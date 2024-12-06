@@ -1,10 +1,10 @@
-import { useCartItem } from "./useCartItem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useSetup } from "../_test";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
 import Cart from "../mocks/Cart";
+import { useCartItem } from "./useCartItem";
 
 const lineItem = Cart.lineItems[0];
 

@@ -1,7 +1,7 @@
-import { Product } from "./Product";
-import { ProductManufacturerTranslation } from "./ProductManufacturerTranslation";
-import { CustomFields } from "../../common/CustomField";
-import { Media } from "../../content/media/Media";
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../../content/media/Media";
+import type { Product } from "./Product";
+import type { ProductManufacturerTranslation } from "./ProductManufacturerTranslation";
 /**
  * @public
  */

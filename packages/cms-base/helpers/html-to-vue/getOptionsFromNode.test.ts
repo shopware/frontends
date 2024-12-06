@@ -1,6 +1,6 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getOptionsFromNode } from "./getOptionsFromNode";
 import type { NodeObject } from "./getOptionsFromNode";
-import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("getOptionsFromNode", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");

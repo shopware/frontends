@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import type {
   CmsBlockImageTextGallery,
   CmsElementImage,
   CmsElementText,
 } from "@shopware-pwa/composables-next";
 import { useCmsBlock } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: CmsBlockImageTextGallery;

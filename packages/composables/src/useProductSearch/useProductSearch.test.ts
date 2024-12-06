@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { useProductSearch } from "./useProductSearch";
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
+import { useProductSearch } from "./useProductSearch";
 
 describe("useProductSearch", () => {
   it("search", async () => {

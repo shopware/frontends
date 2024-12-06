@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import type { Ref } from "vue";
-import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
+import { useLocalWishlist, useSyncWishlist, useUser } from "#imports";
 
 export type UseProductWishlistReturn = {
   /**

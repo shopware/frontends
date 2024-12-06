@@ -1,14 +1,14 @@
+import { addCustomTab } from "@nuxt/devtools-kit";
 /**
  * @module @shopware/nuxt3
  */
 import {
-  defineNuxtModule,
   addPlugin,
   createResolver,
+  defineNuxtModule,
   useLogger,
   // addTypeTemplate,
 } from "@nuxt/kit";
-import { addCustomTab } from "@nuxt/devtools-kit";
 import { defu } from "defu";
 import { isConfigDeprecated } from "./utils";
 const MODULE_ID = "@shopware/nuxt3";

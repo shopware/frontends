@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-import { useCart } from "./useCart";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { Schemas, operations } from "#shopware";
 import { useSetup } from "../_test";
-import type { operations, Schemas } from "#shopware";
 import Cart from "../mocks/Cart";
+import { useCart } from "./useCart";
 
 describe("useCart", () => {
   beforeEach(() => {

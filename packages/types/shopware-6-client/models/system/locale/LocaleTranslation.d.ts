@@ -1,5 +1,5 @@
-import { Locale } from "./Locale";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Locale } from "./Locale";
 
 /**
  * @public

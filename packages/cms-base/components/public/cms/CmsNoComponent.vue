@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { computed } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];

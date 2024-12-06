@@ -1,6 +1,6 @@
-import { ShippingMethod } from "../shipping/ShippingMethod";
-import { Entity } from "../../common/Entity";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Entity } from "../../common/Entity";
+import type { ShippingMethod } from "../shipping/ShippingMethod";
 
 /**
  * @public

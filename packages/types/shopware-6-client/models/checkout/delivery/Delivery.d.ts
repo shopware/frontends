@@ -1,7 +1,7 @@
-import { ShippingMethod } from "../shipping/ShippingMethod";
-import { StateMachineState } from "../../system/state-machine/StateMachineState";
-import { ShippingAddress } from "../customer/ShippingAddress";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { StateMachineState } from "../../system/state-machine/StateMachineState";
+import type { ShippingAddress } from "../customer/ShippingAddress";
+import type { ShippingMethod } from "../shipping/ShippingMethod";
 
 /**
  * @public

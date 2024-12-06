@@ -11,10 +11,10 @@
   "
 >
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import type { Schemas } from "#shopware";
-import { onMounted, reactive, ref, watch } from "vue";
-import { defu } from "defu";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
+import { defu } from "defu";
+import { onMounted, reactive, ref, watch } from "vue";
+import type { Schemas } from "#shopware";
 
 const emits =
   defineEmits<

@@ -1,8 +1,8 @@
-import { snakeCase, pascalCase } from "scule";
 import { equals } from "@vitest/expect";
 import { diff } from "@vitest/utils/diff";
-import c from "picocolors";
 import type { ObjectSubtype } from "openapi-typescript";
+import c from "picocolors";
+import { pascalCase, snakeCase } from "scule";
 
 export default (componentName: string, body: ObjectSubtype) => {
   // aliast needs to be in snake case. Examples:

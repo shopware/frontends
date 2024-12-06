@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useAi } from "../composables/useAi";
 import AIAnswer from "./AIAnswer.vue";
 

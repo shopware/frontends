@@ -1,5 +1,5 @@
-import { NumberRange } from "./NumberRange";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { NumberRange } from "./NumberRange";
 
 /**
  * @public

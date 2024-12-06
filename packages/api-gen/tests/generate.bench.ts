@@ -1,8 +1,8 @@
-import { describe, bench, vi } from "vitest";
-import { generate } from "../src/commands/generate";
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import testSchema from "./api-types/testSchema.json";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import json5 from "json5";
+import { bench, describe, vi } from "vitest";
+import { generate } from "../src/commands/generate";
+import testSchema from "./api-types/testSchema.json";
 
 vi.mock("node:fs", async () => {
   return {

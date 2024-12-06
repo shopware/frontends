@@ -1,11 +1,11 @@
-import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { RegisterForm } from "../page-objects/RegisterPage";
-import { CheckoutPage } from "../page-objects/CheckoutPage";
-import { ProductPage } from "../page-objects/ProductPage";
-import { CartPage } from "../page-objects/CartPage";
-import { LoginForm } from "../page-objects/LoginPage";
 import { faker } from "@faker-js/faker";
+import { expect, test } from "@playwright/test";
+import { CartPage } from "../page-objects/CartPage";
+import { CheckoutPage } from "../page-objects/CheckoutPage";
+import { HomePage } from "../page-objects/HomePage";
+import { LoginForm } from "../page-objects/LoginPage";
+import { ProductPage } from "../page-objects/ProductPage";
+import { RegisterForm } from "../page-objects/RegisterPage";
 import { findEnv } from "../utils/helpers";
 
 require("dotenv").config({ path: findEnv() });

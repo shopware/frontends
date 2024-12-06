@@ -1,8 +1,8 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { useSyncWishlist } from "./useSyncWishlist";
-import { useSetup } from "../_test";
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useSetup } from "../_test";
+import { useSyncWishlist } from "./useSyncWishlist";
 
 describe("useSyncWishlist", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { test, expect, request } from "@playwright/test";
+import { expect, request, test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 
 test.describe("Check for seo-url requests", { tag: "@vue-demo-store" }, () => {

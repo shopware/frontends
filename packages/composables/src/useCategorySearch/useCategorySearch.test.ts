@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { useSetup } from "../_test";
-import { useCategorySearch } from "./useCategorySearch";
 import { cmsAssociations } from "../cms/cmsAssociations";
+import { useCategorySearch } from "./useCategorySearch";
 
 describe("useCategorySearch", () => {
   it("search method", () => {

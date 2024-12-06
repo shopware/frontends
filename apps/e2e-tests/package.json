@@ -6,7 +6,8 @@
   "scripts": {
     "test:e2e": "playwright test --grep @vue-demo-store",
     "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts",
-    "lint": "biome lint .",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
     "start": "npx http-server"
   },
   "devDependencies": {

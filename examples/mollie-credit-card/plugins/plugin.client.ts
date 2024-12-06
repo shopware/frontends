@@ -1,9 +1,9 @@
-import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 import type {
   CreateLocaleInstanceArgs,
-  MolliePlugin,
   MollieOptions,
+  MolliePlugin,
 } from "@/types";
+import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 
 declare module "@nuxt/schema" {
   interface PublicRuntimeConfig {

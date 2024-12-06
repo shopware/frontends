@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useNewsletter } from "./useNewsletter";
 import { useSetup } from "../_test";
+import { useNewsletter } from "./useNewsletter";
 
 describe("useNewsletter", () => {
   it("newsletter subscribe", async () => {

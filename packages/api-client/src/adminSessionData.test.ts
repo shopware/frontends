@@ -1,4 +1,4 @@
-import { describe, expect, test as baseTest } from "vitest";
+import { test as baseTest, describe, expect } from "vitest";
 import { createAdminAPIClient } from ".";
 import type { operations } from "../api-types/adminApiTypes";
 
@@ -7,6 +7,7 @@ const baseURL = "https://demo-frontends.shopware.store/store-api";
 const test = baseTest.extend<{
   adminApiClient: ReturnType<typeof createAdminAPIClient<operations>>;
 }>({
+  // biome-ignore lint/correctness/noEmptyPattern: this is the vitest way of extending
   adminApiClient: async ({}, use) => {
     // setup the fixture before each test function
     const adminApiClient = createAdminAPIClient<operations>({

@@ -14,13 +14,15 @@ const emits = defineEmits<{
   (e: "error", error: string | undefined): void;
 }>();
 
-const onCreditCardSubmit = async (token: string | undefined) => {
+const onCreditCardSubmit = async (token?: string) => {
+  if (!token || !user.value?.id) return;
+
   apiClient.invoke(
     "mollieSubmitCreditCart post script/mollie/creditcard/store-token/{userId/{token}",
     {
       pathParams: {
-        userId: user.value!.id!,
-        token: token!,
+        userId: user.value.id,
+        token: token,
       },
     },
   );

@@ -1,9 +1,9 @@
-import { Product } from "../../content/product/Product";
-import { Media } from "../../content/media/Media";
-import { Category } from "../../content/category/Category";
-import { Order } from "../../checkout/order/Order";
-import { NewsletterRecipient } from "../../content/newsletter/NewsletterRecipient";
-import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { Order } from "../../checkout/order/Order";
+import type { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { Category } from "../../content/category/Category";
+import type { Media } from "../../content/media/Media";
+import type { NewsletterRecipient } from "../../content/newsletter/NewsletterRecipient";
+import type { Product } from "../../content/product/Product";
 
 /**
  * @public

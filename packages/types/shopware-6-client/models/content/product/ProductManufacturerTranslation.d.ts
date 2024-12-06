@@ -1,5 +1,5 @@
-import { ProductManufacturer } from "./ProductManufacturer";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { ProductManufacturer } from "./ProductManufacturer";
 
 /**
  * @public

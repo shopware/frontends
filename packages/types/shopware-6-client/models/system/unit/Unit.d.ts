@@ -1,5 +1,5 @@
-import { UnitTranslation } from "./UnitTranslation";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { UnitTranslation } from "./UnitTranslation";
 
 /**
  * @public

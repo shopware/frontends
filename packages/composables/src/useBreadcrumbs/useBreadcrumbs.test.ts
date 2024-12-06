@@ -1,7 +1,7 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-import { useBreadcrumbs } from "./useBreadcrumbs";
-import { useSetup } from "../_test";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { operations } from "#shopware";
+import { useSetup } from "../_test";
+import { useBreadcrumbs } from "./useBreadcrumbs";
 
 describe("useBreadcrumbs", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");

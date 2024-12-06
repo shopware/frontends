@@ -1,5 +1,5 @@
-import { SalesChannelType } from "./SalesChannelType";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { SalesChannelType } from "./SalesChannelType";
 
 /**
  * @public

@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
-import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { createAPIClient } from "@shopware/api-client";
+import Cookies from "js-cookie";
 
 import type { Composer } from "vue-i18n";
 

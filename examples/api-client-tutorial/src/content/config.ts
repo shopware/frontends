@@ -1,5 +1,5 @@
-import { contentSchema } from "@tutorialkit/types";
 import { defineCollection } from "astro:content";
+import { contentSchema } from "@tutorialkit/types";
 
 const tutorial = defineCollection({
   type: "content",

@@ -21,7 +21,9 @@
     "dev:playground": "pnpm run prepare && nuxi dev playground",
     "build:playground": "pnpm run prepare && nuxi build playground",
     "build": "pnpm run prepare && nuxt-module-build build --stub && nuxi prepare playground",
-    "lint": "pnpm run prepare && vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "pnpm run prepare && vue-tsc --noEmit",
     "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.1",
+    "@biomejs/biome": "1.8.3",
     "@nuxt/devtools": "1.6.3",
     "@nuxt/module-builder": "0.8.4",
     "@nuxt/schema": "3.14.1592",

@@ -1,8 +1,8 @@
-import type { Schemas } from "#shopware";
 import { getProductTierPrices } from "@shopware-pwa/helpers-next";
 import type { TierPrice } from "@shopware-pwa/helpers-next";
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
+import type { Schemas } from "#shopware";
 
 export type UseProductPriceReturn = {
   /**

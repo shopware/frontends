@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { getCmsTranslate } from "@shopware-pwa/helpers-next";
+import { defu } from "defu";
+import { toRefs } from "vue";
 import {
   useAddToCart,
-  useNotifications,
-  useCartNotification,
   useCartErrorParamsResolver,
+  useCartNotification,
+  useNotifications,
 } from "#imports";
-import { toRefs } from "vue";
-import { defu } from "defu";
 import type { Schemas } from "#shopware";
-import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 
 const { pushSuccess, pushError } = useNotifications();
 const { getErrorsCodes } = useCartNotification();

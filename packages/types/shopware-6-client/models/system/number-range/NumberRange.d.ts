@@ -1,8 +1,8 @@
-import { CustomFields } from "../../common/CustomField";
-import { NumberRangeType } from "./NumberRangeType";
-import { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
-import { NumberRangeState } from "./NumberRangeState";
-import { NumberRangeTranslation } from "./NumberRangeTranslation";
+import type { CustomFields } from "../../common/CustomField";
+import type { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
+import type { NumberRangeState } from "./NumberRangeState";
+import type { NumberRangeTranslation } from "./NumberRangeTranslation";
+import type { NumberRangeType } from "./NumberRangeType";
 
 /**
  * @public

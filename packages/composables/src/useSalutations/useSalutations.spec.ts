@@ -1,8 +1,8 @@
-import { useSalutations } from "./useSalutations";
-import { describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
-import Salutations from "../mocks/Salutations";
+import { describe, expect, it, vi } from "vitest";
 import { useSetup } from "../_test";
+import Salutations from "../mocks/Salutations";
+import { useSalutations } from "./useSalutations";
 
 describe("useSalutations", () => {
   it("should init value on init", async () => {

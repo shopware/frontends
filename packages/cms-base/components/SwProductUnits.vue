@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { computed } from "vue";
 import { defu } from "defu";
+import { computed } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{

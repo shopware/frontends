@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { useCountries } from "./useCountries";
 import { useSetup } from "../_test";
 import CountryMock from "../mocks/Country";
+import { useCountries } from "./useCountries";
 
 describe("useCountries", () => {
   it("useCountries flow", async () => {

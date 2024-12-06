@@ -1,17 +1,17 @@
+import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { createAPIClient } from "@shopware/api-client";
+import { defu } from "defu";
+import { getCookie } from "h3";
+import Cookies from "js-cookie";
+import { ref } from "vue";
 import {
+  createShopwareContext,
   defineNuxtPlugin,
+  showError,
   useRuntimeConfig,
   useState,
-  createShopwareContext,
-  showError,
 } from "#imports";
-import { ref } from "vue";
-import Cookies from "js-cookie";
-import { createAPIClient } from "@shopware/api-client";
-import { getCookie } from "h3";
-import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 import type { ApiClient } from "#shopware";
-import { defu } from "defu";
 
 declare module "#app" {
   interface NuxtApp {
@@ -53,7 +53,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
     !!runtimeConfig?.shopware?.useUserContextInSSR;
 
-  const contextTokenFromCookie = !!NuxtApp.ssrContext
+  const contextTokenFromCookie = NuxtApp.ssrContext
     ? getCookie(NuxtApp.ssrContext?.event, "sw-context-token")
     : Cookies.get("sw-context-token");
 

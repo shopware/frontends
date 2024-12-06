@@ -1,6 +1,6 @@
 <script setup>
-import { useAi } from "../composables/useAi";
 import { ref } from "vue";
+import { useAi } from "../composables/useAi";
 
 const props = defineProps({
   answer: Object,

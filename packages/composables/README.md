@@ -122,8 +122,8 @@ Let's get back to the step where the `api-client` was initialized:
 
 ```ts [apiClient.ts]
 import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "#shopware";
 import Cookies from "js-cookie";
+import type { operations } from "#shopware";
 
 const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
 

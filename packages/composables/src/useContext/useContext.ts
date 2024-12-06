@@ -1,5 +1,5 @@
+import { injectLocal, provideLocal } from "@vueuse/core";
 import { ref, unref } from "vue";
-import { provideLocal, injectLocal } from "@vueuse/core";
 import type { Ref } from "vue";
 
 /**

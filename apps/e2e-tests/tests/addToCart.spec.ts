@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { CartPage } from "../page-objects/CartPage";
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
-import { CartPage } from "../page-objects/CartPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
 test.setTimeout(50000);

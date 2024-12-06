@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
@@ -20,6 +22,7 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",

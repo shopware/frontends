@@ -1,15 +1,15 @@
+import { resolve } from "node:path";
+import { findSync } from "find-in-files";
 // @ts-nocheck
 import type { Plugin } from "vite";
-import { resolve } from "path";
-import { findSync } from "find-in-files";
 
+import { readFileSync, readdirSync } from "node:fs";
 import {
   getToggleContainer,
   getWrappedCodeBlock,
   prepareGithubPermalink,
   replacer,
 } from "./utils";
-import { readdirSync, readFileSync } from "node:fs";
 
 export async function CmsBaseReference({
   projectRootDir,
@@ -26,8 +26,10 @@ export async function CmsBaseReference({
       const [pkg, fileName] = id.split("/").slice(-2);
       const packageName = fileName.replace(/\.md$/, "");
 
+      let transformedCode = code;
+
       if (pkg !== "packages" || packageName !== "cms-base") {
-        return code;
+        return transformedCode;
       }
 
       let API = "\n\n## Available components\n\n";
@@ -42,7 +44,7 @@ export async function CmsBaseReference({
 
         API += `### \`${component.name.replace(".vue", "")}\`\n`;
         API += prepareGithubPermalink({
-          label: `source code`,
+          label: "source code",
           path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
           project: "shopware/frontends",
         });
@@ -64,9 +66,9 @@ export async function CmsBaseReference({
       API += "\n\n";
 
       // place it before the changelog
-      code = replacer(code, API, "", "tail");
+      transformedCode = replacer(transformedCode, API, "", "tail");
 
-      return code;
+      return transformedCode;
     },
   };
 }

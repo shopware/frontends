@@ -1,7 +1,7 @@
+import { defu } from "defu";
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 import { cmsAssociations } from "../cms/cmsAssociations";
-import { defu } from "defu";
 
 type UseProductSearchReturnOptions = {
   withCmsAssociations?: boolean;

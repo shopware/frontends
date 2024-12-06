@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, computed } from "vue";
 import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
-import { useRoute } from "vue-router";
-import Textarea from "primevue/textarea";
 import Button from "primevue/button";
+import Textarea from "primevue/textarea";
 import Timeline from "primevue/timeline";
+import { computed, onBeforeMount, ref } from "vue";
+import { useRoute } from "vue-router";
 
 const { isLoggedIn } = useUser();
 const quote = ref();

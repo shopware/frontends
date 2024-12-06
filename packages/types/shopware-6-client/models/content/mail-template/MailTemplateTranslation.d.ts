@@ -1,4 +1,4 @@
-import { MailTemplate } from "./MailTemplate";
+import type { MailTemplate } from "./MailTemplate";
 
 /**
  * @public

@@ -1,5 +1,5 @@
-import { Product } from "./Product";
-import { Language } from "../../framework/language/Language";
+import type { Language } from "../../framework/language/Language";
+import type { Product } from "./Product";
 
 /**
  * @public

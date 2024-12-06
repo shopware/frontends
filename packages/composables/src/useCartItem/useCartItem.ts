@@ -1,6 +1,6 @@
+import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useCart } from "#imports";
 import type { Schemas } from "#shopware";
 

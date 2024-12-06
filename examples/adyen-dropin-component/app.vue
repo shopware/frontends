@@ -43,7 +43,11 @@ try {
 }
 
 // handler for @payButtonClicked event from <AdyenCreditCard /> component located a template
-const onPayButton = async (state: any) => {
+const onPayButton = async (state: {
+  data: {
+    paymentMethod: Record<string, unknown>;
+  };
+}) => {
   // when user clicks "Pay" button in a drop-in component, create an order based on current session (automatically logged in user & product added to cart)
   const order = await createOrder();
   activeStep.value = 3;

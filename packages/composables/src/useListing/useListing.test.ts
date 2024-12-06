@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { useListing, useCategoryListing } from "./useListing";
-import { useSetup } from "../_test";
-import searchMock from "../mocks/Search";
-import ContextError from "../helpers/ContextError";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import ContextError from "../helpers/ContextError";
+import searchMock from "../mocks/Search";
+import { useCategoryListing, useListing } from "./useListing";
 
 describe("useListing", () => {
   it("should invoke search", async () => {

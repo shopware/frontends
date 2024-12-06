@@ -1,10 +1,10 @@
 import {
-  defineNuxtModule,
   addComponentsDir,
   addImportsDir,
   addPlugin,
   addServerHandler,
   createResolver,
+  defineNuxtModule,
 } from "@nuxt/kit";
 import { defu } from "defu";
 

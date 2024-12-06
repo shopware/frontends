@@ -1,7 +1,7 @@
+import { faker } from "@faker-js/faker";
 import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
-import { faker } from "@faker-js/faker";
 
 test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
   let homePage: HomePage;

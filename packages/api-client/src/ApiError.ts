@@ -1,4 +1,4 @@
-import { FetchResponse } from "ofetch";
+import type { FetchResponse } from "ofetch";
 
 export type ApiError = {
   title?: string;

@@ -7,7 +7,6 @@
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
     "start": "nuxt start",
-    "lintold": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
     "lint": "biome check .",
     "lint:fix": "biome check --write . && pnpm run typecheck",
     "typecheck": "nuxt prepare && nuxi typecheck",

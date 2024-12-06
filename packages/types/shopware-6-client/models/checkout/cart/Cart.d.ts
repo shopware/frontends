@@ -1,8 +1,8 @@
-import { LineItem } from "./line-item/LineItem";
-import { CartPrice } from "./price/CartPrice";
-import { Delivery } from "../delivery/Delivery";
-import { Transaction } from "./transaction/Transaction";
 import { EntityError } from "../../common/EntityError";
+import type { Delivery } from "../delivery/Delivery";
+import type { LineItem } from "./line-item/LineItem";
+import type { CartPrice } from "./price/CartPrice";
+import type { Transaction } from "./transaction/Transaction";
 
 /**
  * @beta

@@ -1,7 +1,7 @@
+import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
 import { CmsPage } from "../cms/CmsPage";
 import { SeoUrl } from "../navigation/Navigation";
-import { CustomFields } from "../../common/CustomField";
-import type { Schemas } from "#shopware";
 
 /**
  * @deprecated use {@link Schemas['LandingPage']} from "#shopware" import instead

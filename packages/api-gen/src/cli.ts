@@ -1,9 +1,9 @@
 import type { Argv } from "yargs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
-import packageJson from "../package.json";
 import { loadSchema } from "./commands/loadSchema";
 import { validateJson } from "./commands/validateJson";
 

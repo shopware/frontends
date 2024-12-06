@@ -1,7 +1,7 @@
-import { LocaleTranslation } from "./LocaleTranslation";
-import { Language } from "../../framework/language/Language";
-import { CustomFields } from "../../common/CustomField";
-import { Customer } from "../../checkout/customer/Customer";
+import type { Customer } from "../../checkout/customer/Customer";
+import type { CustomFields } from "../../common/CustomField";
+import type { Language } from "../../framework/language/Language";
+import type { LocaleTranslation } from "./LocaleTranslation";
 
 /**
  * @public

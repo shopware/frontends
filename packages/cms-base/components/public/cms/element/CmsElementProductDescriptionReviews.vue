@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import xss from "xss";
 import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
-import {
-  getTranslatedProperty,
-  getProductName,
-} from "@shopware-pwa/helpers-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { computed, ref } from "vue";
+import {
+  getProductName,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
 import { defu } from "defu";
+import { computed, ref } from "vue";
+import xss from "xss";
 import { useProduct } from "#imports";
 
 const props = defineProps<{

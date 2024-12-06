@@ -1,7 +1,7 @@
-import { defineLoader } from "vitepress";
-import { resolve, dirname } from "path";
+import { readdirSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { extract } from "ts-dox";
-import { readdirSync } from "fs";
+import { defineLoader } from "vitepress";
 export interface Data {
   composablesList: { text: string; link: string; category: string }[];
 }

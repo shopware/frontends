@@ -19,8 +19,8 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "biome lint .",
-    "lint:fix": "biome lint --write . && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -42,6 +42,7 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "3.14.1592",
     "@types/three": "0.166.0",
     "@vitest/coverage-v8": "2.1.8",

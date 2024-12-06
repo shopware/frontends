@@ -1,5 +1,5 @@
-import { Currency } from "./Currency";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Currency } from "./Currency";
 
 /**
  * @public

@@ -1,5 +1,5 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

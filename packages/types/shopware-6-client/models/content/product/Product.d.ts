@@ -1,23 +1,23 @@
-import { ProductMedia } from "./ProductMedia";
+import type { Schemas } from "#shopware";
+import { CalculatedPrice } from "../../checkout/cart/price/CalculatedPrice";
+import { DeliveryTime } from "../../checkout/delivery/DeliveryTime";
+import type { CustomFields } from "../../common/CustomField";
+import { ListingPrice } from "../../framework/pricing/ListingPrice";
+import type { Price } from "../../framework/pricing/Price";
+import { Tag } from "../../system/tag/Tag";
 import { Tax } from "../../system/tax/Tax";
 import { Unit } from "../../system/unit/Unit";
-import { ProductReview } from "./ProductReview";
-import { ListingPrice } from "../../framework/pricing/ListingPrice";
-import { Price } from "../../framework/pricing/Price";
-import { CalculatedPrice } from "../../checkout/cart/price/CalculatedPrice";
-import { ProductPrice } from "./ProductPrice";
-import { PropertyGroup } from "../property/PropertyGroup";
-import { DeliveryTime } from "../../checkout/delivery/DeliveryTime";
-import { ProductManufacturer } from "./ProductManufacturer";
-import { ProductTranslation } from "./ProductTranslation";
 import { Category } from "../category/Category";
-import { Tag } from "../../system/tag/Tag";
-import { CustomFields } from "../../common/CustomField";
-import { SeoUrl } from "../navigation/Navigation";
 import { CmsPage } from "../cms/CmsPage";
-import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
+import { SeoUrl } from "../navigation/Navigation";
+import { PropertyGroup } from "../property/PropertyGroup";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
-import type { Schemas } from "#shopware";
+import type { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
+import { ProductManufacturer } from "./ProductManufacturer";
+import { ProductMedia } from "./ProductMedia";
+import { ProductPrice } from "./ProductPrice";
+import { ProductReview } from "./ProductReview";
+import { ProductTranslation } from "./ProductTranslation";
 
 /**
  * @deprecated - use Schema["CrossSellingElementCollection"] instead from import "#shopware"

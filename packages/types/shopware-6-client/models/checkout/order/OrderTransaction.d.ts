@@ -1,9 +1,9 @@
-import { Order } from "./Order";
-import { PaymentMethod } from "../payment/PaymentMethod";
+import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
 import { StateMachineState } from "../../system/state-machine/StateMachineState";
 import { CalculatedPrice } from "../cart/price/CalculatedPrice";
-import { CustomFields } from "../../common/CustomField";
-import type { Schemas } from "#shopware";
+import { PaymentMethod } from "../payment/PaymentMethod";
+import { Order } from "./Order";
 
 /**
  * @public

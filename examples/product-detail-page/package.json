@@ -6,9 +6,12 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",

@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "astro": "astro",
-    "lint": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "tsc --noEmit",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "astro preview",
@@ -19,6 +21,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.4",
     "@astrojs/react": "3.6.3",
+    "@biomejs/biome": "1.8.3",
     "@shopware/api-client": "1.1.2",
     "@tutorialkit/astro": "1.1.1",
     "@tutorialkit/theme": "1.2.1",

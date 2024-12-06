@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { expect, test } from "@playwright/test";
 
 declare global {
   interface Window {
@@ -15,7 +15,7 @@ declare global {
 
 const directoryPath = path.join(__dirname, "../../../templates/");
 
-fs.readdirSync(directoryPath).forEach((template) => {
+for (const template of fs.readdirSync(directoryPath)) {
   test(`Open, { tag: "@stackblitz" },  ${template}`, async ({ page }) => {
     test.setTimeout(200000);
     const templateName = `shopware/frontends/tree/main/templates/${template}`;
@@ -54,4 +54,4 @@ fs.readdirSync(directoryPath).forEach((template) => {
       expect(response.status()).toBe(200);
     });
   });
-});
+}

@@ -1,5 +1,5 @@
-import { MailHeaderFooterTranslation } from "./MailHeaderFooterTranslation";
-import { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { MailHeaderFooterTranslation } from "./MailHeaderFooterTranslation";
 
 /**
  * @public

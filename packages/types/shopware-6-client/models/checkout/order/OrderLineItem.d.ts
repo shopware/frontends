@@ -1,12 +1,12 @@
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../../content/media/Media";
+import { type CartProductItem, Product } from "../../content/product/Product";
 import { CalculatedPrice } from "../cart/price/CalculatedPrice";
-import { PriceDefinitionInterface } from "../cart/price/PriceDefinitionInterface";
-import { Order } from "./Order";
-import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
-import { Media } from "../../content/media/Media";
-import { CustomFields } from "../../common/CustomField";
-import { CartProductItem, Product } from "../../content/product/Product";
-import { Promotion } from "../promotion/Promotion";
-import { Downloads } from "./OrderDownloads";
+import type { PriceDefinitionInterface } from "../cart/price/PriceDefinitionInterface";
+import type { Promotion } from "../promotion/Promotion";
+import type { Order } from "./Order";
+import type { OrderDeliveryPosition } from "./OrderDeliveryPosition";
+import type { Downloads } from "./OrderDownloads";
 /**
  * @public
  */

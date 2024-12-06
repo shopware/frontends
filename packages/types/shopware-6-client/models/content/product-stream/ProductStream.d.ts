@@ -1,6 +1,6 @@
-import { ProductStreamTranslation } from "./ProductStreamTranslation";
-import { ProductStreamFilter } from "./ProductStreamFilter";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { ProductStreamFilter } from "./ProductStreamFilter";
+import type { ProductStreamTranslation } from "./ProductStreamTranslation";
 
 /**
  * @public

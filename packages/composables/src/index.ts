@@ -1,6 +1,6 @@
-import type { Schemas } from "#shopware";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
+import type { Schemas } from "#shopware";
 
 /**
  * A composables library compatible with Vue 3 and Shopware 6.

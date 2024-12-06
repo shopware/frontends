@@ -7,9 +7,12 @@
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "generate-types": "shopware-api-gen generate --apiType=store"
+    "generate-types": "shopware-api-gen generate --apiType=store",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",

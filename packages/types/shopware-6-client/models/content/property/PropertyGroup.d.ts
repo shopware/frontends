@@ -1,6 +1,6 @@
-import { PropertyGroupOption } from "./PropertyGroupOption";
-import { CustomFields } from "../../common/CustomField";
-import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
+import type { CustomFields } from "../../common/CustomField";
+import type { PropertyGroupOption } from "./PropertyGroupOption";
+import type { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
 
 /**
  * @public

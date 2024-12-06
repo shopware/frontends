@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { useNavigationContext } from "./useNavigationContext";
-import { useSetup } from "../_test";
 import { ref } from "vue";
+import { useSetup } from "../_test";
+import { useNavigationContext } from "./useNavigationContext";
 
 describe("useNavigationContext", () => {
   it("notification flow", async () => {

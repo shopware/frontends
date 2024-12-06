@@ -1,12 +1,12 @@
-import { Media } from "../media/Media";
-import { CmsPage } from "../cms/CmsPage";
-import { Product } from "../product/Product";
+import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
 import { Entity } from "../../common/Entity";
 import { Tag } from "../../system/tag/Tag";
-import { CategoryTranslation } from "./CategoryTranslation";
-import { CustomFields } from "../../common/CustomField";
+import { CmsPage } from "../cms/CmsPage";
+import { Media } from "../media/Media";
 import { SeoUrl } from "../navigation/Navigation";
-import type { Schemas } from "#shopware";
+import { Product } from "../product/Product";
+import { CategoryTranslation } from "./CategoryTranslation";
 /**
  * Source: https://github.com/shopware/platform/blob/master/src/Core/Content/Category/CategoryDefinition.php#L50
  *

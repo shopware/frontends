@@ -1,9 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
-import { useAddress } from "./useAddress";
-import { useSetup } from "../_test";
-import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
+import { describe, expect, it, vi } from "vitest";
+import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useAddress } from "./useAddress";
 
 const MOCKED_ADDRESS = {
   countryId: "6777d83705454d078fc9a7419296c7dc",

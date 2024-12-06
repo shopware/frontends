@@ -37,7 +37,8 @@
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
@@ -46,10 +47,10 @@
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
     "@vitest/coverage-v8": "2.1.8",
-    "eslint-config-shopware": "workspace:*",
     "jsdom": "^25.0.1",
     "prettier": "3.4.1",
     "tsconfig": "workspace:*",

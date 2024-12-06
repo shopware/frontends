@@ -1,3 +1,7 @@
+import { createApp, eventHandler, readBody, toNodeListener } from "h3";
+import type { App } from "h3";
+import { listen } from "listhen";
+import type { Listener } from "listhen";
 import {
   afterAll,
   beforeAll,
@@ -7,10 +11,6 @@ import {
   it,
   vi,
 } from "vitest";
-import { listen } from "listhen";
-import type { Listener } from "listhen";
-import { createApp, eventHandler, toNodeListener, readBody } from "h3";
-import type { App } from "h3";
 import { createAdminAPIClient } from ".";
 import type { operations } from "../api-types/adminApiTypes";
 

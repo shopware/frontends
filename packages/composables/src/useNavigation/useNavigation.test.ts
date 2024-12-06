@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { useNavigation } from "./useNavigation";
-import Menu from "../mocks/Menu";
 import { useSetup } from "../_test";
+import Menu from "../mocks/Menu";
+import { useNavigation } from "./useNavigation";
 
 describe("useNavigation", () => {
   it("should set the menu", async () => {

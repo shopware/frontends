@@ -1,6 +1,6 @@
+import json5 from "json5";
 import { describe, expect, it } from "vitest";
 import { patchJsonSchema } from "./patchJsonSchema";
-import json5 from "json5";
 
 describe("patchJsonSchema", () => {
   describe("components", () => {

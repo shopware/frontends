@@ -1,12 +1,12 @@
-import { Media } from "../../content/media/Media";
-import { Plugin } from "../../framework/plugin/Plugin";
-import { Customer } from "../customer/Customer";
-import { SalesChannel } from "../../system/sales-channel/SalesChannel";
-import { Rule } from "../../content/rule/Rule";
-import { PaymentMethodTranslation } from "./PaymentMethodTranslation";
-import { OrderTransaction } from "../order/OrderTransaction";
-import { CustomFields } from "../../common/CustomField";
 import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
+import { Media } from "../../content/media/Media";
+import { Rule } from "../../content/rule/Rule";
+import { Plugin } from "../../framework/plugin/Plugin";
+import { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import { Customer } from "../customer/Customer";
+import { OrderTransaction } from "../order/OrderTransaction";
+import { PaymentMethodTranslation } from "./PaymentMethodTranslation";
 
 /**
  * @deprecated use Schemas['PaymentMethod'] from "#shopware" import instead

@@ -1,10 +1,10 @@
-import { CustomFields } from "../../common/CustomField";
-import { Category } from "../category/Category";
-import { Product } from "../product/Product";
-import { Aggregation } from "../../../search/Aggregation";
-import { CmsBlock } from "./CmsBlock";
-import { LandingPage } from "../landing-page/LandingPage";
 import type { Schemas } from "#shopware";
+import type { Aggregation } from "../../../search/Aggregation";
+import type { CustomFields } from "../../common/CustomField";
+import type { Category } from "../category/Category";
+import type { LandingPage } from "../landing-page/LandingPage";
+import type { Product } from "../product/Product";
+import type { CmsBlock } from "./CmsBlock";
 
 /**
  * Cms page type

@@ -1,5 +1,5 @@
-import { Media } from "../../content/media/Media";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../../content/media/Media";
 
 /**
  * @public

@@ -1,9 +1,9 @@
+import fs from "node:fs/promises";
 import { getChangedFilesSince } from "@changesets/git";
 import type { PackageJSON } from "@changesets/types";
 import writeChangeset from "@changesets/write";
 import { getPackages } from "@manypkg/get-packages";
 import spawn from "spawndamnit";
-import fs from "fs/promises";
 
 const IGNORED_PACKAGE_PATTERNS = [
   // all in examples directory regex

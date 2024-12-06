@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { useProductWishlist } from "./useProductWishlist";
+import { ref } from "vue";
 import { useSetup } from "../_test";
 import { useUser } from "../useUser/useUser";
-import { ref } from "vue";
+import { useProductWishlist } from "./useProductWishlist";
 
 vi.mock("../useUser/useUser");
 

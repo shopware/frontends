@@ -1,5 +1,5 @@
-import { inject } from "vue";
 import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
+import { inject } from "vue";
 
 export function useUrlResolver() {
   const getUrlPrefix = () => inject("urlPrefix", "");

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig, useUrlResolver } from "#imports";
-import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import { decodeHTML } from "entities";
+import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
+import { useCmsElementConfig, useUrlResolver } from "#imports";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import type { NodeObject } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";

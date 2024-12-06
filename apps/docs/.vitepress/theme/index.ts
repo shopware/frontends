@@ -1,6 +1,6 @@
-// import './styles/index.css'
-import { App } from "vue";
 import { SWAGTheme } from "vitepress-shopware-docs";
+// import './styles/index.css'
+import type { App } from "vue";
 // Ai component
 // import AI from "./components/AI.vue";
 import "./custom.css";

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { useOrderDetails } from "./useOrderDetails";
 import { useSetup } from "../_test";
 import Order from "../mocks/Order";
+import { useOrderDetails } from "./useOrderDetails";
 
 describe("useOrderDetails", () => {
   it("init details", async () => {

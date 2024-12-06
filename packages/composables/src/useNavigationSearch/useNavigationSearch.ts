@@ -1,4 +1,4 @@
-import { useShopwareContext, useSessionContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseNavigationSearchReturn = {

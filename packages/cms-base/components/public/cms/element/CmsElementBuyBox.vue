@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { defu } from "defu";
+import { computed } from "vue";
 import {
   useCmsElementConfig,
+  usePrice,
+  useProduct,
   useProductPrice,
   useSessionContext,
-  useProduct,
-  usePrice,
 } from "#imports";
-import { computed } from "vue";
-import { defu } from "defu";
 
 const props = defineProps<{
   content: CmsElementBuyBox;

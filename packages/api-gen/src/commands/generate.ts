@@ -1,27 +1,27 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { resolve, join, dirname } from "node:path";
-import ts from "typescript";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import openapiTS, {
   astToString,
   transformSchemaObjectWithComposition,
 } from "openapi-typescript";
 import type { OpenAPI3, SchemaObject } from "openapi-typescript";
+import ts from "typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
+import json5 from "json5";
+import { ofetch } from "ofetch";
 import c from "picocolors";
 import { format } from "prettier";
-import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
-import { ofetch } from "ofetch";
 import type { TransformedElements } from "../generateFile";
-import { transformSchemaTypes } from "../transformSchemaTypes";
-import { transformOpenApiTypes } from "../transformOpenApiTypes";
-import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
-import json5 from "json5";
 import {
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
+import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
+import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
+import { transformOpenApiTypes } from "../transformOpenApiTypes";
+import { transformSchemaTypes } from "../transformSchemaTypes";
 
 export async function generate(args: {
   cwd: string;

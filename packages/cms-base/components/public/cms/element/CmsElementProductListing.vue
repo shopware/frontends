@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useCategoryListing } from "#imports";
-import { computed, ref, watch, useTemplateRef } from "vue";
 import { defu } from "defu";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{

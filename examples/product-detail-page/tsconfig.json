@@ -1,8 +1,9 @@
 {
-  // https://v3.nuxtjs.org/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
+  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
     "paths": {
+      "#imports": ["./imports.d.ts"],
       "#shopware": ["./shopware.d.ts"]
     }
   }

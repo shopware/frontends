@@ -1,7 +1,7 @@
 import { createAdminAPIClient } from "@shopware/api-client";
 import type {
-  operations,
   components,
+  operations,
 } from "@shopware/api-client/admin-api-types";
 import Cookies from "js-cookie";
 

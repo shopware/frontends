@@ -1,11 +1,11 @@
+import { defu } from "defu";
 /**
  * Template composable
  */
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
-import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
+import { useLocalWishlist, useSyncWishlist, useUser } from "#imports";
 import type { Schemas } from "#shopware";
-import { defu } from "defu";
 
 export type UseWishlistReturn = {
   /**

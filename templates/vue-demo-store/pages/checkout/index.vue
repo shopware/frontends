@@ -143,6 +143,10 @@ const state = reactive<operations["register post /account/register"]["body"]>({
   password: "",
   guest: false,
   billingAddress: {
+    customerId: "",
+    firstName: "",
+    id: "",
+    lastName: "",
     street: "",
     zipcode: "",
     city: "",

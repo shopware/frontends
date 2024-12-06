@@ -1,4 +1,4 @@
-import { NumberRange } from "./NumberRange";
+import type { NumberRange } from "./NumberRange";
 
 /**
  * @public

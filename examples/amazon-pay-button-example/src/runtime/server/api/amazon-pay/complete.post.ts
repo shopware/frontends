@@ -1,9 +1,9 @@
 import fs from "node:fs";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import * as path from "node:path";
+import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
+import { defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { createError, useRuntimeConfig } from "#imports";
-import { defineEventHandler, readValidatedBody } from "h3";
 
 // import {
 //   defineEventHandler,
@@ -67,10 +67,16 @@ export default defineEventHandler(async (event) => {
   const aPayClient = new Client.WebStoreClient(config);
 
   try {
-    const response = await aPayClient.completeCheckoutSession(
+    const response = (await aPayClient.completeCheckoutSession(
       parsedBody.data.amazonCheckoutSessionId,
       payload,
-    );
+    )) as {
+      data: {
+        statusDetails: {
+          state: string;
+        };
+      };
+    };
 
     if (response.data.statusDetails.state !== "Completed") {
       throw new Error("Payment not completed");

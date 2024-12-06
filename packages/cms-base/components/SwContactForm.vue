@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
+import { email, minLength, required } from "@vuelidate/validators";
+import { defu } from "defu";
+import { computed, reactive, ref } from "vue";
 import {
   useCmsElementConfig,
   useNavigationContext,
   useSalutations,
   useShopwareContext,
 } from "#imports";
-import { computed, reactive, ref } from "vue";
-import { defu } from "defu";
 
 const props = defineProps<{
   content: CmsElementForm;

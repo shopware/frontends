@@ -1,17 +1,17 @@
-import { join } from "node:path";
-import c from "picocolors";
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import json5 from "json5";
 import type { ObjectSubtype, OpenAPI3 } from "openapi-typescript";
-import { validationRules } from "../validation-rules";
-import { patchJsonSchema } from "../patchJsonSchema";
+import c from "picocolors";
+import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 import {
   API_GEN_CONFIG_FILENAME,
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
-import json5 from "json5";
-import { getAdminApiClient, getStoreApiClient } from "../apiClient";
+import { patchJsonSchema } from "../patchJsonSchema";
+import { validationRules } from "../validation-rules";
 
 /**
  * Removes the api type from the endpoint string to compare it with the definition from the schema

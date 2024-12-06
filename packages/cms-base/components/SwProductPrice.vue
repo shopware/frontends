@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useProductPrice, usePrice } from "#imports";
-import { toRefs } from "vue";
 import { defu } from "defu";
+import { toRefs } from "vue";
+import { usePrice, useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   product: Schemas["Product"];

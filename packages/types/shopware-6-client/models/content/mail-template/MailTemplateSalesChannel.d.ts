@@ -1,5 +1,5 @@
-import { SalesChannel } from "../../system/sales-channel/SalesChannel";
-import { MailTemplateType } from "./MailTemplateType";
+import type { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { MailTemplateType } from "./MailTemplateType";
 
 /**
  * @public

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { pascalCase } from "scule";
 import {
-  getCmsLayoutConfiguration,
   getBackgroundImageUrl,
+  getCmsLayoutConfiguration,
 } from "@shopware-pwa/helpers-next";
-import { useNavigationContext, createCategoryListingContext } from "#imports";
+import { pascalCase } from "scule";
 import { computed, h, resolveComponent } from "vue";
+import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

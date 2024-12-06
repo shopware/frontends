@@ -1,4 +1,4 @@
-import { Language } from "../../framework/language/Language";
+import type { Language } from "../../framework/language/Language";
 
 /**
  * @public

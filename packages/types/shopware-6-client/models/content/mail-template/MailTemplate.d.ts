@@ -1,7 +1,7 @@
-import { MailTemplateMedia } from "./MailTemplateMedia";
-import { MailTemplateSalesChannel } from "./MailTemplateSalesChannel";
-import { MailTemplateType } from "./MailTemplateType";
-import { MailTemplateTranslation } from "./MailTemplateTranslation";
+import type { MailTemplateMedia } from "./MailTemplateMedia";
+import type { MailTemplateSalesChannel } from "./MailTemplateSalesChannel";
+import type { MailTemplateTranslation } from "./MailTemplateTranslation";
+import type { MailTemplateType } from "./MailTemplateType";
 
 /**
  * @public

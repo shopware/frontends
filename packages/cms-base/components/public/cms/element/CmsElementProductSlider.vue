@@ -3,9 +3,9 @@ import type {
   CmsElementProductSlider,
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
-import { ref, computed, onMounted, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import type { ComputedRef } from "vue";
+import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
   content: CmsElementProductSlider;

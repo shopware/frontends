@@ -1,16 +1,16 @@
-import { Pagination } from "./Pagination";
-import {
-  EqualsFilter,
-  RangeFilter,
-  MultiFilter,
-  EqualsAnyFilter,
-} from "./SearchFilter";
-import { Aggregation } from "./Aggregation";
-import { TotalCountMode } from "./TotalCountMode";
-import { ShopwareAssociation } from "./Association";
-import { Grouping } from "./Grouping";
 // import { StoreSort } from "./StoreSort";
 import type { Schemas } from "#shopware";
+import type { Aggregation } from "./Aggregation";
+import type { ShopwareAssociation } from "./Association";
+import type { Grouping } from "./Grouping";
+import type { Pagination } from "./Pagination";
+import type {
+  EqualsAnyFilter,
+  EqualsFilter,
+  MultiFilter,
+  RangeFilter,
+} from "./SearchFilter";
+import type { TotalCountMode } from "./TotalCountMode";
 
 /**
  * @deprecated use Schemas['ProductSorting'] from "#shopware" import instead

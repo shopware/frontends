@@ -1,6 +1,6 @@
-import { Product } from "./Product";
-import { Rule } from "../rule/Rule";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Rule } from "../rule/Rule";
+import type { Product } from "./Product";
 
 /**
  * @public

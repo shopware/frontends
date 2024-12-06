@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { useSessionContext } from "./useSessionContext";
-import { useSetup } from "../_test";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useSessionContext } from "./useSessionContext";
 
 const consoleErrorSpy = vi.spyOn(console, "error");
 consoleErrorSpy.mockImplementation(() => {});

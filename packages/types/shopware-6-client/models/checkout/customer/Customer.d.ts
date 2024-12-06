@@ -1,14 +1,14 @@
+import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
 import { ProductReview } from "../../content/product/ProductReview";
-import { PaymentMethod } from "../payment/PaymentMethod";
-import { CustomerGroup } from "./CustomerGroup";
+import { Tag } from "../../system/tag/Tag";
 import { OrderCustomer } from "../order/OrderCustomer";
-import { ShippingAddress } from "./ShippingAddress";
+import { PaymentMethod } from "../payment/PaymentMethod";
+import { Promotion } from "../promotion/Promotion";
 import { BillingAddress } from "./BillingAddress";
 import { CustomerAddress } from "./CustomerAddress";
-import { Promotion } from "../promotion/Promotion";
-import { Tag } from "../../system/tag/Tag";
-import { CustomFields } from "../../common/CustomField";
-import type { Schemas } from "#shopware";
+import { CustomerGroup } from "./CustomerGroup";
+import { ShippingAddress } from "./ShippingAddress";
 
 /**
  * @deprecated use {@link Schemas['Customer']} from "#shopware" import instead

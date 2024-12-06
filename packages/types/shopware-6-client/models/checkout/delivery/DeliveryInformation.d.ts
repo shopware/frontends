@@ -1,4 +1,4 @@
-import { DeliveryTime } from "./DeliveryTime";
+import type { DeliveryTime } from "./DeliveryTime";
 
 /**
  * @public

@@ -1,5 +1,5 @@
-import { Product } from "../product/Product";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Product } from "../product/Product";
 
 export type CustomerWishlist = {
   customerId: string;

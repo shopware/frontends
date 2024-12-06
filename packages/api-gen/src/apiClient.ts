@@ -1,6 +1,6 @@
-import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
-import type { operations } from "@shopware/api-client/api-types";
+import { createAPIClient, createAdminAPIClient } from "@shopware/api-client";
 import type { operations as adminOperations } from "@shopware/api-client/admin-api-types";
+import type { operations } from "@shopware/api-client/api-types";
 
 let adminApiClient: ReturnType<typeof createAdminAPIClient<adminOperations>>;
 let storeApiClient: ReturnType<typeof createAPIClient<operations>>;

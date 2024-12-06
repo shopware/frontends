@@ -18,7 +18,7 @@ const nav = [
   },
   {
     text: "Resources",
-    activeMatch: `^/(api)`,
+    activeMatch: "^/(api)",
     items: [
       {
         text: "HTTP APIs",

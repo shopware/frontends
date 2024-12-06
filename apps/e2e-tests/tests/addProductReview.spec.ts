@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
-import { ProductPage } from "../page-objects/ProductPage";
 import { LoginForm } from "../page-objects/LoginPage";
+import { ProductPage } from "../page-objects/ProductPage";
 import { findEnv } from "../utils/helpers";
 
 require("dotenv").config({ path: findEnv() });

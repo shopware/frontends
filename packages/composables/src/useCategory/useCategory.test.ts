@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { useCategory } from "./useCategory";
-import { useSetup } from "../_test";
 import { ref } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useCategory } from "./useCategory";
 
 describe("useCategory", () => {
   it("empty category init", () => {

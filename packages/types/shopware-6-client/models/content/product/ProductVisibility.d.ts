@@ -1,5 +1,5 @@
-import { Product } from "./Product";
-import { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { Product } from "./Product";
 
 /**
  * @public

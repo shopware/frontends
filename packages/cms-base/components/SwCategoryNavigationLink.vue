@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-import { useUrlResolver } from "#imports";
-import { RouterLink } from "vue-router";
 import {
   buildUrlPrefix,
   getCategoryRoute,
@@ -9,6 +6,9 @@ import {
   urlIsAbsolute,
 } from "@shopware-pwa/helpers-next";
 import { computed } from "vue";
+import { RouterLink } from "vue-router";
+import { useUrlResolver } from "#imports";
+import type { Schemas } from "#shopware";
 
 interface Props {
   navigationElement: Schemas["Category"];

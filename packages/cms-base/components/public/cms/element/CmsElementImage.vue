@@ -3,12 +3,12 @@ import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware-pwa/composables-next";
-import { useCmsElementImage, useUrlResolver } from "#imports";
 import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 import { useElementSize } from "@vueuse/core";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
-import { isSpatial } from "../../../../helpers/media/isSpatial";
+import { useCmsElementImage, useUrlResolver } from "#imports";
 import { ClientOnly } from "../../../../helpers/clientOnly";
+import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;

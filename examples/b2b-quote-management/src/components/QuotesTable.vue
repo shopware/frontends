@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
 import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
-import Login from "./Login.vue";
+import { onBeforeMount, ref } from "vue";
 import type { Schemas } from "#shopware";
+import Login from "./Login.vue";
 
 const quotesList = ref<Schemas["Quote"][]>([]);
 const { getQuoteList } = useB2bQuoteManagement();

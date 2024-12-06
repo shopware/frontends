@@ -22,21 +22,21 @@
 </template>
 
 <script>
-import { useAttrs, ref } from "vue";
+import { ref, useAttrs } from "vue";
 
 export default {
   setup() {
-    let attrs = useAttrs();
+    const attrs = useAttrs();
 
-    let title = ref(attrs.title);
+    const title = ref(attrs.title);
 
-    let page = ref(attrs.page);
+    const page = ref(attrs.page);
 
-    let icon = ref(attrs.icon || "");
+    const icon = ref(attrs.icon || "");
 
-    let sub = ref(attrs.sub || "");
+    const sub = ref(attrs.sub || "");
 
-    let target = ref(attrs.target || "");
+    const target = ref(attrs.target || "");
 
     return {
       title,
