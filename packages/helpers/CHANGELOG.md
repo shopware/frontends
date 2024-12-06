@@ -1,5 +1,11 @@
 # @shopware-pwa/helpers-next
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsBreadcrumbs` helper for building CMS breadcrumbs
+
 ## 1.1.0
 
 ### Minor Changes

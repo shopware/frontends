@@ -270,7 +270,7 @@ importers:
         specifier: 3.6.3
         version: 3.6.3(@types/node@22.10.0)(@types/react-dom@17.0.25)(@types/react@18.3.3)(less@4.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(terser@5.37.0)
       '@shopware/api-client':
-        specifier: 1.1.2
+        specifier: 1.2.0
         version: link:../../packages/api-client
       '@tutorialkit/astro':
         specifier: 1.1.1
