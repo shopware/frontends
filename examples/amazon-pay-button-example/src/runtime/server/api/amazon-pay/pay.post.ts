@@ -67,10 +67,10 @@ export default defineEventHandler(async (event) => {
   };
 
   const aPayClient = new Client.WebStoreClient(config);
-  const response = await aPayClient.updateCheckoutSession(
+  const response = (await aPayClient.updateCheckoutSession(
     parsedBody.data.sessionId,
     payload,
-  );
+  )) as { data: unknown };
 
   return {
     result: response.data,
