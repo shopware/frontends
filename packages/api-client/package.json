@@ -48,13 +48,13 @@
   "devDependencies": {
     "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
-    "@vitest/coverage-v8": "2.1.6",
+    "@vitest/coverage-v8": "2.1.8",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^25.0.1",
     "prettier": "3.4.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.6"
+    "vitest": "2.1.8"
   },
   "dependencies": {
     "defu": "6.1.4",
