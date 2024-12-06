@@ -1,5 +1,5 @@
-import { SnippetSet } from "./SnippetSet";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { SnippetSet } from "./SnippetSet";
 
 /**
  * @public

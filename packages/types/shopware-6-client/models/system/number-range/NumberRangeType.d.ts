@@ -1,7 +1,7 @@
-import { NumberRange } from "./NumberRange";
-import { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
-import { CustomFields } from "../../common/CustomField";
-import { NumberRangeTypeTranslation } from "./NumberRangeTypeTranslation";
+import type { CustomFields } from "../../common/CustomField";
+import type { NumberRange } from "./NumberRange";
+import type { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
+import type { NumberRangeTypeTranslation } from "./NumberRangeTypeTranslation";
 
 /**
  * @public

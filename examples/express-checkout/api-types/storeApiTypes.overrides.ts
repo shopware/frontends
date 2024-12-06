@@ -4,8 +4,6 @@ export type components = coreComponents & {
   schemas: Schemas;
 };
 
-export type Schemas = {};
-
 export type operations = {
   "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";

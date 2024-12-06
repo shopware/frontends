@@ -1,6 +1,6 @@
-import path from "path";
+import fs from "node:fs/promises";
+import path from "node:path";
 import parseChangelog from "changelog-parser";
-import fs from "fs/promises";
 
 /**
  * This script adds the latest changelog entry to the README.md file of each package.

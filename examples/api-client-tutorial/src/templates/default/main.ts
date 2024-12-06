@@ -1,5 +1,5 @@
-import { setupExample } from "./example";
 import frontendsLogo from "/frontends-logo.svg";
+import { setupExample } from "./example";
 import "./style.css";
 import viteLogo from "/vite.svg";
 

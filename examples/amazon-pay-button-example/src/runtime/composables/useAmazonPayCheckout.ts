@@ -1,14 +1,14 @@
+import { computed, ref } from "vue";
 import { useRoute } from "#imports";
 import {
-  useUser,
-  useCountries,
-  useSalutations,
   useCart,
   useCheckout,
+  useCountries,
   useCustomerOrders,
+  useSalutations,
   useSessionContext,
+  useUser,
 } from "#imports";
-import { computed, ref } from "vue";
 
 export function useAmazonPayCheckout(amazonSessionId?: string) {
   const route = useRoute();

@@ -1,8 +1,8 @@
-import { CustomFields } from "../../common/CustomField";
-import { StateMachineTransition } from "./StateMachineTransition";
-import { StateMachineState } from "./StateMachineState";
-import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
-import { StateMachineHistory } from "./StateMachineHistory";
+import type { CustomFields } from "../../common/CustomField";
+import type { StateMachineHistory } from "./StateMachineHistory";
+import type { StateMachineState } from "./StateMachineState";
+import type { StateMachineStateTranslation } from "./StateMachineStateTranslation";
+import type { StateMachineTransition } from "./StateMachineTransition";
 
 /**
  * @public

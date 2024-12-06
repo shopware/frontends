@@ -1,5 +1,5 @@
-import { CalculatedTax } from "../../../system/tax/CalculatedTax";
-import { TaxRule } from "../../../system/tax/TaxRule";
+import type { CalculatedTax } from "../../../system/tax/CalculatedTax";
+import type { TaxRule } from "../../../system/tax/TaxRule";
 
 /**
  * @public

@@ -2,22 +2,20 @@ export type MollieElement = {
   mount(htmlElement: HTMLElement | string): void;
   unmount(): void;
 };
-type Mollie = {
-  (
-    profileId: string,
-    options: { locale: string; testmode: boolean },
-  ): {
-    createToken(): Promise<{ error: Error; token: string }>;
-    createComponent(
-      type:
-        | "card"
-        | "cardHolder"
-        | "cardNumber"
-        | "verificationCode"
-        | "expiryDate",
-      options?: any,
-    ): Promise<MollieElement>;
-  };
+type Mollie = (
+  profileId: string,
+  options: { locale: string; testmode: boolean },
+) => {
+  createToken(): Promise<{ error: Error; token: string }>;
+  createComponent(
+    type:
+      | "card"
+      | "cardHolder"
+      | "cardNumber"
+      | "verificationCode"
+      | "expiryDate",
+    options?: Record<string, unknown>,
+  ): Promise<MollieElement>;
 };
 
 export type CreateLocaleInstanceArgs = {
@@ -69,5 +67,3 @@ export type MollieOptions = {
   defaultLocale: MollieLocale;
   testMode: boolean;
 };
-
-export {};

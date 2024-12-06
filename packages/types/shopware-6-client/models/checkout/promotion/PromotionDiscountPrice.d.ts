@@ -1,5 +1,5 @@
-import { PromotionDiscount } from "./PromotionDiscount";
-import { Currency } from "../../system/currency/Currency";
+import type { Currency } from "../../system/currency/Currency";
+import type { PromotionDiscount } from "./PromotionDiscount";
 
 /**
  * @public

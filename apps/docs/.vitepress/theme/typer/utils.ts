@@ -11,8 +11,8 @@ export function replacer(
 
   if (!code.match(regex)) {
     if (insert === "none") return code;
-    else if (insert === "head") return `${target}\n\n${code}`;
-    else return `${code}\n\n${target}`;
+    if (insert === "head") return `${target}\n\n${code}`;
+    return `${code}\n\n${target}`;
   }
 
   return code.replace(regex, target);

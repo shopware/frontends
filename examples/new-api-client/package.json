@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,6 +17,7 @@
     "vue": "3.5.13"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
     "typescript": "5.6.3",

@@ -1,12 +1,12 @@
-import { StateMachine } from "./StateMachine";
+import type { Schemas } from "#shopware";
 import { Order } from "../../checkout/order/Order";
-import { OrderTransaction } from "../../checkout/order/OrderTransaction";
 import { OrderDelivery } from "../../checkout/order/OrderDelivery";
-import { StateMachineTransition } from "./StateMachineTransition";
+import { OrderTransaction } from "../../checkout/order/OrderTransaction";
+import { CustomFields } from "../../common/CustomField";
+import { StateMachine } from "./StateMachine";
 import { StateMachineHistory } from "./StateMachineHistory";
 import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
-import { CustomFields } from "../../common/CustomField";
-import type { Schemas } from "#shopware";
+import { StateMachineTransition } from "./StateMachineTransition";
 
 /**
  * @deprecated - use Schema["StateMachineState"] instead from import "#shopware"
