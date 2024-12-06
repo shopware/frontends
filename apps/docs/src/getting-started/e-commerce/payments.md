@@ -137,7 +137,7 @@ In detached API consumer like headless app, the mentioned information can be obt
 ```ts
 const { apiClient } = useShopwareContext(); // or use an instance of @shopware/api-client library
 
-const tokenResponse = await apiClient.invoke("generateJwtForAppServer post /app-system/{name}/generate-token", {
+const tokenResponse = await apiClient.invoke("generateJWTAppSystemAppServer post /app-system/{name}/generate-token", {
   pathParams: {
     name: "MyPaymentApp"
   }
