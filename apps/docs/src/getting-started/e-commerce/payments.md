@@ -124,3 +124,50 @@ However, if there are no plugin-specific endpoints to interact with, the `handle
 See what can be achieved on Express Checkout example for PayPal provider.
 
 <PageRef page="../../../resources/integrations/payments/" title="Payment Integrations" sub="See also all our Payment Integrations." />
+
+
+## App server integration
+
+When a payment method uses an app server, for example as a [gateway](https://developer.shopware.com/docs/guides/plugins/apps/gateways/checkout/checkout-gateway.html) or middleware, there are some key  information needed to identify the client source and the store related to the app itself.
+
+In detached API consumer like headless app, the mentioned information can be obtained by using a [tailored endpoint](https://developer.shopware.com/docs/guides/plugins/apps/clientside-to-app-backend.html):
+
+⚠️ **works only for logged-in customers**
+
+```ts
+const { apiClient } = useShopwareContext(); // or use an instance of @shopware/api-client library
+
+const tokenResponse = await apiClient.invoke("generateJWTAppSystemAppServer post /app-system/{name}/generate-token", {
+  pathParams: {
+    name: "MyPaymentApp"
+  }
+})
+```
+
+The response may look like this:
+```json
+// tokenResponse:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJVZXF4S1RtSHBKVHZmZkRQIiwiaWF0IjoxNzMzNDA5NTM3LjQ1NzYxMSwibmJmIjoxNzMzNDA5NTM3LjQ1NzYxMywiZXhwIjoxNzMzNDEwMTM3LjQ1BzUzOSwic2FsZXNDaGFubmVsSWQiOiI4ODQzMmRlZjM5ZmM0NjI0YjMzMjEzYTU2YjhjOTQ0ZCJ9.M2GZ6hFFBgQAgoAQAVC--aIG2pl5wytEBBwpCN0UFCw",
+    "expires": "2024-12-05T14:48:57+00:00",
+    "shopId": "QeqxZlmHpJBvfvDP"
+}
+```
+
+Since the endpoint returns a `jwt` token containing all required data to identify the further requests: `salesChannelId` and `shopId`. Therefore using the `jwt` token should be the only way of authorization, in a request's header. The token is valid for 10 minutes by default.
+
+For example:
+```ts
+await fetch("https://shopware.mypaymentgateway.com/api/store/card", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${tokenResponse.data?.token}` // jwt token from the sample code above
+  },
+  body: JSON.stringify({
+    cardId: "card_123",
+    tokenId: "some-secret-token_123",
+  }),
+});
+```
+
