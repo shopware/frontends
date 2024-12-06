@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1468](https://github.com/shopware/frontends/pull/1468) [`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc) Thanks [@JimTacobs](https://github.com/JimTacobs)! - Added fetchOptions to both API clients to allow for base configuration of http client
+
 ## 1.1.2
 
 ### Patch Changes
