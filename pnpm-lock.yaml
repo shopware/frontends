@@ -278,7 +278,7 @@ importers:
         specifier: 1.8.3
         version: 1.8.3
       '@shopware/api-client':
-        specifier: 1.1.2
+        specifier: canary
         version: link:../../packages/api-client
       '@tutorialkit/astro':
         specifier: 1.1.1
