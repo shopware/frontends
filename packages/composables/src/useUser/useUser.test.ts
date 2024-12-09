@@ -161,7 +161,7 @@ describe("useUser", () => {
       },
     });
 
-    expect(async () => {
+    await expect(async () => {
       await vm.refreshUser();
     }).rejects.toThrowError();
   });

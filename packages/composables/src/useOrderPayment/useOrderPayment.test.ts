@@ -52,8 +52,8 @@ describe("useOrderPayment", () => {
         computed(() => null) as unknown as ComputedRef<Schemas["Order"]>,
       ),
     );
-    expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
-    expect(vm.handlePayment()).resolves.toBeUndefined();
+    await expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
+    await expect(vm.handlePayment()).resolves.toBeUndefined();
   });
 
   it("should be a asynchronous payment", () => {

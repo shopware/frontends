@@ -13,10 +13,10 @@ describe("useSyncWishlist", () => {
   consoleErrorSpy.mockImplementation(() => {});
   describe("methods", () => {
     describe("addToWishlist", () => {
-      it("should add product to the wishlist", () => {
+      it("should add product to the wishlist", async () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
-        expect(vm.addToWishlistSync("some-id")).resolves.toBe(undefined);
+        await expect(vm.addToWishlistSync("some-id")).resolves.toBe(undefined);
       });
     });
 
@@ -32,12 +32,12 @@ describe("useSyncWishlist", () => {
     });
 
     describe("mergeWishlistProducts", () => {
-      it("should sync wishlist", () => {
+      it("should sync wishlist", async () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
-        expect(vm.mergeWishlistProducts(["test1", "test2"])).resolves.toEqual(
-          undefined,
-        );
+        await expect(
+          vm.mergeWishlistProducts(["test1", "test2"]),
+        ).resolves.toEqual(undefined);
       });
     });
 
