@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+import { usePrice, useSessionContext } from "#imports";
 import { useSetup } from "../_test";
-import { useSessionContext } from "../useSessionContext/useSessionContext";
-import { usePrice } from "./usePrice";
 const currentNavigator = global.navigator;
 
 vi.mock("../useSessionContext/useSessionContext.ts");

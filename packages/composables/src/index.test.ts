@@ -17,8 +17,12 @@ describe("resolveCmsComponent", () => {
   });
 
   it("getDefaultApiParams", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     const result = getDefaultApiParams();
     expect(result).toEqual({});
+    expect(console.error).toHaveBeenCalledWith(
+      "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+    );
   });
 
   it("cms section component", () => {

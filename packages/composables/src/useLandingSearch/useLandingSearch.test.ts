@@ -15,7 +15,7 @@ describe("useLandingSearch", () => {
       expect.stringContaining("readLandingPage"),
       expect.objectContaining({ pathParams: { landingPageId: "test" } }),
     );
-    expect(result).resolves.toStrictEqual(LandingPageMock);
+    await expect(result).resolves.toStrictEqual(LandingPageMock);
 
     vm.search("test", { withCmsAssociations: true });
 
