@@ -1,4 +1,4 @@
-import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
 
 /**
  * @public

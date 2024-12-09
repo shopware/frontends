@@ -10,9 +10,9 @@
     }
   "
 >
-import type { Schemas } from "#shopware";
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;

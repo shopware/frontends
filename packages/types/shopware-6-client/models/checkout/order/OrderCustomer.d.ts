@@ -1,6 +1,6 @@
-import { Customer } from "../customer/Customer";
-import { Order } from "./Order";
-import { Salutation } from "../../system/salutation/Salutation";
+import type { Salutation } from "../../system/salutation/Salutation";
+import type { Customer } from "../customer/Customer";
+import type { Order } from "./Order";
 
 /**
  * @public

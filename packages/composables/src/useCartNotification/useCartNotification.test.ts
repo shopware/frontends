@@ -1,7 +1,6 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { useCartNotification } from "../useCartNotification/useCartNotification";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useCart, useCartNotification } from "#imports";
 import { useSetup } from "../_test";
-import { useCart } from "../useCart/useCart";
 
 const pushErrorSpy = vi.fn();
 const pushSuccessSpy = vi.fn();

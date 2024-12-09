@@ -1,6 +1,6 @@
-import { Country } from "../../system/country/Country";
-import { CountryState } from "../../system/country/CountryState";
-import { CustomerAddress } from "../customer/CustomerAddress";
+import type { Country } from "../../system/country/Country";
+import type { CountryState } from "../../system/country/CountryState";
+import type { CustomerAddress } from "../customer/CustomerAddress";
 
 /**
  * @public

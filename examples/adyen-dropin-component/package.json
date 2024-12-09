@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
-    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "devDependencies": {
     "@adyen/adyen-web": "6.5.1",
+    "@biomejs/biome": "1.8.3",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",

@@ -1,5 +1,5 @@
-import { AxiosResponse, AxiosError } from "axios";
-import { ApiError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
+import type { AxiosError, AxiosResponse } from "axios";
 /**
  * API error structure for incoming errors
  *

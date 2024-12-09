@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
-import type { Schemas } from "#shopware";
+import { useElementSize, useResizeObserver } from "@vueuse/core";
 import {
   computed,
   onBeforeUnmount,
@@ -12,7 +11,8 @@ import {
   watch,
 } from "vue";
 import type { CSSProperties, VNodeArrayChildren } from "vue";
-import { useElementSize, useResizeObserver } from "@vueuse/core";
+import { useCmsElementConfig } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{

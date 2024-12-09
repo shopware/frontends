@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
-import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
+import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
+import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
 import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
-import type { Component } from "vue";
 
 const props = defineProps<{
   filter: ListingFilter;

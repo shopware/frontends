@@ -1,6 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { createApp } from "vue";
 import { createShopwareContext } from "./createShopwareContext";
-import { describe, expect, it } from "vitest";
 
 describe("createShopwareContext", () => {
   it("should create a Shopware context with default options", () => {

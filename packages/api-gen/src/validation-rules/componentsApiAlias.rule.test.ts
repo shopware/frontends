@@ -1,6 +1,6 @@
+import type { ObjectSubtype } from "openapi-typescript";
 import { describe, expect, it } from "vitest";
 import componentsApiAliasRule from "./componentsApiAlias.rule";
-import type { ObjectSubtype } from "openapi-typescript";
 
 function _uncolorize(str: string | null) {
   // biome-ignore lint: noControlCharactersInRegex used to decolorize output

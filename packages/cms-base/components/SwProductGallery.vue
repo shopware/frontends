@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
-import type { Schemas } from "#shopware";
 import { ref, watch } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   product: Schemas["Product"];

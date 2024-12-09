@@ -1,5 +1,5 @@
-import { Project } from "ts-morph";
 import { format } from "prettier";
+import { Project } from "ts-morph";
 
 export type MethodDefinition = {
   operationId: string;

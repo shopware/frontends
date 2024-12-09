@@ -1,5 +1,5 @@
-import { CustomerGroup } from "./CustomerGroup";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { CustomerGroup } from "./CustomerGroup";
 
 /**
  * @public

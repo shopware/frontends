@@ -1,6 +1,6 @@
-import { SalesChannel } from "../sales-channel/SalesChannel";
-import { NumberRange } from "./NumberRange";
-import { NumberRangeType } from "./NumberRangeType";
+import type { SalesChannel } from "../sales-channel/SalesChannel";
+import type { NumberRange } from "./NumberRange";
+import type { NumberRangeType } from "./NumberRangeType";
 
 /**
  * @public

@@ -1,11 +1,11 @@
-import { TaxRule } from "../../system/tax/TaxRule";
-import { PromotionSalesChannel } from "./PromotionSalesChannel";
-import { PromotionIndividualCode } from "./PromotionIndividualCode";
-import { PromotionSetGroup } from "./PromotionSetGroup";
-import { PromotionDiscount } from "./PromotionDiscount";
-import { Rule } from "../../content/rule/Rule";
-import { PromotionTranslation } from "./PromotionTranslation";
-import { Customer } from "../customer/Customer";
+import type { Rule } from "../../content/rule/Rule";
+import type { TaxRule } from "../../system/tax/TaxRule";
+import type { Customer } from "../customer/Customer";
+import type { PromotionDiscount } from "./PromotionDiscount";
+import type { PromotionIndividualCode } from "./PromotionIndividualCode";
+import type { PromotionSalesChannel } from "./PromotionSalesChannel";
+import type { PromotionSetGroup } from "./PromotionSetGroup";
+import type { PromotionTranslation } from "./PromotionTranslation";
 
 /**
  * @public

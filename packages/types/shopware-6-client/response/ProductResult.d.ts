@@ -1,5 +1,5 @@
-import { PropertyGroup } from "../models/content/property/PropertyGroup";
-import { Product } from "../models/content/product/Product";
+import type { Product } from "../models/content/product/Product";
+import type { PropertyGroup } from "../models/content/property/PropertyGroup";
 
 /**
  * @beta

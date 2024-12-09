@@ -1,8 +1,8 @@
-import { useUser } from "./useUser";
-import { describe, expect, it, vi } from "vitest";
-import { useSetup } from "../_test";
-import { ref } from "vue";
 import type { operations } from "@shopware/api-client/api-types";
+import { describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
+import { useSetup } from "../_test";
+import { useUser } from "./useUser";
 
 const refreshCartSpy = vi.fn();
 vi.mock("../useCart/useCart.ts", async () => {
@@ -161,7 +161,7 @@ describe("useUser", () => {
       },
     });
 
-    expect(async () => {
+    await expect(async () => {
       await vm.refreshUser();
     }).rejects.toThrowError();
   });

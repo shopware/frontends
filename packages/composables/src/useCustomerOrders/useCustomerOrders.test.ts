@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useCustomerOrders } from "./useCustomerOrders";
 import { useSetup } from "../_test";
+import { useCustomerOrders } from "./useCustomerOrders";
 
 describe("useCustomerOrders", () => {
   it("should inovke load orders", async () => {

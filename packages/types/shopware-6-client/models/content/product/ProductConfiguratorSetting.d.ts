@@ -1,7 +1,7 @@
-import { Media } from "../media/Media";
-import { PropertyGroupOption } from "../property/PropertyGroupOption";
-import { Product } from "./Product";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../media/Media";
+import type { PropertyGroupOption } from "../property/PropertyGroupOption";
+import type { Product } from "./Product";
 
 /**
  * @public

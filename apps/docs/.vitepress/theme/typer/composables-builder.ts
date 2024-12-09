@@ -1,18 +1,18 @@
-// @ts-nocheck
-import type { Plugin } from "vite";
-import { resolve, dirname } from "path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { findSync } from "find-in-files";
 import { extract } from "ts-dox";
+// @ts-nocheck
+import type { Plugin } from "vite";
 import {
   getToggleContainer,
   getWrappedCodeBlock,
+  normalizeAnchorText,
+  normalizeString,
   prepareGithubPermalink,
   replacer,
-  normalizeString,
-  normalizeAnchorText,
 } from "./utils";
-import { readdirSync, readFileSync, existsSync } from "node:fs";
-import { fileURLToPath } from "url";
 
 export async function ComposablesBuilder({
   projectRootDir,
@@ -26,19 +26,20 @@ export async function ComposablesBuilder({
   return {
     name: "composables-builder",
     enforce: "pre",
-    async transform(code, id) {
+    async transform(sourceCode, id) {
       if (!id.match(/\.md\b/)) return null;
 
+      let transformedCode = sourceCode;
       const [pkg, type, fileName] = id.split("/").slice(-3);
 
       const composableName = fileName.replace(".md", "");
 
       if (pkg !== "packages" || type !== "composables") {
-        return code;
+        return transformedCode;
       }
 
       if (composableName === "index") {
-        code = code.replace(
+        transformedCode = transformedCode.replace(
           "{{INTRO}}",
           normalizeString(
             readFileSync(
@@ -48,10 +49,10 @@ export async function ComposablesBuilder({
           ),
         );
 
-        return code;
+        return transformedCode;
       }
       // Build name
-      code = code.replace("{{NAME}}", composableName);
+      transformedCode = transformedCode.replace("{{NAME}}", composableName);
 
       let astJson = "";
 
@@ -63,7 +64,7 @@ export async function ComposablesBuilder({
         );
       } catch (e) {
         console.error(e);
-        return code;
+        return transformedCode;
       }
 
       const description = astJson?.functions[composableName]?.summary || "";
@@ -76,7 +77,7 @@ export async function ComposablesBuilder({
         astJson?.functions[`${composableName}Function`]?.docs?.category;
 
       if (category) {
-        code = code.replace(
+        transformedCode = transformedCode.replace(
           "{{META}}",
           `<div>Category:</div> <a href="${mountPoint}/packages/composables/#${normalizeAnchorText(category)}"><div class="bg-red">${category}</div></a>`,
         );
@@ -84,14 +85,14 @@ export async function ComposablesBuilder({
 
       // Building interfaces block
 
-      let interfacesBlock = ``;
+      let interfacesBlock = "";
       for (const key of Object.keys(astJson.functions)) {
         interfacesBlock += getWrappedCodeBlock(
           normalizeString(`${astJson?.functions[key]?.signature || ""}`),
         );
 
         interfacesBlock += prepareGithubPermalink({
-          label: `source code`,
+          label: "source code",
           path: `${relativeDir}/${composableName}/${composableName}.ts`,
           project: "shopware/frontends",
           line: astJson?.functions[key]?.location?.line + 1,
@@ -99,21 +100,21 @@ export async function ComposablesBuilder({
       }
 
       // Building types block
-      let typesBlock = ``;
+      let typesBlock = "";
       for (const key of Object.keys(astJson.types)) {
         typesBlock += getWrappedCodeBlock(
           normalizeString(`${astJson?.types[key]?.signature || ""}`),
         );
 
         typesBlock += prepareGithubPermalink({
-          label: `source code`,
+          label: "source code",
           path: `${relativeDir}/${composableName}/${composableName}.ts`,
           project: "shopware/frontends",
           line: astJson?.types[key]?.location?.line + 1,
         });
       }
 
-      code = code
+      transformedCode = transformedCode
         .replace("{{DESCRIPTION}}", description)
         .replace("{{RETURN_TYPES_CONTENT}}", typesBlock)
         .replace("{{INTERFACE_CONTENT}}", interfacesBlock);
@@ -126,9 +127,12 @@ export async function ComposablesBuilder({
           ),
           "utf8",
         );
-        code = code.replace("{{ADDITIONAL_README}}", additionalMd);
+        transformedCode = transformedCode.replace(
+          "{{ADDITIONAL_README}}",
+          additionalMd,
+        );
       } catch (e) {
-        code = code.replace("{{ADDITIONAL_README}}", "");
+        transformedCode = transformedCode.replace("{{ADDITIONAL_README}}", "");
       }
 
       // Demo static
@@ -140,7 +144,7 @@ export async function ComposablesBuilder({
           "utf8",
         );
 
-        code = code.replace(
+        transformedCode = transformedCode.replace(
           "{{DEMO_BLOCK}}",
           `
 ## Demo
@@ -150,9 +154,9 @@ ${codeBlock}
           `,
         );
       } catch (e) {
-        code = code.replace("{{DEMO_BLOCK}}", "");
+        transformedCode = transformedCode.replace("{{DEMO_BLOCK}}", "");
       }
-      return code;
+      return transformedCode;
     },
   };
 }
