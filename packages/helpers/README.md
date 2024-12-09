@@ -36,8 +36,8 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.1.0
+### Latest changes: 1.2.0
 
 ### Minor Changes
 
-- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsTranslate` helper to replace text placeholder with param value
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsBreadcrumbs` helper for building CMS breadcrumbs
