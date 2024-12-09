@@ -1,5 +1,11 @@
 # vue-vite-blank
 
+## 0.2.0
+
+### Minor Changes
+
+- [#1490](https://github.com/shopware/frontends/pull/1490) [`c59b384`](https://github.com/shopware/frontends/commit/c59b384084a1cb70f2679ff5810518932dd06516) Thanks [@patzick](https://github.com/patzick)! - Update to the Node 22 LTS as the default
+
 ## 0.1.1
 
 ### Patch Changes
