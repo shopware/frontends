@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
