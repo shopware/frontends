@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "[DEPRECATED] Showare Store API Types",
   "author": "Shopware",
   "repository": {
@@ -8,7 +8,11 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/types.html",
-  "keywords": ["shopware", "api", "client"],
+  "keywords": [
+    "shopware",
+    "api",
+    "client"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -23,7 +27,11 @@
       "import": "./index.mjs"
     }
   },
-  "files": ["index.d.ts", "index.mjs", "**/*.d.ts"],
+  "files": [
+    "index.d.ts",
+    "index.mjs",
+    "**/*.d.ts"
+  ],
   "scripts": {
     "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0",
     "typecheck": "tsc --noEmit"
