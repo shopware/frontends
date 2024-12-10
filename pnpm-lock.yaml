@@ -85,8 +85,8 @@ importers:
         specifier: 9.1.7
         version: 9.1.7
       prettier:
-        specifier: 3.4.1
-        version: 3.4.1
+        specifier: 3.4.2
+        version: 3.4.2
       turbo:
         specifier: 2.3.3
         version: 2.3.3
@@ -270,7 +270,7 @@ importers:
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.4
-        version: 0.9.4(prettier-plugin-astro@0.14.1)(prettier@3.4.1)(typescript@5.6.3)
+        version: 0.9.4(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.6.3)
       '@astrojs/react':
         specifier: 3.6.3
         version: 3.6.3(@types/node@22.10.0)(@types/react-dom@17.0.25)(@types/react@18.3.3)(less@4.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(terser@5.37.0)
@@ -936,8 +936,8 @@ importers:
         specifier: ^25.0.1
         version: 25.0.1
       prettier:
-        specifier: 3.4.1
-        version: 3.4.1
+        specifier: 3.4.2
+        version: 3.4.2
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -960,8 +960,8 @@ importers:
         specifier: 7.4.2
         version: 7.4.2(encoding@0.1.13)(typescript@5.6.3)
       prettier:
-        specifier: 3.4.1
-        version: 3.4.1
+        specifier: 3.4.2
+        version: 3.4.2
       ts-morph:
         specifier: 24.0.0
         version: 24.0.0
@@ -9907,6 +9907,9 @@ packages:
   magic-string@0.30.14:
     resolution: {integrity: sha512-5c99P1WKTed11ZC0HMJOj6CDIue6F8ySu+bJL+85q1zBEIY8IklrJ1eiKC2NDRh3Ct3FcvmJPyQHb9erXMTJNw==}
 
+  magic-string@0.30.15:
+    resolution: {integrity: sha512-zXeaYRgZ6ldS1RJJUrMrYgNJ4fdwnyI6tVqoiIhyCyv5IVTK9BU8Ic2l253GGETQHxI4HNUwhJ3fjDhKqEoaAw==}
+
   magic-string@0.30.7:
     resolution: {integrity: sha512-8vBuFF/I/+OSLRmdf2wwFCJCz+nSn0m6DPvGH1fS/KiQoSaR+sETbov0eIk9KhEKy8CYqIkIAnbohxT/4H0kuA==}
     engines: {node: '>=12'}
@@ -11246,13 +11249,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.3.3:
-    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
-    engines: {node: '>=14'}
-    hasBin: true
-
-  prettier@3.4.1:
-    resolution: {integrity: sha512-G+YdqtITVZmOJje6QkXQWzl3fSfMxFwm1tjTyo9exhkmWSqC4Yhd1+lug++IlR2mvRVAxEDDWYkQdeSztajqgg==}
+  prettier@3.4.2:
+    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -14110,9 +14108,9 @@ snapshots:
 
   '@antfu/utils@0.7.10': {}
 
-  '@astrojs/check@0.9.4(prettier-plugin-astro@0.14.1)(prettier@3.4.1)(typescript@5.6.3)':
+  '@astrojs/check@0.9.4(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.6.3)':
     dependencies:
-      '@astrojs/language-server': 2.15.3(prettier-plugin-astro@0.14.1)(prettier@3.4.1)(typescript@5.6.3)
+      '@astrojs/language-server': 2.15.3(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.6.3)
       chokidar: 4.0.1
       kleur: 4.1.5
       typescript: 5.6.3
@@ -14125,7 +14123,7 @@ snapshots:
 
   '@astrojs/internal-helpers@0.4.1': {}
 
-  '@astrojs/language-server@2.15.3(prettier-plugin-astro@0.14.1)(prettier@3.4.1)(typescript@5.6.3)':
+  '@astrojs/language-server@2.15.3(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.6.3)':
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/yaml2ts': 0.2.1
@@ -14139,14 +14137,14 @@ snapshots:
       volar-service-css: 0.0.61(@volar/language-service@2.4.5)
       volar-service-emmet: 0.0.61(@volar/language-service@2.4.5)
       volar-service-html: 0.0.61(@volar/language-service@2.4.5)
-      volar-service-prettier: 0.0.61(@volar/language-service@2.4.5)(prettier@3.4.1)
+      volar-service-prettier: 0.0.61(@volar/language-service@2.4.5)(prettier@3.4.2)
       volar-service-typescript: 0.0.61(@volar/language-service@2.4.5)
       volar-service-typescript-twoslash-queries: 0.0.61(@volar/language-service@2.4.5)
       volar-service-yaml: 0.0.61(@volar/language-service@2.4.5)
       vscode-html-languageservice: 5.3.1
       vscode-uri: 3.0.8
     optionalDependencies:
-      prettier: 3.4.1
+      prettier: 3.4.2
       prettier-plugin-astro: 0.14.1
     transitivePeerDependencies:
       - typescript
@@ -18218,7 +18216,7 @@ snapshots:
   '@shopware-docs/vitepress@1.3.0-alpha.16(@unocss/webpack@0.62.4(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))':
     dependencies:
       axios: 1.7.4
-      prettier: 3.3.3
+      prettier: 3.4.2
       sitemap: 8.0.0
       unocss: 0.62.4(@unocss/webpack@0.62.4(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3)
@@ -18859,7 +18857,7 @@ snapshots:
       express: 4.21.2
       find-cache-dir: 3.3.2
       fs-extra: 11.2.0
-      magic-string: 0.30.14
+      magic-string: 0.30.15
       rollup: 4.28.1
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     optionalDependencies:
@@ -19253,7 +19251,7 @@ snapshots:
       '@storybook/core-server': 7.6.20(encoding@0.1.13)
       '@storybook/vue3': 7.6.20(encoding@0.1.13)(vue@3.5.13(typescript@5.6.3))
       '@vitejs/plugin-vue': 4.6.2(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
-      magic-string: 0.30.14
+      magic-string: 0.30.15
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
       vue-docgen-api: 4.79.2(vue@3.5.13(typescript@5.6.3))
     transitivePeerDependencies:
@@ -19802,7 +19800,7 @@ snapshots:
 
   '@types/prettier@3.0.0':
     dependencies:
-      prettier: 3.4.1
+      prettier: 3.4.2
 
   '@types/pretty-hrtime@1.0.3': {}
 
@@ -20552,7 +20550,7 @@ snapshots:
       '@unocss/config': 0.62.4
       '@unocss/core': 0.62.4
       chokidar: 3.6.0
-      magic-string: 0.30.14
+      magic-string: 0.30.15
       tinyglobby: 0.2.10
       unplugin: 1.16.0
       webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)
@@ -20799,7 +20797,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       c8: 7.14.0
-      magic-string: 0.30.14
+      magic-string: 0.30.15
       picocolors: 1.0.1
       std-env: 3.8.0
       vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@15.11.7)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
@@ -25185,6 +25183,10 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  magic-string@0.30.15:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.0
+
   magic-string@0.30.7:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -27135,7 +27137,7 @@ snapshots:
   prettier-plugin-astro@0.14.1:
     dependencies:
       '@astrojs/compiler': 2.10.3
-      prettier: 3.3.3
+      prettier: 3.4.2
       sass-formatter: 0.7.9
 
   prettier@2.8.7:
@@ -27143,9 +27145,7 @@ snapshots:
 
   prettier@2.8.8: {}
 
-  prettier@3.3.3: {}
-
-  prettier@3.4.1: {}
+  prettier@3.4.2: {}
 
   pretty-bytes@6.1.1: {}
 
@@ -29988,12 +29988,12 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.5
 
-  volar-service-prettier@0.0.61(@volar/language-service@2.4.5)(prettier@3.4.1):
+  volar-service-prettier@0.0.61(@volar/language-service@2.4.5)(prettier@3.4.2):
     dependencies:
       vscode-uri: 3.0.8
     optionalDependencies:
       '@volar/language-service': 2.4.5
-      prettier: 3.4.1
+      prettier: 3.4.2
 
   volar-service-typescript-twoslash-queries@0.0.61(@volar/language-service@2.4.5):
     dependencies:

@@ -41,7 +41,7 @@
     "esno": "4.8.0",
     "globby": "14.0.2",
     "husky": "9.1.7",
-    "prettier": "3.4.1",
+    "prettier": "3.4.2",
     "turbo": "2.3.3",
     "vercel": "39.1.3"
   },
