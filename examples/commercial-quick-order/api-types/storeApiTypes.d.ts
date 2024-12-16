@@ -1728,7 +1728,6 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   Customer: {
-    accountType?: string;
     active?: boolean;
     activeBillingAddress: components["schemas"]["CustomerAddress"];
     activeShippingAddress: components["schemas"]["CustomerAddress"];
@@ -1738,7 +1737,6 @@ export type Schemas = {
     apiAlias: "customer";
     birthday?: string;
     campaignCode?: string;
-    company?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     createdById?: string;
@@ -1805,8 +1803,18 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedById?: string;
-    vatIds?: string[];
-  };
+  } & (
+    | {
+        /** @enum {string} */
+        accountType: "private";
+      }
+    | {
+        /** @enum {string} */
+        accountType: "business";
+        company: string;
+        vatIds: [string, ...string[]];
+      }
+  );
   CustomerAddress: {
     additionalAddressLine1?: string;
     additionalAddressLine2?: string;
@@ -7571,8 +7579,6 @@ export type operations = {
       birthdayMonth?: number;
       /** Birthday year */
       birthdayYear?: number;
-      /** Company of the customer. Only required when `accountType` is `business`. */
-      company?: string;
       /** Customer first name. Value will be reused for shipping and billing address if not provided explicitly. */
       firstName: string;
       /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
@@ -7581,7 +7587,29 @@ export type operations = {
       salutationId: string;
       /** (Academic) title of the customer */
       title?: string;
-    };
+    } & (
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+    );
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
@@ -7703,17 +7731,9 @@ export type operations = {
     body: {
       /** Flag indicating accepted data protection */
       acceptedDataProtection: boolean;
-      /**
-       * Account type of the customer which can be either `private` or `business`.
-       * @default private
-       */
-      accountType?: string;
       /** Field can be used to store an affiliate tracking code */
       affiliateCode?: string;
-      billingAddress: Omit<
-        components["schemas"]["CustomerAddress"],
-        "createdAt" | "id" | "customerId" | "firstName" | "lastName"
-      >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
+      billingAddress: components["schemas"]["CustomerAddress"];
       /** Birthday day */
       birthdayDay?: number;
       /** Birthday month */
@@ -7742,7 +7762,29 @@ export type operations = {
       storefrontUrl: string;
       /** (Academic) title of the customer */
       title?: string;
-    };
+    } & (
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+    );
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };

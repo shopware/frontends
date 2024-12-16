@@ -1,7 +1,7 @@
 import type { createAPIClient } from "@shopware/api-client";
 import type {
-  operations as defaultOperations,
   components as defaultComponents,
+  operations as defaultOperations,
 } from "@shopware/api-client/store-api-types";
 
 export type operations = defaultOperations;

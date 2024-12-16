@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, watch, computed, useTemplateRef } from "vue";
 import {
   useSessionContext,
   useShopwareContext,
   useUser,
 } from "@shopware-pwa/composables-next";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
-import { Schemas } from "#shopware";
+import { computed, ref, useTemplateRef, watch } from "vue";
+import type { Schemas } from "#shopware";
 
 const { apiClient } = useShopwareContext();
 // for initialize the session and get the current currency
@@ -61,7 +61,7 @@ const showToastMessage = (message: string) => {
 // used in suggest search bar
 const search = async (phrase: string) => {
   const response = await apiClient.invoke(
-    `quickOrderProductSearch get /quick-order/product`,
+    "quickOrderProductSearch get /quick-order/product",
     {
       query: { search: phrase },
     },
@@ -127,14 +127,16 @@ const onItemQtyChange = (event: Event, itemId: string) => {
 // iterate over items found (products from API) and add them to the store (chosenItems Map)
 const onCsvFileChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;
-  const files = target.files!;
-  const file = files[0];
+  const files = target.files;
+  const file = files?.[0];
+  if (!file) return;
+
   const formData = new FormData();
   formData.append("file", file);
   // const headers = { "Content-Type": "multipart/form-data" };
 
   const foundProductsResponse = await apiClient.invoke(
-    `quickOrderLoadFile post /quick-order/load-file`,
+    "quickOrderLoadFile post /quick-order/load-file",
     {
       contentType: "multipart/form-data",
       body: formData,

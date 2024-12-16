@@ -1,14 +1,14 @@
+import { computed, ref } from "vue";
 import { useRoute } from "#imports";
 import {
-  useUser,
-  useCountries,
-  useSalutations,
   useCart,
   useCheckout,
+  useCountries,
   useCustomerOrders,
+  useSalutations,
   useSessionContext,
+  useUser,
 } from "#imports";
-import { computed, ref } from "vue";
 
 export function useAmazonPayCheckout(amazonSessionId?: string) {
   const route = useRoute();
@@ -103,6 +103,13 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       accountType: "private",
       salutationId: getNotSpecifiedSalutation(),
       billingAddress: {
+        customerId: "",
+        firstName: sessionData.billingAddress.name?.split(" ")[0],
+        lastName:
+          sessionData.billingAddress.name?.split(" ")[
+            sessionData.billingAddress.name?.split(" ").length - 1
+          ] || "",
+        id: "",
         salutationId: getNotSpecifiedSalutation(),
         countryId: mapCountryId(sessionData.billingAddress.countryCode),
         street:

@@ -24,7 +24,11 @@
       ".nuxt",
       ".vercel",
       "*apiSchema*.json",
-      "*apiTypes*.d.ts"
+      "*apiTypes*.d.ts",
+      ".vitepress/cache/*",
+      "packages/types/*",
+      "playwright-report",
+      "api-gen/tests/*"
     ]
   }
 }

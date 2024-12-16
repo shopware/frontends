@@ -6,8 +6,19 @@ export type components = mainComponents & {
 
 export type Schemas = {
   // here go the entities definitions available, that can be used in operations but also imported and used standalone
+  TestEntity: {
+    id: string;
+    name: string;
+  };
 };
 
 export type operations = {
   // here go the endpoints and its definitions that can refer to the Schemas but it's not a requirement
+  testOperation: {
+    parameters: {
+      path: {
+        testId: string;
+      };
+    };
+  };
 };

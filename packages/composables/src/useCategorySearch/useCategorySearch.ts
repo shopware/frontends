@@ -1,6 +1,6 @@
 import { useShopwareContext } from "#imports";
-import { cmsAssociations } from "../cms/cmsAssociations";
 import type { Schemas } from "#shopware";
+import { cmsAssociations } from "../cms/cmsAssociations";
 
 export type UseCategorySearchReturn = {
   /**

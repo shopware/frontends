@@ -1,6 +1,6 @@
 declare module "@amazonpay/amazon-pay-api-sdk-nodejs" {
   export class WebStoreClient {
-    constructor(config: any);
+    constructor(config: unknown);
     completeCheckoutSession(
       sessionId: string,
       payload: {
@@ -9,12 +9,15 @@ declare module "@amazonpay/amazon-pay-api-sdk-nodejs" {
           currencyCode: string;
         };
       },
-    ): Promise<any>;
+    ): Promise<unknown>;
 
     getCheckoutSession(sessionId: string): Promise<{ data: unknown }>;
-    createCheckoutSession(payload: unknown, headers: unknown): Promise<any>;
+    createCheckoutSession(payload: unknown, headers: unknown): Promise<unknown>;
     generateButtonSignature(payload: unknown): string;
-    updateCheckoutSession(sessionId: string, payload: unknown): Promise<any>;
+    updateCheckoutSession(
+      sessionId: string,
+      payload: unknown,
+    ): Promise<unknown>;
   }
 }
 

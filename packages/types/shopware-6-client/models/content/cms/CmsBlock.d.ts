@@ -1,13 +1,13 @@
-import { Media } from "../media/Media";
-import {
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../media/Media";
+import type {
   BackgroundMediaMode,
   CmsSection,
   CmsSlot,
+  CmsVisibility,
   MobileBehavior,
   SizingMode,
-  CmsVisibility,
 } from "./CmsPage";
-import { CustomFields } from "../../common/CustomField";
 /**
  * @public
  */

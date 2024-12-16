@@ -6,7 +6,9 @@
   "scripts": {
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
-    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
@@ -21,6 +23,9 @@
     "typescript": "5.6.3",
     "vue": "3.5.13",
     "vue-tsc": "2.1.10"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"

@@ -15,9 +15,9 @@ Documentation specific for this package: [types](https://frontends.shopware.com/
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.0.6
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc)]:
+  - @shopware/api-client@1.2.0

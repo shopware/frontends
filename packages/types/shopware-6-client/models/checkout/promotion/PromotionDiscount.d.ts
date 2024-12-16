@@ -1,5 +1,5 @@
-import { Rule } from "../../content/rule/Rule";
-import { Promotion } from "./Promotion";
+import type { Rule } from "../../content/rule/Rule";
+import type { Promotion } from "./Promotion";
 
 /**
  * @public

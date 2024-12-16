@@ -34,17 +34,17 @@ import { normalizeAnchorText } from "../typer/utils";
 const categoryTreeData = computed(() => {
   const categoryTree: { [key: string]: string[] } = {};
 
-  data.composablesList.forEach((composable) => {
+  for (const composable of data.composablesList) {
     const categories = composable.category.split(",");
 
-    categories.forEach((category) => {
+    for (const category of categories) {
       if (!categoryTree[category]) {
         categoryTree[category] = [];
       }
 
       categoryTree[category].push(composable.text);
-    });
-  });
+    }
+  }
 
   return categoryTree;
 });

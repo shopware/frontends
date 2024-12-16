@@ -1,21 +1,21 @@
-import { MediaType } from "./MediaType";
-import { MediaTranslation } from "./MediaTranslation";
-import { Category } from "../category/Category";
-import { ProductMedia } from "../product/ProductMedia";
-import { MediaThumbnail } from "./MediaThumbnail";
-import { MediaFolder } from "./MediaFolder";
-import { PropertyGroupOption } from "../property/PropertyGroupOption";
-import { MailTemplateMedia } from "../mail-template/MailTemplateMedia";
-import { Tag } from "../../system/tag/Tag";
-import { DocumentBaseConfig } from "../../checkout/document/DocumentBaseConfig";
-import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
-import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
-import { CmsBlock } from "../cms/CmsBlock";
-import { Document } from "../../checkout/document/Document";
-import { ProductManufacturer } from "../product/ProductManufacturer";
-import { OrderLineItem } from "../../checkout/order/OrderLineItem";
-import { CustomFields } from "../../common/CustomField";
 import { Customer } from "../../checkout/customer/Customer";
+import { Document } from "../../checkout/document/Document";
+import { DocumentBaseConfig } from "../../checkout/document/DocumentBaseConfig";
+import { OrderLineItem } from "../../checkout/order/OrderLineItem";
+import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
+import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { CustomFields } from "../../common/CustomField";
+import { Tag } from "../../system/tag/Tag";
+import { Category } from "../category/Category";
+import { CmsBlock } from "../cms/CmsBlock";
+import { MailTemplateMedia } from "../mail-template/MailTemplateMedia";
+import { ProductManufacturer } from "../product/ProductManufacturer";
+import { ProductMedia } from "../product/ProductMedia";
+import { PropertyGroupOption } from "../property/PropertyGroupOption";
+import { MediaFolder } from "./MediaFolder";
+import type { MediaThumbnail } from "./MediaThumbnail";
+import type { MediaTranslation } from "./MediaTranslation";
+import { MediaType } from "./MediaType";
 
 /**
  * @public

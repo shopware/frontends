@@ -1,17 +1,17 @@
+import defu from "defu";
+import { createHooks } from "hookable";
 import {
-  type FetchResponse,
-  ofetch,
   type FetchOptions,
+  type FetchResponse,
   type ResponseType,
+  ofetch,
 } from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
-import { ClientHeaders, createHeaders } from "./defaultHeaders";
-import { errorInterceptor } from "./errorInterceptor";
-import { createHooks } from "hookable";
-import defu from "defu";
-import { createPathWithParams } from "./transformPathToQuery";
 import type { InvokeParameters } from "./createAPIClient";
-import { GlobalFetchOptions } from "./createAPIClient";
+import type { GlobalFetchOptions } from "./createAPIClient";
+import { type ClientHeaders, createHeaders } from "./defaultHeaders";
+import { errorInterceptor } from "./errorInterceptor";
+import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -61,6 +61,7 @@ export type AdminApiClientHooks = {
 };
 
 export function createAdminAPIClient<
+  // biome-ignore lint/suspicious/noExplicitAny: we allow for broader types to be used
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
 >(params: {

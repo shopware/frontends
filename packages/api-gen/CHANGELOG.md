@@ -1,5 +1,14 @@
 # @shopware/api-gen
 
+## 1.1.4
+
+### Patch Changes
+
+- [#1447](https://github.com/shopware/frontends/pull/1447) [`11ea41f`](https://github.com/shopware/frontends/commit/11ea41fc00493d4997ddfcb23e2f5bf89dd2a828) Thanks [@patzick](https://github.com/patzick)! - Improved error messages and merging override patches.
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc)]:
+  - @shopware/api-client@1.2.0
+
 ## 1.1.3
 
 ### Patch Changes

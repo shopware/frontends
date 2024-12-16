@@ -1,6 +1,6 @@
-import { Rule } from "../../content/rule/Rule";
-import { Currency } from "../../system/currency/Currency";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Rule } from "../../content/rule/Rule";
+import type { Currency } from "../../system/currency/Currency";
 
 /**
  * @public

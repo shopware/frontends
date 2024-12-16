@@ -1,4 +1,4 @@
-import { MailHeaderFooter } from "./MailHeaderFooter";
+import type { MailHeaderFooter } from "./MailHeaderFooter";
 
 /**
  * @public

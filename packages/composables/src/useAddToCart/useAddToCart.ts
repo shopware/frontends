@@ -1,5 +1,5 @@
-import { ref, computed, unref } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { computed, ref, unref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useCart } from "#imports";
 import type { Schemas } from "#shopware";
 export type UseAddToCartReturn = {

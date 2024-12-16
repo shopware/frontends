@@ -1,10 +1,10 @@
+import type { Schemas } from "#shopware";
+import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
+import { OrderAddress } from "../../checkout/order/OrderAddress";
+import { CustomFields } from "../../common/CustomField";
+import { SalesChannel } from "../sales-channel/SalesChannel";
 import { CountryState } from "./CountryState";
 import { CountryTranslation } from "./CountryTranslation";
-import { OrderAddress } from "../../checkout/order/OrderAddress";
-import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
-import { SalesChannel } from "../sales-channel/SalesChannel";
-import { CustomFields } from "../../common/CustomField";
-import type { Schemas } from "#shopware";
 
 type CountryTaxSetting = {
   enabled: boolean;

@@ -1,5 +1,18 @@
 # docs
 
+## 1.8.0
+
+### Minor Changes
+
+- [#1490](https://github.com/shopware/frontends/pull/1490) [`c59b384`](https://github.com/shopware/frontends/commit/c59b384084a1cb70f2679ff5810518932dd06516) Thanks [@patzick](https://github.com/patzick)! - Update to the Node 22 LTS as the default
+
+### Patch Changes
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992), [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039)]:
+  - @shopware/api-client@1.2.0
+  - @shopware-pwa/composables-next@1.5.0
+  - @shopware-pwa/helpers-next@1.2.0
+
 ## 1.7.8
 
 ### Patch Changes

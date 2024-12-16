@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { useProductAssociations } from "./useProductAssociations";
 import { computed, ref } from "vue";
-import mockedProduct from "../mocks/Product";
-import mockedCrossSelling from "../mocks/CrossSellingResponse";
 import { useSetup } from "../_test";
+import mockedCrossSelling from "../mocks/CrossSellingResponse";
+import mockedProduct from "../mocks/Product";
+import { useProductAssociations } from "./useProductAssociations";
 
 describe("useProductAssociations", () => {
   console.error = vi.fn();

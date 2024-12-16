@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { useCmsElementProductBox } from "./useCmsElementProductBox";
 import { useSetup } from "../_test";
 import CmsProductBox from "../mocks/CmsProductBox";
 import type { CmsElementProductBox } from "../types/cmsElementTypes";
+import { useCmsElementProductBox } from "./useCmsElementProductBox";
 
 describe("useCmsElementProductBox", () => {
   it("should init product box", () => {

@@ -1,5 +1,20 @@
 # @shopware-pwa/nuxt3-module
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1442](https://github.com/shopware/frontends/pull/1442) [`9669d1b`](https://github.com/shopware/frontends/commit/9669d1b39fca71461a3641840632db171f2968ed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added possibility to use Nuxt config file for setting the API requests headers. Headers are added to each request SSR and CSR.
+
+### Patch Changes
+
+- [#1514](https://github.com/shopware/frontends/pull/1514) [`05a4792`](https://github.com/shopware/frontends/commit/05a479240cac709e18f411a6276de359937341a6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `createError` with `showError` function in the `onResponseError` hook to redirect the user to the Nuxt error page.
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992), [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039)]:
+  - @shopware/api-client@1.2.0
+  - @shopware-pwa/composables-next@1.5.0
+  - @shopware-pwa/helpers-next@1.2.0
+
 ## 1.0.8
 
 ### Patch Changes

@@ -1,9 +1,9 @@
-import type { OpenAPI3, PathItemObject } from "openapi-typescript";
-import { createDefu } from "defu";
-import c from "picocolors";
 import { equals } from "@vitest/expect";
 import { diff } from "@vitest/utils/diff";
+import { createDefu } from "defu";
 import json5 from "json5";
+import type { OpenAPI3, PathItemObject } from "openapi-typescript";
+import c from "picocolors";
 
 export type OverridesSchema = {
   components?: {

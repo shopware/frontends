@@ -1,7 +1,6 @@
-import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
-import { CategoryPage } from "../page-objects/CategoryPage";
 import { ProductPage } from "../page-objects/ProductPage";
 
 test.describe.only(

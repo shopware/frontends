@@ -1,5 +1,5 @@
-import { Plugin } from "./Plugin";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Plugin } from "./Plugin";
 
 /**
  * @public

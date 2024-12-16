@@ -1,12 +1,12 @@
-import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
-import { ProductPrice } from "../product/ProductPrice";
-import { ShippingMethodPrice } from "../../checkout/shipping/ShippingMethodPrice";
-import { PromotionDiscount } from "../../checkout/promotion/PromotionDiscount";
-import { PromotionSetGroup } from "../../checkout/promotion/PromotionSetGroup";
-import { Promotion } from "../../checkout/promotion/Promotion";
-import { RuleCondition } from "./RuleCondition";
-import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
-import { CustomFields } from "../../common/CustomField";
+import type { PaymentMethod } from "../../checkout/payment/PaymentMethod";
+import type { Promotion } from "../../checkout/promotion/Promotion";
+import type { PromotionDiscount } from "../../checkout/promotion/PromotionDiscount";
+import type { PromotionSetGroup } from "../../checkout/promotion/PromotionSetGroup";
+import type { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { ShippingMethodPrice } from "../../checkout/shipping/ShippingMethodPrice";
+import type { CustomFields } from "../../common/CustomField";
+import type { ProductPrice } from "../product/ProductPrice";
+import type { RuleCondition } from "./RuleCondition";
 
 /**
  * @public

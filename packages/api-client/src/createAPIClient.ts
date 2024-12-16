@@ -1,14 +1,14 @@
+import defu from "defu";
+import { createHooks } from "hookable";
 import {
-  type FetchResponse,
-  ofetch,
   type FetchOptions,
+  type FetchResponse,
   type ResponseType,
+  ofetch,
 } from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
-import { ClientHeaders, createHeaders } from "./defaultHeaders";
+import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
-import { createHooks } from "hookable";
-import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -71,6 +71,7 @@ export type ApiClientHooks = {
 };
 
 export function createAPIClient<
+  // biome-ignore lint/suspicious/noExplicitAny: we allow for broader types to be used
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
 >(params: {
@@ -92,8 +93,8 @@ export function createAPIClient<
     },
     (key, value) => {
       apiClientHooks.callHook("onDefaultHeaderChanged", key, value);
-      if (key === "sw-context-token") {
-        apiClientHooks.callHook("onContextChanged", value!);
+      if (key === "sw-context-token" && value) {
+        apiClientHooks.callHook("onContextChanged", value);
       }
     },
   );
@@ -174,14 +175,14 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
+    const mergedHeaders = defu(currentParams.headers, defaultHeaders);
 
     if (
       mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
       typeof window !== "undefined"
     ) {
       // multipart/form-data must not be set manually when it's used by the browser
-      delete mergedHeaders["Content-Type"];
+      mergedHeaders["Content-Type"] = undefined;
     }
 
     const resp = await apiFetch.raw<

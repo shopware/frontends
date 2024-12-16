@@ -1,4 +1,4 @@
-import { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents;
 //   & {
@@ -60,55 +60,6 @@ export type Schemas = {
 };
 
 export type operations = {
-  "register post /account/register": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Flag indicating accepted data protection */
-      acceptedDataProtection: boolean;
-      /**
-       * Account type of the customer which can be either `private` or `business`.
-       * @default private
-       */
-      accountType?: string;
-      /** Field can be used to store an affiliate tracking code */
-      affiliateCode?: string;
-      billingAddress: Omit<
-        components["schemas"]["CustomerAddress"],
-        "createdAt" | "id" | "customerId" | "firstName" | "lastName"
-      >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
-      /** Birthday day */
-      birthdayDay?: number;
-      /** Birthday month */
-      birthdayMonth?: number;
-      /** Birthday year */
-      birthdayYear?: number;
-      /** Field can be used to store a campaign tracking code */
-      campaignCode?: string;
-      /** Email of the customer. Has to be unique, unless `guest` is `true` */
-      email: string;
-      /** Customer first name. Value will be reused for shipping and billing address if not provided explicitly. */
-      firstName: string;
-      /**
-       * If set, will create a guest customer. Guest customers can re-use an email address and don't need a password.
-       * @default false
-       */
-      guest?: boolean;
-      /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
-      lastName: string;
-      /** Password for the customer. Required, unless `guest` is `true` */
-      password: string;
-      /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
-      salutationId: string;
-      shippingAddress?: components["schemas"]["CustomerAddress"];
-      /** URL of the storefront for that registration. Used in confirmation emails. Has to be one of the configured domains of the sales channel. */
-      storefrontUrl: string;
-      /** (Academic) title of the customer */
-      title?: string;
-    };
-    response: components["schemas"]["Customer"];
-    responseCode: 200;
-  };
   "updateLineItem patch /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";

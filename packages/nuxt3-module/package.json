@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
@@ -27,7 +27,8 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
@@ -40,9 +41,8 @@
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "3.14.1592",
-    "eslint": "9.14.0",
-    "eslint-config-shopware": "workspace:*",
     "nuxt": "3.14.1592",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
