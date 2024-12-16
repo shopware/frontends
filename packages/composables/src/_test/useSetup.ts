@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
+import { defu } from "defu";
 import { vi } from "vitest";
 import { defineComponent, h } from "vue";
-import { defu } from "defu";
 
 type Injections = {
   shopware: unknown;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { transformOpenApiTypes } from "./transformOpenApiTypes";
 import type { GenerationMap } from "./generateFile";
+import { transformOpenApiTypes } from "./transformOpenApiTypes";
 
 describe("transformOpenApiTypes", async () => {
   it("should transform open api type with optional body", async () => {

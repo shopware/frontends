@@ -1,14 +1,14 @@
+import { addCustomTab } from "@nuxt/devtools-kit";
 /**
  * @module @shopware/nuxt3
  */
 import {
-  defineNuxtModule,
   addPlugin,
   createResolver,
+  defineNuxtModule,
   useLogger,
   // addTypeTemplate,
 } from "@nuxt/kit";
-import { addCustomTab } from "@nuxt/devtools-kit";
 import { defu } from "defu";
 import { isConfigDeprecated } from "./utils";
 const MODULE_ID = "@shopware/nuxt3";
@@ -95,14 +95,21 @@ declare module "@nuxt/schema" {
   interface NuxtOptions {
     shopware?: ShopwareNuxtOptions;
   }
+  interface ApiClientConfig {
+    headers?: {
+      [key: string]: string;
+    };
+  }
 
   interface RuntimeConfig {
     shopware?: Pick<
       ShopwareNuxtOptions,
       "endpoint" | "shopwareEndpoint" | "useUserContextInSSR"
     >;
+    apiClientConfig?: ApiClientConfig;
   }
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;
+    apiClientConfig?: ApiClientConfig;
   }
 }

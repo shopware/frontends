@@ -1,11 +1,11 @@
-import { defineConfigWithTheme } from "vitepress";
-import type { Config as ThemeConfig } from "vitepress-shopware-docs";
+import { resolve } from "node:path";
 import { baseConfig } from "@shopware-docs/vitepress";
-import nav from "./navigation";
-import { resolve } from "path";
-import { sidebar } from "./sidebar";
-import sharedConfig from "./config.hub";
+import { defineConfigWithTheme } from "vitepress";
 import { SearchPlugin } from "vitepress-plugin-search";
+import type { Config as ThemeConfig } from "vitepress-shopware-docs";
+import sharedConfig from "./config.hub";
+import nav from "./navigation";
+import { sidebar } from "./sidebar";
 
 interface ThemeConfigExtended extends ThemeConfig {
   ai: {
@@ -113,7 +113,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>(
       vite: {
         build: {
           minify: "terser",
-          chunkSizeWarningLimit: Infinity,
+          chunkSizeWarningLimit: Number.POSITIVE_INFINITY,
           ssr: false,
           rollupOptions: {
             output: {

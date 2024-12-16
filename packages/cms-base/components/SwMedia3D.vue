@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, useGLTF } from "@tresjs/cientos";
-import { BasicShadowMap, SRGBColorSpace, NoToneMapping } from "three";
+import { TresCanvas } from "@tresjs/core";
+import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from "three";
 
 const props = defineProps<{
   src: string;

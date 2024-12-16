@@ -1,7 +1,7 @@
-import { Country } from "../../system/country/Country";
-import { CustomFields } from "../../common/CustomField";
-import { Salutation } from "../../system/salutation/Salutation";
 import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
+import { Country } from "../../system/country/Country";
+import { Salutation } from "../../system/salutation/Salutation";
 
 /**
  * @public

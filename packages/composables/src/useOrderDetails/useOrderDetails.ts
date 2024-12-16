@@ -1,6 +1,6 @@
-import { computed, ref, inject, provide } from "vue";
-import type { ComputedRef, Ref } from "vue";
 import { defu } from "defu";
+import { computed, inject, provide, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -185,6 +185,7 @@ export function useOrderDetails(
         },
       ],
       associations: mergedAssociations.associations,
+      checkPromotion: true,
     } as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(

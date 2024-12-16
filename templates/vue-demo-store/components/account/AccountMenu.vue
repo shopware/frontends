@@ -10,7 +10,9 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const isAccountMenuOpen = ref(false);
 
-onClickOutside(accountMenu, () => (isAccountMenuOpen.value = false));
+onClickOutside(accountMenu, () => {
+  isAccountMenuOpen.value = false;
+});
 
 async function invokeLogout() {
   try {

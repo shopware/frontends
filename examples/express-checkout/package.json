@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
@@ -16,14 +18,15 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.12",
-    "vue-router": "4.4.5"
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
-    "@types/node": "20.17.0",
-    "@vitejs/plugin-vue": "5.1.4",
-    "vite": "5.4.10",
+    "@types/node": "22.10.0",
+    "@vitejs/plugin-vue": "5.2.1",
+    "vite": "6.0.3",
     "vue-tsc": "2.1.10"
   }
 }

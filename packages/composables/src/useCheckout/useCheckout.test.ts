@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useCheckout } from "./useCheckout";
 import { useSetup } from "../_test";
+import { useCheckout } from "./useCheckout";
 
 describe("useCheckout", () => {
   it("getShippingMethods - empty", async () => {

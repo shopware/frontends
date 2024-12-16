@@ -8,7 +8,7 @@ export function createVirtualFiles(
 ) {
   const filesMap = new Map<string, ts.SourceFile>();
 
-  files.forEach((fileDefinition) => {
+  for (const fileDefinition of files) {
     const filename = fileDefinition.name;
 
     const sourceFile = ts.createSourceFile(
@@ -20,7 +20,7 @@ export function createVirtualFiles(
     );
 
     filesMap.set(filename, sourceFile);
-  });
+  }
 
   const defaultCompilerHost = ts.createCompilerHost({});
 
@@ -28,9 +28,8 @@ export function createVirtualFiles(
     getSourceFile: (name, languageVersion) => {
       if (filesMap.has(name)) {
         return filesMap.get(name);
-      } else {
-        return defaultCompilerHost.getSourceFile(name, languageVersion);
       }
+      return defaultCompilerHost.getSourceFile(name, languageVersion);
     },
     writeFile: () => {},
     getDefaultLibFileName: () => "lib.d.ts",

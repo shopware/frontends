@@ -1,5 +1,5 @@
-import type { Schemas } from "#shopware";
 import { useCart, useNotifications } from "#imports";
+import type { Schemas } from "#shopware";
 
 const successCodes = ["promotion-discount-added"];
 

@@ -1,7 +1,7 @@
 import ts from "typescript";
-import { createVirtualFiles } from "./virtualFileCreator";
-import { getDeepPropertyCode, getTypePropertyNames } from "./utils";
 import type { OverridesMap, TransformedElements } from "./generateFile";
+import { getDeepPropertyCode, getTypePropertyNames } from "./utils";
+import { createVirtualFiles } from "./virtualFileCreator";
 
 export function transformSchemaTypes(schema: string): TransformedElements {
   const {
@@ -9,10 +9,10 @@ export function transformSchemaTypes(schema: string): TransformedElements {
     sourceFiles: [sourceFile],
   } = createVirtualFiles([{ name: "_openApi.d.ts", content: schema }]);
 
-  let overridesMap: OverridesMap = {};
-  let componentsMap: Record<string, string> = {};
+  const overridesMap: OverridesMap = {};
+  const componentsMap: Record<string, string> = {};
 
-  let existingTypes: string[][] = [];
+  const existingTypes: string[][] = [];
 
   const skipTypeNames = ["operations", "Schemas", "components"];
 
@@ -29,16 +29,17 @@ export function transformSchemaTypes(schema: string): TransformedElements {
       if (typeName === "operations") {
         const allOperations = getTypePropertyNames(type);
 
-        allOperations.forEach((currentOperationName) => {
+        for (const currentOperationName of allOperations) {
           const code = getDeepPropertyCode({
             type,
             names: [currentOperationName],
             node,
             typeChecker,
           });
-
-          overridesMap[currentOperationName] = code!;
-        });
+          if (code) {
+            overridesMap[currentOperationName] = code;
+          }
+        }
       }
 
       if (typeName === "Schemas") {
@@ -51,14 +52,17 @@ export function transformSchemaTypes(schema: string): TransformedElements {
         // if (allSchemas) {
         const schemaNames = getTypePropertyNames(type);
 
-        schemaNames.forEach((schemaName) => {
-          componentsMap[schemaName] = getDeepPropertyCode({
+        for (const schemaName of schemaNames) {
+          const code = getDeepPropertyCode({
             type: type,
             names: [schemaName],
             node,
             typeChecker,
-          })!;
-        });
+          });
+          if (code) {
+            componentsMap[schemaName] = code;
+          }
+        }
         // }
       }
 
@@ -76,7 +80,9 @@ export function transformSchemaTypes(schema: string): TransformedElements {
     node.forEachChild((child) => traverseThroughFileNodes(child));
   }
 
-  traverseThroughFileNodes(sourceFile!);
+  if (sourceFile) {
+    traverseThroughFileNodes(sourceFile);
+  }
 
   return [overridesMap, componentsMap, existingTypes];
 }

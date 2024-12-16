@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
-import {
-  getTranslatedProperty,
-  getProductName,
-} from "@shopware-pwa/helpers-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { computed, ref } from "vue";
+import {
+  getProductName,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
 import { defu } from "defu";
-import { useProduct, useUser, useShopwareContext } from "#imports";
+import { computed, ref } from "vue";
+import { useProduct, useShopwareContext, useUser } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductDescriptionReviews;

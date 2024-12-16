@@ -6,19 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm lint && vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
     "@stackblitz/sdk": "latest",
-    "vue": "3.5.12",
-    "vue-router": "4.4.5"
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
   },
   "devDependencies": {
-    "@types/node": "20.17.0",
-    "@vitejs/plugin-vue": "5.1.4",
+    "@biomejs/biome": "1.8.3",
+    "@types/node": "22.10.0",
+    "@vitejs/plugin-vue": "5.2.1",
     "typescript": "5.6.3",
-    "vite": "5.4.10",
+    "vite": "6.0.3",
     "vue-tsc": "2.1.10"
   }
 }

@@ -6,17 +6,18 @@
   "scripts": {
     "test:e2e": "playwright test --grep @vue-demo-store",
     "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts",
-    "lint": "biome lint .",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
     "start": "npx http-server"
   },
   "devDependencies": {
-    "@playwright/test": "1.48.2"
+    "@playwright/test": "1.49.0"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.10.0",
-    "@faker-js/faker": "9.0.3",
+    "@faker-js/faker": "9.3.0",
     "@stackblitz/sdk": "1.11.0",
-    "dotenv": "16.4.5",
+    "dotenv": "16.4.7",
     "http-server": "14.1.1"
   }
 }

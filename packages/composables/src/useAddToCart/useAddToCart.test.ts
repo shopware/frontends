@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
-import { useAddToCart } from "./useAddToCart";
 import { useSetup } from "../_test";
 import ProductMocked from "../mocks/Product";
+import { useAddToCart } from "./useAddToCart";
 
 describe("useB2bQuoteManagement", () => {
   vi.mock("../useCart/useCart.ts", () => ({

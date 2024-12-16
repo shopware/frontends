@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import SwProductCard from "../../../SwProductCard.vue";
-import SwPagination from "../../../SwPagination.vue";
-import { useCategoryListing } from "#imports";
-import { computed, ref, watch } from "vue";
 import { defu } from "defu";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
@@ -16,6 +14,7 @@ const props = defineProps<{
 const defaultLimit = 15;
 const defaultPage = 1;
 const defaultOrder = "name-asc";
+const productListElement = useTemplateRef("productListElement");
 
 type Translations = {
   listing: {
@@ -85,6 +84,7 @@ const changePage = async (page: number) => {
     page,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
 const changeLimit = async (limit: Event) => {
@@ -101,6 +101,7 @@ const changeLimit = async (limit: Event) => {
     defaultPage,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
 const isProductListing = computed(
@@ -116,9 +117,7 @@ const compareRouteQueryWithInitialListing = async () => {
   const isChangePageNeeded =
     (route.query.limit && limit.value !== limitListing) ||
     (route.query.p && Number(route.query.p) !== pageListing) ||
-    (route.query.order && route.query.order !== orderListing)
-      ? true
-      : false;
+    (route.query.order && route.query.order !== orderListing);
 
   if (isChangePageNeeded) {
     const limitQuery = route.query.limit
@@ -157,7 +156,8 @@ compareRouteQueryWithInitialListing();
       <div class="mt-6">
         <div
           v-if="!loading"
-          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
+          ref="productListElement"
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8 productListElement"
         >
           <SwProductCard
             v-for="product in getElements"

@@ -53,14 +53,28 @@ app.provide("apiClient", apiClient);
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 
 ```js
-// app variable in type of App
+import { createShopwareContext } from "@shopware-pwa/composables-next";
 
+// app variable in type of App
 const shopwareContext = createShopwareContext(app, {
   devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
 });
 // register a plugin in a Vue instance
 app.use(shopwareContext);
 ```
+
+Exclude `@shopware-pwa/composables-next` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
+
+```ts
+// vite.config.js or .ts
+...
+optimizeDeps: {
+  exclude: ["@shopware-pwa/composables-next"],
+},
+...
+```
+
+---
 
 > The example does not provide the session handling and that means you need to do few additional steps if you need to keep your session after the page reload (see the chapter below with 🍪)
 
@@ -108,8 +122,8 @@ Let's get back to the step where the `api-client` was initialized:
 
 ```ts [apiClient.ts]
 import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "#shopware";
 import Cookies from "js-cookie";
+import type { operations } from "#shopware";
 
 const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
 
@@ -151,9 +165,22 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.4.2
+### Latest changes: 1.5.0
+
+### Minor Changes
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Changed `registration` method in the `useUser` composable. Because of changes in the double opt-in on registration flow in the Shopware backend we are adjusting this method on our side. In new approach we are checking `active` and `doubleOptInRegistration` properties that represents current status of the user.
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `buildDynamicBreadcrumbs` method for building breadcrumbs structure
+  Added `pushBreadcrumb` method to push single breadcrumb at the top of the breadcrumbs list
+  Added `associations` option to the `search` method in `useProductSearch` composable
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
+- [#1449](https://github.com/shopware/frontends/pull/1449) [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992) Thanks [@mkucmus](https://github.com/mkucmus)! - Add configuration step to README.md
+
+- [#1492](https://github.com/shopware/frontends/pull/1492) [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCustomerOrders` - added checkPromotions flag for loading orders
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515)]:
+  - @shopware/api-client@1.2.0
+  - @shopware-pwa/helpers-next@1.2.0

@@ -1,6 +1,6 @@
 import fs from "node:fs";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import * as path from "node:path";
+import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { z } from "zod";
 
 import { createError, useRuntimeConfig } from "#imports";
@@ -67,10 +67,10 @@ export default defineEventHandler(async (event) => {
   };
 
   const aPayClient = new Client.WebStoreClient(config);
-  const response = await aPayClient.updateCheckoutSession(
+  const response = (await aPayClient.updateCheckoutSession(
     parsedBody.data.sessionId,
     payload,
-  );
+  )) as { data: unknown };
 
   return {
     result: response.data,

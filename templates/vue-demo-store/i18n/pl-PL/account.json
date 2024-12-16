@@ -64,7 +64,8 @@
       "paymentSetSuccessfully": "Ustawiono domyślną metodę płatności",
       "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w nim zawarty, aby ukończyć rejestrację.",
       "paymentMethodChanged": "Metoda płatności została zmieniona",
-      "productsAdded": "Produkty zostały dodane do koszyka"
+      "productsAdded": "Produkty zostały dodane do koszyka",
+      "verifying": "Potwierdzenie konta"
     }
   }
 }

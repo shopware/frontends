@@ -1,8 +1,8 @@
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import ContextError from "../helpers/ContextError";
-import type { Schemas } from "#shopware";
 import { useContext } from "#imports";
+import type { Schemas } from "#shopware";
+import ContextError from "../helpers/ContextError";
 
 export type UseProductReturn = {
   /**

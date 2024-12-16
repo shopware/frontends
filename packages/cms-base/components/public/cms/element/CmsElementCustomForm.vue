@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
 import { computed, defineAsyncComponent } from "vue";
+import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -15,7 +15,6 @@ const FormComponent = computed(() => {
       return defineAsyncComponent(
         () => import("../../../SwNewsletterForm.vue"),
       );
-    case "contact":
     default:
       return defineAsyncComponent(() => import("../../../SwContactForm.vue"));
   }

@@ -1,4 +1,4 @@
-import { Project } from "@stackblitz/sdk";
+import type { Project } from "@stackblitz/sdk";
 
 export function getStackBlitzProjectConfig({
   packageName,
@@ -15,7 +15,7 @@ export function getStackBlitzProjectConfig({
   isAsync: boolean;
   multiImport?: string;
   functionToRunAfterImport?: string;
-  paramsConfig?: any;
+  paramsConfig?: Record<string, unknown>;
 }): Project {
   const INDEX_HTML_TEMPLATE = () => `
 <html>

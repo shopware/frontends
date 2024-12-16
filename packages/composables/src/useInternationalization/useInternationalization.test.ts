@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
+import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
 import { useInternationalization } from "./useInternationalization";
 import type { RouteObject } from "./useInternationalization";
-import { useSetup } from "../_test";
-import type { Schemas } from "#shopware";
 
 describe("useInternationalization", () => {
   it("should return storefrontUrl", async () => {

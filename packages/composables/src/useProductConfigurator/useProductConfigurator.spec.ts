@@ -1,10 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { useProductConfigurator } from "./useProductConfigurator";
 import { ref } from "vue";
-import mockedProduct from "../mocks/Product";
-import mockedConfigurator from "../mocks/Configurator";
+import { useProduct, useProductConfigurator } from "#imports";
 import { useSetup } from "../_test";
-import { useProduct } from "../useProduct/useProduct";
+import mockedConfigurator from "../mocks/Configurator";
+import mockedProduct from "../mocks/Product";
 
 vi.mock("../useProduct/useProduct.ts");
 

@@ -1,15 +1,15 @@
-import { CustomerAddress } from "../customer/CustomerAddress";
-import { OrderLineItem } from "./OrderLineItem";
-import { StateMachineState } from "../../system/state-machine/StateMachineState";
-import { OrderTransaction } from "./OrderTransaction";
-import { Tag } from "../../system/tag/Tag";
-import { Currency } from "../../system/currency/Currency";
+import type { Schemas } from "#shopware";
+import type { CustomFields } from "../../common/CustomField";
 import { Language } from "../../framework/language/Language";
+import { Currency } from "../../system/currency/Currency";
 import { SalesChannel } from "../../system/sales-channel/SalesChannel";
-import { CustomFields } from "../../common/CustomField";
+import { StateMachineState } from "../../system/state-machine/StateMachineState";
+import { Tag } from "../../system/tag/Tag";
+import { CustomerAddress } from "../customer/CustomerAddress";
 import { Delivery } from "../delivery/Delivery";
 import { OrderDocument } from "./OrderDocument";
-import type { Schemas } from "#shopware";
+import { OrderLineItem } from "./OrderLineItem";
+import { OrderTransaction } from "./OrderTransaction";
 
 interface CalculatedTax {
   tax: number;

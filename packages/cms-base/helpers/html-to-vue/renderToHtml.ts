@@ -2,9 +2,9 @@
  * Based on the https://github.com/HCESrl/html-to-vue
  */
 
+import type { ComponentInternalInstance, h } from "vue";
 import { generateAST, rectifyAST } from "./ast";
 import { renderer } from "./renderer";
-import { h, type ComponentInternalInstance } from "vue";
 
 type DefaultConfig = {
   container: {

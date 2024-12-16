@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useProductSearchSuggest } from "./useProductSearchSuggest";
 import { useSetup } from "../_test";
+import { useProductSearchSuggest } from "./useProductSearchSuggest";
 
 describe("useProductSearchSuggest", () => {
   it("search", async () => {

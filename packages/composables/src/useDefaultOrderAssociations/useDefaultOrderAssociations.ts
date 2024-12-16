@@ -39,7 +39,6 @@ export function useDefaultOrderAssociations(): UseDefaultOrderAssociationsReturn
           },
         },
       },
-      checkPromotion: true,
     };
 
   return orderAssociations;

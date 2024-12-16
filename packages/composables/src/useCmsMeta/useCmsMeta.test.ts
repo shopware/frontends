@@ -1,7 +1,7 @@
-import { useCmsMeta } from "./useCmsMeta";
 import { describe, expect, it } from "vitest";
-import LandingPageMock from "../mocks/LandingPage";
 import { useSetup } from "../_test";
+import LandingPageMock from "../mocks/LandingPage";
+import { useCmsMeta } from "./useCmsMeta";
 
 describe("composables - useCmsMeta", () => {
   it("should return title and meta tags", () => {

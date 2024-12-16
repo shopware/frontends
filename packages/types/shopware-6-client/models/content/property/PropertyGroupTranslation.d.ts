@@ -1,5 +1,5 @@
-import { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
-import { CustomFields } from "../../common/CustomField";
+import type { ShippingMethod } from "../../checkout/shipping/ShippingMethod";
+import type { CustomFields } from "../../common/CustomField";
 
 /**
  * @public

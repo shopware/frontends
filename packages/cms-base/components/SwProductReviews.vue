@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-import { useProductReviews, useCmsTranslations } from "#imports";
-import { computed, onMounted, ref, toRefs } from "vue";
 import { defu } from "defu";
+import { computed, onMounted, ref, toRefs } from "vue";
+import { useCmsTranslations, useProductReviews } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   product: Schemas["Product"];

@@ -46,7 +46,7 @@ Example of overrides file:
 <!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
-import { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents & {
   schemas: Schemas;
@@ -243,9 +243,11 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.1.3
+### Latest changes: 1.1.4
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
+- [#1447](https://github.com/shopware/frontends/pull/1447) [`11ea41f`](https://github.com/shopware/frontends/commit/11ea41fc00493d4997ddfcb23e2f5bf89dd2a828) Thanks [@patzick](https://github.com/patzick)! - Improved error messages and merging override patches.
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc)]:
+  - @shopware/api-client@1.2.0

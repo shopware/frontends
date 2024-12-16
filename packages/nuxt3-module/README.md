@@ -88,6 +88,32 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
 
+## API Default Headers
+
+You can use Nuxt config to set the default API call headers.
+More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-started/configuration).
+
+> **_NOTE:_** By default, the values in `runtimeConfig` are only available on the server-side. However, keys within `runtimeConfig.public` are also accessible on the client-side. [MORE](https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens)
+
+```json
+{
+  "runtimeConfig": {
+    "public": {
+      "apiClientConfig": {
+        "headers": {
+          "global-heder-example": "global-header-example-value"
+        }
+      }
+    },
+    "apiClientConfig": {
+      "headers": {
+        "ssr-heder-example": "ssr-header-example-value"
+      }
+    }
+  }
+}
+```
+
 ## Links
 
 - [📘 Documentation](https://frontends.shopware.com)
@@ -99,10 +125,17 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 1.0.8
+### Latest changes: 1.1.0
+
+### Minor Changes
+
+- [#1442](https://github.com/shopware/frontends/pull/1442) [`9669d1b`](https://github.com/shopware/frontends/commit/9669d1b39fca71461a3641840632db171f2968ed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added possibility to use Nuxt config file for setting the API requests headers. Headers are added to each request SSR and CSR.
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
-  - @shopware-pwa/composables-next@1.4.2
+- [#1514](https://github.com/shopware/frontends/pull/1514) [`05a4792`](https://github.com/shopware/frontends/commit/05a479240cac709e18f411a6276de359937341a6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `createError` with `showError` function in the `onResponseError` hook to redirect the user to the Nuxt error page.
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992), [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039)]:
+  - @shopware/api-client@1.2.0
+  - @shopware-pwa/composables-next@1.5.0
+  - @shopware-pwa/helpers-next@1.2.0

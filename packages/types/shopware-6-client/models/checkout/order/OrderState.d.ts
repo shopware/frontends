@@ -1,4 +1,4 @@
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
 
 export type OrderState = {
   name: string;

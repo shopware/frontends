@@ -1,5 +1,5 @@
-import { PropertyGroupOption } from "./PropertyGroupOption";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { PropertyGroupOption } from "./PropertyGroupOption";
 
 /**
  * @public

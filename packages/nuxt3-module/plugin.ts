@@ -1,15 +1,16 @@
+import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { createAPIClient } from "@shopware/api-client";
+import { defu } from "defu";
+import { getCookie } from "h3";
+import Cookies from "js-cookie";
+import { ref } from "vue";
 import {
+  createShopwareContext,
   defineNuxtPlugin,
+  showError,
   useRuntimeConfig,
   useState,
-  createShopwareContext,
-  createError,
 } from "#imports";
-import { ref } from "vue";
-import Cookies from "js-cookie";
-import { createAPIClient } from "@shopware/api-client";
-import { getCookie } from "h3";
-import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 import type { ApiClient } from "#shopware";
 
 declare module "#app" {
@@ -52,7 +53,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
     !!runtimeConfig?.shopware?.useUserContextInSSR;
 
-  const contextTokenFromCookie = !!NuxtApp.ssrContext
+  const contextTokenFromCookie = NuxtApp.ssrContext
     ? getCookie(NuxtApp.ssrContext?.event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
@@ -62,6 +63,10 @@ export default defineNuxtPlugin((NuxtApp) => {
     contextToken: shouldUseSessionContextInServerRender
       ? contextTokenFromCookie
       : "",
+    defaultHeaders: defu(
+      runtimeConfig.apiClientConfig?.headers,
+      runtimeConfig.public?.apiClientConfig?.headers,
+    ),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
@@ -77,7 +82,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     // @ts-expect-error TODO: check maintenance mode and fix typongs here
     const error = isMaintenanceMode(response._data?.errors ?? []);
     if (error) {
-      throw createError({
+      throw showError({
         statusCode: 503,
         statusMessage: "MAINTENANCE_MODE",
       });
@@ -85,7 +90,6 @@ export default defineNuxtPlugin((NuxtApp) => {
   });
 
   NuxtApp.vueApp.provide("apiClient", apiClient);
-
   // Shopware context
   const shopwareContext = createShopwareContext(NuxtApp.vueApp, {
     enableDevtools: true,

@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
+import { describe, expect, it } from "vitest";
 import { prepareFileContent } from "../src/generateFile";
+import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
 
 describe("transformOpenApiTypes", async () => {
   const inputFileNames = readdirSync(
@@ -11,7 +11,7 @@ describe("transformOpenApiTypes", async () => {
     .filter((name) => name.endsWith(".example.ts"))
     .map((filename) => filename.replace(".example.ts", ""));
 
-  inputFileNames.forEach((exampleName) => {
+  for (const exampleName of inputFileNames) {
     it(`transform should match snapshot for file: ${exampleName}`, async () => {
       const exampleFileContent = readFileSync(
         join(
@@ -42,5 +42,5 @@ describe("transformOpenApiTypes", async () => {
         `./snapshots-transformOpenApiTypes/${exampleName}.result.ts`,
       );
     });
-  });
+  }
 });

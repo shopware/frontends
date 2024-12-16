@@ -1,8 +1,8 @@
-import { Language } from "../../framework/language/Language";
-import { SalesChannel } from "../../system/sales-channel/SalesChannel";
-import { Tag } from "../../system/tag/Tag";
-import { Salutation } from "../../system/salutation/Salutation";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Language } from "../../framework/language/Language";
+import type { SalesChannel } from "../../system/sales-channel/SalesChannel";
+import type { Salutation } from "../../system/salutation/Salutation";
+import type { Tag } from "../../system/tag/Tag";
 
 /**
  * @public

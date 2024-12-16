@@ -1,9 +1,9 @@
-import { Media } from "../media/Media";
-import { PropertyGroup } from "./PropertyGroup";
-import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
-import { ProductConfiguratorSetting } from "../product/ProductConfiguratorSetting";
-import { Product } from "../product/Product";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Media } from "../media/Media";
+import type { Product } from "../product/Product";
+import type { ProductConfiguratorSetting } from "../product/ProductConfiguratorSetting";
+import type { PropertyGroup } from "./PropertyGroup";
+import type { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
 
 /**
  * @public

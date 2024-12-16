@@ -58,10 +58,11 @@ updates:
           - "@faker*"
           - "@codspeed/*"
           - "@playwright*"
-      prettier:
+      linter:
         patterns:
           - "prettier"
           - "@types/prettier"
+          - "@biome/*"
       vue:
         patterns:
           - "vue"

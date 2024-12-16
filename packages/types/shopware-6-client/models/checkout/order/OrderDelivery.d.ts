@@ -1,9 +1,9 @@
-import { Order } from "./Order";
-import { ShippingMethodPrice } from "../shipping/ShippingMethodPrice";
-import { StateMachineState } from "../../system/state-machine/StateMachineState";
-import { CalculatedPrice } from "../cart/price/CalculatedPrice";
-import { OrderAddress } from "./OrderAddress";
-import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
+import type { StateMachineState } from "../../system/state-machine/StateMachineState";
+import type { CalculatedPrice } from "../cart/price/CalculatedPrice";
+import type { ShippingMethodPrice } from "../shipping/ShippingMethodPrice";
+import type { Order } from "./Order";
+import type { OrderAddress } from "./OrderAddress";
+import type { OrderDeliveryPosition } from "./OrderDeliveryPosition";
 
 /**
  * @public

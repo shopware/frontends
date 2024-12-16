@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-client",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "type": "module",
@@ -9,11 +9,7 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": [
-    "shopware",
-    "api",
-    "client"
-  ],
+  "keywords": ["shopware", "api", "client"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -21,11 +17,7 @@
   "module": "./dist/index.mjs",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "api-types",
-    "admin-api-types"
-  ],
+  "files": ["dist", "api-types", "admin-api-types"],
   "exports": {
     ".": {
       "require": {
@@ -45,7 +37,8 @@
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
@@ -54,15 +47,15 @@
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
-    "@vitest/coverage-v8": "2.1.4",
-    "eslint-config-shopware": "workspace:*",
+    "@vitest/coverage-v8": "2.1.8",
     "jsdom": "^25.0.1",
-    "prettier": "3.3.3",
+    "prettier": "3.4.2",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4"
+    "vitest": "2.1.8"
   },
   "dependencies": {
     "defu": "6.1.4",
