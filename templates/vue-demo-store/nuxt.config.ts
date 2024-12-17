@@ -1,6 +1,9 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
+
 export default defineNuxtConfig({
+  watch: ["~/layers/commercial-advanced-search"],
   extends: [
+    "./layers/commercial-advanced-search",
     "@shopware-pwa/composables-next/nuxt-layer",
     "@shopware-pwa/cms-base",
   ],
@@ -40,11 +43,13 @@ export default defineNuxtConfig({
      */
     broadcasting: false,
   },
+
   shopware: {
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    accessToken: "SWSCSXLISW9AQUX6OGN1SLHAUG",
+    endpoint: "http://localhost:8000/store-api/",
     devStorefrontUrl: "",
   },
+
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
@@ -86,6 +91,7 @@ export default defineNuxtConfig({
       isr: 60 * 60 * 24,
     },
   },
+
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
@@ -94,12 +100,14 @@ export default defineNuxtConfig({
     // typeCheck: true,
     strict: true,
   },
+
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
   ],
+
   // components: true,
   components: {
     dirs: [
@@ -110,24 +118,30 @@ export default defineNuxtConfig({
     ],
     global: true,
   },
+
   vueuse: {
     ssrHandlers: true,
   },
+
   nitro: {
     compressPublicAssets: true,
   },
+
   unocss: {
     // for presets, theme config, ... look at the uno.config.ts file
   },
+
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
   ],
+
   router: {
     options: {
       linkActiveClass: "link-active",
       linkExactActiveClass: "link-exact-active text-primary",
     },
   },
+
   i18n: {
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
@@ -153,5 +167,7 @@ export default defineNuxtConfig({
       },
     ],
   },
+
   telemetry: false,
+  compatibilityDate: "2024-12-10",
 });
