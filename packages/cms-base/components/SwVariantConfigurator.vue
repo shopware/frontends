@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { getProductRoute } from "@shopware-pwa/helpers-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { ref, computed, unref } from "vue";
-import type { ComputedRef } from "vue";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 import { defu } from "defu";
-import { useProductConfigurator } from "#imports";
+import { computed, ref, unref } from "vue";
+import type { ComputedRef } from "vue";
 import { useRouter } from "vue-router";
+import { useProductConfigurator } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = withDefaults(
@@ -31,9 +31,10 @@ let translations: Translations = {
 
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-const emit = defineEmits<{
-  (e: "change", selected: Partial<Schemas["Product"]> | undefined): void;
-}>();
+const emit =
+  defineEmits<
+    (e: "change", selected: Partial<Schemas["Product"]> | undefined) => void
+  >();
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {

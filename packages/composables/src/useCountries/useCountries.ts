@@ -1,4 +1,4 @@
-import { computed, ref, onMounted, inject, provide } from "vue";
+import { computed, inject, onMounted, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";

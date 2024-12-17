@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { pascalCase } from "scule";
 import {
-  getCmsLayoutConfiguration,
   getBackgroundImageUrl,
+  getCmsLayoutConfiguration,
 } from "@shopware-pwa/helpers-next";
-import { useNavigationContext, createCategoryListingContext } from "#imports";
+import { pascalCase } from "scule";
 import { computed, h, resolveComponent } from "vue";
+import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -34,28 +34,28 @@ const DynamicRender = () => {
       componentObject.section,
     );
     if (typeof componentObject.component === "string") {
-      return h("div", {}, "There is no " + componentObject.component);
-    } else {
-      if (layoutStyles?.backgroundImage) {
-        layoutStyles.backgroundImage = getBackgroundImageUrl(
-          layoutStyles.backgroundImage,
-          componentObject.section,
-        );
-      }
-
-      return h(componentObject.component, {
-        content: componentObject.section,
-        class: {
-          ...cssClasses,
-          "max-w-screen-2xl mx-auto": layoutStyles?.sizingMode === "boxed",
-        },
-        style: {
-          backgroundColor: layoutStyles?.backgroundColor,
-          backgroundImage: layoutStyles?.backgroundImage,
-          backgroundSize: layoutStyles?.backgroundSize,
-        },
-      });
+      return h("div", {}, `There is no ${componentObject.component}`);
     }
+
+    if (layoutStyles?.backgroundImage) {
+      layoutStyles.backgroundImage = getBackgroundImageUrl(
+        layoutStyles.backgroundImage,
+        componentObject.section,
+      );
+    }
+
+    return h(componentObject.component, {
+      content: componentObject.section,
+      class: {
+        ...cssClasses,
+        "max-w-screen-2xl mx-auto": layoutStyles?.sizingMode === "boxed",
+      },
+      style: {
+        backgroundColor: layoutStyles?.backgroundColor,
+        backgroundImage: layoutStyles?.backgroundImage,
+        backgroundSize: layoutStyles?.backgroundSize,
+      },
+    });
   });
 };
 </script>

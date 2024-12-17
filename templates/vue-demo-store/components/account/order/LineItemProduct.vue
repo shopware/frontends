@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
-  getSmallestThumbnailUrl,
-  getMedia,
   downloadFile,
+  getMedia,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 const props = defineProps<{

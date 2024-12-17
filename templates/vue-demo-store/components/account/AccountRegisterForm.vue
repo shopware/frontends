@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
 
 const { required, minLength, email, requiredIf } = customValidators();
@@ -109,18 +109,19 @@ const invokeSubmit = async () => {
     try {
       loading.value = true;
       const response = await register(state);
-      if (response && response.active) router.push("/");
-      else if (response && !response.active) {
+      if (response?.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
         doubleOptInBox.value?.scrollIntoView();
         $v.value.$reset();
-      }
+      } else if (response?.active) router.push("/");
     } catch (error) {
       if (error instanceof ApiClientError) {
         const errors = resolveApiErrors(error.details.errors);
-        errors.forEach((error) => pushError(error));
+        for (const error of errors) {
+          pushError(error);
+        }
       }
     } finally {
       loading.value = false;
@@ -145,7 +146,8 @@ useBreadcrumbs([
       {{ $t("account.messages.signUpSuccess") }}
     </div>
     <form
-      class="w-full relative"
+      v-if="!showDoubleOptInBox"
+      class="w-full relative mt-10"
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >

@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { resolveCmsComponent, getDefaultApiParams } from "./index";
-import CmsPage from "./mocks/CmsPage";
-import type { Schemas } from "#shopware";
 import * as vue from "vue";
+import type { Schemas } from "#shopware";
+import { getDefaultApiParams, resolveCmsComponent } from "./index";
+import CmsPage from "./mocks/CmsPage";
 
 vi.mock("vue");
 describe("resolveCmsComponent", () => {
@@ -17,8 +17,12 @@ describe("resolveCmsComponent", () => {
   });
 
   it("getDefaultApiParams", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     const result = getDefaultApiParams();
     expect(result).toEqual({});
+    expect(console.error).toHaveBeenCalledWith(
+      "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+    );
   });
 
   it("cms section component", () => {

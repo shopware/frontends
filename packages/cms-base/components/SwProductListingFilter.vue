@@ -1,23 +1,24 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
-import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
+import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
+import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
 import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
-
-const emit = defineEmits<{
-  (e: "selectFilterValue", { code, value }: { code: any; value: any }): void;
-}>();
 
 const props = defineProps<{
   filter: ListingFilter;
   selectedFilters?: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
+}>();
+
+const emit = defineEmits<{
+  selectFilterValue: [{ code: string; value: string | number | boolean }];
 }>();
 
 const cmsMap = () => {
   const map: {
-    [key: string]: any;
+    [key: string]: Component;
   } = {
     manufacturer: SwFilterPropertiesVue,
     properties: SwFilterPropertiesVue,

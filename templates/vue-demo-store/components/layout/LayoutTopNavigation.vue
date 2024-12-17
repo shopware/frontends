@@ -3,8 +3,8 @@ import {
   getCategoryRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import type { Schemas } from "#shopware";
 import { onKeyStroke, useActiveElement } from "@vueuse/core";
+import type { Schemas } from "#shopware";
 type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;
 };
@@ -91,7 +91,7 @@ const updateActiveClass = (
       if (navigation[ni].id === navigationId) {
         navigation[ni].activeClass = true;
       }
-      if (navigation[ni].id == parentId) {
+      if (navigation[ni].id === parentId) {
         navigation[ni].activeClass = true;
         if (navigationElements.value) {
           setNavigationActiveClass(
@@ -171,7 +171,7 @@ onKeyStroke("Escape", () => {
 watch(
   () => route.path,
   () => {
-    if (resetActiveClass.value == true && navigationElements.value) {
+    if (resetActiveClass.value === true && navigationElements.value) {
       resetNavigationActiveClass(navigationElements.value);
     }
     resetActiveClass.value = true;

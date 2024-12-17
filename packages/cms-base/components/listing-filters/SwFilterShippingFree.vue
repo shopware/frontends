@@ -10,18 +10,19 @@
     }
   "
 >
-import type { Schemas } from "#shopware";
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;
   selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
 }>();
 
-const emits = defineEmits<{
-  (e: "select-value", value: { code: string; value: unknown }): void;
-}>();
+const emits =
+  defineEmits<
+    (e: "select-value", value: { code: string; value: unknown }) => void
+  >();
 const currentFilterData = computed(
   () => !!props.selectedFilters[props.filter?.code],
 );
@@ -38,7 +39,9 @@ const toggle = () => {
 };
 
 const dropdownElement = ref(null);
-onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
+onClickOutside(dropdownElement, () => {
+  isFilterVisible.value = false;
+});
 </script>
 
 <template>

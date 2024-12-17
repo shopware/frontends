@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { operations } from "#shopware";
-import ListingFilter from "./ListingFilter.vue";
 import { computed, provide, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
+import type { operations } from "#shopware";
+import ListingFilter from "./ListingFilter.vue";
 
 const {
   filtersToQuery,
@@ -16,18 +16,17 @@ const route = useRoute();
 const router = useRouter();
 
 // @ToDo: clean up the "any" inside searchSelectedFilters
-const searchSelectedFilters: UnwrapNestedRefs<{
-  [key: string]: any;
-}> = reactive<{
-  manufacturer: Set<any>;
-  properties: Set<any>;
+const searchSelectedFilters = reactive<{
+  manufacturer: Set<string>;
+  properties: Set<string>;
   "min-price": string | number | undefined;
   "max-price": string | number | undefined;
   rating: string | number | undefined;
   "shipping-free": boolean | undefined;
+  [key: string]: Set<string> | string | number | boolean | undefined;
 }>({
-  manufacturer: new Set(),
-  properties: new Set(),
+  manufacturer: new Set<string>(),
+  properties: new Set<string>(),
   "min-price": undefined,
   "max-price": undefined,
   rating: undefined,
@@ -37,31 +36,31 @@ const searchSelectedFilters: UnwrapNestedRefs<{
 const searchCriteriaForRequest: ComputedRef<
   operations["searchPage post /search"]["body"]
 > = computed(() => ({
-  // turn Set to array and then into string with | separator
   manufacturer: [...searchSelectedFilters.manufacturer]?.join("|"),
-  // turn Set to array and then into string with | separator
   properties: [...searchSelectedFilters.properties]?.join("|"),
-  "min-price": searchSelectedFilters["min-price"],
-  "max-price": searchSelectedFilters["max-price"],
+  "min-price": Number(searchSelectedFilters["min-price"]),
+  "max-price": Number(searchSelectedFilters["max-price"]),
   order: getCurrentSortingOrder.value,
-  "shipping-free": searchSelectedFilters["shipping-free"],
-  rating: searchSelectedFilters["rating"],
+  "shipping-free": Boolean(searchSelectedFilters["shipping-free"]),
+  rating: Number(searchSelectedFilters.rating),
   search: "",
 }));
 
 for (const param in route.query) {
-  if (searchSelectedFilters.hasOwnProperty(param)) {
+  if (Object.prototype.hasOwnProperty.call(searchSelectedFilters, param)) {
     if (
       searchSelectedFilters[param] &&
       typeof searchSelectedFilters[param] === "object"
     ) {
-      (route.query[param] as unknown as string)
-        .split("|")
-        .forEach((element) => {
-          searchSelectedFilters[param].add(element);
-        });
+      const elements = (route.query[param] as unknown as string).split("|");
+      for (const element of elements) {
+        searchSelectedFilters[param].add(element);
+      }
     } else {
-      searchSelectedFilters[param] = route.query[param];
+      const queryValue = route.query[param];
+      if (queryValue && !Array.isArray(queryValue)) {
+        searchSelectedFilters[param] = queryValue;
+      }
     }
   }
 }
@@ -76,10 +75,13 @@ const onOptionSelectToggle = async ({
   if (!["properties", "manufacturer"].includes(code)) {
     searchSelectedFilters[code] = value;
   } else {
-    if (searchSelectedFilters[code]?.has(value)) {
-      searchSelectedFilters[code]?.delete(value);
-    } else {
-      searchSelectedFilters[code]?.add(value);
+    const filterSet = searchSelectedFilters[code];
+    if (filterSet instanceof Set) {
+      if (filterSet.has(value)) {
+        filterSet.delete(value);
+      } else {
+        filterSet.add(value);
+      }
     }
   }
   await router.push({
@@ -99,7 +101,7 @@ const clearFilters = async () => {
   searchSelectedFilters.properties.clear();
   searchSelectedFilters["min-price"] = undefined;
   searchSelectedFilters["max-price"] = undefined;
-  searchSelectedFilters["rating"] = undefined;
+  searchSelectedFilters.rating = undefined;
   searchSelectedFilters["shipping-free"] = undefined;
   await router.push({
     query: {
@@ -126,7 +128,7 @@ const showResetFiltersButton = computed<boolean>(() => {
     selectedOptionIds.value.length !== 0 ||
     searchSelectedFilters["max-price"] ||
     searchSelectedFilters["min-price"] ||
-    searchSelectedFilters["rating"] ||
+    searchSelectedFilters.rating ||
     searchSelectedFilters["shipping-free"]
   ) {
     return true;

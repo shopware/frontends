@@ -2,9 +2,9 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 // read .env file and load it into process.env
 import "dotenv/config";
+import json5 from "json5";
 import c from "picocolors";
 import { format } from "prettier";
-import json5 from "json5";
 import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
@@ -60,7 +60,7 @@ export async function loadSchema(args: {
     const downloadUrl =
       configUrl + (isAdminApi ? ADMIN_API_ENDPOINT : STORE_API_ENDPOINT);
 
-    let apiJSON;
+    let apiJSON: Record<string, unknown>;
 
     if (isAdminApi) {
       const adminClient = getAdminApiClient();

@@ -1,27 +1,27 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { resolve, join, dirname } from "node:path";
-import ts from "typescript";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import openapiTS, {
   astToString,
   transformSchemaObjectWithComposition,
 } from "openapi-typescript";
 import type { OpenAPI3, SchemaObject } from "openapi-typescript";
+import ts from "typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
+import json5 from "json5";
+import { ofetch } from "ofetch";
 import c from "picocolors";
 import { format } from "prettier";
-import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
-import { ofetch } from "ofetch";
-import { TransformedElements } from "../generateFile";
-import { transformSchemaTypes } from "../transformSchemaTypes";
-import { transformOpenApiTypes } from "../transformOpenApiTypes";
-import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
-import json5 from "json5";
+import type { TransformedElements } from "../generateFile";
 import {
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
+import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
+import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
+import { transformOpenApiTypes } from "../transformOpenApiTypes";
+import { transformSchemaTypes } from "../transformSchemaTypes";
 
 export async function generate(args: {
   cwd: string;
@@ -56,9 +56,9 @@ export async function generate(args: {
       process.exit(1);
     }
 
-    let schema: string = "";
+    let schema = "";
     let processedSchemaAst: TransformedElements;
-    let apiVersion: string = "unknown";
+    let apiVersion = "unknown";
 
     if (fileExist) {
       // Apply patches
@@ -128,7 +128,7 @@ export async function generate(args: {
             `,
         transform(schemaObject, metadata) {
           if (!schemaObject) {
-            throw new Error("Schema object is empty at " + metadata.path);
+            throw new Error(`Schema object is empty at ${metadata.path}`);
           }
           /**
            * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
@@ -167,7 +167,9 @@ export async function generate(args: {
                 {} as Record<string, { type: "string" }>,
               );
             if (Object.keys(stringProperties).length === 0) {
-              delete schemaObject.properties.translated;
+              const { translated: _, ...propertiesWithoutTranslated } =
+                schemaObject.properties;
+              schemaObject.properties = propertiesWithoutTranslated;
             } else {
               schemaObject.required ??= [];
               schemaObject.required.push("translated");

@@ -1,7 +1,6 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { useCartErrorParamsResolver } from "./useCartErrorParamsResolver";
-import { useCart } from "../useCart/useCart";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+import { useCart, useCartErrorParamsResolver } from "#imports";
 
 vi.mock("../useCart/useCart.ts");
 

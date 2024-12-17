@@ -1,7 +1,7 @@
-import { useCmsBlock } from "./useCmsBlock";
 import { describe, expect, it } from "vitest";
-import { useSetup } from "../_test";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useCmsBlock } from "./useCmsBlock";
 
 describe("composables - useCmsBlock", () => {
   it("get block data", () => {

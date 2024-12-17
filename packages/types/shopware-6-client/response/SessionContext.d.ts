@@ -1,13 +1,13 @@
+import type { Schemas } from "#shopware";
+// import { Category } from "../models/content/category/Category";
+// import { Customer } from "../models/checkout/customer/Customer";
+import type { CustomFields } from "../models/common/CustomField";
+import type { Language } from "../models/framework/language/Language";
 // import { PaymentMethod } from "../models/checkout/payment/PaymentMethod";
 // import { ShippingMethod } from "../models/checkout/shipping/ShippingMethod";
 // import { ShippingAddress } from "../models/checkout/customer/ShippingAddress";
 // import { Country } from "../models/system/country/Country";
-import { Currency } from "../models/system/currency/Currency";
-import { Language } from "../models/framework/language/Language";
-// import { Category } from "../models/content/category/Category";
-// import { Customer } from "../models/checkout/customer/Customer";
-import { CustomFields } from "../models/common/CustomField";
-import type { Schemas } from "#shopware";
+import type { Currency } from "../models/system/currency/Currency";
 
 // export type ContextTokenResponse = {
 //   apiAlias: "array_struct";

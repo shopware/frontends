@@ -1,13 +1,13 @@
+import { join } from "node:path";
+import { defu } from "defu";
 import {
-  GenerationMap,
-  TransformedElements,
+  type GenerationMap,
+  type TransformedElements,
   generateFile,
 } from "./generateFile";
-import { createVirtualFiles } from "./virtualFileCreator";
 // import { transformOpenApiTypes } from "./transformOpenApiTypes";
 import { transformSchemaTypes } from "./transformSchemaTypes";
-import { defu } from "defu";
-import { join } from "node:path";
+import { createVirtualFiles } from "./virtualFileCreator";
 
 export async function processAstSchemaAndOverrides(
   [opMap, opComponents, opExistingTypes]: TransformedElements,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { h } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: Schemas["CmsSlot"];
@@ -17,7 +17,7 @@ const DynamicRender = () => {
   } = resolveCmsComponent(props.content);
   if (resolvedComponent) {
     if (!isResolved)
-      return h("div", {}, "Problem resolving component: " + componentName);
+      return h("div", {}, `Problem resolving component: ${componentName}`);
 
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
@@ -28,7 +28,7 @@ const DynamicRender = () => {
       class: cssClasses,
     });
   }
-  console.error("Component not resolved: " + componentNameToResolve);
+  console.error(`Component not resolved: ${componentNameToResolve}`);
   return h("div", {}, "");
 };
 </script>

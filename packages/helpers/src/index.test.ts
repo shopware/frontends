@@ -14,6 +14,7 @@ describe("helpers - test global API", () => {
         "getCategoryImageUrl": [Function],
         "getCategoryRoute": [Function],
         "getCategoryUrl": [Function],
+        "getCmsBreadcrumbs": [Function],
         "getCmsEntityObject": [Function],
         "getCmsLayoutConfiguration": [Function],
         "getCmsTranslate": [Function],

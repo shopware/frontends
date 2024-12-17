@@ -1,9 +1,9 @@
-import { Product } from "../product/Product";
-import { Media } from "../media/Media";
-import { Category } from "../category/Category";
-import { RouteName } from "../cms/CmsPage";
-import { CustomFields } from "../../common/CustomField";
 import type { Schemas } from "#shopware";
+import { CustomFields } from "../../common/CustomField";
+import type { Category } from "../category/Category";
+import { RouteName } from "../cms/CmsPage";
+import { Media } from "../media/Media";
+import { Product } from "../product/Product";
 
 /**
  * Navigation type to display on page.

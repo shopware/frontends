@@ -1,5 +1,5 @@
-import { Project } from "ts-morph";
 import { format } from "prettier";
+import { Project } from "ts-morph";
 
 export type MethodDefinition = {
   operationId: string;
@@ -81,9 +81,9 @@ export async function prepareFileContent({
   const sourceFile = project.createSourceFile(
     filepath,
     (writer) => {
-      existingTypes.forEach((type) => {
+      for (const type of existingTypes) {
         writer.writeLine(type[1]);
-      });
+      }
 
       // components
       writer.write("export type components =").block(() => {
@@ -91,9 +91,9 @@ export async function prepareFileContent({
       });
 
       writer.write("export type Schemas =").block(() => {
-        sortedSchemaKeys.forEach((key) => {
+        for (const key of sortedSchemaKeys) {
           writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
-        });
+        }
       });
 
       writer.write("export type operations =").block(() => {
@@ -200,7 +200,7 @@ export async function prepareFileContent({
                   }
 
                   if (singleRequest.pathParams) {
-                    writer.write(`pathParams:`).write(singleRequest.pathParams);
+                    writer.write("pathParams:").write(singleRequest.pathParams);
                   }
 
                   if (singleRequest.body) {

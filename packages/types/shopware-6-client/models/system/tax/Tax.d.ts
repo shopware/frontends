@@ -1,5 +1,5 @@
-import { Product } from "../../content/product/Product";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Product } from "../../content/product/Product";
 
 /**
  * @public

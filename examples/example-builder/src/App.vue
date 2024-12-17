@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
-import { getStackBlitzProjectConfig } from "./helpers";
 import sdk from "@stackblitz/sdk";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { getStackBlitzProjectConfig } from "./helpers";
 // Import stylesheets
 import "./style.css";
 

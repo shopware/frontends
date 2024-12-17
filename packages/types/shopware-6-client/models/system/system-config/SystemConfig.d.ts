@@ -1,4 +1,4 @@
-import { SalesChannel } from "../sales-channel/SalesChannel";
+import type { SalesChannel } from "../sales-channel/SalesChannel";
 
 /**
  * @public

@@ -1,21 +1,50 @@
 <script setup lang="ts">
-import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getProductName } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   navigationId: string;
 }>();
 
 const { search } = useProductSearch();
+const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
+const { apiClient } = useShopwareContext();
 
-const { data: productResponse, error } = await useAsyncData(
-  "cmsProduct" + props.navigationId,
+const { data, error } = await useAsyncData(
+  `cmsProduct${props.navigationId}`,
   async () => {
-    const productResponse = await search(props.navigationId, {
-      withCmsAssociations: true,
-    });
-    return productResponse;
+    const responses = await Promise.allSettled([
+      search(props.navigationId, {
+        withCmsAssociations: true,
+        associations: {
+          seoUrls: {},
+        },
+      }),
+      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
+        pathParams: {
+          id: props.navigationId,
+        },
+      }),
+    ]);
+
+    for (const response of responses) {
+      if (response.status === "rejected") {
+        console.error("[FrontendDetailPage.vue]", response.reason.message);
+      }
+    }
+
+    return {
+      productResponse:
+        responses[0].status === "fulfilled" ? responses[0].value : null,
+      breadcrumbs:
+        responses[1].status === "fulfilled" ? responses[1].value : null,
+    };
   },
 );
+const productResponse = ref(data.value?.productResponse);
+
+if (data.value?.breadcrumbs) {
+  buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
+}
 
 if (!productResponse.value) {
   console.error("[FrontendDetailPage.vue]", error.value?.message);
@@ -24,13 +53,10 @@ if (!productResponse.value) {
 
 useProductJsonLD(productResponse.value.product);
 
-const breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value.product.seoCategory,
-  {
-    startIndex: 2,
-  },
-);
-useBreadcrumbs(breadcrumbs);
+pushBreadcrumb({
+  name: getProductName({ product: productResponse.value.product }) ?? "",
+  path: `/${productResponse.value.product.seoUrls?.[0]?.seoPathInfo}`,
+});
 
 const { product } = useProduct(
   productResponse.value.product,

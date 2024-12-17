@@ -1,7 +1,7 @@
-import { createApp } from "vue";
 import { createShopwareContext } from "@shopware-pwa/composables-next";
-import { apiClient } from "./apiClient";
+import { createApp } from "vue";
 import App from "./App.vue";
+import { apiClient } from "./apiClient";
 
 const app = createApp(App);
 

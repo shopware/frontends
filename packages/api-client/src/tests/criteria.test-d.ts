@@ -1,4 +1,4 @@
-import { describe, expectTypeOf, it, assertType } from "vitest";
+import { assertType, describe, expectTypeOf, it } from "vitest";
 import type { Schemas } from "../../api-types/storeApiTypes";
 
 type Criteria = Schemas["Criteria"];

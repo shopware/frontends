@@ -8,9 +8,9 @@ const props = defineProps<{
 const { controller } = toRefs(props);
 const { isOpen, close } = controller.value;
 
-const { escape } = useMagicKeys();
+const { escape: escapeKey } = useMagicKeys();
 
-watch(escape, () => {
+watch(escapeKey, () => {
   isOpen.value && close();
 });
 

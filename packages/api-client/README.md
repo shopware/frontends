@@ -289,8 +289,8 @@ client.hook("onRequest", (_request, options) => {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.1.2
+### Latest changes: 1.2.0
 
-### Patch Changes
+### Minor Changes
 
-- [#1434](https://github.com/shopware/frontends/pull/1434) [`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381) Thanks [@quando1910](https://github.com/quando1910)! - set authentication header instead of appending, when session has expired and is being refreshed
+- [#1468](https://github.com/shopware/frontends/pull/1468) [`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc) Thanks [@JimTacobs](https://github.com/JimTacobs)! - Added fetchOptions to both API clients to allow for base configuration of http client

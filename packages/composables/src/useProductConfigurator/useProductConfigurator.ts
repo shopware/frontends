@@ -1,7 +1,7 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
-import { useProduct, useShopwareContext } from "#imports";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { useProduct, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseProductConfiguratorReturn = {

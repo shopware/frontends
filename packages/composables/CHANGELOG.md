@@ -1,5 +1,25 @@
 # @shopware-pwa/composables-next
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Changed `registration` method in the `useUser` composable. Because of changes in the double opt-in on registration flow in the Shopware backend we are adjusting this method on our side. In new approach we are checking `active` and `doubleOptInRegistration` properties that represents current status of the user.
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `buildDynamicBreadcrumbs` method for building breadcrumbs structure
+  Added `pushBreadcrumb` method to push single breadcrumb at the top of the breadcrumbs list
+  Added `associations` option to the `search` method in `useProductSearch` composable
+
+### Patch Changes
+
+- [#1449](https://github.com/shopware/frontends/pull/1449) [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992) Thanks [@mkucmus](https://github.com/mkucmus)! - Add configuration step to README.md
+
+- [#1492](https://github.com/shopware/frontends/pull/1492) [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCustomerOrders` - added checkPromotions flag for loading orders
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515)]:
+  - @shopware/api-client@1.2.0
+  - @shopware-pwa/helpers-next@1.2.0
+
 ## 1.4.2
 
 ### Patch Changes

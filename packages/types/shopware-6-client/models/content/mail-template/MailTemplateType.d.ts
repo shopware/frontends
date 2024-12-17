@@ -1,6 +1,6 @@
-import { MailTemplateSalesChannel } from "./MailTemplateSalesChannel";
-import { MailTemplateTypeTranslation } from "./MailTemplateTypeTranslation";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { MailTemplateSalesChannel } from "./MailTemplateSalesChannel";
+import type { MailTemplateTypeTranslation } from "./MailTemplateTypeTranslation";
 
 /**
  * @public

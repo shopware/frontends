@@ -18,11 +18,17 @@
       "node_modules",
       "coverage",
       ".turbo",
+      ".output",
+      ".astro",
       "temp",
       ".nuxt",
       ".vercel",
-      "apiSchema*.json",
-      "apiTypes*.d.ts"
+      "*apiSchema*.json",
+      "*apiTypes*.d.ts",
+      ".vitepress/cache/*",
+      "packages/types/*",
+      "playwright-report",
+      "api-gen/tests/*"
     ]
   }
 }

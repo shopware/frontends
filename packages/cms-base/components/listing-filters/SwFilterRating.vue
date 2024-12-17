@@ -8,12 +8,13 @@
     }
   "
 >
-import type { Schemas } from "#shopware";
 import { computed, ref } from "vue";
+import type { Schemas } from "#shopware";
 
-const emits = defineEmits<{
-  (e: "select-value", value: { code: string; value: unknown }): void;
-}>();
+const emits =
+  defineEmits<
+    (e: "select-value", value: { code: string; value: unknown }) => void
+  >();
 
 const props = defineProps<{
   filter: ListingFilter;

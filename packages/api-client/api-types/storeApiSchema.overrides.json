@@ -149,6 +149,47 @@
         }
       }
     ],
+    "Customer": [
+      {
+        "properties": {
+          "accountType": "_DELETE_",
+          "company": "_DELETE_",
+          "vatIds": "_DELETE_"
+        }
+      },
+      {
+        "oneOf": [
+          {
+            "required": ["accountType"],
+            "properties": {
+              "accountType": {
+                "type": "string",
+                "enum": ["private"]
+              }
+            }
+          },
+          {
+            "required": ["accountType", "vatIds", "company"],
+            "properties": {
+              "accountType": {
+                "type": "string",
+                "enum": ["business"]
+              },
+              "vatIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              },
+              "company": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    ],
     "DeliveryInformation": [
       {
         "required": ["stock"]
@@ -447,6 +488,75 @@
         }
       ]
     },
+    "/account/change-profile": {
+      "post": [
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "accountType": "_DELETE_",
+                    "company": "_DELETE_",
+                    "vatIds": "_DELETE_"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "accountType": {
+                          "description": "Type of the customer account. Default value is 'private'.",
+                          "type": "string",
+                          "enum": ["private"],
+                          "default": "private"
+                        },
+                        "company": {
+                          "type": "null"
+                        },
+                        "vatIds": {
+                          "type": "null"
+                        }
+                      }
+                    },
+                    {
+                      "required": ["accountType", "company", "vatIds"],
+                      "properties": {
+                        "accountType": {
+                          "description": "Type of the customer account. Can be `private` or `business`.",
+                          "type": "string",
+                          "enum": ["business"]
+                        },
+                        "company": {
+                          "description": "Company of the customer. Only required when `accountType` is `business`.",
+                          "type": "string"
+                        },
+                        "vatIds": {
+                          "description": "VAT IDs of the customer's company. Only valid when `accountType` is `business`.",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "/account/list-address": {
       "post": [
         {
@@ -474,6 +584,73 @@
                       { "$ref": "#/components/schemas/EntitySearchResult" }
                     ]
                   }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "/account/register": {
+      "post":[
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "accountType": "_DELETE_"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "accountType": {
+                          "description": "Type of the customer account. Default value is 'private'.",
+                          "type": "string",
+                          "enum": ["private"],
+                          "default": "private"
+                        },
+                        "company": {
+                          "type": "null"
+                        },
+                        "vatIds": {
+                          "type": "null"
+                        }
+                      }
+                    },
+                    {
+                      "required": ["accountType", "company", "vatIds"],
+                      "properties": {
+                        "accountType": {
+                          "description": "Type of the customer account. Can be `private` or `business`.",
+                          "type": "string",
+                          "enum": ["business"]
+                        },
+                        "company": {
+                          "description": "Company of the customer. Only required when `accountType` is `business`.",
+                          "type": "string"
+                        },
+                        "vatIds": {
+                          "description": "VAT IDs of the customer's company. Only valid when `accountType` is `business`.",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 1
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }

@@ -1,5 +1,5 @@
-import { Country } from "./Country";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { Country } from "./Country";
 
 /**
  * @public

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
-  useSessionContext,
   useCheckout,
+  useSessionContext,
   useUser,
 } from "@shopware-pwa/composables-next/lib";
 defineProps<{

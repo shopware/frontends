@@ -1,4 +1,4 @@
-import { Promotion } from "./Promotion";
+import type { Promotion } from "./Promotion";
 
 /**
  * @public

@@ -1,17 +1,17 @@
-import { join } from "node:path";
-import c from "picocolors";
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import json5 from "json5";
 import type { ObjectSubtype, OpenAPI3 } from "openapi-typescript";
-import { validationRules } from "../validation-rules";
-import { patchJsonSchema } from "../patchJsonSchema";
+import c from "picocolors";
+import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 import {
   API_GEN_CONFIG_FILENAME,
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
-import json5 from "json5";
-import { getAdminApiClient, getStoreApiClient } from "../apiClient";
+import { patchJsonSchema } from "../patchJsonSchema";
+import { validationRules } from "../validation-rules";
 
 /**
  * Removes the api type from the endpoint string to compare it with the definition from the schema
@@ -36,11 +36,11 @@ async function getAllApiEndpoints({ isAdminApi }: { isAdminApi: boolean }) {
     const adminClient = getAdminApiClient();
     const result = await adminClient.invoke("getRoutes get /_info/routes");
     return result.data;
-  } else {
-    const apiClient = getStoreApiClient();
-    const result = await apiClient.invoke("getRoutes get /_info/routes");
-    return result.data;
   }
+
+  const apiClient = getStoreApiClient();
+  const result = await apiClient.invoke("getRoutes get /_info/routes");
+  return result.data;
 }
 
 export async function validateJson(args: {
@@ -93,29 +93,29 @@ export async function validateJson(args: {
     apiType: args.apiType,
   });
 
-  Object.entries(fileContentAsJson.components?.schemas || {}).forEach(
-    (schema) => {
-      rulesToProcess.forEach((ruleName) => {
-        if (!validationRules[ruleName]) {
-          console.error(
-            c.red(
-              `Validation rule ${c.bold(
-                ruleName,
-              )} is not implemented. Check your ${c.bold(API_GEN_CONFIG_FILENAME)} file.`,
-            ),
-          );
-          process.exit(1);
-        }
-        const res = validationRules[ruleName]?.(
-          schema[0],
-          schema[1] as ObjectSubtype,
+  for (const [schemaName, schema] of Object.entries(
+    fileContentAsJson.components?.schemas || {},
+  )) {
+    for (const ruleName of rulesToProcess) {
+      if (!validationRules[ruleName]) {
+        console.error(
+          c.red(
+            `Validation rule ${c.bold(
+              ruleName,
+            )} is not implemented. Check your ${c.bold(API_GEN_CONFIG_FILENAME)} file.`,
+          ),
         );
-        if (res) {
-          errors.push(res);
-        }
-      });
-    },
-  );
+        process.exit(1);
+      }
+      const res = validationRules[ruleName]?.(
+        schemaName,
+        schema as ObjectSubtype,
+      );
+      if (res) {
+        errors.push(res);
+      }
+    }
+  }
 
   const { alreadyApliedPatches, todosToFix, outdatedPatches, schemaPaths } =
     patchJsonSchema({
@@ -129,7 +129,7 @@ export async function validateJson(args: {
   });
 
   // compare endpoints
-  exposedApiEndpoints.endpoints.forEach((endpoint) => {
+  for (const endpoint of exposedApiEndpoints.endpoints) {
     const endpointPath = cleanupEndpointString(endpoint.path);
 
     for (const endpointMethod of endpoint.methods) {
@@ -149,10 +149,10 @@ export async function validateJson(args: {
         endpointsMissingInSchema++;
       }
     }
-  });
+  }
 
   let endpointsInSchemaButNotInApi = 0;
-  schemaPaths.forEach((path) => {
+  for (const path of schemaPaths) {
     const searchedPath = cleanupEndpointString(path.path);
 
     const foundPath = exposedApiEndpoints.endpoints.find((endpoint) => {
@@ -178,7 +178,7 @@ export async function validateJson(args: {
         }
       }
     }
-  });
+  }
 
   displayPatchingSummary({
     todosToFix,

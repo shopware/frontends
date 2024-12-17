@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
-import type { Schemas } from "#shopware";
+import { useElementSize, useResizeObserver } from "@vueuse/core";
 import {
   computed,
   onBeforeUnmount,
@@ -12,7 +11,8 @@ import {
   watch,
 } from "vue";
 import type { CSSProperties, VNodeArrayChildren } from "vue";
-import { useElementSize, useResizeObserver } from "@vueuse/core";
+import { useCmsElementConfig } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{
@@ -60,9 +60,7 @@ const children = computed<string[]>(() => {
     ...childrenRaw.value.slice(0, slidesToShow.value),
   ] as string[];
 });
-const emit = defineEmits<{
-  (e: "changeSlide", index: number): void;
-}>();
+const emit = defineEmits<(e: "changeSlide", index: number) => void>();
 const slider = useTemplateRef("slider");
 const imageSlider = useTemplateRef("imageSlider");
 const imageSliderTrackStyle = ref<CSSProperties>();
@@ -115,11 +113,10 @@ const imageSliderStyle = computed(() => {
       height: getConfigValue("minHeight"),
       margin: `0 -${props.gap}`,
     };
-  } else {
-    return {
-      minHeight: getConfigValue("minHeight"),
-    };
   }
+  return {
+    minHeight: getConfigValue("minHeight"),
+  };
 });
 
 const verticalAlignValue = computed(
@@ -147,7 +144,7 @@ function initSlider() {
 
 function buildImageSliderTrackStyle(
   transformIndex: number,
-  moving: boolean = false,
+  moving = false,
   callback = () => {},
 ) {
   let styleObj: CSSProperties = {
@@ -170,8 +167,8 @@ function buildImageSliderTrackStyle(
     imageSliderTrackStyle.value = { ...styleObj };
     isSliding.value = true;
     setTimeout(() => {
-      delete styleObj.transition;
-      imageSliderTrackStyle.value = { ...styleObj };
+      const { transition: _, ...styleWithoutTransition } = styleObj;
+      imageSliderTrackStyle.value = { ...styleWithoutTransition };
       isSliding.value = false;
       callback();
     }, speed.value);
@@ -189,7 +186,7 @@ function buildImageSliderTrackStyle(
       // If image exist
       height = childComponent?.children[0].children[0].clientHeight
         ? `${childComponent.clientHeight}px`
-        : (height = `auto`);
+        : "auto";
     }
     styleObj = {
       ...styleObj,
