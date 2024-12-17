@@ -69,7 +69,7 @@
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "micromatch": "^4.0.8",
       "nanoid@3": "^3.3.8",
-      "nanoid": "^5.0.9",
+      "nanoid@5": "^5.0.9",
       "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
       "rollup@3": "^3.29.5",
