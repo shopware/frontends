@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from "nuxt/config";
+import type { NuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   imports: {
@@ -10,4 +11,4 @@ export default defineNuxtConfig({
   telemetry: {
     enabled: false,
   },
-});
+}) as NuxtConfig;

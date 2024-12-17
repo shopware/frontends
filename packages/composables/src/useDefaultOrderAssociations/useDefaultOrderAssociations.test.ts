@@ -35,7 +35,6 @@ describe("useDefaultOrderAssociations", () => {
             },
           },
         },
-        "checkPromotion": true,
       }
     `);
   });
