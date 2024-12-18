@@ -472,11 +472,15 @@ Configuration is set to `Display single product` and `Main product` is selected.
 
 Changes you will see in the **store API output** with that configuration:
 
-- The store API returns `one element` which, if the association is set, contains several children (variants)
-- The data comes from the selected `Product product`, e.g. stock, sales, product number and so on.
-- If you add the association `children` all the variant product data is returned in that array
+- The store API returns `one element`
+- The data comes from the `Parent (main) product`, e.g. stock, sales, product number and so on.
+- If the association `children` is set, all the variant product data is returned in the `children` array
   - The `childCount` should be greater than zero, it should contain the number of all possible variants
 - `parentId` and `optionsIds` will always be null
+
+:::warning Too many children & big json files
+It is good practice to return only the necessary data in your custom frontend. This means selecting only the required children and monitoring the JSON file size. Large files can slow down performance as they need to be downloaded and parsed.
+:::
 
 ### Display single product (Variant)
 
@@ -491,14 +495,22 @@ Changes you will see in the **store API output** with that configuration:
 - The `childCount` should be zero, as a variant cannot be a parent product
 - `parentId` will contain the id of the parent product and `optionsIds` will contain the options from that variant product
 
+:::info Use case example
+You always want to display the cheapest product on the product list as preselected. So that the customer can add it to the shopping cart more quickly.
+:::
+
 ### Expand property values in product listings
 
 <img src="../../.assets/e-commerce/product-listing/variants-expand-properties-in-listing.png" alt="Screen from Admin config for Variants presentation with expanded properties option selected" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
 Changes you will see in the **store API output** with that configuration:
 
-- The store API provides `multiple elements` for each selected property, but not the parent product
+- The store API returns `multiple elements` for each selected property, but not the parent product
 - Data will be collected from the matching Variant products e.g. stock, sales, productNumber and so on.
 - If you add the association `children`, an empty array is always returned, as a variant cannot be a parent product
 - The `childCount` should be zero, as a variant cannot be a parent product
-- `parentId` will contain the id of the parent product and `optionsIds` will contain the options from that variant product
+- `parentId` will contain the id of the parent product and `optionsIds` will contain the options from that matching variant product
+
+:::info Use case example
+You could expand a property like `color` to display all the different images of a T-shirt directly in the product listing. The size selection can still be made on the product detail page so as not to overload the product list.
+:::
