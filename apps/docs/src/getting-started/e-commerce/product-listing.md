@@ -13,6 +13,7 @@ In this chapter you will learn how to
 - Implement a pagination
 - Apply sortings, pagination, and filters
 - Use the `helpers` package
+- Configure variants presentation for store API
 
 ## Listing context
 
@@ -455,3 +456,49 @@ import {
   {{ getTranslatedProperty(product, "name") }}
 </a>
 ```
+
+## Variants presentation
+
+You have three different options for presenting your variants to your audience. These can be configured via the administration, for every product with variants. In this section, we explain how the output of the store API changes depending on the configuration.
+
+**To open the Product listing configuration for the Storefront presentation (also changes the output of the store API), proceed as follows in your administration:**
+
+Hover over `Cataloges` > Click on `Products` > Use the Search or Pagination to find your Product > Click on the Product with Variants you want to change > Click on the Tab `Variants` > Click on the Button `Storefront presentation` > A new window/modals opens > Click on `Product lists` on the left side > Here you can change the configuration of how the product with variants should be presented
+
+### Display single product (main product)
+
+Configuration is set to `Display single product` and `Main product` is selected.
+<img src="../../.assets/e-commerce/product-listing/variants-display-single-product-main.png" alt="Screen from Admin config for Variants presentation with single main product selected" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+
+Changes you will see in the **store API output** with that configuration:
+
+- The store API returns `one element` which, if the association is set, contains several children (variants)
+- The data comes from the selected `Product product`, e.g. stock, sales, product number and so on.
+- If you add the association `children` all the variant product data is returned in that array
+  - The `childCount` should be greater than zero, it should contain the number of all possible variants
+- `parentId` and `optionsIds` will always be null
+
+### Display single product (Variant)
+
+Configuration is set to `Display single product` and a `Variant product` is selected.
+<img src="../../.assets/e-commerce/product-listing/variants-display-single-product-variant.png" alt="Screen from Admin config for Variants presentation with single variant product selected" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+
+Changes you will see in the **store API output** with that configuration:
+
+- The store API returns `one element`
+- The data comes from the selected `Product variant`, e.g. stock, sales, product number and so on.
+- If you add the association `children`, an empty array is always returned, as a variant cannot be a parent product
+- The `childCount` should be zero, as a variant cannot be a parent product
+- `parentId` will contain the id of the parent product and `optionsIds` will contain the options from that variant product
+
+### Expand property values in product listings
+
+<img src="../../.assets/e-commerce/product-listing/variants-expand-properties-in-listing.png" alt="Screen from Admin config for Variants presentation with expanded properties option selected" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+
+Changes you will see in the **store API output** with that configuration:
+
+- The store API provides `multiple elements` for each selected property, but not the parent product
+- Data will be collected from the matching Variant products e.g. stock, sales, productNumber and so on.
+- If you add the association `children`, an empty array is always returned, as a variant cannot be a parent product
+- The `childCount` should be zero, as a variant cannot be a parent product
+- `parentId` will contain the id of the parent product and `optionsIds` will contain the options from that variant product
