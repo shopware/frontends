@@ -23,6 +23,7 @@ let translations: Translations = {
   listing: {
     variantsFrom: "variants from",
     previously: "previously",
+    from: "from",
     to: "to",
   },
 };
@@ -73,7 +74,7 @@ const {
     >
       <template #beforePrice
         ><span v-if="displayFrom || displayFromVariants" class="text-sm">{{
-          translations.listing.to
+          translations.listing.from
         }}</span></template
       >
     </SwSharedPrice>
