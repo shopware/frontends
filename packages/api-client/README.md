@@ -265,6 +265,16 @@ apiClient.hook("onDefaultHeaderChanged", (key, value) => {
 
 calling `apiClient.hook` will autocomplete the list of available hooks.
 
+#### onResponse
+
+Using the onRequest hook, you can modify the request before it is sent. This is particularly useful for adding custom headers.
+
+```typescript
+client.hook("onRequest", (_request, options) => {
+  options.headers.append("x-custom-header", "value");
+});
+```
+
 ## Links
 
 - [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
