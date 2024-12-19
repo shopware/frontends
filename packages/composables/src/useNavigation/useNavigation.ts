@@ -17,6 +17,7 @@ export type UseNavigationReturn = {
    */
   loadNavigationElements(params: {
     depth: number;
+    criteria?: Schemas["Criteria"];
   }): Promise<Schemas["NavigationRouteResponse"]>;
 };
 
@@ -49,7 +50,10 @@ export function useNavigation(params?: {
 
   const navigationElements = computed(() => sharedElements.value);
 
-  async function loadNavigationElements({ depth }: { depth: number }) {
+  async function loadNavigationElements(params: {
+    depth: number;
+    criteria?: Schemas["Criteria"];
+  }) {
     try {
       const navigationResponse = await apiClient.invoke(
         "readNavigation post /navigation/{activeId}/{rootId}",
@@ -62,7 +66,8 @@ export function useNavigation(params?: {
             rootId: type,
           },
           body: {
-            depth,
+            depth: params.depth,
+            ...params.criteria,
           },
         },
       );
