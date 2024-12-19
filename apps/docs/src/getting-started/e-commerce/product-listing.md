@@ -459,11 +459,15 @@ import {
 
 ## Variants presentation
 
-You have three different options for presenting your variants to your audience. These can be configured via the administration, for every product with variants. In this section, we explain how the output of the store API changes depending on the configuration.
+You have three different options for presenting your variants to your audience. These can be configured via the administration, for every product with variants. In this section, we explain how the output of the store API changes depending on the configuration. The default option is `Expand property values in product listings` without any property selection, this leads to a randomly selected variant.
 
 **To open the Product listing configuration for the Storefront presentation (also changes the output of the store API), proceed as follows in your administration:**
 
-Hover over `Cataloges` > Click on `Products` > Use the Search or Pagination to find your Product > Click on the Product with Variants you want to change > Click on the Tab `Variants` > Click on the Button `Storefront presentation` > A new window/modals opens > Click on `Product lists` on the left side > Here you can change the configuration of how the product with variants should be presented
+Hover over `Cataloges` > Click on `Products` > Use the Search or Pagination to find your Product > Click on the Product with Variants you want to change > Click on the Tab `Variants` > Click on the Button `Storefront presentation` > A new window/modals opens > Click on `Product lists` on the left side > Here you can change the configuration of how the product with variants should be presented.
+
+:::info Additional ressources
+More about Variants can be found in the [Customer documentation](https://docs.shopware.com/en/shopware-6-en/catalogues/products#variants). If you want to customise a product, please also check [Custom products](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts) and do not use variants.
+:::
 
 ### Display single product (main product)
 
