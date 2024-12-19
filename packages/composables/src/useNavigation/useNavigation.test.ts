@@ -56,7 +56,7 @@ describe("useNavigation", () => {
 
     await vm.loadNavigationElements({
       depth: 2,
-      criteria: { includes: { category: ["name"] } },
+      includes: { category: ["name"] },
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readNavigation"),
