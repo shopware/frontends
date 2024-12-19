@@ -1,5 +1,11 @@
 # @shopware-pwa/cms-base
 
+## 1.2.1
+
+### Patch Changes
+
+- [#1535](https://github.com/shopware/frontends/pull/1535) [`289ff97`](https://github.com/shopware/frontends/commit/289ff9763247a94d4555524d1500073af9038a36) Thanks [@mkucmus](https://github.com/mkucmus)! - Display "from price" label correctly for Product price component.
+
 ## 1.2.0
 
 ### Minor Changes
