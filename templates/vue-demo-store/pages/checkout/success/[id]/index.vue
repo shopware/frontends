@@ -12,8 +12,9 @@ const { isLoggedIn, isGuestSession } = useUser();
 if (!isLoggedIn.value && !isGuestSession.value) {
   router.push("/");
 }
+
 const {
-  loadOrderDetails,
+  asyncSetData,
   shippingAddress,
   billingAddress,
   shippingMethod,
@@ -22,7 +23,9 @@ const {
   subtotal,
   total,
   shippingCosts,
-} = useOrderDetails(orderId);
+} = useOrder();
+
+const { loadOrderDetails } = useOrderDataProvider();
 
 const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(order);
@@ -31,7 +34,11 @@ onMounted(async () => {
   const SUCCESS_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
   const FAILURE_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
-  await loadOrderDetails();
+  const order = await loadOrderDetails({
+    keyValue: orderId,
+  });
+  if (order) asyncSetData(order);
+
   handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
 });
 
