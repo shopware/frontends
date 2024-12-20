@@ -1,5 +1,11 @@
 # @shopware-pwa/composables-next
 
+## 1.6.0
+
+### Minor Changes
+
+- [#1540](https://github.com/shopware/frontends/pull/1540) [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42) Thanks [@kasztof](https://github.com/kasztof)! - Allow to pass full seach criteria according to loadNavigationElements method of useNavigation composable
+
 ## 1.5.0
 
 ### Minor Changes
