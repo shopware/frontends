@@ -239,7 +239,8 @@ export const sidebar = [
       { text: "Performance", link: "/best-practices/performance.html" },
       {
         text: "Testing",
-        // link: "/best-practices/testing.html",
+        link: "/best-practices/testing.html",
+        collapsed: true,
         items: [
           {
             text: "E2E Testing",

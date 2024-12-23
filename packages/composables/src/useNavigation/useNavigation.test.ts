@@ -48,4 +48,21 @@ describe("useNavigation", () => {
     );
     expect(vm.navigationElements).toStrictEqual([]);
   });
+
+  it("should pass criteria to the api call", async () => {
+    const { vm, injections } = useSetup(useNavigation);
+    injections.apiClient.invoke.mockResolvedValue({ data: undefined });
+    vi.spyOn(injections.apiClient, "invoke").mockImplementation(() => {});
+
+    await vm.loadNavigationElements({
+      depth: 2,
+      includes: { category: ["name"] },
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readNavigation"),
+      expect.objectContaining({
+        body: { depth: 2, includes: { category: ["name"] } },
+      }),
+    );
+  });
 });

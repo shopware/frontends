@@ -8,6 +8,8 @@
     "product": "Produkt",
     "products": "Produkte",
     "resetFilters": "Filter zurücksetzen",
-    "sort": "Sortieren nach"
+    "sort": "Sortieren nach",
+    "from": "Ab",
+    "variantsFrom": "Varianten ab"
   }
 }
