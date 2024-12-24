@@ -2,7 +2,9 @@ import defu from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchOptions,
+  type FetchRequest,
   type FetchResponse,
+  type ResolvedFetchOptions,
   type ResponseType,
   ofetch,
 } from "ofetch";
@@ -68,6 +70,10 @@ export type ApiClientHooks = {
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: <T>(response: FetchResponse<T>) => void;
   onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
+  onRequest: (
+    request: FetchRequest,
+    options: ResolvedFetchOptions<ResponseType>,
+  ) => void;
 };
 
 export function createAPIClient<
@@ -120,6 +126,9 @@ export function createAPIClient<
     async onResponseError({ response }) {
       apiClientHooks.callHook("onResponseError", response);
       errorInterceptor(response);
+    },
+    async onRequest({ request, options }) {
+      await apiClientHooks.callHook("onRequest", request, options);
     },
   });
   /**
