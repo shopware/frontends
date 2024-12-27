@@ -29,7 +29,12 @@ const orderDate = computed(() =>
         {{ order.amountTotal }} {{ currency?.symbol }}
       </div>
       <div class="text-secondary-600">{{ orderDate }}</div>
-      <div class="text-secondary-600">{{ order.stateMachineState.name }}</div>
+      <div class="text-secondary-600">
+        <AccountOrderStatus
+          v-if="order.stateMachineState"
+          :state="order.stateMachineState"
+        />
+      </div>
       <div class="hidden sm:block justify-self-end text-dark cursor-pointer">
         <NuxtLink :to="`/account/order/details/${order.id}`">
           {{ t("account.view") }}

@@ -48,20 +48,6 @@ const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],
 );
 
-const statusClass = computed(() => {
-  switch (order.value?.stateMachineState.technicalName) {
-    case "completed":
-      return "bg-green-100 text-green-800";
-    case "open":
-    case "in_progress":
-      return "bg-yellow-100 text-yellow-800";
-    case "cancelled":
-      return "bg-red-100 text-red-800";
-    default:
-      return "bg-gray-100 text-gray-800";
-  }
-});
-
 const formatDate = (date: number | Date) => {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
@@ -152,11 +138,10 @@ const generateBackLink = () => {
               </p>
             </div>
             <div class="mt-4 sm:mt-0">
-              <span
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                :class="statusClass"
-                >{{ order.stateMachineState.name }}</span
-              >
+              <AccountOrderStatus
+                v-if="order.stateMachineState"
+                :state="order.stateMachineState"
+              />
             </div>
           </div>
 

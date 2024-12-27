@@ -118,7 +118,10 @@ const formatDate = (date: Date | string) =>
                 {{ formatDate(order.orderDate) }}
               </div>
               <div class="text-secondary-600">
-                {{ status }}
+                <AccountOrderStatus
+                  v-if="order?.stateMachineState"
+                  :state="order.stateMachineState"
+                />
               </div>
               <button
                 class="hidden sm:block justify-self-end text-dark cursor-pointer"
