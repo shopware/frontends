@@ -9,11 +9,7 @@ const props = defineProps<{
   order: Schemas["Order"];
 }>();
 
-const isExpand = ref(false);
 const { t } = useI18n();
-const toggleView = () => {
-  isExpand.value = !isExpand.value;
-};
 const { currency } = useSessionContext();
 
 const orderDate = computed(() =>
@@ -34,22 +30,20 @@ const orderDate = computed(() =>
       </div>
       <div class="text-secondary-600">{{ orderDate }}</div>
       <div class="text-secondary-600">{{ order.stateMachineState.name }}</div>
-      <div
-        class="hidden sm:block justify-self-end text-dark cursor-pointer"
-        @click="toggleView"
-      >
-        {{ !isExpand ? t("account.view") : t("account.hide") }}
+      <div class="hidden sm:block justify-self-end text-dark cursor-pointer">
+        <NuxtLink :to="`/account/order/details/${order.id}`">
+          {{ t("account.view") }}
+        </NuxtLink>
       </div>
     </AccountOrderSummary>
     <div>
       <div
         class="block sm:hidden text-center text-dark cursor-pointer bg-secondary py-2"
-        :aria-expanded="isExpand"
-        @click="toggleView"
       >
-        {{ !isExpand ? t("account.view") : t("account.hide") }}
+        <NuxtLink :to="`/account/order/details/${order.id}`">
+          {{ t("account.view") }}
+        </NuxtLink>
       </div>
     </div>
-    <AccountOrderDetails v-if="isExpand" :order-id="order.id" />
   </div>
 </template>

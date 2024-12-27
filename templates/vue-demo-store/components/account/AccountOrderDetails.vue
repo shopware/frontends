@@ -25,9 +25,6 @@ const {
 } = await useOrderDetails(props.orderId);
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
-onMounted(() => {
-  loadOrderDetails();
-});
 
 const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],

@@ -16,6 +16,7 @@ const {
   currentPage,
   limit,
 } = useCustomerOrders();
+
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
