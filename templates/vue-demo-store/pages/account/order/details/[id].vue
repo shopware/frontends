@@ -182,14 +182,25 @@ const generateBackLink = () => {
                       <div class="flex items-center">
                         <div class="flex-shrink-0 h-10 w-10">
                           <img
+                            v-if="item.type === 'product'"
                             class="h-10 w-10"
                             :src="getSmallestThumbnailUrl(item.cover)"
                             :alt="item.label"
                           />
+                          <div
+                            v-else-if="item.type === 'promotion'"
+                            class="h-10 w-10 i-carbon-tag text-3xl text-center"
+                          ></div>
                         </div>
                         <div class="ml-4">
                           <div class="text-sm font-medium text-gray-900">
                             {{ item.label }}
+
+                            <span
+                              v-if="item.type === 'promotion'"
+                              class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
+                              >{{ $t("cart.promotion") }}</span
+                            >
                           </div>
                         </div>
                       </div>
