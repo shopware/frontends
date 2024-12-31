@@ -13,7 +13,6 @@ const { getErrorsCodes } = useCartNotification();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const {
-  loadOrderDetails,
   order,
   hasDocuments,
   documents,
