@@ -65,6 +65,8 @@ export * from "./useWishlist/useWishlist";
 export * from "./useB2bQuoteManagement/useB2bQuoteManagement";
 export * from "./useCartNotification/useCartNotification";
 export * from "./useCartErrorParamsResolver/useCartErrorParamsResolver";
+export * from "./useOrder/useOrder";
+export * from "./useOrderDataProvider/useOrderDataProvider";
 
 export function resolveCmsComponent(
   content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"],
