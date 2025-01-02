@@ -37,7 +37,7 @@
     "@types/changelog-parser": "2.8.4",
     "automd": "^0.3.7",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "esno": "4.8.0",
     "globby": "14.0.2",
     "husky": "9.1.7",
