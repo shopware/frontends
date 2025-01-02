@@ -50,6 +50,30 @@
       "order": "Order",
       "orders": "Orders"
     },
+    "orderDetails": {
+      "order": "Order",
+      "placedOn": "Placed on {d}",
+      "shippingAddress": "Shipping address",
+      "billingAddress": "Billing address",
+      "orderSummary": "Order Summary",
+      "paymentMethod": "Payment method",
+      "shippingMethod": "Shipping method",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "takesUpTo": "Takes up to",
+      "change": "Change",
+      "changePaymentMethod": "Change payment method",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "backToOrdersList": "Back to orders list",
+      "itemsHeader": {
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price",
+        "total": "Total"
+      }
+    },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",
       "label": "Personal data"

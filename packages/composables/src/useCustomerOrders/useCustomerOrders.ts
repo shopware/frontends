@@ -64,6 +64,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     });
     orders.value = fetchedOrders.data.orders.elements;
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
+    currentPaginationPage.value = fetchedOrders.data.orders.page ?? 1;
   };
 
   const changeCurrentPage = async (pageNumber: number) => {
