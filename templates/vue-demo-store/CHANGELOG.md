@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed order details from `AccountOrder` component and moved it to the new order details page `pages/account/order/details/[id].vue`
+
 ## 1.4.0
 
 ### Minor Changes
