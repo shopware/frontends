@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",
-    "@astrojs/react": "3.6.3",
+    "@astrojs/react": "4.1.2",
     "@biomejs/biome": "1.8.3",
     "@shopware/api-client": "canary",
     "@tutorialkit/astro": "1.1.1",
@@ -28,7 +28,7 @@
     "@tutorialkit/types": "1.1.1",
     "@types/node": "20.14.6",
     "@types/react": "18.3.3",
-    "astro": "4.16.18",
+    "astro": "5.1.2",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "5.6.3"
   }
