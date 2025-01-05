@@ -50,11 +50,11 @@ export type UseOrderDetailsReturn = {
    */
   paymentUrl: Ref<null | string>;
   /**
-   * Selected shipping method
+   * Returns current selected shipping method for the order. Last element in delivery array.
    */
   shippingMethod: ComputedRef<Schemas["ShippingMethod"] | undefined | null>;
   /**
-   * Selected payment method
+   * Returns current selected payment method for the order. Last element in transactions array.
    */
   paymentMethod: ComputedRef<Schemas["PaymentMethod"] | undefined | null>;
   /**
@@ -139,12 +139,21 @@ export function useOrderDetails(
 
   const orderAssociations = useDefaultOrderAssociations();
 
-  const paymentMethod = computed(
-    () => _sharedOrder.value?.transactions?.[0]?.paymentMethod,
+  const paymentMethod = computed(() =>
+    _sharedOrder.value?.transactions?.length
+      ? _sharedOrder.value.transactions[
+          _sharedOrder.value.transactions.length - 1
+        ].paymentMethod
+      : undefined,
   );
-  const shippingMethod = computed(
-    () => _sharedOrder.value?.deliveries?.[0]?.shippingMethod,
+
+  const shippingMethod = computed(() =>
+    _sharedOrder.value?.deliveries?.length
+      ? _sharedOrder.value.deliveries[_sharedOrder.value.deliveries.length - 1]
+          .shippingMethod
+      : undefined,
   );
+
   const paymentUrl = ref();
 
   const personalDetails = computed(() => ({
