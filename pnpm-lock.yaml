@@ -93,8 +93,8 @@ importers:
         specifier: 2.3.3
         version: 2.3.3
       vercel:
-        specifier: 39.2.2
-        version: 39.2.2(@swc/core@1.7.10)(encoding@0.1.13)
+        specifier: 39.2.4
+        version: 39.2.4(@swc/core@1.7.10)(encoding@0.1.13)
 
   apps/docs:
     dependencies:
@@ -140,7 +140,7 @@ importers:
         version: 1.3.0-alpha.16(@unocss/webpack@0.62.4(rollup@4.29.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.47)(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))
       '@shopware-docs/vitest':
         specifier: ^1.3.0-alpha.16
-        version: 1.3.0-alpha.16(@playwright/test@1.49.1)(@unocss/webpack@0.62.4(rollup@4.29.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.47)(rollup@4.29.1)(slugify@1.6.6)(vite-plugin-inspect@0.8.8(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 1.3.0-alpha.16(@playwright/test@1.49.1)(@unocss/webpack@0.62.4(rollup@4.29.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.47)(rollup@4.29.1)(slugify@1.6.6)(vite-plugin-inspect@0.8.8(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       '@types/markdown-it':
         specifier: 14.1.2
         version: 14.1.2
@@ -927,13 +927,13 @@ importers:
         version: 1.8.3
       '@codspeed/vitest-plugin':
         specifier: 4.0.0
-        version: 4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       '@types/prettier':
         specifier: 3.0.0
         version: 3.0.0
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
@@ -948,7 +948,7 @@ importers:
         version: 2.0.0(sass@1.77.8)(typescript@5.6.3)
       vitest:
         specifier: 2.1.8
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
   packages/api-gen:
     dependencies:
@@ -982,7 +982,7 @@ importers:
         version: 17.0.33
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       json5:
         specifier: 2.2.3
         version: 2.2.3
@@ -997,7 +997,7 @@ importers:
         version: 2.0.0(sass@1.77.8)(typescript@5.6.3)
       vitest:
         specifier: 2.1.8
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
   packages/cms-base:
     dependencies:
@@ -1055,7 +1055,7 @@ importers:
         version: 0.166.0
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       nuxt:
         specifier: 3.14.1592
         version: 3.14.1592(@biomejs/biome@1.8.3)(@parcel/watcher@2.4.1)(@types/node@22.10.0)(encoding@0.1.13)(eslint@9.17.0(jiti@2.4.0))(ioredis@5.4.1)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.3)(rollup@4.29.1)(sass@1.77.8)(terser@5.37.0)(typescript@5.6.3)(vite@6.0.3(@types/node@22.10.0)(jiti@2.4.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)(tsx@4.19.1)(yaml@2.4.5))(vue-tsc@2.1.10(typescript@5.6.3))(webpack-sources@3.2.3)
@@ -1070,7 +1070,7 @@ importers:
         version: 2.0.0(sass@1.77.8)(typescript@5.6.3)
       vitest:
         specifier: 2.1.8
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
       vue-router:
         specifier: 4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.6.3))
@@ -1104,13 +1104,13 @@ importers:
         version: 3.14.1592(magicast@0.3.5)(rollup@4.29.1)(webpack-sources@3.2.3)
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       '@vue/test-utils':
         specifier: 2.4.6
         version: 2.4.6
       happy-dom:
-        specifier: 16.2.9
-        version: 16.2.9
+        specifier: 16.3.0
+        version: 16.3.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1122,7 +1122,7 @@ importers:
         version: 2.0.0(sass@1.77.8)(typescript@5.6.3)
       vitest:
         specifier: 2.1.8
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
       vue:
         specifier: 3.5.13
         version: 3.5.13(typescript@5.6.3)
@@ -1150,10 +1150,10 @@ importers:
         version: 1.8.3
       '@vitest/coverage-v8':
         specifier: 2.1.8
-        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       happy-dom:
-        specifier: 16.2.9
-        version: 16.2.9
+        specifier: 16.3.0
+        version: 16.3.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1162,7 +1162,7 @@ importers:
         version: 2.0.0(sass@1.77.8)(typescript@5.6.3)
       vitest:
         specifier: 2.1.8
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
   packages/nuxt3-module:
     dependencies:
@@ -6247,30 +6247,30 @@ packages:
     peerDependencies:
       webpack: ^4 || ^5
 
-  '@vercel/build-utils@8.8.0':
-    resolution: {integrity: sha512-4jkeJ/Xr0epojgfiyQufB8vC0ubE9SCfA9I2BGcOIKcf65C25juSvuYwaLixnjZXHUTO4Y9W7fdgiLUk55MgbA==}
+  '@vercel/build-utils@9.0.0':
+    resolution: {integrity: sha512-uOUC25R+KdwCpfwgHZlL7GTp1RD2AFkmS9lfEEGeNv3OUrBo7XPX2EnI1jsoWs/VFjJ9TGZLx177qBH8IGCoMw==}
 
   '@vercel/error-utils@2.0.3':
     resolution: {integrity: sha512-CqC01WZxbLUxoiVdh9B/poPbNpY9U+tO1N9oWHwTl5YAZxcqXmmWJ8KNMFItJCUUWdY3J3xv8LvAuQv2KZ5YdQ==}
 
-  '@vercel/fun@1.1.0':
-    resolution: {integrity: sha512-SpuPAo+MlAYMtcMcC0plx7Tv4Mp7SQhJJj1iIENlOnABL24kxHpL09XLQMGzZIzIW7upR8c3edwgfpRtp+dhVw==}
-    engines: {node: '>= 10'}
+  '@vercel/fun@1.1.2':
+    resolution: {integrity: sha512-n13RO1BUy8u6+kzDQ2++BRj4Y5EAiQPt+aV+Tb2HNTmToNr4Mu3dE1kFlaTVTxQzAT3hvIRlVEU/OMvF8LCFJw==}
+    engines: {node: '>= 16'}
 
   '@vercel/gatsby-plugin-vercel-analytics@1.0.11':
     resolution: {integrity: sha512-iTEA0vY6RBPuEzkwUTVzSHDATo1aF6bdLLspI68mQ/BTbi5UQEGjpjyzdKOVcSYApDtFU6M6vypZ1t4vIEnHvw==}
 
-  '@vercel/gatsby-plugin-vercel-builder@2.0.61':
-    resolution: {integrity: sha512-OchbRapri4fGCefvjOG9m0yP2JICvCwrrQ+jS3lumcvr6NimmdDu3yxnzFYlSZ06D8cqD3hXx7a+hJKY5zdk3Q==}
+  '@vercel/gatsby-plugin-vercel-builder@2.0.62':
+    resolution: {integrity: sha512-tXL8fY1JTzH/u90/FSdY7tih8RLWbtdX7vcQI2VZY001ae1kTfLHXNcO+eq/hPM20o/SpbuzYtNo9wHNoyP06g==}
 
   '@vercel/go@3.2.1':
     resolution: {integrity: sha512-ezjmuUvLigH9V4egEaX0SZ+phILx8lb+Zkp1iTqKI+yl/ibPAtVo5o+dLSRAXU9U01LBmaLu3O8Oxd/JpWYCOw==}
 
-  '@vercel/hydrogen@1.0.9':
-    resolution: {integrity: sha512-IPAVaALuGAzt2apvTtBs5tB+8zZRzn/yG3AGp8dFyCsw/v5YOuk0Q5s8Z3fayLvJbFpjrKtqRNDZzVJBBU3MrQ==}
+  '@vercel/hydrogen@1.0.10':
+    resolution: {integrity: sha512-CMuF1TaERm3M65vCR2qoN49KdoMnZ3tWemBb2lcULrq5ZZegkSN18v0iOzO7eM+lIYH6lN9giyrmBH08XWsrKg==}
 
-  '@vercel/next@4.4.0':
-    resolution: {integrity: sha512-oqeAY+f6qMeS3/zEUHeJqa47Sa4ULB33a1DuXcRgvACwewGFUApp2XYm+pgci3EU/19ij8c2EHIASp7B6Y+XVg==}
+  '@vercel/next@4.4.1':
+    resolution: {integrity: sha512-b7szq2venuPQsZhezV+LiiFQVMBrFoGSuikJSHjhc1jYSee33AB6dEryvZIcQcRYjjUy9h5jjfFV8EBplwinig==}
 
   '@vercel/nft@0.27.3':
     resolution: {integrity: sha512-oySTdDSzUAFDXpsSLk9Q943o+/Yu/+TCFxnehpFQEf/3khi2stMpTHPVNwFdvZq/Z4Ky93lE+MGHpXCRpMkSCA==}
@@ -6282,17 +6282,17 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  '@vercel/node@5.0.0':
-    resolution: {integrity: sha512-l917aGyDkaOhqfDrYSqy9sjd+Pv6K8mCsVyxzGv4kwmbhERpi8rS6aBmfIf4fDevEPYiOasftPHASbdnyHOe/g==}
+  '@vercel/node@5.0.1':
+    resolution: {integrity: sha512-Udl2TGDdAMH2Od54ARJWyKwFFHy9z1GaS8B2T3UKH1V8gz32SAOe47x9PzP+hWKNOj5xjrdwPAtm3lE7bU6TcQ==}
 
-  '@vercel/python@4.5.1':
-    resolution: {integrity: sha512-nZX1oezs5E+Un5Pw21P7cEXV9WBohRSq8gDAqipu7KHFfdAQ7ubfBclRmDTGaHOiYvdLsJPiE599vsUfKKob/w==}
+  '@vercel/python@4.6.0':
+    resolution: {integrity: sha512-43bpxcas3d3ep+F5zdziva6gW1LBc71YGQiG/XmajGlDv4cCNO312Vf8BE5SYafb5ft6rwl69+WOoFwGkI26qA==}
 
-  '@vercel/redwood@2.1.10':
-    resolution: {integrity: sha512-JscXZGNuZY1IHq5CbGBHt7BvHEHh35ZIgorJ5RAEjvuqaox/EE4bA0oyI8y/5aWoZfMvJifS+UATKwI8HrP97w==}
+  '@vercel/redwood@2.1.11':
+    resolution: {integrity: sha512-fQyI/4Hvb8y0QfqwR0qz46Mhs0GL4JXSL78/jjotTLwMscrIJH8lCAqVYq7GGHtqdWcPpo3vUgEgbCwkmFZYmg==}
 
-  '@vercel/remix-builder@4.0.0':
-    resolution: {integrity: sha512-82O08BggyQgRR86jbkx6pTWaTVhlMA9vU0nvql8af76r3k0iBrkoe6tJiEnwut2YaePUNWr2Kr+mdy6OrJHmVw==}
+  '@vercel/remix-builder@5.0.1':
+    resolution: {integrity: sha512-fHJ5aa+jtA8DyVneJyOq4dB0WXBbJuqEqrCcKqzaDk9O+g7PPBbuG2XGwe1j3HR6WfTMGODoCXfOv6zp4b0ltg==}
 
   '@vercel/routing-utils@5.0.0':
     resolution: {integrity: sha512-llvozDbkGDSelbgigAt9IwCQS8boP4rNHfy3rpJf0DqSn6UDlkFX270NwIQruyXN9KHktHC9qOof6Ik2+bT88A==}
@@ -6300,8 +6300,8 @@ packages:
   '@vercel/ruby@2.1.0':
     resolution: {integrity: sha512-UZYwlSEEfVnfzTmgkD+kxex9/gkZGt7unOWNyWFN7V/ZnZSsGBUgv6hXLnwejdRi3EztgRQEBd1kUKlXdIeC0Q==}
 
-  '@vercel/static-build@2.5.39':
-    resolution: {integrity: sha512-gnurv1NWzyE5STFF0BlgWXzIMODv9HeVezRwiEyhndjeugwkzp3xyoRXXR178LZ87lZ7gcgOp6HWEpNmaHDSyw==}
+  '@vercel/static-build@2.5.40':
+    resolution: {integrity: sha512-jaL2dQ/ED3wE2hK8AwvwyKLBbxrPKAxoz/lEaxzcj4t9tz/CfjJxuaDE2MwJvdigYFrIHwQqffu4zQTC+oMLsA==}
 
   '@vercel/static-config@3.0.0':
     resolution: {integrity: sha512-2qtvcBJ1bGY0dYGYh3iM7yGKkk971FujLEDXzuW5wcZsPr1GSEjO/w2iSr3qve6nDDtBImsGoDEnus5FI4+fIw==}
@@ -8794,8 +8794,8 @@ packages:
     resolution: {integrity: sha512-5uYhsJH8VJBTv7oslg4BznJYhDoRI6waYCxMmCdnTrcCrHA/fCFKoTFz2JKKE0HdDFUF7/oQuhzumXJK7paBRQ==}
     engines: {node: '>= 0.4'}
 
-  get-intrinsic@1.2.6:
-    resolution: {integrity: sha512-qxsEs+9A+u85HhllWJJFicJfPDhRmjzoYdl64aMWW9yRIJmSyxdn8IEkuIM530/7T+lv0TIHd8L6Q/ra0tEoeA==}
+  get-intrinsic@1.2.7:
+    resolution: {integrity: sha512-VW6Pxhsrk0KAOqs3WEd0klDiF/+V7gQOpAvY1jVU/LHmaD/kQO4523aiJuikX/QAKYiW6x8Jh+RJej1almdtCA==}
     engines: {node: '>= 0.4'}
 
   get-nonce@1.0.1:
@@ -8823,6 +8823,10 @@ packages:
   get-port@7.1.0:
     resolution: {integrity: sha512-QB9NKEeDg3xxVwCCwJQ9+xycaz6pBB6iQ76wiWMl1927n0Kir6alPiP+yuiICLLU4jpMe08dXfpebuQppFA2zw==}
     engines: {node: '>=16'}
+
+  get-proto@1.0.1:
+    resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
+    engines: {node: '>= 0.4'}
 
   get-stream@5.2.0:
     resolution: {integrity: sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==}
@@ -8953,8 +8957,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@16.2.9:
-    resolution: {integrity: sha512-WlBDENS5IsffAY+ROmKId2Exgyo92oD+c26xodHftmU+5FPx/DqdL0T30RROewtE8Us5EN5qvVuHUieVuK7t8Q==}
+  happy-dom@16.3.0:
+    resolution: {integrity: sha512-Q71RaIhyS21vhW17Tpa5W36yqQXIlE1TZ0A0Gguts8PShUSQE/7fBgxYGxgm3+5y0gF6afdlAVHLQqgrIcfRzg==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.1.0:
@@ -11873,8 +11877,8 @@ packages:
     resolution: {integrity: sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA==}
     hasBin: true
 
-  regexp.prototype.flags@1.5.3:
-    resolution: {integrity: sha512-vqlC04+RQoFalODCbCumG2xIOvapzVMHwsyIGM/SIE8fRhFFsXeH8/QQ+s0T0kDAhKc4k30s73/0ydkHQz6HlQ==}
+  regexp.prototype.flags@1.5.4:
+    resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
 
   regexpu-core@6.2.0:
@@ -13469,8 +13473,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vercel@39.2.2:
-    resolution: {integrity: sha512-FTt0r++eORfQ3TLshYFdq5WiC7xVfbKMLE5YsBzex41yeDSCo5a5KXD6nDyMm+IIlu++XsHEVJRnfOA/JjL/mw==}
+  vercel@39.2.4:
+    resolution: {integrity: sha512-VWmnSH2qgrugOvc6vRm0F/trUjAX1/Ew/5bQY+JzVC6nvRPmOot2zjTs7c38Ye8pr1RdMMqxKY1+L5FzWI8Tdw==}
     engines: {node: '>= 16'}
     hasBin: true
 
@@ -15701,11 +15705,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@codspeed/vitest-plugin@4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
+  '@codspeed/vitest-plugin@4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
     dependencies:
       '@codspeed/core': 4.0.0
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
-      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - debug
 
@@ -16612,7 +16616,7 @@ snapshots:
       detect-libc: 2.0.3
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.6.9(encoding@0.1.13)
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -18671,10 +18675,10 @@ snapshots:
       - supports-color
       - vite
 
-  '@shopware-docs/vitest@1.3.0-alpha.16(@playwright/test@1.49.1)(@unocss/webpack@0.62.4(rollup@4.29.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.47)(rollup@4.29.1)(slugify@1.6.6)(vite-plugin-inspect@0.8.8(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
+  '@shopware-docs/vitest@1.3.0-alpha.16(@playwright/test@1.49.1)(@unocss/webpack@0.62.4(rollup@4.29.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.47)(rollup@4.29.1)(slugify@1.6.6)(vite-plugin-inspect@0.8.8(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)))(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
     dependencies:
       '@playwright/test': 1.49.1
-      '@vitest/coverage-c8': 0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+      '@vitest/coverage-c8': 0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       axios: 1.7.4
       get-port: 7.1.0
       playwright-chromium: 1.46.1
@@ -18683,7 +18687,7 @@ snapshots:
       vite-plugin-inspect: 0.8.8(rollup@4.29.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.4)(change-case@5.4.4)(less@4.2.0)(postcss@8.4.47)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.37.0)(typescript@5.6.3)
       vitepress-shopware-docs: link:../..
-      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - '@unocss/webpack'
       - debug
@@ -19048,7 +19052,7 @@ snapshots:
 
   '@stoplight/types@14.1.0':
     dependencies:
-      '@types/json-schema': 7.0.15
+      '@types/json-schema': 7.0.11
       utility-types: 3.10.0
 
   '@stoplight/types@14.1.1':
@@ -21053,11 +21057,11 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/build-utils@8.8.0': {}
+  '@vercel/build-utils@9.0.0': {}
 
   '@vercel/error-utils@2.0.3': {}
 
-  '@vercel/fun@1.1.0(encoding@0.1.13)':
+  '@vercel/fun@1.1.2(encoding@0.1.13)':
     dependencies:
       '@tootallnate/once': 2.0.0
       async-listen: 1.2.0
@@ -21087,10 +21091,10 @@ snapshots:
     dependencies:
       web-vitals: 0.2.4
 
-  '@vercel/gatsby-plugin-vercel-builder@2.0.61':
+  '@vercel/gatsby-plugin-vercel-builder@2.0.62':
     dependencies:
       '@sinclair/typebox': 0.25.24
-      '@vercel/build-utils': 8.8.0
+      '@vercel/build-utils': 9.0.0
       '@vercel/routing-utils': 5.0.0
       esbuild: 0.14.47
       etag: 1.8.1
@@ -21098,12 +21102,12 @@ snapshots:
 
   '@vercel/go@3.2.1': {}
 
-  '@vercel/hydrogen@1.0.9':
+  '@vercel/hydrogen@1.0.10':
     dependencies:
       '@vercel/static-config': 3.0.0
       ts-morph: 12.0.0
 
-  '@vercel/next@4.4.0(encoding@0.1.13)':
+  '@vercel/next@4.4.1(encoding@0.1.13)':
     dependencies:
       '@vercel/nft': 0.27.3(encoding@0.1.13)
     transitivePeerDependencies:
@@ -21146,13 +21150,13 @@ snapshots:
       - encoding
       - supports-color
 
-  '@vercel/node@5.0.0(@swc/core@1.7.10)(encoding@0.1.13)':
+  '@vercel/node@5.0.1(@swc/core@1.7.10)(encoding@0.1.13)':
     dependencies:
       '@edge-runtime/node-utils': 2.3.0
       '@edge-runtime/primitives': 4.1.0
       '@edge-runtime/vm': 3.2.0
       '@types/node': 22.10.0
-      '@vercel/build-utils': 8.8.0
+      '@vercel/build-utils': 9.0.0
       '@vercel/error-utils': 2.0.3
       '@vercel/nft': 0.27.3(encoding@0.1.13)
       '@vercel/static-config': 3.0.0
@@ -21174,9 +21178,9 @@ snapshots:
       - encoding
       - supports-color
 
-  '@vercel/python@4.5.1': {}
+  '@vercel/python@4.6.0': {}
 
-  '@vercel/redwood@2.1.10(encoding@0.1.13)':
+  '@vercel/redwood@2.1.11(encoding@0.1.13)':
     dependencies:
       '@vercel/nft': 0.27.3(encoding@0.1.13)
       '@vercel/routing-utils': 5.0.0
@@ -21187,7 +21191,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@vercel/remix-builder@4.0.0(encoding@0.1.13)':
+  '@vercel/remix-builder@5.0.1(encoding@0.1.13)':
     dependencies:
       '@vercel/error-utils': 2.0.3
       '@vercel/nft': 0.27.3(encoding@0.1.13)
@@ -21205,10 +21209,10 @@ snapshots:
 
   '@vercel/ruby@2.1.0': {}
 
-  '@vercel/static-build@2.5.39':
+  '@vercel/static-build@2.5.40':
     dependencies:
       '@vercel/gatsby-plugin-vercel-analytics': 1.0.11
-      '@vercel/gatsby-plugin-vercel-builder': 2.0.61
+      '@vercel/gatsby-plugin-vercel-builder': 2.0.62
       '@vercel/static-config': 3.0.0
       ts-morph: 12.0.0
 
@@ -21254,16 +21258,16 @@ snapshots:
       vite: 6.0.3(@types/node@22.10.0)(jiti@2.4.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)(tsx@4.19.1)(yaml@2.4.5)
       vue: 3.5.13(typescript@5.6.3)
 
-  '@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
+  '@vitest/coverage-c8@0.33.0(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       c8: 7.14.0
       magic-string: 0.30.17
       picocolors: 1.0.1
       std-env: 3.8.0
-      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
-  '@vitest/coverage-v8@2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
+  '@vitest/coverage-v8@2.1.8(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -21277,7 +21281,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -22541,13 +22545,13 @@ snapshots:
     dependencies:
       call-bind-apply-helpers: 1.0.1
       es-define-property: 1.0.1
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       set-function-length: 1.2.2
 
   call-bound@1.0.3:
     dependencies:
       call-bind-apply-helpers: 1.0.1
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
 
   call-me-maybe@1.0.2: {}
 
@@ -23087,7 +23091,7 @@ snapshots:
       array-buffer-byte-length: 1.0.2
       call-bind: 1.0.8
       es-get-iterator: 1.1.3
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       is-arguments: 1.2.0
       is-array-buffer: 3.0.5
       is-date-object: 1.1.0
@@ -23097,7 +23101,7 @@ snapshots:
       object-is: 1.1.6
       object-keys: 1.1.1
       object.assign: 4.1.7
-      regexp.prototype.flags: 1.5.3
+      regexp.prototype.flags: 1.5.4
       side-channel: 1.1.0
       which-boxed-primitive: 1.1.1
       which-collection: 1.0.2
@@ -23399,7 +23403,7 @@ snapshots:
   es-get-iterator@1.1.3:
     dependencies:
       call-bind: 1.0.8
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       has-symbols: 1.1.0
       is-arguments: 1.2.0
       is-map: 2.0.3
@@ -24219,14 +24223,14 @@ snapshots:
       has-symbols: 1.0.3
       hasown: 2.0.2
 
-  get-intrinsic@1.2.6:
+  get-intrinsic@1.2.7:
     dependencies:
       call-bind-apply-helpers: 1.0.1
-      dunder-proto: 1.0.1
       es-define-property: 1.0.1
       es-errors: 1.3.0
       es-object-atoms: 1.0.0
       function-bind: 1.1.2
+      get-proto: 1.0.1
       gopd: 1.2.0
       has-symbols: 1.1.0
       hasown: 2.0.2
@@ -24245,6 +24249,11 @@ snapshots:
   get-port@5.1.1: {}
 
   get-port@7.1.0: {}
+
+  get-proto@1.0.1:
+    dependencies:
+      dunder-proto: 1.0.1
+      es-object-atoms: 1.0.0
 
   get-stream@5.2.0:
     dependencies:
@@ -24418,7 +24427,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@16.2.9:
+  happy-dom@16.3.0:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -25000,7 +25009,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.8
       call-bound: 1.0.3
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
 
   is-arrayish@0.2.1: {}
 
@@ -25189,7 +25198,7 @@ snapshots:
   is-weakset@2.0.4:
     dependencies:
       call-bound: 1.0.3
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
 
   is-what@3.14.1: {}
 
@@ -28161,11 +28170,13 @@ snapshots:
 
   regexp-tree@0.1.27: {}
 
-  regexp.prototype.flags@1.5.3:
+  regexp.prototype.flags@1.5.4:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
       es-errors: 1.3.0
+      get-proto: 1.0.1
+      gopd: 1.2.0
       set-function-name: 2.0.2
 
   regexpu-core@6.2.0:
@@ -28740,14 +28751,14 @@ snapshots:
     dependencies:
       call-bound: 1.0.3
       es-errors: 1.3.0
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       object-inspect: 1.13.3
 
   side-channel-weakmap@1.0.2:
     dependencies:
       call-bound: 1.0.3
       es-errors: 1.3.0
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       object-inspect: 1.13.3
       side-channel-map: 1.0.1
 
@@ -30143,19 +30154,19 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vercel@39.2.2(@swc/core@1.7.10)(encoding@0.1.13):
+  vercel@39.2.4(@swc/core@1.7.10)(encoding@0.1.13):
     dependencies:
-      '@vercel/build-utils': 8.8.0
-      '@vercel/fun': 1.1.0(encoding@0.1.13)
+      '@vercel/build-utils': 9.0.0
+      '@vercel/fun': 1.1.2(encoding@0.1.13)
       '@vercel/go': 3.2.1
-      '@vercel/hydrogen': 1.0.9
-      '@vercel/next': 4.4.0(encoding@0.1.13)
-      '@vercel/node': 5.0.0(@swc/core@1.7.10)(encoding@0.1.13)
-      '@vercel/python': 4.5.1
-      '@vercel/redwood': 2.1.10(encoding@0.1.13)
-      '@vercel/remix-builder': 4.0.0(encoding@0.1.13)
+      '@vercel/hydrogen': 1.0.10
+      '@vercel/next': 4.4.1(encoding@0.1.13)
+      '@vercel/node': 5.0.1(@swc/core@1.7.10)(encoding@0.1.13)
+      '@vercel/python': 4.6.0
+      '@vercel/redwood': 2.1.11(encoding@0.1.13)
+      '@vercel/remix-builder': 5.0.1(encoding@0.1.13)
       '@vercel/ruby': 2.1.0
-      '@vercel/static-build': 2.5.39
+      '@vercel/static-build': 2.5.40
       chokidar: 4.0.0
     transitivePeerDependencies:
       - '@swc/core'
@@ -30227,7 +30238,7 @@ snapshots:
     dependencies:
       cac: 6.7.14
       debug: 4.4.0(supports-color@9.4.0)
-      es-module-lexer: 1.5.4
+      es-module-lexer: 1.6.0
       pathe: 1.1.2
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
@@ -30558,7 +30569,7 @@ snapshots:
       - typescript
       - universal-cookie
 
-  vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.2.9)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0):
+  vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.3.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
@@ -30583,7 +30594,7 @@ snapshots:
     optionalDependencies:
       '@edge-runtime/vm': 3.2.0
       '@types/node': 22.10.0
-      happy-dom: 16.2.9
+      happy-dom: 16.3.0
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less
