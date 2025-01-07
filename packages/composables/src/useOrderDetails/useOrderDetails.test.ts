@@ -131,4 +131,94 @@ describe("useOrderDetails", () => {
     await vm.loadOrderDetails();
     expect(vm.paymentChangeable).toEqual(true);
   });
+
+  it("should return current payment method", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              transactions: [
+                {
+                  paymentMethod: {
+                    shortName: "invoice_payment",
+                  },
+                },
+                {
+                  paymentMethod: {
+                    shortName: "cash_payment",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.paymentMethod?.shortName).toEqual("cash_payment");
+  });
+
+  it("should return current delivery method", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              deliveries: [
+                {
+                  shippingMethod: {
+                    name: "test",
+                  },
+                },
+                {
+                  shippingMethod: {
+                    name: "Standard",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.shippingMethod?.name).toEqual("Standard");
+  });
+
+  it("should return undefined if payment method does not exists", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              transactions: [],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.paymentMethod?.shortName).toEqual(undefined);
+  });
+
+  it("should return undefined if shipping method does not exists", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              deliveries: [],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.shippingMethod?.name).toEqual(undefined);
+  });
 });
