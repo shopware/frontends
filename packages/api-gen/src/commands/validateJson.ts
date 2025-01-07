@@ -89,7 +89,7 @@ export async function validateJson(args: {
 
   const errors: string[] = [];
   const jsonOverrides = await loadJsonOverrides({
-    path: configJSON.patches,
+    paths: configJSON.patches,
     apiType: args.apiType,
   });
 

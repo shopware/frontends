@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import json5 from "json5";
 import { ofetch } from "ofetch";
 import c from "picocolors";
-import type { OverridesSchema } from "./patchJsonSchema";
+import { type OverridesSchema, extendedDefu } from "./patchJsonSchema";
 import type { validationRules } from "./validation-rules";
 
 export type ApiGenConfig = {
@@ -44,22 +44,7 @@ function isURL(str: string) {
   return str.startsWith("http");
 }
 
-export async function loadJsonOverrides({
-  path,
-  apiType,
-}: {
-  path?: string;
-  apiType: string;
-}): Promise<OverridesSchema | undefined> {
-  const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
-
-  const fallbackPath = existsSync(localPath)
-    ? localPath
-    : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
-
-  const pathToResolve = path || fallbackPath;
-  console.log("Loading overrides from:", pathToResolve);
-
+async function resolveSinglePath(pathToResolve: string) {
   try {
     if (isURL(pathToResolve)) {
       const response = await ofetch(pathToResolve, {
@@ -72,15 +57,62 @@ export async function loadJsonOverrides({
     const jsonOverridesFile = await readFileSync(pathToResolve, {
       encoding: "utf-8",
     });
-    const content = json5.parse(jsonOverridesFile);
-    return content;
+    return json5.parse(jsonOverridesFile);
   } catch (error) {
     console.warn(
       c.yellow(
-        `Problem with resolving overrides "patches" at address ${pathToResolve}. Check whether you configuret it properly in your ${API_GEN_CONFIG_FILENAME}\n`,
+        `Problem with resolving overrides "patches" at address ${pathToResolve}. Check whether you configured it properly in your ${API_GEN_CONFIG_FILENAME}\n`,
       ),
       error,
     );
+    return {};
+  }
+}
+
+export async function loadJsonOverrides({
+  paths,
+  apiType,
+}: {
+  paths?: string | string[];
+  apiType: string;
+}): Promise<OverridesSchema | undefined> {
+  const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
+
+  const fallbackPath = existsSync(localPath)
+    ? localPath
+    : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
+
+  const patchesToResolve: string[] = Array.isArray(paths)
+    ? paths
+    : paths
+      ? [paths]
+      : [];
+
+  if (!patchesToResolve?.length) {
+    patchesToResolve.push(fallbackPath);
+  }
+
+  console.log("Loading overrides from:", patchesToResolve);
+
+  try {
+    const results = await Promise.allSettled(
+      patchesToResolve.map(resolveSinglePath),
+    );
+    // merge results from correctly settled promises
+    return extendedDefu(
+      {},
+      ...results
+        .filter((result) => result.status === "fulfilled")
+        .map((result) => result.value),
+    );
+  } catch (error) {
+    console.warn(
+      c.yellow(
+        `Problem with resolving overrides "patches". Check whether you configured it properly in your ${API_GEN_CONFIG_FILENAME}\n`,
+      ),
+      error,
+    );
+    return {};
   }
 }
 
