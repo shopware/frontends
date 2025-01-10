@@ -44,8 +44,16 @@ export function useCmsElementImage(
 ): UseCmsElementImage {
   const { getConfigValue } = useCmsElementConfig(element);
 
+  const displayMode = computed(
+    () => getConfigValue("displayMode") || "initial",
+  );
+
+  const minHeight = computed(() =>
+    displayMode.value === "cover" ? getConfigValue("minHeight") : undefined,
+  );
+
   const containerStyle: ComputedRef<CSSProperties> = computed(() => ({
-    minHeight: getConfigValue("minHeight"),
+    ...(minHeight.value !== undefined && { minHeight: minHeight.value }),
   }));
 
   const anchorAttrs = computed(() => ({
@@ -78,10 +86,6 @@ export function useCmsElementImage(
     srcset: getSrcSetForMedia(element.data?.media),
   }));
 
-  const displayMode = computed(
-    () => getConfigValue("displayMode") || "initial",
-  );
-
   const isVideoElement = computed(() => {
     return !!element.data?.media?.mimeType?.includes("video");
   });
@@ -91,12 +95,12 @@ export function useCmsElementImage(
   });
 
   return {
+    displayMode,
     containerStyle,
     anchorAttrs,
     imageAttrs,
     imageContainerAttrs,
     imageLink,
-    displayMode,
     isVideoElement,
     mimeType,
   };

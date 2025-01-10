@@ -5,9 +5,12 @@ import { useCmsElementImage } from "./useCmsElementImage";
 describe("useCmsElementImage", () => {
   describe("computed", () => {
     describe("containerStyle", () => {
-      it("should return minHeight css property", () => {
+      it("should return minHeight css property when displayMode is cover", () => {
         const { containerStyle } = useCmsElementImage({
           config: {
+            displayMode: {
+              value: "cover",
+            },
             minHeight: {
               value: "100px",
             },
@@ -16,6 +19,22 @@ describe("useCmsElementImage", () => {
 
         expect(containerStyle.value).toEqual({ minHeight: "100px" });
       });
+
+      it("should not return minHeight css property when displayMode is not cover", () => {
+        const { containerStyle } = useCmsElementImage({
+          config: {
+            displayMode: {
+              value: "contain",
+            },
+            minHeight: {
+              value: "100px",
+            },
+          },
+        } as CmsElementImage);
+
+        expect(containerStyle.value).toEqual({});
+      });
+
       it("should return anchorAttrs", () => {
         const { anchorAttrs } = useCmsElementImage({
           config: {
