@@ -4,7 +4,7 @@ defineOptions({
 });
 definePageMeta({ layout: "checkout" });
 
-const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
+const { cartItems, subtotal, totalPrice, shippingCosts } = useCart();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const hasItems = computed(() => cartItems.value.length > 0);
@@ -44,15 +44,26 @@ const hasItems = computed(() => cartItems.value.length > 0);
           />
         </div>
 
-        <div
-          class="flex py-4 border-b justify-between text-sm text-secondary-500"
-        >
-          <p>{{ $t("cart.shippingEstimate") }}</p>
-          <SharedPrice
-            :value="shippingTotal"
-            class="text-secondary-900 font-medium"
-            data-testid="cart-subtotal"
-          />
+        <div class="py-4 text-sm text-secondary-500 border-b">
+          <div
+            class="py-1 flex justify-between"
+            v-for="shippingCost in shippingCosts"
+            :key="shippingCost.shippingMethod?.id ?? '33'"
+          >
+            <p>{{ $t("cart.shippingCosts") }}</p>
+            <div
+              v-if="shippingCost.shippingCosts?.totalPrice"
+              class="flex text-secondary-900"
+            >
+              <span v-if="shippingCost.shippingCosts.totalPrice > 0">+</span>
+
+              <SharedPrice
+                :value="shippingCost.shippingCosts.totalPrice"
+                class="text-secondary-900 font-medium"
+                data-testid="cart-shipping-cost"
+              />
+            </div>
+          </div>
         </div>
 
         <div
