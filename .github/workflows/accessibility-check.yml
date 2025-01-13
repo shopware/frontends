@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: "30 09 * * *"
 jobs:
-  run-stackblitz-templates-tests:
+  run-accessibility-check:
     runs-on: macos-14
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -37,4 +37,4 @@ jobs:
       - name: Run tests
         run: |
           cd apps/e2e-tests
-          npx playwright test --grep @accessibility --project=chromium
+          BASE_E2E_URL=https://frontends-demo.vercel.app/ npx playwright test --grep @accessibility --project=chromium
