@@ -4,7 +4,7 @@ run-name: Playwright accessibility tests 🚀
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 23 * * *"
+    - cron: "30 09 * * *"
 jobs:
   run-stackblitz-templates-tests:
     runs-on: macos-14
@@ -18,13 +18,13 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - run: corepack enable
       - run: pnpm --version
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
