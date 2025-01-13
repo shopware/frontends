@@ -48,15 +48,13 @@ const hasItems = computed(() => cartItems.value.length > 0);
           <div
             class="py-1 flex justify-between"
             v-for="shippingCost in shippingCosts"
-            :key="shippingCost.shippingMethod?.id ?? '33'"
+            :key="shippingCost.shippingMethod?.id ?? Math.random() * 100"
           >
             <p>{{ $t("cart.shippingCosts") }}</p>
             <div
               v-if="shippingCost.shippingCosts?.totalPrice"
               class="flex text-secondary-900"
             >
-              <span v-if="shippingCost.shippingCosts.totalPrice > 0">+</span>
-
               <SharedPrice
                 :value="shippingCost.shippingCosts.totalPrice"
                 class="text-secondary-900 font-medium"
