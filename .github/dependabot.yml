@@ -16,13 +16,10 @@ updates:
       - dependency-name: "vitepress-shopware-docs"
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
       - dependency-name: "@nuxtjs/i18n"
+      # ignoring all Astro updates
+      - dependency-name: "@astrojs/*"
+      - dependency-name: "astro"
     groups:
-      astro:
-        update-types:
-          - "major"
-        patterns:
-          - "@astrojs/*"
-          - "astro"
       changelog:
         patterns:
           - "@changesets/*"
