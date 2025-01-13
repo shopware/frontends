@@ -38,7 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@vitest/coverage-v8": "2.1.8",
-    "happy-dom": "15.11.7",
+    "happy-dom": "16.3.0",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "2.1.8"

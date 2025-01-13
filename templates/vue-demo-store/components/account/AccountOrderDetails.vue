@@ -13,7 +13,6 @@ const { getErrorsCodes } = useCartNotification();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const {
-  loadOrderDetails,
   order,
   hasDocuments,
   documents,
@@ -25,9 +24,6 @@ const {
 } = await useOrderDetails(props.orderId);
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
-onMounted(() => {
-  loadOrderDetails();
-});
 
 const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],

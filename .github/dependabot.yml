@@ -18,6 +18,8 @@ updates:
       - dependency-name: "@nuxtjs/i18n"
     groups:
       astro:
+        update-types:
+          - "major"
         patterns:
           - "@astrojs/*"
           - "astro"

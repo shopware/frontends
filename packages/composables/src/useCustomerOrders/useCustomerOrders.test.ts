@@ -34,4 +34,14 @@ describe("useCustomerOrders", () => {
       }),
     );
   });
+
+  it("should set current page after loading orders", async () => {
+    const { vm, injections } = useSetup(useCustomerOrders);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { orders: { elements: [], page: 23 } },
+    });
+    await vm.loadOrders();
+
+    expect(vm.currentPage).toBe(23);
+  });
 });

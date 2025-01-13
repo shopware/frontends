@@ -48,6 +48,30 @@
       "order": "zamówienie",
       "orders": "Zamówienia"
     },
+    "orderDetails": {
+      "order": "Zamówienie",
+      "placedOn": "Złożone dnia {d}",
+      "shippingAddress": "Adres wysyłki",
+      "billingAddress": "Adres rozliczeniowy",
+      "orderSummary": "Podsumowanie zamówienia",
+      "paymentMethod": "Metoda płatności",
+      "shippingMethod": "Metoda wysyłki",
+      "subtotal": "Suma częściowa",
+      "shipping": "Wysyłka",
+      "total": "Całkowita kwota",
+      "takesUpTo": "Zajmuje do",
+      "change": "Zmień",
+      "changePaymentMethod": "Zmień metodę płatności",
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź",
+      "backToOrdersList": "Powrót do listy zamówień",
+      "itemsHeader": {
+        "item": "Przedmiot",
+        "quantity": "Ilość",
+        "price": "Cena",
+        "total": "Całkowita kwota"
+      }
+    },
     "personalData": {
       "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
       "label": "Dane osobowe"
