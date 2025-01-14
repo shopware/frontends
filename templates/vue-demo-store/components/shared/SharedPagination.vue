@@ -4,9 +4,7 @@ defineProps<{
   current: number;
 }>();
 
-defineEmits<{
-  (e: "changePage", page: number): void;
-}>();
+defineEmits<(e: "changePage", page: number) => void>();
 </script>
 <template>
   <nav

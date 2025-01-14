@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-import {
-  getCmsLayoutConfiguration,
-  getBackgroundImageUrl,
-} from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
+import {
+  getBackgroundImageUrl,
+  getCmsLayoutConfiguration,
+} from "@shopware-pwa/helpers-next";
 import { h } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];

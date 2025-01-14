@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { useB2bEmployeeManagement } from "./useB2bEmployeeManagement";
+import { describe, expect, it } from "vitest";
 import { useSetup } from "../_test";
+import { useB2bEmployeeManagement } from "./useB2bEmployeeManagement";
 
 describe("useB2bEmployeeManagement", () => {
   it("should trigger getEmployees api endpoint", async () => {

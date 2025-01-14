@@ -1,6 +1,6 @@
-import { PluginTranslation } from "./PluginTranslation";
-import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
-import { CustomFields } from "../../common/CustomField";
+import type { PaymentMethod } from "../../checkout/payment/PaymentMethod";
+import type { CustomFields } from "../../common/CustomField";
+import type { PluginTranslation } from "./PluginTranslation";
 
 /**
  * @public

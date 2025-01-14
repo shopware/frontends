@@ -1,9 +1,9 @@
-import c from "picocolors";
-import { readFileSync, existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import json5 from "json5";
-import type { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
+import c from "picocolors";
 import type { OverridesSchema } from "./patchJsonSchema";
+import type { validationRules } from "./validation-rules";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;

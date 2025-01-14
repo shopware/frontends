@@ -1,4 +1,4 @@
-import { useShopwareContext, useInternationalization } from "#imports";
+import { useInternationalization, useShopwareContext } from "#imports";
 import type { operations } from "#shopware";
 
 interface UseB2bEmployeeManagement {

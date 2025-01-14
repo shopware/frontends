@@ -5,11 +5,17 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit"
   },
   "dependencies": {
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "nuxt": "3.12.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3"
   }
 }

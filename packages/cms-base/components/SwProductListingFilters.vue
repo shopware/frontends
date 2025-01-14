@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { computed, provide, reactive, ref, useTemplateRef } from "vue";
-import type { ComputedRef, UnwrapNestedRefs } from "vue";
-import { defu } from "defu";
-import SwProductListingFilter from "./SwProductListingFilter.vue";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
 } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useCategoryListing } from "#imports";
 import { onClickOutside } from "@vueuse/core";
+import { defu } from "defu";
+import { computed, provide, reactive, ref, useTemplateRef } from "vue";
+import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
+import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{

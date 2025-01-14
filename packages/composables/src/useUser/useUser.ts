@@ -1,13 +1,13 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { syncRefs } from "@vueuse/core";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import {
-  useShopwareContext,
   useCart,
+  useContext,
   useInternationalization,
   useSessionContext,
-  useContext,
+  useShopwareContext,
 } from "#imports";
-import { syncRefs } from "@vueuse/core";
 import type { Schemas, operations } from "#shopware";
 
 export type UseUserReturn = {
@@ -176,12 +176,15 @@ export function useUser(): UseUserReturn {
   ): Promise<Schemas["Customer"]> {
     const { data } = await apiClient.invoke("register post /account/register", {
       body: {
-        ...params,
+        ...(params as operations["register post /account/register"]["body"]),
         storefrontUrl: getStorefrontUrl(),
       },
     });
-    _user.value = data;
-    if (_user.value?.active) await refreshSessionContext();
+    // Update the user data in the context if the user is active and not using double opt-in registration set in the Shopware Admin
+    if (data.active && !data.doubleOptInRegistration) {
+      _user.value = data;
+    }
+    await refreshSessionContext();
     return data;
   }
 

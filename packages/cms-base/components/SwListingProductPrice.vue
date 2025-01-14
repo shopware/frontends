@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import {
-  useProductPrice,
   useCmsTranslations,
+  useProductPrice,
 } from "@shopware-pwa/composables-next";
-import type { Schemas } from "#shopware";
-import SwSharedPrice from "./SwSharedPrice.vue";
-import { toRefs } from "vue";
 import { defu } from "defu";
+import { toRefs } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   product: Schemas["Product"];
@@ -24,6 +23,7 @@ let translations: Translations = {
   listing: {
     variantsFrom: "variants from",
     previously: "previously",
+    from: "from",
     to: "to",
   },
 };
@@ -74,7 +74,7 @@ const {
     >
       <template #beforePrice
         ><span v-if="displayFrom || displayFromVariants" class="text-sm">{{
-          translations.listing.to
+          translations.listing.from
         }}</span></template
       >
     </SwSharedPrice>

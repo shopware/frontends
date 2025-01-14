@@ -1,5 +1,9 @@
 import ts from "typescript";
-import { createVirtualFiles } from "./virtualFileCreator";
+import type {
+  GenerationMap,
+  MethodDefinition,
+  TransformedElements,
+} from "./generateFile";
 import {
   getDeepProperty,
   getDeepPropertyCode,
@@ -7,11 +11,7 @@ import {
   isNeverType,
   isOptional,
 } from "./utils";
-import type {
-  GenerationMap,
-  MethodDefinition,
-  TransformedElements,
-} from "./generateFile";
+import { createVirtualFiles } from "./virtualFileCreator";
 
 export function transformOpenApiTypes(schema: string): TransformedElements {
   const {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
 import { onMounted, ref } from "vue";
+import type { operations } from "#shopware";
+import { adminApiClient } from "./adminApiClient";
 import { apiClient } from "./apiClient";
+import AdminLoginForm from "./components/AdminLoginForm.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./components/LoginForm.vue";
-import AdminLoginForm from "./components/AdminLoginForm.vue";
-import { adminApiClient } from "./adminApiClient";
-import { ApiClientError } from "@shopware/api-client";
-import type { operations } from "#shopware";
 
 const productsResponse =
   ref<operations["readProduct post /product"]["response"]>();

@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
 
 const { required, minLength, sameAs } = customValidators();
-const emits = defineEmits<{
-  (e: "success"): void;
-}>();
+const emits = defineEmits<(e: "success") => void>();
 
 const { updatePassword } = useCustomerPassword();
 const { user, refreshUser } = useUser();

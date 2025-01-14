@@ -19,7 +19,7 @@ const { unitPrice } = useProductPrice(product);
 
 const promotionCode = ref("SWFRONTENDS");
 
-const proxyAddToCart = async (quantity: number = 1) => {
+const proxyAddToCart = async (quantity = 1) => {
   await addProduct({ id: product.value?.id, quantity });
   refreshCart();
 };
@@ -28,7 +28,7 @@ const changeItemQuantity = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   await changeProductQuantity({
     id: target.id,
-    quantity: parseInt(target.value),
+    quantity: Number.parseInt(target.value),
   });
   refreshCart();
 };

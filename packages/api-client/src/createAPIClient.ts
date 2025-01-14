@@ -1,9 +1,14 @@
-import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
-import type { operations } from "../api-types/storeApiTypes";
-import { ClientHeaders, createHeaders } from "./defaultHeaders";
-import { errorInterceptor } from "./errorInterceptor";
-import { createHooks } from "hookable";
 import defu from "defu";
+import { createHooks } from "hookable";
+import {
+  type FetchOptions,
+  type FetchResponse,
+  type ResponseType,
+  ofetch,
+} from "ofetch";
+import type { operations } from "../api-types/storeApiTypes";
+import { type ClientHeaders, createHeaders } from "./defaultHeaders";
+import { errorInterceptor } from "./errorInterceptor";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -53,6 +58,11 @@ export type InvokeParameters<CURRENT_OPERATION> =
     >;
   };
 
+export type GlobalFetchOptions = Pick<
+  FetchOptions<ResponseType>,
+  "retry" | "retryDelay" | "retryStatusCodes" | "timeout"
+>;
+
 export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
@@ -61,6 +71,7 @@ export type ApiClientHooks = {
 };
 
 export function createAPIClient<
+  // biome-ignore lint/suspicious/noExplicitAny: we allow for broader types to be used
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
 >(params: {
@@ -68,6 +79,7 @@ export function createAPIClient<
   accessToken?: string;
   contextToken?: string;
   defaultHeaders?: ClientHeaders;
+  fetchOptions?: GlobalFetchOptions;
 }) {
   // Create a hookable instance
   const apiClientHooks = createHooks<ApiClientHooks>();
@@ -81,14 +93,15 @@ export function createAPIClient<
     },
     (key, value) => {
       apiClientHooks.callHook("onDefaultHeaderChanged", key, value);
-      if (key === "sw-context-token") {
-        apiClientHooks.callHook("onContextChanged", value!);
+      if (key === "sw-context-token" && value) {
+        apiClientHooks.callHook("onContextChanged", value);
       }
     },
   );
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
+    ...params.fetchOptions,
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
@@ -162,14 +175,14 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
+    const mergedHeaders = defu(currentParams.headers, defaultHeaders);
 
     if (
       mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
       typeof window !== "undefined"
     ) {
       // multipart/form-data must not be set manually when it's used by the browser
-      delete mergedHeaders["Content-Type"];
+      mergedHeaders["Content-Type"] = undefined;
     }
 
     const resp = await apiFetch.raw<

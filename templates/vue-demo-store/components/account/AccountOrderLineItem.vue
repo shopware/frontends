@@ -11,9 +11,6 @@ const props = defineProps<{
 
 const LineItemType = computed(() => {
   switch (props.lineItem.type) {
-    default:
-    case "product":
-      return defineAsyncComponent(() => import("./order/LineItemProduct.vue"));
     case "promotion":
       return defineAsyncComponent(
         () => import("./order/LineItemPromotion.vue"),
@@ -22,6 +19,8 @@ const LineItemType = computed(() => {
       return defineAsyncComponent(() => import("./order/LineItemCredit.vue"));
     case "custom":
       return defineAsyncComponent(() => import("./order/LineItemCustom.vue"));
+    default:
+      return defineAsyncComponent(() => import("./order/LineItemProduct.vue"));
   }
 });
 </script>

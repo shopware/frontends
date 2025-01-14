@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
-import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
-import type { operations } from "#shopware";
+import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
+import type { operations } from "#shopware";
 
 const { required, minLength, requiredIf, email } = customValidators();
 
@@ -143,6 +143,10 @@ const state = reactive<operations["register post /account/register"]["body"]>({
   password: "",
   guest: false,
   billingAddress: {
+    customerId: "",
+    firstName: "",
+    id: "",
+    lastName: "",
     street: "",
     zipcode: "",
     city: "",
@@ -218,21 +222,21 @@ const placeOrder = async () => {
   }
   if (!beforeCreateOrderValidation()) return;
 
-  isLoading["placeOrder"] = true;
+  isLoading.placeOrder = true;
 
   try {
     const order = await createOrder();
-    await push("/checkout/success/" + order.id);
+    await push(`/checkout/success/${order.id}`);
     refreshCart();
   } catch (error) {
     if (error instanceof ApiClientError)
-      error.details.errors.forEach((error: ApiError) => {
-        if (error?.detail) {
-          pushError(error.detail);
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
         }
-      });
+      }
   } finally {
-    isLoading["placeOrder"] = false;
+    isLoading.placeOrder = false;
   }
 };
 
@@ -244,8 +248,8 @@ const placeOrderTriggered = ref(false);
 onMounted(async () => {
   await refreshSessionContext();
 
-  isLoading["shippingMethods"] = true;
-  isLoading["paymentMethods"] = true;
+  isLoading.shippingMethods = true;
+  isLoading.paymentMethods = true;
 
   await Promise.allSettled([
     loadCustomerAddresses(),
@@ -253,14 +257,14 @@ onMounted(async () => {
     getPaymentMethods(),
   ]);
 
-  isLoading["shippingMethods"] = false;
-  isLoading["paymentMethods"] = false;
+  isLoading.shippingMethods = false;
+  isLoading.paymentMethods = false;
 });
 
 const refreshAddresses = async () => {
-  isLoading["addresses"] = true;
+  isLoading.addresses = true;
   await loadCustomerAddresses();
-  isLoading["addresses"] = false;
+  isLoading.addresses = false;
 };
 
 const registerErrors = ref<ApiError[]>([]);
@@ -294,15 +298,15 @@ const loginModalController = useModal();
 const addAddressModalController = useModal();
 
 const refreshShippingMethod = async () => {
-  isLoading["shippingMethods"] = true;
+  isLoading.shippingMethods = true;
   await getShippingMethods({ forceReload: true });
-  isLoading["shippingMethods"] = false;
+  isLoading.shippingMethods = false;
 };
 
 const refreshPaymentMethod = async () => {
-  isLoading["paymentMethods"] = true;
+  isLoading.paymentMethods = true;
   await getPaymentMethods({ forceReload: true });
-  isLoading["paymentMethods"] = false;
+  isLoading.paymentMethods = false;
 };
 
 const shippingExists = computed(() => {

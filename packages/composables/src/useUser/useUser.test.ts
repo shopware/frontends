@@ -1,7 +1,8 @@
-import { useUser } from "./useUser";
+import type { operations } from "@shopware/api-client/api-types";
 import { describe, expect, it, vi } from "vitest";
-import { useSetup } from "../_test";
 import { ref } from "vue";
+import { useSetup } from "../_test";
+import { useUser } from "./useUser";
 
 const refreshCartSpy = vi.fn();
 vi.mock("../useCart/useCart.ts", async () => {
@@ -26,7 +27,10 @@ vi.mock("../useSessionContext/useSessionContext.ts", async () => {
   };
 });
 
-const REGISTRATION_DATA = {
+const REGISTRATION_DATA: Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+> = {
   acceptedDataProtection: true,
   accountType: "private",
   salutationId: "d5e543063dd642b48ef94b02d68e5785",
@@ -40,6 +44,10 @@ const REGISTRATION_DATA = {
     city: "sadasdas",
     countryId: "2de9ecc24e7b43d283302abba082b7ce",
     countryStateId: "",
+    customerId: "",
+    id: "",
+    firstName: "test",
+    lastName: "test",
   },
 };
 
@@ -98,6 +106,31 @@ describe("useUser", () => {
     expect(vm.isLoggedIn).toBe(true);
   });
 
+  it("register function with double opt-in option should not automatically log user in", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        active: true,
+        doubleOptInRegistration: true,
+        id: "test123",
+        guest: false,
+      },
+    });
+
+    await vm.register(REGISTRATION_DATA);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("register"),
+      expect.objectContaining({
+        body: {
+          ...REGISTRATION_DATA,
+          storefrontUrl: "http://localhost:3000", // This is the default value from the useInternationalization
+        },
+      }),
+    );
+    expect(vm.isLoggedIn).toBe(false);
+  });
+
   it("logout", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -128,7 +161,7 @@ describe("useUser", () => {
       },
     });
 
-    expect(async () => {
+    await expect(async () => {
       await vm.refreshUser();
     }).rejects.toThrowError();
   });

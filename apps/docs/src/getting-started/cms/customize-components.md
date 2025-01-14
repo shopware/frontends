@@ -27,7 +27,7 @@ In order to customize a component, you need to override it. The process is the s
 - Blocks
 - Elements
 
-To do so, you need to create a file with the same name as the component in the `components/cms` directory.
+To do so, you need to create a file with the same name as the component in the `components` directory or wherever according to the project's configuration.
 
 ```json
 demo-store/
@@ -37,6 +37,12 @@ demo-store/
 ```
 
 Now the CMS module will automatically resolve that file based on the name and you can start writing your component.
+
+## Internal components
+
+❗**Internal components are not a part of public API. Once overwritten you need to track the changes on your own.**
+
+There is also a possibility to override the internal components, shared between public blocks and elements, the ones starting with `Sw` prefix, like [SwSlider.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base/components/SwSlider.vue) or [SwProductCard.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base/components/SwProductCard.vue).
 
 ### Additional Example
 

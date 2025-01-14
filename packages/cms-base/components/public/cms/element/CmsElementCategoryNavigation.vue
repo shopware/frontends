@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { defu } from "defu";
-import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import { useCategory, useNavigation } from "#imports";
+import { defu } from "defu";
+import type { Ref } from "vue";
 import { onMounted, ref } from "vue";
+import { useCategory, useNavigation } from "#imports";
 import type { Schemas } from "#shopware";
 
 type Translations = {

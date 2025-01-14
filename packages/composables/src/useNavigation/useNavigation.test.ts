@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { useNavigation } from "./useNavigation";
-import Menu from "../mocks/Menu";
+import { describe, expect, it, vi } from "vitest";
 import { useSetup } from "../_test";
+import Menu from "../mocks/Menu";
+import { useNavigation } from "./useNavigation";
 
 describe("useNavigation", () => {
   it("should set the menu", async () => {
@@ -21,6 +21,7 @@ describe("useNavigation", () => {
 
   it("menu is empty because of the error", async () => {
     const { vm, injections } = useSetup(useNavigation);
+    vi.spyOn(console, "error").mockImplementation(() => {});
 
     injections.apiClient.invoke.mockRejectedValue(null);
 
@@ -28,6 +29,10 @@ describe("useNavigation", () => {
       depth: 3,
     });
     expect(vm.navigationElements?.length).toBe(0);
+    expect(console.error).toHaveBeenCalledWith(
+      "[useNavigation][loadNavigationElements]",
+      null,
+    );
   });
 
   it("should set the menu - empty return", async () => {
@@ -42,5 +47,22 @@ describe("useNavigation", () => {
       expect.anything(),
     );
     expect(vm.navigationElements).toStrictEqual([]);
+  });
+
+  it("should pass criteria to the api call", async () => {
+    const { vm, injections } = useSetup(useNavigation);
+    injections.apiClient.invoke.mockResolvedValue({ data: undefined });
+    vi.spyOn(injections.apiClient, "invoke").mockImplementation(() => {});
+
+    await vm.loadNavigationElements({
+      depth: 2,
+      includes: { category: ["name"] },
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readNavigation"),
+      expect.objectContaining({
+        body: { depth: 2, includes: { category: ["name"] } },
+      }),
+    );
   });
 });

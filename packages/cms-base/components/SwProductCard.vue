@@ -1,29 +1,28 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import {
   buildUrlPrefix,
+  getProductFromPrice,
   getProductName,
   getProductRoute,
-  getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import { toRefs, computed, ref, useTemplateRef } from "vue";
+import { getCmsTranslate } from "@shopware-pwa/helpers-next";
+import { ApiClientError } from "@shopware/api-client";
+import { useElementSize } from "@vueuse/core";
 import { defu } from "defu";
-import SwListingProductPrice from "./SwListingProductPrice.vue";
+import { computed, ref, toRefs, useTemplateRef } from "vue";
+import { RouterLink } from "vue-router";
 import {
   useAddToCart,
+  useCartErrorParamsResolver,
+  useCartNotification,
   useNotifications,
   useProductWishlist,
   useUrlResolver,
-  useCartNotification,
-  useCartErrorParamsResolver,
 } from "#imports";
-import { useElementSize } from "@vueuse/core";
 import type { Schemas } from "#shopware";
-import { ApiClientError } from "@shopware/api-client";
-import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 
 const { pushSuccess, pushError } = useNotifications();
 const { getErrorsCodes } = useCartNotification();

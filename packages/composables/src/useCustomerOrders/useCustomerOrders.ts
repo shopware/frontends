@@ -1,5 +1,5 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
@@ -64,6 +64,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     });
     orders.value = fetchedOrders.data.orders.elements;
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
+    currentPaginationPage.value = fetchedOrders.data.orders.page ?? 1;
   };
 
   const changeCurrentPage = async (pageNumber: number) => {

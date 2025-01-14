@@ -1,6 +1,6 @@
-import { StateMachineState } from "./StateMachineState";
-import { StateMachine } from "./StateMachine";
-import { Customer } from "../../checkout/customer/Customer";
+import type { Customer } from "../../checkout/customer/Customer";
+import type { StateMachine } from "./StateMachine";
+import type { StateMachineState } from "./StateMachineState";
 
 /**
  * @public

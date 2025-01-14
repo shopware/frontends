@@ -1,5 +1,5 @@
-import { TaxRule } from "../../../system/tax/TaxRule";
-import { CalculatedPrice } from "./CalculatedPrice";
+import type { TaxRule } from "../../../system/tax/TaxRule";
+import type { CalculatedPrice } from "./CalculatedPrice";
 
 export type PriceDefinitionInterface = {
   apiAlias: "cart_price_quantity";

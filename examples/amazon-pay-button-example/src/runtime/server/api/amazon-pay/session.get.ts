@@ -1,8 +1,8 @@
 import fs from "node:fs";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import * as path from "node:path";
-import { useRuntimeConfig } from "#imports";
+import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { defineEventHandler, getQuery } from "h3";
+import { useRuntimeConfig } from "#imports";
 
 export default defineEventHandler((event) => {
   const query = getQuery(event);
@@ -25,9 +25,7 @@ export default defineEventHandler((event) => {
   );
 
   return response
-    .then(function (result) {
-      return result.data;
-    })
+    .then((result) => result.data)
     .catch((error) => {
       return { error };
     });

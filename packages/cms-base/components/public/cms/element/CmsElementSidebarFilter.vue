@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { CmsElementSidebarFilter } from "@shopware-pwa/composables-next";
-import SwProductListingFilters from "../../../SwProductListingFilters.vue";
 
 defineProps<{
   content: CmsElementSidebarFilter;

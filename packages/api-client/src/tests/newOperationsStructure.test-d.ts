@@ -1,4 +1,4 @@
-import { describe, it, assertType, expectTypeOf } from "vitest";
+import { assertType, describe, expectTypeOf, it } from "vitest";
 import { createAPIClient } from "../createAPIClient";
 
 type operations = {

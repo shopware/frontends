@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { useSessionContext } from "./useSessionContext";
-import { useSetup } from "../_test";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useSessionContext } from "./useSessionContext";
 
 const consoleErrorSpy = vi.spyOn(console, "error");
 consoleErrorSpy.mockImplementation(() => {});
@@ -85,7 +85,7 @@ describe("useSessionContext", () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
 
-    expect(vm.setShippingMethod({ id: undefined })).rejects.toThrowError(
+    await expect(vm.setShippingMethod({ id: undefined })).rejects.toThrowError(
       "You need to provide shipping method id in order to set shipping method.",
     );
   });
@@ -108,7 +108,7 @@ describe("useSessionContext", () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
 
-    expect(vm.setPaymentMethod({ id: "" })).rejects.toThrowError(
+    await expect(vm.setPaymentMethod({ id: "" })).rejects.toThrowError(
       "You need to provide payment method id in order to set payment method.",
     );
   });
@@ -151,7 +151,7 @@ describe("useSessionContext", () => {
   it("setActiveShippingAddress - error", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    expect(vm.setActiveShippingAddress({ id: "" })).rejects.toThrowError(
+    await expect(vm.setActiveShippingAddress({ id: "" })).rejects.toThrowError(
       "You need to provide address id in order to set the address.",
     );
   });
@@ -173,7 +173,7 @@ describe("useSessionContext", () => {
   it("setActiveBillingAddress - error", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    expect(vm.setActiveBillingAddress({ id: "" })).rejects.toThrowError(
+    await expect(vm.setActiveBillingAddress({ id: "" })).rejects.toThrowError(
       "You need to provide address id in order to set the address.",
     );
   });

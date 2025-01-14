@@ -1,6 +1,6 @@
-import { SalesChannel } from "./SalesChannel";
-import { SalesChannelTypeTranslation } from "./SalesChannelTypeTranslation";
-import { CustomFields } from "../../common/CustomField";
+import type { CustomFields } from "../../common/CustomField";
+import type { SalesChannel } from "./SalesChannel";
+import type { SalesChannelTypeTranslation } from "./SalesChannelTypeTranslation";
 
 /**
  * @public

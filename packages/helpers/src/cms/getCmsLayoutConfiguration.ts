@@ -111,9 +111,6 @@ export function getCmsLayoutConfiguration<
 
   result.cssClasses = cssClasses;
 
-  if (content.backgroundMedia) {
-    result.layoutStyles.backgroundImage = `url("${content.backgroundMedia.url}")`;
-  }
   if (content.backgroundColor) {
     result.layoutStyles.backgroundColor = content.backgroundColor;
   }

@@ -1,12 +1,12 @@
-import {
-  LtRangeFilter,
+import type {
   GtRangeFilter,
-  LteRangeFilter,
   GteRangeFilter,
   LtGtRangeFilter,
   LtGteRangeFilter,
+  LtRangeFilter,
   LteGtRangeFilter,
   LteGteRangeFilter,
+  LteRangeFilter,
 } from "./RangeFilters";
 
 /**

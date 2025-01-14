@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { downloadFile } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   documents: Schemas["Document"][];

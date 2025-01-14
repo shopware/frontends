@@ -1,6 +1,6 @@
-import { CustomFields } from "../../common/CustomField";
-import { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomain";
-import { Snippet } from "./Snippet";
+import type { CustomFields } from "../../common/CustomField";
+import type { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomain";
+import type { Snippet } from "./Snippet";
 
 /**
  * @public

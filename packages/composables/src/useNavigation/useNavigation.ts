@@ -1,7 +1,7 @@
-import { computed, ref, inject, provide } from "vue";
+import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 /**
  *
@@ -15,9 +15,9 @@ export type UseNavigationReturn = {
   /**
    * Load navigation elements
    */
-  loadNavigationElements(params: {
-    depth: number;
-  }): Promise<Schemas["NavigationRouteResponse"]>;
+  loadNavigationElements(
+    params: operations["readNavigation post /navigation/{activeId}/{rootId}"]["body"],
+  ): Promise<Schemas["NavigationRouteResponse"]>;
 };
 
 /**
@@ -49,7 +49,9 @@ export function useNavigation(params?: {
 
   const navigationElements = computed(() => sharedElements.value);
 
-  async function loadNavigationElements({ depth }: { depth: number }) {
+  async function loadNavigationElements(
+    params: operations["readNavigation post /navigation/{activeId}/{rootId}"]["body"],
+  ) {
     try {
       const navigationResponse = await apiClient.invoke(
         "readNavigation post /navigation/{activeId}/{rootId}",
@@ -61,9 +63,7 @@ export function useNavigation(params?: {
             activeId: type,
             rootId: type,
           },
-          body: {
-            depth,
-          },
+          body: params,
         },
       );
 

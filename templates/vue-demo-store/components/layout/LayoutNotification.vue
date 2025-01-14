@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
 import type { Notification } from "@shopware-pwa/composables-next";
+import type { ComputedRef } from "vue";
 
-defineEmits<{
-  (e: "click:close", id: number): void;
-}>();
+defineEmits<(e: "click:close", id: number) => void>();
 
 const props = defineProps<{
   notification: Notification;

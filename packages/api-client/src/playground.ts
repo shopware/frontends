@@ -2,8 +2,8 @@
  * This file is just a temporary for playground and testing IDE support, it has no connections and will be removed, fell free to experiment here with the API
  */
 
-import { createAPIClient } from "./createAPIClient";
 import type { operations } from "../api-types/storeApiTypes";
+import { createAPIClient } from "./createAPIClient";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";

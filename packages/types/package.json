@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "[DEPRECATED] Showare Store API Types",
   "author": "Shopware",
   "repository": {
@@ -33,7 +33,7 @@
     "**/*.d.ts"
   ],
   "scripts": {
-    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

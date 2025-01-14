@@ -48,6 +48,30 @@
       "order": "Bestellung",
       "orders": "Bestellungen"
     },
+    "orderDetails": {
+      "order": "Bestellung",
+      "placedOn": "Bestellt am {d}",
+      "shippingAddress": "Lieferadresse",
+      "billingAddress": "Rechnungsadresse",
+      "orderSummary": "Bestellübersicht",
+      "paymentMethod": "Zahlungsmethode",
+      "shippingMethod": "Versandart",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
+      "takesUpTo": "Dauert bis zu",
+      "change": "Ändern",
+      "changePaymentMethod": "Zahlungsmethode ändern",
+      "cancel": "Stornieren",
+      "confirm": "Bestätigen",
+      "backToOrdersList": "Zurück zur Bestellliste",
+      "itemsHeader": {
+        "item": "Artikel",
+        "quantity": "Menge",
+        "price": "Preis",
+        "total": "Gesamt"
+      }
+    },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
       "label": "Persönliche Daten"
@@ -64,7 +88,8 @@
       "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
       "paymentMethodChanged": "Zahlungsmethode geändert",
-      "productsAdded": "Produkte hinzugefügt"
+      "productsAdded": "Produkte hinzugefügt",
+      "verifying": "Konto bestätigen"
     }
   }
 }

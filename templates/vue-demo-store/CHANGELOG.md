@@ -1,5 +1,25 @@
 # vue-demo-store
 
+## 1.4.0
+
+### Minor Changes
+
+- [#1506](https://github.com/shopware/frontends/pull/1506) [`0d426c2`](https://github.com/shopware/frontends/commit/0d426c28e839f8a47241e083ff09076d7136b9fb) Thanks [@patzick](https://github.com/patzick)! - Changed eslint to biome for more accurate and much faster linting experience.
+
+- [#1490](https://github.com/shopware/frontends/pull/1490) [`c59b384`](https://github.com/shopware/frontends/commit/c59b384084a1cb70f2679ff5810518932dd06516) Thanks [@patzick](https://github.com/patzick)! - Update to the Node 22 LTS as the default
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added dynamic breadcrumbs
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added a confirmation page after the double opt-in option. The confirmation link is included in the email after registration.
+
+### Patch Changes
+
+- [#1497](https://github.com/shopware/frontends/pull/1497) [`164cb91`](https://github.com/shopware/frontends/commit/164cb917958404a57c815e8b1cf0a0239295292c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix contrast ratio for cart and orders pages
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix registration form for the double opt in registration flow
+
+- [#1404](https://github.com/shopware/frontends/pull/1404) [`d4482d5`](https://github.com/shopware/frontends/commit/d4482d51a65c435f27923e85223cac4e291f6c56) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add smooth scrolling on the routing change (excluding product variants)
+
 ## 1.3.0
 
 ### Minor Changes

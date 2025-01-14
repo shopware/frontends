@@ -137,17 +137,17 @@ export default defineNuxtConfig({
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
+        language: "en-GB",
         file: "en-GB.ts",
       },
       {
         code: "pl-PL",
-        iso: "pl-PL",
+        language: "pl-PL",
         file: "pl-PL.ts",
       },
       {
         code: "testde",
-        iso: "de-DE",
+        language: "de-DE",
         file: "de-DE.ts",
         localeId: "c19b753b5f2c4bea8ad15e00027802d4",
       },

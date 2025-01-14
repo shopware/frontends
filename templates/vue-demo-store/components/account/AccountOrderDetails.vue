@@ -13,7 +13,6 @@ const { getErrorsCodes } = useCartNotification();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const {
-  loadOrderDetails,
   order,
   hasDocuments,
   documents,
@@ -25,9 +24,6 @@ const {
 } = await useOrderDetails(props.orderId);
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
-onMounted(() => {
-  loadOrderDetails();
-});
 
 const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],
@@ -78,9 +74,9 @@ const handleReorder = async () => {
     const itemsBefore = count.value;
     await addProducts(items);
 
-    getErrorsCodes()?.forEach((element) => {
+    for (const element of getErrorsCodes() ?? []) {
       pushError(t(`errors.${element.messageKey}`, { ...element }));
-    });
+    }
 
     if (itemsBefore < count.value) {
       pushSuccess(t("account.messages.productsAdded"));

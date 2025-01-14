@@ -12,9 +12,10 @@
 >
 import { reactive, ref, watch } from "vue";
 
-const emits = defineEmits<{
-  (e: "select-value", value: { code: string; value: unknown }): void;
-}>();
+const emits =
+  defineEmits<
+    (e: "select-value", value: { code: string; value: unknown }) => void
+  >();
 
 const props = defineProps<{
   filter: ListingFilter;
@@ -26,7 +27,7 @@ type Translations = {
     max: string;
   };
 };
-let translations: Translations = {
+const translations: Translations = {
   listing: {
     min: "Min",
     max: "Max",
@@ -34,11 +35,11 @@ let translations: Translations = {
 };
 
 const route = useRoute();
-const minPrice = !isNaN(Number(route.query["min-price"]))
+const minPrice = !Number.isNaN(Number(route.query["min-price"]))
   ? Number(route.query["min-price"])
   : props.filter?.min || 0;
 
-const maxPrice = !isNaN(Number(route.query["max-price"]))
+const maxPrice = !Number.isNaN(Number(route.query["max-price"]))
   ? Number(route.query["max-price"])
   : props.filter?.max || 0;
 
@@ -53,7 +54,9 @@ const toggle = () => {
 };
 
 const dropdownElement = ref(null);
-onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
+onClickOutside(dropdownElement, () => {
+  isFilterVisible.value = false;
+});
 
 function onMinPriceChange(newPrice: number, oldPrice: number) {
   if (newPrice === oldPrice || oldPrice === 0) return;

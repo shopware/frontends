@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
+import { describe, expect, it } from "vitest";
 import { prepareFileContent } from "../src/generateFile";
+import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
 
 describe("transformOpenApiTypes", async () => {
   const inputFileNames = readdirSync(

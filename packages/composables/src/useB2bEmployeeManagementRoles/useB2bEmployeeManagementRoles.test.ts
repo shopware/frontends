@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { useB2bEmployeeManagementRoles } from "./useB2bEmployeeManagementRoles";
+import { describe, expect, it } from "vitest";
 import { useSetup } from "../_test";
+import { useB2bEmployeeManagementRoles } from "./useB2bEmployeeManagementRoles";
 
 describe("useB2bEmployeeManagementRoles", () => {
   it("should trigger createSingleRole api endpoint", async () => {

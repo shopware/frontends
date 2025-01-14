@@ -11,8 +11,8 @@
     }
   "
 >
-import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { inject, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

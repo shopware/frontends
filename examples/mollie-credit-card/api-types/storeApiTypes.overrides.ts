@@ -4,7 +4,11 @@ export type components = coreComponents & {
   schemas: Schemas;
 };
 
-export type Schemas = {};
+export type Schemas = {
+  MollieCreditCard: {
+    token: string;
+  };
+};
 
 export type operations = {
   "mollieSubmitCreditCart post script/mollie/creditcard/store-token/{userId/{token}": {
