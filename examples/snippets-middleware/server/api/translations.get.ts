@@ -31,7 +31,7 @@ export default defineEventHandler(async (handler) => {
   // create an instance of the Shopware API client
   // using client credentials grant type
   const client = createAdminAPIClient<operations>({
-    baseURL: `${useRuntimeConfig().public.shopware.shopwareEndpoint?.replace("store-api", "api")}`,
+    baseURL: `${useRuntimeConfig().public.shopware.endpoint?.replace("store-api", "api")}`,
     credentials: {
       grant_type: "client_credentials",
       client_id: useRuntimeConfig()?.api_client_id,
