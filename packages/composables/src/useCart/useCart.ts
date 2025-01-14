@@ -67,7 +67,7 @@ export type UseCartReturn = {
   /**
    * Shipping price
    *
-   * @deprecated Use `shippingTotal` instead
+   * @deprecated Use `shippingCosts` instead
    */
   shippingTotal: ComputedRef<number>;
   /**
