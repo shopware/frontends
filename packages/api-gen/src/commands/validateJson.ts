@@ -47,6 +47,7 @@ export async function validateJson(args: {
   cwd: string;
   filename?: string;
   apiType: string;
+  logPatches: boolean;
 }) {
   const schemaFilenameToValidate = args.filename
     ? args.filename
@@ -185,6 +186,7 @@ export async function validateJson(args: {
     errors,
     outdatedPatches,
     alreadyApliedPatches,
+    displayPatchedLogs: args.logPatches,
   });
 
   console.log(

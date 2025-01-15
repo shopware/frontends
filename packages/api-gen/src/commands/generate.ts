@@ -28,6 +28,7 @@ export async function generate(args: {
   filename?: string;
   apiType: "store" | "admin";
   debug: boolean;
+  logPatches: boolean;
 }) {
   const inputFilename = args.filename
     ? args.filename
@@ -71,10 +72,24 @@ export async function generate(args: {
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
       });
+      console.error("test1");
       const jsonOverrides = await loadJsonOverrides({
         paths: configJSON?.patches,
         apiType: args.apiType,
       });
+      console.error("test2");
+
+      if (args.debug) {
+        // save overrides to file
+        writeFileSync(
+          join(
+            args.cwd,
+            "api-types",
+            `${args.apiType}ApiTypes.overrides-result.json`,
+          ),
+          json5.stringify(jsonOverrides, null, 2),
+        );
+      }
 
       const {
         patchedSchema,
@@ -93,6 +108,7 @@ export async function generate(args: {
         todosToFix,
         outdatedPatches,
         alreadyApliedPatches,
+        displayPatchedLogs: args.logPatches,
       });
 
       if (args.debug) {

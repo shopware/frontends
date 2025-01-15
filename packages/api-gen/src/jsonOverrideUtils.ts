@@ -121,13 +121,15 @@ export function displayPatchingSummary({
   outdatedPatches,
   alreadyApliedPatches,
   errors,
+  displayPatchedLogs,
 }: {
   todosToFix: string[][];
   outdatedPatches: string[][];
   alreadyApliedPatches: number;
   errors?: string[];
+  displayPatchedLogs?: boolean;
 }) {
-  if (!errors?.length && todosToFix.length) {
+  if (displayPatchedLogs && !errors?.length && todosToFix.length) {
     console.log(c.yellow("Warnings to fix in the schema:"));
     for (const todo of todosToFix) {
       console.log(`${c.yellow("WARNING")}: ${todo[0]}`);
