@@ -45,7 +45,7 @@ const {
   cartItems,
   subtotal,
   totalPrice,
-  shippingTotal,
+  shippingCosts,
   isVirtualCart,
   refreshCart,
 } = useCart();
@@ -1014,6 +1014,24 @@ const beforeCreateOrderValidation = () => {
             </div>
 
             <div
+              class="py-1 flex justify-between text-sm text-secondary-500"
+              v-for="shippingCost in shippingCosts"
+              :key="shippingCost.shippingMethod?.id ?? Math.random() * 100"
+            >
+              <p>{{ $t("cart.shippingCosts") }}</p>
+              <div
+                v-if="shippingCost.shippingCosts?.totalPrice"
+                class="flex text-secondary-900"
+              >
+                <SharedPrice
+                  :value="shippingCost.shippingCosts.totalPrice"
+                  class="text-secondary-900 font-medium"
+                  data-testid="cart-shipping-cost"
+                />
+              </div>
+            </div>
+
+            <!-- <div
               class="flex pb-4 border-b justify-between text-sm text-secondary-500"
             >
               <p>{{ $t("checkout.shippingEstimate") }}</p>
@@ -1022,7 +1040,7 @@ const beforeCreateOrderValidation = () => {
                 class="text-secondary-900 font-medium"
                 data-testid="cart-subtotal"
               />
-            </div>
+            </div> -->
 
             <div class="flex justify-between text-secondary-900 font-medium">
               <p>{{ $t("checkout.orderTotal") }}l</p>
