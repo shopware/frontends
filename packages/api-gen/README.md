@@ -107,7 +107,18 @@ Example:
 
 ```json
 {
-  "patches": "./api-types/storeApiTypes.overrides.json"
+  "patches": ["./api-types/storeApiTypes.overrides.json"]
+}
+```
+
+or you could use multiple patches and add your own overrides on top:
+
+```json
+{
+  "patches": [
+    "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
+    "./api-types/myOwnPatches.overrides.json"
+  ]
 }
 ```
 
@@ -175,6 +186,11 @@ pnpx @shopware/api-gen generate --apiType=store
 pnpx @shopware/api-gen generate --apiType=admin
 ```
 
+flags:
+
+- `--debug` - display debug logs and additional information which can be helpful in case of issues
+- `--logPatches` - display patched logs, useful when you want to fix schema in original file
+
 ### `loadSchema`
 
 Load OpenAPI specification from Shopware instance and save it to JSON file.
@@ -190,6 +206,11 @@ pnpx @shopware/api-gen loadSchema --apiType=store
 # load schema from admin API
 pnpx @shopware/api-gen loadSchema --apiType=admin
 ```
+
+flags:
+
+- `--debug` - display debug logs and additional information which can be helpful in case of issues
+- `--logPatches` - display patched logs, useful when you want to fix schema in original file
 
 Remember to add `.env` file in order to authenticate with Shopware instance.
 

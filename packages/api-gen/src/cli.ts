@@ -44,6 +44,11 @@ yargs(hideBin(process.argv))
           default: false,
           describe: "show debug information and generate intermediate files",
         })
+        .option("logPatches", {
+          type: "boolean",
+          default: false,
+          describe: "show patched logs",
+        })
         .help();
     },
     async (args) => generate(args),
@@ -83,6 +88,16 @@ yargs(hideBin(process.argv))
           type: "string",
           describe:
             "name of the schema json file. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
+        })
+        .option("logPatches", {
+          type: "boolean",
+          default: false,
+          describe: "show patched logs",
+        })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
         })
         .help();
     },
