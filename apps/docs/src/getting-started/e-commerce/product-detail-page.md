@@ -47,7 +47,7 @@ const propertyGroups: Schemas["PropertyGroup"][] = productResponse.configurator;
 Thanks to this, in the response we are able to access `Product` and `configurator` object. The latter is responsible for keeping related variants information to be used for more complex products.
 
 :::info
-If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` property, you can also utilize `@shopware-pwa/cms-base` Nuxt 3 module to display the whole Product page designed in Shopping Experiences.
+If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` property, you can also utilize `@shopware/cms-base-layer` Nuxt 3 module to display the whole Product page designed in Shopping Experiences.
 :::
 
 Having source of the data, you can display all you need in your Vue.js template:

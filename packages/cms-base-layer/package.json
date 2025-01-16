@@ -1,14 +1,14 @@
 {
-  "name": "@shopware-pwa/cms-base",
+  "name": "@shopware/cms-base-layer",
   "version": "1.3.0",
-  "description": "[DEPRECATED] Use @shopware/cms-base-layer instead. Vue CMS support for Shopware",
+  "description": "Vue CMS Nuxt Layer for Shopware",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/getting-started/content-pages.html",
-  "keywords": ["Shopware", "Vue", "CMS"],
+  "homepage": "https://frontends.shopware.com/framework/shopping-experiences.html",
+  "keywords": ["Shopware", "Vue", "CMS", "Nuxt", "Layer"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },

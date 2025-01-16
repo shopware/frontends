@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware-pwa/cms-base"],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",

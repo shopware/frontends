@@ -1,4 +1,4 @@
-# @shopware-pwa/cms-base
+# @shopware/cms-base-layer
 
 ## 1.3.0
 

@@ -772,15 +772,15 @@ importers:
       '@nuxtjs/i18n':
         specifier: 8.5.6
         version: 8.5.6(magicast@0.3.5)(rollup@4.30.1)(vue@3.5.13(typescript@5.6.3))(webpack-sources@3.2.3)
-      '@shopware-pwa/cms-base':
-        specifier: canary
-        version: link:../../packages/cms-base
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client
+      '@shopware/cms-base-layer':
+        specifier: canary
+        version: link:../../packages/cms-base-layer
       '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
@@ -930,7 +930,7 @@ importers:
         version: 1.8.3
       '@codspeed/vitest-plugin':
         specifier: 4.0.0
-        version: 4.0.0(vite@6.0.3(@types/node@22.10.0)(jiti@2.4.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)(tsx@4.19.1)(yaml@2.4.5))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       '@types/prettier':
         specifier: 3.0.0
         version: 3.0.0
@@ -1002,7 +1002,7 @@ importers:
         specifier: 2.1.8
         version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
-  packages/cms-base:
+  packages/cms-base-layer:
     dependencies:
       '@nuxt/kit':
         specifier: 3.14.1592
@@ -1257,15 +1257,15 @@ importers:
 
   templates/vue-blank:
     devDependencies:
-      '@shopware-pwa/cms-base':
-        specifier: canary
-        version: link:../../packages/cms-base
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client
+      '@shopware/cms-base-layer':
+        specifier: canary
+        version: link:../../packages/cms-base-layer
       '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
@@ -1290,15 +1290,15 @@ importers:
 
   templates/vue-demo-store:
     dependencies:
-      '@shopware-pwa/cms-base':
-        specifier: canary
-        version: link:../../packages/cms-base
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client
+      '@shopware/cms-base-layer':
+        specifier: canary
+        version: link:../../packages/cms-base-layer
       '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
@@ -15730,10 +15730,10 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@codspeed/vitest-plugin@4.0.0(vite@6.0.3(@types/node@22.10.0)(jiti@2.4.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)(tsx@4.19.1)(yaml@2.4.5))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
+  '@codspeed/vitest-plugin@4.0.0(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))':
     dependencies:
       '@codspeed/core': 4.0.0
-      vite: 6.0.3(@types/node@22.10.0)(jiti@2.4.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)(tsx@4.19.1)(yaml@2.4.5)
+      vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
       vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.6.0)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - debug
@@ -22594,7 +22594,7 @@ snapshots:
     dependencies:
       call-bind-apply-helpers: 1.0.1
       es-define-property: 1.0.1
-      get-intrinsic: 1.2.4
+      get-intrinsic: 1.2.6
       set-function-length: 1.2.2
 
   call-bound@1.0.3:
@@ -23142,7 +23142,7 @@ snapshots:
       array-buffer-byte-length: 1.0.1
       call-bind: 1.0.8
       es-get-iterator: 1.1.3
-      get-intrinsic: 1.2.4
+      get-intrinsic: 1.2.6
       is-arguments: 1.2.0
       is-array-buffer: 3.0.5
       is-date-object: 1.1.0
@@ -23449,7 +23449,7 @@ snapshots:
   es-get-iterator@1.1.3:
     dependencies:
       call-bind: 1.0.8
-      get-intrinsic: 1.2.4
+      get-intrinsic: 1.2.6
       has-symbols: 1.1.0
       is-arguments: 1.2.0
       is-map: 2.0.3
