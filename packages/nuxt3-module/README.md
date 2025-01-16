@@ -125,17 +125,9 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 1.1.0
-
-### Minor Changes
-
-- [#1442](https://github.com/shopware/frontends/pull/1442) [`9669d1b`](https://github.com/shopware/frontends/commit/9669d1b39fca71461a3641840632db171f2968ed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added possibility to use Nuxt config file for setting the API requests headers. Headers are added to each request SSR and CSR.
+### Latest changes: 1.1.1
 
 ### Patch Changes
 
-- [#1514](https://github.com/shopware/frontends/pull/1514) [`05a4792`](https://github.com/shopware/frontends/commit/05a479240cac709e18f411a6276de359937341a6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `createError` with `showError` function in the `onResponseError` hook to redirect the user to the Nuxt error page.
-
-- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992), [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039)]:
-  - @shopware/api-client@1.2.0
-  - @shopware-pwa/composables-next@1.5.0
-  - @shopware-pwa/helpers-next@1.2.0
+- Updated dependencies [[`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6), [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715), [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42), [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a)]:
+  - @shopware-pwa/composables-next@1.6.0

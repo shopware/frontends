@@ -1,5 +1,15 @@
 # vue-demo-store
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed order details from `AccountOrder` component and moved it to the new order details page `pages/account/order/details/[id].vue`
+
+### Patch Changes
+
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Display all shipping costs in the cart components `cart.vue`, `checkout/index.vue`
+
 ## 1.4.0
 
 ### Minor Changes

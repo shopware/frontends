@@ -132,25 +132,11 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
-### Latest changes: 1.2.0
-
-### Minor Changes
-
-- [#1501](https://github.com/shopware/frontends/pull/1501) [`9c84519`](https://github.com/shopware/frontends/commit/9c8451922459c910f3d87e73b8c58ac8d5030f8e) Thanks [@mkucmus](https://github.com/mkucmus)! - Ability to overwrite internal components
-
-  For example:
-
-  `SwSharedPrice.vue` is used for multiple times to display a price. Create a component with the same name to make `cms-base` start using your component internally.
-
-  ***
-
-  ⚠️ Internal components aren't part of public API so the related changes won't be published in the changelog. Try to overwrite and track the changes on your responsibility.
-
-- [#1404](https://github.com/shopware/frontends/pull/1404) [`d4482d5`](https://github.com/shopware/frontends/commit/d4482d51a65c435f27923e85223cac4e291f6c56) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add smooth scrolling for listing pagination
+### Latest changes: 1.2.1
 
 ### Patch Changes
 
-- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515), [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992), [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039)]:
-  - @shopware/api-client@1.2.0
-  - @shopware-pwa/composables-next@1.5.0
-  - @shopware-pwa/helpers-next@1.2.0
+- [#1535](https://github.com/shopware/frontends/pull/1535) [`289ff97`](https://github.com/shopware/frontends/commit/289ff9763247a94d4555524d1500073af9038a36) Thanks [@mkucmus](https://github.com/mkucmus)! - Display "from price" label correctly for Product price component.
+
+- Updated dependencies [[`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6), [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715), [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42), [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a)]:
+  - @shopware-pwa/composables-next@1.6.0

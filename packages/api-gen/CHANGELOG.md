@@ -1,5 +1,11 @@
 # @shopware/api-gen
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1566](https://github.com/shopware/frontends/pull/1566) [`541cd6e`](https://github.com/shopware/frontends/commit/541cd6e5b5acaa20fb8aad699b2674e81b9330ce) Thanks [@patzick](https://github.com/patzick)! - Possibility to add multiple override json patches. Now you can use our default overrides and add your own on top of it.
+
 ## 1.1.4
 
 ### Patch Changes
