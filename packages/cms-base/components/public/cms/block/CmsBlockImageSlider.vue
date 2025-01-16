@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsBlockImageSlider } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageSlider } from "@shopware/composables";
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

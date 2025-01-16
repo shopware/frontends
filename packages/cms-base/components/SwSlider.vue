@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SliderElementConfig } from "@shopware-pwa/composables-next";
+import type { SliderElementConfig } from "@shopware/composables";
 import { useElementSize, useResizeObserver } from "@vueuse/core";
 import {
   computed,

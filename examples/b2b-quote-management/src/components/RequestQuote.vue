@@ -3,7 +3,7 @@ import {
   useB2bQuoteManagement,
   useCart,
   useProductSearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import Button from "primevue/button";
 import Message from "primevue/message";
 import Step from "primevue/step";

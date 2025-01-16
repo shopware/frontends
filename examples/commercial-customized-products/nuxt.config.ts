@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+  extends: ["@shopware/composables/nuxt-layer"],
 
   shopware: {
     endpoint: "http://localhost:8000/store-api/",

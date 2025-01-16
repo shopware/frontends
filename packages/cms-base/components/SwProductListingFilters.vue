@@ -2,8 +2,8 @@
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-} from "@shopware-pwa/composables-next";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
 import { computed, provide, reactive, ref, useTemplateRef } from "vue";

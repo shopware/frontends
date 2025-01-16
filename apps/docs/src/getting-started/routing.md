@@ -28,7 +28,7 @@ In the most common routing scenario, you will have a URL path like `/Winter-Seas
 import {
   useNavigationContext,
   useNavigationSearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 
 const { resolvePath } = useNavigationSearch();
 
@@ -68,7 +68,7 @@ import {
   useNavigationContext,
   useNavigationSearch,
   useCategorySearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 
 const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
+import type { CmsElementProductDescriptionReviews } from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref } from "vue";
 import { useProduct, useShopwareContext, useUser } from "#imports";

@@ -2,7 +2,7 @@
 import type {
   CmsElementImage,
   CmsElementImageSlider,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import { computed } from "vue";
 
 const props = defineProps<{

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { CmsElementForm } from "@shopware-pwa/composables-next";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
+import type { CmsElementForm } from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import { useVuelidate } from "@vuelidate/core";
 import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";

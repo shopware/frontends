@@ -3,7 +3,7 @@ import type {
   CmsBlockImageTextGallery,
   CmsElementImage,
   CmsElementText,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import { useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 

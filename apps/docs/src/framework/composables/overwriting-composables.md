@@ -23,7 +23,7 @@ In order to extend or overwrite the logic of the composables, you need to create
 
 ```ts
 // composables/useAddToCart.ts
-import { useAddToCart as coreUseAddToCart } from "@shopware-pwa/composables-next";
+import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -52,7 +52,7 @@ This case is not problematic, as the existing API is not changing. Let's try to 
 
 ```ts
 // composables/useAddToCart.ts
-import { useAddToCart as coreUseAddToCart } from "@shopware-pwa/composables-next";
+import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -79,7 +79,7 @@ This might be especially useful for high customization. Let's say we want to add
 
 ```ts
 // composables/useAddToCart.ts
-import { useAddToCart as coreUseAddToCart } from "@shopware-pwa/composables-next";
+import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -105,7 +105,7 @@ Sometimes you want to completly replace original logic, maybe you want to call a
 
 ```ts
 // composables/useAddToCart.ts
-import { useAddToCart as coreUseAddToCart } from "@shopware-pwa/composables-next";
+import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);

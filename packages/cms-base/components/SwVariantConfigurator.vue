@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { getProductRoute } from "@shopware-pwa/helpers-next";
+import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, unref } from "vue";
 import type { ComputedRef } from "vue";

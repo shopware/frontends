@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  useCmsTranslations,
-  useProductPrice,
-} from "@shopware-pwa/composables-next";
+import { useCmsTranslations, useProductPrice } from "@shopware/composables";
 import { defu } from "defu";
 import { toRefs } from "vue";
 import type { Schemas } from "#shopware";

@@ -2,7 +2,7 @@
 import type {
   CmsElementProductSlider,
   SliderElementConfig,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import type { ComputedRef } from "vue";
 import { useCmsElementConfig } from "#imports";

@@ -1,4 +1,4 @@
-import type { ShopwareContext } from "@shopware-pwa/composables-next";
+import type { ShopwareContext } from "@shopware/composables";
 import type { ApiClient } from "#shopware";
 
 export function useShopwareContext() {

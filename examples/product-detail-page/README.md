@@ -20,7 +20,7 @@ In order to have a different API connected to the app, rename `.env.dist` file t
 
 ## Customize
 
-Now, you are free to use the `@shopware-pwa/composables-next` package in the application. You can start from [app.vue](./app.vue).
+Now, you are free to use the `@shopware/composables` package in the application. You can start from [app.vue](./app.vue).
 
 ## Install & Run
 

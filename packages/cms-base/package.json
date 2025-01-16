@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "3.14.1592",
-    "@shopware-pwa/composables-next": "workspace:*",
+    "@shopware/composables": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "@tresjs/cientos": "4.0.2",

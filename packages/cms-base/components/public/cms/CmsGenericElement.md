@@ -4,7 +4,7 @@ Example usage:
 
 ```vue{19,22}
 <script setup lang="ts">
-import type { CmsBlockGalleryBuybox } from "@shopware-pwa/composables-next";
+import type { CmsBlockGalleryBuybox } from "@shopware/composables";
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

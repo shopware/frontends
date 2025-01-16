@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@shopware-pwa/cms-base": "canary",
-    "@shopware-pwa/composables-next": "canary",
+    "@shopware/composables": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "22.10.0",

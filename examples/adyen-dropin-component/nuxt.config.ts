@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+  extends: ["@shopware/composables/nuxt-layer"],
 
   shopware: {
     // your Shopware 6 instance endpoint and access key

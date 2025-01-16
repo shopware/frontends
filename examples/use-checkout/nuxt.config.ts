@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+  extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware-pwa/nuxt3-module", "@unocss/nuxt"],
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",

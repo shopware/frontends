@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed } from "vue";
 import type { Schemas } from "#shopware";

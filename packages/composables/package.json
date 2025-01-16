@@ -1,7 +1,7 @@
 {
-  "name": "@shopware-pwa/composables-next",
+  "name": "@shopware/composables",
   "version": "1.6.1",
-  "description": "[DEPRECATED] Use @shopware/composables instead! Shopware Frontends composables for Vue",
+  "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
     "type": "git",

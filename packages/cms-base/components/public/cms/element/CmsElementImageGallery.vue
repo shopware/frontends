@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
+import type { CmsElementImageGallery } from "@shopware/composables";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 import { isSpatial } from "../../../../helpers/media/isSpatial";

@@ -98,7 +98,7 @@ importers:
 
   apps/docs:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: workspace:*
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
@@ -196,7 +196,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -242,7 +242,7 @@ importers:
       '@nuxt/schema':
         specifier: 3.14.1592
         version: 3.14.1592(magicast@0.3.5)(rollup@4.30.1)
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -315,7 +315,7 @@ importers:
       '@primevue/themes':
         specifier: ^4.0.0
         version: 4.0.0(@primeuix/styled@0.3.0)
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
@@ -364,7 +364,7 @@ importers:
 
   examples/blank-playground:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -398,7 +398,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -428,7 +428,7 @@ importers:
 
   examples/commercial-quick-order:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -499,7 +499,7 @@ importers:
       '@paypal/paypal-js':
         specifier: 8.1.0
         version: 8.1.0
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
@@ -539,7 +539,7 @@ importers:
 
   examples/login-form:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -601,7 +601,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -637,7 +637,7 @@ importers:
       '@nuxtjs/i18n':
         specifier: 8.5.6
         version: 8.5.6(magicast@0.3.5)(rollup@4.30.1)(vue@3.5.13(typescript@5.6.3))(webpack-sources@3.2.3)
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -705,7 +705,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -735,7 +735,7 @@ importers:
 
   examples/responsive-images:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -775,7 +775,7 @@ importers:
       '@shopware-pwa/cms-base':
         specifier: canary
         version: link:../../packages/cms-base
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -813,7 +813,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
@@ -849,7 +849,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -885,7 +885,7 @@ importers:
       '@biomejs/biome':
         specifier: 1.8.3
         version: 1.8.3
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -1007,7 +1007,7 @@ importers:
       '@nuxt/kit':
         specifier: 3.14.1592
         version: 3.14.1592(magicast@0.3.5)(rollup@4.30.1)(webpack-sources@3.2.3)
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: workspace:*
         version: link:../composables
       '@shopware-pwa/helpers-next':
@@ -1172,7 +1172,7 @@ importers:
       '@nuxt/kit':
         specifier: 3.14.1592
         version: 3.14.1592(magicast@0.3.5)(rollup@4.30.1)(webpack-sources@3.2.3)
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: workspace:*
         version: link:../composables
       '@shopware-pwa/helpers-next':
@@ -1230,7 +1230,7 @@ importers:
       '@astrojs/vue':
         specifier: 4.5.3
         version: 4.5.3(@types/node@22.10.0)(astro@4.16.18(@types/node@22.10.0)(less@4.2.0)(rollup@4.30.1)(sass@1.77.8)(terser@5.37.0)(typescript@5.6.3))(less@4.2.0)(rollup@4.30.1)(sass@1.77.8)(terser@5.37.0)(vue@3.5.13(typescript@5.6.3))
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
@@ -1260,7 +1260,7 @@ importers:
       '@shopware-pwa/cms-base':
         specifier: canary
         version: link:../../packages/cms-base
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
@@ -1293,7 +1293,7 @@ importers:
       '@shopware-pwa/cms-base':
         specifier: canary
         version: link:../../packages/cms-base
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
@@ -1351,7 +1351,7 @@ importers:
 
   templates/vue-vite-blank:
     dependencies:
-      '@shopware-pwa/composables-next':
+      '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':

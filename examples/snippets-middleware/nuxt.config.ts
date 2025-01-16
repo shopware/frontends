@@ -1,9 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware-pwa/cms-base"],
   runtimeConfig: {
     // These values are used in the Shopware API client
     // TODO: replace with environment variables copied from Github once feature is supported
