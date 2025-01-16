@@ -215,4 +215,37 @@ describe("useCart", () => {
 
     expect(vm.consumeCartErrors()).toEqual(null);
   });
+
+  it("should return shipping costs", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        deliveries: [
+          {
+            shippingMethod: {
+              id: "a9d9cc502b3547f4a89eb2830c032c78",
+            },
+          },
+          {
+            shippingMethod: {
+              id: "a9d9cc502b3547f4a89eb2830c032c78",
+            },
+          },
+        ],
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.shippingCosts.length).toEqual(2);
+  });
+
+  it("should return empty shipping costs", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        deliveries: null,
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.shippingCosts.length).toEqual(0);
+  });
 });

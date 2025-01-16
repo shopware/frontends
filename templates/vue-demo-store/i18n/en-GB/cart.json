@@ -8,6 +8,7 @@
     "orderTotal": "Order total",
     "subtotal": "Subtotal",
     "shippingEstimate": "Shipping estimate",
+    "shippingCosts": "Shipping costs",
     "emptyCartLabel": "Your cart is empty!",
     "messages": {
       "addedToCart": "{p} has been added to cart."
