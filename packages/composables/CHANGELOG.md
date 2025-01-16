@@ -1,4 +1,4 @@
-# @shopware-pwa/composables-next
+# @shopware/composables
 
 ## 1.7.0
 

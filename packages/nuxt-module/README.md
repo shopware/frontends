@@ -118,7 +118,7 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends` & `#shopware-pwa` channel)
+- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends`)
 <!-- AUTO GENERATED CHANGELOG -->
 
 ## Changelog
