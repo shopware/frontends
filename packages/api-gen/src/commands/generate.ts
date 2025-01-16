@@ -72,12 +72,10 @@ export async function generate(args: {
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
       });
-      console.error("test1");
       const jsonOverrides = await loadJsonOverrides({
         paths: configJSON?.patches,
         apiType: args.apiType,
       });
-      console.error("test2");
 
       if (args.debug) {
         // save overrides to file
