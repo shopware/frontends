@@ -1,5 +1,20 @@
 # @shopware-pwa/composables-next
 
+## 1.6.0
+
+### Minor Changes
+
+- [#1540](https://github.com/shopware/frontends/pull/1540) [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42) Thanks [@kasztof](https://github.com/kasztof)! - Allow to pass full seach criteria according to loadNavigationElements method of useNavigation composable
+
+### Patch Changes
+
+- [#1564](https://github.com/shopware/frontends/pull/1564) [`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Return the last element for the payment and shipping methods in `useOrderDetails`. The reason for this change is that the backend returns collections sorted by the entry date
+
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `shippingCosts` property in `useCart` composable that returns shipping costs of the cart, with the shipping discounts.
+  `shippingTotal` function is now deprecated as it only returns the first value from the array. The backend is returning a collection.
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - useCustomerOrders - Set current page based on the orders endpoint response
+
 ## 1.5.0
 
 ### Minor Changes

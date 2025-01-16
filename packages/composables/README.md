@@ -165,22 +165,17 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.5.0
+### Latest changes: 1.6.0
 
 ### Minor Changes
 
-- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Changed `registration` method in the `useUser` composable. Because of changes in the double opt-in on registration flow in the Shopware backend we are adjusting this method on our side. In new approach we are checking `active` and `doubleOptInRegistration` properties that represents current status of the user.
-
-- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `buildDynamicBreadcrumbs` method for building breadcrumbs structure
-  Added `pushBreadcrumb` method to push single breadcrumb at the top of the breadcrumbs list
-  Added `associations` option to the `search` method in `useProductSearch` composable
+- [#1540](https://github.com/shopware/frontends/pull/1540) [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42) Thanks [@kasztof](https://github.com/kasztof)! - Allow to pass full seach criteria according to loadNavigationElements method of useNavigation composable
 
 ### Patch Changes
 
-- [#1449](https://github.com/shopware/frontends/pull/1449) [`8ba9702`](https://github.com/shopware/frontends/commit/8ba9702657d1dc31cc653728788830fa38bb4992) Thanks [@mkucmus](https://github.com/mkucmus)! - Add configuration step to README.md
+- [#1564](https://github.com/shopware/frontends/pull/1564) [`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Return the last element for the payment and shipping methods in `useOrderDetails`. The reason for this change is that the backend returns collections sorted by the entry date
 
-- [#1492](https://github.com/shopware/frontends/pull/1492) [`a03a492`](https://github.com/shopware/frontends/commit/a03a492f18ebff84606e47f5239330454c9f3039) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCustomerOrders` - added checkPromotions flag for loading orders
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `shippingCosts` property in `useCart` composable that returns shipping costs of the cart, with the shipping discounts.
+  `shippingTotal` function is now deprecated as it only returns the first value from the array. The backend is returning a collection.
 
-- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc), [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515)]:
-  - @shopware/api-client@1.2.0
-  - @shopware-pwa/helpers-next@1.2.0
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - useCustomerOrders - Set current page based on the orders endpoint response
