@@ -94,7 +94,7 @@ importers:
         version: 2.3.3
       vercel:
         specifier: 39.3.0
-        version: 39.3.0(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.30.1)
+        version: 39.3.0(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.28.1)
 
   apps/docs:
     dependencies:
@@ -210,7 +210,7 @@ importers:
         version: link:../../packages/api-gen
       '@unocss/nuxt':
         specifier: 0.65.1
-        version: 0.65.1(magicast@0.3.5)(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))(webpack@5.91.0(@swc/core@1.7.10))
+        version: 0.65.1(magicast@0.3.5)(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
       '@vueuse/nuxt':
         specifier: 12.0.0
         version: 12.0.0(magicast@0.3.5)(nuxt@3.14.1592(@biomejs/biome@1.8.3)(@parcel/watcher@2.4.1)(@types/node@22.10.0)(encoding@0.1.13)(eslint@9.18.0(jiti@2.4.0))(ioredis@5.4.1)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.3)(rollup@4.28.1)(sass@1.77.8)(terser@5.37.0)(typescript@5.6.3)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue-tsc@2.1.10(typescript@5.6.3)))(rollup@4.28.1)(typescript@5.6.3)
@@ -336,10 +336,10 @@ importers:
         version: link:../../packages/api-gen
       '@unocss/nuxt':
         specifier: 0.62.4
-        version: 0.62.4(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+        version: 0.62.4(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(webpack@5.91.0(@swc/core@1.7.10))
       unocss:
         specifier: 0.62.4
-        version: 0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+        version: 0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
 
   examples/b2b-quote-management:
     dependencies:
@@ -1993,8 +1993,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/plugin-transform-nullish-coalescing-operator@7.26.6':
-    resolution: {integrity: sha512-CKW8Vu+uUZneQCPtXmSBUC6NCAUdya26hWCElAWh5mVSlSRsmiCPUUDKb3Z0szng1hiAJa098Hkhg9o4SE35Qw==}
+  '@babel/plugin-transform-nullish-coalescing-operator@7.25.8':
+    resolution: {integrity: sha512-Z7WJJWdQc8yCWgAmjI3hyC+5PXIubH9yRKzkl9ZEG647O9szl9zvmKLzpbItlijBnVhTUf1cpyWBsZ3+2wjWPQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -5884,11 +5884,8 @@ packages:
   '@types/prop-types@15.7.11':
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
 
-  '@types/prop-types@15.7.14':
-    resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
-
-  '@types/qs@6.9.18':
-    resolution: {integrity: sha512-kK7dgTYDyGqS+e2Q4aK9X3D7q234CIZ1Bv0q/7Z5IwRDoADNU81xXJK/YVyLbLTZCoIwUoDoffFeF+p/eIklAA==}
+  '@types/qs@6.9.16':
+    resolution: {integrity: sha512-7i+zxXdPD0T4cKDuxCUXJ4wHcsJLwENa6Z3dCu8cfCK743OGy5Nu1RmAGqDPsoTDINVEcdXKRvR/zre+P2Ku1A==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -7254,6 +7251,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
+  browserslist@4.24.4:
+    resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+
   bser@2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
 
@@ -7353,6 +7355,9 @@ packages:
 
   caniuse-lite@1.0.30001669:
     resolution: {integrity: sha512-DlWzFDJqstqtIVx1zeSpIMLjunf5SmwOw0N2Ck/QSQdS8PLS4+9HrLaYei4w8BIAL7IB/UEDu889d8vhCTPA0w==}
+
+  caniuse-lite@1.0.30001692:
+    resolution: {integrity: sha512-A95VKan0kdtrsnMubMKxEKUKImOPSuCpYgxSQBo036P5YYgVIcOYJEgt/txJWqObiRQeISNCfef9nvlQ0vbV7A==}
 
   ccount@1.1.0:
     resolution: {integrity: sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==}
@@ -7649,10 +7654,6 @@ packages:
 
   consola@3.2.3:
     resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-
-  consola@3.4.0:
-    resolution: {integrity: sha512-EiPU8G6dQG0GFHNR8ljnZFki/8a+cQwEQ+7wpxdChl02Q8HXlwEZWD5lqAF8vC2sEC3Tehr8hy7vErz88LHyUA==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   console-control-strings@1.1.0:
@@ -8262,13 +8263,6 @@ packages:
 
   es-module-lexer@1.5.4:
     resolution: {integrity: sha512-MVNK56NiMrOwitFB7cqDwq0CQutbw+0BvLshJSse0MUNU+y1FC3bUS/AQg7oUng+/wKrrki7JfmwtVHkVfPLlw==}
-
-  es-module-lexer@1.6.0:
-    resolution: {integrity: sha512-qqnD1yMU6tk/jnaMosogGySTZP8YtUgAffA9nMN+E/rjxcfRQ6IEk7IiozUjgxKoFHBGjTLnrHB/YC45r/59EQ==}
-
-  es-object-atoms@1.1.0:
-    resolution: {integrity: sha512-Ujz8Al/KfOVR7fkaghAB1WvnLsdYxHDWmfoi2vlA2jZWRg31XhIC1a4B+/I24muD8iSbHxJ1JkrfqmWb65P/Mw==}
-    engines: {node: '>= 0.4'}
 
   esbuild-android-64@0.14.47:
     resolution: {integrity: sha512-R13Bd9+tqLVFndncMHssZrPWe6/0Kpv2/dt4aA69soX4PRxlzsVpCvoJeFE8sOEoeVEiBkI0myjlkDodXlHa0g==}
@@ -10836,6 +10830,9 @@ packages:
 
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
+
+  node-releases@2.0.19:
+    resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
   nopt@1.0.10:
     resolution: {integrity: sha512-NWmpvLSqUrgrAC9HCuxEvb+PSloHpqVu+FqcO4eeF2h5qYRhA7ev6KvelyQAKtegUbC6RypJnlEOhd8vloNKYg==}
@@ -15151,7 +15148,7 @@ snapshots:
       '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.25.9
 
-  '@babel/plugin-transform-nullish-coalescing-operator@7.26.6(@babel/core@7.26.0)':
+  '@babel/plugin-transform-nullish-coalescing-operator@7.25.8(@babel/core@7.26.0)':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/helper-plugin-utils': 7.25.9
@@ -15348,56 +15345,55 @@ snapshots:
       '@babel/plugin-syntax-import-assertions': 7.25.7(@babel/core@7.26.0)
       '@babel/plugin-syntax-import-attributes': 7.25.7(@babel/core@7.26.0)
       '@babel/plugin-syntax-unicode-sets-regex': 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-transform-arrow-functions': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-async-generator-functions': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-async-to-generator': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-block-scoped-functions': 7.26.5(@babel/core@7.26.0)
-      '@babel/plugin-transform-block-scoping': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-class-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-class-static-block': 7.26.0(@babel/core@7.26.0)
-      '@babel/plugin-transform-classes': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-computed-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-destructuring': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-dotall-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-duplicate-keys': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-duplicate-named-capturing-groups-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-dynamic-import': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-exponentiation-operator': 7.26.3(@babel/core@7.26.0)
-      '@babel/plugin-transform-export-namespace-from': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-for-of': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-function-name': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-json-strings': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-literals': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-logical-assignment-operators': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-member-expression-literals': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-modules-amd': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-modules-commonjs': 7.26.3(@babel/core@7.26.0)
-      '@babel/plugin-transform-modules-systemjs': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-modules-umd': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-named-capturing-groups-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-new-target': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-nullish-coalescing-operator': 7.26.6(@babel/core@7.26.0)
-      '@babel/plugin-transform-numeric-separator': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-object-rest-spread': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-object-super': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-optional-catch-binding': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-optional-chaining': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-parameters': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-private-methods': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-private-property-in-object': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-property-literals': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-regenerator': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-regexp-modifiers': 7.26.0(@babel/core@7.26.0)
-      '@babel/plugin-transform-reserved-words': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-shorthand-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-spread': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-sticky-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-template-literals': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-typeof-symbol': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-unicode-escapes': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-unicode-property-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-unicode-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-unicode-sets-regex': 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-transform-arrow-functions': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-async-generator-functions': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-async-to-generator': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-block-scoped-functions': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-block-scoping': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-class-properties': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-class-static-block': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-classes': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-computed-properties': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-destructuring': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-dotall-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-duplicate-keys': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-duplicate-named-capturing-groups-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-dynamic-import': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-exponentiation-operator': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-export-namespace-from': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-for-of': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-function-name': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-json-strings': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-literals': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-logical-assignment-operators': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-member-expression-literals': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-amd': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-commonjs': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-systemjs': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-umd': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-named-capturing-groups-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-new-target': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-numeric-separator': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-object-rest-spread': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-object-super': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-optional-catch-binding': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-optional-chaining': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-parameters': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-private-methods': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-private-property-in-object': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-property-literals': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-regenerator': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-reserved-words': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-shorthand-properties': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-spread': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-sticky-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-template-literals': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-typeof-symbol': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-unicode-escapes': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-unicode-property-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-unicode-regex': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-unicode-sets-regex': 7.25.7(@babel/core@7.26.0)
       '@babel/preset-modules': 0.1.6-no-external-plugins(@babel/core@7.26.0)
       babel-plugin-polyfill-corejs2: 0.4.11(@babel/core@7.26.0)
       babel-plugin-polyfill-corejs3: 0.10.6(@babel/core@7.26.0)
@@ -16778,7 +16774,7 @@ snapshots:
 
   '@mapbox/node-pre-gyp@2.0.0-rc.0(encoding@0.1.13)':
     dependencies:
-      consola: 3.4.0
+      consola: 3.2.3
       detect-libc: 2.0.3
       https-proxy-agent: 7.0.5(supports-color@9.4.0)
       node-fetch: 2.7.0(encoding@0.1.13)
@@ -19312,7 +19308,7 @@ snapshots:
 
   '@stoplight/types@14.1.0':
     dependencies:
-      '@types/json-schema': 7.0.11
+      '@types/json-schema': 7.0.15
       utility-types: 3.10.0
 
   '@stoplight/types@14.1.1':
@@ -19871,7 +19867,7 @@ snapshots:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
       '@storybook/types': 7.6.20
-      '@types/qs': 6.9.18
+      '@types/qs': 6.9.16
       dequal: 2.0.3
       lodash: 4.17.21
       memoizerific: 1.11.3
@@ -20390,7 +20386,7 @@ snapshots:
   '@types/express-serve-static-core@4.19.6':
     dependencies:
       '@types/node': 22.10.0
-      '@types/qs': 6.9.18
+      '@types/qs': 6.9.16
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
@@ -20398,7 +20394,7 @@ snapshots:
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.19.6
-      '@types/qs': 6.9.18
+      '@types/qs': 6.9.16
       '@types/serve-static': 1.15.7
 
   '@types/find-cache-dir@3.2.1': {}
@@ -20512,10 +20508,7 @@ snapshots:
 
   '@types/prop-types@15.7.11': {}
 
-  '@types/prop-types@15.7.14':
-    optional: true
-
-  '@types/qs@6.9.18': {}
+  '@types/qs@6.9.16': {}
 
   '@types/range-parser@1.2.7': {}
 
@@ -20939,7 +20932,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@unocss/nuxt@0.62.4(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))':
+  '@unocss/nuxt@0.62.4(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(webpack@5.91.0(@swc/core@1.7.10))':
     dependencies:
       '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.24.0)
       '@unocss/config': 0.62.4
@@ -20953,8 +20946,8 @@ snapshots:
       '@unocss/preset-wind': 0.62.4
       '@unocss/reset': 0.62.4
       '@unocss/vite': 0.62.4(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
-      '@unocss/webpack': 0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
-      unocss: 0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
+      '@unocss/webpack': 0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10))
+      unocss: 0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -20963,7 +20956,7 @@ snapshots:
       - vite
       - webpack
 
-  '@unocss/nuxt@0.65.1(magicast@0.3.5)(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))(webpack@5.91.0(@swc/core@1.7.10))':
+  '@unocss/nuxt@0.65.1(magicast@0.3.5)(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))':
     dependencies:
       '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.28.1)
       '@unocss/config': 0.65.1
@@ -20977,8 +20970,8 @@ snapshots:
       '@unocss/preset-wind': 0.65.1
       '@unocss/reset': 0.65.1
       '@unocss/vite': 0.65.1(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
-      '@unocss/webpack': 0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10))
-      unocss: 0.65.1(@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
+      '@unocss/webpack': 0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+      unocss: 0.65.1(@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -21344,7 +21337,7 @@ snapshots:
       - supports-color
       - vue
 
-  '@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))':
+  '@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@rollup/pluginutils': 5.1.3(rollup@4.24.0)
@@ -21354,7 +21347,7 @@ snapshots:
       magic-string: 0.30.14
       tinyglobby: 0.2.10
       unplugin: 1.16.0
-      webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)
+      webpack: 5.91.0(@swc/core@1.7.10)
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - rollup
@@ -21376,6 +21369,22 @@ snapshots:
       - rollup
       - supports-color
     optional: true
+
+  '@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@rollup/pluginutils': 5.1.3(rollup@4.28.1)
+      '@unocss/config': 0.65.1
+      '@unocss/core': 0.65.1
+      chokidar: 3.6.0
+      magic-string: 0.30.14
+      tinyglobby: 0.2.10
+      unplugin: 1.16.0
+      webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
 
   '@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10))':
     dependencies:
@@ -22853,7 +22862,7 @@ snapshots:
       caniuse-lite: 1.0.30001692
       electron-to-chromium: 1.5.82
       node-releases: 2.0.19
-      update-browserslist-db: 1.1.2(browserslist@4.24.4)
+      update-browserslist-db: 1.1.1(browserslist@4.24.4)
 
   bser@2.1.1:
     dependencies:
@@ -22971,6 +22980,8 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001669: {}
+
+  caniuse-lite@1.0.30001692: {}
 
   ccount@1.1.0: {}
 
@@ -23247,8 +23258,6 @@ snapshots:
 
   consola@3.2.3: {}
 
-  consola@3.4.0: {}
-
   console-control-strings@1.1.0: {}
 
   constantinople@4.0.1:
@@ -23290,7 +23299,7 @@ snapshots:
 
   core-js-compat@3.38.1:
     dependencies:
-      browserslist: 4.24.2
+      browserslist: 4.24.4
 
   core-js@3.38.1: {}
 
@@ -23810,12 +23819,6 @@ snapshots:
   es-module-lexer@1.4.1: {}
 
   es-module-lexer@1.5.4: {}
-
-  es-module-lexer@1.6.0: {}
-
-  es-object-atoms@1.1.0:
-    dependencies:
-      es-errors: 1.3.0
 
   esbuild-android-64@0.14.47:
     optional: true
@@ -24642,19 +24645,6 @@ snapshots:
       has-symbols: 1.0.3
       hasown: 2.0.2
 
-  get-intrinsic@1.2.7:
-    dependencies:
-      call-bind-apply-helpers: 1.0.1
-      es-define-property: 1.0.1
-      es-errors: 1.3.0
-      es-object-atoms: 1.1.0
-      function-bind: 1.1.2
-      get-proto: 1.0.1
-      gopd: 1.2.0
-      has-symbols: 1.1.0
-      hasown: 2.0.2
-      math-intrinsics: 1.1.0
-
   get-nonce@1.0.1: {}
 
   get-npm-tarball-url@2.1.0: {}
@@ -24668,11 +24658,6 @@ snapshots:
   get-port@5.1.1: {}
 
   get-port@7.1.0: {}
-
-  get-proto@1.0.1:
-    dependencies:
-      dunder-proto: 1.0.1
-      es-object-atoms: 1.1.0
 
   get-stream@5.2.0:
     dependencies:
@@ -25344,7 +25329,7 @@ snapshots:
       '@types/dom-speech-recognition': 0.0.1
       '@types/google.maps': 3.58.1
       '@types/hogan.js': 3.0.5
-      '@types/qs': 6.9.18
+      '@types/qs': 6.9.16
       algoliasearch: 4.20.0
       algoliasearch-helper: 3.22.4(algoliasearch@4.20.0)
       hogan.js: 3.0.2
@@ -25771,15 +25756,15 @@ snapshots:
   jscodeshift@0.15.2(@babel/preset-env@7.25.8(@babel/core@7.26.0)):
     dependencies:
       '@babel/core': 7.26.0
-      '@babel/parser': 7.26.5
-      '@babel/plugin-transform-class-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-modules-commonjs': 7.26.3(@babel/core@7.26.0)
-      '@babel/plugin-transform-nullish-coalescing-operator': 7.26.6(@babel/core@7.26.0)
-      '@babel/plugin-transform-optional-chaining': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-private-methods': 7.25.9(@babel/core@7.26.0)
-      '@babel/preset-flow': 7.25.9(@babel/core@7.26.0)
-      '@babel/preset-typescript': 7.26.0(@babel/core@7.26.0)
-      '@babel/register': 7.25.9(@babel/core@7.26.0)
+      '@babel/parser': 7.26.1
+      '@babel/plugin-transform-class-properties': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-commonjs': 7.25.7(@babel/core@7.26.0)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-optional-chaining': 7.25.8(@babel/core@7.26.0)
+      '@babel/plugin-transform-private-methods': 7.25.7(@babel/core@7.26.0)
+      '@babel/preset-flow': 7.25.7(@babel/core@7.26.0)
+      '@babel/preset-typescript': 7.24.7(@babel/core@7.26.0)
+      '@babel/register': 7.25.7(@babel/core@7.26.0)
       babel-core: 7.0.0-bridge.0(@babel/core@7.26.0)
       chalk: 4.1.2
       flow-parser: 0.250.0
@@ -27207,6 +27192,8 @@ snapshots:
 
   node-releases@2.0.18: {}
 
+  node-releases@2.0.19: {}
+
   nopt@1.0.10:
     dependencies:
       abbrev: 1.1.1
@@ -27629,8 +27616,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-object-atoms: 1.1.0
-      has-symbols: 1.1.0
+      has-symbols: 1.0.3
       object-keys: 1.1.1
 
   oblivious-set@1.0.0: {}
@@ -29671,7 +29657,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
-      terser: 5.36.0
+      terser: 5.37.0
       webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)
     optionalDependencies:
       '@swc/core': 1.7.10
@@ -29683,7 +29669,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
-      terser: 5.36.0
+      terser: 5.37.0
       webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)
     optionalDependencies:
       '@swc/core': 1.7.10
@@ -29695,7 +29681,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
-      terser: 5.36.0
+      terser: 5.37.0
       webpack: 5.91.0(@swc/core@1.7.10)
     optionalDependencies:
       '@swc/core': 1.7.10
@@ -29713,7 +29699,6 @@ snapshots:
       acorn: 8.14.0
       commander: 2.20.3
       source-map-support: 0.5.21
-    optional: true
 
   test-exclude@6.0.0:
     dependencies:
@@ -30373,7 +30358,7 @@ snapshots:
       - rollup
       - supports-color
 
-  unocss@0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)):
+  unocss@0.62.4(@unocss/webpack@0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)):
     dependencies:
       '@unocss/astro': 0.62.4(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
       '@unocss/cli': 0.62.4(rollup@4.24.0)
@@ -30393,7 +30378,7 @@ snapshots:
       '@unocss/transformer-variant-group': 0.62.4
       '@unocss/vite': 0.62.4(rollup@4.24.0)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))
     optionalDependencies:
-      '@unocss/webpack': 0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+      '@unocss/webpack': 0.62.4(rollup@4.24.0)(webpack@5.91.0(@swc/core@1.7.10))
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - postcss
@@ -30427,7 +30412,7 @@ snapshots:
       - rollup
       - supports-color
 
-  unocss@0.65.1(@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3)):
+  unocss@0.65.1(@unocss/webpack@0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3)):
     dependencies:
       '@unocss/astro': 0.65.1(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
       '@unocss/cli': 0.65.1(rollup@4.28.1)
@@ -30447,7 +30432,7 @@ snapshots:
       '@unocss/transformer-variant-group': 0.65.1
       '@unocss/vite': 0.65.1(rollup@4.28.1)(vite@5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0))(vue@3.5.13(typescript@5.6.3))
     optionalDependencies:
-      '@unocss/webpack': 0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10))
+      '@unocss/webpack': 0.65.1(rollup@4.28.1)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
       vite: 5.4.10(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
     transitivePeerDependencies:
       - postcss
@@ -30619,6 +30604,12 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
+  update-browserslist-db@1.1.1(browserslist@4.24.4):
+    dependencies:
+      browserslist: 4.24.4
+      escalade: 3.2.0
+      picocolors: 1.1.1
+
   uqr@0.1.2: {}
 
   uri-js-replace@1.0.1: {}
@@ -30727,17 +30718,17 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vercel@39.3.0(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.30.1):
+  vercel@39.3.0(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.28.1):
     dependencies:
       '@vercel/build-utils': 9.0.1
       '@vercel/fun': 1.1.2(encoding@0.1.13)
       '@vercel/go': 3.2.1
       '@vercel/hydrogen': 1.0.11
-      '@vercel/next': 4.4.2(encoding@0.1.13)(rollup@4.30.1)
-      '@vercel/node': 5.0.2(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.30.1)
+      '@vercel/next': 4.4.2(encoding@0.1.13)(rollup@4.28.1)
+      '@vercel/node': 5.0.2(@swc/core@1.7.10)(encoding@0.1.13)(rollup@4.28.1)
       '@vercel/python': 4.7.0
-      '@vercel/redwood': 2.1.12(encoding@0.1.13)(rollup@4.30.1)
-      '@vercel/remix-builder': 5.0.2(encoding@0.1.13)(rollup@4.30.1)
+      '@vercel/redwood': 2.1.12(encoding@0.1.13)(rollup@4.28.1)
+      '@vercel/remix-builder': 5.0.2(encoding@0.1.13)(rollup@4.28.1)
       '@vercel/ruby': 2.1.0
       '@vercel/static-build': 2.5.41
       chokidar: 4.0.0
@@ -31505,7 +31496,7 @@ snapshots:
       '@webassemblyjs/wasm-parser': 1.12.1
       acorn: 8.14.0
       acorn-import-assertions: 1.9.0(acorn@8.14.0)
-      browserslist: 4.24.2
+      browserslist: 4.24.4
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4
@@ -31536,7 +31527,7 @@ snapshots:
       '@webassemblyjs/wasm-parser': 1.12.1
       acorn: 8.14.0
       acorn-import-assertions: 1.9.0(acorn@8.14.0)
-      browserslist: 4.24.2
+      browserslist: 4.24.4
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4
@@ -31567,7 +31558,7 @@ snapshots:
       '@webassemblyjs/wasm-parser': 1.12.1
       acorn: 8.14.0
       acorn-import-assertions: 1.9.0(acorn@8.14.0)
-      browserslist: 4.24.2
+      browserslist: 4.24.4
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4
