@@ -5,6 +5,10 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/nuxt3-module?label=nuxt3-module%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Anuxt3-module)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
+> [!WARNING]
+>
+> This package is deprecated and will be removed in the future. Use [@shopware/nuxt-module](https://www.npmjs.com/package/@shopware/nuxt-module) instead.
+
 Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the composables and api-client packages.
 
 If you want to use these packages with a different Vue.js framework, see [the guide](https://frontends.shopware.com/getting-started/templates/custom-vue-project.html) for using Shopware Frontends in a custom project.
