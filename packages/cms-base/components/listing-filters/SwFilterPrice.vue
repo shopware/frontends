@@ -10,7 +10,7 @@
     }
   "
 >
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 import { defu } from "defu";
 import { onMounted, reactive, ref, watch } from "vue";

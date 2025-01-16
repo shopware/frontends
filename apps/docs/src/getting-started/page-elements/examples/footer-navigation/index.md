@@ -19,7 +19,7 @@ Implementing Footer navigation can be described in few steps:
 
 ```vue
 <script setup lang="ts">
-import { useNavigation } from "@shopware-pwa/composables-next";
+import { useNavigation } from "@shopware/composables";
 import { getCategoryRoute } from "@shopware-pwa/helpers-next";
 const { navigationElements, loadNavigationElements } = useNavigation({
   type: "footer-navigation", // footer-navigation selected

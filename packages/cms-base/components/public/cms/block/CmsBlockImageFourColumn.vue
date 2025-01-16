@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsBlockImageFourColumn } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageFourColumn } from "@shopware/composables";
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

@@ -11,7 +11,7 @@ If you want to use these packages with a different Vue.js framework, see [the gu
 
 ## Features
 
-- Business logic covered by [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) package. Registering all composable functions globally. [See the reference](https://frontends.shopware.com/packages/composables.html).
+- Business logic covered by [Composables](https://npmjs.com/package/@shopware/composables) package. Registering all composable functions globally. [See the reference](https://frontends.shopware.com/packages/composables.html).
 - Shopware context shared in Nuxt application.
 - Configured [API Client](https://npmjs.com/package/@shopware/api-client) package.
 
@@ -86,7 +86,7 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 ## 📦 Advanced packaging
 
-Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
+Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware/composables) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
 
 ## API Default Headers
 
@@ -130,4 +130,4 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 ### Patch Changes
 
 - Updated dependencies [[`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc)]:
-  - @shopware-pwa/composables-next@1.6.1
+  - @shopware/composables@1.6.1

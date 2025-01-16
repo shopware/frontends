@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+  extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware-pwa/nuxt3-module", "../src/module"], // path to amazon-pay module
   runtimeConfig: {
     shopware: {

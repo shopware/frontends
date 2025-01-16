@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementSidebarFilter } from "@shopware-pwa/composables-next";
+import type { CmsElementSidebarFilter } from "@shopware/composables";
 
 defineProps<{
   content: CmsElementSidebarFilter;

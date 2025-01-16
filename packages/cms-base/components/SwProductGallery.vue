@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
+import type { CmsElementImageGallery } from "@shopware/composables";
 import { ref, watch } from "vue";
 import type { Schemas } from "#shopware";
 

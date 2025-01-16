@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import type { Nuxt } from "@nuxt/schema";
 import type { ShopwareNuxtOptions } from ".";
 
-type DEPENDENCY = "@shopware-pwa/composables-next";
+type DEPENDENCY = "@shopware/composables";
 
 const distDir = dirname(fileURLToPath(import.meta.url));
 const pkgDir = resolve(distDir, "..");

@@ -1,1 +1,1 @@
-export * from "@shopware-pwa/composables-next";
+export * from "@shopware/composables";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementVimeoVideo } from "@shopware-pwa/composables-next";
+import type { CmsElementVimeoVideo } from "@shopware/composables";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import { useCmsElementConfig } from "#imports";

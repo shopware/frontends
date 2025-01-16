@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [vue()],
   optimizeDeps: {
-    exclude: ["@shopware-pwa/composables-next"],
+    exclude: ["@shopware/composables"],
   },
   resolve: {
     alias: {

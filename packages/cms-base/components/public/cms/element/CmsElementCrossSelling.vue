@@ -2,7 +2,7 @@
 import type {
   CmsElementCrossSelling,
   SliderElementConfig,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
 import { computed, ref, useTemplateRef } from "vue";
 import { useCmsElementConfig } from "#imports";

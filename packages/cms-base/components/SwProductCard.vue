@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import {
   buildUrlPrefix,
   getProductFromPrice,
@@ -10,6 +8,8 @@ import {
 } from "@shopware-pwa/helpers-next";
 import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 import { ApiClientError } from "@shopware/api-client";
+import type { BoxLayout, DisplayMode } from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
 import { defu } from "defu";
 import { computed, ref, toRefs, useTemplateRef } from "vue";

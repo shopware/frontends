@@ -10,7 +10,7 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "workspace:*",
+    "@shopware/composables": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "flexsearch": "0.7.43",

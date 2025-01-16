@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUser } from "@shopware-pwa/composables-next";
+import { useUser } from "@shopware/composables";
 import { defineEmits, ref } from "vue";
 
 const emits = defineEmits<(e: "success") => void>();

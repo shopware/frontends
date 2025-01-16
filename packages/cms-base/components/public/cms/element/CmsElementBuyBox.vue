@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import type { CmsElementBuyBox } from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed } from "vue";
 import {

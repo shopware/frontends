@@ -13,7 +13,7 @@ It is useful for projects that want to use the CMS components but design their o
 
 - Vue components for [Shopping Experiences](https://www.shopware.com/en/products/shopping-experiences/) CMS
 - CMS sections, blocks and elements styled using [Tailwind CSS](https://tailwindcss.com/) classes
-- 🚀 Empowered by [@shopware-pwa/composables-next](https://www.npmjs.com/package/@shopware-pwa/composables-next)
+- 🚀 Empowered by [@shopware/composables](https://www.npmjs.com/package/@shopware/composables)
 
 ## Setup
 
@@ -47,10 +47,7 @@ Then, register the Nuxt layer in `nuxt.config.ts` file:
 ```ts [nuxt.config.ts]
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware-pwa/cms-base"],
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -137,4 +134,4 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 ### Patch Changes
 
 - Updated dependencies [[`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc)]:
-  - @shopware-pwa/composables-next@1.6.1
+  - @shopware/composables@1.6.1

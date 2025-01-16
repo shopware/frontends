@@ -7,10 +7,5 @@ export default defineBuildConfig({
     cjsBridge: true,
   },
   declaration: true,
-  externals: [
-    "@nuxt/schema",
-    "@nuxt/kit",
-    "@shopware-pwa/composables-next",
-    "#imports",
-  ],
+  externals: ["@nuxt/schema", "@nuxt/kit", "@shopware/composables", "#imports"],
 });

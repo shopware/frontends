@@ -30,7 +30,7 @@ The `useProductSearch` allows us to `search` in the product's collection:
 
 ```ts
 import type { Schemas } from "#shopware";
-import { useProductSearch } from "@shopware-pwa/composables-next";
+import { useProductSearch } from "@shopware/composables";
 
 const { search } = useProductSearch();
 

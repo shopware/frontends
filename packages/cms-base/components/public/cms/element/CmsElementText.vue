@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementText } from "@shopware-pwa/composables-next";
+import type { CmsElementText } from "@shopware/composables";
 import { decodeHTML } from "entities";
 import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";

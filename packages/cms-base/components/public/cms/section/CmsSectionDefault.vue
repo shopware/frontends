@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CmsSectionDefault } from "@shopware-pwa/composables-next";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
+import type { CmsSectionDefault } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsSectionDefault;
