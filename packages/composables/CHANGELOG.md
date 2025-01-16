@@ -1,5 +1,11 @@
 # @shopware-pwa/composables-next
 
+## 1.6.1
+
+### Patch Changes
+
+- [#1594](https://github.com/shopware/frontends/pull/1594) [`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc) Thanks [@patzick](https://github.com/patzick)! - Deprecating package `@shopware-pwa/composables-next` and publishing it under `@shopware/composables`
+
 ## 1.6.0
 
 ### Minor Changes
