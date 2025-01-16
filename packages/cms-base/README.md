@@ -5,6 +5,10 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
+> [!WARNING]
+>
+> This package is deprecated and will be removed in the future. Use [@shopware/cms-base-layer](https://www.npmjs.com/package/@shopware/cms-base-layer) instead.
+
 Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using atomic css syntax (UnoCss / Tailwind).
 
 It is useful for projects that want to use the CMS components but design their own layout.
