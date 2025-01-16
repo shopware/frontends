@@ -5,6 +5,10 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
+> [!WARNING]
+>
+> This package is deprecated. Please use [@shopware/composables](https://www.npmjs.com/package/@shopware/composables) instead.
+
 Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
 
 ## Features
