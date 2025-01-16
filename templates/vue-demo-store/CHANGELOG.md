@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.6.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
+
 ## 1.5.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@shopware/helpers",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "type": "module",

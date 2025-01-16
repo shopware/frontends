@@ -1,5 +1,16 @@
 # @shopware-pwa/composables-next
 
+## 1.7.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
+
+### Patch Changes
+
+- Updated dependencies [[`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3)]:
+  - @shopware-pwa/helpers-next@1.3.0
+
 ## 1.6.1
 
 ### Patch Changes

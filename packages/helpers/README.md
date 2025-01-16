@@ -36,8 +36,8 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.3.0
 
 ### Minor Changes
 
-- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsBreadcrumbs` helper for building CMS breadcrumbs
+- [#1599](https://github.com/shopware/frontends/pull/1599) [`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3) Thanks [@patzick](https://github.com/patzick)! - Package `@shopware-pwa/helpers-next` is deprecated. Use [@shopware/helpers](https://www.npmjs.com/package/@shopware/helpers) instead.

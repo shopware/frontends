@@ -1,5 +1,13 @@
 # docs
 
+## 1.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639), [`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3)]:
+  - @shopware/composables@1.7.0
+  - @shopware-pwa/helpers-next@1.3.0
+
 ## 1.8.2
 
 ### Patch Changes
