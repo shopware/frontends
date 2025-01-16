@@ -20,7 +20,7 @@ You can activate the maintenance mode of your store by selecting your sales chan
 Maintenance mode is returned as an error from all of the endpoints. We can detect it by using `onResponseError` hook.
 
 ```ts
-import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { isMaintenanceMode } from "@shopware/helpers";
 
 const apiClient = createAPIClient({
   baseURL: shopwareEndpoint,
@@ -45,7 +45,7 @@ This example is for Nuxt 3 apps
 Every error thrown within the application is automatically caught and the `error.vue` page is displayed.
 
 ```ts
-import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { isMaintenanceMode } from "@shopware/helpers";
 
 apiClient.hook("onResponseError", (response) => {
   const error = isMaintenanceMode(response._data?.errors ?? []);

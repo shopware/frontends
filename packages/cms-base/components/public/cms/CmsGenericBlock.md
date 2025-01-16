@@ -5,7 +5,7 @@ Example usage:
 ```vue{14-19}
 <script setup lang="ts">
 import type { CmsSectionDefault } from "@shopware/composables";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
+import { getCmsLayoutConfiguration } from "@shopware/helpers";
 
 const props = defineProps<{
   content: CmsSectionDefault;

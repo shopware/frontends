@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { useCmsSection } from "@shopware/composables";
 import type { CmsSectionSidebar } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { computed } from "vue";
 import { useCategory } from "#imports";
 

@@ -112,7 +112,7 @@ There are few functions that could be used to extract some crucial information a
 Example how to work with Product's main image:
 
 ```ts
-import { getMainImageUrl } from "@shopware-pwa/helpers-next";
+import { getMainImageUrl } from "@shopware/helpers";
 
 const coverUrl = getMainImageUrl(product);
 // coverUrl is now an URL to the resource (or undefined)

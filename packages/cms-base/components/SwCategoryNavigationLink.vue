@@ -4,7 +4,7 @@ import {
   getCategoryRoute,
   getTranslatedProperty,
   urlIsAbsolute,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useUrlResolver } from "#imports";

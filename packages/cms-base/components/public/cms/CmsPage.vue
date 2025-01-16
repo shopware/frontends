@@ -2,7 +2,7 @@
 import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { pascalCase } from "scule";
 import { computed, h, resolveComponent } from "vue";
 import { createCategoryListingContext, useNavigationContext } from "#imports";

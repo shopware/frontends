@@ -2,7 +2,7 @@ import {
   getSrcSetForMedia,
   relativeUrlSlash,
   urlIsAbsolute,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { computed } from "vue";
 import type {
   AnchorHTMLAttributes,

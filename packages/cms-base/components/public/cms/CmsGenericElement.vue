@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware/composables";
+import { getCmsLayoutConfiguration } from "@shopware/helpers";
 import { h } from "vue";
 import type { Schemas } from "#shopware";
 

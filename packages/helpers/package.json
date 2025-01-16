@@ -1,7 +1,7 @@
 {
-  "name": "@shopware-pwa/helpers-next",
+  "name": "@shopware/helpers",
   "version": "1.2.0",
-  "description": "[DEPRECATED] Use @shopware/helpers instead. Shopware helpers for accessing API data",
+  "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "type": "module",
   "repository": {

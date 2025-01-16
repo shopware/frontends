@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductName } from "@shopware-pwa/helpers-next";
+import { getProductName } from "@shopware/helpers";
 
 const props = defineProps<{
   navigationId: string;

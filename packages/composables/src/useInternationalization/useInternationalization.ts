@@ -1,4 +1,4 @@
-import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
+import { urlIsAbsolute } from "@shopware/helpers";
 import type { Ref } from "vue";
 import { useContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";

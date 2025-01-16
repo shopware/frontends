@@ -3,7 +3,7 @@ import {
   getSmallestThumbnailUrl,
   isLandingPage,
   isProduct,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import type { Schemas } from "#shopware";
 
 export type UseCmsHeadReturn = ReturnType<typeof useCmsHead>;

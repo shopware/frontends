@@ -38,7 +38,7 @@ The API client provides a common interface to access the Shopware API. It can be
 ## helpers
 
 <div class="flex mt--4 mb-4 gap-2">
-    <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/helpers-next" target="_blank">@shopware-pwa/helpers-next</a>
+    <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/helpers" target="_blank">@shopware/helpers</a>
 </div>
 
 Helpers are functions that can be used for formatting, data manipulation and other stateless tasks within any JavaScript project. They are not tied to any other components.

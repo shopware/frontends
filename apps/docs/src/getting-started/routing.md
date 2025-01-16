@@ -128,7 +128,7 @@ We have created two new helper functions that can be used to avoid these extra c
 
 ```vue
 <script setup lang="ts">
-import { getCategoryRoute } from "@shopware-pwa/helpers-next";
+import { getCategoryRoute } from "@shopware/helpers";
 </script>
 
 <template>
@@ -142,7 +142,7 @@ import { getCategoryRoute } from "@shopware-pwa/helpers-next";
 
 ```vue
 <script setup lang="ts">
-import { getProductRoute } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware/helpers";
 </script>
 
 <template>

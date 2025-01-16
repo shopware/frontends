@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { resolveCmsComponent } from "@shopware/composables";
 import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
-} from "@shopware-pwa/helpers-next";
-import { resolveCmsComponent } from "@shopware/composables";
+} from "@shopware/helpers";
 import { h } from "vue";
 import type { Schemas } from "#shopware";
 

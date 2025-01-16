@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
+import type { BoxLayout, DisplayMode } from "@shopware/composables";
+import { useCmsTranslations } from "@shopware/composables";
 import {
   buildUrlPrefix,
   getProductFromPrice,
   getProductName,
   getProductRoute,
   getSmallestThumbnailUrl,
-} from "@shopware-pwa/helpers-next";
-import { getCmsTranslate } from "@shopware-pwa/helpers-next";
-import { ApiClientError } from "@shopware/api-client";
-import type { BoxLayout, DisplayMode } from "@shopware/composables";
-import { useCmsTranslations } from "@shopware/composables";
+} from "@shopware/helpers";
+import { getCmsTranslate } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { defu } from "defu";
 import { computed, ref, toRefs, useTemplateRef } from "vue";

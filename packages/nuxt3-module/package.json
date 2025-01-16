@@ -35,7 +35,7 @@
   "dependencies": {
     "@nuxt/kit": "3.14.1592",
     "@shopware/composables": "workspace:*",
-    "@shopware-pwa/helpers-next": "workspace:*",
+    "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "defu": "6.1.4",
     "js-cookie": "3.0.5"

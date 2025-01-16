@@ -3,7 +3,7 @@ import {
   downloadFile,
   getMedia,
   getSmallestThumbnailUrl,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import type { Schemas } from "#shopware";
 const props = defineProps<{
   lineItem: Schemas["OrderLineItem"];

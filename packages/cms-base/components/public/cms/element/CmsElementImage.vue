@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware/composables";
+import { buildUrlPrefix } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import { useCmsElementImage, useUrlResolver } from "#imports";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 import { useCmsTranslations } from "@shopware/composables";
+import { getCmsTranslate } from "@shopware/helpers";
 import { defu } from "defu";
 import { toRefs } from "vue";
 import {

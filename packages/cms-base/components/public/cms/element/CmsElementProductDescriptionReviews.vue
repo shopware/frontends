@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {
-  getProductName,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
 import type { CmsElementProductDescriptionReviews } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
+import { getProductName, getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref } from "vue";
 import xss from "xss";
