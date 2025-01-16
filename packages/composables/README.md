@@ -165,8 +165,13 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.6.1
+### Latest changes: 1.7.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
 
 ### Patch Changes
 
-- [#1594](https://github.com/shopware/frontends/pull/1594) [`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc) Thanks [@patzick](https://github.com/patzick)! - Deprecating package `@shopware-pwa/composables-next` and publishing it under `@shopware/composables`
+- Updated dependencies [[`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3)]:
+  - @shopware-pwa/helpers-next@1.3.0
