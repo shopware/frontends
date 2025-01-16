@@ -106,7 +106,7 @@ switch (routeName.value) {
 This switch statement handles all options that Shopware natively supports and can easily be enhanced. Another option is to build custom components for each route type and do the rest in there.
 
 :::tip Module imports
-If you use the `@shopware-pwa/nuxt3-module`, all composables will be automatically imported for you.
+If you use the `@shopware/nuxt-module`, all composables will be automatically imported for you.
 :::
 
 You are done at this point if you choose to build/design custom pages or integrate an external CMS system for the page content.

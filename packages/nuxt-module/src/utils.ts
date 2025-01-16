@@ -27,7 +27,10 @@ export async function isDependencyInstalledLocally(
       return true;
     }
   } catch (error) {
-    console.error("nuxt3-module: unable to check local dependencies", error);
+    console.error(
+      "Shopware[nuxt-module]: unable to check local dependencies",
+      error,
+    );
   }
   return false;
 }

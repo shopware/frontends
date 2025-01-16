@@ -40,7 +40,7 @@ mollie: {
 
 ## Use Credit Card components
 
-1. For Shopware Frontends aware projects (with `shopware-pwa/nuxt3-module` enabled)
+1. For Shopware Frontends aware projects (with `@shopware/nuxt-module` enabled)
 
 ```html
 <script setup lang="ts">

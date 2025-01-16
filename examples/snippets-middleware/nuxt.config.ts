@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     endpoint: "https://demo-frontends.shopware.store/store-api",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
-  modules: ["@shopware-pwa/nuxt3-module", "@nuxtjs/i18n"],
+  modules: ["@shopware/nuxt-module", "@nuxtjs/i18n"],
   typescript: {
     strict: true,
   },

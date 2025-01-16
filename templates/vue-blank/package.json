@@ -11,7 +11,7 @@
   "devDependencies": {
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "22.10.0",
     "@vueuse/nuxt": "12.0.0",

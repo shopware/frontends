@@ -16,7 +16,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@shopware/composables": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",

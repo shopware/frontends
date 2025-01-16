@@ -40,7 +40,7 @@ Next, you need to register all components in its `components/public` directory g
 
 export default defineNuxtConfig({
   /* ... */
-- modules: [/* ... */, "@shopware-pwa/nuxt3-module"],
+- modules: [/* ... */, "@shopware/nuxt-module"],
 + modules: [/* ... */, "@shopware/cms-base-layer"],
 });
 ```

@@ -1,4 +1,4 @@
-# @shopware-pwa/nuxt3-module
+# @shopware/nuxt-module
 
 ## 1.2.0
 

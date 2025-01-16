@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     accessToken: "SWSCZJLOU1JXSWX2A3RSR3EWYG",
   },
 
-  modules: ["@shopware-pwa/nuxt3-module"],
+  modules: ["@shopware/nuxt-module"],
 
   /**
    * Commented because of the StackBlitz error

@@ -42,7 +42,7 @@ Now the CMS module will automatically resolve that file based on the name and yo
 
 ❗**Internal components are not a part of public API. Once overwritten you need to track the changes on your own.**
 
-There is also a possibility to override the internal components, shared between public blocks and elements, the ones starting with `Sw` prefix, like [SwSlider.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base/components/SwSlider.vue) or [SwProductCard.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base/components/SwProductCard.vue).
+There is also a possibility to override the internal components, shared between public blocks and elements, the ones starting with `Sw` prefix, like [SwSlider.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/components/SwSlider.vue) or [SwProductCard.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/components/SwProductCard.vue).
 
 ### Additional Example
 

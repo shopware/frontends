@@ -80,7 +80,7 @@ jobs:
         run: pnpm lint
 
       - name: Publish package previews
-        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base' './packages/composables' './packages/helpers' './packages/nuxt3-module'
+        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module'
 
   test:
     name: Test

@@ -1,7 +1,7 @@
 ---
 "vue-demo-store": minor
 "@shopware/cms-base-layer": minor
-"@shopware-pwa/nuxt3-module": minor
+"@shopware/nuxt-module": minor
 "@shopware/composables": minor
 "vue-blank": minor
 "@shopware/helpers": minor

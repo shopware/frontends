@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@shopware/composables": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/nuxt-module": "canary",
     "nuxt": "3.12.4"
   },
   "devDependencies": {

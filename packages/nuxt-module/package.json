@@ -1,13 +1,13 @@
 {
-  "name": "@shopware-pwa/nuxt3-module",
+  "name": "@shopware/nuxt-module",
   "version": "1.2.0",
-  "description": "[DEPRECATED] Use @shopware/nuxt-module instead. Nuxt 3 module for Shopware Frontends",
+  "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt3-module",
+  "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt-module",
   "keywords": ["Nuxt", "Shopware", "Vue"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
