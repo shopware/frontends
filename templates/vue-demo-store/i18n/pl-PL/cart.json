@@ -8,6 +8,7 @@
     "orderTotal": "Całkowity koszt zamówienia",
     "subtotal": "Suma częściowa",
     "shippingEstimate": "Szacowana wysyłka",
+    "shippingCosts": "Koszty wysyłki",
     "emptyCartLabel": "Twój koszyk jest pusty!",
     "messages": {
       "addedToCart": "{p} został dodany do koszyka."

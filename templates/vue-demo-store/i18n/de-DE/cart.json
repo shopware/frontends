@@ -8,6 +8,7 @@
     "orderTotal": "Gesamtbestellwert",
     "subtotal": "Zwischensumme",
     "shippingEstimate": "Versandkostenabschätzung",
+    "shippingCosts": "Versandkosten",
     "emptyCartLabel": "Ihr Warenkorb ist leer!",
     "messages": {
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
