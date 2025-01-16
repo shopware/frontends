@@ -1,10 +1,6 @@
 # shopware/frontends - helpers
 
-> [!WARNING]
->
-> This package is deprecated and will be removed in the future. Use [@shopware/helpers](https://www.npmjs.com/package/@shopware/helpers) instead.
-
-Welcome to `@shopware-pwa/helpers-next` package.
+Welcome to `@shopware/helpers` package.
 
 For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
@@ -27,7 +23,7 @@ const visibilityMap: Record<CmsVisibility, HelpersCssClasses> = {
 These classes can be integrated into a custom template, thereby ensuring consistency across different packages. For example as a `safelist` classes in unocss configuration file
 
 ```ts
-import { helpersCssClasses } from "@shopware-pwa/helpers-next";
+import { helpersCssClasses } from "@shopware/helpers";
 
 export default defineConfig({
   safelist: helpersCssClasses,

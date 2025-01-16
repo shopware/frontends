@@ -7,7 +7,7 @@ This repository shows an example of application built using Shopware Frontends F
 ## What's inside
 
 - Nuxt 3 application
-- Required libraries installed (api-client, composables, nuxt3-module)
+- Required libraries installed (api-client, composables, nuxt-module)
 - Minimum configuration of Nuxt 3 module
 
 ## Requirements

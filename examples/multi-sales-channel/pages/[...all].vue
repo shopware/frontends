@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  getLanguageName,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+import { getLanguageName, getTranslatedProperty } from "@shopware/helpers";
 
 const { languages, getLanguageCodeFromId } = useInternationalization();
 const { sessionContext, languageIdChain } = useSessionContext();

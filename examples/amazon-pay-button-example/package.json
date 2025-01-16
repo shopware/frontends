@@ -1,5 +1,5 @@
 {
-  "name": "amazon-pay-button-example",
+  "name": "example-amazon-pay-button",
   "version": "1.0.0",
   "description": "Amazon Pay button implementation",
   "repository": "shopware/frontends",
@@ -37,6 +37,7 @@
     "@nuxt/schema": "3.14.1592",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
+    "@shopware/nuxt-module": "canary",
     "@types/node": "22.10.0",
     "nuxt": "3.14.1592",
     "typescript": "5.6.3",

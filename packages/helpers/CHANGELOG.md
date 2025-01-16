@@ -1,4 +1,4 @@
-# @shopware-pwa/helpers-next
+# @shopware/helpers
 
 ## 1.3.0
 

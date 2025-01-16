@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+import { getSmallestThumbnailUrl } from "@shopware/helpers";
 
 const props = defineProps(["product"]);
 useProduct(props.product);

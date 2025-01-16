@@ -1,6 +1,6 @@
 # Multi sales channel support Nuxt plugin
 
-Drop-in replacement for [@shopware-pwa/nuxt3-module](https://www.npmjs.com/package/@shopware-pwa/nuxt3-module)
+Drop-in replacement for [@shopware/nuxt-module](https://www.npmjs.com/package/@shopware/nuxt-module)
 to use with the [vue-demo-store](https://github.com/shopware/frontends/tree/main/templates/vue-demo-store) template.
 
 ## Features

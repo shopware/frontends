@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { type OnApproveData, loadScript } from "@paypal/paypal-js";
 import {
-  getSmallestThumbnailUrl,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
-import {
   useAddToCart,
   useCart,
   useCheckout,
@@ -13,6 +9,10 @@ import {
   useProductSearch,
   useSessionContext,
 } from "@shopware/composables";
+import {
+  getSmallestThumbnailUrl,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import type { Schemas } from "#shopware";

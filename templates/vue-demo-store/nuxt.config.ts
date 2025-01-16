@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware-pwa/cms-base"],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   runtimeConfig: {
     shopware: {
       /**
@@ -94,7 +94,7 @@ export default defineNuxtConfig({
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
-    "@shopware-pwa/nuxt3-module",
+    "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
   // components: true,

@@ -14,9 +14,9 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxtjs/i18n": "8.5.6",
-    "@shopware-pwa/cms-base": "canary",
+    "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@types/lru-cache": "7.10.10",
     "@types/node": "22.10.0",

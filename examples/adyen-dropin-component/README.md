@@ -31,7 +31,7 @@ For demo purposes, it's better to set `Adyen Cards` as the **default payment met
 
 ```js
   // ./playground/nuxt.config.ts
-  modules: ["@shopware-pwa/nuxt3-module"],
+  modules: ["@shopware/nuxt-module"],
   // see that "../src/module" points to this dir (from ./playground/nuxt.config.ts file)
 ```
 
@@ -40,7 +40,7 @@ For demo purposes, it's better to set `Adyen Cards` as the **default payment met
 There are three sections within `runtimeConfig`:
 
 - `public.loginData`: keeps customer login data - checkout requires to be logged-in (as guest or typical user)
-- `public.shopware`: configures the `@shopware-pwa/nuxt3-module` by telling what is the API we want to connect
+- `public.shopware`: configures the `@shopware/nuxt-module` by telling what is the API we want to connect
 - `public.adyenCheckout`: settings for `Adyen.client.ts` plugin to create a valid Adyen Checkout instance used later on
 
 ```js

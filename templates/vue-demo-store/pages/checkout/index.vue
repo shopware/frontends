@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { customValidators } from "@/i18n/utils/i18n-validators";
-import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 import type { operations } from "#shopware";
 

@@ -145,8 +145,7 @@ Remove the unocss imports, build modules and configuration from the `nuxt.config
    buildModules: [
      "@vueuse/nuxt",
 -    "@unocss/nuxt",
-     "@shopware-pwa/nuxt3-module",
-     "@shopware-pwa/cms-base",
+     "@shopware/nuxt-module"
    ],
    vueuse: {
      ssrHandlers: true,

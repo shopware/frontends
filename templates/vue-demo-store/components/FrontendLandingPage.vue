@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCmsBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getCmsBreadcrumbs } from "@shopware/helpers";
 import { useLandingSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
