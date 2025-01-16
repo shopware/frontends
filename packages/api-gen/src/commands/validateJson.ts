@@ -103,7 +103,7 @@ export async function validateJson(args: {
     );
     writeFileSync(overridesFilePath, json5.stringify(jsonOverrides, null, 2));
     console.log(
-      `Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
+      `[DEBUG] Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
     );
   }
 

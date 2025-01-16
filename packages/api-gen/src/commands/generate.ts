@@ -89,7 +89,7 @@ export async function generate(args: {
           json5.stringify(jsonOverrides, null, 2),
         );
         console.log(
-          `Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
+          `[DEBUG] Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
         );
       }
 
@@ -127,6 +127,9 @@ export async function generate(args: {
         writeFileSync(patchedSchemaPath, json5.stringify(patchedSchema), {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the patched schema in: ${c.bold(patchedSchemaPath)} file.`,
+        );
       }
 
       const astSchema = await openapiTS(patchedSchema, {
@@ -227,6 +230,7 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(`[DEBUG]: Debug Schema saved to ${fullOutputFilePath}`);
 
         schema = await format(schema, {
           // semi: false,
@@ -269,6 +273,9 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the generated schema in: ${c.bold(fullOutputFilePath)} file.`,
+        );
       }
 
       // TODO: change overrides file name to param
