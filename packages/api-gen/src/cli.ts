@@ -94,6 +94,11 @@ yargs(hideBin(process.argv))
           default: false,
           describe: "show patched logs",
         })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
+        })
         .help();
     },
     async (args) => validateJson(args),

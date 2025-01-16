@@ -79,13 +79,17 @@ export async function generate(args: {
 
       if (args.debug) {
         // save overrides to file
+        const overridesFilePath = join(
+          args.cwd,
+          "api-types",
+          `${args.apiType}ApiTypes.overrides-result.json`,
+        );
         writeFileSync(
-          join(
-            args.cwd,
-            "api-types",
-            `${args.apiType}ApiTypes.overrides-result.json`,
-          ),
+          overridesFilePath,
           json5.stringify(jsonOverrides, null, 2),
+        );
+        console.log(
+          `Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
         );
       }
 
