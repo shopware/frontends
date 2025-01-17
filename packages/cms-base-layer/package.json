@@ -26,7 +26,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nuxt/kit": "3.14.1592",
+    "@nuxt/kit": "3.15.2",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
@@ -43,15 +43,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/schema": "3.14.1592",
+    "@nuxt/schema": "3.15.2",
     "@types/three": "0.166.0",
     "@vitest/coverage-v8": "2.1.8",
-    "nuxt": "3.14.1592",
+    "nuxt": "3.15.2",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
     "vitest": "2.1.8",
     "vue-router": "4.5.0",
-    "vue-tsc": "2.1.10"
+    "vue-tsc": "2.2.0"
   }
 }
