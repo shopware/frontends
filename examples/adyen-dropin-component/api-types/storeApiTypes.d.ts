@@ -5486,7 +5486,7 @@ export type Schemas = {
     };
     customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
     extensions: {
-      adyenData: {};
+      adyenData: object;
     };
     /** Fallback group if the default customer group is not applicable */
     fallbackCustomerGroup?: {

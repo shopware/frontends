@@ -1,19 +1,29 @@
 <script setup lang="ts">
+import { useInternationalization, useShopwareContext } from "#imports";
+
 const { params } = useRoute();
 const { getRoles } = useB2bEmployeeManagementRoles();
-const { createSingleEmployee, getEmployeeById } = useB2bEmployeeManagement();
+const { getEmployeeById } = useB2bEmployeeManagement();
 const { languages, getAvailableLanguages } = useInternationalization();
 
-const handleCreateEmployee = () => {
-  createSingleEmployee(
+const { apiClient } = useShopwareContext();
+
+const handleEditEmployee = async () => {
+  const response = await apiClient.invoke(
+    "updateEmployee patch /employee/{id}",
     {
-      firstName: state.firstName,
-      lastName: state.lastName,
-      email: state.email,
-      roleID: state.roleID,
+      pathParams: {
+        id: params.id,
+      },
+      body: {
+        firstName: state.firstName,
+        lastName: state.lastName,
+        email: state.email,
+        roleId: state.roleID,
+      },
     },
-    languageId.value,
   );
+  await navigateTo("/employees");
 };
 const state = reactive({
   firstName: "",
@@ -32,7 +42,12 @@ onMounted(async () => {
   roles.value = elements;
 
   const employee = await getEmployeeById(params.id);
-  console.log(employee);
+
+  state.firstName = employee.firstName;
+  state.email = employee.email;
+  state.roleID = employee.role;
+  state.lastName = employee.lastName;
+  languageId.value = employee.languageId;
 });
 </script>
 <template>
@@ -45,7 +60,7 @@ onMounted(async () => {
       &larr; Back to employee list
     </NuxtLink>
     <form
-      @submit.prevent="handleCreateEmployee"
+      @submit.prevent="handleEditEmployee"
       class="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
       <div class="flex flex-col">
@@ -100,7 +115,7 @@ onMounted(async () => {
       </div>
       <div class="flex items-end">
         <button type="submit" class="bg-blue-500 text-white p-2 rounded">
-          Create employee
+          Edit employee
         </button>
       </div>
     </form>
