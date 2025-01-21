@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+  extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@nuxtjs/i18n"],
 
   runtimeConfig: {

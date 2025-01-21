@@ -1,4 +1,4 @@
-import { createShopwareContext } from "@shopware-pwa/composables-next/dist";
+import { createShopwareContext } from "@shopware/composables/dist";
 import { createApp } from "vue";
 import { apiClient } from "./apiClient";
 

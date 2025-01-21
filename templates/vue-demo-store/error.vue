@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RouteObject } from "@shopware-pwa/composables-next";
+import type { RouteObject } from "@shopware/composables";
 import type { NuxtError } from "#app";
 
 defineOptions({

@@ -1,5 +1,5 @@
 import Aura from "@primevue/themes/aura";
-import { createShopwareContext } from "@shopware-pwa/composables-next";
+import { createShopwareContext } from "@shopware/composables";
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";

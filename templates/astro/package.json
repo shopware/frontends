@@ -13,7 +13,7 @@
   "dependencies": {
     "@astrojs/node": "8.3.4",
     "@astrojs/vue": "4.5.3",
-    "@shopware-pwa/composables-next": "canary",
+    "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "5.2.1",
     "@vitejs/plugin-vue-jsx": "4.1.1",

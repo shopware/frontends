@@ -8,11 +8,11 @@ import {
   useProductPrice,
   useProductSearch,
   useSessionContext,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import type { Schemas } from "#shopware";

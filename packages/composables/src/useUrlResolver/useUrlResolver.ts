@@ -1,4 +1,4 @@
-import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
+import { buildUrlPrefix } from "@shopware/helpers";
 import { inject } from "vue";
 
 export function useUrlResolver() {

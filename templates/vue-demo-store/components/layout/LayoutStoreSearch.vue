@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductRoute } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware/helpers";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 import { useTemplateRef } from "vue";

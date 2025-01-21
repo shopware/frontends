@@ -1,4 +1,4 @@
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import type { Schemas } from "#shopware";

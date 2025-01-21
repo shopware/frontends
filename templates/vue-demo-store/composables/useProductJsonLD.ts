@@ -1,4 +1,4 @@
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import type { Schemas } from "#shopware";
 

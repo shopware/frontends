@@ -40,11 +40,11 @@ mollie: {
 
 ## Use Credit Card components
 
-1. For Shopware Frontends aware projects (with `shopware-pwa/nuxt3-module` enabled)
+1. For Shopware Frontends aware projects (with `@shopware/nuxt-module` enabled)
 
 ```html
 <script setup lang="ts">
-  import { useCheckout } from "@shopware-pwa/composables-next/dist";
+  import { useCheckout } from "@shopware/composables/dist";
   const { selectedPaymentMethod } = useCheckout();
   // the name may vary, so first, please check what comes from API
   const showMollieCreditCardComponent = computed(

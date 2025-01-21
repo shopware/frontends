@@ -107,7 +107,7 @@ export function getDefaultApiParams(): {
   [composableName: string]: unknown;
 } {
   console.error(
-    "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+    "[@shopware/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
   );
   return {};
 }

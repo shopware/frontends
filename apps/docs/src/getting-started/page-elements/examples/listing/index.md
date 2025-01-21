@@ -20,8 +20,8 @@ This listing shows the product name and price with soft hover effects and a fade
 
 ```vue
 <script setup lang="ts">
-import { useProductSearchSuggest } from "@shopware-pwa/composables-next";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { useProductSearchSuggest } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 
 const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
 

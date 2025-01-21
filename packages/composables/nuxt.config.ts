@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     dirs: ["src"],
   },
   build: {
-    transpile: ["@shopware-pwa/composables-next"],
+    transpile: ["@shopware/composables"],
   },
   telemetry: {
     enabled: false,

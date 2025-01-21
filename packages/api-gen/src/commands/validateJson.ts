@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import json5 from "json5";
 import type { ObjectSubtype, OpenAPI3 } from "openapi-typescript";
@@ -47,6 +47,8 @@ export async function validateJson(args: {
   cwd: string;
   filename?: string;
   apiType: string;
+  logPatches: boolean;
+  debug: boolean;
 }) {
   const schemaFilenameToValidate = args.filename
     ? args.filename
@@ -89,9 +91,21 @@ export async function validateJson(args: {
 
   const errors: string[] = [];
   const jsonOverrides = await loadJsonOverrides({
-    path: configJSON.patches,
+    paths: configJSON.patches,
     apiType: args.apiType,
   });
+
+  if (args.debug) {
+    const overridesFilePath = join(
+      args.cwd,
+      "api-types",
+      `${args.apiType}ApiTypes.overrides-result.json`,
+    );
+    writeFileSync(overridesFilePath, json5.stringify(jsonOverrides, null, 2));
+    console.log(
+      `[DEBUG] Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
+    );
+  }
 
   for (const [schemaName, schema] of Object.entries(
     fileContentAsJson.components?.schemas || {},
@@ -185,6 +199,7 @@ export async function validateJson(args: {
     errors,
     outdatedPatches,
     alreadyApliedPatches,
+    displayPatchedLogs: args.logPatches,
   });
 
   console.log(

@@ -1,6 +1,6 @@
 {
-  "name": "@shopware-pwa/helpers-next",
-  "version": "1.2.0",
+  "name": "@shopware/helpers",
+  "version": "1.4.0",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "type": "module",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@vitest/coverage-v8": "2.1.8",
-    "happy-dom": "16.5.3",
+    "happy-dom": "16.6.0",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "2.1.8"

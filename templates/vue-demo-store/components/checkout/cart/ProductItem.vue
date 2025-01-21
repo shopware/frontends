@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 import { ApiClientError } from "@shopware/api-client";
+import { getSmallestThumbnailUrl } from "@shopware/helpers";
 import type { Schemas } from "#shopware";
 
 const miniCartModal = useMiniCartModal();

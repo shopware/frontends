@@ -3,7 +3,7 @@ import {
   downloadFile,
   getMedia,
   getSmallestThumbnailUrl,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { Schemas, operations } from "#shopware";
 

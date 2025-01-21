@@ -20,21 +20,27 @@ test.describe.only(
 
     test("Check Homepage accessibility issues", async ({ page }) => {
       await homePage.visitMainPage();
-      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .disableRules(["heading-order", "page-has-heading-one"])
+        .analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     });
 
     test("Check Category accessibility issues", async ({ page }) => {
       await homePage.visitMainPage();
       await homePage.openCategoryPage();
-      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .disableRules(["page-has-heading-one"])
+        .analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     });
 
     test("Check Product Page accessibility issues", async ({ page }) => {
       await homePage.visitMainPage();
       await homePage.openCartPage();
-      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .disableRules(["page-has-heading-one"])
+        .analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     });
   },

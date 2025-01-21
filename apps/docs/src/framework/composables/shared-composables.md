@@ -19,7 +19,7 @@ Typically you extend shared composable by using the same core composable. In the
 Example:
 
 ```ts
-import { useCartFunction } from "@shopware-pwa/composables-next";
+import { useCartFunction } from "@shopware/composables";
 import { createSharedComposable } from "@vueuse/core";
 
 function myUseCart() {

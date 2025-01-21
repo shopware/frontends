@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
+import { useB2bQuoteManagement, useUser } from "@shopware/composables";
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
 import Timeline from "primevue/timeline";

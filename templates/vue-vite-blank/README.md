@@ -20,7 +20,7 @@ In order to have a different API connect to the app, change the API access infor
 
 ## Customize
 
-Now, you are free to use the `@shopware-pwa/composables-next` package in the application. You can start from [src/App.vue](./src/App.vue).
+Now, you are free to use the `@shopware/composables` package in the application. You can start from [src/App.vue](./src/App.vue).
 
 ## Install & Run
 

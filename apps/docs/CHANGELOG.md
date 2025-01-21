@@ -1,5 +1,41 @@
 # docs
 
+## 1.9.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+### Patch Changes
+
+- Updated dependencies [[`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed), [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed)]:
+  - @shopware/composables@1.8.0
+  - @shopware/helpers@1.4.0
+
+## 1.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639), [`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3)]:
+  - @shopware/composables@1.7.0
+  - @shopware-pwa/helpers-next@1.3.0
+
+## 1.8.2
+
+### Patch Changes
+
+- Updated dependencies [[`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc)]:
+  - @shopware-pwa/composables-next@1.6.1
+
+## 1.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6), [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715), [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42), [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a)]:
+  - @shopware-pwa/composables-next@1.6.0
+
 ## 1.8.0
 
 ### Minor Changes

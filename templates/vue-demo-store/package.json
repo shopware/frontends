@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "1.4.0",
+  "version": "1.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,10 +16,10 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@shopware-pwa/cms-base": "canary",
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/helpers-next": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/cms-base-layer": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@unocss/nuxt": "0.65.1",
     "@vuelidate/core": "2.0.3",

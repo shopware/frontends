@@ -2,7 +2,7 @@
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 import { useTemplateRef } from "vue";
 import type { Schemas } from "#shopware";
 

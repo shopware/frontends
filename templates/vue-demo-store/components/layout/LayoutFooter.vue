@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  getCategoryRoute,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+import { getCategoryRoute, getTranslatedProperty } from "@shopware/helpers";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
 const localePath = useLocalePath();

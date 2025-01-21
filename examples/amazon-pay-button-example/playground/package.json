@@ -11,8 +11,8 @@
     "typecheck": "nuxt prepare && vue-tsc --noEmit"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "nuxt": "3.12.4"
   },
   "devDependencies": {

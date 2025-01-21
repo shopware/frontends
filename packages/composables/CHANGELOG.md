@@ -1,4 +1,49 @@
-# @shopware-pwa/composables-next
+# @shopware/composables
+
+## 1.8.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+### Patch Changes
+
+- Updated dependencies [[`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed), [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed)]:
+  - @shopware/helpers@1.4.0
+
+## 1.7.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
+
+### Patch Changes
+
+- Updated dependencies [[`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3)]:
+  - @shopware-pwa/helpers-next@1.3.0
+
+## 1.6.1
+
+### Patch Changes
+
+- [#1594](https://github.com/shopware/frontends/pull/1594) [`957e514`](https://github.com/shopware/frontends/commit/957e51451b3a6e4833c4b58794993b729a53f3bc) Thanks [@patzick](https://github.com/patzick)! - Deprecating package `@shopware-pwa/composables-next` and publishing it under `@shopware/composables`
+
+## 1.6.0
+
+### Minor Changes
+
+- [#1540](https://github.com/shopware/frontends/pull/1540) [`3778061`](https://github.com/shopware/frontends/commit/3778061f7fbc82e7deabfa466fd3bb8f34325f42) Thanks [@kasztof](https://github.com/kasztof)! - Allow to pass full seach criteria according to loadNavigationElements method of useNavigation composable
+
+### Patch Changes
+
+- [#1564](https://github.com/shopware/frontends/pull/1564) [`3d2f2b5`](https://github.com/shopware/frontends/commit/3d2f2b5595ac847be66302befed921aa2f9264b6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Return the last element for the payment and shipping methods in `useOrderDetails`. The reason for this change is that the backend returns collections sorted by the entry date
+
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `shippingCosts` property in `useCart` composable that returns shipping costs of the cart, with the shipping discounts.
+  `shippingTotal` function is now deprecated as it only returns the first value from the array. The backend is returning a collection.
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - useCustomerOrders - Set current page based on the orders endpoint response
 
 ## 1.5.0
 
