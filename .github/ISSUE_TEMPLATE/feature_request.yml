@@ -1,35 +1,39 @@
 name: 🚀 Feature request
 description: Suggest an idea for this project
-title: "[FEATURE] "
-labels: [enhancement]
+labels: ["pending triage"]
 body:
+- type: textarea
+  id: feature-description
+  attributes:
+    label: Describe the feature
+    description: A description of the feature you are requesting.
+    placeholder: Feature description
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Description
-    description: A brief description of the feature you are requesting.
+    description: A brief description of the feature you are requesting. Please mention use cases, possible solutions and alternatives. 
   validations:
     required: true
 - type: textarea
   attributes:
-    label: Use Case
-    description: What problem will this feature solve? Please provide a specific use case.
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Proposed Solution
-    description: If you have a suggestion for how to implement this feature, please describe it here.
+    label: Acceptance Criteria
+    description: Describe shortly in points the main criteria to be met in order to fulfill this request.
   validations:
     required: false
-- type: textarea
+- type: checkboxes
+  id: additional-info
   attributes:
-    label: Alternatives Considered
-    description: Have you considered any alternative solutions or workarounds? If so, please describe them here.
-  validations:
-    required: false
-- type: textarea
+    label: Additional information
+    description: Additional information that helps us decide how to proceed.
+    options:
+      - label: Would you be willing to help implement this feature?
+- type: checkboxes
+  id: required-info
   attributes:
-    label: Additional Context
-    description: Is there anything else you'd like to add? Links? References? Anything that will give us more context about your request!
-  validations:
-    required: false
+    label: Checks
+    description: Before submitting, please make sure you do the following
+    options:
+      - label: Check existing [discussions](https://github.com/shopware/frontends/discussions) and [issues](https://github.com/shopware/frontends/issues).
+        required: true
