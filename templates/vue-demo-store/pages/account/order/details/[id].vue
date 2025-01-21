@@ -79,18 +79,26 @@ const selectedPaymentMethod = computed({
   },
 });
 
+const paymentMethodUI = ref("");
+
 const openChangePaymentModal = async () => {
   isChangePaymentModalOpen.value = true;
 
   try {
     const payments = await getPaymentMethods();
     paymentMethods.value = payments;
+    paymentMethodUI.value = paymentMethod.value?.id || "";
   } catch (error) {
     console.error(error);
   }
 };
 
 const closeChangePaymentModal = () => {
+  isChangePaymentModalOpen.value = false;
+};
+
+const confirmChangePaymentModal = () => {
+  selectedPaymentMethod.value = paymentMethodUI.value;
   isChangePaymentModalOpen.value = false;
 };
 
@@ -354,7 +362,7 @@ const generateBackLink = () => {
             <h3 class="text-lg font-semibold text-gray-900 mb-4">
               {{ $t("account.orderDetails.paymentMethod") }}
             </h3>
-            <div class="flex items-center justify-between">
+            <div v-if="!isLoading" class="flex items-center justify-between">
               <div class="flex items-center">
                 <div>
                   <p class="text-sm font-medium text-gray-900">
@@ -369,6 +377,14 @@ const generateBackLink = () => {
               >
                 {{ $t("account.orderDetails.change") }}
               </button>
+            </div>
+            <div v-else class="animate-pulse">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="w-32 h-4 bg-gray-200 rounded"></div>
+                </div>
+                <div class="w-24 h-8 bg-gray-200 rounded"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -393,7 +409,7 @@ const generateBackLink = () => {
               type="radio"
               :id="method.id"
               :value="method.id"
-              v-model="selectedPaymentMethod"
+              v-model="paymentMethodUI"
               class="mr-3"
             />
             <label :for="method.id" class="flex-grow">
@@ -411,6 +427,13 @@ const generateBackLink = () => {
         <div class="mt-6 flex justify-end space-x-3">
           <button
             @click="closeChangePaymentModal"
+            class="px-4 py-2 bg-dark-600 text-white rounded hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            :disabled="!selectedPaymentMethod"
+          >
+            {{ $t("account.orderDetails.close") }}
+          </button>
+          <button
+            @click="confirmChangePaymentModal"
             class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             :disabled="!selectedPaymentMethod"
           >
