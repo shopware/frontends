@@ -250,6 +250,10 @@ export const sidebar = [
             text: "A/B Testing",
             link: "/best-practices/testing/ab-testing.html",
           },
+          {
+            text: "Accessibility Testing",
+            link: "/best-practices/testing/accessibility-testing.html",
+          },
         ],
       },
     ],
