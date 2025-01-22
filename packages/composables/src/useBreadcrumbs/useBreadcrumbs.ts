@@ -71,7 +71,7 @@ export function useBreadcrumbs(
   const buildDynamicBreadcrumbs = async (
     breadcrumbs: operations["readBreadcrumb get /breadcrumb/{id}"]["response"],
   ) => {
-    _breadcrumbs.value = breadcrumbs.breadcrumbs.map((breadcrumb) => {
+    _breadcrumbs.value = breadcrumbs.map((breadcrumb) => {
       // Adjust path to be compatible with the router
       return {
         ...breadcrumb,

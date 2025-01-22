@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { operations } from "#shopware";
+import type { Schemas } from "#shopware";
 import { useSetup } from "../_test";
 import { useBreadcrumbs } from "./useBreadcrumbs";
 
@@ -48,9 +48,9 @@ describe("useBreadcrumbs", () => {
         ],
       },
     });
-    await vm.buildDynamicBreadcrumbs({
-      breadcrumbs: [{ path: "test" }],
-    } as unknown as operations["readBreadcrumb get /breadcrumb/{id}"]["response"]);
+    await vm.buildDynamicBreadcrumbs([
+      { path: "test" } as Schemas["Breadcrumb"],
+    ]);
 
     expect(vm.breadcrumbs[0].path).toBe("/test");
   });

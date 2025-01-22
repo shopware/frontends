@@ -19,7 +19,7 @@
     "@vitejs/plugin-vue-jsx": "4.1.1",
     "astro": "4.16.18",
     "js-cookie": "3.0.5",
-    "sharp": "0.33.4",
+    "sharp": "0.33.5",
     "vue": "3.5.13"
   },
   "engines": {
