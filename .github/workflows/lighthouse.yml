@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 20
       - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v9
+        uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
             "https://frontends-demo.vercel.app/"
