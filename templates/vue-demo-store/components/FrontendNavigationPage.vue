@@ -12,6 +12,7 @@ const { search } = useCategorySearch();
 const route = useRoute();
 const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
+const errorDetails = ref();
 
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
@@ -37,6 +38,7 @@ const { data, error } = await useAsyncData(
     for (const response of responses) {
       if (response.status === "rejected") {
         console.error("[FrontendNavigationPage.vue]", response.reason.message);
+        errorDetails.value = response.reason.message;
       }
     }
 
@@ -54,8 +56,12 @@ if (data.value?.breadcrumbs) {
 }
 
 if (!categoryResponse.value) {
-  console.error("[FrontendNavigationPage.vue]", error.value?.message);
-  throw error.value;
+  const statusMessage = error.value || errorDetails.value;
+  console.error("[FrontendNavigationPage.vue]", statusMessage);
+  throw createError({
+    statusCode: 500,
+    message: statusMessage,
+  });
 }
 
 const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
