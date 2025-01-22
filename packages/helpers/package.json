@@ -37,10 +37,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@vitest/coverage-v8": "2.1.8",
-    "happy-dom": "16.6.0",
+    "@vitest/coverage-v8": "3.0.3",
+    "happy-dom": "16.7.2",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.8"
+    "vitest": "3.0.3"
   }
 }
