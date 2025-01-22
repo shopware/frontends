@@ -20,7 +20,7 @@ const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 const contextResponse = await apiClient.invoke("readContext get /context");
 sessionContextData.value = contextResponse.data;
 
-if (config.broadcasting) {
+if (config.public.broadcasting) {
   useBroadcastChannelSync();
 }
 
