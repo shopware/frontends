@@ -18,7 +18,7 @@
     "vue": "3.5.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.4",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
     "vite": "6.0.11",

@@ -11,7 +11,7 @@
     "lint:fix": "biome check . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.4",
     "@shopware/composables": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",

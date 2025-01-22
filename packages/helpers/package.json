@@ -36,7 +36,7 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.4",
     "@vitest/coverage-v8": "2.1.8",
     "happy-dom": "16.6.0",
     "tsconfig": "workspace:*",

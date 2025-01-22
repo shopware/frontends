@@ -22,7 +22,7 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.4",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",

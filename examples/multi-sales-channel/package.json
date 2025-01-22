@@ -25,7 +25,7 @@
     "vue-tsc": "2.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3"
+    "@biomejs/biome": "1.9.4"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
