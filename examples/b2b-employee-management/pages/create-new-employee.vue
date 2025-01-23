@@ -1,18 +1,17 @@
 <script setup lang="ts">
-const { getRoles } = useB2bEmployeeManagementRoles();
-const { createSingleEmployee } = useB2bEmployeeManagement();
 const { languages, getAvailableLanguages } = useInternationalization();
+const { apiClient } = useShopwareContext();
 
 const handleCreateEmployee = async () => {
-  await createSingleEmployee(
-    {
+  await apiClient.invoke("createEmployee post /employee/create", {
+    body: {
       firstName: state.firstName,
       lastName: state.lastName,
       email: state.email,
       roleID: state.roleID,
+      languageId: languageId.value,
     },
-    languageId.value,
-  );
+  });
 
   navigateTo("/employees");
 };
@@ -29,7 +28,9 @@ const roles = ref([]);
 
 onMounted(async () => {
   await getAvailableLanguages();
-  const { elements } = await getRoles();
+  const {
+    data: { elements },
+  } = await apiClient.invoke("readRoles get /role");
   roles.value = elements;
 });
 </script>

@@ -17,11 +17,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@shopware/composables": "canary",
-    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "@unocss/nuxt": "0.62.4",
+    "nuxt3-notifications": "^1.2.3",
     "unocss": "0.62.4"
   }
 }

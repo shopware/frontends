@@ -2,8 +2,6 @@
 import { useInternationalization, useShopwareContext } from "#imports";
 
 const { params } = useRoute();
-const { getRoles } = useB2bEmployeeManagementRoles();
-const { getEmployeeById } = useB2bEmployeeManagement();
 const { languages, getAvailableLanguages } = useInternationalization();
 
 const { apiClient } = useShopwareContext();
@@ -38,16 +36,25 @@ const roles = ref([]);
 
 onMounted(async () => {
   await getAvailableLanguages();
-  const { elements } = await getRoles();
+  const {
+    data: { elements },
+  } = await apiClient.invoke("readRoles get /role");
   roles.value = elements;
 
-  const employee = await getEmployeeById(params.id);
+  const { data: employeeData } = await apiClient.invoke(
+    "readEmployee get /employee/{id}",
+    {
+      pathParams: {
+        id: params.id,
+      },
+    },
+  );
 
-  state.firstName = employee.firstName;
-  state.email = employee.email;
-  state.roleID = employee.role;
-  state.lastName = employee.lastName;
-  languageId.value = employee.languageId;
+  state.firstName = employeeData.firstName;
+  state.email = employeeData.email;
+  state.roleID = employeeData.role;
+  state.lastName = employeeData.lastName;
+  languageId.value = employeeData.languageId;
 });
 </script>
 <template>

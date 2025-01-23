@@ -69,7 +69,6 @@ const isGroupChecked = (group) => {
 };
 
 const toggleGroup = (group) => {
-  console.log("toggleGroup", group);
   const allSelected = isGroupChecked(group);
   group.permissions.forEach((permission) => {
     const index = model.value.indexOf(permission.permissionName);

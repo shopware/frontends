@@ -1,24 +1,56 @@
 <script setup lang="ts">
+const { apiClient } = useShopwareContext();
+const { notify } = useNotification();
 const employees = ref([]);
-const { getEmployees, reinviteEmployee, deleteEmployee } =
-  useB2bEmployeeManagement();
 
+/**
+ * Lifecycle hook that is called when the component is mounted.
+ * This hook is called only on the client side.
+ * This hook asynchronously calls the getEmployees function to fetch employee data.
+ */
 onMounted(async () => {
-  updateEmployees();
+  getEmployees();
 });
 
-const updateEmployees = async () => {
-  const { elements } = await getEmployees();
+const getEmployees = async () => {
+  // apiClient action for fetching employees list
+  const {
+    data: { elements },
+  } = await apiClient.invoke("readEmployeesPOST post /employee");
+
   employees.value = elements;
 };
 
 const handleResendInvitation = async (employeeId: string) => {
-  await reinviteEmployee(employeeId);
+  try {
+    // apiClient action for reinviting an employee
+    // employeeId is the id of the employee to be reinvited that can be obtained from the employee object
+    await apiClient.invoke("reinviteEmployee post /employee/reinvite/{id}", {
+      body: {},
+      pathParams: {
+        id: employeeId,
+      },
+    });
+    notify({
+      title: "Invitation",
+      text: "Invitation has been resent successfully",
+      type: "success",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const handleDeleteEmployee = async (employeeId: string) => {
-  await deleteEmployee(employeeId);
-  updateEmployees();
+  // apiClient action for deleting an employee
+  // employeeId is the id of the employee to be deleted that can be obtained from the employee object
+  await apiClient.invoke("deleteEmployee delete /employee/{id}", {
+    pathParams: {
+      id: employeeId,
+    },
+  });
+  // Refresh the employee list after deleting an employee
+  getEmployees();
 };
 </script>
 <template>

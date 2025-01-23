@@ -1,18 +1,24 @@
 <script setup lang="ts">
+const { apiClient } = useShopwareContext();
 const roles = ref([]);
-const { getRoles, deleteRole } = useB2bEmployeeManagementRoles();
 
 onMounted(async () => {
   updateRoles();
 });
 
 const handleDelete = async (id: string) => {
-  await deleteRole(id);
+  await apiClient.invoke("deleteRole delete /role/{id}", {
+    pathParams: {
+      id,
+    },
+  });
   updateRoles();
 };
 
 const updateRoles = async () => {
-  const { elements } = await getRoles();
+  const {
+    data: { elements },
+  } = await apiClient.invoke("readRoles get /role");
   roles.value = elements;
 };
 </script>
