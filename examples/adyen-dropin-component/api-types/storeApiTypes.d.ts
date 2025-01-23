@@ -749,11 +749,7 @@ export type Schemas = {
     /** @enum {string} */
     type: "page" | "link" | "folder";
   };
-  BreadcrumbCollection: {
-    /** @enum {string} */
-    apiAlias: "breadcrumb_collection";
-    breadcrumbs: components["schemas"]["Breadcrumb"][];
-  };
+  BreadcrumbCollection: components["schemas"]["Breadcrumb"][];
   CalculatedPrice: {
     /** @enum {string} */
     apiAlias: "calculated_price";

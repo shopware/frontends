@@ -65,8 +65,8 @@ describe("componentsApiAlias.rule", async () => {
        - Expected
       + Received
 
-        Object {
-          "enum": Array [
+        {
+          "enum": [
       -     "cms_block",
       +     "cmsBlock",
           ],
@@ -96,8 +96,8 @@ describe("componentsApiAlias.rule", async () => {
        - Expected
       + Received
 
-        Object {
-          "enum": Array [
+        {
+          "enum": [
       -     "price_definition",
       +     "cart_price_quantity",
           ],

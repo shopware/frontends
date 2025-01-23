@@ -13049,15 +13049,10 @@
         }
       },
       "BreadcrumbCollection": {
-        "type": "object",
-        "properties": {
-          "breadcrumbs": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Breadcrumb" }
-          },
-          "apiAlias": { "type": "string", "enum": ["breadcrumb_collection"] }
-        },
-        "required": ["breadcrumbs", "apiAlias"]
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Breadcrumb"
+        }
       },
       "NaturalLanguageSearchTermResponse": {
         "type": "array",

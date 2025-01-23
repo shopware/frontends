@@ -26,7 +26,10 @@ if (landingResponse.value) {
 
 if (!landingResponse?.value) {
   console.error("[FrontendLandingPage.vue]", error.value?.message);
-  throw error.value;
+  throw createError({
+    statusCode: 500,
+    message: error.value?.message,
+  });
 }
 
 const landingPage = landingResponse as Ref<Schemas["LandingPage"]>;
