@@ -11,16 +11,16 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
+    "@shopware/api-client": "canary",
+    "@shopware/api-gen": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "nuxt": "3.12.4",
     "vue": "3.5.6",
     "vue-router": "4.4.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@shopware/api-client": "canary",
-    "@shopware/api-gen": "canary",
-    "@shopware/composables": "canary",
-    "@shopware/nuxt-module": "canary",
     "@unocss/nuxt": "0.62.4",
     "nuxt3-notifications": "^1.2.3",
     "unocss": "0.62.4"
