@@ -32,7 +32,8 @@ export default defineNuxtPlugin((NuxtApp) => {
     runtimeConfig.public?.shopware?.shopwareEndpoint;
 
   const shopwareEndpointSSR =
-    runtimeConfig.shopware?.endpoint ?? shopwareEndpointCSR;
+    (NuxtApp.ssrContext && runtimeConfig.shopware?.endpoint) ||
+    shopwareEndpointCSR;
 
   const shopwareEndpoint = import.meta.server
     ? shopwareEndpointSSR
@@ -63,10 +64,9 @@ export default defineNuxtPlugin((NuxtApp) => {
     contextToken: shouldUseSessionContextInServerRender
       ? contextTokenFromCookie
       : "",
-    defaultHeaders: defu(
-      runtimeConfig.apiClientConfig?.headers,
+    defaultHeaders:
+      (NuxtApp.ssrContext && runtimeConfig.apiClientConfig?.headers) ||
       runtimeConfig.public?.apiClientConfig?.headers,
-    ),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {

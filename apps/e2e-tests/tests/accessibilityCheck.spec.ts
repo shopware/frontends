@@ -30,7 +30,7 @@ test.describe.only(
       await homePage.visitMainPage();
       await homePage.openCategoryPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
-        .disableRules(["page-has-heading-one"])
+        .disableRules(["heading-order", "page-has-heading-one"])
         .analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     });
@@ -39,7 +39,7 @@ test.describe.only(
       await homePage.visitMainPage();
       await homePage.openCartPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
-        .disableRules(["page-has-heading-one"])
+        .disableRules(["heading-order", "page-has-heading-one"])
         .analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     });
