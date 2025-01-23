@@ -3,8 +3,8 @@ const { getRoles } = useB2bEmployeeManagementRoles();
 const { createSingleEmployee } = useB2bEmployeeManagement();
 const { languages, getAvailableLanguages } = useInternationalization();
 
-const handleCreateEmployee = () => {
-  createSingleEmployee(
+const handleCreateEmployee = async () => {
+  await createSingleEmployee(
     {
       firstName: state.firstName,
       lastName: state.lastName,
@@ -13,6 +13,8 @@ const handleCreateEmployee = () => {
     },
     languageId.value,
   );
+
+  navigateTo("/employees");
 };
 const state = reactive({
   firstName: "",

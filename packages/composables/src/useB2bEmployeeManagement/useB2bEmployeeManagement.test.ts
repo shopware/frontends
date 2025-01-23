@@ -21,7 +21,7 @@ describe("useB2bEmployeeManagement", () => {
       firstName: "test",
       lastName: "test2",
       roleId: "32323",
-      languageID: "1232323412",
+      languageId: "1232323412",
     };
     injections.apiClient.invoke.mockResolvedValue({
       data: {},

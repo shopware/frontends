@@ -360,15 +360,18 @@ export type Schemas = {
      * @default false
      */
     canSendRequestEmail?: boolean;
-    /** The mode of the interaction */
-    mode?: string;
+    /**
+     * The mode of the interaction
+     * @enum {string}
+     */
+    mode?: "guided" | "self";
     /** The name of the sales channel */
     salesChannelName?: string;
     /**
      * The video and audio settings
      * @enum {string}
      */
-    videoAudioSettings?: "none" | "both" | "audio_only";
+    videoAudioSettings?: "none" | "both" | "audio-only";
   };
   ApprovalRule: {
     active?: boolean;
@@ -700,6 +703,24 @@ export type Schemas = {
     name: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+  };
+  BaseInteraction: {
+    /**
+     * The time in seconds how long the interaction should be stored in the database
+     * @default -1
+     */
+    lifeTimeInSeconds?: number;
+    /**
+     * The time when the interaction was triggered
+     * @default now
+     */
+    triggeredAt?: string;
+  };
+  BasePresentationSlideData: {
+    cmsPage?: components["schemas"]["CmsPage"];
+    extensions?: {
+      cmsPageRelation?: components["schemas"]["PresentationCmsPage"];
+    };
   };
   Breadcrumb: {
     /** @enum {string} */
@@ -1146,7 +1167,6 @@ export type Schemas = {
   ClientPresentationStateResponse: {
     stateForAll?: components["schemas"]["StateForAll"];
     stateForClients?: components["schemas"]["StateForClients"];
-    stateForMe?: components["schemas"]["StateForMe"];
   };
   CmsBlock: {
     /** @enum {string} */
@@ -1340,7 +1360,9 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: {
+      _uniqueIdentifier?: string;
+    };
     extensions?: {
       swagCmsExtensionsForm?: {
         data?: {
@@ -1365,6 +1387,11 @@ export type Schemas = {
     translated: {
       blockId: string;
       cmsBlockVersionId: string;
+      config?: {
+        content?: {
+          value?: string;
+        };
+      };
       slot: string;
       type: string;
       versionId: string;
@@ -1545,52 +1572,7 @@ export type Schemas = {
     /** The subject of the appointment */
     subject: string;
   };
-  CreateInteractionRequestBody: {
-    /**
-     * The time in seconds how long the interaction should be stored in the database
-     * @default -1
-     */
-    lifeTimeInSeconds?: number;
-    /**
-     * the name of the interaction
-     * @enum {string}
-     */
-    name:
-      | "keep.alive"
-      | "product.viewed"
-      | "quickview.opened"
-      | "quickview.closed"
-      | "dynamicPage.opened"
-      | "dynamicProductPage.opened"
-      | "dynamicPage.closed"
-      | "page.viewed"
-      | "guide.hovered"
-      | "attendee.product.collection.liked"
-      | "attendee.product.collection.disliked"
-      | "attendee.product.collection.removed"
-      | "attendee.leave"
-      | "remote.checkout.accepted"
-      | "remote.checkout.denied"
-      | "broadcastMode.toggled"
-      | "viewMode.changed"
-      | "screenSharing.toggled";
-    payload:
-      | components["schemas"]["EmptyPayload"]
-      | components["schemas"]["ProductPayload"]
-      | components["schemas"]["DynamicPageOpenedPayload"]
-      | components["schemas"]["DynamicProductPageOpenedPayload"]
-      | components["schemas"]["DynamicPageClosedPayload"]
-      | components["schemas"]["PageViewedPayload"]
-      | components["schemas"]["GuideHoveredPayload"]
-      | components["schemas"]["ToggleBroadcastModePayload"]
-      | components["schemas"]["ViewModeChangedPayload"]
-      | components["schemas"]["ScreenSharingToggledPayload"];
-    /**
-     * The time when the interaction was triggered
-     * @default now
-     */
-    triggeredAt?: string;
-  };
+  CreateInteractionRequestBody: components["schemas"]["DynamicInteractionBody"];
   Criteria: {
     aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Association"];
@@ -1855,6 +1837,16 @@ export type Schemas = {
         company: string;
         vatIds: [string, ...string[]];
       }
+    | {
+        /** @enum {string} */
+        accountType: "private";
+      }
+    | {
+        /** @enum {string} */
+        accountType: "business";
+        company: string;
+        vatIds: [string, ...string[]];
+      }
   );
   CustomerAddress: {
     additionalAddressLine1?: string;
@@ -1994,6 +1986,14 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  DiscountLineItemPayload: {
+    /** Format: float */
+    discountPrice?: number;
+    /** @enum {string} */
+    discountType?: "percentage" | "absolute";
+    /** Format: float */
+    discountValue?: number;
+  };
   Document: {
     config: {
       name: string;
@@ -2130,7 +2130,6 @@ export type Schemas = {
     customFields?: GenericRecord;
     id?: string;
     name?: string;
-    startAsBroadcast?: boolean;
     /** Format: date-time */
     readonly updatedAt?: string;
     url?: string;
@@ -2208,42 +2207,69 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  DynamicInteractionBody:
+    | components["schemas"]["EmptyInteraction"]
+    | components["schemas"]["ProductInteraction"]
+    | components["schemas"]["DynamicPageOpenedInteraction"]
+    | components["schemas"]["DynamicPageClosedInteraction"]
+    | components["schemas"]["DynamicProductPageOpenedInteraction"]
+    | components["schemas"]["PageViewedInteraction"]
+    | components["schemas"]["GuideHoveredInteraction"]
+    | components["schemas"]["ToggleBroadcastModeInteraction"]
+    | components["schemas"]["ViewModeChangedInteraction"]
+    | components["schemas"]["ScreenSharingToggledInteraction"];
+  DynamicPageClosedInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["DynamicPageClosedPayload"];
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
+    name: "dynamicPage.closed";
+  };
   DynamicPageClosedPayload: {
     /**
      * Whether all pages were closed
      * @default false
      */
     all?: boolean;
-    /**
-     * discriminator enum property added by openapi-typescript
-     * @enum {string}
-     */
-    name: "dynamicPage.closed";
     /** The id of the page that was closed */
     pageId?: string | null;
   };
-  DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"] & {
+  DynamicPageOpenedInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["DynamicPageOpenedPayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "dynamicPage.opened";
   };
+  DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"];
   DynamicProductListingPageOpenedPayload: {
     /** Current page position in the pagination */
     page: number;
   };
-  DynamicProductPageOpenedPayload: {
-    /** the id from the product which is shown on the dynamic page */
-    productId: string;
-  } & (components["schemas"]["AbstractDynamicPageOpenedPayload"] & {
+  DynamicProductPageOpenedInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["DynamicProductPageOpenedPayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "dynamicProductPage.opened";
-  });
-  EmptyPayload: {
+  };
+  DynamicProductPageOpenedPayload: {
+    /** the id from the product which is shown on the dynamic page */
+    productId: string;
+  } & components["schemas"]["AbstractDynamicPageOpenedPayload"];
+  EmptyInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: GenericRecord;
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
@@ -2256,6 +2282,7 @@ export type Schemas = {
       | "remote.checkout.accepted"
       | "remote.checkout.denied";
   };
+  EmptyPayload: Record<string, never>;
   EntitySearchResult: {
     /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
     aggregations?: GenericRecord[];
@@ -2306,13 +2333,18 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  GuideHoveredPayload: {
-    hoveredElementId?: string | null;
+  GuideHoveredInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["GuideHoveredPayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "guide.hovered";
+  };
+  GuideHoveredPayload: {
+    hoveredElementId?: string | null;
   };
   ImportExportFile: {
     /** Format: date-time */
@@ -2350,6 +2382,13 @@ export type Schemas = {
     appointmentName?: string;
     /** The created Id for the attendee */
     attendeeId?: string;
+    /** The name of the attendee */
+    attendeeName?: string | null;
+    /** The b2b features that available for the appointment */
+    b2bFeatures?: {
+      /** To know if the quote management is enabled for current customer */
+      quoteManagement?: boolean;
+    };
     /** The appointment id */
     id?: string;
     /** To see if it's a preview appointment */
@@ -2375,6 +2414,8 @@ export type Schemas = {
     salesChannelId?: string;
     /** The name of the current sales channel */
     salesChannelName?: string;
+    /** The video user id that attendee could use */
+    videoUserId?: string | null;
   };
   LandingPage: {
     active?: boolean;
@@ -2565,6 +2606,14 @@ export type Schemas = {
     dataTimestamp?: string;
     deliveryInformation: components["schemas"]["CartDeliveryInformation"];
     description?: string;
+    extensions?: {
+      meta?: {
+        attendees?: {
+          id: string;
+          name: string;
+        }[];
+      };
+    };
     good?: boolean;
     id: string;
     label?: string;
@@ -2619,7 +2668,9 @@ export type Schemas = {
     | "promotion"
     | "discount"
     | "container"
-    | "quantity";
+    | "quantity"
+    | "dsr-line-item-discount"
+    | "dsr-cart-discount";
   ListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
@@ -2781,7 +2832,7 @@ export type Schemas = {
       };
     };
     readonly fileExtension: string;
-    readonly fileName: string;
+    fileName: string;
     /** Format: int64 */
     readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -2793,7 +2844,7 @@ export type Schemas = {
       /** Format: int64 */
       width?: number;
     };
-    readonly mimeType?: string;
+    mimeType?: string;
     path: string;
     private: boolean;
     thumbnails?: components["schemas"]["MediaThumbnail"][];
@@ -2971,6 +3022,21 @@ export type Schemas = {
     deliveries?: components["schemas"]["OrderDelivery"][];
     documents: components["schemas"]["Document"][];
     extensions?: {
+      quote?: {
+        data?: {
+          /** @example 7a674c327bfa07f7c1204fb38ca6ef3b */
+          id?: string;
+          /** @example quote */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/quote
+           */
+          related?: string;
+        };
+      };
       returns?: {
         data?: {
           /** @example 7fff84525c6516919851a9005373f87e */
@@ -3600,12 +3666,17 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  PageViewedPayload: {
+  PageViewedInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["PageViewedPayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "page.viewed";
+  };
+  PageViewedPayload: {
     /** the id from the page which was viewed */
     pageId: string;
     pageNumber?: number | null;
@@ -3744,23 +3815,21 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  PresentationCmsPage: components["schemas"]["DsrPresentationCmsPage"] & {
+    /** The product id is assigned to presentation if it's product listing or instant listing */
+    pickedProductIds?: string[] | null;
+  };
   PresentationSlideData: {
+    category?: components["schemas"]["Category"];
     cmsPage?: components["schemas"]["CmsPage"];
+    configurator?: components["schemas"]["PropertyGroup"][];
     extensions?: {
-      cmsPageRelation?: components["schemas"]["DsrPresentationCmsPage"];
+      cmsPageRelation?: components["schemas"]["PresentationCmsPage"];
     };
-  } & (
-    | {
-        configurator?: components["schemas"]["PropertyGroup"][];
-        product?: components["schemas"]["Product"];
-      }
-    | {
-        category?: components["schemas"]["Category"];
-      }
-    | null
-  );
+    product?: components["schemas"]["Product"];
+  };
   PresentationStructure: {
-    cmsPageResults?: {
+    cmsPageResults: {
       cmsPage?: components["schemas"]["CmsPage"];
       /** The presentation id */
       resourceIdentifier?: string;
@@ -3770,15 +3839,15 @@ export type Schemas = {
        */
       resourceType?: string;
     }[];
-    navigation?: {
+    navigation: {
       /** The CMS page id */
-      cmsPageId?: string;
+      cmsPageId: string;
       /** The presentation CMS page id */
-      groupId?: string;
+      groupId: string;
       /** The slide name */
-      groupName?: string;
+      groupName: string;
       /** The slide position */
-      index?: number;
+      index: number;
       /** If the slide is an instant listing */
       isInstantListing?: boolean;
       /** @default [] */
@@ -3786,9 +3855,9 @@ export type Schemas = {
       /** The number of picked products of the instant listing */
       pickedProductsCount?: number;
       /** The section id */
-      sectionId?: string;
+      sectionId: string;
       /** The section name */
-      sectionName?: string | null;
+      sectionName: string | null;
     }[];
   };
   Price: {
@@ -4093,6 +4162,20 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+  };
+  ProductInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["ProductPayload"];
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
+    name:
+      | "product.viewed"
+      | "attendee.product.collection.liked"
+      | "attendee.product.collection.disliked"
+      | "attendee.product.collection.removed";
   };
   ProductJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
@@ -4603,16 +4686,16 @@ export type Schemas = {
     weight?: number;
     /** Format: float */
     width?: number;
-  } & {
-    options: {
-      group: string;
-      option: string;
-      translated: {
+  } & components["schemas"]["DiscountLineItemPayload"] & {
+      options: {
         group: string;
         option: string;
-      };
-    }[];
-  };
+        translated: {
+          group: string;
+          option: string;
+        };
+      }[];
+    };
   ProductKeywordDictionary: {
     id?: string;
     keyword: string;
@@ -4766,15 +4849,6 @@ export type Schemas = {
     product?: components["schemas"]["Product"];
   };
   ProductPayload: {
-    /**
-     * discriminator enum property added by openapi-typescript
-     * @enum {string}
-     */
-    name:
-      | "product.viewed"
-      | "attendee.product.collection.liked"
-      | "attendee.product.collection.disliked"
-      | "attendee.product.collection.removed";
     /** the id from the product which is used in the interaction */
     productId: string;
   };
@@ -5209,6 +5283,202 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  QuoteJsonApi: components["schemas"]["resource"] & {
+    /** Format: float */
+    readonly amountNet?: number;
+    /** Format: float */
+    readonly amountTotal?: number;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdById?: string;
+    currencyId: string;
+    customerId: string;
+    customFields?: GenericRecord;
+    discount?: {
+      type?: string;
+      /** Format: float */
+      value?: number;
+    };
+    /** Format: date-time */
+    expirationDate?: string;
+    id: string;
+    languageId: string;
+    orderId?: string;
+    orderVersionId?: string;
+    price?: {
+      calculatedTaxes?: GenericRecord;
+      /** Format: float */
+      netPrice: number;
+      /** Format: float */
+      positionPrice: number;
+      /** Format: float */
+      rawTotal: number;
+      taxRules?: GenericRecord;
+      taxStatus: string;
+      /** Format: float */
+      totalPrice: number;
+    };
+    quoteNumber?: string;
+    relationships?: {
+      comments?: {
+        data?: {
+          /** @example a5d491060952aa8ad5fdee071be752de */
+          id?: string;
+          /** @example quote_comment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/comments
+           */
+          related?: string;
+        };
+      };
+      currency?: {
+        data?: {
+          /** @example 1af0389838508d7016a9841eb6273962 */
+          id?: string;
+          /** @example currency */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/currency
+           */
+          related?: string;
+        };
+      };
+      deliveries?: {
+        data?: {
+          /** @example 6fc31b6b9cd717cc0dcb81152308f8af */
+          id?: string;
+          /** @example quote_delivery */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/deliveries
+           */
+          related?: string;
+        };
+      };
+      documents?: {
+        data?: {
+          /** @example 21f64da1e5792c8295b964d159a14491 */
+          id?: string;
+          /** @example quote_document */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/documents
+           */
+          related?: string;
+        };
+      };
+      language?: {
+        data?: {
+          /** @example 8512ae7d57b1396273f76fe6ed341a23 */
+          id?: string;
+          /** @example language */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/language
+           */
+          related?: string;
+        };
+      };
+      lineItems?: {
+        data?: {
+          /** @example a042af1aa9f3853fe3cd7dabc065568f */
+          id?: string;
+          /** @example quote_line_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/lineItems
+           */
+          related?: string;
+        };
+      };
+      stateMachineState?: {
+        data?: {
+          /** @example 1ab22d393154f21e3be76aca3ec3ee31 */
+          id?: string;
+          /** @example state_machine_state */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/stateMachineState
+           */
+          related?: string;
+        };
+      };
+      transactions?: {
+        data?: {
+          /** @example c15b977dd99332ca8623fbdfb86827e8 */
+          id?: string;
+          /** @example quote_transaction */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/transactions
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelId: string;
+    /** Format: date-time */
+    sentAt?: string;
+    shippingCosts?: {
+      calculatedTaxes?: GenericRecord;
+      listPrice?: {
+        /** Format: float */
+        discount?: number;
+        /** Format: float */
+        percentage?: number;
+        /** Format: float */
+        price?: number;
+      };
+      /** Format: int64 */
+      quantity: number;
+      referencePrice?: GenericRecord;
+      regulationPrice?: {
+        /** Format: float */
+        price?: number;
+      };
+      taxRules?: GenericRecord;
+      /** Format: float */
+      totalPrice: number;
+      /** Format: float */
+      unitPrice: number;
+    };
+    stateId: string;
+    /** Format: float */
+    subtotalNet?: number;
+    readonly taxStatus?: string;
+    /** Format: float */
+    totalDiscount?: number;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    updatedById?: string;
+    userId?: string;
+    versionId?: string;
+  };
   QuoteLineItem: {
     children: components["schemas"]["QuoteLineItem"][];
     cover?: components["schemas"]["Media"];
@@ -5216,6 +5486,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    deliveryPositions?: components["schemas"]["QuoteDeliveryPosition"][];
     description?: string;
     discount?: {
       type?: string;
@@ -5602,14 +5873,19 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  ScreenSharingToggledPayload: {
-    /** Whether the screen sharing is active or not */
-    active: boolean;
+  ScreenSharingToggledInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["ScreenSharingToggledPayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "screenSharing.toggled";
+  };
+  ScreenSharingToggledPayload: {
+    /** Whether the screen sharing is active or not */
+    active: boolean;
   };
   Script: {
     /** Format: date-time */
@@ -6133,13 +6409,6 @@ export type Schemas = {
     extensions?: unknown[];
     hoveredElementId?: string | null;
     videoClientToken?: string | null;
-  };
-  StateForMe: {
-    attendeeName?: string | null;
-    /** @default [] */
-    extensions?: unknown[];
-    /** @default null */
-    guideCartPermissionsGranted?: boolean;
   };
   StateMachine: {
     /** Format: date-time */
@@ -7354,14 +7623,19 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  ToggleBroadcastModePayload: {
-    /** Status if the mode is toggled to active or inactive */
-    active: boolean;
+  ToggleBroadcastModeInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["ToggleBroadcastModePayload"];
+  } & {
     /**
      * discriminator enum property added by openapi-typescript
      * @enum {string}
      */
     name: "broadcastMode.toggled";
+  };
+  ToggleBroadcastModePayload: {
+    /** Status if the mode is toggled to active or inactive */
+    active: boolean;
   };
   TotalCountMode: "none" | "exact" | "next-pages";
   Unit: {
@@ -7414,6 +7688,16 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  ViewModeChangedInteraction: components["schemas"]["BaseInteraction"] & {
+    name: string;
+    payload: components["schemas"]["ViewModeChangedPayload"];
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
+    name: "viewMode.changed";
+  };
   ViewModeChangedPayload: {
     /**
      * The view mode of presentation
@@ -7421,11 +7705,6 @@ export type Schemas = {
      * @enum {string}
      */
     mode?: "onlyYou" | "presentation" | "videoGrid";
-    /**
-     * discriminator enum property added by openapi-typescript
-     * @enum {string}
-     */
-    name: "viewMode.changed";
   };
   Warehouse: {
     /** Format: date-time */
@@ -7798,6 +8077,27 @@ export type operations = {
           /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
           vatIds: [string, ...string[]];
         }
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
     );
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
@@ -7952,6 +8252,27 @@ export type operations = {
       /** (Academic) title of the customer */
       title?: string;
     } & (
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
       | {
           /**
            * Type of the customer account. Default value is 'private'.
@@ -8518,7 +8839,7 @@ export type operations = {
        * The status you respond to
        * @enum {string}
        */
-      invitationStatus?: "accepted" | "maybe" | "declined";
+      answer?: "accepted" | "maybe" | "declined";
       /** The token will be attached to the invitation response link in the invitation mail */
       token: string;
     };
@@ -8743,7 +9064,16 @@ export type operations = {
     response: components["schemas"]["CmsPage"];
     responseCode: 200;
   };
-  "readEmployees post /employee": {
+  "readEmployees get /employee": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bEmployee"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readEmployeesPOST post /employee": {
     contentType?: "application/json";
     accept?: "application/json";
     body?: components["schemas"]["Criteria"];
@@ -8810,6 +9140,8 @@ export type operations = {
       email: string;
       /** First name of the new employee */
       firstName: string;
+      /** Identifier of the [language](#/System%20%26%20Context/readLanguages) to be set for the new employee. */
+      languageId: string;
       /** Last name of the new employee */
       lastName: string;
       /** Id of the role of the new employee */
@@ -9673,6 +10005,7 @@ export type operations = {
       /** Identifier of the shopping list to be fetched */
       id: string;
     };
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["B2bComponentsShoppingList"];
     responseCode: 200;
   };
@@ -9757,7 +10090,7 @@ export type operations = {
     };
     responseCode: 200;
   };
-  "updateLineItems patch /shopping-list/line-item/{id}/change-quantity": {
+  "updateLineItems post /shopping-list/line-item/{id}/change-quantity": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
@@ -9771,12 +10104,16 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
-  "removeLineItems delete /shopping-list/line-item/remove": {
+  "removeLineItems post /shopping-list/line-item/remove": {
     contentType?: "application/json";
     accept?: "application/json";
     body: {
       /** Line items ids */
-      ids: string[];
+      ids?: string[];
+      /** List id */
+      listId?: string;
+      /** Product ids */
+      productIds?: string[];
     };
     response: never;
     responseCode: 204;

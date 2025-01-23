@@ -1,9 +1,9 @@
-import { useInternationalization, useShopwareContext } from "#imports";
+import { useShopwareContext } from "#imports";
 import type { operations } from "#shopware";
 
 interface UseB2bEmployeeManagement {
   getEmployees: () => Promise<
-    operations["readEmployees post /employee"]["response"]
+    operations["readEmployeesPOST post /employee"]["response"]
   >;
   createSingleEmployee: (
     params: operations["createEmployee post /employee/create"]["body"],
@@ -24,17 +24,13 @@ interface UseB2bEmployeeManagement {
 
 /**
  * More info about the feature https://docs.shopware.com/en/shopware-6-en/commercial-features/b2b-components#employee-management
- *
- *
- *
  * @returns
  */
 export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
   const { apiClient } = useShopwareContext();
-  const { getStorefrontUrl } = useInternationalization();
 
   const getEmployees = async () => {
-    const response = await apiClient.invoke("readEmployees post /employee");
+    const response = await apiClient.invoke("readEmployeesPOST post /employee");
     return response.data;
   };
 
@@ -47,8 +43,6 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
       {
         body: {
           ...params,
-          // @ts-expect-error Waiting for the API to be updated
-          storefrontUrl: getStorefrontUrl(),
           languageId,
         },
       },
@@ -75,9 +69,7 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
     const response = await apiClient.invoke(
       "reinviteEmployee post /employee/reinvite/{id}",
       {
-        body: {
-          storefrontUrl: getStorefrontUrl(),
-        },
+        body: {},
         pathParams: {
           id: employeeId,
         },

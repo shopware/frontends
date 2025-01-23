@@ -1842,7 +1842,10 @@
           "slot": { "type": "string" },
           "locked": { "type": "boolean" },
           "config": { "type": "object" },
-          "customFields": { "type": "object" },
+          "customFields": {
+            "type": "object",
+            "properties": { "_uniqueIdentifier": { "type": "string" } }
+          },
           "data": { "type": "object", "readOnly": true },
           "blockId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "fieldConfig": { "type": "object" },
@@ -1860,7 +1863,20 @@
             "format": "date-time",
             "readOnly": true
           },
-          "translated": { "type": "object" },
+          "translated": {
+            "type": "object",
+            "properties": {
+              "config": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "object",
+                    "properties": { "value": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          },
           "extensions": {
             "properties": {
               "swagCmsExtensionsForm": {
@@ -2381,10 +2397,8 @@
           "salutationId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "firstName": { "type": "string" },
           "lastName": { "type": "string" },
-          "company": { "type": "string" },
           "email": { "type": "string" },
           "title": { "type": "string" },
-          "vatIds": { "type": "array", "items": { "type": "string" } },
           "affiliateCode": { "type": "string" },
           "campaignCode": { "type": "string" },
           "active": { "type": "boolean" },
@@ -2425,7 +2439,6 @@
             "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
             "readOnly": true
           },
-          "accountType": { "type": "string" },
           "createdById": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "updatedById": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "defaultPaymentMethodId": {
@@ -2505,7 +2518,27 @@
           },
           "apiAlias": { "type": "string", "enum": ["customer"] }
         },
-        "type": "object"
+        "type": "object",
+        "oneOf": [
+          {
+            "required": ["accountType"],
+            "properties": {
+              "accountType": { "type": "string", "enum": ["private"] }
+            }
+          },
+          {
+            "required": ["accountType", "vatIds", "company"],
+            "properties": {
+              "accountType": { "type": "string", "enum": ["business"] },
+              "vatIds": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1
+              },
+              "company": { "type": "string" }
+            }
+          }
+        ]
       },
       "CustomerAddress": {
         "description": "Added since version: 6.0.0.0",
@@ -2920,7 +2953,6 @@
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
           "url": { "type": "string" },
-          "startAsBroadcast": { "type": "boolean" },
           "customFields": { "type": "object" },
           "createdAt": {
             "type": "string",
@@ -3713,14 +3745,14 @@
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-          "mimeType": { "type": "string", "readOnly": true },
+          "mimeType": { "type": "string" },
           "fileExtension": { "type": "string", "readOnly": true },
           "uploadedAt": {
             "type": "string",
             "format": "date-time",
             "readOnly": true
           },
-          "fileName": { "type": "string", "readOnly": true },
+          "fileName": { "type": "string" },
           "fileSize": {
             "type": "integer",
             "format": "int64",
@@ -4216,6 +4248,32 @@
                           "type": "string",
                           "example": "7fff84525c6516919851a9005373f87e"
                         }
+                      }
+                    }
+                  }
+                },
+                "type": "object"
+              },
+              "quote": {
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "format": "uri-reference",
+                        "example": "/order/a240fa27925a635b08dc28c9e4f9216d/quote"
+                      }
+                    }
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string", "example": "quote" },
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{32}$",
+                        "example": "7a674c327bfa07f7c1204fb38ca6ef3b"
                       }
                     }
                   }
@@ -6224,7 +6282,8 @@
               }
             },
             "type": "object"
-          }
+          },
+          { "$ref": "#/components/schemas/DiscountLineItemPayload" }
         ]
       },
       "Product": {
@@ -7177,6 +7236,363 @@
         },
         "type": "object"
       },
+      "QuoteJsonApi": {
+        "description": "Added since version: 6.5.3.0",
+        "allOf": [
+          { "$ref": "#/components/schemas/resource" },
+          {
+            "required": [
+              "id",
+              "stateId",
+              "currencyId",
+              "languageId",
+              "salesChannelId",
+              "customerId"
+            ],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "stateId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "userId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "currencyId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "languageId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "salesChannelId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              "createdById": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "updatedById": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "orderId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "orderVersionId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              "quoteNumber": { "type": "string" },
+              "expirationDate": { "type": "string", "format": "date-time" },
+              "sentAt": { "type": "string", "format": "date-time" },
+              "price": {
+                "required": [
+                  "netPrice",
+                  "totalPrice",
+                  "positionPrice",
+                  "rawTotal",
+                  "taxStatus"
+                ],
+                "properties": {
+                  "netPrice": { "type": "number", "format": "float" },
+                  "totalPrice": { "type": "number", "format": "float" },
+                  "calculatedTaxes": { "type": "object" },
+                  "taxRules": { "type": "object" },
+                  "positionPrice": { "type": "number", "format": "float" },
+                  "rawTotal": { "type": "number", "format": "float" },
+                  "taxStatus": { "type": "string" }
+                },
+                "type": "object"
+              },
+              "shippingCosts": {
+                "required": ["unitPrice", "totalPrice", "quantity"],
+                "properties": {
+                  "unitPrice": { "type": "number", "format": "float" },
+                  "totalPrice": { "type": "number", "format": "float" },
+                  "quantity": { "type": "integer", "format": "int64" },
+                  "calculatedTaxes": { "type": "object" },
+                  "taxRules": { "type": "object" },
+                  "referencePrice": { "type": "object" },
+                  "listPrice": {
+                    "properties": {
+                      "price": { "type": "number", "format": "float" },
+                      "discount": { "type": "number", "format": "float" },
+                      "percentage": { "type": "number", "format": "float" }
+                    },
+                    "type": "object"
+                  },
+                  "regulationPrice": {
+                    "properties": {
+                      "price": { "type": "number", "format": "float" }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "discount": {
+                "properties": {
+                  "type": { "type": "string" },
+                  "value": { "type": "number", "format": "float" }
+                },
+                "type": "object"
+              },
+              "taxStatus": { "type": "string", "readOnly": true },
+              "amountTotal": {
+                "type": "number",
+                "format": "float",
+                "readOnly": true
+              },
+              "amountNet": {
+                "type": "number",
+                "format": "float",
+                "readOnly": true
+              },
+              "subtotalNet": { "type": "number", "format": "float" },
+              "totalDiscount": { "type": "number", "format": "float" },
+              "customFields": { "type": "object" },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "relationships": {
+                "properties": {
+                  "stateMachineState": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/stateMachineState"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "state_machine_state"
+                          },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{32}$",
+                            "example": "1ab22d393154f21e3be76aca3ec3ee31"
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "currency": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/currency"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "example": "currency" },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{32}$",
+                            "example": "1af0389838508d7016a9841eb6273962"
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "language": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/language"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "example": "language" },
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{32}$",
+                            "example": "8512ae7d57b1396273f76fe6ed341a23"
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "lineItems": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/lineItems"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "quote_line_item"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "a042af1aa9f3853fe3cd7dabc065568f"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "deliveries": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/deliveries"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "quote_delivery"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "6fc31b6b9cd717cc0dcb81152308f8af"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "transactions": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/transactions"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "quote_transaction"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "c15b977dd99332ca8623fbdfb86827e8"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "comments": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/comments"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "quote_comment"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "a5d491060952aa8ad5fdee071be752de"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "documents": {
+                    "properties": {
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "related": {
+                            "type": "string",
+                            "format": "uri-reference",
+                            "example": "/quote/c48e929b2b1eabba2ba036884433345e/documents"
+                          }
+                        }
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "quote_document"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "21f64da1e5792c8295b964d159a14491"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
       "Quote": {
         "description": "Added since version: 6.5.3.0",
         "required": [
@@ -7587,7 +8003,11 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/QuoteLineItem" }
           },
-          "cover": { "$ref": "#/components/schemas/Media" }
+          "cover": { "$ref": "#/components/schemas/Media" },
+          "deliveryPositions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/QuoteDeliveryPosition" }
+          }
         },
         "type": "object"
       },
@@ -11941,7 +12361,9 @@
           "promotion",
           "discount",
           "container",
-          "quantity"
+          "quantity",
+          "dsr-line-item-discount",
+          "dsr-cart-discount"
         ]
       },
       "LineItem": {
@@ -12047,7 +12469,28 @@
             }
           },
           "type": { "$ref": "#/components/schemas/LineItemType" },
-          "uniqueIdentifier": { "type": "string" }
+          "uniqueIdentifier": { "type": "string" },
+          "extensions": {
+            "type": "object",
+            "properties": {
+              "meta": {
+                "type": "object",
+                "properties": {
+                  "attendees": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["id", "name"],
+                      "properties": {
+                        "name": { "type": "string" },
+                        "id": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         },
         "required": ["id", "type"]
       },
@@ -12731,7 +13174,8 @@
           },
           "mode": {
             "type": "string",
-            "description": "The mode of the interaction"
+            "description": "The mode of the interaction",
+            "enum": ["guided", "self"]
           },
           "attendeeRestrictionType": {
             "type": "string",
@@ -12741,7 +13185,7 @@
           "videoAudioSettings": {
             "type": "string",
             "description": "The video and audio settings",
-            "enum": ["none", "both", "audio_only"]
+            "enum": ["none", "both", "audio-only"]
           },
           "canSendRequestEmail": {
             "type": "boolean",
@@ -12889,8 +13333,7 @@
         "type": "object",
         "properties": {
           "stateForAll": { "$ref": "#/components/schemas/StateForAll" },
-          "stateForClients": { "$ref": "#/components/schemas/StateForClients" },
-          "stateForMe": { "$ref": "#/components/schemas/StateForMe" }
+          "stateForClients": { "$ref": "#/components/schemas/StateForClients" }
         },
         "example": {
           "stateForAll": {
@@ -12921,11 +13364,6 @@
           "stateForClients": {
             "videoClientToken": null,
             "hoveredElementId": null,
-            "extensions": []
-          },
-          "stateForMe": {
-            "attendeeName": " admin",
-            "guideCartPermissionsGranted": false,
             "extensions": []
           },
           "apiAlias": "swag_digital_sales_rooms_content_presentation_state_sales_channel_get_get_client_presentation_state_struct"
@@ -12991,73 +13429,48 @@
           "requestedById": "7b7c358f1ca04098aacf12873c2eed94"
         }
       },
-      "CreateInteractionRequestBody": {
+      "DynamicInteractionBody": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/EmptyInteraction" },
+          { "$ref": "#/components/schemas/ProductInteraction" },
+          { "$ref": "#/components/schemas/DynamicPageOpenedInteraction" },
+          { "$ref": "#/components/schemas/DynamicPageClosedInteraction" },
+          {
+            "$ref": "#/components/schemas/DynamicProductPageOpenedInteraction"
+          },
+          { "$ref": "#/components/schemas/PageViewedInteraction" },
+          { "$ref": "#/components/schemas/GuideHoveredInteraction" },
+          { "$ref": "#/components/schemas/ToggleBroadcastModeInteraction" },
+          { "$ref": "#/components/schemas/ViewModeChangedInteraction" },
+          { "$ref": "#/components/schemas/ScreenSharingToggledInteraction" }
+        ],
+        "discriminator": {
+          "propertyName": "name",
+          "mapping": {
+            "keep.alive": "#/components/schemas/EmptyInteraction",
+            "quickview.opened": "#/components/schemas/EmptyInteraction",
+            "quickview.closed": "#/components/schemas/EmptyInteraction",
+            "attendee.leave": "#/components/schemas/EmptyInteraction",
+            "remote.checkout.accepted": "#/components/schemas/EmptyInteraction",
+            "remote.checkout.denied": "#/components/schemas/EmptyInteraction",
+            "product.viewed": "#/components/schemas/ProductInteraction",
+            "attendee.product.collection.liked": "#/components/schemas/ProductInteraction",
+            "attendee.product.collection.disliked": "#/components/schemas/ProductInteraction",
+            "attendee.product.collection.removed": "#/components/schemas/ProductInteraction",
+            "dynamicPage.opened": "#/components/schemas/DynamicPageOpenedInteraction",
+            "dynamicPage.closed": "#/components/schemas/DynamicPageClosedInteraction",
+            "dynamicProductPage.opened": "#/components/schemas/DynamicProductPageOpenedInteraction",
+            "page.viewed": "#/components/schemas/PageViewedInteraction",
+            "guide.hovered": "#/components/schemas/GuideHoveredInteraction",
+            "broadcastMode.toggled": "#/components/schemas/ToggleBroadcastModeInteraction",
+            "viewMode.changed": "#/components/schemas/ViewModeChangedInteraction",
+            "screenSharing.toggled": "#/components/schemas/ScreenSharingToggledInteraction"
+          }
+        }
+      },
+      "BaseInteraction": {
         "type": "object",
-        "required": ["name", "payload"],
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "the name of the interaction",
-            "enum": [
-              "keep.alive",
-              "product.viewed",
-              "quickview.opened",
-              "quickview.closed",
-              "dynamicPage.opened",
-              "dynamicProductPage.opened",
-              "dynamicPage.closed",
-              "page.viewed",
-              "guide.hovered",
-              "attendee.product.collection.liked",
-              "attendee.product.collection.disliked",
-              "attendee.product.collection.removed",
-              "attendee.leave",
-              "remote.checkout.accepted",
-              "remote.checkout.denied",
-              "broadcastMode.toggled",
-              "viewMode.changed",
-              "screenSharing.toggled"
-            ]
-          },
-          "payload": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/EmptyPayload" },
-              { "$ref": "#/components/schemas/ProductPayload" },
-              { "$ref": "#/components/schemas/DynamicPageOpenedPayload" },
-              {
-                "$ref": "#/components/schemas/DynamicProductPageOpenedPayload"
-              },
-              { "$ref": "#/components/schemas/DynamicPageClosedPayload" },
-              { "$ref": "#/components/schemas/PageViewedPayload" },
-              { "$ref": "#/components/schemas/GuideHoveredPayload" },
-              { "$ref": "#/components/schemas/ToggleBroadcastModePayload" },
-              { "$ref": "#/components/schemas/ViewModeChangedPayload" },
-              { "$ref": "#/components/schemas/ScreenSharingToggledPayload" }
-            ],
-            "discriminator": {
-              "propertyName": "name",
-              "mapping": {
-                "keep.alive": "#/components/schemas/EmptyPayload",
-                "product.viewed": "#/components/schemas/ProductPayload",
-                "quickview.opened": "#/components/schemas/EmptyPayload",
-                "quickview.closed": "#/components/schemas/EmptyPayload",
-                "dynamicPage.opened": "#/components/schemas/DynamicPageOpenedPayload",
-                "dynamicProductPage.opened": "#/components/schemas/DynamicProductPageOpenedPayload",
-                "dynamicPage.closed": "#/components/schemas/DynamicPageClosedPayload",
-                "page.viewed": "#/components/schemas/PageViewedPayload",
-                "guide.hovered": "#/components/schemas/GuideHoveredPayload",
-                "attendee.product.collection.liked": "#/components/schemas/ProductPayload",
-                "attendee.product.collection.disliked": "#/components/schemas/ProductPayload",
-                "attendee.product.collection.removed": "#/components/schemas/ProductPayload",
-                "attendee.leave": "#/components/schemas/EmptyPayload",
-                "remote.checkout.accepted": "#/components/schemas/EmptyPayload",
-                "remote.checkout.denied": "#/components/schemas/EmptyPayload",
-                "broadcastMode.toggled": "#/components/schemas/ToggleBroadcastModePayload",
-                "viewMode.changed": "#/components/schemas/ViewModeChangedPayload",
-                "screenSharing.toggled": "#/components/schemas/ScreenSharingToggledPayload"
-              }
-            }
-          },
           "triggeredAt": {
             "type": "string",
             "description": "The time when the interaction was triggered",
@@ -13069,6 +13482,156 @@
             "default": -1
           }
         }
+      },
+      "EmptyInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "minProperties": 0,
+                "maxProperties": 0
+              }
+            }
+          }
+        ]
+      },
+      "ProductInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": { "$ref": "#/components/schemas/ProductPayload" }
+            }
+          }
+        ]
+      },
+      "DynamicPageOpenedInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/DynamicPageOpenedPayload"
+              }
+            }
+          }
+        ]
+      },
+      "DynamicProductPageOpenedInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/DynamicProductPageOpenedPayload"
+              }
+            }
+          }
+        ]
+      },
+      "DynamicPageClosedInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/DynamicPageClosedPayload"
+              }
+            }
+          }
+        ]
+      },
+      "PageViewedInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": { "$ref": "#/components/schemas/PageViewedPayload" }
+            }
+          }
+        ]
+      },
+      "GuideHoveredInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": { "$ref": "#/components/schemas/GuideHoveredPayload" }
+            }
+          }
+        ]
+      },
+      "ToggleBroadcastModeInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/ToggleBroadcastModePayload"
+              }
+            }
+          }
+        ]
+      },
+      "ViewModeChangedInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/ViewModeChangedPayload"
+              }
+            }
+          }
+        ]
+      },
+      "ScreenSharingToggledInteraction": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseInteraction" },
+          {
+            "type": "object",
+            "required": ["name", "payload"],
+            "properties": {
+              "name": { "type": "string" },
+              "payload": {
+                "$ref": "#/components/schemas/ScreenSharingToggledPayload"
+              }
+            }
+          }
+        ]
+      },
+      "CreateInteractionRequestBody": {
+        "$ref": "#/components/schemas/DynamicInteractionBody"
       },
       "DynamicPageClosedPayload": {
         "type": "object",
@@ -13191,6 +13754,24 @@
           "isPreview": {
             "type": "boolean",
             "description": "To see if it's a preview appointment"
+          },
+          "attendeeName": {
+            "oneOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "The name of the attendee"
+          },
+          "videoUserId": {
+            "oneOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "The video user id that attendee could use"
+          },
+          "b2bFeatures": {
+            "type": "object",
+            "description": "The b2b features that available for the appointment",
+            "properties": {
+              "quoteManagement": {
+                "type": "boolean",
+                "description": "To know if the quote management is enabled for current customer"
+              }
+            }
           }
         },
         "example": {
@@ -13203,6 +13784,9 @@
           "JWTMercureSubscriberToken": "jwt token for subscribing to updates",
           "mercureHubPublicUrl": "http://localhost:8081/.well-known/mercure",
           "JWTMercurePublisherToken": "jwt token for publishing updates",
+          "attendeeName": "attendee name",
+          "videoUserId": null,
+          "b2bFeatures": { "feature1": false, "feature2": true },
           "id": "2d2c358f1ca04098aacf12873c2eed82",
           "newContextToken": "new context token to call the other routes",
           "attendeeId": "b6358241e4ad4a4e99d0f729d21d63be",
@@ -13212,6 +13796,21 @@
           "presentationGuideMode": "guided",
           "isPreview": false,
           "apiAlias": "swag_digital_sales_rooms_content_appointment_struct_appointment_join_struct"
+        }
+      },
+      "DiscountLineItemPayload": {
+        "type": "object",
+        "properties": {
+          "discountType": {
+            "type": "string",
+            "enum": ["percentage", "absolute"]
+          },
+          "discountValue": {
+            "type": "number",
+            "format": "float",
+            "maximum": 0
+          },
+          "discountPrice": { "type": "number", "format": "float", "maximum": 0 }
         }
       },
       "PageViewedPayload": {
@@ -13243,47 +13842,62 @@
           }
         }
       },
+      "PresentationCmsPage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/DsrPresentationCmsPage" },
+          {
+            "type": "object",
+            "properties": {
+              "pickedProductIds": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{32}$",
+                      "description": "Product id"
+                    }
+                  },
+                  { "type": "null" }
+                ],
+                "description": "The product id is assigned to presentation if it's product listing or instant listing"
+              }
+            }
+          }
+        ]
+      },
+      "BasePresentationSlideData": {
+        "properties": {
+          "cmsPage": { "$ref": "#/components/schemas/CmsPage" },
+          "extensions": {
+            "type": "object",
+            "properties": {
+              "cmsPageRelation": {
+                "$ref": "#/components/schemas/PresentationCmsPage"
+              }
+            }
+          }
+        }
+      },
       "PresentationSlideData": {
         "type": "object",
-        "allOf": [
-          {
-            "properties": {
-              "cmsPage": { "$ref": "#/components/schemas/CmsPage" },
-              "extensions": {
-                "type": "object",
-                "properties": {
-                  "cmsPageRelation": {
-                    "$ref": "#/components/schemas/DsrPresentationCmsPage"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "oneOf": [
-          {
+        "properties": {
+          "cmsPage": { "$ref": "#/components/schemas/CmsPage" },
+          "extensions": {
             "type": "object",
-            "description": "A product result contains product information and product variant/configuration information. It corresponds with presentation product page",
             "properties": {
-              "product": { "$ref": "#/components/schemas/Product" },
-              "configurator": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/PropertyGroup" }
+              "cmsPageRelation": {
+                "$ref": "#/components/schemas/PresentationCmsPage"
               }
             }
           },
-          {
-            "type": "object",
-            "description": "A category result contains category information. It corresponds with a presentation category page",
-            "properties": {
-              "category": { "$ref": "#/components/schemas/Category" }
-            }
-          },
-          {
-            "type": "null",
-            "description": "A landing page result contains no specific fields."
+          "product": { "$ref": "#/components/schemas/Product" },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "configurator": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PropertyGroup" }
           }
-        ],
+        },
         "example": {
           "extensions": {
             "cmsPageRelation": {
@@ -13734,6 +14348,7 @@
       },
       "PresentationStructure": {
         "type": "object",
+        "required": ["cmsPageResults", "navigation"],
         "properties": {
           "cmsPageResults": {
             "type": "array",
@@ -13758,6 +14373,14 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "cmsPageId",
+                "groupId",
+                "groupName",
+                "index",
+                "sectionId",
+                "sectionName"
+              ],
               "properties": {
                 "index": {
                   "type": "integer",
@@ -14849,16 +15472,6 @@
           "extensions": { "type": "array", "default": [] }
         }
       },
-      "StateForMe": {
-        "type": "object",
-        "properties": {
-          "attendeeName": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }]
-          },
-          "guideCartPermissionsGranted": { "type": "boolean", "default": null },
-          "extensions": { "type": "array", "default": [] }
-        }
-      },
       "ToggleBroadcastModePayload": {
         "type": "object",
         "required": ["active"],
@@ -15210,6 +15823,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "required": ["salutationId", "firstName", "lastName"],
                 "properties": {
                   "salutationId": {
@@ -15228,10 +15842,6 @@
                     "description": "Customer last name. Value will be reused for shipping and billing address if not provided explicitly.",
                     "type": "string"
                   },
-                  "company": {
-                    "description": "Company of the customer. Only required when `accountType` is `business`.",
-                    "type": "string"
-                  },
                   "birthdayDay": {
                     "description": "Birthday day",
                     "type": "integer"
@@ -15245,7 +15855,40 @@
                     "type": "integer"
                   }
                 },
-                "type": "object"
+                "oneOf": [
+                  {
+                    "properties": {
+                      "accountType": {
+                        "description": "Type of the customer account. Default value is 'private'.",
+                        "type": "string",
+                        "enum": ["private"],
+                        "default": "private"
+                      },
+                      "company": { "type": "null" },
+                      "vatIds": { "type": "null" }
+                    }
+                  },
+                  {
+                    "required": ["accountType", "company", "vatIds"],
+                    "properties": {
+                      "accountType": {
+                        "description": "Type of the customer account. Can be `private` or `business`.",
+                        "type": "string",
+                        "enum": ["business"]
+                      },
+                      "company": {
+                        "description": "Company of the customer. Only required when `accountType` is `business`.",
+                        "type": "string"
+                      },
+                      "vatIds": {
+                        "description": "VAT IDs of the customer's company. Only valid when `accountType` is `business`.",
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -15777,11 +16420,6 @@
                   "shippingAddress": {
                     "$ref": "#/components/schemas/CustomerAddress"
                   },
-                  "accountType": {
-                    "description": "Account type of the customer which can be either `private` or `business`.",
-                    "type": "string",
-                    "default": "private"
-                  },
                   "guest": {
                     "description": "If set, will create a guest customer. Guest customers can re-use an email address and don't need a password.",
                     "type": "boolean",
@@ -15821,6 +16459,40 @@
                   "acceptedDataProtection",
                   "storefrontUrl",
                   "billingAddress"
+                ],
+                "oneOf": [
+                  {
+                    "properties": {
+                      "accountType": {
+                        "description": "Type of the customer account. Default value is 'private'.",
+                        "type": "string",
+                        "enum": ["private"],
+                        "default": "private"
+                      },
+                      "company": { "type": "null" },
+                      "vatIds": { "type": "null" }
+                    }
+                  },
+                  {
+                    "required": ["accountType", "company", "vatIds"],
+                    "properties": {
+                      "accountType": {
+                        "description": "Type of the customer account. Can be `private` or `business`.",
+                        "type": "string",
+                        "enum": ["business"]
+                      },
+                      "company": {
+                        "description": "Company of the customer. Only required when `accountType` is `business`.",
+                        "type": "string"
+                      },
+                      "vatIds": {
+                        "description": "VAT IDs of the customer's company. Only valid when `accountType` is `business`.",
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1
+                      }
+                    }
+                  }
                 ],
                 "type": "object"
               }
@@ -18666,7 +19338,7 @@
     "/employee/create": {
       "post": {
         "tags": ["B2B Employee Management"],
-        "summary": "Create a single employee and returns the employee",
+        "summary": "Create a single employee and return the employee",
         "description": "This route is used to create and return an employee",
         "operationId": "createEmployee",
         "parameters": [],
@@ -18688,13 +19360,18 @@
                     "description": "Email of the new employee",
                     "type": "string"
                   },
+                  "languageId": {
+                    "description": "Identifier of the [language](#/System%20%26%20Context/readLanguages) to be set for the new employee.",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{32}$"
+                  },
                   "roleId": {
                     "description": "Id of the role of the new employee",
                     "type": "string",
                     "pattern": "^[0-9a-f]{32}$"
                   }
                 },
-                "required": ["firstName", "lastName", "email"],
+                "required": ["firstName", "lastName", "email", "languageId"],
                 "type": "object"
               }
             }
@@ -18714,11 +19391,55 @@
       }
     },
     "/employee": {
-      "post": {
+      "get": {
         "tags": ["B2B Employee Management"],
         "summary": "Fetch a list of employees",
         "description": "This route is used to load employees",
         "operationId": "readEmployees",
+        "parameters": [],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [{ "$ref": "#/components/schemas/Criteria" }]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity search result containing employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "properties": {
+                        "elements": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/B2bEmployee"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    },
+                    { "$ref": "#/components/schemas/EntitySearchResult" }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
+      },
+      "post": {
+        "tags": ["B2B Employee Management"],
+        "summary": "Fetch a list of employees",
+        "description": "This route is used to load employees",
+        "operationId": "readEmployeesPOST",
         "parameters": [],
         "requestBody": {
           "required": false,
@@ -18787,8 +19508,8 @@
         "security": [{ "ApiKey": [] }]
       },
       "patch": {
-        "tags": ["B2B"],
-        "summary": "Update a one employee by id",
+        "tags": ["B2B Employee Management"],
+        "summary": "Update one employee by id",
         "description": "This route is used to update one employee by id",
         "operationId": "updateEmployee",
         "parameters": [
@@ -18841,8 +19562,8 @@
         "security": [{ "ApiKey": [] }]
       },
       "delete": {
-        "tags": ["B2B"],
-        "summary": "Delete an employee by id",
+        "tags": ["B2B Employee Management"],
+        "summary": "Delete one employee by id",
         "description": "This route is used to delete one employee by id",
         "operationId": "deleteEmployee",
         "parameters": [
@@ -19015,7 +19736,7 @@
     "/role/create": {
       "post": {
         "tags": ["B2B Employee Management"],
-        "summary": "Create a single role and returns the role",
+        "summary": "Create a single role and return the role",
         "description": "This route is used to create and return an role",
         "operationId": "createRole",
         "parameters": [],
@@ -19103,7 +19824,7 @@
         "security": [{ "ApiKey": [] }]
       },
       "post": {
-        "tags": ["B2B"],
+        "tags": ["B2B Employee Management"],
         "summary": "Fetch a list of roles",
         "description": "This route is used to load roles",
         "operationId": "readRolesPOST",
@@ -19150,7 +19871,7 @@
     "/role/{id}": {
       "get": {
         "tags": ["B2B Employee Management"],
-        "summary": "Fetch a one role by id",
+        "summary": "Fetch one role by id",
         "description": "This route is used to fetch one role by id",
         "operationId": "readRole",
         "parameters": [
@@ -19175,8 +19896,8 @@
         "security": [{ "ApiKey": [] }]
       },
       "patch": {
-        "tags": ["B2B"],
-        "summary": "Update a one role by id",
+        "tags": ["B2B Employee Management"],
+        "summary": "Update one role by id",
         "description": "This route is used to update one role by id",
         "operationId": "updateRole",
         "parameters": [
@@ -19226,8 +19947,8 @@
         "security": [{ "ApiKey": [] }]
       },
       "delete": {
-        "tags": ["B2B"],
-        "summary": "Delete an role by id",
+        "tags": ["B2B Employee Management"],
+        "summary": "Delete one role by id",
         "description": "This route is used to delete one role by id",
         "operationId": "deleteRole",
         "parameters": [
@@ -20262,6 +20983,14 @@
         "summary": "Load one shopping list",
         "description": "This route is used to load one shopping list",
         "operationId": "readShoppingList",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Criteria" }
+            }
+          }
+        },
         "parameters": [
           {
             "name": "id",
@@ -20482,7 +21211,7 @@
       }
     },
     "/shopping-list/line-item/remove": {
-      "delete": {
+      "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Delete shopping list line items",
         "description": "This route is used to delete shopping list line items",
@@ -20494,12 +21223,21 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["ids"],
                 "properties": {
                   "ids": {
                     "description": "Line items ids",
                     "type": "array",
                     "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+                  },
+                  "productIds": {
+                    "description": "Product ids",
+                    "type": "array",
+                    "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+                  },
+                  "listId": {
+                    "description": "List id",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{32}$"
                   }
                 }
               }
@@ -20511,7 +21249,7 @@
       }
     },
     "/shopping-list/line-item/{id}/change-quantity": {
-      "patch": {
+      "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Update shopping list line item quantity",
         "description": "This route is used to update shopping list line item quantity",
@@ -20823,7 +21561,7 @@
                     "description": "The token will be attached to the invitation response link in the invitation mail",
                     "type": "string"
                   },
-                  "invitationStatus": {
+                  "answer": {
                     "description": "The status you respond to",
                     "type": "string",
                     "enum": ["accepted", "maybe", "declined"]
