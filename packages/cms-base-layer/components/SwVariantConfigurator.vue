@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useCmsTranslations } from "@shopware/composables";
-import { getProductRoute } from "@shopware/helpers";
+import { getProductRoute, buildUrlPrefix } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref, unref } from "vue";
 import type { ComputedRef } from "vue";
 import { useRouter } from "vue-router";
-import { useProductConfigurator } from "#imports";
+import {useProductConfigurator, useUrlResolver} from "#imports";
 import type { Schemas } from "#shopware";
+
+const { getUrlPrefix } = useUrlResolver();
+
+const prefix = getUrlPrefix();
 
 const props = withDefaults(
   defineProps<{
@@ -56,7 +60,7 @@ const onHandleChange = async () => {
     unref(selectedOptions),
   );
 
-  const selectedOptionsVariantPath = getProductRoute(variantFound);
+  const selectedOptionsVariantPath = buildUrlPrefix(getProductRoute(variantFound),prefix);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
       router.push(selectedOptionsVariantPath);
