@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "example-b2b-employee-management",
   "private": true,
   "type": "module",
   "scripts": {
