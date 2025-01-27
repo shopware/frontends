@@ -190,6 +190,8 @@ export function useListing(params?: {
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
 
+  console.log("params", params);
+
   let searchMethod: typeof listingType extends "productSearchListing"
     ? (
         searchParams: operations["readProductListing post /product-listing/{categoryId}"]["body"],
@@ -202,6 +204,7 @@ export function useListing(params?: {
     searchMethod = async (
       searchCriteria: operations["searchPage post /search"]["body"],
     ) => {
+      console.log("searchCriteria-1", searchCriteria);
       const { data } = await apiClient.invoke("searchPage post /search", {
         headers: {
           "sw-include-seo-urls": true,
@@ -219,6 +222,8 @@ export function useListing(params?: {
     searchMethod = async (
       searchCriteria: operations["readProductListing post /product-listing/{categoryId}"]["body"],
     ) => {
+      console.log("searchCriteria-2", searchCriteria);
+
       const { data } = await apiClient.invoke(
         "readProductListing post /product-listing/{categoryId}",
         {
@@ -350,6 +355,7 @@ export function createListingComposable({
         searchDefaults,
         criteria,
       );
+      console.log("initSearch", searchCriteria);
       const result = await searchMethod(searchCriteria);
       return result;
     } finally {
@@ -367,6 +373,7 @@ export function createListingComposable({
         searchDefaults,
         criteria,
       );
+      console.log("async search", searchCriteria);
       const result = await searchMethod(searchCriteria);
 
       _storeAppliedListing.value = result;
@@ -524,6 +531,8 @@ export function createListingComposable({
         properties: appliedFilters.properties?.split("|"),
       };
     }
+
+    console.log("setCurrentFilters", appliedFilters);
 
     return search(appliedFilters);
   };
