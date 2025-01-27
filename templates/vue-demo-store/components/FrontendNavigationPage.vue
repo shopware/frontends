@@ -17,6 +17,7 @@ const errorDetails = ref();
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
   async () => {
+    console.warn("useAsyncData", route.query);
     const responses = await Promise.allSettled([
       search(props.navigationId, {
         withCmsAssociations: true,
