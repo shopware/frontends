@@ -10,4 +10,5 @@ export default defineNuxtConfig({
     devStorefrontUrl: "",
   },
   ssr: false,
+  experimental: { appManifest: false },
 });
