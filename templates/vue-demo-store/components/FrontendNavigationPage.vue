@@ -15,7 +15,7 @@ const { apiClient } = useShopwareContext();
 const errorDetails = ref();
 
 const { data, error } = await useAsyncData(
-  `cmsNavigation${props.navigationId}`,
+  `cmsNavigation${props.navigationId}-${JSON.stringify(route.query)}`,
   async () => {
     console.warn("useAsyncData", route.query);
     const responses = await Promise.allSettled([
