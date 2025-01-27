@@ -32,10 +32,12 @@ export default defineNuxtConfig({
     //     "ssr-heder-example": "ssr-header-example-value",
     //   },
     // },
-    /**
-     * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
-     */
-    broadcasting: false,
+    public: {
+      /**
+       * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
+       */
+      broadcasting: false,
+    },
   },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
