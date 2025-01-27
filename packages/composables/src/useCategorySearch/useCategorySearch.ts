@@ -41,7 +41,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
 
-    console.warn("useCategorySearch", categoryId, options);
+    console.warn("useCategorySearch", categoryId, options?.query);
     const result = await apiClient.invoke(
       "readCategory post /category/{navigationId}",
       {
