@@ -271,3 +271,381 @@ Thanks to the internal logic of the PayPal extension, the is already connected w
 The example shows the specific case, when a product can be bought in one action from the frontend.
 
 <StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/express-checkout" openPath="/" />
+
+## Integrating other PayPal payment methods
+
+PayPal additionally provides Pay Later and Credit card (ACDC) alongside with a variety of alternative payment methods like Apple Pay, Google Pay or Venmo.
+For reference check out [PayPal's documentation](https://developer.paypal.com/docs/checkout/) on integrating these.
+
+### Shared behaviour of `createOrder` and `onApprove`
+
+The `createOrder` and `onApprove` events are the same for all payment methods.
+The only difference is the product used to create the order.
+
+```ts
+async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlepay' | 'applepay' | 'venmo') {
+  const response = await apiClient.invoke(
+    "createPayPalOrder post /store-api/paypal/create-order",
+    { body: { product } },
+  );
+
+  return response?.data?.token;
+}
+
+async function onApprove(data: { orderID: string }) {
+  // createOrder from useCheckout composable
+  orderCreated.value = await createOrder({
+    paypalOrderId: data.orderID,
+  });
+  refreshCart()
+  // apiClient from useShopwareContext composable
+  const handlePaymentResponse = await apiClient.invoke(
+    "handlePaymentMethod post /handle-payment",
+    {
+      query: {
+        paypalOrderId: data.orderID,
+      },
+      body: {
+        orderId: order.id,
+        finishUrl: `${window.location.origin}/order/finish?order=${order.id}&success=true`,
+      },
+    },
+  );
+  // call the /payment/finalize-transaction endpoint
+  await fetch(handlePaymentResponse.data.redirectUrl);
+  ...
+}
+```
+
+### Load the PayPal SDK including the additional payment methods
+
+Depending on the type of the payment method and how it integrates with PayPal, you need to add it to `enable-funding` or `components`:
+
+```ts
+import { loadScript } from "@paypal/paypal-js";
+
+loadScript({
+  // Pay Later or venmo
+  "enable-funding": "paylater,venmo",
+  // ACDC, Apple Pay or Google Pay
+  components: "card-fields,applepay,googlepay",
+  ...
+});
+```
+
+### Pay Later
+
+```ts
+const divContainer = ref();
+
+window
+  .paypal
+  .Buttons({
+    fundingSource: paypal.FUNDING.PAYLATER,
+    createOrder: createOrder.bind(this, "paylater"),
+    onApprove: onApprove.bind(this),
+
+    // ...
+  })
+  .render(divContainer)
+```
+
+### Venmo
+
+```ts
+const divContainer = ref();
+
+window
+  .paypal
+  .Buttons({
+    fundingSource: paypal.FUNDING.VENMO,
+    createOrder: createOrder.bind(this, "venmo"),
+    onApprove: onApprove.bind(this),
+
+    // ...
+  })
+  .render(divContainer)
+```
+
+### Credit card (ACDC)
+
+```ts
+const cardFields = paypal.CardFields({
+  createOrder: createOrder.bind(this, "acdc"),
+  onApprove: onApprove.bind(this),
+  style: {/** some custom styling */},
+})
+
+const nameField = cardFields.NameField({
+  placeholder: "Card holder name",
+});
+nameField.render("#acdc-name-field-container");
+
+const numberField = cardFields.NumberField({
+  placeholder: "Card number",
+});
+numberField.render("#acdc-number-field-container");
+
+const cvvField = cardFields.CVVField({
+  placeholder: "Security code (CVV)",
+});
+cvvField.render("#acdc-cvv-field-container");
+
+const expiryField = cardFields.ExpiryField({
+  placeholder: "Expiration date (MM/YY)",
+});
+expiryField.render("#acdc-expiry-field-container");
+```
+
+Upon form submit via your own rendered button you need to check the validity of the card fields:
+
+```ts
+async function onFormSubmit() {
+  const cardState = await cardFields.getState();
+
+  if (state.isFormValid) {
+    // This will trigger the `onApprove` event
+    cardFields.submit();
+
+    return;
+  }
+
+  // Do some advanced error handling, e.g. focus the invalid field
+  const firstInvalidFieldKey = Object.keys(state.fields).find((key) => !state.fields[key].isValid);
+  this.fields[firstInvalidFieldKey]?.focus();
+}
+```
+
+After submitting the card fields, the `onApprove` event will be triggered.
+
+### Google Pay
+
+For Google Pay to work, you need to load the Google Pay script in the head of your HTML document.
+
+```html
+<head>
+  <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+  <!-- ... -->
+</head>
+```
+
+Now you can render the Google Pay button in your frontend:
+
+```ts
+const { cart, totalPrice } = useCart();
+const { currency } = useSessionContext();
+const divContainer = ref();
+
+async function renderGooglePay() {
+  if (!window?.google?.payments?.api?.PaymentsClient) {
+    throw new Error("Google Pay script is not load");
+  }
+
+  const {
+    isEligible,
+    apiVersion,
+    apiVersionMinor,
+    allowedPaymentMethods,
+    merchantInfo,
+    countryCode,
+  } = await window.paypal.Googlepay().config();
+
+  if (!isEligible) {
+    throw new Error("Funding for Google Pay is not eligible");
+  }
+
+  const gpClient = new window.google.payments.api.PaymentsClient({
+    environment: "PRODUCTION", // or "TEST"
+    paymentDataCallbacks: {
+      onPaymentAuthorized: async (paymentData) => {
+        try {
+          await onPaymentAuthorized(paymentData);
+          return { transactionState: "SUCCESS" };
+        } catch (e) {
+          return {
+            transactionState: "ERROR",
+            error: { intent: "PAYMENT_AUTHORIZATION", message: e.message || "TRANSACTION FAILED" },
+          }
+        }
+      },
+    },
+  });
+
+  const { result } = await gpClient.isReadyToPay({ apiVersion, apiVersionMinor, allowedPaymentMethods });
+  if (!result) {
+    throw new Error("Browser does not support Google Pay");
+  }
+
+  const paymentDataRequest = {
+    apiVersion,
+    apiVersionMinor,
+    allowedPaymentMethods,
+    merchantInfo,
+    callbackIntents: ["PAYMENT_AUTHORIZATION"],
+    transactionInfo: {
+      countryCode,
+      totalPriceStatus: "FINAL",
+      totalPriceLabel: "Grand Total",
+      currencyCode: currency.value.isoCode,
+      totalPrice: totalPrice.value,
+      displayItems: [
+        {
+          label: "Subtotal",
+          price: cart.price.netPrice,
+          type: "SUBTOTAL",
+        },
+        {
+          label: "Tax",
+          price: cart.price.calculatedTaxes.price,
+          type: "TAX",
+        }
+      ],
+    },
+  };
+
+  gpClient.prefetchPaymentData(paymentDataRequest);
+
+  const button = gpClient.createButton({
+    allowedPaymentMethods,
+    onClick: () => {
+      // do some form validity checks before continue
+
+      gpClient.loadPaymentData(paymentDataRequest).catch();
+    },
+  });
+  
+  divContainer.appendChild(button);
+}
+
+async function onPaymentAuthorized(paymentData) {
+  const orderId = await createOrder("googlepay");
+
+  if (!orderId) {
+    throw new Error("PayPal order could not be created")
+  }
+
+  const confirmOrderResponse = await window.paypal.Googlepay().confirmOrder({
+    orderId,
+    paymentMethodData: paymentData.paymentMethodData,
+  });
+
+  if (!["APPROVED","PAYER_ACTION_REQUIRED"].includes(confirmOrderResponse.status)) {
+    throw new Error("PayPal didn't approve the transaction.");
+  }
+
+  if ("PAYER_ACTION_REQUIRED" === confirmOrderResponse.status) {
+    await window.paypal.Googlepay().initiatePayerAction({orderId});
+  }
+
+  this.onApprove({ orderId });
+}
+```
+
+### Apple Pay
+
+For Apple Pay to work, you need to load the Apple Pay script in the head of your HTML document.
+
+```html
+<head>
+  <script src="https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js"></script>
+  <!-- ... -->
+</head>
+```
+
+Now you can render the Apple Pay button in your frontend:
+
+```ts
+const { totalPrice } = useCart();
+const { activeBillingAddress } = useSessionContext();
+const divContainer = ref();
+
+async function renderApplePay() {
+  if (!window.ApplePaySession?.supportsVersion(4) || !window.ApplePaySession?.canMakePayments()) {
+    throw new Error("Browser does not support Apple Pay");
+  }
+
+  const {
+    isEligible,
+    countryCode,
+    merchantCapabilities,
+    supportedNetworks,
+    currencyCode,
+  } = await window.paypal.Applepay().config();
+
+  if (!isEligible) {
+    throw new Error("Funding for Apple Pay is not eligible");
+  }
+
+  const billingContact = {
+    addressLines: [activeBillingAddress.street],
+    administrativeArea: activeBillingAddress.countryState?.name,
+    country: activeBillingAddress.country?.iso3,
+    countryCode: activeBillingAddress.country?.iso,
+    familyName: activeBillingAddress.lastName,
+    givenName: activeBillingAddress.firstName,
+    locality: activeBillingAddress.city,
+    postalCode: activeBillingAddress.zipcode,
+  }
+
+  const paymentDataRequest = {
+    countryCode,
+    merchantCapabilities,
+    supportedNetworks,
+    currencyCode,
+    billingContact,
+    requiredShippingContactFields: [],
+    requiredBillingContactFields: [],
+    total: {
+      label: "TOTAL",
+      type: "final",
+      amount: totalPrice.value,
+    },
+  };
+
+  const button = document.createElement("apple-pay-button");
+  button.setAttribute("buttonStyle", "black");
+  button.setAttribute("type", "buy");
+  button.addEventListener("click",() => {
+    // do some form validity checks before continue
+
+    const session = new window.ApplePaySession(4, paymentRequest);
+
+    session.onvalidatemerchant = this.onValidateMerchant.bind(this, session);
+    session.onpaymentauthorized = this.onPaymentAuthorized.bind(this, session, billingContact);
+
+    session.begin();
+  });
+  
+  divContainer.appendChild(button);
+}
+
+async function onValidateMerchant(session, event) {
+  try {
+    const { merchantSession } = await window.paypal.Applepay().validateMerchant({
+      validationUrl: event.validationURL,
+    });
+
+    session.completeMerchantValidation(merchantSession);
+  } catch (e) {
+    session.abort();
+  }
+}
+
+async function onPaymentAuthorized(session, billingContact, paymentData) {
+  try {
+    const orderId = await createOrder("applepay");
+
+    await paypal.Applepay().confirmOrder({
+      orderId,
+      token: event.payment.token,
+      billingContact,
+    });
+
+    session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+
+    this.onApprove({ orderId });
+  } catch (e) {
+    session.abort();
+  }
+}
+```
