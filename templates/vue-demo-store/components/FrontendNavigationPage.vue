@@ -49,6 +49,9 @@ const { data, error } = await useAsyncData(
         responses[1].status === "fulfilled" ? responses[1].value : null,
     };
   },
+  {
+    immediate: false,
+  },
 );
 const categoryResponse = ref(data.value?.category);
 
