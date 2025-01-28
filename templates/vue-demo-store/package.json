@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
-    "build": "nuxt prepare && nuxt build",
+    "build": "export NITRO_PRESET=vercel_edge nuxt prepare && nuxt build",
     "start": "nuxt start",
     "lint": "biome check .",
     "lint:fix": "biome check --write . && pnpm run typecheck",
