@@ -46,7 +46,7 @@
     "@nuxt/schema": "3.15.2",
     "@types/three": "0.172.0",
     "@vitest/coverage-v8": "3.0.3",
-    "nuxt": "3.15.2",
+    "nuxt": "3.15.3",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
