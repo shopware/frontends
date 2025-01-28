@@ -82,7 +82,22 @@ export default defineNuxtConfig({
       ssr: false,
     },
     "/**": {
-      isr: 60 * 60 * 24,
+      isr: {
+        expiration: 60 * 60 * 24,
+        allowQuery: [
+          "page",
+          "p",
+          "limit",
+          "sort",
+          "filter",
+          "search",
+          "manufacturer",
+          "properties",
+          "rating",
+          "price",
+          "category",
+        ],
+      },
     },
   },
   /**
