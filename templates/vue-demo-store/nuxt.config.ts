@@ -83,7 +83,7 @@ export default defineNuxtConfig({
     },
     "/**": {
       isr: {
-        expiration: 60 * 60 * 24,
+        expiration: 10,
         // see https://github.com/shopware/frontends/issues/1652
         allowQuery: [
           "page",
@@ -99,7 +99,7 @@ export default defineNuxtConfig({
           "price",
           "category",
         ],
-        passQuery: true,
+        //passQuery: true,
       },
     },
   },
