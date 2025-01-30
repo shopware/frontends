@@ -1,7 +1,7 @@
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useProduct, useShopwareContext } from "#imports";
+import { useProduct, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseProductConfiguratorReturn = {
@@ -41,7 +41,7 @@ export type UseProductConfiguratorReturn = {
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const { configurator, product } = useProduct();
 
   const selected = ref<{
@@ -102,6 +102,9 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
           associations: {
             seoUrls: {},
           },
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       });
       return response.data.elements?.[0]; // return first matching product

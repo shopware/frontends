@@ -10,7 +10,8 @@ import type { Schemas } from "#shopware";
 
 const { apiClient } = useShopwareContext();
 // for initialize the session and get the current currency
-const { currency, refreshSessionContext } = useSessionContext();
+const { currency, refreshSessionContext, languageIdChain } =
+  useSessionContext();
 // to log in a customer, because the Quick Order feature is enabled for specifically selected users (in admin panel)
 const { login } = useUser();
 
@@ -107,6 +108,9 @@ const onAddToCartClick = async () => {
   await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
     body: {
       items: lineItemsPayload,
+    },
+    headers: {
+      "sw-language-id": languageIdChain.value,
     },
   });
 

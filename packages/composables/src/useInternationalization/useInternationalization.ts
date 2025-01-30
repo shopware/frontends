@@ -1,6 +1,6 @@
 import { urlIsAbsolute } from "@shopware/helpers";
 import type { Ref } from "vue";
-import { useContext, useShopwareContext } from "#imports";
+import { useContext, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseInternationalizationReturn = {
@@ -82,7 +82,7 @@ export function useInternationalization(
 ): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
     "swLanguagesCurrentLanguage",
@@ -94,7 +94,11 @@ export function useInternationalization(
   }
 
   async function getAvailableLanguages() {
-    const { data } = await apiClient.invoke("readLanguages post /language");
+    const { data } = await apiClient.invoke("readLanguages post /language", {
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
+    });
     _storeLanguages.value = data.elements;
     return data;
   }

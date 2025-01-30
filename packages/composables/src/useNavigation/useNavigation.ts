@@ -1,6 +1,6 @@
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 /**
@@ -40,6 +40,7 @@ export function useNavigation(params?: {
   const type = params?.type || "main-navigation";
 
   const { apiClient } = useShopwareContext();
+  const { languageIdChain } = useSessionContext();
 
   const sharedElements: Ref<Schemas["NavigationRouteResponse"]> = inject(
     `swNavigation-${type}`,
@@ -58,6 +59,7 @@ export function useNavigation(params?: {
         {
           headers: {
             "sw-include-seo-urls": true,
+            "sw-language-id": languageIdChain.value,
           },
           pathParams: {
             activeId: type,

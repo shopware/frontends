@@ -1,4 +1,4 @@
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 import { cmsAssociations } from "../cms/cmsAssociations";
 
@@ -29,7 +29,7 @@ export function useLandingSearch(): {
   ) => Promise<Schemas["LandingPage"]>;
 } {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const search = async (
     navigationId: string,
     options?: {
@@ -46,6 +46,9 @@ export function useLandingSearch(): {
         },
         body: {
           associations,
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       },
     );

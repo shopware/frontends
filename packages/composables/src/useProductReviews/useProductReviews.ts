@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseProductReviewsReturn = {
@@ -39,7 +39,7 @@ export function useProductReviews(
   product: Ref<Schemas["Product"]>,
 ): UseProductReviewsReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const productReviews: Ref<Schemas["ProductReview"][]> = ref([]);
 
   const loadProductReviews = async (
@@ -52,6 +52,9 @@ export function useProductReviews(
       {
         pathParams: { productId: product.value.id },
         body: parameters,
+        headers: {
+          "sw-language-id": languageIdChain.value,
+        },
       },
     );
     productReviews.value = fetchedReviews.data.elements ?? [];

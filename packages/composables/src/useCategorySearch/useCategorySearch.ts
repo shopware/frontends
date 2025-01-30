@@ -1,4 +1,4 @@
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 import { cmsAssociations } from "../cms/cmsAssociations";
 
@@ -31,6 +31,7 @@ export type UseCategorySearchReturn = {
  */
 export function useCategorySearch(): UseCategorySearchReturn {
   const { apiClient } = useShopwareContext();
+  const { languageIdChain } = useSessionContext();
 
   async function search(
     categoryId: string,
@@ -48,6 +49,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": languageIdChain.value,
         },
         body: {
           associations,
@@ -69,6 +71,9 @@ export function useCategorySearch(): UseCategorySearchReturn {
       body: {
         associations,
         ...options?.query,
+      },
+      headers: {
+        "sw-language-id": languageIdChain.value,
       },
     });
     return result.data.elements ?? [];

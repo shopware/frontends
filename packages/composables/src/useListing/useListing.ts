@@ -2,7 +2,7 @@ import { getListingFilters } from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useCategory, useShopwareContext } from "#imports";
+import { useCategory, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 function isObject<T>(item: T): boolean {
@@ -186,7 +186,7 @@ export function useListing(params?: {
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
   let categoryId = params?.categoryId || null;
-
+  const { languageIdChain } = useSessionContext();
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
 
@@ -205,6 +205,7 @@ export function useListing(params?: {
       const { data } = await apiClient.invoke("searchPage post /search", {
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": languageIdChain.value,
         },
         body: searchCriteria,
       });
@@ -224,6 +225,7 @@ export function useListing(params?: {
         {
           headers: {
             "sw-include-seo-urls": true,
+            "sw-language-id": languageIdChain.value,
           },
           pathParams: {
             categoryId: categoryId as string, // null exception in useCategory,

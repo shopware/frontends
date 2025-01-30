@@ -1,7 +1,7 @@
 import { createSharedComposable } from "@vueuse/core";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { useContext, useShopwareContext } from "#imports";
+import { useContext, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 /**
@@ -101,6 +101,7 @@ export type UseCartReturn = {
  */
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
+  const { languageIdChain } = useSessionContext();
 
   const _storeCart = useContext<Schemas["Cart"]>("swCart");
   const _storeCartErrors = useContext<Schemas["Cart"]["errors"] | null>(
@@ -115,7 +116,11 @@ export function useCartFunction(): UseCartReturn {
       return newCart;
     }
 
-    const { data } = await apiClient.invoke("readCart get /checkout/cart");
+    const { data } = await apiClient.invoke("readCart get /checkout/cart", {
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
+    });
     _storeCart.value = data;
     setCartErrors(data);
     return data;

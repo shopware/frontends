@@ -128,7 +128,8 @@ export type UseUserReturn = {
  */
 export function useUser(): UseUserReturn {
   const { apiClient } = useShopwareContext();
-  const { userFromContext, refreshSessionContext } = useSessionContext();
+  const { userFromContext, refreshSessionContext, languageIdChain } =
+    useSessionContext();
 
   const _user = useContext<Schemas["Customer"] | undefined>("customer");
   syncRefs(userFromContext, _user, {
@@ -228,6 +229,9 @@ export function useUser(): UseUserReturn {
           },
         ],
       },
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
     });
 
     country.value = countries.data.elements?.[0] ?? null;
@@ -248,6 +252,9 @@ export function useUser(): UseUserReturn {
               value: salutationId,
             },
           ],
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       },
     );

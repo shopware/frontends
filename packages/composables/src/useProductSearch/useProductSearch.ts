@@ -1,5 +1,5 @@
 import { defu } from "defu";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 import { cmsAssociations } from "../cms/cmsAssociations";
 
@@ -29,7 +29,7 @@ export type UseProductSearchReturn = {
  */
 export function useProductSearch(): UseProductSearchReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const search = async (
     productId: string,
     options?: UseProductSearchReturnOptions,
@@ -44,6 +44,7 @@ export function useProductSearch(): UseProductSearchReturn {
       {
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": languageIdChain.value,
         },
         pathParams: { productId },
         body: associations,

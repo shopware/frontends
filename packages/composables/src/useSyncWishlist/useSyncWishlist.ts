@@ -1,7 +1,7 @@
 import { ApiClientError } from "@shopware/api-client";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseSyncWishlistReturn = {
@@ -48,6 +48,7 @@ const totalWishlistItemsCount: Ref<number> = ref(0);
  */
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiClient } = useShopwareContext();
+  const { languageIdChain } = useSessionContext();
   async function addToWishlistSync(id: string) {
     await apiClient.invoke(
       "addProductOnWishlist post /customer/wishlist/add/{productId}",
@@ -76,7 +77,12 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     try {
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
-        { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
+        {
+          body: { ...defaultSearchCriteria, "total-count-mode": "exact" },
+          headers: {
+            "sw-language-id": languageIdChain.value,
+          },
+        },
       );
       _wishlistItems.value = [
         ...response.data.products.elements.map((element) => element.id),

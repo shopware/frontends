@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseProductAssociationsReturn = {
@@ -38,7 +38,7 @@ export function useProductAssociations(
 
   // @ts-ignore: temporary until fixed or removed
   const association = options.associationContext;
-
+  const { languageIdChain } = useSessionContext();
   const { apiClient } = useShopwareContext();
   const isLoading = ref(false);
   const associations = ref<Schemas["CrossSellingElementCollection"]>([]);
@@ -85,6 +85,9 @@ export function useProductAssociations(
         "readProductCrossSellings post /product/{productId}/cross-selling",
         {
           pathParams: { productId: product.value.id },
+          headers: {
+            "sw-language-id": languageIdChain.value,
+          },
         },
       );
 

@@ -1,7 +1,11 @@
 import { defu } from "defu";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
+import {
+  useDefaultOrderAssociations,
+  useSessionContext,
+  useShopwareContext,
+} from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseOrderDetailsReturn = {
@@ -129,7 +133,7 @@ export function useOrderDetails(
   associations?: Schemas["Criteria"]["associations"],
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
@@ -201,6 +205,9 @@ export function useOrderDetails(
       "readOrder post /order",
       {
         body: params,
+        headers: {
+          "sw-language-id": languageIdChain.value,
+        },
       },
     );
     _sharedOrder.value =
@@ -232,6 +239,9 @@ export function useOrderDetails(
         body: {
           orderId,
         },
+        headers: {
+          "sw-language-id": languageIdChain.value,
+        },
       },
     );
     await loadOrderDetails();
@@ -244,6 +254,9 @@ export function useOrderDetails(
         body: {
           orderId: orderId,
           paymentMethodId: paymentMethodId,
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       },
     );
@@ -261,6 +274,9 @@ export function useOrderDetails(
           orderId,
           downloadId,
         },
+        headers: {
+          "sw-language-id": languageIdChain.value,
+        },
       },
     );
 
@@ -274,6 +290,9 @@ export function useOrderDetails(
         pathParams: {
           documentId,
           deepLinkCode,
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       },
     );
@@ -297,6 +316,9 @@ export function useOrderDetails(
       "readPaymentMethod post /payment-method",
       {
         body: { onlyAvailable: true },
+        headers: {
+          "sw-language-id": languageIdChain.value,
+        },
       },
     );
     return response.data.elements || [];

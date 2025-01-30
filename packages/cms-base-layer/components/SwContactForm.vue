@@ -11,6 +11,7 @@ import {
   useCmsElementConfig,
   useNavigationContext,
   useSalutations,
+  useSessionContext,
   useShopwareContext,
 } from "#imports";
 
@@ -84,6 +85,7 @@ const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
 const { apiClient } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
+const { languageIdChain } = useSessionContext();
 
 const getConfirmationText = computed(
   () =>
@@ -147,6 +149,9 @@ const invokeSubmit = async () => {
         body: {
           ...state,
           navigationId: foreignKey.value,
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       });
       formSent.value = true;

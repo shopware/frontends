@@ -1,6 +1,6 @@
 import { computed, inject, onMounted, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseSalutationsReturn = {
@@ -23,14 +23,18 @@ export type UseSalutationsReturn = {
  */
 export function useSalutations(): UseSalutationsReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
 
   const fetchSalutations = async (): Promise<
     operations["readSalutation post /salutation"]["response"]
   > => {
-    const result = await apiClient.invoke("readSalutation post /salutation");
+    const result = await apiClient.invoke("readSalutation post /salutation", {
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
+    });
     _salutations.value = result.data.elements;
     return result.data;
   };

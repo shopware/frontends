@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseCustomerOrdersReturn = {
@@ -41,7 +41,7 @@ export type UseCustomerOrdersReturn = {
  */
 export function useCustomerOrders(): UseCustomerOrdersReturn {
   const { apiClient } = useShopwareContext();
-
+  const { languageIdChain } = useSessionContext();
   const orders: Ref<Schemas["Order"][]> = ref([]);
 
   const currentPaginationPage = ref<number>(1);
@@ -61,6 +61,9 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     currentParams.value = params;
     const fetchedOrders = await apiClient.invoke("readOrder post /order", {
       body: { ...params, "total-count-mode": "exact" },
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
     });
     orders.value = fetchedOrders.data.orders.elements;
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;

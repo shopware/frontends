@@ -34,6 +34,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
+const { languageIdChain } = useSessionContext();
 
 const description = computed(() =>
   getTranslatedProperty(product.value, "description"),
@@ -54,6 +55,9 @@ const fetchReviews = async () => {
     "readProductReviews post /product/{productId}/reviews",
     {
       pathParams: { productId: product.value.id },
+      headers: {
+        "sw-language-id": languageIdChain.value,
+      },
     },
   );
   reviews.value = reviewsResponse.data.elements || [];

@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useShopwareContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseOrderPaymentReturn = {
@@ -56,6 +56,7 @@ export function useOrderPayment(
   order: ComputedRef<Schemas["Order"] | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiClient } = useShopwareContext();
+  const { languageIdChain } = useSessionContext();
   const activeTransaction = computed(() =>
     order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
@@ -101,6 +102,9 @@ export function useOrderPayment(
         body: {
           orderId: order.value.id,
           paymentMethodId,
+        },
+        headers: {
+          "sw-language-id": languageIdChain.value,
         },
       },
     );
