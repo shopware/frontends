@@ -63,14 +63,14 @@ const renderPaypalButtons = async () => {
         console.warn("[PayPal > App.vue][onError]", err);
       },
       createOrder: async () => {
-        if (!paypalMethod.value) {
-          alert("PayPal payment method not found");
-          return "";
-        }
+        // if (!paypalMethod.value) {
+        //   alert("PayPal payment method not found");
+        //   return "";
+        // }
         // 1. set the payment method id in the context PATCH /context -> setPaymentMethod
         // 2. add product to cart -> addToCart
         // 3. create order -> /store-api/paypal/express/create-order
-        await setPaymentMethod(paypalMethod.value);
+        await setPaymentMethod({ id: "498f356e536a4a899f9fd55294577355" });
         await addToCart();
 
         const response = await apiClient.invoke(
