@@ -22,6 +22,7 @@ vi.mock("../useSessionContext/useSessionContext.ts", async () => {
       return {
         refreshSessionContext: refreshSessionContextSpy,
         userFromContext: ref(),
+        languageIdChain: ref(),
       };
     },
   };

@@ -86,6 +86,11 @@ describe("useCart", () => {
     await vm.refreshCart();
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readCart"),
+      expect.objectContaining({
+        headers: {
+          "sw-language-id": "",
+        },
+      }),
     );
   });
 

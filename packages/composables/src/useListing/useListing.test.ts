@@ -21,7 +21,12 @@ describe("useListing", () => {
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("search"),
-      expect.objectContaining({}),
+      expect.objectContaining({
+        headers: {
+          "sw-include-seo-urls": true,
+          "sw-language-id": "",
+        },
+      }),
     );
 
     expect(vm.getCurrentPage).toBe(1);
@@ -48,6 +53,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
         pathParams: {
           categoryId: "1234",
@@ -92,6 +98,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
         pathParams: {
           categoryId: "1234",
@@ -131,6 +138,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
         pathParams: {
           categoryId: "1234",
@@ -189,6 +197,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
       }),
     );
@@ -211,6 +220,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
       }),
     );
@@ -233,6 +243,7 @@ describe("useListing", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
       }),
     );

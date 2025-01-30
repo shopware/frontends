@@ -19,6 +19,7 @@ describe("useCategorySearch", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
       }),
     );
@@ -41,6 +42,7 @@ describe("useCategorySearch", () => {
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-language-id": "",
         },
         body: {
           associations: cmsAssociations,
