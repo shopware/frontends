@@ -2,4 +2,4 @@
 "vue-demo-store": patch
 ---
 
-Add missing `sw-language-id` header property for API calls
+Added `sw-language-id` header property in `SwContactForm.vue` and `App.vue` components
