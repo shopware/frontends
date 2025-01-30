@@ -45,9 +45,10 @@ const paypalMethod = computed(() => {
 const renderPaypalButtons = async () => {
   const paypal = await loadScript({
     clientId:
-      "AfHYkB-D2otC9Ct7ohQJbhVqvq9IeMA5_sQ5p7aJVyd0lz3oEYn0K7v9ujnjaEBOpXUZhuBuR22R953z",
+      "AVtDmzTYdEt8TCzQXRBr4sNVgW_xC4icUD3y2osCy7220oPT9OLIEQFRQx7esWjmXrFqW17F14Z2svS3",
     currency: "EUR",
     locale: "en_US",
+    environment: "sandbox",
   });
   if (!paypal || !paypal.Buttons) {
     return;
@@ -63,6 +64,7 @@ const renderPaypalButtons = async () => {
       },
       createOrder: async () => {
         if (!paypalMethod.value) {
+          alert("PayPal payment method not found");
           return "";
         }
         // 1. set the payment method id in the context PATCH /context -> setPaymentMethod

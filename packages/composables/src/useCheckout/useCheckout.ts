@@ -107,7 +107,7 @@ export function useCheckout(): UseCheckoutReturn {
           ...mergedAssociations,
         },
         query: {
-          onlyAvailable: true,
+          onlyAvailable: false,
         },
       },
     );
@@ -124,7 +124,7 @@ export function useCheckout(): UseCheckoutReturn {
     const response = await apiClient.invoke(
       "readPaymentMethod post /payment-method",
       {
-        body: { onlyAvailable: true },
+        body: { onlyAvailable: false },
       },
     );
     storePaymentMethods.value = response.data.elements || [];
