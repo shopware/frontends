@@ -2,6 +2,8 @@
 
 This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends).
 
+📖 Visit [Integrations > Payments > Paypal](https://frontends.shopware.com/resources/integrations/payments/paypal.html) docs for further information.
+
 ## Customization
 
 - edit [./src/App.vue](./src/App.vue) in order to change the current example
