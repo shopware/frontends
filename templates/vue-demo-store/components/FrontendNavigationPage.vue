@@ -21,58 +21,65 @@ const { data, error } = await useAsyncData(
       "useAsyncData",
       `cmsNavigation${props.navigationId}-${route.query?.manufacturer || "empty"}`,
     );
-    const responses = await Promise.allSettled([
-      search(props.navigationId, {
-        withCmsAssociations: true,
-        query: {
-          ...route.query,
-        },
-      }),
-      apiClient
-        .invoke("readBreadcrumb get /breadcrumb/{id}", {
-          pathParams: {
-            id: props.navigationId,
-          },
-        })
-        .catch(() => {
-          console.error("Error while fetching breadcrumbs");
-        }),
-    ]);
+    // const responses = await Promise.allSettled([
+    //   search(props.navigationId, {
+    //     withCmsAssociations: true,
+    //     query: {
+    //       ...route.query,
+    //     },
+    //   }),
+    // apiClient
+    //   .invoke("readBreadcrumb get /breadcrumb/{id}", {
+    //     pathParams: {
+    //       id: props.navigationId,
+    //     },
+    //   })
+    //   .catch(() => {
+    //     console.error("Error while fetching breadcrumbs");
+    //   }),
+    //]);
 
-    for (const response of responses) {
-      if (response.status === "rejected") {
-        console.error("[FrontendNavigationPage.vue]", response.reason.message);
-        errorDetails.value = response.reason.message;
-      }
-    }
+    // for (const response of responses) {
+    //   if (response.status === "rejected") {
+    //     console.error("[FrontendNavigationPage.vue]", response.reason.message);
+    //     errorDetails.value = response.reason.message;
+    //   }
+    // }
+
+    const categoryResponse1 = await search(props.navigationId, {
+      withCmsAssociations: true,
+      query: {
+        ...route.query,
+      },
+    });
 
     return {
-      category: responses[0].status === "fulfilled" ? responses[0].value : null,
-      breadcrumbs:
-        responses[1].status === "fulfilled" ? responses[1].value : null,
+      category: categoryResponse1 ?? null,
+      // breadcrumbs:
+      //   responses[1].status === "fulfilled" ? responses[1].value : null,
     };
   },
 );
+
 const categoryResponse = ref(data.value?.category);
 
-if (data.value?.breadcrumbs) {
-  buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
-}
+// if (data.value?.breadcrumbs) {
+//   //buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
+// }
 
-if (!categoryResponse.value) {
-  const statusMessage = error.value || errorDetails.value;
-  console.error("[FrontendNavigationPage.vue]", statusMessage);
-  throw createError({
-    statusCode: 500,
-    message: statusMessage,
-  });
-}
+// const statusMessage = error.value || errorDetails.value;
+// console.error("[FrontendNavigationPage.vue]", statusMessage);
+// throw createError({
+//   statusCode: 500,
+//   message: statusMessage,
+// });
 
-const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
+const { category } = useCategory(
+  categoryResponse as unknown as Ref<Schemas["Category"]>,
+);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 
-<template>
-  <LayoutBreadcrumbs v-if="route.path != '/'" />
+<template :key="`${route.query.manufacturer}`">
   <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
 </template>
