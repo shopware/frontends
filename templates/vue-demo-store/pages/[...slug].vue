@@ -69,5 +69,9 @@ function render() {
 </script>
 
 <template>
+  <div :key="route.path">
+  {{ route.path }} {{ route.query }}
   <render />
+  </div>
+  
 </template>
