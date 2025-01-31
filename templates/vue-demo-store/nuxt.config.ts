@@ -88,7 +88,17 @@ export default defineNuxtConfig({
       isr: {
         expiration: 60 * 60 * 24,
         // see https://github.com/shopware/frontends/issues/1652
-        allowQuery: [],
+        allowQuery: [
+          "manufacturer",
+          "p",
+          "sort",
+          "rating",
+          "price",
+          "search",
+          "category",
+          "limit",
+          "page",
+        ],
         //passQuery: true,
       },
     },
