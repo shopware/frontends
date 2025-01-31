@@ -47,6 +47,8 @@ export default defineNuxtConfig({
     devStorefrontUrl: "",
   },
 
+  debug: true,
+
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
@@ -119,6 +121,8 @@ export default defineNuxtConfig({
     "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
+
+  devtools: { enabled: true },
 
   // components: true,
   components: {
