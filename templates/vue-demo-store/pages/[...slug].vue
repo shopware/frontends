@@ -2,6 +2,7 @@
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
+import { FrontendNavigationPage } from "#components";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -71,7 +72,7 @@ function render() {
 <template>
   <div :key="route.path">
   {{ route.path }} {{ route.query }}
-  <render />
+  <FrontendNavigationPage v-if="foreignKey" :navigation-id="foreignKey" />
   </div>
   
 </template>
