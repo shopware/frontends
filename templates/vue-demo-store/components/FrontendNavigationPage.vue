@@ -13,12 +13,14 @@ const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 const errorDetails = ref();
 
-const { data, error } = await useAsyncData(
+const { data, error, refresh } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
   async () => {
     const route = useRoute();
 
     const queryParams = route.query;
+
+    console.warn("search query inside useAsyncData", queryParams);
 
     const categoryResponse1 = await search(props.navigationId, {
       withCmsAssociations: true,
