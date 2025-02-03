@@ -19,8 +19,9 @@ const { locale } = useI18n();
 const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 
 const { data: seoResult } = await useAsyncData(
-  `cmsResponse${routePath}-${route.query?.manufacturer}`,
+  `cmsResponse${routePath}`,
   async () => {
+    console.warn("useAsyncData", `cmsResponse${routePath}`, route.query);
     // For client links if the history state contains seo url information we can omit the api call
     if (import.meta.client) {
       if (history.state?.routeName) {
@@ -51,7 +52,7 @@ const { routeName, foreignKey } = useNavigationContext(
 const componentName = routeName.value;
 
 onBeforeRouteLeave(() => {
-  clearBreadcrumbs();
+  //clearBreadcrumbs();
 });
 
 function render() {
