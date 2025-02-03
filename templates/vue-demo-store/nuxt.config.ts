@@ -93,6 +93,7 @@ export default defineNuxtConfig({
         allowQuery: undefined,
         //passQuery: true,
       },
+      prerender: false,
     },
   },
 
