@@ -56,7 +56,7 @@ const initalRoute = defu(route);
 watch(
   () => route,
   (newRoute) => {
-    console.warn("route", newRoute, route);
+    console.warn("route", newRoute.query, route.query);
     if (initalRoute.path !== newRoute.path) {
       return;
     }

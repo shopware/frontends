@@ -9,7 +9,6 @@ const props = defineProps<{
 }>();
 
 const { search } = useCategorySearch();
-const route = useRoute();
 const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 const errorDetails = ref();
@@ -17,46 +16,19 @@ const errorDetails = ref();
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
   async () => {
-    console.warn(
-      "useAsyncData",
-      `cmsNavigation${props.navigationId}-${route.query?.manufacturer || "empty"}`,
-    );
-    // const responses = await Promise.allSettled([
-    //   search(props.navigationId, {
-    //     withCmsAssociations: true,
-    //     query: {
-    //       ...route.query,
-    //     },
-    //   }),
-    // apiClient
-    //   .invoke("readBreadcrumb get /breadcrumb/{id}", {
-    //     pathParams: {
-    //       id: props.navigationId,
-    //     },
-    //   })
-    //   .catch(() => {
-    //     console.error("Error while fetching breadcrumbs");
-    //   }),
-    //]);
+    const route = useRoute();
 
-    // for (const response of responses) {
-    //   if (response.status === "rejected") {
-    //     console.error("[FrontendNavigationPage.vue]", response.reason.message);
-    //     errorDetails.value = response.reason.message;
-    //   }
-    // }
+    const queryParams = route.query;
 
     const categoryResponse1 = await search(props.navigationId, {
       withCmsAssociations: true,
       query: {
-        ...route.query,
+        ...queryParams,
       },
     });
 
     return {
       category: categoryResponse1 ?? null,
-      // breadcrumbs:
-      //   responses[1].status === "fulfilled" ? responses[1].value : null,
     };
   },
 );
