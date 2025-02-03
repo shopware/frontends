@@ -14,7 +14,7 @@ const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 const errorDetails = ref();
 
-const { data, error } = await useLazyAsyncData(
+const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
   async () => {
     console.warn(
