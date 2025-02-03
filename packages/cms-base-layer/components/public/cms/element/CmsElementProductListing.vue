@@ -56,6 +56,7 @@ const initalRoute = defu(route);
 watch(
   () => route,
   (newRoute) => {
+    console.warn("route", newRoute, route);
     if (initalRoute.path !== newRoute.path) {
       return;
     }
@@ -118,6 +119,20 @@ const compareRouteQueryWithInitialListing = async () => {
     (route.query.limit && limit.value !== limitListing) ||
     (route.query.p && Number(route.query.p) !== pageListing) ||
     (route.query.order && route.query.order !== orderListing);
+
+  console.warn(
+    "isChangeNeeded",
+    isChangePageNeeded,
+    route.query.limit,
+    limit.value,
+    limitListing,
+    route.query.p,
+    Number(route.query.p),
+    pageListing,
+    route.query.order,
+    route.query.order,
+    orderListing,
+  );
 
   if (isChangePageNeeded) {
     const limitQuery = route.query.limit
