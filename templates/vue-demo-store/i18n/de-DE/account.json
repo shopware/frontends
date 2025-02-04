@@ -64,6 +64,7 @@
       "changePaymentMethod": "Zahlungsmethode ändern",
       "cancel": "Stornieren",
       "confirm": "Bestätigen",
+      "close": "Schließen",
       "backToOrdersList": "Zurück zur Bestellliste",
       "itemsHeader": {
         "item": "Artikel",

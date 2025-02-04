@@ -322,8 +322,8 @@ export const sidebar = [
                 link: "/resources/integrations/payments/mollie.html",
               },
               {
-                text: "Paypal Express",
-                link: "/resources/integrations/payments/paypal-express.html",
+                text: "Paypal",
+                link: "/resources/integrations/payments/paypal.html",
               },
             ],
           },
