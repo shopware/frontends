@@ -226,7 +226,7 @@ const placeOrder = async () => {
 
   try {
     const order = await createOrder();
-    await push(`/checkout/success/${order.id}`);
+    await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
     if (error instanceof ApiClientError)
@@ -277,7 +277,7 @@ const invokeSubmit = async () => {
       const response = await register(state);
       if (!response.active) {
         pushInfo(t("checkout.messages.checkoutSignInSuccess"));
-        await push("/");
+        await push(formatLink("/"));
       }
     } catch (error) {
       if (error instanceof ApiClientError) {
@@ -290,7 +290,7 @@ async function invokeLogout() {
   try {
     await logout();
   } finally {
-    await push("/");
+    await push(formatLink("/"));
   }
 }
 
