@@ -64,8 +64,8 @@ importers:
         specifier: 0.5.0
         version: 0.5.0(encoding@0.1.13)
       '@changesets/cli':
-        specifier: 2.27.11
-        version: 2.27.11
+        specifier: 2.27.12
+        version: 2.27.12
       '@types/changelog-parser':
         specifier: 2.8.4
         version: 2.8.4
@@ -2170,10 +2170,6 @@ packages:
     resolution: {integrity: sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@7.26.0':
-    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/runtime@7.26.7':
     resolution: {integrity: sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ==}
     engines: {node: '>=6.9.0'}
@@ -2274,8 +2270,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@changesets/apply-release-plan@7.0.7':
-    resolution: {integrity: sha512-qnPOcmmmnD0MfMg9DjU1/onORFyRpDXkMMl2IJg9mECY6RnxL3wN0TCCc92b2sXt1jt8DgjAUUsZYGUGTdYIXA==}
+  '@changesets/apply-release-plan@7.0.8':
+    resolution: {integrity: sha512-qjMUj4DYQ1Z6qHawsn7S71SujrExJ+nceyKKyI9iB+M5p9lCL55afuEd6uLBPRpLGWQwkwvWegDHtwHJb1UjpA==}
 
   '@changesets/assemble-release-plan@6.0.5':
     resolution: {integrity: sha512-IgvBWLNKZd6k4t72MBTBK3nkygi0j3t3zdC1zrfusYo0KpdsvnDjrMM9vPnTCLCMlfNs55jRL4gIMybxa64FCQ==}
@@ -2286,8 +2282,8 @@ packages:
   '@changesets/changelog-github@0.5.0':
     resolution: {integrity: sha512-zoeq2LJJVcPJcIotHRJEEA2qCqX0AQIeFE+L21L8sRLPVqDhSXY8ZWAt2sohtBpFZkBwu+LUwMSKRr2lMy3LJA==}
 
-  '@changesets/cli@2.27.11':
-    resolution: {integrity: sha512-1QislpE+nvJgSZZo9+Lj3Lno5pKBgN46dAV8IVxKJy9wX8AOrs9nn5pYVZuDpoxWJJCALmbfOsHkyxujgetQSg==}
+  '@changesets/cli@2.27.12':
+    resolution: {integrity: sha512-9o3fOfHYOvBnyEn0mcahB7wzaA3P4bGJf8PNqGit5PKaMEFdsRixik+txkrJWd2VX+O6wRFXpxQL8j/1ANKE9g==}
     hasBin: true
 
   '@changesets/config@3.0.5':
@@ -6006,6 +6002,9 @@ packages:
 
   '@types/react@18.3.3':
     resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
+
+  '@types/react@19.0.8':
+    resolution: {integrity: sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -11179,11 +11178,8 @@ packages:
   package-json-from-dist@1.0.0:
     resolution: {integrity: sha512-dATvCeZN/8wQsGywez1mzHtTlP22H8OEfPrVMLNr4/eGa+ijtLn/6M5f0dY8UKNrC2O9UCU6SSoG3qRKnt7STw==}
 
-  package-manager-detector@0.2.0:
-    resolution: {integrity: sha512-E385OSk9qDcXhcM9LNSe4sdhx8a9mAPrZ4sMLW+tmxl5ZuGtPUcdFu+MPP2jbgiWAZ6Pfe5soGFMd+0Db5Vrog==}
-
-  package-manager-detector@0.2.8:
-    resolution: {integrity: sha512-ts9KSdroZisdvKMWVAVCXiKqnqNfXz4+IbrBG8/BWx/TR5le+jfenvoBuIZ6UWM9nz47W7AbD9qYfAwfWMIwzA==}
+  package-manager-detector@0.2.9:
+    resolution: {integrity: sha512-+vYvA/Y31l8Zk8dwxHhL3JfTuHPm6tlxM2A3GeQyl7ovYnSp1+mzAxClxaOr0qO1TtPxbQxetI7v5XqKLJZk7Q==}
 
   packrup@0.1.2:
     resolution: {integrity: sha512-ZcKU7zrr5GlonoS9cxxrb5HVswGnyj6jQvwFBa6p5VFw7G71VAHcUKL5wyZSU/ECtPM/9gacWxy2KFQKt1gMNA==}
@@ -12400,13 +12396,13 @@ packages:
   seedrandom@3.0.5:
     resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
 
-  semver@7.6.2:
-    resolution: {integrity: sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==}
+  semver@7.6.3:
+    resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
     engines: {node: '>=10'}
     hasBin: true
 
-  semver@7.6.3:
-    resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
+  semver@7.7.0:
+    resolution: {integrity: sha512-DrfFnPzblFmNrIZzg5RzHegbiRWg7KMR7btwi2yjHwx06zsUbO5g613sVwEV7FTwmzJu+Io0lJe2GJ3LxqpvBQ==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -14604,7 +14600,7 @@ snapshots:
 
   '@antfu/install-pkg@0.4.1':
     dependencies:
-      package-manager-detector: 0.2.8
+      package-manager-detector: 0.2.9
       tinyexec: 0.3.2
 
   '@antfu/utils@0.7.10': {}
@@ -14799,14 +14795,14 @@ snapshots:
     dependencies:
       '@babel/helper-validator-identifier': 7.25.9
       js-tokens: 4.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.1
     optional: true
 
   '@babel/code-frame@7.26.2':
     dependencies:
       '@babel/helper-validator-identifier': 7.25.9
       js-tokens: 4.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   '@babel/compat-data@7.26.2': {}
 
@@ -14848,7 +14844,7 @@ snapshots:
       debug: 4.4.0(supports-color@9.4.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -14886,7 +14882,7 @@ snapshots:
       '@babel/helper-validator-option': 7.25.9
       browserslist: 4.24.4
       lru-cache: 5.1.1
-      semver: 7.6.3
+      semver: 7.7.0
 
   '@babel/helper-create-class-features-plugin@7.25.9(@babel/core@7.26.0)':
     dependencies:
@@ -14897,7 +14893,7 @@ snapshots:
       '@babel/helper-replace-supers': 7.25.9(@babel/core@7.26.0)
       '@babel/helper-skip-transparent-expression-wrappers': 7.25.9
       '@babel/traverse': 7.26.3
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -14910,7 +14906,7 @@ snapshots:
       '@babel/helper-replace-supers': 7.25.9(@babel/core@7.26.7)
       '@babel/helper-skip-transparent-expression-wrappers': 7.25.9
       '@babel/traverse': 7.26.3
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -14919,7 +14915,7 @@ snapshots:
       '@babel/core': 7.26.7
       '@babel/helper-annotate-as-pure': 7.25.9
       regexpu-core: 6.2.0
-      semver: 7.6.3
+      semver: 7.7.0
 
   '@babel/helper-define-polyfill-provider@0.6.3(@babel/core@7.26.7)':
     dependencies:
@@ -15625,7 +15621,7 @@ snapshots:
       babel-plugin-polyfill-corejs3: 0.10.6(@babel/core@7.26.7)
       babel-plugin-polyfill-regenerator: 0.6.3(@babel/core@7.26.7)
       core-js-compat: 3.40.0
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -15675,10 +15671,6 @@ snapshots:
       source-map-support: 0.5.21
 
   '@babel/runtime@7.25.7':
-    dependencies:
-      regenerator-runtime: 0.14.1
-
-  '@babel/runtime@7.26.0':
     dependencies:
       regenerator-runtime: 0.14.1
 
@@ -15786,7 +15778,7 @@ snapshots:
   '@biomejs/cli-win32-x64@1.8.3':
     optional: true
 
-  '@changesets/apply-release-plan@7.0.7':
+  '@changesets/apply-release-plan@7.0.8':
     dependencies:
       '@changesets/config': 3.0.5
       '@changesets/get-version-range-type': 0.4.0
@@ -15800,7 +15792,7 @@ snapshots:
       outdent: 0.5.0
       prettier: 2.8.8
       resolve-from: 5.0.0
-      semver: 7.6.3
+      semver: 7.7.0
 
   '@changesets/assemble-release-plan@6.0.5':
     dependencies:
@@ -15809,7 +15801,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.1
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
-      semver: 7.6.3
+      semver: 7.7.0
 
   '@changesets/changelog-git@0.2.0':
     dependencies:
@@ -15823,9 +15815,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@changesets/cli@2.27.11':
+  '@changesets/cli@2.27.12':
     dependencies:
-      '@changesets/apply-release-plan': 7.0.7
+      '@changesets/apply-release-plan': 7.0.8
       '@changesets/assemble-release-plan': 6.0.5
       '@changesets/changelog-git': 0.2.0
       '@changesets/config': 3.0.5
@@ -15847,10 +15839,10 @@ snapshots:
       fs-extra: 7.0.1
       mri: 1.2.0
       p-limit: 2.3.0
-      package-manager-detector: 0.2.0
+      package-manager-detector: 0.2.9
       picocolors: 1.1.1
       resolve-from: 5.0.0
-      semver: 7.6.3
+      semver: 7.7.0
       spawndamnit: 3.0.1
       term-size: 2.2.1
 
@@ -15873,7 +15865,7 @@ snapshots:
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
       picocolors: 1.1.1
-      semver: 7.6.3
+      semver: 7.7.0
 
   '@changesets/get-github-info@0.6.0(encoding@0.1.13)':
     dependencies:
@@ -16899,7 +16891,7 @@ snapshots:
       js-yaml: 4.1.0
       json5: 2.2.3
       pathe: 1.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       source-map-js: 1.2.1
       unplugin: 1.15.0(webpack-sources@3.2.3)
     optionalDependencies:
@@ -17069,14 +17061,14 @@ snapshots:
 
   '@manypkg/find-root@1.1.0':
     dependencies:
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.26.7
       '@types/node': 22.10.0
       find-up: 4.1.0
       fs-extra: 8.1.0
 
   '@manypkg/get-packages@1.1.3':
     dependencies:
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.26.7
       '@changesets/types': 4.1.0
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
@@ -17090,7 +17082,7 @@ snapshots:
       https-proxy-agent: 7.0.6(supports-color@9.4.0)
       node-fetch: 2.7.0(encoding@0.1.13)
       nopt: 8.0.0
-      semver: 7.6.3
+      semver: 7.7.0
       tar: 7.4.3
     transitivePeerDependencies:
       - encoding
@@ -17127,7 +17119,7 @@ snapshots:
   '@mdx-js/react@2.3.0(react@18.3.1)':
     dependencies:
       '@types/mdx': 2.0.13
-      '@types/react': 18.3.3
+      '@types/react': 19.0.8
       react: 18.3.1
 
   '@miyaneee/rollup-plugin-json5@1.2.0(rollup@4.32.1)':
@@ -17484,7 +17476,7 @@ snapshots:
       git-url-parse: 16.0.0
       is-docker: 3.0.0
       ofetch: 1.4.1
-      package-manager-detector: 0.2.8
+      package-manager-detector: 0.2.9
       parse-git-config: 3.0.0
       pathe: 2.0.2
       rc9: 2.1.2
@@ -17504,7 +17496,7 @@ snapshots:
       git-url-parse: 16.0.0
       is-docker: 3.0.0
       ofetch: 1.4.1
-      package-manager-detector: 0.2.8
+      package-manager-detector: 0.2.9
       parse-git-config: 3.0.0
       pathe: 2.0.2
       rc9: 2.1.2
@@ -19749,7 +19741,7 @@ snapshots:
       prompts: 2.4.2
       puppeteer-core: 2.1.1
       read-pkg-up: 7.0.1
-      semver: 7.6.3
+      semver: 7.7.0
       strip-json-comments: 3.1.1
       tempy: 1.0.1
       ts-dedent: 2.2.0
@@ -19881,7 +19873,7 @@ snapshots:
       pretty-hrtime: 1.0.3
       prompts: 2.4.2
       read-pkg-up: 7.0.1
-      semver: 7.6.3
+      semver: 7.7.0
       telejson: 7.2.0
       tiny-invariant: 1.3.3
       ts-dedent: 2.2.0
@@ -20664,6 +20656,10 @@ snapshots:
       '@types/prop-types': 15.7.11
       csstype: 3.1.3
 
+  '@types/react@19.0.8':
+    dependencies:
+      csstype: 3.1.3
+
   '@types/resolve@1.20.2': {}
 
   '@types/sax@1.2.7':
@@ -20790,7 +20786,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.6.3
+      semver: 7.7.0
       ts-api-utils: 1.3.0(typescript@5.6.3)
     optionalDependencies:
       typescript: 5.6.3
@@ -21458,7 +21454,7 @@ snapshots:
       node-fetch: 2.6.7(encoding@0.1.13)
       path-match: 1.2.4
       promisepipe: 3.0.0
-      semver: 7.6.3
+      semver: 7.7.0
       stat-mode: 0.3.0
       stream-to-promise: 2.2.0
       tar: 7.4.3
@@ -21573,7 +21569,7 @@ snapshots:
       '@vercel/nft': 0.27.10(encoding@0.1.13)(rollup@4.32.1)
       '@vercel/routing-utils': 5.0.0
       '@vercel/static-config': 3.0.0
-      semver: 7.6.3
+      semver: 7.7.0
       ts-morph: 12.0.0
     transitivePeerDependencies:
       - encoding
@@ -21663,7 +21659,7 @@ snapshots:
       '@ampproject/remapping': 2.3.0
       c8: 7.14.0
       magic-string: 0.30.17
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       std-env: 3.8.0
       vitest: 3.0.3(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@16.7.2)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)
 
@@ -22620,7 +22616,7 @@ snapshots:
       caniuse-lite: 1.0.30001692
       fraction.js: 4.3.7
       normalize-range: 0.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.5.1
       postcss-value-parser: 4.2.0
 
@@ -22661,7 +22657,7 @@ snapshots:
       '@babel/compat-data': 7.26.5
       '@babel/core': 7.26.7
       '@babel/helper-define-polyfill-provider': 0.6.3(@babel/core@7.26.7)
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -22782,7 +22778,7 @@ snapshots:
 
   broadcast-channel@3.7.0:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       detect-node: 2.1.0
       js-sha3: 0.8.0
       microseconds: 0.2.0
@@ -23337,7 +23333,7 @@ snapshots:
       postcss-modules-scope: 3.2.1(postcss@8.5.1)
       postcss-modules-values: 4.0.0(postcss@8.5.1)
       postcss-value-parser: 4.2.0
-      semver: 7.6.3
+      semver: 7.7.0
     optionalDependencies:
       webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)
 
@@ -23607,7 +23603,7 @@ snapshots:
 
   dom-helpers@3.4.0:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
 
   dom-serializer@2.0.0:
     dependencies:
@@ -23682,7 +23678,7 @@ snapshots:
       '@one-ini/wasm': 0.1.1
       commander: 10.0.1
       minimatch: 9.0.1
-      semver: 7.6.3
+      semver: 7.7.0
 
   ee-first@1.1.1: {}
 
@@ -25082,7 +25078,7 @@ snapshots:
 
   history@4.10.1:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.3.3
@@ -25647,7 +25643,7 @@ snapshots:
       '@babel/parser': 7.26.7
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.6.3
+      semver: 7.7.0
     transitivePeerDependencies:
       - supports-color
 
@@ -25881,7 +25877,7 @@ snapshots:
       acorn: 8.14.0
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      semver: 7.6.3
+      semver: 7.7.0
 
   jsonc-parser@2.2.1: {}
 
@@ -25924,7 +25920,7 @@ snapshots:
 
   launch-editor@2.9.1:
     dependencies:
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       shell-quote: 1.8.2
 
   lazy-universal-dotenv@4.0.0:
@@ -26153,15 +26149,15 @@ snapshots:
   make-dir@2.1.0:
     dependencies:
       pify: 4.0.1
-      semver: 7.6.3
+      semver: 7.7.0
 
   make-dir@3.1.0:
     dependencies:
-      semver: 7.6.3
+      semver: 7.7.0
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.6.3
+      semver: 7.7.0
 
   make-error@1.3.6: {}
 
@@ -26204,7 +26200,7 @@ snapshots:
 
   match-sorter@6.3.1:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       remove-accents: 0.4.2
 
   math-intrinsics@1.1.0: {}
@@ -26926,7 +26922,7 @@ snapshots:
       citty: 0.1.6
       defu: 6.1.4
       esbuild: 0.18.20
-      fs-extra: 11.2.0
+      fs-extra: 11.3.0
       globby: 13.2.2
       jiti: 1.21.6
       mlly: 1.7.3
@@ -27182,7 +27178,7 @@ snapshots:
     dependencies:
       hosted-git-info: 2.8.9
       resolve: 1.22.10
-      semver: 7.6.3
+      semver: 7.7.0
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -27795,9 +27791,7 @@ snapshots:
 
   package-json-from-dist@1.0.0: {}
 
-  package-manager-detector@0.2.0: {}
-
-  package-manager-detector@0.2.8: {}
+  package-manager-detector@0.2.9: {}
 
   packrup@0.1.2: {}
 
@@ -27997,7 +27991,7 @@ snapshots:
 
   polished@4.2.2:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
 
   polished@4.3.1:
     dependencies:
@@ -28055,7 +28049,7 @@ snapshots:
       cosmiconfig: 8.3.6(typescript@5.6.3)
       jiti: 1.21.7
       postcss: 8.5.1
-      semver: 7.6.3
+      semver: 7.7.0
       webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)
     transitivePeerDependencies:
       - typescript
@@ -28522,7 +28516,7 @@ snapshots:
 
   react-query@3.39.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       broadcast-channel: 3.7.0
       match-sorter: 6.3.1
       react: 18.3.1
@@ -28576,7 +28570,7 @@ snapshots:
 
   react-router-dom@5.3.4(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -28593,7 +28587,7 @@ snapshots:
 
   react-router@5.3.4(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -29107,7 +29101,7 @@ snapshots:
 
   rtl-css-js@1.16.1:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
 
   run-applescript@7.0.0: {}
 
@@ -29189,10 +29183,9 @@ snapshots:
 
   seedrandom@3.0.5: {}
 
-  semver@7.6.2:
-    optional: true
-
   semver@7.6.3: {}
+
+  semver@7.7.0: {}
 
   send@0.19.0:
     dependencies:
@@ -29279,7 +29272,7 @@ snapshots:
     dependencies:
       color: 4.2.3
       detect-libc: 2.0.3
-      semver: 7.6.2
+      semver: 7.6.3
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.33.4
       '@img/sharp-darwin-x64': 0.33.4
@@ -29699,7 +29692,7 @@ snapshots:
       css-tree: 2.3.1
       css-what: 6.1.0
       csso: 5.0.5
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   symbol-tree@3.2.4: {}
 
@@ -30085,7 +30078,7 @@ snapshots:
 
   typescript-auto-import-cache@0.3.3:
     dependencies:
-      semver: 7.6.3
+      semver: 7.7.0
 
   typescript-eslint@8.17.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.6.3):
     dependencies:
@@ -30430,7 +30423,7 @@ snapshots:
 
   unload@2.2.0:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.7
       detect-node: 2.1.0
 
   unocss@0.59.4(postcss@8.5.1)(rollup@4.32.1)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.37.0)):
@@ -31264,7 +31257,7 @@ snapshots:
   volar-service-typescript@0.0.61(@volar/language-service@2.4.5):
     dependencies:
       path-browserify: 1.0.1
-      semver: 7.6.3
+      semver: 7.7.0
       typescript-auto-import-cache: 0.3.3
       vscode-languageserver-textdocument: 1.0.12
       vscode-nls: 5.2.0
