@@ -64,6 +64,7 @@
       "changePaymentMethod": "Zmień metodę płatności",
       "cancel": "Anuluj",
       "confirm": "Potwierdź",
+      "close": "Zamknij",
       "backToOrdersList": "Powrót do listy zamówień",
       "itemsHeader": {
         "item": "Przedmiot",
