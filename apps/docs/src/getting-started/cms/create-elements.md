@@ -15,13 +15,13 @@ nav:
 
 # Create Elements (CMS)
 
-Start with importing the correct element type from the `composables-next` package and using it in the `defineProps` method to define the type of your `content` property:
+Start with importing the correct element type from the `@shopware/composables` package and using it in the `defineProps` method to define the type of your `content` property:
 
 ```vue
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage } from "@shopware-pwa/composables-next";
+import { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsElementImage;
@@ -49,7 +49,7 @@ However, for some elements the configuration can be quite complex, so there are 
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage, useCmsElementImage } from "@shopware-pwa/composables-next";
+import { CmsElementImage, useCmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
     content: CmsElementImage

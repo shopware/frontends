@@ -57,7 +57,7 @@ breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
 
 ```ts
-import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getCategoryBreadcrumbs } from "@shopware/helpers";
 
 let breadcrumbs = getCategoryBreadcrumbs(
   productResponse.value?.product?.seoCategory,

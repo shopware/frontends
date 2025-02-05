@@ -21,10 +21,7 @@ Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 ```vue
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
-import {
-  getProductRoute,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
 
 const router = useRouter();

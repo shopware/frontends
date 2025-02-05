@@ -7,7 +7,7 @@ This repository shows an example of how to use translation snippets using admin 
 ## What's inside
 
 - Nuxt 3 application
-- Required libraries installed (api-client, composables, nuxt3-module)
+- Required libraries installed (api-client, composables, nuxt-module)
 - Minimum configuration of Nuxt 3 module
 - **Configured i18n module: `i18n` section in `nuxt.config.ts` file**
 - **API middleware added: `./server/api/translations.get.ts` file**

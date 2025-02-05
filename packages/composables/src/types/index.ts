@@ -1,10 +1,3 @@
-// import type {
-//   ProductResponse as LegacyProductResponse,
-//   LandingPage,
-//   Category,
-//   CmsPage,
-// } from "@shopware-pwa/types";
-
 export * from "./cmsBlockTypes";
 export * from "./cmsElementTypes";
 export * from "./cmsSectionTypes";

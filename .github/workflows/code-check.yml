@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: 22
 
-      - run: corepack enable
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
       - run: pnpm --version
       - uses: actions/setup-node@v4
         with:
@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: 22
 
-      - run: corepack enable
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
       - run: pnpm --version
       - uses: actions/setup-node@v4
         with:
@@ -80,7 +80,7 @@ jobs:
         run: pnpm lint
 
       - name: Publish package previews
-        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base' './packages/composables' './packages/helpers' './packages/nuxt3-module'
+        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module'
 
   test:
     name: Test
@@ -100,7 +100,7 @@ jobs:
         with:
           node-version: 22
 
-      - run: corepack enable
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
       - run: pnpm --version
       - uses: actions/setup-node@v4
         with:

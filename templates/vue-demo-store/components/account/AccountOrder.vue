@@ -11,6 +11,8 @@ const props = defineProps<{
 
 const { t } = useI18n();
 const { currency } = useSessionContext();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const orderDate = computed(() =>
   new Date(props.order.orderDate).toLocaleDateString(
@@ -36,7 +38,7 @@ const orderDate = computed(() =>
         />
       </div>
       <div class="hidden sm:block justify-self-end text-dark cursor-pointer">
-        <NuxtLink :to="`/account/order/details/${order.id}`">
+        <NuxtLink :to="formatLink(`/account/order/details/${order.id}`)">
           {{ t("account.view") }}
         </NuxtLink>
       </div>
@@ -45,7 +47,7 @@ const orderDate = computed(() =>
       <div
         class="block sm:hidden text-center text-dark cursor-pointer bg-secondary py-2"
       >
-        <NuxtLink :to="`/account/order/details/${order.id}`">
+        <NuxtLink :to="formatLink(`/account/order/details/${order.id}`)">
           {{ t("account.view") }}
         </NuxtLink>
       </div>

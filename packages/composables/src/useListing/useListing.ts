@@ -1,4 +1,4 @@
-import { getListingFilters } from "@shopware-pwa/helpers-next";
+import { getListingFilters } from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";

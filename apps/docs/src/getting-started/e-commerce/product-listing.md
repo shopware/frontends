@@ -432,7 +432,7 @@ Active filters for `Properties` contain only the list of ID's of properties' opt
 
 ## Helpers package
 
-The purpose of `@shopware-pwa/helpers-next` is to make developer's life easier.
+The purpose of `@shopware/helpers` is to make developer's life easier.
 
 In the present case, we could use the product's thumbnail or use the translated name, or even get the product details page's URL, if the application supports a routing.
 
@@ -442,7 +442,7 @@ import {
   getSmallestThumbnailUrl,
   getProductUrl,
   getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
 ```
 
 ```html

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductName } from "@shopware-pwa/helpers-next";
+import { getProductName } from "@shopware/helpers";
 
 const props = defineProps<{
   navigationId: string;
@@ -8,6 +8,7 @@ const props = defineProps<{
 const { search } = useProductSearch();
 const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
+const errorDetails = ref();
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
@@ -29,6 +30,7 @@ const { data, error } = await useAsyncData(
     for (const response of responses) {
       if (response.status === "rejected") {
         console.error("[FrontendDetailPage.vue]", response.reason.message);
+        errorDetails.value = response.reason.message;
       }
     }
 
@@ -47,8 +49,12 @@ if (data.value?.breadcrumbs) {
 }
 
 if (!productResponse.value) {
-  console.error("[FrontendDetailPage.vue]", error.value?.message);
-  throw error.value;
+  const statusMessage = error.value || errorDetails.value;
+  console.error("[FrontendDetailPage.vue]", statusMessage);
+  throw createError({
+    statusCode: 500,
+    message: statusMessage,
+  });
 }
 
 useProductJsonLD(productResponse.value.product);

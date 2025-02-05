@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  getCategoryImageUrl,
-  getCategoryRoute,
-} from "@shopware-pwa/helpers-next";
+import { getCategoryImageUrl, getCategoryRoute } from "@shopware/helpers";
 import type { Schemas } from "#shopware";
 
 const { navigationElements } = useNavigation();

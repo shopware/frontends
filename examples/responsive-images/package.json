@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "canary",
+    "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "vue": "3.5.13"
@@ -21,7 +21,7 @@
     "@biomejs/biome": "1.8.3",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
-    "vite": "6.0.3",
-    "vue-tsc": "2.1.10"
+    "vite": "6.0.11",
+    "vue-tsc": "2.2.0"
   }
 }

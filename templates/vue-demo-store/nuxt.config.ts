@@ -1,9 +1,6 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   runtimeConfig: {
     shopware: {
       /**
@@ -35,10 +32,12 @@ export default defineNuxtConfig({
     //     "ssr-heder-example": "ssr-header-example-value",
     //   },
     // },
-    /**
-     * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
-     */
-    broadcasting: false,
+    public: {
+      /**
+       * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
+       */
+      broadcasting: false,
+    },
   },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -97,7 +96,7 @@ export default defineNuxtConfig({
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
-    "@shopware-pwa/nuxt3-module",
+    "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
   // components: true,

@@ -1,4 +1,4 @@
-import { useCartFunction as swUseCart } from "@shopware-pwa/composables-next";
+import { useCartFunction as swUseCart } from "@shopware/composables";
 import type { Schemas } from "#shopware";
 
 const _useCart = (): UseCartReturn => {

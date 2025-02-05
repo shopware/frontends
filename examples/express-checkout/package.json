@@ -13,9 +13,9 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@paypal/paypal-js": "8.1.0",
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/helpers-next": "canary",
+    "@paypal/paypal-js": "8.2.0",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "vue": "3.5.13",
@@ -26,7 +26,7 @@
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
-    "vite": "6.0.3",
-    "vue-tsc": "2.1.10"
+    "vite": "6.0.11",
+    "vue-tsc": "2.2.0"
   }
 }

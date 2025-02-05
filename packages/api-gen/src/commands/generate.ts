@@ -28,6 +28,7 @@ export async function generate(args: {
   filename?: string;
   apiType: "store" | "admin";
   debug: boolean;
+  logPatches: boolean;
 }) {
   const inputFilename = args.filename
     ? args.filename
@@ -72,9 +73,25 @@ export async function generate(args: {
         silent: true, // we allow to not have the config file in this command
       });
       const jsonOverrides = await loadJsonOverrides({
-        path: configJSON?.patches,
+        paths: configJSON?.patches,
         apiType: args.apiType,
       });
+
+      if (args.debug) {
+        // save overrides to file
+        const overridesFilePath = join(
+          args.cwd,
+          "api-types",
+          `${args.apiType}ApiTypes.overrides-result.json`,
+        );
+        writeFileSync(
+          overridesFilePath,
+          json5.stringify(jsonOverrides, null, 2),
+        );
+        console.log(
+          `[DEBUG] Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
+        );
+      }
 
       const {
         patchedSchema,
@@ -93,6 +110,7 @@ export async function generate(args: {
         todosToFix,
         outdatedPatches,
         alreadyApliedPatches,
+        displayPatchedLogs: args.logPatches,
       });
 
       if (args.debug) {
@@ -109,6 +127,9 @@ export async function generate(args: {
         writeFileSync(patchedSchemaPath, json5.stringify(patchedSchema), {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the patched schema in: ${c.bold(patchedSchemaPath)} file.`,
+        );
       }
 
       const astSchema = await openapiTS(patchedSchema, {
@@ -209,6 +230,7 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(`[DEBUG]: Debug Schema saved to ${fullOutputFilePath}`);
 
         schema = await format(schema, {
           // semi: false,
@@ -251,6 +273,9 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the generated schema in: ${c.bold(fullOutputFilePath)} file.`,
+        );
       }
 
       // TODO: change overrides file name to param

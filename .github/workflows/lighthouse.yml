@@ -2,11 +2,9 @@ name: Lighthouse CI
 run-name: run Lighthouse CI 🚀
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "55 23 * * *"
 jobs:
   lighthouseci:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,8 +13,6 @@ jobs:
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          serverBaseUrl: ${{ secrets.LHCI_SERVER_URL }}
-          serverToken: ${{ secrets.LHCI_SERVER_TOKEN }}
           urls: |
             "https://frontends-demo.vercel.app/"
             "https://frontends-demo.vercel.app/Products/"

@@ -1,6 +1,6 @@
 # shopware/frontends - helpers
 
-Welcome to `@shopware-pwa/helpers-next` package.
+Welcome to `@shopware/helpers` package.
 
 For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
@@ -23,7 +23,7 @@ const visibilityMap: Record<CmsVisibility, HelpersCssClasses> = {
 These classes can be integrated into a custom template, thereby ensuring consistency across different packages. For example as a `safelist` classes in unocss configuration file
 
 ```ts
-import { helpersCssClasses } from "@shopware-pwa/helpers-next";
+import { helpersCssClasses } from "@shopware/helpers";
 
 export default defineConfig({
   safelist: helpersCssClasses,
@@ -36,8 +36,10 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.4.0
 
 ### Minor Changes
 
-- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsBreadcrumbs` helper for building CMS breadcrumbs
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.

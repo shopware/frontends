@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "private": true,
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "",
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "workspace:*",
-    "@shopware-pwa/helpers-next": "workspace:*",
+    "@shopware/composables": "workspace:*",
+    "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "flexsearch": "0.7.43",
     "markdown-it": "14.1.0",

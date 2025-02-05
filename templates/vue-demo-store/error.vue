@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RouteObject } from "@shopware-pwa/composables-next";
+import type { RouteObject } from "@shopware/composables";
 import type { NuxtError } from "#app";
 
 defineOptions({
@@ -76,9 +76,15 @@ const errorMessage = isFormattedError ? errMessage : props.error.message;
         </h1>
         <p
           v-if="errorMessage"
-          class="text-xl md:text-3xl font-semibold mt-4 mb-6"
+          class="text-xl md:text-3xl font-semibold font-italic mt-4 mb-6"
         >
           {{ errorMessage }}
+        </p>
+        <p
+          v-if="errorMessage !== error.message"
+          class="text-l md:text-xl font-italic mt-4 mb-6"
+        >
+          {{ error.message }}
         </p>
         <DevOnly>
           <div class="text-xs text-gray-500">

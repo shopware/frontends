@@ -14,15 +14,15 @@
   },
   "dependencies": {
     "@nuxtjs/i18n": "8.5.6",
-    "@shopware-pwa/composables-next": "canary",
+    "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "js-cookie": "3.0.5",
-    "nuxt": "3.14.1592",
+    "nuxt": "3.15.3",
     "typescript": "5.6.3",
     "vue": "3.5.13",
-    "vue-tsc": "2.1.10"
+    "vue-tsc": "2.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"

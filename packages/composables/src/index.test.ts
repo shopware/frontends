@@ -21,7 +21,7 @@ describe("resolveCmsComponent", () => {
     const result = getDefaultApiParams();
     expect(result).toEqual({});
     expect(console.error).toHaveBeenCalledWith(
-      "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+      "[@shopware/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
     );
   });
 

@@ -1,4 +1,4 @@
-import { helpersCssClasses } from "@shopware-pwa/helpers-next";
+import { helpersCssClasses } from "@shopware/helpers";
 import transformerDirectives from "@unocss/transformer-directives";
 import {
   defineConfig,

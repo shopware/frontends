@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getLanguageName } from "@shopware-pwa/helpers-next";
+import { getLanguageName } from "@shopware/helpers";
 
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();

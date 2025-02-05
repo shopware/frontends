@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { customValidators } from "@/i18n/utils/i18n-validators";
-import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 import type { operations } from "#shopware";
 
@@ -51,7 +51,7 @@ const {
 } = useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const isLoading = reactive<{ [key: string]: boolean }>({});
-
+const editPersonalInfo = ref(false);
 watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
   if (isLogged || isLoggedGuest) {
     loadCustomerAddresses();
@@ -226,7 +226,7 @@ const placeOrder = async () => {
 
   try {
     const order = await createOrder();
-    await push(`/checkout/success/${order.id}`);
+    await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
     if (error instanceof ApiClientError)
@@ -277,7 +277,7 @@ const invokeSubmit = async () => {
       const response = await register(state);
       if (!response.active) {
         pushInfo(t("checkout.messages.checkoutSignInSuccess"));
-        await push("/");
+        await push(formatLink("/"));
       }
     } catch (error) {
       if (error instanceof ApiClientError) {
@@ -290,7 +290,7 @@ async function invokeLogout() {
   try {
     await logout();
   } finally {
-    await push("/");
+    await push(formatLink("/"));
   }
 }
 
@@ -325,6 +325,31 @@ const beforeCreateOrderValidation = () => {
 
   return true;
 };
+const { updatePersonalInfo } = useUser();
+
+const handleChangeBaseInfo = async (data: {
+  firstName: string;
+  lastName: string;
+  salutationId: string;
+}) => {
+  try {
+    await updatePersonalInfo({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      salutationId: data.salutationId,
+    });
+  } catch (error) {
+    if (error instanceof ApiClientError)
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
+        }
+      }
+  }
+
+  await refreshSessionContext();
+  editPersonalInfo.value = false;
+};
 </script>
 
 <template>
@@ -353,13 +378,19 @@ const beforeCreateOrderValidation = () => {
       <div class="md:grid md:grid-cols-2 md:gap-6">
         <div class="md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
-            <div>
+            <div class="relative">
               <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.personalInformationLabel") }}
               </h3>
               <div class="text-sm text-secondary-600">
                 {{ $t("checkout.personalInformationInfo") }}
               </div>
+              <button
+              v-if="isUserSession"
+                class="cursor-pointer i-carbon-edit text-xl inline-block absolute right-0 top-0"
+                data-testid="personal-information-edit"
+                @click.prevent="editPersonalInfo = !editPersonalInfo"
+              />
             </div>
             <form
               v-if="!isUserSession"
@@ -655,6 +686,18 @@ const beforeCreateOrderValidation = () => {
                 @click="invokeLogout"
                 >{{ $t("checkout.logOut") }}</a
               >.
+
+              <CheckoutCustomerBaseInfo
+                v-if="editPersonalInfo"
+                class="mt-4"
+                :customerData="{
+                  firstName: user?.firstName,
+                  lastName: user?.lastName,
+                  salutationId: user?.salutationId,
+                }"
+                @update="handleChangeBaseInfo"
+                @cancel="editPersonalInfo = false"
+              />
             </div>
           </div>
           <fieldset
@@ -1030,17 +1073,6 @@ const beforeCreateOrderValidation = () => {
                 />
               </div>
             </div>
-
-            <!-- <div
-              class="flex pb-4 border-b justify-between text-sm text-secondary-500"
-            >
-              <p>{{ $t("checkout.shippingEstimate") }}</p>
-              <SharedPrice
-                :value="shippingTotal"
-                class="text-secondary-900 font-medium"
-                data-testid="cart-subtotal"
-              />
-            </div> -->
 
             <div class="flex justify-between text-secondary-900 font-medium">
               <p>{{ $t("checkout.orderTotal") }}l</p>

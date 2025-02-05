@@ -34,7 +34,7 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
 5. Now add the storyblok access token to you `nuxt.config.ts` file  
    _(you need a storyblok account to get that token)_
    ```ts
-   modules: ["@shopware-pwa/nuxt3-module", "@storyblok/nuxt"],
+   modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
      storyblok: {
      accessToken: "super-secret-token"
    },

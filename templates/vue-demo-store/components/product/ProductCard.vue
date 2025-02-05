@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import { ApiClientError } from "@shopware/api-client";
+import type { BoxLayout, DisplayMode } from "@shopware/composables";
 import {
   getProductFromPrice,
   getProductName,
   getProductRoute,
   getSmallestThumbnailUrl,
-} from "@shopware-pwa/helpers-next";
-import { ApiClientError } from "@shopware/api-client";
+} from "@shopware/helpers";
 import type { Schemas } from "#shopware";
 
 const { pushSuccess, pushError } = useNotifications();

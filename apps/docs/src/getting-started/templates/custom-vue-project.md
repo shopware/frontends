@@ -24,7 +24,7 @@ More information about creating a new Vue project can be found [here](https://vu
 First of all, install the required npm dependencies:
 
 ```bash
-pnpm add @shopware-pwa/composables-next @shopware/api-client
+pnpm add @shopware/composables @shopware/api-client
 ```
 
 Additionally, to keep the current session context even after page reloads, we are going to install a cookie helper to set and get value of [context token](https://shopware.stoplight.io/docs/store-api/ZG9jOjEwODA3NjQx-authentication-and-authorisation) in our plugin:
@@ -38,23 +38,23 @@ You can read more about CMS pages here:
 
 <PageRef page="../cms/content-pages.html" title="Create content pages" sub="Render a content page using components" />
 
-<!-- automd:pm-install name="@shopware-pwa/cms-base" dev -->
+<!-- automd:pm-install name="@shopware/cms-base-layer" dev -->
 
 ```sh
 # ✨ Auto-detect
-npx nypm install -D @shopware-pwa/cms-base
+npx nypm install -D @shopware/cms-base-layer
 
 # npm
-npm install -D @shopware-pwa/cms-base
+npm install -D @shopware/cms-base-layer
 
 # yarn
-yarn add -D @shopware-pwa/cms-base
+yarn add -D @shopware/cms-base-layer
 
 # pnpm
-pnpm install -D @shopware-pwa/cms-base
+pnpm install -D @shopware/cms-base-layer
 
 # bun
-bun install -D @shopware-pwa/cms-base
+bun install -D @shopware/cms-base-layer
 ```
 
 <!-- /automd -->
@@ -71,20 +71,20 @@ Now, let's configure the API client and business logic together.
 The business logic is written to be Vue 3 compatible. Under the hood, it utilizes the composition API, especially the `provide`/`inject` feature for sharing state.
 :::
 
-In order to configure the business logic and API client together with your Vue 3 application, it's required to create a Shopware instance provided by a factory method within the `@shopware-pwa/composables-next` package. Everything will be encapsulated in a plugin and installed later on.
+In order to configure the business logic and API client together with your Vue 3 application, it's required to create a Shopware instance provided by a factory method within the `@shopware/composables` package. Everything will be encapsulated in a plugin and installed later on.
 
 :::tip Vue plugins
 This section requires having knowledge about the [concept of Vue 3 plugins](https://vuejs.org/guide/reusability/plugins.html#writing-a-plugin).
 :::
 
-Import necessary methods from `@shopware/api-client`, `@shopware-pwa/composables-next` and `js-cookie` packages:
+Import necessary methods from `@shopware/api-client`, `@shopware/composables` and `js-cookie` packages:
 
 ```ts
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
 import { createAPIClient } from "@shopware/api-client";
-import { createShopwareContext } from "@shopware-pwa/composables-next";
+import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
 
 export default {
@@ -208,7 +208,7 @@ app.mount("#app");
 import { ref } from "vue";
 import type { App } from "vue";
 import { createAPIClient } from "@shopware/api-client";
-import { createShopwareContext } from "@shopware-pwa/composables-next";
+import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
@@ -273,6 +273,11 @@ const instance = createInstance({
   languageId: languageId.value,
 });
 ```
+
+:::warning
+If you need to redirect your media, you can use the `shopware.yaml` file to configure the main media URL.
+For more details, please visit this [site](https://developer.shopware.com/docs/guides/hosting/infrastructure/filesystem.html#flysystem-overview).
+:::
 
 ## Next steps
 

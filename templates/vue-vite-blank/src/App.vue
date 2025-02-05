@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSessionContext } from "@shopware-pwa/composables-next/lib";
+import { useSessionContext } from "@shopware/composables/dist";
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import Frontends from "./components/Frontends.vue";

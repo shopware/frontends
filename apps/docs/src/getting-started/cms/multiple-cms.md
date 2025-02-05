@@ -34,7 +34,7 @@ import { pascalCase } from "scule";
 import {
   useNavigationContext,
   useNavigationSearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import type { Schemas } from "#shopware";
 const { clearBreadcrumbs } = useBreadcrumbs();
 

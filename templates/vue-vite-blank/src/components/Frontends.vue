@@ -3,7 +3,7 @@ import {
   useCheckout,
   useSessionContext,
   useUser,
-} from "@shopware-pwa/composables-next/lib";
+} from "@shopware/composables/dist";
 defineProps<{
   template: string;
 }>();

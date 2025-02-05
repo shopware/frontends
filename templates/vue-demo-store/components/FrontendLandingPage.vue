@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCmsBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getCmsBreadcrumbs } from "@shopware/helpers";
 import { useLandingSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -26,7 +26,10 @@ if (landingResponse.value) {
 
 if (!landingResponse?.value) {
   console.error("[FrontendLandingPage.vue]", error.value?.message);
-  throw error.value;
+  throw createError({
+    statusCode: 500,
+    message: error.value?.message,
+  });
 }
 
 const landingPage = landingResponse as Ref<Schemas["LandingPage"]>;

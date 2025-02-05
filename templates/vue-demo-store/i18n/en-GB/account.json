@@ -66,6 +66,7 @@
       "changePaymentMethod": "Change payment method",
       "cancel": "Cancel",
       "confirm": "Confirm",
+      "close": "Close",
       "backToOrdersList": "Back to orders list",
       "itemsHeader": {
         "item": "Item",

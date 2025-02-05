@@ -1,5 +1,29 @@
 # vue-demo-store
 
+## 1.7.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+## 1.6.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
+
+## 1.5.0
+
+### Minor Changes
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed order details from `AccountOrder` component and moved it to the new order details page `pages/account/order/details/[id].vue`
+
+### Patch Changes
+
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Display all shipping costs in the cart components `cart.vue`, `checkout/index.vue`
+
 ## 1.4.0
 
 ### Minor Changes

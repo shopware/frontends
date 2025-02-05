@@ -3,7 +3,7 @@ import {
   useSessionContext,
   useShopwareContext,
   useUser,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 import { computed, ref, useTemplateRef, watch } from "vue";
 import type { Schemas } from "#shopware";
