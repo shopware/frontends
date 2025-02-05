@@ -274,6 +274,11 @@ const instance = createInstance({
 });
 ```
 
+:::warning
+If you need to redirect your media, you can use the `shopware.yaml` file to configure the main media URL.
+For more details, please visit this [site](https://developer.shopware.com/docs/guides/hosting/infrastructure/filesystem.html#flysystem-overview).
+:::
+
 ## Next steps
 
 After your setup, you can follow our building guides to get started with Shopware Frontends
