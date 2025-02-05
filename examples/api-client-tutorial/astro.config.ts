@@ -5,6 +5,11 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 600,
+    },
+  },
   integrations: [tutorialkit()],
   image: {
     service: passthroughImageService(),
