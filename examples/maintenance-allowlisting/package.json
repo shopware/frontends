@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@shopware/api-client": "canary",
+    "@shopware/api-gen": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
+    "nuxt": "^3.15.4",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@unocss/nuxt": "65.4.3",
+    "unocss": "65.4.3"
+  }
+}

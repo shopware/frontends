@@ -81,17 +81,19 @@ const isMaintenanceMode = computed(() => {
 </template>
 ```
 
-### IP Whitelisting
+### IP Allowlisting
 
-This document provides a step-by-step guide on how to add the possibility for whitelisting in the Frontends app.
-Whitelisting allows specific users or IP addresses to bypass certain restrictions or maintenance modes, ensuring 
+This document provides a step-by-step guide on how to add the possibility for allowlisting in the Frontends app.
+Allowlisting allows specific users or IP addresses to bypass certain restrictions or maintenance modes, ensuring 
 they have access to the application even when it is otherwise restricted.
  
 
 The solution involves adding a server middleware that checks whether maintenance mode is enabled. If maintenance mode is active, SSR (Server-Side Rendering) mode will be off. This ensures that the backend IP is omitted, and CRS will take the role to display the maintenance page.
 
-```ts
-// frontends/templates/vue-demo-store/server/middleware/maintenance.ts
+This code should be added to the `server/middleware/maintenance.ts` file.
+<!-- automd:file src="examples/maintenance-allowlisting/server/middleware/maintenance.ts" code -->
+
+```ts [maintenance.ts]
 import { ApiClientError } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
 import apiClient from "../apiBuilder";
@@ -110,3 +112,5 @@ export default defineEventHandler(async (event) => {
   }
 });
 ```
+
+<!-- /automd -->

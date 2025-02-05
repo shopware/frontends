@@ -2,4 +2,4 @@
 "docs": minor
 ---
 
-Added `IP Whitelisting` section for `Maintenance mode` page
+Added `IP Allowlisting` section for `Maintenance mode` page
