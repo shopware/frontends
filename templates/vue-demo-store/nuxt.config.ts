@@ -85,7 +85,6 @@ export default defineNuxtConfig({
       isr: {
         // see https://github.com/shopware/frontends/issues/1652
         allowQuery: ["manufacturer", "properties"],
-        passQuery: true,
       },
     },
   },
