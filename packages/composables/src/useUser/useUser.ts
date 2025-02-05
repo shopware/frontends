@@ -128,7 +128,7 @@ export type UseUserReturn = {
  */
 export function useUser(): UseUserReturn {
   const { apiClient } = useShopwareContext();
-  const { userFromContext, refreshSessionContext, languageIdChain } =
+  const { userFromContext, refreshSessionContext, currentSessionLanguageID } =
     useSessionContext();
 
   const _user = useContext<Schemas["Customer"] | undefined>("customer");
@@ -230,7 +230,7 @@ export function useUser(): UseUserReturn {
         ],
       },
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
 
@@ -254,7 +254,7 @@ export function useUser(): UseUserReturn {
           ],
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
