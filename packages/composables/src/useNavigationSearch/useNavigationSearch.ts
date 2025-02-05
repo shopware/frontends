@@ -16,7 +16,7 @@ export type UseNavigationSearchReturn = {
  */
 export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiClient } = useShopwareContext();
-  const { sessionContext, languageIdChain } = useSessionContext();
+  const { sessionContext, currentSessionLanguageID } = useSessionContext();
 
   async function resolvePath(path: string) {
     if (path === "/") {
@@ -50,7 +50,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
         ],
       },
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
 

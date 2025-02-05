@@ -29,7 +29,7 @@ export type UseProductSearchReturn = {
  */
 export function useProductSearch(): UseProductSearchReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const search = async (
     productId: string,
     options?: UseProductSearchReturnOptions,
@@ -44,7 +44,7 @@ export function useProductSearch(): UseProductSearchReturn {
       {
         headers: {
           "sw-include-seo-urls": true,
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
         pathParams: { productId },
         body: associations,

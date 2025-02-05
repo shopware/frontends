@@ -41,7 +41,7 @@ export type UseCustomerOrdersReturn = {
  */
 export function useCustomerOrders(): UseCustomerOrdersReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const orders: Ref<Schemas["Order"][]> = ref([]);
 
   const currentPaginationPage = ref<number>(1);
@@ -62,7 +62,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     const fetchedOrders = await apiClient.invoke("readOrder post /order", {
       body: { ...params, "total-count-mode": "exact" },
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     orders.value = fetchedOrders.data.orders.elements;

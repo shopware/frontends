@@ -23,7 +23,7 @@ export type UseSalutationsReturn = {
  */
 export function useSalutations(): UseSalutationsReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
 
@@ -32,7 +32,7 @@ export function useSalutations(): UseSalutationsReturn {
   > => {
     const result = await apiClient.invoke("readSalutation post /salutation", {
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     _salutations.value = result.data.elements;

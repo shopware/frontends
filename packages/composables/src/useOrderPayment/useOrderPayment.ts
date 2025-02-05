@@ -56,7 +56,7 @@ export function useOrderPayment(
   order: ComputedRef<Schemas["Order"] | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const activeTransaction = computed(() =>
     order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
@@ -104,7 +104,7 @@ export function useOrderPayment(
           paymentMethodId,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );

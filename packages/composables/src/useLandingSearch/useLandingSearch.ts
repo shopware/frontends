@@ -29,7 +29,7 @@ export function useLandingSearch(): {
   ) => Promise<Schemas["LandingPage"]>;
 } {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const search = async (
     navigationId: string,
     options?: {
@@ -48,7 +48,7 @@ export function useLandingSearch(): {
           associations,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );

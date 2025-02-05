@@ -39,7 +39,7 @@ export function useProductReviews(
   product: Ref<Schemas["Product"]>,
 ): UseProductReviewsReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const productReviews: Ref<Schemas["ProductReview"][]> = ref([]);
 
   const loadProductReviews = async (
@@ -53,7 +53,7 @@ export function useProductReviews(
         pathParams: { productId: product.value.id },
         body: parameters,
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );

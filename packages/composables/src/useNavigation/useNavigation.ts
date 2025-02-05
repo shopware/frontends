@@ -40,7 +40,7 @@ export function useNavigation(params?: {
   const type = params?.type || "main-navigation";
 
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
 
   const sharedElements: Ref<Schemas["NavigationRouteResponse"]> = inject(
     `swNavigation-${type}`,
@@ -59,7 +59,7 @@ export function useNavigation(params?: {
         {
           headers: {
             "sw-include-seo-urls": true,
-            "sw-language-id": languageIdChain.value,
+            "sw-language-id": currentSessionLanguageID.value,
           },
           pathParams: {
             activeId: type,

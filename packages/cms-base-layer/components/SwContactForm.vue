@@ -85,7 +85,7 @@ const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
 const { apiClient } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
-const { languageIdChain } = useSessionContext();
+const { currentSessionLanguageID } = useSessionContext();
 
 const getConfirmationText = computed(
   () =>
@@ -151,7 +151,7 @@ const invokeSubmit = async () => {
           navigationId: foreignKey.value,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       });
       formSent.value = true;

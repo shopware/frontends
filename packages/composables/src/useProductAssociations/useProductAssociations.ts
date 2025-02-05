@@ -38,7 +38,7 @@ export function useProductAssociations(
 
   // @ts-ignore: temporary until fixed or removed
   const association = options.associationContext;
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const { apiClient } = useShopwareContext();
   const isLoading = ref(false);
   const associations = ref<Schemas["CrossSellingElementCollection"]>([]);
@@ -86,7 +86,7 @@ export function useProductAssociations(
         {
           pathParams: { productId: product.value.id },
           headers: {
-            "sw-language-id": languageIdChain.value,
+            "sw-language-id": currentSessionLanguageID.value,
           },
         },
       );

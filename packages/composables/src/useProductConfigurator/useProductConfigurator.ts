@@ -41,7 +41,7 @@ export type UseProductConfiguratorReturn = {
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const { configurator, product } = useProduct();
 
   const selected = ref<{
@@ -104,7 +104,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
           },
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       });
       return response.data.elements?.[0]; // return first matching product

@@ -40,7 +40,7 @@ const { apiClient } = useShopwareContext();
 const { resolveApiErrors } = useApiErrorsResolver();
 const { pushError } = useNotifications();
 const { required, minLength } = customValidators();
-const { languageIdChain } = useSessionContext();
+const { currentSessionLanguageID } = useSessionContext();
 const $v = useVuelidate(rules, state);
 
 const emits = defineEmits<(e: "success") => void>();
@@ -67,7 +67,7 @@ const invokeSend = async () => {
           points: state.rating || 0,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );

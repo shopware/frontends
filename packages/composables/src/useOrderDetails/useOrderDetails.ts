@@ -133,7 +133,7 @@ export function useOrderDetails(
   associations?: Schemas["Criteria"]["associations"],
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
@@ -206,7 +206,7 @@ export function useOrderDetails(
       {
         body: params,
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -240,7 +240,7 @@ export function useOrderDetails(
           orderId,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -256,7 +256,7 @@ export function useOrderDetails(
           paymentMethodId: paymentMethodId,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -275,7 +275,7 @@ export function useOrderDetails(
           downloadId,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -292,7 +292,7 @@ export function useOrderDetails(
           deepLinkCode,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -317,7 +317,7 @@ export function useOrderDetails(
       {
         body: { onlyAvailable: true },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );

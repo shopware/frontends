@@ -67,7 +67,7 @@ const {
   changeLanguage,
   languages: storeLanguages,
 } = useInternationalization();
-const { languageIdChain, refreshSessionContext } = useSessionContext();
+const { currentSessionLanguageID, refreshSessionContext } = useSessionContext();
 
 const { data: languages } = await useAsyncData("languages", async () => {
   return await getAvailableLanguages();
@@ -87,11 +87,13 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {
-    if (languageIdChain.value !== localeProperties.value.localeId) {
+    if (currentSessionLanguageID.value !== localeProperties.value.localeId) {
       languageToChangeId = localeProperties.value.localeId;
     }
   } else {
-    const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
+    const sessionLanguage = getLanguageCodeFromId(
+      currentSessionLanguageID.value,
+    );
 
     // If languages are not the same, set one from prefix
     if (sessionLanguage !== prefix) {

@@ -186,7 +186,7 @@ export function useListing(params?: {
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
   let categoryId = params?.categoryId || null;
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
 
@@ -205,7 +205,7 @@ export function useListing(params?: {
       const { data } = await apiClient.invoke("searchPage post /search", {
         headers: {
           "sw-include-seo-urls": true,
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
         body: searchCriteria,
       });
@@ -225,7 +225,7 @@ export function useListing(params?: {
         {
           headers: {
             "sw-include-seo-urls": true,
-            "sw-language-id": languageIdChain.value,
+            "sw-language-id": currentSessionLanguageID.value,
           },
           pathParams: {
             categoryId: categoryId as string, // null exception in useCategory,

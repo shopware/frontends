@@ -82,7 +82,7 @@ export function useInternationalization(
 ): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
     "swLanguagesCurrentLanguage",
@@ -96,7 +96,7 @@ export function useInternationalization(
   async function getAvailableLanguages() {
     const { data } = await apiClient.invoke("readLanguages post /language", {
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     _storeLanguages.value = data.elements;

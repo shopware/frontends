@@ -230,6 +230,17 @@ describe("useSessionContext", () => {
     expect(vm.languageIdChain).toStrictEqual("test");
   });
 
+  it("should return languageIdChain", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      context: {
+        languageIdChain: ["test", "test2"],
+      },
+    } as unknown as Schemas["SalesChannelContext"]);
+
+    expect(vm.currentSessionLanguageID).toStrictEqual("test");
+  });
+
   it("should return empty languageIdChain", () => {
     const { vm } = useSetup(() => useSessionContext());
     vm.setContext({} as unknown as Schemas["SalesChannelContext"]);

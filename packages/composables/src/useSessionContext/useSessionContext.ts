@@ -16,7 +16,7 @@ export type UseSessionContextReturn = {
    */
   setCountry(countryId: string): Promise<void>;
   /**
-   * current context's language
+   * current context's
    */
   sessionContext: ComputedRef<Schemas["SalesChannelContext"] | undefined>;
   /**
@@ -24,7 +24,7 @@ export type UseSessionContextReturn = {
    */
   refreshSessionContext(): Promise<void>;
   /**
-   * current context's language
+   * current context's shipping method
    */
   selectedShippingMethod: ComputedRef<Schemas["ShippingMethod"] | null>;
   /**
@@ -93,6 +93,10 @@ export type UseSessionContextReturn = {
    * current language id chain
    */
   languageIdChain: ComputedRef<string>;
+  /**
+   * Alias for `languageIdChain`
+   */
+  currentSessionLanguageID: ComputedRef<string>;
   /**
    * current context's customer object
    */
@@ -275,6 +279,7 @@ export function useSessionContext(
     setLanguage,
     languageId,
     languageIdChain,
+    currentSessionLanguageID: languageIdChain,
     setCountry,
     setContext,
   };

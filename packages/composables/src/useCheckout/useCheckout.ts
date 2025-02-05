@@ -80,7 +80,7 @@ export function useCheckout(): UseCheckoutReturn {
     selectedShippingMethod,
     setShippingMethod,
     setPaymentMethod,
-    languageIdChain,
+    currentSessionLanguageID,
   } = useSessionContext();
 
   const storeShippingMethods = inject("swShippingMethods", ref());
@@ -111,7 +111,7 @@ export function useCheckout(): UseCheckoutReturn {
           onlyAvailable: true,
         },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -130,7 +130,7 @@ export function useCheckout(): UseCheckoutReturn {
       {
         body: { onlyAvailable: true },
         headers: {
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
       },
     );
@@ -144,7 +144,7 @@ export function useCheckout(): UseCheckoutReturn {
     const order = await apiClient.invoke("createOrder post /checkout/order", {
       body: params,
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     return order.data;

@@ -48,7 +48,7 @@ const totalWishlistItemsCount: Ref<number> = ref(0);
  */
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
   async function addToWishlistSync(id: string) {
     await apiClient.invoke(
       "addProductOnWishlist post /customer/wishlist/add/{productId}",
@@ -80,7 +80,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
         {
           body: { ...defaultSearchCriteria, "total-count-mode": "exact" },
           headers: {
-            "sw-language-id": languageIdChain.value,
+            "sw-language-id": currentSessionLanguageID.value,
           },
         },
       );

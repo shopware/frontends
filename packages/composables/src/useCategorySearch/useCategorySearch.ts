@@ -31,7 +31,7 @@ export type UseCategorySearchReturn = {
  */
 export function useCategorySearch(): UseCategorySearchReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
 
   async function search(
     categoryId: string,
@@ -49,7 +49,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         },
         headers: {
           "sw-include-seo-urls": true,
-          "sw-language-id": languageIdChain.value,
+          "sw-language-id": currentSessionLanguageID.value,
         },
         body: {
           associations,
@@ -73,7 +73,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         ...options?.query,
       },
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     return result.data.elements ?? [];

@@ -101,7 +101,7 @@ export type UseCartReturn = {
  */
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
-  const { languageIdChain } = useSessionContext();
+  const { currentSessionLanguageID } = useSessionContext();
 
   const _storeCart = useContext<Schemas["Cart"]>("swCart");
   const _storeCartErrors = useContext<Schemas["Cart"]["errors"] | null>(
@@ -118,7 +118,7 @@ export function useCartFunction(): UseCartReturn {
 
     const { data } = await apiClient.invoke("readCart get /checkout/cart", {
       headers: {
-        "sw-language-id": languageIdChain.value,
+        "sw-language-id": currentSessionLanguageID.value,
       },
     });
     _storeCart.value = data;
