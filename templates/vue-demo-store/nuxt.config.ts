@@ -82,7 +82,7 @@ export default defineNuxtConfig({
       ssr: false,
     },
     "/**": {
-      isr: 60 * 60 * 24,
+      isr: false,
     },
   },
   /**
