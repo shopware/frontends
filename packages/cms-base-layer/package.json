@@ -50,7 +50,7 @@
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
-    "vitest": "3.0.3",
+    "vitest": "3.0.5",
     "vue-router": "4.5.0",
     "vue-tsc": "2.2.0"
   }
