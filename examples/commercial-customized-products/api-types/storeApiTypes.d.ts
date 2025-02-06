@@ -8354,11 +8354,15 @@ export type operations = {
   "readBreadcrumb get /breadcrumb/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string; //TODO: [OpenAPI][readBreadcrumb] - sw-language-id should be added
+    };
     query?: {
-      /** UUID for referrer category only used for product breadcrumb */
-      referrerCategoryId?: string;
       /** Type: category or product (optional - default: product) */
       type?: "product" | "category";
+      /** UUID for referrer category only used for product breadcrumb */
+      referrerCategoryId?: string;
     };
     pathParams: {
       /** UUID for product or category */

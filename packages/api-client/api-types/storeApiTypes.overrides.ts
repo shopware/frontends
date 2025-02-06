@@ -111,4 +111,24 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "readBreadcrumb get /breadcrumb/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string; //TODO: [OpenAPI][readBreadcrumb] - sw-language-id should be added
+    };
+    query?: {
+      /** Type: category or product (optional - default: product) */
+      type?: "product" | "category";
+      /** UUID for referrer category only used for product breadcrumb */
+      referrerCategoryId?: string;
+    };
+    pathParams: {
+      /** UUID for product or category */
+      id: string;
+    };
+    response: components["schemas"]["BreadcrumbCollection"];
+    responseCode: 200;
+  };
 };
