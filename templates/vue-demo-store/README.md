@@ -80,3 +80,27 @@ Have a look at the [docker-composable-frontends repository](https://github.com/s
 
 More information on generating different outputs can be found [here](https://nitro.unjs.io/deploy).
 Our recommendation is to use `.env` file for changing platform presets
+
+#### Vercel serverless functions and ISR
+
+There is an [issue](https://github.com/nitrojs/nitro/issues/1880) with Vercel serverless functions and ISR for catch-all route and dynamic data that depends on GET query parameters. 
+
+To fix it, you need to do one of the following:
+- disable `isr` for the catch-all route:
+
+  ```js
+    // nuxt.config.ts
+    routeRules: {
+      "/**": {
+        isr: false
+      },
+    }
+  ```
+- switch to `vercel-edge` platform by setting the corresponding preset:
+
+  ```bash
+  # package.json build script
+  NITRO_PLATFORM=vercel-edge pnpm build
+  ```
+
+  or set the `NITRO_PLATFORM` env right in vercel dashboard.

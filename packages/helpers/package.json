@@ -41,6 +41,6 @@
     "happy-dom": "16.7.2",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "3.0.3"
+    "vitest": "3.0.5"
   }
 }
