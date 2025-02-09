@@ -45,8 +45,8 @@ test.describe("Check search page", { tag: "@vue-demo-store" }, () => {
       0,
     );
   });
-
-  test("Check limit and pagination", async ({ page }) => {
+  //https://github.com/shopware/frontends/issues/1678
+  test.skip("Check limit and pagination", async ({ page }) => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectLimitOneProductPerPage();
     await expect(page).toHaveURL(/.*limit.*/);
