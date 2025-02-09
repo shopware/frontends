@@ -55,7 +55,8 @@ export class SearchResultPage {
   }
 
   async goToSecondPage() {
-    await this.page.getByRole("button", { name: /2/i }).click();
+    await this.page.getByRole("button", { name: "Page 2" }).click();
+    await this.page.waitForLoadState();
   }
 
   async selectSortingPriceAsc() {
