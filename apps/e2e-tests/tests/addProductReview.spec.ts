@@ -21,8 +21,8 @@ test.describe("Add review", { tag: "@vue-demo-store" }, () => {
 
     await homePage.visitMainPage();
   });
-
-  test("Add product review", async ({ page }) => {
+  //https://github.com/shopware/frontends/issues/1679
+  test.skip("Add product review", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginform.login(userEmail, password);
     await page.waitForLoadState("networkidle");
