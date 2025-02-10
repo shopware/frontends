@@ -2,10 +2,10 @@
 import { getLanguageName, getTranslatedProperty } from "@shopware/helpers";
 
 const { languages, getLanguageCodeFromId } = useInternationalization();
-const { sessionContext, languageIdChain } = useSessionContext();
+const { sessionContext, currentSessionLanguageID } = useSessionContext();
 
 const language = computed(() =>
-  languages.value.find((l) => languageIdChain.value === l.id),
+  languages.value.find((l) => currentSessionLanguageID.value === l.id),
 );
 
 const onChangeHandler = async (option: Event) => {
@@ -22,7 +22,7 @@ const onChangeHandler = async (option: Event) => {
   <div>
     <ul>
       <li>
-        Language: {{ language ? getLanguageName(language) : languageIdChain }}
+        Language: {{ language ? getLanguageName(language) : currentSessionLanguageID }}
       </li>
       <li>
         Sales channel:
@@ -35,7 +35,7 @@ const onChangeHandler = async (option: Event) => {
         v-for="language in languages"
         :key="language.id"
         :value="language.id"
-        :selected="languageIdChain === language.id"
+        :selected="currentSessionLanguageID === language.id"
         :label="getLanguageName(language)"
       >
         {{ getLanguageName(language) }}

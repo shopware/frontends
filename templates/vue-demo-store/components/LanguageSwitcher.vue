@@ -3,7 +3,7 @@ import { getLanguageName } from "@shopware/helpers";
 
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();
-const { languageIdChain } = useSessionContext();
+const { currentSessionLanguageID } = useSessionContext();
 
 const onChangeHandler = async (option: Event) => {
   const data = await changeLanguage((option.target as HTMLSelectElement).value);
@@ -25,7 +25,7 @@ const onChangeHandler = async (option: Event) => {
       v-for="language in languages"
       :key="language.id"
       :value="language.id"
-      :selected="languageIdChain === language.id"
+      :selected="currentSessionLanguageID === language.id"
       :label="getLanguageName(language)"
     >
       {{ getLanguageName(language) }}

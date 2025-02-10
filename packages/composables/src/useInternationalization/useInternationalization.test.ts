@@ -29,6 +29,11 @@ describe("useInternationalization", () => {
     vm.getAvailableLanguages();
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readLanguages"),
+      expect.objectContaining({
+        headers: {
+          "sw-language-id": "",
+        },
+      }),
     );
   });
 
@@ -38,7 +43,9 @@ describe("useInternationalization", () => {
     vm.changeLanguage("test-id");
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("updateContext"),
-      expect.objectContaining({ body: { languageId: "test-id" } }),
+      expect.objectContaining({
+        body: { languageId: "test-id" },
+      }),
     );
   });
 

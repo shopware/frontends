@@ -4,6 +4,7 @@ const props = defineProps<{
 }>();
 
 const { apiClient } = useShopwareContext();
+const { currentSessionLanguageID } = useSessionContext();
 
 const { data: registrationResponse } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
@@ -12,6 +13,9 @@ const { data: registrationResponse } = await useAsyncData(
       "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}",
       {
         pathParams: { customerGroupId: props.navigationId },
+        headers: {
+          "sw-language-id": currentSessionLanguageID.value,
+        },
       },
     );
     return response.data || {};

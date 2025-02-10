@@ -8,6 +8,7 @@ const sessionContext = ref();
 
 vi.mocked(useSessionContext).mockReturnValue({
   sessionContext,
+  currentSessionLanguageID: ref(),
 } as unknown as ReturnType<typeof useSessionContext>);
 
 const mockedResponse = {

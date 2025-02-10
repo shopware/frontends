@@ -32,6 +32,7 @@ const {
   totalPagesCount,
   canSyncWishlist,
 } = useWishlist();
+const { currentSessionLanguageID } = useSessionContext();
 defineOptions({
   name: "WishlistPage",
 });
@@ -64,6 +65,9 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   try {
     const { data } = await apiClient.invoke("readProduct post /product", {
       body: { ids: itemIds || items.value },
+      headers: {
+        "sw-language-id": currentSessionLanguageID.value,
+      },
     });
 
     if (data?.elements) {

@@ -9,6 +9,7 @@ const { search } = useProductSearch();
 const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 const errorDetails = ref();
+const { currentSessionLanguageID } = useSessionContext();
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
@@ -23,6 +24,9 @@ const { data, error } = await useAsyncData(
       apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
         pathParams: {
           id: props.navigationId,
+        },
+        headers: {
+          "sw-language-id": currentSessionLanguageID.value,
         },
       }),
     ]);
