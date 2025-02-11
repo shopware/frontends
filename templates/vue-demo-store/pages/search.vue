@@ -58,7 +58,7 @@ const createFiltersFromRoute = () => {
       if (key === "properties") {
         filters.push({
           type: "multi",
-          operator: "OR",
+          operator: "or",
           queries: [
             {
               type: "equalsAny",
