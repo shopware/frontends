@@ -111,4 +111,188 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "register post /account/register": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Flag indicating accepted data protection */
+      acceptedDataProtection: boolean;
+      /** Field can be used to store an affiliate tracking code */
+      affiliateCode?: string;
+      billingAddress: components["schemas"]["CustomerAddress"];
+      /** Birthday day */
+      birthdayDay?: number;
+      /** Birthday month */
+      birthdayMonth?: number;
+      /** Birthday year */
+      birthdayYear?: number;
+      /** Field can be used to store a campaign tracking code */
+      campaignCode?: string;
+      /** Email of the customer. Has to be unique, unless `guest` is `true` */
+      email: string;
+      /** Customer first name. Value will be reused for shipping and billing address if not provided explicitly. */
+      firstName: string;
+      /**
+       * If set, will create a guest customer. Guest customers can re-use an email address and don't need a password.
+       * @default false
+       */
+      guest?: boolean;
+      /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
+      lastName: string;
+      /** Password for the customer. Required, unless `guest` is `true` */
+      password: string;
+      /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
+      salutationId?: string; // TODO: [OpenAPI][register]: salutationId should not be required
+      shippingAddress?: components["schemas"]["CustomerAddress"];
+      /** URL of the storefront for that registration. Used in confirmation emails. Has to be one of the configured domains of the sales channel. */
+      storefrontUrl: string;
+      /** (Academic) title of the customer */
+      title?: string;
+    } & (
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+    );
+    response: components["schemas"]["Customer"];
+    responseCode: 200;
+  };
+  "sendContactMail post /contact-form": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    body: {
+      /** Type of the content management page */
+      cmsPageType?: string;
+      /** The message of the contact form */
+      comment: string;
+      /** Email address */
+      email: string;
+      /** Entity name for slot config */
+      entityName?: string;
+      /** Firstname. This field may be required depending on the system settings. */
+      firstName?: string;
+      /** Lastname. This field may be required depending on the system settings. */
+      lastName?: string;
+      /** Identifier of the navigation page. Can be used to override the configuration.
+       *     Take a look at the settings of a category containing a concat form in the administration. */
+      navigationId?: string;
+      /** Phone. This field may be required depending on the system settings. */
+      phone?: string;
+      /** Identifier of the salutation. Use `/api/salutation` endpoint to fetch possible values. */
+      salutationId?: string; // TODO: [OpenAPI][sendContactMail]: salutationId should not be required
+      /** Identifier of the cms element */
+      slotId?: string;
+      /** The subject of the contact form. */
+      subject: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "changeProfile post /account/change-profile": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Birthday day */
+      birthdayDay?: number;
+      /** Birthday month */
+      birthdayMonth?: number;
+      /** Birthday year */
+      birthdayYear?: number;
+      /** Customer first name. Value will be reused for shipping and billing address if not provided explicitly. */
+      firstName: string;
+      /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
+      lastName: string;
+      /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
+      salutationId?: string; // TODO: [OpenAPI][changeProfile]: salutationId should not be required
+      /** (Academic) title of the customer */
+      title?: string;
+    } & (
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+      | {
+          /**
+           * Type of the customer account. Default value is 'private'.
+           * @default private
+           * @enum {string}
+           */
+          accountType?: "private";
+          company?: null;
+          vatIds?: null;
+        }
+      | {
+          /**
+           * Type of the customer account. Can be `private` or `business`.
+           * @enum {string}
+           */
+          accountType: "business";
+          /** Company of the customer. Only required when `accountType` is `business`. */
+          company: string;
+          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+          vatIds: [string, ...string[]];
+        }
+    );
+    response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
 };

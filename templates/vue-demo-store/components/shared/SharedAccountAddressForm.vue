@@ -69,9 +69,6 @@ const firstNameInputElement = useTemplateRef("firstNameInputElement");
 useFocus(firstNameInputElement, { initialValue: true });
 
 const rules = computed(() => ({
-  salutationId: {
-    required,
-  },
   firstName: {
     required,
     minLength: minLength(3),
@@ -142,12 +139,7 @@ const $v = useVuelidate(rules, formData);
                   {{ salutation.displayName }}
                 </option>
               </select>
-              <span
-                v-if="$v.salutationId.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
-              >
-                {{ $v.salutationId.$errors[0].$message }}
-              </span>
+        
             </div>
             <div class="col-span-6 sm:col-span-3">
               <label
