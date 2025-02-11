@@ -19,7 +19,6 @@
     "vue-router": "4.4.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@unocss/nuxt": "0.62.4",
     "nuxt3-notifications": "^1.2.3",
     "unocss": "0.62.4"
