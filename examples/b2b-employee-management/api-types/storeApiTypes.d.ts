@@ -41,32 +41,6 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  AddToCartPayload: {
-    "customized-products-template": {
-      id: string;
-      options: {
-        [optionId: string]: {
-          media?: {
-            [filename: string]: {
-              id: string;
-              filename: string;
-            };
-          };
-          value: string | components["schemas"]["Media"][];
-        };
-      };
-    };
-    lineItems: {
-      [productId: string]: {
-        id: string;
-        type: string;
-        referencedId: string;
-        quantity: number;
-        stackable: boolean;
-        removable: boolean;
-      };
-    };
-  };
   AdvancedSearchAction: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -728,7 +702,11 @@ export type Schemas = {
     /** @enum {string} */
     type: "page" | "link" | "folder";
   };
-  BreadcrumbCollection: components["schemas"]["Breadcrumb"][];
+  BreadcrumbCollection: {
+    /** @enum {string} */
+    apiAlias: "breadcrumb_collection";
+    breadcrumbs: components["schemas"]["Breadcrumb"][];
+  };
   CalculatedPrice: {
     /** @enum {string} */
     apiAlias: "calculated_price";
@@ -6735,31 +6713,35 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SwagCustomizedProductsTemplate: {
-    versionId: string;
-    translated: {
-      displayName: string;
-      description: string;
-    };
-    createdAt: string;
-    updatedAt: null | string;
-    internalName: string;
+    active?: boolean;
+    configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
+    confirmInput?: boolean;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    readonly decisionTree?: GenericRecord;
+    description?: string;
     displayName: string;
-    description: string;
-    mediaId: null | string;
-    active: boolean;
-    stepByStep: boolean;
-    confirmInput: boolean;
-    optionsAutoCollapse: boolean;
-    decisionTree: unknown[];
-    translations: null | unknown;
-    media: null | components["schemas"];
-    products: null | components["schemas"]["Product"][];
-    exclusions: unknown[];
-    configurations: null | unknown;
+    exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
     id: string;
-    parentVersionId: string;
-    options: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
-    apiAlias: "swag_customized_products_template";
+    internalName: string;
+    media?: components["schemas"]["Media"];
+    mediaId?: string;
+    options?: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
+    optionsAutoCollapse?: boolean;
+    parentVersionId?: string;
+    products?: components["schemas"]["Product"][];
+    stepByStep?: boolean;
+    translated: {
+      description: string;
+      displayName: string;
+      internalName: string;
+      mediaId: string;
+      parentVersionId: string;
+      versionId: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    versionId?: string;
   };
   SwagCustomizedProductsTemplateConfiguration: {
     configuration: GenericRecord;
@@ -8717,24 +8699,6 @@ export type operations = {
       productIds?: string[];
     };
     response: components["schemas"]["SuccessResponse"];
-    responseCode: 200;
-  };
-  "addCustomizedProductToCart post /customized-products/add-to-cart": {
-    accept?: "application/json";
-    body: components["schemas"]["AddToCartPayload"];
-    response: never;
-    responseCode: 204;
-  };
-  "uploadCustomizedProductImage post /customized-products/upload": {
-    accept?: "application/json";
-    body: FormData;
-    headers?: {
-      "Content-Type": "multipart/form-data";
-    };
-    response: {
-      mediaId: string;
-      fileName: string;
-    };
     responseCode: 200;
   };
   "download post /document/download/{documentId}/{deepLinkCode}": {
