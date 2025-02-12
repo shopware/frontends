@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "example-maintenance-allowlisting",
   "private": true,
   "type": "module",
   "scripts": {
@@ -19,7 +19,6 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
     "@unocss/nuxt": "65.4.3",
     "unocss": "65.4.3"
   }
