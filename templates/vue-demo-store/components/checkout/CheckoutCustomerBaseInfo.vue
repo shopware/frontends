@@ -5,7 +5,7 @@ import { useVuelidate } from "@vuelidate/core";
 type BaseInfo = {
   firstName: string;
   lastName: string;
-  salutationId: string;
+  salutationId?: string;
 };
 
 const props = defineProps<{
@@ -24,9 +24,6 @@ const state = reactive<BaseInfo>({
 });
 const { required, minLength } = customValidators();
 const rules = computed(() => ({
-  salutationId: {
-    required,
-  },
   firstName: {
     required,
     minLength: minLength(3),
@@ -73,7 +70,6 @@ const handleUpdateData = async () => {
           autocomplete="on"
           class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
           data-testid="checkout-pi-salutation-select"
-          @blur="$v.salutationId.$touch()"
         >
           <option disabled selected value="">
             {{ $t("form.chooseSalutation") }}
@@ -86,12 +82,6 @@ const handleUpdateData = async () => {
             {{ salutation.displayName }}
           </option>
         </select>
-        <span
-          v-if="$v.salutationId.$error"
-          class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
-        >
-          {{ $v.salutationId.$errors[0].$message }}
-        </span>
       </div>
       <div class="col-span-6 sm:col-span-3">
         <label
