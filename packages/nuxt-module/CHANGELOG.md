@@ -1,5 +1,15 @@
 # @shopware/nuxt-module
 
+## 1.3.1
+
+### Patch Changes
+
+- [#1628](https://github.com/shopware/frontends/pull/1628) [`a22588f`](https://github.com/shopware/frontends/commit/a22588f12393309d356c5d2f1a16526591f4e3d5) Thanks [@mkucmus](https://github.com/mkucmus)! - Read private shopware config only in SSR context.
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+  - @shopware/composables@1.8.1
+
 ## 1.3.0
 
 ### Minor Changes

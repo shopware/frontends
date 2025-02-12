@@ -1,5 +1,22 @@
 # @shopware/cms-base-layer
 
+## 1.4.1
+
+### Patch Changes
+
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
+
+  - SwNewsletterForm
+  - SwContactForm
+
+- [#1659](https://github.com/shopware/frontends/pull/1659) [`7c10417`](https://github.com/shopware/frontends/commit/7c10417e9c0bb9fe049a0e36abf115be6c63c945) Thanks [@patzick](https://github.com/patzick)! - SwVariantConfigurator - URL prefix on Variant Change
+
+- [#1677](https://github.com/shopware/frontends/pull/1677) [`d663627`](https://github.com/shopware/frontends/commit/d663627aaa00abc797f5c2413c4e978f95bd6f89) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix displaying product variants on the product page
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+  - @shopware/composables@1.8.1
+
 ## 1.4.0
 
 ### Minor Changes
