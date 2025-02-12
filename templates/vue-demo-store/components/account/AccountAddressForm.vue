@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
-import type { ApiError } from "@shopware/api-client";
 import { useTemplateRef } from "vue";
 import type { Schemas } from "#shopware";
 

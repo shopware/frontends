@@ -39,11 +39,11 @@
     "changelog-parser": "3.0.1",
     "dotenv-cli": "8.0.0",
     "esno": "4.8.0",
-    "globby": "14.0.2",
+    "globby": "14.1.0",
     "husky": "9.1.7",
-    "prettier": "3.4.2",
-    "turbo": "2.4.0",
-    "vercel": "41.0.2"
+    "prettier": "3.5.0",
+    "turbo": "2.4.1",
+    "vercel": "41.1.0"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
