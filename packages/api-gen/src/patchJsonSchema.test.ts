@@ -32,31 +32,32 @@ describe("patchJsonSchema", () => {
       });
 
       expect(patchedSchema).toMatchInlineSnapshot(`
-      {
-        "components": {
-          "schemas": {
-            "CalculatedPrice": {
-              "properties": {
-                "apiAlias": {
-                  "enum": [
-                    "calculated_price",
-                  ],
-                  "type": "string",
+        {
+          "components": {
+            "schemas": {
+              "CalculatedPrice": {
+                "properties": {
+                  "apiAlias": {
+                    "enum": [
+                      "calculated_price",
+                    ],
+                    "type": "string",
+                  },
+                  "netPrice": {
+                    "type": "number",
+                  },
                 },
-                "netPrice": {
-                  "type": "number",
-                },
+                "required": [
+                  "apiAlias",
+                  "netPrice",
+                ],
+                "type": "object",
               },
-              "required": [
-                "apiAlias",
-                "netPrice",
-              ],
-              "type": "object",
             },
           },
-        },
-      }
-    `);
+          "paths": {},
+        }
+      `);
     });
 
     it("should properly merge errors array", async () => {
@@ -232,6 +233,7 @@ describe("patchJsonSchema", () => {
               },
             },
           },
+          "paths": {},
         }
       `);
     });
@@ -294,6 +296,7 @@ describe("patchJsonSchema", () => {
               },
             },
           },
+          "paths": {},
         }
       `);
     });
@@ -358,6 +361,7 @@ describe("patchJsonSchema", () => {
               },
             },
           },
+          "paths": {},
         }
       `);
     });
@@ -400,6 +404,7 @@ describe("patchJsonSchema", () => {
               },
             },
           },
+          "paths": {},
         }
       `);
     });
@@ -441,6 +446,9 @@ describe("patchJsonSchema", () => {
 
       expect(patchedSchema).toMatchInlineSnapshot(`
         {
+          "components": {
+            "schemas": {},
+          },
           "paths": {
             "/role": {
               "get": {
@@ -516,6 +524,7 @@ describe("patchJsonSchema", () => {
             },
           },
         },
+        "paths": {},
       }
     `);
   });
@@ -585,6 +594,7 @@ describe("patchJsonSchema", () => {
             },
           },
         },
+        "paths": {},
       }
     `);
   });
