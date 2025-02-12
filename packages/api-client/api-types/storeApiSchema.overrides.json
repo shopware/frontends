@@ -83,6 +83,11 @@
         }
       }
     ],
+    "CartItems": [
+      {
+        "required": ["items"]
+      }
+    ],
     "Category": [
       {
         "required": ["breadcrumb"],
@@ -831,6 +836,35 @@
             }
           }
         }
+      ],
+      "patch": [
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                "$ref": "_DELETE_",
+                "type": "object",
+                "required": ["items"], 
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { 
+                      "type": "object",
+                      "required": ["id", "quantity"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "quantity": { "type": "number" }
+                      }
+                    }
+                  }
+                  }
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "/contact-form": {
@@ -859,6 +893,33 @@
         }
       ]
     },
+    "/employee/{id}": {
+      "get": {
+        "operationId": "readB2bEmployee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the employee to be read",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/B2bEmployee" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/quote/detail/{id}": {
       "post": [
         {
@@ -879,6 +940,21 @@
       "post": {
         "requestBody": {
           "required": true
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["elements"]
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -928,6 +1004,21 @@
             "schema": { "type": "boolean" }
           }
         ]
+      }
+    },
+    "/shipping-method": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["elements"]
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

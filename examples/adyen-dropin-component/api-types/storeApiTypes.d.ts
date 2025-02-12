@@ -882,7 +882,7 @@ export type Schemas = {
     messageKey: string;
   };
   CartItems: {
-    items?: components["schemas"]["LineItem"][];
+    items: components["schemas"]["LineItem"][];
   };
   CartListPrice: {
     /** @enum {string} */
@@ -7467,18 +7467,8 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SwagPaypalVaultToken: {
-    // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema
-    /** Format: date-time */
-    createdAt: string;
-    customer?: components["schemas"]["Customer"];
-    customerId: string;
     id?: string;
-    identifier: string;
-    mainMapping?: components["schemas"]["SwagPaypalVaultTokenMapping"];
-    paymentMethod?: components["schemas"]["PaymentMethod"];
-    paymentMethodId: string;
-    /** Format: date-time */
-    updatedAt?: string;
+    identifier?: string;
   };
   SwagPaypalVaultTokenMapping: {
     /** Format: date-time */
@@ -8557,11 +8547,16 @@ export type operations = {
       "sw-language-id"?: string;
     };
     body: {
-      // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
-      items: Array<{
-        id: string;
-        quantity: number;
-      }>;
+      items: [
+        {
+          id: string;
+          quantity: number;
+        },
+        ...{
+          id: string;
+          quantity: number;
+        }[],
+      ];
     };
     response: components["schemas"]["Cart"];
     responseCode: 200;
@@ -9078,6 +9073,16 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readB2bEmployee get /employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be read */
+      id: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
   "readEmployee post /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9114,16 +9119,6 @@ export type operations = {
       lastName?: string;
       /** New id of the role of the employee */
       roleId?: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "readEmployee get /employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be fetched */
-      id: string;
     };
     response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
@@ -9480,7 +9475,7 @@ export type operations = {
     };
     body?: components["schemas"]["Criteria"];
     response: {
-      elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
+      elements: components["schemas"]["Product"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
@@ -9959,11 +9954,11 @@ export type operations = {
     body?: components["schemas"]["Criteria"];
     response: {
       /** aggregation result */
-      aggregations?: Record<string, never>;
-      elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
+      aggregations?: GenericRecord;
+      elements: components["schemas"]["ShippingMethod"][];
       /** Total amount */
       total?: number;
-    };
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "createShoppingList post /shopping-list": {
