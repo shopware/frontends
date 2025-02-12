@@ -833,6 +833,32 @@
         }
       ]
     },
+    "/contact-form": {
+      "post": [
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["email", "subject", "comment"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "/quote/detail/{id}": {
       "post": [
         {

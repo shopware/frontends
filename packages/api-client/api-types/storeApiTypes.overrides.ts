@@ -111,39 +111,4 @@ export type operations = {
     };
     responseCode: 200;
   };
-  "sendContactMail post /contact-form": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
-    };
-    body: {
-      /** Type of the content management page */
-      cmsPageType?: string;
-      /** The message of the contact form */
-      comment: string;
-      /** Email address */
-      email: string;
-      /** Entity name for slot config */
-      entityName?: string;
-      /** Firstname. This field may be required depending on the system settings. */
-      firstName?: string;
-      /** Lastname. This field may be required depending on the system settings. */
-      lastName?: string;
-      /** Identifier of the navigation page. Can be used to override the configuration.
-       *     Take a look at the settings of a category containing a concat form in the administration. */
-      navigationId?: string;
-      /** Phone. This field may be required depending on the system settings. */
-      phone?: string;
-      /** Identifier of the salutation. Use `/api/salutation` endpoint to fetch possible values. */
-      salutationId?: string; // TODO: [OpenAPI][sendContactMail]: salutationId should not be required
-      /** Identifier of the cms element */
-      slotId?: string;
-      /** The subject of the contact form. */
-      subject: string;
-    };
-    response: never;
-    responseCode: 200;
-  };
 };

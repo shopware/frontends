@@ -8584,7 +8584,7 @@ export type operations = {
       /** Phone. This field may be required depending on the system settings. */
       phone?: string;
       /** Identifier of the salutation. Use `/api/salutation` endpoint to fetch possible values. */
-      salutationId?: string; // TODO: [OpenAPI][sendContactMail]: salutationId should not be required
+      salutationId?: string;
       /** Identifier of the cms element */
       slotId?: string;
       /** The subject of the contact form. */
