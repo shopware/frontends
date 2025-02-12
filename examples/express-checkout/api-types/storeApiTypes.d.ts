@@ -7958,7 +7958,7 @@ export type operations = {
       /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
       lastName: string;
       /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
-      salutationId?: string; // TODO: [OpenAPI][changeProfile]: salutationId should not be required
+      salutationId?: string;
       /** (Academic) title of the customer */
       title?: string;
     } & (
@@ -8151,7 +8151,7 @@ export type operations = {
       /** Password for the customer. Required, unless `guest` is `true` */
       password: string;
       /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
-      salutationId?: string; // TODO: [OpenAPI][register]: salutationId should not be required
+      salutationId?: string;
       shippingAddress?: components["schemas"]["CustomerAddress"];
       /** URL of the storefront for that registration. Used in confirmation emails. Has to be one of the configured domains of the sales channel. */
       storefrontUrl: string;

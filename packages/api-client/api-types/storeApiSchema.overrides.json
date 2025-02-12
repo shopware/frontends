@@ -554,6 +554,28 @@
               }
             }
           }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["firstName", "lastName"]
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -592,7 +614,7 @@
       ]
     },
     "/account/register": {
-      "post":[
+      "post": [
         {
           "requestBody": {
             "content": {
@@ -650,6 +672,36 @@
                         }
                       }
                     }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "email",
+                    "password",
+                    "firstName",
+                    "lastName",
+                    "acceptedDataProtection",
+                    "storefrontUrl",
+                    "billingAddress"
                   ]
                 }
               }
