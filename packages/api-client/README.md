@@ -279,8 +279,8 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.2.1
 
-### Minor Changes
+### Patch Changes
 
-- [#1468](https://github.com/shopware/frontends/pull/1468) [`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc) Thanks [@JimTacobs](https://github.com/JimTacobs)! - Added fetchOptions to both API clients to allow for base configuration of http client
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Overwrite API schemas to remove requirements from 'salutationId` property

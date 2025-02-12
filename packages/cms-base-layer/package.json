@@ -1,6 +1,6 @@
 {
   "name": "@shopware/cms-base-layer",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Vue CMS Nuxt Layer for Shopware",
   "author": "Shopware",
   "repository": {

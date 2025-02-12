@@ -264,8 +264,9 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.2.1
 
-### Minor Changes
+### Patch Changes
 
-- [#1566](https://github.com/shopware/frontends/pull/1566) [`541cd6e`](https://github.com/shopware/frontends/commit/541cd6e5b5acaa20fb8aad699b2674e81b9330ce) Thanks [@patzick](https://github.com/patzick)! - Possibility to add multiple override json patches. Now you can use our default overrides and add your own on top of it.
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1

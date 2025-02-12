@@ -1,5 +1,15 @@
 # docs
 
+## 1.9.1
+
+### Patch Changes
+
+- [#1665](https://github.com/shopware/frontends/pull/1665) [`cc296b6`](https://github.com/shopware/frontends/commit/cc296b682ae6cbe2071588e023c4846808f1c4dd) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added warning about media URL for Shopware Endpoint on the SSR mode section
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+  - @shopware/composables@1.8.1
+
 ## 1.9.0
 
 ### Minor Changes
