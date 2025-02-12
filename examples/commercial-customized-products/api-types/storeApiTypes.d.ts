@@ -9047,6 +9047,16 @@ export type operations = {
     response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
   };
+  "readEmployee get /employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
   "createEmployee post /employee/create": {
     contentType?: "application/json";
     accept?: "application/json";
