@@ -56,10 +56,7 @@ const isOptionSelected = (optionId: string) =>
 
 const onHandleChange = async () => {
   isLoading.value = true;
-  const variantFound = await findVariantForSelectedOptions(
-    unref(selectedOptions),
-  );
-
+  const variantFound = await findVariantForSelectedOptions();
   const selectedOptionsVariantPath = buildUrlPrefix(
     getProductRoute(variantFound),
     prefix,
@@ -107,13 +104,13 @@ const onHandleChange = async () => {
             :class="{
               'border-3 border-indigo-600': isOptionSelected(option.id),
             }"
-            @click="handleChange(optionGroup.name, option.id, onHandleChange)"
+            @click="handleChange(optionGroup.translated.name, option.id, onHandleChange)"
           >
             <p
               :id="`${option.id}-choice-label`"
               data-testid="product-variant-text"
             >
-              {{ option.name }}
+              {{ option.translated.name }}
             </p>
           </label>
         </div>
