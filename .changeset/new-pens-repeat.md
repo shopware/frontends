@@ -2,4 +2,4 @@
 "@shopware/api-gen": patch
 ---
 
-Create `api-types` folder if not exists
+`loadSchema` command - create `api-types` folder if not exists
