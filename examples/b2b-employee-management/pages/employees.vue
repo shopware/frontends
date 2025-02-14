@@ -120,15 +120,15 @@ const handleDeleteEmployee = async (employeeId: string) => {
               class="text-blue-500 hover:text-blue-700"
               >Edit</NuxtLink
             >
-            <Button
+            <button
               @click="handleResendInvitation(employee.id)"
               class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-              >Resend Invitation</Button
+              >Resend Invitation</button
             >
-            <Button
+            <button
               @click="handleDeleteEmployee(employee.id)"
               class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-              >Delete</Button
+              >Delete</button
             >
           </td>
         </tr>
