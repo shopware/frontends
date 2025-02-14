@@ -27,7 +27,7 @@
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
-    "@vueuse/core": "12.5.0",
+    "@vueuse/core": "12.6.1",
     "unocss": "65.4.3",
     "vite": "6.1.0",
     "vue-tsc": "2.2.0"
