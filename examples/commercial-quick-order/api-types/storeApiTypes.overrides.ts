@@ -54,14 +54,4 @@ export type operations = {
     };
     responseCode: 200;
   };
-  "readEmployee get /employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
 };

@@ -42,7 +42,7 @@ onMounted(async () => {
   roles.value = elements;
 
   const { data: employeeData } = await apiClient.invoke(
-    "readEmployee get /employee/{id}",
+    "readB2bEmployee get /employee/{id}",
     {
       pathParams: {
         id: params.id,

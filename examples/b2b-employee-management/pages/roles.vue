@@ -56,10 +56,10 @@ const updateRoles = async () => {
                 class="text-blue-500 hover:text-blue-700"
                 >Edit</NuxtLink
               >
-              <Button
+              <button
                 @click="handleDelete(role.id)"
                 class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                >Delete</Button
+                >Delete</button
               >
             </div>
           </td>

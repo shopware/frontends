@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 // read .env file and load it into process.env
 import "dotenv/config";
@@ -92,6 +92,12 @@ export async function loadSchema(args: {
     // const version = apiJSON?.info?.version;
 
     const dir = args.cwd;
+
+    const apiTypesDir = join(dir, "api-types");
+    if (!existsSync(apiTypesDir)) {
+      mkdirSync(apiTypesDir);
+    }
+
     const filePath = join("api-types", outputFilename);
 
     writeFileSync(join(dir, filePath), content, {
