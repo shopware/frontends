@@ -17,7 +17,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     name: Create release PR or publish merged changesets
-    runs-on: macos-14
+    runs-on: ubuntu-24.04
     permissions:
       id-token: write
       contents: write

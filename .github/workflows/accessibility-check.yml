@@ -7,7 +7,7 @@ on:
     - cron: "30 09 * * *"
 jobs:
   run-accessibility-check:
-    runs-on: macos-14
+    runs-on: ubuntu-24.04
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
