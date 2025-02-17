@@ -1,5 +1,12 @@
 # @shopware/api-gen
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1706](https://github.com/shopware/frontends/pull/1706) [`d7bf6d7`](https://github.com/shopware/frontends/commit/d7bf6d715689f5d0cbef9f0bbbc78f19f54215d5) Thanks [@patzick](https://github.com/patzick)! - Simplify `api-gen.config.json` configuration. Now you can use names instead of paths in patches like `storeApiSchema.overrides.json` or `storeApiSchema.b2b.overrides.json`.
+  Thanks to this you can simple and more granularly apply patches for your project.
+
 ## 1.2.1
 
 ### Patch Changes
