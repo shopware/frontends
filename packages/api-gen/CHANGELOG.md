@@ -1,5 +1,14 @@
 # @shopware/api-gen
 
+## 1.2.1
+
+### Patch Changes
+
+- [#1696](https://github.com/shopware/frontends/pull/1696) [`f953539`](https://github.com/shopware/frontends/commit/f953539726813aa3cba404df2a74fa2d18b96fb0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `loadSchema` command - create `api-types` folder if not exists
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+
 ## 1.2.0
 
 ### Minor Changes
