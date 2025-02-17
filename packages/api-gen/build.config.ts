@@ -1,11 +1,6 @@
 import { defineBuildConfig } from "unbuild";
 export default defineBuildConfig({
-  entries: [
-    "src/cli",
-    "src/commands/generate",
-    "src/commands/loadSchema",
-    "src/commands/validateJson",
-  ],
+  entries: ["src/cli", "src/index"],
   rollup: {
     inlineDependencies: true,
     cjsBridge: true,
