@@ -266,11 +266,9 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.2.1
+### Latest changes: 1.3.0
 
-### Patch Changes
+### Minor Changes
 
-- [#1696](https://github.com/shopware/frontends/pull/1696) [`f953539`](https://github.com/shopware/frontends/commit/f953539726813aa3cba404df2a74fa2d18b96fb0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `loadSchema` command - create `api-types` folder if not exists
-
-- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
-  - @shopware/api-client@1.2.1
+- [#1706](https://github.com/shopware/frontends/pull/1706) [`d7bf6d7`](https://github.com/shopware/frontends/commit/d7bf6d715689f5d0cbef9f0bbbc78f19f54215d5) Thanks [@patzick](https://github.com/patzick)! - Simplify `api-gen.config.json` configuration. Now you can use names instead of paths in patches like `storeApiSchema.overrides.json` or `storeApiSchema.b2b.overrides.json`.
+  Thanks to this you can simple and more granularly apply patches for your project.
