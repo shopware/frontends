@@ -325,14 +325,14 @@ const beforeCreateOrderValidation = () => {
 const { updatePersonalInfo } = useUser();
 
 const handleChangeBaseInfo = async (data: {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   salutationId?: string;
 }) => {
   try {
     await updatePersonalInfo({
-      firstName: data.firstName,
-      lastName: data.lastName,
+      firstName: data.firstName ?? "",
+      lastName: data.lastName ?? "",
       salutationId: data.salutationId ?? "",
     });
   } catch (error) {
