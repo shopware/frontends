@@ -107,7 +107,8 @@ Example:
 
 ```json
 {
-  "patches": ["./api-types/storeApiTypes.overrides.json"]
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "patches": ["storeApiTypes.overrides.json"]
 }
 ```
 
@@ -115,6 +116,7 @@ or you could use multiple patches and add your own overrides on top:
 
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
   "patches": [
     "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
     "./api-types/myOwnPatches.overrides.json"
@@ -246,7 +248,7 @@ Prepare your config file named **api-gen.config.json**:
   "rules": [
     "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
   ],
-  //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
+  //"patches": "storeApiTypes.overrides.json" // -> path to your overrides file in api-types folder, default is fetched from api-client repository
 }
 ```
 

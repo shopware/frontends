@@ -67,12 +67,15 @@ The last step of a "coding" phase is to point the newly created patch file to th
 
 In the working dir, create a `api-gen.config.json` file
 
-```json
-# api-gen.config.json
+<!-- automd:file src="examples/api-client-tutorial/src/content/tutorial/2-implementation/3-customize/3-partial-overriding/_solution/api-gen.config.json" code -->
+
+```json [api-gen.config.json]
 {
-  "patches": "./api-types/storeApiTypes.overrides.json"
+  "patches": ["storeApiTypes.overrides.json"]
 }
 ```
+
+<!-- /automd -->
 
 ## Generate types
 

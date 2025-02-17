@@ -8962,16 +8962,6 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readB2bEmployee get /employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be read */
-      id: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
   "readEmployee post /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";

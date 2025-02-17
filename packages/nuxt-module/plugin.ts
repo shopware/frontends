@@ -1,6 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
-import { defu } from "defu";
 import { getCookie } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
