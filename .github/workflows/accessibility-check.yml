@@ -7,7 +7,7 @@ on:
     - cron: "30 09 * * *"
 jobs:
   run-accessibility-check:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 22
 
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       - run: pnpm --version
       - uses: actions/setup-node@v4
         with:

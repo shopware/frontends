@@ -55,9 +55,6 @@ const rules = computed(() => ({
   accountType: {
     required,
   },
-  salutationId: {
-    required,
-  },
   firstName: {
     required,
     minLength: minLength(3),
@@ -174,19 +171,14 @@ useBreadcrumbs([
           </select>
         </div>
         <div class="col-span-12">
-          <label for="salutation">{{ $t("form.salutation") }} *</label>
+          <label for="salutation">{{ $t("form.salutation") }}</label>
           <select
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :class="[
-              $v.salutationId.$error
-                ? 'border-red-600 focus:border-red-600'
-                : 'border-secondary-300 focus:border-indigo-500',
-            ]"
+            :class="'border-secondary-300 focus:border-indigo-500'"
             data-testid="registration-salutation-select"
-            @blur="$v.salutationId.$touch()"
           >
             <option selected value="">
               {{ $t("form.chooseSalutation") }}
@@ -199,12 +191,6 @@ useBreadcrumbs([
               {{ salutation.displayName }}
             </option>
           </select>
-          <span
-            v-if="$v.salutationId.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
-          >
-            {{ $v.salutationId.$errors[0].$message }}
-          </span>
         </div>
 
         <div class="col-span-12 md:col-span-4">

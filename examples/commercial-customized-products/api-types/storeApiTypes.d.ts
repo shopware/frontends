@@ -861,7 +861,7 @@ export type Schemas = {
     messageKey: string;
   };
   CartItems: {
-    items?: components["schemas"]["LineItem"][];
+    items: components["schemas"]["LineItem"][];
   };
   CartListPrice: {
     /** @enum {string} */
@@ -7399,18 +7399,8 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SwagPaypalVaultToken: {
-    // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema
-    /** Format: date-time */
-    createdAt: string;
-    customer?: components["schemas"]["Customer"];
-    customerId: string;
     id?: string;
-    identifier: string;
-    mainMapping?: components["schemas"]["SwagPaypalVaultTokenMapping"];
-    paymentMethod?: components["schemas"]["PaymentMethod"];
-    paymentMethodId: string;
-    /** Format: date-time */
-    updatedAt?: string;
+    identifier?: string;
   };
   SwagPaypalVaultTokenMapping: {
     /** Format: date-time */
@@ -7980,7 +7970,7 @@ export type operations = {
       /** Customer last name. Value will be reused for shipping and billing address if not provided explicitly. */
       lastName: string;
       /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
-      salutationId: string;
+      salutationId?: string;
       /** (Academic) title of the customer */
       title?: string;
     } & (
@@ -8173,7 +8163,7 @@ export type operations = {
       /** Password for the customer. Required, unless `guest` is `true` */
       password: string;
       /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
-      salutationId: string;
+      salutationId?: string;
       shippingAddress?: components["schemas"]["CustomerAddress"];
       /** URL of the storefront for that registration. Used in confirmation emails. Has to be one of the configured domains of the sales channel. */
       storefrontUrl: string;
@@ -8468,11 +8458,16 @@ export type operations = {
       "sw-language-id"?: string;
     };
     body: {
-      // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
-      items: Array<{
-        id: string;
-        quantity: number;
-      }>;
+      items: [
+        {
+          id: string;
+          quantity: number;
+        },
+        ...{
+          id: string;
+          quantity: number;
+        }[],
+      ];
     };
     response: components["schemas"]["Cart"];
     responseCode: 200;
@@ -8582,7 +8577,7 @@ export type operations = {
       /** Phone. This field may be required depending on the system settings. */
       phone?: string;
       /** Identifier of the salutation. Use `/api/salutation` endpoint to fetch possible values. */
-      salutationId: string;
+      salutationId?: string;
       /** Identifier of the cms element */
       slotId?: string;
       /** The subject of the contact form. */
@@ -9007,6 +9002,16 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readB2bEmployee get /employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be read */
+      id: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
   "readEmployee post /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9399,7 +9404,7 @@ export type operations = {
     };
     body?: components["schemas"]["Criteria"];
     response: {
-      elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
+      elements: components["schemas"]["Product"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
@@ -9878,11 +9883,11 @@ export type operations = {
     body?: components["schemas"]["Criteria"];
     response: {
       /** aggregation result */
-      aggregations?: Record<string, never>;
-      elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
+      aggregations?: GenericRecord;
+      elements: components["schemas"]["ShippingMethod"][];
       /** Total amount */
       total?: number;
-    };
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "createShoppingList post /shopping-list": {

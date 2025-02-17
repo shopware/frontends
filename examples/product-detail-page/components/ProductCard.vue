@@ -23,11 +23,11 @@ const { addToCart } = useAddToCart(product);
     />
 
     <div class="px-5 pb-5">
-      <h5
+      <div
         class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mb-4"
       >
         {{ product?.translated.name }}
-      </h5>
+      </div>
       <div class="flex items-center justify-between">
         <span class="text-3xl font-bold text-gray-900 dark:text-white">{{
           getFormattedPrice(unitPrice)
