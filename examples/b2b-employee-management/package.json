@@ -19,8 +19,8 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
-    "@unocss/nuxt": "65.4.3",
+    "@unocss/nuxt": "65.5.0",
     "nuxt3-notifications": "^1.2.3",
-    "unocss": "65.4.3"
+    "unocss": "65.5.0"
   }
 }
