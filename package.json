@@ -63,6 +63,7 @@
       "debug": "^4.3.5",
       "cookie": "^0.7.0",
       "cross-spawn": "^7.0.5",
+      "esbuild": "^0.25.0",
       "fast-loops": "^1.1.4",
       "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
