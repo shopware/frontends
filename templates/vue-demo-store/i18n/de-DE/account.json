@@ -77,6 +77,10 @@
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
       "label": "Persönliche Daten"
     },
+    "changeEmail": {
+      "label": "E-Mail-Adresse ändern",
+      "infoBox": "Ändern Sie Ihre E-Mail-Adresse unten."
+    },
     "messages": {
       "defaultShippingAddressSuccess": "Standard-Lieferadresse erfolgreich festgelegt",
       "defaultShippingAddressError": "Fehler beim Festlegen der Standard-Lieferadresse",

@@ -14,6 +14,7 @@
     "country": "Kraj",
     "chooseCountry": "Wybierz kraj...",
     "company": "Firma",
+    "vatIds": "Numer identyfikacji podatkowej",
     "companyPlaceholder": "Wprowadź nazwę firmy...",
     "streetAddress": "Adres ulicy",
     "streetPlaceholder": "Wpisz ulicę...",
