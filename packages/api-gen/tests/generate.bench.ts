@@ -30,6 +30,7 @@ describe("api-gen - generate", () => {
       filename: "testSchema.json",
       apiType: "store",
       debug: false,
+      logPatches: false,
     });
   });
 });

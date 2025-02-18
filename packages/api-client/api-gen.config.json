@@ -1,5 +1,5 @@
 {
   "$schema": "../api-gen/api-gen.schema.json",
   "rules": ["COMPONENTS_API_ALIAS"],
-  "patches": ["./api-types/storeApiSchema.overrides.json"]
+  "patches": ["storeApiSchema.overrides.json"]
 }

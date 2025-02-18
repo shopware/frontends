@@ -432,7 +432,7 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
       `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
     );
   });
