@@ -3,9 +3,9 @@ import { customValidators } from "@/i18n/utils/i18n-validators";
 import { useVuelidate } from "@vuelidate/core";
 
 type BaseInfo = {
-  firstName: string;
-  lastName: string;
-  salutationId: string;
+  firstName?: string;
+  lastName?: string;
+  salutationId?: string;
 };
 
 const props = defineProps<{
@@ -14,19 +14,20 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "update", value: BaseInfo): void;
-  (e: "cancel", value: undefined): void;
+  (e: "cancel"): void;
 }>();
 
-const state = reactive<BaseInfo>({
-  salutationId: "",
-  firstName: "",
-  lastName: "",
-});
+const state = reactive({
+  salutationId: props.customerData.salutationId || "",
+  firstName: props.customerData.firstName || "",
+  lastName: props.customerData.lastName || "",
+}) as {
+  salutationId: string;
+  firstName: string;
+  lastName: string;
+};
 const { required, minLength } = customValidators();
 const rules = computed(() => ({
-  salutationId: {
-    required,
-  },
   firstName: {
     required,
     minLength: minLength(3),
@@ -40,11 +41,6 @@ const rules = computed(() => ({
 const $v = useVuelidate(rules, state);
 const { getSalutations } = useSalutations();
 
-onMounted(() => {
-  state.salutationId = props.customerData.salutationId;
-  state.firstName = props.customerData.firstName;
-  state.lastName = props.customerData.lastName;
-});
 const handleUpdateData = async () => {
   $v.value.$touch();
   const valid = await $v.value.$validate();
@@ -73,7 +69,6 @@ const handleUpdateData = async () => {
           autocomplete="on"
           class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
           data-testid="checkout-pi-salutation-select"
-          @blur="$v.salutationId.$touch()"
         >
           <option disabled selected value="">
             {{ $t("form.chooseSalutation") }}
@@ -86,12 +81,6 @@ const handleUpdateData = async () => {
             {{ salutation.displayName }}
           </option>
         </select>
-        <span
-          v-if="$v.salutationId.$error"
-          class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
-        >
-          {{ $v.salutationId.$errors[0].$message }}
-        </span>
       </div>
       <div class="col-span-6 sm:col-span-3">
         <label

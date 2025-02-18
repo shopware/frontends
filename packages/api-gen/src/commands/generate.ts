@@ -17,6 +17,7 @@ import {
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
+  resolveSinglePath,
 } from "../jsonOverrideUtils";
 import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
 import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
@@ -41,10 +42,9 @@ export async function generate(args: {
     const fullInputFilePath = join(args.cwd, "api-types", inputFilename);
     const fullOutputFilePath = join(args.cwd, "api-types", outputFilename);
 
-    //check if file exist
-    const fileExist = existsSync(fullInputFilePath);
+    const resolvedSchema = await resolveSinglePath<OpenAPI3>(inputFilename);
 
-    if (!fileExist && !args.apiType) {
+    if (!resolvedSchema && !args.apiType) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
@@ -61,12 +61,9 @@ export async function generate(args: {
     let processedSchemaAst: TransformedElements;
     let apiVersion = "unknown";
 
-    if (fileExist) {
+    if (resolvedSchema) {
       // Apply patches
-      const schemaFile = readFileSync(fullInputFilePath, {
-        encoding: "utf-8",
-      });
-      const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
+      const schemaForPatching = structuredClone(resolvedSchema);
       apiVersion = schemaForPatching?.info?.version;
 
       const configJSON = await loadApiGenConfig({
@@ -103,7 +100,7 @@ export async function generate(args: {
         jsonOverrides,
       });
 
-      const originalSchema = json5.parse(schemaFile);
+      const originalSchema = structuredClone(resolvedSchema);
       console.log("schema", originalSchema.info);
 
       displayPatchingSummary({

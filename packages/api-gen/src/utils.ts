@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import json5 from "json5";
 import ts from "typescript";
 
 export function getTypePropertyNames(type: ts.Type) {
@@ -89,4 +92,14 @@ export function isOptional(symbol: ts.Symbol): boolean {
 export function isNeverType(symbol?: ts.Type): boolean {
   if (!symbol) return false;
   return symbol.flags === ts.TypeFlags.Never;
+}
+
+export async function loadLocalJSONFile<T = JSON>(
+  path: string,
+): Promise<T | undefined> {
+  const localPath = resolve(path);
+  if (existsSync(localPath)) {
+    return json5.parse(readFileSync(localPath, "utf-8"));
+  }
+  return undefined;
 }

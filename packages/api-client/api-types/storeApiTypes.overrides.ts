@@ -43,20 +43,6 @@ export type Schemas = {
     entity?: "product";
     sorting?: string;
   };
-  SwagPaypalVaultToken: {
-    // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema
-    /** Format: date-time */
-    createdAt: string;
-    customer?: components["schemas"]["Customer"];
-    customerId: string;
-    id?: string;
-    identifier: string;
-    mainMapping?: components["schemas"]["SwagPaypalVaultTokenMapping"];
-    paymentMethod?: components["schemas"]["PaymentMethod"];
-    paymentMethodId: string;
-    /** Format: date-time */
-    updatedAt?: string;
-  };
 };
 
 export type operations = {

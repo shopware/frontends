@@ -38,7 +38,9 @@ const { getConfigValue } = useCmsElementConfig({
   config: SliderElementConfig;
 });
 
-const slots = useSlots();
+const slots = useSlots() as {
+  default?: () => { children: VNodeArrayChildren }[];
+};
 const childrenRaw = computed(
   () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? [],
 );

@@ -125,18 +125,12 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt-module/CHANGELOG.md)
 
-### Latest changes: 1.3.0
-
-### Minor Changes
-
-- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Package `@shopware-pwa/nuxt3-module` is deprecated. Use [@shopware/nuxt-module](https://www.npmjs.com/package/@shopware/nuxt-module) instead.
-
-- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
-
-- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+### Latest changes: 1.3.1
 
 ### Patch Changes
 
-- Updated dependencies [[`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed), [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed)]:
-  - @shopware/composables@1.8.0
-  - @shopware/helpers@1.4.0
+- [#1628](https://github.com/shopware/frontends/pull/1628) [`a22588f`](https://github.com/shopware/frontends/commit/a22588f12393309d356c5d2f1a16526591f4e3d5) Thanks [@mkucmus](https://github.com/mkucmus)! - Read private shopware config only in SSR context.
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+  - @shopware/composables@1.8.1

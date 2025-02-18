@@ -527,7 +527,9 @@ export function createListingComposable({
       };
     }
 
-    return search(appliedFilters);
+    return search(
+      appliedFilters as operations["searchPage post /search"]["body"],
+    );
   };
 
   const resetFilters = () => {

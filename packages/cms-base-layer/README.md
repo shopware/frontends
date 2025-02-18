@@ -129,16 +129,21 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 1.4.0
-
-### Minor Changes
-
-- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
-
-- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+### Latest changes: 1.4.1
 
 ### Patch Changes
 
-- Updated dependencies [[`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed), [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed)]:
-  - @shopware/composables@1.8.0
-  - @shopware/helpers@1.4.0
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
+
+  - SwNewsletterForm
+  - SwContactForm
+
+- [#1659](https://github.com/shopware/frontends/pull/1659) [`7c10417`](https://github.com/shopware/frontends/commit/7c10417e9c0bb9fe049a0e36abf115be6c63c945) Thanks [@patzick](https://github.com/patzick)! - SwVariantConfigurator - URL prefix on Variant Change
+
+- [#1677](https://github.com/shopware/frontends/pull/1677) [`d663627`](https://github.com/shopware/frontends/commit/d663627aaa00abc797f5c2413c4e978f95bd6f89) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix displaying product variants on the product page
+
+- [#1692](https://github.com/shopware/frontends/pull/1692) [`2440a55`](https://github.com/shopware/frontends/commit/2440a55066d31edf2942dbab19a7b5043cdff532) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change `h5` HTML tag to `div` for better accessibility structure - for ProductCard component
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+  - @shopware/composables@1.8.1

@@ -83,6 +83,11 @@
         }
       }
     ],
+    "CartItems": [
+      {
+        "required": ["items"]
+      }
+    ],
     "Category": [
       {
         "required": ["breadcrumb"],
@@ -554,6 +559,28 @@
               }
             }
           }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["firstName", "lastName"]
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -592,7 +619,7 @@
       ]
     },
     "/account/register": {
-      "post":[
+      "post": [
         {
           "requestBody": {
             "content": {
@@ -650,6 +677,36 @@
                         }
                       }
                     }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "email",
+                    "password",
+                    "firstName",
+                    "lastName",
+                    "acceptedDataProtection",
+                    "storefrontUrl",
+                    "billingAddress"
                   ]
                 }
               }
@@ -779,6 +836,61 @@
             }
           }
         }
+      ],
+      "patch": [
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                "$ref": "_DELETE_",
+                "type": "object",
+                "required": ["items"], 
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { 
+                      "type": "object",
+                      "required": ["id", "quantity"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "quantity": { "type": "number" }
+                      }
+                    }
+                  }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "/contact-form": {
+      "post": [
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": "_DELETE_"
+                }
+              }
+            }
+          }
+        },
+        {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["email", "subject", "comment"]
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "/quote/detail/{id}": {
@@ -801,6 +913,21 @@
       "post": {
         "requestBody": {
           "required": true
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["elements"]
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -850,6 +977,21 @@
             "schema": { "type": "boolean" }
           }
         ]
+      }
+    },
+    "/shipping-method": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["elements"]
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
