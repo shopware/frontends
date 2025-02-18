@@ -170,7 +170,7 @@ onBeforeMount(() => {
         <button
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary"
           type="submit"
-          data-testid="account-personal-data-submit-button"
+          data-testid="account-email-change-submit-button"
         >
           {{ $t("form.save") }}
         </button>
