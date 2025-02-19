@@ -33,9 +33,9 @@ const toggleTabs = (tabNumber: number) => {
         data-tabs-toggle="#profileTabContent"
         role="tablist"
       >
-        <li class="w-1/2 md:w-auto" role="tab">
+        <li class="w-1/3 md:w-auto" role="tab">
           <a
-            class="inline-block pb-3 rounded-t-lg hover:text-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-primary text-5"
             :class="[
               currentTab !== 1
                 ? 'text-secondary-900'
@@ -46,9 +46,9 @@ const toggleTabs = (tabNumber: number) => {
             {{ $t("account.personalData.label") }}
           </a>
         </li>
-        <li class="w-1/2 md:w-auto" role="tab">
+        <li class="w-1/3 md:w-auto" role="tab">
           <a
-            class="inline-block pb-3 rounded-t-lg hover:text-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-primary text-5"
             :class="[
               currentTab !== 2
                 ? 'text-secondary-900'
@@ -57,6 +57,19 @@ const toggleTabs = (tabNumber: number) => {
             @click="() => toggleTabs(2)"
           >
             {{ $t("account.changePassword") }}
+          </a>
+        </li>
+        <li class="w-1/3 md:w-auto" role="tab">
+          <a
+            class="inline-block pb-3 rounded-t-lg hover:text-primary text-5"
+            :class="[
+              currentTab !== 3
+                ? 'text-secondary-900'
+                : 'text-primary border-b-2 border-primary',
+            ]"
+            @click="() => toggleTabs(3)"
+          >
+            {{ $t("account.changeEmail.label") }}
           </a>
         </li>
       </ul>
@@ -78,6 +91,14 @@ const toggleTabs = (tabNumber: number) => {
           ]"
         >
           <AccountChangePassword />
+        </div>
+          <div
+          :class="[
+            'cms-block-product-description-reviews__reviews',
+            currentTab !== 3 ? 'hidden' : 'block',
+          ]"
+        >
+          <AccountChangeEmail />
         </div>
       </div>
     </div>

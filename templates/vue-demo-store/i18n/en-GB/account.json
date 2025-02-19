@@ -79,6 +79,10 @@
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",
       "label": "Personal data"
     },
+    "changeEmail": {
+      "label": "Change email",
+      "infoBox": "You can change your email address here"
+    },
     "messages": {
       "defaultShippingAddressSuccess": "Set default shipping address successfully",
       "defaultShippingAddressError": "Set default shipping address error",
