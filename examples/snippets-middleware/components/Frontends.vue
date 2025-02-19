@@ -90,14 +90,13 @@ onMounted(async () => {
   </div>
   <div>
     you can also examine what is returned by visiting
-    
     <strong><a :href="`${useRequestURL()}api/translations?locale=${currentLocale}`" target="_blank">{{ useRequestURL()}}api/translations?locale={{currentLocale}}</a></strong> and loaded by
     i18n module
   </div>
 </template>
 <style scoped>
 .logo {
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 .center {
