@@ -18,8 +18,8 @@
     "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
     "typescript": "5.6.3",
-    "vite": "6.1.0",
-    "vue-tsc": "2.2.0"
+    "vite": "6.1.1",
+    "vue-tsc": "2.2.2"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
