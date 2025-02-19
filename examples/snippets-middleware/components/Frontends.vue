@@ -1,7 +1,54 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
+
 const { currency, selectedPaymentMethod } = useSessionContext();
+const { changeLanguage, getLanguageIdFromCode, getAvailableLanguages } =
+  useInternationalization();
+
 const { isLoggedIn } = useUser();
 const { t, availableLocales, locale: currentLocale } = useI18n();
+const { resolvePath } = useNavigationSearch();
+const { apiClient } = useShopwareContext();
+const backendRoute = ref<Schemas["SeoUrl"] | null>();
+
+// function to fetch the pretty URL for a different language
+const findRouteForLanguage = async (languageCode: string) => {
+  if (!backendRoute.value?.foreignKey) {
+    return;
+  }
+  const languageId = await getLanguageIdFromCode(languageCode);
+  const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
+    headers: {
+      "sw-language-id": languageId,
+    },
+    body: {
+      filter: [
+        {
+          type: "equals",
+          field: "foreignKey",
+          value: backendRoute.value?.foreignKey,
+        },
+      ],
+    },
+  });
+  return seoResult.data.elements?.[0];
+};
+
+watch(currentLocale, async () => {
+  // fetch the new pretty URL for a different language
+  backendRoute.value = await findRouteForLanguage(unref(currentLocale));
+});
+
+onMounted(async () => {
+  // fetch the available languages
+  await getAvailableLanguages();
+  // check the ID of the language for corresponding language code
+  const languageId = getLanguageIdFromCode(currentLocale.value);
+  // change the language in the /context
+  await changeLanguage(languageId);
+  const response = await resolvePath("/Summer-trends/");
+  backendRoute.value = response;
+});
 </script>
 
 <template>
@@ -25,6 +72,10 @@ const { t, availableLocales, locale: currentLocale } = useI18n();
       </a>
     </div>
     <p>
+     {{ t("general.url") }}:
+      <strong>{{ backendRoute?.seoPathInfo }}</strong>
+    </p>
+    <p>
       {{ t("general.currency") }}:
       <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
     </p>
@@ -39,13 +90,14 @@ const { t, availableLocales, locale: currentLocale } = useI18n();
   </div>
   <div>
     you can also examine what is returned by visiting
-    <strong>/api/translations?locale={{ currentLocale }}</strong> and loaded by
+    
+    <strong><a :href="`${useRequestURL()}api/translations?locale=${currentLocale}`" target="_blank">{{ useRequestURL()}}api/translations?locale={{currentLocale}}</a></strong> and loaded by
     i18n module
   </div>
 </template>
 <style scoped>
 .logo {
-  max-width: 100%;
+  max-width: 100%; 
 }
 
 .center {
