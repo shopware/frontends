@@ -14,6 +14,7 @@
     "country": "Land",
     "chooseCountry": "Land auswählen...",
     "company": "Firma",
+    "vatIds": "USt-IdNr.",
     "companyPlaceholder": "Firma eingeben...",
     "streetAddress": "Straße und Hausnummer",
     "streetPlaceholder": "Straße eingeben...",
