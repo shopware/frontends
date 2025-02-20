@@ -2,7 +2,7 @@
 import type { Schemas } from "#shopware";
 
 const { currency, selectedPaymentMethod } = useSessionContext();
-const { changeLanguage, getLanguageIdFromCode, getAvailableLanguages } =
+const { getLanguageIdFromCode, getAvailableLanguages } =
   useInternationalization();
 
 const { isLoggedIn } = useUser();
@@ -42,10 +42,6 @@ watch(currentLocale, async () => {
 onMounted(async () => {
   // fetch the available languages
   await getAvailableLanguages();
-  // check the ID of the language for corresponding language code
-  const languageId = getLanguageIdFromCode(currentLocale.value);
-  // change the language in the /context
-  await changeLanguage(languageId);
   const response = await resolvePath("/Summer-trends/");
   backendRoute.value = response;
 });
@@ -89,9 +85,9 @@ onMounted(async () => {
     </p>
   </div>
   <div>
-    you can also examine what is returned by visiting
-    <strong><a :href="`${useRequestURL()}api/translations?locale=${currentLocale}`" target="_blank">{{ useRequestURL()}}api/translations?locale={{currentLocale}}</a></strong> and loaded by
-    i18n module
+    you can also examine what is returned from an API middleware and loaded by
+    i18n module by visiting
+    <strong><a :href="`${useRequestURL()}api/translations?locale=${currentLocale}`" target="_blank">{{ useRequestURL()}}api/translations?locale={{currentLocale}}</a></strong> 
   </div>
 </template>
 <style scoped>
