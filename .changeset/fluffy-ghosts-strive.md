@@ -2,4 +2,5 @@
 "@shopware/cms-base-layer": minor
 ---
 
-Add CmsBlockHtml to render html blocks
+Added CmsBlockHtml to render html blocks.
+Added CmsElementHtml to render html element.

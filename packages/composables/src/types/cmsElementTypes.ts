@@ -46,15 +46,12 @@ export type CmsElementText = Schemas["CmsSlot"] & {
 };
 
 // HTML
-export type CmsBlockHtml = Schemas["CmsSlot"] & {
-  slots: {
-    data: {
-      content: string;
-      apiAlias: "cms_html";
-    };
-    id: string;
-    blockId: string;
-  }[];
+export type CmsElementHtml = Schemas["CmsSlot"] & {
+  type: "html";
+  data: {
+    content: string;
+    apiAlias: "cms_html";
+  };
 };
 
 // Image
