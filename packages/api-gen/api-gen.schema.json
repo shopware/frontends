@@ -1,6 +1,31 @@
 {
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "patchSource": {
+      "type": "string",
+      "anyOf": [
+        {
+          "format": "url"
+        },
+        {
+          "format": "file-path"
+        },
+        {
+          "const": "storeApiSchema.overrides.json",
+          "description": "Clean core Store API Schema patches"
+        },
+        {
+          "const": "storeApiSchema.b2b.overrides.json",
+          "description": "B2B module patches"
+        },
+        {
+          "const": "adminApiSchema.overrides.json",
+          "description": "Admin API Schema patches"
+        }
+      ]
+    }
+  },
   "properties": {
     "$schema": {
       "type": "string",
@@ -29,32 +54,15 @@
       "description": "Path to a file or files containing patches to apply to the schema",
       "oneOf": [
         {
-          "type": "string",
-          "anyOf": [
-            {
-              "format": "url"
-            },
-            {
-              "format": "file-path"
-            }
-          ]
+          "$ref": "#/$defs/patchSource"
         },
         {
           "type": "array",
           "items": {
-            "type": "string",
-            "anyOf": [
-              {
-                "format": "url"
-              },
-              {
-                "format": "file-path"
-              }
-            ]
+            "$ref": "#/$defs/patchSource"
           }
         }
       ]
     }
-  },
-  "required": ["rules"]
+  }
 }

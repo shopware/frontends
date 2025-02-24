@@ -12,6 +12,7 @@ type Translations = {
   listing: {
     variantsFrom: string;
     previously: string;
+    from: string;
     to: string;
   };
 };

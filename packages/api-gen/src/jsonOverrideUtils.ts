@@ -1,8 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import json5 from "json5";
 import { ofetch } from "ofetch";
 import c from "picocolors";
 import { type OverridesSchema, extendedDefu } from "./patchJsonSchema";
+import { loadLocalJSONFile } from "./utils";
 import type { validationRules } from "./validation-rules";
 
 export type ApiGenConfig = {
@@ -44,28 +46,70 @@ function isURL(str: string) {
   return str.startsWith("http");
 }
 
-async function resolveSinglePath(pathToResolve: string) {
+/**
+ * Resolve single path to JSON file.
+ * Resolving order:
+ * 1. Direct path - url or file path
+ * 2. check in `api-types` folder for file name
+ * 3. check in node_modules api-client package for file name
+ * 4. check at github external resource for file name
+ *
+ * Displays warning if file is not found.
+ */
+export async function resolveSinglePath<T = JSON>(
+  pathToResolve: string,
+): Promise<T | undefined> {
   try {
     if (isURL(pathToResolve)) {
       const response = await ofetch(pathToResolve, {
         responseType: "json",
         parseResponse: json5.parse,
       });
+      console.log("Resolved file from", pathToResolve);
       return response;
     }
 
-    const jsonOverridesFile = await readFileSync(pathToResolve, {
-      encoding: "utf-8",
-    });
-    return json5.parse(jsonOverridesFile);
+    // 1. direct local path
+    const localFile = await loadLocalJSONFile(pathToResolve);
+    if (localFile) {
+      console.log("Resolved file from", pathToResolve);
+      return localFile as T;
+    }
+
+    // 2. check in `api-types` folder for file name
+    const apiTypesFolder = join(process.cwd(), "api-types");
+    const apiTypesFile = join(apiTypesFolder, pathToResolve);
+    const localApiTypesFile = await loadLocalJSONFile(apiTypesFile);
+    if (localApiTypesFile) {
+      console.log("Resolved file from", apiTypesFile);
+      return localApiTypesFile as T;
+    }
+
+    // 3. check in node_modules api-client package for file name
+    const nodeModulesFolder = resolve(
+      `node_modules/@shopware/api-client/api-types/${pathToResolve}`,
+    );
+    const localNodeModulesFile = await loadLocalJSONFile(nodeModulesFolder);
+    if (localNodeModulesFile) {
+      console.log("Resolved file from", nodeModulesFolder);
+      return localNodeModulesFile as T;
+    }
+
+    // 4. check at github external resource for file name
+    const githubFile = `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${pathToResolve}`;
+    const localGithubFile = await loadLocalJSONFile(githubFile);
+    if (localGithubFile) {
+      console.log("Resolved file from", githubFile);
+      return localGithubFile as T;
+    }
   } catch (error) {
     console.warn(
       c.yellow(
-        `Problem with resolving overrides "patches" at address ${pathToResolve}. Check whether you configured it properly in your ${API_GEN_CONFIG_FILENAME}\n`,
+        `Problem with resolving file at address ${pathToResolve}. Check whether you configured it properly in your ${API_GEN_CONFIG_FILENAME}\n`,
       ),
       error,
     );
-    return {};
+    return undefined;
   }
 }
 
@@ -103,7 +147,7 @@ export async function loadJsonOverrides({
       {},
       ...results
         .filter((result) => result.status === "fulfilled")
-        .map((result) => result.value),
+        .map((result) => result.value || {}),
     );
   } catch (error) {
     console.warn(

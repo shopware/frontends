@@ -20,9 +20,9 @@
     "@types/node": "22.10.0",
     "js-cookie": "3.0.5",
     "nuxt": "3.15.4",
-    "typescript": "5.6.3",
+    "typescript": "5.7.3",
     "vue": "3.5.13",
-    "vue-tsc": "2.2.0"
+    "vue-tsc": "2.2.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"

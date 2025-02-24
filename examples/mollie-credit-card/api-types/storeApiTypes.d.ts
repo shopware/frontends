@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: unknown
+ * Shopware API version: 6.6.8.0
  *
  */
 type GenericRecord =
@@ -4731,8 +4731,7 @@ export type Schemas = {
       label: string;
       priority: number;
       translated: {
-        apiAlias?: string;
-        key?: string;
+        key: string;
         label: string;
       };
     }[];
@@ -4747,8 +4746,8 @@ export type Schemas = {
         min: number;
       };
       properties: string[];
-      rating?: number; // TODO: [OpenAPI][ProductListingResult] - rating should be defined the same as in body of the request
-      search: string; // TODO: [OpenAPI][ProductListingResult] - search should be required as is required in body of the request, otherwise everywhere optional
+      rating: number | null;
+      search?: string;
       /** @default false */
       "shipping-free": boolean;
     };

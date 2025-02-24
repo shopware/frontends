@@ -1,0 +1,25 @@
+{
+  "name": "example-maintenance-allowlisting",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "generate-types": "shopware-api-gen generate --apiType=store"
+  },
+  "dependencies": {
+    "@shopware/api-client": "canary",
+    "@shopware/api-gen": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
+    "nuxt": "^3.15.4",
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
+  },
+  "devDependencies": {
+    "@unocss/nuxt": "66.0.0",
+    "unocss": "66.0.0"
+  }
+}

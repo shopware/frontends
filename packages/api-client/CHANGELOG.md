@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 1.2.1
+
+### Patch Changes
+
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Overwrite API schemas to remove requirements from 'salutationId` property
+
 ## 1.2.0
 
 ### Minor Changes

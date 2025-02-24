@@ -482,7 +482,7 @@ describe("createAdminAPIClient", () => {
     });
     controller.abort();
 
-    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
       `[FetchError: [GET] "${baseURL}order": <no response> This operation was aborted]`,
     );
   });

@@ -2,9 +2,9 @@
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
-const { required, minLength, requiredIf, email, sameAs } = customValidators();
 
-const { user, refreshUser, updatePersonalInfo, updateEmail } = useUser();
+const { required, requiredIf } = customValidators();
+const { user, refreshUser, updatePersonalInfo } = useUser();
 
 const errorMessages = ref<string[]>([]);
 
@@ -16,32 +16,12 @@ const loadingData = ref(false);
 const state = reactive({
   firstName: "",
   lastName: "",
-  email: "",
-  emailConfirmation: "",
-  password: "",
   salutationId: "",
   title: "",
+  accountType: "private" as "private" | "business",
+  company: "",
+  vatIds: "",
 });
-
-const isEmailChanging = computed(() => state.email !== user.value?.email);
-
-const isNameChanging = computed(
-  () =>
-    state.firstName !== user.value?.firstName ||
-    state.lastName !== user.value?.lastName,
-);
-
-const refs = toRefs(state);
-
-const emailConfirmationValidationRule = computed(() =>
-  isEmailChanging.value
-    ? {
-        required,
-        email,
-        sameAsEmail: sameAs(refs.email),
-      }
-    : {},
-);
 
 const rules = computed(() => ({
   firstName: {
@@ -50,16 +30,18 @@ const rules = computed(() => ({
   lastName: {
     required,
   },
-  email: {
-    email,
+  accountType: {
     required,
   },
-  emailConfirmation: emailConfirmationValidationRule.value, // take a dynamic one
-  password: {
+  company: {
     required: requiredIf(() => {
-      return isEmailChanging.value;
+      return state.accountType === "business";
     }),
-    minLength: minLength(8),
+  },
+  vatIds: {
+    required: requiredIf(() => {
+      return state.accountType === "business";
+    }),
   },
 }));
 
@@ -72,32 +54,34 @@ const invokeUpdate = async (): Promise<void> => {
     loadingData.value = true;
     updated.value = false;
     $v.value.$touch();
-    if (
-      $v.value.$invalid ||
-      (!isNameChanging.value && !isEmailChanging.value)
-    ) {
+
+    const valid = await $v.value.$validate();
+    if (!valid) {
       return;
     }
+
     isUpdating.value = true;
 
-    if (isNameChanging.value) {
+    if (state.accountType === "business") {
+      await updatePersonalInfo({
+        firstName: state.firstName,
+        lastName: state.lastName,
+        salutationId: state.salutationId,
+        title: state.title,
+        company: state.company,
+        vatIds: [state.vatIds],
+        accountType: state.accountType,
+      });
+    } else {
       await updatePersonalInfo({
         firstName: state.firstName,
         lastName: state.lastName,
         salutationId: state.salutationId,
         title: state.title,
       });
-      isSuccess.value = true;
     }
 
-    if (isEmailChanging.value) {
-      await updateEmail({
-        email: state.email,
-        emailConfirmation: state.emailConfirmation,
-        password: state.password,
-      });
-      isSuccess.value = true;
-    }
+    isSuccess.value = true;
 
     isUpdating.value = false;
 
@@ -115,9 +99,15 @@ onBeforeMount(async () => {
   await refreshUser();
   state.firstName = user.value?.firstName || "";
   state.lastName = user.value?.lastName || "";
-  state.email = user.value?.email || "";
   state.salutationId = user.value?.salutationId || "";
   state.title = user.value?.title || "";
+  state.accountType = user.value?.accountType || "private";
+
+  if (user.value?.accountType === "business") {
+    state.vatIds = user.value?.vatIds[0] || "";
+    state.company = user.value?.company || "";
+  }
+
   loadingData.value = false;
 });
 </script>
@@ -149,6 +139,35 @@ onBeforeMount(async () => {
         {{ errorMessages }}
       </div>
       <div class="mt-4 space-y-4 lg:mt-5 md:space-y-5">
+        <div class="col-span-12">
+          <label
+            for="accountType"
+            class="block mb-2 text-sm font-medium text-secondary-500"
+            >{{ $t("form.accountType.title") }}</label
+          >
+          <select
+            id="accountType"
+            v-model="state.accountType"
+            name="accountType"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            data-testid="registration-account-type-select"
+            @blur="$v.accountType.$touch()"
+          >
+            <option value="private">
+              {{ $t("form.accountType.private") }}
+            </option>
+            <option value="business">
+              {{ $t("form.accountType.business") }}
+            </option>
+          </select>
+          <span
+            v-if="$v.accountType.$error"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
+          >
+            {{ $v.accountType.$errors[0].$message }}
+          </span>
+        </div>
+
         <div>
           <label
             for="firstname"
@@ -203,87 +222,63 @@ onBeforeMount(async () => {
             {{ $v.lastName.$errors[0].$message }}
           </span>
         </div>
-        <div>
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-secondary-500"
-          >
-            {{ $t("form.email") }}
-          </label>
-          <input
-            id="email"
-            v-model="state.email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-            :placeholder="$t('form.emailPlaceholder')"
-            data-testid="account-personal-data-email-input"
-            :disabled="loadingData"
-            @blur="$v.email.$touch()"
-          />
-          <span
-            v-if="$v.email.$error"
-            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
-          >
-            {{ $v.email.$errors[0].$message }}
-          </span>
-        </div>
-        <div v-if="isEmailChanging">
-          <label
-            for="email-confirm"
-            class="block mb-2 text-sm font-medium text-secondary-500"
-          >
-            {{ $t("form.confirmEmail") }}
-          </label>
-          <input
-            id="email-confirm"
-            v-model="state.emailConfirmation"
-            name="email-confirm"
-            type="email"
-            autocomplete="email-confirm"
-            required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-            :placeholder="$t('form.emailPlaceholder')"
-            data-testid="account-personal-data-email-confirmation-input"
-            :disabled="loadingData"
-            @blur="$v.emailConfirmation.$touch()"
-          />
-          <span
-            v-if="$v.emailConfirmation.$error"
-            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
-          >
-            {{ $v.emailConfirmation.$errors[0].$message }}
-          </span>
-        </div>
-        <div v-if="isEmailChanging">
-          <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-secondary-500"
-          >
-            {{ $t("form.password") }}
-          </label>
-          <input
-            id="password"
-            v-model="state.password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-            placeholder="••••••••"
-            data-testid="account-personal-data-password-input"
-            :disabled="loadingData"
-            @blur="$v.password.$touch()"
-          />
-          <span
-            v-if="$v.password.$error"
-            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
-          >
-            {{ $v.password.$errors[0].$message }}
-          </span>
-        </div>
+        <template v-if="state.accountType === 'business'">
+          <div>
+            <label
+              for="company"
+              class="block mb-2 text-sm font-medium text-secondary-500"
+            >
+              {{ $t("form.company") }}
+            </label>
+            <input
+              id="company"
+              v-model="state.company"
+              name="company"
+              type="text"
+              autocomplete="on"
+              required
+              class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+              :placeholder="$t('form.companyPlaceholder')"
+              data-testid="account-personal-data-company-input"
+              :disabled="loadingData"
+              @blur="$v.company.$touch()"
+            />
+            <span
+              v-if="$v.company.$error"
+              class="text-red-600 focus:ring-primary border-secondary-300 rounded"
+            >
+              {{ $v.company.$errors[0].$message }}
+            </span>
+          </div>
+
+          <div>
+            <label
+              for="vatIds"
+              class="block mb-2 text-sm font-medium text-secondary-500"
+            >
+              {{ $t("form.vatIds") }}
+            </label>
+            <input
+              id="vatIds"
+              v-model="state.vatIds"
+              name="vatIds"
+              type="text"
+              autocomplete="on"
+              required
+              class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+              :placeholder="$t('form.vatIdPlaceholder')"
+              data-testid="account-personal-data-vatIds-input"
+              :disabled="loadingData"
+              @blur="$v.vatIds.$touch()"
+            />
+            <span
+              v-if="$v.vatIds.$error"
+              class="text-red-600 focus:ring-primary border-secondary-300 rounded"
+            >
+              {{ $v.vatIds.$errors[0].$message }}
+            </span>
+          </div>
+        </template>
       </div>
 
       <div>

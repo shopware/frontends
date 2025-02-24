@@ -77,6 +77,10 @@
       "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
       "label": "Dane osobowe"
     },
+    "changeEmail": {
+      "label": "Zmień adres e-mail",
+      "infoBox": "Zmień swój adres e-mail poniżej"
+    },
     "messages": {
       "defaultShippingAddressSuccess": "Domyślny adres wysyłki został pomyślnie ustawiony",
       "defaultShippingAddressError": "Wystąpił błąd podczas ustawiania domyślnego adresu wysyłki",
