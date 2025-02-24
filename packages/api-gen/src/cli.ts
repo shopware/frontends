@@ -61,8 +61,8 @@ yargs(hideBin(process.argv))
         .option("apiType", {
           describe:
             "Type of the API schema to load. It can be 'store' or 'admin'",
-          default: "store",
-          choices: ["store", "admin"],
+          demandOption: true,
+          choices: ["store", "admin"] as const,
         })
         .positional("filename", {
           type: "string",
@@ -81,8 +81,8 @@ yargs(hideBin(process.argv))
         .option("apiType", {
           describe:
             "Type of the API schema to load. It can be 'store' or 'admin'",
-          default: "store",
-          choices: ["store", "admin"],
+          demandOption: true,
+          choices: ["store", "admin"] as const,
         })
         .positional("filename", {
           type: "string",

@@ -43,10 +43,25 @@ async function getAllApiEndpoints({ isAdminApi }: { isAdminApi: boolean }) {
   return result.data;
 }
 
+/**
+ * Validate JSON schema with the ruleset and parser
+ */
 export async function validateJson(args: {
+  /**
+   * Current working directory
+   */
   cwd: string;
+  /**
+   * Filename of the schema to process, default is `storeApiSchema.json` or `adminApiSchema.json` depending on the `apiType` parameter
+   */
   filename?: string;
-  apiType: string;
+  /**
+   * Type of the API to validate
+   */
+  apiType: "store" | "admin";
+  /**
+   * Log patches, display information about applied patches while generating types
+   */
   logPatches: boolean;
   debug: boolean;
 }) {
