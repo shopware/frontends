@@ -1,3 +1,3 @@
-export * from "./commands/generate";
-export * from "./commands/loadSchema";
-export * from "./commands/validateJson";
+export { generate } from "./commands/generate";
+export { loadSchema } from "./commands/loadSchema";
+export { validateJson } from "./commands/validateJson";
