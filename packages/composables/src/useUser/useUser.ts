@@ -100,12 +100,6 @@ export type UseUserReturn = {
     updateEmailData: operations["changeEmail post /account/change-email"]["body"],
   ): Promise<void>;
   /**
-   * Sets the default payment method for given id
-   * @param paymentMethodId
-   * @returns
-   */
-  setDefaultPaymentMethod(paymentMethodId: string): Promise<void>;
-  /**
    * Default payment method for the user
    */
   userDefaultPaymentMethod: ComputedRef<
@@ -271,16 +265,6 @@ export function useUser(): UseUserReturn {
     });
   }
 
-  async function setDefaultPaymentMethod(
-    paymentMethodId: string,
-  ): Promise<void> {
-    await apiClient.invoke(
-      "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
-      {
-        pathParams: { paymentMethodId },
-      },
-    );
-  }
   const defaultBillingAddressId = computed(
     () => user.value?.defaultBillingAddressId || null,
   );
@@ -307,7 +291,6 @@ export function useUser(): UseUserReturn {
     logout,
     updateEmail,
     updatePersonalInfo,
-    setDefaultPaymentMethod,
     loadSalutation,
     salutation,
     loadCountry,

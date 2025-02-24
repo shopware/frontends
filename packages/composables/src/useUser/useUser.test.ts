@@ -245,21 +245,6 @@ describe("useUser", () => {
     );
   });
 
-  it("setDefaultPaymentMethod", async () => {
-    const { vm, injections } = useSetup(() => useUser());
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.setDefaultPaymentMethod("test");
-
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("changePaymentMethod"),
-      expect.objectContaining({
-        pathParams: {
-          paymentMethodId: "test",
-        },
-      }),
-    );
-  });
-
   it("loadSalutation", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
