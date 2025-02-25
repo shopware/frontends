@@ -78,3 +78,4 @@ export type CmsBlockProductDescriptionReviews = BlockType<"content">;
 export type CmsBlockCrossSelling = BlockType<"content">;
 
 export type CmsBlockForm = BlockType<"content">;
+export type CmsBlockHtml = BlockType<"content">;

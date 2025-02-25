@@ -45,6 +45,15 @@ export type CmsElementText = Schemas["CmsSlot"] & {
   };
 };
 
+// HTML
+export type CmsElementHtml = Schemas["CmsSlot"] & {
+  type: "html";
+  data: {
+    content: string;
+    apiAlias: "cms_html";
+  };
+};
+
 // Image
 
 type ImageElementConfig = {
