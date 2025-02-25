@@ -6,11 +6,13 @@ refreshSessionContext();
 </script>
 <template>
   <NuxtLayout>
-    <NuxtNotifications position="top right" :speed="500"  />
-    <div class="container mx-auto px-4">
-      <h1>B2B Employee Management - example</h1>
-    </div>
+    <div test-id="test-wrapper">
+      <NuxtNotifications position="top right" :speed="500" />
+      <div class="container mx-auto px-4">
+        <h1>B2B Employee Management - example</h1>
+      </div>
 
-    <NuxtPage />
+      <NuxtPage />
+    </div>
   </NuxtLayout>
 </template>

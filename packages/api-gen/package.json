@@ -14,6 +14,12 @@
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "files": ["bin", "dist"],
   "bin": {
     "api-gen": "bin/api-gen.mjs",
@@ -46,7 +52,7 @@
     "ofetch": "1.4.1",
     "openapi-typescript": "7.5.2",
     "prettier": "3.5.1",
-    "ts-morph": "24.0.0",
+    "ts-morph": "25.0.1",
     "yargs": "17.7.2"
   }
 }

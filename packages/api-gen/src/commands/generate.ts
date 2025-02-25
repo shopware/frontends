@@ -24,11 +24,29 @@ import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
 import { transformOpenApiTypes } from "../transformOpenApiTypes";
 import { transformSchemaTypes } from "../transformSchemaTypes";
 
+/**
+ * Generate schema from your API instance
+ */
 export async function generate(args: {
+  /**
+   * Current working directory
+   */
   cwd: string;
+  /**
+   * Filename of the schema to process, default is `storeApiSchema.json` or `adminApiSchema.json` depending on the `apiType` parameter
+   */
   filename?: string;
+  /**
+   * Type of the API to generate types for
+   */
   apiType: "store" | "admin";
+  /**
+   * Debug mode, display additional information and generates additional files, not needed for the regular usage
+   */
   debug: boolean;
+  /**
+   * Log patches, display information about applied patches while generating types
+   */
   logPatches: boolean;
 }) {
   const inputFilename = args.filename

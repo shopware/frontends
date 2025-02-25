@@ -40,7 +40,7 @@
     "@shopware/nuxt-module": "canary",
     "@types/node": "22.10.0",
     "nuxt": "3.15.4",
-    "typescript": "5.6.3",
+    "typescript": "5.7.3",
     "vue-tsc": "2.2.2"
   }
 }

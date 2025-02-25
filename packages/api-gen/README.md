@@ -252,6 +252,53 @@ Prepare your config file named **api-gen.config.json**:
 }
 ```
 
+### Programmatic usage
+
+Each command can also be used programmatically within your own scripts:
+
+#### `generate`
+
+```ts
+import { generate } from "@shopware/api-gen";
+
+await generate({ 
+  cwd: process.cwd(),
+  filename: "storeApiTypes.ts",
+  apiType: "store",
+  debug: true,
+  logPatches: true,
+});
+```
+
+#### `loadSchema`
+
+```ts
+import { loadSchema } from "@shopware/api-gen";
+
+await loadSchema({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+});
+```
+
+#### `validateJson`
+
+```ts
+import { validateJson } from "@shopware/api-gen";
+
+await validateJson({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+  logPatches: true,
+  debug: true,
+});
+```
+
+> [!NOTE]  
+> Make sure that the required environment variables are set for the node process when executing commands programmatically.
+
 ## Links
 
 - [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
