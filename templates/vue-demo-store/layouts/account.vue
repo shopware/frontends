@@ -84,17 +84,6 @@ provide("swNavigation-footer-navigation", footerData);
                       <span class="ml-3">{{ $t("account.yourAddress") }}</span>
                     </NuxtLink>
                   </li>
-                  <li>
-                    <NuxtLink
-                      :to="formatLink(`/account/payment`)"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100"
-                    >
-                      <div i-carbon-wallet text-xl inline-block />
-                      <span class="ml-3">{{
-                        $t("account.myPaymentsHeader")
-                      }}</span>
-                    </NuxtLink>
-                  </li>
                 </ul>
                 <ul
                   class="pt-4 mt-4 space-y-2 border-t border-secondary-200 list-none pl-0"
