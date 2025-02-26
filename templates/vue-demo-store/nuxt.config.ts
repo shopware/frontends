@@ -82,7 +82,10 @@ export default defineNuxtConfig({
       ssr: false,
     },
     "/**": {
-      isr: 60 * 60 * 24,
+      isr: {
+        // see https://github.com/shopware/frontends/issues/1652
+        allowQuery: ["manufacturer", "properties"],
+      },
     },
   },
   /**
