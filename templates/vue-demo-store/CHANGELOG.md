@@ -1,5 +1,15 @@
 # vue-demo-store
 
+## 1.9.0
+
+### Minor Changes
+
+- [#1711](https://github.com/shopware/frontends/pull/1711) [`da3b19c`](https://github.com/shopware/frontends/commit/da3b19c741244297ba4d74a31fcffd4939e46032) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added the ability to change the account type on the account details page. email editing moved to the new tab
+
+### Patch Changes
+
+- [#1712](https://github.com/shopware/frontends/pull/1712) [`23f07df`](https://github.com/shopware/frontends/commit/23f07dff7e42c669f03a6290d0c70fd0759f9383) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `sw-language-id` header on the app context level
+
 ## 1.8.0
 
 ### Minor Changes

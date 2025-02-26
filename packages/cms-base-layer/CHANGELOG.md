@@ -1,5 +1,12 @@
 # @shopware/cms-base-layer
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1727](https://github.com/shopware/frontends/pull/1727) [`94872b7`](https://github.com/shopware/frontends/commit/94872b7c6f6337ff8ce0bcfd9320e4178a4927f0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added CmsBlockHtml to render html blocks.
+  Added CmsElementHtml to render html element.
+
 ## 1.4.1
 
 ### Patch Changes
