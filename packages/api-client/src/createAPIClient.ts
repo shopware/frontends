@@ -156,7 +156,9 @@ export function createAPIClient<
         }
       ? [InvokeParameters<CURRENT_OPERATION>]
       : [InvokeParameters<CURRENT_OPERATION>?]
-  ): Promise<RequestReturnType<CURRENT_OPERATION>> {
+  ): Promise<
+    RequestReturnType<CURRENT_OPERATION> & { headers: Record<string, string> }
+  > {
     const [, method, requestPath] = pathParam.split(" ") as [
       string,
       string,
@@ -195,10 +197,18 @@ export function createAPIClient<
       query: currentParams.query,
     });
 
+    const headers: Record<string, string> = {};
+    resp.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
+
     return {
       data: resp._data,
       status: resp.status,
-    } as RequestReturnType<CURRENT_OPERATION>;
+      headers,
+    } as RequestReturnType<CURRENT_OPERATION> & {
+      headers: Record<string, string>;
+    };
   }
 
   return {
