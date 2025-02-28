@@ -1,12 +1,19 @@
-import apiClient from "../../../apiBuilder";
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
+import { shopwareAccessToken, shopwareEndpoint } from "../../../apiBuilder";
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   if (!body.customerId || !body.token || !body.userId) {
     await sendRedirect(event, "/", 400);
     return;
   }
+  const apiClient = createAPIClient<operations>({
+    accessToken: shopwareAccessToken,
+    baseURL: shopwareEndpoint,
+  });
 
-  const response = await apiClient.invoke(
+  await apiClient.invoke(
     "imitateCustomerLogin post /account/login/imitate-customer",
     {
       body: {
@@ -16,11 +23,16 @@ export default defineEventHandler(async (event) => {
       },
     },
   );
-  if (!response.headers["sw-context-token"]) {
+
+  if (!apiClient.defaultHeaders["sw-context-token"]) {
     await sendRedirect(event, "/", 400);
     return;
   }
-  setCookie(event, "sw-context-token", response.headers["sw-context-token"]);
+  setCookie(
+    event,
+    "sw-context-token",
+    apiClient.defaultHeaders["sw-context-token"],
+  );
 
   await sendRedirect(event, "/account", 200);
 });
