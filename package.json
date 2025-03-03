@@ -2,7 +2,13 @@
   "name": "shopware-frontends",
   "version": "0.0.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*", "templates/*", "examples/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/layers/*",
+    "templates/*",
+    "examples/*"
+  ],
   "scripts": {
     "bump": "changeset version",
     "postinstall": "pnpm run build --filter='./packages/*'",
