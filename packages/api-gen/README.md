@@ -36,7 +36,7 @@ Generator will create a new directory `api-types` with TypeScript schemas inside
 
 ### Overriding
 
-If your instance contains inacurate or outdated OpenAPI specification, you can override it by creating a new file inside `api-types` directory::
+If your instance contains inacurate or outdated OpenAPI specification, you can override it by creating a new file inside `api-types` directory:
 
 - `storeApiTypes.overrides.ts` for store API
 - `adminApiTypes.overrides.ts` for admin API
@@ -112,18 +112,6 @@ Example:
 }
 ```
 
-or you could use multiple patches and add your own overrides on top:
-
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
-  "patches": [
-    "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
-    "./api-types/myOwnPatches.overrides.json"
-  ]
-}
-```
-
 and then inside the `storeApiTypes.overrides.json` file you can add your patches:
 
 ```json
@@ -152,6 +140,42 @@ you apply this as 2 independent patches, or combine it as a single patch without
   }
 }
 ```
+
+#### Applying patches from multiple files
+
+Since `patches` is an array, it is possible to have multiple files applying patches one after another.
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "patches": [
+    "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
+    "./api-types/myOwnPatches.overrides.json"
+  ]
+}
+```
+
+It is important to mention that they need to follow the same principle (See above, you can either add a singular patch using an object syntax, or apply multiple patches using an array for a component).
+
+Example:
+
+the provided `storeApiSchema.overrides.json` from the first patch is using array syntax for the `"Product"` component. It is important to follow this syntax when applying `myOwnPatches.overrides.json`.
+
+```json
+{
+    "components": {
+        "Product": [
+            {
+                "required": ["weight"]
+            }
+        ]
+    }
+}
+```
+
+If the patch would be using an object, only the first patch will be applied.
+
+---
 
 Creating multiple patches is useful when you want to apply different changes to the same object, which can also be corrected on the backend side independently. This way specific patches are becoming outdated and you get the notification that you can remove them safely.
 
