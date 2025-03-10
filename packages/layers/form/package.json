@@ -1,0 +1,13 @@
+{
+  "name": "shopware-nuxt-layer-form",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "postinstall": "ln -sF ../../../templates/vue-demo-store/.nuxt ./.nuxt"
+  },
+  "devDependencies": {
+    "nuxt": "3.15.4",
+    "typescript": "5.7.3"
+  }
+}
