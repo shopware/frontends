@@ -107,7 +107,8 @@ Example:
 
 ```json
 {
-  "patches": ["./api-types/storeApiTypes.overrides.json"]
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "patches": ["storeApiTypes.overrides.json"]
 }
 ```
 
@@ -115,6 +116,7 @@ or you could use multiple patches and add your own overrides on top:
 
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
   "patches": [
     "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
     "./api-types/myOwnPatches.overrides.json"
@@ -246,9 +248,56 @@ Prepare your config file named **api-gen.config.json**:
   "rules": [
     "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
   ],
-  //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
+  //"patches": "storeApiTypes.overrides.json" // -> path to your overrides file in api-types folder, default is fetched from api-client repository
 }
 ```
+
+### Programmatic usage
+
+Each command can also be used programmatically within your own scripts:
+
+#### `generate`
+
+```ts
+import { generate } from "@shopware/api-gen";
+
+await generate({ 
+  cwd: process.cwd(),
+  filename: "storeApiTypes.ts",
+  apiType: "store",
+  debug: true,
+  logPatches: true,
+});
+```
+
+#### `loadSchema`
+
+```ts
+import { loadSchema } from "@shopware/api-gen";
+
+await loadSchema({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+});
+```
+
+#### `validateJson`
+
+```ts
+import { validateJson } from "@shopware/api-gen";
+
+await validateJson({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+  logPatches: true,
+  debug: true,
+});
+```
+
+> [!NOTE]  
+> Make sure that the required environment variables are set for the node process when executing commands programmatically.
 
 ## Links
 
@@ -264,8 +313,9 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.3.0
 
 ### Minor Changes
 
-- [#1566](https://github.com/shopware/frontends/pull/1566) [`541cd6e`](https://github.com/shopware/frontends/commit/541cd6e5b5acaa20fb8aad699b2674e81b9330ce) Thanks [@patzick](https://github.com/patzick)! - Possibility to add multiple override json patches. Now you can use our default overrides and add your own on top of it.
+- [#1706](https://github.com/shopware/frontends/pull/1706) [`d7bf6d7`](https://github.com/shopware/frontends/commit/d7bf6d715689f5d0cbef9f0bbbc78f19f54215d5) Thanks [@patzick](https://github.com/patzick)! - Simplify `api-gen.config.json` configuration. Now you can use names instead of paths in patches like `storeApiSchema.overrides.json` or `storeApiSchema.b2b.overrides.json`.
+  Thanks to this you can simple and more granularly apply patches for your project.

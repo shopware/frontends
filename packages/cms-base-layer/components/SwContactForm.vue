@@ -115,9 +115,6 @@ const rules = computed(() => ({
     required,
     minLength: minLength(3),
   },
-  salutationId: {
-    required,
-  },
   phone: {
     required,
     minLength: minLength(3),
@@ -176,18 +173,12 @@ const invokeSubmit = async () => {
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-4">
-          <label for="salutation">{{ translations.form.salutation }} *</label>
+          <label for="salutation">{{ translations.form.salutation }}</label>
           <select
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :class="[
-              $v.salutationId.$error
-                ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
-            ]"
-            @blur="$v.salutationId.$touch()"
+            class="border-gray-300 focus:border-indigo-500 appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -200,12 +191,6 @@ const invokeSubmit = async () => {
               {{ salutation.displayName }}
             </option>
           </select>
-          <span
-            v-if="$v.salutationId.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-          >
-            {{ $v.salutationId.$errors[0].$message }}
-          </span>
         </div>
         <div class="col-span-4">
           <label for="first-name">{{ translations.form.firstName }} *</label>

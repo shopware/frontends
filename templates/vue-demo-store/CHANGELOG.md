@@ -1,5 +1,25 @@
 # vue-demo-store
 
+## 1.8.0
+
+### Minor Changes
+
+- [#1640](https://github.com/shopware/frontends/pull/1640) [`b30b046`](https://github.com/shopware/frontends/commit/b30b04646e77be86e2851c046f9dcb3a4c393042) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added possibility to edit personal info on the checkout process
+
+### Patch Changes
+
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
+
+  - Checkout page
+  - SharedAccountAddressForm
+  - CheckoutCustomerBaseInfo
+  - AccountRegisterForm
+  - AccountAddressForm
+
+- [#1660](https://github.com/shopware/frontends/pull/1660) [`530b22f`](https://github.com/shopware/frontends/commit/530b22fa84eb0950c77932456f32067c596e51f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing formatLink for links in checkout and my account page
+
+- [#1617](https://github.com/shopware/frontends/pull/1617) [`8a57689`](https://github.com/shopware/frontends/commit/8a57689cd7f6a6c3b8ea4161d423f8b0d37a7f2c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added loader to the changing payment method on the order details page. Added better UX for the change payment method modal
+
 ## 1.7.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,10 +21,10 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "65.4.3",
+    "@unocss/nuxt": "66.0.0",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
-    "@vueuse/nuxt": "12.5.0",
+    "@vueuse/nuxt": "12.7.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
@@ -32,11 +32,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@iconify-json/carbon": "1.2.5",
+    "@iconify-json/carbon": "1.2.7",
     "@nuxtjs/i18n": "8.5.6",
     "@shopware/api-gen": "canary",
-    "nuxt": "3.15.3",
-    "typescript": "5.6.3"
+    "nuxt": "3.15.4",
+    "typescript": "5.7.3"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"

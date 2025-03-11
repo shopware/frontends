@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 // read .env file and load it into process.env
 import "dotenv/config";
@@ -11,10 +11,32 @@ const SCHEMA_ENDPOINT = "_info/openapi3.json";
 const STORE_API_ENDPOINT = `/store-api/${SCHEMA_ENDPOINT}`;
 const ADMIN_API_ENDPOINT = `/api/${SCHEMA_ENDPOINT}`;
 
+/**
+ * Load JSON schema from your API instance. You need to have proper .env file with the following values:
+ *
+ * For `store` API:
+ * - OPENAPI_JSON_URL
+ * - OPENAPI_ACCESS_KEY
+ *
+ * For `admin` API:
+ * - OPENAPI_JSON_URL
+ * - SHOPWARE_ADMIN_USERNAME
+ * - SHOPWARE_ADMIN_PASSWORD
+ *
+ */
 export async function loadSchema(args: {
+  /**
+   * Current working directory
+   */
   cwd: string;
+  /**
+   * Filename to save the downloaded schema, default is `storeApiSchema.json` or `adminApiSchema.json` depending on the `apiType` parameter
+   */
   filename?: string;
-  apiType: string;
+  /**
+   * Type of the API to generate types for
+   */
+  apiType: "store" | "admin";
 }) {
   if (!["store", "admin"].includes(args.apiType)) {
     console.error(
@@ -92,6 +114,12 @@ export async function loadSchema(args: {
     // const version = apiJSON?.info?.version;
 
     const dir = args.cwd;
+
+    const apiTypesDir = join(dir, "api-types");
+    if (!existsSync(apiTypesDir)) {
+      mkdirSync(apiTypesDir);
+    }
+
     const filePath = join("api-types", outputFilename);
 
     writeFileSync(join(dir, filePath), content, {

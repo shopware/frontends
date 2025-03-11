@@ -22,12 +22,12 @@ export default defineNuxtConfig({
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
+        language: "en-GB",
         file: "all.ts",
       },
       {
         code: "de-DE",
-        iso: "de-DE",
+        language: "de-DE",
         file: "all.ts",
       },
     ],

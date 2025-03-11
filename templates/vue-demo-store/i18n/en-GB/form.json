@@ -14,6 +14,7 @@
     "country": "Country",
     "chooseCountry": "Choose country...",
     "company": "Company",
+    "vatIds": "VAT Registration Number",
     "companyPlaceholder": "Enter company...",
     "streetAddress": "Street address",
     "streetPlaceholder": "Enter street...",

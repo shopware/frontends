@@ -102,6 +102,9 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   }
 
   if (languageToChangeId) {
+    apiClient.defaultHeaders.apply({
+      "sw-language-id": languageToChangeId,
+    });
     await changeLanguage(languageToChangeId);
     await refreshSessionContext();
   }
