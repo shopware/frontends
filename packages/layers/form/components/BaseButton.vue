@@ -1,3 +1,5 @@
 <template>
-  <button><span class="text-red">Test</span></button>
+<button class="px-4 py-3 bg-[#543b94] rounded inline-flex justify-center items-center gap-1">
+  <div class="justify-start text-white text-base font-bold font-['Inter'] leading-normal">Button</div>
+</button>
 </template>

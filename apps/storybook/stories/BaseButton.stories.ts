@@ -11,5 +11,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NuxtWelcomeStory: Story = {
+  render: (args) => ({
+    components: { Button },
+    setup() {
+      return { args };
+    },
+    template: '<Button v-bind="args" />',
+  }),
   args: {},
 };
