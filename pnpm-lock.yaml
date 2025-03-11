@@ -223,9 +223,15 @@ importers:
       '@storybook/vue3':
         specifier: 8.3.3
         version: 8.3.3(storybook@8.3.3)(vue@3.5.13(typescript@5.7.3))
+      '@unocss/nuxt':
+        specifier: 66.0.0
+        version: 66.0.0(magicast@0.3.5)(postcss@8.5.3)(rollup@4.34.8)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0))
       storybook:
         specifier: 8.3.3
         version: 8.3.3
+      unocss:
+        specifier: 66.0.0
+        version: 66.0.0(@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0)))(postcss@8.5.3)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
 
   examples/adyen-dropin-component:
     devDependencies:
@@ -15048,7 +15054,7 @@ snapshots:
       debug: 4.4.0(supports-color@9.4.0)
       globals: 15.15.0
       kolorist: 1.8.0
-      local-pkg: 1.0.0
+      local-pkg: 1.1.1
       mlly: 1.7.4
     transitivePeerDependencies:
       - supports-color
@@ -19662,7 +19668,7 @@ snapshots:
       magic-string: 0.30.17
       pathe: 1.1.2
       perfect-debounce: 1.0.0
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -19680,7 +19686,7 @@ snapshots:
       magic-string: 0.30.17
       pathe: 2.0.3
       perfect-debounce: 1.0.0
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       unplugin-utils: 0.2.4
 
   '@unocss/config@0.59.4':
@@ -19768,6 +19774,31 @@ snapshots:
       - vue
       - webpack
 
+  '@unocss/nuxt@66.0.0(magicast@0.3.5)(postcss@8.5.3)(rollup@4.34.8)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0))':
+    dependencies:
+      '@nuxt/kit': 3.15.4(magicast@0.3.5)(rollup@4.34.8)
+      '@unocss/config': 66.0.0
+      '@unocss/core': 66.0.0
+      '@unocss/preset-attributify': 66.0.0
+      '@unocss/preset-icons': 66.0.0
+      '@unocss/preset-tagify': 66.0.0
+      '@unocss/preset-typography': 66.0.0
+      '@unocss/preset-uno': 66.0.0
+      '@unocss/preset-web-fonts': 66.0.0
+      '@unocss/preset-wind': 66.0.0
+      '@unocss/reset': 66.0.0
+      '@unocss/vite': 66.0.0(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@unocss/webpack': 66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0))
+      unocss: 66.0.0(@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0)))(postcss@8.5.3)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+    transitivePeerDependencies:
+      - magicast
+      - postcss
+      - rollup
+      - supports-color
+      - vite
+      - vue
+      - webpack
+
   '@unocss/nuxt@66.0.0(magicast@0.3.5)(postcss@8.5.3)(rollup@4.34.8)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.91.0(@swc/core@1.7.10))':
     dependencies:
       '@nuxt/kit': 3.15.4(magicast@0.3.5)(rollup@4.34.8)
@@ -19810,7 +19841,7 @@ snapshots:
       '@unocss/rule-utils': 0.62.4
       css-tree: 2.3.1
       postcss: 8.5.3
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
     transitivePeerDependencies:
       - supports-color
 
@@ -19821,7 +19852,7 @@ snapshots:
       '@unocss/rule-utils': 66.0.0
       css-tree: 3.1.0
       postcss: 8.5.3
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
 
   '@unocss/preset-attributify@0.59.4':
     dependencies:
@@ -20073,7 +20104,7 @@ snapshots:
       '@unocss/inspector': 0.62.4
       chokidar: 3.6.0
       magic-string: 0.30.17
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       vite: 5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
     transitivePeerDependencies:
       - rollup
@@ -20087,7 +20118,7 @@ snapshots:
       '@unocss/inspector': 66.0.0(vue@3.5.13(typescript@5.7.3))
       chokidar: 3.6.0
       magic-string: 0.30.17
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       unplugin-utils: 0.2.4
       vite: 5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
     transitivePeerDependencies:
@@ -20101,7 +20132,7 @@ snapshots:
       '@unocss/inspector': 66.0.0(vue@3.5.13(typescript@5.7.3))
       chokidar: 3.6.0
       magic-string: 0.30.17
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       unplugin-utils: 0.2.4
       vite: 6.2.0(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -20115,11 +20146,24 @@ snapshots:
       '@unocss/inspector': 66.0.0(vue@3.5.13(typescript@5.7.3))
       chokidar: 3.6.0
       magic-string: 0.30.17
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       unplugin-utils: 0.2.4
       vite: 6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - vue
+
+  '@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@unocss/config': 66.0.0
+      '@unocss/core': 66.0.0
+      chokidar: 3.6.0
+      magic-string: 0.30.17
+      tinyglobby: 0.2.12
+      unplugin: 2.2.0
+      unplugin-utils: 0.2.4
+      webpack: 5.91.0(@swc/core@1.7.10)(esbuild@0.25.0)
+      webpack-sources: 3.2.3
 
   '@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10))':
     dependencies:
@@ -20128,7 +20172,7 @@ snapshots:
       '@unocss/core': 66.0.0
       chokidar: 3.6.0
       magic-string: 0.30.17
-      tinyglobby: 0.2.11
+      tinyglobby: 0.2.12
       unplugin: 2.2.0
       unplugin-utils: 0.2.4
       webpack: 5.91.0(@swc/core@1.7.10)
@@ -28978,6 +29022,34 @@ snapshots:
       - rollup
       - supports-color
 
+  unocss@66.0.0(@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0)))(postcss@8.5.3)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      '@unocss/astro': 66.0.0(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@unocss/cli': 66.0.0
+      '@unocss/core': 66.0.0
+      '@unocss/postcss': 66.0.0(postcss@8.5.3)
+      '@unocss/preset-attributify': 66.0.0
+      '@unocss/preset-icons': 66.0.0
+      '@unocss/preset-mini': 66.0.0
+      '@unocss/preset-tagify': 66.0.0
+      '@unocss/preset-typography': 66.0.0
+      '@unocss/preset-uno': 66.0.0
+      '@unocss/preset-web-fonts': 66.0.0
+      '@unocss/preset-wind': 66.0.0
+      '@unocss/preset-wind3': 66.0.0
+      '@unocss/transformer-attributify-jsx': 66.0.0
+      '@unocss/transformer-compile-class': 66.0.0
+      '@unocss/transformer-directives': 66.0.0
+      '@unocss/transformer-variant-group': 66.0.0
+      '@unocss/vite': 66.0.0(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+    optionalDependencies:
+      '@unocss/webpack': 66.0.0(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.25.0))
+      vite: 6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0)
+    transitivePeerDependencies:
+      - postcss
+      - supports-color
+      - vue
+
   unocss@66.0.0(@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.5.3)(vite@6.2.0(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       '@unocss/astro': 66.0.0(vite@6.2.0(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
@@ -29889,7 +29961,7 @@ snapshots:
       '@edge-runtime/vm': 3.2.0
       '@types/debug': 4.1.12
       '@types/node': 22.10.0
-      '@vitest/browser': 3.0.7(@types/node@22.10.0)(playwright@1.50.1)(typescript@5.7.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitest@3.0.7)
+      '@vitest/browser': 3.0.7(@types/node@22.10.0)(playwright@1.50.1)(typescript@5.7.3)(vite@6.2.1(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.7)
       happy-dom: 17.1.8
       jsdom: 25.0.1
     transitivePeerDependencies:
