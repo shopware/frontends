@@ -8,9 +8,9 @@ const meta = {
 } satisfies Meta<typeof Button>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Button>;
 
-export const NuxtWelcomeStory: Story = {
+export const Primary: Story = {
   render: (args) => ({
     components: { Button },
     setup() {
@@ -18,5 +18,8 @@ export const NuxtWelcomeStory: Story = {
     },
     template: '<Button v-bind="args" />',
   }),
-  args: {},
+  args: {
+    label: "Button",
+    disabled: false,
+  },
 };
