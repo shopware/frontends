@@ -59,7 +59,7 @@
       "vue-i18n": "^11.1.2",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.10.0",
-      "axios": "^1.7.4",
+      "axios": "^1.8.3",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
       "cookie": "^0.7.0",
@@ -91,7 +91,10 @@
       "dset": "^3.1.4",
       "send": "^0.19.0",
       "serve-static": "^1.16.1",
-      "express": "^4.20.1"
+      "express": "^4.20.1",
+      "prismjs": "^1.30.0",
+      "@babel/runtime": "^7.26.10",
+      "@babel/helpers": "^7.26.10"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]

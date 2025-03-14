@@ -13,7 +13,7 @@ overrides:
   vue-i18n: ^11.1.2
   '@sentry/browser': ^7.119.1
   '@types/node': 22.10.0
-  axios: ^1.7.4
+  axios: ^1.8.3
   braces: ^3.0.3
   debug: ^4.3.5
   cookie: ^0.7.0
@@ -46,6 +46,9 @@ overrides:
   send: ^0.19.0
   serve-static: ^1.16.1
   express: ^4.20.1
+  prismjs: ^1.30.0
+  '@babel/runtime': ^7.26.10
+  '@babel/helpers': ^7.26.10
 
 patchedDependencies:
   '@vueuse/core@11.1.0':
@@ -118,10 +121,10 @@ importers:
         version: 14.1.0
       vitepress:
         specifier: 1.3.4
-        version: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
+        version: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
       vitepress-plugin-search:
         specifier: 1.0.4-alpha.22
-        version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))
+        version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))
       vitepress-shopware-docs:
         specifier: 1.3.0-alpha.16
         version: 1.3.0-alpha.16(@babel/core@7.26.9)(@babel/template@7.26.9)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.34.8)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vue-instantsearch@4.19.3(@vue/server-renderer@3.5.13(vue@3.5.13(typescript@5.7.3)))(algoliasearch@4.20.0)(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
@@ -134,16 +137,16 @@ importers:
         version: 1.3.0-alpha.16
       '@shopware-docs/storybook':
         specifier: ^1.3.0-alpha.16
-        version: 1.3.0-alpha.16(5eedcf7be998ed630442f485cda03692)
+        version: 1.3.0-alpha.16(92990987b090715391d0f3fb15e6fccd)
       '@shopware-docs/typer':
         specifier: ^1.3.0-alpha.16
         version: 1.3.0-alpha.16(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(typescript@5.7.3)
       '@shopware-docs/vitepress':
         specifier: ^1.3.4
-        version: 1.3.4(postcss@8.5.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))
+        version: 1.3.4(postcss@8.5.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))
       '@shopware-docs/vitest':
         specifier: ^1.3.0-alpha.16
-        version: 1.3.0-alpha.16(@playwright/test@1.50.1)(@vitest/coverage-c8@0.33.0(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.5.3)(rollup@4.34.8)(slugify@1.6.6)(vite-plugin-inspect@10.2.1(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
+        version: 1.3.0-alpha.16(@playwright/test@1.50.1)(@vitest/coverage-c8@0.33.0(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.5.3)(rollup@4.34.8)(slugify@1.6.6)(vite-plugin-inspect@10.2.1(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
       '@types/markdown-it':
         specifier: 14.1.2
         version: 14.1.2
@@ -1708,12 +1711,8 @@ packages:
     resolution: {integrity: sha512-ETzz9UTjQSTmw39GboatdymDq4XIQbR8ySgVrylRhPOFpsd+JrKHIuF0de7GCWmem+T4uC5z7EZguod7Wj4A4g==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helpers@7.26.0':
-    resolution: {integrity: sha512-tbhNuIxNcVb21pInl3ZSjksLCvgdZy9KwJ8brv993QtIVKJBBkYXz4q4ZbAv31GdnC+R90np23L5FbEBlthAEw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helpers@7.26.9':
-    resolution: {integrity: sha512-Mz/4+y8udxBKdmzt/UjPACs4G3j5SshJJEFFKxlCGPydG4JAHXxjWjAwjd09tf6oINvl1VfMJo+nB7H2YKQ0dA==}
+  '@babel/helpers@7.26.10':
+    resolution: {integrity: sha512-UPYc3SauzZ3JGgj87GgZ89JVdC5dj0AoetR5Bw6wj4niittNyFh6+eOGonYvJ1ao6B8lEa3Q3klS7ADZ53bc5g==}
     engines: {node: '>=6.9.0'}
 
   '@babel/parser@7.26.2':
@@ -2202,12 +2201,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/runtime@7.25.7':
-    resolution: {integrity: sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/runtime@7.26.9':
-    resolution: {integrity: sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==}
+  '@babel/runtime@7.26.10':
+    resolution: {integrity: sha512-2WJMeRQPHKSPemqk/awGrAiuFfzBmOIPXKizAsVhWH9YJqLZ0H+HS4c8loHGgW6utJ3E/ejXQUsiGaQy2NZ9Fw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/standalone@7.26.6':
@@ -2232,6 +2227,10 @@ packages:
 
   '@babel/traverse@7.26.9':
     resolution: {integrity: sha512-ZYW7L+pL8ahU5fXmNbPF+iZFHCv5scFak7MZ9bwaRPLUhHh7QQEMjZUg0HevihoqCM5iSYHN61EyCoZvqC+bxg==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/types@7.26.10':
+    resolution: {integrity: sha512-emqcG3vHrpxUKTrxcblR36dcrcoRDvKmnL/dCL6ZsHaShW80qxCAcNhzQZrpeM765VzEos+xOi4s+r4IXzTwdQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.26.3':
@@ -6333,7 +6332,7 @@ packages:
     resolution: {integrity: sha512-w6CDisaxs19S5Fd+NPPLFaA3GoX5gxuxrbTTBu0EYap7oH13w75L6C/+7e9mcoF9akhcR6GyYajwVMQEjdapJg==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1.7.4
+      axios: ^1.8.3
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -6771,11 +6770,8 @@ packages:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
     engines: {node: '>=4'}
 
-  axios@1.7.4:
-    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
-
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.8.3:
+    resolution: {integrity: sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -7894,10 +7890,6 @@ packages:
   errx@0.1.0:
     resolution: {integrity: sha512-fZmsRiDNv07K6s2KkKFTiD2aIvECa7++PKyD5NC32tpRw46qZA3sOz+aM+/V9V0GDHxVTKLziveV4JhzBHDp9Q==}
 
-  es-define-property@1.0.0:
-    resolution: {integrity: sha512-jxayLKShrEqqzJ0eumQbVhTYQM27CfT1T35+gCgDFoL82JLsXqTJ76zv6A0YLOgEnLUMvLzsDsGIrl8NFpT2gQ==}
-    engines: {node: '>= 0.4'}
-
   es-define-property@1.0.1:
     resolution: {integrity: sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==}
     engines: {node: '>= 0.4'}
@@ -8315,15 +8307,6 @@ packages:
   focus-trap@7.5.4:
     resolution: {integrity: sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==}
 
-  follow-redirects@1.15.6:
-    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   follow-redirects@1.15.9:
     resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
     engines: {node: '>=4.0'}
@@ -8349,10 +8332,6 @@ packages:
 
   form-data@4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
-    engines: {node: '>= 6'}
-
-  form-data@4.0.1:
-    resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
 
   form-data@4.0.2:
@@ -8460,10 +8439,6 @@ packages:
   get-east-asian-width@1.2.0:
     resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
     engines: {node: '>=18'}
-
-  get-intrinsic@1.2.4:
-    resolution: {integrity: sha512-5uYhsJH8VJBTv7oslg4BznJYhDoRI6waYCxMmCdnTrcCrHA/fCFKoTFz2JKKE0HdDFUF7/oQuhzumXJK7paBRQ==}
-    engines: {node: '>= 0.4'}
 
   get-intrinsic@1.2.7:
     resolution: {integrity: sha512-VW6Pxhsrk0KAOqs3WEd0klDiF/+V7gQOpAvY1jVU/LHmaD/kQO4523aiJuikX/QAKYiW6x8Jh+RJej1almdtCA==}
@@ -8610,9 +8585,6 @@ packages:
   glsl-tokenizer@2.1.5:
     resolution: {integrity: sha512-XSZEJ/i4dmz3Pmbnpsy3cKh7cotvFlBiZnDOwnj/05EwNp2XrhQ4XKJxT7/pDt4kp4YcpRSKz8eTV7S+mwV6MA==}
 
-  gopd@1.0.1:
-    resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
-
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -8661,14 +8633,6 @@ packages:
 
   has-property-descriptors@1.0.2:
     resolution: {integrity: sha512-55JNKuIW+vq4Ke1BjOTjM2YctQIvCT7GFzHwmfZPGo5wnrgkid0YQtnAleFSqumZm4az3n2BS+erby5ipJdgrg==}
-
-  has-proto@1.0.3:
-    resolution: {integrity: sha512-SJ1amZAJUiZS+PhsVLf5tGydlaVB8EdFpaSO4gmiUKUOxk8qzn5AIy4ZeJUmh22znIdk/uMAUT2pl3FxzVUH+Q==}
-    engines: {node: '>= 0.4'}
-
-  has-symbols@1.0.3:
-    resolution: {integrity: sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==}
-    engines: {node: '>= 0.4'}
 
   has-symbols@1.1.0:
     resolution: {integrity: sha512-1cDNdwJ2Jaohmb3sg4OmKaMBwuC48sYni5HUw2DvsC8LjGTLK9h+eb1X6RyuOHe4hT0ULCW68iomhjUoKUqlPQ==}
@@ -11256,8 +11220,8 @@ packages:
     peerDependencies:
       react: '>=0.14.9'
 
-  prismjs@1.29.0:
-    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+  prismjs@1.30.0:
+    resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
     engines: {node: '>=6'}
 
   process-nextick-args@2.0.1:
@@ -14219,7 +14183,7 @@ snapshots:
 
   '@amazonpay/amazon-pay-api-sdk-nodejs@2.3.1':
     dependencies:
-      axios: 1.7.4
+      axios: 1.8.3
       uuid: 3.4.0
     transitivePeerDependencies:
       - debug
@@ -14353,7 +14317,7 @@ snapshots:
 
   '@astrojs/prism@3.1.0':
     dependencies:
-      prismjs: 1.29.0
+      prismjs: 1.30.0
 
   '@astrojs/react@3.6.3(@types/node@22.10.0)(@types/react-dom@17.0.25)(@types/react@18.3.3)(less@4.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(terser@5.39.0)':
     dependencies:
@@ -14446,7 +14410,7 @@ snapshots:
       '@babel/generator': 7.26.3
       '@babel/helper-compilation-targets': 7.25.9
       '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.0)
-      '@babel/helpers': 7.26.0
+      '@babel/helpers': 7.26.10
       '@babel/parser': 7.26.3
       '@babel/template': 7.25.9
       '@babel/traverse': 7.26.3
@@ -14466,7 +14430,7 @@ snapshots:
       '@babel/generator': 7.26.9
       '@babel/helper-compilation-targets': 7.26.5
       '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.9)
-      '@babel/helpers': 7.26.9
+      '@babel/helpers': 7.26.10
       '@babel/parser': 7.26.9
       '@babel/template': 7.26.9
       '@babel/traverse': 7.26.9
@@ -14654,15 +14618,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helpers@7.26.0':
-    dependencies:
-      '@babel/template': 7.25.9
-      '@babel/types': 7.26.9
-
-  '@babel/helpers@7.26.9':
+  '@babel/helpers@7.26.10':
     dependencies:
       '@babel/template': 7.26.9
-      '@babel/types': 7.26.9
+      '@babel/types': 7.26.10
 
   '@babel/parser@7.26.2':
     dependencies:
@@ -15276,11 +15235,7 @@ snapshots:
       pirates: 4.0.6
       source-map-support: 0.5.21
 
-  '@babel/runtime@7.25.7':
-    dependencies:
-      regenerator-runtime: 0.14.1
-
-  '@babel/runtime@7.26.9':
+  '@babel/runtime@7.26.10':
     dependencies:
       regenerator-runtime: 0.14.1
 
@@ -15296,14 +15251,14 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.26.2
       '@babel/parser': 7.26.9
-      '@babel/types': 7.26.9
+      '@babel/types': 7.26.10
 
   '@babel/traverse@7.25.9':
     dependencies:
       '@babel/code-frame': 7.26.2
       '@babel/generator': 7.26.3
       '@babel/parser': 7.26.9
-      '@babel/template': 7.25.9
+      '@babel/template': 7.26.9
       '@babel/types': 7.26.9
       debug: 4.4.0(supports-color@9.4.0)
       globals: 11.12.0
@@ -15333,6 +15288,11 @@ snapshots:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+
+  '@babel/types@7.26.10':
+    dependencies:
+      '@babel/helper-string-parser': 7.25.9
+      '@babel/helper-validator-identifier': 7.25.9
 
   '@babel/types@7.26.3':
     dependencies:
@@ -15667,9 +15627,9 @@ snapshots:
 
   '@codspeed/core@4.0.0':
     dependencies:
-      axios: 1.7.9
+      axios: 1.8.3
       find-up: 6.3.0
-      form-data: 4.0.1
+      form-data: 4.0.2
       node-gyp-build: 4.8.4
     transitivePeerDependencies:
       - debug
@@ -16453,14 +16413,14 @@ snapshots:
 
   '@manypkg/find-root@1.1.0':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@types/node': 22.10.0
       find-up: 4.1.0
       fs-extra: 8.1.0
 
   '@manypkg/get-packages@1.1.3':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@changesets/types': 4.1.0
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
@@ -17286,11 +17246,11 @@ snapshots:
 
   '@radix-ui/number@1.0.1':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   '@radix-ui/primitive@1.0.1':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   '@radix-ui/primitive@1.1.0': {}
 
@@ -17315,7 +17275,7 @@ snapshots:
 
   '@radix-ui/react-arrow@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -17350,7 +17310,7 @@ snapshots:
 
   '@radix-ui/react-collection@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       '@radix-ui/react-context': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -17387,7 +17347,7 @@ snapshots:
 
   '@radix-ui/react-compose-refs@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17420,7 +17380,7 @@ snapshots:
 
   '@radix-ui/react-context@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17461,7 +17421,7 @@ snapshots:
 
   '@radix-ui/react-direction@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17480,7 +17440,7 @@ snapshots:
 
   '@radix-ui/react-dismissable-layer@1.0.4(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -17507,7 +17467,7 @@ snapshots:
 
   '@radix-ui/react-focus-guards@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17520,7 +17480,7 @@ snapshots:
 
   '@radix-ui/react-focus-scope@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.3.13)(react@18.3.1)
@@ -17543,7 +17503,7 @@ snapshots:
 
   '@radix-ui/react-id@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
     optionalDependencies:
@@ -17591,7 +17551,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.1.2(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-arrow': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.13)(react@18.3.1)
@@ -17628,7 +17588,7 @@ snapshots:
 
   '@radix-ui/react-portal@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -17658,7 +17618,7 @@ snapshots:
 
   '@radix-ui/react-primitive@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-slot': 1.0.2(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -17720,7 +17680,7 @@ snapshots:
 
   '@radix-ui/react-select@1.2.2(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/number': 1.0.1
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-collection': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -17759,7 +17719,7 @@ snapshots:
 
   '@radix-ui/react-slot@1.0.2(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
     optionalDependencies:
@@ -17822,7 +17782,7 @@ snapshots:
 
   '@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17841,7 +17801,7 @@ snapshots:
 
   '@radix-ui/react-use-controllable-state@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
     optionalDependencies:
@@ -17863,7 +17823,7 @@ snapshots:
 
   '@radix-ui/react-use-escape-keydown@1.0.3(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
     optionalDependencies:
@@ -17878,7 +17838,7 @@ snapshots:
 
   '@radix-ui/react-use-layout-effect@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
@@ -17897,14 +17857,14 @@ snapshots:
 
   '@radix-ui/react-use-previous@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.13
 
   '@radix-ui/react-use-rect@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/rect': 1.0.1
       react: 18.3.1
     optionalDependencies:
@@ -17919,7 +17879,7 @@ snapshots:
 
   '@radix-ui/react-use-size@1.0.1(@types/react@18.3.13)(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.3.13)(react@18.3.1)
       react: 18.3.1
     optionalDependencies:
@@ -17934,7 +17894,7 @@ snapshots:
 
   '@radix-ui/react-visually-hidden@1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -17944,7 +17904,7 @@ snapshots:
 
   '@radix-ui/rect@1.0.1':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   '@radix-ui/rect@1.1.0': {}
 
@@ -18512,7 +18472,7 @@ snapshots:
 
   '@shopware-docs/cli@1.3.0-alpha.16': {}
 
-  '@shopware-docs/storybook@1.3.0-alpha.16(5eedcf7be998ed630442f485cda03692)':
+  '@shopware-docs/storybook@1.3.0-alpha.16(92990987b090715391d0f3fb15e6fccd)':
     dependencies:
       '@storybook/addon-essentials': 7.6.20(@types/react-dom@17.0.25)(@types/react@18.3.13)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-interactions': 7.6.20
@@ -18522,7 +18482,7 @@ snapshots:
       '@storybook/testing-library': 0.2.2
       '@storybook/vue3': 7.6.20(encoding@0.1.13)(vue@3.5.13(typescript@5.7.3))
       '@storybook/vue3-vite': 7.6.20(encoding@0.1.13)(typescript@5.7.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vue@3.5.13(typescript@5.7.3))
-      axios: 1.7.4
+      axios: 1.8.3
       chromatic: 10.9.6
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -18532,7 +18492,7 @@ snapshots:
       storybook-addon-fetch-mock: 1.0.1(node-fetch@2.7.0(encoding@0.1.13))
       storybook-addon-pseudo-states: 2.2.1(@storybook/components@7.6.20(@types/react-dom@17.0.25)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/core-events@7.6.20)(@storybook/manager-api@7.6.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/preview-api@7.6.20)(@storybook/theming@7.6.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       unocss: 0.62.4(postcss@8.5.3)(rollup@4.34.8)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
       vitepress-shopware-docs: link:../..
     transitivePeerDependencies:
       - '@unocss/webpack'
@@ -18561,13 +18521,13 @@ snapshots:
       - terser
       - typescript
 
-  '@shopware-docs/vitepress@1.3.4(postcss@8.5.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))':
+  '@shopware-docs/vitepress@1.3.4(postcss@8.5.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
-      axios: 1.7.9
+      axios: 1.8.3
       prettier: 3.5.2
       sitemap: 8.0.0
       unocss: 66.0.0(postcss@8.5.3)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vue@3.5.13(typescript@5.7.3))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
       vitepress-shopware-docs: link:../..
     transitivePeerDependencies:
       - '@unocss/webpack'
@@ -18577,17 +18537,17 @@ snapshots:
       - vite
       - vue
 
-  '@shopware-docs/vitest@1.3.0-alpha.16(@playwright/test@1.50.1)(@vitest/coverage-c8@0.33.0(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.5.3)(rollup@4.34.8)(slugify@1.6.6)(vite-plugin-inspect@10.2.1(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))':
+  '@shopware-docs/vitest@1.3.0-alpha.16(@playwright/test@1.50.1)(@vitest/coverage-c8@0.33.0(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.5.3)(rollup@4.34.8)(slugify@1.6.6)(vite-plugin-inspect@10.2.1(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)))(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))':
     dependencies:
       '@playwright/test': 1.50.1
       '@vitest/coverage-c8': 0.33.0(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
-      axios: 1.7.4
+      axios: 1.8.3
       get-port: 7.1.0
       playwright-chromium: 1.46.1
       slugify: 1.6.6
       unocss: 0.62.4(postcss@8.5.3)(rollup@4.34.8)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
       vite-plugin-inspect: 10.2.1(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
       vitepress-shopware-docs: link:../..
       vitest: 3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
     transitivePeerDependencies:
@@ -18860,7 +18820,7 @@ snapshots:
       nano-memoize: 1.3.1
       polished: 4.2.2
       prism-react-renderer: 1.3.5(react@18.3.1)
-      prismjs: 1.29.0
+      prismjs: 1.30.0
       react: 18.3.1
       react-fast-compare: 3.2.2
       react-overflow-list: 0.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -18889,7 +18849,7 @@ snapshots:
       nano-memoize: 1.3.1
       polished: 4.2.2
       prism-react-renderer: 1.3.5(react@18.3.1)
-      prismjs: 1.29.0
+      prismjs: 1.30.0
       react: 18.3.1
       react-fast-compare: 3.2.2
       react-overflow-list: 0.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -19686,7 +19646,7 @@ snapshots:
   '@testing-library/dom@9.3.4':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       '@types/aria-query': 5.0.4
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -21148,7 +21108,7 @@ snapshots:
       c8: 7.14.0
       magic-string: 0.30.17
       picocolors: 1.0.1
-      std-env: 3.8.0
+      std-env: 3.8.1
       vitest: 3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
 
   '@vitest/coverage-v8@3.0.7(vitest@3.0.7(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.1.8)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))':
@@ -21590,13 +21550,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@11.0.3(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.5.4)(fuse.js@7.0.0)(vue@3.5.13(typescript@5.7.3))':
+  '@vueuse/integrations@11.0.3(axios@1.8.3)(change-case@5.4.4)(focus-trap@7.5.4)(fuse.js@7.0.0)(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@vueuse/core': 11.0.3(vue@3.5.13(typescript@5.7.3))
       '@vueuse/shared': 11.0.3(vue@3.5.13(typescript@5.7.3))
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.7.3))
     optionalDependencies:
-      axios: 1.7.9
+      axios: 1.8.3
       change-case: 5.4.4
       focus-trap: 7.5.4
       fuse.js: 7.0.0
@@ -22162,15 +22122,7 @@ snapshots:
 
   axe-core@4.10.2: {}
 
-  axios@1.7.4:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
-  axios@1.7.9:
+  axios@1.8.3:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.2
@@ -22324,7 +22276,7 @@ snapshots:
 
   broadcast-channel@3.7.0:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       detect-node: 2.1.0
       js-sha3: 0.8.0
       microseconds: 0.2.0
@@ -22456,7 +22408,7 @@ snapshots:
 
   call-bind@1.0.7:
     dependencies:
-      es-define-property: 1.0.0
+      es-define-property: 1.0.1
       es-errors: 1.3.0
       function-bind: 1.1.2
       get-intrinsic: 1.2.7
@@ -23126,7 +23078,7 @@ snapshots:
 
   didyoumean2@6.0.1:
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.10
       fastest-levenshtein: 1.0.16
       lodash.deburr: 4.1.0
 
@@ -23154,7 +23106,7 @@ snapshots:
 
   dom-helpers@3.4.0:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   dom-serializer@2.0.0:
     dependencies:
@@ -23312,10 +23264,6 @@ snapshots:
       stackframe: 1.3.4
 
   errx@0.1.0: {}
-
-  es-define-property@1.0.0:
-    dependencies:
-      get-intrinsic: 1.2.7
 
   es-define-property@1.0.1: {}
 
@@ -23737,7 +23685,7 @@ snapshots:
   fetch-mock@9.11.0(node-fetch@2.7.0(encoding@0.1.13)):
     dependencies:
       '@babel/core': 7.26.9
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       core-js: 3.40.0
       debug: 4.4.0(supports-color@9.4.0)
       glob-to-regexp: 0.4.1
@@ -23862,8 +23810,6 @@ snapshots:
     dependencies:
       tabbable: 6.2.0
 
-  follow-redirects@1.15.6: {}
-
   follow-redirects@1.15.9: {}
 
   for-each@0.3.3:
@@ -23883,12 +23829,6 @@ snapshots:
       signal-exit: 4.1.0
 
   form-data@4.0.0:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
-
-  form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -23983,14 +23923,6 @@ snapshots:
   get-caller-file@2.0.5: {}
 
   get-east-asian-width@1.2.0: {}
-
-  get-intrinsic@1.2.4:
-    dependencies:
-      es-errors: 1.3.0
-      function-bind: 1.1.2
-      has-proto: 1.0.3
-      has-symbols: 1.0.3
-      hasown: 2.0.2
 
   get-intrinsic@1.2.7:
     dependencies:
@@ -24177,10 +24109,6 @@ snapshots:
     dependencies:
       through2: 0.6.5
 
-  gopd@1.0.1:
-    dependencies:
-      get-intrinsic: 1.2.7
-
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
@@ -24245,10 +24173,6 @@ snapshots:
   has-property-descriptors@1.0.2:
     dependencies:
       es-define-property: 1.0.1
-
-  has-proto@1.0.3: {}
-
-  has-symbols@1.0.3: {}
 
   has-symbols@1.1.0: {}
 
@@ -24490,7 +24414,7 @@ snapshots:
 
   history@4.10.1:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.3.3
@@ -24565,7 +24489,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.6
+      follow-redirects: 1.15.9
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -24734,7 +24658,7 @@ snapshots:
 
   instantsearch-ui-components@0.9.0:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   instantsearch.css@8.5.0: {}
 
@@ -25610,7 +25534,7 @@ snapshots:
 
   match-sorter@6.3.1:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       remove-accents: 0.4.2
 
   math-intrinsics@1.1.0: {}
@@ -27558,11 +27482,11 @@ snapshots:
 
   polished@4.2.2:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   polished@4.3.1:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   portfinder@1.0.32:
     dependencies:
@@ -27861,7 +27785,7 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  prismjs@1.29.0: {}
+  prismjs@1.30.0: {}
 
   process-nextick-args@2.0.1: {}
 
@@ -28085,7 +28009,7 @@ snapshots:
 
   react-query@3.39.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       broadcast-channel: 3.7.0
       match-sorter: 6.3.1
       react: 18.3.1
@@ -28139,7 +28063,7 @@ snapshots:
 
   react-router-dom@5.3.4(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -28156,7 +28080,7 @@ snapshots:
 
   react-router@5.3.4(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -28299,7 +28223,7 @@ snapshots:
 
   regenerator-transform@0.15.2:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   regex-parser@2.3.0: {}
 
@@ -28670,7 +28594,7 @@ snapshots:
 
   rtl-css-js@1.16.1:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
 
   run-applescript@7.0.0: {}
 
@@ -28936,7 +28860,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       es-errors: 1.3.0
-      get-intrinsic: 1.2.4
+      get-intrinsic: 1.2.7
       object-inspect: 1.13.1
 
   side-channel@1.1.0:
@@ -30019,7 +29943,7 @@ snapshots:
 
   unload@2.2.0:
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.26.10
       detect-node: 2.1.0
 
   unocss@0.59.4(postcss@8.5.3)(rollup@4.34.8)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)):
@@ -30747,14 +30671,14 @@ snapshots:
     optionalDependencies:
       vite: 5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
 
-  vitepress-plugin-search@1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3)):
+  vitepress-plugin-search@1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3))(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       '@types/flexsearch': 0.7.3
       '@types/markdown-it': 12.2.3
       flexsearch: 0.7.43
       glob-to-regexp: 0.4.1
       markdown-it: 13.0.2
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3)
       vue: 3.5.13(typescript@5.7.3)
 
   vitepress-shopware-docs@1.3.0-alpha.16(@babel/core@7.26.9)(@babel/template@7.26.9)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.34.8)(vite@5.4.14(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vue-instantsearch@4.19.3(@vue/server-renderer@3.5.13(vue@3.5.13(typescript@5.7.3)))(algoliasearch@4.20.0)(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3)):
@@ -30767,7 +30691,7 @@ snapshots:
       '@stoplight/json-schema-generator': 1.0.2(encoding@0.1.13)
       '@vueuse/core': 11.1.0(patch_hash=d45b71d4b753ac5bea6e324c8992e32b0ee5c69c88ae3320eb5e7ccb86f55804)(vue@3.5.13(typescript@5.7.3))
       algoliasearch: 4.20.0
-      axios: 1.7.4
+      axios: 1.8.3
       body-scroll-lock: 3.1.5
       fs-extra: 11.2.0
       fsevents: 2.3.3
@@ -30812,7 +30736,7 @@ snapshots:
       - wonka
       - xstate
 
-  vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.7.9)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3):
+  vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@22.10.0)(@types/react@18.3.13)(axios@1.8.3)(change-case@5.4.4)(fuse.js@7.0.0)(less@4.2.0)(postcss@8.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)(search-insights@2.17.0)(terser@5.39.0)(typescript@5.7.3):
     dependencies:
       '@docsearch/css': 3.6.1
       '@docsearch/js': 3.6.1(@algolia/client-search@4.20.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.0)
@@ -30823,7 +30747,7 @@ snapshots:
       '@vue/devtools-api': 7.3.9
       '@vue/shared': 3.4.38
       '@vueuse/core': 11.1.0(patch_hash=d45b71d4b753ac5bea6e324c8992e32b0ee5c69c88ae3320eb5e7ccb86f55804)(vue@3.5.13(typescript@5.7.3))
-      '@vueuse/integrations': 11.0.3(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.5.4)(fuse.js@7.0.0)(vue@3.5.13(typescript@5.7.3))
+      '@vueuse/integrations': 11.0.3(axios@1.8.3)(change-case@5.4.4)(focus-trap@7.5.4)(fuse.js@7.0.0)(vue@3.5.13(typescript@5.7.3))
       focus-trap: 7.5.4
       mark.js: 8.11.1
       minisearch: 7.1.0
@@ -31254,7 +31178,7 @@ snapshots:
       available-typed-arrays: 1.0.7
       call-bind: 1.0.7
       for-each: 0.3.3
-      gopd: 1.0.1
+      gopd: 1.2.0
       has-tostringtag: 1.0.2
 
   which-typed-array@1.1.18:
