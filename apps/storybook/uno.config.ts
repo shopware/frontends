@@ -1,4 +1,3 @@
-import transformerDirectives from "@unocss/transformer-directives";
 import {
   defineConfig,
   presetAttributify,
@@ -9,6 +8,17 @@ import {
 
 export default defineConfig({
   theme: {
+    colors: {
+      brandPrimary: {
+        DEFAULT: "#543b95",
+      },
+      surfaceOnSurface: {
+        DEFAULT: "#1d1b20",
+      },
+      brandPrimaryHover: {
+        DEFAULT: "#45317a",
+      },
+    },
     fontFamily: {
       inter: "Inter",
     },
