@@ -23,12 +23,12 @@ export default defineNuxtConfig({
       {
         code: "en-GB",
         language: "en-GB",
-        file: "all.ts",
+        file: { path: "en-GB.ts", cache: false },
       },
       {
         code: "de-DE",
         language: "de-DE",
-        file: "all.ts",
+        file: { path: "de-DE.ts", cache: false },
       },
     ],
   },
