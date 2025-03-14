@@ -59,6 +59,7 @@ useAddress();
 
 const { locale, availableLocales, defaultLocale, localeProperties, messages } =
   useI18n();
+
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -83,7 +84,11 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  provide("cmsTranslations", messages.value[prefix || defaultLocale] ?? {});
+  provide(
+    "cmsTranslations",
+    messages.value[(prefix as keyof typeof messages.value) || defaultLocale] ??
+      {},
+  );
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {
@@ -109,7 +114,9 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : defaultLocale;
+  locale.value = (
+    prefix ? prefix : defaultLocale
+  ) as keyof typeof messages.value;
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }
