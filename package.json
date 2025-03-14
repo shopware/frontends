@@ -53,9 +53,10 @@
     "overrides": {
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
-      "@intlify/core": "^9.14.2",
-      "@intlify/core-base": "^9.14.2",
-      "@intlify/shared": "^9.14.2",
+      "@intlify/core": "^11.1.2",
+      "@intlify/core-base": "^11.1.2",
+      "@intlify/shared": "^11.1.2",
+      "vue-i18n": "^11.1.2",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.10.0",
       "axios": "^1.7.4",
