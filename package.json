@@ -108,8 +108,7 @@
       ]
     },
     "patchedDependencies": {
-      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch",
-      "automd": "patches/automd.patch"
+      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch"
     }
   }
 }

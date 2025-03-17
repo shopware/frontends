@@ -36,6 +36,9 @@ pnpm install -D @shopware/cms-base-layer
 
 # bun
 bun install -D @shopware/cms-base-layer
+
+# deno
+deno install --dev @shopware/cms-base-layer
 ```
 
 <!-- /automd -->
