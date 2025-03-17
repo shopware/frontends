@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     strategy: "prefix",
     detectBrowserLanguage: false,
     multiDomainLocales: true,
-    langDir: "./i18n/",
+    langDir: "./",
     locales: [
       {
         code: "de",
