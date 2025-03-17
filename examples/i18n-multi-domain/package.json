@@ -14,7 +14,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@nuxtjs/i18n": "8.5.6",
+    "@nuxtjs/i18n": "9.3.1",
     "@unocss/nuxt": "66.0.0",
     "unocss": "66.0.0"
   }
