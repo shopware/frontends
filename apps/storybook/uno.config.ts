@@ -18,6 +18,18 @@ export default defineConfig({
       brandPrimaryHover: {
         DEFAULT: "#45317a",
       },
+      statesInfo: {
+        DEFAULT: "#0288D1",
+      },
+      statesSuccess: {
+        DEFAULT: "#15B31C",
+      },
+      statesWarning: {
+        DEFAULT: "#F57C00",
+      },
+      statesError: {
+        DEFAULT: "#D12D24",
+      },
     },
     fontFamily: {
       inter: "Inter",
@@ -39,8 +51,16 @@ export default defineConfig({
       getCSS: () => `
       body {
         font-family: 'Inter', sans-serif;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased; 
       }
       `,
     },
+  ],
+  safelist: [
+    "bg-states-info",
+    "bg-states-success",
+    "bg-states-warning",
+    "bg-states-error",
   ],
 });
