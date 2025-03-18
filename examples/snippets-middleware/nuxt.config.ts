@@ -18,17 +18,17 @@ export default defineNuxtConfig({
   i18n: {
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
-    langDir: "./i18n/langs",
+    langDir: "./langs",
     locales: [
       {
         code: "en-GB",
         language: "en-GB",
-        file: "all.ts",
+        file: { path: "en-GB.ts", cache: false },
       },
       {
         code: "de-DE",
         language: "de-DE",
-        file: "all.ts",
+        file: { path: "de-DE.ts", cache: false },
       },
     ],
   },

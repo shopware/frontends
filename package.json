@@ -35,7 +35,7 @@
     "@changesets/changelog-github": "0.5.1",
     "@changesets/cli": "2.28.1",
     "@types/changelog-parser": "2.8.4",
-    "automd": "^0.3.7",
+    "automd": "0.4.0",
     "changelog-parser": "3.0.1",
     "dotenv-cli": "8.0.0",
     "esno": "4.8.0",
@@ -53,12 +53,13 @@
     "overrides": {
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
-      "@intlify/core": "^9.14.2",
-      "@intlify/core-base": "^9.14.2",
-      "@intlify/shared": "^9.14.2",
+      "@intlify/core": "^11.1.2",
+      "@intlify/core-base": "^11.1.2",
+      "@intlify/shared": "^11.1.2",
+      "vue-i18n": "^11.1.2",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.10.0",
-      "axios": "^1.7.4",
+      "axios": "^1.8.3",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
       "cookie": "^0.7.0",
@@ -90,7 +91,10 @@
       "dset": "^3.1.4",
       "send": "^0.19.0",
       "serve-static": "^1.16.1",
-      "express": "^4.20.1"
+      "express": "^4.20.1",
+      "prismjs": "^1.30.0",
+      "@babel/runtime": "^7.26.10",
+      "@babel/helpers": "^7.26.10"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]
@@ -104,8 +108,7 @@
       ]
     },
     "patchedDependencies": {
-      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch",
-      "automd": "patches/automd.patch"
+      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch"
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import getURL from "requrl";
 import { SitemapIndexStream, streamToPromise } from "sitemap";
-import apiClient from "../apiBuilder";
+import { apiClient } from "../apiBuilder";
 
 type Sitemap = {
   url: string;
