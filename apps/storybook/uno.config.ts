@@ -57,10 +57,4 @@ export default defineConfig({
       `,
     },
   ],
-  safelist: [
-    "bg-states-info",
-    "bg-states-success",
-    "bg-states-warning",
-    "bg-states-error",
-  ],
 });
