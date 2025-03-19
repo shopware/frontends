@@ -3,9 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "main": "./nuxt.config.ts",
-  "scripts": {
-    "postinstall": "ln -sF ../../../templates/vue-demo-store/.nuxt ./.nuxt"
-  },
+  "scripts": {},
   "dependencies": {
     "@shopware/composables": "canary"
   },
