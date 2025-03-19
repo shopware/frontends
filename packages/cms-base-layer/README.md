@@ -132,21 +132,14 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 1.4.1
+### Latest changes: 1.5.0
+
+### Minor Changes
+
+- [#1727](https://github.com/shopware/frontends/pull/1727) [`94872b7`](https://github.com/shopware/frontends/commit/94872b7c6f6337ff8ce0bcfd9320e4178a4927f0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added CmsBlockHtml to render html blocks.
+  Added CmsElementHtml to render html element.
 
 ### Patch Changes
 
-- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
-
-  - SwNewsletterForm
-  - SwContactForm
-
-- [#1659](https://github.com/shopware/frontends/pull/1659) [`7c10417`](https://github.com/shopware/frontends/commit/7c10417e9c0bb9fe049a0e36abf115be6c63c945) Thanks [@patzick](https://github.com/patzick)! - SwVariantConfigurator - URL prefix on Variant Change
-
-- [#1677](https://github.com/shopware/frontends/pull/1677) [`d663627`](https://github.com/shopware/frontends/commit/d663627aaa00abc797f5c2413c4e978f95bd6f89) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix displaying product variants on the product page
-
-- [#1692](https://github.com/shopware/frontends/pull/1692) [`2440a55`](https://github.com/shopware/frontends/commit/2440a55066d31edf2942dbab19a7b5043cdff532) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change `h5` HTML tag to `div` for better accessibility structure - for ProductCard component
-
-- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
-  - @shopware/api-client@1.2.1
-  - @shopware/composables@1.8.1
+- Updated dependencies [[`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49)]:
+  - @shopware/composables@1.9.0

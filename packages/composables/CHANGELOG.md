@@ -1,5 +1,11 @@
 # @shopware/composables
 
+## 1.9.0
+
+### Minor Changes
+
+- [#1737](https://github.com/shopware/frontends/pull/1737) [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `setDefaultPaymentMethod` as a deprecated method from `useUser` composable. The API endpoint is removed in the 6.7 version. The default payment method is now set on the checkout process
+
 ## 1.8.1
 
 ### Patch Changes

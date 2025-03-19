@@ -165,9 +165,8 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.8.1
+### Latest changes: 1.9.0
 
-### Patch Changes
+### Minor Changes
 
-- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
-  - @shopware/api-client@1.2.1
+- [#1737](https://github.com/shopware/frontends/pull/1737) [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `setDefaultPaymentMethod` as a deprecated method from `useUser` composable. The API endpoint is removed in the 6.7 version. The default payment method is now set on the checkout process
