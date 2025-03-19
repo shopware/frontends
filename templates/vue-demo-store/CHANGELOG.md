@@ -1,5 +1,19 @@
 # vue-demo-store
 
+## 1.9.0
+
+### Minor Changes
+
+- [#1711](https://github.com/shopware/frontends/pull/1711) [`da3b19c`](https://github.com/shopware/frontends/commit/da3b19c741244297ba4d74a31fcffd4939e46032) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added the ability to change the account type on the account details page. email editing moved to the new tab
+
+- [#1737](https://github.com/shopware/frontends/pull/1737) [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed account payment method page
+
+- [#1749](https://github.com/shopware/frontends/pull/1749) [`31f4a1d`](https://github.com/shopware/frontends/commit/31f4a1d169d193334871259c8911660f1028eae0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add server routing to handle login as a customer option
+
+### Patch Changes
+
+- [#1712](https://github.com/shopware/frontends/pull/1712) [`23f07df`](https://github.com/shopware/frontends/commit/23f07dff7e42c669f03a6290d0c70fd0759f9383) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `sw-language-id` header on the app context level
+
 ## 1.8.0
 
 ### Minor Changes
