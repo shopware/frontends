@@ -2,8 +2,8 @@
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
-    "@shopware/cms-base-layer",
     "../../packages/layers/layout",
+    //"../../packages/layers/ui-dark-theme",
     "../../packages/layers/ui-light-theme",
   ],
   shopware: {
@@ -11,11 +11,14 @@ export default defineNuxtConfig({
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
 
-  modules: ["@shopware/nuxt-module"],
+  modules: ["@shopware/nuxt-module", "@unocss/nuxt"],
   typescript: {
     // typeCheck: true,
     strict: true,
   },
+  // unocss: {
+  //   nuxtLayers: true,
+  // },
 
   telemetry: false,
 });

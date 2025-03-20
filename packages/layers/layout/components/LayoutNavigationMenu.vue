@@ -1,7 +1,7 @@
 <template>
   <div class="relative" @mouseleave="handleMouseLeave">
-    <nav class="w-full border-b border-[#cac4d0]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="w-full border-b border-outline-outline-variant m-4">
+      <div class="max-w-7xl mx-auto pr-4 sm:pr-6 lg:pr-8">
         <div class="flex justify-center sm:justify-start">
           <div class="flex space-x-8">
             <div
@@ -16,12 +16,12 @@
                 @focus="handleFocus(`main-menu-${index}`)"
                 @blur="handleBlur(`main-menu-${index}`)"
                 :class="[
-                  'inline-flex items-center px-1 pt-1 pb-2 text-sm font-medium',
-                  item === 'Sale' ? 'text-[#d12d24]' : 'text-[#1d1b20]',
+                  'inline-flex items-center px-1 pt-1 pb-2 text-font-size-scale-02 font-medium',
+                  item === 'Sale' ? 'text-[#d12d24]' : 'text-surface-on-surface',
                   'hover:underline',
                   'active:underline',
                   activeMenu === item ? 'underline' : '',
-                  focusedItems[`main-menu-${index}`] ? 'outline outline-2 outline-[#1722f9] rounded-md' : 'outline-none'
+                  focusedItems[`main-menu-${index}`] ? 'outline outline-2 outline-outline-outline-focus rounded-md' : 'outline-none'
                 ]"
               >
                 {{ item }}
@@ -35,11 +35,11 @@
     <!-- Mega Menu Dropdown -->
     <div
       v-if="activeMenu && megaMenuData[activeMenu]"
-      class="absolute left-0 w-full bg-white shadow-lg z-50 border-t border-[#cac4d0]"
+      class="absolute left-0 w-full bg-surface-surface shadow-lg z-50 border-t border-outline-outline-variant border-t-0"
       @mouseenter="activeMenu = activeMenu"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 class="text-lg font-medium text-[#1d1b20] mb-6">Dropdown Menu</h2>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pl-0">
+        <h2 class="text-font-size-scale-04 font-medium text-surface-on-surface mb-6">Dropdown Menu</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div
             v-for="(column, columnIndex) in megaMenuData[activeMenu]"
@@ -53,10 +53,10 @@
               @focus="handleFocus(`category-${columnIndex}`)"
               @blur="handleBlur(`category-${columnIndex}`)"
               :class="[
-                'text-[#543b95] font-medium flex items-center',
+                'text-brand-primary font-medium flex items-center',
                 'hover:underline',
                 'active:underline',
-                focusedItems[`category-${columnIndex}`] ? 'outline outline-2 outline-[#1722f9] rounded-md' : 'outline-none'
+                focusedItems[`category-${columnIndex}`] ? 'outline outline-2 outline-outline-outline-focus rounded-md' : 'outline-none'
               ]"
             >
               {{ column.category }} 
@@ -72,11 +72,11 @@
                 @focus="handleFocus(`submenu-${columnIndex}-${itemIndex}`)"
                 @blur="handleBlur(`submenu-${columnIndex}-${itemIndex}`)"
                 :class="[
-                  'text-sm',
-                  item.includes('sale') ? 'text-[#d12d24]' : 'text-[#1d1b20]',
+                  'text-font-size-scale-02',
+                  item.includes('sale') ? 'text-[#d12d24]' : 'text-surface-on-surface',
                   'hover:underline',
                   'active:underline',
-                  focusedItems[`submenu-${columnIndex}-${itemIndex}`] ? 'outline outline-2 outline-[#1722f9] rounded-md' : 'outline-none'
+                  focusedItems[`submenu-${columnIndex}-${itemIndex}`] ? 'outline outline-2 outline-outline-outline-focus rounded-md' : 'outline-none'
                 ]"
               >
                 {{ item }}
@@ -192,7 +192,7 @@ const menuItems = [
   "Sale",
 ];
 
-const activeMenu = ref(null);
+const activeMenu = ref(1);
 const focusedItems = reactive({});
 
 const handleMouseEnter = (menuItem) => {
@@ -211,3 +211,7 @@ const handleBlur = (id) => {
   focusedItems[id] = false;
 };
 </script>
+
+<style scoped>
+/* You can add additional scoped styles here if needed */
+</style>

@@ -6,6 +6,7 @@ defineProps<{
 <template>
   <nav
     aria-label="Breadcrumb"
+    class="max-w-7xl mx-auto p-6 font-sans"
   >
     <ol class="inline-flex items-center">
       <li

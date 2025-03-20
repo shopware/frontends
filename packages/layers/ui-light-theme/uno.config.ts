@@ -31,18 +31,20 @@ export default defineConfig({
       "states-success-pressed": "#108C16",
       "surface-on-surface-disabled": "#9893A6",
     },
-    spacing: {
-      "font-size-scale-01": "12px",
-      "font-size-scale-02": "14px",
-      "font-size-scale-03": "16px",
-      "font-size-scale-04": "20px",
-      "font-size-scale-05": "24px",
-      "font-size-scale-06": "32px",
-      "font-size-scale-07": "40px",
-      "font-size-scale-08": "48px",
-      "font-size-scale-09": "64px",
-      "font-size-scale-10": "72px",
+
+    fontSize: {
+      "scale-01": "12px",
+      "scale-02": "14px",
+      "scale-03": "16px",
+      "scale-04": "20px",
+      "scale-05": "24px",
+      "scale-06": "32px",
+      "scale-07": "40px",
+      "scale-08": "48px",
+      "scale-09": "64px",
+      "scale-10": "72px",
     },
+
     fontFamily: {
       sans: ["Inter", "sans-serif"],
       serif: ["Noto Serif", "serif"],
