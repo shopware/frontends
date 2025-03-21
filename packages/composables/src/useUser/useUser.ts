@@ -100,6 +100,8 @@ export type UseUserReturn = {
     updateEmailData: operations["changeEmail post /account/change-email"]["body"],
   ): Promise<void>;
   /**
+   * @deprecated API endpoint is removed in Shopware 6.7
+   *
    * Sets the default payment method for given id
    * @param paymentMethodId
    * @returns
@@ -281,6 +283,7 @@ export function useUser(): UseUserReturn {
       },
     );
   }
+
   const defaultBillingAddressId = computed(
     () => user.value?.defaultBillingAddressId || null,
   );
@@ -307,7 +310,6 @@ export function useUser(): UseUserReturn {
     logout,
     updateEmail,
     updatePersonalInfo,
-    setDefaultPaymentMethod,
     loadSalutation,
     salutation,
     loadCountry,
@@ -316,6 +318,7 @@ export function useUser(): UseUserReturn {
     defaultShippingAddressId,
     userDefaultPaymentMethod,
     userDefaultBillingAddress,
+    setDefaultPaymentMethod,
     userDefaultShippingAddress,
   };
 }
