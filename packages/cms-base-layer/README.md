@@ -36,6 +36,9 @@ pnpm install -D @shopware/cms-base-layer
 
 # bun
 bun install -D @shopware/cms-base-layer
+
+# deno
+deno install --dev @shopware/cms-base-layer
 ```
 
 <!-- /automd -->
@@ -50,6 +53,7 @@ export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
     "../../packages/layers/layout",
+    "../../packages/layers/product",
     //"../../packages/layers/ui-dark-theme",
     "../../packages/layers/ui-light-theme",
   ],

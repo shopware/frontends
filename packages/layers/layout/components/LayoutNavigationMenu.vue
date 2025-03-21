@@ -1,7 +1,7 @@
 <template>
   <div class="relative" @mouseleave="handleMouseLeave">
-    <nav class="w-full px-72 border-b border-outline-outline-variant m-4">
-      <div class="max-w-7xl mx-auto pr-4 sm:pr-6 lg:pr-8">
+    <nav class="w-full border-b border-outline-outline-variant">
+      <div class="max-w-7xl mx-auto p-6 sm:pr-6 lg:pr-8">
         <div class="flex justify-center sm:justify-start">
           <div class="flex space-x-8">
             <div v-for="(item, index) in menuItems" :key="index" class="relative" @mouseenter="handleMouseEnter(item)">

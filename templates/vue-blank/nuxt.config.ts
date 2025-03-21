@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
     "../../packages/layers/layout",
+    "../../packages/layers/product",
     //"../../packages/layers/ui-dark-theme",
     "../../packages/layers/ui-light-theme",
   ],

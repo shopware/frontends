@@ -14,7 +14,7 @@ const breadcrumbs = [
     <LayoutNavigationMenu />
     <main class="flex-1">
       <LayoutBreadcrumbs :breadcrumbs="breadcrumbs" />
-      <LayoutProductDetailPage />
+      <ProductProductDetailPage />
     </main>
     </div>
 </template>
