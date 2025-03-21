@@ -23,14 +23,14 @@ export const Primary: StoryObj<typeof LayoutBreadcrumbs> = {
     breadcrumbs: [
       {
         name: "Home",
-        path: "/",
+        path: "/99",
       },
       {
-        name: "Page",
+        name: "Pmage",
         path: "/page",
       },
       {
-        name: "Current",
+        name: "Current0000",
         path: "/page/current",
       },
     ],

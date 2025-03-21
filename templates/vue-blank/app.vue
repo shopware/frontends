@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import Frontends from "./components/Frontends.vue";
-const { refreshSessionContext } = useSessionContext();
-
-onMounted(() => {
-  refreshSessionContext();
-});
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Furniture", path: "/furniture" },
+  { name: "Chairs", path: "/furniture/chairs" },
+  { name: "Wooden Chair", path: "" },
+];
 </script>
 
 <template>
-  <div id="app">
-    <Frontends template="Blank Vue 3 template (Nuxt)" />
-  </div>
+  <div class="flex min-h-screen flex-col x">
+    <LayoutTopMenu/>
+    <LayoutTopHeader />
+    <LayoutNavigationMenu />
+    <main class="flex-1 bg-surface-surface">
+      <LayoutBreadcrumbs :breadcrumbs="breadcrumbs" />
+      <ProductProductDetailPage />
+    </main>
+    </div>
 </template>
-<style>
-@import "./style.css";
-</style>

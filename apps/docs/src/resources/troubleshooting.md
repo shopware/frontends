@@ -136,3 +136,7 @@ runtimeConfig: {
 BFCache is a browser optimization that allows pages to be stored in memory, enabling instant loading when users navigate back or forward. While Broadcasting is useful for real-time updates, its current implementation conflicts with BFCache. Disabling Broadcasting allows us to prioritize the performance improvements offered by BFCache.
 
 For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Performance/Navigation_and_resource_timing#bfcache), [WHATWG](https://github.com/whatwg/html/issues/7253)
+
+## CORS (Cross-Origin Resource Sharing) Issues
+
+See the [CORS](/resources/troubleshooting/CORS) page for more information on how to handle CORS issues in your project.
