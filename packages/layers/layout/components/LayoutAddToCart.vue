@@ -1,6 +1,6 @@
 <template>
   <button 
-    class="w-full py-6 bg-brand-primary hover:bg-brand-primary/90 text-states-on-info rounded"
+    class="self-stretch px-4 py-3 w-full bg-brand-primary hover:bg-brand-primary/90 text-states-on-info rounded inline-flex justify-center items-center gap-1"
     @click="addToCart"
   >
     Add to cart

@@ -3,7 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "main": "./nuxt.config.ts",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "nuxt prepare"
+  },
   "dependencies": {
     "@shopware/composables": "canary",
     "lucide-vue-next": "^0.483.0"
