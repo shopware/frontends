@@ -1,15 +1,13 @@
 <template>
-  <header class="sticky top-0 z-50 w-full border-b bg-surface-surface">
-    <div class="container flex h-16 items-center justify-between px-4 md:px-6 max-w-7xl mx-auto ">
+  <header class="sticky top-0 z-50 w-full border-b  border-outline-outline-variant bg-surface-surface">
+    <div class="container flex h-20 items-center justify-between px-4 md:px-6 max-w-7xl mx-auto ">
       <!-- Logo and Brand -->
       <div class="flex items-center gap-2">
-        <a href="/" class="flex items-center">
-          <span class="text-[length:var(--font-size-scale-05)] font-bold text-brand-primary">CF</span>
-          <div class="ml-2 hidden md:block">
-            <div class="text-[length:var(--font-size-scale-01)] text-surface-on-surface-variant">Composable</div>
-            <div class="text-[length:var(--font-size-scale-02)] font-medium text-surface-on-surface">Frontends</div>
-          </div>
-        </a>
+      <div class="justify-start text-brand-primary text-5xl font-light font-['Noto_Serif'] leading-[76.50px]">CF</div>
+      <div class="ml-2 hidden md:block">
+        <div class="text-[length:var(--font-size-scale-01)] text-surface-on-surface-variant font-light font-['Archivo']">Composable</div>
+        <div class="text-[length:var(--font-size-scale-02)] text-surface-on-surface font-light font-['Archivo']">Frontends</div>
+      </div>
 
       </div>
       <!-- Search Bar -->

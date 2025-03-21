@@ -30,17 +30,17 @@ const closeDropdown = () => {
   <div class="relative">
     <button 
       @click="toggleDropdown" 
-      class="flex items-center gap-2 outline-none  bg-transparent"
+      class="flex items-center gap-2 outline-none  bg-transparent text-surface-on-surface-primary"
       type="button"
       aria-haspopup="true"
       :aria-expanded="isOpen"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-brand-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-surface-on-surface-primary">
         <circle cx="12" cy="12" r="10" />
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
       </svg>
-      <span class="text-brand-primary text-[font-size-scale-02]">{{ selectedLanguage.name }}</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-brand-primary">
+      <span class="text-surface-on-surface-primary text-[font-size-scale-02]">{{ selectedLanguage.name }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-surface-on-surface-primary">
         <path d="m6 9 6 6 6-6" />
       </svg>
     </button>
@@ -55,7 +55,7 @@ const closeDropdown = () => {
           v-for="language in languages"
           :key="language.code"
           @click="selectLanguage(language)"
-          class="flex w-full z-10 items-center gap-2 px-4 py-2 text-[font-size-scale-02] text-surface-on-surface hover:bg-surface-surface-variant hover:text-brand-primary"
+          class="flex w-full z-10 items-center gap-2 px-4 py-2 text-[font-size-scale-02] text-surface-on-surface-primary hover:bg-surface-surface-variant hover:text-brand-primary bg-surface-surface"
           role="menuitem"
         >
           <svg v-if="language.code === selectedLanguage.code" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-brand-primary">

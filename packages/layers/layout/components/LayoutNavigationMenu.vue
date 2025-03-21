@@ -1,5 +1,5 @@
 <template>
-  <div class="relative" @mouseleave="handleMouseLeave">
+  <div class="relative bg-surface-surface" @mouseleave="handleMouseLeave">
     <nav class="w-full border-b border-outline-outline-variant">
       <div class="max-w-7xl mx-auto p-6 sm:pr-6 lg:pr-8">
         <div class="flex justify-center sm:justify-start">
@@ -7,7 +7,7 @@
             <div v-for="(item, index) in menuItems" :key="index" class="relative" @mouseenter="handleMouseEnter(item)">
               <a href="#" :id="`main-menu-${index}`" @focus="handleFocus(`main-menu-${index}`)"
                 @blur="handleBlur(`main-menu-${index}`)" :class="[
-                  'justify-start text-Surface-On-Surface text-base font-normal leading-normal',
+                  'justify-start text-surface-on-surface text-base font-normal leading-normal',
                   item === 'Sale' ? 'text-[#d12d24]' : 'text-surface-on-surface',
                   'hover:underline',
   'active:underline active:font-bold',

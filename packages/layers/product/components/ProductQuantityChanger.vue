@@ -6,7 +6,7 @@
       <Minus class="h-4 w-4 text-surface-on-surface" />
     </button>
     <span
-      class="h-10 px-4 bg-Surface-Surface border-l border-r border-Outline-Outline inline-flex flex-col justify-center items-center">{{
+      class="h-10 px-4 bg-surface-surface text-surface-on-surface border-l border-r border-Outline-Outline inline-flex flex-col justify-center items-center">{{
       quantity }}</span>
     <button class="w-10 h-10 bg-surface-surface flex justify-center items-center" @click="incrementQuantity"
       aria-label="Increase quantity">

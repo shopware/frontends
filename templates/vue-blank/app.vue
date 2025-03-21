@@ -12,7 +12,7 @@ const breadcrumbs = [
     <LayoutTopMenu/>
     <LayoutTopHeader />
     <LayoutNavigationMenu />
-    <main class="flex-1">
+    <main class="flex-1 bg-surface-surface">
       <LayoutBreadcrumbs :breadcrumbs="breadcrumbs" />
       <ProductProductDetailPage />
     </main>

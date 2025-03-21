@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto p-6 font-sans">
+  <div class="max-w-7xl mx-auto p-6 font-sans bg-surface-surface">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Left column - Product Gallery -->
       <ProductGallery :images="productImages" />
