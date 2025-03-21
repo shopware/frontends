@@ -5,7 +5,7 @@
       <ProductGallery :images="productImages" />
 
       <!-- Right column - Product details -->
-      <div class="space-y-6">
+      <div class="space-y-9">
         <div>
           <p class="text-outline-outline text-scale-02">Carl Hansen & Sen</p>
           <h1 class="text-surface-on-surface text-scale-07 font-serif mt-1">Product Name</h1>
@@ -21,12 +21,12 @@
         <QuantityChanger :quantity="quantity" @update:quantity="quantity = $event" />
 
         <!-- Add to cart -->
-        <AddToCart />
-
-        <p class="text-scale-01 text-outline-outline">Meta information about purchase.</p>
-
+        <div class="space-y-2">
+          <AddToCart />
+          <p class="text-scale-01 text-outline-outline">Meta information about purchase.</p>
+        </div>
         <!-- Product description -->
-        <div class="text-surface-on-surface space-y-4 text-scale-02">
+        <div class="text-surface-on-surface space-y-2 text-scale-02">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis at lacus
             in efficitur. Nulla nec dolor iaculis purus tempus tristique ut nec arcu. In

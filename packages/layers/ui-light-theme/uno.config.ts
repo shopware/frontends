@@ -26,6 +26,7 @@ export default defineConfig({
       "surface-surface-variant": "#FBF6FF",
       "states-success": "#15B31C",
       "states-success-hover": "#108C16",
+      "surface-on-surface-primary": "#D0BCFF",
       "surface-on-surface-variant": "#696470",
       "surface-surface-disabled": "#E8E8E8",
       "states-success-pressed": "#108C16",

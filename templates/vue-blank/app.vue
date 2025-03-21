@@ -8,7 +8,7 @@ const breadcrumbs = [
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col">
+  <div class="flex min-h-screen flex-col x">
     <LayoutTopMenu/>
     <LayoutTopHeader />
     <LayoutNavigationMenu />

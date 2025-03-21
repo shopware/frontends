@@ -1,18 +1,15 @@
 <template>
-  <div class="flex items-center border border-outline-outline-variant rounded w-fit">
-    <button 
-      class="px-3 py-2 border-r border-outline-outline-variant"
-      @click="decrementQuantity"
-      aria-label="Decrease quantity"
-    >
+  <div
+    class="rounded outline outline-1 outline-offset-[-1px] outline-outline-outline inline-flex justify-start items-center overflow-hidden">
+    <button class="w-10 h-10 bg-surface-surface flex justify-center items-center" @click="decrementQuantity"
+      aria-label="Decrease quantity">
       <Minus class="h-4 w-4 text-surface-on-surface" />
     </button>
-    <span class="px-4 py-2 min-w-[40px] text-center">{{ quantity }}</span>
-    <button 
-      class="px-3 py-2 border-l border-outline-outline-variant"
-      @click="incrementQuantity"
-      aria-label="Increase quantity"
-    >
+    <span
+      class="h-10 px-4 bg-Surface-Surface border-l border-r border-Outline-Outline inline-flex flex-col justify-center items-center">{{
+      quantity }}</span>
+    <button class="w-10 h-10 bg-surface-surface flex justify-center items-center" @click="incrementQuantity"
+      aria-label="Increase quantity">
       <Plus class="h-4 w-4 text-surface-on-surface" />
     </button>
   </div>

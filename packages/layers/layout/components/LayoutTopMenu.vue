@@ -1,6 +1,6 @@
 <template>
-  <header class="w-full bg-surface-surface-variant py-3 px-4">
-    <div class="container mx-auto flex justify-between items-center">
+  <header class="w-full bg-surface-on-surface-primary py-3 px-4">
+    <div class="container mx-auto flex justify-between items-center max-w-7xl mx-auto px-4 md:px-6">
       <LayoutLanguageSelector />
       <nav>
         <ul class="flex items-center gap-6">
