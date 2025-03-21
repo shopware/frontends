@@ -4,8 +4,8 @@ export default defineNuxtConfig({
     "@shopware/composables/nuxt-layer",
     "../../packages/layers/layout",
     "../../packages/layers/product",
-    "../../packages/layers/ui-dark-theme",
-    // "../../packages/layers/ui-light-theme",
+    // "../../packages/layers/ui-dark-theme",
+    "../../packages/layers/ui-light-theme",
   ],
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
