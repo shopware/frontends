@@ -1,3 +1,13 @@
+<script setup>
+import {
+  HeartIcon,
+  SearchIcon,
+  ShoppingCartIcon,
+  UserIcon,
+} from "lucide-vue-next";
+
+const { toggleCart } = useCartSidebar();
+</script>
 <template>
   <header class="sticky top-0 z-50 w-full border-b  border-outline-outline-variant bg-surface-surface">
     <div class="container flex h-20 items-center justify-between px-4 md:px-6 max-w-7xl mx-auto ">
@@ -37,7 +47,7 @@
           </span>
         </button>
 
-        <button class="p-2 text-brand-primary bg-transparent transition-transform duration-300 hover:scale-120">
+        <button @click="toggleCart" class="p-2 text-brand-primary bg-transparent transition-transform duration-300 hover:scale-120">
           <ShoppingCartIcon class="h-5 w-5" />
           <span class="sr-only">Cart</span>
         </button>
@@ -45,16 +55,3 @@
     </div>
   </header>
 </template>
-
-<script setup>
-import {
-  HeartIcon,
-  SearchIcon,
-  ShoppingCartIcon,
-  UserIcon,
-} from "lucide-vue-next";
-</script>
-
-<style scoped>
-/* Component-specific styles */
-</style>

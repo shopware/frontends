@@ -1,20 +1,47 @@
 <script setup lang="ts">
-const breadcrumbs = [
-  { name: "Home", path: "/" },
-  { name: "Furniture", path: "/furniture" },
-  { name: "Chairs", path: "/furniture/chairs" },
-  { name: "Wooden Chair", path: "" },
-];
+import type { Schemas } from "@shopware/api-client/api-types";
+import { getProductName } from "@shopware/helpers";
+
+const { search } = useProductSearch();
+const { pushBreadcrumb, breadcrumbs } = useBreadcrumbs();
+pushBreadcrumb({
+  name: "Home",
+  path: "/",
+});
+
+const { navigationElements, loadNavigationElements } = useNavigation();
+
+const demoProduct = ref<Schemas["Product"]>();
+
+onMounted(async () => {
+  loadNavigationElements({});
+  const productResponse = await search("018bd828d69f72dba59567a17c432eae", {
+    associations: {
+      media: {},
+      seoUrls: {},
+    },
+  });
+
+  pushBreadcrumb({
+    name: getProductName({ product: productResponse.product }) ?? "",
+    path: `/${productResponse.product.seoUrls?.[0]?.seoPathInfo}`,
+  });
+  demoProduct.value = productResponse.product;
+});
+provideCartSidebar();
 </script>
 
 <template>
   <div class="flex min-h-screen flex-col x">
-    <LayoutTopMenu/>
+    <LayoutTopMenu />
     <LayoutTopHeader />
-    <LayoutNavigationMenu />
+    <LayoutNavigationMenu :navigationElements="navigationElements" />
     <main class="flex-1 bg-surface-surface">
       <LayoutBreadcrumbs :breadcrumbs="breadcrumbs" />
-      <ProductProductDetailPage />
+      <ProductProductDetailPage v-if="demoProduct" :product="demoProduct" />
     </main>
-    </div>
+    
+    <CartSidebar :initialItems="[]" />
+  </div>
+  <NuxtPage />
 </template>

@@ -1,125 +1,165 @@
+<script setup lang="ts">
+import type { Schemas } from "@shopware/api-client/store-api-types";
+
+type Product = Schemas["Product"];
+
+import { useProductAssociations } from "@shopware/composables/lib";
+import { ChevronDown } from "lucide-vue-next";
+import { computed, ref } from "vue";
+import AddToCart from "./ProductAddToCart.vue";
+import ProductGallery from "./ProductGallery.vue";
+import QuantityChanger from "./ProductQuantityChanger.vue";
+import VariantSelector from "./ProductVariantSelector.vue";
+
+// Define product prop
+const props = defineProps<{
+  product: Product;
+}>();
+
+const { loadAssociations, productAssociations } = useProductAssociations(
+  computed(() => props.product),
+  {
+    associationContext: "cross-selling",
+  },
+);
+
+// Map product properties to color variants if available
+const colorVariants = computed(() => {
+  if (!props.product.options) return [];
+
+  // Find color options if they exist
+  const colorOptions = props.product.options.filter(
+    (option) =>
+      option.group?.name?.toLowerCase().includes("color") ||
+      option.name?.toLowerCase().includes("color"),
+  );
+
+  return (
+    colorOptions.map((option) => ({
+      id: option.id,
+      name: option.name || "",
+      value: option.colorHexCode || "#000000", // Fallback to black if no hex code
+    })) || []
+  );
+});
+
+const categories: { id: string; name: string; content: string }[] = [
+  {
+    id: "details",
+    name: "Product details",
+    content: props.product.description || "No product details available.",
+  },
+  {
+    id: "shipping",
+    name: "Shipping & Returns",
+    content:
+      props.product?.deliveryTime?.translated?.name ||
+      "Please contact us for shipping and return information.",
+  },
+  {
+    id: "reviews",
+    name: "Reviews",
+    content: "No reviews available for this product yet.",
+  },
+];
+
+const activeCategory = ref<{
+  id: string;
+  name: string;
+  content: string;
+} | null>(null);
+
+const toggleCategory = (index: string) => {
+  activeCategory.value =
+    categories.find((category) => category.id === index) || null;
+};
+
+// State
+const selectedVariant = ref(
+  colorVariants.value.length > 0 ? colorVariants.value[0] : null,
+);
+const quantity = ref(1);
+
+// Format price with currency
+const formattedPrice = computed(() => {
+  if (!props.product.calculatedPrice) return "";
+
+  const price = props.product.calculatedPrice.unitPrice;
+  const currency = "€";
+
+  return `${price.toFixed(2)} ${currency}`;
+});
+
+// Get manufacturer name
+const manufacturerName = computed(() => {
+  return props.product.manufacturer?.name || "";
+});
+
+onMounted(() => {
+  loadAssociations({
+    searchParams: {
+      limit: 4,
+    },
+  });
+});
+</script>
 <template>
-  <div class="max-w-7xl mx-auto p-6 font-sans bg-surface-surface">
+  <div class="max-w-7xl mx-auto p-6 py-12 font-sans bg-surface-surface">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Left column - Product Gallery -->
-      <ProductGallery :images="productImages" />
+      <ProductGallery v-if="product.media?.length" :images="product.media" />
 
       <!-- Right column - Product details -->
       <div class="space-y-9">
         <div>
-          <p class="text-outline-outline text-scale-02">Carl Hansen & Sen</p>
-          <h1 class="text-surface-on-surface text-scale-07 font-serif mt-1">Product Name</h1>
+          <p class="text-outline-outline text-scale-02">{{ manufacturerName }}</p>
+          <h1 class="text-surface-on-surface text-scale-07 font-serif mt-1">{{ product.name }}</h1>
         </div>
 
-        <p class="text-surface-on-surface text-scale-04 font-medium">580,00 €</p>
+        <p class="text-surface-on-surface text-scale-04 font-medium">{{ formattedPrice }}</p>
 
-        <!-- Color variant selector -->
-        <VariantSelector :variants="colorVariants" :selected-variant="selectedVariant"
-          @select="selectedVariant = $event" />
+        <!-- Color variant selector - only show if variants exist -->
+        <VariantSelector 
+          v-if="colorVariants.length > 0"
+          :variants="colorVariants" 
+          @select="selectedVariant = $event" 
+        />
 
         <!-- Quantity changer -->
         <QuantityChanger :quantity="quantity" @update:quantity="quantity = $event" />
 
         <!-- Add to cart -->
         <div class="space-y-2">
-          <AddToCart />
-          <p class="text-scale-01 text-outline-outline">Meta information about purchase.</p>
+          <AddToCart 
+            :product="product"
+            :quantity="quantity"
+            :selected-options="selectedVariant ? [selectedVariant.id] : []"
+          />
+          <p class="text-scale-01 text-outline-outline">
+            {{ product.deliveryTime || 'Standard delivery times apply' }}
+          </p>
         </div>
+        
         <!-- Product description -->
-        <div
-          class="self-stretch justify-start text-Surface-On-Surface font-['Inter'] text-surface-on-surface space-y-2">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis at lacus
-            in efficitur. Nulla nec dolor iaculis purus tempus tristique ut nec arcu. In
-            ullamcorper purus nec dolor pretium, ac lobortis sem condimentum. In
-            consequat erat vel massa egestas, id fermentum velit pharetra.
-          </p>
-          <p>
-            Pellentesque at venenatis lectus. Phasellus eu elementum nisi.
-            Pellentesque lobortis risus sed magna pharetra, a aliquet leo viverra.
-            Quisque fermentum dictum neque at iaculis.
-          </p>
+        <div class="self-stretch justify-start text-surface-on-surface font-['Inter'] text-surface-on-surface space-y-2">
+          <div v-html="product.description"></div>
         </div>
 
-        <div v-for="(category, index) in categories" :key="index" class="border-t border-outline-outline-variant py-4">
-          <button @click="toggleCategory(index)"
+        <div v-for="category in categories" :key="category.id" class="border-t border-outline-outline-variant py-4">
+          <button @click="toggleCategory(category.id)"
             class="flex justify-between items-center w-full text-left font-medium text-surface-on-surface focus:outline-none bg-transparent">
             <span>{{ category.name }}</span>
             <ChevronDown class="h-5 w-5 text-surface-on-surface transition-transform duration-300"
-              :class="{ 'rotate-180': activeCategory === index }" />
+              :class="{ 'rotate-180': activeCategory?.id === category.id }" />
           </button>
 
-          <div v-show="activeCategory === index" class="mt-2 text-sm text-gray-600">
+          <div v-show="activeCategory?.id === category?.id" class="mt-2 text-sm text-gray-600">
             {{ category.content }}
           </div>
         </div>
       </div>
     </div>
+    
+    <ProductCrossSelling v-for="crossSelling in productAssociations" :key="crossSelling.crossSelling.id" :crossSelling="crossSelling"/>
   </div>
 </template>
-
-<script setup>
-import { ChevronDown } from "lucide-vue-next";
-import { ref } from "vue";
-import AddToCart from "./ProductAddToCart.vue";
-import ProductGallery from "./ProductGallery.vue";
-import QuantityChanger from "./ProductQuantityChanger.vue";
-import VariantSelector from "./ProductVariantSelector.vue";
-
-// Product data
-const productImages = [
-  {
-    id: 1,
-    src: "https://placehold.co/600x600",
-    alt: "Wooden chair with woven seat",
-    isThumbnail: false,
-  },
-  {
-    id: 2,
-    src: "https://placehold.co/300x300",
-    alt: "Wooden chair thumbnail 1",
-    isThumbnail: true,
-  },
-  {
-    id: 3,
-    src: "https://placehold.co/300x300",
-    alt: "Wooden chair thumbnail 2",
-    isThumbnail: true,
-  },
-];
-
-const colorVariants = [
-  { id: 1, name: "Olive Green", value: "#606c38" },
-  { id: 2, name: "Dark Green", value: "#283618" },
-  { id: 3, name: "Light Orange", value: "#dda15e" },
-  { id: 4, name: "Dark Orange", value: "#bc6c25" },
-];
-
-const categories = [
-  {
-    name: "Product details",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis at lacus in efficitur. Nulla nec dolor iaculis purus tempus tristique ut nec arcu. In ullamcorper purus nec dolor pretium, ac lobortis sem condimentum. In consequat erat vel massa egestas, id fermentum velit pharetra. Pellentesque at venenatis lectus. Phasellus eu elementum nisi. Pellentesque lobortis risus sed magna pharetra, a aliquet leo viverra. Quisque fermentum dictum neque at iaculis.",
-  },
-  {
-    name: "Shipping & Returns",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis at lacus in efficitur. Nulla nec dolor iaculis purus tempus tristique ut nec arcu. In ullamcorper purus nec dolor pretium, ac lobortis sem condimentum. In consequat erat vel massa egestas, id fermentum velit pharetra. Pellentesque at venenatis lectus. Phasellus eu elementum nisi. Pellentesque lobortis risus sed magna pharetra, a aliquet leo viverra. Quisque fermentum dictum neque at iaculis.",
-  },
-  {
-    name: "Reviews",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis at lacus in efficitur. Nulla nec dolor iaculis purus tempus tristique ut nec arcu. In ullamcorper purus nec dolor pretium, ac lobortis sem condimentum. In consequat erat vel massa egestas, id fermentum velit pharetra. Pellentesque at venenatis lectus. Phasellus eu elementum nisi. Pellentesque lobortis risus sed magna pharetra, a aliquet leo viverra. Quisque fermentum dictum neque at iaculis.",
-  },
-];
-
-const activeCategory = ref(null);
-
-const toggleCategory = (index) => {
-  activeCategory.value = activeCategory.value === index ? null : index;
-};
-
-// State
-const selectedVariant = ref(colorVariants[0]);
-const quantity = ref(2);
-</script>

@@ -4,22 +4,27 @@ export default defineNuxtConfig({
     "@shopware/composables/nuxt-layer",
     "../../packages/layers/layout",
     "../../packages/layers/product",
-    // "../../packages/layers/ui-dark-theme",
+    "../../packages/layers/cart",
+    //"../../packages/layers/ui-dark-theme",
     "../../packages/layers/ui-light-theme",
   ],
+
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
 
-  modules: ["@shopware/nuxt-module", "@unocss/nuxt"],
+  modules: ["@shopware/nuxt-module", "@unocss/nuxt", "@vueuse/nuxt"],
+
   typescript: {
-    // typeCheck: true,
     strict: true,
   },
-  // unocss: {
-  //   nuxtLayers: true,
-  // },
 
   telemetry: false,
+
+  devtools: {
+    timeline: {
+      enabled: true,
+    },
+  },
 });
