@@ -182,7 +182,8 @@ export function createAPIClient<
       typeof window !== "undefined"
     ) {
       // multipart/form-data must not be set manually when it's used by the browser
-      mergedHeaders["Content-Type"] = undefined;
+      // biome-ignore lint/performance/noDelete: Delete is necessary to set the content type in the browser
+      delete mergedHeaders["Content-Type"];
     }
 
     const resp = await apiFetch.raw<
