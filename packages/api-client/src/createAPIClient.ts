@@ -175,14 +175,15 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    const mergedHeaders = defu(currentParams.headers, defaultHeaders);
+    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
 
     if (
       mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
       typeof window !== "undefined"
     ) {
       // multipart/form-data must not be set manually when it's used by the browser
-      mergedHeaders["Content-Type"] = undefined;
+      const { "Content-Type": _, ...headersWithoutContentType } = mergedHeaders;
+      mergedHeaders = headersWithoutContentType;
     }
 
     const resp = await apiFetch.raw<
