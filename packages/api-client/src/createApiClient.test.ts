@@ -342,11 +342,24 @@ describe("createAPIClient", () => {
       },
     });
 
-    expect(contentTypeSpy).toHaveBeenCalledWith(
-      expect.not.objectContaining({
-        "content-type": "multipart/form-data",
-      }),
-    );
+    expect(contentTypeSpy.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          {
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate",
+            "accept-language": "*",
+            "connection": "keep-alive",
+            "content-length": "0",
+            "host": "localhost:3610",
+            "sec-fetch-mode": "cors",
+            "sw-access-key": "123",
+            "sw-context-token": "456",
+            "user-agent": "node",
+          },
+        ],
+      ]
+    `);
   });
 
   it("should trigger success callback", async () => {

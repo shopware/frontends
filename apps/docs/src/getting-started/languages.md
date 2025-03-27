@@ -153,3 +153,67 @@ In more complex scenarios, such as when different prefixes are used on the backe
 ```
 
 The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages
+
+## Switching language locally
+
+**Problem**
+
+After switching the language, the URL returned from the backend is used as the basis for redirection which leads to exiting the localhost context.
+
+```typescript
+const onChangeHandler = async (option: Event) => {
+  const data = await changeLanguage((option.target as HTMLSelectElement).value);
+
+  if (data.redirectUrl) {
+    window.location.replace(replaceToDevStorefront(data.redirectUrl));
+  } else {
+    window.location.reload();
+  }
+};
+```
+
+This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
+
+### Locally host overrides
+The idea of this solution is to override the domain locally in the `hosts` file.
+
+Windows: `C:\Windows\System32\drivers\etc`
+Linux: `/etc/hosts`
+macOS: `/etc/hosts`
+
+```
+127.0.0.1       yourDomainFromBackend.com
+#IPv6
+::1             yourDomainFromBackend.com
+```
+
+Thanks to this, you will be able to use your local Frontends app instance with the domain returned by the backend.
+
+### Add dev resolver
+
+You can add own dev resolver to avoid redirection
+
+```typescript
+const dev = process.dev;
+
+const onChangeHandler = async (option: Event) => {
+  const data = await changeLanguage((option.target as HTMLSelectElement).value);
+
+  // Check dev mode
+  if (dev) {
+    // Set locale
+    locale.value = getLanguageCodeFromId(
+      (option.target as HTMLSelectElement).value,
+    );
+    // Refresh page
+    window.location.replace(`${window.location.origin}/${locale.value}`);
+    return;
+  }
+  
+  if (data.redirectUrl) {
+    window.location.replace(replaceToDevStorefront(data.redirectUrl));
+  } else {
+    window.location.reload();
+  }
+};
+```
