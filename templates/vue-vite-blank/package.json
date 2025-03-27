@@ -16,10 +16,10 @@
   },
   "devDependencies": {
     "@types/node": "22.10.0",
-    "@vitejs/plugin-vue": "5.2.1",
+    "@vitejs/plugin-vue": "5.2.3",
     "typescript": "5.7.3",
-    "vite": "6.2.0",
-    "vue-tsc": "2.2.4"
+    "vite": "6.2.3",
+    "vue-tsc": "2.2.8"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
