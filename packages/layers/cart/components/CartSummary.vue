@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="space-y-3 pt-4">
+  <div class="space-y-3 pt-4 w-full">
     <div class="flex justify-between text-sm">
       <span class="text-[#696470]">Subtotal</span>
       <span class="text-[#1d1b20]">{{ subtotal.toFixed(2) }} €</span>

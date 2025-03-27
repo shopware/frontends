@@ -5,6 +5,8 @@ export default defineNuxtConfig({
     "../../packages/layers/layout",
     "../../packages/layers/product",
     "../../packages/layers/cart",
+    // "../../packages/layers/checkout/",
+    "../../packages/layers/one-page-checkout",
     //"../../packages/layers/ui-dark-theme",
     "../../packages/layers/ui-light-theme",
   ],
@@ -21,6 +23,7 @@ export default defineNuxtConfig({
   },
 
   telemetry: false,
+  router: {},
 
   devtools: {
     timeline: {

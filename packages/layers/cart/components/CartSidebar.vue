@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useCart } from "@shopware/composables";
+import { useBreadcrumbs, useCart } from "@shopware/composables";
 import { ShoppingBag, X } from "lucide-vue-next";
 import { computed, onMounted, ref } from "vue";
 
 // Create and provide the cart sidebar state
 const { isOpen, closeCart } = useCartSidebar();
-
+const { clearBreadcrumbs } = useBreadcrumbs();
+clearBreadcrumbs();
 // Use the Shopware cart composable to access cart data and methods
 const {
   count: cartItemCount,
@@ -31,7 +32,6 @@ const isEmpty = computed(() => !items.value.length);
 
 // Handle cart item operations
 const handleQuantityChange = async (itemId: string, quantity: number) => {
-  console.warn("handleQuantityChange", itemId, quantity);
   await changeProductQuantity({
     id: itemId,
     quantity: quantity,
@@ -94,7 +94,7 @@ const handleRemoveItem = async (itemId: string) => {
             :total="total"
           />
           
-          <button class="w-full mt-6 py-2 px-4 bg-brand-primary hover:bg-brand-on-primary-container text-white rounded-md">
+          <button @click="() => {closeCart(); $router.push('checkout')}" class="w-full mt-6 py-2 px-4 bg-brand-primary hover:bg-brand-on-primary-container text-white rounded-md">
             Checkout
           </button>
         </template>

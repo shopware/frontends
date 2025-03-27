@@ -16,7 +16,9 @@ const emit = defineEmits<{
 // Computed properties to extract data from the item
 const itemImage = computed(() => {
   return (
-    props.item.cover?.url || props.item.cover?.media?.url || "/placeholder.svg"
+    props.item.cover?.thumbnails?.find((thumb) => thumb.width === 280)?.url ||
+    props.item.cover?.media?.url ||
+    "https://placehold.co/280x280"
   );
 });
 
@@ -34,7 +36,7 @@ const characteristics = computed(() => {
   if (!props.item.payload?.options?.length) return "";
 
   return props.item.payload.options
-    .map((option) => option.group + ": " + option.option)
+    .map((option) => `${option.group}: ${option.option}`)
     .join(", ");
 });
 
@@ -55,7 +57,7 @@ const handleRemove = () => {
 </script>
 
 <template>
-  <div class="py-6 flex gap-4">
+  <div class="py-6 flex gap-4 w-full">
     <div class="bg-surface-surface-variant w-20 h-20 flex-shrink-0 rounded-md overflow-hidden">
       <img 
         :src="itemImage" 
