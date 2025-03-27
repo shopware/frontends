@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import Frontends from "./components/Frontends.vue";
-const { refreshSessionContext } = useSessionContext();
+const { pushBreadcrumb, breadcrumbs } = useBreadcrumbs();
+// pushBreadcrumb({
+//   name: "Home",
+//   path: "/",
+// });
 
-onMounted(() => {
-  refreshSessionContext();
-});
+const { navigationElements, loadNavigationElements } = useNavigation();
+
+await loadNavigationElements({});
+
+provideCartSidebar();
 </script>
 
 <template>
-  <div id="app">
-    <Frontends template="Blank Vue 3 template (Nuxt)" />
+  <div class="flex min-h-screen flex-col">
+    <LayoutTopMenu />
+    <LayoutTopHeader />
+    <LayoutNavigationMenu :navigationElements="navigationElements" />
+    <main class="flex-1 bg-surface-surface">
+      <div><LayoutBreadcrumbs v-if="breadcrumbs?.length" :breadcrumbs="breadcrumbs" /></div>
+      <NuxtPage />
+    </main>
+    <CartSidebar :initialItems="[]" />
   </div>
 </template>
-<style>
-@import "./style.css";
-</style>

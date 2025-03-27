@@ -4,10 +4,11 @@
   "version": "0.0.1",
   "main": "./nuxt.config.ts",
   "scripts": {
-    "postinstall": "ln -sF ../../../templates/vue-demo-store/.nuxt ./.nuxt"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@shopware/composables": "canary"
+    "@shopware/composables": "canary",
+    "lucide-vue-next": "^0.483.0"
   },
   "devDependencies": {
     "nuxt": "3.15.4",

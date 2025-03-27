@@ -2,4 +2,13 @@
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  components: {
+    dirs: [
+      {
+        path: "./components",
+        priority: 10,
+      },
+    ],
+    global: true,
+  },
 });
