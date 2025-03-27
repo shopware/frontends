@@ -13,7 +13,7 @@
   "dependencies": {
     "@shopware/composables": "canary",
     "@shopware/nuxt-module": "canary",
-    "nuxt": "3.12.4"
+    "nuxt": "3.16.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"
