@@ -136,7 +136,8 @@ export async function ReadmeBasedReference({
       // place it before the changelog
       transformedCode = replacer(transformedCode, API, "", "tail");
       // for LLM training
-      transformedCode += "\n<!-- dynamic-markdown -->\n";
+      transformedCode += '\n<div data-placeholder="dynamic-markdown"></div>\n';
+
       return transformedCode;
     },
   };
