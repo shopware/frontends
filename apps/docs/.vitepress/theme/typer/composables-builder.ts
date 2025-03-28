@@ -156,6 +156,8 @@ ${codeBlock}
       } catch (e) {
         transformedCode = transformedCode.replace("{{DEMO_BLOCK}}", "");
       }
+      // for LLM training
+      transformedCode += "\n<!-- dynamic-markdown -->\n";
       return transformedCode;
     },
   };
