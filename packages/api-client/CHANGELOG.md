@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 1.2.2
+
+### Patch Changes
+
+- [#1801](https://github.com/shopware/frontends/pull/1801) [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc) Thanks [@joostaasman](https://github.com/joostaasman)! - fix: Undefined mergedHeaders["content-type"] when content-type is multipart/form-data
+
 ## 1.2.1
 
 ### Patch Changes
