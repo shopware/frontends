@@ -1,14 +1,22 @@
 <script setup lang="ts">
-const activeSection = ref(1);
+import { ShoppingBag } from "lucide-vue-next";
 
-const toggleSection = (sectionNumber) => {
+const activeSection = ref(1);
+const { cart, count } = useCart();
+
+const subtotal = computed(() => cart.value?.price?.subtotal || 0);
+const shipping = computed(() => 0);
+const total = computed(() => cart.value?.price?.totalPrice || 0);
+
+const toggleSection = (sectionNumber: number): void => {
   activeSection.value =
     sectionNumber === activeSection.value ? 0 : sectionNumber;
 };
 
-const isActive = (sectionNumber) => activeSection.value === sectionNumber;
+const isActive = (sectionNumber: number): boolean =>
+  activeSection.value === sectionNumber;
 
-const handleNextSection = (nextSection) => {
+const handleNextSection = (nextSection: number): void => {
   activeSection.value = nextSection;
 };
 </script>
