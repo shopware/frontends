@@ -5,7 +5,7 @@
   "main": "./nuxt.config.ts",
   "scripts": {},
   "devDependencies": {
-    "nuxt": "3.15.4",
+    "nuxt": "3.16.1",
     "typescript": "5.7.3"
   }
 }
