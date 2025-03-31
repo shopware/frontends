@@ -42,8 +42,8 @@
     "globby": "14.1.0",
     "husky": "9.1.7",
     "prettier": "3.5.2",
-    "turbo": "2.4.2",
-    "vercel": "41.2.0"
+    "turbo": "2.4.4",
+    "vercel": "41.4.1"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
@@ -55,6 +55,7 @@
       "@babel/traverse": "^7.24.8",
       "@intlify/core": "^11.1.2",
       "@intlify/core-base": "^11.1.2",
+      "@intlify/message-compiler": "^11.1.2",
       "@intlify/shared": "^11.1.2",
       "vue-i18n": "^11.1.2",
       "@sentry/browser": "^7.119.1",
@@ -83,7 +84,7 @@
       "tar": "^7.4.0",
       "undici": "^6.21.1",
       "vite@4>docs": "^4.5.3",
-      "vite@5": "^5.4.12",
+      "vite@5": "^5.4.15",
       "ws": "^8.18.0",
       "yaml@2": "^2.4.5",
       "zod": "^3.23.8",

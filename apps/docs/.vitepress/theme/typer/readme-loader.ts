@@ -38,7 +38,8 @@ export async function ReadmeLoader(): Promise<Plugin> {
 
         transformedCode = transformedCode.replace(pattern, content);
       }
-
+      // for LLM training
+      transformedCode += '\n<div data-placeholder="dynamic-markdown"></div>\n';
       return transformedCode;
     },
   };
