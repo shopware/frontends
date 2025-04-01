@@ -40,7 +40,7 @@ const handleNext = () => {
       @click="toggleCreateAccount"
       class="flex items-center text-[#543b95] font-medium"
     >
-      <div class="w-5 h-5 mr-2 i-carbon-add"" />
+      <div class="w-5 h-5 mr-2 i-carbon-add"></div>
       Create customer account
     </button>
     
