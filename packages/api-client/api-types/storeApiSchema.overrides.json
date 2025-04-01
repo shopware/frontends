@@ -455,6 +455,19 @@
             "enum": ["sales_channel_context"]
           }
         }
+      },
+      {
+        "required": ["languageInfo"],
+        "properties": {
+          "languageInfo": {
+            "type": "object",
+            "required": ["localeCode", "name"],
+            "properties": {
+              "name": { "type": "string" },
+              "localeCode": { "type": "string" }
+            }
+          }
+        }
       }
     ],
     "Quote": [{ "required": ["price"] }, { "required": ["stateMachineState"] }],

@@ -122,9 +122,15 @@ export async function loadJsonOverrides({
 }): Promise<OverridesSchema | undefined> {
   const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
 
+  const localNodePath = resolve(
+    `node_modules/@shopware/api-client/api-types/${apiType}ApiSchema.overrides.json`,
+  );
+
   const fallbackPath = existsSync(localPath)
     ? localPath
-    : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
+    : existsSync(localNodePath)
+      ? localNodePath
+      : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
 
   const patchesToResolve: string[] = Array.isArray(paths)
     ? paths
