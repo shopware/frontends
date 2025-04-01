@@ -63,10 +63,20 @@ const toggleView = () => {
   isExpand.value = !isExpand.value;
 };
 
-const formatDate = (date: Date | string) =>
-  new Date(date).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US",
-  );
+const { sessionContext } = useSessionContext();
+const navLang =
+  sessionContext.value?.languageInfo.localeCode ||
+  navigator?.language ||
+  "en-US";
+
+const formatDate = (date: Date | number) =>
+  new Intl.DateTimeFormat(navLang, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(date);
 </script>
 
 <template>
@@ -115,7 +125,7 @@ const formatDate = (date: Date | string) =>
                 />
               </div>
               <div v-if="order?.orderDate" class="text-secondary-600">
-                {{ formatDate(order.orderDate) }}
+                {{ formatDate(new Date(order.orderDate)) }}
               </div>
               <div class="text-secondary-600">
                 <AccountOrderStatus

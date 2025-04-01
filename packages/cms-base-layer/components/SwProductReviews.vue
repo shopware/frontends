@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { defu } from "defu";
 import { computed, onMounted, ref, toRefs } from "vue";
-import { useCmsTranslations, useProductReviews } from "#imports";
+import {
+  useCmsTranslations,
+  useProductReviews,
+  useSessionContext,
+} from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -12,12 +16,14 @@ const props = defineProps<{
 type Translations = {
   product: {
     noReviews: string;
+    reviewNotAccepted: string;
   };
 };
 
 let translations: Translations = {
   product: {
     noReviews: "No reviews yet.",
+    reviewNotAccepted: "Your review has not been approved yet",
   },
 };
 
@@ -42,15 +48,21 @@ const reviewsList = computed<Schemas["ProductReview"][]>(
 
 const format: Intl.DateTimeFormatOptions = {
   year: "numeric",
-  month: "short",
+  month: "numeric",
   day: "numeric",
   hour: "numeric",
   minute: "numeric",
-  hour12: true,
 };
 
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-us", format);
+const { sessionContext } = useSessionContext();
+const navLang =
+  sessionContext.value?.languageInfo.localeCode ||
+  navigator?.language ||
+  "en-US";
+
+const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString(navLang, format);
+};
 </script>
 
 <template>
@@ -69,6 +81,13 @@ const formatDate = (date: string) =>
         class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
       >
         <span>{{ formatDate(review.createdAt) }}</span>
+      </div>
+      <div
+          v-if="!review.status"
+          class="mt-2 text-3 p-2 bg-[#d4f0f5] flex gap-2 items-center"
+        >
+        <div class="w-6 h-6 i-carbon-warning" />
+        {{ translations.product.reviewNotAccepted }}
       </div>
       <div
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"

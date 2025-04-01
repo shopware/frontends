@@ -48,10 +48,16 @@ const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],
 );
 
+const { sessionContext } = useSessionContext();
+const navLang =
+  sessionContext.value?.languageInfo.localeCode ||
+  navigator?.language ||
+  "en-US";
+
 const formatDate = (date: number | Date) => {
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(navLang, {
     year: "numeric",
-    month: "long",
+    month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",

@@ -5,17 +5,22 @@ const props = defineProps<{
   reviews: Schemas["ProductReview"][];
 }>();
 
+const { sessionContext } = useSessionContext();
+const navLang =
+  sessionContext.value?.languageInfo.localeCode ||
+  navigator?.language ||
+  "en-US";
+
 const format: Intl.DateTimeFormatOptions = {
   year: "numeric",
-  month: "short",
+  month: "numeric",
   day: "numeric",
   hour: "numeric",
   minute: "numeric",
-  hour12: true,
 };
 
 const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-us", format);
+  new Date(date).toLocaleDateString(navLang, format);
 </script>
 
 <template>
