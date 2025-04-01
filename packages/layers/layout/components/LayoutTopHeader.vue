@@ -1,11 +1,4 @@
 <script setup>
-import {
-  HeartIcon,
-  SearchIcon,
-  ShoppingCartIcon,
-  UserIcon,
-} from "lucide-vue-next";
-
 const { toggleCart } = useCartSidebar();
 </script>
 <template>
@@ -25,7 +18,7 @@ const { toggleCart } = useCartSidebar();
         <input type="search" placeholder="Search"
           class="w-full rounded-md border border-outline-outline-variant pl-3 pr-10 py-2 focus:outline-none focus:border-outline-outline-focus" />
         <button class="absolute right-0 top-0 h-full px-3 text-outline-outline bg-transparent">
-          <SearchIcon class="h-4 w-4" />
+          <div class="h-4 w-4 i-carbon-search"></div>
           <span class="sr-only">Search</span>
         </button>
       </div>
@@ -33,13 +26,13 @@ const { toggleCart } = useCartSidebar();
       <!-- Action Icons -->
       <div class="flex items-center gap-2">
         <button class="p-2 text-brand-primary bg-transparent transition-transform duration-300 hover:scale-120">
-          <UserIcon class="h-5 w-5" />
+          <div class="h-5 w-5 i-carbon-user"></div>
           <span class="sr-only">Account</span>
         </button>
 
         <button
           class="p-2 text-brand-primary relative bg-transparent transition-transform duration-300 hover:scale-120">
-          <HeartIcon class="h-5 w-5" />
+          <div class="i-carbon-favorite h-5 w-5"></div>
           <span class="sr-only">Favorites</span>
           <span
             class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#d12d24] text-[length:var(--font-size-scale-01)] font-medium text-surface-surface">
@@ -48,7 +41,7 @@ const { toggleCart } = useCartSidebar();
         </button>
 
         <button @click="toggleCart" class="p-2 text-brand-primary bg-transparent transition-transform duration-300 hover:scale-120">
-          <ShoppingCartIcon class="h-5 w-5" />
+          <div class="h-5 w-5 i-carbon-shopping-cart"></div>
           <span class="sr-only">Cart</span>
         </button>
       </div>

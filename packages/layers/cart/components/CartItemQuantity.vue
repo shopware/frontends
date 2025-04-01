@@ -1,6 +1,4 @@
 <script setup>
-import { Minus, Plus } from "lucide-vue-next";
-
 defineProps({
   quantity: {
     type: Number,
@@ -31,7 +29,7 @@ const handleDecrement = () => {
       @click="handleDecrement"
       :class="`${size === 'sm' ? 'w-8 h-8' : 'w-12 h-12'} ${quantity === 1 ? 'bg-surface-surface-disabled' : ''} flex items-center justify-center border-r border-outline-outline text-surface-on-surface bg-surface-surface`"
     >
-      <Minus :size="size === 'sm' ? 16 : 20" />
+      <div :class="`${size === 'sm' ? 'w-16 h-16' : 'w-20 h-20'} i-carbon-subtract`" />
     </button>
     <div 
       :class="`${size === 'sm' ? 'w-8 h-8' : 'w-12 h-12'} flex items-center justify-center border-r border-outline-outline text-surface-on-surface`"
@@ -42,7 +40,8 @@ const handleDecrement = () => {
       @click="handleIncrement"
       :class="`${size === 'sm' ? 'w-8 h-8' : 'w-12 h-12'} flex items-center justify-center text-surface-on-surface bg-surface-surface`"
     >
-      <Plus :size="size === 'sm' ? 16 : 20" />
+            <div :class="`${size === 'sm' ? 'w-16 h-16' : 'w-20 h-20'} i-carbon-add`" />
+
     </button>
   </div>
 </template>

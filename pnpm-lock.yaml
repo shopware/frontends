@@ -1014,7 +1014,7 @@ importers:
         version: 1.8.3
       '@codspeed/vitest-plugin':
         specifier: 4.0.1
-        version: 4.0.1(vite@6.2.3(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.9(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(msw@2.7.3(@types/node@22.10.0)(typescript@5.7.3))(sass@1.77.8)(terser@5.39.0))
+        version: 4.0.1(vite@5.4.15(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitest@3.0.9(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(msw@2.7.3(@types/node@22.10.0)(typescript@5.7.3))(sass@1.77.8)(terser@5.39.0))
       '@types/prettier':
         specifier: 3.0.0
         version: 3.0.0
@@ -1283,9 +1283,6 @@ importers:
       '@shopware/composables':
         specifier: canary
         version: link:../../composables
-      lucide-vue-next:
-        specifier: ^0.483.0
-        version: 0.483.0(vue@3.5.13(typescript@5.7.3))
     devDependencies:
       nuxt:
         specifier: 3.16.1
@@ -1299,9 +1296,6 @@ importers:
       '@shopware/composables':
         specifier: canary
         version: link:../../composables
-      lucide-vue-next:
-        specifier: ^0.483.0
-        version: 0.483.0(vue@3.5.13(typescript@5.7.3))
     devDependencies:
       nuxt:
         specifier: 3.16.1
@@ -9315,11 +9309,6 @@ packages:
     resolution: {integrity: sha512-MhWWlVnuab1RG5/zMRRcVGXZLCXrZTgfwMikgzCegsPnG62yDQo5JnqKkrK4jO5iKqDAZGItAqN5CtKBCBWRUA==}
     engines: {node: '>=16.14'}
 
-  lucide-vue-next@0.483.0:
-    resolution: {integrity: sha512-oMX1hfH7hOAdwaJdddYTSN0Z+WomndF3KXryCP/I6iu+4jZL6a4YyYi1J23EzP3/wOWCaj9mDuVhxgK+xqX8vQ==}
-    peerDependencies:
-      vue: '>=3.0.1'
-
   lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
 
@@ -14411,10 +14400,10 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@codspeed/vitest-plugin@4.0.1(vite@6.2.3(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.9(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(msw@2.7.3(@types/node@22.10.0)(typescript@5.7.3))(sass@1.77.8)(terser@5.39.0))':
+  '@codspeed/vitest-plugin@4.0.1(vite@5.4.15(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitest@3.0.9(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(msw@2.7.3(@types/node@22.10.0)(typescript@5.7.3))(sass@1.77.8)(terser@5.39.0))':
     dependencies:
       '@codspeed/core': 4.0.1
-      vite: 6.2.3(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0)
+      vite: 5.4.15(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
       vitest: 3.0.9(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(@vitest/browser@3.0.7)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(msw@2.7.3(@types/node@22.10.0)(typescript@5.7.3))(sass@1.77.8)(terser@5.39.0)
     transitivePeerDependencies:
       - debug
@@ -23697,10 +23686,6 @@ snapshots:
       yallist: 3.1.1
 
   lru-cache@8.0.5: {}
-
-  lucide-vue-next@0.483.0(vue@3.5.13(typescript@5.7.3)):
-    dependencies:
-      vue: 3.5.13(typescript@5.7.3)
 
   lunr@2.3.9: {}
 

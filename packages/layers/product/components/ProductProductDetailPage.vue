@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import type { Schemas } from "@shopware/api-client/store-api-types";
-
-type Product = Schemas["Product"];
-
 import { useProductAssociations } from "@shopware/composables/lib";
-import { ChevronDown } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import AddToCart from "./ProductAddToCart.vue";
 import ProductGallery from "./ProductGallery.vue";
 import QuantityChanger from "./ProductQuantityChanger.vue";
 import VariantSelector from "./ProductVariantSelector.vue";
+type Product = Schemas["Product"];
 
 // Define product prop
 const props = defineProps<{
@@ -149,8 +146,8 @@ onMounted(() => {
           <button @click="toggleCategory(category.id)"
             class="flex justify-between items-center w-full text-left font-medium text-surface-on-surface focus:outline-none bg-transparent">
             <span>{{ category.name }}</span>
-            <ChevronDown class="h-5 w-5 text-surface-on-surface transition-transform duration-300"
-              :class="{ 'rotate-180': activeCategory?.id === category.id }" />
+            <div class="i-carbon-cheveron-down h-5 w-5 text-surface-on-surface transition-transform duration-300"
+              :class="{ 'rotate-180': activeCategory?.id === category.id }"></div>
           </button>
 
           <div v-show="activeCategory?.id === category?.id" class="mt-2 text-sm text-gray-600">

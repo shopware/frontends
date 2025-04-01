@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Star } from "lucide-vue-next";
-
 const props = defineProps<{
   rating: number;
   reviews?: number;
@@ -12,8 +10,8 @@ const stars = props.maxStars || 5;
 <template>
   <div class="flex items-center">
     <span v-for="i in stars" :key="i" class="mr-0.5">
-      <Star 
-        class="w-4 h-4" 
+      <div 
+        class="w-4 h-4 i-carbon-star" 
         :class="i <= rating ? 'fill-surface-on-surface-variant text-surface-on-surface-variant' : 'text-outline-outline-variant'" 
       />
     </span>

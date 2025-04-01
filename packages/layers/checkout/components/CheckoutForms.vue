@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ShoppingBag } from "lucide-vue-next";
-
 const activeSection = ref(1);
 const { cart, count } = useCart();
 
@@ -62,7 +60,7 @@ const handleNextSection = (nextSection: number): void => {
               <CartItems />
             </div>
             <div v-else class="flex flex-col items-center justify-center h-40 text-center w-full">
-              <ShoppingBag class="h-10 w-10 text-outline-outline mb-2" />
+              <div class="i-ic-baseline-shopping-bag h-10 w-10 text-outline-outline mb-2"></div>
               <p class="text-outline-outline">Your cart is empty</p>
             </div>
           </div>

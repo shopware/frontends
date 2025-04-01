@@ -1,5 +1,4 @@
 <script setup>
-import { PlusIcon } from "lucide-vue-next";
 import { ref } from "vue";
 
 const emit = defineEmits(["next"]);
@@ -41,7 +40,7 @@ const handleNext = () => {
       @click="toggleCreateAccount"
       class="flex items-center text-[#543b95] font-medium"
     >
-      <PlusIcon class="w-5 h-5 mr-2" />
+      <div class="w-5 h-5 mr-2 i-carbon-add"" />
       Create customer account
     </button>
     

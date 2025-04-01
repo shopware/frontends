@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Schemas } from "@shopware/api-client/store-api-types";
-import { ChevronRight } from "lucide-vue-next";
 import { computed, reactive, ref } from "vue";
 
 // Define props with NavigationRouteResponse type
@@ -143,7 +142,7 @@ const handleBlur = (id: string) => {
               ]"
             >
               {{ column.category }}
-              <ChevronRight class="ml-1 h-4 w-4" />
+              <div class="ml-1 h-4 w-4 i-carbon-chevron-right" />
             </a>
 
             <div class="flex flex-col space-y-3">

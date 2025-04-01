@@ -1,6 +1,4 @@
 <script setup>
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-vue-next";
-
 const props = defineProps({
   number: {
     type: Number,
@@ -32,7 +30,7 @@ const emit = defineEmits(["toggle"]);
         {{ number }}
       </div>
       <h2 class="text-2xl font-normal text-[#1d1b20] flex-grow text-left">{{ title }}</h2>
-      <component :is="isActive ? ChevronUpIcon : ChevronDownIcon" class="text-[#79747e]" />
+      <div :class="isActive ? 'i-carbon-chevron-up' : 'i-carbon-chevron-down'" class="text-[#79747e] h-6 w-6"></div>
     </div>
     
     <div 

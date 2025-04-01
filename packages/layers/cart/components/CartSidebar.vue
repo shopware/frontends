@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBreadcrumbs, useCart } from "@shopware/composables";
-import { ShoppingBag, X } from "lucide-vue-next";
 import { computed, onMounted, ref } from "vue";
 
 // Create and provide the cart sidebar state
@@ -63,7 +62,7 @@ const handleRemoveItem = async (itemId: string) => {
           @click="closeCart"
           class="h-9 w-9 rounded-md flex items-center justify-center hover:bg-surface-surface-variant"
         >
-          <X class="h-5 w-5" />
+          <div class="i-carbon-close-large h-5 w-5" />
           <span class="sr-only">Close</span>
         </button>
       </div>
@@ -71,7 +70,7 @@ const handleRemoveItem = async (itemId: string) => {
       <!-- Content -->
       <div class="p-4 h-[calc(100vh-65px)] overflow-y-auto">
         <div v-if="isEmpty" class="flex flex-col items-center justify-center h-40 text-center">
-          <ShoppingBag class="h-10 w-10 text-outline-outline mb-2" />
+          <div class="i-carbon-shopping-bag h-10 w-10 text-outline-outline mb-2"></div>
           <p class="text-outline-outline">Your cart is empty</p>
         </div>
         

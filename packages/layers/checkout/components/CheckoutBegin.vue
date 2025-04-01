@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ShoppingBag } from "lucide-vue-next";
 const { count, cart } = useCart();
 const subtotal = computed(() => cart.value?.price?.subtotal || 0);
 const shipping = computed(() => 0);
@@ -74,7 +73,7 @@ const total = computed(() => cart.value?.price?.totalPrice || 0);
               <CartItems />
             </div>
             <div v-else class="flex flex-col items-center justify-center h-40 text-center w-full">
-              <ShoppingBag class="h-10 w-10 text-outline-outline mb-2" />
+              <div class="i-carbon-shopping-bag h-10 w-10 text-outline-outline mb-2"></div>
               <p class="text-outline-outline">Your cart is empty</p>
             </div>
           </div>
