@@ -1,7 +1,7 @@
 import { createSharedComposable } from "@vueuse/core";
 import { computed, ref, watch } from "vue";
 import type { ComputedRef } from "vue";
-import { useSessionContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 
 export type UsePriceReturn = {
   /**
@@ -33,6 +33,7 @@ function _usePrice(params?: {
   currencyCode: string;
 }): UsePriceReturn {
   const { sessionContext } = useSessionContext();
+  const { browserLocale } = useShopwareContext();
   const currencyLocale = ref<string | undefined>();
   const currencyCode = ref<string>("");
 
@@ -47,10 +48,7 @@ function _usePrice(params?: {
   }) {
     _setCurrencyCode(params.currencyCode);
     _setLocaleCode(
-      params.localeCode ||
-        currencyLocale.value ||
-        (typeof navigator !== "undefined" && navigator?.language) ||
-        "en-US",
+      params.localeCode || currencyLocale.value || browserLocale || "en-US",
     );
   }
 

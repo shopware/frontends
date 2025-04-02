@@ -48,20 +48,16 @@ const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],
 );
 
-const { sessionContext } = useSessionContext();
-const navLang =
-  sessionContext.value?.languageInfo.localeCode ||
-  navigator?.language ||
-  "en-US";
+const { browserLocale } = useShopwareContext();
 
-const formatDate = (date: number | Date) => {
-  return new Intl.DateTimeFormat(navLang, {
+const formatDate = (date: string) => {
+  return new Intl.DateTimeFormat(browserLocale, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  }).format(date);
+  }).format(new Date(date));
 };
 
 const isChangePaymentModalOpen = ref(false);
@@ -149,7 +145,7 @@ const generateBackLink = () => {
               <p class="text-sm text-gray-600">
                 {{
                   $t("account.orderDetails.placedOn", {
-                    d: formatDate(new Date(order.orderDate)),
+                    d: formatDate(order.orderDate),
                   })
                 }}
               </p>

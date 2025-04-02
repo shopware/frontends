@@ -64,8 +64,10 @@ const handleReviewAdded = () => {
 };
 
 onMounted(async () => {
-  if (props.content.data?.reviews?.elements) {
+  if (props.content.data?.reviews?.elements?.length) {
     reviews.value = props.content.data.reviews.elements;
+  } else {
+    await fetchReviews();
   }
 });
 </script>
@@ -131,11 +133,13 @@ onMounted(async () => {
               ]"
             >
               <ProductReviews :product="product" :reviews="reviews" />
-              <ProductReviewsForm
-                v-if="isLoggedIn && !reviewAdded"
-                :product-id="product.id"
-                @success="handleReviewAdded"
-              />
+              <ClientOnly>
+                <ProductReviewsForm
+                  v-if="isLoggedIn && !reviewAdded"
+                  :product-id="product.id"
+                  @success="handleReviewAdded"
+                />
+              </ClientOnly>
               <div v-if="reviewAdded">
                 {{ translations.product.messages.reviewAdded }}
               </div>

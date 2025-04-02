@@ -4,7 +4,7 @@ import { computed, onMounted, ref, toRefs } from "vue";
 import {
   useCmsTranslations,
   useProductReviews,
-  useSessionContext,
+  useShopwareContext,
 } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -54,14 +54,10 @@ const format: Intl.DateTimeFormatOptions = {
   minute: "numeric",
 };
 
-const { sessionContext } = useSessionContext();
-const navLang =
-  sessionContext.value?.languageInfo.localeCode ||
-  navigator?.language ||
-  "en-US";
+const { browserLocale } = useShopwareContext();
 
 const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString(navLang, format);
+  return new Intl.DateTimeFormat(browserLocale, format).format(new Date(date));
 };
 </script>
 

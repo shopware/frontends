@@ -63,20 +63,16 @@ const toggleView = () => {
   isExpand.value = !isExpand.value;
 };
 
-const { sessionContext } = useSessionContext();
-const navLang =
-  sessionContext.value?.languageInfo.localeCode ||
-  navigator?.language ||
-  "en-US";
+const { browserLocale } = useShopwareContext();
 
-const formatDate = (date: Date | number) =>
-  new Intl.DateTimeFormat(navLang, {
+const formatDate = (date: string) =>
+  new Intl.DateTimeFormat(browserLocale, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  }).format(date);
+  }).format(new Date(date));
 </script>
 
 <template>
@@ -125,7 +121,7 @@ const formatDate = (date: Date | number) =>
                 />
               </div>
               <div v-if="order?.orderDate" class="text-secondary-600">
-                {{ formatDate(new Date(order.orderDate)) }}
+                {{ formatDate(order.orderDate) }}
               </div>
               <div class="text-secondary-600">
                 <AccountOrderStatus
