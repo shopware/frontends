@@ -35,7 +35,7 @@
     "@iconify-json/carbon": "1.2.8",
     "@nuxtjs/i18n": "9.3.1",
     "@shopware/api-gen": "canary",
-    "nuxt": "3.16.1",
+    "nuxt": "3.16.2",
     "typescript": "5.7.3"
   },
   "engines": {
