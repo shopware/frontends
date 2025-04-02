@@ -12,13 +12,17 @@ export type UsePriceReturn = {
    * Update configuration
    */
   update(params: {
-    localeCode: string | undefined;
+    localeCode?: string | undefined;
     currencyCode: string;
   }): void;
   /**
    * Currency code
    */
   currencyCode: ComputedRef<string>;
+  /**
+   * Currency locale
+   */
+  currencyLocale: ComputedRef<string>;
 };
 
 /**
@@ -34,12 +38,12 @@ function _usePrice(params?: {
 }): UsePriceReturn {
   const { sessionContext } = useSessionContext();
   const { browserLocale } = useShopwareContext();
-  const currencyLocale = ref<string | undefined>();
+  const currencyLocale = ref<string>(browserLocale);
   const currencyCode = ref<string>("");
 
   if (params) {
     currencyCode.value = params.currencyCode;
-    currencyLocale.value = params.localeCode;
+    _setLocaleCode(params.localeCode);
   }
 
   function update(params: {
@@ -47,17 +51,15 @@ function _usePrice(params?: {
     currencyCode: string;
   }) {
     _setCurrencyCode(params.currencyCode);
-    _setLocaleCode(
-      params.localeCode || currencyLocale.value || browserLocale || "en-US",
-    );
+    _setLocaleCode(params.localeCode);
   }
 
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
   }
 
-  function _setLocaleCode(locale: string) {
-    currencyLocale.value = locale;
+  function _setLocaleCode(locale: string | undefined) {
+    currencyLocale.value = locale || currencyLocale.value;
   }
 
   /**
@@ -68,10 +70,9 @@ function _usePrice(params?: {
       return "";
     }
 
-    if (!currencyLocale.value) {
+    if (!currencyLocale.value || !currencyCode.value) {
       return value.toString();
     }
-
     return new Intl.NumberFormat(currencyLocale.value, {
       style: "currency",
       currency: currencyCode.value,
@@ -96,6 +97,7 @@ function _usePrice(params?: {
     getFormattedPrice,
     update,
     currencyCode: computed(() => currencyCode.value),
+    currencyLocale: computed(() => currencyLocale.value),
   };
 }
 /**
