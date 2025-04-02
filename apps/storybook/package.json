@@ -4,17 +4,20 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
     "nuxt": "3.16.1",
     "vue": "3.5.13",
-    "vue-router": "4.5.0"
+    "vue-router": "4.5.0",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
+    "@shopware/api-client": "canary"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",

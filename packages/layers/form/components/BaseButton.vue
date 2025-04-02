@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 defineProps<{
   label: string;
-  disabled: boolean;
 }>();
 </script>
 <template>

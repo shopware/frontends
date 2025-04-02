@@ -33,6 +33,7 @@ export default defineConfig({
     },
     fontFamily: {
       inter: "Inter",
+      Noto_Serif: "Noto Serif",
     },
   },
   presets: [
