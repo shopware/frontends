@@ -52,7 +52,7 @@
     "@types/prettier": "3.0.0",
     "@vitest/coverage-v8": "3.1.1",
     "jsdom": "^25.0.1",
-    "prettier": "3.5.2",
+    "prettier": "3.5.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "3.1.1"
