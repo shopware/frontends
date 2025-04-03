@@ -39,7 +39,7 @@ function handleAddToCart() {
   window.dispatchEvent(
     new CustomEvent("add-to-cart", {
       detail: {
-        productId: product,
+        productId: product.id,
         quantity: 1,
       },
     }),
