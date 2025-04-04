@@ -1,7 +1,7 @@
 import { createSharedComposable } from "@vueuse/core";
 import { computed, ref, watch } from "vue";
 import type { ComputedRef } from "vue";
-import { useSessionContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 
 export type UsePriceReturn = {
   /**
@@ -12,13 +12,17 @@ export type UsePriceReturn = {
    * Update configuration
    */
   update(params: {
-    localeCode: string | undefined;
+    localeCode?: string | undefined;
     currencyCode: string;
   }): void;
   /**
    * Currency code
    */
   currencyCode: ComputedRef<string>;
+  /**
+   * Currency locale
+   */
+  currencyLocale: ComputedRef<string>;
 };
 
 /**
@@ -29,16 +33,17 @@ export type UsePriceReturn = {
  * @category Product
  */
 function _usePrice(params?: {
-  localeCode: string | undefined;
+  localeCode?: string | undefined;
   currencyCode: string;
 }): UsePriceReturn {
   const { sessionContext } = useSessionContext();
-  const currencyLocale = ref<string | undefined>();
+  const { browserLocale } = useShopwareContext();
+  const currencyLocale = ref<string>(browserLocale);
   const currencyCode = ref<string>("");
 
   if (params) {
     currencyCode.value = params.currencyCode;
-    currencyLocale.value = params.localeCode;
+    _setLocaleCode(params.localeCode);
   }
 
   function update(params: {
@@ -46,20 +51,15 @@ function _usePrice(params?: {
     currencyCode: string;
   }) {
     _setCurrencyCode(params.currencyCode);
-    _setLocaleCode(
-      params.localeCode ||
-        currencyLocale.value ||
-        (typeof navigator !== "undefined" && navigator?.language) ||
-        "en-US",
-    );
+    _setLocaleCode(params.localeCode);
   }
 
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
   }
 
-  function _setLocaleCode(locale: string) {
-    currencyLocale.value = locale;
+  function _setLocaleCode(locale: string | undefined) {
+    currencyLocale.value = locale || currencyLocale.value;
   }
 
   /**
@@ -70,10 +70,9 @@ function _usePrice(params?: {
       return "";
     }
 
-    if (!currencyLocale.value) {
+    if (!currencyLocale.value || !currencyCode.value) {
       return value.toString();
     }
-
     return new Intl.NumberFormat(currencyLocale.value, {
       style: "currency",
       currency: currencyCode.value,
@@ -98,6 +97,7 @@ function _usePrice(params?: {
     getFormattedPrice,
     update,
     currencyCode: computed(() => currencyCode.value),
+    currencyLocale: computed(() => currencyLocale.value),
   };
 }
 /**

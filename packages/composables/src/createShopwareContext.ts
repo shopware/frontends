@@ -13,6 +13,7 @@ export function createShopwareContext(
   options: {
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
+    browserLocale?: string;
   },
 ) {
   const scope: EffectScope = effectScope(true);
@@ -34,6 +35,7 @@ export function createShopwareContext(
     _e: scope,
     devStorefrontUrl: options.devStorefrontUrl,
     state,
+    browserLocale: options.browserLocale || "en-US",
   });
 
   if (options?.enableDevtools && typeof window !== "undefined") {

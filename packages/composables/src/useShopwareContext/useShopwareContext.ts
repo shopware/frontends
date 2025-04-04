@@ -8,6 +8,11 @@ export type ShopwareContext = {
    * Shopware API client
    */
   apiClient: ApiClient;
+  /**
+   * Browser locale, working in SSR
+   * If not provided, it will be "en-US"
+   */
+  browserLocale: string;
 };
 
 /**
@@ -27,5 +32,6 @@ export function useShopwareContext(): ShopwareContext {
   return {
     apiClient,
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
+    browserLocale: shopwareContext.browserLocale || "en-US",
   };
 }
