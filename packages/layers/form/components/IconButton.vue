@@ -23,6 +23,6 @@ const styles = {
     class="w-10 h-10 relative rounded-full border-0"
     :disabled="disabled"
   >
-    <slot> </slot>
+    <slot />
   </button>
 </template>
