@@ -1,5 +1,20 @@
 # @shopware/cms-base-layer
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1727](https://github.com/shopware/frontends/pull/1727) [`94872b7`](https://github.com/shopware/frontends/commit/94872b7c6f6337ff8ce0bcfd9320e4178a4927f0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added CmsBlockHtml to render html blocks.
+  Added CmsElementHtml to render html element.
+
+### Patch Changes
+
+- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - Fix date formatting based on locale, previously always returned en-US format
+
+- Updated dependencies [[`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49)]:
+  - @shopware/composables@1.9.0
+  - @shopware/api-client@1.2.2
+
 ## 1.4.1
 
 ### Patch Changes

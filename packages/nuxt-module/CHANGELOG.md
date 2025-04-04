@@ -1,5 +1,17 @@
 # @shopware/nuxt-module
 
+## 1.4.0
+
+### Minor Changes
+
+- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - `useShopwareContext` - added `browserLocale` field. With nuxt-module it's automatically injected into context. Should be used for proper date formatting.
+
+### Patch Changes
+
+- Updated dependencies [[`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49)]:
+  - @shopware/composables@1.9.0
+  - @shopware/api-client@1.2.2
+
 ## 1.3.1
 
 ### Patch Changes
