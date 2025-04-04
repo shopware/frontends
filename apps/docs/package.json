@@ -13,7 +13,7 @@
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "flexsearch": "0.7.43",
+    "flexsearch": "0.8.149",
     "markdown-it": "14.1.0",
     "vitepress": "1.3.4",
     "vitepress-plugin-search": "1.0.4-alpha.22",
