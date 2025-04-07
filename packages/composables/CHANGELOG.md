@@ -1,5 +1,18 @@
 # @shopware/composables
 
+## 1.9.0
+
+### Minor Changes
+
+- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - `useShopwareContext` - added `browserLocale` field. With nuxt-module it's automatically injected into context. Should be used for proper date formatting.
+
+- [#1737](https://github.com/shopware/frontends/pull/1737) [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `setDefaultPaymentMethod` as a deprecated method from `useUser` composable. The API endpoint is removed in the 6.7 version. The default payment method is now set on the checkout process
+
+### Patch Changes
+
+- Updated dependencies [[`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc)]:
+  - @shopware/api-client@1.2.2
+
 ## 1.8.1
 
 ### Patch Changes
