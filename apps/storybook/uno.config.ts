@@ -43,6 +43,8 @@ export default defineConfig({
       brandOnTertiary: {
         DEFAULT: "#1d1b20",
       },
+
+      /** Surface */
       surfaceSurfaceContainer: {
         DEFAULT: "#F3EDF7",
       },
@@ -51,6 +53,14 @@ export default defineConfig({
       },
       surfaceOnSurfaceDisabled: {
         DEFAULT: "#9893a5",
+      },
+      surfaceSurface: {
+        DEFAULT: "#ffffff",
+      },
+
+      /** Outline */
+      outlineOutline: {
+        DEFAULT: "#79747e",
       },
 
       statesInfo: {

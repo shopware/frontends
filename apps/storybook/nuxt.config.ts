@@ -1,9 +1,11 @@
+import Cart from "../../packages/composables/src/mocks/Cart";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
     "../../packages/layers/layout",
-    "../../packages/layers/product",
+    ["../../packages/layers/product", { install: true }],
   ],
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },

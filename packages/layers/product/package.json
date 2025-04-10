@@ -7,7 +7,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@shopware/composables": "canary"
+    "@shopware/composables": "canary",
+    "@nuxtjs/i18n": "9.3.1"
   },
   "devDependencies": {
     "nuxt": "3.16.1",
