@@ -1,0 +1,16 @@
+{
+  "name": "shopware-nuxt-layer-core",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "3.16.1",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "@shopware/composables": "workspace:^"
+  }
+}

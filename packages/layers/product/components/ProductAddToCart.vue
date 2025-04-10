@@ -10,8 +10,8 @@ const props = defineProps<{
 }>();
 
 const isLoading = ref(false);
-const { addToCart: addItemToCart } = useAddToCart(props.product);
-const { openCart } = useCartSidebar();
+const { addToCart: addItemToCart } = useAddToCart(ref(props.product));
+const { openCart } = useNuxtApp().$cartSidebar;
 
 const addToCart = async () => {
   isLoading.value = true;

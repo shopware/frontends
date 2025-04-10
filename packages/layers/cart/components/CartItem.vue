@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Schemas } from "@shopware/api-client/store-api-types";
-import { computed } from "vue";
+// import { useCartItemComponent } from "../composables/useCartItemComponent";
 
 // Define props to accept the whole line item object
 const props = defineProps<{
@@ -13,47 +13,18 @@ const emit = defineEmits<{
   remove: [itemId: string];
 }>();
 
-// Computed properties to extract data from the item
-const itemImage = computed(() => {
-  return (
-    props.item.cover?.thumbnails?.find((thumb) => thumb.width === 280)?.url ||
-    props.item.cover?.media?.url ||
-    "https://placehold.co/280x280"
-  );
-});
-
-const itemPrice = computed(() => {
-  return props.item.price?.unitPrice || 0;
-});
-
-const formattedPrice = computed(() => {
-  const price = itemPrice.value;
-  const currency = props.item.price?.currency?.symbol || "€";
-  return `${price.toFixed(2)} ${currency}`;
-});
-
-const characteristics = computed(() => {
-  if (!props.item.payload?.options?.length) return "";
-
-  return props.item.payload.options
-    .map((option) => `${option.group}: ${option.option}`)
-    .join(", ");
-});
-
-// Handlers
-const handleIncrement = () => {
-  emit("quantity-change", props.item.id, props.item.quantity + 1);
-};
-
-const handleDecrement = () => {
-  if (props.item.quantity > 1) {
-    emit("quantity-change", props.item.id, props.item.quantity - 1);
-  }
-};
-
-const handleRemove = () => {
-  emit("remove", props.item.id);
-};
+// Use the composable to get all the cart item functionality
+const {
+  itemImage,
+  formattedPrice,
+  characteristics,
+  handleIncrement,
+  handleDecrement,
+  handleRemove,
+} = useCartItemComponent(
+  computed(() => props.item),
+  emit,
+);
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-const { toggleCart } = useCartSidebar();
+const { toggleCart } = useNuxtApp().$cartSidebar;
 </script>
 <template>
   <header class="sticky top-0 z-50 w-full border-b  border-outline-outline-variant bg-surface-surface">

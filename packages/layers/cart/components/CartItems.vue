@@ -2,9 +2,6 @@
 import { useBreadcrumbs, useCart } from "@shopware/composables";
 import { computed, onMounted, ref } from "vue";
 
-// Create and provide the cart sidebar state
-const { clearBreadcrumbs } = useBreadcrumbs();
-clearBreadcrumbs();
 // Use the Shopware cart composable to access cart data and methods
 const { cart, refreshCart, removeItem, changeProductQuantity } = useCart();
 

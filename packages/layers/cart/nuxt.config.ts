@@ -2,6 +2,7 @@
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  extends: ["../core"],
   components: {
     dirs: [
       {
@@ -11,8 +12,5 @@ export default defineNuxtConfig({
     ],
     global: true,
   },
-  imports: {
-    dirs: ["./composables"],
-    global: true,
-  },
+  imports: { autoImport: true },
 });

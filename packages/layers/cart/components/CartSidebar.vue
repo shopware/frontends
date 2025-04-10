@@ -1,45 +1,25 @@
 <script setup lang="ts">
-import { useBreadcrumbs, useCart } from "@shopware/composables";
-import { computed, onMounted, ref } from "vue";
+import { useBreadcrumbs } from "@shopware/composables";
 
-// Create and provide the cart sidebar state
-const { isOpen, closeCart } = useCartSidebar();
+// Clear breadcrumbs
 const { clearBreadcrumbs } = useBreadcrumbs();
 clearBreadcrumbs();
-// Use the Shopware cart composable to access cart data and methods
+
+// Use our custom cart composable
 const {
-  count: cartItemCount,
-  cart,
-  refreshCart,
-  removeItem,
-  changeProductQuantity,
-} = useCart();
+  // isOpen,
+  // closeCart,
+  cartItemCount,
+  items,
+  subtotal,
+  shipping,
+  total,
+  isEmpty,
+  handleQuantityChange,
+  handleRemoveItem,
+} = useCartSidebarComponent();
 
-// Fetch cart data when component mounts
-onMounted(async () => {
-  if (!cart.value) {
-    await refreshCart();
-  }
-});
-
-// Computed properties for cart data
-const items = computed(() => cart.value?.lineItems || []);
-const subtotal = computed(() => cart.value.price?.subtotal || 0);
-const shipping = computed(() => 0);
-const total = computed(() => cart.value?.price?.totalPrice || 0);
-const isEmpty = computed(() => !items.value.length);
-
-// Handle cart item operations
-const handleQuantityChange = async (itemId: string, quantity: number) => {
-  await changeProductQuantity({
-    id: itemId,
-    quantity: quantity,
-  });
-};
-
-const handleRemoveItem = async (itemId: string) => {
-  await removeItem({ id: itemId });
-};
+const { isOpen, closeCart } = useNuxtApp().$cartSidebar;
 </script>
 
 <template>

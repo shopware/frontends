@@ -2,6 +2,7 @@
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  extends: ["../core"],
   components: {
     dirs: [
       {

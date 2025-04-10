@@ -1,15 +1,21 @@
 <script setup lang="ts">
+import type { Schemas } from "@shopware/api-client/store-api-types";
+const { apiClient } = useShopwareContext();
+const sessionContextData = ref<Schemas["SalesChannelContext"]>();
+const contextResponse = await apiClient.invoke("readContext get /context");
+sessionContextData.value = contextResponse.data;
+useSessionContext(sessionContextData.value);
 const { pushBreadcrumb, breadcrumbs } = useBreadcrumbs();
 // pushBreadcrumb({
 //   name: "Home",
 //   path: "/",
 // });
 
+//await useSessionContext().refreshSessionContext()
+
 const { navigationElements, loadNavigationElements } = useNavigation();
 
 await loadNavigationElements({});
-
-provideCartSidebar();
 </script>
 
 <template>
