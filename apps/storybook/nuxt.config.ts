@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   ],
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/storybook", "@unocss/nuxt"],
+  modules: ["@nuxtjs/storybook", "@unocss/nuxt", "@shopware/nuxt-module"],
   unocss: {
     nuxtLayers: true,
   },
