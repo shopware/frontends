@@ -33,7 +33,7 @@
     "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.1",
     "@biomejs/biome": "1.8.3",
     "@nuxt/devtools": "2.3.2",
-    "@nuxt/module-builder": "0.8.4",
+    "@nuxt/module-builder": "1.0.1",
     "@nuxt/schema": "3.16.2",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
