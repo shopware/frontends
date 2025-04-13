@@ -1,0 +1,29 @@
+{
+  "name": "vue-starter-template",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt prepare && nuxt dev",
+    "build": "nuxt prepare && nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write . && pnpm run typecheck"
+  },
+  "dependencies": {
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
+    "@shopware/api-client": "canary",
+    "nuxt": "^3.16.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@unocss/nuxt": "66.0.0",
+    "unocss": "66.0.0",
+    "@nuxtjs/i18n": "9.5.3"
+  }
+}

@@ -1,0 +1,112 @@
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetWind3,
+} from "unocss";
+
+export default defineConfig({
+  theme: {
+    colors: {
+      "brand-primary": "rgba(84, 59, 149, 1)",
+      "surface-surface": "rgba(255, 255, 255, 1)",
+      "outline-outline": "rgba(121, 116, 126, 1)",
+      "outline-outline-variant": "rgba(202, 196, 208, 1)",
+      "outline-outline-primary": "rgba(84, 59, 149, 1)",
+      "outline-outline-disabled": "rgba(152, 147, 166, 1)",
+      "outline-outline-focus": "rgba(23, 34, 249, 1)",
+      "surface-on-surface": "rgba(29, 27, 32, 1)",
+      "states-info": "rgba(2, 136, 209, 1)",
+      "states-info-hover": "rgba(2, 117, 180, 1)",
+      "states-info-pressed": "rgba(2, 117, 180, 1)",
+      "states-on-info": "rgba(255, 255, 255, 1)",
+      "states-info-container": "rgba(187, 231, 255, 1)",
+      "states-on-info-container": "rgba(1, 57, 87, 1)",
+      "surface-surface-variant": "rgba(251, 246, 255, 1)",
+      "states-success": "rgba(21, 179, 28, 1)",
+      "states-success-hover": "rgba(16, 140, 22, 1)",
+      "surface-on-surface-variant": "rgba(105, 100, 112, 1)",
+      "surface-surface-disabled": "rgba(232, 232, 232, 1)",
+      "states-success-pressed": "rgba(16, 140, 22, 1)",
+      "surface-on-surface-disabled": "rgba(152, 147, 166, 1)",
+      "states-on-success": "rgba(255, 255, 255, 1)",
+      "surface-surface-primary": "rgba(208, 188, 255, 1)",
+      "surface-on-surface-primary": "rgba(58, 39, 106, 1)",
+      "surface-inverse-surface": "rgba(50, 47, 53, 1)",
+      "states-success-container": "rgba(201, 255, 203, 1)",
+      "states-on-success-container": "rgba(9, 72, 12, 1)",
+      "surface-inverse-on-surface": "rgba(255, 255, 255, 1)",
+      "states-warning": "rgba(245, 124, 0, 1)",
+      "states-warning-hover": "rgba(194, 98, 0, 1)",
+      "surface-surface-container-lowest": "rgba(255, 255, 255, 1)",
+      "states-warning-pressed": "rgba(194, 98, 0, 1)",
+      "surface-surface-container-low": "rgba(247, 242, 250, 1)",
+      "surface-surface-container": "rgba(243, 237, 247, 1)",
+      "states-on-warning": "rgba(255, 255, 255, 1)",
+      "states-warning-container": "rgba(255, 225, 194, 1)",
+      "surface-surface-container-high": "rgba(236, 230, 240, 1)",
+      "states-on-warning-container": "rgba(135, 68, 0, 1)",
+      "surface-surface-container-highest": "rgba(230, 224, 233, 1)",
+      "surface-background": "rgba(255, 255, 255, 1)",
+      "surface-on-background": "rgba(29, 27, 32, 1)",
+      "states-error": "rgba(209, 45, 36, 1)",
+      "states-error-hover": "rgba(171, 37, 29, 1)",
+      "states-error-pressed": "rgba(171, 37, 29, 1)",
+      "states-on-error": "rgba(255, 255, 255, 1)",
+      "states-error-container": "rgba(249, 222, 220, 1)",
+      "states-on-error-container": "rgba(133, 34, 33, 1)",
+      "brand-primary-hover": "rgba(69, 49, 122, 1)",
+      "brand-primary-pressed": "rgba(69, 49, 122, 1)",
+      "brand-on-primary": "rgba(255, 255, 255, 1)",
+      "brand-secondary": "rgba(225, 213, 255, 1)",
+      "brand-secondary-hover": "rgba(208, 188, 252, 1)",
+      "brand-secondary-pressed": "rgba(208, 188, 252, 1)",
+      "brand-on-secondary": "rgba(58, 39, 106, 1)",
+      "brand-tertiary": "rgba(241, 241, 241, 1)",
+      "brand-tertiary-hover": "rgba(227, 227, 227, 1)",
+      "brand-tertiary-pressed": "rgba(227, 227, 227, 1)",
+      "brand-on-tertiary": "rgba(29, 27, 32, 1)",
+      "opacity-opacity-dark-highest": "rgba(0, 0, 0, 0.75)",
+      "fixed-fixed-on-image": "rgba(255, 255, 255, 1)",
+      "other-sale": "rgba(209, 45, 36, 1)",
+      "other-shadow": "rgba(0, 0, 0, 1)",
+      "opacity-opacity-dark-high": "rgba(0, 0, 0, 0.5)",
+      "opacity-opacity-dark": "rgba(0, 0, 0, 0.30000001192092896)",
+      "opacity-opacity-dark-low": "rgba(0, 0, 0, 0.11999999731779099)",
+      "opacity-opacity-dark-lowest": "rgba(0, 0, 0, 0.07999999821186066)",
+      "opacity-opacity-light-highest": "rgba(255, 255, 255, 0.75)",
+      "opacity-opacity-light-high": "rgba(255, 255, 255, 0.5)",
+      "opacity-opacity-light": "rgba(255, 255, 255, 0.25)",
+      "opacity-opacity-light-low": "rgba(255, 255, 255, 0.11999999731779099)",
+      "opacity-opacity-light-lowest":
+        "rgba(255, 255, 255, 0.07999999821186066)",
+    },
+    fontFamily: {
+      inter: "Inter",
+      Noto_Serif: "Noto Serif",
+    },
+  },
+  presets: [
+    presetWind3(),
+    presetIcons({
+      collections: {
+        carbon: () =>
+          import("@iconify-json/carbon/icons.json").then((i) => i.default),
+      },
+    }),
+    presetAttributify(),
+    presetTypography(),
+  ],
+  preflights: [
+    {
+      getCSS: () => `
+        body {
+            font-family: 'Inter', sans-serif;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased; 
+        }
+        `,
+    },
+  ],
+});
