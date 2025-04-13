@@ -7,7 +7,6 @@
     "build": "nuxt prepare && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
     "lint": "biome check .",
     "lint:fix": "biome check --write . && pnpm run typecheck"
   },
