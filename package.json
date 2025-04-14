@@ -85,7 +85,7 @@
       "tar-fs": "^2.1.2",
       "undici": "^6.21.1",
       "vite@4>docs": "^4.5.3",
-      "vite@5": "^5.4.16",
+      "vite@5": "^5.4.18",
       "ws": "^8.18.0",
       "yaml@2": "^2.4.5",
       "zod": "^3.23.8",
@@ -108,9 +108,6 @@
         "CVE-2024-31207",
         "CVE-2024-43788"
       ]
-    },
-    "patchedDependencies": {
-      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch"
     }
   }
 }
