@@ -2,12 +2,20 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { usePrice, useSessionContext } from "#imports";
 import { useSetup } from "../_test";
-const currentNavigator = global.navigator;
+
+vi.mock("@vueuse/core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@vueuse/core")>();
+  return {
+    ...actual,
+    createSharedComposable: (fn: (...args: unknown[]) => unknown) => fn,
+  };
+});
 
 vi.mock("../useSessionContext/useSessionContext.ts");
 const sessionContext = ref();
 
 beforeEach(() => {
+  sessionContext.value = null;
   vi.clearAllMocks();
   vi.mocked(useSessionContext).mockReturnValue({
     sessionContext,
@@ -20,9 +28,6 @@ describe("usePrice", () => {
   });
 
   it("use default locale if locale is not provided", () => {
-    vi.spyOn(global, "navigator", "get").mockImplementation(
-      () => ({}) as Navigator,
-    );
     const { vm } = useSetup(usePrice);
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"2.55"');
     vm.update({
@@ -30,20 +35,22 @@ describe("usePrice", () => {
       localeCode: undefined,
     });
 
+    expect(vm.currencyLocale).toBe("en-US");
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"$2.55"');
   });
 
   it("should use navigator language if locale is not provided", () => {
-    vi.spyOn(global, "navigator", "get").mockImplementation(
-      () => currentNavigator,
-    );
-    vi.spyOn(navigator, "language", "get").mockImplementation(() => "en-FR");
-    const { vm } = useSetup(usePrice);
+    const { vm } = useSetup(usePrice, {
+      shopware: {
+        browserLocale: "en-FR",
+      },
+    });
     vm.update({
       currencyCode: "USD",
       localeCode: undefined,
     });
 
+    expect(vm.currencyLocale).toBe("en-FR");
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"$2.55"');
   });
 
@@ -72,9 +79,13 @@ describe("usePrice", () => {
     const { vm } = useSetup(usePrice);
 
     await vm.update({
+      localeCode: "de-DE",
+      currencyCode: "EUR",
+    });
+
+    await vm.update({
       currencyCode: "USD",
-      // @ts-expect-error string expected here
-      currencyLocale: undefined,
+      localeCode: undefined,
     });
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"2,55 $"');
   });
@@ -93,5 +104,29 @@ describe("usePrice", () => {
     };
     await vm.$nextTick();
     expect(vm.currencyCode).toBe("PLN");
+  });
+
+  it("should use default en-US locale if locale is not provided", async () => {
+    const { vm } = useSetup(usePrice);
+
+    await vm.update({
+      currencyCode: "USD",
+    });
+    expect(vm.currencyLocale).toBe("en-US");
+    expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"$2.55"');
+  });
+
+  it("should take locale from shopware context", async () => {
+    const { vm } = useSetup(usePrice, {
+      shopware: {
+        browserLocale: "en-GB",
+      },
+    });
+
+    await vm.update({
+      currencyCode: "USD",
+    });
+    expect(vm.currencyLocale).toBe("en-GB");
+    expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot(`"US$2.55"`);
   });
 });

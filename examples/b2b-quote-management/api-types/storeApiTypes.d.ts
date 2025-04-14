@@ -11118,7 +11118,6 @@ export type operations = {
   "readRoles get /role": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];

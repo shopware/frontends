@@ -3,25 +3,32 @@ import type { CmsElementProductDescriptionReviews } from "@shopware/composables"
 import { useCmsTranslations } from "@shopware/composables";
 import { getProductName, getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
-import { computed, ref } from "vue";
+import { type Ref, computed, onMounted, ref } from "vue";
 import xss from "xss";
 import { useProduct } from "#imports";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductDescriptionReviews;
 }>();
 
 type Translations = {
-  products: {
+  product: {
     description: string;
     reviews: string;
+    messages: {
+      reviewAdded: string;
+    };
   };
 };
 
 let translations: Translations = {
-  products: {
+  product: {
     description: "Description",
     reviews: "Reviews",
+    messages: {
+      reviewAdded: "Thank you for submitting your review",
+    },
   },
 };
 translations = defu(useCmsTranslations(), translations) as Translations;
@@ -37,7 +44,13 @@ const toggleTabs = (tabNumber: number) => {
   currentTab.value = tabNumber;
 };
 
-const reviews = computed(() => props.content.data.reviews.elements);
+const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
+
+onMounted(async () => {
+  if (props.content.data?.reviews?.elements) {
+    reviews.value = props.content.data.reviews.elements;
+  }
+});
 </script>
 
 <template>
@@ -60,7 +73,7 @@ const reviews = computed(() => props.content.data.reviews.elements);
             @click="() => toggleTabs(1)"
           >
             <i class="fas fa-space-shuttle text-base mr-1" />
-            {{ translations.products.description }}
+            {{ translations.product.description }}
           </a>
         </li>
         <li class="mr-2 text-center">
@@ -71,10 +84,11 @@ const reviews = computed(() => props.content.data.reviews.elements);
                 ? 'text-secondary-500 bg-white'
                 : 'text-white bg-secondary-500',
             ]"
+            data-testid="product-reviews-tab"
             @click="() => toggleTabs(2)"
           >
             <i class="fas fa-cog text-base mr-1" />
-            {{ translations.products.reviews }}
+            {{ translations.product.reviews }} ({{ reviews.length }})
           </a>
         </li>
       </ul>

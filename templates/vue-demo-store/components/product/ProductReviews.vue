@@ -5,17 +5,18 @@ const props = defineProps<{
   reviews: Schemas["ProductReview"][];
 }>();
 
+const { browserLocale } = useShopwareContext();
+
 const format: Intl.DateTimeFormatOptions = {
   year: "numeric",
-  month: "short",
+  month: "numeric",
   day: "numeric",
   hour: "numeric",
   minute: "numeric",
-  hour12: true,
 };
 
 const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-us", format);
+  new Intl.DateTimeFormat(browserLocale, format).format(new Date(date));
 </script>
 
 <template>

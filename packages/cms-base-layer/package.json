@@ -26,11 +26,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nuxt/kit": "3.16.1",
+    "@nuxt/kit": "3.16.2",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@tresjs/cientos": "4.0.2",
+    "@tresjs/cientos": "4.3.0",
     "@tresjs/core": "4.3.3",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
@@ -43,14 +43,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/schema": "3.16.1",
+    "@nuxt/schema": "3.16.2",
     "@types/three": "0.173.0",
-    "@vitest/coverage-v8": "3.0.9",
-    "nuxt": "3.16.1",
+    "@vitest/coverage-v8": "3.1.1",
+    "nuxt": "3.16.2",
     "tsconfig": "workspace:*",
     "typescript": "5.7.3",
     "unbuild": "2.0.0",
-    "vitest": "3.0.9",
+    "vitest": "3.1.1",
     "vue-router": "4.5.0",
     "vue-tsc": "2.2.8"
   }
