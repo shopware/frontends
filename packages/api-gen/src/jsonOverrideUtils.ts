@@ -110,8 +110,8 @@ export async function resolveSinglePath<T = JSON>(
       ),
       error,
     );
-    return undefined;
   }
+  return undefined;
 }
 
 export async function loadJsonOverrides({
@@ -120,7 +120,7 @@ export async function loadJsonOverrides({
 }: {
   paths?: string | string[];
   apiType: string;
-}): Promise<OverridesSchema | undefined> {
+}): Promise<OverridesSchema> {
   const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
 
   const localNodePath = resolve(
@@ -191,6 +191,7 @@ export const mergeJsonOverrides = createDefu((obj, key, value) => {
   if (obj[key] === undefined) {
     obj[key] = extendedDefu(value, value);
   }
+  return false;
 });
 
 export function displayPatchingSummary({

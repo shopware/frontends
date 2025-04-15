@@ -29,12 +29,12 @@ describe("Shopware helpers - getProductReviews", () => {
     expect(reviews).toHaveLength(2);
     const firstReview = reviews[0];
     const secondReview = reviews[1];
-    expect(firstReview.id).toBe("3858d1baf2544a379c92535ea3d2fe53");
-    expect(firstReview.date).toBe("2019-10-08T09:42:19+00:00");
-    expect(firstReview.message).toBe("Great quality!");
-    expect(firstReview.rating).toBe(4);
+    expect(firstReview?.id).toBe("3858d1baf2544a379c92535ea3d2fe53");
+    expect(firstReview?.date).toBe("2019-10-08T09:42:19+00:00");
+    expect(firstReview?.message).toBe("Great quality!");
+    expect(firstReview?.rating).toBe(4);
 
-    expect(secondReview.author).toBe("3f06d7747f904336a78bf75e86a6450f");
+    expect(secondReview?.author).toBe("3f06d7747f904336a78bf75e86a6450f");
   });
   it("should return no reviews if do not exist", () => {
     const productWithoutReviews = {};
