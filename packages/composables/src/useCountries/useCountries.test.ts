@@ -14,9 +14,9 @@ describe("useCountries", () => {
     });
     await vm.fetchCountries();
 
-    expect(vm.getStatesForCountry(CountryMock.elements[0].id)).toStrictEqual(
-      CountryMock.elements[0].states,
-    );
+    expect(
+      vm.getStatesForCountry(CountryMock.elements?.[0]?.id as string),
+    ).toStrictEqual(CountryMock.elements?.[0]?.states);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readCountry"),
@@ -42,9 +42,9 @@ describe("useCountries", () => {
     });
     await vm.fetchCountries();
 
-    expect(vm.getStatesForCountry(CountryMock.elements[0].id)).toStrictEqual(
-      null,
-    );
+    expect(
+      vm.getStatesForCountry(CountryMock.elements?.[0]?.id as string),
+    ).toStrictEqual(null);
   });
 
   it("useCountries flow - empty", async () => {

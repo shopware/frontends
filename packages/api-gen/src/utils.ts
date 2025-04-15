@@ -22,6 +22,7 @@ export function getDeepProperty({
     return type;
   }
   const [currentName, ...restNames] = names;
+  if (!currentName) return undefined;
 
   const property = type.getProperty(currentName);
   if (!property) {
@@ -51,6 +52,7 @@ export function getDeepPropertyCode({
 }) {
   const namesWithoutLast = names.slice(0, -1);
   const currentName = names[names.length - 1];
+  if (!currentName) return undefined;
   const deepProperty = getDeepProperty({
     type,
     names: namesWithoutLast,
@@ -64,6 +66,7 @@ export function getDeepPropertyCode({
     }
     return property.valueDeclaration?.getText().replace(/^[^:]+:/, "");
   }
+  return undefined;
 }
 
 export function isOptional(symbol: ts.Symbol): boolean {
@@ -75,6 +78,7 @@ export function isOptional(symbol: ts.Symbol): boolean {
 
   // Check if the declaration has a question token
   if (
+    declaration &&
     ts.isPropertySignature(declaration) &&
     declaration.questionToken !== undefined
   ) {
@@ -82,7 +86,11 @@ export function isOptional(symbol: ts.Symbol): boolean {
   }
 
   // If it's not a property signature, check if it's a parameter
-  if (ts.isParameter(declaration) && declaration.questionToken !== undefined) {
+  if (
+    declaration &&
+    ts.isParameter(declaration) &&
+    declaration.questionToken !== undefined
+  ) {
     return true; // Parameter is optional
   }
 

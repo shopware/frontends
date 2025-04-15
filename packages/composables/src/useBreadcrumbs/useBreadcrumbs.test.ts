@@ -52,7 +52,7 @@ describe("useBreadcrumbs", () => {
       { path: "test" } as Schemas["Breadcrumb"],
     ]);
 
-    expect(vm.breadcrumbs[0].path).toBe("/test");
+    expect(vm.breadcrumbs[0]?.path).toBe("/test");
   });
 
   it("should push breadcrumb", async () => {

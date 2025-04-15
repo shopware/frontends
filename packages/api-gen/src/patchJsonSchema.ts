@@ -38,6 +38,8 @@ export const extendedDefu = createDefu((obj, key, value) => {
     delete obj[key];
     return true;
   }
+
+  return false;
 });
 
 export function patchJsonSchema({

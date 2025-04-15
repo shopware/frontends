@@ -373,4 +373,6 @@ function runTransformations(schemaObject: SchemaObject) {
       ts.factory.createIdentifier("GenericRecord"),
     );
   }
+
+  return undefined;
 }
