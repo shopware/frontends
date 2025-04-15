@@ -989,7 +989,7 @@ importers:
         version: 1.8.3
       '@codspeed/vitest-plugin':
         specifier: 4.0.1
-        version: 4.0.1(vite@5.4.18(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
+        version: 4.0.1(vite@6.2.6(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.1))(vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))
       '@types/prettier':
         specifier: 3.0.0
         version: 3.0.0
@@ -1410,14 +1410,11 @@ importers:
         specifier: canary
         version: link:../../packages/nuxt-module
       nuxt:
-        specifier: ^3.16.2
+        specifier: 3.16.2
         version: 3.16.2(@biomejs/biome@1.8.3)(@parcel/watcher@2.5.1)(@types/node@22.10.0)(db0@0.3.1)(encoding@0.1.13)(eslint@9.23.0(jiti@2.4.2))(ioredis@5.6.0)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.39.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(typescript@5.8.3)(vue-tsc@2.2.8(typescript@5.8.3))(yaml@2.7.1)
       vue:
-        specifier: ^3.5.13
+        specifier: 3.5.13
         version: 3.5.13(typescript@5.8.3)
-      vue-router:
-        specifier: ^4.5.0
-        version: 4.5.0(vue@3.5.13(typescript@5.8.3))
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -1425,9 +1422,15 @@ importers:
       '@nuxtjs/i18n':
         specifier: 9.5.3
         version: 9.5.3(@vue/compiler-dom@3.5.13)(eslint@9.23.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.39.0)(vue@3.5.13(typescript@5.8.3))
+      '@shopware/api-gen':
+        specifier: canary
+        version: link:../../packages/api-gen
       '@unocss/nuxt':
         specifier: 66.0.0
         version: 66.0.0(magicast@0.3.5)(postcss@8.5.3)(vue@3.5.13(typescript@5.8.3))(webpack@5.91.0(@swc/core@1.7.10))
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
       unocss:
         specifier: 66.0.0
         version: 66.0.0(@unocss/webpack@66.0.0(webpack@5.91.0(@swc/core@1.7.10)))(postcss@8.5.3)(vue@3.5.13(typescript@5.8.3))
@@ -11510,7 +11513,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qs@6.11.2:
@@ -15810,10 +15812,10 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@codspeed/vitest-plugin@4.0.1(vite@5.4.18(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))(vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))':
+  '@codspeed/vitest-plugin@4.0.1(vite@6.2.6(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.1))(vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0))':
     dependencies:
       '@codspeed/core': 4.0.1
-      vite: 5.4.18(@types/node@22.10.0)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
+      vite: 6.2.6(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.1)
       vitest: 3.1.1(@edge-runtime/vm@3.2.0)(@types/debug@4.1.12)(@types/node@22.10.0)(happy-dom@17.4.4)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.39.0)
     transitivePeerDependencies:
       - debug

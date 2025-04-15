@@ -1,28 +1,40 @@
 {
   "name": "vue-starter-template",
+  "version": "0.0.1",
+  "description": "Shopware Vue Starter Template",
   "private": true,
+  "author": "Shopware",
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "main": "./nuxt.config.ts",
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "biome check .",
-    "lint:fix": "biome check --write . && pnpm run typecheck"
+    "lint:fix": "biome check --write . && pnpm run typecheck",
+    "typecheck": "nuxt prepare && nuxi typecheck",
+    "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "nuxt": "^3.16.2",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "nuxt": "3.16.2",
+    "vue": "3.5.13"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@shopware/api-gen": "canary",
     "@unocss/nuxt": "66.0.0",
     "unocss": "66.0.0",
-    "@nuxtjs/i18n": "9.5.3"
+    "@nuxtjs/i18n": "9.5.3",
+    "typescript": "5.8.3"
   }
 }
