@@ -139,20 +139,17 @@ export function useOrderDetails(
 
   const orderAssociations = useDefaultOrderAssociations();
 
-  const paymentMethod = computed(() =>
-    _sharedOrder.value?.transactions?.length
-      ? _sharedOrder.value.transactions[
-          _sharedOrder.value.transactions.length - 1
-        ].paymentMethod
-      : undefined,
-  );
+  const paymentMethod = computed(() => {
+    const transactions = _sharedOrder.value?.transactions;
+    if (!transactions?.length) return undefined;
+    return transactions[transactions.length - 1]?.paymentMethod;
+  });
 
-  const shippingMethod = computed(() =>
-    _sharedOrder.value?.deliveries?.length
-      ? _sharedOrder.value.deliveries[_sharedOrder.value.deliveries.length - 1]
-          .shippingMethod
-      : undefined,
-  );
+  const shippingMethod = computed(() => {
+    const deliveries = _sharedOrder.value?.deliveries;
+    if (!deliveries?.length) return undefined;
+    return deliveries[deliveries.length - 1]?.shippingMethod;
+  });
 
   const paymentUrl = ref();
 
@@ -204,7 +201,7 @@ export function useOrderDetails(
       },
     );
     _sharedOrder.value =
-      orderDetailsResponse.data.orders?.elements?.[0] ?? null;
+      orderDetailsResponse.data.orders?.elements?.[0] ?? undefined;
     paymentChangeableList.value =
       orderDetailsResponse.data.paymentChangeable ?? {};
     return orderDetailsResponse.data;
@@ -285,11 +282,7 @@ export function useOrderDetails(
   const documents = computed(() => _sharedOrder.value?.documents || []);
 
   const paymentChangeable = computed(() => {
-    return Object.keys(paymentChangeableList.value).length
-      ? (paymentChangeableList.value as { [key: string]: boolean })[
-          orderId as string
-        ]
-      : false;
+    return paymentChangeableList.value?.[orderId as string] ?? false;
   });
 
   const getPaymentMethods = async () => {

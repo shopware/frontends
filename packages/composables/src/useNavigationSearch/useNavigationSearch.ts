@@ -18,7 +18,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiClient } = useShopwareContext();
   const { sessionContext } = useSessionContext();
 
-  async function resolvePath(path: string) {
+  async function resolvePath(path: string): Promise<Schemas["SeoUrl"] | null> {
     if (path === "/") {
       // please ignore optional chaining for salesChannel object as it's always present (type definition issue)
       const categoryId =
@@ -51,7 +51,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       },
     });
 
-    return seoResult.data.elements?.[0];
+    return seoResult.data.elements?.[0] ?? null;
   }
 
   return {

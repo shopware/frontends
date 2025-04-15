@@ -67,8 +67,8 @@ export async function prepareFileContent({
 
   const combinedKeys = Object.keys(operationsMap);
   const sortedMapKeys = combinedKeys.sort((a, b) => {
-    const aValue = a.includes(" ") ? a.split(" ")[2] : a;
-    const bValue = b.includes(" ") ? b.split(" ")[2] : b;
+    const aValue = a.includes(" ") ? a.split(" ")[2] || a : a;
+    const bValue = b.includes(" ") ? b.split(" ")[2] || b : b;
 
     return aValue.localeCompare(bValue);
   });
@@ -82,7 +82,9 @@ export async function prepareFileContent({
     filepath,
     (writer) => {
       for (const type of existingTypes) {
-        writer.writeLine(type[1]);
+        if (type[1]) {
+          writer.writeLine(type[1]);
+        }
       }
 
       // components
@@ -92,7 +94,9 @@ export async function prepareFileContent({
 
       writer.write("export type Schemas =").block(() => {
         for (const key of sortedSchemaKeys) {
-          writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
+          if (componentsMap[key]) {
+            writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
+          }
         }
       });
 
@@ -103,7 +107,7 @@ export async function prepareFileContent({
           if (typeof method === "string") {
             writer.write(`"${routePath}":`).write(method);
           } else {
-            const methodHeaders = method.headers;
+            const methodHeaders = method?.headers;
 
             type RequestType = {
               contentType?: string;
@@ -120,24 +124,24 @@ export async function prepareFileContent({
             };
 
             const requests: RequestType[] = [];
-            if (!method.body.length) {
+            if (!method?.body.length) {
               // no body definition
               // requests.push({
               //   headers: { ...methodHeaders },
               //   body: null,
               //   response: null,
               // });
-              for (const response of method.responses) {
+              for (const response of method?.responses || []) {
                 requests.push({
                   contentType: defaultContentType,
                   accept: response.contentType,
                   headers: methodHeaders,
-                  headersOptional: method.headersOptional,
-                  query: method.query,
-                  queryOptional: method.queryOptional,
-                  pathParams: method.pathParams,
+                  headersOptional: method?.headersOptional,
+                  query: method?.query,
+                  queryOptional: method?.queryOptional,
+                  pathParams: method?.pathParams,
                   body: null,
-                  bodyOptional: method.bodyOptional,
+                  bodyOptional: method?.bodyOptional,
                   response: response.code,
                   responseCode: response.responseCode,
                 });
