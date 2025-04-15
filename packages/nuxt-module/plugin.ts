@@ -94,9 +94,9 @@ export default defineNuxtPlugin((NuxtApp) => {
   if (import.meta.client) {
     browserLocale = navigator.language;
   } else {
-    browserLocale = useRequestHeaders()
-      ["accept-language"]?.split(",")[0]
-      ?.split(";")[0];
+    browserLocale =
+      useRequestHeaders()["accept-language"]?.split(",")[0]?.split(";")[0] ??
+      "en-US";
   }
 
   NuxtApp.vueApp.provide("apiClient", apiClient);

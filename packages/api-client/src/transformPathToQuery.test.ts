@@ -195,4 +195,22 @@ describe("transform path to query request", () => {
       }
     `);
   });
+
+  it("should handle undefined pathDefinition", async () => {
+    const [path, params] = transformPathToQuery("yo POST", {
+      someParam: "value",
+    });
+
+    expect(path).toEqual("");
+    expect(params).toMatchInlineSnapshot(`
+      {
+        "body": {
+          "someParam": "value",
+        },
+        "headers": {},
+        "method": "POST",
+        "query": {},
+      }
+    `);
+  });
 });

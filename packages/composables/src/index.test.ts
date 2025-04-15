@@ -8,9 +8,10 @@ vi.mock("vue");
 describe("resolveCmsComponent", () => {
   vi.spyOn(vue, "resolveComponent").mockImplementation((element) => element);
   it("should resolve a cms component", () => {
-    const result = resolveCmsComponent(
-      CmsPage.cmsPage.sections[0].blocks[0] as unknown as Schemas["CmsBlock"],
-    );
+    const section = CmsPage.cmsPage.sections?.[0];
+    const block = section?.blocks?.[0];
+
+    const result = resolveCmsComponent(block as unknown as Schemas["CmsBlock"]);
     expect(result.componentName).toBe("image-simple-grid");
     expect(result.componentNameToResolve).toBe("CmsBlockImageSimpleGrid");
     expect(result.isResolved).toBe(true);

@@ -15,15 +15,15 @@ describe("useOrderDetails", () => {
     );
 
     expect(vm.personalDetails).toEqual({
-      email: Order.orders.elements[0].orderCustomer.email,
-      firstName: Order.orders.elements[0].orderCustomer.firstName,
-      lastName: Order.orders.elements[0].orderCustomer.lastName,
+      email: Order.orders.elements?.[0]?.orderCustomer.email,
+      firstName: Order.orders.elements?.[0]?.orderCustomer.firstName,
+      lastName: Order.orders.elements?.[0]?.orderCustomer.lastName,
     });
 
     expect(vm.billingAddress).toEqual(
-      Order.orders.elements[0].addresses.find(
+      Order.orders.elements?.[0]?.addresses.find(
         ({ id }: { id: string }) =>
-          id === Order.orders.elements[0].billingAddressId,
+          id === Order.orders.elements?.[0]?.billingAddressId,
       ),
     );
   });

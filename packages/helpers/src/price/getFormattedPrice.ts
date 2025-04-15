@@ -38,7 +38,7 @@ export function getFormattedPrice(
   // Remove decimals
   // 1.00 -> 1 | 1.02  -> 1.02
   if (options.removeDecimals) {
-    formattedPrice[0] = removeDecimals(formattedPrice[0]);
+    formattedPrice[0] = removeDecimals(formattedPrice[0] as string);
   }
   // Remove currency
   // 1 $ -> 1

@@ -13,6 +13,8 @@ function getEntityPrefix<
       return "detail";
     case "landing_page":
       return "landingPage";
+    default:
+      return "navigation";
   }
 }
 
