@@ -154,6 +154,14 @@ In more complex scenarios, such as when different prefixes are used on the backe
 
 The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages
 
+## Multi domain example
+
+To handle multiple domains for different languages, you can configure your application to recognize and switch between these domains seamlessly. Here's an example of how to set up your configuration:
+
+[Check example](https://github.com/shopware/frontends/tree/main/examples/i18n-multi-domain)
+
+*This example should be run locally because of the multi-domain requirements*
+
 ## Switching language locally
 
 **Problem**
@@ -173,6 +181,7 @@ const onChangeHandler = async (option: Event) => {
 ```
 
 This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
+
 
 ### Locally host overrides
 The idea of this solution is to override the domain locally in the `hosts` file.
