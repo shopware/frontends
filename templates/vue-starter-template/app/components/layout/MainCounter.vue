@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 defineProps<{
-  count: string;
+  count: number;
 }>();
 </script>
 <template>
