@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+defineSlots<{
+  default(): unknown;
+}>();
+
 defineProps<{
   count: number;
 }>();
@@ -10,7 +14,7 @@ defineProps<{
     <div
       class="w-[18px] left-0 top-[-2px] absolute text-center justify-start text-white text-sm font-bold leading-[21px]"
     >
-      {{ count }}
+      <slot> {{ count }} </slot>
     </div>
   </div>
 </template>

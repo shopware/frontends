@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+defineSlots<{
+  default(): unknown;
+}>();
+
 defineProps<{
   label: string;
 }>();
@@ -10,7 +14,7 @@ defineProps<{
     <div
       class="justify-start text-white text-base font-bold font-['Inter'] leading-normal"
     >
-      {{ label }}
+      <slot> {{ label }}</slot>
     </div>
   </button>
 </template>

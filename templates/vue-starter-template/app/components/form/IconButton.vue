@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-const { type = "primary", disabled = false } = defineProps<{
+const { type = "primary" } = defineProps<{
   type?: "primary" | "secondary" | "tertiary" | "outline" | "ghost";
-  disabled?: boolean;
 }>();
 
 const styles = {
@@ -23,11 +22,10 @@ const styles = {
       styles[type],
       {
         'bg-surface-on-surface-disabled text-surface-surface-disabled':
-          disabled,
+          $attrs.disabled,
       },
     ]"
     class="w-10 h-10 relative rounded-full border-0"
-    :disabled="disabled"
   >
     <slot />
   </button>
