@@ -82,7 +82,7 @@ const toggleTab = (index: number) => {
         :autoplay="false"
       >
         <SwProductCard
-          v-for="product of crossSellCollections[currentTabIndex].products"
+          v-for="product of crossSellCollections[currentTabIndex]?.products"
           :key="product.id"
           class="w-[300px]"
           :product="product"

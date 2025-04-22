@@ -51,7 +51,8 @@ const addToCartProxy = async () => {
   const errors = getErrorsCodes();
   for (const element of errors) {
     const { messageKey, params } = resolveCartError(element);
-    pushError(getCmsTranslate(translations.errors[messageKey], params));
+    if (translations.errors[messageKey])
+      pushError(getCmsTranslate(translations.errors[messageKey], params));
   }
 
   if (!errors.length)

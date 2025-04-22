@@ -17,5 +17,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["@shopware/cms-base-layer"],
   },
-  telemetry: false,
+  telemetry: {
+    enabled: false,
+  },
 }) as NuxtConfig;

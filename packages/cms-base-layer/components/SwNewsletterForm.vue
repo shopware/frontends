@@ -79,7 +79,7 @@ const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
 
 const getFormTitle = computed(() => getConfigValue("title"));
 const state = reactive({
-  option: subscriptionOptions[0].value,
+  option: subscriptionOptions[0]?.value ?? "",
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -216,7 +216,7 @@ const invokeSubmit = async () => {
             v-if="$v.email?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email?.$errors[0].$message }}
+            {{ $v.email?.$errors[0]?.$message || '' }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
@@ -260,7 +260,7 @@ const invokeSubmit = async () => {
             v-if="$v.firstName?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName?.$errors[0].$message }}
+            {{ $v.firstName?.$errors[0]?.$message || '' }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
@@ -284,7 +284,7 @@ const invokeSubmit = async () => {
             v-if="$v.lastName?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName?.$errors[0].$message }}
+            {{ $v.lastName?.$errors[0]?.$message || '' }}
           </span>
         </div>
         <div class="col-span-12">
