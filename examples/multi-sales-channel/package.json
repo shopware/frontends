@@ -22,7 +22,8 @@
     "nuxt": "3.16.2",
     "typescript": "5.8.3",
     "vue": "3.5.13",
-    "vue-tsc": "2.2.8"
+    "vue-tsc": "2.2.8",
+    "@unocss/nuxt": "66.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"
