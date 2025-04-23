@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   compatibilityDate: "2025-04-15",
   devtools: { enabled: true },

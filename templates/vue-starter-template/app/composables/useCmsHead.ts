@@ -23,7 +23,7 @@ export function useCmsHead(
     mainShopTitle?: string;
   },
 ): void {
-  const unrefEntity = unref(entity) as CmsPageEntity;
+  const unrefEntity = unref(entity);
   // get title and meta tags available in the Shopware instance
   const { title: metaTitle, meta } = useCmsMeta(unrefEntity);
 
