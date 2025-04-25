@@ -12,7 +12,7 @@ const { search } = useCategorySearch();
 const route = useRoute();
 const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
-const errorDetails = ref();
+const errors = ref<string[]>([]);
 
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
@@ -24,21 +24,17 @@ const { data, error } = await useAsyncData(
           ...route.query,
         },
       }),
-      apiClient
-        .invoke("readBreadcrumb get /breadcrumb/{id}", {
-          pathParams: {
-            id: props.navigationId,
-          },
-        })
-        .catch(() => {
-          console.error("Error while fetching breadcrumbs");
-        }),
+      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
+        pathParams: {
+          id: props.navigationId,
+        },
+      }),
     ]);
 
     for (const response of responses) {
       if (response.status === "rejected") {
         console.error("[FrontendNavigationPage.vue]", response.reason.message);
-        errorDetails.value = response.reason.message;
+        errors.value.push(response.reason.message);
       }
     }
 
@@ -56,7 +52,7 @@ if (data.value?.breadcrumbs) {
 }
 
 if (!categoryResponse.value) {
-  const statusMessage = error.value || errorDetails.value;
+  const statusMessage = error.value?.message || errors.value.join(", ");
   console.error("[FrontendNavigationPage.vue]", statusMessage);
   throw createError({
     statusCode: 500,

@@ -8,7 +8,7 @@ const props = defineProps<{
 const { search } = useProductSearch();
 const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
-const errorDetails = ref();
+const errors = ref<string[]>([]);
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
@@ -30,7 +30,7 @@ const { data, error } = await useAsyncData(
     for (const response of responses) {
       if (response.status === "rejected") {
         console.error("[FrontendDetailPage.vue]", response.reason.message);
-        errorDetails.value = response.reason.message;
+        errors.value.push(response.reason.message);
       }
     }
 
@@ -42,14 +42,14 @@ const { data, error } = await useAsyncData(
     };
   },
 );
-const productResponse = ref(data.value?.productResponse);
+const productResponse = data.value?.productResponse;
 
 if (data.value?.breadcrumbs) {
   buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
 }
 
-if (!productResponse.value) {
-  const statusMessage = error.value || errorDetails.value;
+if (!productResponse) {
+  const statusMessage = error.value?.message || errors.value.join(", ");
   console.error("[FrontendDetailPage.vue]", statusMessage);
   throw createError({
     statusCode: 500,
@@ -57,16 +57,16 @@ if (!productResponse.value) {
   });
 }
 
-useProductJsonLD(productResponse.value.product);
+useProductJsonLD(productResponse.product);
 
 pushBreadcrumb({
-  name: getProductName({ product: productResponse.value.product }) ?? "",
-  path: `/${productResponse.value.product.seoUrls?.[0]?.seoPathInfo}`,
+  name: getProductName({ product: productResponse.product }) ?? "",
+  path: `/${productResponse.product.seoUrls?.[0]?.seoPathInfo}`,
 });
 
 const { product } = useProduct(
-  productResponse.value.product,
-  productResponse.value.configurator,
+  productResponse.product,
+  productResponse.configurator,
 );
 
 useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
