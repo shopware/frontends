@@ -59,6 +59,7 @@ export async function resolveOwnDependency(dependency: DEPENDENCY, nuxt: Nuxt) {
       return target;
     }
   }
+  return null;
 }
 
 export function isConfigDeprecated(config: ShopwareNuxtOptions) {

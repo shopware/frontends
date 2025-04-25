@@ -43,8 +43,8 @@ describe("useCart", () => {
     expect(vm.totalPrice).toBe(0);
     expect(vm.subtotal).toBe(0);
     await vm.addProduct({
-      id: itemsMock.items[0].referencedId as string,
-      quantity: itemsMock.items[0].quantity,
+      id: itemsMock.items[0]?.referencedId as string,
+      quantity: itemsMock.items[0]?.quantity,
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -53,9 +53,9 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              type: itemsMock.items[0].type,
-              id: itemsMock.items[0].referencedId,
-              quantity: itemsMock.items[0].quantity,
+              type: itemsMock.items[0]?.type,
+              id: itemsMock.items[0]?.referencedId,
+              quantity: itemsMock.items[0]?.quantity,
             },
           ],
         },
@@ -63,7 +63,7 @@ describe("useCart", () => {
     );
 
     await vm.addProduct({
-      id: itemsMock.items[0].referencedId as string,
+      id: itemsMock.items[0]?.referencedId as string,
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -72,8 +72,8 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              type: itemsMock.items[0].type,
-              id: itemsMock.items[0].referencedId,
+              type: itemsMock.items[0]?.type,
+              id: itemsMock.items[0]?.referencedId,
               quantity: 0,
             },
           ],
@@ -112,7 +112,7 @@ describe("useCart", () => {
 
   it("change product quantity", async () => {
     await vm.changeProductQuantity({
-      id: itemsMock.items[0].referencedId as string,
+      id: itemsMock.items[0]?.referencedId as string,
       quantity: 4,
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -121,7 +121,7 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              id: itemsMock.items[0].referencedId,
+              id: itemsMock.items[0]?.referencedId,
               quantity: 4,
             },
           ],

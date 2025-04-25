@@ -18,7 +18,7 @@
     "unocss": "66.0.0"
   },
   "dependencies": {
-    "@vueuse/nuxt": "13.0.0",
+    "@vueuse/nuxt": "13.1.0",
     "vue": "3.5.13",
     "vue-tsc": "2.2.8"
   }

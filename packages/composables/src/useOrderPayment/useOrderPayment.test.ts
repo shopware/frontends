@@ -10,7 +10,7 @@ describe("useOrderPayment", () => {
   it("should handle the order payment", async () => {
     const { vm, injections } = useSetup(() =>
       useOrderPayment(
-        computed(() => Order.orders.elements[0]) as unknown as ComputedRef<
+        computed(() => Order.orders.elements?.[0]) as unknown as ComputedRef<
           Schemas["Order"]
         >,
       ),
@@ -24,13 +24,13 @@ describe("useOrderPayment", () => {
         body: {
           errorUrl: undefined,
           finishUrl: undefined,
-          orderId: Order.orders.elements[0].id,
+          orderId: Order.orders.elements?.[0]?.id,
         },
       }),
     );
 
     expect(vm.activeTransaction).toEqual(
-      Order.orders.elements[0].transactions[0],
+      Order.orders.elements?.[0]?.transactions[0],
     );
 
     vm.changePaymentMethod("test");
@@ -59,19 +59,18 @@ describe("useOrderPayment", () => {
   it("should be a asynchronous payment", () => {
     const { vm } = useSetup(() =>
       useOrderPayment(
-        computed(() =>
-          Object.assign(Order.orders.elements[0], {
-            transactions: [
-              {
-                paymentMethod: {
-                  active: true,
-                  asynchronous: true,
-                  afterOrderEnabled: true,
-                },
+        computed(() => ({
+          ...Order.orders.elements?.[0],
+          transactions: [
+            {
+              paymentMethod: {
+                active: true,
+                asynchronous: true,
+                afterOrderEnabled: true,
               },
-            ],
-          }),
-        ) as unknown as ComputedRef<Schemas["Order"]>,
+            },
+          ],
+        })) as unknown as ComputedRef<Schemas["Order"]>,
       ),
     );
 

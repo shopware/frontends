@@ -107,6 +107,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
       return response.data.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
+      return undefined;
     }
   }
 

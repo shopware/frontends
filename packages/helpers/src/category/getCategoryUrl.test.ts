@@ -82,4 +82,13 @@ describe("getCategoryUrl", () => {
       }),
     ).toBe("/navigation/123");
   });
+  it("should deal with uknown link type", () => {
+    expect(
+      getCategoryUrl({
+        type: "unknown",
+        id: "123",
+        linkType: "unknown",
+      }),
+    ).toBe("/navigation/123");
+  });
 });
