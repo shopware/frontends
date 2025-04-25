@@ -3,7 +3,12 @@ export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   compatibilityDate: "2025-04-15",
   devtools: { enabled: true },
-  modules: ["@unocss/nuxt", "@shopware/nuxt-module", "@nuxtjs/i18n"],
+  modules: [
+    "@unocss/nuxt",
+    "@shopware/nuxt-module",
+    "@nuxtjs/i18n",
+    "@nuxt/icon",
+  ],
   runtimeConfig: {
     public: {
       shopware: {
@@ -27,5 +32,13 @@ export default defineNuxtConfig({
       },
     ],
     global: true,
+  },
+  icon: {
+    customCollections: [
+      {
+        prefix: "shopware",
+        dir: "./app/assets/icons",
+      },
+    ],
   },
 });

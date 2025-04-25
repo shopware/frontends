@@ -23,19 +23,20 @@
   },
   "dependencies": {
     "@shopware/cms-base-layer": "canary",
+    "@shopware/api-client": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
-    "@shopware/api-client": "canary",
     "nuxt": "3.16.2",
     "vue": "3.5.13"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@nuxt/icon": "^1.12.0",
+    "@nuxtjs/i18n": "9.5.3",
     "@shopware/api-gen": "canary",
     "@unocss/nuxt": "66.0.0",
-    "unocss": "66.0.0",
-    "@nuxtjs/i18n": "9.5.3",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "unocss": "66.0.0"
   }
 }
