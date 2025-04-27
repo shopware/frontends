@@ -24,15 +24,11 @@ const { data, error } = await useAsyncData(
           ...route.query,
         },
       }),
-      apiClient
-        .invoke("readBreadcrumb get /breadcrumb/{id}", {
-          pathParams: {
-            id: props.navigationId,
-          },
-        })
-        .catch(() => {
-          console.error("Error while fetching breadcrumbs");
-        }),
+      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
+        pathParams: {
+          id: props.navigationId,
+        },
+      }),
     ]);
 
     for (const response of responses) {
