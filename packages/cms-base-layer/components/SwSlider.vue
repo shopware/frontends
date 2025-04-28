@@ -42,7 +42,7 @@ const slots = useSlots() as {
   default?: () => { children: VNodeArrayChildren }[];
 };
 const childrenRaw = computed(
-  () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? [],
+  () => (slots?.default?.()[0]?.children as VNodeArrayChildren) ?? [],
 );
 const slidesToScroll = computed(() =>
   props.slidesToScroll >= props.slidesToShow
@@ -186,7 +186,7 @@ function buildImageSliderTrackStyle(
       const childComponent =
         imageSliderTrack.value?.children[transformIndex + 1];
       // If image exist
-      height = childComponent?.children[0].children[0].clientHeight
+      height = childComponent?.children[0]?.children[0]?.clientHeight
         ? `${childComponent.clientHeight}px`
         : "auto";
     }
