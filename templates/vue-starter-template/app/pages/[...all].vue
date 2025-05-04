@@ -11,9 +11,11 @@ defineOptions({
 
 const { resolvePath } = useNavigationSearch();
 const route = useRoute();
+const { locale } = useI18n();
+const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 
 const { data: seoResult } = await useAsyncData(
-  `cmsResponse${route.path}`,
+  `cmsResponse${routePath}`,
   async () => {
     // For client links if the history state contains seo url information we can omit the api call
     if (import.meta.client) {
@@ -24,17 +26,17 @@ const { data: seoResult } = await useAsyncData(
         };
       }
     }
-    const seoUrl = await resolvePath(route.path);
+    const seoUrl = await resolvePath(routePath);
     return seoUrl;
   },
 );
 
 if (!seoResult.value?.foreignKey) {
-  console.error("[...all].vue:", `No data found in API for ${route.path}`);
+  console.error("[...all].vue:", `No data found in API for ${routePath}`);
 
   throw createError({
     statusCode: 404,
-    statusMessage: `No data fetched from API for ${route.path}`,
+    statusMessage: `No data fetched from API for ${routePath}`,
   });
 }
 
