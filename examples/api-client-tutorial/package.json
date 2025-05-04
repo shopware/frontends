@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@tutorialkit/react": "1.4.0",
-    "react": "18.3.1",
+    "react": "19.1.0",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "@tutorialkit/theme": "1.2.1",
     "@tutorialkit/types": "1.1.1",
     "@types/node": "20.14.6",
-    "@types/react": "18.3.3",
+    "@types/react": "19.1.2",
     "astro": "4.16.18",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "5.8.3"
