@@ -79,7 +79,7 @@ const {
     <template v-if="regulationPrice">
       <div class="flex gap-2 justify-end text-gray-500 text-3.5 mb-2">
         {{ translations.listing.previously }}
-        <SharedPrice :value="regulationPrice" />
+        <SwSharedPrice :value="regulationPrice" />
       </div>
     </template>
     <template v-if="!regulationPrice">
