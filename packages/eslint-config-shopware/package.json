@@ -11,8 +11,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "eslint": "9.23.0",
-    "eslint-config-prettier": "10.1.1",
+    "eslint": "9.25.1",
+    "eslint-config-prettier": "10.1.2",
     "typescript-eslint": "8.17.0"
   },
   "devDependencies": {
