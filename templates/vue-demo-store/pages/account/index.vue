@@ -12,7 +12,6 @@ const { getSalutations } = useSalutations();
 const {
   user,
   loadSalutation,
-  userDefaultPaymentMethod,
   userDefaultBillingAddress,
   userDefaultShippingAddress,
 } = useUser();
@@ -73,7 +72,7 @@ onBeforeMount(async () => {
       <h1 class="text-2xl mb-10">{{ $t("account.accountOverviewHeader") }}</h1>
     </div>
     <section class="flex gap-10 mb-10">
-      <div class="w-1/2 flex flex-col">
+      <div class="w-full flex flex-col">
         <h3 class="border-b pb-3 font-bold mb-3">
           {{ $t("account.yourProfile") }}
         </h3>
@@ -87,24 +86,6 @@ onBeforeMount(async () => {
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
             data-testid="my-account-change-profile-button"
             :to="formatLink(`/account/profile`)"
-          >
-            {{ $t("account.change") }}
-          </NuxtLink>
-        </div>
-      </div>
-      <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">
-          {{ $t("account.paymentMethodHeader") }}
-        </h3>
-        <p class="font-medium">
-          {{ userDefaultPaymentMethod?.name }}
-        </p>
-        <p>{{ userDefaultPaymentMethod?.description }}</p>
-        <div class="mt-5">
-          <NuxtLink
-            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
-            data-testid="my-account-change-payment-method-button"
-            :to="formatLink(`/account/payment`)"
           >
             {{ $t("account.change") }}
           </NuxtLink>
