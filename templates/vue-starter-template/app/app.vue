@@ -4,14 +4,7 @@ import { getPrefix } from "../i18n/src/helpers/prefix";
 
 const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
-const contextResponse = await apiClient.invoke("readContext get /context");
-sessionContextData.value = contextResponse.data;
 
-useSessionContext(sessionContextData.value);
-
-const { locale, availableLocales, defaultLocale, localeProperties, messages } =
-  useI18n();
-const router = useRouter();
 const {
   getAvailableLanguages,
   getLanguageCodeFromId,
@@ -19,15 +12,26 @@ const {
   changeLanguage,
   languages: storeLanguages,
 } = useInternationalization();
+
+const [contextResponse, languages] = await Promise.all([
+  apiClient.invoke("readContext get /context"),
+  getAvailableLanguages(),
+]);
+
+sessionContextData.value = contextResponse.data;
+
+useSessionContext(sessionContextData.value);
+
+const { locale, availableLocales, defaultLocale, localeProperties, messages } =
+  useI18n();
+const router = useRouter();
+
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
-const { data: languages } = await useAsyncData("languages", async () => {
-  return await getAvailableLanguages();
-});
 let languageToChangeId: string | null = null;
 
-if (languages.value?.elements.length && router.currentRoute.value.name) {
-  storeLanguages.value = languages.value?.elements;
+if (languages.elements.length && router.currentRoute.value.name) {
+  storeLanguages.value = languages.elements;
   // Prefix from url
   const prefix = getPrefix(
     availableLocales,
