@@ -13,10 +13,13 @@ const {
   languages: storeLanguages,
 } = useInternationalization();
 
-const [contextResponse, languages] = await Promise.all([
+const [contextResponse, languagesResponse] = await Promise.all([
   apiClient.invoke("readContext get /context"),
-  getAvailableLanguages(),
+  useAsyncData("languages", async () => {
+    return await getAvailableLanguages();
+  }),
 ]);
+const languages = unref(languagesResponse.data);
 
 sessionContextData.value = contextResponse.data;
 
@@ -30,7 +33,7 @@ const { languageIdChain, refreshSessionContext } = useSessionContext();
 
 let languageToChangeId: string | null = null;
 
-if (languages.elements.length && router.currentRoute.value.name) {
+if (languages && router.currentRoute.value.name) {
   storeLanguages.value = languages.elements;
   // Prefix from url
   const prefix = getPrefix(
