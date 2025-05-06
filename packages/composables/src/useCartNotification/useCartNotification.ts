@@ -28,10 +28,11 @@ export function useCartNotification(): useCartNotificationReturn {
     if (!errors || Array.isArray(errors)) return;
 
     for (const element of Object.keys(errors)) {
-      if (successCodes.includes(errors[element].messageKey)) {
-        pushSuccess(errors[element].message);
+      const error = errors[element] as Schemas["CartError"];
+      if (successCodes.includes(error.messageKey)) {
+        pushSuccess(error.message);
       } else {
-        pushError(errors[element].message);
+        pushError(error.message);
       }
     }
   };
@@ -47,9 +48,8 @@ export function useCartNotification(): useCartNotificationReturn {
 
     return Object.keys(errors).reduce(
       (acc, element) => {
-        if (!successCodes.includes(errors[element].messageKey))
-          acc.push(errors[element] as Schemas["CartError"]);
-
+        const error = errors[element] as Schemas["CartError"];
+        if (!successCodes.includes(error.messageKey)) acc.push(error);
         return acc;
       },
       [] as Schemas["CartError"][],

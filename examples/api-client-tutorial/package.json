@@ -15,7 +15,7 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@tutorialkit/react": "1.0.0",
+    "@tutorialkit/react": "1.4.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
@@ -24,13 +24,13 @@
     "@astrojs/react": "3.6.3",
     "@biomejs/biome": "1.8.3",
     "@shopware/api-client": "canary",
-    "@tutorialkit/astro": "1.1.1",
+    "@tutorialkit/astro": "1.4.0",
     "@tutorialkit/theme": "1.2.1",
     "@tutorialkit/types": "1.1.1",
     "@types/node": "20.14.6",
     "@types/react": "18.3.3",
     "astro": "4.16.18",
     "prettier-plugin-astro": "0.14.1",
-    "typescript": "5.7.3"
+    "typescript": "5.8.3"
   }
 }

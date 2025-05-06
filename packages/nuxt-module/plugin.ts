@@ -7,6 +7,7 @@ import {
   createShopwareContext,
   defineNuxtPlugin,
   showError,
+  useRequestHeaders,
   useRuntimeConfig,
   useState,
 } from "#imports";
@@ -88,11 +89,22 @@ export default defineNuxtPlugin((NuxtApp) => {
     }
   });
 
+  // Get browser locale in CSR and SSR
+  let browserLocale = "en-US";
+  if (import.meta.client) {
+    browserLocale = navigator.language;
+  } else {
+    browserLocale =
+      useRequestHeaders()["accept-language"]?.split(",")[0]?.split(";")[0] ??
+      "en-US";
+  }
+
   NuxtApp.vueApp.provide("apiClient", apiClient);
   // Shopware context
   const shopwareContext = createShopwareContext(NuxtApp.vueApp, {
     enableDevtools: true,
     devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
+    browserLocale,
   });
   NuxtApp.vueApp.provide("shopware", shopwareContext);
 

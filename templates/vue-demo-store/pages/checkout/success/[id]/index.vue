@@ -63,10 +63,16 @@ const toggleView = () => {
   isExpand.value = !isExpand.value;
 };
 
-const formatDate = (date: Date | string) =>
-  new Date(date).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US",
-  );
+const { browserLocale } = useShopwareContext();
+
+const formatDate = (date: string) =>
+  new Intl.DateTimeFormat(browserLocale, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(new Date(date));
 </script>
 
 <template>

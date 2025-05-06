@@ -19,7 +19,8 @@ sessionContextData.value = contextResponse.data;
 useSessionContext(sessionContextData.value);
 
 const { languageIdChain, refreshSessionContext } = useSessionContext();
-const { locale, availableLocales, defaultLocale, localeProperties } = useI18n();
+const { locale, availableLocales, defaultLocale, localeProperties, messages } =
+  useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -64,7 +65,9 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : defaultLocale;
+  locale.value = (
+    prefix ? prefix : defaultLocale
+  ) as keyof typeof messages.value;
 }
 </script>
 

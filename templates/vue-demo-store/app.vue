@@ -32,21 +32,8 @@ if (config.public.broadcasting) {
 //   }
 // );
 
-// read the locale/lang code from accept-language header (i.e. en, en-GB or de-DE)
-// and set configuration for price formatting globally
-const headers = useRequestHeaders();
-// Extract the first (with highest priority order) locale or lang code from accept-language header
-// for example: "en-US;q=0.7,en;q=0.3" will return "en-US"
-const localeFromHeader = headers?.["accept-language"]
-  ?.split(",")
-  ?.map(
-    (languageConfig) => languageConfig.match(/^([a-z]{2}(?:-[A-Z]{2})?)/)?.[0],
-  )
-  .find(Boolean);
-
 usePrice({
   currencyCode: sessionContextData.value?.currency?.isoCode || "",
-  localeCode: localeFromHeader,
 });
 
 useSessionContext(sessionContextData.value);
@@ -59,6 +46,7 @@ useAddress();
 
 const { locale, availableLocales, defaultLocale, localeProperties, messages } =
   useI18n();
+
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -83,7 +71,11 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  provide("cmsTranslations", messages.value[prefix || defaultLocale] ?? {});
+  provide(
+    "cmsTranslations",
+    messages.value[(prefix as keyof typeof messages.value) || defaultLocale] ??
+      {},
+  );
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {
@@ -109,7 +101,9 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : defaultLocale;
+  locale.value = (
+    prefix ? prefix : defaultLocale
+  ) as keyof typeof messages.value;
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }

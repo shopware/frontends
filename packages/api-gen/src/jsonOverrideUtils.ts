@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { createDefu } from "defu";
 import json5 from "json5";
 import { ofetch } from "ofetch";
 import c from "picocolors";
@@ -109,8 +110,8 @@ export async function resolveSinglePath<T = JSON>(
       ),
       error,
     );
-    return undefined;
   }
+  return undefined;
 }
 
 export async function loadJsonOverrides({
@@ -119,12 +120,18 @@ export async function loadJsonOverrides({
 }: {
   paths?: string | string[];
   apiType: string;
-}): Promise<OverridesSchema | undefined> {
+}): Promise<OverridesSchema> {
   const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
+
+  const localNodePath = resolve(
+    `node_modules/@shopware/api-client/api-types/${apiType}ApiSchema.overrides.json`,
+  );
 
   const fallbackPath = existsSync(localPath)
     ? localPath
-    : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
+    : existsSync(localNodePath)
+      ? localNodePath
+      : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
 
   const patchesToResolve: string[] = Array.isArray(paths)
     ? paths
@@ -143,7 +150,7 @@ export async function loadJsonOverrides({
       patchesToResolve.map(resolveSinglePath),
     );
     // merge results from correctly settled promises
-    return extendedDefu(
+    return mergeJsonOverrides(
       {},
       ...results
         .filter((result) => result.status === "fulfilled")
@@ -159,6 +166,33 @@ export async function loadJsonOverrides({
     return {};
   }
 }
+
+export const mergeJsonOverrides = createDefu((obj, key, value) => {
+  if (Array.isArray(obj[key]) && Array.isArray(value)) {
+    // concat arrays but skip duplicates
+    // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
+    obj[key] = [...new Set([...obj[key], ...value])].sort();
+    return true;
+  }
+
+  // if one is array and the second not combine them in array
+  if (Array.isArray(obj[key]) && !Array.isArray(value) && value) {
+    // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
+    obj[key] = [...new Set([value, ...obj[key]])].sort();
+    return true;
+  }
+  if (obj[key] && !Array.isArray(obj[key]) && Array.isArray(value)) {
+    // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
+    obj[key] = [...new Set([...value, obj[key]])].sort();
+    return true;
+  }
+
+  // if there is no key in object, add it
+  if (obj[key] === undefined) {
+    obj[key] = extendedDefu(value, value);
+  }
+  return false;
+});
 
 export function displayPatchingSummary({
   todosToFix,

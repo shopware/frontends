@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.6.8.0
+ * Shopware API version: 6.6.10.0
  *
  */
 type GenericRecord =
@@ -493,6 +493,8 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    /** Runtime field, cannot be used as part of the criteria. */
+    default?: boolean;
     id: string;
     name: string;
     permissions?: GenericRecord[];
@@ -635,6 +637,7 @@ export type Schemas = {
     languageId: string;
     lastName: string;
     role?: components["schemas"]["B2bComponentsRole"];
+    status?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -1275,22 +1278,12 @@ export type Schemas = {
     };
     id?: string;
     mobileBehavior?: string;
+    name?: string;
     page?: components["schemas"]["CmsPage"];
     pageId: string;
     /** Format: int64 */
     position: number;
     sizingMode?: string;
-    translated: {
-      backgroundColor: string;
-      backgroundMediaId: string;
-      backgroundMediaMode: string;
-      cmsPageVersionId: string;
-      cssClass: string;
-      mobileBehavior: string;
-      pageId: string;
-      sizingMode: string;
-      type: string;
-    };
     /** @enum {string} */
     type: "default" | "sidebar";
     /** Format: date-time */
@@ -1953,6 +1946,8 @@ export type Schemas = {
     customFields?: GenericRecord;
     deepLinkCode: string;
     dependentDocuments?: components["schemas"]["Document"][];
+    documentA11yMediaFile?: components["schemas"]["Media"];
+    documentA11yMediaFileId?: string;
     documentMediaFile?: components["schemas"]["Media"];
     documentMediaFileId?: string;
     documentNumber?: string;
@@ -2091,6 +2086,24 @@ export type Schemas = {
     productId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+  };
+  DsrCmsSlide: {
+    cmsSection?: components["schemas"]["CmsSection"];
+    cmsSectionId: string;
+    cmsSectionVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    slideName: string;
+    translated: {
+      cmsSectionId: string;
+      cmsSectionVersionId: string;
+      slideName: string;
+      versionId: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    versionId?: string;
   };
   DsrInteraction: {
     /** Format: date-time */
@@ -2974,6 +2987,21 @@ export type Schemas = {
     deliveries?: components["schemas"]["OrderDelivery"][];
     documents: components["schemas"]["Document"][];
     extensions?: {
+      orderEmployee?: {
+        data?: {
+          /** @example 5ea451c08a87db806089c4031601c29a */
+          id?: string;
+          /** @example b2b_order_employee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/orderEmployee
+           */
+          related?: string;
+        };
+      };
       quote?: {
         data?: {
           /** @example 7a674c327bfa07f7c1204fb38ca6ef3b */
@@ -5712,6 +5740,10 @@ export type Schemas = {
       displayGross?: boolean;
       name?: string;
     };
+    languageInfo: {
+      localeCode: string;
+      name: string;
+    };
     paymentMethod?: components["schemas"]["PaymentMethod"];
     salesChannel: components["schemas"]["SalesChannel"];
     shippingLocation?: {
@@ -7758,6 +7790,1390 @@ export type Schemas = {
       components["schemas"]["pagination"];
     meta?: components["schemas"]["meta"];
   };
+  swag_paypal_v1_capture: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    is_final_capture: boolean;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    reason_code: string;
+    state: string;
+    transaction_fee: components["schemas"]["swag_paypal_v1_capture_transaction_fee"];
+    update_time: string;
+  };
+  swag_paypal_v1_capture_transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
+  swag_paypal_v1_client_token: {
+    client_token: string;
+    /**
+     * Format: date-time
+     * Calculated expiration date
+     */
+    expire_date_time: string;
+    /** The lifetime of the access token, in seconds. */
+    expires_in: number;
+  };
+  swag_paypal_v1_common_address: {
+    city: string;
+    country_code: string;
+    line1: string;
+    line2: string | null;
+    phone: string | null;
+    postal_code: string;
+    state: string | null;
+  };
+  swag_paypal_v1_common_amount: {
+    currency: string;
+    details: components["schemas"]["swag_paypal_v1_common_details"];
+    total: string;
+  };
+  swag_paypal_v1_common_details: {
+    discount: string;
+    handling_fee: string;
+    insurance: string;
+    shipping: string;
+    shipping_discount: string;
+    subtotal: string;
+    tax: string;
+  };
+  swag_paypal_v1_common_link: {
+    enc_type: string | null;
+    href: string;
+    method: string;
+    rel: string;
+  };
+  swag_paypal_v1_common_money: {
+    currency_code: string;
+    value: string;
+  };
+  swag_paypal_v1_common_value: {
+    currency: string;
+    value: string;
+  };
+  swag_paypal_v1_create_webhooks: {
+    event_types: components["schemas"]["swag_paypal_v1_create_webhooks_event_type"][];
+    url: string;
+  };
+  swag_paypal_v1_create_webhooks_event_type: {
+    name: string;
+  };
+  swag_paypal_v1_disputes: {
+    items: components["schemas"]["swag_paypal_v1_disputes_item"][] | null;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+  };
+  swag_paypal_v1_disputes_common_buyer: {
+    name: string;
+  };
+  swag_paypal_v1_disputes_common_item: {
+    dispute_amount: components["schemas"]["swag_paypal_v1_common_money"];
+    item_description: string;
+    item_id: string;
+    item_quantity: string;
+    notes: string;
+    partner_transaction_id: string;
+    reason: string;
+  };
+  swag_paypal_v1_disputes_common_product_details: {
+    product_received: string;
+    product_received_time: string;
+    purchase_url: string;
+    return_details: components["schemas"]["swag_paypal_v1_disputes_common_return_details"];
+    sub_reasons: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
+  };
+  swag_paypal_v1_disputes_common_return_details: {
+    mode: string;
+    receipt: boolean;
+    return_confirmation_number: string;
+    return_time: string;
+    returned: boolean;
+  };
+  swag_paypal_v1_disputes_common_seller: {
+    email: string;
+    merchant_id: string;
+    name: string;
+  };
+  swag_paypal_v1_disputes_common_service_details: {
+    description: string;
+    note: string;
+    purchase_url: string;
+    service_started: string;
+    sub_reasons: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
+  };
+  swag_paypal_v1_disputes_common_sub_reason: {
+    sub_reason: string;
+  };
+  swag_paypal_v1_disputes_common_transaction: {
+    buyer: components["schemas"]["swag_paypal_v1_disputes_common_buyer"];
+    buyer_transaction_id: string;
+    create_time: string;
+    custom: string;
+    gross_amount: components["schemas"]["swag_paypal_v1_common_money"];
+    invoice_number: string;
+    items: components["schemas"]["swag_paypal_v1_disputes_common_item"][];
+    reference_id: string;
+    seller: components["schemas"]["swag_paypal_v1_disputes_common_seller"];
+    seller_transaction_id: string;
+    transaction_status: string;
+  };
+  swag_paypal_v1_disputes_item: {
+    adjudications: components["schemas"]["swag_paypal_v1_disputes_item_adjudication"][];
+    buyer_response_due_date: string | null;
+    communication_details:
+      | components["schemas"]["swag_paypal_v1_disputes_item_communication_details"]
+      | null;
+    create_time: string;
+    dispute_amount: components["schemas"]["swag_paypal_v1_disputes_item_dispute_amount"];
+    dispute_channel: string | null;
+    dispute_id: string;
+    dispute_life_cycle_stage: string;
+    dispute_outcome:
+      | components["schemas"]["swag_paypal_v1_disputes_item_dispute_outcome"]
+      | null;
+    /** @enum {string|null} */
+    dispute_state:
+      | "REQUIRED_ACTION"
+      | "REQUIRED_OTHER_PARTY_ACTION"
+      | "UNDER_PAYPAL_REVIEW"
+      | "RESOLVED"
+      | "OPEN_INQUIRIES"
+      | "APPEALABLE"
+      | null;
+    disputed_transactions:
+      | components["schemas"]["swag_paypal_v1_disputes_item_disputed_transaction"][]
+      | null;
+    evidences:
+      | components["schemas"]["swag_paypal_v1_disputes_item_evidence"][]
+      | null;
+    extensions: components["schemas"]["swag_paypal_v1_disputes_item_extensions"];
+    external_reason_code: string | null;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    messages:
+      | components["schemas"]["swag_paypal_v1_disputes_item_message"][]
+      | null;
+    money_movements: components["schemas"]["swag_paypal_v1_disputes_item_money_movement"][];
+    offer: components["schemas"]["swag_paypal_v1_disputes_item_offer"] | null;
+    partner_actions:
+      | components["schemas"]["swag_paypal_v1_disputes_item_partner_action"][]
+      | null;
+    reason: string;
+    refund_details:
+      | components["schemas"]["swag_paypal_v1_disputes_item_refund_details"]
+      | null;
+    seller_response_due_date: string | null;
+    status: string;
+    supporting_info:
+      | components["schemas"]["swag_paypal_v1_disputes_item_supporting_info"][]
+      | null;
+    update_time: string;
+  };
+  swag_paypal_v1_disputes_item_adjudication: {
+    adjudication_time: string;
+    dispute_life_cycle_stage: string;
+    reason: string;
+    type: string;
+  };
+  swag_paypal_v1_disputes_item_communication_details: {
+    email: string;
+    note: string;
+    time_posted: string;
+  };
+  swag_paypal_v1_disputes_item_dispute_amount: components["schemas"]["swag_paypal_v1_common_money"];
+  swag_paypal_v1_disputes_item_dispute_outcome: {
+    amount_refunded: components["schemas"]["swag_paypal_v1_common_money"];
+    outcome_code: string;
+  };
+  swag_paypal_v1_disputes_item_disputed_transaction: components["schemas"]["swag_paypal_v1_disputes_common_transaction"] & {
+    seller_protection_eligible: boolean;
+  };
+  swag_paypal_v1_disputes_item_evidence: {
+    documents: components["schemas"]["swag_paypal_v1_disputes_item_evidence_document"][];
+    evidence_info: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info"];
+    evidence_type: string;
+    item_id: string;
+    notes: string;
+  };
+  swag_paypal_v1_disputes_item_evidence_document: {
+    name: string;
+  };
+  swag_paypal_v1_disputes_item_evidence_evidence_info: {
+    refund_ids: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info_refund_id"][];
+    tracking_info: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info_tracking_info"][];
+  };
+  swag_paypal_v1_disputes_item_evidence_evidence_info_refund_id: {
+    refund_id: string;
+  };
+  swag_paypal_v1_disputes_item_evidence_evidence_info_tracking_info: {
+    carrier_name: string;
+    carrier_name_other: string;
+    tracking_number: string;
+    tracking_url: string;
+  };
+  swag_paypal_v1_disputes_item_extensions: {
+    billing_dispute_properties: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties"];
+    buyer_contacted_channel: string;
+    buyer_contacted_time: string;
+    merchandize_dispute_properties: components["schemas"]["swag_paypal_v1_disputes_item_extensions_merchandize_dispute_properties"];
+    merchant_contacted: boolean;
+    merchant_contacted_mode: string;
+    merchant_contacted_outcome: string;
+    merchant_contacted_time: string;
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties: {
+    canceled_recurring_billing: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing"];
+    credit_not_processed: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed"];
+    duplicate_transaction: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction"];
+    incorrect_transaction_amount: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount"];
+    payment_by_other_means: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means"];
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing: {
+    cancellation_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
+    expected_refund: components["schemas"]["swag_paypal_v1_common_money"];
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details: {
+    merchant_agreed_refund: boolean;
+    merchant_agreed_refund_time: string;
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details: {
+    cancellation_date: string;
+    cancellation_mode: string;
+    cancellation_number: string;
+    cancelled: boolean;
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed: {
+    agreed_refund_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details"];
+    cancellation_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
+    expected_refund: components["schemas"]["swag_paypal_v1_common_money"];
+    issue_type: string;
+    product_details: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
+    service_details: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction: {
+    original_transaction: components["schemas"]["swag_paypal_v1_disputes_common_transaction"];
+    received_duplicate: boolean;
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount: {
+    correct_transaction_amount: components["schemas"]["swag_paypal_v1_common_money"];
+    correct_transaction_time: string;
+  };
+  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means: {
+    charge_different_from_original: boolean;
+    payment_instrument_suffix: string;
+    payment_method: string;
+    received_duplicate: boolean;
+  };
+  swag_paypal_v1_disputes_item_extensions_merchandize_dispute_properties: {
+    issue_type: string;
+    product_details: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
+    service_details: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
+  };
+  swag_paypal_v1_disputes_item_message: {
+    content: string;
+    posted_by: string;
+    time_posted: string;
+  };
+  swag_paypal_v1_disputes_item_money_movement: {
+    affected_party: string;
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    initiated_time: string;
+    reason: string;
+    type: string;
+  };
+  swag_paypal_v1_disputes_item_offer: {
+    buyer_requested_amount: components["schemas"]["swag_paypal_v1_common_money"];
+    history:
+      | components["schemas"]["swag_paypal_v1_disputes_item_offer_history"][]
+      | null;
+    offer_type: string;
+    seller_offered_amount: components["schemas"]["swag_paypal_v1_common_money"];
+  };
+  swag_paypal_v1_disputes_item_offer_history: {
+    actor: string;
+    event_type: string;
+    offer_time: string;
+    offer_type: string;
+  };
+  swag_paypal_v1_disputes_item_partner_action: {
+    amount: components["schemas"]["swag_paypal_v1_common_money"];
+    create_time: string;
+    due_time: string;
+    id: string;
+    name: string;
+    status: string;
+    update_time: string;
+  };
+  swag_paypal_v1_disputes_item_refund_details: {
+    allowed_refund_amount: components["schemas"]["swag_paypal_v1_common_money"];
+  };
+  swag_paypal_v1_disputes_item_supporting_info: {
+    notes: string;
+    provided_time: string;
+    source: string;
+  };
+  swag_paypal_v1_do_void: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    state: string;
+    update_time: string;
+  };
+  swag_paypal_v1_merchant_integrations: {
+    capabilities:
+      | components["schemas"]["swag_paypal_v1_merchant_integrations_capability"][]
+      | null;
+    granted_permissions: string[];
+    legal_name: string;
+    merchant_id: string;
+    oauth_integrations: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration"][];
+    payments_receivable: boolean;
+    primary_email: string;
+    primary_email_confirmed: boolean;
+    products: components["schemas"]["swag_paypal_v1_merchant_integrations_product"][];
+    tracking_id: string;
+  };
+  swag_paypal_v1_merchant_integrations_capability: {
+    name: string;
+    status: string;
+  };
+  swag_paypal_v1_merchant_integrations_oauth_integration: {
+    integration_method?: string;
+    integration_type?: string;
+    oauth_third_party?: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration_oauth_third_party"][];
+    status?: string;
+  };
+  swag_paypal_v1_merchant_integrations_oauth_integration_oauth_third_party: {
+    access_token?: string;
+    merchant_client_id?: string;
+    partner_client_id?: string;
+    refresh_token?: string;
+    scopes: string[];
+  };
+  swag_paypal_v1_merchant_integrations_product: {
+    capabilities?: string[];
+    name: string;
+    vetting_status?: string;
+  };
+  swag_paypal_v1_oauth_credentials: {
+    restId: string;
+    restSecret: string;
+    url: string;
+  };
+  swag_paypal_v1_patch: {
+    /** @enum {string} */
+    op: "add" | "replace";
+    path: string;
+    value: string | Record<string, never>[];
+  };
+  swag_paypal_v1_payment: {
+    application_context: components["schemas"]["swag_paypal_v1_payment_application_context"];
+    cart: string;
+    create_time: string;
+    id: string;
+    /**
+     * @default sale
+     * @enum {string}
+     */
+    intent?: "sale" | "authorize" | "order";
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    payer: components["schemas"]["swag_paypal_v1_payment_payer"];
+    payment_instruction:
+      | components["schemas"]["swag_paypal_v1_payment_payment_instruction"]
+      | null;
+    redirect_urls: components["schemas"]["swag_paypal_v1_payment_redirect_urls"];
+    state: string;
+    transactions: components["schemas"]["swag_paypal_v1_payment_transaction"][];
+    update_time: string;
+  };
+  swag_paypal_v1_payment_application_context: {
+    brand_name: string;
+    /** @enum {string} */
+    landing_page: "Login" | "Billing";
+    locale: string;
+    /** @default SET_PROVIDED_ADDRESS */
+    shipping_preference?: string;
+    /** @default commit */
+    user_action?: string;
+  };
+  swag_paypal_v1_payment_payer: {
+    external_selected_funding_instrument_type: string;
+    payer_info: components["schemas"]["swag_paypal_v1_payment_payer_payer_info"];
+    payment_method: string;
+    status: string;
+  };
+  swag_paypal_v1_payment_payer_execute_payer_info: {
+    payer_id: string;
+  };
+  swag_paypal_v1_payment_payer_payer_info: components["schemas"]["swag_paypal_v1_payment_payer_execute_payer_info"] & {
+    billing_address:
+      | components["schemas"]["swag_paypal_v1_common_address"]
+      | null;
+    country_code: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    shipping_address: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_address"];
+  };
+  swag_paypal_v1_payment_payment_instruction: {
+    amount: components["schemas"]["swag_paypal_v1_common_value"];
+    instruction_type: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    payment_due_date: string;
+    recipient_banking_instruction: components["schemas"]["swag_paypal_v1_payment_payment_instruction_recipient_banking_instruction"];
+    reference_number: string;
+  };
+  swag_paypal_v1_payment_payment_instruction_recipient_banking_instruction: {
+    account_holder_name: string;
+    bank_identifier_code: string;
+    bank_name: string;
+    international_bank_account_number: string;
+  };
+  swag_paypal_v1_payment_redirect_urls: {
+    cancel_url: string;
+    return_url: string;
+  };
+  swag_paypal_v1_payment_transaction: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    custom: string;
+    description: string;
+    invoice_number: string | null;
+    item_list:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_item_list"]
+      | null;
+    payee: components["schemas"]["swag_paypal_v1_payment_transaction_payee"];
+    related_resources: components["schemas"]["swag_paypal_v1_payment_transaction_related_resource"][];
+    soft_descriptor: string;
+  };
+  swag_paypal_v1_payment_transaction_item_list: {
+    items: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_item"][];
+    shipping_address: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_address"];
+    shipping_options: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_option"][];
+    shipping_phone_number: string;
+  };
+  swag_paypal_v1_payment_transaction_item_list_item: {
+    currency: string;
+    name: string;
+    price: string;
+    quantity: number;
+    sku: string | null;
+    tax: string;
+  };
+  swag_paypal_v1_payment_transaction_item_list_shipping_address: components["schemas"]["swag_paypal_v1_common_address"] & {
+    recipient_name: string;
+  };
+  swag_paypal_v1_payment_transaction_item_list_shipping_option: unknown;
+  swag_paypal_v1_payment_transaction_payee: {
+    email: string;
+    merchant_id: string;
+  };
+  swag_paypal_v1_payment_transaction_related_resource: {
+    authorization:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_authorization"]
+      | null;
+    capture:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_capture"]
+      | null;
+    order:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_order"]
+      | null;
+    refund:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_refund"]
+      | null;
+    sale:
+      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_sale"]
+      | null;
+  };
+  swag_paypal_v1_payment_transaction_related_resource_authorization: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    reason_code: string;
+    receipt_id: string;
+    state: string;
+    update_time: string;
+    valid_until: string;
+  };
+  swag_paypal_v1_payment_transaction_related_resource_capture: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    custom: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    state: string;
+    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
+    update_time: string;
+  };
+  swag_paypal_v1_payment_transaction_related_resource_order: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    reason_code: string;
+    receipt_id: string;
+    state: string;
+    update_time: string;
+  };
+  swag_paypal_v1_payment_transaction_related_resource_refund: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    capture_id: string;
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    sale_id: string;
+    state: string;
+    update_time: string;
+  };
+  swag_paypal_v1_payment_transaction_related_resource_sale: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    state: string;
+    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
+    update_time: string;
+  };
+  swag_paypal_v1_plan: {
+    billing_cycles: components["schemas"]["swag_paypal_v1_plan_billing_cycle"][];
+    description: string | null;
+    name: string;
+    payment_preferences: components["schemas"]["swag_paypal_v1_plan_payment_preferences"];
+    product_id: string;
+    status: string;
+    taxes: components["schemas"]["swag_paypal_v1_plan_taxes"];
+  };
+  swag_paypal_v1_plan_billing_cycle: {
+    frequency: components["schemas"]["swag_paypal_v1_plan_billing_cycle_frequency"];
+    pricing_scheme: components["schemas"]["swag_paypal_v1_plan_billing_cycle_pricing_scheme"];
+    sequence: number;
+    tenure_type: string;
+    total_cycles: number;
+  };
+  swag_paypal_v1_plan_billing_cycle_frequency: {
+    interval_count: number;
+    interval_unit: string;
+  };
+  swag_paypal_v1_plan_billing_cycle_pricing_scheme: {
+    fixed_price: components["schemas"]["swag_paypal_v1_common_money"];
+  };
+  swag_paypal_v1_plan_payment_preferences: {
+    auto_bill_outstanding: boolean;
+    payment_failure_threshold: number;
+  };
+  swag_paypal_v1_plan_taxes: {
+    inclusive: boolean;
+    percentage: string;
+  };
+  swag_paypal_v1_product: {
+    description: string;
+    name: string;
+    type: string;
+  };
+  swag_paypal_v1_refund: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    capture_id: string;
+    create_time: string;
+    description: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    parent_payment: string;
+    reason: string;
+    refund_from_received_amount: components["schemas"]["swag_paypal_v1_common_value"];
+    refund_from_transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
+    sale_id: string;
+    state: string;
+    total_refunded_amount: components["schemas"]["swag_paypal_v1_common_value"];
+    update_time: string;
+  };
+  swag_paypal_v1_shipping: {
+    trackers: components["schemas"]["swag_paypal_v1_shipping_tracker"][];
+  };
+  swag_paypal_v1_shipping_tracker: {
+    carrier: string;
+    notify_buyer: boolean;
+    /** Pattern: '2022-08-15' */
+    shipment_date: string;
+    status: string;
+    tracking_number: string;
+    transaction_id: string;
+  };
+  swag_paypal_v1_subscription: {
+    application_context: components["schemas"]["swag_paypal_v1_subscription_application_context"];
+    billing_info:
+      | components["schemas"]["swag_paypal_v1_subscription_billing_info"]
+      | null;
+    create_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    plan_id: string;
+    quantity: string;
+    shipping_amount: components["schemas"]["swag_paypal_v1_common_money"];
+    start_time: string;
+    status: string;
+    status_update_time: string;
+    subscriber: components["schemas"]["swag_paypal_v1_subscription_subscriber"];
+    update_time: string;
+  };
+  swag_paypal_v1_subscription_application_context: {
+    brand_name: string;
+    cancel_url: string;
+    locale: string;
+    return_url: string;
+    /** @default SET_PROVIDED_ADDRESS */
+    shipping_preference?: string;
+    /** @default SUBSCRIBE_NOW */
+    user_action?: string;
+  };
+  swag_paypal_v1_subscription_billing_info: {
+    cycle_executions: components["schemas"]["swag_paypal_v1_subscription_billing_info_cycle_execution"][];
+    failed_payments_count: number;
+    last_payment: components["schemas"]["swag_paypal_v1_subscription_billing_info_last_payment"];
+    next_billing_time: string | null;
+    outstanding_balance: components["schemas"]["swag_paypal_v1_subscription_billing_info_outstanding_balance"];
+  };
+  swag_paypal_v1_subscription_billing_info_cycle_execution: {
+    cycles_completed: number;
+    cycles_remaining: number;
+    sequence: number;
+    tenure_type: string;
+    total_cycles: number;
+  };
+  swag_paypal_v1_subscription_billing_info_last_payment: {
+    amount: components["schemas"]["swag_paypal_v1_common_money"];
+    time: string;
+  };
+  swag_paypal_v1_subscription_billing_info_outstanding_balance: components["schemas"]["swag_paypal_v1_common_money"];
+  swag_paypal_v1_subscription_subscriber: {
+    email_address: string;
+    name: components["schemas"]["swag_paypal_v1_subscription_subscriber_name"];
+    payer_id: string;
+    shipping_address:
+      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address"]
+      | null;
+  };
+  swag_paypal_v1_subscription_subscriber_name: {
+    given_name: string;
+    surname: string;
+  };
+  swag_paypal_v1_subscription_subscriber_shipping_address: {
+    address:
+      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address_address"]
+      | null;
+    name:
+      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address_name"]
+      | null;
+  };
+  swag_paypal_v1_subscription_subscriber_shipping_address_address: {
+    address_line_1: string | null;
+    address_line_2: string | null;
+    admin_area_1: string | null;
+    admin_area_2: string | null;
+    country_code: string;
+    postal_code: string | null;
+  };
+  swag_paypal_v1_subscription_subscriber_shipping_address_name: {
+    full_name: string;
+  };
+  swag_paypal_v1_token: {
+    /** The access token issued by PayPal. After the access token
+     *     expires (see $expiresIn), you must request a new access token. */
+    access_token: string;
+    app_id: string;
+    /**
+     * Format: date-time
+     * Calculated expiration date
+     */
+    expire_date_time: string;
+    /** The lifetime of the access token, in seconds. */
+    expires_in: number;
+    id_token: string | null;
+    nonce: string;
+    /** Scopes expressed in the form of resource URL endpoints. The value of the scope parameter
+     *     is expressed as a list of space-delimited, case-sensitive strings. */
+    scope: string;
+    /** The type of the token issued as described in OAuth2.0 RFC6749,
+     *     Section 7.1. Value is case insensitive. */
+    token_type: string;
+  };
+  swag_paypal_v1_webhook: {
+    create_time: string;
+    event_type: string;
+    event_version: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    resource:
+      | (
+          | components["schemas"]["swag_paypal_v3_payment_token"]
+          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_authorization"]
+          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture"]
+          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund"]
+          | components["schemas"]["swag_paypal_v1_webhook_resource"]
+          | components["schemas"]["swag_paypal_v1_subscription"]
+        )
+      | null;
+    resource_type: string;
+    resource_version: string;
+    summary: string;
+  };
+  swag_paypal_v1_webhook_resource: {
+    amount: components["schemas"]["swag_paypal_v1_common_amount"];
+    billing_agreement_id: string | null;
+    clearing_time: string;
+    create_time: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["swag_paypal_v1_common_link"][];
+    merchant_id: string | null;
+    parent_payment: string | null;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    refund_reason_code: string | null;
+    sale_id: string | null;
+    state: string;
+    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
+    update_time: string;
+  };
+  swag_paypal_v2_common_address: {
+    /** The first line of the address. For example, number or street. For example, 173 Drury Lane.
+     *     Required for data entry and compliance and risk checks. Must contain the full address. */
+    address_line_1: string | null;
+    /** The second line of the address. For example, suite or apartment number. */
+    address_line_2: string | null;
+    /** The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision.
+     *     Format for postal delivery. For example, CA and not California. */
+    admin_area_1: string | null;
+    /** A city, town, or village. Smaller than $adminArea1 */
+    admin_area_2: string | null;
+    country_code: string;
+    postal_code: string | null;
+  };
+  swag_paypal_v2_common_link: {
+    enc_type: string | null;
+    href: string;
+    method: string;
+    rel: string;
+  };
+  swag_paypal_v2_common_money: {
+    currency_code: string;
+    value: string;
+  };
+  swag_paypal_v2_common_name: {
+    given_name: string;
+    surname: string;
+  };
+  swag_paypal_v2_common_phone_number: {
+    country_code: string;
+    national_number: string;
+  };
+  swag_paypal_v2_order: {
+    application_context: components["schemas"]["swag_paypal_v2_order_application_context"];
+    create_time: string;
+    id: string;
+    intent: string;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    payer: components["schemas"]["swag_paypal_v2_order_payer"];
+    payment_source:
+      | components["schemas"]["swag_paypal_v2_order_payment_source"]
+      | null;
+    processing_instruction: string;
+    purchase_units:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit"][]
+      | null;
+    status: string;
+    update_time: string;
+  };
+  swag_paypal_v2_order_application_context: {
+    brand_name: string;
+    cancel_url: string;
+    /**
+     * @default NO_PREFERENCE
+     * @enum {string}
+     */
+    landing_page?: "LOGIN" | "BILLING" | "NO_PREFERENCE";
+    return_url: string;
+    /**
+     * @default SET_PROVIDED_ADDRESS
+     * @enum {string}
+     */
+    shipping_preference?:
+      | "SET_PROVIDED_ADDRESS"
+      | "NO_SHIPPING"
+      | "GET_FROM_FILE";
+    /**
+     * @default PAY_NOW
+     * @enum {string}
+     */
+    user_action?: "CONTINUE" | "PAY_NOW";
+  };
+  swag_paypal_v2_order_payer: {
+    address: components["schemas"]["swag_paypal_v2_common_address"];
+    email_address: string;
+    name: components["schemas"]["swag_paypal_v2_common_name"];
+    payer_id: string;
+    phone:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_phone"]
+      | null;
+  };
+  swag_paypal_v2_order_payment_source: {
+    apple_pay: components["schemas"]["swag_paypal_v2_order_payment_source_apple_pay"];
+    bancontact:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_bancontact"]
+      | null;
+    blik:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_blik"]
+      | null;
+    boletobancario:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario"]
+      | null;
+    card:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
+      | null;
+    eps:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_eps"]
+      | null;
+    giropay:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_giropay"]
+      | null;
+    google_pay:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_google_pay"]
+      | null;
+    ideal:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_ideal"]
+      | null;
+    multibanco:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_multibanco"]
+      | null;
+    my_bank:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_my_bank"]
+      | null;
+    oxxo:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_oxxo"]
+      | null;
+    p24:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_p24"]
+      | null;
+    pay_upon_invoice:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_pay_upon_invoice"]
+      | null;
+    paypal:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_paypal"]
+      | null;
+    sofort:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_sofort"]
+      | null;
+    token:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_token"]
+      | null;
+    trustly:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_trustly"]
+      | null;
+    venmo:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_venmo"]
+      | null;
+  };
+  swag_paypal_v2_order_payment_source_apple_pay: {
+    attributes:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    card:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
+      | null;
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_bancontact: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_blik: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_boletobancario: {
+    billing_address: components["schemas"]["swag_paypal_v2_common_address"];
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    expiry_date: string;
+    name: string;
+    tax_info: components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario_tax_info"];
+  };
+  swag_paypal_v2_order_payment_source_boletobancario_tax_info: {
+    tax_id: string;
+    tax_id_type: string;
+  };
+  swag_paypal_v2_order_payment_source_card: {
+    attributes:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    authentication_result:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card_authentication_result"]
+      | null;
+    billing_address:
+      | components["schemas"]["swag_paypal_v2_common_address"]
+      | null;
+    brand: string;
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    last_digits: string;
+    name: string;
+    stored_credential:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card_stored_credential"]
+      | null;
+    type: string;
+    vault_id: string;
+  };
+  swag_paypal_v2_order_payment_source_card_authentication_result: {
+    liability_shift: string;
+    three_d_secure:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card_authentication_result_3d_secure"]
+      | null;
+  };
+  swag_paypal_v2_order_payment_source_card_authentication_result_3d_secure: {
+    authentication_status: string;
+    enrollment_status: string;
+  };
+  swag_paypal_v2_order_payment_source_card_stored_credential: {
+    /** @enum {string} */
+    payment_initiator: "MERCHANT" | "CUSTOMER";
+    /** @enum {string} */
+    payment_type: "RECURRING" | "ONE_TIME" | "UNSCHEDULED";
+    previous_network_transaction_reference: string;
+    /** @enum {string} */
+    usage: "DERIVED" | "FIRST" | "SUBSEQUENT";
+  };
+  swag_paypal_v2_order_payment_source_common_attributes: {
+    customer: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"];
+    vault: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_vault"];
+    verification: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_verification"];
+  };
+  swag_paypal_v2_order_payment_source_common_attributes_customer: {
+    id: string;
+  };
+  swag_paypal_v2_order_payment_source_common_attributes_vault: {
+    confirm_payment_token: string;
+    customer:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"]
+      | null;
+    id: string | null;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    permit_multiple_payment_tokens: boolean;
+    status: string;
+    store_in_vault: string;
+    usage_type: string;
+  };
+  swag_paypal_v2_order_payment_source_common_attributes_verification: {
+    method: string;
+  };
+  swag_paypal_v2_order_payment_source_common_experience_context: {
+    brand_name: string;
+    cancel_url: string;
+    /** Only: PUI */
+    customer_service_instructions: string[];
+    /**
+     * @default NO_PREFERENCE
+     * @enum {string}
+     */
+    landing_page?: "LOGIN" | "GUEST_CHECKOUT" | "NO_PREFERENCE";
+    locale: string;
+    logo_url: string;
+    /**
+     * Only: PayPal Wallet
+     * @enum {string}
+     */
+    payment_method_preference: "UNRESTRICTED" | "IMMEDIATE_PAYMENT_REQUIRED";
+    return_url: string;
+    /**
+     * @default SET_PROVIDED_ADDRESS
+     * @enum {string}
+     */
+    shipping_preference?:
+      | "SET_PROVIDED_ADDRESS"
+      | "NO_SHIPPING"
+      | "GET_FROM_FILE";
+    /**
+     * @default PAY_NOW
+     * @enum {string}
+     */
+    user_action?: "CONTINUE" | "PAY_NOW";
+  };
+  swag_paypal_v2_order_payment_source_common_phone: {
+    phone_number: components["schemas"]["swag_paypal_v2_common_phone_number"];
+    phone_type: string;
+  };
+  swag_paypal_v2_order_payment_source_eps: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_giropay: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_google_pay: {
+    attributes:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    card:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
+      | null;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+  };
+  swag_paypal_v2_order_payment_source_ideal: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_multibanco: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_my_bank: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_oxxo: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_p24: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_pay_upon_invoice: {
+    billing_address: components["schemas"]["swag_paypal_v2_common_address"];
+    birth_date: string;
+    deposit_bank_details: components["schemas"]["swag_paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details"];
+    email: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["swag_paypal_v2_common_name"];
+    payment_reference: string;
+    phone: components["schemas"]["swag_paypal_v2_common_phone_number"];
+  };
+  swag_paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details: {
+    account_holder_name: string;
+    bank_name: string;
+    bic: string;
+    iban: string;
+  };
+  swag_paypal_v2_order_payment_source_paypal: {
+    account_id: string;
+    address: components["schemas"]["swag_paypal_v2_common_address"];
+    attributes:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    billing_agreement_id: string;
+    birth_date: string;
+    email_address: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["swag_paypal_v2_common_name"];
+    phone_number:
+      | components["schemas"]["swag_paypal_v2_common_phone_number"]
+      | null;
+    phone_type: string;
+    vault_id: string;
+  };
+  swag_paypal_v2_order_payment_source_sofort: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_token: {
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    id: string;
+    stored_payment_source: components["schemas"]["swag_paypal_v2_order_payment_source_token_stored_payment_source"];
+    type: string;
+  };
+  swag_paypal_v2_order_payment_source_token_stored_payment_source: {
+    payment_initiator: string;
+    payment_type: string;
+    usage: string;
+  };
+  swag_paypal_v2_order_payment_source_trustly: {
+    country_code: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  swag_paypal_v2_order_payment_source_venmo: {
+    account_id: string;
+    address: components["schemas"]["swag_paypal_v2_common_address"];
+    attributes:
+      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    email_address: string;
+    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["swag_paypal_v2_common_name"];
+    phone_number:
+      | components["schemas"]["swag_paypal_v2_common_phone_number"]
+      | null;
+    user_name: string;
+    vault_id: string;
+  };
+  swag_paypal_v2_order_purchase_unit: {
+    amount: components["schemas"]["swag_paypal_v2_order_purchase_unit_amount"];
+    custom_id: string | null;
+    description: string;
+    invoice_id: string | null;
+    items:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_item"][]
+      | null;
+    payee: components["schemas"]["swag_paypal_v2_order_purchase_unit_payee"];
+    payments:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments"]
+      | null;
+    reference_id: string;
+    shipping: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping"];
+  };
+  swag_paypal_v2_order_purchase_unit_amount: components["schemas"]["swag_paypal_v2_common_money"] & {
+    breakdown:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_amount_breakdown"]
+      | null;
+  };
+  swag_paypal_v2_order_purchase_unit_amount_breakdown: {
+    discount: components["schemas"]["swag_paypal_v2_common_money"];
+    handling: components["schemas"]["swag_paypal_v2_common_money"];
+    insurance: components["schemas"]["swag_paypal_v2_common_money"];
+    item_total: components["schemas"]["swag_paypal_v2_common_money"];
+    shipping: components["schemas"]["swag_paypal_v2_common_money"];
+    shipping_discount: components["schemas"]["swag_paypal_v2_common_money"];
+    tax_total: components["schemas"]["swag_paypal_v2_common_money"] | null;
+  };
+  swag_paypal_v2_order_purchase_unit_item: {
+    /** @enum {string} */
+    category: "PHYSICAL_GOODS" | "DIGITAL_GOODS" | "DONATION";
+    name: string;
+    quantity: number;
+    sku: string | null;
+    tax: components["schemas"]["swag_paypal_v2_common_money"];
+    tax_rate: string | number | Record<string, never>;
+    unit_amount: components["schemas"]["swag_paypal_v2_common_money"];
+  };
+  swag_paypal_v2_order_purchase_unit_payee: {
+    display_data: components["schemas"]["swag_paypal_v2_order_purchase_unit_payee_display_data"];
+    email_address: string;
+    merchant_id: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payee_display_data: {
+    brand_name: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments: {
+    authorizations:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_authorization"][]
+      | null;
+    captures:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture"][]
+      | null;
+    refunds:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund"][]
+      | null;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_authorization: {
+    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    expiration_time: string;
+    id: string;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    seller_protection: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_common_seller_protection"];
+    status: string;
+    update_time: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_authorization_seller_protection: {
+    dispute_categories: string[];
+    status: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_capture: {
+    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    disbursement_mode: string;
+    final_capture: boolean;
+    id: string;
+    invoice_id: string | null;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    note_to_payer: string | null;
+    processor_response: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture_processor_response"];
+    seller_protection: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_common_seller_protection"];
+    seller_receivable_breakdown: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown"];
+    status: string;
+    update_time: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_capture_processor_response: {
+    avs_code: string | null;
+    cvv_code: string | null;
+    response_code: string | null;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown: {
+    gross_amount: components["schemas"]["swag_paypal_v2_common_money"];
+    net_amount: components["schemas"]["swag_paypal_v2_common_money"];
+    paypal_fee: components["schemas"]["swag_paypal_v2_common_money"];
+  };
+  swag_paypal_v2_order_purchase_unit_payments_common_seller_protection: {
+    dispute_categories: string[];
+    status: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_refund: {
+    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    id: string;
+    invoice_id: string | null;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    note_to_payer: string | null;
+    seller_payable_breakdown: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown"];
+    status: string;
+    update_time: string;
+  };
+  swag_paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown: {
+    gross_amount: components["schemas"]["swag_paypal_v2_common_money"];
+    net_amount: components["schemas"]["swag_paypal_v2_common_money"];
+    paypal_fee: components["schemas"]["swag_paypal_v2_common_money"];
+    total_refunded_amount: components["schemas"]["swag_paypal_v2_common_money"];
+  };
+  swag_paypal_v2_order_purchase_unit_shipping: {
+    address: components["schemas"]["swag_paypal_v2_common_address"];
+    name: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_name"];
+    trackers:
+      | components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_tracker"][]
+      | null;
+  };
+  swag_paypal_v2_order_purchase_unit_shipping_name: {
+    full_name: string;
+  };
+  swag_paypal_v2_order_purchase_unit_shipping_tracker: {
+    id: string;
+    items: components["schemas"]["swag_paypal_v2_order_purchase_unit_item"][];
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    notify_payer: boolean;
+    status: string;
+  };
+  swag_paypal_v2_order_purchase_unit_shipping_tracker_item: {
+    image_url: string | null;
+    name: string;
+    quantity: number;
+    sku: string | null;
+    url: string | null;
+  };
+  swag_paypal_v2_order_tracker: {
+    capture_id: string;
+    carrier: string;
+    carrier_name_other: string | null;
+    items: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_tracker_item"][];
+    /** @default false */
+    notify_payer?: boolean;
+    tracking_number: string;
+  };
+  swag_paypal_v2_patch: {
+    from: string;
+    op: string;
+    path: string;
+    value:
+      | (
+          | number
+          | Record<string, never>
+          | string
+          | boolean
+          | Record<string, never>[]
+        )
+      | null;
+  };
+  swag_paypal_v2_referral: {
+    business_entity: components["schemas"]["swag_paypal_v2_referral_business_entity"];
+    capabilities: string[];
+    legal_consents: components["schemas"]["swag_paypal_v2_referral_legal_consent"][];
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    operations: components["schemas"]["swag_paypal_v2_referral_operation"][];
+    partner_config_override: components["schemas"]["swag_paypal_v2_referral_partner_config_override"];
+    preferred_language_code: string;
+    products: string[];
+    tracking_id: string;
+  };
+  swag_paypal_v2_referral_business_entity: {
+    addresses: components["schemas"]["swag_paypal_v2_referral_business_entity_address"][];
+  };
+  swag_paypal_v2_referral_business_entity_address: {
+    country_code: string;
+    /** @default WORK */
+    type?: string;
+  };
+  swag_paypal_v2_referral_legal_consent: {
+    granted: boolean;
+    /** @default SHARE_DATA_CONSENT */
+    type?: string;
+  };
+  swag_paypal_v2_referral_operation: {
+    api_integration_preference: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference"];
+    /** @default API_INTEGRATION */
+    operation?: string;
+  };
+  swag_paypal_v2_referral_operation_integration_preference: {
+    rest_api_integration: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference_integration"];
+  };
+  swag_paypal_v2_referral_operation_integration_preference_integration: {
+    /** @default PAYPAL */
+    integration_method?: string;
+    /** @default THIRD_PARTY */
+    integration_type?: string;
+    third_party_details: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference_integration_third_party_details"];
+  };
+  swag_paypal_v2_referral_operation_integration_preference_integration_third_party_details: {
+    features: string[];
+  };
+  swag_paypal_v2_referral_partner_config_override: {
+    partner_logo_url: string;
+    return_url: string;
+  };
+  swag_paypal_v3_payment_token: {
+    customer: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"];
+    id: string;
+    links: components["schemas"]["swag_paypal_v2_common_link"][];
+    metadata:
+      | components["schemas"]["swag_paypal_v3_payment_token_metadata"]
+      | null;
+    payment_source: components["schemas"]["swag_paypal_v2_order_payment_source"];
+    status: string;
+  };
+  swag_paypal_v3_payment_token_metadata: {
+    order_id: string;
+  };
 };
 export type operations = {
   "api-info get /_info/openapi3.json": {
@@ -8964,17 +10380,7 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readB2bEmployee get /employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be read */
-      id: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "readEmployee post /employee/{id}": {
+  "readEmployee get /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
@@ -9262,6 +10668,79 @@ export type operations = {
       total?: number;
     };
     responseCode: 200;
+  };
+  "createPayPalOrder post /paypal/create-order": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Use an existing order id to create PayPal order */
+      orderId?: string;
+      /**
+       * Use an existing order id to create PayPal order
+       * @default ppcp
+       */
+      product?: string;
+    };
+    response: {
+      token?: string;
+    };
+    responseCode: 200;
+  };
+  "createPayPalExpressOrder post /paypal/express/create-order": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 200;
+  };
+  "preparePayPalExpressCheckout post /paypal/express/prepare-checkout": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** ID of the paypal order */
+      token?: string;
+    };
+    response: {
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
+  "setPaymentMethodEligibility post /paypal/payment-method-eligibility": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** List of PayPal payment method identifiers according to constant REMOVABLE_PAYMENT_HANDLERS */
+      paymentMethods?: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "getPUIPaymentInstructions get /paypal/pui/payment-instructions/{transactionId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the order transaction to be fetched */
+      transactionId: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "getPayPalCustomerVaultToken get /paypal/vault-token": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      token?: string;
+    };
+    responseCode: 200;
+  };
+  "paypalVaultClear post /paypal/vault/clear": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** @enum {string} */
+      type?: "cancel" | "browser" | "error";
+    };
+    response: never;
+    responseCode: 204;
   };
   "fetchPendingOrder post /pending-order/{id}": {
     contentType?: "application/json";
@@ -9556,6 +11035,20 @@ export type operations = {
     responseCode: 204;
   };
   "requestChangeQuote post /quote/{id}/request-change": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
+    body?: {
+      /** Message content */
+      comment?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "sendMessageInQuote post /quote/{id}/send-message": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {

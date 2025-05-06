@@ -213,7 +213,7 @@ const invokeSubmit = async () => {
             v-if="$v.firstName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName.$errors[0].$message }}
+            {{ $v.firstName.$errors[0]?.$message ?? '' }}
           </span>
         </div>
         <div class="col-span-4">
@@ -237,7 +237,7 @@ const invokeSubmit = async () => {
             v-if="$v.lastName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName.$errors[0].$message }}
+            {{ $v.lastName.$errors[0]?.$message ?? '' }}
           </span>
         </div>
         <div class="col-span-6">
@@ -261,7 +261,7 @@ const invokeSubmit = async () => {
             v-if="$v.email.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email.$errors[0].$message }}
+            {{ $v.email.$errors[0]?.$message ?? '' }}
           </span>
         </div>
         <div class="col-span-6">
@@ -285,7 +285,7 @@ const invokeSubmit = async () => {
             v-if="$v.phone.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.phone.$errors[0].$message }}
+            {{ $v.phone.$errors[0]?.$message ?? '' }}
           </span>
         </div>
         <div class="col-span-12">
@@ -309,7 +309,7 @@ const invokeSubmit = async () => {
             v-if="$v.subject.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.subject.$errors[0].$message }}
+            {{ $v.subject.$errors[0]?.$message ?? '' }}
           </span>
         </div>
         <div class="col-span-12">
@@ -334,7 +334,7 @@ const invokeSubmit = async () => {
             v-if="$v.comment.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.comment.$errors[0].$message }}
+            {{ $v.comment.$errors[0]?.$message || '' }}
           </span>
         </div>
         <div class="col-span-12">

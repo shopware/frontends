@@ -28,7 +28,7 @@ export async function CmsBaseReference({
 
       let transformedCode = code;
 
-      if (pkg !== "packages" || packageName !== "cms-base") {
+      if (pkg !== "packages" || packageName !== "cms-base-layer") {
         return transformedCode;
       }
 
@@ -67,6 +67,8 @@ export async function CmsBaseReference({
 
       // place it before the changelog
       transformedCode = replacer(transformedCode, API, "", "tail");
+      // for LLM training
+      transformedCode += '\n<div data-placeholder="dynamic-markdown"></div>\n';
 
       return transformedCode;
     },

@@ -37,7 +37,7 @@ describe("useProductPrice", () => {
       productTierPrices.product.calculatedPrices[2],
     );
     expect(vm.referencePrice).toStrictEqual(
-      productTierPrices.product.calculatedPrices[0].referencePrice,
+      productTierPrices.product.calculatedPrices?.[0]?.referencePrice,
     );
     expect(vm.displayFrom).toBe(true);
     expect(vm.displayFromVariants).toBe(20);

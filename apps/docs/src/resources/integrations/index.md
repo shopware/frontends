@@ -34,7 +34,8 @@ ensuring a harmonious and efficient synergy between your Shopware store and dive
     </a>
   </div>
   <div>
-    <a href="payments/mollie.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+    <a href="https://github.com/mollie/Shopware6Composables" target="_blank" class="relative block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+    <span class="absolute bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300 no-underline">external</span>
       <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../.assets/payment-icons/mollie.webp" alt="mollie Logo" class="my-8 h-20 inline"/></span>
         <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Easy payments and financial management for all companies with mollie. Here you will find instructions on how to set up mollie with Shopware and Composable Frontends.</p>
     </a>
