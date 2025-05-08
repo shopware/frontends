@@ -60,7 +60,7 @@ provide("swNavigation-footer-navigation", footerData);
                       :to="formatLink(`/account`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100 is-active"
                     >
-                      <div i-carbon-dashboard text-xl inline-block />
+                      <div class="i-carbon-dashboard text-xl inline-block" />
                       <span class="ml-3">
                         {{ $t("account.menu.accountOverviewHeader") }}</span
                       >
@@ -71,7 +71,7 @@ provide("swNavigation-footer-navigation", footerData);
                       :to="formatLink(`/account/profile`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100 is-active"
                     >
-                      <div i-carbon-user text-xl inline-block />
+                      <div class="i-carbon-user text-xl inline-block" />
                       <span class="ml-3">{{ $t("account.yourProfile") }}</span>
                     </NuxtLink>
                   </li>
@@ -80,7 +80,7 @@ provide("swNavigation-footer-navigation", footerData);
                       :to="formatLink(`/account/address`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100"
                     >
-                      <div i-carbon-home text-xl inline-block />
+                      <div class="i-carbon-home text-xl inline-block" />
                       <span class="ml-3">{{ $t("account.yourAddress") }}</span>
                     </NuxtLink>
                   </li>
@@ -93,7 +93,7 @@ provide("swNavigation-footer-navigation", footerData);
                       :to="formatLink(`/account/order`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100"
                     >
-                      <div i-carbon-order-details text-xl inline-block />
+                      <div class="i-carbon-order-details text-xl inline-block" />
                       <span class="ml-3">{{
                         $t("account.orderHistoryHeader")
                       }}</span>
@@ -104,7 +104,7 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center rounded-lg px-0 md:px-2 py-2 hover:text-primary hover:bg-secondary-100 w-full"
                       @click="invokeLogout()"
                     >
-                      <div i-carbon-logout text-xl inline-block />
+                      <div class="i-carbon-logout text-xl inline-block" />
                       <span class="ml-3 text-secondary-700">{{
                         $t("account.logout")
                       }}</span>
