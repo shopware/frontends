@@ -231,7 +231,10 @@ export function createAPIClient<
         shouldRecreateClient = true;
       }
 
-      if (config.accessToken !== undefined && config.accessToken !== currentAccessToken) {
+      if (
+        config.accessToken !== undefined &&
+        config.accessToken !== currentAccessToken
+      ) {
         currentAccessToken = config.accessToken;
         defaultHeaders["sw-access-key"] = config.accessToken;
       }
