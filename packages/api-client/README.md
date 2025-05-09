@@ -266,7 +266,34 @@ apiClient.hook("onDefaultHeaderChanged", (key, value) => {
 });
 ```
 
+Available hooks:
+
+- `onContextChanged`: Triggered when context token changes
+- `onResponseError`: Triggered when API returns an error
+- `onSuccessResponse`: Triggered when API request succeeds
+- `onDefaultHeaderChanged`: Triggered when default headers are modified
+- `onRequest`: Triggered before each request is made, allowing for request inspection and modification
+
 calling `apiClient.hook` will autocomplete the list of available hooks.
+
+### Base Configuration Management
+
+The API client provides methods to manage its base configuration:
+
+```typescript
+// Get current configuration
+const config = apiClient.getBaseConfig();
+console.log(config.baseURL); // "https://demo-frontends.shopware.store/store-api"
+console.log(config.accessToken); // "SWSCBHFSNTVMAWNZDNFKSHLAYW"
+
+// Update configuration
+apiClient.updateBaseConfig({
+  baseURL: "https://new-url.com/store-api",
+  accessToken: "NEW_TOKEN",
+});
+```
+
+This allows you to dynamically change the API endpoint or access token during runtime, for example when switching between different environments or when the access token needs to be updated.
 
 ## Links
 
