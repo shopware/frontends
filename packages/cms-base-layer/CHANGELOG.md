@@ -1,5 +1,11 @@
 # @shopware/cms-base-layer
 
+## 1.5.1
+
+### Patch Changes
+
+- [#1862](https://github.com/shopware/frontends/pull/1862) [`20fd2c6`](https://github.com/shopware/frontends/commit/20fd2c615738f93a3947c69f351fc5d37ea89ebf) Thanks [@aheartforspinach](https://github.com/aheartforspinach)! - Fix CmsSectionSidebar.vue when used on a landing page by removing useCategory and related code
+
 ## 1.5.0
 
 ### Minor Changes
