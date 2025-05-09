@@ -38,12 +38,12 @@ describe("createAPIClient", () => {
   });
 
   it("should invoke requests with sw-access-key header and no context-token by default", async () => {
-    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const firstAppSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
         const requestHeaders = getHeaders(event);
-        seoUrlHeadersSpy(requestHeaders);
+        firstAppSpy(requestHeaders);
         return {};
       }),
     );
@@ -55,7 +55,7 @@ describe("createAPIClient", () => {
       baseURL,
     });
     await client.invoke("readCart get /checkout/cart");
-    expect(seoUrlHeadersSpy).not.toHaveBeenCalledWith(
+    expect(firstAppSpy).not.toHaveBeenCalledWith(
       expect.objectContaining({
         "sw-context-token": "",
       }),
@@ -63,12 +63,12 @@ describe("createAPIClient", () => {
   });
 
   it("should invoke requests with sw-context-token header", async () => {
-    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const firstAppSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
         const requestHeaders = getHeaders(event);
-        seoUrlHeadersSpy(requestHeaders);
+        firstAppSpy(requestHeaders);
         return {};
       }),
     );
@@ -82,7 +82,7 @@ describe("createAPIClient", () => {
     });
     await client.invoke("readCart get /checkout/cart");
 
-    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
+    expect(firstAppSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         "sw-access-key": "123",
         "sw-context-token": "456",
@@ -639,6 +639,83 @@ describe("createAPIClient", () => {
         "some-new-context-token",
       );
       expect(contextChangedMock).toHaveBeenCalledWith("some-new-context-token");
+    });
+  });
+
+  describe("change of baseConfig", () => {
+    it("should change baseUrl, access token and invoke it properly", async () => {
+      const firstAppSpy = vi.fn().mockImplementation(() => {});
+      const app = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          firstAppSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const anotherAppSpy = vi.fn().mockImplementation(() => {});
+      const app2 = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          anotherAppSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+      const baseURL2 = await createPortAndGetUrl(app2);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken: "456",
+        baseURL,
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(firstAppSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accept: "application/json",
+        }),
+      );
+
+      client.updateBaseConfig({
+        baseURL: baseURL2,
+        accessToken: "NEW_TOKEN",
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(anotherAppSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accept: "application/json",
+          "sw-access-key": "NEW_TOKEN",
+        }),
+      );
+    });
+
+    it("should return current base configuration", () => {
+      const client = createAPIClient<operations>({
+        accessToken: "INITIAL_TOKEN",
+        baseURL: "https://initial-url.com",
+      });
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL: "https://initial-url.com",
+        accessToken: "INITIAL_TOKEN",
+      });
+
+      client.updateBaseConfig({
+        baseURL: "https://new-url.com",
+        accessToken: "NEW_TOKEN",
+      });
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL: "https://new-url.com",
+        accessToken: "NEW_TOKEN",
+      });
     });
   });
 });
