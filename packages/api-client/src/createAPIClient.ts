@@ -226,12 +226,12 @@ export function createAPIClient<
     updateBaseConfig: (config: { baseURL?: string; accessToken?: string }) => {
       let shouldRecreateClient = false;
 
-      if (config.baseURL && config.baseURL !== currentBaseURL) {
+      if (config.baseURL !== undefined && config.baseURL !== currentBaseURL) {
         currentBaseURL = config.baseURL;
         shouldRecreateClient = true;
       }
 
-      if (config.accessToken && config.accessToken !== currentAccessToken) {
+      if (config.accessToken !== undefined && config.accessToken !== currentAccessToken) {
         currentAccessToken = config.accessToken;
         defaultHeaders["sw-access-key"] = config.accessToken;
       }
