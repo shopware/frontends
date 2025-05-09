@@ -1,5 +1,24 @@
 # @shopware/cms-base-layer
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1727](https://github.com/shopware/frontends/pull/1727) [`94872b7`](https://github.com/shopware/frontends/commit/94872b7c6f6337ff8ce0bcfd9320e4178a4927f0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added CmsBlockHtml to render html blocks.
+  Added CmsElementHtml to render html element.
+
+### Patch Changes
+
+- [#1843](https://github.com/shopware/frontends/pull/1843) [`1859893`](https://github.com/shopware/frontends/commit/1859893ec3fe1cdead4b1c39e34943d9a70deaa4) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhance form error handling and fix TS errors
+
+- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - Fix date formatting based on locale, previously always returned en-US format
+
+- [#1857](https://github.com/shopware/frontends/pull/1857) [`e78d51e`](https://github.com/shopware/frontends/commit/e78d51e6af0726b12620d9f7e8f2c3150aa80cfa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix wrong `SharedPrice` component in `SwListingProductPrice.vue` file
+
+- Updated dependencies [[`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49)]:
+  - @shopware/api-client@1.3.0
+  - @shopware/composables@1.9.0
+
 ## 1.4.1
 
 ### Patch Changes
