@@ -5,6 +5,9 @@ import { getPrefix } from "../i18n/src/helpers/prefix";
 const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 
+const { refreshCart } = useCart();
+const { getWishlistProducts } = useWishlist();
+
 const {
   getAvailableLanguages,
   getLanguageCodeFromId,
@@ -78,6 +81,11 @@ if (languages && router.currentRoute.value.name) {
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }
+
+onMounted(() => {
+  refreshCart();
+  getWishlistProducts();
+});
 </script>
 
 <template>

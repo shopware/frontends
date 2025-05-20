@@ -22,8 +22,9 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@shopware/cms-base-layer": "canary",
+    "@nuxt/image": "^1.9.0",
     "@shopware/api-client": "canary",
+    "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
