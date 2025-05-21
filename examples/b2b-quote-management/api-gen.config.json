@@ -1,8 +1,5 @@
 {
   "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
   "rules": ["COMPONENTS_API_ALIAS"],
-  "patches": [
-    "storeApiSchema.overrides.json",
-    "storeApiSchema.b2b.overrides.json"
-  ]
+  "patches": ["storeApiSchema.overrides.json"]
 }
