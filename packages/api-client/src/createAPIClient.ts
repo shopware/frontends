@@ -1,6 +1,7 @@
 import defu from "defu";
 import { createHooks } from "hookable";
 import {
+  type FetchContext,
   type FetchOptions,
   type FetchResponse,
   type ResponseType,
@@ -68,6 +69,7 @@ export type ApiClientHooks = {
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: <T>(response: FetchResponse<T>) => void;
   onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
+  onRequest: (context: FetchContext) => void;
 };
 
 export function createAPIClient<
@@ -99,29 +101,38 @@ export function createAPIClient<
     },
   );
 
-  const apiFetch = ofetch.create({
-    baseURL: params.baseURL,
-    ...params.fetchOptions,
-    // async onRequest({ request, options }) {},
-    // async onRequestError({ request, options, error }) {},
-    async onResponse(context) {
-      apiClientHooks.callHook("onSuccessResponse", context.response);
-      if (
-        context.response.headers.has("sw-context-token") &&
-        defaultHeaders["sw-context-token"] !==
-          context.response.headers.get("sw-context-token")
-      ) {
-        const newContextToken = context.response.headers.get(
-          "sw-context-token",
-        ) as string;
-        defaultHeaders["sw-context-token"] = newContextToken;
-      }
-    },
-    async onResponseError({ response }) {
-      apiClientHooks.callHook("onResponseError", response);
-      errorInterceptor(response);
-    },
-  });
+  let currentBaseURL = params.baseURL;
+  let currentAccessToken = params.accessToken;
+
+  function createFetchClient(baseURL: string | undefined) {
+    return ofetch.create({
+      baseURL,
+      ...params.fetchOptions,
+      async onRequest(context) {
+        apiClientHooks.callHook("onRequest", context);
+      },
+      async onResponse(context) {
+        apiClientHooks.callHook("onSuccessResponse", context.response);
+        if (
+          context.response.headers.has("sw-context-token") &&
+          defaultHeaders["sw-context-token"] !==
+            context.response.headers.get("sw-context-token")
+        ) {
+          const newContextToken = context.response.headers.get(
+            "sw-context-token",
+          ) as string;
+          defaultHeaders["sw-context-token"] = newContextToken;
+        }
+      },
+      async onResponseError({ response }) {
+        apiClientHooks.callHook("onResponseError", response);
+        errorInterceptor(response);
+      },
+    });
+  }
+
+  let apiFetch = createFetchClient(currentBaseURL);
+
   /**
    * Invoke API request based on provided path definition.
    */
@@ -209,5 +220,35 @@ export function createAPIClient<
      */
     defaultHeaders,
     hook: apiClientHooks.hook,
+    /**
+     * Update the base configuration for API client
+     */
+    updateBaseConfig: (config: { baseURL?: string; accessToken?: string }) => {
+      let shouldRecreateClient = false;
+
+      if (config.baseURL !== undefined && config.baseURL !== currentBaseURL) {
+        currentBaseURL = config.baseURL;
+        shouldRecreateClient = true;
+      }
+
+      if (
+        config.accessToken !== undefined &&
+        config.accessToken !== currentAccessToken
+      ) {
+        currentAccessToken = config.accessToken;
+        defaultHeaders["sw-access-key"] = config.accessToken;
+      }
+
+      if (shouldRecreateClient) {
+        apiFetch = createFetchClient(currentBaseURL);
+      }
+    },
+    /**
+     * Get the current base configuration
+     */
+    getBaseConfig: () => ({
+      baseURL: currentBaseURL,
+      accessToken: currentAccessToken,
+    }),
   };
 }

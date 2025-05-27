@@ -1,5 +1,14 @@
 # @shopware/api-gen
 
+## 1.3.1
+
+### Patch Changes
+
+- [#1814](https://github.com/shopware/frontends/pull/1814) [`00fb689`](https://github.com/shopware/frontends/commit/00fb6899821ed5e5f1d0b44062b34791b102a917) Thanks [@patzick](https://github.com/patzick)! - Merging JSON overrides allows to have multiple pverrides as objects and arrays - combining them into arrays.
+
+- Updated dependencies [[`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c)]:
+  - @shopware/api-client@1.3.0
+
 ## 1.3.0
 
 ### Minor Changes
