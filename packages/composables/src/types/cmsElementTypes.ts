@@ -159,7 +159,7 @@ type YouTubeVideoElementConfig = {
   previewMedia: ElementConfig<string>;
   showControls: ElementConfig<boolean>;
   needsConfirmation: ElementConfig<boolean>;
-  advancePrivacyMode: ElementConfig<boolean>;
+  advancedPrivacyMode: ElementConfig<boolean>;
 };
 export type CmsElementYoutubeVideo = Schemas["CmsSlot"] & {
   type: "youtube-video";

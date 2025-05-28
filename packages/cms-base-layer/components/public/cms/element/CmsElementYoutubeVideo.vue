@@ -29,7 +29,7 @@ const config = computed(() => ({
 
 const YOUTUBE_URL = "https://www.youtube.com/embed/";
 const YOUTUBE_NOCOOKIE_URL = "https://www.youtube-nocookie.com/embed/";
-const videoDomain = getConfigValue("advancePrivacyMode")
+const videoDomain = getConfigValue("advancedPrivacyMode")
   ? YOUTUBE_NOCOOKIE_URL
   : YOUTUBE_URL;
 
