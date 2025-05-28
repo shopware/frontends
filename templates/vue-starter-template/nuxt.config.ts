@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@shopware/nuxt-module",
     "@nuxtjs/i18n",
     "@nuxt/icon",
+    "@nuxt/image",
   ],
   runtimeConfig: {
     public: {
