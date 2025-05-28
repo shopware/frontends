@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     typeCheck: true,
     strict: true,
   },
+  css: ["@unocss/reset/tailwind-compat.css"],
   components: {
     dirs: [
       {
@@ -33,6 +34,30 @@ export default defineNuxtConfig({
     ],
     global: true,
   },
+  i18n: {
+    strategy: "prefix_except_default",
+    defaultLocale: "en-GB",
+    detectBrowserLanguage: false,
+    langDir: "./src/langs/",
+    vueI18n: "./config",
+    locales: [
+      {
+        code: "en-GB",
+        language: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "pl-PL",
+        language: "pl-PL",
+        file: "pl-PL.ts",
+      },
+      {
+        code: "de-DE",
+        file: "de-DE.ts",
+        language: "de-DE",
+      },
+    ],
+  },
   icon: {
     customCollections: [
       {
@@ -41,4 +66,5 @@ export default defineNuxtConfig({
       },
     ],
   },
+  ssr: false,
 });

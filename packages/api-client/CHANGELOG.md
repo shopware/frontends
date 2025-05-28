@@ -1,5 +1,22 @@
 # @shopware/api-client
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
+
+  - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
+  - `getBaseConfig`: Returns current baseURL and accessToken values
+
+  This change replaces the previous `updateBaseUrl` method with a more flexible configuration management system that can be extended in the future.
+
+### Patch Changes
+
+- [#1801](https://github.com/shopware/frontends/pull/1801) [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc) Thanks [@joostaasman](https://github.com/joostaasman)! - fix: Undefined mergedHeaders["content-type"] when content-type is multipart/form-data
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added `onRequest` hook to the API client that is triggered before each request is made. This hook provides access to the request context, allowing for request inspection and modification before it's sent.
+
 ## 1.2.1
 
 ### Patch Changes

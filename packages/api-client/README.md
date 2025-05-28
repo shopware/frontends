@@ -266,7 +266,34 @@ apiClient.hook("onDefaultHeaderChanged", (key, value) => {
 });
 ```
 
+Available hooks:
+
+- `onContextChanged`: Triggered when context token changes
+- `onResponseError`: Triggered when API returns an error
+- `onSuccessResponse`: Triggered when API request succeeds
+- `onDefaultHeaderChanged`: Triggered when default headers are modified
+- `onRequest`: Triggered before each request is made, allowing for request inspection and modification
+
 calling `apiClient.hook` will autocomplete the list of available hooks.
+
+### Base Configuration Management
+
+The API client provides methods to manage its base configuration:
+
+```typescript
+// Get current configuration
+const config = apiClient.getBaseConfig();
+console.log(config.baseURL); // "https://demo-frontends.shopware.store/store-api"
+console.log(config.accessToken); // "SWSCBHFSNTVMAWNZDNFKSHLAYW"
+
+// Update configuration
+apiClient.updateBaseConfig({
+  baseURL: "https://new-url.com/store-api",
+  accessToken: "NEW_TOKEN",
+});
+```
+
+This allows you to dynamically change the API endpoint or access token during runtime, for example when switching between different environments or when the access token needs to be updated.
 
 ## Links
 
@@ -282,8 +309,19 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.2.1
+### Latest changes: 1.3.0
+
+### Minor Changes
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
+
+  - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
+  - `getBaseConfig`: Returns current baseURL and accessToken values
+
+  This change replaces the previous `updateBaseUrl` method with a more flexible configuration management system that can be extended in the future.
 
 ### Patch Changes
 
-- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Overwrite API schemas to remove requirements from 'salutationId` property
+- [#1801](https://github.com/shopware/frontends/pull/1801) [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc) Thanks [@joostaasman](https://github.com/joostaasman)! - fix: Undefined mergedHeaders["content-type"] when content-type is multipart/form-data
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added `onRequest` hook to the API client that is triggered before each request is made. This hook provides access to the request context, allowing for request inspection and modification before it's sent.
