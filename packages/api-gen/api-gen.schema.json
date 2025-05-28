@@ -16,10 +16,6 @@
           "description": "Clean core Store API Schema patches"
         },
         {
-          "const": "storeApiSchema.b2b.overrides.json",
-          "description": "B2B module patches"
-        },
-        {
           "const": "adminApiSchema.overrides.json",
           "description": "Admin API Schema patches"
         }
