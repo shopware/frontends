@@ -38,6 +38,12 @@
     "nuxt": "3.16.2",
     "typescript": "5.8.3"
   },
+  "resolutions": {
+    "vue": "3.5.13",
+    "@vue/compiler-ssr": "3.5.13",
+    "@vue/server-renderer": "3.5.13",
+    "@intlify/unplugin-vue-i18n": "^1.5.0"
+  },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
   }
