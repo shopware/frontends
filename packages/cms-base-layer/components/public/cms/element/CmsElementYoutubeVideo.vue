@@ -15,7 +15,7 @@ const config = computed(() => ({
   loop: getConfigValue("loop")
     ? `loop=1&playlist=${getConfigValue("videoID")}&`
     : "",
-  showControls: getConfigValue("showControls") ? "controls=1&" : "",
+  showControls: getConfigValue("showControls") ? "controls=1&" : "controls=0&",
   start:
     Number.parseInt(getConfigValue("start")) !== 0
       ? `start=${getConfigValue("start")}&`
