@@ -6,15 +6,15 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="container mx-auto flex pt-6 pb-6">
+  <div class="mx-auto grid sm:grid-cols-3 gap-4 py-6">
     <CmsGenericElement
       v-for="(slot, i) in content.slots"
       :key="slot.id"
       :content="slot"
-      class="cms-block-text-teaser-section flex"
+      class="cms-block-text-teaser-section"
       :class="{
-        'flex-basis-1/3 flex-col ': i == 0,
-        'pl-4 flex-basis-2/3': i == 1,
+        'sm:col-span-1': i === 0,
+        'sm:col-span-2': i === 1,
       }"
     />
   </div>
