@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "6.2.3",
+    "vite": "6.3.5",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary"
   }
