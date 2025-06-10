@@ -74,7 +74,7 @@ const selectedShippingMethod = computed({
   async set(shippingMethodId: string) {
     isLoading[shippingMethodId] = true;
     await setShippingMethod({ id: shippingMethodId });
-    await refreshPaymentMethod();
+    await Promise.allSettled([refreshPaymentMethod(), refreshCart()]);
     isLoading[shippingMethodId] = false;
   },
 });
@@ -96,15 +96,18 @@ const selectedShippingAddress = computed({
   },
   async set(shippingAddressId: string) {
     isLoading[`shipping-${shippingAddressId}`] = true;
+    isLoading.cart = true;
     await setActiveShippingAddress({ id: shippingAddressId });
     await Promise.allSettled([
       !isVirtualCart.value ? refreshShippingMethod() : null,
       refreshPaymentMethod(),
+      refreshCart(),
     ]);
 
     if (shippingAddressId === selectedBillingAddress.value)
       customShipping.value = false;
     isLoading[`shipping-${shippingAddressId}`] = false;
+    isLoading.cart = false;
   },
 });
 
@@ -114,14 +117,17 @@ const selectedBillingAddress = computed({
   },
   async set(billingAddressId: string) {
     isLoading[`billing-${billingAddressId}`] = true;
+    isLoading.cart = true;
     await setActiveBillingAddress({ id: billingAddressId });
     await Promise.allSettled([
       !isVirtualCart.value ? refreshShippingMethod() : null,
       refreshPaymentMethod(),
+      refreshCart(),
     ]);
     if (billingAddressId === selectedShippingAddress.value)
       customShipping.value = false;
     isLoading[`billing-${billingAddressId}`] = false;
+    isLoading.cart = false;
   },
 });
 
@@ -1028,18 +1034,32 @@ const handleChangeBaseInfo = async (data: {
               </p>
             </div>
             <ul role="list" class="-my-4 divide-y divide-secondary-200 pl-0">
-              <li
-                v-for="cartItem in cartItems"
-                :key="cartItem.id"
-                class="flex py-6"
-              >
-                <CheckoutCartItem :cart-item="cartItem" />
-              </li>
+              <template v-if="isLoading['cart']">
+                <li v-for="n in 3" :key="n" class="flex py-6">
+                  <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-secondary-200 animate-pulse"></div>
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div class="h-4 bg-secondary-200 rounded w-3/4 animate-pulse"></div>
+                    <div class="mt-2 h-4 bg-secondary-200 rounded w-1/2 animate-pulse"></div>
+                    <div class="mt-2 h-4 bg-secondary-200 rounded w-1/4 animate-pulse"></div>
+                  </div>
+                </li>
+              </template>
+              <template v-else>
+                <li
+                  v-for="cartItem in cartItems"
+                  :key="cartItem.id"
+                  class="flex py-6"
+                >
+                  <CheckoutCartItem :cart-item="cartItem" />
+                </li>
+              </template>
             </ul>
 
             <div class="flex justify-between text-sm text-secondary-500">
               <p>{{ $t("checkout.subtotal") }}</p>
+              <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
               <SharedPrice
+                v-else
                 :value="subtotal"
                 class="text-secondary-900 font-medium"
                 data-testid="cart-subtotal"
@@ -1056,7 +1076,9 @@ const handleChangeBaseInfo = async (data: {
                 v-if="shippingCost.shippingCosts?.totalPrice"
                 class="flex text-secondary-900"
               >
+                <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
                 <SharedPrice
+                  v-else
                   :value="shippingCost.shippingCosts.totalPrice"
                   class="text-secondary-900 font-medium"
                   data-testid="cart-shipping-cost"
@@ -1066,7 +1088,12 @@ const handleChangeBaseInfo = async (data: {
 
             <div class="flex justify-between text-secondary-900 font-medium">
               <p>{{ $t("checkout.orderTotal") }}l</p>
-              <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
+              <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
+              <SharedPrice
+                v-else
+                :value="totalPrice"
+                data-testid="cart-subtotal"
+              />
             </div>
 
             <div class="mt-4">
