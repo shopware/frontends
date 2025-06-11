@@ -76,6 +76,27 @@ describe("useNavigationSearch", () => {
       }),
     );
   });
+  it("should resolve technical url with trailing slash", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    await vm.resolvePath("/detail/test/");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        body: {
+          filter: [
+            {
+              type: "equals",
+              field: "pathInfo",
+              value: "/detail/test",
+            },
+          ],
+        },
+      }),
+    );
+  });
   it("should not invoke api call for / search ", async () => {
     const { vm, injections } = useSetup(useNavigationSearch);
     injections.apiClient.invoke.mockResolvedValue({

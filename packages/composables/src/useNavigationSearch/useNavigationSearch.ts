@@ -35,9 +35,12 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       path.startsWith("/detail/") ||
       path.startsWith("/landingPage/");
 
-    // remove leading slash in case of seo url
-    const normalizedPath = isTechnicalUrl ? path : path.substring(1);
-    // console.error("looking for path", normalizedPath);
+    // remove leading slash in case of seo url or remove trailing slash in case of technical url
+    const normalizedPath = isTechnicalUrl
+      ? path.endsWith("/")
+        ? path.slice(0, -1)
+        : path
+      : path.substring(1);
 
     const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
       body: {
