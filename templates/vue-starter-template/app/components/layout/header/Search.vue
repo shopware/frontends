@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-const search = ref("");
+const model = defineModel<string>({ required: true });
 </script>
 
 <template>
   <div>
-    <FormBaseInput v-model="search" placeholder="Search">
+    <FormBaseInput v-model="model" placeholder="Search">
       <template #rightIcon>
         <Icon
           name="shopware:search-s"
