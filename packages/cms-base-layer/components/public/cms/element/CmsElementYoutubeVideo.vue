@@ -15,7 +15,7 @@ const config = computed(() => ({
   loop: getConfigValue("loop")
     ? `loop=1&playlist=${getConfigValue("videoID")}&`
     : "",
-  showControls: getConfigValue("showControls") ? "controls=0&" : "",
+  showControls: getConfigValue("showControls") ? "controls=1&" : "controls=0&",
   start:
     Number.parseInt(getConfigValue("start")) !== 0
       ? `start=${getConfigValue("start")}&`
@@ -27,7 +27,13 @@ const config = computed(() => ({
   disableKeyboard: "disablekb=1",
 }));
 
-const videoUrl = `https://www.youtube-nocookie.com/embed/\
+const YOUTUBE_URL = "https://www.youtube.com/embed/";
+const YOUTUBE_NOCOOKIE_URL = "https://www.youtube-nocookie.com/embed/";
+const videoDomain = getConfigValue("advancedPrivacyMode")
+  ? YOUTUBE_NOCOOKIE_URL
+  : YOUTUBE_URL;
+
+const videoUrl = `${videoDomain}\
             ${config.value.videoID}?\
             ${config.value.relatedVideos}\
             ${config.value.loop}\
