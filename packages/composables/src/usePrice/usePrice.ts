@@ -76,6 +76,7 @@ function _usePrice(params?: {
     return new Intl.NumberFormat(currencyLocale.value, {
       style: "currency",
       currency: currencyCode.value,
+      currencyDisplay: "symbol",
     }).format(+value);
   }
 
