@@ -42,7 +42,7 @@ describe("usePrice", () => {
   it("should use navigator language if locale is not provided", () => {
     const { vm } = useSetup(usePrice, {
       shopware: {
-        browserLocale: "en-FR",
+        browserLocale: "de-DE",
       },
     });
     vm.update({
@@ -50,8 +50,8 @@ describe("usePrice", () => {
       localeCode: undefined,
     });
 
-    expect(vm.currencyLocale).toBe("en-FR");
-    expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"$2.55"');
+    expect(vm.currencyLocale).toBe("de-DE");
+    expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot(`"2,55 $"`);
   });
 
   it("should init price object", () => {
