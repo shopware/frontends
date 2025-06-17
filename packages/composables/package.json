@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/kit": "3.16.2",
+    "@nuxt/kit": "3.17.5",
     "@vitest/coverage-v8": "3.2.3",
     "@vue/test-utils": "2.4.6",
     "happy-dom": "18.0.1",
@@ -74,6 +74,6 @@
     "typescript": "5.8.3",
     "unbuild": "2.0.0",
     "vitest": "3.2.3",
-    "vue": "3.5.13"
+    "vue": "3.5.16"
   }
 }
