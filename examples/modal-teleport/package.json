@@ -13,13 +13,13 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@unocss/nuxt": "66.2.2",
-    "@unocss/reset": "66.0.0",
+    "@unocss/reset": "66.2.2",
     "nuxt": "3.17.5",
     "unocss": "66.2.2"
   },
   "dependencies": {
-    "@vueuse/nuxt": "13.1.0",
+    "@vueuse/nuxt": "13.3.0",
     "vue": "3.5.16",
-    "vue-tsc": "2.2.8"
+    "vue-tsc": "2.2.10"
   }
 }
