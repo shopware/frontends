@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Dropin } from "@adyen/adyen-web";
-import type { operations } from "#shopware";
 import "@adyen/adyen-web/styles/adyen.css";
 
 const emits = defineEmits<{
@@ -34,7 +33,7 @@ try {
   );
 
   const checkout = await nuxtApp.$adyenCheckout({
-    ...(sessionContext.value?.extensions?.adyenData || adyenCheckout),
+    ...(sessionContext.value?.extensions?.adyenData || adyenCheckout || {}),
     paymentMethodsResponse: adyenConfigResponse.data,
     async onSubmit(state, element) {
       // emit the payButtonClicked event with a current state coming from Adyen checkout instance
