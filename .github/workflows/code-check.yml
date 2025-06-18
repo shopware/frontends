@@ -85,9 +85,6 @@ jobs:
           DO_NOT_TRACK: 1
         run: pnpm typecheck
 
-      - name: Publish package previews
-        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module'
-
   test:
     name: Test
     timeout-minutes: 15
