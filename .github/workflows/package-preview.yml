@@ -14,6 +14,9 @@ jobs:
     if: github.event.pull_request.labels.*.name == 'pkg-pr-publish'
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
