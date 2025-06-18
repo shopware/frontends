@@ -16,7 +16,7 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "5.2.4",
-    "@vitejs/plugin-vue-jsx": "4.1.2",
+    "@vitejs/plugin-vue-jsx": "4.2.0",
     "astro": "4.16.18",
     "js-cookie": "3.0.5",
     "sharp": "0.33.5",
