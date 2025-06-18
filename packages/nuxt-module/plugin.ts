@@ -55,7 +55,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     !!runtimeConfig?.shopware?.useUserContextInSSR;
 
   const contextTokenFromCookie = NuxtApp.ssrContext
-    ? getCookie(NuxtApp.ssrContext?.event, "sw-context-token")
+    ? getCookie(NuxtApp.ssrContext.event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
   const apiClient = createAPIClient({

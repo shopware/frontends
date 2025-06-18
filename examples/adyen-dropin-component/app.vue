@@ -22,7 +22,10 @@ try {
   // auto log-in
 
   await login({
-    ...config?.public?.loginData,
+    ...((config?.public?.loginData as {
+      username: string;
+      password: string;
+    }) || { username: "", password: "" }),
   });
   activeStep.value = 1;
   // search for a product to be added to cart
