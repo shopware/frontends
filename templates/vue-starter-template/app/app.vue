@@ -2,6 +2,14 @@
 import type { Schemas } from "#shopware";
 import { getPrefix } from "../i18n/src/helpers/prefix";
 
+useHead({
+  title: "Shopware Starter Demo store",
+  meta: [{ name: "description", content: "Shopware Starter Demo store" }],
+  htmlAttrs: {
+    lang: "en",
+  },
+});
+
 const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 

@@ -34,14 +34,18 @@ async function onChangeHandler(id: string) {
 </script>
 <template>
   <div>
-    <LayoutMetaNavigation
-      v-if="languagesList.length > 1"
-      class="px-6"
-      :current-language-label="currentLanguageLabel"
-      :languages="languagesList"
-      @onLanguageChangeHandler="onChangeHandler"
-    />
-    <LayoutHeader class="px-6" />
-    <slot />
+    <header>
+      <LayoutMetaNavigation
+        v-if="languagesList.length > 1"
+        class="px-6"
+        :current-language-label="currentLanguageLabel"
+        :languages="languagesList"
+        @onLanguageChangeHandler="onChangeHandler"
+      />
+      <LayoutHeader class="px-6" />
+    </header>
+    <main>
+      <slot />
+    </main>
   </div>
 </template>
