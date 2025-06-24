@@ -12,6 +12,7 @@ const state = reactive({
     newPasswordConfirm: "",
   },
   error: "",
+  success: false,
 });
 
 const rules = computed(() => ({
@@ -49,6 +50,7 @@ const invokeReset = async (): Promise<void> => {
         },
       },
     );
+    state.success = true;
   } catch (err) {
     if (err instanceof ApiClientError) {
       state.error = err.details.errors?.[0]?.detail;
@@ -74,7 +76,12 @@ const invokeReset = async (): Promise<void> => {
         >
           {{ state.error }}
         </div>
-
+        <div 
+          v-if="state.success" 
+          class="text-green-600 focus:ring-primary border-secondary-300 rounded"
+        >
+          {{ $t("changePassword.messages.passwordUpdateSuccess") }}
+        </div>
         <div class="-space-y-px">
           <div>
             <label for="new-password" class="sr-only">{{
