@@ -1,12 +1,14 @@
+import { mergeConfigs } from "@unocss/core";
 import {
-  defineConfig,
   presetAttributify,
   presetIcons,
   presetTypography,
   presetWind3,
 } from "unocss";
 
-export default defineConfig({
+import baseConfig from "./.nuxt/uno.config.mjs";
+
+const templateConfig = {
   theme: {
     colors: {
       "brand-primary": "#543B95",
@@ -109,4 +111,6 @@ export default defineConfig({
         `,
     },
   ],
-});
+};
+
+export default mergeConfigs([baseConfig, templateConfig]);

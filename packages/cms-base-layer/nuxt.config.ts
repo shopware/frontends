@@ -1,6 +1,7 @@
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
+  modules: ["@unocss/nuxt"],
   components: [
     {
       path: "./components/public",
