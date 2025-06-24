@@ -226,3 +226,35 @@ const onChangeHandler = async (option: Event) => {
   }
 };
 ```
+
+## Troubleshooting in reverse proxy environments
+
+When deploying your application behind a reverse proxy, such as Fastly, Cloudflare, or Vercel, you may encounter issues with language switching. This is primarily due to how these services cache responses and handle headers, which can affect the way languages are served to users.
+
+To face possible issues with language switching, you would need to understand how [@nuxtjs/i18n](https://i18n.nuxtjs.org/) module works:
+
+###  **Language Detection**
+
+The i18n module detects the user's preferred language based on the URL or the `Accept-Language` header.xz
+The setting can be disabled by setting `detectBrowserLanguage: false` in the i18n module configuration. Then, the language will be determined solely based on the URL and the configured locales.
+
+### **URL Structure**
+
+The i18n module uses a specific URL structure to differentiate between languages. For example, it might use `/en/` for English and `/de/` for German. There are two strategies for this:
+
+   - `prefix_except_default`: This strategy adds a prefix to the URL for all languages except the default one.
+   - `prefix_and_default`: This strategy adds a prefix to the URL for all languages, including the default one.
+
+### Multiple locales for the same domain
+
+If you have multiple locales for the same domain, you can configure them in the i18n module. This allows you to serve different languages from the same domain without needing to switch domains.
+
+### [@nuxtjs/i18n](https://i18n.nuxtjs.org/) module reads `x-forwarded-host` header
+
+The i18n module can read the `x-forwarded-host` header to determine the original host of the request. This is useful when your application is behind a reverse proxy, as it allows the i18n module to correctly identify the requested language based on the original host.
+
+### **Caching Issues**
+
+Caching can cause issues with language switching, especially if the cache is not properly configured to handle different languages. To avoid this, ensure that your reverse proxy is set up to cache responses based on the `Accept-Language` header or the URL structure used by the i18n module.
+
+Also, ensure that proxy caching is purged after the deployment of new language configurations or updates to the i18n module.
