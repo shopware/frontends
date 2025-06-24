@@ -1,0 +1,9 @@
+{
+  "checkout": {
+    "title": "Kasse",
+    "summary": "Zusammenfassung",
+    "subtotal": "Zwischensumme",
+    "shippingCosts": "Versand",
+    "total": "Gesamt"
+  }
+}

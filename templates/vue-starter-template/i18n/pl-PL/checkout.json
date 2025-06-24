@@ -1,0 +1,9 @@
+{
+  "checkout": {
+    "title": "Koszyk",
+    "summary": "Podsumowanie",
+    "subtotal": "Suma częściowa",
+    "shippingCosts": "Wysyłka",
+    "total": "Suma"
+  }
+}

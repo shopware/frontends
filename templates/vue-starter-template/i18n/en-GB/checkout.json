@@ -1,0 +1,9 @@
+{
+  "checkout": {
+    "title": "Checkout",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "shippingCosts": "Shipping",
+    "total": "Total"
+  }
+}
