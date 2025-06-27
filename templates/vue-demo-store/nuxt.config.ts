@@ -116,6 +116,7 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
   },
   unocss: {
+    nuxtLayers: true,
     // for presets, theme config, ... look at the uno.config.ts file
   },
   css: [
