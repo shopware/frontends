@@ -1,14 +1,10 @@
 import { helpersCssClasses } from "@shopware/helpers";
+import { type ConfigBase, mergeConfigs } from "@unocss/core";
 import transformerDirectives from "@unocss/transformer-directives";
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetUno,
-} from "unocss";
+// jump to the base config to see the presets and rules already applied
+import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default defineConfig({
+const templateConfig: ConfigBase = {
   theme: {
     extend: {
       width: "width",
@@ -72,17 +68,6 @@ export default defineConfig({
       },
     },
   },
-  presets: [
-    presetUno(),
-    presetIcons({
-      collections: {
-        carbon: () =>
-          import("@iconify-json/carbon/icons.json").then((i) => i.default),
-      },
-    }),
-    presetAttributify(),
-    presetTypography(),
-  ],
   transformers: [transformerDirectives()],
   preflights: [
     // preflights can be used to set some base styles
@@ -115,4 +100,6 @@ export default defineConfig({
     },
   ],
   safelist: helpersCssClasses,
-});
+};
+
+export default mergeConfigs([baseConfig, templateConfig]);

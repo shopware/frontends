@@ -27,9 +27,9 @@
   },
   "dependencies": {
     "@nuxt/kit": "3.17.5",
+    "@shopware/api-client": "workspace:*",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
-    "@shopware/api-client": "workspace:*",
     "@tresjs/cientos": "4.3.0",
     "@tresjs/core": "4.3.3",
     "@unocss/nuxt": "66.2.2",
@@ -39,6 +39,7 @@
     "entities": "6.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.173.0",
+    "unocss": "66.2.2",
     "vue": "3.5.16",
     "xss": "1.0.15"
   },
