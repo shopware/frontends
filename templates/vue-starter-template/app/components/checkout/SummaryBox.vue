@@ -5,14 +5,19 @@ const props = defineProps<{
   cart: Schemas["Cart"];
 }>();
 
+const emit = defineEmits<{
+  remove: [id: string];
+  updateQuantity: [id: string, quantity: number];
+}>();
+
 const { subtotal, totalPrice, shippingCosts } = useCart();
 
 function handleRemoveItem(id: string) {
-  console.log(id);
+  emit("remove", id);
 }
 
 function handleUpdateQuantity(id: string, quantity: number) {
-  console.log(id, quantity);
+  emit("updateQuantity", id, quantity);
 }
 </script>
 <template>

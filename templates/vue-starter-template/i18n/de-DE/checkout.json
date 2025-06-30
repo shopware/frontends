@@ -4,6 +4,7 @@
     "summary": "Zusammenfassung",
     "subtotal": "Zwischensumme",
     "shippingCosts": "Versand",
-    "total": "Gesamt"
+    "total": "Gesamt",
+    "placeOrderButton": "Bestellen"
   }
 }

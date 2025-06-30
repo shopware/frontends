@@ -4,6 +4,7 @@
     "summary": "Summary",
     "subtotal": "Subtotal",
     "shippingCosts": "Shipping",
-    "total": "Total"
+    "total": "Total",
+    "placeOrderButton": "Confirm and place order"
   }
 }

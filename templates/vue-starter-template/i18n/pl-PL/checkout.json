@@ -4,6 +4,7 @@
     "summary": "Podsumowanie",
     "subtotal": "Suma częściowa",
     "shippingCosts": "Wysyłka",
-    "total": "Suma"
+    "total": "Suma",
+    "placeOrderButton": "Złóż zamówienie"
   }
 }
