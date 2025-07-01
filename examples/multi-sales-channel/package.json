@@ -21,9 +21,9 @@
     "js-cookie": "3.0.5",
     "nuxt": "3.17.5",
     "typescript": "5.8.3",
-    "vue": "3.5.16",
-    "vue-tsc": "2.2.10",
-    "@unocss/nuxt": "66.2.2"
+    "vue": "3.5.17",
+    "vue-tsc": "3.0.0",
+    "@unocss/nuxt": "66.3.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"
