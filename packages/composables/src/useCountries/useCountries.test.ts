@@ -61,4 +61,31 @@ describe("useCountries", () => {
 
     expect(vm.getCountries).toStrictEqual([]);
   });
+
+  it("useCountries flow - getCountriesOptions", async () => {
+    const { vm } = await useSetup(useCountries, {
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({
+          data: CountryMock,
+        }),
+      },
+    });
+
+    await vm.fetchCountries();
+
+    expect(vm.getCountries).toStrictEqual([
+      {
+        value: "16bb0446bf094f5d8bebf450652abafc",
+        label: "Sweden",
+      },
+      {
+        value: "184eb596425f4d56aa9ed8af9c3dc8d1",
+        label: "Ireland",
+      },
+      {
+        value: "20513996f80f4d00b5ebedc51a2deae2",
+        label: "Australia",
+      },
+    ]);
+  });
 });

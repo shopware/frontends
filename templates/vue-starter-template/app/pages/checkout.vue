@@ -38,7 +38,6 @@ function handlePlaceOrder() {
 }
 </script>
 <template>
-  <!-- <pre> {{ cart }} </pre> -->
   <div class="container mx-auto">
     <h1 class="text-10 my-20 font-['Noto_Serif']">
       {{ $t("checkout.title") }}
@@ -46,20 +45,26 @@ function handlePlaceOrder() {
     <div class="flex gap-20 justify-between">
       <div class="w-1/2">
         {{ selectedShippingMethod }}
-        <CheckoutStepHeader :step="1" label="Shipping address" />
+        <CheckoutStepHeader :step="1" label="Shipping address">
+          <CheckoutCustomerAddress />
+        </CheckoutStepHeader>
         <CheckoutStepHeader :step="2" label="Shipping">
           <CheckoutShippingMethods
             :shippingMethods="shippingMethods"
             v-model:selectedShippingMethod="selectedShippingMethod"
           />
         </CheckoutStepHeader>
-        <CheckoutStepHeader :step="3" label="Payment information" >
-            <CheckoutPaymentMethods
+        <CheckoutStepHeader :step="3" label="Payment information">
+          <CheckoutPaymentMethods
             :paymentMethods="paymentMethods"
             v-model:selectedPaymentMethod="selectedPaymentMethod"
           />
         </CheckoutStepHeader>
-        <FormBaseButton :label="$t('checkout.placeOrderButton')" @click="handlePlaceOrder"  :disabled="!canPlaceOrder" />
+        <FormBaseButton
+          :label="$t('checkout.placeOrderButton')"
+          @click="handlePlaceOrder"
+          :disabled="!canPlaceOrder"
+        />
       </div>
       <div class="w-1/2">
         <CheckoutSummaryBox
