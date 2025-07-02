@@ -1,6 +1,6 @@
 {
   "name": "@shopware/composables",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
