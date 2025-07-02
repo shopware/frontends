@@ -7,7 +7,7 @@ const model = defineModel<string>({
   required: true,
 });
 
-const props = defineSlots<{
+const slots = defineSlots<{
   leftIcon(): unknown;
   rightIcon(): unknown;
 }>();

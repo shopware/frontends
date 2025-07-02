@@ -1,0 +1,24 @@
+{
+  "checkout": {
+    "title": "Koszyk",
+    "summary": "Podsumowanie",
+    "subtotal": "Suma częściowa",
+    "shippingCosts": "Wysyłka",
+    "total": "Suma",
+    "placeOrderButton": "Złóż zamówienie",
+    "customerAddress": {
+      "firstNamePlaceholder": "Wprowadź imię",
+      "firstNameLabel": "Imię",
+      "lastNamePlaceholder": "Wprowadź nazwisko",
+      "lastNameLabel": "Nazwisko",
+      "streetPlaceholder": "Wprowadź adres",
+      "streetLabel": "Adres",
+      "zipcodePlaceholder": "Wprowadź kod pocztowy",
+      "zipcodeLabel": "Kod pocztowy",
+      "cityPlaceholder": "Wprowadź nazwę miasta",
+      "cityLabel": "Miasto",
+      "countryPlaceholder": "Wybierz kraj",
+      "countryLabel": "Kraj"
+    }
+  }
+}
