@@ -3,6 +3,11 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
+definePageMeta({
+  // for default path setup in the backend
+  path: "/account/recover/password",
+});
+
 useBreadcrumbs([
   {
     name: t("breadcrumbs.passwordReset"),
