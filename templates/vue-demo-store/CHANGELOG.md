@@ -1,5 +1,15 @@
 # vue-demo-store
 
+## 1.10.0
+
+### Minor Changes
+
+- [#1885](https://github.com/shopware/frontends/pull/1885) [`3011265`](https://github.com/shopware/frontends/commit/301126501693b6f12eb6b426303012beeb2d60d5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add loader state for the cart component
+
+### Patch Changes
+
+- [#1885](https://github.com/shopware/frontends/pull/1885) [`3011265`](https://github.com/shopware/frontends/commit/301126501693b6f12eb6b426303012beeb2d60d5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh cart data after changing payment or shipping method
+
 ## 1.9.0
 
 ### Minor Changes
