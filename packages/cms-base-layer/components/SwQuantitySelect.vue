@@ -1,19 +1,27 @@
 <script setup lang="ts">
-const qty = defineModel<number>({
+const quantity = defineModel<number>({
   required: true,
 });
 
-const { size = "large" } = defineProps<{
+const {
+  size = "large",
+  steps,
+  max,
+  min,
+} = defineProps<{
   size?: "small" | "large";
+  steps?: number;
+  min?: number;
+  max?: number;
 }>();
 
 function increaseQty() {
-  qty.value++;
+  quantity.value++;
 }
 
 function decreaseQty() {
-  if (qty.value > 1) {
-    qty.value--;
+  if (quantity.value > 1) {
+    quantity.value--;
   }
 }
 
@@ -30,11 +38,15 @@ const sizeClasses = {
     <div
       class="bg-white border-l border-r border-outline-outline inline-flex flex-col justify-center items-center"
     >
-      <div
-        class="w-10 self-stretch text-center justify-start text-[#1d1b20] text-xs font-bold  leading-[18px]"
-      >
-        {{ qty }}
-      </div>
+      <input 
+        v-model="quantity" 
+        type="number" 
+        :min="min"
+        :max="max" 
+        :step="steps"
+        class="w-10 self-stretch text-end text-[#1d1b20] text-xs font-bold leading-[18px] border-none outline-none bg-transparent"
+        data-testid="product-quantity" 
+      />
     </div>
     <button class="w-10 bg-surface-surface border-0 border-l-1 cursor-pointer hover:bg-brand-tertiary-hover font-semibold" @click="increaseQty">+</button>
   </div>

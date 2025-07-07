@@ -2,7 +2,7 @@
 import { useCmsTranslations } from "@shopware/composables";
 import { getCmsTranslate } from "@shopware/helpers";
 import { defu } from "defu";
-import { toRefs } from "vue";
+import { computed, toRefs } from "vue";
 import {
   useAddToCart,
   useCartErrorParamsResolver,
@@ -23,6 +23,7 @@ type Translations = {
     addedToCart: string;
     qty: string;
     addToCart: string;
+    productNumber: string;
   };
   errors: {
     [key: string]: string;
@@ -34,6 +35,7 @@ let translations: Translations = {
     addedToCart: "has been added to cart.",
     qty: "Qty",
     addToCart: "Add to cart",
+    productNumber: "Product number",
   },
   errors: {
     "product-stock-reached":
@@ -45,6 +47,12 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 const { addToCart, quantity } = useAddToCart(product);
+
+const availableStock = computed(() => product.value?.availableStock ?? 0);
+const minPurchase = computed(() => product.value?.minPurchase ?? 0);
+const deliveryTime = computed(() => product.value?.deliveryTime);
+const restockTime = computed(() => product.value?.restockTime);
+const productNumber = computed(() => product.value?.productNumber ?? "");
 
 const addToCartProxy = async () => {
   await addToCart();
@@ -63,32 +71,28 @@ const addToCartProxy = async () => {
 </script>
 
 <template>
-  <div class="flex flex-row mt-10">
-    <div class="basis-1/4 relative -top-6">
-      <label for="qty" class="text-sm">{{ translations.product.qty }}</label>
-      <input
-        id="qty"
-        v-model="quantity"
-        type="number"
-        :min="product.minPurchase || 1"
-        :max="product.calculatedMaxPurchase"
-        :step="product.purchaseSteps || 1"
-        class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full mt-4"
-        data-testid="product-quantity"
-      />
-    </div>
-    <div class="basis-3/4 ml-4">
-      <button
-        :disabled="!product.available"
-        class="py-2 px-6 w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 cursor-pointer border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        :class="{
-          'opacity-50 cursor-not-allowed': !product.available,
-        }"
+  <div class="w-[572px] inline-flex flex-col justify-start items-start gap-8">
+    <SwQuantitySelect v-model="quantity" :min="product.minPurchase" :max="product.maxPurchase"
+      :steps="product.purchaseSteps" />
+
+    <SwStockInfo :availableStock="availableStock" :minPurchase="minPurchase" :deliveryTime="deliveryTime"
+      :restockTime="restockTime" />
+
+    <div class="self-stretch flex flex-col justify-start items-start gap-1">
+      <SwButton 
+        variant="primary"
+        size="medium"
+        :disabled="!product?.available"
+        block
         data-testid="add-to-cart-button"
         @click="addToCartProxy"
       >
-        🛍 {{ translations.product.addToCart }}
-      </button>
+        {{ translations.product.addToCart }}
+      </SwButton>
+      
+      <div class="self-stretch justify-start text-surface-on-surface text-xs font-normal font-['Inter'] leading-none">
+        {{ translations.product.productNumber }}: {{ productNumber }}
+      </div>
     </div>
   </div>
 </template>

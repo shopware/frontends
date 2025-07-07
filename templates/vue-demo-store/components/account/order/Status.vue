@@ -8,14 +8,14 @@ const props = defineProps<{
 const statusClass = computed(() => {
   switch (props.state.technicalName) {
     case "completed":
-      return "bg-green-100 text-green-800";
+      return "bg-states-success-container text-states-on-success-container";
     case "open":
     case "in_progress":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-states-warning-container text-states-on-warning-container";
     case "cancelled":
-      return "bg-red-100 text-red-800";
+      return "bg-states-error-container text-states-on-error-container";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-surface-surface-disabled text-surface-on-surface-disabled";
   }
 });
 </script>

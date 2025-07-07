@@ -87,6 +87,7 @@ export default defineConfig({
       Noto_Serif: "Noto Serif",
     },
   },
+  safelist: ["states-success", "states-error", "states-info", "states-warning"],
   presets: [
     presetWind3(),
     presetIcons({
