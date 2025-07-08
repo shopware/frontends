@@ -6,12 +6,20 @@ const { paymentMethods } = defineProps<{
   paymentMethods: Schemas["PaymentMethod"][];
 }>();
 
+const emit = defineEmits<{
+  change: [id: string];
+}>();
+
 const selectedPaymentMethod = defineModel<string | null>(
   "selectedPaymentMethod",
   {
     required: true,
   },
 );
+
+function handleChange(id: string) {
+  emit("change", id);
+}
 </script>
 <template>
   <div class="border border-outline-outline divide-y-1 divide-outline-outline">
@@ -28,6 +36,7 @@ const selectedPaymentMethod = defineModel<string | null>(
             :value="paymentMethod.id"
             name="payment-method"
             v-model="selectedPaymentMethod"
+            @change="handleChange(paymentMethod.id)"
           />
         </div>
         <div>

@@ -9,12 +9,20 @@ const { shippingMethods } = defineProps<{
   shippingMethods: Schemas["ShippingMethod"][];
 }>();
 
+const emit = defineEmits<{
+  change: [id: string];
+}>();
+
 const selectedShippingMethod = defineModel<string | null>(
   "selectedShippingMethod",
   {
     required: true,
   },
 );
+
+function handleChange(id: string) {
+  emit("change", id);
+}
 </script>
 <template>
   <div class="border border-outline-outline divide-y-1 divide-outline-outline">
@@ -31,6 +39,7 @@ const selectedShippingMethod = defineModel<string | null>(
             :value="shippingMethod.id"
             name="shipping-method"
             v-model="selectedShippingMethod"
+            @change="handleChange(shippingMethod.id)"
           />
         </div>
         <div>

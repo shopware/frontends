@@ -19,6 +19,14 @@
       "cityLabel": "Miasto",
       "countryPlaceholder": "Wybierz kraj",
       "countryLabel": "Kraj"
-    }
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "Wprowadź adres e-mail",
+      "emailLabel": "Adres e-mail",
+      "passwordPlaceholder": "Wprowadź hasło",
+      "passwordLabel": "Hasło",
+      "createAccountToggleLabel": "Utwórz konto klienta"
+    },
+    "saveAddressButton": "Dalej"
   }
 }

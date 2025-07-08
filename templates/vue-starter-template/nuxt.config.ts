@@ -67,5 +67,15 @@ export default defineNuxtConfig({
       },
     ],
   },
-  ssr: false,
+  routeRules: {
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": {
+      ssr: false,
+    },
+  },
 });

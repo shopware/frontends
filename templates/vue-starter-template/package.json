@@ -29,7 +29,8 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "nuxt": "3.17.5",
-    "vue": "3.5.16"
+    "vue": "3.5.16",
+    "@vuelidate/core": "2.0.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
