@@ -82,7 +82,11 @@ export default defineNuxtConfig({
       ssr: false,
     },
     "/**": {
-      isr: 60 * 60 * 24,
+      cache: {
+        swr: true,
+        maxAge: 1800,
+        staleMaxAge: 60 * 60 * 3,
+      },
     },
   },
   /**
@@ -114,6 +118,13 @@ export default defineNuxtConfig({
   },
   nitro: {
     compressPublicAssets: true,
+    storage: {
+      cache: {
+        driver: process.env.REDIS_URL ? "redis" : "memory",
+        url: process.env.REDIS_URL,
+        token: process.env.REDIS_TOKEN,
+      },
+    },
   },
   unocss: {
     // for presets, theme config, ... look at the uno.config.ts file
