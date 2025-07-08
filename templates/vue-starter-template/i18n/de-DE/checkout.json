@@ -1,0 +1,24 @@
+{
+  "checkout": {
+    "title": "Kasse",
+    "summary": "Zusammenfassung",
+    "subtotal": "Zwischensumme",
+    "shippingCosts": "Versand",
+    "total": "Gesamt",
+    "placeOrderButton": "Bestellen",
+    "customerAddress": {
+      "firstNamePlaceholder": "Vorname eingeben",
+      "firstNameLabel": "Vorname",
+      "lastNamePlaceholder": "Nachname eingeben",
+      "lastNameLabel": "Nachname",
+      "streetPlaceholder": "Straße eingeben",
+      "streetLabel": "Straße",
+      "zipcodePlaceholder": "Postleitzahl eingeben",
+      "zipcodeLabel": "Postleitzahl",
+      "cityPlaceholder": "Stadt eingeben",
+      "cityLabel": "Stadt",
+      "countryPlaceholder": "Land auswählen",
+      "countryLabel": "Land"
+    }
+  }
+}

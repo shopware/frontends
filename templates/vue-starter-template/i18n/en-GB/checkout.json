@@ -1,0 +1,24 @@
+{
+  "checkout": {
+    "title": "Checkout",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "shippingCosts": "Shipping",
+    "total": "Total",
+    "placeOrderButton": "Confirm and place order",
+    "customerAddress": {
+      "firstNamePlaceholder": "Enter first name",
+      "firstNameLabel": "First name",
+      "lastNamePlaceholder": "Enter last name",
+      "lastNameLabel": "Last name",
+      "streetPlaceholder": "Enter street address",
+      "streetLabel": "Street address",
+      "zipcodePlaceholder": "Enter ZIP code",
+      "zipcodeLabel": "Zip Code",
+      "cityPlaceholder": "Enter city name",
+      "cityLabel": "City",
+      "countryPlaceholder": "Select country",
+      "countryLabel": "Country"
+    }
+  }
+}

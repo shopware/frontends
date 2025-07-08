@@ -10,6 +10,12 @@ export type UseCountriesReturn = {
     operations["readCountry post /country"]["response"]
   >;
   getStatesForCountry(countryId: string): Schemas["CountryState"][] | null;
+  getCountriesOptions: ComputedRef<
+    {
+      label: string;
+      value: string;
+    }[]
+  >;
 };
 
 /**
@@ -39,6 +45,15 @@ export function useCountries(): UseCountriesReturn {
     return _sharedCountries.value ?? [];
   });
 
+  const getCountriesOptions = computed(() => {
+    return (
+      _sharedCountries.value?.map((element: Schemas["Country"]) => ({
+        label: element.translated.name,
+        value: element.id,
+      })) ?? []
+    );
+  });
+
   const mountedCallback = async () => {
     if (!_sharedCountries.value) {
       await fetchCountries();
@@ -60,5 +75,6 @@ export function useCountries(): UseCountriesReturn {
     fetchCountries,
     getStatesForCountry,
     getCountries,
+    getCountriesOptions,
   };
 }
