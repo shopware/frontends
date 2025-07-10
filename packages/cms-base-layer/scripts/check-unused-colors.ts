@@ -153,6 +153,7 @@ function updateCmsBaseConfig(
     return;
   }
 
+  // @ts-ignore
   const [fullMatch, openBrace, currentColorsSection, closeBrace] = colorsMatch;
 
   // Build new colors section with only used template colors
