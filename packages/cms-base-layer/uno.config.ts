@@ -19,7 +19,6 @@ export default defineConfig({
       "brand-secondary": "#E1D5FF",
       "brand-secondary-hover": "#D0BCFC",
       "brand-tertiary-hover": "#E3E3E3",
-      "fixed-fixed-on-image": "#FFFFFF",
     },
     fontFamily: {
       inter: "Inter",
