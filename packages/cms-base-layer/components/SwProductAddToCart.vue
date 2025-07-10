@@ -74,22 +74,13 @@ const addToCartProxy = async () => {
   <div class="w-[572px] inline-flex flex-col justify-start items-start gap-8">
     <SwQuantitySelect v-model="quantity" :min="product.minPurchase" :max="product.maxPurchase"
       :steps="product.purchaseSteps" />
-
     <SwStockInfo :availableStock="availableStock" :minPurchase="minPurchase" :deliveryTime="deliveryTime"
       :restockTime="restockTime" />
-
     <div class="self-stretch flex flex-col justify-start items-start gap-1">
-      <SwButton 
-        variant="primary"
-        size="medium"
-        :disabled="!product?.available"
-        block
-        data-testid="add-to-cart-button"
-        @click="addToCartProxy"
-      >
+      <SwButton variant="primary" size="medium" :disabled="!product?.available" block data-testid="add-to-cart-button"
+        @click="addToCartProxy">
         {{ translations.product.addToCart }}
       </SwButton>
-      
       <div class="self-stretch justify-start text-surface-on-surface text-xs font-normal font-['Inter'] leading-none">
         {{ translations.product.productNumber }}: {{ productNumber }}
       </div>
