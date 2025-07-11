@@ -1,4 +1,10 @@
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
+import {
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetWind3,
+} from "unocss";
 // jump to the base config to see the presets and rules already applied
 import baseConfig from "./.nuxt/uno.config.mjs";
 
@@ -80,8 +86,23 @@ const templateConfig: ConfigBase = {
       "opacity-opacity-light-low": "rgba(255, 255, 255, 0.11999999731779099)",
       "opacity-opacity-light-lowest":
         "rgba(255, 255, 255, 0.07999999821186066)",
+      fontFamily: {
+        inter: "Inter",
+        Noto_Serif: "Noto Serif",
+      },
     },
   },
+  presets: [
+    presetWind3(),
+    presetIcons({
+      collections: {
+        carbon: () =>
+          import("@iconify-json/carbon/icons.json").then((i) => i.default),
+      },
+    }),
+    presetAttributify(),
+    presetTypography(),
+  ],
   preflights: [
     {
       getCSS: () => `
