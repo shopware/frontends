@@ -23,21 +23,24 @@
     "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check-colors": "tsx scripts/check-unused-colors.ts"
   },
   "dependencies": {
     "@nuxt/kit": "3.17.5",
+    "@shopware/api-client": "workspace:*",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
-    "@shopware/api-client": "workspace:*",
     "@tresjs/cientos": "4.3.0",
     "@tresjs/core": "4.3.3",
+    "@unocss/nuxt": "66.2.2",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/core": "13.3.0",
     "entities": "6.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.173.0",
+    "unocss": "66.2.2",
     "vue": "3.5.16",
     "xss": "1.0.15"
   },
