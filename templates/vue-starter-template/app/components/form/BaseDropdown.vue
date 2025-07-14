@@ -6,6 +6,7 @@ defineProps<{
     value: string;
   }[];
   id: string;
+  invalid?: boolean;
 }>();
 
 const model = defineModel<string>({
@@ -14,6 +15,9 @@ const model = defineModel<string>({
 </script>
 <template>
   <div
+    :class="{
+      'outline-red': invalid,
+    }"
     class="flex items-center rounded-lg px-4 py-2 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
   >
     <select class="w-full" v-model="model" :id="id">

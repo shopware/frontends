@@ -19,6 +19,26 @@
       "cityLabel": "Stadt",
       "countryPlaceholder": "Land auswählen",
       "countryLabel": "Land"
-    }
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "E-Mail eingeben",
+      "emailLabel": "E-Mail",
+      "passwordPlaceholder": "Passwort eingeben",
+      "passwordLabel": "Passwort",
+      "createAccountToggleLabel": "Kundenkonto erstellen"
+    },
+    "saveAddressButton": "Weiter",
+    "success": {
+      "header": "Wir haben Ihre Bestellung #{0} erhalten und werden sie so schnell wie möglich verarbeiten.",
+      "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",
+      "paymentProcessInfo": "Sie werden in 5 Sekunden zur Zahlungsmaschine weitergeleitet."
+    },
+    "shippingAddressLabel": "Versandadresse",
+    "paymentMethodLabel": "Zahlungsmethode",
+    "billingAddressLabel": "Rechnungsadresse",
+    "shippingMethodLabel": "Versandmethode",
+    "takesUpTo": "Dauert bis zu",
+    "shippingPriceLabel": "Versand",
+    "totalLabel": "Gesamt"
   }
 }
