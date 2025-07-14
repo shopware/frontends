@@ -86,10 +86,10 @@ const templateConfig: ConfigBase = {
       "opacity-opacity-light-low": "rgba(255, 255, 255, 0.11999999731779099)",
       "opacity-opacity-light-lowest":
         "rgba(255, 255, 255, 0.07999999821186066)",
-      fontFamily: {
-        inter: "Inter",
-        Noto_Serif: "Noto Serif",
-      },
+    },
+    fontFamily: {
+      inter: "Inter",
+      Noto_Serif: "Noto Serif",
     },
   },
   presets: [
