@@ -27,6 +27,18 @@
       "passwordLabel": "Password",
       "createAccountToggleLabel": "Create customer account"
     },
-    "saveAddressButton": "Next"
+    "saveAddressButton": "Next",
+    "success": {
+      "header": "We have received your order #{0} and will process it as soon as possible.",
+      "paymentProcessLabel": "Finish payment process.",
+      "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
+    },
+    "shippingAddressLabel": "Shipping address",
+    "paymentMethodLabel": "Payment method",
+    "billingAddressLabel": "Billing address",
+    "shippingMethodLabel": "Shipping method",
+    "takesUpTo": "Takes up to",
+    "shippingPriceLabel": "Shipping",
+    "totalLabel": "Total"
   }
 }

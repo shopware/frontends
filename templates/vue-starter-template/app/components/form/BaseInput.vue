@@ -1,7 +1,16 @@
 <script lang="ts" setup>
+type InputTypeAttribute =
+  | "email"
+  | "number"
+  | "password"
+  | "tel"
+  | "text"
+  | "time"
+  | "url";
+
 const { placeholder, type = "text" } = defineProps<{
   placeholder?: string;
-  type?: "text" | "password";
+  type?: InputTypeAttribute;
   invalid?: boolean;
 }>();
 

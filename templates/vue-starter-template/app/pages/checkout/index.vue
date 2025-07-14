@@ -7,12 +7,15 @@ const {
   getPaymentMethods,
   setShippingMethod,
   setPaymentMethod,
+  createOrder,
 } = useCheckout();
 
 const {
   selectedPaymentMethod: sessionSelectedPaymentMethod,
   selectedShippingMethod: sessionSelectedShippingMethod,
 } = useSessionContext();
+
+const { refreshCart } = useCart();
 
 const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
   useUser();
@@ -28,6 +31,9 @@ const {
 } = useTemplateCheckout();
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+const { push } = useRouter();
 
 function handleRemoveItem(id: string) {
   console.log(id);
@@ -37,8 +43,10 @@ function handleUpdateQuantity(id: string, quantity: number) {
   console.log(id, quantity);
 }
 
-function handlePlaceOrder() {
-  console.log("place order");
+async function handlePlaceOrder() {
+  const order = await createOrder();
+  await push(formatLink(`/checkout/success/${order.id}`));
+  refreshCart();
 }
 
 function handleChangeShippingMethod(id: string) {
@@ -60,7 +68,7 @@ async function handleSaveAddress() {
     return;
   }
 
-  const response = await register({
+  await register({
     firstName: billingAddress.value.firstName,
     lastName: billingAddress.value.lastName,
     email: customerBaseInfo.value.email,
@@ -120,6 +128,8 @@ onMounted(() => {
             :label="$t('checkout.saveAddressButton')"
             @click="handleSaveAddress"
           />
+
+          <!-- <CheckoutCustomerAddressChosen v-else :address="billingAddress" /> -->
         </CheckoutStepHeader>
         <CheckoutStepHeader :step="2" label="Shipping">
           <CheckoutShippingMethods
