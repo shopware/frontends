@@ -17,7 +17,7 @@ defineOptions({
     </div>
 
     <div
-      class="flex flex-col sm:grid grid-cols-5 lg:grid-cols-6 gap-y-5 gap-x-7 text-secondary-400"
+      class="flex flex-col sm:grid grid-cols-5 lg:grid-cols-6 gap-y-5 gap-x-7 text-surface-on-surface"
     >
       <slot />
     </div>

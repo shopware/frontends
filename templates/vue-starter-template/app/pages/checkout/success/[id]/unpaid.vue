@@ -10,7 +10,7 @@ const { formatLink } = useInternationalization(localePath);
 <template>
   <div class="container mx-auto w-1/2 mb-24 mt-24 text-center">
     <h1
-      class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-secondary-900 md:text-5xl lg:text-6xl dark:text-white"
+      class="mb-4 text-4xl font-extrabold tracking-tight leading-none ext-surface-on-surface md:text-5xl lg:text-6xl dark:text-white"
     >
       {{ $t("checkout.yourOrder") }}
       <span
@@ -19,7 +19,7 @@ const { formatLink } = useInternationalization(localePath);
       >
     </h1>
     <p
-      class="text-lg font-normal text-secondary-500y-500y-500y-500y-500y-500y-500y-500 lg:text-xl dark:text-secondary-400y-400y-400y-400"
+      class="text-lg font-normal text-secondary-500y-500y-500y-500y-500y-500y-500y-500 lg:text-xl dark:text-surface-on-surfacey-400y-400y-400"
     >
       {{ $t("checkout.unpaidStatus") }}
     </p>

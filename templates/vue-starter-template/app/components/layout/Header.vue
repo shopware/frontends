@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 const { count: cartCount } = useCart();
 const { count: wishlistCount } = useWishlist();
+const { isLoggedIn } = useUser();
+
+const loginModalController = useModal();
 
 const mobileSearchActive = ref(false);
 const searchText = ref("");
@@ -10,6 +13,12 @@ const { formatLink } = useInternationalization(localePath);
 
 function toggleMobileSearch() {
   mobileSearchActive.value = !mobileSearchActive.value;
+}
+
+function handleMyAccountClick() {
+  if (!isLoggedIn.value) {
+    loginModalController.open();
+  }
 }
 </script>
 
@@ -26,7 +35,9 @@ function toggleMobileSearch() {
             @click="toggleMobileSearch"
             class="hidden max-sm:block"
           />
-          <LayoutHeaderMyAccountIcon />
+          <FormIconButton type="ghost" @click="handleMyAccountClick"
+            ><LayoutHeaderMyAccountIcon
+          /></FormIconButton>
           <LayoutHeaderWishlistIcon :counter="wishlistCount" />
           <LayoutHeaderCartIcon :counter="cartCount" />
           <LayoutHeaderMobileMenuIcon class="hidden max-sm:block" />
@@ -37,5 +48,10 @@ function toggleMobileSearch() {
         <FormLinkButton @click="toggleMobileSearch" label="Close" />
       </template>
     </div>
+    <ClientOnly>
+      <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
+        <AccountLoginForm />
+      </SharedModal>
+    </ClientOnly>
   </div>
 </template>

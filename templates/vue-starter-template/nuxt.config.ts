@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-04-15",
   devtools: { enabled: true },
   modules: [
+    "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware/nuxt-module",
     "@nuxtjs/i18n",
@@ -15,6 +16,7 @@ export default defineNuxtConfig({
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        devStorefrontUrl: "https://frontends-demo.vercel.app",
       },
     },
   },

@@ -6,9 +6,9 @@ defineProps<{
 </script>
 <template>
   <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t border-secondary-200 text-secondary-400 sm:items-center"
+    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t  border-outline-outline text-surface-on-surface sm:items-center"
   >
-    <div class="sm:flex items-center col-span-2 text-secondary-900">
+    <div class="sm:flex items-center col-span-2 ext-surface-on-surface">
       <div class="w-26 i-carbon-tag text-3xl text-center align-end"></div>
       <div class="my-5">
         {{ lineItem.label }}
@@ -26,7 +26,7 @@ defineProps<{
       <div class="sm:hidden">{{ $t("account.order.price") }}</div>
       <SharedPrice
         :value="lineItem.unitPrice"
-        class="text-secondary-600 font-normal"
+        class="text-surface-on-surface font-normal"
         data-testid="order-item-promotion-unitprice"
       />
     </div>
@@ -37,7 +37,7 @@ defineProps<{
       <div class="sm:hidden">{{ $t("account.order.subtotal") }}</div>
       <SharedPrice
         :value="lineItem.totalPrice"
-        class="text-secondary-600 font-normal"
+        class="text-surface-on-surface font-normal"
         data-testid="order-item-promotion-totalprice"
       />
     </div>
