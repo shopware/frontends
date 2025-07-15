@@ -25,7 +25,7 @@ const getMediaFileHandler = async (mediaId: string, fileName: string) => {
     class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-1 sm:gap-y-10 gap-x-1 py-4 border-t  border-outline-outline text-surface-on-surface sm:items-center"
   >
     <div
-      class="sm:flex items-center sm:items-center col-span-2 ext-surface-on-surface"
+      class="sm:flex items-center sm:items-center col-span-2 text-surface-on-surface"
     >
       <div
         class="w-full sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-md mr-2"

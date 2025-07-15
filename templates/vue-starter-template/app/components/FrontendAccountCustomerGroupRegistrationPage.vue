@@ -22,7 +22,7 @@ const { data: registrationResponse } = await useAsyncData(
 <template>
   <div class="container mx-auto bg-white flex flex-col">
     <h1
-      class="mb-4 text-2xl font-extrabold leading-none tracking-tight ext-surface-on-surface md:text-3xl lg:text-5xl dark:text-white text-center"
+      class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-surface-on-surface md:text-3xl lg:text-5xl dark:text-white text-center"
     >
       {{ registrationResponse?.translated.registrationTitle }}
     </h1>

@@ -7,7 +7,7 @@ defineOptions({
 <template>
   <div class="container mx-auto w-1/2 mb-24 mt-24 text-center">
     <h1
-      class="mb-4 text-4xl font-extrabold tracking-tight leading-none ext-surface-on-surface md:text-5xl lg:text-6xl dark:text-white"
+      class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-surface-on-surface md:text-5xl lg:text-6xl dark:text-white"
     >
       {{ $t("checkout.yourOrder") }}
       <span

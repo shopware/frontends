@@ -293,7 +293,7 @@ const formatDate = (date: string) =>
                 <div
                   class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t  border-outline-outline text-surface-on-surface items-center"
                 >
-                  <div class="flex items-center col-span-2 ext-surface-on-surface">
+                  <div class="flex items-center col-span-2 text-surface-on-surface">
                     <div
                       class="i-carbon-image bg-secondary-200 h-18 w-18 mr-2"
                     />

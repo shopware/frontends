@@ -8,7 +8,7 @@ defineProps<{
   <div
     class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t  border-outline-outline text-surface-on-surface sm:items-center"
   >
-    <div class="sm:flex items-center col-span-2 ext-surface-on-surface">
+    <div class="sm:flex items-center col-span-2 text-surface-on-surface">
       <div class="w-26 i-carbon-tag text-3xl text-center align-end"></div>
       <div class="my-5">
         {{ lineItem.label }}
