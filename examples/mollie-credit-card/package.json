@@ -20,11 +20,11 @@
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
-    "@vueuse/nuxt": "13.3.0",
-    "nuxt": "3.17.5",
+    "@vueuse/nuxt": "13.5.0",
+    "nuxt": "4.0.0",
     "typescript": "5.8.3",
-    "vue": "3.5.16",
-    "vue-tsc": "2.2.10"
+    "vue": "3.5.17",
+    "vue-tsc": "3.0.1"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"
