@@ -1,5 +1,14 @@
 # @shopware/composables
 
+## 1.9.1
+
+### Patch Changes
+
+- [#1877](https://github.com/shopware/frontends/pull/1877) [`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394) Thanks [@mkucmus](https://github.com/mkucmus)! - Adjust `readSeoUrl` request in case of trailing slash when technical URL is used
+
+- Updated dependencies [[`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
+  - @shopware/helpers@1.5.0
+
 ## 1.9.0
 
 ### Minor Changes
