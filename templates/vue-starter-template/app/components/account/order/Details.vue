@@ -95,7 +95,7 @@ const handleReorder = async () => {
     v-if="paymentChangeable && statusTechnicalName === 'open'"
     class="px-2 py-4"
   >
-    <h3 class="mb-5 text-secondary-600 text-base">
+    <h3 class="mb-5 text-surface-on-surface text-base">
       {{ $t("account.order.paymentMethod") }}
     </h3>
     <ul class="pl-2">
@@ -110,7 +110,7 @@ const handleReorder = async () => {
           :value="singlePaymentMethod.id"
           name="payment-method"
           type="radio"
-          class="focus:ring-primary h-4 w-4 border-secondary-300"
+          class="focus:ring-primary h-4 w-4 border-outline-outline"
           :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
           :checked="selectedPaymentMethod === singlePaymentMethod.id"
           :disabled="isLoading"
@@ -138,7 +138,7 @@ const handleReorder = async () => {
   </div>
   <div v-if="lineItems.length" class="px-2 py-4">
     <div
-      class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-secondary-600"
+      class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-surface-on-surface"
     >
       <div class="col-span-2">{{ $t("account.order.product") }}</div>
       <div>{{ $t("account.order.quantity") }}</div>

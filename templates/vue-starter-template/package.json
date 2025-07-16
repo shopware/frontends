@@ -38,6 +38,8 @@
     "@nuxtjs/i18n": "9.5.4",
     "@shopware/api-gen": "canary",
     "@unocss/nuxt": "66.2.2",
+    "@vueuse/core": "13.3.0",
+    "@vueuse/nuxt": "13.3.0",
     "typescript": "5.8.3",
     "unocss": "66.2.2",
     "vite": "6.3.5"

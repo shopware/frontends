@@ -22,13 +22,13 @@ const { data: registrationResponse } = await useAsyncData(
 <template>
   <div class="container mx-auto bg-white flex flex-col">
     <h1
-      class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-secondary-900 md:text-3xl lg:text-5xl dark:text-white text-center"
+      class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-surface-on-surface md:text-3xl lg:text-5xl dark:text-white text-center"
     >
       {{ registrationResponse?.translated.registrationTitle }}
     </h1>
     <div
       v-if="registrationResponse?.registrationActive"
-      class="text-lg font-normal text-secondary-500 lg:text-xl dark:text-secondary-400y-400"
+      class="text-lg font-normal text-secondary-500 lg:text-xl dark:text-surface-on-surfacey-400"
     >
       <p class="px-6 sm:px-4 mb-6">
         {{ registrationResponse?.translated.registrationIntroduction }}

@@ -109,21 +109,21 @@ const formatDate = (date: string) =>
         <div class="pt-8">
           <div>
             <AccountOrderSummary>
-              <div class="lg:col-span-2 text-secondary-600">
+              <div class="lg:col-span-2 text-surface-on-surface">
                 {{ order?.orderNumber }}
               </div>
               <div>
                 <SharedPrice
                   v-if="order?.amountTotal"
                   :value="order.amountTotal"
-                  class="text-secondary-600 font-normal"
+                  class="text-surface-on-surface font-normal"
                   data-testid="order-subtotal"
                 />
               </div>
-              <div v-if="order?.orderDate" class="text-secondary-600">
+              <div v-if="order?.orderDate" class="text-surface-on-surface">
                 {{ formatDate(order.orderDate) }}
               </div>
-              <div class="text-secondary-600">
+              <div class="text-surface-on-surface">
                 <AccountOrderStatus
                   v-if="order?.stateMachineState"
                   :state="order.stateMachineState"
@@ -153,7 +153,7 @@ const formatDate = (date: string) =>
             </template>
           </div>
         </div>
-        <div class="border-t border-secondary-200 flex">
+        <div class="border-t  border-outline-outline flex">
           <div class="flex-1 flex-col ml-4">
             <div
               class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
@@ -162,7 +162,7 @@ const formatDate = (date: string) =>
                 <div class="font-medium">
                   {{ $t("checkout.shippingAddressLabel") }}
                 </div>
-                <div class="pt-2 text-secondary-600">
+                <div class="pt-2 text-surface-on-surface">
                   <div>
                     {{ shippingAddress?.firstName }}
                     {{ shippingAddress?.lastName }}
@@ -179,7 +179,7 @@ const formatDate = (date: string) =>
                 <div class="font-medium">
                   {{ $t("checkout.billingAddressLabel") }}
                 </div>
-                <div class="pt-2 text-secondary-600">
+                <div class="pt-2 text-surface-on-surface">
                   <div>
                     {{ billingAddress.firstName }} {{ billingAddress.lastName }}
                   </div>
@@ -193,13 +193,13 @@ const formatDate = (date: string) =>
               </div>
             </div>
             <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-secondary-100 md:flex py-6 md:py-10"
+              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t  border-outline-outline md:flex py-6 md:py-10"
             >
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">
                   {{ $t("checkout.paymentMethodLabel") }}
                 </div>
-                <div class="pt-2 text-secondary-600">
+                <div class="pt-2 text-surface-on-surface">
                   <div>{{ paymentMethod?.translated.name }}</div>
                 </div>
               </div>
@@ -207,7 +207,7 @@ const formatDate = (date: string) =>
                 <div class="font-medium">
                   {{ $t("checkout.shippingMethodLabel") }}
                 </div>
-                <div class="pt-2 text-secondary-600">
+                <div class="pt-2 text-surface-on-surface">
                   <div>{{ shippingMethod?.translated.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     {{ $t("checkout.takesUpTo") }}
@@ -216,7 +216,7 @@ const formatDate = (date: string) =>
                 </div>
               </div>
             </div>
-            <div class="border-t border-secondary-100 py-6 md:py-10 space-y-4">
+            <div class="border-t  border-outline-outline py-6 md:py-10 space-y-4">
               <div class="md:w-1/2 ml-auto flex flex-col gap-2">
                 <div
                   v-if="subtotal"
@@ -225,7 +225,7 @@ const formatDate = (date: string) =>
                   <p>{{ $t("checkout.subtotal") }}</p>
                   <SharedPrice
                     :value="subtotal"
-                    class="text-secondary-600 font-normal"
+                    class="text-surface-on-surface font-normal"
                     data-testid="order-subtotal"
                   />
                 </div>
@@ -236,7 +236,7 @@ const formatDate = (date: string) =>
                   <p>{{ $t("checkout.shippingPriceLabel") }}</p>
                   <SharedPrice
                     :value="shippingCosts"
-                    class="text-secondary-600 font-normal"
+                    class="text-surface-on-surface font-normal"
                     data-testid="order-shipping"
                   />
                 </div>
@@ -247,7 +247,7 @@ const formatDate = (date: string) =>
                   <p>{{ $t("checkout.totalLabel") }}</p>
                   <SharedPrice
                     :value="total"
-                    class="text-secondary-600 font-normal"
+                    class="text-surface-on-surface font-normal"
                     data-testid="order-total"
                   />
                 </div>
@@ -291,9 +291,9 @@ const formatDate = (date: string) =>
                   />
                 </div>
                 <div
-                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-secondary-200 text-secondary-400 items-center"
+                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t  border-outline-outline text-surface-on-surface items-center"
                 >
-                  <div class="flex items-center col-span-2 text-secondary-900">
+                  <div class="flex items-center col-span-2 text-surface-on-surface">
                     <div
                       class="i-carbon-image bg-secondary-200 h-18 w-18 mr-2"
                     />
@@ -306,7 +306,7 @@ const formatDate = (date: string) =>
                   />
                   <div>
                     <div
-                      class="flex gap-1 text-secondary-600 font-normal"
+                      class="flex gap-1 text-surface-on-surface font-normal"
                       data-testid="order-item-unitprice"
                     >
                       <div
@@ -321,7 +321,7 @@ const formatDate = (date: string) =>
               </div>
             </div>
           </div>
-          <div class="border-t border-secondary-200 flex">
+          <div class="border-t  border-outline-outline flex">
             <div class="flex-1 flex-col ml-4">
               <div class="md:flex md:flex-wrap py-6 md:py-10">
                 <div class="w-auto md:w-1/2 w-1/2 pr-4">
@@ -354,7 +354,7 @@ const formatDate = (date: string) =>
                 </div>
               </div>
               <div
-                class="md:flex md:flex-wrap border-t border-secondary-100 md:flex py-6 md:py-10"
+                class="md:flex md:flex-wrap border-t  border-outline-outline md:flex py-6 md:py-10"
               >
                 <div class="w-auto md:w-1/2">
                   <div
@@ -386,14 +386,14 @@ const formatDate = (date: string) =>
                 </div>
               </div>
               <div
-                class="border-t border-secondary-100 py-6 md:py-10 space-y-4"
+                class="border-t  border-outline-outline py-6 md:py-10 space-y-4"
               >
                 <div class="flex justify-between text-base font-medium">
                   <div
                     class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-12"
                   />
                   <div
-                    class="flex gap-1 text-secondary-600 font-normal"
+                    class="flex gap-1 text-surface-on-surface font-normal"
                     data-testid="order-subtotal"
                   >
                     <div
@@ -406,7 +406,7 @@ const formatDate = (date: string) =>
                     class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-12"
                   />
                   <div
-                    class="flex gap-1 text-secondary-600y-600y-600y-600y-600y-600y-600y-600y-600y-600 font-normal"
+                    class="flex gap-1 text-surface-on-surfacey-600y-600y-600y-600y-600y-600y-600y-600y-600 font-normal"
                     data-testid="order-total"
                   >
                     <div
