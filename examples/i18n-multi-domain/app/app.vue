@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t, locales, locale, availableLocales } = useI18n();
+const { t, locales } = useI18n();
 </script>
 <template>
   <div class="p-4 container mx-auto">
