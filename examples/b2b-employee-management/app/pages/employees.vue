@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { apiClient } = useShopwareContext();
-const { notify } = useNotification();
+// const { notify } = useNotification();
 const employees = ref([]);
 
 /**
@@ -31,11 +31,11 @@ const handleResendInvitation = async (employeeId: string) => {
         id: employeeId,
       },
     });
-    notify({
-      title: "Invitation",
-      text: "Invitation has been resent successfully",
-      type: "success",
-    });
+    // notify({
+    //   title: "Invitation",
+    //   text: "Invitation has been resent successfully",
+    //   type: "success",
+    // });
   } catch (error) {
     console.error(error);
   }
