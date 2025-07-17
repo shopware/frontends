@@ -114,7 +114,7 @@ const errorMessage = isFormattedError ? errMessage : props.error.message;
     <div class="flex items-center justify-center">
       <img
         class="w-full h-full max-w-md max-h-md"
-        src="~/assets/error-background.png"
+        src="/error-background.png"
         alt="Error"
       />
     </div>

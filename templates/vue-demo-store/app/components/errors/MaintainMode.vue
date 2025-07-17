@@ -5,7 +5,7 @@
     <div class="flex items-center justify-center">
       <img
         class="w-full h-full"
-        src="~/assets/maintenance_mode.svg"
+        src="/maintenance_mode.svg"
         alt="Maintenance"
       />
     </div>

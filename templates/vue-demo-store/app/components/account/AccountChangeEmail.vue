@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { customValidators } from "@/i18n/utils/i18n-validators";
+import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 
