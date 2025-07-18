@@ -45,6 +45,12 @@ To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package
 > [!NOTE]
 > Do not edit your `storeApiSchema.d.ts` file. It will be overwritten on the next schema generation. Instead use your `shopware.d.ts` file to extend types.
 
+## Styling and Shopping Experiences integration
+
+This tempalte uses [UnoCSS](https://unocss.dev/) for styling, which is a utility-first CSS framework. It is configured to use the [Tailwind CSS](https://tailwindcss.com/) classes. 
+
+The template also includes a [CMS Base nuxt layer](https://www.npmjs.com/package/@shopware/cms-base-layer) to provide the CMS components for Shopping Experiences integration. The layer is registered in the `nuxt.config.ts` file. In order to override the default Tailwind CSS configuration, you can create your own `uno.config.ts` file in the root of your project and extend the default configuration.
+
 ## Production
 
 Refer to to the Shopware documentation for best practices on deploying a production JavaScript application with Shopware: [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html)

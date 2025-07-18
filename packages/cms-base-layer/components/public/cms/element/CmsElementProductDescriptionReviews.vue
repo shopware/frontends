@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementProductDescriptionReviews } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
-import { getProductName, getTranslatedProperty } from "@shopware/helpers";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { type Ref, computed, onMounted, ref } from "vue";
 import xss from "xss";
@@ -33,15 +33,23 @@ let translations: Translations = {
 };
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-const currentTab = ref<number>(1);
+const openSections = ref<Set<number>>(new Set([1]));
 const { product } = useProduct(props.content.data?.product);
 
 const description = computed(() =>
   xss(getTranslatedProperty(product.value, "description")),
 );
 
-const toggleTabs = (tabNumber: number) => {
-  currentTab.value = tabNumber;
+const toggleSection = (sectionNumber: number) => {
+  if (openSections.value.has(sectionNumber)) {
+    openSections.value.delete(sectionNumber);
+  } else {
+    openSections.value.add(sectionNumber);
+  }
+};
+
+const isSectionOpen = (sectionNumber: number) => {
+  return openSections.value.has(sectionNumber);
 };
 
 const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
@@ -54,70 +62,121 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    v-if="product"
-    class="cms-block-product-description-reviews flex flex-wrap"
-  >
-    <div class="w-full">
-      <ul
-        class="flex flex-wrap text-sm font-medium list-none text-center text-secondary-500 border-b border-secondary-200 dark:border-secondary-500 dark:text-secondary-400"
-      >
-        <li class="mr-2 text-center">
-          <a
-            class="font-bold uppercase px-5 py-3 block leading-normal cursor-pointer"
-            :class="[
-              currentTab !== 1
-                ? 'text-secondary-500 bg-white'
-                : 'text-white bg-secondary-500',
-            ]"
-            @click="() => toggleTabs(1)"
-          >
-            <i class="fas fa-space-shuttle text-base mr-1" />
+  <div class="w-full self-stretch inline-flex flex-col justify-start items-start gap-4">
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
+        @click="toggleSection(1)">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
             {{ translations.product.description }}
-          </a>
-        </li>
-        <li class="mr-2 text-center">
-          <a
-            class="font-bold uppercase px-5 py-3 block leading-normal cursor-pointer"
-            :class="[
-              currentTab !== 2
-                ? 'text-secondary-500 bg-white'
-                : 'text-white bg-secondary-500',
-            ]"
-            data-testid="product-reviews-tab"
-            @click="() => toggleTabs(2)"
-          >
-            <i class="fas fa-cog text-base mr-1" />
-            {{ translations.product.reviews }} ({{ reviews.length }})
-          </a>
-        </li>
-      </ul>
-      <div class="relative flex flex-col min-w-0 break-words w-full mb-6">
-        <div class="px-4 py-5 flex-auto">
-          <div class="tab-content tab-space">
-            <div
-              :class="[
-                'cms-block-product-description-reviews__description',
-                currentTab !== 1 ? 'hidden' : 'block',
-              ]"
-            >
-              <p class="text-xl font-bold mt-3">
-                {{ getProductName({ product }) }}
-              </p>
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div class="mt-2" v-html="description"></div>
-            </div>
-            <div
-              :class="[
-                'cms-block-product-description-reviews__reviews',
-                currentTab !== 2 ? 'hidden' : 'block',
-              ]"
-            >
-              <SwProductReviews :product="product" :reviews="reviews" />
-            </div>
+          </div>
+        </div>
+        <div class="w-6 h-6 relative">
+          <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
+            <div class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(1) }"></div>
           </div>
         </div>
       </div>
     </div>
+    <Transition name="accordion">
+      <div v-if="isSectionOpen(1)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+        <div
+          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-html="description"></div>
+        </div>
+      </div>
+    </Transition>
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
+        @click="toggleSection(2)">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+            {{ translations.product.reviews }} ({{ reviews.length }})
+          </div>
+        </div>
+        <div class="w-6 h-6 relative">
+          <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
+            <div class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(2) }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Transition name="accordion">
+      <div v-if="isSectionOpen(2)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+        <div
+          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          <div v-if="reviews.length === 0" class="text-center py-4">
+            No reviews yet
+          </div>
+          <div v-else>
+            <div v-for="review in reviews" :key="review.id"
+              class="mb-4 p-4 border border-outline-outline-variant rounded">
+              <div class="font-semibold">{{ review.title }}</div>
+              <div class="text-sm text-surface-on-surface-variant">
+                {{ review.content }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
+        @click="toggleSection(3)">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+            Category
+          </div>
+        </div>
+        <div class="w-6 h-6 relative">
+          <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
+            <div class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(3) }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Transition name="accordion">
+      <div v-if="isSectionOpen(3)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+        <div
+          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          <div v-if="product?.categories">
+            <div v-for="category in product.categories" :key="category.id" class="mb-2">
+              {{ category.name }}
+            </div>
+          </div>
+          <div v-else>
+            No categories available
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
+<style scoped>
+.accordion-enter-active,
+.accordion-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.accordion-enter-from,
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
