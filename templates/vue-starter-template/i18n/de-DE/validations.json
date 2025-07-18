@@ -1,0 +1,24 @@
+{
+  "validations": {
+    "alpha": "Der Wert ist nicht alphabetisch",
+    "alphaNum": "Der Wert muss alphanumerisch sein",
+    "between": "Der Wert muss zwischen {min} und {max} liegen",
+    "decimal": "Der Wert muss dezimal sein",
+    "email": "Der Wert ist keine gültige E-Mail-Adresse",
+    "integer": "Der Wert ist keine ganze Zahl",
+    "ipAddress": "Der Wert ist keine gültige IP-Adresse",
+    "macAddress": "Der Wert ist keine gültige MAC-Adresse",
+    "maxLength": "Die maximale Länge beträgt {max}",
+    "minLength": "Mindestlänge {min}",
+    "minValue": "Der kleinste erlaubte Wert ist {min}",
+    "not": "Der Wert entspricht dem angegebenen Validierer nicht",
+    "numeric": "Der Wert muss numerisch sein",
+    "or": "Der Wert entspricht keinem der angegebenen Validierer",
+    "required": "Der Wert ist erforderlich",
+    "requiredIf": "Der Wert ist erforderlich",
+    "requiredUnless": "Der Wert ist erforderlich",
+    "sameAs": "Der Wert muss dem Wert {otherName} entsprechen",
+    "url": "Der Wert ist keine gültige URL-Adresse",
+    "newPasswordConfirm": "Die Passwörter stimmen nicht überein"
+  }
+}

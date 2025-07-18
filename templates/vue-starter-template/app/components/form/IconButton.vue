@@ -23,9 +23,10 @@ const styles = {
       {
         'bg-surface-on-surface-disabled text-surface-surface-disabled':
           $attrs.disabled,
+        'w-10 h-10': type !== 'ghost',
       },
     ]"
-    class="w-10 h-10 relative rounded-full border-0"
+    class="relative rounded-full border-0"
   >
     <slot />
   </button>
