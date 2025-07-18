@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { useVuelidate } from "@vuelidate/core";
-import { defineModel } from "vue";
 import type { Schemas } from "#shopware";
 
 const state = defineModel<

@@ -13,17 +13,17 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "9.3.1",
+    "@nuxtjs/i18n": "10.0.0",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "js-cookie": "3.0.5",
-    "nuxt": "3.17.5",
+    "nuxt": "4.0.0",
     "typescript": "5.8.3",
-    "vue": "3.5.16",
+    "vue": "3.5.17",
     "vue-tsc": "2.2.10",
-    "@unocss/nuxt": "66.2.2"
+    "@unocss/nuxt": "66.3.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"
