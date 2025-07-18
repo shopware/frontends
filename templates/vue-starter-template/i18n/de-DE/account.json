@@ -1,0 +1,18 @@
+{
+  "account": {
+    "order": {
+      "product": "Produkt",
+      "quantity": "Menge",
+      "price": "Preis",
+      "subtotal": "Zwischensumme",
+      "orderNumber": "Bestellnummer",
+      "totalAmount": "Gesamtbetrag",
+      "orderDate": "Bestelldatum",
+      "orderStatus": "Bestellstatus",
+      "paymentMethod": "Zahlungsmethode",
+      "repeatOrder": "Bestellung wiederholen",
+      "order": "Bestellung",
+      "orders": "Bestellungen"
+    }
+  }
+}
