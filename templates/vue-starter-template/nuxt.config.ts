@@ -7,10 +7,9 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware/nuxt-module",
-
+    "@nuxtjs/i18n",
     "@nuxt/icon",
     "@nuxt/image",
-    "@nuxtjs/i18n",
   ],
   runtimeConfig: {
     public: {
@@ -22,7 +21,6 @@ export default defineNuxtConfig({
     },
   },
   typescript: {
-    typeCheck: true,
     strict: true,
   },
   css: ["@unocss/reset/tailwind-compat.css"],

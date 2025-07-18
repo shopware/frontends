@@ -57,7 +57,6 @@
       "@intlify/core-base": "^11.1.10",
       "@intlify/message-compiler": "^11.1.10",
       "@intlify/shared": "^11.1.10",
-      "vue-i18n": "^11.1.2",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.10.0",
       "axios": "^1.8.3",
