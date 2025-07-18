@@ -64,21 +64,29 @@ const referencePrice = computed(
 );
 const purchaseUnit = computed(() => product.value?.purchaseUnit);
 const unitName = computed(() => product.value?.unit?.name);
+const productName = computed(() => product.value?.translated?.name || "");
 </script>
 <template>
     <div v-if="product" :class="{
-        'h-full flex flex-col': true,
+        'h-full w-full flex flex-col md:w-[36rem]': true,
         'justify-start': alignment === 'flex-start',
         'justify-end': alignment === 'flex-end',
         'justify-center': alignment === 'center',
     }">
-        <div class="w-[572px] inline-flex flex-col justify-start items-start gap-8 mt-4">
+        <div class="w-full inline-flex flex-col justify-start items-start gap-8 mt-4">
+            <div
+                class="md:hidden self-stretch justify-start text-surface-on-surface text-4xl font-normal font-['Noto_Serif'] leading-[60px]">
+                {{ productName }}</div>
+
             <div v-if="tierPrices.length <= 1">
-                <SwSharedPrice v-if="isListPrice" class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
+                <SwSharedPrice v-if="isListPrice"
+                    class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
                     :value="price?.listPrice?.price" />
-                <SwSharedPrice v-if="unitPrice" class="text-3xl text-secondary-900 basis-2/6 justify-start" :class="{
-                    'text-red': isListPrice,
-                }" :value="unitPrice" />
+                <SwSharedPrice v-if="unitPrice"
+                    class="justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal"
+                    :class="{
+                        'text-red': isListPrice,
+                    }" :value="unitPrice" />
                 <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
                     {{ translations.product.previously }}
                     <SwSharedPrice class="ml-1" :value="regulationPrice" />

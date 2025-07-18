@@ -71,7 +71,7 @@ const addToCartProxy = async () => {
 </script>
 
 <template>
-  <div class="w-[572px] inline-flex flex-col justify-start items-start gap-8">
+  <div class="w-full inline-flex flex-col justify-start items-start gap-8">
     <SwQuantitySelect v-model="quantity" :min="product.minPurchase" :max="product.maxPurchase"
       :steps="product.purchaseSteps" />
     <SwStockInfo :availableStock="availableStock" :minPurchase="minPurchase" :deliveryTime="deliveryTime"
