@@ -35,7 +35,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/icon": "^1.15.0",
-    "@nuxtjs/i18n": "10.0.0-rc.3",
+    "@nuxtjs/i18n": "10.0.0",
     "@shopware/api-gen": "canary",
     "@unocss/nuxt": "66.3.3",
     "@vueuse/core": "13.5.0",

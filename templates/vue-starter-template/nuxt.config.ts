@@ -7,9 +7,10 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware/nuxt-module",
-    "@nuxtjs/i18n",
+
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxtjs/i18n",
   ],
   runtimeConfig: {
     public: {
@@ -19,9 +20,6 @@ export default defineNuxtConfig({
         devStorefrontUrl: "https://frontends-demo.vercel.app",
       },
     },
-  },
-  future: {
-    compatibilityVersion: 4,
   },
   typescript: {
     typeCheck: true,
