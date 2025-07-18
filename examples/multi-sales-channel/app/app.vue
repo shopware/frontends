@@ -8,7 +8,8 @@ function getPrefix(
 ): string {
   if (name.includes(fallbackLocale)) return "";
   const index = locales.findIndex((element) => name.includes(element));
-  return index >= 0 ? locales[index] : "";
+  const locale = locales[index] ?? "";
+  return index >= 0 ? locale : "";
 }
 
 const { apiClient } = useShopwareContext();
@@ -47,7 +48,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // Language set on the backend side
   if (localeProperties.value.localeId) {
     if (languageIdChain.value !== localeProperties.value.localeId) {
-      languageToChangeId = localeProperties.value.localeId;
+      languageToChangeId = localeProperties.value.localeId as string;
     }
   } else {
     const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);

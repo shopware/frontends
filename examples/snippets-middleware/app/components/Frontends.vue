@@ -10,7 +10,8 @@ const { t, availableLocales, locale: currentLocale } = useI18n();
 const { resolvePath } = useNavigationSearch();
 const { apiClient } = useShopwareContext();
 const backendRoute = ref<Schemas["SeoUrl"] | null>();
-
+const url = useRequestURL();
+const { setLocale } = useI18n();
 // function to fetch the pretty URL for a different language
 const findRouteForLanguage = async (languageCode: string) => {
   if (!backendRoute.value?.foreignKey) {
@@ -62,13 +63,13 @@ onMounted(async () => {
           (availableLocale) => !!['en-GB', 'de-DE'].includes(availableLocale),
         )"
         :key="locale"
-        @click.prevent.stop="$i18n.setLocale(locale)"
+        @click.prevent.stop="setLocale(locale)"
       >
         {{ locale }}
       </a>
     </div>
     <p>
-     {{ t("general.url") }}:
+      {{ t("general.url") }}:
       <strong>{{ backendRoute?.seoPathInfo }}</strong>
     </p>
     <p>
@@ -87,7 +88,13 @@ onMounted(async () => {
   <div>
     you can also examine what is returned from an API middleware and loaded by
     i18n module by visiting
-    <strong><a :href="`${useRequestURL()}api/translations?locale=${currentLocale}`" target="_blank">{{ useRequestURL()}}api/translations?locale={{currentLocale}}</a></strong> 
+    <strong
+      ><a
+        :href="`${url}api/translations?locale=${currentLocale}`"
+        target="_blank"
+        >{{ url }}api/translations?locale={{ currentLocale }}</a
+      ></strong
+    >
   </div>
 </template>
 <style scoped>
