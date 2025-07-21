@@ -53,6 +53,7 @@
     "overrides": {
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
+      "@eslint/plugin-kit": "^0.3.3",
       "@intlify/core": "^11.1.10",
       "@intlify/core-base": "^11.1.10",
       "@intlify/message-compiler": "^11.1.10",
