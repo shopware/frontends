@@ -44,7 +44,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.0.0",
-    "nuxt": "4.0.0",
+    "nuxt": "4.0.1",
     "tsconfig": "workspace:*",
     "typescript": "5.8.3",
     "unbuild": "2.0.0"

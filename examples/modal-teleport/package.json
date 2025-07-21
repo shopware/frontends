@@ -14,7 +14,7 @@
     "@biomejs/biome": "1.8.3",
     "@unocss/nuxt": "66.3.3",
     "@unocss/reset": "66.3.3",
-    "nuxt": "4.0.0",
+    "nuxt": "4.0.1",
     "unocss": "66.3.3"
   },
   "dependencies": {

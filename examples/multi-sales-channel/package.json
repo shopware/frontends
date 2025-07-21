@@ -13,13 +13,13 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "10.0.0",
+    "@nuxtjs/i18n": "10.0.1",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.10.0",
     "js-cookie": "3.0.5",
-    "nuxt": "4.0.0",
+    "nuxt": "4.0.1",
     "typescript": "5.8.3",
     "vue": "3.5.17",
     "vue-tsc": "2.2.10",

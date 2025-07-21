@@ -5,6 +5,7 @@
 .nitro
 .cache
 dist
+tsconfig.tsbuildinfo
 
 # Node dependencies
 node_modules
