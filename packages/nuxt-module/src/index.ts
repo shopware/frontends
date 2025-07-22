@@ -88,29 +88,3 @@ export type ShopwareNuxtOptions = {
    */
   useUserContextInSSR?: boolean;
 };
-
-declare module "@nuxt/schema" {
-  interface NuxtConfig {
-    shopware?: ShopwareNuxtOptions;
-  }
-  interface NuxtOptions {
-    shopware?: ShopwareNuxtOptions;
-  }
-  interface ApiClientConfig {
-    headers?: {
-      [key: string]: string;
-    };
-  }
-
-  interface RuntimeConfig {
-    shopware?: Pick<
-      ShopwareNuxtOptions,
-      "endpoint" | "shopwareEndpoint" | "useUserContextInSSR"
-    >;
-    apiClientConfig?: ApiClientConfig;
-  }
-  interface PublicRuntimeConfig {
-    shopware: ShopwareNuxtOptions;
-    apiClientConfig?: ApiClientConfig;
-  }
-}
