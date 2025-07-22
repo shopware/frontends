@@ -1116,8 +1116,8 @@ importers:
         specifier: 1.8.3
         version: 1.8.3
       '@nuxt/schema':
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 4.0.1
+        version: 4.0.1
       '@types/three':
         specifier: 0.173.0
         version: 0.173.0
@@ -1260,8 +1260,8 @@ importers:
         specifier: 1.8.3
         version: 1.8.3
       '@nuxt/schema':
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 4.0.1
+        version: 4.0.1
       nuxt:
         specifier: 4.0.1
         version: 4.0.1(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.1)(@types/node@22.10.0)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.17)(db0@0.3.2)(encoding@0.1.13)(eslint@9.29.0(jiti@2.4.2))(ioredis@5.6.1)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.43.0)(sass@1.89.2)(terser@5.43.0)(tsx@4.19.2)(typescript@5.8.3)(vite@7.0.5(@types/node@22.10.0)(jiti@2.4.2)(less@4.2.0)(sass@1.89.2)(terser@5.43.0)(tsx@4.19.2)(yaml@2.7.1))(vue-tsc@2.2.10(typescript@5.8.3))(yaml@2.7.1)
@@ -3585,10 +3585,6 @@ packages:
 
   '@nuxt/schema@3.17.5':
     resolution: {integrity: sha512-A1DSQk2uXqRHXlgLWDeFCyZk/yPo9oMBMb9OsbVko9NLv9du2DO2cs9RQ68Amvdk8O2nG7/FxAMNnkMdQ8OexA==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-
-  '@nuxt/schema@4.0.0':
-    resolution: {integrity: sha512-I1ygEGxGUxBBrwlGMJFCWye7rMQbnyGuuW97aM0X2IncsCE3/y2gIsrn0TaJglg5rAR8KM3kHLHDMUVb+IOM7A==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   '@nuxt/schema@4.0.1':
@@ -18555,14 +18551,6 @@ snapshots:
   '@nuxt/schema@3.17.5':
     dependencies:
       '@vue/shared': 3.5.16
-      consola: 3.4.2
-      defu: 6.1.4
-      pathe: 2.0.3
-      std-env: 3.9.0
-
-  '@nuxt/schema@4.0.0':
-    dependencies:
-      '@vue/shared': 3.5.17
       consola: 3.4.2
       defu: 6.1.4
       pathe: 2.0.3
