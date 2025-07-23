@@ -99,7 +99,8 @@
       "@babel/runtime": "^7.26.10",
       "@babel/helpers": "^7.26.10",
       "react-router": "^7.5.2",
-      "on-headers": "^1.1.0"
+      "on-headers": "^1.1.0",
+      "form-data": "^4.0.4"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]
