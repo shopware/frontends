@@ -1,4 +1,3 @@
-// import type { RuntimeConfig, PublicRuntimeConfig } from "nuxt/schema";
 import type { ShopwareNuxtOptions } from "../src";
 
 declare module "nuxt/schema" {
@@ -15,10 +14,7 @@ declare module "nuxt/schema" {
   }
 
   interface RuntimeConfig {
-    shopware?: Pick<
-      ShopwareNuxtOptions,
-      "endpoint" | "shopwareEndpoint" | "useUserContextInSSR"
-    >;
+    shopware: ShopwareNuxtOptions;
     apiClientConfig?: ApiClientConfig;
     public: PublicRuntimeConfig;
   }

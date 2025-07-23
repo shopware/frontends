@@ -12,6 +12,7 @@ import {
   useState,
 } from "#imports";
 import type { ApiClient } from "#shopware";
+import type { ShopwareNuxtOptions } from "./src";
 
 declare module "#app" {
   interface NuxtApp {
@@ -27,12 +28,17 @@ declare module "vue" {
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
+
+  const shopwareRuntimeConfigPublic = runtimeConfig.public
+    .shopware as ShopwareNuxtOptions;
+  const shopwareRuntimeConfig = runtimeConfig.shopware as ShopwareNuxtOptions;
+
   const shopwareEndpointCSR =
-    runtimeConfig.public?.shopware?.endpoint ??
-    runtimeConfig.public?.shopware?.shopwareEndpoint;
+    shopwareRuntimeConfigPublic?.endpoint ??
+    shopwareRuntimeConfigPublic?.shopwareEndpoint;
 
   const shopwareEndpointSSR =
-    (NuxtApp.ssrContext && runtimeConfig.shopware?.endpoint) ||
+    (NuxtApp.ssrContext && shopwareRuntimeConfig?.endpoint) ||
     shopwareEndpointCSR;
 
   const shopwareEndpoint = import.meta.server
@@ -40,8 +46,8 @@ export default defineNuxtPlugin((NuxtApp) => {
     : shopwareEndpointCSR;
 
   const shopwareAccessToken =
-    runtimeConfig.public?.shopware?.accessToken ??
-    runtimeConfig.public?.shopware?.shopwareAccessToken;
+    shopwareRuntimeConfigPublic?.accessToken ??
+    shopwareRuntimeConfigPublic?.shopwareAccessToken;
 
   if (!shopwareEndpoint || !shopwareAccessToken) {
     throw new Error(
@@ -51,12 +57,16 @@ export default defineNuxtPlugin((NuxtApp) => {
 
   const shouldUseSessionContextInServerRender =
     !NuxtApp.ssrContext ||
-    !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
-    !!runtimeConfig?.shopware?.useUserContextInSSR;
+    !!shopwareRuntimeConfigPublic?.useUserContextInSSR ||
+    !!shopwareRuntimeConfig?.useUserContextInSSR;
 
   const contextTokenFromCookie = NuxtApp.ssrContext
     ? getCookie(NuxtApp.ssrContext.event, "sw-context-token")
     : Cookies.get("sw-context-token");
+
+  type ApiClientConfig = {
+    headers?: Record<string, string>;
+  };
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -65,8 +75,9 @@ export default defineNuxtPlugin((NuxtApp) => {
       ? contextTokenFromCookie
       : "",
     defaultHeaders:
-      (NuxtApp.ssrContext && runtimeConfig.apiClientConfig?.headers) ||
-      runtimeConfig.public?.apiClientConfig?.headers,
+      (NuxtApp.ssrContext &&
+        (runtimeConfig.apiClientConfig as ApiClientConfig)?.headers) ||
+      (runtimeConfig.public?.apiClientConfig as ApiClientConfig)?.headers,
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
@@ -105,7 +116,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   // biome-ignore lint: ignore type error
   const shopwareContext = createShopwareContext(NuxtApp.vueApp as any, {
     enableDevtools: true,
-    devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
+    devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,
     browserLocale,
   });
   NuxtApp.vueApp.provide("shopware", shopwareContext);
