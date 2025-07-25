@@ -29,19 +29,19 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@vuelidate/core": "2.0.3",
-    "nuxt": "3.17.5",
-    "vue": "3.5.16"
+    "nuxt": "4.0.1",
+    "vue": "3.5.18"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/icon": "^1.13.0",
+    "@nuxt/icon": "^1.15.0",
     "@nuxtjs/i18n": "9.5.4",
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.2.2",
-    "@vueuse/core": "13.3.0",
-    "@vueuse/nuxt": "13.3.0",
+    "@unocss/nuxt": "66.3.3",
+    "@vueuse/core": "13.5.0",
+    "@vueuse/nuxt": "13.5.0",
     "typescript": "5.8.3",
-    "unocss": "66.2.2",
-    "vite": "6.3.5"
+    "unocss": "66.3.3",
+    "vite": "7.0.6"
   }
 }
