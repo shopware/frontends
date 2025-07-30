@@ -52,7 +52,7 @@ Helpers are functions that can be used for formatting, data manipulation and oth
     <img src="../.assets/framework-icons/vue.png" alt="This package depends on Vue.js 3" title="This package depends on Vue.js 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/composables" target="_blank">@shopware/composables</a>
 </div>
 
-The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](/getting-started/).
+The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/).
 
 <PageRef page="../packages/composables.html" title="Composables Reference" sub="Package API reference with all composables" />
 
@@ -66,7 +66,7 @@ The composables are a set of Vue.js composition functions that can be used in an
 
 The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
 
-If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](/getting-started/templates/custom-vue-project.html).
+If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-vue-project).
 
 <PageRef page="../packages/nuxt-module.html" title="Nuxt3 Module Reference" sub="Documentation about setup and basic usage" />
 
@@ -81,7 +81,7 @@ If you want to use these packages with a different Vue.js framework, see the gui
 
 The CMS base is a Nuxt module that provides an implementation of all CMS components in Shopware [based on utility-classes](./styling.html) using unocss/Tailwind.css syntax. It is useful for projects that want to use the CMS components but design their own layout.
 
-Head to our [Content Pages](/getting-started/cms/content-pages.html#use-the-cms-base-package) guide to learn more.
+Head to our [Content Pages](../getting-started/cms/content-pages#use-the-cms-base-package) guide to learn more.
 
 <PageRef page="../packages/cms-base.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
 
