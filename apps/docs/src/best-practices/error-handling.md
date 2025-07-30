@@ -16,7 +16,7 @@ nav:
 # Error Handling
 
 :::warning
-Deprecated. This doc is based on the old API client. Use The [new API client](../packages/api-client/) instead.
+Deprecated. This doc is based on the old API client. Use The [new API client](../packages/api-client) instead.
 :::
 
 How to for error handling in different areas and different cases with examples.
