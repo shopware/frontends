@@ -95,7 +95,7 @@ export default defineNuxtConfig({
 
 ## Use Amazon Pay component
 
-Use `<AmazonPayButton />` component wherever you want as it's registered globally. You can customize the way it's rendered by editing [the component](./src/runtime/components/AmazonPayButton.client.vue).
+Use `<AmazonPayButton />` component wherever you want as it's registered globally. You can customize the way it's rendered by editing the component `src/runtime/components/AmazonPayButton.client.vue`.
 
 ## What to expect
 

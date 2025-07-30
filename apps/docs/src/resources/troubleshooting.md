@@ -139,4 +139,4 @@ For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozil
 
 ## CORS (Cross-Origin Resource Sharing) Issues
 
-See the [CORS](../troubleshooting/CORS) page for more information on how to handle CORS issues in your project.
+See the [CORS](./troubleshooting/CORS) page for more information on how to handle CORS issues in your project.
