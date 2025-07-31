@@ -21,7 +21,7 @@ This guide will discuss how to use and customize [Shopping Experiences](https://
 
 Shopping Experiences are implemented as a dedicated package that you can install in your project.
 
-If your project is based on the [Demo Store Template](/getting-started/templates/demo-store-template.html), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
+If your project is based on the [Demo Store Template](../getting-started/templates/demo-store-template), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
 
 ## Install the package
 

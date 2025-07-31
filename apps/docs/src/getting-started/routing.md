@@ -122,7 +122,7 @@ Thankfully, we do not need to do that in every case. Only the first request (han
 
 To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
 
-We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](/packages/helpers.html#getcategoryroute) and [getProductRoute](/packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers.html#getcategoryroute) and [getProductRoute](../packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
 
 ##### Example getCategoryRoute with NuxtLink
 

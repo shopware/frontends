@@ -22,9 +22,9 @@ In this chapter you will learn how to
 
 ### Quick reference
 
-- [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) is a composable used for a breadcrumbs management with sharable state
-- [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
-- [getCmsBreadcrumbs](/packages/helpers.html#getcmsbreadcrumbs) is a helper used for building breadcrumbs for `Landing Pages`
+- [useBreadcrumbs](../../packages/composables/useBreadcrumbs) is a composable used for a breadcrumbs management with sharable state
+- [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
+- [getCmsBreadcrumbs](../../packages/helpers#getcmsbreadcrumbs) is a helper used for building breadcrumbs for `Landing Pages`
 
 ## Building breadcrumbs for a static page
 
@@ -54,7 +54,7 @@ Each CMS page contains the `Category` with `breadcrumb` array, which contains a 
 breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 ```
 
-we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
+we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware/helpers";
@@ -79,7 +79,7 @@ onBeforeRouteLeave(() => {
 
 ## Displaying Breadcrumbs
 
-Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
+Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```vue
 <script setup lang="ts">
