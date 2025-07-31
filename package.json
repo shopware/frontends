@@ -53,11 +53,11 @@
     "overrides": {
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
-      "@intlify/core": "^11.1.2",
-      "@intlify/core-base": "^11.1.2",
-      "@intlify/message-compiler": "^11.1.2",
-      "@intlify/shared": "^11.1.2",
-      "vue-i18n": "^11.1.2",
+      "@eslint/plugin-kit": "^0.3.3",
+      "@intlify/core": "^11.1.10",
+      "@intlify/core-base": "^11.1.10",
+      "@intlify/message-compiler": "^11.1.10",
+      "@intlify/shared": "^11.1.10",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.10.0",
       "axios": "^1.8.3",
@@ -98,7 +98,9 @@
       "prismjs": "^1.30.0",
       "@babel/runtime": "^7.26.10",
       "@babel/helpers": "^7.26.10",
-      "react-router": "^7.5.2"
+      "react-router": "^7.5.2",
+      "on-headers": "^1.1.0",
+      "form-data": "^4.0.4"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]

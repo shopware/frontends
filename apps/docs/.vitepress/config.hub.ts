@@ -31,7 +31,7 @@ export default (
       ReadmeBasedReference({ projectRootDir, relativeDir: "packages" }),
       CmsBaseReference({
         projectRootDir,
-        relativeDir: "packages/cms-base-layer/components/public/cms",
+        relativeDir: "packages/cms-base-layer/app/components/public/cms",
       }),
       ReadmeLoader(),
       ComposablesBuilder({

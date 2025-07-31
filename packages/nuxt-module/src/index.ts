@@ -21,26 +21,27 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
   async setup(options: ShopwareNuxtOptions, nuxt) {
     const logger = useLogger(MODULE_ID);
     const resolver = createResolver(import.meta.url);
-
+    const shopwareConfig =
+      (nuxt.options.runtimeConfig?.public?.shopware as ShopwareNuxtOptions) ??
+      undefined;
     nuxt.options.runtimeConfig.public.shopware = defu(
       nuxt.options.runtimeConfig.public.shopware || {},
       options || {},
     );
 
-    if (isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)) {
+    if (isConfigDeprecated(shopwareConfig)) {
       logger.warn(
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
     }
-    if (nuxt.options?.runtimeConfig?.shopware?.endpoint) {
+    if (shopwareConfig?.endpoint as string) {
       logger.info(
-        `You are using SSR Shopware API endpoint: ${nuxt.options.runtimeConfig.shopware.endpoint}`,
+        `You are using SSR Shopware API endpoint: ${shopwareConfig.endpoint}`,
       );
     }
     logger.info(
       `CSR Shopware API endpoint: ${
-        nuxt.options.runtimeConfig.public?.shopware?.endpoint ??
-        nuxt.options.runtimeConfig.public?.shopware?.shopwareEndpoint
+        shopwareConfig?.endpoint ?? shopwareConfig?.shopwareEndpoint
       }`,
     );
     addPlugin({
@@ -87,29 +88,3 @@ export type ShopwareNuxtOptions = {
    */
   useUserContextInSSR?: boolean;
 };
-
-declare module "@nuxt/schema" {
-  interface NuxtConfig {
-    shopware?: ShopwareNuxtOptions;
-  }
-  interface NuxtOptions {
-    shopware?: ShopwareNuxtOptions;
-  }
-  interface ApiClientConfig {
-    headers?: {
-      [key: string]: string;
-    };
-  }
-
-  interface RuntimeConfig {
-    shopware?: Pick<
-      ShopwareNuxtOptions,
-      "endpoint" | "shopwareEndpoint" | "useUserContextInSSR"
-    >;
-    apiClientConfig?: ApiClientConfig;
-  }
-  interface PublicRuntimeConfig {
-    shopware: ShopwareNuxtOptions;
-    apiClientConfig?: ApiClientConfig;
-  }
-}
