@@ -1,5 +1,11 @@
 # @shopware/helpers
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1910](https://github.com/shopware/frontends/pull/1910) [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add helper for getting payment and shipping method icon
+
 ## 1.4.0
 
 ### Minor Changes
