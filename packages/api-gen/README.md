@@ -316,11 +316,8 @@ await validateJson({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.3.1
+### Latest changes: 1.3.2
 
 ### Patch Changes
 
-- [#1814](https://github.com/shopware/frontends/pull/1814) [`00fb689`](https://github.com/shopware/frontends/commit/00fb6899821ed5e5f1d0b44062b34791b102a917) Thanks [@patzick](https://github.com/patzick)! - Merging JSON overrides allows to have multiple pverrides as objects and arrays - combining them into arrays.
-
-- Updated dependencies [[`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c)]:
-  - @shopware/api-client@1.3.0
+- [#1939](https://github.com/shopware/frontends/pull/1939) [`cb62cfb`](https://github.com/shopware/frontends/commit/cb62cfb541552ce4e0dc8a02a7a8bddb72ef4de1) Thanks [@patzick](https://github.com/patzick)! - Update typescript version to match openapi-typescript version, causing problems with generating proper schema.

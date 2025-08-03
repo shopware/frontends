@@ -132,21 +132,18 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 1.5.0
-
-### Minor Changes
-
-- [#1727](https://github.com/shopware/frontends/pull/1727) [`94872b7`](https://github.com/shopware/frontends/commit/94872b7c6f6337ff8ce0bcfd9320e4178a4927f0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added CmsBlockHtml to render html blocks.
-  Added CmsElementHtml to render html element.
+### Latest changes: 1.5.1
 
 ### Patch Changes
 
-- [#1843](https://github.com/shopware/frontends/pull/1843) [`1859893`](https://github.com/shopware/frontends/commit/1859893ec3fe1cdead4b1c39e34943d9a70deaa4) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhance form error handling and fix TS errors
+- [#1879](https://github.com/shopware/frontends/pull/1879) [`eaf170b`](https://github.com/shopware/frontends/commit/eaf170bd037a278b3d2e155c4d69de8e5fd9516d) Thanks [@acuriouspotion](https://github.com/acuriouspotion)! - Fix youtube player control display and usage of advanced privacy mode setting.
 
-- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - Fix date formatting based on locale, previously always returned en-US format
+- [#1862](https://github.com/shopware/frontends/pull/1862) [`20fd2c6`](https://github.com/shopware/frontends/commit/20fd2c615738f93a3947c69f351fc5d37ea89ebf) Thanks [@aheartforspinach](https://github.com/aheartforspinach)! - Fix CmsSectionSidebar.vue when used on a landing page by removing useCategory and related code
 
-- [#1857](https://github.com/shopware/frontends/pull/1857) [`e78d51e`](https://github.com/shopware/frontends/commit/e78d51e6af0726b12620d9f7e8f2c3150aa80cfa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix wrong `SharedPrice` component in `SwListingProductPrice.vue` file
+- [#1884](https://github.com/shopware/frontends/pull/1884) [`3004b97`](https://github.com/shopware/frontends/commit/3004b973913b90cdf4b255ffb3f9cee265241666) Thanks [@MorennMcFly](https://github.com/MorennMcFly)! - Fix cms blocks TextTeaserSection and TextTwoColumn responsivity so the elements stack from md breakpoint and under.
 
-- Updated dependencies [[`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49)]:
-  - @shopware/api-client@1.3.0
-  - @shopware/composables@1.9.0
+- [#1863](https://github.com/shopware/frontends/pull/1863) [`f8c5cd5`](https://github.com/shopware/frontends/commit/f8c5cd5c9aa8b65d394c831e3ac548b4743c53a6) Thanks [@aheartforspinach](https://github.com/aheartforspinach)! - move `CmsBlockHtml.vue` to block folder (instead of element), remove `CmsBlockHtml.md`
+
+- Updated dependencies [[`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394), [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
+  - @shopware/composables@1.9.1
+  - @shopware/helpers@1.5.0
