@@ -1,5 +1,21 @@
 # @shopware/cms-base-layer
 
+## 1.5.1
+
+### Patch Changes
+
+- [#1879](https://github.com/shopware/frontends/pull/1879) [`eaf170b`](https://github.com/shopware/frontends/commit/eaf170bd037a278b3d2e155c4d69de8e5fd9516d) Thanks [@acuriouspotion](https://github.com/acuriouspotion)! - Fix youtube player control display and usage of advanced privacy mode setting.
+
+- [#1862](https://github.com/shopware/frontends/pull/1862) [`20fd2c6`](https://github.com/shopware/frontends/commit/20fd2c615738f93a3947c69f351fc5d37ea89ebf) Thanks [@aheartforspinach](https://github.com/aheartforspinach)! - Fix CmsSectionSidebar.vue when used on a landing page by removing useCategory and related code
+
+- [#1884](https://github.com/shopware/frontends/pull/1884) [`3004b97`](https://github.com/shopware/frontends/commit/3004b973913b90cdf4b255ffb3f9cee265241666) Thanks [@MorennMcFly](https://github.com/MorennMcFly)! - Fix cms blocks TextTeaserSection and TextTwoColumn responsivity so the elements stack from md breakpoint and under.
+
+- [#1863](https://github.com/shopware/frontends/pull/1863) [`f8c5cd5`](https://github.com/shopware/frontends/commit/f8c5cd5c9aa8b65d394c831e3ac548b4743c53a6) Thanks [@aheartforspinach](https://github.com/aheartforspinach)! - move `CmsBlockHtml.vue` to block folder (instead of element), remove `CmsBlockHtml.md`
+
+- Updated dependencies [[`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394), [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
+  - @shopware/composables@1.9.1
+  - @shopware/helpers@1.5.0
+
 ## 1.5.0
 
 ### Minor Changes

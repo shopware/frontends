@@ -106,6 +106,6 @@ Some important limitations are
 - Frontend settings are not synchronized from the backend - such as
   - Available fields for checkout and registration
 - Not all Plugins or Apps are API aware
-- Not all Commercial features are supported, check the [Commercial Integrations](/resources/integrations/commercial/) page
+- Not all Commercial features are supported, check the [Commercial Integrations](../../resources/integrations/commercial/) page
 
 If you think a specific feature should be part of the demo store template, feel free to create an [issue](https://github.com/shopware/frontends/issues/new) or make a [contribution](https://github.com/shopware/frontends/pulls).

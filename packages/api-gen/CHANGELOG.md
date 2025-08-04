@@ -1,5 +1,11 @@
 # @shopware/api-gen
 
+## 1.3.2
+
+### Patch Changes
+
+- [#1939](https://github.com/shopware/frontends/pull/1939) [`cb62cfb`](https://github.com/shopware/frontends/commit/cb62cfb541552ce4e0dc8a02a7a8bddb72ef4de1) Thanks [@patzick](https://github.com/patzick)! - Update typescript version to match openapi-typescript version, causing problems with generating proper schema.
+
 ## 1.3.1
 
 ### Patch Changes
