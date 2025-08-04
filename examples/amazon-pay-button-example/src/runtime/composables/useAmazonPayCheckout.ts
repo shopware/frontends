@@ -91,7 +91,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
     amazonSessionData.value = sessionData;
 
     await shopwareRegister({
-      firstName: sessionData.billingAddress.name?.split(" ")[0],
+      firstName: sessionData.billingAddress.name?.split(" ")[0] || "",
       lastName:
         sessionData.billingAddress.name?.split(" ")[
           sessionData.billingAddress.name?.split(" ").length - 1
@@ -104,7 +104,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       salutationId: getNotSpecifiedSalutation(),
       billingAddress: {
         customerId: "",
-        firstName: sessionData.billingAddress.name?.split(" ")[0],
+        firstName: sessionData.billingAddress.name?.split(" ")[0] || "",
         lastName:
           sessionData.billingAddress.name?.split(" ")[
             sessionData.billingAddress.name?.split(" ").length - 1
@@ -196,11 +196,11 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        orderId: orders.value?.[0].id,
-        transactionId: orders.value?.[0].transactions?.[0].id,
+        orderId: orders.value?.[0]?.id,
+        transactionId: orders.value?.[0]?.transactions?.[0]?.id,
         amazonCheckoutSessionId: checkoutSessionId.value,
         chargeAmount: {
-          amount: orders.value?.[0].amountTotal?.toString(),
+          amount: orders.value?.[0]?.amountTotal?.toString(),
           currencyCode: currency.value?.isoCode,
         },
       }),

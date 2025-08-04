@@ -38,8 +38,8 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/nuxt-module": "canary",
-    "@types/node": "22.10.0",
-    "nuxt": "3.17.5",
+    "@types/node": "22.13.14",
+    "nuxt": "4.0.1",
     "typescript": "5.8.3",
     "vue-tsc": "2.2.10"
   }

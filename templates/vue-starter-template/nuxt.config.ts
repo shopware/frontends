@@ -20,11 +20,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  future: {
-    compatibilityVersion: 4,
-  },
   typescript: {
-    typeCheck: true,
     strict: true,
   },
   css: ["@unocss/reset/tailwind-compat.css"],

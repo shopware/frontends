@@ -46,7 +46,7 @@
     "vercel": "43.2.0"
   },
   "engines": {
-    "node": "^18.17.x || ^20.x || ^22.x"
+    "node": "^20.x || ^22.x"
   },
   "packageManager": "pnpm@10.2.0",
   "pnpm": {
@@ -60,7 +60,7 @@
       "@eslint/plugin-kit": "^0.3.4",
       "vue-i18n": "^11.1.10",
       "@sentry/browser": "^7.119.1",
-      "@types/node": "22.10.0",
+      "@types/node": "22.13.14",
       "axios": "^1.8.3",
       "braces": "^3.0.3",
       "debug": "^4.3.5",

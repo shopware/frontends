@@ -3,9 +3,8 @@ import { resolve } from "node:path";
  * @module @shopware/cms-base
  */
 import { defineNuxtModule } from "@nuxt/kit";
-import type { NuxtModule } from "@nuxt/schema";
 
-const nuxtModule: NuxtModule = defineNuxtModule({
+export default defineNuxtModule({
   meta: {
     name: "@shopware/cms-base",
     configKey: "shopware-cms",
@@ -25,5 +24,3 @@ const nuxtModule: NuxtModule = defineNuxtModule({
     nuxt.options.imports.transform?.include.push(/.+cms-base.+/);
   },
 });
-
-export default nuxtModule;
