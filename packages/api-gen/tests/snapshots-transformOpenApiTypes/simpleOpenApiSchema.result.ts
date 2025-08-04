@@ -14,6 +14,10 @@ type GenericRecord =
   | { [key: string]: GenericRecord };
 export type components = {
   schemas: Schemas;
+  parameters: {
+    accept: string;
+    contentType: string;
+  };
 };
 export type Schemas = {
   Country: {

@@ -23,6 +23,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
   const operationsMap: GenerationMap = {};
   // let overridesMap: OverridesMap = {};
   const componentsMap: Record<string, string> = {};
+  const parametersMap: Record<string, string> = {};
 
   const existingTypes: string[][] = [];
 
@@ -275,7 +276,32 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
             }
           }
         }
+
+        const allParameters = getDeepProperty({
+          type,
+          names: ["parameters"],
+          node,
+          typeChecker,
+        });
+
+        if (allParameters) {
+          const parameterNames = getTypePropertyNames(allParameters);
+
+          for (const parameterName of parameterNames) {
+            const parameterCode = getDeepPropertyCode({
+              type: allParameters,
+              names: [parameterName],
+              node,
+              typeChecker,
+            });
+            if (parameterCode) {
+              parametersMap[parameterName] = parameterCode;
+            }
+          }
+        }
       }
+
+      // console.error("type name", typeName);
 
       const doNotMoveTypes = [
         "$defs",
@@ -298,5 +324,5 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
     traverseThroughFileNodes(sourceFile);
   }
 
-  return [operationsMap, componentsMap, existingTypes];
+  return [operationsMap, componentsMap, existingTypes, parametersMap];
 }

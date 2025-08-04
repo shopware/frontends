@@ -11,6 +11,7 @@ export function transformSchemaTypes(schema: string): TransformedElements {
 
   const overridesMap: OverridesMap = {};
   const componentsMap: Record<string, string> = {};
+  const parametersMap: Record<string, string> = {};
 
   const existingTypes: string[][] = [];
 
@@ -84,5 +85,5 @@ export function transformSchemaTypes(schema: string): TransformedElements {
     traverseThroughFileNodes(sourceFile);
   }
 
-  return [overridesMap, componentsMap, existingTypes];
+  return [overridesMap, componentsMap, existingTypes, parametersMap];
 }
