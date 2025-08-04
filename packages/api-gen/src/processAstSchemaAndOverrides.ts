@@ -10,7 +10,7 @@ import { transformSchemaTypes } from "./transformSchemaTypes";
 import { createVirtualFiles } from "./virtualFileCreator";
 
 export async function processAstSchemaAndOverrides(
-  [opMap, opComponents, opExistingTypes]: TransformedElements,
+  [opMap, opComponents, opExistingTypes, opParameters]: TransformedElements,
   overridingSchema: string,
   type: "store" | "admin",
   options: { version: string },
@@ -35,7 +35,7 @@ export async function processAstSchemaAndOverrides(
     return;
   }
   // recursivelyGetOverrides(overridesSourceFile);
-  const [oOperationsMap, oComponetsMap, oParametersMap] =
+  const [oOperationsMap, oComponetsMap] =
     transformSchemaTypes(overridingSchema);
 
   const operationsMap: GenerationMap = defu(
@@ -44,6 +44,7 @@ export async function processAstSchemaAndOverrides(
   );
   const componentsMap = defu(oComponetsMap, opComponents);
   const existingTypes = opExistingTypes;
+  const parametersMap = opParameters;
 
   const filePath = join("api-types", `${type}ApiTypes.d.ts`);
   await generateFile(
