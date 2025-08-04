@@ -59,7 +59,7 @@
       "@intlify/message-compiler": "^11.1.10",
       "@intlify/shared": "^11.1.10",
       "@sentry/browser": "^7.119.1",
-      "@types/node": "22.10.0",
+      "@types/node": "22.13.14",
       "axios": "^1.8.3",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
