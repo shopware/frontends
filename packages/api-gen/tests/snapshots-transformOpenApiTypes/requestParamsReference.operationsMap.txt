@@ -1,0 +1,22 @@
+{
+  "myRequestWithParams post /customer/wishlist/{productId}": {
+    "body": [],
+    "headers": undefined,
+    "operationId": "myRequestWithParams",
+    "pathParams": undefined,
+    "query": " {
+        /** A list of product identifiers. */
+        ids?: components["parameters"]["criteriaIds"];
+      };",
+    "queryOptional": true,
+    "responses": [
+      {
+        "code": " {
+            success: boolean;
+          };",
+        "contentType": "application/json",
+        "responseCode": 200,
+      },
+    ],
+  },
+}
