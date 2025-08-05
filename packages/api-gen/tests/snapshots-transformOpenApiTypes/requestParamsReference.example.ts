@@ -1,7 +1,6 @@
 export type paths = {
   "/customer/wishlist/{productId}": {
     post: operations["myRequestWithParams"];
-    get: operations["myRequestWithOptionalParams"];
   };
 };
 

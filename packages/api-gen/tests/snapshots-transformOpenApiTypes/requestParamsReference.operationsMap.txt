@@ -1,12 +1,4 @@
 {
-  "myRequestWithOptionalParams get /customer/wishlist/{productId}": {
-    "body": [],
-    "headers": undefined,
-    "operationId": "myRequestWithOptionalParams",
-    "pathParams": undefined,
-    "query": undefined,
-    "responses": [],
-  },
   "myRequestWithParams post /customer/wishlist/{productId}": {
     "body": [],
     "headers": undefined,
