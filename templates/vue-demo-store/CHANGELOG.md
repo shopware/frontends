@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.11.0
+
+### Minor Changes
+
+- [#1930](https://github.com/shopware/frontends/pull/1930) [`ea2961f`](https://github.com/shopware/frontends/commit/ea2961f51eb2dc0d21416134d29945b3c2a1aea8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update Nuxt to v4
+
 ## 1.10.0
 
 ### Minor Changes
