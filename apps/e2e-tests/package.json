@@ -11,13 +11,13 @@
     "start": "npx http-server"
   },
   "devDependencies": {
-    "@playwright/test": "1.53.0"
+    "@playwright/test": "1.54.2"
   },
   "dependencies": {
     "@axe-core/playwright": "4.10.2",
-    "@faker-js/faker": "9.8.0",
+    "@faker-js/faker": "9.9.0",
     "@stackblitz/sdk": "1.11.0",
-    "dotenv": "16.5.0",
+    "dotenv": "17.2.1",
     "http-server": "14.1.1"
   }
 }
