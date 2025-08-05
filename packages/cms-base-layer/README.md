@@ -87,9 +87,52 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) how to use `cms-base` package in your project based on Nuxt v3.
 
+## Default styling
+
+The components are styled using [Tailwind CSS](https://tailwindcss.com/) utility classes, so you can use them in your project without any additional configuration if your project uses Tailwind CSS. 
+
+This layer provides a default Tailwind CSS configuration (see [uno.config.ts](./uno.config.ts) for details), which is used to style the components. If you want to customize the styling, you can do so by creating your own Tailwind CSS configuration file and extending the default one:
+
+```ts [nuxt.config.ts]
+// nuxt.config.ts
+export default defineNuxtConfig({
+  // ...
+  unocss: {
+    nuxtLayers: true, // enable Nuxt layers for UnoCSS
+  },
+})
+```
+
+```ts [uno.config.ts]
+// uno.config.ts
+import config from './.nuxt/uno.config.mjs'
+
+export default config
+```
+
+Thanks to this, you can **use the default configuration** provided by this layer, or **extend/overwrite** it with your own customizations in your end-project:
+
+```ts [uno.config.ts]
+// uno.config.ts
+import { mergeConfigs } from '@unocss/core'
+import config from './.nuxt/uno.config.mjs'
+
+export default mergeConfigs([config, {
+  theme: {
+    colors: {
+      primary: '#ff3e00',
+      secondary: '#1c1c1c',
+    },
+  },
+}])
+
+```
+
+See the [UnoCSS reference](https://unocss.dev/integrations/nuxt#configuration) for more information on how to configure UnoCSS in Nuxt when work with layers.
+
 ## 📘 Available components
 
-The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base.html#available-components).
+The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base-layer.html#available-components).
 
 ## 🔄 Overwriting components
 
