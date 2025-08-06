@@ -21,7 +21,7 @@ describe("transformOpenApiTypes", async () => {
         "utf-8",
       );
 
-      const [operationsMap, componentsMap, existingTypes] =
+      const [operationsMap, componentsMap, existingTypes, parametersMap] =
         transformOpenApiTypes(exampleFileContent);
 
       const project = await prepareFileContent({
@@ -29,6 +29,7 @@ describe("transformOpenApiTypes", async () => {
         operationsMap,
         existingTypes,
         componentsMap: componentsMap,
+        parametersMap,
         options: {
           version: "0.0.0",
         },

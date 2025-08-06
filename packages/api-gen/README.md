@@ -316,8 +316,8 @@ await validateJson({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.3.2
+### Latest changes: 1.3.3
 
 ### Patch Changes
 
-- [#1939](https://github.com/shopware/frontends/pull/1939) [`cb62cfb`](https://github.com/shopware/frontends/commit/cb62cfb541552ce4e0dc8a02a7a8bddb72ef4de1) Thanks [@patzick](https://github.com/patzick)! - Update typescript version to match openapi-typescript version, causing problems with generating proper schema.
+- [#1942](https://github.com/shopware/frontends/pull/1942) [`a344abb`](https://github.com/shopware/frontends/commit/a344abba579c91c4f775e7be27ed882ca420fdc2) Thanks [@patzick](https://github.com/patzick)! - Allow shared parameters to be available in schema resolver.

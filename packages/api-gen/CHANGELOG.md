@@ -1,5 +1,11 @@
 # @shopware/api-gen
 
+## 1.3.3
+
+### Patch Changes
+
+- [#1942](https://github.com/shopware/frontends/pull/1942) [`a344abb`](https://github.com/shopware/frontends/commit/a344abba579c91c4f775e7be27ed882ca420fdc2) Thanks [@patzick](https://github.com/patzick)! - Allow shared parameters to be available in schema resolver.
+
 ## 1.3.2
 
 ### Patch Changes

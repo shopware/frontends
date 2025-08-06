@@ -21,7 +21,7 @@ describe("transformOpenApiTypes", async () => {
         "utf-8",
       );
 
-      const [operationsMap, componentsMap, existingTypes] =
+      const [operationsMap, componentsMap, existingTypes, parametersMap] =
         transformOpenApiTypes(exampleFileContent);
 
       await expect(operationsMap).toMatchFileSnapshot(
@@ -42,6 +42,7 @@ describe("transformOpenApiTypes", async () => {
         operationsMap,
         existingTypes,
         componentsMap: componentsMap,
+        parametersMap,
         options: {
           version: "0.0.0",
         },

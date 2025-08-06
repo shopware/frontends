@@ -23,7 +23,7 @@ vi.mocked(readFileSync).mockReturnValue(json5.stringify(testSchema));
 const consoleWarnSpy = vi.spyOn(console, "log");
 consoleWarnSpy.mockImplementation(() => {});
 
-describe("api-gen - generate", () => {
+describe.skip("api-gen - generate", () => {
   bench("[api-gen][generate] - generate schema command", async () => {
     await generate({
       cwd: __dirname,

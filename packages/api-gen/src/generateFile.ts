@@ -28,8 +28,9 @@ export type OverridesMap = Record<string, string>;
 
 export type TransformedElements = [
   OverridesMap | GenerationMap,
-  Record<string, string>,
+  Record<string, string>, // component schemas map
   string[][],
+  Record<string, string>, // component parameters map
 ];
 
 export async function generateFile(
@@ -37,6 +38,7 @@ export async function generateFile(
   operationsMap: OverridesMap | GenerationMap,
   existingTypes: string[][],
   schemasMap: Record<string, string>,
+  parametersMap: Record<string, string>,
   options: { version: string },
 ) {
   const project = await prepareFileContent({
@@ -44,6 +46,7 @@ export async function generateFile(
     operationsMap,
     existingTypes,
     componentsMap: schemasMap,
+    parametersMap,
     options,
   });
 
@@ -55,12 +58,14 @@ export async function prepareFileContent({
   operationsMap,
   existingTypes,
   componentsMap,
+  parametersMap,
   options,
 }: {
   filepath: string;
   operationsMap: OverridesMap | GenerationMap;
   existingTypes: string[][];
   componentsMap: Record<string, string>;
+  parametersMap: Record<string, string>;
   options: { version: string };
 }) {
   const project = new Project({});
@@ -78,6 +83,8 @@ export async function prepareFileContent({
 
   const sortedSchemaKeys = Object.keys(componentsMap).sort();
 
+  const sortedParametersKeys = Object.keys(parametersMap).sort();
+
   const sourceFile = project.createSourceFile(
     filepath,
     (writer) => {
@@ -90,6 +97,15 @@ export async function prepareFileContent({
       // components
       writer.write("export type components =").block(() => {
         writer.writeLine("schemas: Schemas;");
+        if (sortedParametersKeys.length) {
+          writer.writeLine("parameters:").block(() => {
+            for (const key of sortedParametersKeys) {
+              if (parametersMap[key]) {
+                writer.write(`${key}:`).write(parametersMap[key]); //.write(";");
+              }
+            }
+          });
+        }
       });
 
       writer.write("export type Schemas =").block(() => {
