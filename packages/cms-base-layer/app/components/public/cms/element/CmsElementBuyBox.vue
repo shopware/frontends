@@ -68,12 +68,12 @@ const productName = computed(() => product.value?.translated?.name || "");
 </script>
 <template>
     <div v-if="product" :class="{
-        'h-full w-full flex flex-col md:w-[36rem]': true,
+        'h-full w-full flex flex-col': true,
         'justify-start': alignment === 'flex-start',
         'justify-end': alignment === 'flex-end',
         'justify-center': alignment === 'center',
     }">
-        <div class="w-full inline-flex flex-col justify-start items-start gap-8 mt-4">
+        <div class="self-stretch inline-flex flex-col justify-start items-start gap-8 mt-4 min-w-0">
             <div
                 class="md:hidden self-stretch justify-start text-surface-on-surface text-4xl font-normal font-['Noto_Serif'] leading-[60px]">
                 {{ productName }}</div>

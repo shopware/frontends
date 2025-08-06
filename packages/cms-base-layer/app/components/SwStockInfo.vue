@@ -30,7 +30,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 </script>
 <template>
-  <div class="w-[588px] inline-flex justify-start items-center gap-2">
+  <div class="inline-flex justify-start items-center gap-2">
     <div class="w-2 h-2 bg-states-success rounded-full" v-if="availableStock > 0"></div>
     <div class="w-2 h-2 bg-states-error rounded-full" v-else></div>
     <span v-if="availableStock >= minPurchase && deliveryTime">{{ translations.product.deliveryTime }} {{
