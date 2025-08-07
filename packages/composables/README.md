@@ -165,11 +165,8 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.9.1
+### Latest changes: 1.9.2
 
 ### Patch Changes
 
-- [#1877](https://github.com/shopware/frontends/pull/1877) [`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394) Thanks [@mkucmus](https://github.com/mkucmus)! - Adjust `readSeoUrl` request in case of trailing slash when technical URL is used
-
-- Updated dependencies [[`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
-  - @shopware/helpers@1.5.0
+- [`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e) Thanks [@mkucmus](https://github.com/mkucmus)! - add nested media entity association explicitly

@@ -1,5 +1,12 @@
 # docs
 
+## 1.10.3
+
+### Patch Changes
+
+- Updated dependencies [[`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e)]:
+  - @shopware/composables@1.9.2
+
 ## 1.10.2
 
 ### Patch Changes
