@@ -27,20 +27,20 @@
     "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
-    "@nuxt/kit": "3.17.5"
+    "@nuxt/kit": "4.0.3"
   },
   "devDependencies": {
     "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.1",
     "@biomejs/biome": "1.8.3",
-    "@nuxt/devtools": "2.5.0",
-    "@nuxt/module-builder": "1.0.1",
-    "@nuxt/schema": "3.17.5",
+    "@nuxt/devtools": "2.6.2",
+    "@nuxt/module-builder": "1.0.2",
+    "@nuxt/schema": "4.0.3",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/nuxt-module": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.0.1",
+    "nuxt": "4.0.3",
     "typescript": "5.8.3",
-    "vue-tsc": "2.2.10"
+    "vue-tsc": "3.0.5"
   }
 }
