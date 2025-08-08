@@ -79,7 +79,7 @@ function onTouchEnd() {
 
 <template>
   <div class="w-full max-w-full relative inline-flex flex-col justify-center items-center gap-2 mx-auto">
-    <div class="w-full lg:max-w-[600px] xl:max-w-[708px]">
+    <div class="w-full">
       <!-- Main Image Display -->
 
       <div class="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative overflow-hidden rounded-lg"

@@ -197,7 +197,7 @@ async function checkAndSyncColors() {
     }
 
     // Get cms-base component files only
-    const cmsComponentsDir = join(rootDir, "components");
+    const cmsComponentsDir = join(rootDir, "app", "components");
     const cmsComponentFiles = getComponentFiles(cmsComponentsDir);
 
     console.log(

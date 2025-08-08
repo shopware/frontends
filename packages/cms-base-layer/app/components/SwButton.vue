@@ -48,7 +48,7 @@ const buttonClasses = computed(() => {
 
   if (props.disabled || props.loading) {
     classes.push(
-      "bg-surface-surface text-surface-on-surface cursor-not-allowed opacity-50",
+      "bg-surface-surface-disabled text-surface-on-surface cursor-not-allowed opacity-50",
     );
   } else {
     classes.push(variantClasses[props.variant]);

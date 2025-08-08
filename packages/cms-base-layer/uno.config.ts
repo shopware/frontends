@@ -17,6 +17,7 @@ export default defineConfig({
       "surface-surface-variant": "#FBF6FF",
       "states-success": "#15B31C",
       "surface-on-surface-variant": "#696470",
+      "surface-surface-disabled": "#E8E8E8",
       "surface-surface-container-highest": "#E6E0E9",
       "states-error": "#D12D24",
       "brand-primary-hover": "#45317A",
@@ -24,6 +25,7 @@ export default defineConfig({
       "brand-secondary-hover": "#D0BCFC",
       "brand-tertiary": "#F1F1F1",
       "brand-tertiary-hover": "#E3E3E3",
+      "brand-on-tertiary": "#1D1B20",
     },
     fontFamily: {
       inter: "Inter",
