@@ -76,7 +76,7 @@ const hasItems = computed(() => cartItems.value.length > 0);
         </div>
 
         <NuxtLink
-          class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-primary hover:bg-dark"
+          class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-dark"
           data-testid="cart-checkout-link"
           :to="formatLink(`/checkout`)"
         >

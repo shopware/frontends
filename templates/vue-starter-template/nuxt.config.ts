@@ -24,6 +24,9 @@ export default defineNuxtConfig({
     strict: true,
   },
   css: ["@unocss/reset/tailwind-compat.css"],
+  unocss: {
+    nuxtLayers: true,
+  },
   components: {
     dirs: [
       {

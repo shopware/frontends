@@ -12,13 +12,13 @@ const leftContent = getSlotContent("left");
 </script>
 
 <template>
-  <div
-    class="lg:container mx-auto flex flex-col lg:flex-row gap-10 justify-center"
-  >
-    <div class="overflow-hidden basis-4/6">
+  <div class="w-full flex flex-col lg:flex-row justify-center items-stretch gap-4 lg:gap-10 lg:px-0 overflow-hidden">
+    <!-- Gallery Section -->
+    <div class="w-full lg:w-3/5">
       <CmsGenericElement :content="leftContent" />
     </div>
-    <div class="basis-2/6">
+    <!-- Buybox Section -->
+    <div class="w-full lg:w-2/5">
       <CmsGenericElement :content="rightContent" />
     </div>
   </div>
