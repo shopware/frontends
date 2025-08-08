@@ -1,6 +1,10 @@
 export const cmsAssociations = {
   associations: {
-    media: {},
+    media: {
+      associations: {
+        media: {},
+      },
+    },
     cmsPage: {
       associations: {
         sections: {
