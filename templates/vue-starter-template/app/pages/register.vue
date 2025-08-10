@@ -1,0 +1,3 @@
+<template>
+    [TODO] register
+</template>

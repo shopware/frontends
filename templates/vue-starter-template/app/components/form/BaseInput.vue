@@ -12,6 +12,7 @@ const { placeholder, type = "text" } = defineProps<{
   placeholder?: string;
   type?: InputTypeAttribute;
   invalid?: boolean;
+  autocomplete?: string;
 }>();
 
 const model = defineModel<string>({
@@ -36,6 +37,7 @@ const slots = defineSlots<{
       class="text-sm w-full"
       :placeholder="placeholder"
       :type="type"
+      :autocomplete="autocomplete"
     />
     <slot name="rightIcon" />
   </div>
