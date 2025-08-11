@@ -4,18 +4,19 @@ import type { ApiError } from "@shopware/api-client";
 import { useTemplateRef } from "vue";
 
 const emits = defineEmits<{
-  (e: "success"): void;
-  (e: "close"): void;
+  success: [];
+  close: [];
 }>();
+
 const router = useRouter();
 const { isLoggedIn, login } = useUser();
 const { t } = useI18n();
-const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const loginErrors = ref<string[]>([]);
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
 
 const formData = ref({
   username: "",
@@ -23,18 +24,17 @@ const formData = ref({
   remember: true,
 });
 
-const goToRegister = () => {
+const emailInputElement = useTemplateRef("emailInputElement");
+useFocus(emailInputElement, { initialValue: true });
+
+function goToRegister() {
   emits("close");
   router.push(formatLink("/register"));
-};
+}
 
-const { resolveApiErrors } = useApiErrorsResolver("account_login");
-
-const invokeLogin = async (): Promise<void> => {
+async function invokeLogin(): Promise<void> {
   loginErrors.value = [];
   try {
-    // TODO: remove this line once the https://github.com/shopware/frontends/issues/112 issue is fixed
-    await refreshSessionContext();
     await login(formData.value);
     emits("success");
     pushSuccess(t("account.messages.loggedInSuccess"));
@@ -45,10 +45,7 @@ const invokeLogin = async (): Promise<void> => {
       loginErrors.value = resolveApiErrors(error.details.errors as ApiError[]);
     }
   }
-};
-
-const emailInputElement = useTemplateRef("emailInputElement");
-useFocus(emailInputElement, { initialValue: true });
+}
 </script>
 <template>
   <div
