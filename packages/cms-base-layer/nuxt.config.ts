@@ -1,13 +1,18 @@
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
+
+const layerDir = fileURLToPath(new URL("./", import.meta.url));
+
 export default defineNuxtConfig({
   components: [
     {
-      path: "~/app/components/public",
+      path: resolve(layerDir, "app/components/public"),
       pathPrefix: false,
     },
     {
-      path: "~/app/acomponents/",
+      path: resolve(layerDir, "app/components"),
       pattern: "Sw*",
       extensions: [".vue"],
       global: false,

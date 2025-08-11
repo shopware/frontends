@@ -15,7 +15,7 @@
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
-  "files": ["dist", "components", "helpers", "index.cjs", "nuxt.config.ts"],
+  "files": ["dist", "app", "helpers", "index.cjs", "nuxt.config.ts"],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
