@@ -22,26 +22,26 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@nuxt/image": "^1.10.0",
+    "@nuxt/image": "^1.11.0",
     "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@vuelidate/core": "2.0.3",
-    "nuxt": "4.0.1",
-    "vue": "3.5.17"
+    "nuxt": "4.0.3",
+    "vue": "3.5.18"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/icon": "^1.15.0",
+    "@nuxt/icon": "^2.0.0",
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.3.3",
-    "@vueuse/core": "13.5.0",
-    "@vueuse/nuxt": "13.5.0",
+    "@unocss/nuxt": "66.4.2",
+    "@vueuse/core": "13.6.0",
+    "@vueuse/nuxt": "13.6.0",
     "typescript": "5.8.3",
-    "unocss": "66.3.3",
-    "vite": "6.3.5"
+    "unocss": "66.4.2",
+    "vite": "7.1.1"
   }
 }
