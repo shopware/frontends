@@ -103,7 +103,7 @@ export default defineNuxtConfig({
   components: {
     dirs: [
       {
-        path: "~/app/components",
+        path: "~/components",
         priority: 2,
       },
     ],

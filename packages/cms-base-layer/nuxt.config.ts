@@ -3,11 +3,11 @@ import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   components: [
     {
-      path: "./components/public",
+      path: "~/app/components/public",
       pathPrefix: false,
     },
     {
-      path: "./components/",
+      path: "~/app/acomponents/",
       pattern: "Sw*",
       extensions: [".vue"],
       global: false,
