@@ -1,0 +1,4 @@
+{
+  "installDependencies": false,
+  "startCommand": "node script.js && npm install && npm run dev"
+}
