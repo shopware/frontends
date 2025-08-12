@@ -37,7 +37,7 @@ export function useLandingSearch(): {
     },
   ) => {
     const associations: operations["readLandingPage post /landing-page/{landingPageId}"]["body"]["associations"] =
-      options?.withCmsAssociations ? cmsAssociations : {};
+      options?.withCmsAssociations ? cmsAssociations.associations : {};
     const result = await apiClient.invoke(
       "readLandingPage post /landing-page/{landingPageId}",
       {

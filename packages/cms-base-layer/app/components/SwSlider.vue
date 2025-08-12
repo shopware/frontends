@@ -34,7 +34,7 @@ const props = withDefaults(
 
 const { getConfigValue } = useCmsElementConfig({
   config: props.config,
-} as Schemas["CmsSlot"] & {
+} as Omit<Schemas["CmsSlot"], "config"> & {
   config: SliderElementConfig;
 });
 

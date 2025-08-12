@@ -183,6 +183,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       },
       filter: [
         {
+          // @ts-expect-error TODO: Fix it in order schema
           field: "orderNumber",
           type: "equals",
           value: sessionData.merchantMetadata.merchantReferenceId,
