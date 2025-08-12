@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.11.1
+
+### Patch Changes
+
+- [#1953](https://github.com/shopware/frontends/pull/1953) [`ea0824f`](https://github.com/shopware/frontends/commit/ea0824f40fc251fba125f32c817c6afcf12b9921) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove refreshing session context before login
+
 ## 1.11.0
 
 ### Minor Changes
