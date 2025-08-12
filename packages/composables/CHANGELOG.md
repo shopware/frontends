@@ -1,5 +1,11 @@
 # @shopware/composables
 
+## 1.9.2
+
+### Patch Changes
+
+- [`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e) Thanks [@mkucmus](https://github.com/mkucmus)! - add nested media entity association explicitly
+
 ## 1.9.1
 
 ### Patch Changes
