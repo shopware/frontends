@@ -86,7 +86,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Publish package previews
-        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module' --template './templates/vue-demo-store' --packageManager 'pnpm'
+        run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module' --template './templates/vue-starter-template' --packageManager 'pnpm'
 
   test:
     name: Test
