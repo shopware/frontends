@@ -64,6 +64,7 @@ export function useOrderPayment(
   const state = computed(() => activeTransaction.value?.stateMachineState);
   const isAsynchronous = computed(
     () =>
+      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
       activeTransaction.value?.paymentMethod?.asynchronous &&
       activeTransaction.value?.paymentMethod?.afterOrderEnabled,
   );

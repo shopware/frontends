@@ -2,7 +2,7 @@ import { defu } from "defu";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseOrderDetailsReturn = {
   /**
@@ -182,17 +182,11 @@ export function useOrderDetails(
       orderAssociations,
       associations ? associations : {},
     );
-    const params = {
-      filter: [
-        {
-          type: "equals",
-          field: "id",
-          value: orderId,
-        },
-      ],
-      associations: mergedAssociations.associations,
+    const params: operations["readOrder post /order"]["body"] = {
+      ids: [orderId],
+      associations: mergedAssociations,
       checkPromotion: true,
-    } as Schemas["Criteria"];
+    };
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",

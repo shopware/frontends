@@ -5,7 +5,6 @@ import type {
   CmsElementText,
 } from "@shopware/composables";
 import { useCmsBlock } from "#imports";
-import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: CmsBlockImageTextGallery;
@@ -17,13 +16,19 @@ const leftTextContent = getSlotContent("left-text") as CmsElementText;
 const rightTextContent = getSlotContent("right-text") as CmsElementText;
 const centerTextContent = getSlotContent("center-text") as CmsElementText;
 
-const leftImageContent = getSlotContent("left-image") as CmsElementImage;
-const rightImageContent = getSlotContent("right-image") as CmsElementImage;
-const centerImageContent = getSlotContent("center-image") as CmsElementImage;
+const leftImageContent = getSlotContent(
+  "left-image",
+) as unknown as CmsElementImage;
+const rightImageContent = getSlotContent(
+  "right-image",
+) as unknown as CmsElementImage;
+const centerImageContent = getSlotContent(
+  "center-image",
+) as unknown as CmsElementImage;
 
 // TODO: useRouter
 function onImageClick(
-  slotContent: Schemas["CmsSlot"] & {
+  slotContent: CmsElementImage & {
     data: {
       url?: string;
       newTab?: boolean;

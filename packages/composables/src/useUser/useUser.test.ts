@@ -1,5 +1,5 @@
 import type { operations } from "@shopware/api-client/api-types";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { useSetup } from "../_test";
 import { useUser } from "./useUser";
@@ -16,12 +16,13 @@ vi.mock("../useCart/useCart.ts", async () => {
 });
 
 const refreshSessionContextSpy = vi.fn();
+const userFromContextRef = ref();
 vi.mock("../useSessionContext/useSessionContext.ts", async () => {
   return {
     useSessionContext: () => {
       return {
         refreshSessionContext: refreshSessionContextSpy,
-        userFromContext: ref(),
+        userFromContext: userFromContextRef,
       };
     },
   };
@@ -52,6 +53,10 @@ const REGISTRATION_DATA: Omit<
 };
 
 describe("useUser", () => {
+  afterEach(() => {
+    userFromContextRef.value = undefined;
+  });
+
   it("login function", async () => {
     const { vm, injections } = useSetup(() => useUser());
 
@@ -286,5 +291,66 @@ describe("useUser", () => {
     await vm.loadSalutation("test");
 
     expect(vm.salutation).toEqual({ id: "test", name: "test" });
+  });
+
+  it("userDefaultPaymentMethod - should fallback to legacy defaultPaymentMethod when lastPaymentMethod is not available", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock the sessionContext to return a user with only legacy defaultPaymentMethod
+    const mockUser = {
+      // No lastPaymentMethod property (undefined)
+      defaultPaymentMethod: {
+        translated: { name: "Legacy Payment Method" },
+      },
+    };
+
+    // Set the userFromContext ref that the composable uses
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toEqual({
+      name: "Legacy Payment Method",
+    });
+
+    // Clean up
+    userFromContextRef.value = undefined;
+  });
+
+  it("userDefaultPaymentMethod - should return null when no payment methods are available", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock user with no payment methods at all
+    const mockUser = {
+      // No lastPaymentMethod and no defaultPaymentMethod
+    };
+
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toBeNull();
+
+    // Clean up
+    userFromContextRef.value = undefined;
+  });
+
+  it("userDefaultPaymentMethod - should fallback when lastPaymentMethod.translated is falsy", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock user with falsy lastPaymentMethod.translated but valid defaultPaymentMethod
+    const mockUser = {
+      lastPaymentMethod: {
+        translated: null, // falsy translated
+      },
+      defaultPaymentMethod: {
+        translated: { name: "Fallback Payment Method" },
+      },
+    };
+
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toEqual({
+      name: "Fallback Payment Method",
+    });
+
+    // Clean up
+    userFromContextRef.value = undefined;
   });
 });

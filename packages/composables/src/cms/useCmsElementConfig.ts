@@ -7,7 +7,7 @@ import type { ElementConfig } from "../types";
  * @category CMS (Shopping Experiences)
  */
 export function useCmsElementConfig<
-  T extends Schemas["CmsSlot"] & {
+  T extends Omit<Schemas["CmsSlot"], "config"> & {
     config: T["config"] extends {
       [key in infer X extends keyof T["config"]]: ElementConfig<unknown>;
     }

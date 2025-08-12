@@ -49,7 +49,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
 
   const totalOrderItemsCount: Ref<number> = ref(0);
 
-  const currentParams = ref<Schemas["Criteria"]>({});
+  const currentParams = ref<operations["readOrder post /order"]["body"]>({});
 
   const loadOrders = async (
     parameters: operations["readOrder post /order"]["body"] = {},

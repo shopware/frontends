@@ -96,7 +96,7 @@ export type UseSessionContextReturn = {
   /**
    * current context's customer object
    */
-  userFromContext: ComputedRef<Schemas["Customer"] | undefined>;
+  userFromContext: ComputedRef<Schemas["Customer"] | undefined | null>;
 };
 
 /**

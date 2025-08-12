@@ -134,6 +134,7 @@ onMounted(async () => {
   }
   const orderResponse = await apiClient.invoke("readOrder post /order", {
     body: {
+      // @ts-expect-error TODO: Fix it in order schema
       filter: [{ type: "equals", field: "id", value: orderId }],
       associations: {
         transactions: { associations: { paymentMethod: {} } },
