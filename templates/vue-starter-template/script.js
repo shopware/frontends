@@ -3,14 +3,14 @@ const localPackageJson = await readPackageJSON();
 
 // read URL from browser's current location
 const URL = typeof window !== "undefined" ? window.location.href : "";
-
+console.warn("URL: ", URL);
 function extractBranchName(url) {
   const match = url.match(/tree\/(.+?)\/templates/);
   return match ? match[1] : "main"; // fallback to "main" if no match
 }
 
 const branchName = extractBranchName(URL);
-
+console.warn("Branch name: ", branchName);
 // find all @shopware dependencies
 const shopwareDeps = Object.keys(localPackageJson.dependencies || {}).filter(
   (name) => name.startsWith("@shopware/"),
