@@ -1,52 +1,52 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { computed } from "vue";
 
-export default function () {
+export default function (accountType: Ref<string>, countryId: Ref<string>) {
   const { required, minLength, email, requiredIf } = customValidators();
+  const { getStatesForCountry } = useCountries();
 
   return computed(() => ({
-  accountType: {
-    required,
-  },
-  firstName: {
-    required,
-    minLength: minLength(3),
-  },
-  lastName: {
-    required,
-    minLength: minLength(3),
-  },
-  email: {
-    required,
-    email,
-  },
-  password: {
-    required,
-    minLength: minLength(8),
-  },
-  billingAddress: {
-    company: {
-      required: requiredIf(() => state.accountType === "business"),
+    accountType: {
+      required,
     },
-    street: {
+    firstName: {
       required,
       minLength: minLength(3),
     },
-    zipcode: {
+    lastName: {
       required,
+      minLength: minLength(3),
     },
-    city: {
+    email: {
       required,
+      email,
     },
-    countryId: {
+    password: {
       required,
+      minLength: minLength(8),
     },
-    countryStateId: {
-      required: requiredIf(() => {
-        return !!getStatesForCountry(state.billingAddress.countryId)?.length;
-      }),
+    billingAddress: {
+      company: {
+        required: requiredIf(() => accountType === "business"),
+      },
+      street: {
+        required,
+        minLength: minLength(3),
+      },
+      zipcode: {
+        required,
+      },
+      city: {
+        required,
+      },
+      countryId: {
+        required,
+      },
+      countryStateId: {
+        required: requiredIf(() => {
+          return !!getStatesForCountry(countryId)?.length;
+        }),
+      },
     },
-  },
-}));
+  }));
 }
-
