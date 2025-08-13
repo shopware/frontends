@@ -117,6 +117,7 @@ export default defineNuxtConfig({
   },
   unocss: {
     // for presets, theme config, ... look at the uno.config.ts file
+    nuxtLayers: true,
   },
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)

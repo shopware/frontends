@@ -1,14 +1,19 @@
+import { type ConfigBase, mergeConfigs } from "@unocss/core";
 import {
-  defineConfig,
   presetAttributify,
   presetIcons,
   presetTypography,
   presetWind3,
 } from "unocss";
+// jump to the base config to see the presets and rules already applied
+import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default defineConfig({
+const templateConfig: ConfigBase = {
+  // here you can add template-specific configurations
   theme: {
     colors: {
+      // "brand-primary": "#123456", // overwrite base color
+      // "custom-accent": "#FF00FF", // add a new color
       "brand-primary": "#543B95",
       "surface-surface": "#FFFFFF",
       "outline-outline": "#79747E",
@@ -109,4 +114,7 @@ export default defineConfig({
         `,
     },
   ],
-});
+  // and more...
+};
+
+export default mergeConfigs([baseConfig, templateConfig]);

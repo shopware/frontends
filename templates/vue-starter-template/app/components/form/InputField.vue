@@ -10,6 +10,7 @@ const {
   id: string;
   type?: "text" | "password";
   errorMessage?: string;
+  autocomplete?: string;
 }>();
 
 const model = defineModel<string>({
@@ -33,6 +34,7 @@ const model = defineModel<string>({
       :type="type"
       :id="id"
       :invalid="!!errorMessage"
+      :autocomplete="autocomplete"
     />
     <span v-if="errorMessage" class="text-red text-xs absolute">{{ errorMessage }}</span>
   </div>

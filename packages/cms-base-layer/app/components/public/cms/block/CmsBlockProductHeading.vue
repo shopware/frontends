@@ -13,7 +13,7 @@ const rightContent = getSlotContent("right");
 </script>
 
 <template>
-  <div class="cms-block-product-heading flex justify-between">
+  <div class="cms-block-product-heading flex justify-between pt-4">
     <CmsGenericElement :content="leftContent" />
     <CmsGenericElement :content="rightContent" />
   </div>

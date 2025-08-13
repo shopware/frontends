@@ -2,7 +2,7 @@
 const { count: cartCount } = useCart();
 const { count: wishlistCount } = useWishlist();
 const { isLoggedIn } = useUser();
-
+const { push } = useRouter();
 const loginModalController = useModal();
 
 const mobileSearchActive = ref(false);
@@ -18,6 +18,8 @@ function toggleMobileSearch() {
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
     loginModalController.open();
+  } else {
+    push(formatLink("/account"));
   }
 }
 </script>
@@ -50,7 +52,7 @@ function handleMyAccountClick() {
     </div>
     <ClientOnly>
       <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
-        <AccountLoginForm />
+        <AccountLoginForm @close="loginModalController.close" />
       </SharedModal>
     </ClientOnly>
   </div>
