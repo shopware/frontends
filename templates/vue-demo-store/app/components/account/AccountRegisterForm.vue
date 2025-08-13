@@ -9,7 +9,6 @@ const props = defineProps<{
   customerGroupId?: string;
 }>();
 
-const { getSalutations } = useSalutations();
 const { getStatesForCountry } = useCountries();
 const { register, isLoggedIn } = useUser();
 const { pushError } = useNotifications();
@@ -33,7 +32,6 @@ watch(isLoggedIn, (isLoggedIn) => {
 const initialState = {
   requestedGroupId: props.customerGroupId,
   accountType: "private",
-  salutationId: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -167,28 +165,6 @@ useBreadcrumbs([
             </option>
             <option value="business">
               {{ $t("form.accountType.business") }}
-            </option>
-          </select>
-        </div>
-        <div class="col-span-12">
-          <label for="salutation">{{ $t("form.salutation") }}</label>
-          <select
-            id="salutation"
-            v-model="state.salutationId"
-            name="salutation"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :class="'border-secondary-300 focus:border-indigo-500'"
-            data-testid="registration-salutation-select"
-          >
-            <option selected value="">
-              {{ $t("form.chooseSalutation") }}
-            </option>
-            <option
-              v-for="salutation in getSalutations"
-              :key="salutation.id"
-              :value="salutation.id"
-            >
-              {{ salutation.displayName }}
             </option>
           </select>
         </div>

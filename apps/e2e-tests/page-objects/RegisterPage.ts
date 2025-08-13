@@ -5,7 +5,6 @@ export class RegisterForm {
   // Define selectors
   readonly page: Page;
   readonly accountType: Locator;
-  readonly salutation: Locator;
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
@@ -23,7 +22,6 @@ export class RegisterForm {
   constructor(page: Page) {
     this.page = page;
     this.accountType = page.getByTestId("registration-account-type-select");
-    this.salutation = page.getByTestId("registration-salutation-select");
     this.firstName = page.getByTestId("registration-first-name-input");
     this.lastName = page.getByTestId("registration-last-name-input");
     this.emailAdrdress = page.getByTestId("registration-email-input");
@@ -45,7 +43,6 @@ export class RegisterForm {
     email: string,
     password: string,
   ) {
-    await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type(firstName);
     await this.lastName.type(lastName);
     await this.emailAdrdress.type(email);
@@ -72,7 +69,6 @@ export class RegisterForm {
   }
 
   async createUser() {
-    await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type(`e2e ${faker.person.firstName()}`);
     await this.lastName.type(`e2e ${faker.person.lastName()}`);
     await this.emailAdrdress.type(faker.internet.exampleEmail());
