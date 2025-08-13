@@ -2,8 +2,9 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
-const { required, minLength, email, requiredIf } = customValidators();
+import { useTemplateRef } from "vue";
 
+const { required, minLength, email, requiredIf } = customValidators();
 const props = defineProps<{
   customerGroupId?: string;
 }>();
@@ -18,10 +19,10 @@ const loading = ref<boolean>();
 const doubleOptInBox = useTemplateRef("doubleOptInBox");
 const showDoubleOptInBox = ref(false);
 const { t } = useI18n();
-if (import.meta.client && isLoggedIn.value) {
-  // redirect to account page if user is logged in
-  navigateTo({ path: "/account" });
-}
+// if (import.meta.client && isLoggedIn.value) {
+//   // redirect to account page if user is logged in
+//   navigateTo({ path: "/account" });
+// }
 
 watch(isLoggedIn, (isLoggedIn) => {
   if (isLoggedIn) {
@@ -96,7 +97,7 @@ const rules = computed(() => ({
 }));
 
 const $v = useVuelidate(rules, state);
-const { resolveApiErrors } = useApiErrorsResolver("account_login");
+// const { resolveApiErrors } = useApiErrorsResolver("account_login");
 
 const invokeSubmit = async () => {
   $v.value.$touch();
@@ -113,12 +114,12 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
-      if (error instanceof ApiClientError) {
-        const errors = resolveApiErrors(error.details.errors);
-        for (const error of errors) {
-          pushError(error);
-        }
-      }
+    //   if (error instanceof ApiClientError) {
+    //     const errors = resolveApiErrors(error.details.errors);
+    //     for (const error of errors) {
+    //       pushError(error);
+    //     }
+    //   }
     } finally {
       loading.value = false;
     }
