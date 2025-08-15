@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
 import registrationFormRules from "../../utils/validation/rules/registrationFormRules";
 
-const { required, minLength, email, requiredIf } = customValidators();
 const props = defineProps<{
   customerGroupId?: string;
 }>();
-
-const { getSalutations } = useSalutations();
 
 const { register, isLoggedIn } = useUser();
 const { pushError } = useNotifications();
@@ -20,10 +16,10 @@ const loading = ref<boolean>();
 const doubleOptInBox = useTemplateRef("doubleOptInBox");
 const showDoubleOptInBox = ref(false);
 const { t } = useI18n();
-// if (import.meta.client && isLoggedIn.value) {
-//   // redirect to account page if user is logged in
-//   navigateTo({ path: "/account" });
-// }
+if (import.meta.client && isLoggedIn.value) {
+  // redirect to account page if user is logged in
+  navigateTo({ path: "/account" });
+}
 
 watch(isLoggedIn, (isLoggedIn) => {
   if (isLoggedIn) {
@@ -55,7 +51,7 @@ const $v = useVuelidate(
   registrationFormRules(state.accountType, state.billingAddress.countryId),
   state,
 );
-// const { resolveApiErrors } = useApiErrorsResolver("account_login");
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
 
 const invokeSubmit = async () => {
   $v.value.$touch();
@@ -72,12 +68,12 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
-      //   if (error instanceof ApiClientError) {
-      //     const errors = resolveApiErrors(error.details.errors);
-      //     for (const error of errors) {
-      //       pushError(error);
-      //     }
-      //   }
+      if (error instanceof ApiClientError) {
+        const errors = resolveApiErrors(error.details.errors);
+        for (const error of errors) {
+          pushError(error);
+        }
+      }
     } finally {
       loading.value = false;
     }
@@ -199,6 +195,7 @@ const accountTypeOptions = [
           :label="$t('form.company')"
           data-testid="registration-company-input"
           @blur="$v.billingAddress.company.$touch()"
+          :errorMessage="$v.billingAddress.company.$errors[0]?.$message"
         />
 
         <FormInputField
@@ -209,6 +206,7 @@ const accountTypeOptions = [
           :label="$t('form.streetAddress')"
           data-testid="registration-street-input"
           @blur="$v.billingAddress.street.$touch()"
+          :errorMessage="$v.billingAddress.street.$errors[0]?.$message"
         />
 
         <FormInputField
@@ -219,6 +217,7 @@ const accountTypeOptions = [
           autocomplete="postal-code"
           data-testid="registration-zipcode-input"
           @blur="$v.billingAddress.zipcode.$touch()"
+          :errorMessage="$v.billingAddress.zipcode.$errors[0]?.$message"
         />
 
         <FormInputField
@@ -229,6 +228,7 @@ const accountTypeOptions = [
           autocomplete="address-level2"
           data-testid="registration-city-input"
           @blur="$v.billingAddress.city.$touch()"
+          :errorMessage="$v.billingAddress.city.$errors[0]?.$message"
         />
 
         <SharedCountryStateInput
@@ -238,7 +238,6 @@ const accountTypeOptions = [
           :state-id-validation="$v.billingAddress.countryStateId"
           class="col-span-12 md:col-span-4"
         />
-        
       </div>
       <div class="mb-5 text-right">
         <FormBaseButton
