@@ -1,0 +1,42 @@
+{
+  "form": {
+    "accountType": {
+      "title": "Kontotyp",
+      "private": "Privat",
+      "business": "Gewerblich"
+    },
+    "salutation": "Anrede",
+    "chooseSalutation": "Anrede wählen...",
+    "firstName": "Vorname",
+    "firstNamePlaceholder": "Vorname eingeben...",
+    "lastName": "Nachname",
+    "lastNamePlaceholder": "Nachname eingeben...",
+    "country": "Land",
+    "chooseCountry": "Land auswählen...",
+    "company": "Firma",
+    "vatIds": "USt-IdNr.",
+    "companyPlaceholder": "Firma eingeben...",
+    "streetAddress": "Straße und Hausnummer",
+    "streetPlaceholder": "Straße eingeben...",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben...",
+    "newPasswordPlaceholder": "Neues Passwort",
+    "repeatPasswordPlaceholder": "Passwort wiederholen",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "E-Mail eingeben...",
+    "vatId": "USt-IdNr.",
+    "vatIdPlaceholder": "USt-IdNr. eingeben...",
+    "confirmEmail": "E-Mail bestätigen",
+    "city": "Stadt",
+    "cityPlaceholder": "Stadt eingeben...",
+    "postalCode": "PLZ",
+    "postalCodePlaceholder": "PLZ eingeben...",
+    "save": "Speichern",
+    "submit": "Senden",
+    "cancel": "Abbrechen",
+    "promoCodePlaceholder": "Promo-Code eingeben",
+    "searchPlaceholder": "Produkte suchen",
+    "chooseState": "Wählen Sie den Staat",
+    "state": "Zustand"
+  }
+}

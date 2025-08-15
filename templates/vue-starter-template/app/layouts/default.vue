@@ -45,6 +45,7 @@ async function onChangeHandler(id: string) {
       <LayoutHeader class="px-6" />
     </header>
     <main>
+      <LayoutNotifications />
       <slot />
     </main>
   </div>

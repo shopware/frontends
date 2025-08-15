@@ -2,9 +2,8 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
-import { useTemplateRef } from "vue";
-
 const { required, minLength, email, requiredIf } = customValidators();
+
 const props = defineProps<{
   customerGroupId?: string;
 }>();

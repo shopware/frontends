@@ -16,6 +16,8 @@ const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 const { refreshCart } = useCart();
 const { getWishlistProducts } = useWishlist();
 
+useNotifications();
+
 const {
   getAvailableLanguages,
   getLanguageCodeFromId,
