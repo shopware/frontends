@@ -5,7 +5,6 @@ import {
   presetTypography,
   presetWind3,
 } from "unocss";
-// jump to the base config to see the presets and rules already applied
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 const templateConfig: ConfigBase = {
@@ -111,10 +110,22 @@ const templateConfig: ConfigBase = {
             -moz-osx-font-smoothing: grayscale;
             -webkit-font-smoothing: antialiased; 
         }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+          -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+          box-shadow: 0 0 0px 1000px #fff inset;
+          color: #fff;
+        }
         `,
     },
   ],
-  // and more...
 };
 
 export default mergeConfigs([baseConfig, templateConfig]);
