@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.6.10.0
+ * Shopware API version: 6.7.1.0
  *
  */
 type GenericRecord =
@@ -16,6 +16,10 @@ type GenericRecord =
     };
 export type components = {
   schemas: Schemas;
+  parameters: {
+    accept: string;
+    contentType: string;
+  };
 };
 export type Schemas = {
   AbstractDynamicPageOpenedPayload: {
@@ -314,6 +318,11 @@ export type Schemas = {
      */
     canSendRequestEmail?: boolean;
     /**
+     * Indicates if the wishlist is enabled
+     * @default false
+     */
+    enableWishlist?: boolean;
+    /**
      * The mode of the interaction
      * @enum {string}
      */
@@ -414,12 +423,29 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  B2bComponentsApprovalRule: {
-    affectedRole?: components["schemas"]["B2bComponentsRole"];
-    affectedRoleId?: string;
+  B2bComponentsAdvancedProductCatalogs: {
+    autoAddNewCategories?: boolean;
+    categories?: components["schemas"]["Category"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    id?: string;
+    id: string;
+    organizationId: string;
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsApprovalRule: {
+    active: boolean;
+    affectedRole?: components["schemas"]["B2bComponentsRole"];
+    affectedRoleId?: string;
+    conditions: GenericRecord;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    name: string;
+    /** Format: int64 */
+    priority: number;
     reviewerRole?: components["schemas"]["B2bComponentsRole"];
     reviewerRoleId?: string;
     /** Format: date-time */
@@ -429,6 +455,40 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsOrganization: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdBy?: components["schemas"]["User"];
+    createdById?: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    customFields?: GenericRecord;
+    defaultBillingAddress?: components["schemas"]["CustomerAddress"];
+    defaultBillingAddressId: string;
+    defaultShippingAddress?: components["schemas"]["CustomerAddress"];
+    defaultShippingAddressId: string;
+    employees?: components["schemas"]["B2bEmployee"][];
+    id: string;
+    name: string;
+    organizationCustomerAddresses?: components["schemas"]["B2bComponentsOrganizationCustomerAddress"][];
+    paymentMethods?: components["schemas"]["PaymentMethod"][];
+    shippingMethods?: components["schemas"]["ShippingMethod"][];
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    updatedBy?: components["schemas"]["User"];
+    updatedById?: string;
+  };
+  B2bComponentsOrganizationCustomerAddress: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customerAddress?: components["schemas"]["CustomerAddress"];
+    customerAddressId: string;
+    id: string;
+    organizationId: string;
+    type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -442,6 +502,7 @@ export type Schemas = {
     approvalRuleId?: string;
     billingAddress?: components["schemas"]["B2bComponentsPendingOrderAddress"];
     billingAddressId: string;
+    cartPayload: string;
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
@@ -455,7 +516,7 @@ export type Schemas = {
     decidedById?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
-    id?: string;
+    id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     order?: components["schemas"]["Order"];
@@ -535,6 +596,23 @@ export type Schemas = {
     customFields?: GenericRecord;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId?: string;
+    extensions?: {
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/organization
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
     name?: string;
@@ -552,6 +630,23 @@ export type Schemas = {
     customerId: string;
     customFields?: GenericRecord;
     employeeId?: string;
+    extensions?: {
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/organization
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     name?: string;
     price?: components["schemas"]["Price"][];
@@ -650,7 +745,6 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   B2bEmployee: {
-    active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -762,7 +856,6 @@ export type Schemas = {
     taxStatus: "net" | "tax-free";
     totalPrice: number;
     unitPrice: number;
-    /** Format: ^[0-9a-f]{32}$ */
     variantId?: string | null;
   };
   Cart: {
@@ -903,7 +996,6 @@ export type Schemas = {
       price?: number;
     } | null;
     unitName: string;
-    /** Format: ^[0-9a-f]{32}$ */
     variantId?: string | null;
   };
   Category: {
@@ -912,7 +1004,7 @@ export type Schemas = {
     afterCategoryVersionId?: string;
     /** @enum {string} */
     apiAlias: "category";
-    breadcrumb: string[];
+    readonly breadcrumb: string[];
     /** Format: int64 */
     readonly childCount: number;
     children: components["schemas"]["Category"][];
@@ -945,6 +1037,8 @@ export type Schemas = {
     parentVersionId?: string;
     readonly path?: string;
     productAssignmentType?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    seoUrl?: string;
     seoUrls?: components["schemas"]["SeoUrl"][];
     tags?: components["schemas"]["Tag"][];
     translated: {
@@ -967,6 +1061,7 @@ export type Schemas = {
       parentVersionId: string;
       path: string;
       productAssignmentType: string;
+      seoUrl: string;
       type: string;
       versionId: string;
     };
@@ -1107,6 +1202,8 @@ export type Schemas = {
         };
       };
     };
+    /** Runtime field, cannot be used as part of the criteria. */
+    seoUrl?: string;
     translated: {
       afterCategoryId: string;
       afterCategoryVersionId: string;
@@ -1126,6 +1223,7 @@ export type Schemas = {
       parentVersionId: string;
       path: string;
       productAssignmentType: string;
+      seoUrl: string;
       type: string;
       versionId: string;
     };
@@ -1324,11 +1422,13 @@ export type Schemas = {
     block?: components["schemas"]["CmsBlock"];
     blockId: string;
     cmsBlockVersionId?: string;
+    config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: {
       _uniqueIdentifier?: string;
     };
+    readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
         data?: {
@@ -1366,6 +1466,29 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
+  };
+  ContextMeasurementSystemInfo: {
+    /**
+     * The measurement system used in the store. 'metric' for metric system, 'imperial' for imperial system.
+     * @default metric
+     * @enum {string}
+     */
+    system?: "metric" | "imperial";
+    /** Units used in the measurement system. */
+    units?: {
+      /**
+       * Unit of length.
+       * @default mm
+       * @enum {string}
+       */
+      length?: "mm" | "cm" | "m" | "in" | "ft";
+      /**
+       * Unit of weight.
+       * @default kg
+       * @enum {string}
+       */
+      weight?: "g" | "kg" | "oz" | "lb";
+    };
   };
   Country: {
     active?: boolean;
@@ -1541,7 +1664,7 @@ export type Schemas = {
   CreateInteractionRequestBody: components["schemas"]["DynamicInteractionBody"];
   Criteria: {
     aggregations?: components["schemas"]["Aggregation"][];
-    associations?: components["schemas"]["Association"];
+    associations?: components["schemas"]["Associations"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
@@ -1733,8 +1856,6 @@ export type Schemas = {
     customFields?: GenericRecord;
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     defaultBillingAddressId: string;
-    defaultPaymentMethod?: components["schemas"]["PaymentMethod"];
-    defaultPaymentMethodId: string;
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
     defaultShippingAddressId: string;
     /** Format: date-time */
@@ -1803,16 +1924,6 @@ export type Schemas = {
         company: string;
         vatIds: [string, ...string[]];
       }
-    | {
-        /** @enum {string} */
-        accountType: "private";
-      }
-    | {
-        /** @enum {string} */
-        accountType: "business";
-        company: string;
-        vatIds: [string, ...string[]];
-      }
   );
   CustomerAddress: {
     additionalAddressLine1?: string;
@@ -1828,7 +1939,26 @@ export type Schemas = {
     customerId: string;
     customFields?: GenericRecord;
     department?: string;
+    extensions?: {
+      organizationCustomerAddresses?: {
+        data?: {
+          /** @example ada6a19a929bea8dbec29edb3d68df58 */
+          id?: string;
+          /** @example b2b_components_organization_customer_address */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/organizationCustomerAddresses
+           */
+          related?: string;
+        };
+      };
+    };
     firstName: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    hash?: string;
     id: string;
     lastName: string;
     phoneNumber?: string;
@@ -1862,13 +1992,12 @@ export type Schemas = {
   };
   CustomerAddressRead: {
     country: components["schemas"]["Country"];
-    countryState?: components["schemas"]["CountryState"];
+    countryState?: components["schemas"]["CountryState"] | null;
     /** Format: date-time */
     createdAt: string;
     readonly customerId: string;
     readonly id?: string;
     salutation: components["schemas"]["Salutation"];
-    /** Format: date-time */
     updatedAt: string | null;
   };
   CustomerGroup: {
@@ -1921,6 +2050,7 @@ export type Schemas = {
     customerId: string;
     customFields?: GenericRecord;
     id: string;
+    products?: components["schemas"]["CustomerWishlistProduct"][];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -1933,7 +2063,6 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  DeliveryInformation: unknown;
   DeliveryTime: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -1977,7 +2106,7 @@ export type Schemas = {
     documentNumber?: string;
     documentType?: components["schemas"]["DocumentType"];
     documentTypeId: string;
-    fileType: string;
+    fileType?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -2792,6 +2921,62 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  MeasurementDisplayUnit: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    default: boolean;
+    /** Format: float */
+    factor: number;
+    id: string;
+    measurementSystem?: components["schemas"]["MeasurementSystem"];
+    measurementSystemId: string;
+    /** Format: int64 */
+    precision: number;
+    shortName: string;
+    translated: {
+      measurementSystemId: string;
+      shortName: string;
+      type: string;
+    };
+    type: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  MeasurementSystem: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    technicalName: string;
+    translated: {
+      technicalName: string;
+    };
+    units?: components["schemas"]["MeasurementDisplayUnit"][];
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  MeasurementUnits: {
+    /**
+     * The measurement system used in the store. 'metric' for metric system, 'imperial' for imperial system.
+     * @default metric
+     * @enum {string}
+     */
+    system?: "metric" | "imperial";
+    /** Units used in the measurement system. */
+    units?: {
+      /**
+       * Unit of length.
+       * @default mm
+       * @enum {string}
+       */
+      length?: "mm" | "cm" | "m" | "in" | "ft";
+      /**
+       * Unit of weight.
+       * @default kg
+       * @enum {string}
+       */
+      weight?: "g" | "kg" | "oz" | "lb";
+    };
+  };
   Media: {
     alt?: string;
     /** @enum {string} */
@@ -2817,14 +3002,14 @@ export type Schemas = {
         };
       };
     };
-    readonly fileExtension: string;
+    fileExtension: string;
     fileName: string;
     /** Format: int64 */
     readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile: boolean;
     id: string;
-    metaData?: {
+    readonly metaData?: {
       /** Format: int64 */
       height?: number;
       /** Format: int64 */
@@ -2949,6 +3134,40 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  NoneFieldsCriteria: {
+    aggregations?: components["schemas"]["Aggregation"][];
+    associations?: components["schemas"]["Associations"];
+    /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+    filter?: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
+    /** Perform groupings over certain fields */
+    grouping?: string[];
+    /** List of ids to search for */
+    ids?: string[];
+    includes?: components["schemas"]["Includes"];
+    /** Number of items per result page */
+    limit?: number;
+    /** Search result page */
+    page?: number;
+    /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+    "post-filter"?: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
+    /** The query string to search for */
+    query?: string;
+    /** Sorting in the search result. */
+    sort?: components["schemas"]["Sort"][];
+    /** Search term */
+    term?: string;
+    "total-count-mode"?: components["schemas"]["TotalCountMode"];
+  };
   Notification: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -3023,6 +3242,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/organization
+           */
+          related?: string;
+        };
+      };
       quote?: {
         data?: {
           /** @example 7a674c327bfa07f7c1204fb38ca6ef3b */
@@ -3081,6 +3315,12 @@ export type Schemas = {
     /** Format: float */
     readonly positionPrice?: number;
     price: components["schemas"]["CalculatedPrice"];
+    primaryOrderDelivery?: components["schemas"]["OrderDelivery"];
+    primaryOrderDeliveryId?: string;
+    primaryOrderDeliveryVersionId?: string;
+    primaryOrderTransaction?: components["schemas"]["OrderTransaction"];
+    primaryOrderTransactionId?: string;
+    primaryOrderTransactionVersionId?: string;
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: GenericRecord;
@@ -3110,6 +3350,7 @@ export type Schemas = {
     source?: string;
     stateMachineState: components["schemas"]["StateMachineState"];
     tags?: components["schemas"]["Tag"][];
+    taxCalculationType?: string;
     readonly taxStatus?: string;
     transactions?: components["schemas"]["OrderTransaction"][];
     /** Format: date-time */
@@ -3131,6 +3372,8 @@ export type Schemas = {
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    hash?: string;
     id: string;
     lastName: string;
     phoneNumber?: string;
@@ -3689,8 +3932,6 @@ export type Schemas = {
   PaymentMethod: {
     active?: boolean;
     afterOrderEnabled?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly asynchronous?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -3703,16 +3944,8 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     /** Runtime field, cannot be used as part of the criteria. */
-    readonly prepared?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly recurring?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly refundable?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
     shortName?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly synchronous?: boolean;
-    technicalName?: string;
+    technicalName: string;
     translated: {
       description: string;
       distinguishableName: string;
@@ -3727,8 +3960,6 @@ export type Schemas = {
   PaymentMethodJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     afterOrderEnabled?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly asynchronous?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -3739,12 +3970,6 @@ export type Schemas = {
     name: string;
     /** Format: int64 */
     position?: number;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly prepared?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly recurring?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly refundable?: boolean;
     relationships?: {
       media?: {
         data?: {
@@ -3764,9 +3989,7 @@ export type Schemas = {
     };
     /** Runtime field, cannot be used as part of the criteria. */
     shortName?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    readonly synchronous?: boolean;
-    technicalName?: string;
+    technicalName: string;
     translated: {
       description: string;
       distinguishableName: string;
@@ -3782,32 +4005,47 @@ export type Schemas = {
     amountNet?: number | null;
     amountTotal?: number | null;
     approvalRuleId?: string;
-    billingAddress?: GenericRecord;
+    billingAddress?: components["schemas"]["OrderAddress"];
     cartPayload?: GenericRecord | string;
-    country?: GenericRecord;
+    country?: GenericRecord | null;
     countryId?: string;
-    currency?: GenericRecord;
+    currency?: GenericRecord | null;
     currencyId?: string;
     customerId?: string;
     decidedById?: string;
     employeeId?: string;
     /** Format: uuid */
     id?: string;
-    itemRounding?: GenericRecord;
-    language?: GenericRecord;
+    itemRounding?: GenericRecord | null;
+    language?: GenericRecord | null;
     languageId?: string;
     lineItemCount?: number;
     number?: string;
     originalPrice?: number | null;
+    paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId?: string;
-    price?: GenericRecord;
+    price?: {
+      calculatedTaxes?: GenericRecord;
+      /** Format: float */
+      netPrice: number;
+      /** Format: float */
+      positionPrice: number;
+      /** Format: float */
+      rawTotal: number;
+      taxRules?: GenericRecord;
+      taxStatus: string;
+      /** Format: float */
+      totalPrice: number;
+    };
     reason?: string;
-    salesChannel?: GenericRecord;
+    salesChannel?: GenericRecord | null;
     salesChannelId?: string;
+    shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId?: string;
     stateId?: string;
+    stateMachineState?: components["schemas"]["StateMachineState"];
     taxStatus?: string;
-    totalRounding?: GenericRecord;
+    totalRounding?: GenericRecord | null;
   };
   Plugin: {
     /** Format: date-time */
@@ -3996,6 +4234,7 @@ export type Schemas = {
     markAsTopseller?: boolean;
     /** Format: int64 */
     maxPurchase?: number;
+    measurements?: components["schemas"]["ProductMeasurements"];
     media?: components["schemas"]["ProductMedia"][];
     metaDescription?: string;
     metaTitle?: string;
@@ -4178,516 +4417,518 @@ export type Schemas = {
       | "attendee.product.collection.disliked"
       | "attendee.product.collection.removed";
   };
-  ProductJsonApi: components["schemas"]["resource"] & {
-    active?: boolean;
-    readonly available?: boolean;
-    /** Format: int64 */
-    readonly availableStock?: number;
-    calculatedCheapestPrice?: GenericRecord;
-    /**
-     * Format: int64
-     * Runtime field, cannot be used as part of the criteria.
-     */
-    calculatedMaxPurchase?: number;
-    calculatedPrice?: GenericRecord;
-    calculatedPrices?: GenericRecord[];
-    canonicalProductId?: string;
-    canonicalProductVersionId?: string;
-    readonly categoryIds?: string[];
-    readonly categoryTree?: string[];
-    /** Format: int64 */
-    readonly childCount?: number;
-    cmsPageId?: string;
-    cmsPageVersionId?: string;
-    coverId?: string;
-    /** Format: date-time */
-    readonly createdAt?: string;
-    customFields?: GenericRecord;
-    deliveryTimeId?: string;
-    description?: string;
-    readonly displayGroup?: string;
-    ean?: string;
-    extensions?: {
-      attendeeProductCollections?: {
-        data?: {
-          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
-          id?: string;
-          /** @example dsr_attendee_product_collection */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
-           */
-          related?: string;
+  ProductJsonApi: unknown &
+    components["schemas"]["resource"] & {
+      active?: boolean;
+      readonly available?: boolean;
+      /** Format: int64 */
+      readonly availableStock?: number;
+      calculatedCheapestPrice?: GenericRecord;
+      /**
+       * Format: int64
+       * Runtime field, cannot be used as part of the criteria.
+       */
+      calculatedMaxPurchase?: number;
+      calculatedPrice?: GenericRecord;
+      calculatedPrices?: GenericRecord[];
+      canonicalProductId?: string;
+      canonicalProductVersionId?: string;
+      readonly categoryIds?: string[];
+      readonly categoryTree?: string[];
+      /** Format: int64 */
+      readonly childCount?: number;
+      cmsPageId?: string;
+      cmsPageVersionId?: string;
+      coverId?: string;
+      /** Format: date-time */
+      readonly createdAt?: string;
+      customFields?: GenericRecord;
+      deliveryTimeId?: string;
+      description?: string;
+      readonly displayGroup?: string;
+      ean?: string;
+      extensions?: {
+        attendeeProductCollections?: {
+          data?: {
+            /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+            id?: string;
+            /** @example dsr_attendee_product_collection */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+             */
+            related?: string;
+          };
+        };
+        reviewSummaries?: {
+          data?: {
+            /** @example c9c718522e64ffa5effb26cef94f4849 */
+            id?: string;
+            /** @example product_review_summary */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
+             */
+            related?: string;
+          };
+        };
+        swagCustomizedProductsTemplate?: {
+          data?: {
+            /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
+            id?: string;
+            /** @example swag_customized_products_template */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
+             */
+            related?: string;
+          };
         };
       };
-      reviewSummaries?: {
-        data?: {
-          /** @example c9c718522e64ffa5effb26cef94f4849 */
-          id?: string;
-          /** @example product_review_summary */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
-           */
-          related?: string;
-        };
-      };
-      swagCustomizedProductsTemplate?: {
-        data?: {
-          /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
-          id?: string;
-          /** @example swag_customized_products_template */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
-           */
-          related?: string;
-        };
-      };
-    };
-    /** Format: float */
-    height?: number;
-    id: string;
-    isCloseout?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    isNew?: boolean;
-    keywords?: string;
-    /** Format: float */
-    length?: number;
-    manufacturerId?: string;
-    manufacturerNumber?: string;
-    markAsTopseller?: boolean;
-    /** Format: int64 */
-    maxPurchase?: number;
-    metaDescription?: string;
-    metaTitle?: string;
-    /** Format: int64 */
-    minPurchase?: number;
-    name: string;
-    readonly optionIds?: string[];
-    packUnit?: string;
-    packUnitPlural?: string;
-    parentId?: string;
-    parentVersionId?: string;
-    productManufacturerVersionId?: string;
-    productMediaVersionId?: string;
-    productNumber: string;
-    readonly propertyIds?: string[];
-    /** Format: int64 */
-    purchaseSteps?: number;
-    /** Format: float */
-    purchaseUnit?: number;
-    /** Format: float */
-    readonly ratingAverage?: number;
-    /** Format: float */
-    referenceUnit?: number;
-    relationships?: {
-      canonicalProduct?: {
-        data?: {
-          /** @example 023995a50b56c0de077323e958b2bbcd */
-          id?: string;
-          /** @example product */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
-           */
-          related?: string;
-        };
-      };
-      categories?: {
-        data?: {
-          /** @example b0b5ccb4a195a07fd3eed14affb8695f */
-          id?: string;
-          /** @example category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/categories
-           */
-          related?: string;
-        };
-      };
-      categoriesRo?: {
-        data?: {
-          /** @example 7f0702d3a90d965b8c9158c451f43fdb */
-          id?: string;
-          /** @example category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/categoriesRo
-           */
-          related?: string;
-        };
-      };
-      children?: {
-        data?: {
-          /** @example 268184c12df027f536154d099d497b31 */
-          id?: string;
-          /** @example product */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/children
-           */
-          related?: string;
-        };
-      };
-      cmsPage?: {
-        data?: {
-          /** @example 7b1460918b1abb93311108f3dc021c9b */
-          id?: string;
-          /** @example cms_page */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/cmsPage
-           */
-          related?: string;
-        };
-      };
-      configuratorSettings?: {
-        data?: {
-          /** @example c0827fee13725d41f1fd7e292243f5aa */
-          id?: string;
-          /** @example product_configurator_setting */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
-           */
-          related?: string;
-        };
-      };
-      cover?: {
-        data?: {
-          /** @example 41d0e299ca1abeb2094852da042165c7 */
-          id?: string;
-          /** @example product_media */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/cover
-           */
-          related?: string;
-        };
-      };
-      crossSellings?: {
-        data?: {
-          /** @example 89936e14544d1b403cecef938101b6b0 */
-          id?: string;
-          /** @example product_cross_selling */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/crossSellings
-           */
-          related?: string;
-        };
-      };
-      deliveryTime?: {
-        data?: {
-          /** @example 8c888ae25a7bd42057370e31f7e01044 */
-          id?: string;
-          /** @example delivery_time */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/deliveryTime
-           */
-          related?: string;
-        };
-      };
-      downloads?: {
-        data?: {
-          /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
-          id?: string;
-          /** @example product_download */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/downloads
-           */
-          related?: string;
-        };
-      };
-      mainCategories?: {
-        data?: {
-          /** @example 1fb731fc4139cbb575429e28846f0c39 */
-          id?: string;
-          /** @example main_category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/mainCategories
-           */
-          related?: string;
-        };
-      };
-      manufacturer?: {
-        data?: {
-          /** @example c2904bca62b22443d6cf5e9d89cab204 */
-          id?: string;
-          /** @example product_manufacturer */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/manufacturer
-           */
-          related?: string;
-        };
-      };
-      media?: {
-        data?: {
-          /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
-          id?: string;
-          /** @example product_media */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/media
-           */
-          related?: string;
-        };
-      };
-      options?: {
-        data?: {
-          /** @example 93da65a9fd0004d9477aeac024e08e15 */
-          id?: string;
-          /** @example property_group_option */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/options
-           */
-          related?: string;
-        };
-      };
-      parent?: {
-        data?: {
-          /** @example d0e45878043844ffc41aac437e86b602 */
-          id?: string;
-          /** @example product */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/parent
-           */
-          related?: string;
-        };
-      };
-      productReviews?: {
-        data?: {
-          /** @example 01e78541ea343ed72424a5222796a4cd */
-          id?: string;
-          /** @example product_review */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/productReviews
-           */
-          related?: string;
-        };
-      };
-      properties?: {
-        data?: {
-          /** @example 74693d2fc58b46bd06410f278e39aa71 */
-          id?: string;
-          /** @example property_group_option */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/properties
-           */
-          related?: string;
-        };
-      };
-      seoCategory?: {
-        data?: {
-          /** @example 9354d004d12e03d35ad8292bf0bb234d */
-          id?: string;
-          /** @example category */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/seoCategory
-           */
-          related?: string;
-        };
-      };
-      seoUrls?: {
-        data?: {
-          /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
-          id?: string;
-          /** @example seo_url */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/seoUrls
-           */
-          related?: string;
-        };
-      };
-      streams?: {
-        data?: {
-          /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
-          id?: string;
-          /** @example product_stream */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/streams
-           */
-          related?: string;
-        };
-      };
-      tags?: {
-        data?: {
-          /** @example d57ac45256849d9b13e2422d91580fb9 */
-          id?: string;
-          /** @example tag */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/tags
-           */
-          related?: string;
-        };
-      };
-      tax?: {
-        data?: {
-          /** @example 06565e5611f23fdf8cc43e5077b92b54 */
-          id?: string;
-          /** @example tax */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/tax
-           */
-          related?: string;
-        };
-      };
-      unit?: {
-        data?: {
-          /** @example 3e34bdebd9bd5edda27e8728904a2552 */
-          id?: string;
-          /** @example unit */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/unit
-           */
-          related?: string;
-        };
-      };
-    };
-    /** Format: date-time */
-    releaseDate?: string;
-    /** Format: int64 */
-    restockTime?: number;
-    /** Format: int64 */
-    readonly sales?: number;
-    shippingFree?: boolean;
-    sortedProperties?: GenericRecord;
-    readonly states?: string[];
-    /** Format: int64 */
-    stock: number;
-    readonly streamIds?: string[];
-    readonly tagIds?: string[];
-    taxId: string;
-    translated: {
-      canonicalProductId: string;
-      canonicalProductVersionId: string;
-      cmsPageId: string;
-      cmsPageVersionId: string;
-      coverId: string;
-      deliveryTimeId: string;
-      description: string;
-      displayGroup: string;
-      ean: string;
-      keywords: string;
-      manufacturerId: string;
-      manufacturerNumber: string;
-      metaDescription: string;
-      metaTitle: string;
+      /** Format: float */
+      height?: number;
+      id: string;
+      isCloseout?: boolean;
+      /** Runtime field, cannot be used as part of the criteria. */
+      isNew?: boolean;
+      keywords?: string;
+      /** Format: float */
+      length?: number;
+      manufacturerId?: string;
+      manufacturerNumber?: string;
+      markAsTopseller?: boolean;
+      /** Format: int64 */
+      maxPurchase?: number;
+      measurements?: GenericRecord;
+      metaDescription?: string;
+      metaTitle?: string;
+      /** Format: int64 */
+      minPurchase?: number;
       name: string;
-      packUnit: string;
-      packUnitPlural: string;
-      parentId: string;
-      parentVersionId: string;
-      productManufacturerVersionId: string;
-      productMediaVersionId: string;
+      readonly optionIds?: string[];
+      packUnit?: string;
+      packUnitPlural?: string;
+      parentId?: string;
+      parentVersionId?: string;
+      productManufacturerVersionId?: string;
+      productMediaVersionId?: string;
       productNumber: string;
-      releaseDate: string;
+      readonly propertyIds?: string[];
+      /** Format: int64 */
+      purchaseSteps?: number;
+      /** Format: float */
+      purchaseUnit?: number;
+      /** Format: float */
+      readonly ratingAverage?: number;
+      /** Format: float */
+      referenceUnit?: number;
+      relationships?: {
+        canonicalProduct?: {
+          data?: {
+            /** @example 023995a50b56c0de077323e958b2bbcd */
+            id?: string;
+            /** @example product */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
+             */
+            related?: string;
+          };
+        };
+        categories?: {
+          data?: {
+            /** @example b0b5ccb4a195a07fd3eed14affb8695f */
+            id?: string;
+            /** @example category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/categories
+             */
+            related?: string;
+          };
+        };
+        categoriesRo?: {
+          data?: {
+            /** @example 7f0702d3a90d965b8c9158c451f43fdb */
+            id?: string;
+            /** @example category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/categoriesRo
+             */
+            related?: string;
+          };
+        };
+        children?: {
+          data?: {
+            /** @example 268184c12df027f536154d099d497b31 */
+            id?: string;
+            /** @example product */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/children
+             */
+            related?: string;
+          };
+        };
+        cmsPage?: {
+          data?: {
+            /** @example 7b1460918b1abb93311108f3dc021c9b */
+            id?: string;
+            /** @example cms_page */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/cmsPage
+             */
+            related?: string;
+          };
+        };
+        configuratorSettings?: {
+          data?: {
+            /** @example c0827fee13725d41f1fd7e292243f5aa */
+            id?: string;
+            /** @example product_configurator_setting */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
+             */
+            related?: string;
+          };
+        };
+        cover?: {
+          data?: {
+            /** @example 41d0e299ca1abeb2094852da042165c7 */
+            id?: string;
+            /** @example product_media */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/cover
+             */
+            related?: string;
+          };
+        };
+        crossSellings?: {
+          data?: {
+            /** @example 89936e14544d1b403cecef938101b6b0 */
+            id?: string;
+            /** @example product_cross_selling */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/crossSellings
+             */
+            related?: string;
+          };
+        };
+        deliveryTime?: {
+          data?: {
+            /** @example 8c888ae25a7bd42057370e31f7e01044 */
+            id?: string;
+            /** @example delivery_time */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/deliveryTime
+             */
+            related?: string;
+          };
+        };
+        downloads?: {
+          data?: {
+            /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
+            id?: string;
+            /** @example product_download */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/downloads
+             */
+            related?: string;
+          };
+        };
+        mainCategories?: {
+          data?: {
+            /** @example 1fb731fc4139cbb575429e28846f0c39 */
+            id?: string;
+            /** @example main_category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/mainCategories
+             */
+            related?: string;
+          };
+        };
+        manufacturer?: {
+          data?: {
+            /** @example c2904bca62b22443d6cf5e9d89cab204 */
+            id?: string;
+            /** @example product_manufacturer */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/manufacturer
+             */
+            related?: string;
+          };
+        };
+        media?: {
+          data?: {
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
+            id?: string;
+            /** @example product_media */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/media
+             */
+            related?: string;
+          };
+        };
+        options?: {
+          data?: {
+            /** @example 93da65a9fd0004d9477aeac024e08e15 */
+            id?: string;
+            /** @example property_group_option */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/options
+             */
+            related?: string;
+          };
+        };
+        parent?: {
+          data?: {
+            /** @example d0e45878043844ffc41aac437e86b602 */
+            id?: string;
+            /** @example product */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/parent
+             */
+            related?: string;
+          };
+        };
+        productReviews?: {
+          data?: {
+            /** @example 01e78541ea343ed72424a5222796a4cd */
+            id?: string;
+            /** @example product_review */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/productReviews
+             */
+            related?: string;
+          };
+        };
+        properties?: {
+          data?: {
+            /** @example 74693d2fc58b46bd06410f278e39aa71 */
+            id?: string;
+            /** @example property_group_option */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/properties
+             */
+            related?: string;
+          };
+        };
+        seoCategory?: {
+          data?: {
+            /** @example 9354d004d12e03d35ad8292bf0bb234d */
+            id?: string;
+            /** @example category */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/seoCategory
+             */
+            related?: string;
+          };
+        };
+        seoUrls?: {
+          data?: {
+            /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
+            id?: string;
+            /** @example seo_url */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/seoUrls
+             */
+            related?: string;
+          };
+        };
+        streams?: {
+          data?: {
+            /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
+            id?: string;
+            /** @example product_stream */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/streams
+             */
+            related?: string;
+          };
+        };
+        tags?: {
+          data?: {
+            /** @example d57ac45256849d9b13e2422d91580fb9 */
+            id?: string;
+            /** @example tag */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/tags
+             */
+            related?: string;
+          };
+        };
+        tax?: {
+          data?: {
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
+            id?: string;
+            /** @example tax */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/tax
+             */
+            related?: string;
+          };
+        };
+        unit?: {
+          data?: {
+            /** @example 3e34bdebd9bd5edda27e8728904a2552 */
+            id?: string;
+            /** @example unit */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/unit
+             */
+            related?: string;
+          };
+        };
+      };
+      /** Format: date-time */
+      releaseDate?: string;
+      /** Format: int64 */
+      restockTime?: number;
+      /** Format: int64 */
+      readonly sales?: number;
+      shippingFree?: boolean;
+      sortedProperties?: GenericRecord;
+      readonly states?: string[];
+      /** Format: int64 */
+      stock: number;
+      readonly streamIds?: string[];
+      readonly tagIds?: string[];
       taxId: string;
-      unitId: string;
-      versionId: string;
-    };
-    unitId?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    versionId?: string;
-    /** Format: float */
-    weight?: number;
-    /** Format: float */
-    width?: number;
-  } & components["schemas"]["DiscountLineItemPayload"] & {
+      translated: {
+        canonicalProductId: string;
+        canonicalProductVersionId: string;
+        cmsPageId: string;
+        cmsPageVersionId: string;
+        coverId: string;
+        deliveryTimeId: string;
+        description: string;
+        displayGroup: string;
+        ean: string;
+        keywords: string;
+        manufacturerId: string;
+        manufacturerNumber: string;
+        metaDescription: string;
+        metaTitle: string;
+        name: string;
+        packUnit: string;
+        packUnitPlural: string;
+        parentId: string;
+        parentVersionId: string;
+        productManufacturerVersionId: string;
+        productMediaVersionId: string;
+        productNumber: string;
+        releaseDate: string;
+        taxId: string;
+        unitId: string;
+        versionId: string;
+      };
+      unitId?: string;
+      /** Format: date-time */
+      readonly updatedAt?: string;
+      versionId?: string;
+      /** Format: float */
+      weight?: number;
+      /** Format: float */
+      width?: number;
+    } & components["schemas"]["DiscountLineItemPayload"] & {
       options: {
         group: string;
         option: string;
@@ -4826,6 +5067,40 @@ export type Schemas = {
     readonly updatedAt?: string;
     versionId?: string;
   };
+  ProductMeasurements: {
+    height?: {
+      /**
+       * @default mm
+       * @enum {string}
+       */
+      unit?: "mm" | "cm" | "m" | "in" | "ft";
+      value?: number;
+    };
+    length?: {
+      /**
+       * @default mm
+       * @enum {string}
+       */
+      unit?: "mm" | "cm" | "m" | "in" | "ft";
+      value?: number;
+    };
+    weight?: {
+      /**
+       * @default kg
+       * @enum {string}
+       */
+      unit?: "g" | "kg" | "oz" | "lb";
+      value?: number;
+    };
+    width?: {
+      /**
+       * @default mm
+       * @enum {string}
+       */
+      unit?: "mm" | "cm" | "m" | "in" | "ft";
+      value?: number;
+    };
+  };
   ProductMedia: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -4837,7 +5112,6 @@ export type Schemas = {
     position?: number;
     productId: string;
     productVersionId?: string;
-    thumbnails?: components["schemas"]["MediaThumbnail"][];
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
@@ -4864,13 +5138,12 @@ export type Schemas = {
     content: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customerId?: string;
     customFields?: GenericRecord;
     externalUser?: string;
     id: string;
     languageId: string;
     /** Format: float */
-    points: number;
+    points?: number;
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
@@ -5036,6 +5309,8 @@ export type Schemas = {
   };
   PropertyGroupOption: {
     colorHexCode?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    combinable?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -5090,13 +5365,30 @@ export type Schemas = {
     documents?: components["schemas"]["QuoteDocument"][];
     /** Format: date-time */
     expirationDate?: string;
+    extensions?: {
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/organization
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     lineItems?: components["schemas"]["QuoteLineItem"][];
     orderId?: string;
     orderVersionId?: string;
-    price: {
+    price?: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
       netPrice: number;
@@ -5137,7 +5429,7 @@ export type Schemas = {
       unitPrice: number;
     };
     stateId: string;
-    stateMachineState: components["schemas"]["StateMachineState"];
+    stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: float */
     subtotalNet?: number;
     readonly taxStatus?: string;
@@ -5157,6 +5449,8 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId?: string;
     id: string;
     quoteId: string;
     quoteVersionId?: string;
@@ -5258,6 +5552,8 @@ export type Schemas = {
     readonly createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
+    documentA11yMediaFile?: components["schemas"]["Media"];
+    documentA11yMediaFileId?: string;
     documentMediaFile?: components["schemas"]["Media"];
     documentMediaFileId?: string;
     documentNumber?: string;
@@ -5301,6 +5597,23 @@ export type Schemas = {
     };
     /** Format: date-time */
     expirationDate?: string;
+    extensions?: {
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/organization
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     languageId: string;
     orderId?: string;
@@ -5586,7 +5899,6 @@ export type Schemas = {
       price?: number;
     } | null;
     unitName: string;
-    /** Format: ^[0-9a-f]{32}$ */
     variantId?: string | null;
   };
   Rule: {
@@ -5689,6 +6001,7 @@ export type Schemas = {
     languageId: string;
     mailHeaderFooterId?: string;
     maintenance?: boolean;
+    measurementUnits?: components["schemas"]["MeasurementUnits"];
     name: string;
     navigationCategory?: components["schemas"]["Category"];
     /** Format: int64 */
@@ -5744,7 +6057,11 @@ export type Schemas = {
       currencyPrecision?: number;
       languageIdChain?: string[];
       scope?: string;
-      source?: string;
+      source?: {
+        salesChannelId: string;
+        /** @enum {string} */
+        type: "sales-channel" | "shop-api";
+      };
       taxState?: string;
       useCache?: boolean;
       versionId?: string;
@@ -5755,16 +6072,26 @@ export type Schemas = {
       displayGross?: boolean;
       name?: string;
     };
-    customer?: components["schemas"]["Customer"];
+    customer?: null | components["schemas"]["Customer"];
     /** Fallback group if the default customer group is not applicable */
     fallbackCustomerGroup?: {
       displayGross?: boolean;
       name?: string;
     };
+    itemRounding: {
+      /** @enum {string} */
+      apiAlias: "shopware_core_framework_data_abstraction_layer_pricing_cash_rounding_config";
+      /** Format: int32 */
+      decimals: number;
+      /** Format: float */
+      interval: number;
+      roundForNet: boolean;
+    };
     languageInfo: {
       localeCode: string;
       name: string;
     };
+    measurementSystem?: components["schemas"]["ContextMeasurementSystemInfo"];
     paymentMethod?: components["schemas"]["PaymentMethod"];
     salesChannel: components["schemas"]["SalesChannel"];
     shippingLocation?: {
@@ -5782,6 +6109,15 @@ export type Schemas = {
     }[];
     /** Context the user session */
     token?: string;
+    totalRounding: {
+      /** @enum {string} */
+      apiAlias: "shopware_core_framework_data_abstraction_layer_pricing_cash_rounding_config";
+      /** Format: int32 */
+      decimals: number;
+      /** Format: float */
+      interval: number;
+      roundForNet: boolean;
+    };
   };
   SalesChannelDomain: {
     /** Format: date-time */
@@ -5793,6 +6129,7 @@ export type Schemas = {
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
+    measurementUnits?: components["schemas"]["MeasurementUnits"];
     salesChannelDefaultHreflang?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     snippetSetId: string;
@@ -5948,7 +6285,7 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxType?: string;
-    technicalName?: string;
+    technicalName: string;
     trackingUrl?: string;
     translated: {
       deliveryTimeId: string;
@@ -6067,7 +6404,7 @@ export type Schemas = {
       };
     };
     taxType?: string;
-    technicalName?: string;
+    technicalName: string;
     trackingUrl?: string;
     translated: {
       deliveryTimeId: string;
@@ -6334,8 +6671,6 @@ export type Schemas = {
     accessibleTo?: string | null;
     /** @default false */
     allowScreenSharing?: boolean;
-    /** @default false */
-    allowUserActionsForGuide?: boolean;
     /** @enum {string} */
     appointmentMode?: "guided" | "self";
     attendeeRestrictionType?: ("open" | "customer" | "rules") | null;
@@ -6443,6 +6778,11 @@ export type Schemas = {
     currencyId: string;
     customFields?: GenericRecord;
     dateInterval: string;
+    /**
+     * Format: date-time
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    followingNextSchedule: string;
     id: string;
     /** Format: int64 */
     initialExecutionCount?: number;
@@ -7606,8 +7946,6 @@ export type Schemas = {
   UpdateAttendeeRequestBody: {
     /** Name of the attendee */
     attendeeName?: string;
-    /** The permission for guide cart actions */
-    guideCartPermissionsGranted?: boolean;
     /** Id of the attendee in the video chat tool */
     videoUserId?: string;
   };
@@ -7775,6 +8113,1370 @@ export type Schemas = {
      */
     prev?: string;
   };
+  paypal_error: {
+    debug_id: string | null;
+    details: components["schemas"]["paypal_error_detail"][] | null;
+    /** Only set if OAuth error occurs */
+    error: string | null;
+    /** Only set if OAuth error occurs */
+    error_description: string | null;
+    links: components["schemas"]["paypal_v1_common_link"][] | null;
+    message: string | null;
+    name: string | null;
+  };
+  paypal_error_detail: {
+    description: string;
+    field: string;
+    issue: string;
+    location: string;
+    value: string;
+  };
+  paypal_v1_capture: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    is_final_capture: boolean;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    reason_code: string;
+    state: string;
+    transaction_fee: components["schemas"]["paypal_v1_capture_transaction_fee"];
+    update_time: string;
+  };
+  paypal_v1_capture_transaction_fee: components["schemas"]["paypal_v1_common_value"];
+  paypal_v1_client_token: {
+    client_token: string;
+    /**
+     * Format: date-time
+     * Calculated expiration date
+     */
+    expire_date_time: string;
+    /** The lifetime of the access token, in seconds. */
+    expires_in: number;
+  };
+  paypal_v1_common_address: {
+    city: string;
+    country_code: string;
+    line_1: string;
+    line_2: string | null;
+    phone: string | null;
+    postal_code: string;
+    state: string | null;
+  };
+  paypal_v1_common_amount: {
+    currency: string;
+    details: components["schemas"]["paypal_v1_common_details"];
+    total: string;
+  };
+  paypal_v1_common_details: {
+    discount: string;
+    handling_fee: string;
+    insurance: string;
+    shipping: string;
+    shipping_discount: string;
+    subtotal: string;
+    tax: string;
+  };
+  paypal_v1_common_link: {
+    enc_type: string | null;
+    href: string;
+    method: string;
+    rel: string;
+  };
+  paypal_v1_common_money: {
+    currency_code: string;
+    value: string;
+  };
+  paypal_v1_common_value: {
+    currency: string;
+    value: string;
+  };
+  paypal_v1_disputes: {
+    items: components["schemas"]["paypal_v1_disputes_item"][] | null;
+    links: components["schemas"]["paypal_v1_common_link"][];
+  };
+  paypal_v1_disputes_common_buyer: {
+    name: string;
+  };
+  paypal_v1_disputes_common_item: {
+    dispute_amount: components["schemas"]["paypal_v1_common_money"];
+    item_description: string;
+    item_id: string;
+    item_quantity: string;
+    notes: string;
+    partner_transaction_id: string;
+    reason: string;
+  };
+  paypal_v1_disputes_common_product_details: {
+    product_received: string;
+    product_received_time: string;
+    purchase_url: string;
+    return_details: components["schemas"]["paypal_v1_disputes_common_return_details"];
+    sub_reasons: components["schemas"]["paypal_v1_disputes_common_sub_reason"][];
+  };
+  paypal_v1_disputes_common_return_details: {
+    mode: string;
+    receipt: boolean;
+    return_confirmation_number: string;
+    return_time: string;
+    returned: boolean;
+  };
+  paypal_v1_disputes_common_seller: {
+    email: string;
+    merchant_id: string;
+    name: string;
+  };
+  paypal_v1_disputes_common_service_details: {
+    description: string;
+    note: string;
+    purchase_url: string;
+    service_started: string;
+    sub_reasons: components["schemas"]["paypal_v1_disputes_common_sub_reason"][];
+  };
+  paypal_v1_disputes_common_sub_reason: {
+    sub_reason: string;
+  };
+  paypal_v1_disputes_common_transaction: {
+    buyer: components["schemas"]["paypal_v1_disputes_common_buyer"];
+    buyer_transaction_id: string;
+    create_time: string;
+    custom: string;
+    gross_amount: components["schemas"]["paypal_v1_common_money"];
+    invoice_number: string;
+    items: components["schemas"]["paypal_v1_disputes_common_item"][];
+    reference_id: string;
+    seller: components["schemas"]["paypal_v1_disputes_common_seller"];
+    seller_transaction_id: string;
+    transaction_status: string;
+  };
+  paypal_v1_disputes_item: {
+    adjudications: components["schemas"]["paypal_v1_disputes_item_adjudication"][];
+    buyer_response_due_date: string | null;
+    communication_details:
+      | components["schemas"]["paypal_v1_disputes_item_communication_details"]
+      | null;
+    create_time: string;
+    dispute_amount: components["schemas"]["paypal_v1_disputes_item_dispute_amount"];
+    dispute_channel: string | null;
+    dispute_id: string;
+    dispute_life_cycle_stage: string;
+    dispute_outcome:
+      | components["schemas"]["paypal_v1_disputes_item_dispute_outcome"]
+      | null;
+    /** @enum {string|null} */
+    dispute_state:
+      | "REQUIRED_ACTION"
+      | "REQUIRED_OTHER_PARTY_ACTION"
+      | "UNDER_PAYPAL_REVIEW"
+      | "RESOLVED"
+      | "OPEN_INQUIRIES"
+      | "APPEALABLE"
+      | null;
+    disputed_transactions:
+      | components["schemas"]["paypal_v1_disputes_item_disputed_transaction"][]
+      | null;
+    evidences:
+      | components["schemas"]["paypal_v1_disputes_item_evidence"][]
+      | null;
+    extensions: components["schemas"]["paypal_v1_disputes_item_extensions"];
+    external_reason_code: string | null;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    messages: components["schemas"]["paypal_v1_disputes_item_message"][] | null;
+    money_movements: components["schemas"]["paypal_v1_disputes_item_money_movement"][];
+    offer: components["schemas"]["paypal_v1_disputes_item_offer"] | null;
+    partner_actions:
+      | components["schemas"]["paypal_v1_disputes_item_partner_action"][]
+      | null;
+    reason: string;
+    refund_details:
+      | components["schemas"]["paypal_v1_disputes_item_refund_details"]
+      | null;
+    seller_response_due_date: string | null;
+    status: string;
+    supporting_info:
+      | components["schemas"]["paypal_v1_disputes_item_supporting_info"][]
+      | null;
+    update_time: string;
+  };
+  paypal_v1_disputes_item_adjudication: {
+    adjudication_time: string;
+    dispute_life_cycle_stage: string;
+    reason: string;
+    type: string;
+  };
+  paypal_v1_disputes_item_communication_details: {
+    email: string;
+    note: string;
+    time_posted: string;
+  };
+  paypal_v1_disputes_item_dispute_amount: components["schemas"]["paypal_v1_common_money"];
+  paypal_v1_disputes_item_dispute_outcome: {
+    amount_refunded: components["schemas"]["paypal_v1_common_money"];
+    outcome_code: string;
+  };
+  paypal_v1_disputes_item_disputed_transaction: components["schemas"]["paypal_v1_disputes_common_transaction"] & {
+    seller_protection_eligible: boolean;
+  };
+  paypal_v1_disputes_item_evidence: {
+    documents: components["schemas"]["paypal_v1_disputes_item_evidence_document"][];
+    evidence_info: components["schemas"]["paypal_v1_disputes_item_evidence_evidence_info"];
+    evidence_type: string;
+    item_id: string;
+    notes: string;
+  };
+  paypal_v1_disputes_item_evidence_document: {
+    name: string;
+  };
+  paypal_v1_disputes_item_evidence_evidence_info: {
+    refund_ids: components["schemas"]["paypal_v1_disputes_item_evidence_evidence_info_refund_id"][];
+    tracking_info: components["schemas"]["paypal_v1_disputes_item_evidence_evidence_info_tracking_info"][];
+  };
+  paypal_v1_disputes_item_evidence_evidence_info_refund_id: {
+    refund_id: string;
+  };
+  paypal_v1_disputes_item_evidence_evidence_info_tracking_info: {
+    carrier_name: string;
+    carrier_name_other: string;
+    tracking_number: string;
+    tracking_url: string;
+  };
+  paypal_v1_disputes_item_extensions: {
+    billing_dispute_properties: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties"];
+    buyer_contacted_channel: string;
+    buyer_contacted_time: string;
+    merchandize_dispute_properties: components["schemas"]["paypal_v1_disputes_item_extensions_merchandize_dispute_properties"];
+    merchant_contacted: boolean;
+    merchant_contacted_mode: string;
+    merchant_contacted_outcome: string;
+    merchant_contacted_time: string;
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties: {
+    canceled_recurring_billing: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing"];
+    credit_not_processed: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed"];
+    duplicate_transaction: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction"];
+    incorrect_transaction_amount: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount"];
+    payment_by_other_means: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means"];
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing: {
+    cancellation_details: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
+    expected_refund: components["schemas"]["paypal_v1_common_money"];
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details: {
+    merchant_agreed_refund: boolean;
+    merchant_agreed_refund_time: string;
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details: {
+    cancellation_date: string;
+    cancellation_mode: string;
+    cancellation_number: string;
+    cancelled: boolean;
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed: {
+    agreed_refund_details: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details"];
+    cancellation_details: components["schemas"]["paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
+    expected_refund: components["schemas"]["paypal_v1_common_money"];
+    issue_type: string;
+    product_details: components["schemas"]["paypal_v1_disputes_common_product_details"];
+    service_details: components["schemas"]["paypal_v1_disputes_common_service_details"];
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction: {
+    original_transaction: components["schemas"]["paypal_v1_disputes_common_transaction"];
+    received_duplicate: boolean;
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount: {
+    correct_transaction_amount: components["schemas"]["paypal_v1_common_money"];
+    correct_transaction_time: string;
+  };
+  paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means: {
+    charge_different_from_original: boolean;
+    payment_instrument_suffix: string;
+    payment_method: string;
+    received_duplicate: boolean;
+  };
+  paypal_v1_disputes_item_extensions_merchandize_dispute_properties: {
+    issue_type: string;
+    product_details: components["schemas"]["paypal_v1_disputes_common_product_details"];
+    service_details: components["schemas"]["paypal_v1_disputes_common_service_details"];
+  };
+  paypal_v1_disputes_item_message: {
+    content: string;
+    posted_by: string;
+    time_posted: string;
+  };
+  paypal_v1_disputes_item_money_movement: {
+    affected_party: string;
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    initiated_time: string;
+    reason: string;
+    type: string;
+  };
+  paypal_v1_disputes_item_offer: {
+    buyer_requested_amount: components["schemas"]["paypal_v1_common_money"];
+    history:
+      | components["schemas"]["paypal_v1_disputes_item_offer_history"][]
+      | null;
+    offer_type: string;
+    seller_offered_amount: components["schemas"]["paypal_v1_common_money"];
+  };
+  paypal_v1_disputes_item_offer_history: {
+    actor: string;
+    event_type: string;
+    offer_time: string;
+    offer_type: string;
+  };
+  paypal_v1_disputes_item_partner_action: {
+    amount: components["schemas"]["paypal_v1_common_money"];
+    create_time: string;
+    due_time: string;
+    id: string;
+    name: string;
+    status: string;
+    update_time: string;
+  };
+  paypal_v1_disputes_item_refund_details: {
+    allowed_refund_amount: components["schemas"]["paypal_v1_common_money"];
+  };
+  paypal_v1_disputes_item_supporting_info: {
+    notes: string;
+    provided_time: string;
+    source: string;
+  };
+  paypal_v1_do_void: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    state: string;
+    update_time: string;
+  };
+  paypal_v1_merchant_integrations: {
+    capabilities:
+      | components["schemas"]["paypal_v1_merchant_integrations_capability"][]
+      | null;
+    granted_permissions: string[];
+    legal_name: string;
+    merchant_id: string;
+    oauth_integrations: components["schemas"]["paypal_v1_merchant_integrations_oauth_integration"][];
+    payments_receivable: boolean;
+    primary_email: string;
+    primary_email_confirmed: boolean;
+    products: components["schemas"]["paypal_v1_merchant_integrations_product"][];
+    tracking_id: string;
+  };
+  paypal_v1_merchant_integrations_capability: {
+    name: string;
+    status: string;
+  };
+  paypal_v1_merchant_integrations_credentials: {
+    client_id: string;
+    client_secret: string;
+    payer_id: string;
+  };
+  paypal_v1_merchant_integrations_oauth_integration: {
+    integration_method?: string;
+    integration_type?: string;
+    oauth_third_party?: components["schemas"]["paypal_v1_merchant_integrations_oauth_integration_oauth_third_party"][];
+    status?: string;
+  };
+  paypal_v1_merchant_integrations_oauth_integration_oauth_third_party: {
+    access_token?: string;
+    merchant_client_id?: string;
+    partner_client_id?: string;
+    refresh_token?: string;
+    scopes: string[];
+  };
+  paypal_v1_merchant_integrations_product: {
+    capabilities?: string[];
+    name: string;
+    vetting_status?: string;
+  };
+  paypal_v1_merchant_tracking: {
+    links: components["schemas"]["paypal_v1_common_link"][];
+    merchant_id: string;
+    tracking_id: string;
+  };
+  paypal_v1_patch: {
+    /** @enum {string} */
+    op: "add" | "replace";
+    path: string;
+    value: string | Record<string, never>[];
+  };
+  paypal_v1_payment: {
+    application_context: components["schemas"]["paypal_v1_payment_application_context"];
+    cart: string;
+    create_time: string;
+    id: string;
+    /**
+     * @default sale
+     * @enum {string}
+     */
+    intent?: "sale" | "authorize" | "order";
+    links: components["schemas"]["paypal_v1_common_link"][];
+    payer: components["schemas"]["paypal_v1_payment_payer"];
+    payment_instruction:
+      | components["schemas"]["paypal_v1_payment_payment_instruction"]
+      | null;
+    redirect_urls: components["schemas"]["paypal_v1_payment_redirect_urls"];
+    state: string;
+    transactions: components["schemas"]["paypal_v1_payment_transaction"][];
+    update_time: string;
+  };
+  paypal_v1_payment_application_context: {
+    brand_name: string;
+    /** @enum {string} */
+    landing_page: "Login" | "Billing";
+    locale: string;
+    /** @default SET_PROVIDED_ADDRESS */
+    shipping_preference?: string;
+    /** @default commit */
+    user_action?: string;
+  };
+  paypal_v1_payment_payer: {
+    external_selected_funding_instrument_type: string;
+    payer_info: components["schemas"]["paypal_v1_payment_payer_payer_info"];
+    payment_method: string;
+    status: string;
+  };
+  paypal_v1_payment_payer_execute_payer_info: {
+    payer_id: string;
+  };
+  paypal_v1_payment_payer_payer_info: components["schemas"]["paypal_v1_payment_payer_execute_payer_info"] & {
+    billing_address: components["schemas"]["paypal_v1_common_address"] | null;
+    country_code: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    shipping_address: components["schemas"]["paypal_v1_payment_transaction_item_list_shipping_address"];
+  };
+  paypal_v1_payment_payment_instruction: {
+    amount: components["schemas"]["paypal_v1_common_value"];
+    instruction_type: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    payment_due_date: string;
+    recipient_banking_instruction: components["schemas"]["paypal_v1_payment_payment_instruction_recipient_banking_instruction"];
+    reference_number: string;
+  };
+  paypal_v1_payment_payment_instruction_recipient_banking_instruction: {
+    account_holder_name: string;
+    bank_identifier_code: string;
+    bank_name: string;
+    international_bank_account_number: string;
+  };
+  paypal_v1_payment_redirect_urls: {
+    cancel_url: string;
+    return_url: string;
+  };
+  paypal_v1_payment_transaction: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    custom: string;
+    description: string;
+    invoice_number: string | null;
+    item_list:
+      | components["schemas"]["paypal_v1_payment_transaction_item_list"]
+      | null;
+    payee: components["schemas"]["paypal_v1_payment_transaction_payee"];
+    related_resources: components["schemas"]["paypal_v1_payment_transaction_related_resource"][];
+    soft_descriptor: string;
+  };
+  paypal_v1_payment_transaction_item_list: {
+    items: components["schemas"]["paypal_v1_payment_transaction_item_list_item"][];
+    shipping_address: components["schemas"]["paypal_v1_payment_transaction_item_list_shipping_address"];
+    shipping_options: components["schemas"]["paypal_v1_payment_transaction_item_list_shipping_option"][];
+    shipping_phone_number: string;
+  };
+  paypal_v1_payment_transaction_item_list_item: {
+    currency: string;
+    name: string;
+    price: string;
+    quantity: number;
+    sku: string | null;
+    tax: string;
+  };
+  paypal_v1_payment_transaction_item_list_shipping_address: components["schemas"]["paypal_v1_common_address"] & {
+    recipient_name: string;
+  };
+  paypal_v1_payment_transaction_item_list_shipping_option: unknown;
+  paypal_v1_payment_transaction_payee: {
+    email: string;
+    merchant_id: string;
+  };
+  paypal_v1_payment_transaction_related_resource: {
+    authorization:
+      | components["schemas"]["paypal_v1_payment_transaction_related_resource_authorization"]
+      | null;
+    capture:
+      | components["schemas"]["paypal_v1_payment_transaction_related_resource_capture"]
+      | null;
+    order:
+      | components["schemas"]["paypal_v1_payment_transaction_related_resource_order"]
+      | null;
+    refund:
+      | components["schemas"]["paypal_v1_payment_transaction_related_resource_refund"]
+      | null;
+    sale:
+      | components["schemas"]["paypal_v1_payment_transaction_related_resource_sale"]
+      | null;
+  };
+  paypal_v1_payment_transaction_related_resource_authorization: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    reason_code: string;
+    receipt_id: string;
+    state: string;
+    update_time: string;
+    valid_until: string;
+  };
+  paypal_v1_payment_transaction_related_resource_capture: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    custom: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    state: string;
+    transaction_fee: components["schemas"]["paypal_v1_common_value"];
+    update_time: string;
+  };
+  paypal_v1_payment_transaction_related_resource_order: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    reason_code: string;
+    receipt_id: string;
+    state: string;
+    update_time: string;
+  };
+  paypal_v1_payment_transaction_related_resource_refund: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    capture_id: string;
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    sale_id: string;
+    state: string;
+    update_time: string;
+  };
+  paypal_v1_payment_transaction_related_resource_sale: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    receipt_id: string;
+    state: string;
+    transaction_fee: components["schemas"]["paypal_v1_common_value"];
+    update_time: string;
+  };
+  paypal_v1_plan: {
+    billing_cycles: components["schemas"]["paypal_v1_plan_billing_cycle"][];
+    description: string | null;
+    name: string;
+    payment_preferences: components["schemas"]["paypal_v1_plan_payment_preferences"];
+    product_id: string;
+    status: string;
+    taxes: components["schemas"]["paypal_v1_plan_taxes"];
+  };
+  paypal_v1_plan_billing_cycle: {
+    frequency: components["schemas"]["paypal_v1_plan_billing_cycle_frequency"];
+    pricing_scheme: components["schemas"]["paypal_v1_plan_billing_cycle_pricing_scheme"];
+    sequence: number;
+    tenure_type: string;
+    total_cycles: number;
+  };
+  paypal_v1_plan_billing_cycle_frequency: {
+    interval_count: number;
+    interval_unit: string;
+  };
+  paypal_v1_plan_billing_cycle_pricing_scheme: {
+    fixed_price: components["schemas"]["paypal_v1_common_money"];
+  };
+  paypal_v1_plan_payment_preferences: {
+    auto_bill_outstanding: boolean;
+    payment_failure_threshold: number;
+  };
+  paypal_v1_plan_taxes: {
+    inclusive: boolean;
+    percentage: string;
+  };
+  paypal_v1_product: {
+    description: string;
+    name: string;
+    type: string;
+  };
+  paypal_v1_refund: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    capture_id: string;
+    create_time: string;
+    description: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    parent_payment: string;
+    reason: string;
+    refund_from_received_amount: components["schemas"]["paypal_v1_common_value"];
+    refund_from_transaction_fee: components["schemas"]["paypal_v1_common_value"];
+    sale_id: string;
+    state: string;
+    total_refunded_amount: components["schemas"]["paypal_v1_common_value"];
+    update_time: string;
+  };
+  paypal_v1_shipping: {
+    trackers: components["schemas"]["paypal_v1_shipping_tracker"][];
+  };
+  paypal_v1_shipping_tracker: {
+    carrier: string;
+    notify_buyer: boolean;
+    /** Format: date-time */
+    shipment_date: string;
+    status: string;
+    tracking_number: string;
+    transaction_id: string;
+  };
+  paypal_v1_subscription: {
+    application_context: components["schemas"]["paypal_v1_subscription_application_context"];
+    billing_info:
+      | components["schemas"]["paypal_v1_subscription_billing_info"]
+      | null;
+    create_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    plan_id: string;
+    quantity: string;
+    shipping_amount: components["schemas"]["paypal_v1_common_money"];
+    start_time: string;
+    status: string;
+    status_update_time: string;
+    subscriber: components["schemas"]["paypal_v1_subscription_subscriber"];
+    update_time: string;
+  };
+  paypal_v1_subscription_application_context: {
+    brand_name: string;
+    cancel_url: string;
+    locale: string;
+    return_url: string;
+    /** @default SET_PROVIDED_ADDRESS */
+    shipping_preference?: string;
+    /** @default SUBSCRIBE_NOW */
+    user_action?: string;
+  };
+  paypal_v1_subscription_billing_info: {
+    cycle_executions: components["schemas"]["paypal_v1_subscription_billing_info_cycle_execution"][];
+    failed_payments_count: number;
+    last_payment: components["schemas"]["paypal_v1_subscription_billing_info_last_payment"];
+    next_billing_time: string | null;
+    outstanding_balance: components["schemas"]["paypal_v1_subscription_billing_info_outstanding_balance"];
+  };
+  paypal_v1_subscription_billing_info_cycle_execution: {
+    cycles_completed: number;
+    cycles_remaining: number;
+    sequence: number;
+    tenure_type: string;
+    total_cycles: number;
+  };
+  paypal_v1_subscription_billing_info_last_payment: {
+    amount: components["schemas"]["paypal_v1_common_money"];
+    time: string;
+  };
+  paypal_v1_subscription_billing_info_outstanding_balance: components["schemas"]["paypal_v1_common_money"];
+  paypal_v1_subscription_subscriber: {
+    email_address: string;
+    name: components["schemas"]["paypal_v1_subscription_subscriber_name"];
+    payer_id: string;
+    shipping_address:
+      | components["schemas"]["paypal_v1_subscription_subscriber_shipping_address"]
+      | null;
+  };
+  paypal_v1_subscription_subscriber_name: {
+    given_name: string;
+    surname: string;
+  };
+  paypal_v1_subscription_subscriber_shipping_address: {
+    address:
+      | components["schemas"]["paypal_v1_subscription_subscriber_shipping_address_address"]
+      | null;
+    name:
+      | components["schemas"]["paypal_v1_subscription_subscriber_shipping_address_name"]
+      | null;
+  };
+  paypal_v1_subscription_subscriber_shipping_address_address: {
+    address_line_1: string | null;
+    address_line_2: string | null;
+    admin_area_1: string | null;
+    admin_area_2: string | null;
+    country_code: string;
+    postal_code: string | null;
+  };
+  paypal_v1_subscription_subscriber_shipping_address_name: {
+    full_name: string;
+  };
+  paypal_v1_token: {
+    /** The access token issued by PayPal. After the access token
+     *     expires (see $expiresIn), you must request a new access token. */
+    access_token: string;
+    app_id: string;
+    /**
+     * Format: date-time
+     * Calculated expiration date
+     */
+    expire_date_time: string;
+    /** The lifetime of the access token, in seconds. */
+    expires_in: number;
+    id_token: string | null;
+    nonce: string;
+    /** Scopes expressed in the form of resource URL endpoints. The value of the scope parameter
+     *     is expressed as a list of space-delimited, case-sensitive strings. */
+    scope: string;
+    /** The type of the token issued as described in OAuth2.0 RFC6749,
+     *     Section 7.1. Value is case insensitive. */
+    token_type: string;
+  };
+  paypal_v1_webhook: {
+    event_types: components["schemas"]["paypal_v1_webhook_event_type"][];
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    url: string;
+  };
+  paypal_v1_webhook_event: {
+    create_time: string;
+    event_type: string;
+    event_version: string;
+    id: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    resource:
+      | (
+          | components["schemas"]["paypal_v3_payment_token"]
+          | components["schemas"]["paypal_v2_order_purchase_unit_payments_authorization"]
+          | components["schemas"]["paypal_v2_order_purchase_unit_payments_capture"]
+          | components["schemas"]["paypal_v2_order_purchase_unit_payments_refund"]
+          | components["schemas"]["paypal_v1_webhook_resource"]
+          | components["schemas"]["paypal_v1_subscription"]
+        )
+      | null;
+    resource_type: string;
+    resource_version: string;
+    summary: string;
+  };
+  paypal_v1_webhook_event_type: {
+    description: string;
+    name: string;
+    resource_version: string;
+    status: string;
+  };
+  paypal_v1_webhook_resource: {
+    amount: components["schemas"]["paypal_v1_common_amount"];
+    billing_agreement_id: string | null;
+    clearing_time: string;
+    create_time: string;
+    id: string;
+    invoice_number: string;
+    links: components["schemas"]["paypal_v1_common_link"][];
+    merchant_id: string | null;
+    parent_payment: string | null;
+    payment_mode: string;
+    protection_eligibility: string;
+    protection_eligibility_type: string;
+    refund_reason_code: string | null;
+    sale_id: string | null;
+    state: string;
+    transaction_fee: components["schemas"]["paypal_v1_common_value"];
+    update_time: string;
+  };
+  paypal_v2_common_address: {
+    /** The first line of the address. For example, number or street. For example, 173 Drury Lane.
+     *     Required for data entry and compliance and risk checks. Must contain the full address. */
+    address_line_1: string | null;
+    /** The second line of the address. For example, suite or apartment number. */
+    address_line_2: string | null;
+    /** The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision.
+     *     Format for postal delivery. For example, CA and not California. */
+    admin_area_1: string | null;
+    /** A city, town, or village. Smaller than $adminArea1 */
+    admin_area_2: string | null;
+    country_code: string;
+    postal_code: string | null;
+  };
+  paypal_v2_common_link: {
+    enc_type: string | null;
+    href: string;
+    method: string;
+    rel: string;
+  };
+  paypal_v2_common_money: {
+    currency_code: string;
+    value: string;
+  };
+  paypal_v2_common_name: {
+    given_name: string;
+    surname: string;
+  };
+  paypal_v2_common_phone_number: {
+    country_code: string;
+    national_number: string;
+  };
+  paypal_v2_order: {
+    application_context: components["schemas"]["paypal_v2_order_application_context"];
+    create_time: string;
+    id: string;
+    /** @enum {string} */
+    intent: "CAPTURE" | "AUTHORIZE";
+    links: components["schemas"]["paypal_v2_common_link"][];
+    payer: components["schemas"]["paypal_v2_order_payer"];
+    payment_source:
+      | components["schemas"]["paypal_v2_order_payment_source"]
+      | null;
+    processing_instruction: string;
+    purchase_units:
+      | components["schemas"]["paypal_v2_order_purchase_unit"][]
+      | null;
+    status: string;
+    update_time: string;
+  };
+  paypal_v2_order_application_context: {
+    brand_name: string;
+    cancel_url: string;
+    /**
+     * @default NO_PREFERENCE
+     * @enum {string}
+     */
+    landing_page?: "LOGIN" | "BILLING" | "NO_PREFERENCE";
+    return_url: string;
+    /**
+     * @default SET_PROVIDED_ADDRESS
+     * @enum {string}
+     */
+    shipping_preference?:
+      | "SET_PROVIDED_ADDRESS"
+      | "NO_SHIPPING"
+      | "GET_FROM_FILE";
+    /**
+     * @default PAY_NOW
+     * @enum {string}
+     */
+    user_action?: "CONTINUE" | "PAY_NOW";
+  };
+  paypal_v2_order_payer: {
+    address: components["schemas"]["paypal_v2_common_address"];
+    email_address: string;
+    name: components["schemas"]["paypal_v2_common_name"];
+    payer_id: string;
+    phone:
+      | components["schemas"]["paypal_v2_order_payment_source_common_phone"]
+      | null;
+  };
+  paypal_v2_order_payment_source: {
+    apple_pay: components["schemas"]["paypal_v2_order_payment_source_apple_pay"];
+    bancontact:
+      | components["schemas"]["paypal_v2_order_payment_source_bancontact"]
+      | null;
+    blik: components["schemas"]["paypal_v2_order_payment_source_blik"] | null;
+    boletobancario:
+      | components["schemas"]["paypal_v2_order_payment_source_boletobancario"]
+      | null;
+    card: components["schemas"]["paypal_v2_order_payment_source_card"] | null;
+    eps: components["schemas"]["paypal_v2_order_payment_source_eps"] | null;
+    google_pay:
+      | components["schemas"]["paypal_v2_order_payment_source_google_pay"]
+      | null;
+    ideal: components["schemas"]["paypal_v2_order_payment_source_ideal"] | null;
+    multibanco:
+      | components["schemas"]["paypal_v2_order_payment_source_multibanco"]
+      | null;
+    my_bank:
+      | components["schemas"]["paypal_v2_order_payment_source_my_bank"]
+      | null;
+    oxxo: components["schemas"]["paypal_v2_order_payment_source_oxxo"] | null;
+    p_2_4: components["schemas"]["paypal_v2_order_payment_source_p24"] | null;
+    pay_upon_invoice:
+      | components["schemas"]["paypal_v2_order_payment_source_pay_upon_invoice"]
+      | null;
+    paypal:
+      | components["schemas"]["paypal_v2_order_payment_source_paypal"]
+      | null;
+    token: components["schemas"]["paypal_v2_order_payment_source_token"] | null;
+    trustly:
+      | components["schemas"]["paypal_v2_order_payment_source_trustly"]
+      | null;
+    venmo: components["schemas"]["paypal_v2_order_payment_source_venmo"] | null;
+  };
+  paypal_v2_order_payment_source_apple_pay: {
+    attributes:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    card: components["schemas"]["paypal_v2_order_payment_source_card"] | null;
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_bancontact: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_blik: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_boletobancario: {
+    billing_address: components["schemas"]["paypal_v2_common_address"];
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    expiry_date: string;
+    name: string;
+    tax_info: components["schemas"]["paypal_v2_order_payment_source_boletobancario_tax_info"];
+  };
+  paypal_v2_order_payment_source_boletobancario_tax_info: {
+    tax_id: string;
+    tax_id_type: string;
+  };
+  paypal_v2_order_payment_source_card: {
+    attributes:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    authentication_result:
+      | components["schemas"]["paypal_v2_order_payment_source_card_authentication_result"]
+      | null;
+    billing_address: components["schemas"]["paypal_v2_common_address"] | null;
+    brand: string;
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    last_digits: string;
+    name: string;
+    stored_credential:
+      | components["schemas"]["paypal_v2_order_payment_source_card_stored_credential"]
+      | null;
+    type: string;
+    vault_id: string;
+  };
+  paypal_v2_order_payment_source_card_authentication_result: {
+    liability_shift: string;
+    three_d_secure:
+      | components["schemas"]["paypal_v2_order_payment_source_card_authentication_result_3d_secure"]
+      | null;
+  };
+  paypal_v2_order_payment_source_card_authentication_result_3d_secure: {
+    authentication_status: string;
+    enrollment_status: string;
+  };
+  paypal_v2_order_payment_source_card_stored_credential: {
+    /** @enum {string} */
+    payment_initiator: "MERCHANT" | "CUSTOMER";
+    /** @enum {string} */
+    payment_type: "RECURRING" | "ONE_TIME" | "UNSCHEDULED";
+    previous_network_transaction_reference: string;
+    /** @enum {string} */
+    usage: "DERIVED" | "FIRST" | "SUBSEQUENT";
+  };
+  paypal_v2_order_payment_source_common_attributes: {
+    customer: components["schemas"]["paypal_v2_order_payment_source_common_attributes_customer"];
+    vault: components["schemas"]["paypal_v2_order_payment_source_common_attributes_vault"];
+    verification: components["schemas"]["paypal_v2_order_payment_source_common_attributes_verification"];
+  };
+  paypal_v2_order_payment_source_common_attributes_customer: {
+    id: string;
+  };
+  paypal_v2_order_payment_source_common_attributes_vault: {
+    confirm_payment_token: string;
+    customer:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes_customer"]
+      | null;
+    id: string | null;
+    links: components["schemas"]["paypal_v2_common_link"][];
+    permit_multiple_payment_tokens: boolean;
+    status: string;
+    store_in_vault: string;
+    usage_type: string;
+  };
+  paypal_v2_order_payment_source_common_attributes_verification: {
+    method: string;
+  };
+  paypal_v2_order_payment_source_common_experience_context: {
+    brand_name: string;
+    cancel_url: string;
+    /** Only: PUI */
+    customer_service_instructions: string[];
+    /**
+     * @default NO_PREFERENCE
+     * @enum {string}
+     */
+    landing_page?: "LOGIN" | "GUEST_CHECKOUT" | "NO_PREFERENCE";
+    locale: string;
+    logo_url: string;
+    /**
+     * Only: PayPal Wallet
+     * @enum {string}
+     */
+    payment_method_preference: "UNRESTRICTED" | "IMMEDIATE_PAYMENT_REQUIRED";
+    return_url: string;
+    /**
+     * @default SET_PROVIDED_ADDRESS
+     * @enum {string}
+     */
+    shipping_preference?:
+      | "SET_PROVIDED_ADDRESS"
+      | "NO_SHIPPING"
+      | "GET_FROM_FILE";
+    /**
+     * @default PAY_NOW
+     * @enum {string}
+     */
+    user_action?: "CONTINUE" | "PAY_NOW";
+  };
+  paypal_v2_order_payment_source_common_phone: {
+    phone_number: components["schemas"]["paypal_v2_common_phone_number"];
+    phone_type: string;
+  };
+  paypal_v2_order_payment_source_eps: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_google_pay: {
+    attributes:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    card: components["schemas"]["paypal_v2_order_payment_source_card"] | null;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+  };
+  paypal_v2_order_payment_source_ideal: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_multibanco: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_my_bank: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_oxxo: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_p24: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_pay_upon_invoice: {
+    billing_address: components["schemas"]["paypal_v2_common_address"];
+    birth_date: string;
+    deposit_bank_details: components["schemas"]["paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details"];
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["paypal_v2_common_name"];
+    payment_reference: string;
+    phone: components["schemas"]["paypal_v2_common_phone_number"];
+  };
+  paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details: {
+    account_holder_name: string;
+    bank_name: string;
+    bic: string;
+    iban: string;
+  };
+  paypal_v2_order_payment_source_paypal: {
+    account_id: string;
+    address: components["schemas"]["paypal_v2_common_address"];
+    attributes:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    billing_agreement_id: string;
+    birth_date: string;
+    email_address: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["paypal_v2_common_name"];
+    phone_number: components["schemas"]["paypal_v2_common_phone_number"] | null;
+    phone_type: string;
+    vault_id: string;
+  };
+  paypal_v2_order_payment_source_token: {
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    id: string;
+    stored_payment_source: components["schemas"]["paypal_v2_order_payment_source_token_stored_payment_source"];
+    type: string;
+  };
+  paypal_v2_order_payment_source_token_stored_payment_source: {
+    payment_initiator: string;
+    payment_type: string;
+    usage: string;
+  };
+  paypal_v2_order_payment_source_trustly: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+  };
+  paypal_v2_order_payment_source_venmo: {
+    account_id: string;
+    address: components["schemas"]["paypal_v2_common_address"];
+    attributes:
+      | components["schemas"]["paypal_v2_order_payment_source_common_attributes"]
+      | null;
+    email_address: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: components["schemas"]["paypal_v2_common_name"];
+    phone_number: components["schemas"]["paypal_v2_common_phone_number"] | null;
+    user_name: string;
+    vault_id: string;
+  };
+  paypal_v2_order_purchase_unit: {
+    amount: components["schemas"]["paypal_v2_order_purchase_unit_amount"];
+    custom_id: string | null;
+    description: string;
+    invoice_id: string | null;
+    items: components["schemas"]["paypal_v2_order_purchase_unit_item"][] | null;
+    payee: components["schemas"]["paypal_v2_order_purchase_unit_payee"];
+    payments:
+      | components["schemas"]["paypal_v2_order_purchase_unit_payments"]
+      | null;
+    reference_id: string;
+    shipping: components["schemas"]["paypal_v2_order_purchase_unit_shipping"];
+  };
+  paypal_v2_order_purchase_unit_amount: components["schemas"]["paypal_v2_common_money"] & {
+    breakdown:
+      | components["schemas"]["paypal_v2_order_purchase_unit_amount_breakdown"]
+      | null;
+  };
+  paypal_v2_order_purchase_unit_amount_breakdown: {
+    discount: components["schemas"]["paypal_v2_common_money"];
+    handling: components["schemas"]["paypal_v2_common_money"];
+    insurance: components["schemas"]["paypal_v2_common_money"];
+    item_total: components["schemas"]["paypal_v2_common_money"];
+    shipping: components["schemas"]["paypal_v2_common_money"];
+    shipping_discount: components["schemas"]["paypal_v2_common_money"];
+    tax_total: components["schemas"]["paypal_v2_common_money"] | null;
+  };
+  paypal_v2_order_purchase_unit_item: {
+    /** @enum {string} */
+    category: "PHYSICAL_GOODS" | "DIGITAL_GOODS" | "DONATION";
+    name: string;
+    quantity: number;
+    sku: string | null;
+    tax: components["schemas"]["paypal_v2_common_money"];
+    tax_rate: string | number | Record<string, never>;
+    unit_amount: components["schemas"]["paypal_v2_common_money"];
+  };
+  paypal_v2_order_purchase_unit_payee: {
+    display_data: components["schemas"]["paypal_v2_order_purchase_unit_payee_display_data"];
+    email_address: string;
+    merchant_id: string;
+  };
+  paypal_v2_order_purchase_unit_payee_display_data: {
+    brand_name: string;
+  };
+  paypal_v2_order_purchase_unit_payments: {
+    authorizations:
+      | components["schemas"]["paypal_v2_order_purchase_unit_payments_authorization"][]
+      | null;
+    captures:
+      | components["schemas"]["paypal_v2_order_purchase_unit_payments_capture"][]
+      | null;
+    refunds:
+      | components["schemas"]["paypal_v2_order_purchase_unit_payments_refund"][]
+      | null;
+  };
+  paypal_v2_order_purchase_unit_payments_authorization: {
+    amount: components["schemas"]["paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    expiration_time: string;
+    id: string;
+    links: components["schemas"]["paypal_v2_common_link"][];
+    seller_protection: components["schemas"]["paypal_v2_order_purchase_unit_payments_common_seller_protection"];
+    status: string;
+    update_time: string;
+  };
+  paypal_v2_order_purchase_unit_payments_authorization_seller_protection: {
+    dispute_categories: string[];
+    status: string;
+  };
+  paypal_v2_order_purchase_unit_payments_capture: {
+    amount: components["schemas"]["paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    disbursement_mode: string;
+    final_capture: boolean;
+    id: string;
+    invoice_id: string | null;
+    links: components["schemas"]["paypal_v2_common_link"][];
+    note_to_payer: string | null;
+    processor_response: components["schemas"]["paypal_v2_order_purchase_unit_payments_capture_processor_response"];
+    seller_protection: components["schemas"]["paypal_v2_order_purchase_unit_payments_common_seller_protection"];
+    seller_receivable_breakdown: components["schemas"]["paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown"];
+    status: string;
+    update_time: string;
+  };
+  paypal_v2_order_purchase_unit_payments_capture_processor_response: {
+    avs_code: string | null;
+    cvv_code: string | null;
+    response_code: string | null;
+  };
+  paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown: {
+    gross_amount: components["schemas"]["paypal_v2_common_money"];
+    net_amount: components["schemas"]["paypal_v2_common_money"];
+    paypal_fee: components["schemas"]["paypal_v2_common_money"];
+  };
+  paypal_v2_order_purchase_unit_payments_common_seller_protection: {
+    dispute_categories: string[];
+    status: string;
+  };
+  paypal_v2_order_purchase_unit_payments_refund: {
+    amount: components["schemas"]["paypal_v2_common_money"] | null;
+    create_time: string;
+    custom_id: string | null;
+    id: string;
+    invoice_id: string | null;
+    links: components["schemas"]["paypal_v2_common_link"][];
+    note_to_payer: string | null;
+    seller_payable_breakdown: components["schemas"]["paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown"];
+    status: string;
+    update_time: string;
+  };
+  paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown: {
+    gross_amount: components["schemas"]["paypal_v2_common_money"];
+    net_amount: components["schemas"]["paypal_v2_common_money"];
+    paypal_fee: components["schemas"]["paypal_v2_common_money"];
+    total_refunded_amount: components["schemas"]["paypal_v2_common_money"];
+  };
+  paypal_v2_order_purchase_unit_shipping: {
+    address: components["schemas"]["paypal_v2_common_address"];
+    name: components["schemas"]["paypal_v2_order_purchase_unit_shipping_name"];
+    trackers:
+      | components["schemas"]["paypal_v2_order_purchase_unit_shipping_tracker"][]
+      | null;
+  };
+  paypal_v2_order_purchase_unit_shipping_name: {
+    full_name: string;
+  };
+  paypal_v2_order_purchase_unit_shipping_tracker: {
+    id: string;
+    items: components["schemas"]["paypal_v2_order_purchase_unit_item"][];
+    links: components["schemas"]["paypal_v2_common_link"][];
+    notify_payer: boolean;
+    status: string;
+  };
+  paypal_v2_order_purchase_unit_shipping_tracker_item: {
+    image_url: string | null;
+    name: string;
+    quantity: number;
+    sku: string | null;
+    url: string | null;
+  };
+  paypal_v2_order_tracker: {
+    capture_id: string;
+    carrier: string;
+    carrier_name_other: string | null;
+    items: components["schemas"]["paypal_v2_order_purchase_unit_shipping_tracker_item"][];
+    /** @default false */
+    notify_payer?: boolean;
+    tracking_number: string;
+  };
+  paypal_v2_patch: {
+    from: string;
+    op: string;
+    path: string;
+    value:
+      | ([] &
+          (
+            | number
+            | Record<string, never>
+            | string
+            | boolean
+            | Record<string, never>[]
+          ))
+      | null;
+  };
+  paypal_v2_referral: {
+    business_entity: components["schemas"]["paypal_v2_referral_business_entity"];
+    capabilities: string[];
+    legal_consents: components["schemas"]["paypal_v2_referral_legal_consent"][];
+    links: components["schemas"]["paypal_v2_common_link"][];
+    operations: components["schemas"]["paypal_v2_referral_operation"][];
+    partner_config_override: components["schemas"]["paypal_v2_referral_partner_config_override"];
+    preferred_language_code: string;
+    products: string[];
+    tracking_id: string;
+  };
+  paypal_v2_referral_business_entity: {
+    addresses: components["schemas"]["paypal_v2_referral_business_entity_address"][];
+  };
+  paypal_v2_referral_business_entity_address: {
+    country_code: string;
+    /** @default WORK */
+    type?: string;
+  };
+  paypal_v2_referral_legal_consent: {
+    granted: boolean;
+    /** @default SHARE_DATA_CONSENT */
+    type?: string;
+  };
+  paypal_v2_referral_operation: {
+    api_integration_preference: components["schemas"]["paypal_v2_referral_operation_api_integration_preference"];
+    /** @default API_INTEGRATION */
+    operation?: string;
+  };
+  paypal_v2_referral_operation_api_integration_preference: {
+    rest_api_integration: components["schemas"]["paypal_v2_referral_operation_api_integration_preference_rest_api_integration"];
+  };
+  paypal_v2_referral_operation_api_integration_preference_rest_api_integration: {
+    /** @default PAYPAL */
+    integration_method?: string;
+    /** @default THIRD_PARTY */
+    integration_type?: string;
+    third_party_details: components["schemas"]["paypal_v2_referral_operation_api_integration_preference_rest_api_integration_third_party_details"];
+  };
+  paypal_v2_referral_operation_api_integration_preference_rest_api_integration_third_party_details: {
+    features: string[];
+  };
+  paypal_v2_referral_partner_config_override: {
+    partner_logo_url: string;
+    return_url: string;
+  };
+  paypal_v3_payment_token: {
+    customer: components["schemas"]["paypal_v2_order_payment_source_common_attributes_customer"];
+    id: string;
+    links: components["schemas"]["paypal_v2_common_link"][];
+    metadata: components["schemas"]["paypal_v3_payment_token_metadata"] | null;
+    payment_source: components["schemas"]["paypal_v2_order_payment_source"];
+    status: string;
+  };
+  paypal_v3_payment_token_metadata: {
+    order_id: string;
+  };
   relationshipLinks: {
     related?: components["schemas"]["link"];
     self?: GenericRecord[] & components["schemas"]["link"];
@@ -7810,1390 +9512,6 @@ export type Schemas = {
     links?: components["schemas"]["links"] &
       components["schemas"]["pagination"];
     meta?: components["schemas"]["meta"];
-  };
-  swag_paypal_v1_capture: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    id: string;
-    is_final_capture: boolean;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    reason_code: string;
-    state: string;
-    transaction_fee: components["schemas"]["swag_paypal_v1_capture_transaction_fee"];
-    update_time: string;
-  };
-  swag_paypal_v1_capture_transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
-  swag_paypal_v1_client_token: {
-    client_token: string;
-    /**
-     * Format: date-time
-     * Calculated expiration date
-     */
-    expire_date_time: string;
-    /** The lifetime of the access token, in seconds. */
-    expires_in: number;
-  };
-  swag_paypal_v1_common_address: {
-    city: string;
-    country_code: string;
-    line1: string;
-    line2: string | null;
-    phone: string | null;
-    postal_code: string;
-    state: string | null;
-  };
-  swag_paypal_v1_common_amount: {
-    currency: string;
-    details: components["schemas"]["swag_paypal_v1_common_details"];
-    total: string;
-  };
-  swag_paypal_v1_common_details: {
-    discount: string;
-    handling_fee: string;
-    insurance: string;
-    shipping: string;
-    shipping_discount: string;
-    subtotal: string;
-    tax: string;
-  };
-  swag_paypal_v1_common_link: {
-    enc_type: string | null;
-    href: string;
-    method: string;
-    rel: string;
-  };
-  swag_paypal_v1_common_money: {
-    currency_code: string;
-    value: string;
-  };
-  swag_paypal_v1_common_value: {
-    currency: string;
-    value: string;
-  };
-  swag_paypal_v1_create_webhooks: {
-    event_types: components["schemas"]["swag_paypal_v1_create_webhooks_event_type"][];
-    url: string;
-  };
-  swag_paypal_v1_create_webhooks_event_type: {
-    name: string;
-  };
-  swag_paypal_v1_disputes: {
-    items: components["schemas"]["swag_paypal_v1_disputes_item"][] | null;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-  };
-  swag_paypal_v1_disputes_common_buyer: {
-    name: string;
-  };
-  swag_paypal_v1_disputes_common_item: {
-    dispute_amount: components["schemas"]["swag_paypal_v1_common_money"];
-    item_description: string;
-    item_id: string;
-    item_quantity: string;
-    notes: string;
-    partner_transaction_id: string;
-    reason: string;
-  };
-  swag_paypal_v1_disputes_common_product_details: {
-    product_received: string;
-    product_received_time: string;
-    purchase_url: string;
-    return_details: components["schemas"]["swag_paypal_v1_disputes_common_return_details"];
-    sub_reasons: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
-  };
-  swag_paypal_v1_disputes_common_return_details: {
-    mode: string;
-    receipt: boolean;
-    return_confirmation_number: string;
-    return_time: string;
-    returned: boolean;
-  };
-  swag_paypal_v1_disputes_common_seller: {
-    email: string;
-    merchant_id: string;
-    name: string;
-  };
-  swag_paypal_v1_disputes_common_service_details: {
-    description: string;
-    note: string;
-    purchase_url: string;
-    service_started: string;
-    sub_reasons: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
-  };
-  swag_paypal_v1_disputes_common_sub_reason: {
-    sub_reason: string;
-  };
-  swag_paypal_v1_disputes_common_transaction: {
-    buyer: components["schemas"]["swag_paypal_v1_disputes_common_buyer"];
-    buyer_transaction_id: string;
-    create_time: string;
-    custom: string;
-    gross_amount: components["schemas"]["swag_paypal_v1_common_money"];
-    invoice_number: string;
-    items: components["schemas"]["swag_paypal_v1_disputes_common_item"][];
-    reference_id: string;
-    seller: components["schemas"]["swag_paypal_v1_disputes_common_seller"];
-    seller_transaction_id: string;
-    transaction_status: string;
-  };
-  swag_paypal_v1_disputes_item: {
-    adjudications: components["schemas"]["swag_paypal_v1_disputes_item_adjudication"][];
-    buyer_response_due_date: string | null;
-    communication_details:
-      | components["schemas"]["swag_paypal_v1_disputes_item_communication_details"]
-      | null;
-    create_time: string;
-    dispute_amount: components["schemas"]["swag_paypal_v1_disputes_item_dispute_amount"];
-    dispute_channel: string | null;
-    dispute_id: string;
-    dispute_life_cycle_stage: string;
-    dispute_outcome:
-      | components["schemas"]["swag_paypal_v1_disputes_item_dispute_outcome"]
-      | null;
-    /** @enum {string|null} */
-    dispute_state:
-      | "REQUIRED_ACTION"
-      | "REQUIRED_OTHER_PARTY_ACTION"
-      | "UNDER_PAYPAL_REVIEW"
-      | "RESOLVED"
-      | "OPEN_INQUIRIES"
-      | "APPEALABLE"
-      | null;
-    disputed_transactions:
-      | components["schemas"]["swag_paypal_v1_disputes_item_disputed_transaction"][]
-      | null;
-    evidences:
-      | components["schemas"]["swag_paypal_v1_disputes_item_evidence"][]
-      | null;
-    extensions: components["schemas"]["swag_paypal_v1_disputes_item_extensions"];
-    external_reason_code: string | null;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    messages:
-      | components["schemas"]["swag_paypal_v1_disputes_item_message"][]
-      | null;
-    money_movements: components["schemas"]["swag_paypal_v1_disputes_item_money_movement"][];
-    offer: components["schemas"]["swag_paypal_v1_disputes_item_offer"] | null;
-    partner_actions:
-      | components["schemas"]["swag_paypal_v1_disputes_item_partner_action"][]
-      | null;
-    reason: string;
-    refund_details:
-      | components["schemas"]["swag_paypal_v1_disputes_item_refund_details"]
-      | null;
-    seller_response_due_date: string | null;
-    status: string;
-    supporting_info:
-      | components["schemas"]["swag_paypal_v1_disputes_item_supporting_info"][]
-      | null;
-    update_time: string;
-  };
-  swag_paypal_v1_disputes_item_adjudication: {
-    adjudication_time: string;
-    dispute_life_cycle_stage: string;
-    reason: string;
-    type: string;
-  };
-  swag_paypal_v1_disputes_item_communication_details: {
-    email: string;
-    note: string;
-    time_posted: string;
-  };
-  swag_paypal_v1_disputes_item_dispute_amount: components["schemas"]["swag_paypal_v1_common_money"];
-  swag_paypal_v1_disputes_item_dispute_outcome: {
-    amount_refunded: components["schemas"]["swag_paypal_v1_common_money"];
-    outcome_code: string;
-  };
-  swag_paypal_v1_disputes_item_disputed_transaction: components["schemas"]["swag_paypal_v1_disputes_common_transaction"] & {
-    seller_protection_eligible: boolean;
-  };
-  swag_paypal_v1_disputes_item_evidence: {
-    documents: components["schemas"]["swag_paypal_v1_disputes_item_evidence_document"][];
-    evidence_info: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info"];
-    evidence_type: string;
-    item_id: string;
-    notes: string;
-  };
-  swag_paypal_v1_disputes_item_evidence_document: {
-    name: string;
-  };
-  swag_paypal_v1_disputes_item_evidence_evidence_info: {
-    refund_ids: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info_refund_id"][];
-    tracking_info: components["schemas"]["swag_paypal_v1_disputes_item_evidence_evidence_info_tracking_info"][];
-  };
-  swag_paypal_v1_disputes_item_evidence_evidence_info_refund_id: {
-    refund_id: string;
-  };
-  swag_paypal_v1_disputes_item_evidence_evidence_info_tracking_info: {
-    carrier_name: string;
-    carrier_name_other: string;
-    tracking_number: string;
-    tracking_url: string;
-  };
-  swag_paypal_v1_disputes_item_extensions: {
-    billing_dispute_properties: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties"];
-    buyer_contacted_channel: string;
-    buyer_contacted_time: string;
-    merchandize_dispute_properties: components["schemas"]["swag_paypal_v1_disputes_item_extensions_merchandize_dispute_properties"];
-    merchant_contacted: boolean;
-    merchant_contacted_mode: string;
-    merchant_contacted_outcome: string;
-    merchant_contacted_time: string;
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties: {
-    canceled_recurring_billing: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing"];
-    credit_not_processed: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed"];
-    duplicate_transaction: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction"];
-    incorrect_transaction_amount: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount"];
-    payment_by_other_means: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means"];
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_canceled_recurring_billing: {
-    cancellation_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
-    expected_refund: components["schemas"]["swag_paypal_v1_common_money"];
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details: {
-    merchant_agreed_refund: boolean;
-    merchant_agreed_refund_time: string;
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details: {
-    cancellation_date: string;
-    cancellation_mode: string;
-    cancellation_number: string;
-    cancelled: boolean;
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_credit_not_processed: {
-    agreed_refund_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_agreed_refund_details"];
-    cancellation_details: components["schemas"]["swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_common_cancellation_details"];
-    expected_refund: components["schemas"]["swag_paypal_v1_common_money"];
-    issue_type: string;
-    product_details: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
-    service_details: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_duplicate_transaction: {
-    original_transaction: components["schemas"]["swag_paypal_v1_disputes_common_transaction"];
-    received_duplicate: boolean;
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_incorrect_transaction_amount: {
-    correct_transaction_amount: components["schemas"]["swag_paypal_v1_common_money"];
-    correct_transaction_time: string;
-  };
-  swag_paypal_v1_disputes_item_extensions_billing_dispute_properties_payment_by_other_means: {
-    charge_different_from_original: boolean;
-    payment_instrument_suffix: string;
-    payment_method: string;
-    received_duplicate: boolean;
-  };
-  swag_paypal_v1_disputes_item_extensions_merchandize_dispute_properties: {
-    issue_type: string;
-    product_details: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
-    service_details: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
-  };
-  swag_paypal_v1_disputes_item_message: {
-    content: string;
-    posted_by: string;
-    time_posted: string;
-  };
-  swag_paypal_v1_disputes_item_money_movement: {
-    affected_party: string;
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    initiated_time: string;
-    reason: string;
-    type: string;
-  };
-  swag_paypal_v1_disputes_item_offer: {
-    buyer_requested_amount: components["schemas"]["swag_paypal_v1_common_money"];
-    history:
-      | components["schemas"]["swag_paypal_v1_disputes_item_offer_history"][]
-      | null;
-    offer_type: string;
-    seller_offered_amount: components["schemas"]["swag_paypal_v1_common_money"];
-  };
-  swag_paypal_v1_disputes_item_offer_history: {
-    actor: string;
-    event_type: string;
-    offer_time: string;
-    offer_type: string;
-  };
-  swag_paypal_v1_disputes_item_partner_action: {
-    amount: components["schemas"]["swag_paypal_v1_common_money"];
-    create_time: string;
-    due_time: string;
-    id: string;
-    name: string;
-    status: string;
-    update_time: string;
-  };
-  swag_paypal_v1_disputes_item_refund_details: {
-    allowed_refund_amount: components["schemas"]["swag_paypal_v1_common_money"];
-  };
-  swag_paypal_v1_disputes_item_supporting_info: {
-    notes: string;
-    provided_time: string;
-    source: string;
-  };
-  swag_paypal_v1_do_void: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    state: string;
-    update_time: string;
-  };
-  swag_paypal_v1_merchant_integrations: {
-    capabilities:
-      | components["schemas"]["swag_paypal_v1_merchant_integrations_capability"][]
-      | null;
-    granted_permissions: string[];
-    legal_name: string;
-    merchant_id: string;
-    oauth_integrations: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration"][];
-    payments_receivable: boolean;
-    primary_email: string;
-    primary_email_confirmed: boolean;
-    products: components["schemas"]["swag_paypal_v1_merchant_integrations_product"][];
-    tracking_id: string;
-  };
-  swag_paypal_v1_merchant_integrations_capability: {
-    name: string;
-    status: string;
-  };
-  swag_paypal_v1_merchant_integrations_oauth_integration: {
-    integration_method?: string;
-    integration_type?: string;
-    oauth_third_party?: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration_oauth_third_party"][];
-    status?: string;
-  };
-  swag_paypal_v1_merchant_integrations_oauth_integration_oauth_third_party: {
-    access_token?: string;
-    merchant_client_id?: string;
-    partner_client_id?: string;
-    refresh_token?: string;
-    scopes: string[];
-  };
-  swag_paypal_v1_merchant_integrations_product: {
-    capabilities?: string[];
-    name: string;
-    vetting_status?: string;
-  };
-  swag_paypal_v1_oauth_credentials: {
-    restId: string;
-    restSecret: string;
-    url: string;
-  };
-  swag_paypal_v1_patch: {
-    /** @enum {string} */
-    op: "add" | "replace";
-    path: string;
-    value: string | Record<string, never>[];
-  };
-  swag_paypal_v1_payment: {
-    application_context: components["schemas"]["swag_paypal_v1_payment_application_context"];
-    cart: string;
-    create_time: string;
-    id: string;
-    /**
-     * @default sale
-     * @enum {string}
-     */
-    intent?: "sale" | "authorize" | "order";
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    payer: components["schemas"]["swag_paypal_v1_payment_payer"];
-    payment_instruction:
-      | components["schemas"]["swag_paypal_v1_payment_payment_instruction"]
-      | null;
-    redirect_urls: components["schemas"]["swag_paypal_v1_payment_redirect_urls"];
-    state: string;
-    transactions: components["schemas"]["swag_paypal_v1_payment_transaction"][];
-    update_time: string;
-  };
-  swag_paypal_v1_payment_application_context: {
-    brand_name: string;
-    /** @enum {string} */
-    landing_page: "Login" | "Billing";
-    locale: string;
-    /** @default SET_PROVIDED_ADDRESS */
-    shipping_preference?: string;
-    /** @default commit */
-    user_action?: string;
-  };
-  swag_paypal_v1_payment_payer: {
-    external_selected_funding_instrument_type: string;
-    payer_info: components["schemas"]["swag_paypal_v1_payment_payer_payer_info"];
-    payment_method: string;
-    status: string;
-  };
-  swag_paypal_v1_payment_payer_execute_payer_info: {
-    payer_id: string;
-  };
-  swag_paypal_v1_payment_payer_payer_info: components["schemas"]["swag_paypal_v1_payment_payer_execute_payer_info"] & {
-    billing_address:
-      | components["schemas"]["swag_paypal_v1_common_address"]
-      | null;
-    country_code: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    shipping_address: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_address"];
-  };
-  swag_paypal_v1_payment_payment_instruction: {
-    amount: components["schemas"]["swag_paypal_v1_common_value"];
-    instruction_type: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    payment_due_date: string;
-    recipient_banking_instruction: components["schemas"]["swag_paypal_v1_payment_payment_instruction_recipient_banking_instruction"];
-    reference_number: string;
-  };
-  swag_paypal_v1_payment_payment_instruction_recipient_banking_instruction: {
-    account_holder_name: string;
-    bank_identifier_code: string;
-    bank_name: string;
-    international_bank_account_number: string;
-  };
-  swag_paypal_v1_payment_redirect_urls: {
-    cancel_url: string;
-    return_url: string;
-  };
-  swag_paypal_v1_payment_transaction: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    custom: string;
-    description: string;
-    invoice_number: string | null;
-    item_list:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_item_list"]
-      | null;
-    payee: components["schemas"]["swag_paypal_v1_payment_transaction_payee"];
-    related_resources: components["schemas"]["swag_paypal_v1_payment_transaction_related_resource"][];
-    soft_descriptor: string;
-  };
-  swag_paypal_v1_payment_transaction_item_list: {
-    items: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_item"][];
-    shipping_address: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_address"];
-    shipping_options: components["schemas"]["swag_paypal_v1_payment_transaction_item_list_shipping_option"][];
-    shipping_phone_number: string;
-  };
-  swag_paypal_v1_payment_transaction_item_list_item: {
-    currency: string;
-    name: string;
-    price: string;
-    quantity: number;
-    sku: string | null;
-    tax: string;
-  };
-  swag_paypal_v1_payment_transaction_item_list_shipping_address: components["schemas"]["swag_paypal_v1_common_address"] & {
-    recipient_name: string;
-  };
-  swag_paypal_v1_payment_transaction_item_list_shipping_option: unknown;
-  swag_paypal_v1_payment_transaction_payee: {
-    email: string;
-    merchant_id: string;
-  };
-  swag_paypal_v1_payment_transaction_related_resource: {
-    authorization:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_authorization"]
-      | null;
-    capture:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_capture"]
-      | null;
-    order:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_order"]
-      | null;
-    refund:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_refund"]
-      | null;
-    sale:
-      | components["schemas"]["swag_paypal_v1_payment_transaction_related_resource_sale"]
-      | null;
-  };
-  swag_paypal_v1_payment_transaction_related_resource_authorization: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    reason_code: string;
-    receipt_id: string;
-    state: string;
-    update_time: string;
-    valid_until: string;
-  };
-  swag_paypal_v1_payment_transaction_related_resource_capture: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    custom: string;
-    id: string;
-    invoice_number: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    receipt_id: string;
-    state: string;
-    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
-    update_time: string;
-  };
-  swag_paypal_v1_payment_transaction_related_resource_order: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    reason_code: string;
-    receipt_id: string;
-    state: string;
-    update_time: string;
-  };
-  swag_paypal_v1_payment_transaction_related_resource_refund: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    capture_id: string;
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    receipt_id: string;
-    sale_id: string;
-    state: string;
-    update_time: string;
-  };
-  swag_paypal_v1_payment_transaction_related_resource_sale: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    receipt_id: string;
-    state: string;
-    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
-    update_time: string;
-  };
-  swag_paypal_v1_plan: {
-    billing_cycles: components["schemas"]["swag_paypal_v1_plan_billing_cycle"][];
-    description: string | null;
-    name: string;
-    payment_preferences: components["schemas"]["swag_paypal_v1_plan_payment_preferences"];
-    product_id: string;
-    status: string;
-    taxes: components["schemas"]["swag_paypal_v1_plan_taxes"];
-  };
-  swag_paypal_v1_plan_billing_cycle: {
-    frequency: components["schemas"]["swag_paypal_v1_plan_billing_cycle_frequency"];
-    pricing_scheme: components["schemas"]["swag_paypal_v1_plan_billing_cycle_pricing_scheme"];
-    sequence: number;
-    tenure_type: string;
-    total_cycles: number;
-  };
-  swag_paypal_v1_plan_billing_cycle_frequency: {
-    interval_count: number;
-    interval_unit: string;
-  };
-  swag_paypal_v1_plan_billing_cycle_pricing_scheme: {
-    fixed_price: components["schemas"]["swag_paypal_v1_common_money"];
-  };
-  swag_paypal_v1_plan_payment_preferences: {
-    auto_bill_outstanding: boolean;
-    payment_failure_threshold: number;
-  };
-  swag_paypal_v1_plan_taxes: {
-    inclusive: boolean;
-    percentage: string;
-  };
-  swag_paypal_v1_product: {
-    description: string;
-    name: string;
-    type: string;
-  };
-  swag_paypal_v1_refund: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    capture_id: string;
-    create_time: string;
-    description: string;
-    id: string;
-    invoice_number: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    parent_payment: string;
-    reason: string;
-    refund_from_received_amount: components["schemas"]["swag_paypal_v1_common_value"];
-    refund_from_transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
-    sale_id: string;
-    state: string;
-    total_refunded_amount: components["schemas"]["swag_paypal_v1_common_value"];
-    update_time: string;
-  };
-  swag_paypal_v1_shipping: {
-    trackers: components["schemas"]["swag_paypal_v1_shipping_tracker"][];
-  };
-  swag_paypal_v1_shipping_tracker: {
-    carrier: string;
-    notify_buyer: boolean;
-    /** Pattern: '2022-08-15' */
-    shipment_date: string;
-    status: string;
-    tracking_number: string;
-    transaction_id: string;
-  };
-  swag_paypal_v1_subscription: {
-    application_context: components["schemas"]["swag_paypal_v1_subscription_application_context"];
-    billing_info:
-      | components["schemas"]["swag_paypal_v1_subscription_billing_info"]
-      | null;
-    create_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    plan_id: string;
-    quantity: string;
-    shipping_amount: components["schemas"]["swag_paypal_v1_common_money"];
-    start_time: string;
-    status: string;
-    status_update_time: string;
-    subscriber: components["schemas"]["swag_paypal_v1_subscription_subscriber"];
-    update_time: string;
-  };
-  swag_paypal_v1_subscription_application_context: {
-    brand_name: string;
-    cancel_url: string;
-    locale: string;
-    return_url: string;
-    /** @default SET_PROVIDED_ADDRESS */
-    shipping_preference?: string;
-    /** @default SUBSCRIBE_NOW */
-    user_action?: string;
-  };
-  swag_paypal_v1_subscription_billing_info: {
-    cycle_executions: components["schemas"]["swag_paypal_v1_subscription_billing_info_cycle_execution"][];
-    failed_payments_count: number;
-    last_payment: components["schemas"]["swag_paypal_v1_subscription_billing_info_last_payment"];
-    next_billing_time: string | null;
-    outstanding_balance: components["schemas"]["swag_paypal_v1_subscription_billing_info_outstanding_balance"];
-  };
-  swag_paypal_v1_subscription_billing_info_cycle_execution: {
-    cycles_completed: number;
-    cycles_remaining: number;
-    sequence: number;
-    tenure_type: string;
-    total_cycles: number;
-  };
-  swag_paypal_v1_subscription_billing_info_last_payment: {
-    amount: components["schemas"]["swag_paypal_v1_common_money"];
-    time: string;
-  };
-  swag_paypal_v1_subscription_billing_info_outstanding_balance: components["schemas"]["swag_paypal_v1_common_money"];
-  swag_paypal_v1_subscription_subscriber: {
-    email_address: string;
-    name: components["schemas"]["swag_paypal_v1_subscription_subscriber_name"];
-    payer_id: string;
-    shipping_address:
-      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address"]
-      | null;
-  };
-  swag_paypal_v1_subscription_subscriber_name: {
-    given_name: string;
-    surname: string;
-  };
-  swag_paypal_v1_subscription_subscriber_shipping_address: {
-    address:
-      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address_address"]
-      | null;
-    name:
-      | components["schemas"]["swag_paypal_v1_subscription_subscriber_shipping_address_name"]
-      | null;
-  };
-  swag_paypal_v1_subscription_subscriber_shipping_address_address: {
-    address_line_1: string | null;
-    address_line_2: string | null;
-    admin_area_1: string | null;
-    admin_area_2: string | null;
-    country_code: string;
-    postal_code: string | null;
-  };
-  swag_paypal_v1_subscription_subscriber_shipping_address_name: {
-    full_name: string;
-  };
-  swag_paypal_v1_token: {
-    /** The access token issued by PayPal. After the access token
-     *     expires (see $expiresIn), you must request a new access token. */
-    access_token: string;
-    app_id: string;
-    /**
-     * Format: date-time
-     * Calculated expiration date
-     */
-    expire_date_time: string;
-    /** The lifetime of the access token, in seconds. */
-    expires_in: number;
-    id_token: string | null;
-    nonce: string;
-    /** Scopes expressed in the form of resource URL endpoints. The value of the scope parameter
-     *     is expressed as a list of space-delimited, case-sensitive strings. */
-    scope: string;
-    /** The type of the token issued as described in OAuth2.0 RFC6749,
-     *     Section 7.1. Value is case insensitive. */
-    token_type: string;
-  };
-  swag_paypal_v1_webhook: {
-    create_time: string;
-    event_type: string;
-    event_version: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    resource:
-      | (
-          | components["schemas"]["swag_paypal_v3_payment_token"]
-          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_authorization"]
-          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture"]
-          | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund"]
-          | components["schemas"]["swag_paypal_v1_webhook_resource"]
-          | components["schemas"]["swag_paypal_v1_subscription"]
-        )
-      | null;
-    resource_type: string;
-    resource_version: string;
-    summary: string;
-  };
-  swag_paypal_v1_webhook_resource: {
-    amount: components["schemas"]["swag_paypal_v1_common_amount"];
-    billing_agreement_id: string | null;
-    clearing_time: string;
-    create_time: string;
-    id: string;
-    invoice_number: string;
-    links: components["schemas"]["swag_paypal_v1_common_link"][];
-    merchant_id: string | null;
-    parent_payment: string | null;
-    payment_mode: string;
-    protection_eligibility: string;
-    protection_eligibility_type: string;
-    refund_reason_code: string | null;
-    sale_id: string | null;
-    state: string;
-    transaction_fee: components["schemas"]["swag_paypal_v1_common_value"];
-    update_time: string;
-  };
-  swag_paypal_v2_common_address: {
-    /** The first line of the address. For example, number or street. For example, 173 Drury Lane.
-     *     Required for data entry and compliance and risk checks. Must contain the full address. */
-    address_line_1: string | null;
-    /** The second line of the address. For example, suite or apartment number. */
-    address_line_2: string | null;
-    /** The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision.
-     *     Format for postal delivery. For example, CA and not California. */
-    admin_area_1: string | null;
-    /** A city, town, or village. Smaller than $adminArea1 */
-    admin_area_2: string | null;
-    country_code: string;
-    postal_code: string | null;
-  };
-  swag_paypal_v2_common_link: {
-    enc_type: string | null;
-    href: string;
-    method: string;
-    rel: string;
-  };
-  swag_paypal_v2_common_money: {
-    currency_code: string;
-    value: string;
-  };
-  swag_paypal_v2_common_name: {
-    given_name: string;
-    surname: string;
-  };
-  swag_paypal_v2_common_phone_number: {
-    country_code: string;
-    national_number: string;
-  };
-  swag_paypal_v2_order: {
-    application_context: components["schemas"]["swag_paypal_v2_order_application_context"];
-    create_time: string;
-    id: string;
-    intent: string;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    payer: components["schemas"]["swag_paypal_v2_order_payer"];
-    payment_source:
-      | components["schemas"]["swag_paypal_v2_order_payment_source"]
-      | null;
-    processing_instruction: string;
-    purchase_units:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit"][]
-      | null;
-    status: string;
-    update_time: string;
-  };
-  swag_paypal_v2_order_application_context: {
-    brand_name: string;
-    cancel_url: string;
-    /**
-     * @default NO_PREFERENCE
-     * @enum {string}
-     */
-    landing_page?: "LOGIN" | "BILLING" | "NO_PREFERENCE";
-    return_url: string;
-    /**
-     * @default SET_PROVIDED_ADDRESS
-     * @enum {string}
-     */
-    shipping_preference?:
-      | "SET_PROVIDED_ADDRESS"
-      | "NO_SHIPPING"
-      | "GET_FROM_FILE";
-    /**
-     * @default PAY_NOW
-     * @enum {string}
-     */
-    user_action?: "CONTINUE" | "PAY_NOW";
-  };
-  swag_paypal_v2_order_payer: {
-    address: components["schemas"]["swag_paypal_v2_common_address"];
-    email_address: string;
-    name: components["schemas"]["swag_paypal_v2_common_name"];
-    payer_id: string;
-    phone:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_phone"]
-      | null;
-  };
-  swag_paypal_v2_order_payment_source: {
-    apple_pay: components["schemas"]["swag_paypal_v2_order_payment_source_apple_pay"];
-    bancontact:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_bancontact"]
-      | null;
-    blik:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_blik"]
-      | null;
-    boletobancario:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario"]
-      | null;
-    card:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
-      | null;
-    eps:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_eps"]
-      | null;
-    giropay:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_giropay"]
-      | null;
-    google_pay:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_google_pay"]
-      | null;
-    ideal:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_ideal"]
-      | null;
-    multibanco:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_multibanco"]
-      | null;
-    my_bank:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_my_bank"]
-      | null;
-    oxxo:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_oxxo"]
-      | null;
-    p24:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_p24"]
-      | null;
-    pay_upon_invoice:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_pay_upon_invoice"]
-      | null;
-    paypal:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_paypal"]
-      | null;
-    sofort:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_sofort"]
-      | null;
-    token:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_token"]
-      | null;
-    trustly:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_trustly"]
-      | null;
-    venmo:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_venmo"]
-      | null;
-  };
-  swag_paypal_v2_order_payment_source_apple_pay: {
-    attributes:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
-      | null;
-    card:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
-      | null;
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_bancontact: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_blik: {
-    country_code: string;
-    email: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_boletobancario: {
-    billing_address: components["schemas"]["swag_paypal_v2_common_address"];
-    country_code: string;
-    email: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    expiry_date: string;
-    name: string;
-    tax_info: components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario_tax_info"];
-  };
-  swag_paypal_v2_order_payment_source_boletobancario_tax_info: {
-    tax_id: string;
-    tax_id_type: string;
-  };
-  swag_paypal_v2_order_payment_source_card: {
-    attributes:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
-      | null;
-    authentication_result:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card_authentication_result"]
-      | null;
-    billing_address:
-      | components["schemas"]["swag_paypal_v2_common_address"]
-      | null;
-    brand: string;
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    last_digits: string;
-    name: string;
-    stored_credential:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card_stored_credential"]
-      | null;
-    type: string;
-    vault_id: string;
-  };
-  swag_paypal_v2_order_payment_source_card_authentication_result: {
-    liability_shift: string;
-    three_d_secure:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card_authentication_result_3d_secure"]
-      | null;
-  };
-  swag_paypal_v2_order_payment_source_card_authentication_result_3d_secure: {
-    authentication_status: string;
-    enrollment_status: string;
-  };
-  swag_paypal_v2_order_payment_source_card_stored_credential: {
-    /** @enum {string} */
-    payment_initiator: "MERCHANT" | "CUSTOMER";
-    /** @enum {string} */
-    payment_type: "RECURRING" | "ONE_TIME" | "UNSCHEDULED";
-    previous_network_transaction_reference: string;
-    /** @enum {string} */
-    usage: "DERIVED" | "FIRST" | "SUBSEQUENT";
-  };
-  swag_paypal_v2_order_payment_source_common_attributes: {
-    customer: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"];
-    vault: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_vault"];
-    verification: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_verification"];
-  };
-  swag_paypal_v2_order_payment_source_common_attributes_customer: {
-    id: string;
-  };
-  swag_paypal_v2_order_payment_source_common_attributes_vault: {
-    confirm_payment_token: string;
-    customer:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"]
-      | null;
-    id: string | null;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    permit_multiple_payment_tokens: boolean;
-    status: string;
-    store_in_vault: string;
-    usage_type: string;
-  };
-  swag_paypal_v2_order_payment_source_common_attributes_verification: {
-    method: string;
-  };
-  swag_paypal_v2_order_payment_source_common_experience_context: {
-    brand_name: string;
-    cancel_url: string;
-    /** Only: PUI */
-    customer_service_instructions: string[];
-    /**
-     * @default NO_PREFERENCE
-     * @enum {string}
-     */
-    landing_page?: "LOGIN" | "GUEST_CHECKOUT" | "NO_PREFERENCE";
-    locale: string;
-    logo_url: string;
-    /**
-     * Only: PayPal Wallet
-     * @enum {string}
-     */
-    payment_method_preference: "UNRESTRICTED" | "IMMEDIATE_PAYMENT_REQUIRED";
-    return_url: string;
-    /**
-     * @default SET_PROVIDED_ADDRESS
-     * @enum {string}
-     */
-    shipping_preference?:
-      | "SET_PROVIDED_ADDRESS"
-      | "NO_SHIPPING"
-      | "GET_FROM_FILE";
-    /**
-     * @default PAY_NOW
-     * @enum {string}
-     */
-    user_action?: "CONTINUE" | "PAY_NOW";
-  };
-  swag_paypal_v2_order_payment_source_common_phone: {
-    phone_number: components["schemas"]["swag_paypal_v2_common_phone_number"];
-    phone_type: string;
-  };
-  swag_paypal_v2_order_payment_source_eps: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_giropay: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_google_pay: {
-    attributes:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
-      | null;
-    card:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_card"]
-      | null;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-  };
-  swag_paypal_v2_order_payment_source_ideal: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_multibanco: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_my_bank: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_oxxo: {
-    country_code: string;
-    email: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_p24: {
-    country_code: string;
-    email: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_pay_upon_invoice: {
-    billing_address: components["schemas"]["swag_paypal_v2_common_address"];
-    birth_date: string;
-    deposit_bank_details: components["schemas"]["swag_paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details"];
-    email: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: components["schemas"]["swag_paypal_v2_common_name"];
-    payment_reference: string;
-    phone: components["schemas"]["swag_paypal_v2_common_phone_number"];
-  };
-  swag_paypal_v2_order_payment_source_pay_upon_invoice_deposit_bank_details: {
-    account_holder_name: string;
-    bank_name: string;
-    bic: string;
-    iban: string;
-  };
-  swag_paypal_v2_order_payment_source_paypal: {
-    account_id: string;
-    address: components["schemas"]["swag_paypal_v2_common_address"];
-    attributes:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
-      | null;
-    billing_agreement_id: string;
-    birth_date: string;
-    email_address: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: components["schemas"]["swag_paypal_v2_common_name"];
-    phone_number:
-      | components["schemas"]["swag_paypal_v2_common_phone_number"]
-      | null;
-    phone_type: string;
-    vault_id: string;
-  };
-  swag_paypal_v2_order_payment_source_sofort: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_token: {
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    id: string;
-    stored_payment_source: components["schemas"]["swag_paypal_v2_order_payment_source_token_stored_payment_source"];
-    type: string;
-  };
-  swag_paypal_v2_order_payment_source_token_stored_payment_source: {
-    payment_initiator: string;
-    payment_type: string;
-    usage: string;
-  };
-  swag_paypal_v2_order_payment_source_trustly: {
-    country_code: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: string;
-  };
-  swag_paypal_v2_order_payment_source_venmo: {
-    account_id: string;
-    address: components["schemas"]["swag_paypal_v2_common_address"];
-    attributes:
-      | components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes"]
-      | null;
-    email_address: string;
-    experience_context: components["schemas"]["swag_paypal_v2_order_payment_source_common_experience_context"];
-    name: components["schemas"]["swag_paypal_v2_common_name"];
-    phone_number:
-      | components["schemas"]["swag_paypal_v2_common_phone_number"]
-      | null;
-    user_name: string;
-    vault_id: string;
-  };
-  swag_paypal_v2_order_purchase_unit: {
-    amount: components["schemas"]["swag_paypal_v2_order_purchase_unit_amount"];
-    custom_id: string | null;
-    description: string;
-    invoice_id: string | null;
-    items:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_item"][]
-      | null;
-    payee: components["schemas"]["swag_paypal_v2_order_purchase_unit_payee"];
-    payments:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments"]
-      | null;
-    reference_id: string;
-    shipping: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping"];
-  };
-  swag_paypal_v2_order_purchase_unit_amount: components["schemas"]["swag_paypal_v2_common_money"] & {
-    breakdown:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_amount_breakdown"]
-      | null;
-  };
-  swag_paypal_v2_order_purchase_unit_amount_breakdown: {
-    discount: components["schemas"]["swag_paypal_v2_common_money"];
-    handling: components["schemas"]["swag_paypal_v2_common_money"];
-    insurance: components["schemas"]["swag_paypal_v2_common_money"];
-    item_total: components["schemas"]["swag_paypal_v2_common_money"];
-    shipping: components["schemas"]["swag_paypal_v2_common_money"];
-    shipping_discount: components["schemas"]["swag_paypal_v2_common_money"];
-    tax_total: components["schemas"]["swag_paypal_v2_common_money"] | null;
-  };
-  swag_paypal_v2_order_purchase_unit_item: {
-    /** @enum {string} */
-    category: "PHYSICAL_GOODS" | "DIGITAL_GOODS" | "DONATION";
-    name: string;
-    quantity: number;
-    sku: string | null;
-    tax: components["schemas"]["swag_paypal_v2_common_money"];
-    tax_rate: string | number | Record<string, never>;
-    unit_amount: components["schemas"]["swag_paypal_v2_common_money"];
-  };
-  swag_paypal_v2_order_purchase_unit_payee: {
-    display_data: components["schemas"]["swag_paypal_v2_order_purchase_unit_payee_display_data"];
-    email_address: string;
-    merchant_id: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payee_display_data: {
-    brand_name: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments: {
-    authorizations:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_authorization"][]
-      | null;
-    captures:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture"][]
-      | null;
-    refunds:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund"][]
-      | null;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_authorization: {
-    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
-    create_time: string;
-    custom_id: string | null;
-    expiration_time: string;
-    id: string;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    seller_protection: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_common_seller_protection"];
-    status: string;
-    update_time: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_authorization_seller_protection: {
-    dispute_categories: string[];
-    status: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_capture: {
-    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
-    create_time: string;
-    custom_id: string | null;
-    disbursement_mode: string;
-    final_capture: boolean;
-    id: string;
-    invoice_id: string | null;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    note_to_payer: string | null;
-    processor_response: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture_processor_response"];
-    seller_protection: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_common_seller_protection"];
-    seller_receivable_breakdown: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown"];
-    status: string;
-    update_time: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_capture_processor_response: {
-    avs_code: string | null;
-    cvv_code: string | null;
-    response_code: string | null;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_capture_seller_receivable_breakdown: {
-    gross_amount: components["schemas"]["swag_paypal_v2_common_money"];
-    net_amount: components["schemas"]["swag_paypal_v2_common_money"];
-    paypal_fee: components["schemas"]["swag_paypal_v2_common_money"];
-  };
-  swag_paypal_v2_order_purchase_unit_payments_common_seller_protection: {
-    dispute_categories: string[];
-    status: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_refund: {
-    amount: components["schemas"]["swag_paypal_v2_common_money"] | null;
-    create_time: string;
-    custom_id: string | null;
-    id: string;
-    invoice_id: string | null;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    note_to_payer: string | null;
-    seller_payable_breakdown: components["schemas"]["swag_paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown"];
-    status: string;
-    update_time: string;
-  };
-  swag_paypal_v2_order_purchase_unit_payments_refund_seller_payable_breakdown: {
-    gross_amount: components["schemas"]["swag_paypal_v2_common_money"];
-    net_amount: components["schemas"]["swag_paypal_v2_common_money"];
-    paypal_fee: components["schemas"]["swag_paypal_v2_common_money"];
-    total_refunded_amount: components["schemas"]["swag_paypal_v2_common_money"];
-  };
-  swag_paypal_v2_order_purchase_unit_shipping: {
-    address: components["schemas"]["swag_paypal_v2_common_address"];
-    name: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_name"];
-    trackers:
-      | components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_tracker"][]
-      | null;
-  };
-  swag_paypal_v2_order_purchase_unit_shipping_name: {
-    full_name: string;
-  };
-  swag_paypal_v2_order_purchase_unit_shipping_tracker: {
-    id: string;
-    items: components["schemas"]["swag_paypal_v2_order_purchase_unit_item"][];
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    notify_payer: boolean;
-    status: string;
-  };
-  swag_paypal_v2_order_purchase_unit_shipping_tracker_item: {
-    image_url: string | null;
-    name: string;
-    quantity: number;
-    sku: string | null;
-    url: string | null;
-  };
-  swag_paypal_v2_order_tracker: {
-    capture_id: string;
-    carrier: string;
-    carrier_name_other: string | null;
-    items: components["schemas"]["swag_paypal_v2_order_purchase_unit_shipping_tracker_item"][];
-    /** @default false */
-    notify_payer?: boolean;
-    tracking_number: string;
-  };
-  swag_paypal_v2_patch: {
-    from: string;
-    op: string;
-    path: string;
-    value:
-      | (
-          | number
-          | Record<string, never>
-          | string
-          | boolean
-          | Record<string, never>[]
-        )
-      | null;
-  };
-  swag_paypal_v2_referral: {
-    business_entity: components["schemas"]["swag_paypal_v2_referral_business_entity"];
-    capabilities: string[];
-    legal_consents: components["schemas"]["swag_paypal_v2_referral_legal_consent"][];
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    operations: components["schemas"]["swag_paypal_v2_referral_operation"][];
-    partner_config_override: components["schemas"]["swag_paypal_v2_referral_partner_config_override"];
-    preferred_language_code: string;
-    products: string[];
-    tracking_id: string;
-  };
-  swag_paypal_v2_referral_business_entity: {
-    addresses: components["schemas"]["swag_paypal_v2_referral_business_entity_address"][];
-  };
-  swag_paypal_v2_referral_business_entity_address: {
-    country_code: string;
-    /** @default WORK */
-    type?: string;
-  };
-  swag_paypal_v2_referral_legal_consent: {
-    granted: boolean;
-    /** @default SHARE_DATA_CONSENT */
-    type?: string;
-  };
-  swag_paypal_v2_referral_operation: {
-    api_integration_preference: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference"];
-    /** @default API_INTEGRATION */
-    operation?: string;
-  };
-  swag_paypal_v2_referral_operation_integration_preference: {
-    rest_api_integration: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference_integration"];
-  };
-  swag_paypal_v2_referral_operation_integration_preference_integration: {
-    /** @default PAYPAL */
-    integration_method?: string;
-    /** @default THIRD_PARTY */
-    integration_type?: string;
-    third_party_details: components["schemas"]["swag_paypal_v2_referral_operation_integration_preference_integration_third_party_details"];
-  };
-  swag_paypal_v2_referral_operation_integration_preference_integration_third_party_details: {
-    features: string[];
-  };
-  swag_paypal_v2_referral_partner_config_override: {
-    partner_logo_url: string;
-    return_url: string;
-  };
-  swag_paypal_v3_payment_token: {
-    customer: components["schemas"]["swag_paypal_v2_order_payment_source_common_attributes_customer"];
-    id: string;
-    links: components["schemas"]["swag_paypal_v2_common_link"][];
-    metadata:
-      | components["schemas"]["swag_paypal_v3_payment_token_metadata"]
-      | null;
-    payment_source: components["schemas"]["swag_paypal_v2_order_payment_source"];
-    status: string;
-  };
-  swag_paypal_v3_payment_token_metadata: {
-    order_id: string;
   };
 };
 export type operations = {
@@ -9362,16 +9680,6 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
-  "changePaymentMethod post /account/change-payment-method/{paymentMethodId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the desired default payment method */
-      paymentMethodId: string;
-    };
-    response: components["schemas"]["SuccessResponse"];
-    responseCode: 200;
-  };
   "changeProfile post /account/change-profile": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9412,35 +9720,24 @@ export type operations = {
           /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
           vatIds: [string, ...string[]];
         }
-      | {
-          /**
-           * Type of the customer account. Default value is 'private'.
-           * @default private
-           * @enum {string}
-           */
-          accountType?: "private";
-          company?: null;
-          vatIds?: null;
-        }
-      | {
-          /**
-           * Type of the customer account. Can be `private` or `business`.
-           * @enum {string}
-           */
-          accountType: "business";
-          /** Company of the customer. Only required when `accountType` is `business`. */
-          company: string;
-          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
-          vatIds: [string, ...string[]];
-        }
     );
+    response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
+  "convertGuest post /account/convert-guest": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** New Password for the customer */
+      password: string;
+    };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
   "readCustomer post /account/customer": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"];
+    body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };
@@ -9587,27 +9884,6 @@ export type operations = {
       /** (Academic) title of the customer */
       title?: string;
     } & (
-      | {
-          /**
-           * Type of the customer account. Default value is 'private'.
-           * @default private
-           * @enum {string}
-           */
-          accountType?: "private";
-          company?: null;
-          vatIds?: null;
-        }
-      | {
-          /**
-           * Type of the customer account. Can be `private` or `business`.
-           * @enum {string}
-           */
-          accountType: "business";
-          /** Company of the customer. Only required when `accountType` is `business`. */
-          company: string;
-          /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
-          vatIds: [string, ...string[]];
-        }
       | {
           /**
            * Type of the customer account. Default value is 'private'.
@@ -10036,6 +10312,19 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "contextGateway post /context/gateway": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      appName: string;
+      data?: GenericRecord;
+    };
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
   "readCountry post /country": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10072,7 +10361,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body?: components["schemas"]["Criteria"];
+    body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["Currency"][];
     responseCode: 200;
   };
@@ -10146,6 +10435,12 @@ export type operations = {
     response: components["schemas"]["Document"];
     responseCode: 200;
   };
+  "dsrAccountUpdateDefaultInfo post /dsr/account/update-default-info": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
   "attendeeRespondInvitation patch /dsr/appointment/{appointmentId}/attendee/respond-invitation": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10179,6 +10474,37 @@ export type operations = {
     response: unknown;
     responseCode: 200;
   };
+  "getSharingShoppingList get /dsr/appointment/{appointmentId}/shopping-lists": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The appointment id you are joining */
+      appointmentId: string;
+    };
+    response: {
+      /**
+       * The api alias of the API
+       * @default dsr.appointment.load-shopping-lists
+       */
+      apiAlias?: string;
+      /** @example {
+       *       "apiAlias": "dsr.appointment.load-shopping-lists",
+       *       "data": {
+       *         "01938f89c632709ba4d65eb53604bf5b": {
+       *           "quantity": "1"
+       *         },
+       *         "01938f89c8647036a617b7d88e1e24f5": {
+       *           "quantity": "1"
+       *         },
+       *         "01938f8a23d47305b1e289163cea5074": {
+       *           "quantity": "1"
+       *         }
+       *       }
+       *     } */
+      data?: GenericRecord;
+    };
+    responseCode: 200;
+  };
   "dsrReadAppointmentSettings get /dsr/appointment/{presentationPath}/basic-setting": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10198,7 +10524,9 @@ export type operations = {
     };
     body?: {
       /** The name of the attendee */
-      attendeeName?: string | null;
+      attendeeName?: string;
+      /** Identifier of the current attendee you want log in as */
+      currentAttendeeId?: string;
     };
     response: components["schemas"]["JoinAppointmentResponse"];
     responseCode: 200;
@@ -10285,7 +10613,9 @@ export type operations = {
       /** CMS section id for which the data is requested */
       sectionId: string;
     };
-    body: components["schemas"]["Criteria"];
+    body: components["schemas"]["Criteria"] & {
+      interaction?: boolean;
+    };
     response: components["schemas"]["ProductListingResult"];
     responseCode: 200;
   };
@@ -10307,6 +10637,16 @@ export type operations = {
       apiAlias?: string;
       /** The data is used to create the appointment request */
       data?: string[];
+    };
+    responseCode: 200;
+  };
+  "dsrLoadCustomerWishlistProductIds post /dsr/customer/wishlist-product-ids": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** @default array_struct */
+      apiAlias?: string;
+      wishlistProductIds?: string[];
     };
     responseCode: 200;
   };
@@ -10401,11 +10741,11 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readEmployee get /employee/{id}": {
+  "readB2bEmployee get /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
-      /** Identifier of the employee to be fetched */
+      /** Identifier of the employee to be read */
       id: string;
     };
     response: components["schemas"]["B2bEmployee"];
@@ -10546,7 +10886,7 @@ export type operations = {
       /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
       rootId: string | components["schemas"]["NavigationType"];
     };
-    body: components["schemas"]["Criteria"] & {
+    body: components["schemas"]["NoneFieldsCriteria"] & {
       /** Return the categories as a tree or as a flat list. */
       buildTree?: GenericRecord[];
       /**
@@ -10619,9 +10959,24 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"] & {
+    body: components["schemas"]["NoneFieldsCriteria"] & {
       /** Check if the payment method of the order is still changeable. */
       checkPromotion?: boolean;
+      /**
+       * Format: email
+       * The email address of the customer. Pass this value to allow for guest user authentification. Not required, if a user (guest or not) is already logged in.
+       */
+      email?: string;
+      /** Pass the deepLinkCode criteria filter to allow for guest user authentification. Not required, if a user (guest or not) is already logged in. */
+      filter?: {
+        /** @enum {string} */
+        field: "deepLinkCode";
+        /** @enum {string} */
+        type: "equals";
+        value: string;
+      }[];
+      /** The zip/postal code of the billing address of the customer. Pass this value to allow for guest user authentification. Not required, if a user (guest or not) is already logged in. */
+      zipcode?: string;
     };
     response: components["schemas"]["OrderRouteResponse"];
     responseCode: 200;
@@ -10668,6 +11023,87 @@ export type operations = {
       orderId: string;
     };
     response: components["schemas"]["StateMachineState"];
+    responseCode: 200;
+  };
+  "createOrganizationUnit post /organization-unit": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Identifier (UUID) of the addresses for billing. */
+      billingAddressIds: unknown[][];
+      /** Identifier (UUID) of the default billing address */
+      defaultBillingAddressId: string;
+      /** Identifier (UUID) of the default shipping address */
+      defaultShippingAddressId: string;
+      /** Identifier (UUID) of employees. */
+      employeeIds?: string[];
+      /** Organization unit name */
+      name: string;
+      /** Identifier (UUID) of the payment methods. */
+      paymentMethodIds: string[];
+      /** Identifier (UUID) of the addresses for shipping. */
+      shippingAddressIds: unknown[][];
+      /** Identifier (UUID) of the shipping methods. */
+      shippingMethodIds: string[];
+    };
+    response: never;
+    responseCode: 201;
+  };
+  "removeOrganizationUnits delete /organization-unit": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Organization Unit ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readOrganizationUnit post /organization-unit/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the Organization Unit to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bComponentsOrganization"];
+    responseCode: 200;
+  };
+  "updateOrganizationUnit patch /organization-unit/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the Organization Unit to be fetched */
+      id: string;
+    };
+    body: {
+      /** Identifier (UUID) of the addresses for billing. */
+      billingAddressIds?: unknown[][];
+      /** Identifier (UUID) of the default billing address */
+      defaultBillingAddressId?: string;
+      /** Identifier (UUID) of the default shipping address */
+      defaultShippingAddressId?: string;
+      /** Identifier (UUID) of employees. */
+      employeeIds?: string[];
+      /** Organization unit name */
+      name?: string;
+      /** Identifier (UUID) of the payment methods. */
+      paymentMethodIds?: string[];
+      /** Identifier (UUID) of the addresses for shipping. */
+      shippingAddressIds?: unknown[][];
+      /** Identifier (UUID) of the shipping methods. */
+      shippingMethodIds?: string[];
+    };
+    response: never;
+    responseCode: 201;
+  };
+  "readOrganizationUnits post /organization-units": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsOrganization"][];
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "readPaymentMethod post /payment-method": {
@@ -10770,6 +11206,7 @@ export type operations = {
       /** Identifier of the pending order to be fetched */
       id: string;
     };
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["PendingOrder"];
     responseCode: 200;
   };
@@ -10815,7 +11252,23 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
-  "requestOrderApproval post /pending-order/request": {
+  "fetchPendingOrderPaymentMethods post /pending-order/{id}/payment-method": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be fetched */
+      id: string;
+    };
+    response: {
+      /** aggregation result */
+      aggregations?: GenericRecord;
+      elements?: components["schemas"]["PaymentMethod"][];
+      /** Total amount */
+      total?: number;
+    };
+    responseCode: 200;
+  };
+  "requestOrderApproval post /pending-orders/request": {
     contentType?: "application/json";
     accept?: "application/json";
     body?: {
@@ -10891,6 +11344,10 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
+    query?: {
+      /** The page number to fetch. */
+      p?: number;
+    };
     pathParams: {
       /** Identifier of a category. */
       categoryId: string;
@@ -10913,7 +11370,7 @@ export type operations = {
       /** Product ID */
       productId: string;
     };
-    body?: components["schemas"]["Criteria"];
+    body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["ProductDetailResponse"];
     responseCode: 200;
   };
@@ -10945,8 +11402,11 @@ export type operations = {
       productId: string;
     };
     body: {
-      /** The options parameter for the variant to find. */
-      options: string[];
+      options:
+        | string[]
+        | {
+            [key: string]: string;
+          };
       /** The id of the option group that has been switched. */
       switchedGroup?: string;
     };
@@ -11331,9 +11791,13 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
+    query?: {
+      /** The page number to fetch. */
+      p?: number;
+    };
     body: {
       /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
-      search: string;
+      search?: string;
     } & components["schemas"]["ProductListingCriteria"] &
       components["schemas"]["ProductListingFlags"];
     response: components["schemas"]["ProductListingResult"];
@@ -11346,10 +11810,15 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
+    query?: {
+      /** The page number to fetch. */
+      p?: number;
+    };
     body: {
       /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
       search: string;
-    } & components["schemas"]["ProductListingFlags"];
+    } & components["schemas"]["ProductListingCriteria"] &
+      components["schemas"]["ProductListingFlags"];
     response: components["schemas"]["ProductListingResult"];
     responseCode: 200;
   };

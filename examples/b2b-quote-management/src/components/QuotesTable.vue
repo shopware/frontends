@@ -59,10 +59,10 @@ onBeforeMount(async () => {
             {{ quote.expirationDate }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ quote.price.totalPrice }}
+            {{ quote.price?.totalPrice }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ quote.stateMachineState.translated.name }}
+            {{ quote.stateMachineState?.translated.name }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
             <router-link :to="`/quote/${quote.id}`">Details</router-link>
