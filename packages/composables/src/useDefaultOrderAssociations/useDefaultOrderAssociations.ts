@@ -10,36 +10,35 @@ export type UseDefaultOrderAssociationsReturn = Schemas["Criteria"] & {
  * @category Order
  */
 export function useDefaultOrderAssociations(): UseDefaultOrderAssociationsReturn {
-  const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } =
-    {
+  const orderAssociations: Schemas["Criteria"]["associations"] & {
+    checkPromotion?: boolean;
+  } = {
+    stateMachineState: {},
+    lineItems: {
       associations: {
-        stateMachineState: {},
-        lineItems: {
+        cover: {},
+        downloads: {
           associations: {
-            cover: {},
-            downloads: {
-              associations: {
-                media: {},
-              },
-            },
-          },
-        },
-        addresses: {},
-        deliveries: {
-          associations: {
-            shippingMethod: {},
-            shippingOrderAddress: {},
-            stateMachineState: {},
-          },
-        },
-        transactions: {
-          associations: {
-            paymentMethod: {},
-            stateMachineState: {},
+            media: {},
           },
         },
       },
-    };
+    },
+    addresses: {},
+    deliveries: {
+      associations: {
+        shippingMethod: {},
+        shippingOrderAddress: {},
+        stateMachineState: {},
+      },
+    },
+    transactions: {
+      associations: {
+        paymentMethod: {},
+        stateMachineState: {},
+      },
+    },
+  };
 
   return orderAssociations;
 }
