@@ -10,7 +10,9 @@ const props = defineProps<{
 }>();
 
 const { getSlotContent } = useCmsBlock(props.content);
-const slotContent = getSlotContent("content") as CmsElementSidebarFilter;
+const slotContent = getSlotContent(
+  "content",
+) as unknown as CmsElementSidebarFilter;
 </script>
 <template>
   <CmsElementSidebarFilter :content="slotContent" />

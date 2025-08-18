@@ -141,7 +141,11 @@ export function useUser(): UseUserReturn {
   const { refreshCart } = useCart();
 
   const userDefaultPaymentMethod = computed(
-    () => user.value?.defaultPaymentMethod?.translated || null,
+    () =>
+      user.value?.lastPaymentMethod?.translated ||
+      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
+      user.value?.defaultPaymentMethod?.translated ||
+      null,
   );
   const userDefaultBillingAddress = computed(
     () => user.value?.defaultBillingAddress || null,
@@ -277,6 +281,7 @@ export function useUser(): UseUserReturn {
     paymentMethodId: string,
   ): Promise<void> {
     await apiClient.invoke(
+      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
       "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
       {
         pathParams: { paymentMethodId },

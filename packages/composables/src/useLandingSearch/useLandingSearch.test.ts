@@ -23,7 +23,7 @@ describe("useLandingSearch", () => {
       expect.stringContaining("readLandingPage"),
       expect.objectContaining({
         pathParams: { landingPageId: "test" },
-        body: { associations: cmsAssociations },
+        body: { associations: cmsAssociations.associations },
       }),
     );
   });
