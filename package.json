@@ -37,13 +37,13 @@
     "@types/changelog-parser": "2.8.4",
     "automd": "0.4.0",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "8.0.0",
+    "dotenv-cli": "10.0.0",
     "esno": "4.8.0",
     "globby": "14.1.0",
     "husky": "9.1.7",
     "prettier": "3.5.3",
-    "turbo": "2.5.4",
-    "vercel": "43.2.0"
+    "turbo": "2.5.5",
+    "vercel": "44.7.3"
   },
   "engines": {
     "node": "^20.x || ^22.x"
