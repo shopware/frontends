@@ -1,5 +1,7 @@
 {
   "account": {
+    "signUpHeader": "Jestem tutaj nowy.",
+    "yourAddress": "Twój adres",
     "order": {
       "product": "Produkt",
       "quantity": "Ilość",

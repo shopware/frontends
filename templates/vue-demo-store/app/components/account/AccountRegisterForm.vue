@@ -2,9 +2,8 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
-import { useTemplateRef } from "vue";
-
 const { required, minLength, email, requiredIf } = customValidators();
+
 const props = defineProps<{
   customerGroupId?: string;
 }>();
@@ -295,22 +294,6 @@ useBreadcrumbs([
           >
             {{ $v.password.$errors[0].$message }}
           </span>
-        </div>
-
-        <div
-          v-if="state.accountType === 'business'"
-          class="col-span-12 md:col-span-4"
-        >
-          <label for="vatId">{{ $t("form.vatId") }}</label>
-          <input
-            id="vatId"
-            v-model="state.vatIds[0]"
-            name="vatId"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :placeholder="$t('form.vatIdPlaceholder')"
-            data-testid="registration-vatid-input"
-            @blur="$v.vatIds.$touch()"
-          />
         </div>
       </div>
 
