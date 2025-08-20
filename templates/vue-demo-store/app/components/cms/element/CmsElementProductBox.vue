@@ -10,6 +10,7 @@ const product = computed(() => props.content.data?.product || {});
 
 <template>
   <div v-if="product" class="cms-element-product-box">
+    <SwVariantConfigurator v-if="product.configuratorGroupConfig" />
     <SwProductAddToCart :product="product" />
   </div>
 </template>
