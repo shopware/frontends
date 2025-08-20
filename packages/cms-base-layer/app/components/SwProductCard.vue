@@ -153,134 +153,141 @@ const srcPath = computed(() => {
     product.value?.cover?.media,
   )}?&height=${roundUp(height.value)}&fit=cover`;
 });
+
+// Computed properties for display data
+const productName = computed(() => getProductName({ product: product.value }));
+const productManufacturer = computed(
+  () => product.value?.manufacturer?.translated?.name || "",
+);
+const isOnSale = computed(
+  () => product.value?.calculatedPrice?.listPrice?.percentage > 0,
+);
+const hasOptions = computed(() => product.value?.options?.length > 0);
+const isTopseller = computed(() => product.value?.markAsTopseller);
+
+// Format price for display
+const formattedPrice = computed(() => {
+  const price = product.value?.calculatedPrice?.unitPrice || 0;
+  return `${price.toFixed(2).replace(".", ",")} €`;
+});
+
+const formattedListPrice = computed(() => {
+  if (!isOnSale.value) return null;
+  const listPrice = product.value?.calculatedPrice?.listPrice?.price || 0;
+  return `${listPrice.toFixed(2).replace(".", ",")} €`;
+});
+
+// Get product colors if available
+const colorOptions = computed(() => {
+  if (!hasOptions.value) return [];
+
+  return (
+    product.value?.options?.filter(
+      (option) =>
+        option.group?.name?.toLowerCase().includes("color") ||
+        option.group?.name?.toLowerCase().includes("colour"),
+    ) || []
+  );
+});
 </script>
 
 <template>
-  <div
-    class="sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-gray-200 rounded-md shadow transform transition duration-300 hover:scale-101"
-    data-testid="product-box"
-  >
-    <div
-      :class="[
-        'w-full rounded-md overflow-hidden hover:opacity-75',
-        layoutType === 'image' ? 'h-80' : 'h-60',
-      ]"
-    >
-      <div class="absolute top-5 -left-1 z-10">
-        <span
-          v-if="product.markAsTopseller"
-          class="bg-[#FFBD5D] px-2.5 py-1.5 color-black text-xl"
-          >{{ translations.product.badges.topseller }}</span
-        >
-      </div>
-      <RouterLink
-        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-        class="overflow-hidden"
-      >
-        <img
-          ref="imageElement"
-          loading="lazy"
-          :src="srcPath"
-          :alt="getProductName({ product }) || ''"
-          class="transform transition duration-400 hover:scale-120"
-          :class="{
-            'w-full h-full': true,
-            'object-cover':
-              displayMode === 'cover' ||
-              (displayMode === 'standard' && layoutType === 'image'),
-            'object-contain': displayMode === 'contain',
-            'object-scale-down':
-              displayMode === 'standard' && layoutType !== 'image',
-          }"
-          data-testid="product-box-img"
-        />
+  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px">
+    <!-- Image section -->
+    <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
+      <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
+        class="relative h-80 self-stretch overflow-hidden">
+        <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="srcPath" :alt="productName"
+          data-testid="product-box-img" />
       </RouterLink>
+
+      <!-- Badge for topseller or sale -->
+      <div v-if="isTopseller || isOnSale"
+        class="absolute top-[281px] left-[8px] inline-flex items-center justify-center rounded bg-states-error px-1.5 py-1"
+        data-state="default" data-type="error">
+        <div class="justify-start font-['Inter'] text-xs font-bold leading-none text-states-on-error">
+          {{ translations.product.badges.topseller }}
+        </div>
+      </div>
+
+      <!-- Wishlist button -->
+      <button aria-label="Toggle wishlist" type="button" :disabled="isLoading"
+        class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
+        data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          class="h-6 w-6 text-brand-on-secondary opacity-50 transition-transform duration-300 hover:scale-120">
+          <path stroke-linecap="round" stroke-linejoin="round" class="bg-brand-on-secondary" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12
+             7.636l1.318-1.318a4.5 4.5 0
+             116.364 6.364L12 21.364l-7.682-8.682a4.5
+             4.5 0 010-6.364z" />
+        </svg>
+      </button>
     </div>
-    <button
-      aria-label="Add to wishlist"
-      type="button"
-      :disabled="isLoading"
-      class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
-      data-testid="product-box-toggle-wishlist-button"
-      @click="toggleWishlistProduct"
-    >
-      <client-only>
+
+    <!-- Product details section -->
+    <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
+      <!-- Manufacturer and product name -->
+      <div class="flex flex-col items-start justify-start gap-2 self-stretch">
+        <div class="flex flex-col items-start justify-start gap-1 self-stretch">
+          <div v-if="productManufacturer"
+            class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight">
+            {{ productManufacturer }}
+          </div>
+          <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
+            class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 h-[4.5rem] overflow-hidden line-clamp-2 display-webkit-box"
+            style="-webkit-box-orient: vertical;" data-testid="product-box-product-name-link">
+            {{ productName }}
+          </RouterLink>
+        </div>
+      </div>
+
+      <!-- Price section -->
+      <div :data-sale="isOnSale ? 'yes' : 'no'" class="inline-flex items-center justify-start gap-2">
+        <div v-if="isOnSale" class="flex items-center justify-start gap-2">
+          <div class="text-other-sale justify-start font-['Inter'] text-base font-bold leading-normal">
+            {{ formattedPrice }}
+          </div>
+          <div class="relative flex items-center justify-center gap-2.5">
+            <div class="text-surface-on-surface-variant justify-start font-['Inter'] text-sm font-normal leading-tight">
+              {{ formattedListPrice }}
+            </div>
+            <div class="absolute top-[12px] left-0 h-px w-16 bg-surface-on-surface-variant"></div>
+          </div>
+        </div>
+        <div v-else class="text-surface-on-surface justify-start font-['Inter'] text-base font-bold leading-normal">
+          {{ formattedPrice }}
+        </div>
+      </div>
+
+      <!-- Color options -->
+      <!-- <div v-if="colorOptions.length > 0" class="inline-flex w-28 flex-wrap content-center items-center justify-start gap-2">
         <div
-          v-if="isInWishlist"
-          class="h-9 w-9 i-carbon-favorite-filled c-red-500"
-          data-testid="product-box-wishlist-icon-in"
-        ></div>
-        <div
-          v-else
-          class="h-9 w-9 i-carbon-favorite c-black"
-          data-testid="product-box-wishlist-icon-not-in"
-        ></div>
-        <template #placeholder>
-          <div class="h-9 w-9 i-carbon-favorite"></div>
-        </template>
-      </client-only>
-    </button>
-    <div class="h-8 mx-4 my-2">
-      <p
-        v-for="option in product?.options"
-        :key="option.id"
-        class="items-center line-clamp-2 rounded-md text-xs font-medium text-gray-600 mt-3"
-      >
-        {{ option.group.name }}:
-        <span class="font-bold">{{ option.name }} </span>
-      </p>
-    </div>
-    <div class="px-4 pb-4">
-      <RouterLink
-        class="line-clamp-2"
-        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-        data-testid="product-box-product-name-link"
-      >
-        <div
-          class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
+          v-for="option in colorOptions.slice(0, 4)"
+          :key="option.id"
+          class="bg-surface-surface-container-lowest outline-outline-outline-variant relative h-6 w-6 overflow-hidden rounded-full outline outline-1 outline-offset-[-1px]"
         >
-          {{ getProductName({ product }) }}
+          <div 
+            class="absolute top-[3px] left-[3px] h-4 w-4 rounded-full"
+            :style="{ backgroundColor: option.colorHexCode || '#808080' }"
+          ></div>
+        </div>
+      </div> -->
+      <SwButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
+        data-testid="add-to-cart-button" @click="addToCartProxy">
+        {{ translations.product.addToCart }}
+      </SwButton>
+
+
+      <!-- Details button for products with fromPrice -->
+      <RouterLink v-else :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())" class="self-stretch">
+        <div class="bg-brand-primary inline-flex items-center justify-center gap-1 self-stretch rounded px-4 py-3"
+          data-show-leading-icon="false" data-show-trailing-icon="false" data-size="regular" data-state="default"
+          data-variant="primary">
+          <div class="text-brand-on-primary justify-start font-['Inter'] text-base font-bold leading-normal">
+            {{ translations.product.details }}
+          </div>
         </div>
       </RouterLink>
-
-      <SwListingProductPrice
-        :product="product"
-        class="ml-auto"
-        data-testid="product-box-product-price"
-      />
-
-      <div>
-        <button
-          v-if="!fromPrice"
-          type="button"
-          class="w-full justify-center my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 flex"
-          :class="{
-            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
-            'text-gray-600 bg-gray-100': isInCart,
-            'opacity-50 cursor-not-allowed': !product.available,
-          }"
-          data-testid="add-to-cart-button"
-          :disabled="!product.available"
-          @click="addToCartProxy"
-        >
-          {{ translations.product.addToCart }}
-          <div v-if="isInCart" class="flex ml-2">
-            <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
-            {{ count }}
-          </div>
-        </button>
-        <RouterLink
-          v-else
-          :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-          class=""
-        >
-          <div
-            class="text-center justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400"
-          >
-            <span data-testid="product-box-product-show-details">Details</span>
-          </div>
-        </RouterLink>
-      </div>
     </div>
   </div>
 </template>
