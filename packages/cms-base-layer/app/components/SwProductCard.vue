@@ -200,7 +200,6 @@ const colorOptions = computed(() => {
         <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="srcPath" :alt="productName"
           data-testid="product-box-img" />
       </RouterLink>
-
       <!-- Badge for topseller or sale -->
       <div v-if="isTopseller || isOnSale"
         class="absolute top-[281px] left-[8px] inline-flex items-center justify-center rounded bg-states-error px-1.5 py-1"
@@ -209,21 +208,15 @@ const colorOptions = computed(() => {
           {{ translations.product.badges.topseller }}
         </div>
       </div>
-
       <!-- Wishlist button -->
       <button aria-label="Toggle wishlist" type="button" :disabled="isLoading"
         class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
         data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-          class="h-6 w-6 text-brand-on-secondary opacity-50 transition-transform duration-300 hover:scale-120">
-          <path stroke-linecap="round" stroke-linejoin="round" class="bg-brand-on-secondary" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12
-             7.636l1.318-1.318a4.5 4.5 0
-             116.364 6.364L12 21.364l-7.682-8.682a4.5
-             4.5 0 010-6.364z" />
-        </svg>
+        <div
+          class="i-carbon-favorite h-6 w-6 text-brand-on-secondary transition-transform duration-300 hover:scale-120">
+        </div>
       </button>
     </div>
-
     <!-- Product details section -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
       <!-- Manufacturer and product name -->
@@ -240,7 +233,6 @@ const colorOptions = computed(() => {
           </RouterLink>
         </div>
       </div>
-
       <!-- Price section -->
       <div :data-sale="isOnSale ? 'yes' : 'no'" class="inline-flex items-center justify-start gap-2">
         <div v-if="isOnSale" class="flex items-center justify-start gap-2">
@@ -276,17 +268,11 @@ const colorOptions = computed(() => {
         data-testid="add-to-cart-button" @click="addToCartProxy">
         {{ translations.product.addToCart }}
       </SwButton>
-
-
       <!-- Details button for products with fromPrice -->
       <RouterLink v-else :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())" class="self-stretch">
-        <div class="bg-brand-primary inline-flex items-center justify-center gap-1 self-stretch rounded px-4 py-3"
-          data-show-leading-icon="false" data-show-trailing-icon="false" data-size="regular" data-state="default"
-          data-variant="primary">
-          <div class="text-brand-on-primary justify-start font-['Inter'] text-base font-bold leading-normal">
-            {{ translations.product.details }}
-          </div>
-        </div>
+        <SwButton block>
+          {{ translations.product.details }}
+        </SwButton>
       </RouterLink>
     </div>
   </div>
