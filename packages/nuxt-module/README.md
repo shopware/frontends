@@ -125,10 +125,10 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt-module/CHANGELOG.md)
 
-### Latest changes: 1.4.1
+### Latest changes: 1.4.2
 
 ### Patch Changes
 
-- Updated dependencies [[`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394), [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
-  - @shopware/composables@1.9.1
-  - @shopware/helpers@1.5.0
+- Updated dependencies [[`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e), [`7fe2ef9`](https://github.com/shopware/frontends/commit/7fe2ef96a9d9d156683b85d31f0a660458c9fbfd), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/composables@1.10.0
+  - @shopware/api-client@1.4.0

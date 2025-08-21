@@ -165,11 +165,28 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.9.1
+### Latest changes: 1.10.0
+
+### Minor Changes
+
+- [#1974](https://github.com/shopware/frontends/pull/1974) [`7fe2ef9`](https://github.com/shopware/frontends/commit/7fe2ef96a9d9d156683b85d31f0a660458c9fbfd) Thanks [@mkucmus](https://github.com/mkucmus)! - Use proper associations format within `useDefaultOrderAssociations` (no redundant nesting).
+
+  Returned value is in type of `Schemas["Criteria"]['associations']` now:
+
+  ```ts
+  const { loadOrders } = useCustomerOrders();
+
+  loadOrders({
+    // ... other parameters
+    associations: useDefaultOrderAssociations(),
+  });
+  ```
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
 
 ### Patch Changes
 
-- [#1877](https://github.com/shopware/frontends/pull/1877) [`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394) Thanks [@mkucmus](https://github.com/mkucmus)! - Adjust `readSeoUrl` request in case of trailing slash when technical URL is used
+- [`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e) Thanks [@mkucmus](https://github.com/mkucmus)! - add nested media entity association explicitly
 
-- Updated dependencies [[`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
-  - @shopware/helpers@1.5.0
+- Updated dependencies [[`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/api-client@1.4.0
