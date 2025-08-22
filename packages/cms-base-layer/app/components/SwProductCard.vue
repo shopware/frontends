@@ -83,7 +83,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 
-const { addToCart, isInCart, count } = useAddToCart(product);
+const { addToCart } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
@@ -148,10 +148,14 @@ function roundUp(num: number) {
   return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
 }
 
-const srcPath = computed(() => {
+const coverSrcPath = computed(() => {
   return `${getSmallestThumbnailUrl(
     product.value?.cover?.media,
   )}?&height=${roundUp(height.value)}&fit=cover`;
+});
+
+const coverAlt = computed(() => {
+  return product.value?.cover?.media?.alt || product.value?.translated.name;
 });
 
 // Computed properties for display data
@@ -160,35 +164,9 @@ const productManufacturer = computed(
   () => product.value?.manufacturer?.translated?.name || "",
 );
 const isOnSale = computed(
-  () => product.value?.calculatedPrice?.listPrice?.percentage > 0,
+  () => (product.value?.calculatedPrice?.listPrice?.percentage ?? 0) > 0,
 );
-const hasOptions = computed(() => product.value?.options?.length > 0);
 const isTopseller = computed(() => product.value?.markAsTopseller);
-
-// Format price for display
-const formattedPrice = computed(() => {
-  const price = product.value?.calculatedPrice?.unitPrice || 0;
-  return `${price.toFixed(2).replace(".", ",")} €`;
-});
-
-const formattedListPrice = computed(() => {
-  if (!isOnSale.value) return null;
-  const listPrice = product.value?.calculatedPrice?.listPrice?.price || 0;
-  return `${listPrice.toFixed(2).replace(".", ",")} €`;
-});
-
-// Get product colors if available
-const colorOptions = computed(() => {
-  if (!hasOptions.value) return [];
-
-  return (
-    product.value?.options?.filter(
-      (option) =>
-        option.group?.name?.toLowerCase().includes("color") ||
-        option.group?.name?.toLowerCase().includes("colour"),
-    ) || []
-  );
-});
 </script>
 
 <template>
@@ -197,7 +175,7 @@ const colorOptions = computed(() => {
     <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
       <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
         class="relative h-80 self-stretch overflow-hidden">
-        <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="srcPath" :alt="productName"
+        <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="coverSrcPath" :alt="coverAlt"
           data-testid="product-box-img" />
       </RouterLink>
       <!-- Badge for topseller or sale -->
@@ -234,36 +212,7 @@ const colorOptions = computed(() => {
         </div>
       </div>
       <!-- Price section -->
-      <div :data-sale="isOnSale ? 'yes' : 'no'" class="inline-flex items-center justify-start gap-2">
-        <div v-if="isOnSale" class="flex items-center justify-start gap-2">
-          <div class="text-other-sale justify-start font-['Inter'] text-base font-bold leading-normal">
-            {{ formattedPrice }}
-          </div>
-          <div class="relative flex items-center justify-center gap-2.5">
-            <div class="text-surface-on-surface-variant justify-start font-['Inter'] text-sm font-normal leading-tight">
-              {{ formattedListPrice }}
-            </div>
-            <div class="absolute top-[12px] left-0 h-px w-16 bg-surface-on-surface-variant"></div>
-          </div>
-        </div>
-        <div v-else class="text-surface-on-surface justify-start font-['Inter'] text-base font-bold leading-normal">
-          {{ formattedPrice }}
-        </div>
-      </div>
-
-      <!-- Color options -->
-      <!-- <div v-if="colorOptions.length > 0" class="inline-flex w-28 flex-wrap content-center items-center justify-start gap-2">
-        <div
-          v-for="option in colorOptions.slice(0, 4)"
-          :key="option.id"
-          class="bg-surface-surface-container-lowest outline-outline-outline-variant relative h-6 w-6 overflow-hidden rounded-full outline outline-1 outline-offset-[-1px]"
-        >
-          <div 
-            class="absolute top-[3px] left-[3px] h-4 w-4 rounded-full"
-            :style="{ backgroundColor: option.colorHexCode || '#808080' }"
-          ></div>
-        </div>
-      </div> -->
+      <SwListingProductPrice :product="product" class="" data-testid="product-box-product-price" />
       <SwButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
         data-testid="add-to-cart-button" @click="addToCartProxy">
         {{ translations.product.addToCart }}
