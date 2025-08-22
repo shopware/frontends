@@ -170,7 +170,7 @@ const isTopseller = computed(() => product.value?.markAsTopseller);
 </script>
 
 <template>
-  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px">
+  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px bg-on-primary w-full">
     <!-- Image section -->
     <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
       <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
