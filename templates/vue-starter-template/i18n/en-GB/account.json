@@ -15,6 +15,14 @@
       "repeatOrder": "Repeat order",
       "order": "Order",
       "orders": "Orders"
+    },
+    "menu": {
+      "header": "Your account",
+      "overview": "Overview",
+      "yourProfile": "Your profile",
+      "addresses": "Addresses",
+      "orders": "Orders",
+      "logout": "Logout"
     }
   }
 }
