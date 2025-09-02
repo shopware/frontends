@@ -15,6 +15,23 @@
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
       "orders": "Bestellungen"
+    },
+    "menu": {
+      "header": "Ihr Konto",
+      "overview": "Übersicht",
+      "yourProfile": "Ihr Profil",
+      "addresses": "Adressen",
+      "orders": "Bestellungen",
+      "logout": "Abmelden"
+    },
+    "overview": {
+      "header": "Übersicht",
+      "subHeader": "Direkt auf Ihre Profilinformationen, die Standardzahlungsmethode und die gegebenen Adressen zugreifen.",
+      "personalDataSectionHeader": "Persönliche Daten",
+      "newsletterSubscriptionSectionHeader": "Newsletter-Abonnement",
+      "newsletterSubscriptionLabel": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann jederzeit abbestellen.)",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse"
     }
   }
 }

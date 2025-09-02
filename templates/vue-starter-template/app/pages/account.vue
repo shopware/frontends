@@ -1,15 +1,62 @@
 <script setup lang="ts">
-const localePath = useLocalePath();
-const { formatLink } = useInternationalization(localePath);
+const {
+  user,
+  // loadSalutation,
+  // userDefaultBillingAddress,
+  // userDefaultShippingAddress,
+  isLoggedIn,
+} = useUser();
 </script>
 <template>
-  <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
-    <div class="flex flex-col gap-3">
-      <h2 class="text-brand-primary text-base font-bold leading-normal">
-        {{ $t("account.menu.header") }}
-      </h2>
-      <AccountMenuList />
+  <NuxtLayout name="account">
+    <div>
+      <AccountPageHeader
+        class="mb-14"
+        :title="$t('account.overview.header')"
+        :subtitle="$t('account.overview.subHeader')"
+      />
+
+      <div class="mb-10">
+        <AccountSectionHeader
+          class="mb-4"
+          :title="$t('account.overview.personalDataSectionHeader')"
+        />
+        <AccountPersonalDataSection
+          :customer-name="user?.firstName + ' ' + user?.lastName"
+          :customer-email="user?.email"
+        />
+      </div>
+
+      <pre>{{ user }}</pre>
+      <div class="mb-10">
+        <AccountSectionHeader
+          :title="$t('account.overview.newsletterSubscriptionSectionHeader')"
+        />
+      </div>
+
+      <div class="flex gap-10 mb-10">
+        <div class="flex-1">
+          <AccountSectionHeader
+            class="mb-4"
+            :title="$t('account.overview.defaultBillingAddressSectionHeader')"
+          />
+          <AccountAddressDataSection
+            v-if="user?.defaultBillingAddress"
+            :address="user.defaultBillingAddress"
+          />
+        </div>
+
+        <div class="flex-1">
+          <AccountSectionHeader
+            class="mb-4"
+            :title="$t('account.overview.defaultShippingAddressSectionHeader')"
+          />
+          <AccountAddressDataSection
+            v-if="user?.defaultShippingAddress"
+            :address="user.defaultShippingAddress"
+          />
+        </div>
+      </div>
     </div>
-    <div>bbbb</div>
-  </div>
+  </NuxtLayout>
 </template>

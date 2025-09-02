@@ -23,6 +23,15 @@
       "addresses": "Addresses",
       "orders": "Orders",
       "logout": "Logout"
+    },
+    "overview": {
+      "header": "Overview",
+      "subHeader": "Directly access your profile information, the default payment method and given addresses.",
+      "personalDataSectionHeader": "Personal data",
+      "newsletterSubscriptionSectionHeader": "Newsletter subscription",
+      "newsletterSubscriptionLabel": "Yes, I would like to subscribe to the free Demostore newsletter. (I may unsubscribe at any time.)",
+      "defaultBillingAddressSectionHeader": "Default billing address",
+      "defaultShippingAddressSectionHeader": "Default shipping address"
     }
   }
 }
