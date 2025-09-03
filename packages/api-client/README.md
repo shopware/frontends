@@ -129,7 +129,7 @@ export const adminApiClient = createAdminAPIClient<operations>({
   sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
 });
 
-adminApiClient.hooks("onAuthChange", (sessionData) => {
+adminApiClient.hook("onAuthChange", (sessionData) => {
   Cookies.set("sw-admin-session-data", JSON.stringify(sessionData), {
     expires: 1, // days
     path: "/",
