@@ -1,11 +1,53 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
+const { resolveApiErrors } = useApiErrorsResolver("account_newsletter");
+const { user } = useUser();
+const { pushSuccess, pushError } = useNotifications();
+const { t } = useI18n();
 const {
-  user,
-  // loadSalutation,
-  // userDefaultBillingAddress,
-  // userDefaultShippingAddress,
-  isLoggedIn,
-} = useUser();
+  isNewsletterSubscriber,
+  newsletterUnsubscribe,
+  newsletterSubscribe,
+  getNewsletterStatus,
+  SUBSRIBE_KEY,
+  confirmationNeeded,
+} = useNewsletter();
+
+const newsletter = ref(false);
+const newsletterDisabled = ref(false);
+
+async function handleNewsletterChange() {
+  newsletterDisabled.value = true;
+
+  try {
+    if (newsletter.value) {
+      await newsletterSubscribe({
+        email: user.value?.email || "",
+        option: SUBSRIBE_KEY,
+      });
+      // Wait to avoid UI flickering
+      await getNewsletterStatus();
+      pushSuccess(t("account.overview.newsletter.messages.subscribed"));
+    } else {
+      await newsletterUnsubscribe(user.value?.email || "");
+      pushSuccess(t("account.overview.newsletter.messages.unsubscribed"));
+    }
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      for (const error of errors) {
+        pushError(error);
+      }
+    }
+  } finally {
+    newsletterDisabled.value = false;
+  }
+}
+
+onBeforeMount(async () => {
+  await getNewsletterStatus();
+  newsletter.value = isNewsletterSubscriber.value;
+});
 </script>
 <template>
   <NuxtLayout name="account">
@@ -27,10 +69,16 @@ const {
         />
       </div>
 
-      <pre>{{ user }}</pre>
       <div class="mb-10">
         <AccountSectionHeader
-          :title="$t('account.overview.newsletterSubscriptionSectionHeader')"
+          class="mb-4"
+          :title="$t('account.overview.newsletter.subscriptionSectionHeader')"
+        />
+        <AccountNewsletterSection
+          v-model="newsletter"
+          :disabled="confirmationNeeded || newsletterDisabled"
+          :confirmation-needed="confirmationNeeded"
+          @change="handleNewsletterChange"
         />
       </div>
 

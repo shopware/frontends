@@ -28,10 +28,17 @@
       "header": "Übersicht",
       "subHeader": "Direkt auf Ihre Profilinformationen, die Standardzahlungsmethode und die gegebenen Adressen zugreifen.",
       "personalDataSectionHeader": "Persönliche Daten",
-      "newsletterSubscriptionSectionHeader": "Newsletter-Abonnement",
-      "newsletterSubscriptionLabel": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann jederzeit abbestellen.)",
       "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
-      "defaultShippingAddressSectionHeader": "Standardversandadresse"
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "newsletter": {
+        "subscriptionSectionHeader": "Newsletter-Abonnement",
+        "subscriptionLabel": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann jederzeit abbestellen.)",
+        "confirmationNeeded": "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich für den Newsletter anmelden.",
+        "messages": {
+          "subscribed": "Vielen Dank! Wir haben Ihre Adresse registriert.",
+          "unsubscribed": "Newsletter-Abbestellung"
+        }
+      }
     }
   }
 }
