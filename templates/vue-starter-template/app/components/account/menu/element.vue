@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const link = defineProps<{
+const { link, label } = defineProps<{
   link: string;
   label: string;
 }>();
@@ -9,6 +9,7 @@ const link = defineProps<{
   <NuxtLink
     class="text-surface-on-surface hover:border-b hover:border-surface-on-surface"
     :to="link"
+    active-class="border-b border-surface-on-surface"
   >
     {{ label }}
   </NuxtLink>

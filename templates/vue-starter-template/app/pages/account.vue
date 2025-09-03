@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+
 const { resolveApiErrors } = useApiErrorsResolver("account_newsletter");
 const { user } = useUser();
 const { pushSuccess, pushError } = useNotifications();
@@ -82,8 +83,8 @@ onBeforeMount(async () => {
         />
       </div>
 
-      <div class="flex gap-10 mb-10">
-        <div class="flex-1">
+      <div class="block md:flex gap-10 mb-10">
+        <div class="flex-1 mb-10">
           <AccountSectionHeader
             class="mb-4"
             :title="$t('account.overview.defaultBillingAddressSectionHeader')"
@@ -94,7 +95,7 @@ onBeforeMount(async () => {
           />
         </div>
 
-        <div class="flex-1">
+        <div class="flex-1 mb-10">
           <AccountSectionHeader
             class="mb-4"
             :title="$t('account.overview.defaultShippingAddressSectionHeader')"

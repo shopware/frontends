@@ -1,9 +1,17 @@
 <script setup lang="ts">
+const emit = defineEmits<{
+  logout: [];
+}>();
+
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+
+function handleLogout() {
+  emit("logout");
+}
 </script>
 <template>
-  <menu>
+  <menu class="flex flex-col gap-3">
     <li>
       <AccountMenuElement
         :link="formatLink('/account')"
@@ -28,6 +36,12 @@ const { formatLink } = useInternationalization(localePath);
         :label="$t('account.menu.orders')"
       />
     </li>
-    <li></li>
+    <li>
+      <FormLinkButton
+        class="text-other-sale text-normal hover:border-b hover:border-other-sale"
+        @click="handleLogout"
+        label="Logout"
+      />
+    </li>
   </menu>
 </template>
