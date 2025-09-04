@@ -16,7 +16,25 @@ export default defineNuxtConfig({
       path: resolve(layerDir, "app/components"),
       pattern: "Sw*",
       extensions: [".vue"],
-      global: false,
+      global: true,
+    },
+    {
+      path: resolve(layerDir, "app/components/ui"),
+      extensions: [".vue"],
+      prefix: "Sw",
+      global: true,
+    },
+    {
+      path: resolve(layerDir, "app/components/form"),
+      extensions: [".vue"],
+      prefix: "Sw",
+      global: true,
+    },
+    {
+      path: resolve(layerDir, "app/components/icons"),
+      extensions: [".vue"],
+      prefix: "Sw",
+      global: true,
     },
   ],
   build: {

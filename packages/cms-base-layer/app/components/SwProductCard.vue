@@ -170,7 +170,7 @@ const isTopseller = computed(() => product.value?.markAsTopseller);
 </script>
 
 <template>
-  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px bg-on-primary w-full">
+  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px w-full">
     <!-- Image section -->
     <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
       <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
@@ -187,13 +187,13 @@ const isTopseller = computed(() => product.value?.markAsTopseller);
         </div>
       </div>
       <!-- Wishlist button -->
-      <button aria-label="Toggle wishlist" type="button" :disabled="isLoading"
-        class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
-        data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
-        <div
-          class="i-carbon-favorite h-6 w-6 text-brand-on-secondary transition-transform duration-300 hover:scale-120">
-        </div>
-      </button>
+      <client-only>
+        <IconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
+          class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
+          data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
+          <SwWishlistIcon :type="isInWishlist ? 'filled' : 'primary'" />
+        </IconButton>
+      </client-only>
     </div>
     <!-- Product details section -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
@@ -205,7 +205,7 @@ const isTopseller = computed(() => product.value?.markAsTopseller);
             {{ productManufacturer }}
           </div>
           <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-            class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 h-[4.5rem] overflow-hidden line-clamp-2 display-webkit-box"
+            class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 h-[4.5] overflow-hidden line-clamp-2 display-webkit-box"
             style="-webkit-box-orient: vertical;" data-testid="product-box-product-name-link">
             {{ productName }}
           </RouterLink>

@@ -37,10 +37,10 @@ function handleMyAccountClick() {
             @click="toggleMobileSearch"
             class="hidden max-sm:block"
           />
-          <FormIconButton type="ghost" @click="handleMyAccountClick"
+          <SwIconButton type="ghost" @click="handleMyAccountClick"
             ><LayoutHeaderMyAccountIcon
-          /></FormIconButton>
-          <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+          /></SwIconButton>
+          <SwWishlistIcon :counter="wishlistCount" />
           <LayoutHeaderCartIcon :counter="cartCount" />
           <LayoutHeaderMobileMenuIcon class="hidden max-sm:block" />
         </div>

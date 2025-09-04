@@ -10,7 +10,7 @@ defineProps<{
       name="shopware:shopping-cart"
       class="color-brand-primary"
     />
-    <LayoutMainCounter
+    <SwMainCounter
       v-if="counter > 0"
       class="absolute top-[-50%] left-[50%]"
       :count="counter"
