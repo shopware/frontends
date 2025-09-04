@@ -5,9 +5,12 @@ import { useCmsTranslations } from "@shopware/composables";
 import {
   buildUrlPrefix,
   getProductFromPrice,
+  getProductManufacturerName,
   getProductName,
   getProductRoute,
   getSmallestThumbnailUrl,
+  isProductOnSale,
+  isProductTopSeller,
 } from "@shopware/helpers";
 import { getCmsTranslate } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
@@ -160,13 +163,11 @@ const coverAlt = computed(() => {
 
 // Computed properties for display data
 const productName = computed(() => getProductName({ product: product.value }));
-const productManufacturer = computed(
-  () => product.value?.manufacturer?.translated?.name || "",
+const productManufacturer = computed(() =>
+  getProductManufacturerName(product.value),
 );
-const isOnSale = computed(
-  () => (product.value?.calculatedPrice?.listPrice?.percentage ?? 0) > 0,
-);
-const isTopseller = computed(() => product.value?.markAsTopseller);
+const isOnSale = computed(() => isProductOnSale(product.value));
+const isTopseller = computed(() => isProductTopSeller(product.value));
 </script>
 
 <template>

@@ -5,8 +5,8 @@ export function isProductOnSale(product: {
   calculatedPrice?: {
     listPrice?: {
       percentage?: number;
-    };
+    } | null;
   };
 }): boolean {
-  return (product.calculatedPrice?.listPrice?.percentage ?? 0) > 0;
+  return (product?.calculatedPrice?.listPrice?.percentage ?? 0) > 0;
 }
