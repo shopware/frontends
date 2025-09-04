@@ -155,7 +155,7 @@ compareRouteQueryWithInitialListing();
     <div class="max-w-2xl mx-auto lg:max-w-full">
       <div class="mt-6">
         <div v-if="!loading" ref="productListElement"
-          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8 productListElement">
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8">
           <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
             :is-product-listing="isProductListing" class="w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8" />
         </div>
