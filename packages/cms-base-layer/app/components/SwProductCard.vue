@@ -189,11 +189,11 @@ const isTopseller = computed(() => isProductTopSeller(product.value));
       </div>
       <!-- Wishlist button -->
       <client-only>
-        <IconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
-          class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
+        <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
+          class=" bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
           data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
           <SwWishlistIcon :filled="isInWishlist" />
-        </IconButton>
+        </SwIconButton>
       </client-only>
     </div>
     <!-- Product details section -->

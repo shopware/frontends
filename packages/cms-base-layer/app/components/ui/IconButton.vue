@@ -26,7 +26,6 @@ const styles = {
         'w-10 h-10': type !== 'ghost',
       },
     ]"
-    class="relative rounded-full border-0"
   >
     <slot />
   </button>
