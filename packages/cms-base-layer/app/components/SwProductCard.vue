@@ -214,15 +214,15 @@ const isTopseller = computed(() => isProductTopSeller(product.value));
       </div>
       <!-- Price section -->
       <SwListingProductPrice :product="product" class="" data-testid="product-box-product-price" />
-      <SwButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
+      <SwBaseButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
         data-testid="add-to-cart-button" @click="addToCartProxy">
         {{ translations.product.addToCart }}
-      </SwButton>
+      </SwBaseButton>
       <!-- Details button for products with fromPrice -->
       <RouterLink v-else :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())" class="self-stretch">
-        <SwButton block>
+        <SwBaseButton block>
           {{ translations.product.details }}
-        </SwButton>
+        </SwBaseButton>
       </RouterLink>
     </div>
   </div>
