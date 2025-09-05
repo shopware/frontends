@@ -5,7 +5,7 @@ defineProps<{
 </script>
 <template>
   <button
-    class="text-brand-primary gap-1 inline-flex items-center bg-none  bg-transparent"
+    class="text-brand-primary gap-1 inline-flex items-center bg-none bg-transparent"
   >
     <slot> {{ label }}</slot>
   </button>
