@@ -78,6 +78,12 @@ export default defineNuxtConfig({
     "/checkout/**": {
       ssr: false,
     },
+    "/account": {
+      ssr: false,
+    },
+    "/account/**": {
+      ssr: false,
+    },
   },
   imports: {
     dirs: ["utils", "utils/**"],

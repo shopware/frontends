@@ -36,7 +36,7 @@ const emit = defineEmits<{
         <FormQuantitySelect v-model="quantity" size="small" @update:modelValue="emit('updateQuantity', item.id, quantity)" />
       </div>
       <div class="content-end text-right">
-        <FormLinkButton label="Remove" @click="emit('remove', item.id)" />
+        <FormLinkButton class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none" label="Remove" @click="emit('remove', item.id)" />
       </div>
     </div>
   </div>

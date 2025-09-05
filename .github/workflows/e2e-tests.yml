@@ -6,7 +6,7 @@ on:
 jobs:
   run-e2e:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs') && !contains(github.event.deployment_status.target_url, 'vue-starter-template')
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
