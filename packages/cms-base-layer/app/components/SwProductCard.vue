@@ -192,7 +192,7 @@ const isTopseller = computed(() => isProductTopSeller(product.value));
         <IconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
           class="bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
           data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
-          <SwWishlistIcon :type="isInWishlist ? 'filled' : 'primary'" />
+          <SwWishlistIcon :filled="isInWishlist" />
         </IconButton>
       </client-only>
     </div>
