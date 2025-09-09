@@ -20,8 +20,15 @@
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "typecheck": {
-      "cache": false,
-      "outputs": []
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.vue",
+        "*.ts",
+        "tsconfig.json",
+        "package.json"
+      ]
     },
     "generate-types": {
       "cache": false,
