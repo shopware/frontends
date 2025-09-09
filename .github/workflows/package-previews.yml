@@ -10,7 +10,7 @@ jobs:
     name: Publish Package Previews
     permissions:
       contents: read
-      issues: write
+      issues: read
     timeout-minutes: 10
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -22,7 +22,6 @@ jobs:
         uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - run: pnpm --version
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -34,14 +33,3 @@ jobs:
 
       - name: Publish package previews
         run: npx pkg-pr-new publish './packages/api-client' './packages/api-gen' './packages/cms-base-layer' './packages/composables' './packages/helpers' './packages/nuxt-module'
-
-      - name: Remove label
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.removeLabel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              name: 'publish-pkg-preview'
-            })
