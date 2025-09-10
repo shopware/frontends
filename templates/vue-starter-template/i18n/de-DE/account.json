@@ -39,6 +39,19 @@
           "unsubscribed": "Newsletter-Abbestellung"
         }
       }
+    },
+    "profile": {
+      "header": "Ihr Profil",
+      "subHeader": "Überprüfen Sie Ihre persönlichen Daten.",
+      "personalDataSectionHeader": "Persönliche Daten",
+      "loginDataSectionHeader": "Login-Daten",
+      "form": {
+        "accountType": "Kontotyp",
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "company": "Firma",
+        "vatIds": "Umsatzsteuer-Identifikationsnummer"
+      }
     }
   }
 }

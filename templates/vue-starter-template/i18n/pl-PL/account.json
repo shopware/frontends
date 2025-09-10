@@ -39,6 +39,19 @@
           "unsubscribed": "Anulowanie subskrypcji newslettera"
         }
       }
+    },
+    "profile": {
+      "header": "Twoje konto",
+      "subHeader": "Sprawdź swoje dane osobowe.",
+      "personalDataSectionHeader": "Dane osobowe",
+      "loginDataSectionHeader": "Dane logowania",
+      "form": {
+        "accountType": "Typ konta",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "company": "Firma",
+        "vatIds": "Numer identyfikacji podatkowej"
+      }
     }
   }
 }

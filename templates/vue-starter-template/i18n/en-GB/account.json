@@ -39,6 +39,19 @@
           "unsubscribed": "Newsletter unsubscribe"
         }
       }
+    },
+    "profile": {
+      "header": "Your profile",
+      "subHeader": "Check your personal data.",
+      "personalDataSectionHeader": "Personal data",
+      "loginDataSectionHeader": "Login data",
+      "form": {
+        "accountType": "Account type",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "company": "Company",
+        "vatIds": "VAT Registration Number"
+      }
     }
   }
 }
