@@ -8,15 +8,10 @@ import {
   getProductManufacturerName,
   getProductName,
   getProductRoute,
-  getSmallestThumbnailUrl,
-  isProductOnSale,
-  isProductTopSeller,
 } from "@shopware/helpers";
 import { getCmsTranslate } from "@shopware/helpers";
-import { useElementSize } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, ref, toRefs, useTemplateRef } from "vue";
-import { RouterLink } from "vue-router";
+import { computed, ref, toRefs } from "vue";
 import {
   useAddToCart,
   useCartErrorParamsResolver,
@@ -141,89 +136,35 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
-const { getUrlPrefix } = useUrlResolver();
-
-const imageElement = useTemplateRef("imageElement");
-const { height } = useElementSize(imageElement);
-
-const DEFAULT_THUMBNAIL_SIZE = 10;
-function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
-}
-
-const coverSrcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(
-    product.value?.cover?.media,
-  )}?&height=${roundUp(height.value)}&fit=cover`;
-});
-
-const coverAlt = computed(() => {
-  return product.value?.cover?.media?.alt || product.value?.translated.name;
-});
-
-// Computed properties for display data
 const productName = computed(() => getProductName({ product: product.value }));
 const productManufacturer = computed(() =>
   getProductManufacturerName(product.value),
 );
-const isOnSale = computed(() => isProductOnSale(product.value));
-const isTopseller = computed(() => isProductTopSeller(product.value));
+
+const { getUrlPrefix } = useUrlResolver();
+const productLink = computed(() =>
+  buildUrlPrefix(getProductRoute(product.value), getUrlPrefix()),
+);
 </script>
 
 <template>
   <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px w-full">
-    <!-- Image section -->
-    <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
-      <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-        class="relative h-80 self-stretch overflow-hidden">
-        <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="coverSrcPath" :alt="coverAlt"
-          data-testid="product-box-img" />
-      </RouterLink>
-      <!-- Badge for topseller or sale -->
-      <div v-if="isTopseller || isOnSale"
-        class="absolute top-[281px] left-[8px] inline-flex items-center justify-center rounded bg-states-error px-1.5 py-1"
-        data-state="default" data-type="error">
-        <div class="justify-start font-['Inter'] text-xs font-bold leading-none text-states-on-error">
-          {{ translations.product.badges.topseller }}
-        </div>
-      </div>
-      <!-- Wishlist button -->
-      <client-only>
-        <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
-          class=" bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
-          data-testid="product-box-toggle-wishlist-button" @click="toggleWishlistProduct">
-          <SwWishlistIcon :filled="isInWishlist" />
-        </SwIconButton>
-      </client-only>
-    </div>
-    <!-- Product details section -->
-    <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
-      <!-- Manufacturer and product name -->
-      <div class="flex flex-col items-start justify-start gap-2 self-stretch">
-        <div class="flex flex-col items-start justify-start gap-1 self-stretch">
-          <div v-if="productManufacturer"
-            class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight">
-            {{ productManufacturer }}
-          </div>
-          <RouterLink :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-            class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 h-[4.5] overflow-hidden line-clamp-2 display-webkit-box"
-            style="-webkit-box-orient: vertical;" data-testid="product-box-product-name-link">
-            {{ productName }}
-          </RouterLink>
-        </div>
-      </div>
-      <!-- Price section -->
-      <SwListingProductPrice :product="product" class="" data-testid="product-box-product-price" />
-      <SwBaseButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
-        data-testid="add-to-cart-button" @click="addToCartProxy">
-        {{ translations.product.addToCart }}
-      </SwBaseButton>
-      <!-- Details button for products with fromPrice -->
-      <RouterLink v-else :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())" class="self-stretch">
-        <SwBaseButton block>
-          {{ translations.product.details }}
-        </SwBaseButton>
-      </RouterLink>
-    </div>
+    <SwProductCardImage
+      :product="product"
+      :translations   ="translations"
+      :isInWishlist="isInWishlist"
+      :isLoading="isLoading"
+      :toggleWishlist="toggleWishlistProduct"
+      :productLink="productLink"
+    />
+    <SwProductCardDetails
+      :product="product"
+      :productName="productName"
+      :productManufacturer="productManufacturer"
+      :translations="translations"
+      :fromPrice="fromPrice"
+      :addToCartProxy="addToCartProxy"
+      :productLink="productLink"
+    />
   </div>
 </template>
