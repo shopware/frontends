@@ -18,10 +18,6 @@ describe("isProductTopSeller", () => {
     expect(isProductTopSeller(product)).toBe(false);
   });
 
-  it("should return false when product is undefined", () => {
-    expect(isProductTopSeller(undefined)).toBe(false);
-  });
-
   it("should handle null values correctly", () => {
     const product = { markAsTopseller: null };
     // @ts-expect-error Testing with null value even though type doesn't allow it

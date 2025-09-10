@@ -10,7 +10,7 @@ interface ProductWithManufacturer {
  * Gets the translated name of the product manufacturer
  */
 export function getProductManufacturerName(
-  product: ProductWithManufacturer | null | undefined,
+  product: ProductWithManufacturer,
 ): string {
-  return product?.manufacturer?.translated?.name || "";
+  return product.manufacturer?.translated?.name || "";
 }

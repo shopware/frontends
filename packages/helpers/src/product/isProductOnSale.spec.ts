@@ -1,9 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { isProductOnSale } from "./isProductOnSale";
 
+interface ProductWithCalculatedPrice {
+  calculatedPrice?: {
+    listPrice?: {
+      percentage?: number;
+    };
+  };
+}
+
 describe("isProductOnSale", () => {
   it("should return true when product has a positive discount percentage", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {
           percentage: 20,
@@ -15,7 +23,7 @@ describe("isProductOnSale", () => {
   });
 
   it("should return false when product has zero discount percentage", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {
           percentage: 0,
@@ -27,7 +35,7 @@ describe("isProductOnSale", () => {
   });
 
   it("should return false when product has negative discount percentage", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {
           percentage: -5,
@@ -39,7 +47,7 @@ describe("isProductOnSale", () => {
   });
 
   it("should return false when percentage is undefined", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {},
       },
@@ -49,7 +57,7 @@ describe("isProductOnSale", () => {
   });
 
   it("should return false when listPrice is undefined", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {},
     };
 
@@ -57,13 +65,14 @@ describe("isProductOnSale", () => {
   });
 
   it("should return false when calculatedPrice is undefined", () => {
-    const product = {};
+    // product must be an object (not null/undefined) per new contract
+    const product: ProductWithCalculatedPrice = {};
 
     expect(isProductOnSale(product)).toBe(false);
   });
 
   it("should handle decimal percentage values", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {
           percentage: 0.5,
@@ -75,7 +84,7 @@ describe("isProductOnSale", () => {
   });
 
   it("should handle very small positive percentage values", () => {
-    const product = {
+    const product: ProductWithCalculatedPrice = {
       calculatedPrice: {
         listPrice: {
           percentage: 0.0001,

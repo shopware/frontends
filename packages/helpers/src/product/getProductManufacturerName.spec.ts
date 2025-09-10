@@ -1,9 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { getProductManufacturerName } from "./getProductManufacturerName";
 
+interface ProductWithManufacturer {
+  manufacturer?: {
+    translated?: {
+      name?: string;
+    };
+  };
+}
+
 describe("getProductManufacturerName", () => {
   it("should return the manufacturer name when available", () => {
-    const product = {
+    const product: ProductWithManufacturer = {
       manufacturer: {
         translated: {
           name: "Apple",
@@ -15,13 +23,13 @@ describe("getProductManufacturerName", () => {
   });
 
   it("should return empty string when manufacturer is undefined", () => {
-    const product = {};
+    const product: ProductWithManufacturer = {};
 
     expect(getProductManufacturerName(product)).toBe("");
   });
 
   it("should return empty string when translated property is undefined", () => {
-    const product = {
+    const product: ProductWithManufacturer = {
       manufacturer: {},
     };
 
@@ -29,7 +37,7 @@ describe("getProductManufacturerName", () => {
   });
 
   it("should return empty string when name property is undefined", () => {
-    const product = {
+    const product: ProductWithManufacturer = {
       manufacturer: {
         translated: {},
       },
@@ -39,7 +47,7 @@ describe("getProductManufacturerName", () => {
   });
 
   it("should return empty string when name is empty", () => {
-    const product = {
+    const product: ProductWithManufacturer = {
       manufacturer: {
         translated: {
           name: "",
@@ -50,16 +58,8 @@ describe("getProductManufacturerName", () => {
     expect(getProductManufacturerName(product)).toBe("");
   });
 
-  it("should return empty string when product is null", () => {
-    expect(getProductManufacturerName(null)).toBe("");
-  });
-
-  it("should return empty string when product is undefined", () => {
-    expect(getProductManufacturerName(undefined)).toBe("");
-  });
-
   it("should handle name with special characters", () => {
-    const product = {
+    const product: ProductWithManufacturer = {
       manufacturer: {
         translated: {
           name: "Möller & Co.",
