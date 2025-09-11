@@ -37,6 +37,7 @@
     "promoCodePlaceholder": "Wpisz kod promocyjny",
     "searchPlaceholder": "Szukaj produktów",
     "chooseState": "Wybierz stan",
-    "state": "Stan"
+    "state": "Stan",
+    "loading": "Ładowanie..."
   }
 }
