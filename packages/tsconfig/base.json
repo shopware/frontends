@@ -5,6 +5,8 @@
     "composite": false,
     "declaration": true,
     "declarationMap": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,

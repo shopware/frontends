@@ -55,7 +55,7 @@ function handleUpdateBaseInfo() {
           class="flex items-center gap-2 absolute"
           :class="{ 'animate-slide-up-out': switchAnimating }"
         >
-          <FormLinkButton class="border-b-0" @click="switchAnimation">
+          <FormLinkButton class="border-b-0 text-sm" @click="switchAnimation">
             <Icon name="shopware:plus-xs" class="color-brand-primary" />
             <span class="text-brand-primary">{{
               $t("checkout.customerBaseInfo.createAccountToggleLabel")

@@ -1,3 +1,3 @@
 <template>
-    [TODO] register
+  <AccountRegistrationForm />
 </template>

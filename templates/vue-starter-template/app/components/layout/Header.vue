@@ -47,7 +47,7 @@ function handleMyAccountClick() {
       </template>
       <template v-else>
         <LayoutHeaderSearch v-model="searchText" />
-        <FormLinkButton @click="toggleMobileSearch" label="Close" />
+        <FormLinkButton class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none" @click="toggleMobileSearch" label="Close" />
       </template>
     </div>
     <ClientOnly>

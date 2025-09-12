@@ -1,5 +1,7 @@
 {
   "account": {
+    "signUpHeader": "Ich bin neu hier.",
+    "yourAddress": "Ihre Adresse",
     "order": {
       "product": "Produkt",
       "quantity": "Menge",
@@ -13,6 +15,30 @@
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
       "orders": "Bestellungen"
+    },
+    "menu": {
+      "header": "Ihr Konto",
+      "overview": "Übersicht",
+      "yourProfile": "Ihr Profil",
+      "addresses": "Adressen",
+      "orders": "Bestellungen",
+      "logout": "Abmelden"
+    },
+    "overview": {
+      "header": "Übersicht",
+      "subHeader": "Direkt auf Ihre Profilinformationen, die Standardzahlungsmethode und die gegebenen Adressen zugreifen.",
+      "personalDataSectionHeader": "Persönliche Daten",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "newsletter": {
+        "subscriptionSectionHeader": "Newsletter-Abonnement",
+        "subscriptionLabel": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann jederzeit abbestellen.)",
+        "confirmationNeeded": "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich für den Newsletter anmelden.",
+        "messages": {
+          "subscribed": "Vielen Dank! Wir haben Ihre Adresse registriert.",
+          "unsubscribed": "Newsletter-Abbestellung"
+        }
+      }
     }
   }
 }

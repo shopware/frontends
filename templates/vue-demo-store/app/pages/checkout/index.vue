@@ -1104,7 +1104,7 @@ const handleChangeBaseInfo = async (data: {
                   >{{ $t("checkout.loginRequired") }}</span
                 >
                 <button
-                  :disabled="!isUserSession"
+                  :disabled="!isUserSession || isLoading['placeOrder']"
                   type="button"
                   :class="{
                     grayscale: !isUserSession,
