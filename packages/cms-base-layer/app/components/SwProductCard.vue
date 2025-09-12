@@ -5,15 +5,13 @@ import { useCmsTranslations } from "@shopware/composables";
 import {
   buildUrlPrefix,
   getProductFromPrice,
+  getProductManufacturerName,
   getProductName,
   getProductRoute,
-  getSmallestThumbnailUrl,
 } from "@shopware/helpers";
 import { getCmsTranslate } from "@shopware/helpers";
-import { useElementSize } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, ref, toRefs, useTemplateRef } from "vue";
-import { RouterLink } from "vue-router";
+import { computed, ref, toRefs } from "vue";
 import {
   useAddToCart,
   useCartErrorParamsResolver,
@@ -83,7 +81,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 
-const { addToCart, isInCart, count } = useAddToCart(product);
+const { addToCart } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
@@ -101,7 +99,7 @@ const toggleWishlistProduct = async () => {
       );
     } else {
       await removeFromWishlist();
-      pushError(
+      pushSuccess(
         `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
       );
     }
@@ -138,149 +136,35 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
+const productName = computed(() => getProductName({ product: product.value }));
+const productManufacturer = computed(() =>
+  getProductManufacturerName(product.value),
+);
+
 const { getUrlPrefix } = useUrlResolver();
-
-const imageElement = useTemplateRef("imageElement");
-const { height } = useElementSize(imageElement);
-
-const DEFAULT_THUMBNAIL_SIZE = 10;
-function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
-}
-
-const srcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(
-    product.value?.cover?.media,
-  )}?&height=${roundUp(height.value)}&fit=cover`;
-});
+const productLink = computed(() =>
+  buildUrlPrefix(getProductRoute(product.value), getUrlPrefix()),
+);
 </script>
 
 <template>
-  <div
-    class="sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-gray-200 rounded-md shadow transform transition duration-300 hover:scale-101"
-    data-testid="product-box"
-  >
-    <div
-      :class="[
-        'w-full rounded-md overflow-hidden hover:opacity-75',
-        layoutType === 'image' ? 'h-80' : 'h-60',
-      ]"
-    >
-      <div class="absolute top-5 -left-1 z-10">
-        <span
-          v-if="product.markAsTopseller"
-          class="bg-[#FFBD5D] px-2.5 py-1.5 color-black text-xl"
-          >{{ translations.product.badges.topseller }}</span
-        >
-      </div>
-      <RouterLink
-        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-        class="overflow-hidden"
-      >
-        <img
-          ref="imageElement"
-          loading="lazy"
-          :src="srcPath"
-          :alt="getProductName({ product }) || ''"
-          class="transform transition duration-400 hover:scale-120"
-          :class="{
-            'w-full h-full': true,
-            'object-cover':
-              displayMode === 'cover' ||
-              (displayMode === 'standard' && layoutType === 'image'),
-            'object-contain': displayMode === 'contain',
-            'object-scale-down':
-              displayMode === 'standard' && layoutType !== 'image',
-          }"
-          data-testid="product-box-img"
-        />
-      </RouterLink>
-    </div>
-    <button
-      aria-label="Add to wishlist"
-      type="button"
-      :disabled="isLoading"
-      class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
-      data-testid="product-box-toggle-wishlist-button"
-      @click="toggleWishlistProduct"
-    >
-      <client-only>
-        <div
-          v-if="isInWishlist"
-          class="h-9 w-9 i-carbon-favorite-filled c-red-500"
-          data-testid="product-box-wishlist-icon-in"
-        ></div>
-        <div
-          v-else
-          class="h-9 w-9 i-carbon-favorite c-black"
-          data-testid="product-box-wishlist-icon-not-in"
-        ></div>
-        <template #placeholder>
-          <div class="h-9 w-9 i-carbon-favorite"></div>
-        </template>
-      </client-only>
-    </button>
-    <div class="h-8 mx-4 my-2">
-      <p
-        v-for="option in product?.options"
-        :key="option.id"
-        class="items-center line-clamp-2 rounded-md text-xs font-medium text-gray-600 mt-3"
-      >
-        {{ option.group.name }}:
-        <span class="font-bold">{{ option.name }} </span>
-      </p>
-    </div>
-    <div class="px-4 pb-4">
-      <RouterLink
-        class="line-clamp-2"
-        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-        data-testid="product-box-product-name-link"
-      >
-        <div
-          class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
-        >
-          {{ getProductName({ product }) }}
-        </div>
-      </RouterLink>
-
-      <SwListingProductPrice
-        :product="product"
-        class="ml-auto"
-        data-testid="product-box-product-price"
-      />
-
-      <div>
-        <button
-          v-if="!fromPrice"
-          type="button"
-          class="w-full justify-center my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 flex"
-          :class="{
-            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
-            'text-gray-600 bg-gray-100': isInCart,
-            'opacity-50 cursor-not-allowed': !product.available,
-          }"
-          data-testid="add-to-cart-button"
-          :disabled="!product.available"
-          @click="addToCartProxy"
-        >
-          {{ translations.product.addToCart }}
-          <div v-if="isInCart" class="flex ml-2">
-            <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
-            {{ count }}
-          </div>
-        </button>
-        <RouterLink
-          v-else
-          :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
-          class=""
-        >
-          <div
-            class="text-center justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400"
-          >
-            <span data-testid="product-box-product-show-details">Details</span>
-          </div>
-        </RouterLink>
-      </div>
-    </div>
+  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px w-full">
+    <SwProductCardImage
+      :product="product"
+      :translations   ="translations"
+      :isInWishlist="isInWishlist"
+      :isLoading="isLoading"
+      :toggleWishlist="toggleWishlistProduct"
+      :productLink="productLink"
+    />
+    <SwProductCardDetails
+      :product="product"
+      :productName="productName"
+      :productManufacturer="productManufacturer"
+      :translations="translations"
+      :fromPrice="fromPrice"
+      :addToCartProxy="addToCartProxy"
+      :productLink="productLink"
+    />
   </div>
 </template>

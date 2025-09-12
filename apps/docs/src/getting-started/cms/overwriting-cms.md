@@ -21,7 +21,7 @@ More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts
 ## Example how to overwrite the cms block product listing
 
 We have this cms element **component** from **cms-base package**:  
-`packages/cms-base-layer/components/public/cms/block/CmsBlockProductListing.vue`
+`packages/cms-base-layer/app/components/public/cms/block/CmsBlockProductListing.vue`
 
 If we want to create our own product listing **component** in **demo-store** the correct place would be:
 `templates/vue-demo-store/components/cms/block/CmsBlockProductListing.vue`
@@ -51,5 +51,5 @@ As example: some components use `SwSharedPrice.vue` to show prices with correspo
 
 Generic components are responsible for resolving each CMS element
 
-- [CmsGenericElement.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/components/public/cms/CmsGenericElement.vue)
-- [CmsGenericBlock.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/components/public/cms/CmsGenericBlock.vue)
+- [CmsGenericElement.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/app/components/public/cms/CmsGenericElement.vue)
+- [CmsGenericBlock.vue](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/app/components/public/cms/CmsGenericBlock.vue)

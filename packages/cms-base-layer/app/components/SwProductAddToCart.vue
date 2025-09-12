@@ -77,10 +77,10 @@ const addToCartProxy = async () => {
     <SwStockInfo :availableStock="availableStock" :minPurchase="minPurchase" :deliveryTime="deliveryTime"
       :restockTime="restockTime" />
     <div class="self-stretch flex flex-col justify-start items-start gap-1">
-      <SwButton variant="primary" size="medium" :disabled="!product?.available" block data-testid="add-to-cart-button"
+      <SwBaseButton variant="primary" size="medium" :disabled="!product?.available" block data-testid="add-to-cart-button"
         @click="addToCartProxy">
         {{ translations.product.addToCart }}
-      </SwButton>
+      </SwBaseButton>
       <div class="self-stretch justify-start text-surface-on-surface text-xs font-normal font-['Inter'] leading-none">
         {{ translations.product.productNumber }}: {{ productNumber }}
       </div>

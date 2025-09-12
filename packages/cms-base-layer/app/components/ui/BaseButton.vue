@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-export interface SwButtonProps {
+export interface SwBaseButtonProps {
   variant?: "primary" | "secondary" | "success" | "warning" | "outline";
   size?: "small" | "medium" | "large";
   disabled?: boolean;
@@ -10,7 +10,7 @@ export interface SwButtonProps {
   block?: boolean;
 }
 
-const props = withDefaults(defineProps<SwButtonProps>(), {
+const props = withDefaults(defineProps<SwBaseButtonProps>(), {
   variant: "primary",
   size: "medium",
   disabled: false,
