@@ -99,7 +99,7 @@ const toggleWishlistProduct = async () => {
       );
     } else {
       await removeFromWishlist();
-      pushError(
+      pushSuccess(
         `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
       );
     }
