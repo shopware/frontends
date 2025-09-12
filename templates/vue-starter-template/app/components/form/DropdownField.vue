@@ -8,6 +8,7 @@ defineProps<{
     value: string;
   }[];
   errorMessage?: string;
+  loading?: boolean;
 }>();
 
 const model = defineModel<string>({
@@ -30,7 +31,8 @@ const model = defineModel<string>({
       :placeholder="placeholder"
       :id="id"
       :options="options"
-       :invalid="!!errorMessage"
+      :invalid="!!errorMessage"
+      :loading
     />
     <span v-if="errorMessage" class="text-red text-xs absolute">{{
       errorMessage
