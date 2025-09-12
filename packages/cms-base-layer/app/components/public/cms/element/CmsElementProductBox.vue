@@ -10,5 +10,6 @@ const product = computed(() => props.content.data?.product || {});
 </script>
 
 <template>
-  <SwProductCard :product="product" />
+  <SwProductCard v-if="product?.id" :product="product" />
+  <SwProductCardSkeleton v-else />
 </template>

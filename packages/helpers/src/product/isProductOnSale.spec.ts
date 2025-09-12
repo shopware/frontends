@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import { isProductOnSale } from "./isProductOnSale";
 
 interface ProductWithCalculatedPrice {
-  calculatedPrice?: {
+  calculatedPrice: {
     listPrice?: {
       percentage?: number;
-    };
+    } | null;
   };
 }
 
@@ -66,7 +66,7 @@ describe("isProductOnSale", () => {
 
   it("should return false when calculatedPrice is undefined", () => {
     // product must be an object (not null/undefined) per new contract
-    const product: ProductWithCalculatedPrice = {};
+    const product = {} as ProductWithCalculatedPrice;
 
     expect(isProductOnSale(product)).toBe(false);
   });

@@ -14,10 +14,10 @@ type Translations = {
 
 defineProps<{
   product: Schemas["Product"];
-  productName: string;
+  productName: string | null;
   productManufacturer?: string | null;
   translations: Translations;
-  fromPrice: boolean | undefined;
+  fromPrice?: number;
   addToCartProxy: () => Promise<void>;
   productLink: UrlRouteOutput;
 }>();
