@@ -3,50 +3,51 @@ const model = defineModel<string>({
   required: true,
 });
 
-const {
-  id = "",
-  dataTestId = "",
-  loading = false,
-} = defineProps<{
+const { id = "", dataTestId = "" } = defineProps<{
   id?: string;
   dataTestId?: string;
-  loading?: boolean;
 }>();
 
 const { apiClient } = useShopwareContext();
 const nuxtApp = useNuxtApp();
 
-const { data: salutationData } = await useAsyncData(
+const {
+  data: salutationData,
+  status,
+  error,
+} = await useAsyncData(
   "salutationData",
   () => apiClient.invoke("readSalutation post /salutation"),
   {
-    transform: (data) => {
-      return data.data.elements.map((element) => ({
+    transform: (apiData) => {
+      const options = apiData.data.elements.map((element) => ({
         label: element.displayName,
         value: element.id,
       }));
+      return { options, cachedDate: new Date() };
     },
-    getCachedData: (data) => {
-      return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+    getCachedData: (key) => {
+      const data = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+
+      // 24 hours cache expiration
+      if (!data || Date.now() > new Date(data.cachedDate).getTime() + 86400000)
+        return;
+      return data;
     },
   },
 );
 
-console.log("result", salutationData.value.data);
+const isLoading = computed(() => status === "pending");
 </script>
 <template>
-  <pre>
- {{ salutationData }}
-
-    </pre
-  >
-
   <FormDropdownField
+    v-bind="$attrs"
     :id="id"
     v-model="model"
-    :label="$t('form.salutation.title')"
-    :options="salutationOptions"
+    :label="$t('form.salutation')"
+    :options="salutationData?.options ?? []"
     :data-testid="dataTestId"
-    :loading
+    :loading="isLoading"
   />
+  <small v-if="error" class="text-states-error">{{ error }}</small>
 </template>
