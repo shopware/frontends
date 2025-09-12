@@ -34,8 +34,11 @@ useBreadcrumbs([
   },
 ]);
 
-const updateNewsletterStatus = async () => {
+const newsletterDisabled = ref(false);
+
+async function updateNewsletterStatus() {
   try {
+    newsletterDisabled.value = true;
     if (!newsletter.value) {
       await newsletterSubscribe({
         email: user.value?.email || "",
@@ -50,16 +53,15 @@ const updateNewsletterStatus = async () => {
     console.log("error", error);
     pushError(t("messages.error"));
   } finally {
-    getNewsletterStatus().then(() => {
-      newsletter.value = isNewsletterSubscriber.value;
-    });
+    await getNewsletterStatus();
+    newsletter.value = isNewsletterSubscriber.value;
+    newsletterDisabled.value = false;
   }
-};
+}
 
 onBeforeMount(async () => {
-  getNewsletterStatus().then(() => {
-    newsletter.value = isNewsletterSubscriber.value;
-  });
+  await getNewsletterStatus();
+  newsletter.value = isNewsletterSubscriber.value;
   if (user?.value?.salutationId) {
     await loadSalutation(user.value.salutationId);
   }
@@ -107,6 +109,7 @@ onBeforeMount(async () => {
       <div class="flex">
         <input
           id="newsletter-checkbox"
+          :disabled="newsletterDisabled"
           v-model="newsletter"
           name="newsletter-checkbox"
           type="checkbox"
