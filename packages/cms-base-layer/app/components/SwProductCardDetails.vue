@@ -12,7 +12,7 @@ type Translations = {
   };
 };
 
-const props = defineProps<{
+defineProps<{
   product: Schemas["Product"];
   productName: string;
   productManufacturer?: string | null;

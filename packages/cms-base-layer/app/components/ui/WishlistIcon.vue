@@ -1,8 +1,12 @@
 <script setup lang="ts">
-defineProps<{
-  filled?: boolean;
-  counter?: number;
-}>();
+withDefaults(
+  defineProps<{
+    filled?: boolean;
+  }>(),
+  {
+    filled: false,
+  },
+);
 </script>
 <template>
   <div class="relative">
@@ -12,10 +16,5 @@ defineProps<{
     ]" /> -->
     <div class="i-carbon-favorite w-6 h-5 hover:cursor-pointer" v-if="!filled"></div>
     <div class="i-carbon-favorite-filled w-6 h-5 hover:cursor-pointer" v-else></div>
-    <SwMainCounter
-      v-if="(counter ?? 0) > 0"
-      class="absolute top-[-50%] left-[50%]"
-      :count="counter"
-    />
   </div>
 </template>
