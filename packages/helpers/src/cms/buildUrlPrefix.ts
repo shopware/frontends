@@ -8,7 +8,7 @@ type UrlRoute = {
   };
 };
 
-type UrlRouteOutput = Omit<UrlRoute, "path"> & { path: string };
+export type UrlRouteOutput = Omit<UrlRoute, "path"> & { path: string };
 
 export function buildUrlPrefix(
   url: string | UrlRoute,

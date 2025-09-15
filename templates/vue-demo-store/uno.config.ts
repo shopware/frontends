@@ -63,6 +63,7 @@ const templateConfig: ConfigBase = {
       "brand-secondary-800": "#1e293b",
       "brand-secondary-900": "#111827",
       "brand-secondary-hover": "#5a5f66",
+      "brand-on-secondary": "#ffffff",
       // Accent Colors
       light: "#5ebbff",
       "light-200": "#e2e8f0",
