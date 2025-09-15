@@ -27,6 +27,7 @@ describe("helpers - test global API", () => {
         "getProductCalculatedListingPrice": [Function],
         "getProductFreeShipping": [Function],
         "getProductFromPrice": [Function],
+        "getProductManufacturerName": [Function],
         "getProductName": [Function],
         "getProductRatingAverage": [Function],
         "getProductReviews": [Function],
@@ -47,6 +48,8 @@ describe("helpers - test global API", () => {
         "isLandingPage": [Function],
         "isMaintenanceMode": [Function],
         "isProduct": [Function],
+        "isProductOnSale": [Function],
+        "isProductTopSeller": [Function],
         "relativeUrlSlash": [Function],
         "urlIsAbsolute": [Function],
       }

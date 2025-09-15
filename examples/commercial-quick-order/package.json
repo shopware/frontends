@@ -16,7 +16,7 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.16"
+    "vue": "3.5.17"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
