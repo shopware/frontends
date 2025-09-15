@@ -21,7 +21,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "66.3.3",
+    "@unocss/nuxt": "66.5.1",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "13.5.0",
@@ -36,7 +36,7 @@
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
     "nuxt": "4.0.1",
-    "vite": "6.3.5",
+    "vite": "6.3.6",
     "typescript": "5.8.3"
   },
   "engines": {
