@@ -5,6 +5,11 @@
       "private": "Private",
       "business": "Company"
     },
+    "quantitySelect": {
+      "label": "Quantity",
+      "increaseButton": "Increase quantity",
+      "decreaseButton": "Decrease quantity"
+    },
     "salutation": "Salutation",
     "chooseSalutation": "Choose salutation...",
     "firstName": "First name",
