@@ -1,5 +1,24 @@
 # Contribution
 
+## Commits
+
+We aim to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format for our commits, but at the end, the PR title matters the most as we squash all commits into one when merging PRs.
+
+### Linting and formatting
+
+We're using git hook to run linting and formatting before each commit. You can run them manually by running `pnpm lint` and `pnpm format`.
+
+### IDE support
+
+If your IDE is showing error on commit like `node: command not found`, you can fix it by running the project from the terminal.
+```bash
+cd ./frontends
+code .
+# or
+cursor .
+# or wny other
+```
+
 ## Changelog preparation
 
 In order to keep track of the changes inside project we do use `changesets` package to generate changelogs. After you created some changes follow these steps:
