@@ -1,8 +1,82 @@
 <script setup lang="ts">
-const { user } = useUser();
+import { ApiClientError } from "@shopware/api-client";
+import type { Schemas } from "#shopware";
+
+const { user, defaultBillingAddressId, defaultShippingAddressId, refreshUser } =
+  useUser();
+const { resolveApiErrors } = useApiErrorsResolver("account_addresses");
+const { pushError } = useNotifications();
+
+const {
+  customerAddresses,
+  loadCustomerAddresses,
+  deleteCustomerAddress,
+  setDefaultCustomerBillingAddress,
+  setDefaultCustomerShippingAddress,
+} = useAddress();
+
+const deletingAddresses = ref<Set<number>>(new Set());
+
 function handleAddAddress() {
   console.log("add address");
 }
+
+async function handleDeleteAddress(addressId: number) {
+  deletingAddresses.value.add(addressId);
+
+  try {
+    // TODO: change it after the API is updated
+    await deleteCustomerAddress(addressId);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await loadCustomerAddresses();
+    await refreshUser();
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      for (const error of errors) {
+        pushError(error);
+      }
+    }
+  } finally {
+    deletingAddresses.value.delete(addressId);
+  }
+}
+
+async function handleSetAsDefaultBillingAddress(addressId: number) {
+  try {
+    // TODO: change it after the API is updated
+    await setDefaultCustomerBillingAddress(addressId);
+    await loadCustomerAddresses();
+    await refreshUser();
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      for (const error of errors) {
+        pushError(error);
+      }
+    }
+  }
+}
+
+async function handleSetAsDefaultShippingAddress(addressId: number) {
+  try {
+    // TODO: change it after the API is updated
+    await setDefaultCustomerShippingAddress(addressId);
+    await loadCustomerAddresses();
+    await refreshUser();
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      for (const error of errors) {
+        pushError(error);
+      }
+    }
+  }
+}
+
+onBeforeMount(async () => {
+  await loadCustomerAddresses();
+});
 </script>
 
 <template>
@@ -51,7 +125,60 @@ function handleAddAddress() {
           class="mb-4"
           :title="$t('account.address.availableAddressesSectionHeader')"
         />
+
+        <TransitionGroup
+          class="block md:grid grid-cols-2 gap-10"
+          name="addresses"
+          tag="div"
+        >
+          <AccountAddressTile
+            v-for="address in customerAddresses"
+            :key="address.id"
+            :address
+            :is-deleting="deletingAddresses.has(address.id)"
+            :is-default-billing-address="address.id === defaultBillingAddressId"
+            :is-default-shipping-address="
+              address.id === defaultShippingAddressId
+            "
+            @delete="handleDeleteAddress"
+            @set-as-default-billing-address="handleSetAsDefaultBillingAddress"
+            @set-as-default-shipping-address="handleSetAsDefaultShippingAddress"
+          />
+        </TransitionGroup>
       </div>
     </div>
   </NuxtLayout>
 </template>
+
+<style scoped>
+.addresses-enter-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.addresses-enter-from {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+
+.addresses-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.addresses-leave-to {
+  opacity: 0;
+  transform: translateX(100%) scale(0.8) rotate(5deg);
+  filter: blur(2px);
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.addresses-move {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.addresses-enter-active,
+.addresses-leave-active,
+.addresses-move {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
