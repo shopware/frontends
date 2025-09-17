@@ -18,10 +18,10 @@
     "@shopware/api-client": "canary",
     "@types/node": "22.13.14",
     "@unocss/nuxt": "66.5.1",
-    "@vueuse/nuxt": "13.5.0",
-    "nuxt": "4.0.1",
+    "@vueuse/nuxt": "13.9.0",
+    "nuxt": "4.1.2",
     "typescript": "5.8.3",
-    "vue": "3.5.17",
-    "vue-tsc": "2.2.10"
+    "vue": "3.5.21",
+    "vue-tsc": "3.0.7"
   }
 }
