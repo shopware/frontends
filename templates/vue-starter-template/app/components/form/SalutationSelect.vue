@@ -10,7 +10,7 @@ const { id = "", dataTestId = "" } = defineProps<{
 
 const { apiClient } = useShopwareContext();
 const nuxtApp = useNuxtApp();
-
+const { defaultCSRCacheLifetime } = useAppConfig();
 const {
   data: salutationData,
   status,
@@ -30,7 +30,11 @@ const {
       const data = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
 
       // 24 hours cache expiration
-      if (!data || Date.now() > new Date(data.cachedDate).getTime() + 86400000)
+      if (
+        !data ||
+        Date.now() >
+          new Date(data.cachedDate).getTime() + defaultCSRCacheLifetime
+      )
         return;
       return data;
     },
