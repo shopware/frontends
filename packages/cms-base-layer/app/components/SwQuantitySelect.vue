@@ -46,7 +46,7 @@ const {
 // generate an id that prefers a provided prop and otherwise uses the component uid
 const inputId = computed(() => {
   if (propId) return propId;
-  const uid = getCurrentInstance()?.uid ?? Math.floor(Math.random() * 1e6);
+  const uid = Math.random().toString(36).substr(2, 9);
   return `sw-quantity-${uid}`;
 });
 
