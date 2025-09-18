@@ -46,7 +46,7 @@ This way:
 - cart data
   are synchronized between tabs.
 
-<!-- automd:file src="templates/vue-demo-store/composables/useBroadcastChannelSync.ts" code -->
+<!-- automd:file src="templates/vue-demo-store/app/composables/useBroadcastChannelSync.ts" code -->
 
 ```ts [useBroadcastChannelSync.ts]
 import type { Schemas } from "#shopware";

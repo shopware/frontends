@@ -30,7 +30,7 @@ const model = defineModel<string>({
       :placeholder="placeholder"
       :id="id"
       :options="options"
-       :invalid="!!errorMessage"
+      :invalid="!!errorMessage"
     />
     <span v-if="errorMessage" class="text-red text-xs absolute">{{
       errorMessage

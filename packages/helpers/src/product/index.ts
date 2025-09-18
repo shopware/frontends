@@ -7,4 +7,7 @@ export * from "./getProductUrl";
 export * from "./getProductRatingAverage";
 export * from "./getProductCalculatedListingPrice";
 export * from "./getProductFromPrice";
+export * from "./getProductManufacturerName";
 export * from "./getProductRoute";
+export * from "./isProductOnSale";
+export * from "./isProductTopSeller";
