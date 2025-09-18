@@ -36,7 +36,7 @@
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
     "nuxt": "4.1.2",
-    "vite": "6.3.6",
+    "vite": "7.1.6",
     "typescript": "5.8.3"
   },
   "engines": {

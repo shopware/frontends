@@ -42,6 +42,6 @@
     "@vueuse/nuxt": "13.5.0",
     "typescript": "5.8.3",
     "unocss": "66.5.1",
-    "vite": "6.3.6"
+    "vite": "7.1.6"
   }
 }
