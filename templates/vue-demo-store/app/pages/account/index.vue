@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
+
 defineOptions({
   name: "AccountPage",
 });
@@ -19,7 +21,7 @@ const {
   isNewsletterSubscriber,
   newsletterUnsubscribe,
   newsletterSubscribe,
-  getNewsletterStatus,
+  getNewsletterStatus: getNewsletterStatusApi,
   confirmationNeeded,
 } = useNewsletter();
 const { pushSuccess, pushError } = useNotifications();
@@ -47,15 +49,36 @@ async function updateNewsletterStatus() {
       pushSuccess(t("newsletter.messages.newsletterSubscribed"));
     } else {
       await newsletterUnsubscribe(user.value?.email || "");
+
       pushSuccess(t("newsletter.messages.newsletterUnsubscribed"));
     }
   } catch (error) {
-    console.log("error", error);
-    pushError(t("messages.error"));
+    if (error instanceof ApiClientError) {
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
+        }
+      }
+    }
   } finally {
     await getNewsletterStatus();
+
     newsletter.value = isNewsletterSubscriber.value;
     newsletterDisabled.value = false;
+  }
+}
+
+async function getNewsletterStatus() {
+  try {
+    await getNewsletterStatusApi();
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
+        }
+      }
+    }
   }
 }
 
@@ -95,9 +118,14 @@ onBeforeMount(async () => {
       </div>
     </section>
     <section class="mb-10">
-      <h3 class="border-b pb-3 font-bold mb-5">
+      <h3 class="border-b pb-3 font-bold mb-5 flex items-center gap-2">
         {{ $t("account.newsletterSettingHeader") }}
+        <div
+          v-if="newsletterDisabled"
+          class="i-svg-spinners-180-ring w-5 h-5 text-gray-500"
+        />
       </h3>
+
       <div
         v-if="confirmationNeeded"
         class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
