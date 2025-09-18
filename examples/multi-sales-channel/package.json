@@ -19,7 +19,7 @@
     "@shopware/api-gen": "canary",
     "@types/node": "22.13.14",
     "js-cookie": "3.0.5",
-    "nuxt": "4.0.1",
+    "nuxt": "4.1.2",
     "typescript": "5.8.3",
     "vue": "3.5.17",
     "vue-tsc": "2.2.10",
