@@ -40,7 +40,7 @@
     "@unocss/nuxt": "66.5.1",
     "@vueuse/core": "13.5.0",
     "@vueuse/nuxt": "13.5.0",
-    "typescript": "5.8.3",
+    "typescript": "5.9.2",
     "unocss": "66.5.1",
     "vite": "6.3.6"
   }
