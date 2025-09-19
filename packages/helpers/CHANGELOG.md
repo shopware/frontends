@@ -1,5 +1,14 @@
 # @shopware/helpers
 
+## 1.6.0
+
+### Minor Changes
+
+- [#1985](https://github.com/shopware/frontends/pull/1985) [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986) Thanks [@mkucmus](https://github.com/mkucmus)! - Added methods to extract product info:
+  - `isProductOnSale`
+  - `isProductTopSeller`
+  - `getProductManufacturerName`
+
 ## 1.5.0
 
 ### Minor Changes
@@ -58,7 +67,6 @@
 - [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
 
 - [#1056](https://github.com/shopware/frontends/pull/1056) [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04) Thanks [@patzick](https://github.com/patzick)! - Removed deprecations from the package:
-
   - `getProductThumbnailUrl` is removed. Use `getSmallestThumbnailUrl` instead.
   - internal method `_debounce` is removed.
   - internal method `_parseUrlQuery` is removed.
