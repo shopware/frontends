@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { apiClient } = useShopwareContext();
-// const { notify } = useNotification();
+const toast = useToast();
 const employees = ref([]);
 
 /**
@@ -31,11 +31,10 @@ const handleResendInvitation = async (employeeId: string) => {
         id: employeeId,
       },
     });
-    // notify({
-    //   title: "Invitation",
-    //   text: "Invitation has been resent successfully",
-    //   type: "success",
-    // });
+    toast.success({
+      title: "Invitation!",
+      message: "Invitation has been resent successfully",
+    });
   } catch (error) {
     console.error(error);
   }
@@ -123,13 +122,15 @@ const handleDeleteEmployee = async (employeeId: string) => {
             <button
               @click="handleResendInvitation(employee.id)"
               class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-              >Resend Invitation</button
             >
+              Resend Invitation
+            </button>
             <button
               @click="handleDeleteEmployee(employee.id)"
               class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-              >Delete</button
             >
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>

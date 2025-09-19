@@ -36,6 +36,8 @@ const model = defineModel<string>({
       :invalid="!!errorMessage"
       :autocomplete="autocomplete"
     />
-    <span v-if="errorMessage" class="text-red text-xs absolute">{{ errorMessage }}</span>
+    <span v-if="errorMessage" class="text-states-error text-xs absolute">{{
+      errorMessage
+    }}</span>
   </div>
 </template>
