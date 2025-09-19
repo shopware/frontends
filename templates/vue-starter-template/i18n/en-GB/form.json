@@ -42,6 +42,7 @@
     "promoCodePlaceholder": "Enter promo code",
     "searchPlaceholder": "Search products",
     "chooseState": "Choose state",
-    "state": "State"
+    "state": "State",
+    "loading": "Loading..."
   }
 }

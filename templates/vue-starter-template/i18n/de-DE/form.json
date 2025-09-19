@@ -42,6 +42,7 @@
     "promoCodePlaceholder": "Promo-Code eingeben",
     "searchPlaceholder": "Produkte suchen",
     "chooseState": "Wählen Sie den Staat",
-    "state": "Zustand"
+    "state": "Zustand",
+    "loading": "Lädt..."
   }
 }
