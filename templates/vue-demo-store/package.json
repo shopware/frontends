@@ -37,7 +37,7 @@
     "@shopware/api-gen": "canary",
     "nuxt": "4.1.2",
     "vite": "6.3.6",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   },
   "engines": {
     "node": "^20.x || ^22.x"
