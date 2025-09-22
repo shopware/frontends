@@ -8,9 +8,10 @@ const { id = "", dataTestId = "" } = defineProps<{
   dataTestId?: string;
 }>();
 
-const { apiClient } = useShopwareContext();
 const nuxtApp = useNuxtApp();
+const { apiClient } = useShopwareContext();
 const { defaultCSRCacheLifetime } = useAppConfig();
+
 const {
   data: salutationData,
   status,

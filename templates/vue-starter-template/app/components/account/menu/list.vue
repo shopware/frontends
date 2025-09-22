@@ -26,7 +26,7 @@ function handleLogout() {
     </li>
     <li>
       <AccountMenuElement
-        :link="formatLink('/account/addresses')"
+        :link="formatLink('/account/address')"
         :label="$t('account.menu.addresses')"
       />
     </li>
