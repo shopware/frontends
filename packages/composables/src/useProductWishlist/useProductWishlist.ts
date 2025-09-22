@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { Ref } from "vue";
+import type { ComputedRef } from "vue";
 import { useLocalWishlist, useSyncWishlist, useUser } from "#imports";
 
 export type UseProductWishlistReturn = {
@@ -14,7 +14,7 @@ export type UseProductWishlistReturn = {
   /**
    * Indicates whether a product is in wishlist
    */
-  isInWishlist: Ref<boolean>;
+  isInWishlist: ComputedRef<boolean>;
 };
 
 /**

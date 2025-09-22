@@ -5,6 +5,11 @@
       "private": "Private",
       "business": "Company"
     },
+    "quantitySelect": {
+      "label": "Quantity",
+      "increaseButton": "Increase quantity",
+      "decreaseButton": "Decrease quantity"
+    },
     "salutation": "Salutation",
     "chooseSalutation": "Choose salutation...",
     "firstName": "First name",
@@ -37,6 +42,7 @@
     "promoCodePlaceholder": "Enter promo code",
     "searchPlaceholder": "Search products",
     "chooseState": "Choose state",
-    "state": "State"
+    "state": "State",
+    "loading": "Loading..."
   }
 }
