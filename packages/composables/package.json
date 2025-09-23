@@ -71,7 +71,7 @@
     "@vue/test-utils": "2.4.6",
     "happy-dom": "18.0.1",
     "tsconfig": "workspace:*",
-    "typescript": "5.8.3",
+    "typescript": "5.9.2",
     "unbuild": "2.0.0",
     "vitest": "3.2.4",
     "vue": "3.5.17"
