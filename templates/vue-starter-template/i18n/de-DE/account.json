@@ -45,12 +45,16 @@
       "subHeader": "Überprüfen Sie Ihre persönlichen Daten.",
       "personalDataSectionHeader": "Persönliche Daten",
       "loginDataSectionHeader": "Login-Daten",
+      "changeEmailButton": "Email-Adresse ändern",
+      "changePasswordButton": "Passwort ändern",
       "form": {
         "accountType": "Kontotyp",
         "firstName": "Vorname",
         "lastName": "Nachname",
         "company": "Firma",
-        "vatIds": "Umsatzsteuer-Identifikationsnummer"
+        "vatIds": "Umsatzsteuer-Identifikationsnummer",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "Daten wurden aktualisiert."
       }
     }
   }

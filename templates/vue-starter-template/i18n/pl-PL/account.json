@@ -45,12 +45,16 @@
       "subHeader": "Sprawdź swoje dane osobowe.",
       "personalDataSectionHeader": "Dane osobowe",
       "loginDataSectionHeader": "Dane logowania",
+      "changeEmailButton": "Zmień email",
+      "changePasswordButton": "Zmień hasło",
       "form": {
         "accountType": "Typ konta",
         "firstName": "Imię",
         "lastName": "Nazwisko",
         "company": "Firma",
-        "vatIds": "Numer identyfikacji podatkowej"
+        "vatIds": "Numer identyfikacji podatkowej",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Dane zostały zaktualizowane."
       }
     }
   }

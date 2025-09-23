@@ -3,9 +3,14 @@ const model = defineModel<string>({
   required: true,
 });
 
-const { id = "", dataTestId = "" } = defineProps<{
+const {
+  id = "",
+  dataTestId = "",
+  errorMessage = undefined,
+} = defineProps<{
   id?: string;
   dataTestId?: string;
+  errorMessage?: string;
 }>();
 
 const nuxtApp = useNuxtApp();
@@ -43,6 +48,7 @@ const {
 );
 
 const isLoading = computed(() => status === "pending");
+const errorMessageText = computed(() => (error ? error : errorMessage));
 </script>
 <template>
   <FormDropdownField
@@ -54,5 +60,7 @@ const isLoading = computed(() => status === "pending");
     :data-testid="dataTestId"
     :loading="isLoading"
   />
-  <small v-if="error" class="text-states-error">{{ error }}</small>
+  <small v-if="errorMessageText" class="text-states-error">{{
+    errorMessageText
+  }}</small>
 </template>

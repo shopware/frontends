@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Validation } from "@vuelidate/core";
-
 const AccountType = {
   private: "private",
   business: "business",
@@ -8,15 +6,6 @@ const AccountType = {
 
 type AccountTypeUnion = (typeof AccountType)[keyof typeof AccountType];
 
-// const state = ref({
-//   firstName: "",
-//   lastName: "",
-//   salutationId: "",
-//   title: "",
-//   accountType: AccountType.private,
-//   company: "",
-//   vatIds: "",
-// });
 const state = defineModel<{
   firstName: string;
   lastName: string;
@@ -33,8 +22,8 @@ const emit = defineEmits<{
   submit: [];
 }>();
 
-const { $v } = defineProps<{
-  validation: Ref<Validation>;
+const { validation: $v = undefined } = defineProps<{
+  validation?: unknown;
 }>();
 
 const handleSubmit = () => {
@@ -42,23 +31,31 @@ const handleSubmit = () => {
 };
 </script>
 <template>
-  <form class="flex flex-col gap-2" @submit.prevent="handleSubmit">
+  <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
     <div class="w-[240px]">
-      <FormSalutationSelect v-model="state.salutationId" />
+      <FormSalutationSelect
+        v-model="state.salutationId"
+        :errorMessage="$v?.salutationId?.$errors[0]?.$message"
+      />
     </div>
     <div class="w-[240px]">
-      <FormAccountTypeSelect v-model="state.accountType" />
+      <FormAccountTypeSelect
+        v-model="state.accountType"
+        :errorMessage="$v?.accountType?.$errors[0]?.$message"
+      />
     </div>
     <div class="flex gap-2">
       <FormInputField
         class="w-full"
         v-model="state.firstName"
         :label="$t('account.profile.form.firstName')"
+        :errorMessage="$v?.firstName?.$errors[0]?.$message"
       />
       <FormInputField
         class="w-full"
         v-model="state.lastName"
         :label="$t('account.profile.form.lastName')"
+        :errorMessage="$v?.lastName?.$errors[0]?.$message"
       />
     </div>
 
@@ -67,13 +64,17 @@ const handleSubmit = () => {
         class="w-full"
         v-model="state.company"
         :label="$t('account.profile.form.company')"
+        :errorMessage="$v?.company?.$errors[0]?.$message"
       />
       <FormInputField
         class="w-full"
         v-model="state.vatIds"
         :label="$t('account.profile.form.vatIds')"
+        :errorMessage="$v?.vatIds?.$errors[0]?.$message"
       />
     </div>
-    <FormBaseButton type="submit"> bla bla </FormBaseButton>
+    <FormBaseButton type="submit">
+      {{ $t("account.profile.form.buttonSubmit") }}
+    </FormBaseButton>
   </form>
 </template>

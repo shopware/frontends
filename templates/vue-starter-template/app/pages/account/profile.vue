@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
+import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
+import { onBeforeMount } from "vue";
 import personalDataFormRules from "../../utils/validation/rules/personalDataFormRules";
 
-const { user, refreshUser, updatePersonalInfo } = useUser();
+const { user, updatePersonalInfo } = useUser();
+const { pushError, pushSuccess } = useNotifications();
 
 const state = ref({
   firstName: "",
@@ -28,7 +30,10 @@ onBeforeMount(() => {
   }
 });
 
-const $v = useVuelidate(personalDataFormRules(state.accountType), state);
+const $v = useVuelidate(
+  personalDataFormRules(computed(() => state.value.accountType)),
+  state,
+);
 
 async function handleSubmit() {
   await $v.value.$validate();
@@ -36,7 +41,17 @@ async function handleSubmit() {
     return;
   }
 
-  // await updatePersonalInfo(state.value);
+  try {
+    await updatePersonalInfo(state.value);
+    pushSuccess($t("account.profile.form.successUpdate"));
+  } catch (error) {
+    if (error instanceof ApiClientError)
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
+        }
+      }
+  }
 }
 </script>
 
@@ -66,6 +81,7 @@ async function handleSubmit() {
           class="mb-4"
           :title="$t('account.profile.loginDataSectionHeader')"
         />
+        <AccountPersonalLoginData :email="user?.email" />
       </div>
     </div>
   </NuxtLayout>

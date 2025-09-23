@@ -1,8 +1,8 @@
-import { customValidators, requiredIf } from "@@/i18n/utils/i18n-validators";
-import { computed, Ref } from "vue";
+import { customValidators } from "@@/i18n/utils/i18n-validators";
+import { type Ref, computed } from "vue";
 
 export default function (accountType: Ref<string>) {
-  const { required } = customValidators();
+  const { required, requiredIf } = customValidators();
   return computed(() => ({
     firstName: {
       required,

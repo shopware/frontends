@@ -3,9 +3,14 @@ type AccountType = "private" | "business";
 
 const model = defineModel<AccountType>();
 
-const { dataTestId = "", id = "" } = defineProps<{
+const {
+  dataTestId = "",
+  id = "",
+  errorMessage = undefined,
+} = defineProps<{
   dataTestId?: string;
   id?: string;
+  errorMessage?: string;
 }>();
 
 const { t } = useI18n();
@@ -28,5 +33,6 @@ const accountTypeOptions = [
     :label="$t('form.accountType.title')"
     :options="accountTypeOptions"
     :data-testid="dataTestId"
+    :errorMessage="errorMessage"
   />
 </template>
