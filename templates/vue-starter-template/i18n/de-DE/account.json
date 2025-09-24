@@ -39,6 +39,18 @@
           "unsubscribed": "Newsletter-Abbestellung"
         }
       }
+    },
+    "address": {
+      "header": "Adressen",
+      "subHeader": "View your current default addresses or add new ones.",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "availableAddressesSectionHeader": "Verfügbare Adressen",
+      "addAddressButton": "Neue Adresse hinzufügen",
+      "editAddressButton": "Adresse bearbeiten",
+      "deleteAddressButton": "Adresse löschen",
+      "useAsDefaultBillingAddressButton": "Als Standardrechnungsadresse verwenden",
+      "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden"
     }
   }
 }
