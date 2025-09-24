@@ -4,7 +4,7 @@ const { email } = defineProps<{
 }>();
 </script>
 <template>
-  <div class="flex gap-4">
+  <div class="flex-col lg:flex-row flex gap-4">
     <div class="flex-grow">{{ email }}</div>
     <AccountActionLink>
       <Icon name="shopware:envelope" />

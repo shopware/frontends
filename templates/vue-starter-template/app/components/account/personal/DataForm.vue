@@ -44,7 +44,7 @@ const handleSubmit = () => {
         :errorMessage="$v?.accountType?.$errors[0]?.$message"
       />
     </div>
-    <div class="flex gap-2">
+    <div class="flex-col md:flex-row flex gap-2">
       <FormInputField
         class="w-full"
         v-model="state.firstName"
@@ -59,7 +59,10 @@ const handleSubmit = () => {
       />
     </div>
 
-    <div class="flex gap-2" v-if="state.accountType === AccountType.business">
+    <div
+      class="flex-col md:flex-row flex gap-2"
+      v-if="state.accountType === AccountType.business"
+    >
       <FormInputField
         class="w-full"
         v-model="state.company"
