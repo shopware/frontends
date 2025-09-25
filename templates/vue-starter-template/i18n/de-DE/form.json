@@ -5,6 +5,11 @@
       "private": "Privat",
       "business": "Gewerblich"
     },
+    "quantitySelect": {
+      "label": "Menge",
+      "increaseButton": "Zincrease Menge",
+      "decreaseButton": "Vermindern Menge"
+    },
     "salutation": "Anrede",
     "chooseSalutation": "Anrede wählen...",
     "firstName": "Vorname",
@@ -37,6 +42,7 @@
     "promoCodePlaceholder": "Promo-Code eingeben",
     "searchPlaceholder": "Produkte suchen",
     "chooseState": "Wählen Sie den Staat",
-    "state": "Zustand"
+    "state": "Zustand",
+    "loading": "Lädt..."
   }
 }

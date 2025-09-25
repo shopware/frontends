@@ -38,15 +38,15 @@
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "defu": "6.1.4",
-    "h3": "1.15.3",
+    "h3": "1.15.4",
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.0.1",
-    "nuxt": "4.0.1",
+    "nuxt": "4.1.2",
     "tsconfig": "workspace:*",
-    "typescript": "5.8.3",
+    "typescript": "5.9.2",
     "unbuild": "2.0.0"
   }
 }
