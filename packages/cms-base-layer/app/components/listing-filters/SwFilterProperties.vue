@@ -12,9 +12,9 @@
   "
 >
 import { getTranslatedProperty } from "@shopware/helpers";
-import { computed, inject, isRef, ref } from "vue";
+import { computed, inject, ref } from "vue";
+import type { Ref } from "vue";
 import type { Schemas } from "#shopware";
-import Checkbox from "../ui/SwitchButton.vue";
 
 const props = defineProps<{
   filter: ListingFilter;
@@ -25,9 +25,7 @@ const emits =
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
 // selectedOptionIds can be a computed ref provided by the parent or a plain array fallback
-const selectedOptionIds = inject<
-  string[] | (() => string[]) | { value: string[] }
->("selectedOptionIds", []);
+const selectedOptionIds = inject<Ref<string[]>>("selectedOptionIds", ref([]));
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
@@ -36,10 +34,7 @@ const toggle = () => {
 const getChecked = (id: string) =>
   computed<boolean>({
     get: () => {
-      const ids = isRef(selectedOptionIds)
-        ? selectedOptionIds.value
-        : selectedOptionIds || [];
-      return !!ids?.includes?.(id);
+      return !!selectedOptionIds?.value?.includes?.(id);
     },
     set: () => {
       emits("select-value", {
@@ -73,7 +68,7 @@ const getChecked = (id: string) =>
         <legend class="sr-only">{{ props.filter.name }}</legend>
         <div
           v-for="option in props.filter.options || props.filter.entities"
-          :key="`${option.id}-${(isRef(selectedOptionIds) ? selectedOptionIds.value : selectedOptionIds || []).includes(option.id)}`"
+          :key="`${option.id}-${(selectedOptionIds).includes(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
