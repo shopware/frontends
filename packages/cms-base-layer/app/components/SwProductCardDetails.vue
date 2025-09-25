@@ -24,10 +24,10 @@ defineProps<{
 </script>
 <template>
   <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
-    <div class="flex flex-col items-start justify-start gap-2 self-stretch">
+    <div class="flex flex-col items-start justify-start gap-2 self-stretch flex-1">
       <div class="flex flex-col items-start justify-start gap-1 self-stretch">
         <div v-if="productManufacturer"
-          class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight">
+          class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight min-h-[1.25rem]">
           {{ productManufacturer }}
         </div>
 
