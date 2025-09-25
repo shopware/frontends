@@ -255,7 +255,7 @@ Prepare your config file named **api-gen.config.json**:
 }
 ```
 
-### `split`
+### `split` - Experimental
 
 Split an OpenAPI schema into multiple files, organized by tags or paths. This is useful for breaking down a large schema into smaller, more manageable parts.
 
