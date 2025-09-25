@@ -159,9 +159,9 @@ describe("split command", () => {
       filterBy: "tag1",
     });
 
-    const tag1File = resolve(outputDir, "tag1.json");
+    const tag1File = resolve(outputDir, "output", "tag1.json");
     expect(existsSync(tag1File)).toBe(true);
-    const tag2File = resolve(outputDir, "tag2.json");
+    const tag2File = resolve(outputDir, "output", "tag2.json");
     expect(existsSync(tag2File)).toBe(false);
     process.chdir(originalCwd);
   });
