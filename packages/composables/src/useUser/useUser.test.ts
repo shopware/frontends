@@ -206,14 +206,18 @@ describe("useUser", () => {
     expect(vm.country).toEqual({ name: "Poland", id: "2de9ecc24e" });
   });
 
-  it("updatePersonalInfo", async () => {
+  it("updatePersonalInfo - business", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
     await vm.updatePersonalInfo({
       firstName: "test",
       lastName: "test",
       salutationId: "d5e543063dd642b48ef94b02d68e5785",
       title: "",
+      accountType: "business",
+      company: "test",
+      vatIds: ["1234567890"],
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -224,6 +228,59 @@ describe("useUser", () => {
           lastName: "test",
           salutationId: "d5e543063dd642b48ef94b02d68e5785",
           title: "",
+          accountType: "business",
+          company: "test",
+          vatIds: ["1234567890"],
+        },
+      }),
+    );
+
+    await vm.updatePersonalInfo({
+      firstName: "test",
+      lastName: "test",
+      salutationId: "d5e543063dd642b48ef94b02d68e5785",
+      title: "",
+      accountType: "business",
+      company: "test",
+      vatIds: "1234567890" as unknown as [string, ...string[]],
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("changeProfile"),
+      expect.objectContaining({
+        body: {
+          firstName: "test",
+          lastName: "test",
+          salutationId: "d5e543063dd642b48ef94b02d68e5785",
+          title: "",
+          accountType: "business",
+          company: "test",
+          vatIds: ["1234567890"],
+        },
+      }),
+    );
+  });
+
+  it("updatePersonalInfo - private", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.updatePersonalInfo({
+      firstName: "test",
+      lastName: "test",
+      salutationId: "d5e543063dd642b48ef94b02d68e5785",
+      title: "",
+      accountType: "private",
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("changeProfile"),
+      expect.objectContaining({
+        body: {
+          firstName: "test",
+          lastName: "test",
+          salutationId: "d5e543063dd642b48ef94b02d68e5785",
+          title: "",
+          accountType: "private",
         },
       }),
     );
