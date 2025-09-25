@@ -108,13 +108,13 @@ export async function split(options: SplitOptions): Promise<void> {
       const outputPath = resolve(outputDir || "output", fileName);
 
       mkdirSync(outputDir || "output", { recursive: true });
-      const formatedSchema = await format(
+      const formattedSchema = await format(
         JSON.stringify(finalSchema, null, 2),
         {
           parser: "json",
         },
       );
-      writeFileSync(outputPath, formatedSchema);
+      writeFileSync(outputPath, formattedSchema);
       console.log(`Generated ${outputPath}`);
     }
   } else if (finalSplitBy === "paths") {
