@@ -105,9 +105,9 @@ export async function split(options: SplitOptions): Promise<void> {
       const finalSchema = removeUnusedComponents(newSchema, usedComponents);
 
       const fileName = `${tag.name.replace(/ /g, "-")}.json`.toLowerCase();
-      const outputPath = resolve(outputDir || ".", fileName);
+      const outputPath = resolve(outputDir || "output", fileName);
 
-      mkdirSync(outputDir || ".", { recursive: true });
+      mkdirSync(outputDir || "output", { recursive: true });
       const formatedSchema = await format(
         JSON.stringify(finalSchema, null, 2),
         {
