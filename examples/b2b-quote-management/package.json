@@ -26,10 +26,10 @@
     "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
     "@types/node": "22.13.14",
-    "@vitejs/plugin-vue": "5.2.4",
-    "@vueuse/core": "13.3.0",
-    "unocss": "66.5.1",
-    "vite": "6.3.6",
-    "vue-tsc": "2.2.10"
+    "@vitejs/plugin-vue": "6.0.1",
+    "@vueuse/core": "13.9.0",
+    "unocss": "66.5.2",
+    "vite": "7.1.7",
+    "vue-tsc": "3.0.8"
   }
 }
