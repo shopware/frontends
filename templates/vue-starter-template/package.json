@@ -34,14 +34,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/icon": "^1.15.0",
+    "@nuxt/icon": "^2.0.0",
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.5.1",
-    "@vueuse/core": "13.5.0",
-    "@vueuse/nuxt": "13.5.0",
+    "@unocss/nuxt": "66.5.2",
+    "@vueuse/core": "13.9.0",
+    "@vueuse/nuxt": "13.9.0",
     "typescript": "5.9.2",
-    "unocss": "66.5.1",
-    "vite": "6.3.6"
+    "unocss": "66.5.2",
+    "vite": "7.1.7"
   }
 }
