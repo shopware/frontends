@@ -151,54 +151,47 @@ compareRouteQueryWithInitialListing();
 </script>
 
 <template>
-  <div class="bg-white">
-    <div class="max-w-2xl mx-auto lg:max-w-full">
-      <div class="mt-6">
-        <div v-if="!loading" ref="productListElement"
-          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8">
-          <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
-            :is-product-listing="isProductListing" class="w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8" />
-        </div>
-        <div v-if="loading" data-testid="loading" class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8">
-          <ProductCardSkeleton v-for="index in limit" :key="index"
-            class="w-full mb-8 sm:w-3/7 lg:w-2/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8" />
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8">
-          <div class="text-center place-self-center">
-            <SwPagination :total="getTotalPagesCount" :current="Number(getCurrentPage)" @change-page="changePage" />
-          </div>
-          <div class="text-center place-self-center mt-2 lg:mt-0">
-            <div class="inline-block align-top text-center md:text-left" data-testid="listing-pagination-limit-box">
-              <label for="limit" class="inline mr-4" data-testid="listing-pagination-limit-label">{{
-                translations.listing.perPage }}</label>
-              <select id="limit" v-model="limit" name="limitchoices"
-                class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                data-testid="listing-pagination-limit-select" @change="changeLimit">
-                <option :value="1">1 {{ translations.listing.product }}</option>
-                <option :value="15">
-                  15 {{ translations.listing.products }}
-                </option>
-                <option :value="30">
-                  30 {{ translations.listing.products }}
-                </option>
-                <option :value="45">
-                  45 {{ translations.listing.products }}
-                </option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
+  <div class="max-w-2xl mx-auto lg:max-w-full">
+    <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-gray-500">
+      {{ translations.listing.noProducts }}
+    </div>
+    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-8">
+      <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
+        :is-product-listing="isProductListing" class="w-full mb-8" />
+    </div>
+    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-8 p-4 md:p-6 lg:p-8">
+      <ProductCardSkeleton v-for="index in limit" :key="index"
+        class="w-full mb-8" />
+    </div>
+    <div v-if="!loading && getTotalPagesCount > 1" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8">
+      <div class="text-center place-self-center">
+        <SwPagination :total="getTotalPagesCount" :current="Number(getCurrentPage)" @change-page="changePage" />
+      </div>
+      <div class="text-center place-self-center mt-2 lg:mt-0">
+        <div class="inline-block align-top text-center md:text-left" data-testid="listing-pagination-limit-box">
+          <label for="limit" class="inline mr-4" data-testid="listing-pagination-limit-label">{{
+            translations.listing.perPage }}</label>
+          <select id="limit" v-model="limit" name="limitchoices"
+            class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            data-testid="listing-pagination-limit-select" @change="changeLimit">
+            <option :value="1">1 {{ translations.listing.product }}</option>
+            <option :value="15">
+              15 {{ translations.listing.products }}
+            </option>
+            <option :value="30">
+              30 {{ translations.listing.products }}
+            </option>
+            <option :value="45">
+              45 {{ translations.listing.products }}
+            </option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
           </div>
         </div>
       </div>
-      <!-- <div v-else>
-        <h2 class="mx-auto text-center">
-          {{ translations.listing.noProducts }}
-        </h2>
-      </div> -->
     </div>
   </div>
 </template>

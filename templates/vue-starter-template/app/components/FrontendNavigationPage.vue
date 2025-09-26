@@ -65,6 +65,6 @@ useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 
 <template>
-  <LayoutBreadcrumbs v-if="route.path != '/'" />
+  <!-- <LayoutBreadcrumbs v-if="route.path != '/'" /> -->
   <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
 </template>

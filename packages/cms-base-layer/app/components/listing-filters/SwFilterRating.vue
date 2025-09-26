@@ -45,47 +45,38 @@ const toggle = () => {
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
-      <button
-        type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
-        @click="toggle"
-      >
-        <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
-        }}</span>
-        <span class="ml-6 flex items-center">
-          <i
-            :class="[
-              !isFilterVisible
-                ? 'i-carbon-chevron-down'
-                : 'i-carbon-chevron-up',
-            ]"
-          />
-        </span>
-      </button>
-    </h3>
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible">
-        <div class="space-y-6 mt-4">
-          <div class="flex">
-            <div
-              v-for="i in 5"
-              :key="i"
-              class="h-6 w-6 c-yellow-500"
-              :class="{
-                'i-carbon-star-filled': displayedScore >= i,
-                'i-carbon-star': displayedScore < i,
-              }"
-              @mouseleave="isHoverActive = false"
-              @click="onChangeRating()"
-              @mouseover="hoverRating(i)"
-            />
+  <div class="self-stretch flex flex-col justify-start items-start gap-3">
+    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
+      <div class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+            {{ props.filter.label }}
           </div>
         </div>
+        <div class="w-6 h-6 relative">
+          <button @click="toggle" class="w-full h-full flex items-center justify-center focus:outline-none bg-transparent">
+            <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
+            <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
+          </button>
+        </div>
       </div>
-    </transition>
+    </div>
+    <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div class="flex flex-row items-center gap-2 mt-2">
+        <div
+          v-for="i in 5"
+          :key="i"
+          class="h-6 w-6 cursor-pointer"
+          :class="{
+            'i-carbon-star-filled text-yellow-500': displayedScore >= i,
+            'i-carbon-star text-gray-300': displayedScore < i,
+          }"
+          @mouseleave="isHoverActive = false"
+          @click="hoverRating(i); onChangeRating()"
+          @mouseover="hoverRating(i)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>

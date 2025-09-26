@@ -67,7 +67,7 @@ onMounted(async () => {
 <template>
   <div>
     <div
-      v-if="categoryNavigation && categoryNavigation.length"
+      v-if="false"
       class="cms-element-category-navigation max-w-screen-xl mx-auto"
     >
       <h2

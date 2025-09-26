@@ -22,7 +22,7 @@ provide("swNavigation-footer-navigation", footerData);
   <div>
     <LayoutHeader />
     <LayoutNotifications />
-    <main class="mx-auto">
+    <main class="">
       <slot />
     </main>
     <LayoutFooter />
