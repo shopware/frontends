@@ -134,7 +134,7 @@ onBeforeUnmount(() => {
     <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
       <div class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1">
         <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['inter'] leading-normal">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
             {{ props.filter.label }}
           </div>
         </div>
@@ -155,7 +155,7 @@ onBeforeUnmount(() => {
               type="number"
               :placeholder="translations.listing.min"
               v-model.number="prices.min"
-              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['inter'] leading-tight"
+              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
               @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
               :min="props.filter.min"
               :max="prices.max"
@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
               type="number"
               :placeholder="translations.listing.max"
               v-model.number="prices.max"
-              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['inter'] leading-tight"
+              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
               @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
               :min="prices.min"
               :max="props.filter.max"

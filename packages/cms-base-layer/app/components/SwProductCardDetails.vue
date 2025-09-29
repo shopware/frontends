@@ -27,7 +27,7 @@ defineProps<{
     <div class="flex flex-col items-start justify-start gap-2 self-stretch flex-1">
       <div class="flex flex-col items-start justify-start gap-1 self-stretch">
         <div v-if="productManufacturer"
-          class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight min-h-[1.25rem]">
+          class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight min-h-[1.25]">
           {{ productManufacturer }}
         </div>
 

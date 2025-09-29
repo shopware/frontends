@@ -261,7 +261,7 @@ const handleSortingClick = (key: string) => {
   <div>
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
-        <div class="flex-1 text-surface-on-surface text-base font-bold font-['inter'] leading-normal mb-8">
+        <div class="flex-1 text-surface-on-surface text-base font-bold font-['Inter'] leading-normal mb-8">
           {{ translations.listing.filters }}
         </div>
         <div ref="dropdownElement" class="flex items-center">
