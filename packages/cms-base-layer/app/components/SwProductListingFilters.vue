@@ -144,13 +144,18 @@ const onOptionSelectToggle = async ({
   code,
   value,
 }: {
-  code: keyof FilterState;
+  code: string;
   value: string | number | boolean;
 }) => {
   try {
-    if (["properties", "manufacturer"].includes(code as string)) {
+    if (!isValidFilterCode(code)) {
+      console.warn(`Invalid filter code: ${code}`);
+      return;
+    }
+
+    if (["properties", "manufacturer"].includes(code)) {
       const filterSet = sidebarSelectedFilters[code] as Set<string>;
-      if (!filterSet) return; // Guard clause
+      if (!filterSet) return;
 
       const stringValue = String(value);
       if (filterSet.has(stringValue)) {
@@ -175,11 +180,15 @@ const onOptionSelectToggle = async ({
   }
 };
 
+function isValidFilterCode(code: string): code is keyof FilterState {
+  return code in sidebarSelectedFilters;
+}
+
 const executeSearch = async () => {
   try {
     await search(searchCriteriaForRequest.value);
     const query = filtersToQuery(searchCriteriaForRequest.value);
-    const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
+    const { limit: _, ...queryWithoutLimit } = query;
 
     await router.push({
       query: queryWithoutLimit as LocationQueryRaw,
@@ -237,6 +246,7 @@ async function invokeCleanFilters() {
 const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
+
 const dropdownElement = useTemplateRef("dropdownElement");
 onClickOutside(dropdownElement, () => {
   isSortMenuOpen.value = false;
@@ -248,85 +258,56 @@ const handleSortingClick = (key: string) => {
 };
 </script>
 <template>
-    <!-- Sidebar Filters -->
-  <div class="">
-      <div class="self-stretch flex flex-col justify-start items-start gap-4">
-        <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
-          <div class="flex-1 text-surface-on-surface text-base font-bold font-['inter'] leading-normal mb-8">
-            {{ translations.listing.filters }}
-          </div>
-          <!-- Sort Dropdown -->
-          <div ref="dropdownElement" class="flex items-center">
-            <div class="relative inline-block text-left">
-              <button
-                type="button"
-                @click="isSortMenuOpen = !isSortMenuOpen"
-                class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
-                id="menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                {{ translations.listing.sort }}
-                <span class="ml-1">
-                  <span v-if="!isSortMenuOpen" class="i-carbon-chevron-down h-5 w-5"></span>
-                  <span v-else class="i-carbon-chevron-up h-5 w-5"></span>
-                </span>
-              </button>
-              <div
-                :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-                tabindex="-1"
-              >
-                <div class="py-1" role="none">
-                  <button
-                    v-for="sorting in getSortingOrders"
-                    :key="sorting.key"
-                    @click="handleSortingClick(sorting.key)"
-                    :class="[
-                      sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-surface-on-surface'
-                        : 'text-surface-on-surface-variant',
-                    ]"
-                    class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-                    role="menuitem"
-                    tabindex="-1"
-                  >
-                    {{ sorting.label }}
-                  </button>
-                </div>
+  <div>
+    <div class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
+        <div class="flex-1 text-surface-on-surface text-base font-bold font-['inter'] leading-normal mb-8">
+          {{ translations.listing.filters }}
+        </div>
+        <div ref="dropdownElement" class="flex items-center">
+          <div class="relative inline-block text-left">
+            <button type="button" @click="isSortMenuOpen = !isSortMenuOpen"
+              class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
+              id="menu-button" aria-expanded="false" aria-haspopup="true">
+              {{ translations.listing.sort }}
+              <span class="ml-1">
+                <span v-if="!isSortMenuOpen" class="i-carbon-chevron-down h-5 w-5"></span>
+                <span v-else class="i-carbon-chevron-up h-5 w-5"></span>
+              </span>
+            </button>
+            <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
+              class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+              role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+              <div class="py-1" role="none">
+                <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
+                  :class="[
+                    sorting.key === getCurrentSortingOrder
+                      ? 'font-medium text-surface-on-surface'
+                      : 'text-surface-on-surface-variant',
+                  ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
+                  role="menuitem" tabindex="-1">
+                  {{ sorting.label }}
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- Filters List -->
-      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-if="getInitialFilters.length">
-        <div
-          v-for="filter in getInitialFilters"
-          :key="`${filter?.id || filter?.code}`"
-          class="mb-2 w-full"
-        >
-          <SwProductListingFilter
-            @select-filter-value="onOptionSelectToggle"
-            :selected-filters="getCurrentFilters"
-            :filter="filter"
-            class="relative"
-          />
-        </div>
-        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-          <button
-            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
-            @click="invokeCleanFilters"
-            type="button"
-          >
-            {{ translations.listing.resetFilters }}
-            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-          </button>
-        </div>
+    </div>
+    <!-- Filters List -->
+    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-if="getInitialFilters.length">
+      <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
+        <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
+          :filter="filter" class="relative" />
+      </div>
+      <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
+        <button
+          class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+          @click="invokeCleanFilters" type="button">
+          {{ translations.listing.resetFilters }}
+          <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+        </button>
       </div>
     </div>
-    <!-- Product Listing (right side) would go here in the main layout -->
+  </div>
 </template>
