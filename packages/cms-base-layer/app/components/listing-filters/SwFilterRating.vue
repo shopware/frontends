@@ -68,8 +68,8 @@ const toggle = () => {
           :key="i"
           class="h-6 w-6 cursor-pointer"
           :class="{
-            'i-carbon-star-filled text-yellow-500': displayedScore >= i,
-            'i-carbon-star text-gray-300': displayedScore < i,
+            'i-carbon-star-filled text-states-warning': displayedScore >= i,
+            'i-carbon-star text-surface-on-surface-disabled': displayedScore < i,
           }"
           @mouseleave="isHoverActive = false"
           @click="hoverRating(i); onChangeRating()"

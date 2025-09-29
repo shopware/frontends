@@ -152,7 +152,7 @@ compareRouteQueryWithInitialListing();
 
 <template>
   <div class="max-w-2xl mx-auto lg:max-w-full">
-    <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-gray-500">
+    <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-surface-on-surface-variant">
       {{ translations.listing.noProducts }}
     </div>
     <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-8">
@@ -172,7 +172,7 @@ compareRouteQueryWithInitialListing();
           <label for="limit" class="inline mr-4" data-testid="listing-pagination-limit-label">{{
             translations.listing.perPage }}</label>
           <select id="limit" v-model="limit" name="limitchoices"
-            class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            class="inline appearance-none bg-surface-surface border border-outline-outline hover:border-outline-outline-primary px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             data-testid="listing-pagination-limit-select" @change="changeLimit">
             <option :value="1">1 {{ translations.listing.product }}</option>
             <option :value="15">
@@ -185,7 +185,7 @@ compareRouteQueryWithInitialListing();
               45 {{ translations.listing.products }}
             </option>
           </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-surface-on-surface-variant">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
             </svg>

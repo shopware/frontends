@@ -25,6 +25,15 @@ type Translations = {
   };
 };
 
+type FilterState = {
+  manufacturer: Set<string>;
+  properties: Set<string>;
+  "min-price": number | undefined;
+  "max-price": number | undefined;
+  rating: number | undefined;
+  "shipping-free": boolean | undefined;
+};
+
 let translations: Translations = {
   listing: {
     filters: "Filters",
@@ -49,23 +58,15 @@ const {
   search,
 } = useCategoryListing();
 
-const sidebarSelectedFilters: UnwrapNestedRefs<{
-  [key: string]: Set<string> | string | number | boolean | undefined;
-}> = reactive<{
-  manufacturer: Set<string>;
-  properties: Set<string>;
-  "min-price": string | number | undefined;
-  "max-price": string | number | undefined;
-  rating: string | number | undefined;
-  "shipping-free": boolean | undefined;
-}>({
-  manufacturer: new Set(),
-  properties: new Set(),
-  "min-price": undefined,
-  "max-price": undefined,
-  rating: undefined,
-  "shipping-free": undefined,
-});
+const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
+  reactive<FilterState>({
+    manufacturer: new Set(),
+    properties: new Set(),
+    "min-price": undefined,
+    "max-price": undefined,
+    rating: undefined,
+    "shipping-free": undefined,
+  });
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
@@ -99,19 +100,41 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
   }));
 
 for (const param in route.query) {
-  if (Object.prototype.hasOwnProperty.call(sidebarSelectedFilters, param)) {
-    if (
-      sidebarSelectedFilters[param] &&
-      typeof sidebarSelectedFilters[param] === "object"
-    ) {
-      const elements = (route.query[param] as unknown as string).split("|");
-      for (const element of elements) {
-        sidebarSelectedFilters[param].add(element);
+  if (param in sidebarSelectedFilters) {
+    const queryValue = route.query[param];
+
+    // Skip arrays
+    if (Array.isArray(queryValue)) continue;
+
+    if (["manufacturer", "properties"].includes(param)) {
+      if (typeof queryValue === "string") {
+        const elements = queryValue.split("|");
+        const targetSet = sidebarSelectedFilters[
+          param as keyof FilterState
+        ] as Set<string>;
+        for (const element of elements) {
+          targetSet.add(element);
+        }
       }
-    } else {
-      const queryValue = route.query[param];
-      if (queryValue !== null && !Array.isArray(queryValue)) {
-        sidebarSelectedFilters[param] = queryValue;
+    } else if (queryValue && typeof queryValue === "string") {
+      // Fix: Use specific property assignments instead of generic keyof
+      if (param === "min-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["min-price"] = numValue;
+        }
+      } else if (param === "max-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["max-price"] = numValue;
+        }
+      } else if (param === "rating") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters.rating = numValue;
+        }
+      } else if (param === "shipping-free") {
+        sidebarSelectedFilters["shipping-free"] = queryValue === "true";
       }
     }
   }
@@ -121,31 +144,49 @@ const onOptionSelectToggle = async ({
   code,
   value,
 }: {
-  code: string;
+  code: keyof FilterState;
   value: string | number | boolean;
 }) => {
-  if (!["properties", "manufacturer"].includes(code)) {
-    sidebarSelectedFilters[code] = value;
-  } else {
-    const filterSet = sidebarSelectedFilters[code] as Set<string>;
-    const stringValue = String(value);
-    if (filterSet?.has(stringValue)) {
-      filterSet.delete(stringValue);
-    } else {
-      filterSet?.add(stringValue);
-    }
-  }
+  try {
+    if (["properties", "manufacturer"].includes(code as string)) {
+      const filterSet = sidebarSelectedFilters[code] as Set<string>;
+      if (!filterSet) return; // Guard clause
 
-  await executeSearch();
+      const stringValue = String(value);
+      if (filterSet.has(stringValue)) {
+        filterSet.delete(stringValue);
+      } else {
+        filterSet.add(stringValue);
+      }
+    } else {
+      if (code === "min-price" || code === "max-price") {
+        sidebarSelectedFilters[code] =
+          typeof value === "number" ? value : Number(value);
+      } else if (code === "rating") {
+        sidebarSelectedFilters[code] = Number(value);
+      } else if (code === "shipping-free") {
+        sidebarSelectedFilters[code] = Boolean(value);
+      }
+    }
+
+    await executeSearch();
+  } catch (error) {
+    console.error("Filter toggle failed:", error);
+  }
 };
 
 const executeSearch = async () => {
-  await search(searchCriteriaForRequest.value);
-  const query = filtersToQuery(searchCriteriaForRequest.value);
-  const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
-  await router.push({
-    query: queryWithoutLimit as LocationQueryRaw,
-  });
+  try {
+    await search(searchCriteriaForRequest.value);
+    const query = filtersToQuery(searchCriteriaForRequest.value);
+    const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
+
+    await router.push({
+      query: queryWithoutLimit as LocationQueryRaw,
+    });
+  } catch (error) {
+    console.error("Search execution failed:", error);
+  }
 };
 
 const clearFilters = () => {
@@ -160,17 +201,21 @@ const clearFilters = () => {
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",
   set: async (order: string): Promise<void> => {
-    await router.push({
-      query: {
-        ...route.query,
-        order,
-      },
-    });
+    try {
+      await router.push({
+        query: {
+          ...route.query,
+          order,
+        },
+      });
 
-    await changeCurrentSortingOrder(order, {
-      ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-      limit: route.query.limit ? Number(route.query.limit) : 15,
-    });
+      await changeCurrentSortingOrder(order, {
+        ...(route.query as unknown as operations["searchPage post /search"]["body"]),
+        limit: route.query.limit ? Number(route.query.limit) : 15,
+      });
+    } catch (error) {
+      console.error("Sorting order change failed:", error);
+    }
   },
 });
 
@@ -181,9 +226,14 @@ const selectedOptionIds = computed(() => [
 provide("selectedOptionIds", selectedOptionIds);
 
 async function invokeCleanFilters() {
-  clearFilters();
-  await executeSearch();
+  try {
+    clearFilters();
+    await executeSearch();
+  } catch (error) {
+    console.error("Clear filters failed:", error);
+  }
 }
+
 const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
@@ -200,7 +250,7 @@ const handleSortingClick = (key: string) => {
 <template>
     <!-- Sidebar Filters -->
   <div class="">
-      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-if="false">
+      <div class="self-stretch flex flex-col justify-start items-start gap-4">
         <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
           <div class="flex-1 text-surface-on-surface text-base font-bold font-['inter'] leading-normal mb-8">
             {{ translations.listing.filters }}
@@ -211,7 +261,7 @@ const handleSortingClick = (key: string) => {
               <button
                 type="button"
                 @click="isSortMenuOpen = !isSortMenuOpen"
-                class="group inline-flex justify-center bg-transparent text-base font-medium text-gray-700 hover:text-gray-900"
+                class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
                 id="menu-button"
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -224,7 +274,7 @@ const handleSortingClick = (key: string) => {
               </button>
               <div
                 :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-1000"
+                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
@@ -237,10 +287,10 @@ const handleSortingClick = (key: string) => {
                     @click="handleSortingClick(sorting.key)"
                     :class="[
                       sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-gray-900'
-                        : 'text-gray-500',
+                        ? 'font-medium text-surface-on-surface'
+                        : 'text-surface-on-surface-variant',
                     ]"
-                    class="block px-4 py-2 text-sm bg-transparent"
+                    class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
                     role="menuitem"
                     tabindex="-1"
                   >
@@ -268,7 +318,7 @@ const handleSortingClick = (key: string) => {
         </div>
         <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
           <button
-            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
             @click="invokeCleanFilters"
             type="button"
           >
