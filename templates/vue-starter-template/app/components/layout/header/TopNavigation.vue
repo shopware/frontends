@@ -29,6 +29,7 @@ const { formatLink } = useInternationalization(localePath);
               : ''
           "
           :to="formatLink(getCategoryRoute(navigationElement))"
+          @click="currentMenuPosition = undefined"
         >
           {{ getTranslatedProperty(navigationElement, "name") }}
         </NuxtLink>

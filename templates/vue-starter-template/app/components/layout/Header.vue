@@ -4,6 +4,8 @@ const { count: wishlistCount } = useWishlist();
 const { isLoggedIn } = useUser();
 const { push } = useRouter();
 const loginModalController = useModal();
+const sideMenuController = useSideMenuModal();
+
 const currentMenuPosition = ref<string | undefined>(undefined);
 
 const mobileSearchActive = ref(false);
@@ -28,7 +30,9 @@ function handleMyAccountClick() {
 <template>
   <div>
     <div class="border-b">
-      <div class="container mx-auto flex items-center justify-between py-3.5">
+      <div
+        class="container mx-auto flex items-center justify-between py-3.5 px-6 sm:px-0"
+      >
         <template v-if="!mobileSearchActive">
           <NuxtLink :to="formatLink('/')">
             <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
@@ -44,7 +48,10 @@ function handleMyAccountClick() {
             /></FormIconButton>
             <LayoutHeaderWishlistIcon :counter="wishlistCount" />
             <LayoutHeaderCartIcon :counter="cartCount" />
-            <LayoutHeaderMobileMenuIcon class="hidden max-sm:block" />
+            <LayoutHeaderMobileMenuIcon
+              class="hidden max-lg:block"
+              @click="sideMenuController.open"
+            />
           </div>
         </template>
         <template v-else>
@@ -62,14 +69,14 @@ function handleMyAccountClick() {
         </SharedModal>
       </ClientOnly>
     </div>
-    <div class="border-b relative">
+    <div class="border-b relative max-lg:hidden">
       <LayoutHeaderTopNavigation
-        class="container mx-auto pt-6 pb-4"
+        class="container mx-auto pt-6 pb-4 px-6 sm:px-0"
         v-model:current-menu-position="currentMenuPosition"
       />
       <client-only>
         <div
-          class="absolute w-full bg-white z-10"
+          class="absolute w-full bg-white z-10 border-b"
           @mouseleave="currentMenuPosition = undefined"
         >
           <LayoutHeaderTopNavigationSubcategories
@@ -79,5 +86,8 @@ function handleMyAccountClick() {
         </div>
       </client-only>
     </div>
+    <client-only>
+      <LayoutSideMenu />
+    </client-only>
   </div>
 </template>

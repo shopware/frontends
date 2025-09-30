@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { getCategoryRoute, getTranslatedProperty } from "@shopware/helpers";
 
-const { currentMenuPosition } = defineProps<{
-  currentMenuPosition: string | undefined;
-}>();
-
+const currentMenuPosition = defineModel<string | undefined>(
+  "currentMenuPosition",
+);
 const { navigationElements } = useNavigation();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
@@ -12,7 +11,7 @@ const { formatLink } = useInternationalization(localePath);
 const subcategories = computed(() => {
   return (
     navigationElements.value?.find(
-      (element) => element.id === currentMenuPosition,
+      (element) => element.id === currentMenuPosition.value,
     )?.children ?? []
   );
 });
@@ -31,6 +30,7 @@ const subcategories = computed(() => {
           subcategory.externalLink || subcategory.linkNewTab ? '_blank' : ''
         "
         :to="formatLink(getCategoryRoute(subcategory))"
+        @click="currentMenuPosition = undefined"
       >
         <div class="text-brand-primary font-bold flex items-center gap-1">
           {{ subcategory.name }}
@@ -48,6 +48,7 @@ const subcategories = computed(() => {
             role="menuitem"
             :target="child.externalLink || child.linkNewTab ? '_blank' : ''"
             :to="formatLink(getCategoryRoute(child))"
+            @click="currentMenuPosition = undefined"
           >
             <div class="">
               {{ child.name }}
