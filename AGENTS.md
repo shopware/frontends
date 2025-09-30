@@ -1,10 +1,29 @@
-# AI Agent Guide for Shopware Composable Frontends
+# AI Agent Guide for Shopware Frontends
 
-This document provides guidance for AI assistants working with the Shopware Composable Frontends monorepo.
+This document provides guidance for AI assistants working with the Shopware Frontends monorepo.
+
+## TL;DR
+
+**What**: Vue.js framework for Shopware 6 eCommerce storefronts
+**Structure**: pnpm monorepo with Turbo
+**Tech**: Vue 3, Nuxt 4, TypeScript, Vitest, Biome
+**Key Packages**: api-client, composables, helpers, cms-base-layer, nuxt-module
+**Templates**: vue-demo-store (full featured), vue-starter-template (production), vue-blank (minimal)
+
+**Quick Start**:
+```bash
+pnpm i                                    # Install
+pnpm run build --filter='./packages/*'   # Build packages
+pnpm run dev --filter=vue-demo-store     # Run demo
+pnpm run test                             # Test
+pnpm changeset                            # Create changeset for PR
+```
+
+**Before commits**: Run `pnpm run lint:fix && pnpm format && pnpm run typecheck`
 
 ## Repository Overview
 
-Shopware Composable Frontends is a Vue.js framework for building custom eCommerce storefronts with Shopware 6. It's a pnpm workspace monorepo using Turbo for build orchestration.
+Shopware Frontends is a Vue.js framework for building custom eCommerce storefronts with Shopware 6. It's a pnpm workspace monorepo using Turbo for build orchestration.
 
 **Root Directory**: `.`
 
