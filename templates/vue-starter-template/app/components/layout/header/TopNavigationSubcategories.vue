@@ -50,7 +50,7 @@ const subcategories = computed(() => {
             :to="formatLink(getCategoryRoute(child))"
             @click="currentMenuPosition = undefined"
           >
-            <div class="">
+            <div>
               {{ child.name }}
             </div>
           </NuxtLink>
