@@ -14,14 +14,14 @@
   "dependencies": {
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.17"
+    "vue": "3.5.22"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@types/node": "22.13.14",
-    "@vitejs/plugin-vue": "5.2.4",
+    "@vitejs/plugin-vue": "6.0.1",
     "typescript": "5.9.2",
-    "vite": "6.3.6",
+    "vite": "7.1.7",
     "vue-tsc": "2.2.10"
   }
 }

@@ -301,7 +301,7 @@ This allows you to dynamically change the API endpoint or access token during ru
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
