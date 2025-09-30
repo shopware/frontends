@@ -18,9 +18,9 @@ const subcategories = computed(() => {
 });
 </script>
 <template>
-  <div v-if="subcategories.length" class="flex flex-wrap py-6 items-start">
+  <div v-if="subcategories.length" class="py-6 items-start columns-3">
     <div
-      class="w-1/3 mb-8"
+      class="mb-8 break-inside-avoid-column"
       v-for="subcategory in subcategories"
       :key="subcategory.id"
     >
