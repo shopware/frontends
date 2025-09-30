@@ -13,7 +13,7 @@ head:
 
 # 😱 Troubleshooting
 
-Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends slack channel](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ).
+Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends Discord channel](https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ).
 
 ## Which SalesChannel type to use for Composable Frontends?
 
