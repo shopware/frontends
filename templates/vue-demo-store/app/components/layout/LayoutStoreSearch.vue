@@ -63,17 +63,15 @@ const { push } = useRouter();
 
 const sideMenuModal = useSideMenuModal();
 
-watch(
-  () => enter,
-  (value) => {
-    if (!value) return;
+// @ts-expect-error - useMagicKeys may return undefined
+watch(enter, (value) => {
+  if (!value) return;
 
-    sideMenuModal.close();
+  sideMenuModal.close();
 
-    active.value = false;
-    push(`/search?search=${typingQuery.value}`);
-  },
-);
+  active.value = false;
+  push(`/search?search=${typingQuery.value}`);
+});
 </script>
 
 <template>
