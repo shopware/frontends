@@ -1426,6 +1426,9 @@ importers:
 
   templates/vue-starter-template:
     dependencies:
+      '@iconify-json/carbon':
+        specifier: 1.2.13
+        version: 1.2.13
       '@iconify/utils':
         specifier: 3.0.2
         version: 3.0.2
