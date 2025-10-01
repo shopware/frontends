@@ -10,9 +10,12 @@ const { isOpen, close } = controller.value;
 
 const { escape: escapeKey } = useMagicKeys();
 
-watch(escapeKey, () => {
-  isOpen.value && close();
-});
+watch(
+  () => escapeKey,
+  () => {
+    isOpen.value && close();
+  },
+);
 
 const modalContentElement = useTemplateRef("modalContentElement");
 onClickOutside(modalContentElement, () => close());

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import type { RouteObject } from "#imports";
+
 const { link, label } = defineProps<{
-  link: string;
+  link: string | RouteObject;
   label: string;
 }>();
 </script>

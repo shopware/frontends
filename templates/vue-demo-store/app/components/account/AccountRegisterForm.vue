@@ -214,7 +214,7 @@ useBreadcrumbs([
             v-if="$v.firstName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.firstName.$errors[0].$message }}
+            {{ $v.firstName.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -240,7 +240,7 @@ useBreadcrumbs([
             v-if="$v.lastName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.lastName.$errors[0].$message }}
+            {{ $v.lastName.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -266,7 +266,7 @@ useBreadcrumbs([
             v-if="$v.email.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.email.$errors[0].$message }}
+            {{ $v.email.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -292,7 +292,7 @@ useBreadcrumbs([
             v-if="$v.password.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.password.$errors[0].$message }}
+            {{ $v.password.$errors[0]?.$message }}
           </span>
         </div>
         <div
@@ -341,7 +341,7 @@ useBreadcrumbs([
             v-if="$v.billingAddress.company.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.billingAddress.company.$errors[0].$message }}
+            {{ $v.billingAddress.company.$errors[0]?.$message }}
           </span>
         </div>
         <div class="col-span-12 md:col-span-4">
@@ -366,7 +366,7 @@ useBreadcrumbs([
             v-if="$v.billingAddress.street.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.billingAddress.street.$errors[0].$message }}
+            {{ $v.billingAddress.street.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -392,7 +392,7 @@ useBreadcrumbs([
             v-if="$v.billingAddress.zipcode.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.billingAddress.zipcode.$errors[0].$message }}
+            {{ $v.billingAddress.zipcode.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -418,7 +418,7 @@ useBreadcrumbs([
             v-if="$v.billingAddress.city.$error"
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
-            {{ $v.billingAddress.city.$errors[0].$message }}
+            {{ $v.billingAddress.city.$errors[0]?.$message }}
           </span>
         </div>
 

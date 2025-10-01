@@ -107,7 +107,7 @@ onBeforeMount(() => {
             v-if="$v.email.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.email.$errors[0].$message }}
+            {{ $v.email.$errors[0]?.$message }}
           </span>
         </div>
         <div>
@@ -134,7 +134,7 @@ onBeforeMount(() => {
             v-if="$v.emailConfirmation.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.emailConfirmation.$errors[0].$message }}
+            {{ $v.emailConfirmation.$errors[0]?.$message }}
           </span>
         </div>
         <div>
@@ -161,7 +161,7 @@ onBeforeMount(() => {
             v-if="$v.password.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.password.$errors[0].$message }}
+            {{ $v.password.$errors[0]?.$message }}
           </span>
         </div>
       </div>

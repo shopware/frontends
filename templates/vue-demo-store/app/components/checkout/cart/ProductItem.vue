@@ -85,7 +85,7 @@ const removeCartItem = async () => {
     class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-secondary-200"
   >
     <img
-      :src="getSmallestThumbnailUrl(cartItem.cover)"
+      :src="getSmallestThumbnailUrl(cartItem.cover?.media)"
       :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"

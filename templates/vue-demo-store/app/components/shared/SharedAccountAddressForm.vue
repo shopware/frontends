@@ -162,7 +162,7 @@ const $v = useVuelidate(rules, formData);
                 v-if="$v.firstName.$error"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
-                {{ $v.firstName.$errors[0].$message }}
+                {{ $v.firstName.$errors[0]?.$message }}
               </span>
             </div>
 
@@ -186,7 +186,7 @@ const $v = useVuelidate(rules, formData);
                 v-if="$v.lastName.$error"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
-                {{ $v.lastName.$errors[0].$message }}
+                {{ $v.lastName.$errors[0]?.$message }}
               </span>
             </div>
 
@@ -218,7 +218,7 @@ const $v = useVuelidate(rules, formData);
                 v-if="$v.street.$error"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
-                {{ $v.street.$errors[0].$message }}
+                {{ $v.street.$errors[0]?.$message }}
               </span>
             </div>
 
@@ -243,7 +243,7 @@ const $v = useVuelidate(rules, formData);
                 v-if="$v.city.$error"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
-                {{ $v.city.$errors[0].$message }}
+                {{ $v.city.$errors[0]?.$message }}
               </span>
             </div>
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -267,7 +267,7 @@ const $v = useVuelidate(rules, formData);
                 v-if="$v.zipcode.$error"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
-                {{ $v.zipcode.$errors[0].$message }}
+                {{ $v.zipcode.$errors[0]?.$message }}
               </span>
             </div>
           </div>

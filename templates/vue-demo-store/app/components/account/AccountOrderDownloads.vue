@@ -6,7 +6,7 @@ const props = defineProps<{
   documents: Schemas["Document"][];
 }>();
 
-const { getDocumentFile } = useOrderDetails(props.documents[0].orderId);
+const { getDocumentFile } = useOrderDetails(props.documents[0]?.orderId || "");
 
 const getMediaFileHandler = async (documentObject: Schemas["Document"]) => {
   const response = await getDocumentFile(

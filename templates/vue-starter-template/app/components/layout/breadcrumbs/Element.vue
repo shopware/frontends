@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { NuxtLink } from "#components";
+
 defineProps<{
   link?: string;
 }>();

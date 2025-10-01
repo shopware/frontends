@@ -115,7 +115,7 @@ const invokeRating = (value: number) => {
           v-if="$v.rating.$error"
           class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
         >
-          {{ $v.rating.$errors[0].$message }}
+          {{ $v.rating.$errors[0]?.$message }}
         </span>
       </div>
     </div>
@@ -133,7 +133,7 @@ const invokeRating = (value: number) => {
         v-if="$v.title.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
-        {{ $v.title.$errors[0].$message }}
+        {{ $v.title.$errors[0]?.$message }}
       </span>
     </div>
     <div>
@@ -149,7 +149,7 @@ const invokeRating = (value: number) => {
         v-if="$v.review.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
-        {{ $v.review.$errors[0].$message }}
+        {{ $v.review.$errors[0]?.$message }}
       </span>
     </div>
     <button
