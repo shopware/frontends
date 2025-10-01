@@ -381,42 +381,46 @@ const removeFilterChip = async (chip: {
                 <span v-else class="i-carbon-chevron-up h-5 w-5"></span>
               </span>
             </button>
-            <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-              class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
-              role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-              <div class="py-1" role="none">
-                <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
-                  :class="[
-                    sorting.key === getCurrentSortingOrder
-                      ? 'font-medium text-surface-on-surface'
-                      : 'text-surface-on-surface-variant',
-                  ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-                  role="menuitem" tabindex="-1">
-                  {{ sorting.label }}
-                </button>
+            <ClientOnly>
+              <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
+                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+                  <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
+                    :class="[
+                      sorting.key === getCurrentSortingOrder
+                        ? 'font-medium text-surface-on-surface'
+                        : 'text-surface-on-surface-variant',
+                    ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
+                    role="menuitem" tabindex="-1">
+                    {{ sorting.label }}
+                  </button>
+                </div>
               </div>
-            </div>
+            </ClientOnly>
           </div>
         </div>
       </div>
     </div>
     <!-- Filters List -->
-    <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
-      <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
-    </div>
-    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-      <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
-        <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
-          :filter="filter" class="relative" />
+    <ClientOnly>
+      <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+        <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
       </div>
-      <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-        <button
-          class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
-          @click="invokeCleanFilters" type="button">
-          {{ translations.listing.resetFilters }}
-          <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-        </button>
+      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
+        <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
+          <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
+            :filter="filter" class="relative" />
+        </div>
+        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
+          <button
+            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+            @click="invokeCleanFilters" type="button">
+            {{ translations.listing.resetFilters }}
+            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+          </button>
+        </div>
       </div>
-    </div>
+    </ClientOnly>
   </div>
 </template>
