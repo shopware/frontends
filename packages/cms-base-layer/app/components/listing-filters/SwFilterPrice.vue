@@ -130,22 +130,19 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="self-stretch flex flex-col justify-start items-start gap-3">
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
-      <div class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
         <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-  <div class="w-6 h-6 relative">
-
-          <button @click="toggle" class="w-full h-full flex items-center justify-center focus:outline-none bg-transparent">
-            <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
-            <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
-          </button>
+        <div class="w-6 h-6 relative flex items-center justify-center">
+          <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
+          <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
         </div>
-      </div>
+      </button>
     </div>
     <div v-show="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-2.5">
   <div data-state="Default" data-type="Range selection" class="self-stretch flex flex-col justify-start items-start gap-1">

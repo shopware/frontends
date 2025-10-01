@@ -46,30 +46,29 @@ const getChecked = (id: string) =>
 </script>
 
 <template>
-  <div class="self-stretch flex flex-col justify-start items-start gap-3">
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
-      <div class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
         <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-        <div class="w-6 h-6 relative">
-          <button @click="toggle" class="w-full h-full flex items-center justify-center focus:outline-none bg-transparent">
-            <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
-            <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
-          </button>
+        <div class="w-6 h-6 relative flex items-center justify-center">
+          <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
+          <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
         </div>
-      </div>
+      </button>
     </div>
     <transition name="filter-collapse">
       <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
         <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
         <legend class="sr-only">{{ props.filter.name }}</legend>
-        <div
+        <label
           v-for="option in props.filter.options || props.filter.entities"
           :key="`${option.id}-${(selectedOptionIds).includes(option.id)}`"
-          class="self-stretch inline-flex justify-start items-start gap-2"
+          class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
+          @click="emits('select-value', { code: props.filter.code, value: option.id })"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
@@ -77,7 +76,8 @@ const getChecked = (id: string) =>
               :description="undefined"
               :disabled="false"
               :model-value="getChecked(option.id).value"
-              @update:model-value="() => emits('select-value', { code: props.filter.code, value: option.id })"
+              @update:model-value="() => {}"
+              @click.stop
             />
           </div>
           <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">
@@ -88,7 +88,7 @@ const getChecked = (id: string) =>
               <!-- Optionally, add count or color swatch here if needed -->
             </div>
           </div>
-        </div>
+        </label>
         </fieldset>
       </div>
     </transition>

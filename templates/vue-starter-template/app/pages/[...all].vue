@@ -63,5 +63,5 @@ function render() {
 </script>
 
 <template>
-  <render class="container flex flex-col mx-auto justify-center"/>
+  <render class="container mx-auto"/>
 </template>

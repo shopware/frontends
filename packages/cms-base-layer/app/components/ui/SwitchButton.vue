@@ -10,10 +10,9 @@ const props = defineProps<{
   disabled?: boolean;
 }>();
 
-// Declare both camelCase and kebab-case event names so Vue Devtools and templates recognize them
 const emits = defineEmits<{
-  (e: "update:model-value", v: boolean | null): void;
-  (e: "change", v: boolean | null): void;
+  "update:model-value": [v: boolean | null];
+  change: [v: boolean | null];
 }>();
 
 const value = computed(() => !!props.modelValue);

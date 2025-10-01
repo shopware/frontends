@@ -155,15 +155,15 @@ compareRouteQueryWithInitialListing();
     <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-surface-on-surface-variant">
       {{ translations.listing.noProducts }}
     </div>
-    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-8">
+    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 lg:gap-8">
       <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
-        :is-product-listing="isProductListing" class="w-full mb-8" />
+        :is-product-listing="isProductListing" class="w-full" />
     </div>
-    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-8 p-4 md:p-6 lg:p-8">
+    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 lg:gap-8">
       <ProductCardSkeleton v-for="index in limit" :key="index"
-        class="w-full mb-8" />
+        class="w-full" />
     </div>
-    <div v-if="!loading && getTotalPagesCount > 1" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8">
+    <div v-if="!loading && getTotalPagesCount > 1" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mt-8">
       <div class="text-center place-self-center">
         <SwPagination :total="getTotalPagesCount" :current="Number(getCurrentPage)" @change-page="changePage" />
       </div>

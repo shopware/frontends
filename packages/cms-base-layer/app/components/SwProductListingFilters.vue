@@ -256,9 +256,115 @@ const handleSortingClick = (key: string) => {
   currentSortingOrder.value = key;
   isSortMenuOpen.value = false;
 };
+
+// Active filter chips logic
+const activeFilterChips = computed(() => {
+  const chips: Array<{ label: string; code: string; value: string | number }> =
+    [];
+
+  // Add property filters
+  for (const propertyId of sidebarSelectedFilters.properties) {
+    const filter = getInitialFilters.value.find((f) => f.code === "properties");
+    if (filter && "options" in filter) {
+      const option = filter.options?.find((o) => o.id === propertyId);
+      if (option && "translated" in option && option.translated?.name) {
+        chips.push({
+          label: option.translated.name as string,
+          code: "properties",
+          value: propertyId,
+        });
+      }
+    }
+  }
+
+  // Add manufacturer filters
+  for (const manufacturerId of sidebarSelectedFilters.manufacturer) {
+    const filter = getInitialFilters.value.find(
+      (f) => f.code === "manufacturer",
+    );
+    if (filter && "entities" in filter) {
+      const entity = filter.entities?.find((e) => e.id === manufacturerId);
+      if (entity && "translated" in entity && entity.translated?.name) {
+        chips.push({
+          label: entity.translated.name as string,
+          code: "manufacturer",
+          value: manufacturerId,
+        });
+      }
+    }
+  }
+
+  // Add price filters
+  if (
+    sidebarSelectedFilters["min-price"] ||
+    sidebarSelectedFilters["max-price"]
+  ) {
+    const min = sidebarSelectedFilters["min-price"] || 0;
+    const max = sidebarSelectedFilters["max-price"] || "∞";
+    chips.push({
+      label: `Price: ${min} - ${max}`,
+      code: "price",
+      value: "price-range",
+    });
+  }
+
+  // Add rating filter
+  if (sidebarSelectedFilters.rating) {
+    chips.push({
+      label: `Rating: ${sidebarSelectedFilters.rating}★`,
+      code: "rating",
+      value: sidebarSelectedFilters.rating,
+    });
+  }
+
+  // Add shipping free filter
+  if (sidebarSelectedFilters["shipping-free"]) {
+    chips.push({
+      label: "Free Shipping",
+      code: "shipping-free",
+      value: "true",
+    });
+  }
+
+  return chips;
+});
+
+const removeFilterChip = async (chip: {
+  code: string;
+  value: string | number;
+}) => {
+  if (chip.code === "properties" || chip.code === "manufacturer") {
+    const filterSet = sidebarSelectedFilters[chip.code] as Set<string>;
+    filterSet.delete(String(chip.value));
+  } else if (chip.code === "price") {
+    sidebarSelectedFilters["min-price"] = undefined;
+    sidebarSelectedFilters["max-price"] = undefined;
+  } else if (chip.code === "rating") {
+    sidebarSelectedFilters.rating = undefined;
+  } else if (chip.code === "shipping-free") {
+    sidebarSelectedFilters["shipping-free"] = undefined;
+  }
+
+  await executeSearch();
+};
 </script>
 <template>
   <div>
+    <!-- Active Filter Chips -->
+    <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
+      <button
+        v-for="(chip, index) in activeFilterChips"
+        :key="`${chip.code}-${chip.value}-${index}`"
+        @click="removeFilterChip(chip)"
+        class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
+      >
+        <span class="text-brand-on-tertiary text-base font-normal font-['Inter'] leading-normal">
+          {{ chip.label }}
+        </span>
+        <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
+      </button>
+    </div>
+
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
         <div class="flex-1 text-surface-on-surface text-base font-bold font-['Inter'] leading-normal mb-8">
@@ -295,7 +401,10 @@ const handleSortingClick = (key: string) => {
       </div>
     </div>
     <!-- Filters List -->
-    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-if="getInitialFilters.length">
+    <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+      <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    </div>
+    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
       <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
         <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
           :filter="filter" class="relative" />
