@@ -31,6 +31,14 @@ async function onChangeHandler(id: string) {
     window.location.reload();
   }
 }
+
+const { loadNavigationElements: loadFooterNavigationElements } = useNavigation({
+  type: "footer-navigation",
+});
+const { data: footerData } = useAsyncData("mainFooterNavigation", () => {
+  return loadFooterNavigationElements({ depth: 1 });
+});
+provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
   <div>
@@ -48,5 +56,6 @@ async function onChangeHandler(id: string) {
       <LayoutNotifications />
       <slot />
     </main>
+    <LayoutFooter />
   </div>
 </template>
