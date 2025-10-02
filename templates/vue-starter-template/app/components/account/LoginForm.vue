@@ -9,7 +9,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-async function handleLogin(formData) {
+async function handleLogin(formData: { username: string; password: string }) {
   await login(formData);
   mergeWishlistProducts();
   emit("close");

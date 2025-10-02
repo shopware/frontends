@@ -22,10 +22,15 @@ export default (<RouterOptions>{
      * - product with variants contains minimum 2 subdirectories
      * - for the same product 1 subdirectory is the same
      */
+    const fromAll = from.params?.all as string[] | undefined;
+    const toAll = to.params?.all as string[] | undefined;
+
     if (
-      from.params?.all?.length > 1 &&
-      to.params?.all?.length > 1 &&
-      from.params?.all[0] === to.params?.all[0]
+      fromAll?.length &&
+      fromAll.length > 1 &&
+      toAll?.length &&
+      toAll.length > 1 &&
+      fromAll[0] === toAll[0]
     ) {
       return null;
     }

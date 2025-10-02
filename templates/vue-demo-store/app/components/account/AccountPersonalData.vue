@@ -164,7 +164,7 @@ onBeforeMount(async () => {
             v-if="$v.accountType.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.accountType.$errors[0].$message }}
+            {{ $v.accountType.$errors[0]?.$message }}
           </span>
         </div>
 
@@ -192,7 +192,7 @@ onBeforeMount(async () => {
             v-if="$v.firstName.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.firstName.$errors[0].$message }}
+            {{ $v.firstName.$errors[0]?.$message }}
           </span>
         </div>
         <div>
@@ -219,7 +219,7 @@ onBeforeMount(async () => {
             v-if="$v.lastName.$error"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
-            {{ $v.lastName.$errors[0].$message }}
+            {{ $v.lastName.$errors[0]?.$message }}
           </span>
         </div>
         <template v-if="state.accountType === 'business'">
@@ -247,7 +247,7 @@ onBeforeMount(async () => {
               v-if="$v.company.$error"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.company.$errors[0].$message }}
+              {{ $v.company.$errors[0]?.$message }}
             </span>
           </div>
 
@@ -275,7 +275,7 @@ onBeforeMount(async () => {
               v-if="$v.vatIds.$error"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.vatIds.$errors[0].$message }}
+              {{ $v.vatIds.$errors[0]?.$message }}
             </span>
           </div>
         </template>

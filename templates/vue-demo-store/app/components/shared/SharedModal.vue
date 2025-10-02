@@ -10,6 +10,7 @@ const { isOpen, close } = controller.value;
 
 const { escape: escapeKey } = useMagicKeys();
 
+// @ts-expect-error - useMagicKeys may return undefined
 watch(escapeKey, () => {
   isOpen.value && close();
 });

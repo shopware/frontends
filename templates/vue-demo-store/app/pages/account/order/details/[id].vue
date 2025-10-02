@@ -5,7 +5,7 @@ import {
   getSmallestThumbnailUrl,
 } from "@shopware/helpers";
 import { computed, ref } from "vue";
-import type { Schemas, operations } from "#shopware";
+import type { Schemas } from "#shopware";
 
 definePageMeta({
   layout: "account",

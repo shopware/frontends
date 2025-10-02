@@ -103,7 +103,7 @@ const handleUpdateData = async () => {
           v-if="$v.firstName.$error"
           class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
         >
-          {{ $v.firstName.$errors[0].$message }}
+          {{ $v.firstName.$errors[0]?.$message }}
         </span>
       </div>
 
@@ -128,7 +128,7 @@ const handleUpdateData = async () => {
           v-if="$v.lastName.$error"
           class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
         >
-          {{ $v.lastName.$errors[0].$message }}
+          {{ $v.lastName.$errors[0]?.$message }}
         </span>
       </div>
     </div>

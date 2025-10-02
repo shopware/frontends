@@ -32,7 +32,7 @@ function onCountrySelectChanged() {
       :label="$t('form.country')"
       :options="getCountriesOptions"
       data-testid="country-select"
-      :errorMessage="countryIdValidation.$errors[0]?.$message"
+      :errorMessage="countryIdValidation?.$errors[0]?.$message"
     />
 
     <div v-if="states && states.length" class="w-full">
@@ -61,7 +61,7 @@ function onCountrySelectChanged() {
         v-if="stateIdValidation?.$error"
         class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
-        {{ stateIdValidation.$errors[0].$message }}
+        {{ stateIdValidation?.$errors[0]?.$message }}
       </span>
     </div>
   </div>

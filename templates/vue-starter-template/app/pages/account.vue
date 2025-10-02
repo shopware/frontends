@@ -66,7 +66,7 @@ onBeforeMount(async () => {
         />
         <AccountPersonalDataSection
           :customer-name="user?.firstName + ' ' + user?.lastName"
-          :customer-email="user?.email"
+          :customer-email="user?.email || ''"
         />
       </div>
 

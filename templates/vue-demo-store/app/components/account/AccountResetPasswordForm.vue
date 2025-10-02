@@ -101,7 +101,7 @@ const invokeReset = async (): Promise<void> => {
               v-if="$v.password.newPassword.$error"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.password.newPassword.$errors[0].$message }}
+              {{ $v.password.newPassword.$errors[0]?.$message }}
             </span>
           </div>
           <div>
@@ -122,7 +122,7 @@ const invokeReset = async (): Promise<void> => {
               v-if="$v.password.newPasswordConfirm.$error"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.password.newPasswordConfirm.$errors[0].$message }}
+              {{ $v.password.newPasswordConfirm.$errors[0]?.$message }}
             </span>
           </div>
         </div>

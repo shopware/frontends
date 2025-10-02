@@ -20,7 +20,7 @@ defineProps<{
     </SharedDataTextRow>
 
     <SharedDataTextRow>
-      {{ address.country.translated.name }}
+      {{ address.country?.translated.name }}
     </SharedDataTextRow>
   </div>
 </template>

@@ -80,7 +80,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // Language set on the backend side
   if (localeProperties.value.localeId) {
     if (languageIdChain.value !== localeProperties.value.localeId) {
-      languageToChangeId = localeProperties.value.localeId;
+      languageToChangeId = localeProperties.value.localeId as string;
     }
   } else {
     const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);

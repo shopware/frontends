@@ -27,7 +27,7 @@ export default function (accountType: Ref<string>, countryId: Ref<string>) {
     },
     billingAddress: {
       company: {
-        required: requiredIf(() => accountType === "business"),
+        required: requiredIf(() => unref(accountType) === "business"),
       },
       street: {
         required,
@@ -44,7 +44,7 @@ export default function (accountType: Ref<string>, countryId: Ref<string>) {
       },
       countryStateId: {
         required: requiredIf(() => {
-          return !!getStatesForCountry(countryId)?.length;
+          return !!getStatesForCountry(unref(countryId))?.length;
         }),
       },
     },
