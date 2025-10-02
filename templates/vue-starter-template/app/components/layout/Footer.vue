@@ -14,9 +14,9 @@ const gridColumns = computed<number>(() =>
 
 <template>
   <footer class="bg-brand-primary">
-    <div class="container mx-auto py-10">
-      <div :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`">
-        <NuxtLink :to="formatLink(`/`)">
+    <div class="container mx-auto py-10 px-6 sm:px-0">
+      <div :class="`grid grid-cols-2 md:grid-cols-${gridColumns} gap-4`">
+        <NuxtLink class="hidden md:block" :to="formatLink(`/`)">
           <NuxtImg
             class="h-20 max-sm:h-10"
             src="/logo-white.svg"
@@ -54,7 +54,7 @@ const gridColumns = computed<number>(() =>
             </ul>
           </template>
         </div>
-        <LayoutFooterNewsletterBox />
+        <LayoutFooterNewsletterBox class="md:block hidden" />
       </div>
     </div>
   </footer>
