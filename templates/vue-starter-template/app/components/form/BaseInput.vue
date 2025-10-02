@@ -34,7 +34,7 @@ const slots = defineSlots<{
     <slot name="leftIcon" />
     <input
       v-model="model"
-      class="text-sm w-full outline-none autofill:!bg-yellow-200"
+      class="text-sm w-full outline-none autofill:!bg-yellow-200 bg-transparent"
       :placeholder="placeholder"
       :type="type"
       :autocomplete="autocomplete"
