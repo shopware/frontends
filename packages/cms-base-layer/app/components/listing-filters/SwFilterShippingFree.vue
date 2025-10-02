@@ -10,6 +10,8 @@
     }
   "
 >
+import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
+import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
@@ -51,12 +53,10 @@ const handleRadioUpdate = (val: string | null | boolean) => {
           {{ props.filter.label }}
         </div>
       </div>
-      <div class="w-6 h-6 relative">
-        <button @click="toggle" class="w-full h-full flex items-center justify-center focus:outline-none bg-transparent">
-          <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
-          <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
-        </button>
-      </div>
+      <SwIconButton type="ghost" @click="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
+        <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+      </SwIconButton>
     </div>
 
     <div v-show="isFilterVisible" class="self-stretch pt-6">

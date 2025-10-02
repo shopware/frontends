@@ -11,6 +11,8 @@
     }
   "
 >
+import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
+import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
@@ -54,10 +56,10 @@ const getChecked = (id: string) =>
             {{ props.filter.label }}
           </div>
         </div>
-        <div class="w-6 h-6 relative flex items-center justify-center">
-          <span v-if="!isFilterVisible" class="i-carbon-chevron-down w-5 h-5"></span>
-          <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
-        </div>
+        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
+          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+        </SwIconButton>
       </button>
     </div>
     <transition name="filter-collapse">

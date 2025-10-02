@@ -376,9 +376,13 @@ const removeFilterChip = async (chip: {
               class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
               id="menu-button" aria-expanded="false" aria-haspopup="true">
               {{ translations.listing.sort }}
-              <span class="ml-1">
-                <span v-if="!isSortMenuOpen" class="i-carbon-chevron-down h-5 w-5"></span>
-                <span v-else class="i-carbon-chevron-up h-5 w-5"></span>
+              <span class="ml-1 inline-flex items-center">
+                <svg v-if="!isSortMenuOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Open sort menu">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 8.79289C8.31658 8.40237 7.68342 8.40237 7.29289 8.79289C6.90237 9.18342 6.90237 9.81658 7.29289 10.2071L11.2929 14.2071C11.6834 14.5976 12.3166 14.5976 12.7071 14.2071L16.7071 10.2071C17.0976 9.81658 17.0976 9.18342 16.7071 8.79289C16.3166 8.40237 15.6834 8.40237 15.2929 8.79289L12 12.0858L8.70711 8.79289Z" fill="currentColor"/>
+                </svg>
+                <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Close sort menu">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 15.2071C8.31658 15.5976 7.68342 15.5976 7.29289 15.2071C6.90237 14.8166 6.90237 14.1834 7.29289 13.7929L11.2929 9.79289C11.6834 9.40237 12.3166 9.40237 12.7071 9.79289L16.7071 13.7929C17.0976 14.1834 17.0976 14.8166 16.7071 15.2071C16.3166 15.5976 15.6834 15.5976 15.2929 15.2071L12 11.9142L8.70711 15.2071Z" fill="currentColor"/>
+                </svg>
               </span>
             </button>
             <ClientOnly>
