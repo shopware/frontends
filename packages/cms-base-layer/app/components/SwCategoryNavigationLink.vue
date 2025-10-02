@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
+import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import {
   buildUrlPrefix,
   getCategoryRoute,
@@ -76,8 +78,7 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <span v-if="!props.isExpanded" class="i-carbon-chevron-down w-5 h-5"></span>
-        <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
+        <img :src="props.isExpanded ? ChevronUpIcon : ChevronDownIcon" alt="" class="w-5 h-5" />
       </button>
     </div>
   </div>
@@ -122,8 +123,7 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <span v-if="!props.isExpanded" class="i-carbon-chevron-down w-5 h-5"></span>
-        <span v-else class="i-carbon-chevron-up w-5 h-5"></span>
+        <img :src="props.isExpanded ? ChevronUpIcon : ChevronDownIcon" alt="" class="w-5 h-5" />
       </button>
     </div>
   </div>

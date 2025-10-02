@@ -10,6 +10,8 @@
 >
 import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
 import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
+import StarEmptyIcon from "@cms-assets/star-empty.svg";
+import StarFilledIcon from "@cms-assets/star-filled.svg";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -63,17 +65,15 @@ const toggle = () => {
     </div>
     <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center gap-2 mt-2">
-        <div
+        <img
           v-for="i in 5"
           :key="i"
           class="h-6 w-6 cursor-pointer"
-          :class="{
-            'i-carbon-star-filled text-states-warning': displayedScore >= i,
-            'i-carbon-star text-surface-on-surface-disabled': displayedScore < i,
-          }"
+          :src="displayedScore >= i ? StarFilledIcon : StarEmptyIcon"
           @mouseleave="isHoverActive = false"
           @click="hoverRating(i); onChangeRating()"
           @mouseover="hoverRating(i)"
+          alt=""
         />
       </div>
     </div>
