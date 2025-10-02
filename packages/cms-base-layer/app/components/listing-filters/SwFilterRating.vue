@@ -8,6 +8,10 @@
     }
   "
 >
+import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
+import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
+import StarEmptyIcon from "@cms-assets/star-empty.svg";
+import StarFilledIcon from "@cms-assets/star-filled.svg";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -45,47 +49,34 @@ const toggle = () => {
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
-      <button
-        type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
-        @click="toggle"
-      >
-        <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
-        }}</span>
-        <span class="ml-6 flex items-center">
-          <i
-            :class="[
-              !isFilterVisible
-                ? 'i-carbon-chevron-down'
-                : 'i-carbon-chevron-up',
-            ]"
-          />
-        </span>
-      </button>
-    </h3>
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible">
-        <div class="space-y-6 mt-4">
-          <div class="flex">
-            <div
-              v-for="i in 5"
-              :key="i"
-              class="h-6 w-6 c-yellow-500"
-              :class="{
-                'i-carbon-star-filled': displayedScore >= i,
-                'i-carbon-star': displayedScore < i,
-              }"
-              @mouseleave="isHoverActive = false"
-              @click="onChangeRating()"
-              @mouseover="hoverRating(i)"
-            />
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
+    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+            {{ props.filter.label }}
           </div>
         </div>
+        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
+          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+        </SwIconButton>
+      </button>
+    </div>
+    <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div class="flex flex-row items-center gap-2 mt-2">
+        <img
+          v-for="i in 5"
+          :key="i"
+          class="h-6 w-6 cursor-pointer"
+          :src="displayedScore >= i ? StarFilledIcon : StarEmptyIcon"
+          @mouseleave="isHoverActive = false"
+          @click="hoverRating(i); onChangeRating()"
+          @mouseover="hoverRating(i)"
+          alt=""
+        />
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 <style scoped>

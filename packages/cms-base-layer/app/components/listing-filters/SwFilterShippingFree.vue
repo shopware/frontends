@@ -10,6 +10,8 @@
     }
   "
 >
+import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
+import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
@@ -17,6 +19,7 @@ import type { Schemas } from "#shopware";
 const props = defineProps<{
   filter: ListingFilter;
   selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
+  description?: string; // Optional description for i18n
 }>();
 
 const emits =
@@ -26,12 +29,6 @@ const emits =
 const currentFilterData = computed(
   () => !!props.selectedFilters[props.filter?.code],
 );
-const onChangeOption = (): void => {
-  emits("select-value", {
-    code: props.filter?.code,
-    value: !currentFilterData.value,
-  });
-};
 
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {
@@ -42,53 +39,42 @@ const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => {
   isFilterVisible.value = false;
 });
+
+const handleRadioUpdate = (val: string | null | boolean) => {
+  emits("select-value", { code: props.filter.code, value: !!val });
+};
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
-      <button
-        type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
-        @click="toggle"
-      >
-        <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
-        }}</span>
-        <span class="ml-6 flex items-center">
-          <i
-            :class="[
-              !isFilterVisible
-                ? 'i-carbon-chevron-down'
-                : 'i-carbon-chevron-up',
-            ]"
-          />
-        </span>
-      </button>
-    </h3>
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
-        <div class="space-y-4">
-          <div class="flex items-center" @click="onChangeOption()">
-            <input
-              :id="`filter-mobile-${props.filter.id || props.filter.code}`"
-              :checked="currentFilterData"
-              :name="props.filter.name"
-              :value="props.filter.name"
-              type="checkbox"
-              class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-            />
+  <div class="self-stretch flex flex-col justify-start items-start gap-3">
+    <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
+      <div class="flex-1 flex justify-start items-center gap-2.5">
+        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+          {{ props.filter.label }}
+        </div>
+      </div>
+      <SwIconButton type="ghost" @click="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
+        <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+      </SwIconButton>
+    </div>
 
-            <label
-              :for="`filter-mobile-${props.filter.id || props.filter.code}`"
-              class="ml-3 text-gray-600"
-            >
-              {{ props.filter.label }}
-            </label>
+    <div v-show="isFilterVisible" class="self-stretch pt-6">
+      <div class="space-y-4">
+        <div class="self-stretch inline-flex justify-start items-start gap-2">
+          <div class="flex-1 pt-[3px]">
+            <SwSwitchButton
+              :model-value="currentFilterData"
+              @update:model-value="handleRadioUpdate"
+              :name="props.filter.code"
+              :aria-label="props.filter.label"
+              :label="props.filter.label"
+              :description="props.description || 'free delivery'"
+            />
           </div>
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 <style scoped>

@@ -148,7 +148,7 @@ const productLink = computed(() =>
 </script>
 
 <template>
-  <div class="inline-flex flex-col items-start justify-start self-stretch overflow-hidden p-px w-full">
+  <div class="inline-flex flex-col items-start justify-between self-stretch overflow-hidden p-px w-full">
     <SwProductCardImage
       :product="product"
       :translations   ="translations"

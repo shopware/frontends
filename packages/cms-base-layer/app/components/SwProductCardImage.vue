@@ -51,8 +51,8 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
 <template>
   <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
     <RouterLink :to="productLink" class="relative h-80 self-stretch overflow-hidden">
-      <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="coverSrcPath"
-        :alt="coverAlt" data-testid="product-box-img" />
+      <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full h-full object-cover"
+        :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"

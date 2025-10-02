@@ -25,6 +25,15 @@ type Translations = {
   };
 };
 
+type FilterState = {
+  manufacturer: Set<string>;
+  properties: Set<string>;
+  "min-price": number | undefined;
+  "max-price": number | undefined;
+  rating: number | undefined;
+  "shipping-free": boolean | undefined;
+};
+
 let translations: Translations = {
   listing: {
     filters: "Filters",
@@ -49,23 +58,15 @@ const {
   search,
 } = useCategoryListing();
 
-const sidebarSelectedFilters: UnwrapNestedRefs<{
-  [key: string]: Set<string> | string | number | boolean | undefined;
-}> = reactive<{
-  manufacturer: Set<string>;
-  properties: Set<string>;
-  "min-price": string | number | undefined;
-  "max-price": string | number | undefined;
-  rating: string | number | undefined;
-  "shipping-free": boolean | undefined;
-}>({
-  manufacturer: new Set(),
-  properties: new Set(),
-  "min-price": undefined,
-  "max-price": undefined,
-  rating: undefined,
-  "shipping-free": undefined,
-});
+const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
+  reactive<FilterState>({
+    manufacturer: new Set(),
+    properties: new Set(),
+    "min-price": undefined,
+    "max-price": undefined,
+    rating: undefined,
+    "shipping-free": undefined,
+  });
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
@@ -99,19 +100,41 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
   }));
 
 for (const param in route.query) {
-  if (Object.prototype.hasOwnProperty.call(sidebarSelectedFilters, param)) {
-    if (
-      sidebarSelectedFilters[param] &&
-      typeof sidebarSelectedFilters[param] === "object"
-    ) {
-      const elements = (route.query[param] as unknown as string).split("|");
-      for (const element of elements) {
-        sidebarSelectedFilters[param].add(element);
+  if (param in sidebarSelectedFilters) {
+    const queryValue = route.query[param];
+
+    // Skip arrays
+    if (Array.isArray(queryValue)) continue;
+
+    if (["manufacturer", "properties"].includes(param)) {
+      if (typeof queryValue === "string") {
+        const elements = queryValue.split("|");
+        const targetSet = sidebarSelectedFilters[
+          param as keyof FilterState
+        ] as Set<string>;
+        for (const element of elements) {
+          targetSet.add(element);
+        }
       }
-    } else {
-      const queryValue = route.query[param];
-      if (queryValue !== null && !Array.isArray(queryValue)) {
-        sidebarSelectedFilters[param] = queryValue;
+    } else if (queryValue && typeof queryValue === "string") {
+      // Fix: Use specific property assignments instead of generic keyof
+      if (param === "min-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["min-price"] = numValue;
+        }
+      } else if (param === "max-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["max-price"] = numValue;
+        }
+      } else if (param === "rating") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters.rating = numValue;
+        }
+      } else if (param === "shipping-free") {
+        sidebarSelectedFilters["shipping-free"] = queryValue === "true";
       }
     }
   }
@@ -124,28 +147,55 @@ const onOptionSelectToggle = async ({
   code: string;
   value: string | number | boolean;
 }) => {
-  if (!["properties", "manufacturer"].includes(code)) {
-    sidebarSelectedFilters[code] = value;
-  } else {
-    const filterSet = sidebarSelectedFilters[code] as Set<string>;
-    const stringValue = String(value);
-    if (filterSet?.has(stringValue)) {
-      filterSet.delete(stringValue);
-    } else {
-      filterSet?.add(stringValue);
+  try {
+    if (!isValidFilterCode(code)) {
+      console.warn(`Invalid filter code: ${code}`);
+      return;
     }
-  }
 
-  await executeSearch();
+    if (["properties", "manufacturer"].includes(code)) {
+      const filterSet = sidebarSelectedFilters[code] as Set<string>;
+      if (!filterSet) return;
+
+      const stringValue = String(value);
+      if (filterSet.has(stringValue)) {
+        filterSet.delete(stringValue);
+      } else {
+        filterSet.add(stringValue);
+      }
+    } else {
+      if (code === "min-price" || code === "max-price") {
+        sidebarSelectedFilters[code] =
+          typeof value === "number" ? value : Number(value);
+      } else if (code === "rating") {
+        sidebarSelectedFilters[code] = Number(value);
+      } else if (code === "shipping-free") {
+        sidebarSelectedFilters[code] = Boolean(value);
+      }
+    }
+
+    await executeSearch();
+  } catch (error) {
+    console.error("Filter toggle failed:", error);
+  }
 };
 
+function isValidFilterCode(code: string): code is keyof FilterState {
+  return code in sidebarSelectedFilters;
+}
+
 const executeSearch = async () => {
-  await search(searchCriteriaForRequest.value);
-  const query = filtersToQuery(searchCriteriaForRequest.value);
-  const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
-  await router.push({
-    query: queryWithoutLimit as LocationQueryRaw,
-  });
+  try {
+    await search(searchCriteriaForRequest.value);
+    const query = filtersToQuery(searchCriteriaForRequest.value);
+    const { limit: _, ...queryWithoutLimit } = query;
+
+    await router.push({
+      query: queryWithoutLimit as LocationQueryRaw,
+    });
+  } catch (error) {
+    console.error("Search execution failed:", error);
+  }
 };
 
 const clearFilters = () => {
@@ -160,17 +210,21 @@ const clearFilters = () => {
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",
   set: async (order: string): Promise<void> => {
-    await router.push({
-      query: {
-        ...route.query,
-        order,
-      },
-    });
+    try {
+      await router.push({
+        query: {
+          ...route.query,
+          order,
+        },
+      });
 
-    await changeCurrentSortingOrder(order, {
-      ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-      limit: route.query.limit ? Number(route.query.limit) : 15,
-    });
+      await changeCurrentSortingOrder(order, {
+        ...(route.query as unknown as operations["searchPage post /search"]["body"]),
+        limit: route.query.limit ? Number(route.query.limit) : 15,
+      });
+    } catch (error) {
+      console.error("Sorting order change failed:", error);
+    }
   },
 });
 
@@ -181,12 +235,18 @@ const selectedOptionIds = computed(() => [
 provide("selectedOptionIds", selectedOptionIds);
 
 async function invokeCleanFilters() {
-  clearFilters();
-  await executeSearch();
+  try {
+    clearFilters();
+    await executeSearch();
+  } catch (error) {
+    console.error("Clear filters failed:", error);
+  }
 }
+
 const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
+
 const dropdownElement = useTemplateRef("dropdownElement");
 onClickOutside(dropdownElement, () => {
   isSortMenuOpen.value = false;
@@ -196,97 +256,175 @@ const handleSortingClick = (key: string) => {
   currentSortingOrder.value = key;
   isSortMenuOpen.value = false;
 };
+
+// Active filter chips logic
+const activeFilterChips = computed(() => {
+  const chips: Array<{ label: string; code: string; value: string | number }> =
+    [];
+
+  // Add property filters
+  for (const propertyId of sidebarSelectedFilters.properties) {
+    const filter = getInitialFilters.value.find((f) => f.code === "properties");
+    if (filter && "options" in filter) {
+      const option = filter.options?.find((o) => o.id === propertyId);
+      if (option && "translated" in option && option.translated?.name) {
+        chips.push({
+          label: option.translated.name as string,
+          code: "properties",
+          value: propertyId,
+        });
+      }
+    }
+  }
+
+  // Add manufacturer filters
+  for (const manufacturerId of sidebarSelectedFilters.manufacturer) {
+    const filter = getInitialFilters.value.find(
+      (f) => f.code === "manufacturer",
+    );
+    if (filter && "entities" in filter) {
+      const entity = filter.entities?.find((e) => e.id === manufacturerId);
+      if (entity && "translated" in entity && entity.translated?.name) {
+        chips.push({
+          label: entity.translated.name as string,
+          code: "manufacturer",
+          value: manufacturerId,
+        });
+      }
+    }
+  }
+
+  // Add price filters
+  if (
+    sidebarSelectedFilters["min-price"] ||
+    sidebarSelectedFilters["max-price"]
+  ) {
+    const min = sidebarSelectedFilters["min-price"] || 0;
+    const max = sidebarSelectedFilters["max-price"] || "∞";
+    chips.push({
+      label: `Price: ${min} - ${max}`,
+      code: "price",
+      value: "price-range",
+    });
+  }
+
+  // Add rating filter
+  if (sidebarSelectedFilters.rating) {
+    chips.push({
+      label: `Rating: ${sidebarSelectedFilters.rating}★`,
+      code: "rating",
+      value: sidebarSelectedFilters.rating,
+    });
+  }
+
+  // Add shipping free filter
+  if (sidebarSelectedFilters["shipping-free"]) {
+    chips.push({
+      label: "Free Shipping",
+      code: "shipping-free",
+      value: "true",
+    });
+  }
+
+  return chips;
+});
+
+const removeFilterChip = async (chip: {
+  code: string;
+  value: string | number;
+}) => {
+  if (chip.code === "properties" || chip.code === "manufacturer") {
+    const filterSet = sidebarSelectedFilters[chip.code] as Set<string>;
+    filterSet.delete(String(chip.value));
+  } else if (chip.code === "price") {
+    sidebarSelectedFilters["min-price"] = undefined;
+    sidebarSelectedFilters["max-price"] = undefined;
+  } else if (chip.code === "rating") {
+    sidebarSelectedFilters.rating = undefined;
+  } else if (chip.code === "shipping-free") {
+    sidebarSelectedFilters["shipping-free"] = undefined;
+  }
+
+  await executeSearch();
+};
 </script>
 <template>
-  <div class="bg-white">
-    <div class="mx-auto m-0" :class="{ 'px-5': isDefaultSidebarFilter }">
-      <ClientOnly>
-        <div
-          class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
-        >
-          <div class="text-4xl tracking-tight text-gray-900">
-            {{ translations.listing.filters }}
-          </div>
+  <div>
+    <!-- Active Filter Chips -->
+    <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
+      <button
+        v-for="(chip, index) in activeFilterChips"
+        :key="`${chip.code}-${chip.value}-${index}`"
+        @click="removeFilterChip(chip)"
+        class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
+      >
+        <span class="text-brand-on-tertiary text-base font-normal font-['Inter'] leading-normal">
+          {{ chip.label }}
+        </span>
+        <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
+      </button>
+    </div>
 
-          <div ref="dropdownElement" class="flex items-center">
-            <div class="relative inline-block text-left">
-              <div>
-                <button
-                  type="button"
-                  @click="isSortMenuOpen = !isSortMenuOpen"
-                  class="group inline-flex justify-center bg-transparent text-base font-medium text-gray-700 hover:text-gray-900"
-                  id="menu-button"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                >
-                  {{ translations.listing.sort }}
-                  <div
-                    class="i-carbon-chevron-down h-5 w-5 ml-1"
-                    :class="{ hidden: isSortMenuOpen }"
-                  ></div>
-                  <div
-                    class="i-carbon-chevron-up h-5 w-5 ml-1"
-                    :class="{ hidden: !isSortMenuOpen }"
-                  ></div>
-                </button>
-              </div>
-              <div
-                :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-1000"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-                tabindex="-1"
-              >
+    <div class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
+        <div class="flex-1 text-surface-on-surface text-base font-bold font-['Inter'] leading-normal mb-8">
+          {{ translations.listing.filters }}
+        </div>
+        <div ref="dropdownElement" class="flex items-center">
+          <div class="relative inline-block text-left">
+            <button type="button" @click="isSortMenuOpen = !isSortMenuOpen"
+              class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
+              id="menu-button" aria-expanded="false" aria-haspopup="true">
+              {{ translations.listing.sort }}
+              <span class="ml-1 inline-flex items-center">
+                <svg v-if="!isSortMenuOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Open sort menu">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 8.79289C8.31658 8.40237 7.68342 8.40237 7.29289 8.79289C6.90237 9.18342 6.90237 9.81658 7.29289 10.2071L11.2929 14.2071C11.6834 14.5976 12.3166 14.5976 12.7071 14.2071L16.7071 10.2071C17.0976 9.81658 17.0976 9.18342 16.7071 8.79289C16.3166 8.40237 15.6834 8.40237 15.2929 8.79289L12 12.0858L8.70711 8.79289Z" fill="currentColor"/>
+                </svg>
+                <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Close sort menu">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 15.2071C8.31658 15.5976 7.68342 15.5976 7.29289 15.2071C6.90237 14.8166 6.90237 14.1834 7.29289 13.7929L11.2929 9.79289C11.6834 9.40237 12.3166 9.40237 12.7071 9.79289L16.7071 13.7929C17.0976 14.1834 17.0976 14.8166 16.7071 15.2071C16.3166 15.5976 15.6834 15.5976 15.2929 15.2071L12 11.9142L8.70711 15.2071Z" fill="currentColor"/>
+                </svg>
+              </span>
+            </button>
+            <ClientOnly>
+              <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
+                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" role="none">
-                  <button
-                    v-for="sorting in getSortingOrders"
-                    :key="sorting.key"
-                    @click="handleSortingClick(sorting.key)"
+                  <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
                     :class="[
                       sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-gray-900'
-                        : 'text-gray-500',
-                    ]"
-                    class="block px-4 py-2 text-sm bg-transparent"
-                    role="menuitem"
-                    tabindex="-1"
-                  >
+                        ? 'font-medium text-surface-on-surface'
+                        : 'text-surface-on-surface-variant',
+                    ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
+                    role="menuitem" tabindex="-1">
                     {{ sorting.label }}
                   </button>
                 </div>
               </div>
-            </div>
+            </ClientOnly>
           </div>
         </div>
-
-        <div class="flex flex-wrap" v-if="getInitialFilters.length">
-          <div
-            v-for="filter in getInitialFilters"
-            :key="`${filter?.id || filter?.code}`"
-            class="mb-2 w-full"
-          >
-            <SwProductListingFilter
-              @select-filter-value="onOptionSelectToggle"
-              :selected-filters="getCurrentFilters"
-              :filter="filter"
-              class="relative"
-            />
-          </div>
-          <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2">
-            <button
-              class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              @click="invokeCleanFilters"
-              type="button"
-            >
-              {{ translations.listing.resetFilters
-              }}<span
-                class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
-              ></span>
-            </button>
-          </div>
-        </div>
-      </ClientOnly>
+      </div>
     </div>
+    <!-- Filters List -->
+    <ClientOnly>
+      <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+        <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+      </div>
+      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
+        <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
+          <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
+            :filter="filter" class="relative" />
+        </div>
+        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
+          <button
+            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+            @click="invokeCleanFilters" type="button">
+            {{ translations.listing.resetFilters }}
+            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+          </button>
+        </div>
+      </div>
+    </ClientOnly>
   </div>
 </template>

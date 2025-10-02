@@ -24,7 +24,7 @@ defineProps<{
 </script>
 <template>
   <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
-    <div class="flex flex-col items-start justify-start gap-2 self-stretch">
+    <div class="flex flex-col items-start justify-start gap-2 self-stretch min-h-[6rem]">
       <div class="flex flex-col items-start justify-start gap-1 self-stretch">
         <div v-if="productManufacturer"
           class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight">
@@ -32,8 +32,8 @@ defineProps<{
         </div>
 
         <RouterLink :to="productLink"
-          class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 h-[4.5] overflow-hidden line-clamp-2 display-webkit-box"
-          style="-webkit-box-orient: vertical;" data-testid="product-box-product-name-link">
+          class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 overflow-hidden line-clamp-2 break-words"
+          data-testid="product-box-product-name-link">
           {{ productName }}
         </RouterLink>
       </div>
