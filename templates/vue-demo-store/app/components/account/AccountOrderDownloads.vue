@@ -6,7 +6,13 @@ const props = defineProps<{
   documents: Schemas["Document"][];
 }>();
 
-const { getDocumentFile } = useOrderDetails(props.documents[0]?.orderId || "");
+if (!props.documents.length || !props.documents[0]?.orderId) {
+  throw new Error(
+    "AccountOrderDownloads requires at least one document with orderId",
+  );
+}
+
+const { getDocumentFile } = useOrderDetails(props.documents[0].orderId);
 
 const getMediaFileHandler = async (documentObject: Schemas["Document"]) => {
   const response = await getDocumentFile(

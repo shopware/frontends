@@ -49,7 +49,7 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
         return t(`errors.${code}`, { ...meta?.parameters });
       }
       if (context && code && contextErrors[context]?.[code]) {
-        return t(`errors.${contextErrors[context]?.[code]}`);
+        return t(`errors.${contextErrors[context][code]}`);
       }
 
       return detail || "No details provided";
