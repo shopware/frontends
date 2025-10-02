@@ -78,7 +78,7 @@ const getChecked = (id: string) =>
               :description="undefined"
               :disabled="false"
               :model-value="getChecked(option.id).value"
-              @update:model-value="() => {}"
+              @update:model-value="() => emits('select-value', { code: props.filter.code, value: option.id })"
               @click.stop
             />
           </div>
