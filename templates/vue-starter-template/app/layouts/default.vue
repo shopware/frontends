@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { getLanguageName } from "@shopware/helpers";
 
+const { loadNavigationElements } = useNavigation();
+const { data } = useAsyncData("mainNavigation", () => {
+  return loadNavigationElements({ depth: 2 });
+});
+
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();
 const { languageIdChain } = useSessionContext();
+provide("swNavigation-main-navigation", data);
 
 const currentLanguageLabel = computed(() => {
   const currentLanguage = languages.value?.find(
@@ -42,7 +48,7 @@ async function onChangeHandler(id: string) {
         :languages="languagesList"
         @onLanguageChangeHandler="onChangeHandler"
       />
-      <LayoutHeader class="px-6" />
+      <LayoutHeader />
     </header>
     <main>
       <LayoutNotifications />
