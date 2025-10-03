@@ -2,12 +2,12 @@
 const {
   placeholder,
   label = "",
-  id,
+  id = "",
   type = "text",
 } = defineProps<{
   placeholder?: string;
   label?: string;
-  id: string;
+  id?: string;
   type?: "text" | "password";
   errorMessage?: string;
   autocomplete?: string;
