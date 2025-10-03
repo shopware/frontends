@@ -47,19 +47,16 @@ const handleRadioUpdate = (val: string | null | boolean) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
-      <div class="flex-1 flex justify-start items-center gap-2.5">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
-          {{ props.filter.label }}
-        </div>
+    <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none">
+      <div class="text-surface-on-surface text-base font-bold leading-normal text-left">
+        {{ props.filter.label }}
       </div>
-      <SwIconButton type="ghost" @click="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
-        <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
-      </SwIconButton>
-    </div>
+      <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="Expand filter" class="w-6 h-6" />
+      <img v-else :src="ChevronUpIcon" alt="Collapse filter" class="w-6 h-6" />
+    </button>
 
-    <div v-show="isFilterVisible" class="self-stretch pt-6">
+    <Transition name="fade">
+      <div v-if="isFilterVisible" class="self-stretch pt-6">
       <div class="space-y-4">
         <div class="self-stretch inline-flex justify-start items-start gap-2">
           <div class="flex-1 pt-[3px]">
@@ -74,7 +71,8 @@ const handleRadioUpdate = (val: string | null | boolean) => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </Transition>
   </div>
 </template>
 <style scoped>
@@ -86,5 +84,6 @@ const handleRadioUpdate = (val: string | null | boolean) => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 </style>

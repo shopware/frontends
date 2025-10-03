@@ -50,20 +50,17 @@ const toggle = () => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
-            {{ props.filter.label }}
-          </div>
+    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-start items-start">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+          {{ props.filter.label }}
         </div>
-        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
-          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
-        </SwIconButton>
+        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="Expand filter" class="w-6 h-6" />
+        <img v-else :src="ChevronUpIcon" alt="Collapse filter" class="w-6 h-6" />
       </button>
     </div>
-    <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+    <Transition name="fade">
+      <div v-if="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center gap-2 mt-2">
         <img
           v-for="i in 5"
@@ -76,7 +73,8 @@ const toggle = () => {
           alt=""
         />
       </div>
-    </div>
+      </div>
+    </Transition>
   </div>
 </template>
 <style scoped>
@@ -88,5 +86,6 @@ const toggle = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 </style>
