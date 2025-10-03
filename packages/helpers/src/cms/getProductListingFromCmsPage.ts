@@ -1,23 +1,3 @@
-type CmsSlot = {
-  type?: string;
-  data?: {
-    listing?: unknown;
-    [key: string]: unknown;
-  };
-};
-
-type CmsBlock = {
-  slots?: CmsSlot[];
-};
-
-type CmsSection = {
-  blocks?: CmsBlock[];
-};
-
-type CmsPage = {
-  sections?: CmsSection[];
-};
-
 /**
  * Extracts the product listing data from a CMS page structure.
  * Useful for SSR to get listing data early before components render.
@@ -32,7 +12,16 @@ type CmsPage = {
  * ```
  */
 export function getProductListingFromCmsPage<T = unknown>(
-  cmsPage: CmsPage | null | undefined,
+  cmsPage:
+    | {
+        sections?: Array<{
+          blocks?: Array<{
+            slots?: Array<{ type?: string; data?: Record<string, unknown> }>;
+          }>;
+        }>;
+      }
+    | null
+    | undefined,
 ): T | null {
   // Early exit - avoid unnecessary iterations
   if (!cmsPage?.sections?.length) {
@@ -47,7 +36,6 @@ export function getProductListingFromCmsPage<T = unknown>(
       if (!block.slots?.length) continue;
 
       for (const slot of block.slots) {
-        // Direct property access is faster than optional chaining in hot path
         if (slot.type === "product-listing") {
           const listing = slot.data?.listing;
           if (listing) {
