@@ -2,6 +2,7 @@
 import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
+  getProductListingFromCmsPage,
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
 import { computed, h, resolveComponent } from "vue";
@@ -14,7 +15,13 @@ const props = defineProps<{
 
 const { routeName } = useNavigationContext();
 if (routeName.value === "frontend.navigation.page") {
-  createCategoryListingContext();
+  const initialListing = getProductListingFromCmsPage<
+    Schemas["ProductListingResult"]
+  >(props.content);
+
+  if (initialListing) {
+    createCategoryListingContext(initialListing);
+  }
 }
 
 const cmsSections = computed<Schemas["CmsSection"][]>(() => {

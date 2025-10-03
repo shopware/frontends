@@ -133,20 +133,17 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
-            {{ props.filter.label }}
-          </div>
+    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-start items-start">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+          {{ props.filter.label }}
         </div>
-        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
-          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
-        </SwIconButton>
+        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="Expand filter" class="w-6 h-6" />
+        <img v-else :src="ChevronUpIcon" alt="Collapse filter" class="w-6 h-6" />
       </button>
     </div>
-    <div v-show="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-2.5">
+    <Transition name="fade">
+      <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-2.5">
   <div data-state="Default" data-type="Range selection" class="self-stretch flex flex-col justify-start items-start gap-1">
         <div class="self-stretch inline-flex justify-between items-center gap-2">
           <div class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
@@ -202,6 +199,19 @@ onBeforeUnmount(() => {
           ></div>
         </div>
       </div>
-    </div>
-    </div>
-    </template>
+      </div>
+    </Transition>
+  </div>
+</template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

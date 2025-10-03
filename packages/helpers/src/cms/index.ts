@@ -27,6 +27,7 @@ export * from "./layoutClasses";
 export * from "./isMaintenanceMode";
 export * from "./getCmsTranslate";
 export * from "./getCmsBreadcrumbs";
+export * from "./getProductListingFromCmsPage";
 
 /**
  * Returns the main page object depending of the type of the CMS page.
