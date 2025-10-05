@@ -44,8 +44,8 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
 
    Note that if you are starting from scratches (not using this example as it is) you will probably need as minimum:
 
-   - [@shopware-pwa/nuxt3-module](https://www.npmjs.com/package/@shopware-pwa/nuxt3-module) - sets up your project to be Shopware 6 aware
-   - [@shopware-pwa/composables-next](https://www.npmjs.com/package/@shopware-pwa/composables-next) - installs all the dependencies for the logic layer
+   - [@shopware/nuxt-module](https://www.npmjs.com/package/@shopware/nuxt-module) - sets up your project to be Shopware 6 aware
+   - [@shopware/composables](https://www.npmjs.com/package/@shopware/composables) - installs all the dependencies for the logic layer
    - [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) - API client for your REST API Shopware 6 backend
    - [@amazonpay/amazon-pay-api-sdk-nodejs](https://www.npmjs.com/package/@amazonpay/amazon-pay-api-sdk-nodejs) - nodejs client for Amazon Pay API
 
@@ -53,7 +53,7 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
 
 ```js
   // ./playground/nuxt.config.ts
-  modules: ["@shopware-pwa/nuxt3-module", "../src/module"],
+  modules: ["@shopware/nuxt-module", "../src/module"],
   // see that "../src/module" points to this dir (from ./playground/nuxt.config.ts file)
 ```
 
@@ -62,8 +62,8 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
 ```ts
 // ./nuxt.config.ts
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
-  modules: ["@shopware-pwa/nuxt3-module", "../src/module"], // path to amazon-pay module
+  extends: ["@shopware/composables/nuxt-layer"],
+  modules: ["@shopware/nuxt-module", "../src/module"], // path to amazon-pay module
   amazonPay: {
     storeId:
       "YOUR STORE ID HERE (e.g. amzn1.application-oa2-client.0123456789abcdef...)", // from amazon pay panel
@@ -95,7 +95,7 @@ export default defineNuxtConfig({
 
 ## Use Amazon Pay component
 
-Use `<AmazonPayButton />` component wherever you want as it's registered globally. You can customize the way it's rendered by editing [the component](./src/runtime/components/AmazonPayButton.client.vue).
+Use `<AmazonPayButton />` component wherever you want as it's registered globally. You can customize the way it's rendered by editing the component `src/runtime/components/AmazonPayButton.client.vue`.
 
 ## What to expect
 

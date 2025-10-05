@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createAPIClient } from "../createAPIClient";
 import type { operations } from "../../api-types/storeApiTypes";
+import { createAPIClient } from "../createAPIClient";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
@@ -63,7 +63,7 @@ describe("updateSessionContext", () => {
         },
       );
       const firstProductPrice =
-        firstProductResponse.data.elements[0].calculatedPrice.unitPrice;
+        firstProductResponse.data.elements[0]?.calculatedPrice.unitPrice;
       expect(firstProductPrice).toBeGreaterThan(0);
 
       const availableCurrencies = await apiInstance.invoke(
@@ -87,7 +87,7 @@ describe("updateSessionContext", () => {
         },
       );
       const newProductPrice =
-        productResponse.data.elements[0].calculatedPrice.unitPrice;
+        productResponse.data.elements[0]?.calculatedPrice.unitPrice;
       expect(newProductPrice).toBeGreaterThan(0);
       expect(newProductPrice).not.toEqual(firstProductPrice);
     });
@@ -153,7 +153,7 @@ describe("updateSessionContext", () => {
         },
       );
       const firstProductName =
-        firstProductResponse.data.elements[0].translated.name;
+        firstProductResponse.data.elements[0]?.translated.name;
       expect(firstProductName).not.toBe("");
 
       const availableLanguages = await apiInstance.invoke(
@@ -178,7 +178,7 @@ describe("updateSessionContext", () => {
           },
         },
       );
-      const newProductName = productResponse.data.elements[0].translated.name;
+      const newProductName = productResponse.data.elements[0]?.translated.name;
       expect(newProductName).not.toBe("");
       expect(newProductName).not.toEqual(firstProductName);
     });

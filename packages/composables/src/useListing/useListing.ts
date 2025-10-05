@@ -1,9 +1,9 @@
-import { inject, computed, ref, provide } from "vue";
-import type { ComputedRef, Ref } from "vue";
-import { getListingFilters } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCategory } from "#imports";
-import type { Schemas, operations } from "#shopware";
+import { getListingFilters } from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
+import { computed, inject, provide, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { useCategory, useShopwareContext } from "#imports";
+import type { Schemas, operations } from "#shopware";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -525,7 +525,9 @@ export function createListingComposable({
       };
     }
 
-    return search(appliedFilters);
+    return search(
+      appliedFilters as operations["searchPage post /search"]["body"],
+    );
   };
 
   const resetFilters = () => {

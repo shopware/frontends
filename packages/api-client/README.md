@@ -33,6 +33,9 @@ pnpm install @shopware/api-client
 
 # bun
 bun install @shopware/api-client
+
+# deno
+deno install @shopware/api-client
 ```
 
 <!-- /automd -->
@@ -126,7 +129,7 @@ export const adminApiClient = createAdminAPIClient<operations>({
   sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
 });
 
-adminApiClient.hooks("onAuthChange", (sessionData) => {
+adminApiClient.hook("onAuthChange", (sessionData) => {
   Cookies.set("sw-admin-session-data", JSON.stringify(sessionData), {
     expires: 1, // days
     path: "/",
@@ -263,7 +266,34 @@ apiClient.hook("onDefaultHeaderChanged", (key, value) => {
 });
 ```
 
+Available hooks:
+
+- `onContextChanged`: Triggered when context token changes
+- `onResponseError`: Triggered when API returns an error
+- `onSuccessResponse`: Triggered when API request succeeds
+- `onDefaultHeaderChanged`: Triggered when default headers are modified
+- `onRequest`: Triggered before each request is made, allowing for request inspection and modification
+
 calling `apiClient.hook` will autocomplete the list of available hooks.
+
+### Base Configuration Management
+
+The API client provides methods to manage its base configuration:
+
+```typescript
+// Get current configuration
+const config = apiClient.getBaseConfig();
+console.log(config.baseURL); // "https://demo-frontends.shopware.store/store-api"
+console.log(config.accessToken); // "SWSCBHFSNTVMAWNZDNFKSHLAYW"
+
+// Update configuration
+apiClient.updateBaseConfig({
+  baseURL: "https://new-url.com/store-api",
+  accessToken: "NEW_TOKEN",
+});
+```
+
+This allows you to dynamically change the API endpoint or access token during runtime, for example when switching between different environments or when the access token needs to be updated.
 
 ## Links
 
@@ -271,7 +301,7 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -279,8 +309,19 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.1.2
+### Latest changes: 1.3.0
+
+### Minor Changes
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
+
+  - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
+  - `getBaseConfig`: Returns current baseURL and accessToken values
+
+  This change replaces the previous `updateBaseUrl` method with a more flexible configuration management system that can be extended in the future.
 
 ### Patch Changes
 
-- [#1434](https://github.com/shopware/frontends/pull/1434) [`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381) Thanks [@quando1910](https://github.com/quando1910)! - set authentication header instead of appending, when session has expired and is being refreshed
+- [#1801](https://github.com/shopware/frontends/pull/1801) [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc) Thanks [@joostaasman](https://github.com/joostaasman)! - fix: Undefined mergedHeaders["content-type"] when content-type is multipart/form-data
+
+- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added `onRequest` hook to the API client that is triggered before each request is made. This hook provides access to the request context, allowing for request inspection and modification before it's sent.

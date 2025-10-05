@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { useSetup } from "../_test";
-import { useProductReviews } from "./useProductReviews";
-import ProductMock from "../mocks/Product";
 import { ref } from "vue";
+import { useSetup } from "../_test";
+import ProductMock from "../mocks/Product";
+import { useProductReviews } from "./useProductReviews";
 
 describe("useProductReviews", () => {
   it("load product reviews", async () => {

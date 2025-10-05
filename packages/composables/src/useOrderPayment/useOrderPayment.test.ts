@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { useOrderPayment } from "./useOrderPayment";
-import { useSetup } from "../_test";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
 import Order from "../mocks/Order";
+import { useOrderPayment } from "./useOrderPayment";
 
 describe("useOrderPayment", () => {
   it("should handle the order payment", async () => {
     const { vm, injections } = useSetup(() =>
       useOrderPayment(
-        computed(() => Order.orders.elements[0]) as unknown as ComputedRef<
+        computed(() => Order.orders.elements?.[0]) as unknown as ComputedRef<
           Schemas["Order"]
         >,
       ),
@@ -24,13 +24,13 @@ describe("useOrderPayment", () => {
         body: {
           errorUrl: undefined,
           finishUrl: undefined,
-          orderId: Order.orders.elements[0].id,
+          orderId: Order.orders.elements?.[0]?.id,
         },
       }),
     );
 
     expect(vm.activeTransaction).toEqual(
-      Order.orders.elements[0].transactions[0],
+      Order.orders.elements?.[0]?.transactions[0],
     );
 
     vm.changePaymentMethod("test");
@@ -52,26 +52,25 @@ describe("useOrderPayment", () => {
         computed(() => null) as unknown as ComputedRef<Schemas["Order"]>,
       ),
     );
-    expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
-    expect(vm.handlePayment()).resolves.toBeUndefined();
+    await expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
+    await expect(vm.handlePayment()).resolves.toBeUndefined();
   });
 
   it("should be a asynchronous payment", () => {
     const { vm } = useSetup(() =>
       useOrderPayment(
-        computed(() =>
-          Object.assign(Order.orders.elements[0], {
-            transactions: [
-              {
-                paymentMethod: {
-                  active: true,
-                  asynchronous: true,
-                  afterOrderEnabled: true,
-                },
+        computed(() => ({
+          ...Order.orders.elements?.[0],
+          transactions: [
+            {
+              paymentMethod: {
+                active: true,
+                asynchronous: true,
+                afterOrderEnabled: true,
               },
-            ],
-          }),
-        ) as unknown as ComputedRef<Schemas["Order"]>,
+            },
+          ],
+        })) as unknown as ComputedRef<Schemas["Order"]>,
       ),
     );
 

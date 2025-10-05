@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import "./style.css";
+import { createShopwareContext } from "@shopware/composables/dist";
 import App from "./App.vue";
-import { createShopwareContext } from "@shopware-pwa/composables-next/lib";
 import { apiClient } from "./apiClient";
 
 const app = createApp(App);

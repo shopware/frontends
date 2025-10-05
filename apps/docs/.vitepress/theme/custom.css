@@ -1,39 +1,39 @@
 .vt-doc table {
-    width: 100%;
-    display: table;
+  width: 100%;
+  display: table;
 }
 
 .DocSearch-Button-Placeholder,
 .DocSearch-Search-Icon,
 .DocSearch-Button-Key,
 .DocSearch-Button:hover .DocSearch-Search-Icon {
-    color: var(--vt-c-white);
+  color: var(--vt-c-white);
 }
 
 .search-item:hover,
 .VPPluginSearch-search-item:hover,
 .DocSearch-Button:hover .DocSearch-Button-Placeholder {
-    color: var(--vt-c-blue);
+  color: var(--vt-c-blue);
 }
 
 .group .VPSidebarGroup .VPSidebarGroup {
-    margin-left: .6rem;
+  margin-left: .6rem;
 }
 
 .group .VPSidebarGroup .VPSidebarGroup h2.title-text {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 h1 + p > a {
-    display: inline-block;
-    margin-right: 10px;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 /**
-*   Fix for anchor position
-*/
+ *   Fix for anchor position
+ */
 .vt-doc h3 > code + a.header-anchor::before,
 .vt-doc h2 > a.header-anchor::before,
 .vt-doc h3 > a.header-anchor::before {
-   content: "#";
+  content: "#";
 }

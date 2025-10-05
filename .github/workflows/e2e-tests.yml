@@ -6,27 +6,19 @@ on:
 jobs:
   run-e2e:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
-    runs-on: macos-14
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs') && !contains(github.event.deployment_status.target_url, 'vue-starter-template')
+    runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
-
-      - run: corepack enable
-      - run: pnpm --version
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-          cache-dependency-path: "**/pnpm-lock.yaml"
+          node-version: 22
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 

@@ -4,7 +4,7 @@
 Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
 :::
 
-See also the [complete guide](/getting-started/e-commerce/product-detail-page.html) about the product detail page from the BUILDING section.
+See also the [complete guide](../../../e-commerce/product-detail-page) about the product detail page from the BUILDING section.
 
 ## Simple Product Detail Page
 
@@ -21,10 +21,7 @@ Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 ```vue
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
-import {
-  getProductRoute,
-  getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
 
 const router = useRouter();

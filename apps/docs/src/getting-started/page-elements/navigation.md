@@ -42,7 +42,7 @@ Note that all the navigation items are in type `Category`, and thanks to this th
 
 ```vue
 <script setup lang="ts">
-import { getCategoryUrl } from "@shopware-pwa/helpers-next";
+import { getCategoryUrl } from "@shopware/helpers";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 </script>

@@ -7,6 +7,10 @@
  */
 export type components = {
   schemas: Schemas;
+  parameters: {
+    accept: string;
+    contentType: string;
+  };
 };
 export type Schemas = {};
 export type operations = {};

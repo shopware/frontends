@@ -1,7 +1,7 @@
 import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
+import { ComposablesBuilder } from "./theme/typer/composables-builder";
 import { ReadmeBasedReference } from "./theme/typer/plugin";
 import { ReadmeLoader } from "./theme/typer/readme-loader";
-import { ComposablesBuilder } from "./theme/typer/composables-builder";
 
 /**
  * This file extends the DevHub VitePress configuration.
@@ -31,7 +31,7 @@ export default (
       ReadmeBasedReference({ projectRootDir, relativeDir: "packages" }),
       CmsBaseReference({
         projectRootDir,
-        relativeDir: "packages/cms-base/components/public/cms",
+        relativeDir: "packages/cms-base-layer/app/components/public/cms",
       }),
       ReadmeLoader(),
       ComposablesBuilder({

@@ -1,17 +1,17 @@
-import { afterAll, describe, expect, it, vi } from "vitest";
-import { listen } from "listhen";
-import type { Listener } from "listhen";
 import {
   createApp,
   createError,
   eventHandler,
-  toNodeListener,
-  setHeader,
   getHeaders,
+  setHeader,
+  toNodeListener,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from "./createAPIClient";
+import { listen } from "listhen";
+import type { Listener } from "listhen";
+import { afterAll, describe, expect, it, vi } from "vitest";
 import type { operations } from "../api-types/storeApiTypes";
+import { createAPIClient } from "./createAPIClient";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -38,12 +38,12 @@ describe("createAPIClient", () => {
   });
 
   it("should invoke requests with sw-access-key header and no context-token by default", async () => {
-    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const firstAppSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
         const requestHeaders = getHeaders(event);
-        seoUrlHeadersSpy(requestHeaders);
+        firstAppSpy(requestHeaders);
         return {};
       }),
     );
@@ -55,7 +55,7 @@ describe("createAPIClient", () => {
       baseURL,
     });
     await client.invoke("readCart get /checkout/cart");
-    expect(seoUrlHeadersSpy).not.toHaveBeenCalledWith(
+    expect(firstAppSpy).not.toHaveBeenCalledWith(
       expect.objectContaining({
         "sw-context-token": "",
       }),
@@ -63,12 +63,12 @@ describe("createAPIClient", () => {
   });
 
   it("should invoke requests with sw-context-token header", async () => {
-    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const firstAppSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
         const requestHeaders = getHeaders(event);
-        seoUrlHeadersSpy(requestHeaders);
+        firstAppSpy(requestHeaders);
         return {};
       }),
     );
@@ -82,7 +82,7 @@ describe("createAPIClient", () => {
     });
     await client.invoke("readCart get /checkout/cart");
 
-    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
+    expect(firstAppSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         "sw-access-key": "123",
         "sw-context-token": "456",
@@ -342,11 +342,24 @@ describe("createAPIClient", () => {
       },
     });
 
-    expect(contentTypeSpy).toHaveBeenCalledWith(
-      expect.not.objectContaining({
-        "content-type": "multipart/form-data",
-      }),
-    );
+    expect(contentTypeSpy.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          {
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate",
+            "accept-language": "*",
+            "connection": "keep-alive",
+            "content-length": "0",
+            "host": "localhost:3610",
+            "sec-fetch-mode": "cors",
+            "sw-access-key": "123",
+            "sw-context-token": "456",
+            "user-agent": "node",
+          },
+        ],
+      ]
+    `);
   });
 
   it("should trigger success callback", async () => {
@@ -396,7 +409,7 @@ describe("createAPIClient", () => {
     await expect(
       client.invoke("readContext get /context"),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[ApiClientError: Failed request]`,
+      "[ApiClientError: Failed request]",
     );
 
     expect(errorCallback).toHaveBeenCalled();
@@ -432,9 +445,153 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
       `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
     );
+  });
+
+  describe("fetchOptions", () => {
+    it("should enforce the timeout for API requests when a timeout is provided", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: {
+          timeout: 50,
+        },
+        baseURL,
+      });
+
+      await expect(
+        // @ts-expect-error this endpoint does not exist
+        client.invoke("testTimeout get /slow-endpoint", {}),
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[FetchError: [GET] "${baseURL}slow-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+      );
+    });
+
+    it("should complete request if timeout is not provided and endpoint resolves", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+
+      // @ts-expect-error this endpoint does not exist
+      const response = await client.invoke("testNoTimeout get /fast-endpoint");
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should complete request if timeout is larger than the time it took to resolve the request", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: {
+          timeout: 100,
+        },
+        baseURL,
+      });
+
+      // @ts-expect-error this endpoint does not exist
+      const response = await client.invoke("testTimeout get /fast-endpoint");
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should use per-request timeout instead of client default timeout", async () => {
+      const app = createApp().use(
+        "/override-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: {
+          timeout: 100,
+        },
+        baseURL,
+      });
+
+      const response = await client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testOverrideTimeout get /override-endpoint",
+        {
+          fetchOptions: { timeout: 200 },
+        },
+      );
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should fail when per-request timeout is smaller than endpoint response time", async () => {
+      const app = createApp().use(
+        "/override-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: {
+          timeout: 200,
+        },
+        baseURL,
+      });
+
+      await expect(
+        // @ts-expect-error this endpoint does not exist
+        client.invoke("testOverrideTimeout get /override-endpoint", {
+          fetchOptions: { timeout: 100 },
+        }),
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+      );
+    });
   });
 
   describe("default header changes", () => {
@@ -482,6 +639,83 @@ describe("createAPIClient", () => {
         "some-new-context-token",
       );
       expect(contextChangedMock).toHaveBeenCalledWith("some-new-context-token");
+    });
+  });
+
+  describe("change of baseConfig", () => {
+    it("should change baseUrl, access token and invoke it properly", async () => {
+      const firstAppSpy = vi.fn().mockImplementation(() => {});
+      const app = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          firstAppSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const anotherAppSpy = vi.fn().mockImplementation(() => {});
+      const app2 = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          anotherAppSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+      const baseURL2 = await createPortAndGetUrl(app2);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken: "456",
+        baseURL,
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(firstAppSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accept: "application/json",
+        }),
+      );
+
+      client.updateBaseConfig({
+        baseURL: baseURL2,
+        accessToken: "NEW_TOKEN",
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(anotherAppSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accept: "application/json",
+          "sw-access-key": "NEW_TOKEN",
+        }),
+      );
+    });
+
+    it("should return current base configuration", () => {
+      const client = createAPIClient<operations>({
+        accessToken: "INITIAL_TOKEN",
+        baseURL: "https://initial-url.com",
+      });
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL: "https://initial-url.com",
+        accessToken: "INITIAL_TOKEN",
+      });
+
+      client.updateBaseConfig({
+        baseURL: "https://new-url.com",
+        accessToken: "NEW_TOKEN",
+      });
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL: "https://new-url.com",
+        accessToken: "NEW_TOKEN",
+      });
     });
   });
 });

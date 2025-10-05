@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import json5 from "json5";
 import ts from "typescript";
 
 export function getTypePropertyNames(type: ts.Type) {
@@ -19,6 +22,7 @@ export function getDeepProperty({
     return type;
   }
   const [currentName, ...restNames] = names;
+  if (!currentName) return undefined;
 
   const property = type.getProperty(currentName);
   if (!property) {
@@ -48,6 +52,7 @@ export function getDeepPropertyCode({
 }) {
   const namesWithoutLast = names.slice(0, -1);
   const currentName = names[names.length - 1];
+  if (!currentName) return undefined;
   const deepProperty = getDeepProperty({
     type,
     names: namesWithoutLast,
@@ -61,6 +66,7 @@ export function getDeepPropertyCode({
     }
     return property.valueDeclaration?.getText().replace(/^[^:]+:/, "");
   }
+  return undefined;
 }
 
 export function isOptional(symbol: ts.Symbol): boolean {
@@ -72,6 +78,7 @@ export function isOptional(symbol: ts.Symbol): boolean {
 
   // Check if the declaration has a question token
   if (
+    declaration &&
     ts.isPropertySignature(declaration) &&
     declaration.questionToken !== undefined
   ) {
@@ -79,7 +86,11 @@ export function isOptional(symbol: ts.Symbol): boolean {
   }
 
   // If it's not a property signature, check if it's a parameter
-  if (ts.isParameter(declaration) && declaration.questionToken !== undefined) {
+  if (
+    declaration &&
+    ts.isParameter(declaration) &&
+    declaration.questionToken !== undefined
+  ) {
     return true; // Parameter is optional
   }
 
@@ -89,4 +100,14 @@ export function isOptional(symbol: ts.Symbol): boolean {
 export function isNeverType(symbol?: ts.Type): boolean {
   if (!symbol) return false;
   return symbol.flags === ts.TypeFlags.Never;
+}
+
+export async function loadLocalJSONFile<T = JSON>(
+  path: string,
+): Promise<T | undefined> {
+  const localPath = resolve(path);
+  if (existsSync(localPath)) {
+    return json5.parse(readFileSync(localPath, "utf-8"));
+  }
+  return undefined;
 }

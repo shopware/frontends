@@ -1,5 +1,19 @@
 # vue-blank
 
+## 0.3.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+## 0.2.0
+
+### Minor Changes
+
+- [#1490](https://github.com/shopware/frontends/pull/1490) [`c59b384`](https://github.com/shopware/frontends/commit/c59b384084a1cb70f2679ff5810518932dd06516) Thanks [@patzick](https://github.com/patzick)! - Update to the Node 22 LTS as the default
+
 ## 0.1.0
 
 ### Minor Changes

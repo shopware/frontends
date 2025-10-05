@@ -1,5 +1,5 @@
-import type { Schemas } from "#shopware";
 import type { CSSProperties } from "vue";
+import type { Schemas } from "#shopware";
 
 export type SourceType = "static" | "mapped";
 
@@ -31,7 +31,7 @@ type ElementFieldConfig = {
 };
 
 // Text
-export type CmsElementText = Schemas["CmsSlot"] & {
+export type CmsElementText = Omit<Schemas["CmsSlot"], "config"> & {
   type: "text" | typeof String;
   slot: typeof String;
   config: TextElementConfig;
@@ -42,6 +42,15 @@ export type CmsElementText = Schemas["CmsSlot"] & {
   };
   translated: {
     config: TextElementConfig;
+  };
+};
+
+// HTML
+export type CmsElementHtml = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "html";
+  data: {
+    content: string;
+    apiAlias: "cms_html";
   };
 };
 
@@ -59,7 +68,7 @@ type ImageElementConfig = {
   horizontalAlign: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementImage = Schemas["CmsSlot"] & {
+export type CmsElementImage = Omit<Schemas["CmsSlot"], "config"> & {
   type: "image";
   config: ImageElementConfig;
   data: {
@@ -93,7 +102,7 @@ type ImageSliderElementConfig = ImageElementConfig &
     >;
   };
 
-export type CmsElementImageSlider = Schemas["CmsSlot"] & {
+export type CmsElementImageSlider = Omit<Schemas["CmsSlot"], "config"> & {
   type: "image-slider";
   config: ImageSliderElementConfig;
   data: {
@@ -119,7 +128,7 @@ type ImageGalleryElementConfig = ImageSliderElementConfig & {
   zoom: ElementConfig<boolean>;
 };
 
-export type CmsElementImageGallery = Schemas["CmsSlot"] & {
+export type CmsElementImageGallery = Omit<Schemas["CmsSlot"], "config"> & {
   type: "image-gallery";
   config: ImageGalleryElementConfig;
   data: {
@@ -150,9 +159,9 @@ type YouTubeVideoElementConfig = {
   previewMedia: ElementConfig<string>;
   showControls: ElementConfig<boolean>;
   needsConfirmation: ElementConfig<boolean>;
-  advancePrivacyMode: ElementConfig<boolean>;
+  advancedPrivacyMode: ElementConfig<boolean>;
 };
-export type CmsElementYoutubeVideo = Schemas["CmsSlot"] & {
+export type CmsElementYoutubeVideo = Omit<Schemas["CmsSlot"], "config"> & {
   type: "youtube-video";
   config: YouTubeVideoElementConfig;
   data: {
@@ -180,7 +189,7 @@ type VimeoVideoElementConfig = {
   needsConfirmation: ElementConfig<boolean>;
 };
 
-export type CmsElementVimeoVideo = Schemas["CmsSlot"] & {
+export type CmsElementVimeoVideo = Omit<Schemas["CmsSlot"], "config"> & {
   type: "vimeo-video";
   config: VimeoVideoElementConfig;
   data: {
@@ -199,7 +208,7 @@ type ProductBoxElementConfig = {
   product: ElementConfig<string>;
 };
 
-export type CmsElementProductBox = Schemas["CmsSlot"] & {
+export type CmsElementProductBox = Omit<Schemas["CmsSlot"], "config"> & {
   type: "product-box";
   config: ProductBoxElementConfig;
   data: {
@@ -225,7 +234,7 @@ type ProductSliderElementConfig = {
   productStreamSorting: ElementConfig<string>;
 };
 
-export type CmsElementProductSlider = Schemas["CmsSlot"] & {
+export type CmsElementProductSlider = Omit<Schemas["CmsSlot"], "config"> & {
   type: "product-slider";
   config: ProductSliderElementConfig;
   data: {
@@ -247,7 +256,7 @@ type CmsSidebarFilterElementConfig = {
   verticalAlign: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementSidebarFilter = Schemas["CmsSlot"] & {
+export type CmsElementSidebarFilter = Omit<Schemas["CmsSlot"], "config"> & {
   type: "sidebar-filter";
   config: CmsSidebarFilterElementConfig;
 };
@@ -264,7 +273,7 @@ type CmsProductListingElementConfig = {
   propertyWhitelist: ElementConfig<string[]>;
 };
 
-export type CmsElementProductListing = Schemas["CmsSlot"] & {
+export type CmsElementProductListing = Omit<Schemas["CmsSlot"], "config"> & {
   type: "product-listing";
   config: CmsProductListingElementConfig;
   data: {
@@ -277,7 +286,10 @@ export type CmsElementProductListing = Schemas["CmsSlot"] & {
 
 type CategoryNavigationElementConfig = unknown;
 
-export type CmsElementCategoryNavigation = Schemas["CmsSlot"] & {
+export type CmsElementCategoryNavigation = Omit<
+  Schemas["CmsSlot"],
+  "config"
+> & {
   type: "category-navigation";
   config: CategoryNavigationElementConfig;
 };
@@ -287,7 +299,10 @@ type ProductDescriptionReviewsElementConfig = {
   alignment: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementProductDescriptionReviews = Schemas["CmsSlot"] & {
+export type CmsElementProductDescriptionReviews = Omit<
+  Schemas["CmsSlot"],
+  "config"
+> & {
   type: "product-description-reviews";
   config: ProductDescriptionReviewsElementConfig;
   data: {
@@ -305,7 +320,7 @@ export type CmsElementProductDescriptionReviews = Schemas["CmsSlot"] & {
 
 type BuyBoxElementConfig = ProductDescriptionReviewsElementConfig;
 // buy box has the same interface in data as product description reviews! unify later
-export type CmsElementBuyBox = Schemas["CmsSlot"] & {
+export type CmsElementBuyBox = Omit<Schemas["CmsSlot"], "config"> & {
   type: "buy-box";
   config: BuyBoxElementConfig;
   data: {
@@ -328,7 +343,7 @@ type CrossSellingElementConfig = {
   displayMode: ElementConfig<DisplayMode>;
 };
 
-export type CmsElementCrossSelling = Schemas["CmsSlot"] & {
+export type CmsElementCrossSelling = Omit<Schemas["CmsSlot"], "config"> & {
   type: "cross-selling";
   config: CrossSellingElementConfig;
   data: {
@@ -347,14 +362,14 @@ type FormElementConfig = {
   defaultMailReceiver: ElementConfig<boolean>;
 };
 
-export type CmsElementForm = Schemas["CmsSlot"] & {
+export type CmsElementForm = Omit<Schemas["CmsSlot"], "config"> & {
   type: "form";
   config: FormElementConfig;
   data: Schemas["Salutation"][];
 };
 
 // Product Name
-export type CmsElementProductName = Schemas["CmsSlot"] & {
+export type CmsElementProductName = Omit<Schemas["CmsSlot"], "config"> & {
   type: "product-name";
   config: TextElementConfig;
   fieldConfig: ElementFieldConfig[];
@@ -368,7 +383,7 @@ export type CmsElementProductName = Schemas["CmsSlot"] & {
 };
 
 // Manufacturer Logo
-export type CmsElementManufacturerLogo = Schemas["CmsSlot"] & {
+export type CmsElementManufacturerLogo = Omit<Schemas["CmsSlot"], "config"> & {
   type: "manufacturer-logo";
   config: ImageElementConfig;
   data: {

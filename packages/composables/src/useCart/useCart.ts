@@ -1,7 +1,7 @@
+import { createSharedComposable } from "@vueuse/core";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext, useShopwareContext } from "#imports";
-import { createSharedComposable } from "@vueuse/core";
 import type { Schemas, operations } from "#shopware";
 
 /**
@@ -66,8 +66,14 @@ export type UseCartReturn = {
   totalPrice: ComputedRef<number>;
   /**
    * Shipping price
+   *
+   * @deprecated Use `shippingCosts` instead
    */
   shippingTotal: ComputedRef<number>;
+  /**
+   * Shipping costs
+   */
+  shippingCosts: ComputedRef<Schemas["CartDelivery"][]>;
   /**
    * The total price of all cart items
    */
@@ -239,6 +245,10 @@ export function useCartFunction(): UseCartReturn {
     return shippingTotal || 0;
   });
 
+  const shippingCosts = computed(() => {
+    return cart.value?.deliveries || [];
+  });
+
   const subtotal = computed(() => {
     const cartPrice = cart.value?.price?.positionPrice;
     return cartPrice || 0;
@@ -297,6 +307,7 @@ export function useCartFunction(): UseCartReturn {
     isEmpty,
     isVirtualCart,
     consumeCartErrors,
+    shippingCosts,
   };
 }
 

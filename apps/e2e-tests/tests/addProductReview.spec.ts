@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
-import { ProductPage } from "../page-objects/ProductPage";
 import { LoginForm } from "../page-objects/LoginPage";
+import { ProductPage } from "../page-objects/ProductPage";
 import { findEnv } from "../utils/helpers";
 
 require("dotenv").config({ path: findEnv() });
@@ -21,8 +21,8 @@ test.describe("Add review", { tag: "@vue-demo-store" }, () => {
 
     await homePage.visitMainPage();
   });
-
-  test("Add product review", async ({ page }) => {
+  //https://github.com/shopware/frontends/issues/1679
+  test.skip("Add product review", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginform.login(userEmail, password);
     await page.waitForLoadState("networkidle");

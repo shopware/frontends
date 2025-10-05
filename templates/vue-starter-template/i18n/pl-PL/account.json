@@ -1,0 +1,44 @@
+{
+  "account": {
+    "signUpHeader": "Jestem tutaj nowy.",
+    "yourAddress": "Twój adres",
+    "order": {
+      "product": "Produkt",
+      "quantity": "Ilość",
+      "price": "Cena",
+      "subtotal": "Suma",
+      "orderNumber": "Numer zamówienia",
+      "totalAmount": "Suma",
+      "orderDate": "Data zamówienia",
+      "orderStatus": "Status zamówienia",
+      "paymentMethod": "Metoda płatności",
+      "repeatOrder": "Powtórz zamówienie",
+      "order": "Zamówienie",
+      "orders": "Zamówienia"
+    },
+    "menu": {
+      "header": "Twoje konto",
+      "overview": "Przegląd",
+      "yourProfile": "Twoje konto",
+      "addresses": "Adresy",
+      "orders": "Zamówienia",
+      "logout": "Wyloguj"
+    },
+    "overview": {
+      "header": "Przegląd",
+      "subHeader": "Dostęp do informacji o profilu, domyślnej metodzie płatności i podanych adresach.",
+      "personalDataSectionHeader": "Dane osobowe",
+      "defaultBillingAddressSectionHeader": "Domyślny adres do faktur",
+      "defaultShippingAddressSectionHeader": "Domyślny adres do wysyłki",
+      "newsletter": {
+        "subscriptionSectionHeader": "Subskrypcja newslettera",
+        "subscriptionLabel": "Tak, chciałbym subskrybować darmowy newsletter Demostore. (Może anulować subskrypcję w każdym momencie.)",
+        "confirmationNeeded": "Proszę potwierdzić swój email przed subskrybowaniem newslettera.",
+        "messages": {
+          "subscribed": "Dziękujemy! Zarejestrowaliśmy Twój email.",
+          "unsubscribed": "Anulowanie subskrypcji newslettera"
+        }
+      }
+    }
+  }
+}

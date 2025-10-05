@@ -21,16 +21,16 @@ This guide will discuss how to use and customize [Shopping Experiences](https://
 
 Shopping Experiences are implemented as a dedicated package that you can install in your project.
 
-If your project is based on the [Demo Store Template](/getting-started/templates/demo-store-template.html), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
+If your project is based on the [Demo Store Template](../getting-started/templates/demo-store-template), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
 
 ## Install the package
 
-The `@shopware-pwa/cms-base` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. It uses Tailwind.css syntax for styling. You will now use it to render a content page.
+The `@shopware/cms-base-layer` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. It uses Tailwind.css syntax for styling. You will now use it to render a content page.
 
 First of all, add the package to your project:
 
 ```bash
-npm install -D @shopware-pwa/cms-base
+npm install -D @shopware/cms-base-layer
 ```
 
 Next, you need to register all components in its `components/public` directory globally. How to do it, depends on your environment. However, the package also comes with a nuxt module which does that for you. So in any Nuxt application, you can just add if to the `modules` section of your Nuxt config file:
@@ -40,8 +40,8 @@ Next, you need to register all components in its `components/public` directory g
 
 export default defineNuxtConfig({
   /* ... */
-- modules: [/* ... */, "@shopware-pwa/nuxt3-module"],
-+ modules: [/* ... */, "@shopware-pwa/cms-base"],
+- modules: [/* ... */, "@shopware/nuxt-module"],
++ modules: [/* ... */, "@shopware/cms-base-layer"],
 });
 ```
 

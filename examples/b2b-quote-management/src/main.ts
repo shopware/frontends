@@ -1,13 +1,13 @@
+import Aura from "@primevue/themes/aura";
+import { createShopwareContext } from "@shopware/composables";
+import PrimeVue from "primevue/config";
 import { createApp } from "vue";
-import { createShopwareContext } from "@shopware-pwa/composables-next";
-import { apiClient } from "./apiClient";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
+import { apiClient } from "./apiClient";
 import Quote from "./components/Quote.vue";
 import QuotesTable from "./components/QuotesTable.vue";
 import RequestQuote from "./components/RequestQuote.vue";
-import PrimeVue from "primevue/config";
-import Aura from "@primevue/themes/aura";
 import "virtual:uno.css";
 import "./assets/main.css";
 

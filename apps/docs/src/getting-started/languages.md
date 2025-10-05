@@ -153,3 +153,108 @@ In more complex scenarios, such as when different prefixes are used on the backe
 ```
 
 The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages
+
+## Multi domain example
+
+To handle multiple domains for different languages, you can configure your application to recognize and switch between these domains seamlessly. Here's an example of how to set up your configuration:
+
+[Check example](https://github.com/shopware/frontends/tree/main/examples/i18n-multi-domain)
+
+*This example should be run locally because of the multi-domain requirements*
+
+## Switching language locally
+
+**Problem**
+
+After switching the language, the URL returned from the backend is used as the basis for redirection which leads to exiting the localhost context.
+
+```typescript
+const onChangeHandler = async (option: Event) => {
+  const data = await changeLanguage((option.target as HTMLSelectElement).value);
+
+  if (data.redirectUrl) {
+    window.location.replace(replaceToDevStorefront(data.redirectUrl));
+  } else {
+    window.location.reload();
+  }
+};
+```
+
+This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
+
+
+### Locally host overrides
+The idea of this solution is to override the domain locally in the `hosts` file.
+
+Windows: `C:\Windows\System32\drivers\etc`
+Linux: `/etc/hosts`
+macOS: `/etc/hosts`
+
+```
+127.0.0.1       yourDomainFromBackend.com
+#IPv6
+::1             yourDomainFromBackend.com
+```
+
+Thanks to this, you will be able to use your local Frontends app instance with the domain returned by the backend.
+
+### Add dev resolver
+
+You can add own dev resolver to avoid redirection
+
+```typescript
+const dev = process.dev;
+
+const onChangeHandler = async (option: Event) => {
+  const data = await changeLanguage((option.target as HTMLSelectElement).value);
+
+  // Check dev mode
+  if (dev) {
+    // Set locale
+    locale.value = getLanguageCodeFromId(
+      (option.target as HTMLSelectElement).value,
+    );
+    // Refresh page
+    window.location.replace(`${window.location.origin}/${locale.value}`);
+    return;
+  }
+  
+  if (data.redirectUrl) {
+    window.location.replace(replaceToDevStorefront(data.redirectUrl));
+  } else {
+    window.location.reload();
+  }
+};
+```
+
+## Troubleshooting in reverse proxy environments
+
+When deploying your application behind a reverse proxy, such as Fastly, Cloudflare, or Vercel, you may encounter issues with language switching. This is primarily due to how these services cache responses and handle headers, which can affect the way languages are served to users.
+
+To face possible issues with language switching, you would need to understand how [@nuxtjs/i18n](https://i18n.nuxtjs.org/) module works:
+
+###  **Language Detection**
+
+The i18n module detects the user's preferred language based on the URL or the `Accept-Language` header.xz
+The setting can be disabled by setting `detectBrowserLanguage: false` in the i18n module configuration. Then, the language will be determined solely based on the URL and the configured locales.
+
+### **URL Structure**
+
+The i18n module uses a specific URL structure to differentiate between languages. For example, it might use `/en/` for English and `/de/` for German. There are two strategies for this:
+
+   - `prefix_except_default`: This strategy adds a prefix to the URL for all languages except the default one.
+   - `prefix_and_default`: This strategy adds a prefix to the URL for all languages, including the default one.
+
+### Multiple locales for the same domain
+
+If you have multiple locales for the same domain, you can configure them in the i18n module. This allows you to serve different languages from the same domain without needing to switch domains.
+
+### [@nuxtjs/i18n](https://i18n.nuxtjs.org/) module reads `x-forwarded-host` header
+
+The i18n module can read the `x-forwarded-host` header to determine the original host of the request. This is useful when your application is behind a reverse proxy, as it allows the i18n module to correctly identify the requested language based on the original host.
+
+### **Caching Issues**
+
+Caching can cause issues with language switching, especially if the cache is not properly configured to handle different languages. To avoid this, ensure that your reverse proxy is set up to cache responses based on the `Accept-Language` header or the URL structure used by the i18n module.
+
+Also, ensure that proxy caching is purged after the deployment of new language configurations or updates to the i18n module.

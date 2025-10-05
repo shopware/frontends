@@ -1,7 +1,7 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseCustomerOrdersReturn = {
   /**
@@ -17,7 +17,9 @@ export type UseCustomerOrdersReturn = {
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
+  loadOrders(
+    parameters?: operations["readOrder post /order"]["body"],
+  ): Promise<void>;
   /**
    * Current page number
    */
@@ -47,10 +49,10 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
 
   const totalOrderItemsCount: Ref<number> = ref(0);
 
-  const currentParams = ref<Schemas["Criteria"]>({});
+  const currentParams = ref<operations["readOrder post /order"]["body"]>({});
 
   const loadOrders = async (
-    parameters: Schemas["Criteria"] = {},
+    parameters: operations["readOrder post /order"]["body"] = {},
   ): Promise<void> => {
     const params = {
       ...parameters,
@@ -62,6 +64,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     });
     orders.value = fetchedOrders.data.orders.elements;
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
+    currentPaginationPage.value = fetchedOrders.data.orders.page ?? 1;
   };
 
   const changeCurrentPage = async (pageNumber: number) => {

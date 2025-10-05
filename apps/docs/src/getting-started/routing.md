@@ -28,7 +28,7 @@ In the most common routing scenario, you will have a URL path like `/Winter-Seas
 import {
   useNavigationContext,
   useNavigationSearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 
 const { resolvePath } = useNavigationSearch();
 
@@ -68,7 +68,7 @@ import {
   useNavigationContext,
   useNavigationSearch,
   useCategorySearch,
-} from "@shopware-pwa/composables-next";
+} from "@shopware/composables";
 
 const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 
@@ -106,7 +106,7 @@ switch (routeName.value) {
 This switch statement handles all options that Shopware natively supports and can easily be enhanced. Another option is to build custom components for each route type and do the rest in there.
 
 :::tip Module imports
-If you use the `@shopware-pwa/nuxt3-module`, all composables will be automatically imported for you.
+If you use the `@shopware/nuxt-module`, all composables will be automatically imported for you.
 :::
 
 You are done at this point if you choose to build/design custom pages or integrate an external CMS system for the page content.
@@ -122,13 +122,13 @@ Thankfully, we do not need to do that in every case. Only the first request (han
 
 To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
 
-We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](/packages/helpers.html#getcategoryroute) and [getProductRoute](/packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers.html#getcategoryroute) and [getProductRoute](../packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
 
 ##### Example getCategoryRoute with NuxtLink
 
 ```vue
 <script setup lang="ts">
-import { getCategoryRoute } from "@shopware-pwa/helpers-next";
+import { getCategoryRoute } from "@shopware/helpers";
 </script>
 
 <template>
@@ -142,7 +142,7 @@ import { getCategoryRoute } from "@shopware-pwa/helpers-next";
 
 ```vue
 <script setup lang="ts">
-import { getProductRoute } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware/helpers";
 </script>
 
 <template>

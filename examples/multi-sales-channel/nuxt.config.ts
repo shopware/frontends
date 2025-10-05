@@ -1,30 +1,25 @@
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
-  modules: ["@nuxtjs/i18n"],
+  extends: ["@shopware/composables/nuxt-layer"],
+  modules: ["@nuxtjs/i18n", "@unocss/nuxt"],
 
   runtimeConfig: {
     public: {
       shopware: {
         useUserContextInSSR: false,
         devStorefrontUrl: "",
-
+        // Declaration of sales channels
         salesChannels: {
           international: {
             endpoint: "https://demo-frontends.shopware.store/store-api/",
             accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
             locales: ["en-GB"],
           },
-          germany: {
-            endpoint: "https://demo-frontends.shopware.store/store-api/",
-            accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-            locales: ["de-DE"],
-          },
           poland: {
             endpoint: "https://demo-frontends.shopware.store/store-api/",
-            accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+            accessToken: "SWSCA2XUULHZBVZTSHVOTM5QAA",
             locales: ["pl-PL"],
           },
         },
@@ -33,17 +28,14 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    strategy: "prefix",
+    strategy: "prefix_except_default",
     defaultLocale: "en-GB",
+    detectBrowserLanguage: false,
     // Locales from the i18n plugin have to match the sales channel configuration
     locales: [
       {
         code: "en-GB",
         iso: "en-GB",
-      },
-      {
-        code: "de-DE",
-        iso: "de-DE",
       },
       {
         code: "pl-PL",
@@ -57,4 +49,5 @@ export default defineNuxtConfig({
   },
 
   telemetry: false,
+  compatibilityDate: "2025-04-17",
 });

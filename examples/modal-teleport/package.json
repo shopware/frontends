@@ -5,20 +5,21 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "12.1.0",
-    "@unocss/nuxt": "0.63.6",
-    "@unocss/reset": "0.63.6",
-    "eslint": "9.14.0",
-    "nuxt": "3.13.2",
-    "unocss": "0.63.6"
+    "@biomejs/biome": "1.8.3",
+    "@unocss/nuxt": "66.5.2",
+    "@unocss/reset": "66.5.2",
+    "nuxt": "4.1.2",
+    "unocss": "66.5.2"
   },
   "dependencies": {
-    "@vueuse/nuxt": "11.2.0",
-    "vue": "3.5.12",
-    "vue-tsc": "2.1.10"
+    "@vueuse/nuxt": "13.9.0",
+    "vue": "3.5.22",
+    "vue-tsc": "2.2.10"
   }
 }

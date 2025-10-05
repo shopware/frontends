@@ -1,6 +1,6 @@
-# shopware/frontends - composables-next
+# shopware/frontends - composables
 
-[![](https://img.shields.io/npm/v/@shopware-pwa/composables-next?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware-pwa/composables-next)
+[![](https://img.shields.io/npm/v/@shopware/composables?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware/composables)
 [![](https://img.shields.io/github/package-json/v/shopware/frontends?color=blue&filename=packages%2Fcomposables%2Fpackage.json&label=frontends/composables&logo=github)](https://github.com/shopware/frontends/tree/main/packages/composables)
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
@@ -20,13 +20,13 @@ Install npm packages (composables & api-client):
 
 ```bash
 # Using pnpm
-pnpm add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
+pnpm add @shopware/composables @shopware/api-client @shopware/api-gen
 
 # Using yarn
-yarn add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
+yarn add @shopware/composables @shopware/api-client @shopware/api-gen
 
 # Using npm
-npm i @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
+npm i @shopware/composables @shopware/api-client @shopware/api-gen
 ```
 
 Now generate your types ysing the [CLI](https://www.npmjs.com/package/@shopware/api-gen):
@@ -53,7 +53,7 @@ app.provide("apiClient", apiClient);
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 
 ```js
-import { createShopwareContext } from "@shopware-pwa/composables-next";
+import { createShopwareContext } from "@shopware/composables";
 
 // app variable in type of App
 const shopwareContext = createShopwareContext(app, {
@@ -63,13 +63,13 @@ const shopwareContext = createShopwareContext(app, {
 app.use(shopwareContext);
 ```
 
-Exclude `@shopware-pwa/composables-next` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
+Exclude `@shopware/composables` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
 
 ```ts
 // vite.config.js or .ts
 ...
 optimizeDeps: {
-  exclude: ["@shopware-pwa/composables-next"],
+  exclude: ["@shopware/composables"],
 },
 ...
 ```
@@ -84,7 +84,7 @@ Now you can use any composable function in your setup function:
 
 ```html
 <script setup>
-    import { useUser, useSessionContext } from "@shopware-pwa/composables-next/dist";
+    import { useUser, useSessionContext } from "@shopware/composables/dist";
 
     const { login } = useUser();
     const { refreshSessionContext, sessionContext } = useSessionContext();
@@ -122,8 +122,8 @@ Let's get back to the step where the `api-client` was initialized:
 
 ```ts [apiClient.ts]
 import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "#shopware";
 import Cookies from "js-cookie";
+import type { operations } from "#shopware";
 
 const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
 
@@ -157,7 +157,7 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` & `#shopware-pwa` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -165,9 +165,11 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.4.2
+### Latest changes: 1.9.1
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
+- [#1877](https://github.com/shopware/frontends/pull/1877) [`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394) Thanks [@mkucmus](https://github.com/mkucmus)! - Adjust `readSeoUrl` request in case of trailing slash when technical URL is used
+
+- Updated dependencies [[`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
+  - @shopware/helpers@1.5.0

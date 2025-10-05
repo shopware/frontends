@@ -1,7 +1,8 @@
-import { useUser } from "./useUser";
-import { describe, expect, it, vi } from "vitest";
-import { useSetup } from "../_test";
+import type { operations } from "@shopware/api-client/api-types";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+import { useSetup } from "../_test";
+import { useUser } from "./useUser";
 
 const refreshCartSpy = vi.fn();
 vi.mock("../useCart/useCart.ts", async () => {
@@ -15,18 +16,22 @@ vi.mock("../useCart/useCart.ts", async () => {
 });
 
 const refreshSessionContextSpy = vi.fn();
+const userFromContextRef = ref();
 vi.mock("../useSessionContext/useSessionContext.ts", async () => {
   return {
     useSessionContext: () => {
       return {
         refreshSessionContext: refreshSessionContextSpy,
-        userFromContext: ref(),
+        userFromContext: userFromContextRef,
       };
     },
   };
 });
 
-const REGISTRATION_DATA = {
+const REGISTRATION_DATA: Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+> = {
   acceptedDataProtection: true,
   accountType: "private",
   salutationId: "d5e543063dd642b48ef94b02d68e5785",
@@ -40,10 +45,18 @@ const REGISTRATION_DATA = {
     city: "sadasdas",
     countryId: "2de9ecc24e7b43d283302abba082b7ce",
     countryStateId: "",
+    customerId: "",
+    id: "",
+    firstName: "test",
+    lastName: "test",
   },
 };
 
 describe("useUser", () => {
+  afterEach(() => {
+    userFromContextRef.value = undefined;
+  });
+
   it("login function", async () => {
     const { vm, injections } = useSetup(() => useUser());
 
@@ -98,6 +111,31 @@ describe("useUser", () => {
     expect(vm.isLoggedIn).toBe(true);
   });
 
+  it("register function with double opt-in option should not automatically log user in", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        active: true,
+        doubleOptInRegistration: true,
+        id: "test123",
+        guest: false,
+      },
+    });
+
+    await vm.register(REGISTRATION_DATA);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("register"),
+      expect.objectContaining({
+        body: {
+          ...REGISTRATION_DATA,
+          storefrontUrl: "http://localhost:3000", // This is the default value from the useInternationalization
+        },
+      }),
+    );
+    expect(vm.isLoggedIn).toBe(false);
+  });
+
   it("logout", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -128,7 +166,7 @@ describe("useUser", () => {
       },
     });
 
-    expect(async () => {
+    await expect(async () => {
       await vm.refreshUser();
     }).rejects.toThrowError();
   });
@@ -253,5 +291,66 @@ describe("useUser", () => {
     await vm.loadSalutation("test");
 
     expect(vm.salutation).toEqual({ id: "test", name: "test" });
+  });
+
+  it("userDefaultPaymentMethod - should fallback to legacy defaultPaymentMethod when lastPaymentMethod is not available", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock the sessionContext to return a user with only legacy defaultPaymentMethod
+    const mockUser = {
+      // No lastPaymentMethod property (undefined)
+      defaultPaymentMethod: {
+        translated: { name: "Legacy Payment Method" },
+      },
+    };
+
+    // Set the userFromContext ref that the composable uses
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toEqual({
+      name: "Legacy Payment Method",
+    });
+
+    // Clean up
+    userFromContextRef.value = undefined;
+  });
+
+  it("userDefaultPaymentMethod - should return null when no payment methods are available", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock user with no payment methods at all
+    const mockUser = {
+      // No lastPaymentMethod and no defaultPaymentMethod
+    };
+
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toBeNull();
+
+    // Clean up
+    userFromContextRef.value = undefined;
+  });
+
+  it("userDefaultPaymentMethod - should fallback when lastPaymentMethod.translated is falsy", () => {
+    const { vm } = useSetup(() => useUser());
+
+    // Mock user with falsy lastPaymentMethod.translated but valid defaultPaymentMethod
+    const mockUser = {
+      lastPaymentMethod: {
+        translated: null, // falsy translated
+      },
+      defaultPaymentMethod: {
+        translated: { name: "Fallback Payment Method" },
+      },
+    };
+
+    userFromContextRef.value = mockUser;
+
+    expect(vm.userDefaultPaymentMethod).toEqual({
+      name: "Fallback Payment Method",
+    });
+
+    // Clean up
+    userFromContextRef.value = undefined;
   });
 });

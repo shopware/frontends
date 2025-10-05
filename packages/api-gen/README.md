@@ -26,6 +26,9 @@ pnpm install -D @shopware/api-gen
 
 # bun
 bun install -D @shopware/api-gen
+
+# deno
+deno install --dev @shopware/api-gen
 ```
 
 <!-- /automd -->
@@ -46,7 +49,7 @@ Example of overrides file:
 <!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
-import { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents & {
   schemas: Schemas;
@@ -107,7 +110,20 @@ Example:
 
 ```json
 {
-  "patches": "./api-types/storeApiTypes.overrides.json"
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "patches": ["storeApiTypes.overrides.json"]
+}
+```
+
+or you could use multiple patches and add your own overrides on top:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "patches": [
+    "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
+    "./api-types/myOwnPatches.overrides.json"
+  ]
 }
 ```
 
@@ -175,6 +191,11 @@ pnpx @shopware/api-gen generate --apiType=store
 pnpx @shopware/api-gen generate --apiType=admin
 ```
 
+flags:
+
+- `--debug` - display debug logs and additional information which can be helpful in case of issues
+- `--logPatches` - display patched logs, useful when you want to fix schema in original file
+
 ### `loadSchema`
 
 Load OpenAPI specification from Shopware instance and save it to JSON file.
@@ -190,6 +211,11 @@ pnpx @shopware/api-gen loadSchema --apiType=store
 # load schema from admin API
 pnpx @shopware/api-gen loadSchema --apiType=admin
 ```
+
+flags:
+
+- `--debug` - display debug logs and additional information which can be helpful in case of issues
+- `--logPatches` - display patched logs, useful when you want to fix schema in original file
 
 Remember to add `.env` file in order to authenticate with Shopware instance.
 
@@ -225,9 +251,96 @@ Prepare your config file named **api-gen.config.json**:
   "rules": [
     "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
   ],
-  //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
+  //"patches": "storeApiTypes.overrides.json" // -> path to your overrides file in api-types folder, default is fetched from api-client repository
 }
 ```
+
+### `split` - Experimental
+
+Split an OpenAPI schema into multiple files, organized by tags or paths. This is useful for breaking down a large schema into smaller, more manageable parts.
+
+The main reason for this is that the complete JSON schema can be too large and complex for API clients like Postman or Insomnia to handle, sometimes
+causing performance issues or import failures due to the file size or circular references. This command helps developers to extract only the parts of
+the schema they need and then import it to the API client of their choice.
+
+Example usage:
+
+```bash
+# Display all available tags
+pnpx @shopware/api-gen split <path-to-schema-file> --list tags
+
+# Display all available paths
+pnpx @shopware/api-gen split <path-to-schema-file> --list paths
+
+# Split schema by tags and show detailed linting errors
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=tags --outputDir <output-directory> --verbose-linting
+
+# Split schema by a single tag
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=tags --outputDir <output-directory> --filterBy "media"
+
+# Split schema by a single path
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=paths --outputDir <output-directory> --filterBy "/api/_action/media/{mediaId}/upload"
+```
+
+### Programmatic usage
+
+Each command can also be used programmatically within your own scripts:
+
+#### `generate`
+
+```ts
+import { generate } from "@shopware/api-gen";
+
+await generate({ 
+  cwd: process.cwd(),
+  filename: "storeApiTypes.ts",
+  apiType: "store",
+  debug: true,
+  logPatches: true,
+});
+```
+
+#### `loadSchema`
+
+```ts
+import { loadSchema } from "@shopware/api-gen";
+
+await loadSchema({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+});
+```
+
+#### `validateJson`
+
+```ts
+import { validateJson } from "@shopware/api-gen";
+
+await validateJson({
+  cwd: process.cwd(),
+  filename: "storeApiTypes.json",
+  apiType: "store",
+  logPatches: true,
+  debug: true,
+});
+```
+
+#### `split`
+
+```ts
+import { split } from "@shopware/api-gen";
+
+await split({
+  schemaFile: "path/to/your/schema.json",
+  outputDir: "path/to/output/directory",
+  splitBy: "tags", // or "paths"
+  // filterBy: "TagName" // optional filter
+});
+```
+
+> [!NOTE]  
+> Make sure that the required environment variables are set for the node process when executing commands programmatically.
 
 ## Links
 
@@ -235,7 +348,7 @@ Prepare your config file named **api-gen.config.json**:
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -243,9 +356,8 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.1.3
+### Latest changes: 1.3.3
 
 ### Patch Changes
 
-- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
-  - @shopware/api-client@1.1.2
+- [#1942](https://github.com/shopware/frontends/pull/1942) [`a344abb`](https://github.com/shopware/frontends/commit/a344abba579c91c4f775e7be27ed882ca420fdc2) Thanks [@patzick](https://github.com/patzick)! - Allow shared parameters to be available in schema resolver.

@@ -1,33 +1,53 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { resolve, join, dirname } from "node:path";
-import ts from "typescript";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import openapiTS, {
   astToString,
   transformSchemaObjectWithComposition,
 } from "openapi-typescript";
 import type { OpenAPI3, SchemaObject } from "openapi-typescript";
+import ts from "typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
+import json5 from "json5";
+import { ofetch } from "ofetch";
 import c from "picocolors";
 import { format } from "prettier";
-import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
-import { ofetch } from "ofetch";
-import { TransformedElements } from "../generateFile";
-import { transformSchemaTypes } from "../transformSchemaTypes";
-import { transformOpenApiTypes } from "../transformOpenApiTypes";
-import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
-import json5 from "json5";
+import type { TransformedElements } from "../generateFile";
 import {
   displayPatchingSummary,
   loadApiGenConfig,
   loadJsonOverrides,
+  resolveSinglePath,
 } from "../jsonOverrideUtils";
+import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
+import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
+import { transformOpenApiTypes } from "../transformOpenApiTypes";
+import { transformSchemaTypes } from "../transformSchemaTypes";
 
+/**
+ * Generate schema from your API instance
+ */
 export async function generate(args: {
+  /**
+   * Current working directory
+   */
   cwd: string;
+  /**
+   * Filename of the schema to process, default is `storeApiSchema.json` or `adminApiSchema.json` depending on the `apiType` parameter
+   */
   filename?: string;
+  /**
+   * Type of the API to generate types for
+   */
   apiType: "store" | "admin";
+  /**
+   * Debug mode, display additional information and generates additional files, not needed for the regular usage
+   */
   debug: boolean;
+  /**
+   * Log patches, display information about applied patches while generating types
+   */
+  logPatches: boolean;
 }) {
   const inputFilename = args.filename
     ? args.filename
@@ -40,10 +60,9 @@ export async function generate(args: {
     const fullInputFilePath = join(args.cwd, "api-types", inputFilename);
     const fullOutputFilePath = join(args.cwd, "api-types", outputFilename);
 
-    //check if file exist
-    const fileExist = existsSync(fullInputFilePath);
+    const resolvedSchema = await resolveSinglePath<OpenAPI3>(inputFilename);
 
-    if (!fileExist && !args.apiType) {
+    if (!resolvedSchema && !args.apiType) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
@@ -56,25 +75,38 @@ export async function generate(args: {
       process.exit(1);
     }
 
-    let schema: string = "";
+    let schema = "";
     let processedSchemaAst: TransformedElements;
-    let apiVersion: string = "unknown";
+    let apiVersion = "unknown";
 
-    if (fileExist) {
+    if (resolvedSchema) {
       // Apply patches
-      const schemaFile = readFileSync(fullInputFilePath, {
-        encoding: "utf-8",
-      });
-      const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
+      const schemaForPatching = structuredClone(resolvedSchema);
       apiVersion = schemaForPatching?.info?.version;
 
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
       });
       const jsonOverrides = await loadJsonOverrides({
-        path: configJSON?.patches,
+        paths: configJSON?.patches,
         apiType: args.apiType,
       });
+
+      if (args.debug) {
+        // save overrides to file
+        const overridesFilePath = join(
+          args.cwd,
+          "api-types",
+          `${args.apiType}ApiTypes.overrides-result.json`,
+        );
+        writeFileSync(
+          overridesFilePath,
+          json5.stringify(jsonOverrides, null, 2),
+        );
+        console.log(
+          `[DEBUG] Check the overrides result in: ${c.bold(overridesFilePath)} file.`,
+        );
+      }
 
       const {
         patchedSchema,
@@ -86,13 +118,14 @@ export async function generate(args: {
         jsonOverrides,
       });
 
-      const originalSchema = json5.parse(schemaFile);
+      const originalSchema = structuredClone(resolvedSchema);
       console.log("schema", originalSchema.info);
 
       displayPatchingSummary({
         todosToFix,
         outdatedPatches,
         alreadyApliedPatches,
+        displayPatchedLogs: args.logPatches,
       });
 
       if (args.debug) {
@@ -109,6 +142,9 @@ export async function generate(args: {
         writeFileSync(patchedSchemaPath, json5.stringify(patchedSchema), {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the patched schema in: ${c.bold(patchedSchemaPath)} file.`,
+        );
       }
 
       const astSchema = await openapiTS(patchedSchema, {
@@ -128,7 +164,7 @@ export async function generate(args: {
             `,
         transform(schemaObject, metadata) {
           if (!schemaObject) {
-            throw new Error("Schema object is empty at " + metadata.path);
+            throw new Error(`Schema object is empty at ${metadata.path}`);
           }
           /**
            * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
@@ -167,7 +203,9 @@ export async function generate(args: {
                 {} as Record<string, { type: "string" }>,
               );
             if (Object.keys(stringProperties).length === 0) {
-              delete schemaObject.properties.translated;
+              const { translated: _, ...propertiesWithoutTranslated } =
+                schemaObject.properties;
+              schemaObject.properties = propertiesWithoutTranslated;
             } else {
               schemaObject.required ??= [];
               schemaObject.required.push("translated");
@@ -207,6 +245,7 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(`[DEBUG]: Debug Schema saved to ${fullOutputFilePath}`);
 
         schema = await format(schema, {
           // semi: false,
@@ -249,6 +288,9 @@ export async function generate(args: {
         writeFileSync(fullOutputFilePath, schema, {
           encoding: "utf-8",
         });
+        console.log(
+          `[DEBUG] Check the generated schema in: ${c.bold(fullOutputFilePath)} file.`,
+        );
       }
 
       // TODO: change overrides file name to param
@@ -331,4 +373,6 @@ function runTransformations(schemaObject: SchemaObject) {
       ts.factory.createIdentifier("GenericRecord"),
     );
   }
+
+  return undefined;
 }

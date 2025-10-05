@@ -22,7 +22,7 @@ Next, import the correct type for your block and use it to define the `content` 
 ```vue
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware-pwa/composables-next";
+import { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
@@ -66,7 +66,7 @@ That works, but it's quite repetiive and hard to read. So we can use another com
 
 ```vue{8,10-12,16-18}
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware-pwa/composables-next";
+import { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;

@@ -1,0 +1,44 @@
+{
+  "account": {
+    "signUpHeader": "I am new here.",
+    "yourAddress": "Your address",
+    "order": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "subtotal": "Subtotal",
+      "orderNumber": "Order number",
+      "totalAmount": "Total amount",
+      "orderDate": "Order date",
+      "orderStatus": "Order status",
+      "paymentMethod": "Payment method",
+      "repeatOrder": "Repeat order",
+      "order": "Order",
+      "orders": "Orders"
+    },
+    "menu": {
+      "header": "Your account",
+      "overview": "Overview",
+      "yourProfile": "Your profile",
+      "addresses": "Addresses",
+      "orders": "Orders",
+      "logout": "Logout"
+    },
+    "overview": {
+      "header": "Overview",
+      "subHeader": "Directly access your profile information, the default payment method and given addresses.",
+      "personalDataSectionHeader": "Personal data",
+      "defaultBillingAddressSectionHeader": "Default billing address",
+      "defaultShippingAddressSectionHeader": "Default shipping address",
+      "newsletter": {
+        "subscriptionSectionHeader": "Newsletter subscription",
+        "subscriptionLabel": "Yes, I would like to subscribe to the free Demostore newsletter. (I may unsubscribe at any time.)",
+        "confirmationNeeded": "Please confirm your email address before subscribing to the newsletter.",
+        "messages": {
+          "subscribed": "Thank you! We have signed up your address.",
+          "unsubscribed": "Newsletter unsubscribe"
+        }
+      }
+    }
+  }
+}

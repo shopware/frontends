@@ -1,16 +1,16 @@
+import { join } from "node:path";
+import { defu } from "defu";
 import {
-  GenerationMap,
-  TransformedElements,
+  type GenerationMap,
+  type TransformedElements,
   generateFile,
 } from "./generateFile";
-import { createVirtualFiles } from "./virtualFileCreator";
 // import { transformOpenApiTypes } from "./transformOpenApiTypes";
 import { transformSchemaTypes } from "./transformSchemaTypes";
-import { defu } from "defu";
-import { join } from "node:path";
+import { createVirtualFiles } from "./virtualFileCreator";
 
 export async function processAstSchemaAndOverrides(
-  [opMap, opComponents, opExistingTypes]: TransformedElements,
+  [opMap, opComponents, opExistingTypes, opParameters]: TransformedElements,
   overridingSchema: string,
   type: "store" | "admin",
   options: { version: string },
@@ -44,6 +44,7 @@ export async function processAstSchemaAndOverrides(
   );
   const componentsMap = defu(oComponetsMap, opComponents);
   const existingTypes = opExistingTypes;
+  const parametersMap = opParameters;
 
   const filePath = join("api-types", `${type}ApiTypes.d.ts`);
   await generateFile(
@@ -51,6 +52,7 @@ export async function processAstSchemaAndOverrides(
     operationsMap,
     existingTypes,
     componentsMap,
+    parametersMap,
     options,
   );
 }

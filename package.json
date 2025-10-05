@@ -2,12 +2,7 @@
   "name": "shopware-frontends",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "templates/*",
-    "examples/*"
-  ],
+  "workspaces": ["apps/*", "packages/*", "templates/*", "examples/*"],
   "scripts": {
     "bump": "changeset version",
     "postinstall": "pnpm run build --filter='./packages/*'",
@@ -16,13 +11,15 @@
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
-    "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
+    "format": "biome format --write .",
     "version": "changeset version",
-    "postversion": "pnpm i && pnpm run versionReadme",
+    "postversion": "pnpm i && pnpm format && pnpm run versionReadme",
     "versionReadme": "esno scripts/addChangelogBodyToReadmeFile.ts",
     "prepare": "husky",
     "generate-types": "turbo run generate-types",
@@ -34,39 +31,53 @@
     "docs:cli": "../developer-portal/docs-cli.cjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@changesets/changelog-github": "0.5.0",
-    "@changesets/cli": "2.27.9",
+    "@biomejs/biome": "1.8.3",
+    "@changesets/changelog-github": "0.5.1",
+    "@changesets/cli": "2.29.7",
     "@types/changelog-parser": "2.8.4",
-    "automd": "^0.3.7",
+    "automd": "0.4.0",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "7.4.2",
+    "dotenv-cli": "10.0.0",
     "esno": "4.8.0",
-    "globby": "14.0.2",
-    "husky": "9.1.6",
-    "prettier": "3.3.3",
-    "turbo": "2.2.3",
-    "vercel": "37.14.0"
+    "globby": "14.1.0",
+    "husky": "9.1.7",
+    "prettier": "3.6.2",
+    "turbo": "2.5.6",
+    "vercel": "44.7.3"
   },
   "engines": {
-    "node": "^18.17.x || ^20.x"
+    "node": "^20.x || ^22.x"
   },
-  "packageManager": "pnpm@9.9.0",
+  "packageManager": "pnpm@10.17.0",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
+      "@intlify/core": "^11.1.10",
+      "@intlify/core-base": "^11.1.10",
+      "@intlify/message-compiler": "^11.1.10",
+      "@intlify/shared": "^11.1.10",
+      "@eslint/plugin-kit": "^0.3.4",
+      "vue-i18n": "^11.1.10",
       "@sentry/browser": "^7.119.1",
-      "@types/node": "^20.17.0",
-      "axios": "^1.7.4",
+      "@types/node": "22.13.14",
+      "axios": "^1.12.0",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
+      "devalue": "^5.3.2",
       "cookie": "^0.7.0",
+      "cross-spawn": "^7.0.5",
+      "esbuild": "^0.25.0",
       "fast-loops": "^1.1.4",
       "follow-redirects": "^1.15.6",
+      "form-data": "^4.0.4",
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "micromatch": "^4.0.8",
+      "nanoid@3": "^3.3.8",
+      "nanoid@5": "^5.0.9",
+      "minimatch": "^10.0.3",
+      "on-headers": "^1.1.0",
       "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
       "rollup@3": "^3.29.5",
@@ -74,10 +85,14 @@
       "semver": "^7.6.2",
       "sharp": "^0.33.4",
       "socks": "^2.8.3",
+      "store2": "^2.14.4",
       "tar": "^7.4.0",
-      "undici": "^6.19.2",
+      "tar-fs": "^2.1.3",
+      "tmp": "^0.2.4",
+      "undici": "^6.21.1",
       "vite@4>docs": "^4.5.3",
-      "vite@5": "^5.4.6",
+      "vite@5": "^5.4.20",
+      "vite@7": "^7.0.7",
       "ws": "^8.18.0",
       "yaml@2": "^2.4.5",
       "zod": "^3.23.8",
@@ -85,14 +100,14 @@
       "dset": "^3.1.4",
       "send": "^0.19.0",
       "serve-static": "^1.16.1",
-      "express": "^4.20.1"
+      "express": "^4.20.1",
+      "prismjs": "^1.30.0",
+      "@babel/runtime": "^7.26.10",
+      "@babel/helpers": "^7.26.10",
+      "react-router": "^7.5.2"
     },
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "webpack",
-        "vite",
-        "react-dom"
-      ]
+      "ignoreMissing": ["webpack", "vite", "react-dom"]
     },
     "auditConfig": {
       "ignoreCves": [
@@ -101,10 +116,6 @@
         "CVE-2024-31207",
         "CVE-2024-43788"
       ]
-    },
-    "patchedDependencies": {
-      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch",
-      "automd": "patches/automd.patch"
     }
   }
 }

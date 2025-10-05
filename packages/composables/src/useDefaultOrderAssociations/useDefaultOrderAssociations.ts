@@ -1,46 +1,38 @@
 import type { Schemas } from "#shopware";
 
-export type UseDefaultOrderAssociationsReturn = Schemas["Criteria"] & {
-  checkPromotion?: boolean;
-};
-
 /**
  * Returns default order associations. You can override this composable in your project.
  * @public
  * @category Order
  */
-export function useDefaultOrderAssociations(): UseDefaultOrderAssociationsReturn {
-  const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } =
-    {
+export function useDefaultOrderAssociations(): Schemas["Criteria"]["associations"] {
+  const orderAssociations = {
+    stateMachineState: {},
+    lineItems: {
       associations: {
-        stateMachineState: {},
-        lineItems: {
+        cover: {},
+        downloads: {
           associations: {
-            cover: {},
-            downloads: {
-              associations: {
-                media: {},
-              },
-            },
-          },
-        },
-        addresses: {},
-        deliveries: {
-          associations: {
-            shippingMethod: {},
-            shippingOrderAddress: {},
-            stateMachineState: {},
-          },
-        },
-        transactions: {
-          associations: {
-            paymentMethod: {},
-            stateMachineState: {},
+            media: {},
           },
         },
       },
-      checkPromotion: true,
-    };
+    },
+    addresses: {},
+    deliveries: {
+      associations: {
+        shippingMethod: {},
+        shippingOrderAddress: {},
+        stateMachineState: {},
+      },
+    },
+    transactions: {
+      associations: {
+        paymentMethod: {},
+        stateMachineState: {},
+      },
+    },
+  };
 
   return orderAssociations;
 }

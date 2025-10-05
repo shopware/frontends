@@ -19,15 +19,16 @@ nav:
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 place-items-center">
   <div>
-    <a href="mollie.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+    <a href="https://github.com/mollie/Shopware6Composables" target="_blank" class="relative block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+    <span class="absolute bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300 no-underline">external</span>
       <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/mollie.webp" alt="mollie Logo" class="my-8 h-20 inline"/></span>
         <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Easy payments and financial management for all companies with mollie. Here you will find instructions on how to set up mollie with Shopware and Composable Frontends.</p>
     </a>
   </div>
   <div>
-    <a href="paypal-express.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
-      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/paypal-express.png" alt="PayPal Express Logo" class="my-8 h-20 inline" /></span>
-      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">PayPal Express will increase your conversions. You can use PayPal Express with Shopware and Composable Frontends. Read more about this in this integration guide.</p>
+    <a href="paypal.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/paypal.png" alt="PayPal Logo" class="my-8 h-20 inline" /></span>
+      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">PayPal will increase your conversions. You can use PayPal with Shopware and Composable Frontends. Read more about this in this integration guide.</p>
     </a>
   </div>
   <div>

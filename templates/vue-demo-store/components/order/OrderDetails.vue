@@ -10,7 +10,7 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(computed(() => props.order));
 
 const goToUrl = (url: string | null) => {
-  if (typeof window !== undefined && url) {
+  if (typeof window !== "undefined" && url) {
     window.location.href = url;
   }
 };
@@ -27,7 +27,7 @@ const formatDate = (date: Date | string) =>
 
 const isExpand = ref(false);
 
-const toggleView = () => (isExpand.value = !isExpand.value);
+const toggleView = () => isExpand.value = !isExpand.value;
 
 const shippingAddress = computed(
   () => props.order.deliveries?.[0]?.shippingOrderAddress,

@@ -1,4 +1,30 @@
-# @shopware-pwa/helpers-next
+# @shopware/helpers
+
+## 1.5.0
+
+### Minor Changes
+
+- [#1910](https://github.com/shopware/frontends/pull/1910) [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add helper for getting payment and shipping method icon
+
+## 1.4.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+## 1.3.0
+
+### Minor Changes
+
+- [#1599](https://github.com/shopware/frontends/pull/1599) [`6736509`](https://github.com/shopware/frontends/commit/67365096168e28b9683cfd3b5d4c8bb3b4ae07e3) Thanks [@patzick](https://github.com/patzick)! - Package `@shopware-pwa/helpers-next` is deprecated. Use [@shopware/helpers](https://www.npmjs.com/package/@shopware/helpers) instead.
+
+## 1.2.0
+
+### Minor Changes
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsBreadcrumbs` helper for building CMS breadcrumbs
 
 ## 1.1.0
 

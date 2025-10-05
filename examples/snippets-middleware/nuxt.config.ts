@@ -1,9 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   runtimeConfig: {
     // These values are used in the Shopware API client
     // TODO: replace with environment variables copied from Github once feature is supported
@@ -14,24 +11,24 @@ export default defineNuxtConfig({
     endpoint: "https://demo-frontends.shopware.store/store-api",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
-  modules: ["@shopware-pwa/nuxt3-module", "@nuxtjs/i18n"],
+  modules: ["@shopware/nuxt-module", "@nuxtjs/i18n"],
   typescript: {
     strict: true,
   },
   i18n: {
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
-    langDir: "./i18n/langs",
+    langDir: "./langs",
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
-        file: "all.ts",
+        language: "en-GB",
+        file: { path: "en-GB.ts", cache: false },
       },
       {
         code: "de-DE",
-        iso: "de-DE",
-        file: "all.ts",
+        language: "de-DE",
+        file: { path: "de-DE.ts", cache: false },
       },
     ],
   },

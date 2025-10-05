@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useNotifications } from "./useNotifications";
 import { useSetup } from "../_test";
+import { useNotifications } from "./useNotifications";
 
 describe("useNotifications", () => {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe("useNotifications", () => {
     vm.pushWarning("Warning message", { persistent: true });
 
     expect(vm.notifications.length).toBe(4);
-    vm.removeOne(vm.notifications[0].id);
+    vm.removeOne(vm.notifications[0]?.id as number);
     expect(vm.notifications.length).toBe(3);
     vm.removeAll();
     expect(vm.notifications.length).toBe(0);

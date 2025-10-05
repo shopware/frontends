@@ -1,7 +1,7 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { getTranslatedProperty } from "@shopware/helpers";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useProduct, useShopwareContext } from "#imports";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
 export type UseProductConfiguratorReturn = {
@@ -107,6 +107,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
       return response.data.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
+      return undefined;
     }
   }
 

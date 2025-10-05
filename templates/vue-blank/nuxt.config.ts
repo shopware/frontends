@@ -1,14 +1,11 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
-  modules: ["@shopware-pwa/nuxt3-module"],
+  modules: ["@shopware/nuxt-module"],
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88

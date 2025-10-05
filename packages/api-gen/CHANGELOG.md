@@ -1,5 +1,57 @@
 # @shopware/api-gen
 
+## 1.3.3
+
+### Patch Changes
+
+- [#1942](https://github.com/shopware/frontends/pull/1942) [`a344abb`](https://github.com/shopware/frontends/commit/a344abba579c91c4f775e7be27ed882ca420fdc2) Thanks [@patzick](https://github.com/patzick)! - Allow shared parameters to be available in schema resolver.
+
+## 1.3.2
+
+### Patch Changes
+
+- [#1939](https://github.com/shopware/frontends/pull/1939) [`cb62cfb`](https://github.com/shopware/frontends/commit/cb62cfb541552ce4e0dc8a02a7a8bddb72ef4de1) Thanks [@patzick](https://github.com/patzick)! - Update typescript version to match openapi-typescript version, causing problems with generating proper schema.
+
+## 1.3.1
+
+### Patch Changes
+
+- [#1814](https://github.com/shopware/frontends/pull/1814) [`00fb689`](https://github.com/shopware/frontends/commit/00fb6899821ed5e5f1d0b44062b34791b102a917) Thanks [@patzick](https://github.com/patzick)! - Merging JSON overrides allows to have multiple pverrides as objects and arrays - combining them into arrays.
+
+- Updated dependencies [[`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c), [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc), [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c)]:
+  - @shopware/api-client@1.3.0
+
+## 1.3.0
+
+### Minor Changes
+
+- [#1706](https://github.com/shopware/frontends/pull/1706) [`d7bf6d7`](https://github.com/shopware/frontends/commit/d7bf6d715689f5d0cbef9f0bbbc78f19f54215d5) Thanks [@patzick](https://github.com/patzick)! - Simplify `api-gen.config.json` configuration. Now you can use names instead of paths in patches like `storeApiSchema.overrides.json` or `storeApiSchema.b2b.overrides.json`.
+  Thanks to this you can simple and more granularly apply patches for your project.
+
+## 1.2.1
+
+### Patch Changes
+
+- [#1696](https://github.com/shopware/frontends/pull/1696) [`f953539`](https://github.com/shopware/frontends/commit/f953539726813aa3cba404df2a74fa2d18b96fb0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `loadSchema` command - create `api-types` folder if not exists
+
+- Updated dependencies [[`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09)]:
+  - @shopware/api-client@1.2.1
+
+## 1.2.0
+
+### Minor Changes
+
+- [#1566](https://github.com/shopware/frontends/pull/1566) [`541cd6e`](https://github.com/shopware/frontends/commit/541cd6e5b5acaa20fb8aad699b2674e81b9330ce) Thanks [@patzick](https://github.com/patzick)! - Possibility to add multiple override json patches. Now you can use our default overrides and add your own on top of it.
+
+## 1.1.4
+
+### Patch Changes
+
+- [#1447](https://github.com/shopware/frontends/pull/1447) [`11ea41f`](https://github.com/shopware/frontends/commit/11ea41fc00493d4997ddfcb23e2f5bf89dd2a828) Thanks [@patzick](https://github.com/patzick)! - Improved error messages and merging override patches.
+
+- Updated dependencies [[`a87bbcf`](https://github.com/shopware/frontends/commit/a87bbcfa3f5aa440265b1e8f0fc72a204863befc)]:
+  - @shopware/api-client@1.2.0
+
 ## 1.1.3
 
 ### Patch Changes

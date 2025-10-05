@@ -1,21 +1,21 @@
+import {
+  getSrcSetForMedia,
+  relativeUrlSlash,
+  urlIsAbsolute,
+} from "@shopware/helpers";
+import { computed } from "vue";
+import type {
+  AnchorHTMLAttributes,
+  CSSProperties,
+  ComputedRef,
+  ImgHTMLAttributes,
+} from "vue";
 import { useCmsElementConfig } from "#imports";
 import type {
   CmsElementImage,
-  DisplayMode,
   CmsElementManufacturerLogo,
+  DisplayMode,
 } from "../types";
-import { computed } from "vue";
-import type {
-  ComputedRef,
-  CSSProperties,
-  AnchorHTMLAttributes,
-  ImgHTMLAttributes,
-} from "vue";
-import {
-  getSrcSetForMedia,
-  urlIsAbsolute,
-  relativeUrlSlash,
-} from "@shopware-pwa/helpers-next";
 
 export type ImageContainerAttrs = {
   href?: string;

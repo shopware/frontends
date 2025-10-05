@@ -1,285 +1,5 @@
 {
   "components": {
-    "Association": [
-      { "additionalProperties": { "$ref": "#/components/schemas/Association" } }
-    ],
-    "CalculatedPrice": [
-      {
-        "properties": { "rawTotal": { "type": "number" } },
-        "required": ["rawTotal"]
-      },
-      {
-        "properties": {
-          "taxStatus": { "type": "string", "enum": ["net", "tax-free"] }
-        },
-        "required": ["taxStatus"]
-      }
-    ],
-    "Cart": [
-      {
-        "required": ["price"]
-      },
-      {
-        "properties": {
-          "errors": {
-            "type": "object",
-            "items": "_DELETE_",
-            "anyOf": [
-              {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/CartError" }
-              },
-              {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "key": {
-                      "type": "string"
-                    },
-                    "level": {
-                      "type": "number"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "messageKey": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["code", "key", "level", "message", "messageKey"]
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "required": ["apiAlias"],
-        "properties": {
-          "apiAlias": {
-            "type": "string",
-            "enum": ["cart"]
-          }
-        }
-      }
-    ],
-    "CartError": [
-      {
-        "required": ["key", "level", "message", "messageKey"],
-        "properties": {
-          "items": "_DELETE_",
-          "key": { "type": "string" },
-          "level": {
-            "type": "number",
-            "enum": [0, 10, 20],
-            "description": "* `0` - notice,\n* `10` - warning,\n* `20` - error"
-          },
-          "message": { "type": "string" },
-          "messageKey": { "type": "string" }
-        }
-      }
-    ],
-    "Category": [
-      {
-        "required": ["breadcrumb"],
-        "properties": {
-          "breadcrumb": {
-            "readOnly": "_DELETE_"
-          }
-        }
-      },
-      {
-        "required": ["type"],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["page", "link"]
-          }
-        }
-      }
-    ],
-    "CmsSection": [
-      {
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["default", "sidebar"]
-          }
-        }
-      }
-    ],
-    "CmsSlot": [
-      {
-        "required": ["apiAlias"],
-        "properties": {
-          "apiAlias": {
-            "type": "string",
-            "enum": ["cms_slot"]
-          }
-        }
-      },
-      {
-        "properties": {
-          "config": "_DELETE_",
-          "data": "_DELETE_"
-        }
-      }
-    ],
-    "Criteria": [
-      {
-        "properties": {
-          "query": {
-            "type": "string",
-            "items": "_DELETE_",
-            "description": "The query string to search for"
-          }
-        }
-      },
-      {
-        "properties": {
-          "associations": {
-            "$ref": "#/components/schemas/Association",
-            "type": "_DELETE_",
-            "items": "_DELETE_"
-          }
-        }
-      }
-    ],
-    "DeliveryInformation": [
-      {
-        "required": ["stock"]
-      }
-    ],
-    "ListPrice": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "discount": { "type": "number" },
-        "percentage": { "type": "number" },
-        "price": { "type": "number" },
-        "apiAlias": { "type": "string", "enum": ["cart_list_price"] }
-      },
-      "required": ["apiAlias"]
-    },
-    "LineItem": [
-      {
-        "required": ["deliveryInformation"]
-      },
-      {
-        "required": ["payload"]
-      },
-      {
-        "required": ["quantity"]
-      },
-      {
-        "required": ["states"]
-      }
-    ],
-    "Media": [
-      {
-        "properties": {
-          "metaData": {
-            "type": "object",
-            "readOnly": "_DELETE_",
-            "properties": {
-              "height": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "width": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        }
-      }
-    ],
-    "Order": [
-      {
-        "required": ["price"],
-        "properties": {
-          "price": { "$ref": "#/components/schemas/CalculatedPrice" }
-        }
-      }
-    ],
-    "OrderRouteResponse": [
-      {
-        "properties": {
-          "orders": "_DELETE_"
-        }
-      },
-      {
-        "properties": {
-          "orders": {
-            "type": "object",
-            "allOf": [
-              {
-                "type": "object",
-                "required": ["elements"],
-                "properties": {
-                  "elements": {
-                    "type": "array",
-                    "items": { "$ref": "#/components/schemas/Order" }
-                  }
-                }
-              },
-              { "$ref": "#/components/schemas/EntitySearchResult" }
-            ]
-          }
-        }
-      }
-    ],
-    "Product": [
-      {
-        "required": ["translated"]
-      },
-      {
-        "properties": {
-          "calculatedCheapestPrice": {
-            "type": "object",
-            "allOf": "_DELETE_",
-            "properties": {
-              "unitPrice": { "type": "number" },
-              "quantity": { "type": "number" },
-              "totalPrice": { "type": "number" },
-              "referencePrice": {
-                "oneOf": [
-                  { "$ref": "#/components/schemas/ReferencePrice" },
-                  { "type": "null" }
-                ]
-              },
-              "listPrice": {
-                "oneOf": [
-                  { "$ref": "#/components/schemas/ListPrice" },
-                  { "type": "null" }
-                ]
-              },
-              "regulationPrice": {
-                "type": "object",
-                "properties": { "price": { "type": "number" } },
-                "required": ["price"],
-                "nullable": true
-              },
-              "hasRange": { "type": "boolean" },
-              "variantId": {
-                "type": "string",
-                "format": "",
-                "nullable": true
-              },
-              "apiAlias": {
-                "type": "string",
-                "enum": ["calculated_cheapest_price"]
-              }
-            }
-          }
-        }
-      }
-    ],
     "ProductJsonApi": [
       {
         "allOf": [
@@ -310,108 +30,6 @@
         ]
       }
     ],
-    "ProductMedia": [
-      {
-        "properties": {
-          "thumbnails": {
-            "$ref": "_DELETE_",
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/MediaThumbnail" }
-          }
-        }
-      },
-      {
-        "required": ["media"]
-      }
-    ],
-    "ProductReview": [
-      {
-        "properties": {
-          "customerId": {
-            "type": "string"
-          }
-        }
-      },
-      {
-        "properties": {
-          "externalUser": {
-            "type": "string"
-          }
-        }
-      }
-    ],
-    "PropertyGroupOption": [
-      {
-        "required": ["translated"]
-      }
-    ],
-    "ReferencePrice": {
-      "type": "object",
-      "properties": {
-        "purchaseUnit": { "type": "number" },
-        "referenceUnit": { "type": "number" },
-        "unitName": { "type": "string" },
-        "price": { "type": "number" },
-        "apiAlias": { "type": "string", "enum": ["cart_price_reference"] },
-        "listPrice": {
-          "oneOf": [
-            { "$ref": "#/components/schemas/ListPrice" },
-            { "type": "null" }
-          ]
-        },
-        "regulationPrice": {
-          "type": "object",
-          "properties": {
-            "price": { "type": "number" },
-            "apiAlias": {
-              "type": "string",
-              "enum": ["cart_regulation_price"]
-            }
-          },
-          "nullable": true
-        },
-        "hasRange": { "type": "boolean" },
-        "variantId": {
-          "type": "string",
-          "format": "^[0-9a-f]{32}$",
-          "nullable": true
-        }
-      },
-      "required": [
-        "hasRange",
-        "regulationPrice",
-        "listPrice",
-        "calculatedTaxes",
-        "totalPrice",
-        "quantity",
-        "unitName"
-      ]
-    },
-    "SalesChannelContext": [
-      {
-        "properties": {
-          "salesChannel": "_DELETE_"
-        }
-      },
-      {
-        "required": ["salesChannel"],
-        "properties": {
-          "salesChannel": {
-            "$ref": "#/components/schemas/SalesChannel"
-          }
-        }
-      },
-      {
-        "required": ["apiAlias"],
-        "properties": {
-          "apiAlias": {
-            "type": "string",
-            "enum": ["sales_channel_context"]
-          }
-        }
-      }
-    ],
-    "Quote": [{ "required": ["price"] }, { "required": ["stateMachineState"] }],
     "SwagPaypalVaultToken": {
       "properties": {
         "id": {
@@ -421,118 +39,9 @@
           "type": "string"
         }
       }
-    },
-    "StateMachineState": [
-      {
-        "required": ["translated"]
-      }
-    ],
-    "WishlistLoadRouteResponse": [
-      {
-        "required": ["products"]
-      }
-    ]
+    }
   },
   "paths": {
-    "/account/address": {
-      "post": [
-        {
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/CustomerAddressBody" }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "/account/list-address": {
-      "post": [
-        {
-          "responses": {
-            "200": {
-              "description": "",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "_DELETE_",
-                    "items": "_DELETE_",
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "required": ["elements"],
-                        "properties": {
-                          "elements": {
-                            "type": "array",
-                            "items": {
-                              "$ref": "#/components/schemas/CustomerAddress"
-                            }
-                          }
-                        }
-                      },
-                      { "$ref": "#/components/schemas/EntitySearchResult" }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "/account/shopping-list/line-item/{id}/add": {
-      "post": {
-        "requestBody": {
-          "required": true
-        }
-      }
-    },
-    "/approval-rule/{id}": {
-      "patch": {
-        "requestBody": {
-          "required": true
-        }
-      }
-    },
-    "/approval-rule/create": {
-      "post": {
-        "requestBody": {
-          "required": true
-        }
-      }
-    },
-    "/currency": {
-      "post": [
-        {
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "allOf": "_DELETE_"
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": { "$ref": "#/components/schemas/Currency" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
     "/checkout/cart/line-item": {
       "post": [
         {
@@ -602,17 +111,30 @@
             }
           }
         }
-      ]
-    },
-    "/quote/detail/{id}": {
-      "post": [
+      ],
+      "patch": [
         {
           "requestBody": {
-            "required": false,
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [{ "$ref": "#/components/schemas/Criteria" }]
+                "$ref": "_DELETE_",
+                "type": "object",
+                "required": ["items"], 
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { 
+                      "type": "object",
+                      "required": ["id", "quantity"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "quantity": { "type": "number" }
+                      }
+                    }
+                  }
+                  }
                 }
               }
             }
@@ -620,56 +142,41 @@
         }
       ]
     },
-    "/quote/{id}/configure": {
+    "/payment-method": {
       "post": {
         "requestBody": {
-          "required": true
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "properties": {
+                      "onlyAvailable": {
+                        "description": "List only available",
+                        "type": "boolean"
+                      }
+                    },
+                    "type": "object"
+                  }
+                ]
+              }
+            }
+          }
         }
       }
-    },
-    "/product/{productId}": {
-      "post": [
-        {
-          "parameters": [
-            {
-              "name": "sw-include-seo-urls",
-              "in": "header",
-              "description": "Instructs Shopware to try and resolve SEO URLs for the given navigation item",
-              "required": false,
-              "schema": { "type": "boolean" }
-            }
-          ]
-        }
-      ]
-    },
-    "/product/{productId}/cross-selling": {
-      "post": [
-        {
-          "parameters": [
-            {
-              "name": "sw-include-seo-urls",
-              "in": "header",
-              "description": "Instructs Shopware to try and resolve SEO URLs for the given navigation item",
-              "required": false,
-              "schema": { "type": "boolean" }
-            }
-          ]
-        }
-      ]
     },
     "/role": {
       "get": {
         "requestBody": "_DELETE_"
       }
     },
-    "/search": {
+    "/shipping-method": {
       "post": {
         "parameters": [
           {
-            "name": "sw-include-seo-urls",
-            "in": "header",
-            "description": "Instructs Shopware to try and resolve SEO URLs for the given navigation item",
-            "required": false,
+            "name": "onlyAvailable",
+            "in": "query",
+            "description": "List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule.",
             "schema": { "type": "boolean" }
           }
         ]

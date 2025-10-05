@@ -1,6 +1,6 @@
 {
-  "name": "@shopware-pwa/helpers-next",
-  "version": "1.1.0",
+  "name": "@shopware/helpers",
+  "version": "1.5.0",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "type": "module",
@@ -9,20 +9,14 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/helpers.html",
-  "keywords": [
-    "shopware",
-    "api",
-    "helpers"
-  ],
+  "keywords": ["shopware", "api", "helpers"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "exports": {
     ".": {
       "import": {
@@ -35,17 +29,18 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
-    "lint": "biome lint . && pnpm run typecheck",
-    "lint:fix": "biome lint --apply . && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.1.4",
-    "happy-dom": "15.10.2",
+    "@biomejs/biome": "1.8.3",
+    "@vitest/coverage-v8": "3.2.4",
+    "happy-dom": "18.0.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4"
+    "vitest": "3.2.4"
   }
 }

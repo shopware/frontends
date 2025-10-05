@@ -6,24 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@paypal/paypal-js": "8.1.0",
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/helpers-next": "canary",
+    "@paypal/paypal-js": "8.2.0",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.12",
-    "vue-router": "4.4.5"
+    "vue": "3.5.22",
+    "vue-router": "4.5.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
-    "@types/node": "20.17.0",
-    "@vitejs/plugin-vue": "5.1.4",
-    "vite": "5.4.10",
-    "vue-tsc": "2.1.10"
+    "@types/node": "22.13.14",
+    "@vitejs/plugin-vue": "6.0.1",
+    "vite": "7.1.7",
+    "vue-tsc": "2.2.10"
   }
 }

@@ -6,18 +6,21 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@biomejs/biome": "1.8.3",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.17.0",
-    "@unocss/nuxt": "0.63.6",
-    "nuxt": "3.13.2",
-    "typescript": "5.6.3",
-    "vue": "3.5.12",
-    "vue-tsc": "2.1.10"
+    "@types/node": "22.13.14",
+    "@unocss/nuxt": "66.5.2",
+    "nuxt": "4.1.2",
+    "typescript": "5.9.2",
+    "vue": "3.5.22",
+    "vue-tsc": "2.2.10"
   }
 }

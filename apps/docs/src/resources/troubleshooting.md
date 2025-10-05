@@ -13,7 +13,7 @@ head:
 
 # 😱 Troubleshooting
 
-Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends slack channel](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ).
+Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends Discord channel](https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ).
 
 ## Which SalesChannel type to use for Composable Frontends?
 
@@ -21,7 +21,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 
 ## The access token for the store API is public visible?
 
-In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-demo-store template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](/resources/community-modules/) how others are doing this.
+In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-demo-store template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](../resources/community-modules/) how others are doing this.
 
 ## How to use https for your localhost with Composable Frontends?
 
@@ -136,3 +136,7 @@ runtimeConfig: {
 BFCache is a browser optimization that allows pages to be stored in memory, enabling instant loading when users navigate back or forward. While Broadcasting is useful for real-time updates, its current implementation conflicts with BFCache. Disabling Broadcasting allows us to prioritize the performance improvements offered by BFCache.
 
 For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Performance/Navigation_and_resource_timing#bfcache), [WHATWG](https://github.com/whatwg/html/issues/7253)
+
+## CORS (Cross-Origin Resource Sharing) Issues
+
+See the [CORS](./troubleshooting/CORS) page for more information on how to handle CORS issues in your project.

@@ -1,10 +1,10 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { useProductPrice } from "./useProductPrice";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
-import mockedProduct from "../mocks/Product";
-import { useSetup } from "../_test";
-import productTierPrices from "../mocks/ProductTierPrices";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import mockedProduct from "../mocks/Product";
+import productTierPrices from "../mocks/ProductTierPrices";
+import { useProductPrice } from "./useProductPrice";
 
 describe("useProductPrice", () => {
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe("useProductPrice", () => {
       productTierPrices.product.calculatedPrices[2],
     );
     expect(vm.referencePrice).toStrictEqual(
-      productTierPrices.product.calculatedPrices[0].referencePrice,
+      productTierPrices.product.calculatedPrices?.[0]?.referencePrice,
     );
     expect(vm.displayFrom).toBe(true);
     expect(vm.displayFromVariants).toBe(20);

@@ -1,0 +1,44 @@
+{
+  "checkout": {
+    "title": "Checkout",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "shippingCosts": "Shipping",
+    "total": "Total",
+    "placeOrderButton": "Confirm and place order",
+    "customerAddress": {
+      "firstNamePlaceholder": "Enter first name",
+      "firstNameLabel": "First name",
+      "lastNamePlaceholder": "Enter last name",
+      "lastNameLabel": "Last name",
+      "streetPlaceholder": "Enter street address",
+      "streetLabel": "Street address",
+      "zipcodePlaceholder": "Enter ZIP code",
+      "zipcodeLabel": "Zip Code",
+      "cityPlaceholder": "Enter city name",
+      "cityLabel": "City",
+      "countryPlaceholder": "Select country",
+      "countryLabel": "Country"
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "Enter email address",
+      "emailLabel": "Email address",
+      "passwordPlaceholder": "Enter password",
+      "passwordLabel": "Password",
+      "createAccountToggleLabel": "Create customer account"
+    },
+    "saveAddressButton": "Next",
+    "success": {
+      "header": "We have received your order #{0} and will process it as soon as possible.",
+      "paymentProcessLabel": "Finish payment process.",
+      "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
+    },
+    "shippingAddressLabel": "Shipping address",
+    "paymentMethodLabel": "Payment method",
+    "billingAddressLabel": "Billing address",
+    "shippingMethodLabel": "Shipping method",
+    "takesUpTo": "Takes up to",
+    "shippingPriceLabel": "Shipping",
+    "totalLabel": "Total"
+  }
+}

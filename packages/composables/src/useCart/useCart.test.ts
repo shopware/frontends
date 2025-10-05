@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-import { useCart } from "./useCart";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { Schemas, operations } from "#shopware";
 import { useSetup } from "../_test";
-import type { operations, Schemas } from "#shopware";
 import Cart from "../mocks/Cart";
+import { useCart } from "./useCart";
 
 describe("useCart", () => {
   beforeEach(() => {
@@ -43,8 +43,8 @@ describe("useCart", () => {
     expect(vm.totalPrice).toBe(0);
     expect(vm.subtotal).toBe(0);
     await vm.addProduct({
-      id: itemsMock.items[0].referencedId as string,
-      quantity: itemsMock.items[0].quantity,
+      id: itemsMock.items[0]?.referencedId as string,
+      quantity: itemsMock.items[0]?.quantity,
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -53,9 +53,9 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              type: itemsMock.items[0].type,
-              id: itemsMock.items[0].referencedId,
-              quantity: itemsMock.items[0].quantity,
+              type: itemsMock.items[0]?.type,
+              id: itemsMock.items[0]?.referencedId,
+              quantity: itemsMock.items[0]?.quantity,
             },
           ],
         },
@@ -63,7 +63,7 @@ describe("useCart", () => {
     );
 
     await vm.addProduct({
-      id: itemsMock.items[0].referencedId as string,
+      id: itemsMock.items[0]?.referencedId as string,
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -72,8 +72,8 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              type: itemsMock.items[0].type,
-              id: itemsMock.items[0].referencedId,
+              type: itemsMock.items[0]?.type,
+              id: itemsMock.items[0]?.referencedId,
               quantity: 0,
             },
           ],
@@ -112,7 +112,7 @@ describe("useCart", () => {
 
   it("change product quantity", async () => {
     await vm.changeProductQuantity({
-      id: itemsMock.items[0].referencedId as string,
+      id: itemsMock.items[0]?.referencedId as string,
       quantity: 4,
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -121,7 +121,7 @@ describe("useCart", () => {
         body: {
           items: [
             {
-              id: itemsMock.items[0].referencedId,
+              id: itemsMock.items[0]?.referencedId,
               quantity: 4,
             },
           ],
@@ -214,5 +214,38 @@ describe("useCart", () => {
     });
 
     expect(vm.consumeCartErrors()).toEqual(null);
+  });
+
+  it("should return shipping costs", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        deliveries: [
+          {
+            shippingMethod: {
+              id: "a9d9cc502b3547f4a89eb2830c032c78",
+            },
+          },
+          {
+            shippingMethod: {
+              id: "a9d9cc502b3547f4a89eb2830c032c78",
+            },
+          },
+        ],
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.shippingCosts.length).toEqual(2);
+  });
+
+  it("should return empty shipping costs", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        deliveries: null,
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.shippingCosts.length).toEqual(0);
   });
 });

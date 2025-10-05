@@ -7,11 +7,12 @@ This repository shows an example of how to use translation snippets using admin 
 ## What's inside
 
 - Nuxt 3 application
-- Required libraries installed (api-client, composables, nuxt3-module)
+- Required libraries installed (api-client, composables, nuxt-module)
 - Minimum configuration of Nuxt 3 module
 - **Configured i18n module: `i18n` section in `nuxt.config.ts` file**
 - **API middleware added: `./server/api/translations.get.ts` file**
 - **Component displaying translated phrases for two languages: en-GB & de-DE**
+- **dynamic URL resolving** for different languages
 
 ## Requirements
 
@@ -114,6 +115,18 @@ Server API exposes an endpoint under `/api/translations` for HTTP GET requests t
 ## Try it online
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/snippets-middleware)
+
+## Pretty URLs resolving
+
+Since the pretty URLs can also be translated, the example shows how to achieve pretty URLS resolving by using available functions shipped by the framework.
+
+`Frontends.vue` component contains a helper method `findRouteForLanguage` that will resolve a proper URL for a given language code:
+
+- translates the locale code to a language ID in the backend
+- utilizes `readSeoUrl post /seo-url` operation of [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) that is calling under the hood the [SEO URL](https://shopware.stoplight.io/docs/store-api/a5120c0fde5df-fetch-seo-routes) endpoint to get a proper URL for a given language (by using `sw-language-id` header).
+
+the example uses [Summer Trends](https://frontends-demo.vercel.app/Summer-Trends/) page that has a a different URL for different language
+
 
 ## FURTHER STEPS
 

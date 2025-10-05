@@ -30,7 +30,7 @@ Every development instance / setup template is pre-configured with a public demo
 For an ideal development experience, we recommend using [VSCode](https://code.visualstudio.com/download) with the following extensions
 
 - Vue Language Features (`Vue.volar`)
-- Prettier - Code Formatter (`esbenp.prettier-vscode`)
+- Biome - Code Formatter and linter (`biomejs.biome`)
 - TS and JS Language Features (`vscode.typescript-language-features`)
 
 If you are using the `demo-store-template`, we also recommend the following extension
@@ -43,7 +43,8 @@ Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 
-- **v20.x** LTS
+- **v22.x** LTS
+- **v20.x** - maintenance
 - **v18.x** - maintenance
 
 :::tip

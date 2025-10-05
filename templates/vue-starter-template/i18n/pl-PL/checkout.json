@@ -1,0 +1,44 @@
+{
+  "checkout": {
+    "title": "Koszyk",
+    "summary": "Podsumowanie",
+    "subtotal": "Suma częściowa",
+    "shippingCosts": "Wysyłka",
+    "total": "Suma",
+    "placeOrderButton": "Złóż zamówienie",
+    "customerAddress": {
+      "firstNamePlaceholder": "Wprowadź imię",
+      "firstNameLabel": "Imię",
+      "lastNamePlaceholder": "Wprowadź nazwisko",
+      "lastNameLabel": "Nazwisko",
+      "streetPlaceholder": "Wprowadź adres",
+      "streetLabel": "Adres",
+      "zipcodePlaceholder": "Wprowadź kod pocztowy",
+      "zipcodeLabel": "Kod pocztowy",
+      "cityPlaceholder": "Wprowadź nazwę miasta",
+      "cityLabel": "Miasto",
+      "countryPlaceholder": "Wybierz kraj",
+      "countryLabel": "Kraj"
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "Wprowadź adres e-mail",
+      "emailLabel": "Adres e-mail",
+      "passwordPlaceholder": "Wprowadź hasło",
+      "passwordLabel": "Hasło",
+      "createAccountToggleLabel": "Utwórz konto klienta"
+    },
+    "saveAddressButton": "Dalej",
+    "success": {
+      "header": "Otrzymaliśmy Twoje zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
+      "paymentProcessLabel": "Zakończ proces płatności.",
+      "paymentProcessInfo": "Zostaniesz przekierowany do bramki płatności w ciągu 5 sekund."
+    },
+    "shippingAddressLabel": "Adres dostawy",
+    "paymentMethodLabel": "Metoda płatności",
+    "billingAddressLabel": "Adres do faktur",
+    "shippingMethodLabel": "Metoda dostawy",
+    "takesUpTo": "Dostawa do",
+    "shippingPriceLabel": "Dostawa",
+    "totalLabel": "Suma"
+  }
+}

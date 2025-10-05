@@ -1,10 +1,10 @@
-import { useCartItem } from "./useCartItem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useSetup } from "../_test";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
 import Cart from "../mocks/Cart";
+import { useCartItem } from "./useCartItem";
 
 const lineItem = Cart.lineItems[0];
 
@@ -35,7 +35,7 @@ describe("useCartItem", () => {
     expect(vm.isRemovable).toBe(true);
     expect(vm.isStackable).toBe(true);
     expect(vm.isDigital).toBe(false);
-    expect(vm.itemImageThumbnailUrl).toBe(lineItem.cover?.url);
+    expect(vm.itemImageThumbnailUrl).toBe(lineItem?.cover?.url);
     expect(vm.itemType).toBe("product");
     expect(vm.itemQuantity).toBe(1);
     expect(vm.itemStock).toBe(49485);
@@ -112,7 +112,7 @@ describe("useCartItem", () => {
 
     expect(changeProductQuantitySpy).toHaveBeenCalledWith({
       quantity: 5,
-      id: lineItem.id,
+      id: lineItem?.id,
     });
     expect(result).toEqual(mockedResponse);
 
@@ -120,7 +120,7 @@ describe("useCartItem", () => {
     vm.changeItemQuantity("6");
     expect(changeProductQuantitySpy).toHaveBeenCalledWith({
       quantity: 6,
-      id: lineItem.id,
+      id: lineItem?.id,
     });
   });
 

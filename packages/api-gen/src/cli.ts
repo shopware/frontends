@@ -1,10 +1,12 @@
 import type { Argv } from "yargs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
-import packageJson from "../package.json";
 import { loadSchema } from "./commands/loadSchema";
+import { split } from "./commands/split";
+import type { SplitOptions } from "./commands/split";
 import { validateJson } from "./commands/validateJson";
 
 export interface CommonOptions {
@@ -44,6 +46,11 @@ yargs(hideBin(process.argv))
           default: false,
           describe: "show debug information and generate intermediate files",
         })
+        .option("logPatches", {
+          type: "boolean",
+          default: false,
+          describe: "show patched logs",
+        })
         .help();
     },
     async (args) => generate(args),
@@ -56,8 +63,8 @@ yargs(hideBin(process.argv))
         .option("apiType", {
           describe:
             "Type of the API schema to load. It can be 'store' or 'admin'",
-          default: "store",
-          choices: ["store", "admin"],
+          demandOption: true,
+          choices: ["store", "admin"] as const,
         })
         .positional("filename", {
           type: "string",
@@ -76,17 +83,67 @@ yargs(hideBin(process.argv))
         .option("apiType", {
           describe:
             "Type of the API schema to load. It can be 'store' or 'admin'",
-          default: "store",
-          choices: ["store", "admin"],
+          demandOption: true,
+          choices: ["store", "admin"] as const,
         })
         .positional("filename", {
           type: "string",
           describe:
             "name of the schema json file. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
         })
+        .option("logPatches", {
+          type: "boolean",
+          default: false,
+          describe: "show patched logs",
+        })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
+        })
         .help();
     },
     async (args) => validateJson(args),
+  )
+  .command(
+    "split <schemaFile>",
+    "Split OpenAPI schema into smaller files by tags or paths",
+    (args) => {
+      return commonOptions(args)
+        .option("outputDir", {
+          alias: "o",
+          type: "string",
+          default: "./output",
+          describe: "output directory for split files",
+        })
+        .positional("schemaFile", {
+          type: "string",
+          describe: "path to the schema file",
+        })
+        .option("splitBy", {
+          alias: "s",
+          type: "string",
+          default: "tags",
+          choices: ["tags", "paths"],
+          describe: "split by tags or paths",
+        })
+        .option("filterBy", {
+          alias: "f",
+          type: "string",
+          describe: "filter by a specific tag or path",
+        })
+        .option("verbose-linting", {
+          type: "boolean",
+          default: false,
+          describe: "show detailed linting errors",
+        })
+        .option("list", {
+          type: "string",
+          choices: ["tags", "paths"],
+          describe: "list all available tags or paths and exit",
+        });
+    },
+    async (args) => split(args as unknown as SplitOptions),
   )
   .showHelpOnFail(false)
   .alias("h", "help")

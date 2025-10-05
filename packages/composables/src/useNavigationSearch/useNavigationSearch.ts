@@ -1,4 +1,4 @@
-import { useShopwareContext, useSessionContext } from "#imports";
+import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseNavigationSearchReturn = {
@@ -18,7 +18,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiClient } = useShopwareContext();
   const { sessionContext } = useSessionContext();
 
-  async function resolvePath(path: string) {
+  async function resolvePath(path: string): Promise<Schemas["SeoUrl"] | null> {
     if (path === "/") {
       // please ignore optional chaining for salesChannel object as it's always present (type definition issue)
       const categoryId =
@@ -35,9 +35,12 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       path.startsWith("/detail/") ||
       path.startsWith("/landingPage/");
 
-    // remove leading slash in case of seo url
-    const normalizedPath = isTechnicalUrl ? path : path.substring(1);
-    // console.error("looking for path", normalizedPath);
+    // remove leading slash in case of seo url or remove trailing slash in case of technical url
+    const normalizedPath = isTechnicalUrl
+      ? path.endsWith("/")
+        ? path.slice(0, -1)
+        : path
+      : path.substring(1);
 
     const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
       body: {
@@ -51,7 +54,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       },
     });
 
-    return seoResult.data.elements?.[0];
+    return seoResult.data.elements?.[0] ?? null;
   }
 
   return {

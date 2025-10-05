@@ -46,7 +46,7 @@ This way:
 - cart data
   are synchronized between tabs.
 
-<!-- automd:file src="templates/vue-demo-store/composables/useBroadcastChannelSync.ts" code -->
+<!-- automd:file src="templates/vue-demo-store/app/composables/useBroadcastChannelSync.ts" code -->
 
 ```ts [useBroadcastChannelSync.ts]
 import type { Schemas } from "#shopware";
@@ -88,7 +88,9 @@ export const useBroadcastChannelSync = createSharedComposable(() => {
     Schemas["SalesChannelContext"]
   >("shopware-session-data");
   watch([sessionData], () => {
-    setContext(sessionData.value!);
+    if (sessionData.value) {
+      setContext(sessionData.value);
+    }
   });
 
   // Listen for API responses and update the shared state

@@ -1,4 +1,4 @@
-import type { CoreConfiguration, AdyenCheckout } from "@adyen/adyen-web";
+import type { AdyenCheckout, CoreConfiguration } from "@adyen/adyen-web";
 
 declare module "nuxt/schema" {
   interface NuxtApp {
@@ -13,5 +13,3 @@ declare module "nuxt/schema" {
     adyenCheckout: CoreConfiguration;
   }
 }
-
-export {};

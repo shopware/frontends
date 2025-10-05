@@ -21,7 +21,7 @@ npm i && npm run dev
 
 ## Configure
 
-The blank template is pre-configured to connect to a public Shopware backend, so you can follow our [building guides](/getting-started/) right away.
+The blank template is pre-configured to connect to a public Shopware backend, so you can follow our [building guides](../) right away.
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration details:
 

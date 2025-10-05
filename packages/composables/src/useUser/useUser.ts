@@ -1,13 +1,13 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { syncRefs } from "@vueuse/core";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import {
-  useShopwareContext,
   useCart,
+  useContext,
   useInternationalization,
   useSessionContext,
-  useContext,
+  useShopwareContext,
 } from "#imports";
-import { syncRefs } from "@vueuse/core";
 import type { Schemas, operations } from "#shopware";
 
 export type UseUserReturn = {
@@ -100,6 +100,8 @@ export type UseUserReturn = {
     updateEmailData: operations["changeEmail post /account/change-email"]["body"],
   ): Promise<void>;
   /**
+   * @deprecated API endpoint is removed in Shopware 6.7
+   *
    * Sets the default payment method for given id
    * @param paymentMethodId
    * @returns
@@ -139,7 +141,11 @@ export function useUser(): UseUserReturn {
   const { refreshCart } = useCart();
 
   const userDefaultPaymentMethod = computed(
-    () => user.value?.defaultPaymentMethod?.translated || null,
+    () =>
+      user.value?.lastPaymentMethod?.translated ||
+      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
+      user.value?.defaultPaymentMethod?.translated ||
+      null,
   );
   const userDefaultBillingAddress = computed(
     () => user.value?.defaultBillingAddress || null,
@@ -176,12 +182,15 @@ export function useUser(): UseUserReturn {
   ): Promise<Schemas["Customer"]> {
     const { data } = await apiClient.invoke("register post /account/register", {
       body: {
-        ...params,
+        ...(params as operations["register post /account/register"]["body"]),
         storefrontUrl: getStorefrontUrl(),
       },
     });
-    _user.value = data;
-    if (_user.value?.active) await refreshSessionContext();
+    // Update the user data in the context if the user is active and not using double opt-in registration set in the Shopware Admin
+    if (data.active && !data.doubleOptInRegistration) {
+      _user.value = data;
+    }
+    await refreshSessionContext();
     return data;
   }
 
@@ -272,12 +281,14 @@ export function useUser(): UseUserReturn {
     paymentMethodId: string,
   ): Promise<void> {
     await apiClient.invoke(
+      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
       "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
       {
         pathParams: { paymentMethodId },
       },
     );
   }
+
   const defaultBillingAddressId = computed(
     () => user.value?.defaultBillingAddressId || null,
   );
@@ -304,7 +315,6 @@ export function useUser(): UseUserReturn {
     logout,
     updateEmail,
     updatePersonalInfo,
-    setDefaultPaymentMethod,
     loadSalutation,
     salutation,
     loadCountry,
@@ -313,6 +323,7 @@ export function useUser(): UseUserReturn {
     defaultShippingAddressId,
     userDefaultPaymentMethod,
     userDefaultBillingAddress,
+    setDefaultPaymentMethod,
     userDefaultShippingAddress,
   };
 }

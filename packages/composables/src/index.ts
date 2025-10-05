@@ -1,6 +1,6 @@
-import type { Schemas } from "#shopware";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
+import type { Schemas } from "#shopware";
 
 /**
  * A composables library compatible with Vue 3 and Shopware 6.
@@ -105,7 +105,7 @@ export function getDefaultApiParams(): {
   [composableName: string]: unknown;
 } {
   console.error(
-    "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+    "[@shopware/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
   );
   return {};
 }

@@ -1,6 +1,11 @@
+import { existsSync, readFileSync } from "node:fs";
+import { BlockList } from "node:net";
+import { resolve } from "node:path";
+import { findSync } from "find-in-files";
+import { extract } from "ts-dox";
+import { expCollector } from "unplugin-export-collector/core";
 // @ts-nocheck
 import type { Plugin } from "vite";
-import { resolve } from "path";
 import {
   getToggleContainer,
   getWrappedCodeBlock,
@@ -8,11 +13,6 @@ import {
   prepareGithubPermalink,
   replacer,
 } from "./utils";
-import { readFileSync, existsSync } from "node:fs";
-import { expCollector } from "unplugin-export-collector/core";
-import { extract } from "ts-dox";
-import { findSync } from "find-in-files";
-import { BlockList } from "net";
 
 const packagesMap = {
   // "api-client": "api-client-next",
@@ -34,6 +34,8 @@ export async function ReadmeBasedReference({
       const packageDirName = fileName.replace(/\.md$/, "");
       const packageName = packagesMap[packageDirName] || packageDirName;
 
+      let transformedCode = code;
+
       if (
         pkg !== "packages" ||
         packageName === "composables" ||
@@ -41,11 +43,11 @@ export async function ReadmeBasedReference({
           resolve(`${projectRootDir}/${relativeDir}/${packageName}/README.md`),
         )
       ) {
-        return code;
+        return transformedCode;
       }
 
-      code = replacer(
-        code,
+      transformedCode = replacer(
+        transformedCode,
         normalizeString(
           readFileSync(
             resolve(
@@ -62,12 +64,12 @@ export async function ReadmeBasedReference({
         resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
       );
 
-      let exportedList: string[] = await expCollector(
+      const exportedList: string[] = await expCollector(
         resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
       );
 
       if (!exportedList.length) {
-        return code;
+        return transformedCode;
       }
 
       let API = "\n\n## API\n\n";
@@ -95,20 +97,17 @@ export async function ReadmeBasedReference({
           }
         }
 
-        let functionDefinition =
+        const functionDefinition =
           astJson.functions?.[exportedOne] ||
           astJson.types[exportedOne] ||
           astJson;
 
-        let availableTypes = astJson.types || {};
+        const availableTypes = astJson.types || {};
 
         if (functionDefinition.signature && functionDefinition.isExported) {
           API += `\n\n### \`${exportedOne}\`\n\n`;
           if (typeof functionDefinition.docs.deprecated === "string") {
-            API +=
-              `\n<span style="font-size:0.8em;">⚠️ deprecated - ` +
-              functionDefinition.docs.deprecated +
-              "</span>\n\n";
+            API += `\n<span style="font-size:0.8em;">⚠️ deprecated - ${functionDefinition.docs.deprecated}</span>\n\n`;
           }
           API += normalizeString(functionDefinition.summary);
 
@@ -135,9 +134,11 @@ export async function ReadmeBasedReference({
       }
 
       // place it before the changelog
-      code = replacer(code, API, "", "tail");
+      transformedCode = replacer(transformedCode, API, "", "tail");
+      // for LLM training
+      transformedCode += '\n<div data-placeholder="dynamic-markdown"></div>\n';
 
-      return code;
+      return transformedCode;
     },
   };
 }

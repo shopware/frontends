@@ -1,0 +1,49 @@
+{
+  "name": "vue-starter-template",
+  "version": "0.0.1",
+  "description": "Shopware Vue Starter Template",
+  "private": true,
+  "author": "Shopware",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "dev": "nuxt prepare && nuxt dev",
+    "build": "nuxt prepare && nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write . && pnpm run typecheck",
+    "typecheck": "nuxt prepare && vue-tsc -b --noEmit",
+    "generate-types": "shopware-api-gen generate --apiType=store"
+  },
+  "dependencies": {
+    "@iconify-json/carbon": "1.2.13",
+    "@iconify/utils": "3.0.2",
+    "@nuxt/image": "1.11.0",
+    "@shopware/api-client": "canary",
+    "@shopware/cms-base-layer": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
+    "@vuelidate/core": "2.0.3",
+    "nuxt": "4.1.2",
+    "vue": "3.5.22"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@nuxt/icon": "^2.0.0",
+    "@nuxtjs/i18n": "10.0.1",
+    "@shopware/api-gen": "canary",
+    "@unocss/nuxt": "66.5.2",
+    "@vueuse/core": "13.9.0",
+    "@vueuse/nuxt": "13.9.0",
+    "typescript": "5.9.2",
+    "unocss": "66.5.2",
+    "vite": "7.1.7"
+  }
+}

@@ -1,9 +1,6 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   runtimeConfig: {
     shopware: {
       /**
@@ -35,10 +32,12 @@ export default defineNuxtConfig({
     //     "ssr-heder-example": "ssr-header-example-value",
     //   },
     // },
-    /**
-     * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
-     */
-    broadcasting: false,
+    public: {
+      /**
+       * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
+       */
+      broadcasting: false,
+    },
   },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -97,7 +96,7 @@ export default defineNuxtConfig({
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
-    "@shopware-pwa/nuxt3-module",
+    "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
   // components: true,
@@ -118,6 +117,7 @@ export default defineNuxtConfig({
   },
   unocss: {
     // for presets, theme config, ... look at the uno.config.ts file
+    nuxtLayers: true,
   },
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
@@ -132,22 +132,22 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
-    langDir: "./i18n/src/langs/",
-    vueI18n: "./i18n/config",
+    langDir: "./src/langs/",
+    vueI18n: "./config",
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
+        language: "en-GB",
         file: "en-GB.ts",
       },
       {
         code: "pl-PL",
-        iso: "pl-PL",
+        language: "pl-PL",
         file: "pl-PL.ts",
       },
       {
         code: "testde",
-        iso: "de-DE",
+        language: "de-DE",
         file: "de-DE.ts",
         localeId: "c19b753b5f2c4bea8ad15e00027802d4",
       },

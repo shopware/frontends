@@ -15,4 +15,4 @@ const apiClient = createAPIClient<operations>({
   baseURL: shopwareEndpoint,
 });
 
-export default apiClient;
+export { shopwareEndpoint, shopwareAccessToken, apiClient };

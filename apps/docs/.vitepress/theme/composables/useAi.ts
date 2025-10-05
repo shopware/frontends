@@ -1,5 +1,5 @@
 import { useData } from "vitepress";
-import { QueryResponse, Answer } from "../types";
+import type { Answer, QueryResponse } from "../types";
 
 type UseAiReturn = {
   sendQueryRequest: (query: string) => Promise<QueryResponse>;
@@ -83,18 +83,12 @@ export function useAi(): UseAiReturn {
     let text = answer.context;
     let offset = 0;
 
-    answer.offsets_in_context.forEach((element) => {
-      text =
-        text.slice(0, element.start + offset) +
-        "<mark>" +
-        text.slice(element.start + offset);
+    for (const element of answer.offsets_in_context) {
+      text = `${text.slice(0, element.start + offset)}<mark>${text.slice(element.start + offset)}`;
       offset += 6;
-      text =
-        text.slice(0, element.end + offset) +
-        "</mark>" +
-        text.slice(element.end + offset);
+      text = `${text.slice(0, element.end + offset)}</mark>${text.slice(element.end + offset)}`;
       offset += 7;
-    });
+    }
 
     return text;
   };

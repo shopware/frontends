@@ -1,6 +1,6 @@
-import type { App } from "vue";
-import { createShopwareContext } from "@shopware-pwa/composables-next/dist";
+import { createShopwareContext } from "@shopware/composables/dist";
 import Cookies from "js-cookie";
+import type { App } from "vue";
 
 import { createAPIClient } from "@shopware/api-client";
 import type { operations } from "@shopware/api-client/store-api-types";

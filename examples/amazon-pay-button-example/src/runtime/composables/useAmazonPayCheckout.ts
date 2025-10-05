@@ -1,14 +1,14 @@
+import { computed, ref } from "vue";
 import { useRoute } from "#imports";
 import {
-  useUser,
-  useCountries,
-  useSalutations,
   useCart,
   useCheckout,
+  useCountries,
   useCustomerOrders,
+  useSalutations,
   useSessionContext,
+  useUser,
 } from "#imports";
-import { computed, ref } from "vue";
 
 export function useAmazonPayCheckout(amazonSessionId?: string) {
   const route = useRoute();
@@ -91,7 +91,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
     amazonSessionData.value = sessionData;
 
     await shopwareRegister({
-      firstName: sessionData.billingAddress.name?.split(" ")[0],
+      firstName: sessionData.billingAddress.name?.split(" ")[0] || "",
       lastName:
         sessionData.billingAddress.name?.split(" ")[
           sessionData.billingAddress.name?.split(" ").length - 1
@@ -103,6 +103,13 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       accountType: "private",
       salutationId: getNotSpecifiedSalutation(),
       billingAddress: {
+        customerId: "",
+        firstName: sessionData.billingAddress.name?.split(" ")[0] || "",
+        lastName:
+          sessionData.billingAddress.name?.split(" ")[
+            sessionData.billingAddress.name?.split(" ").length - 1
+          ] || "",
+        id: "",
         salutationId: getNotSpecifiedSalutation(),
         countryId: mapCountryId(sessionData.billingAddress.countryCode),
         street:
@@ -176,6 +183,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       },
       filter: [
         {
+          // @ts-expect-error TODO: Fix it in order schema
           field: "orderNumber",
           type: "equals",
           value: sessionData.merchantMetadata.merchantReferenceId,
@@ -189,11 +197,11 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        orderId: orders.value?.[0].id,
-        transactionId: orders.value?.[0].transactions?.[0].id,
+        orderId: orders.value?.[0]?.id,
+        transactionId: orders.value?.[0]?.transactions?.[0]?.id,
         amazonCheckoutSessionId: checkoutSessionId.value,
         chargeAmount: {
-          amount: orders.value?.[0].amountTotal?.toString(),
+          amount: orders.value?.[0]?.amountTotal?.toString(),
           currencyCode: currency.value?.isoCode,
         },
       }),

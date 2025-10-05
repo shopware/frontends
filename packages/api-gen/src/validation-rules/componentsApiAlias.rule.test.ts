@@ -1,8 +1,9 @@
+import type { ObjectSubtype } from "openapi-typescript";
 import { describe, expect, it } from "vitest";
 import componentsApiAliasRule from "./componentsApiAlias.rule";
-import { ObjectSubtype } from "openapi-typescript";
 
 function _uncolorize(str: string | null) {
+  // biome-ignore lint: noControlCharactersInRegex used to decolorize output
   return str?.replace(/\u001b[^m]*?m/g, "");
 }
 
@@ -64,8 +65,8 @@ describe("componentsApiAlias.rule", async () => {
        - Expected
       + Received
 
-        Object {
-          "enum": Array [
+        {
+          "enum": [
       -     "cms_block",
       +     "cmsBlock",
           ],
@@ -95,8 +96,8 @@ describe("componentsApiAlias.rule", async () => {
        - Expected
       + Received
 
-        Object {
-          "enum": Array [
+        {
+          "enum": [
       -     "price_definition",
       +     "cart_price_quantity",
           ],

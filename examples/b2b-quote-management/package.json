@@ -6,27 +6,30 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@primevue/themes": "^4.0.0",
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/helpers-next": "canary",
+    "@primevue/themes": "4.2.4",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "primevue": "4.2.1",
-    "vue": "3.5.12",
-    "vue-router": "4.4.5"
+    "vue": "3.5.22",
+    "vue-router": "4.5.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
-    "@types/node": "20.17.0",
-    "@vitejs/plugin-vue": "5.1.4",
-    "@vueuse/core": "11.2.0",
-    "unocss": "0.63.6",
-    "vite": "5.4.10",
-    "vue-tsc": "2.1.10"
+    "@types/node": "22.13.14",
+    "@vitejs/plugin-vue": "6.0.1",
+    "@vueuse/core": "13.9.0",
+    "unocss": "66.5.2",
+    "vite": "7.1.7",
+    "vue-tsc": "2.2.10"
   }
 }

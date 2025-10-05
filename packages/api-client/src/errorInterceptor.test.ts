@@ -1,7 +1,7 @@
+import type { FetchResponse } from "ofetch";
 import { describe, expect, it } from "vitest";
 import type { ApiError } from "./ApiError";
 import { ApiClientError } from "./ApiError";
-import type { FetchResponse } from "ofetch";
 import { errorInterceptor } from "./errorInterceptor";
 
 describe("errorInterceptor", () => {
@@ -69,7 +69,7 @@ describe("errorInterceptor", () => {
       expect(error instanceof ApiClientError).toBe(true);
 
       if (error instanceof ApiClientError) {
-        expect(error.details.errors.length).toBe(resp!._data!.errors.length);
+        expect(error.details.errors.length).toBe(resp?._data?.errors.length);
       }
     }
   });
@@ -81,8 +81,9 @@ describe("errorInterceptor", () => {
       errors: Array<ApiError>;
     }>;
 
-    await expect(() => errorInterceptor(resp))
-      .toThrowErrorMatchingInlineSnapshot(`
+    await expect(() =>
+      errorInterceptor(resp),
+    ).toThrowErrorMatchingInlineSnapshot(`
         [ApiClientError: Failed request
          - [Unknown error] API did not return errors, but request failed. Please check the network tab.]
       `);
@@ -107,7 +108,7 @@ describe("errorInterceptor", () => {
 
     await expect(() =>
       errorInterceptor(resp),
-    ).toThrowErrorMatchingInlineSnapshot(`[ApiClientError: Failed request]`);
+    ).toThrowErrorMatchingInlineSnapshot("[ApiClientError: Failed request]");
 
     try {
       errorInterceptor(resp);

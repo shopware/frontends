@@ -7,20 +7,23 @@
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "generate-types": "shopware-api-gen generate --apiType=store"
+    "generate-types": "shopware-api-gen generate --apiType=store",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
   },
   "devDependencies": {
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@biomejs/biome": "1.8.3",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.17.0",
-    "@vueuse/nuxt": "11.2.0",
-    "nuxt": "3.13.2",
-    "typescript": "5.6.3",
-    "vue": "3.5.12",
-    "vue-tsc": "2.1.10"
+    "@types/node": "22.13.14",
+    "@vueuse/nuxt": "13.9.0",
+    "nuxt": "4.1.2",
+    "typescript": "5.9.2",
+    "vue": "3.5.22",
+    "vue-tsc": "2.2.10"
   },
   "engines": {
-    "node": "^18.17.x || ^20.x"
+    "node": "^20.x || ^22.x"
   }
 }

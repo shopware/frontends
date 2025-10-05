@@ -90,7 +90,7 @@ All prices are passed as floating point numbers, rounded to the decimals which a
 
 ```vue{4,16,24}
 <script setup>
-import { useProductSearch } from '@shopware-pwa/composables-next';
+import { useProductSearch } from '@shopware/composables';
 
 const { getFormattedPrice } = usePrice();
 const { search } = useProductSearch();
@@ -184,7 +184,7 @@ class="mx-auto p-10 shadow-md rounded-md dark:bg-#242424 text-gray-700 dark:text
 
 ```vue{3,9}
 <script setup>
-import { useProduct } from "@shopware-pwa/composables-next";
+import { useProduct } from "@shopware/composables";
 
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
@@ -240,7 +240,7 @@ See a full example of displaying the default price or pricing tiers depending on
 
 ```vue
 <script setup>
-import { useProduct } from "@shopware-pwa/composables-next";
+import { useProduct } from "@shopware/composables";
 
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
@@ -293,7 +293,7 @@ const defaultPrice = computed(() => {
 
 ## useProductPrice composable
 
-See dedicated [Composables > useProductPrice](/packages/composables.html#useproductprice) page to check the details of the helper function.
+See dedicated [Composables > useProductPrice](../../packages/composables/useProductPrice) page to check the details of the helper function.
 
 ### Product listing
 

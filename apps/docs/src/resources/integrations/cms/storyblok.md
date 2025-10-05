@@ -19,7 +19,7 @@ nav:
 [<img src="../../../.assets/cms-icons/storyblok.dark.svg" alt="Storyblok Logo" class="mb-8 h-20 block dark:hidden" />](https://www.storyblok.com/docs/guide/introduction)
 
 Storyblok is a headless CMS that can be easily integrated into any Nuxt 3 application.
-On this page we explain the basics of how to integrate it into our [vue-blank template](/getting-started/templates/blank-template.html).
+On this page we explain the basics of how to integrate it into our [vue-blank template](../../../getting-started/templates/blank-template).
 
 ## Step by step guide
 
@@ -34,7 +34,7 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
 5. Now add the storyblok access token to you `nuxt.config.ts` file  
    _(you need a storyblok account to get that token)_
    ```ts
-   modules: ["@shopware-pwa/nuxt3-module", "@storyblok/nuxt"],
+   modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
      storyblok: {
      accessToken: "super-secret-token"
    },

@@ -1,6 +1,6 @@
-import { useShopwareContext, useInternationalization } from "#imports";
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+import { useInternationalization, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseNewsletterReturn = {
@@ -37,6 +37,14 @@ export type UseNewsletterReturn = {
    * Inform about newsletter confirmation
    */
   confirmationNeeded: ComputedRef<boolean>;
+  /**
+   * Subscribe key
+   */
+  SUBSRIBE_KEY: string;
+  /**
+   * Unsubscribe key
+   */
+  UNSUBSCRIBE_KEY: string;
 };
 
 /**
@@ -45,6 +53,9 @@ export type UseNewsletterReturn = {
  * @category Customer & Account
  */
 export function useNewsletter(): UseNewsletterReturn {
+  const SUBSRIBE_KEY = "subscribe";
+  const UNSUBSCRIBE_KEY = "unsubscribe";
+
   const { apiClient } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
   const newsletterStatus =
@@ -105,5 +116,7 @@ export function useNewsletter(): UseNewsletterReturn {
     getNewsletterStatus,
     newsletterStatus,
     confirmationNeeded,
+    SUBSRIBE_KEY,
+    UNSUBSCRIBE_KEY,
   };
 }

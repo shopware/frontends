@@ -5,6 +5,11 @@
       "private": "Osoba prywatna",
       "business": "Klient biznesowy"
     },
+    "quantitySelect": {
+      "label": "Ilość",
+      "increaseButton": "Zwiększ ilość",
+      "decreaseButton": "Zmniejsz ilość"
+    },
     "salutation": "Forma grzecznościowa",
     "chooseSalutation": "Wybierz formę grzecznościową...",
     "firstName": "Imię",
@@ -14,6 +19,7 @@
     "country": "Kraj",
     "chooseCountry": "Wybierz kraj...",
     "company": "Firma",
+    "vatIds": "Numer identyfikacji podatkowej",
     "companyPlaceholder": "Wprowadź nazwę firmy...",
     "streetAddress": "Adres ulicy",
     "streetPlaceholder": "Wpisz ulicę...",
@@ -32,6 +38,7 @@
     "postalCodePlaceholder": "Wpisz kod pocztowy...",
     "save": "Zapisz",
     "submit": "Zatwierdź",
+    "cancel": "Anuluj",
     "promoCodePlaceholder": "Wpisz kod promocyjny",
     "searchPlaceholder": "Szukaj produktów",
     "chooseState": "Wybierz stan",

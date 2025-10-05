@@ -8,34 +8,31 @@ describe("useDefaultOrderAssociations", () => {
 
     expect(vm).toMatchInlineSnapshot(`
       {
-        "associations": {
-          "addresses": {},
-          "deliveries": {
-            "associations": {
-              "shippingMethod": {},
-              "shippingOrderAddress": {},
-              "stateMachineState": {},
-            },
+        "addresses": {},
+        "deliveries": {
+          "associations": {
+            "shippingMethod": {},
+            "shippingOrderAddress": {},
+            "stateMachineState": {},
           },
-          "lineItems": {
-            "associations": {
-              "cover": {},
-              "downloads": {
-                "associations": {
-                  "media": {},
-                },
+        },
+        "lineItems": {
+          "associations": {
+            "cover": {},
+            "downloads": {
+              "associations": {
+                "media": {},
               },
             },
           },
-          "stateMachineState": {},
-          "transactions": {
-            "associations": {
-              "paymentMethod": {},
-              "stateMachineState": {},
-            },
+        },
+        "stateMachineState": {},
+        "transactions": {
+          "associations": {
+            "paymentMethod": {},
+            "stateMachineState": {},
           },
         },
-        "checkPromotion": true,
       }
     `);
   });

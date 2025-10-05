@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
-import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
-import Login from "./Login.vue";
+import { useB2bQuoteManagement, useUser } from "@shopware/composables";
+import { onBeforeMount, ref } from "vue";
 import type { Schemas } from "#shopware";
+import Login from "./Login.vue";
 
 const quotesList = ref<Schemas["Quote"][]>([]);
 const { getQuoteList } = useB2bQuoteManagement();
@@ -59,10 +59,10 @@ onBeforeMount(async () => {
             {{ quote.expirationDate }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ quote.price.totalPrice }}
+            {{ quote.price?.totalPrice }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ quote.stateMachineState.translated.name }}
+            {{ quote.stateMachineState?.translated.name }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
             <router-link :to="`/quote/${quote.id}`">Details</router-link>

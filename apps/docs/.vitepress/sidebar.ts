@@ -239,7 +239,8 @@ export const sidebar = [
       { text: "Performance", link: "/best-practices/performance.html" },
       {
         text: "Testing",
-        // link: "/best-practices/testing.html",
+        link: "/best-practices/testing.html",
+        collapsed: true,
         items: [
           {
             text: "E2E Testing",
@@ -248,6 +249,10 @@ export const sidebar = [
           {
             text: "A/B Testing",
             link: "/best-practices/testing/ab-testing.html",
+          },
+          {
+            text: "Accessibility Testing",
+            link: "/best-practices/testing/accessibility-testing.html",
           },
         ],
       },
@@ -317,8 +322,8 @@ export const sidebar = [
                 link: "/resources/integrations/payments/mollie.html",
               },
               {
-                text: "Paypal Express",
-                link: "/resources/integrations/payments/paypal-express.html",
+                text: "Paypal",
+                link: "/resources/integrations/payments/paypal.html",
               },
             ],
           },
@@ -340,8 +345,8 @@ export const sidebar = [
         collapsed: true,
         items: composables?.composablesList ?? [],
       },
-      { text: "CMS Base", link: "/packages/cms-base.html" },
-      { text: "Nuxt3 Module", link: "/packages/nuxt3-module.html" },
+      { text: "CMS Base", link: "/packages/cms-base-layer.html" },
+      { text: "Nuxt3 Module", link: "/packages/nuxt-module.html" },
       { text: "Helpers", link: "/packages/helpers.html" },
     ],
   },

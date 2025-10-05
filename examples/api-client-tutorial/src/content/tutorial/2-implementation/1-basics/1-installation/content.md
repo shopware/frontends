@@ -34,7 +34,7 @@ See the library placed in your `package.json` file:
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "5.4.8",
+    "vite": "6.3.6",
     "@shopware/api-client": "canary"
   }
 }

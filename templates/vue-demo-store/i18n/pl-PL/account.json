@@ -10,7 +10,6 @@
     "defaultBillingAddressHeader": "Domyślny adres rozliczeniowy",
     "defaultShippingAddressHeader": "Domyślny adres wysyłki",
     "yourAddress": "Twój adres",
-    "myPaymentsHeader": "Twoje metody płatności",
     "orderHistoryHeader": "Historia zamówień",
     "yourProfile": "Twój profil",
     "documentsLabel": "Dokumenty",
@@ -52,9 +51,38 @@
       "authOrderText": "Aby zobaczyć swoje zamówienie, wprowadź swój adres e-mail i kod pocztowy podany przy adresie rozliczeniowym.",
       "authOrderTitle": "Autoryzacja"
     },
+    "orderDetails": {
+      "order": "Zamówienie",
+      "placedOn": "Złożone dnia {d}",
+      "shippingAddress": "Adres wysyłki",
+      "billingAddress": "Adres rozliczeniowy",
+      "orderSummary": "Podsumowanie zamówienia",
+      "paymentMethod": "Metoda płatności",
+      "shippingMethod": "Metoda wysyłki",
+      "subtotal": "Suma częściowa",
+      "shipping": "Wysyłka",
+      "total": "Całkowita kwota",
+      "takesUpTo": "Zajmuje do",
+      "change": "Zmień",
+      "changePaymentMethod": "Zmień metodę płatności",
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź",
+      "close": "Zamknij",
+      "backToOrdersList": "Powrót do listy zamówień",
+      "itemsHeader": {
+        "item": "Przedmiot",
+        "quantity": "Ilość",
+        "price": "Cena",
+        "total": "Całkowita kwota"
+      }
+    },
     "personalData": {
       "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
       "label": "Dane osobowe"
+    },
+    "changeEmail": {
+      "label": "Zmień adres e-mail",
+      "infoBox": "Zmień swój adres e-mail poniżej"
     },
     "messages": {
       "defaultShippingAddressSuccess": "Domyślny adres wysyłki został pomyślnie ustawiony",
@@ -70,7 +98,8 @@
       "paymentMethodChanged": "Metoda płatności została zmieniona",
       "productsAdded": "Produkty zostały dodane do koszyka",
       "orderSuccessNoOrder": "Zamówienie nie istnieje",
-      "orderWrongData": "Podane dane nie mogły zostać powiązane z zamówieniem."
+      "orderWrongData": "Podane dane nie mogły zostać powiązane z zamówieniem.",
+      "verifying": "Potwierdzenie konta"
     }
   }
 }

@@ -1,6 +1,6 @@
+import { getTranslatedProperty } from "@shopware/helpers";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
 export type UseCmsMetaReturn = {

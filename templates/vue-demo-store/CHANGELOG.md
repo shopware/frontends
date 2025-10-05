@@ -1,5 +1,103 @@
 # vue-demo-store
 
+## 1.11.0
+
+### Minor Changes
+
+- [#1930](https://github.com/shopware/frontends/pull/1930) [`ea2961f`](https://github.com/shopware/frontends/commit/ea2961f51eb2dc0d21416134d29945b3c2a1aea8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update Nuxt to v4
+
+## 1.10.0
+
+### Minor Changes
+
+- [#1885](https://github.com/shopware/frontends/pull/1885) [`3011265`](https://github.com/shopware/frontends/commit/301126501693b6f12eb6b426303012beeb2d60d5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add loader state for the cart component
+
+### Patch Changes
+
+- [#1885](https://github.com/shopware/frontends/pull/1885) [`3011265`](https://github.com/shopware/frontends/commit/301126501693b6f12eb6b426303012beeb2d60d5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh cart data after changing payment or shipping method
+
+## 1.9.0
+
+### Minor Changes
+
+- [#1711](https://github.com/shopware/frontends/pull/1711) [`da3b19c`](https://github.com/shopware/frontends/commit/da3b19c741244297ba4d74a31fcffd4939e46032) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added the ability to change the account type on the account details page. email editing moved to the new tab
+
+- [#1737](https://github.com/shopware/frontends/pull/1737) [`bd70905`](https://github.com/shopware/frontends/commit/bd70905b8443fd57d8d8cb3cfc6501a9117dea49) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed account payment method page
+
+- [#1749](https://github.com/shopware/frontends/pull/1749) [`31f4a1d`](https://github.com/shopware/frontends/commit/31f4a1d169d193334871259c8911660f1028eae0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add server routing to handle login as a customer option
+
+### Patch Changes
+
+- [#1858](https://github.com/shopware/frontends/pull/1858) [`331e9ef`](https://github.com/shopware/frontends/commit/331e9ef4bd73032d1a6b73e39a65e672fb3ee9d7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove payment section from the account dashboard
+
+- [#1812](https://github.com/shopware/frontends/pull/1812) [`c28810d`](https://github.com/shopware/frontends/commit/c28810d0ca503b97c232438e200bbf5ba5dab403) Thanks [@patzick](https://github.com/patzick)! - Fix date formatting based on locale, previously always returned en-US format
+
+- [#1712](https://github.com/shopware/frontends/pull/1712) [`23f07df`](https://github.com/shopware/frontends/commit/23f07dff7e42c669f03a6290d0c70fd0759f9383) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Set `sw-language-id` header on the app context level
+
+## 1.8.0
+
+### Minor Changes
+
+- [#1640](https://github.com/shopware/frontends/pull/1640) [`b30b046`](https://github.com/shopware/frontends/commit/b30b04646e77be86e2851c046f9dcb3a4c393042) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added possibility to edit personal info on the checkout process
+
+### Patch Changes
+
+- [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
+
+  - Checkout page
+  - SharedAccountAddressForm
+  - CheckoutCustomerBaseInfo
+  - AccountRegisterForm
+  - AccountAddressForm
+
+- [#1660](https://github.com/shopware/frontends/pull/1660) [`530b22f`](https://github.com/shopware/frontends/commit/530b22fa84eb0950c77932456f32067c596e51f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing formatLink for links in checkout and my account page
+
+- [#1617](https://github.com/shopware/frontends/pull/1617) [`8a57689`](https://github.com/shopware/frontends/commit/8a57689cd7f6a6c3b8ea4161d423f8b0d37a7f2c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added loader to the changing payment method on the order details page. Added better UX for the change payment method modal
+
+## 1.7.0
+
+### Minor Changes
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/helpers-next` to `@shopware/helpers` package.
+
+- [#1602](https://github.com/shopware/frontends/pull/1602) [`bb7d1cb`](https://github.com/shopware/frontends/commit/bb7d1cbc4204ff1d48f77416f94f550bc235e5ed) Thanks [@patzick](https://github.com/patzick)! - Switch from `@shopware-pwa/cms-base` to `@shopware/cms-base-layer` package.
+
+## 1.6.0
+
+### Minor Changes
+
+- [#1596](https://github.com/shopware/frontends/pull/1596) [`3a79106`](https://github.com/shopware/frontends/commit/3a791065d04152255095965e3fb12ea538a22639) Thanks [@patzick](https://github.com/patzick)! - Changed `@shopware-pwa/composables` package to `@shopware/composables`. Just rename it in package.json file and run install.
+
+## 1.5.0
+
+### Minor Changes
+
+- [#1550](https://github.com/shopware/frontends/pull/1550) [`63d56b3`](https://github.com/shopware/frontends/commit/63d56b3dacd6ca48a44744e387e6212a23c8bf4a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Removed order details from `AccountOrder` component and moved it to the new order details page `pages/account/order/details/[id].vue`
+
+### Patch Changes
+
+- [#1580](https://github.com/shopware/frontends/pull/1580) [`a04aa8c`](https://github.com/shopware/frontends/commit/a04aa8c0c705626bb231f8ead59c4c67a2d0d715) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Display all shipping costs in the cart components `cart.vue`, `checkout/index.vue`
+
+## 1.4.0
+
+### Minor Changes
+
+- [#1506](https://github.com/shopware/frontends/pull/1506) [`0d426c2`](https://github.com/shopware/frontends/commit/0d426c28e839f8a47241e083ff09076d7136b9fb) Thanks [@patzick](https://github.com/patzick)! - Changed eslint to biome for more accurate and much faster linting experience.
+
+- [#1490](https://github.com/shopware/frontends/pull/1490) [`c59b384`](https://github.com/shopware/frontends/commit/c59b384084a1cb70f2679ff5810518932dd06516) Thanks [@patzick](https://github.com/patzick)! - Update to the Node 22 LTS as the default
+
+- [#1369](https://github.com/shopware/frontends/pull/1369) [`13c83be`](https://github.com/shopware/frontends/commit/13c83bec53a6aaba49941b9bf869629eadeb4515) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added dynamic breadcrumbs
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added a confirmation page after the double opt-in option. The confirmation link is included in the email after registration.
+
+### Patch Changes
+
+- [#1497](https://github.com/shopware/frontends/pull/1497) [`164cb91`](https://github.com/shopware/frontends/commit/164cb917958404a57c815e8b1cf0a0239295292c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix contrast ratio for cart and orders pages
+
+- [#1489](https://github.com/shopware/frontends/pull/1489) [`2c337b5`](https://github.com/shopware/frontends/commit/2c337b5555495e5cc75f17f1c7f50cc25dfe7c1e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix registration form for the double opt in registration flow
+
+- [#1404](https://github.com/shopware/frontends/pull/1404) [`d4482d5`](https://github.com/shopware/frontends/commit/d4482d51a65c435f27923e85223cac4e291f6c56) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add smooth scrolling on the routing change (excluding product variants)
+
 ## 1.3.0
 
 ### Minor Changes

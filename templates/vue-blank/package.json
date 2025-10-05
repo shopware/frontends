@@ -1,6 +1,6 @@
 {
   "name": "vue-blank",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "build": "nuxt prepare && nuxt build",
@@ -9,18 +9,18 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@shopware-pwa/cms-base": "canary",
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/cms-base-layer": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.17.0",
-    "@vueuse/nuxt": "11.2.0",
-    "nuxt": "3.13.2",
-    "typescript": "5.6.3",
-    "vue": "3.5.12",
-    "vue-tsc": "2.1.10"
+    "@types/node": "22.13.14",
+    "@vueuse/nuxt": "13.9.0",
+    "nuxt": "4.1.2",
+    "typescript": "5.9.2",
+    "vue": "3.5.22",
+    "vue-tsc": "2.2.10"
   },
   "engines": {
-    "node": "^18.17.x || ^20.x"
+    "node": "^20.x || ^22.x"
   }
 }

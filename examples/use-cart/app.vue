@@ -19,7 +19,7 @@ const { unitPrice } = useProductPrice(product);
 
 const promotionCode = ref("SWFRONTENDS");
 
-const proxyAddToCart = async (quantity: number = 1) => {
+const proxyAddToCart = async (quantity = 1) => {
   await addProduct({ id: product.value?.id, quantity });
   refreshCart();
 };
@@ -28,7 +28,7 @@ const changeItemQuantity = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   await changeProductQuantity({
     id: target.id,
-    quantity: parseInt(target.value),
+    quantity: Number.parseInt(target.value),
   });
   refreshCart();
 };
@@ -46,11 +46,11 @@ onMounted(async () => {
       class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="px-5 pb-5">
-        <h5
+        <div
           class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
         >
           {{ product?.translated.name }}
-        </h5>
+        </div>
 
         <div class="flex items-center justify-between mt-4">
           <span class="text-3xl font-bold text-gray-900 dark:text-white">{{

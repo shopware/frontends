@@ -1,7 +1,7 @@
 import { assertType, describe, it } from "vitest";
-import { createAPIClient } from "../createAPIClient";
 import type { operations } from "../../api-types/storeApiTypes";
-import type { RequestReturnType, RequestParameters } from "../createAPIClient";
+import { createAPIClient } from "../createAPIClient";
+import type { RequestParameters, RequestReturnType } from "../createAPIClient";
 
 describe("createApiClient type checks", () => {
   it(`should allow not passing params when endpoint does not require "body"`, async () => {
@@ -15,7 +15,7 @@ describe("createApiClient type checks", () => {
     await apiInstance.invoke("readCms post /cms/{id}");
   });
 
-  it(`should match RequestReturnType`, async () => {
+  it("should match RequestReturnType", async () => {
     const apiInstance = createAPIClient<operations>({
       baseURL: "",
       accessToken: "",

@@ -5,6 +5,11 @@
       "private": "Privat",
       "business": "Gewerblich"
     },
+    "quantitySelect": {
+      "label": "Menge",
+      "increaseButton": "Zincrease Menge",
+      "decreaseButton": "Vermindern Menge"
+    },
     "salutation": "Anrede",
     "chooseSalutation": "Anrede wählen...",
     "firstName": "Vorname",
@@ -14,6 +19,7 @@
     "country": "Land",
     "chooseCountry": "Land auswählen...",
     "company": "Firma",
+    "vatIds": "USt-IdNr.",
     "companyPlaceholder": "Firma eingeben...",
     "streetAddress": "Straße und Hausnummer",
     "streetPlaceholder": "Straße eingeben...",
@@ -32,6 +38,7 @@
     "postalCodePlaceholder": "PLZ eingeben...",
     "save": "Speichern",
     "submit": "Senden",
+    "cancel": "Abbrechen",
     "promoCodePlaceholder": "Promo-Code eingeben",
     "searchPlaceholder": "Produkte suchen",
     "chooseState": "Wählen Sie den Staat",

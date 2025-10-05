@@ -1,5 +1,5 @@
-import { defineBuildConfig } from "unbuild";
 import { resolve } from "pathe";
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
   entries: ["src/index"],
@@ -12,7 +12,7 @@ export default defineBuildConfig({
     "vue",
     "scule",
     "@shopware/api-client",
-    "@shopware-pwa/helpers-next",
+    "@shopware/helpers",
     "@vueuse/core",
   ],
   alias: {

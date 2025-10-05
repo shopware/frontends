@@ -1,32 +1,36 @@
 {
-  "name": "working-with-api-client",
+  "name": "api-client-tutorial",
   "version": "0.0.1",
   "type": "module",
   "private": true,
   "scripts": {
     "astro": "astro",
-    "lint": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "tsc --noEmit",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@tutorialkit/react": "1.0.0",
+    "@tutorialkit/react": "1.4.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",
-    "@astrojs/react": "3.6.2",
-    "@shopware/api-client": "1.1.2",
-    "@tutorialkit/astro": "1.1.1",
+    "@astrojs/react": "3.6.3",
+    "@biomejs/biome": "1.8.3",
+    "@shopware/api-client": "canary",
+    "@tutorialkit/astro": "1.6.0",
     "@tutorialkit/theme": "1.2.1",
     "@tutorialkit/types": "1.1.1",
     "@types/node": "20.14.6",
     "@types/react": "18.3.3",
-    "astro": "4.16.7",
+    "astro": "4.16.19",
     "prettier-plugin-astro": "0.14.1",
-    "typescript": "5.6.3"
+    "typescript": "5.9.2"
   }
 }

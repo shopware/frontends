@@ -1,24 +1,29 @@
 import { describe, expect, it, vi } from "vitest";
-import { resolveCmsComponent, getDefaultApiParams } from "./index";
-import CmsPage from "./mocks/CmsPage";
-import type { Schemas } from "#shopware";
 import * as vue from "vue";
+import type { Schemas } from "#shopware";
+import { getDefaultApiParams, resolveCmsComponent } from "./index";
+import CmsPage from "./mocks/CmsPage";
 
 vi.mock("vue");
 describe("resolveCmsComponent", () => {
   vi.spyOn(vue, "resolveComponent").mockImplementation((element) => element);
   it("should resolve a cms component", () => {
-    const result = resolveCmsComponent(
-      CmsPage.cmsPage.sections[0].blocks[0] as unknown as Schemas["CmsBlock"],
-    );
+    const section = CmsPage.cmsPage.sections?.[0];
+    const block = section?.blocks?.[0];
+
+    const result = resolveCmsComponent(block as unknown as Schemas["CmsBlock"]);
     expect(result.componentName).toBe("image-simple-grid");
     expect(result.componentNameToResolve).toBe("CmsBlockImageSimpleGrid");
     expect(result.isResolved).toBe(true);
   });
 
   it("getDefaultApiParams", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     const result = getDefaultApiParams();
     expect(result).toEqual({});
+    expect(console.error).toHaveBeenCalledWith(
+      "[@shopware/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+    );
   });
 
   it("cms section component", () => {

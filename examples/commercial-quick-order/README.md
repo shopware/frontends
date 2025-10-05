@@ -6,8 +6,8 @@ This example should help get you started developing [Shopware Frontends](https:/
 
 ## Customization
 
-- edit [./src/App.vue](./src/App.vue) in order to change the current example's logic, look & feel.
-- edit [./src/main.js](./src/main.js) in order to adjust Shopware Frontends plugin
+- edit `./src/App.vue` in order to change the current example's logic, look & feel.
+- edit `./src/main.js` in order to adjust Shopware Frontends plugin
 
 ## Overview of example
 

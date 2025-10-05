@@ -6,19 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "lint": "vue-tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.12"
+    "vue": "3.5.22"
   },
   "devDependencies": {
-    "@types/node": "20.17.0",
-    "@vitejs/plugin-vue": "5.1.4",
-    "typescript": "5.6.3",
-    "vite": "5.4.10",
-    "vue-tsc": "2.1.10"
+    "@biomejs/biome": "1.8.3",
+    "@types/node": "22.13.14",
+    "@vitejs/plugin-vue": "6.0.1",
+    "typescript": "5.9.2",
+    "vite": "7.1.7",
+    "vue-tsc": "2.2.10"
   }
 }

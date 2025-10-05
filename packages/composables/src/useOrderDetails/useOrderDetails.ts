@@ -1,8 +1,8 @@
-import { computed, ref, inject, provide } from "vue";
-import type { ComputedRef, Ref } from "vue";
 import { defu } from "defu";
+import { computed, inject, provide, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseOrderDetailsReturn = {
   /**
@@ -50,11 +50,11 @@ export type UseOrderDetailsReturn = {
    */
   paymentUrl: Ref<null | string>;
   /**
-   * Selected shipping method
+   * Returns current selected shipping method for the order. Last element in delivery array.
    */
   shippingMethod: ComputedRef<Schemas["ShippingMethod"] | undefined | null>;
   /**
-   * Selected payment method
+   * Returns current selected payment method for the order. Last element in transactions array.
    */
   paymentMethod: ComputedRef<Schemas["PaymentMethod"] | undefined | null>;
   /**
@@ -139,12 +139,18 @@ export function useOrderDetails(
 
   const orderAssociations = useDefaultOrderAssociations();
 
-  const paymentMethod = computed(
-    () => _sharedOrder.value?.transactions?.[0]?.paymentMethod,
-  );
-  const shippingMethod = computed(
-    () => _sharedOrder.value?.deliveries?.[0]?.shippingMethod,
-  );
+  const paymentMethod = computed(() => {
+    const transactions = _sharedOrder.value?.transactions;
+    if (!transactions?.length) return undefined;
+    return transactions[transactions.length - 1]?.paymentMethod;
+  });
+
+  const shippingMethod = computed(() => {
+    const deliveries = _sharedOrder.value?.deliveries;
+    if (!deliveries?.length) return undefined;
+    return deliveries[deliveries.length - 1]?.shippingMethod;
+  });
+
   const paymentUrl = ref();
 
   const personalDetails = computed(() => ({
@@ -176,16 +182,11 @@ export function useOrderDetails(
       orderAssociations,
       associations ? associations : {},
     );
-    const params = {
-      filter: [
-        {
-          type: "equals",
-          field: "id",
-          value: orderId,
-        },
-      ],
-      associations: mergedAssociations.associations,
-    } as Schemas["Criteria"];
+    const params: operations["readOrder post /order"]["body"] = {
+      ids: [orderId],
+      associations: mergedAssociations,
+      checkPromotion: true,
+    };
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",
@@ -194,7 +195,7 @@ export function useOrderDetails(
       },
     );
     _sharedOrder.value =
-      orderDetailsResponse.data.orders?.elements?.[0] ?? null;
+      orderDetailsResponse.data.orders?.elements?.[0] ?? undefined;
     paymentChangeableList.value =
       orderDetailsResponse.data.paymentChangeable ?? {};
     return orderDetailsResponse.data;
@@ -275,11 +276,7 @@ export function useOrderDetails(
   const documents = computed(() => _sharedOrder.value?.documents || []);
 
   const paymentChangeable = computed(() => {
-    return Object.keys(paymentChangeableList.value).length
-      ? (paymentChangeableList.value as { [key: string]: boolean })[
-          orderId as string
-        ]
-      : false;
+    return paymentChangeableList.value?.[orderId as string] ?? false;
   });
 
   const getPaymentMethods = async () => {

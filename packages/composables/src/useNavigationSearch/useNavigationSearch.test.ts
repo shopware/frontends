@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { useNavigationSearch } from "./useNavigationSearch";
-import { useSetup } from "../_test";
-import { useSessionContext } from "../useSessionContext/useSessionContext";
 import { ref } from "vue";
+import { useNavigationSearch, useSessionContext } from "#imports";
+import { useSetup } from "../_test";
 
 vi.mock("../useSessionContext/useSessionContext.ts");
 const sessionContext = ref();
@@ -71,6 +70,27 @@ describe("useNavigationSearch", () => {
               type: "equals",
               field: "pathInfo",
               value: "/landingPage/test",
+            },
+          ],
+        },
+      }),
+    );
+  });
+  it("should resolve technical url with trailing slash", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    await vm.resolvePath("/detail/test/");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        body: {
+          filter: [
+            {
+              type: "equals",
+              field: "pathInfo",
+              value: "/detail/test",
             },
           ],
         },

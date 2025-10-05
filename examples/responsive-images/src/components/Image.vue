@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useProductSearch } from "@shopware/composables";
 import { computed } from "vue";
-import { useProductSearch } from "@shopware-pwa/composables-next";
 
 const { search } = useProductSearch();
 // look for some product

@@ -11,7 +11,6 @@
     "defaultShippingAddressHeader": "Default shipping address",
     "editAddress": "Edit address",
     "yourAddress": "Your address",
-    "myPaymentsHeader": "My payments",
     "orderHistoryHeader": "Order history",
     "yourProfile": "Your profile",
     "documentsLabel": "Documents",
@@ -54,9 +53,38 @@
       "authOrderText": "To view your order, please enter your mail address and the postal code given with your billing address.",
       "authOrderTitle": "Authentication"
     },
+    "orderDetails": {
+      "order": "Order",
+      "placedOn": "Placed on {d}",
+      "shippingAddress": "Shipping address",
+      "billingAddress": "Billing address",
+      "orderSummary": "Order Summary",
+      "paymentMethod": "Payment method",
+      "shippingMethod": "Shipping method",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "takesUpTo": "Takes up to",
+      "change": "Change",
+      "changePaymentMethod": "Change payment method",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "close": "Close",
+      "backToOrdersList": "Back to orders list",
+      "itemsHeader": {
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price",
+        "total": "Total"
+      }
+    },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",
       "label": "Personal data"
+    },
+    "changeEmail": {
+      "label": "Change email",
+      "infoBox": "You can change your email address here"
     },
     "messages": {
       "defaultShippingAddressSuccess": "Set default shipping address successfully",
@@ -72,7 +100,8 @@
       "paymentMethodChanged": "Payment method changed successfully",
       "productsAdded": "Products added to cart",
       "orderSuccessNoOrder": "Order doesn't exist",
-      "orderWrongData": "The given data could not be associated with an order."
+      "orderWrongData": "The given data could not be associated with an order.",
+      "verifying": "Account confirmation"
     }
   }
 }

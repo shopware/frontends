@@ -1,5 +1,5 @@
-import { Project } from "ts-morph";
 import { format } from "prettier";
+import { Project } from "ts-morph";
 
 export type MethodDefinition = {
   operationId: string;
@@ -28,8 +28,9 @@ export type OverridesMap = Record<string, string>;
 
 export type TransformedElements = [
   OverridesMap | GenerationMap,
-  Record<string, string>,
+  Record<string, string>, // component schemas map
   string[][],
+  Record<string, string>, // component parameters map
 ];
 
 export async function generateFile(
@@ -37,6 +38,7 @@ export async function generateFile(
   operationsMap: OverridesMap | GenerationMap,
   existingTypes: string[][],
   schemasMap: Record<string, string>,
+  parametersMap: Record<string, string>,
   options: { version: string },
 ) {
   const project = await prepareFileContent({
@@ -44,6 +46,7 @@ export async function generateFile(
     operationsMap,
     existingTypes,
     componentsMap: schemasMap,
+    parametersMap,
     options,
   });
 
@@ -55,20 +58,22 @@ export async function prepareFileContent({
   operationsMap,
   existingTypes,
   componentsMap,
+  parametersMap,
   options,
 }: {
   filepath: string;
   operationsMap: OverridesMap | GenerationMap;
   existingTypes: string[][];
   componentsMap: Record<string, string>;
+  parametersMap: Record<string, string>;
   options: { version: string };
 }) {
   const project = new Project({});
 
   const combinedKeys = Object.keys(operationsMap);
   const sortedMapKeys = combinedKeys.sort((a, b) => {
-    const aValue = a.includes(" ") ? a.split(" ")[2] : a;
-    const bValue = b.includes(" ") ? b.split(" ")[2] : b;
+    const aValue = a.includes(" ") ? a.split(" ")[2] || a : a;
+    const bValue = b.includes(" ") ? b.split(" ")[2] || b : b;
 
     return aValue.localeCompare(bValue);
   });
@@ -78,22 +83,37 @@ export async function prepareFileContent({
 
   const sortedSchemaKeys = Object.keys(componentsMap).sort();
 
+  const sortedParametersKeys = Object.keys(parametersMap).sort();
+
   const sourceFile = project.createSourceFile(
     filepath,
     (writer) => {
-      existingTypes.forEach((type) => {
-        writer.writeLine(type[1]);
-      });
+      for (const type of existingTypes) {
+        if (type[1]) {
+          writer.writeLine(type[1]);
+        }
+      }
 
       // components
       writer.write("export type components =").block(() => {
         writer.writeLine("schemas: Schemas;");
+        if (sortedParametersKeys.length) {
+          writer.writeLine("parameters:").block(() => {
+            for (const key of sortedParametersKeys) {
+              if (parametersMap[key]) {
+                writer.write(`${key}:`).write(parametersMap[key]); //.write(";");
+              }
+            }
+          });
+        }
       });
 
       writer.write("export type Schemas =").block(() => {
-        sortedSchemaKeys.forEach((key) => {
-          writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
-        });
+        for (const key of sortedSchemaKeys) {
+          if (componentsMap[key]) {
+            writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
+          }
+        }
       });
 
       writer.write("export type operations =").block(() => {
@@ -103,7 +123,7 @@ export async function prepareFileContent({
           if (typeof method === "string") {
             writer.write(`"${routePath}":`).write(method);
           } else {
-            const methodHeaders = method.headers;
+            const methodHeaders = method?.headers;
 
             type RequestType = {
               contentType?: string;
@@ -120,24 +140,24 @@ export async function prepareFileContent({
             };
 
             const requests: RequestType[] = [];
-            if (!method.body.length) {
+            if (!method?.body.length) {
               // no body definition
               // requests.push({
               //   headers: { ...methodHeaders },
               //   body: null,
               //   response: null,
               // });
-              for (const response of method.responses) {
+              for (const response of method?.responses || []) {
                 requests.push({
                   contentType: defaultContentType,
                   accept: response.contentType,
                   headers: methodHeaders,
-                  headersOptional: method.headersOptional,
-                  query: method.query,
-                  queryOptional: method.queryOptional,
-                  pathParams: method.pathParams,
+                  headersOptional: method?.headersOptional,
+                  query: method?.query,
+                  queryOptional: method?.queryOptional,
+                  pathParams: method?.pathParams,
                   body: null,
-                  bodyOptional: method.bodyOptional,
+                  bodyOptional: method?.bodyOptional,
                   response: response.code,
                   responseCode: response.responseCode,
                 });
@@ -200,7 +220,7 @@ export async function prepareFileContent({
                   }
 
                   if (singleRequest.pathParams) {
-                    writer.write(`pathParams:`).write(singleRequest.pathParams);
+                    writer.write("pathParams:").write(singleRequest.pathParams);
                   }
 
                   if (singleRequest.body) {

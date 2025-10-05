@@ -23,4 +23,5 @@ export function getProductFromPrice<
   const displayFromPriceLabel = (product.calculatedPrices?.length ?? 0) > 0;
 
   if (displayFromPriceLabel) return realPrice?.unitPrice;
+  return undefined;
 }

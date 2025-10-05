@@ -1,9 +1,13 @@
-import { OpenAPI3, PathItemObject } from "openapi-typescript";
-import { createDefu } from "defu";
-import c from "picocolors";
 import { equals } from "@vitest/expect";
 import { diff } from "@vitest/utils/diff";
+import { createDefu } from "defu";
 import json5 from "json5";
+import type {
+  OpenAPI3,
+  PathItemObject,
+  SchemaObject,
+} from "openapi-typescript";
+import c from "picocolors";
 
 export type OverridesSchema = {
   components?: {
@@ -34,6 +38,8 @@ export const extendedDefu = createDefu((obj, key, value) => {
     delete obj[key];
     return true;
   }
+
+  return false;
 });
 
 export function patchJsonSchema({
@@ -44,74 +50,136 @@ export function patchJsonSchema({
   jsonOverrides?: OverridesSchema;
 }) {
   const patchedSchema = json5.parse(json5.stringify(openApiSchema));
-  let alreadyApliedPatches: number = 0;
+  patchedSchema.components ??= {};
+  patchedSchema.components.schemas ??= {};
+  patchedSchema.paths ??= {};
+
+  let alreadyApliedPatches = 0;
   const outdatedPatches: string[][] = [];
-  let appliedPatches: number = 0;
+  let appliedPatches = 0;
   const todosToFix: string[][] = [];
   const schemaPaths: Array<{
     path: string;
     method: string;
   }> = [];
 
-  Object.entries(openApiSchema.components?.schemas || {}).forEach((schema) => {
-    if (jsonOverrides?.components?.[schema[0]]) {
-      const overridePatches = jsonOverrides?.components[schema[0]];
-      const patches = Array.isArray(overridePatches)
-        ? overridePatches
-        : [overridePatches];
-      patches.forEach((patch: JSON) => {
-        const mergedPatch = extendedDefu(patch, schema[1]);
-
-        patchedSchema.components.schemas[schema[0]] = extendedDefu(
-          patch,
-          patchedSchema.components.schemas[schema[0]],
-        );
-        appliedPatches++;
-        const matchResult = equals(mergedPatch, schema[1]);
-
-        if (matchResult) {
-          outdatedPatches.push([
-            `${c.gray(
-              `\n${c.bold("Info")}: Patch for ${c.bold(schema[0])} is already applied in schema. You can remove it from overrides.`,
-            )}`,
-            c.red(json5.stringify(patch)),
-          ]);
-          alreadyApliedPatches++;
-        } else {
-          todosToFix.push([
-            `Patch for ${c.cyan(
-              c.bold(schema[0]),
-            )} is missing in schema. \nPatch:\n${c.cyan(
-              json5.stringify(patch),
-            )}`,
-            diff(mergedPatch, schema[1], {
-              aColor: c.green,
-              bColor: c.red,
-            }) || "",
-          ]);
-        }
-      });
+  function _applyPatches(
+    initialObject: JSON,
+    schemaName: string,
+    overridePatches: JSON[],
+    originalSchema: JSON | SchemaObject,
+  ) {
+    let patchedObject = initialObject;
+    const patches = Array.isArray(overridePatches)
+      ? overridePatches
+      : [overridePatches];
+    for (const patch of patches) {
+      patchedObject = extendedDefu(patch, patchedObject);
     }
-  });
+
+    const matchResult = equals(patchedObject, originalSchema);
+
+    if (matchResult) {
+      outdatedPatches.push([
+        `${c.gray(
+          `\n${c.bold("Info")}: Patch for ${c.bold(schemaName)} is already applied in schema. You can remove it from overrides.`,
+        )}`,
+        c.red(json5.stringify(patches)),
+      ]);
+      alreadyApliedPatches++;
+    } else {
+      appliedPatches++;
+      todosToFix.push([
+        `Patch for "${c.cyan(schemaName)}" is missing in schema. \nPatched object:\n${c.cyan(
+          json5.stringify(patchedObject),
+        )}`,
+        diff(patchedObject, originalSchema, {
+          aColor: c.green,
+          bColor: c.red,
+        }) || "",
+      ]);
+    }
+
+    return patchedObject;
+  }
+
+  function _applyPathPatches(
+    pathName: string,
+    httpMethod: keyof PathItemObject,
+    overridePatches: JSON[],
+  ) {
+    patchedSchema.paths[pathName] ??= {};
+    patchedSchema.paths[pathName][httpMethod] ??= {};
+
+    patchedSchema.paths[pathName][httpMethod] = _applyPatches(
+      patchedSchema.paths[pathName][httpMethod],
+      `${pathName} ${httpMethod}`,
+      overridePatches,
+      (openApiSchema.paths?.[pathName] as PathItemObject)?.[httpMethod],
+    );
+  }
+
+  function _applyComponentsPatches(
+    pathName: string,
+    // httpMethod: string,
+    overridePatches: JSON[],
+  ) {
+    patchedSchema.components.schemas[pathName] ??= {} as SchemaObject;
+
+    patchedSchema.components.schemas[pathName] = _applyPatches(
+      patchedSchema.components.schemas[pathName],
+      pathName,
+      overridePatches,
+      openApiSchema.components?.schemas?.[pathName] as SchemaObject,
+    );
+  }
+
+  for (const schemaName of Object.keys(
+    openApiSchema.components?.schemas || {},
+  )) {
+    if (jsonOverrides?.components?.[schemaName]) {
+      const overridePatches = jsonOverrides?.components[schemaName];
+
+      _applyComponentsPatches(schemaName, overridePatches);
+    }
+  }
 
   // finds not existing components and add them, mostly for backwards compatibility
-  Object.entries(jsonOverrides?.components || {}).forEach((schema) => {
-    if (!openApiSchema.components?.schemas?.[schema[0]]) {
-      const patches = Array.isArray(schema[1]) ? schema[1] : [schema[1]];
-      patches.forEach((patch: JSON) => {
-        patchedSchema.components.schemas[schema[0]] = extendedDefu(
-          patch,
-          patchedSchema.components.schemas[schema[0]],
-        );
-        appliedPatches++;
-      });
+  for (const [schemaName, patches] of Object.entries(
+    jsonOverrides?.components || {},
+  )) {
+    if (!openApiSchema.components?.schemas?.[schemaName]) {
+      _applyComponentsPatches(schemaName, patches);
     }
-  });
+  }
 
-  Object.entries(openApiSchema?.paths || {}).forEach((pathObject) => {
-    const pathName = pathObject[0];
-    Object.entries(pathObject[1]).forEach((singlePath) => {
-      const httpMethod = singlePath[0];
+  // find non existing paths and add them to schema
+  for (const [pathName, methodObject] of Object.entries(
+    jsonOverrides?.paths || {},
+  )) {
+    for (const [httpMethod, overridePatches] of Object.entries(
+      methodObject || {},
+    )) {
+      if (
+        !(openApiSchema.paths?.[pathName] as PathItemObject)?.[
+          httpMethod as keyof PathItemObject
+        ]
+      ) {
+        _applyPathPatches(
+          pathName,
+          httpMethod as keyof PathItemObject,
+          overridePatches,
+        );
+      }
+    }
+  }
+
+  for (const [pathName, pathObject] of Object.entries(
+    openApiSchema?.paths || {},
+  )) {
+    for (const httpMethod of Object.keys(pathObject as PathItemObject)) {
+      if (!(httpMethod in pathObject)) continue;
+
       schemaPaths.push({
         path: pathName,
         method: httpMethod.toUpperCase(),
@@ -119,47 +187,11 @@ export function patchJsonSchema({
 
       if (jsonOverrides?.paths?.[pathName]?.[httpMethod]) {
         const overridePatches = jsonOverrides?.paths[pathName][httpMethod];
-
-        const patches = Array.isArray(overridePatches)
-          ? overridePatches
-          : [overridePatches];
-        patches.forEach((patch: JSON) => {
-          const mergedPatch = extendedDefu(
-            patch,
-            singlePath[1] as PathItemObject,
-          );
-
-          patchedSchema.paths[pathName][httpMethod] = extendedDefu(
-            patch,
-            patchedSchema.paths[pathName][httpMethod],
-          );
-          appliedPatches++;
-
-          const matchResult = equals(mergedPatch, singlePath[1]);
-
-          if (matchResult) {
-            outdatedPatches.push([
-              `${c.gray(
-                `\n${c.bold("Info")}: Patch for "${c.bold(pathName)} ${c.bold(httpMethod)}" is already applied in schema. You can remove it from overrides.`,
-              )}`,
-              c.red(json5.stringify(patch)),
-            ]);
-            alreadyApliedPatches++;
-          } else {
-            todosToFix.push([
-              `Patch for ${c.cyan(
-                c.bold(pathName),
-              )} ${httpMethod} is missing in schema. \nPatch:\n${c.cyan(
-                json5.stringify(patch),
-              )}`,
-              diff(mergedPatch, singlePath[1], {
-                aColor: c.green,
-                bColor: c.red,
-              }) || "",
-              "\n\n",
-            ]);
-          }
-        });
+        _applyPathPatches(
+          pathName,
+          httpMethod as keyof PathItemObject,
+          overridePatches,
+        );
       }
 
       // require requestBody by default, optional only when explicitly set to false
@@ -167,8 +199,8 @@ export function patchJsonSchema({
       if (requestBody) {
         requestBody.required = requestBody.required !== false;
       }
-    });
-  });
+    }
+  }
   return {
     patchedSchema,
     alreadyApliedPatches,

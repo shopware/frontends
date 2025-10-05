@@ -1,5 +1,5 @@
-import type { Locator, Page } from "@playwright/test";
 import { faker } from "@faker-js/faker";
+import type { Locator, Page } from "@playwright/test";
 
 export class RegisterForm {
   // Define selectors

@@ -1,9 +1,9 @@
+import { buildUrlPrefix } from "@shopware/helpers";
 import { describe, expect, it, vi } from "vitest";
-import { useUrlResolver } from "./useUrlResolver";
 import { useSetup } from "../_test";
-import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
+import { useUrlResolver } from "./useUrlResolver";
 
-vi.mock("@shopware-pwa/helpers-next", async () => {
+vi.mock("@shopware/helpers", async () => {
   return {
     buildUrlPrefix: vi.fn(),
   };

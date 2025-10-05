@@ -18,12 +18,13 @@ nav:
 In this chapter you will learn how to
 
 - Build breadcrumbs for static page
-- How breadcrumbs are built for CMS pages
+- Build dynamic breadcrumbs for category/product page
 
 ### Quick reference
 
-- [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) is a composable used for a breadcrumbs management with sharable state
-- [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
+- [useBreadcrumbs](../../packages/composables/useBreadcrumbs) is a composable used for a breadcrumbs management with sharable state
+- [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
+- [getCmsBreadcrumbs](../../packages/helpers#getcmsbreadcrumbs) is a helper used for building breadcrumbs for `Landing Pages`
 
 ## Building breadcrumbs for a static page
 
@@ -36,12 +37,16 @@ useBreadcrumbs([
 ]);
 ```
 
-## Building breadcrumbs for CMS pages
+## Building breadcrumbs for a category/product page
 
-:::warning
-Currently Shopware 6 API returns breadcrumbs without links.
-It means that breadcrumbs for a product and category page, are just a plain text.
-:::
+```ts
+// props.navigationId is a page id
+
+const { buildDynamicBreadcrumbs } = useBreadcrumbs();
+buildDynamicBreadcrumbs(props.navigationId);
+```
+
+## Building breadcrumbs for CMS pages - without additional request
 
 Each CMS page contains the `Category` with `breadcrumb` array, which contains a list of names, like:
 
@@ -49,10 +54,10 @@ Each CMS page contains the `Category` with `breadcrumb` array, which contains a 
 breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 ```
 
-we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
+we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```ts
-import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getCategoryBreadcrumbs } from "@shopware/helpers";
 
 let breadcrumbs = getCategoryBreadcrumbs(
   productResponse.value?.product?.seoCategory,
@@ -74,7 +79,7 @@ onBeforeRouteLeave(() => {
 
 ## Displaying Breadcrumbs
 
-Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
+Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```vue
 <script setup lang="ts">

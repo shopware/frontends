@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
 import {
-  useProductSearch,
-  useCart,
   useB2bQuoteManagement,
-} from "@shopware-pwa/composables-next";
-import Textarea from "primevue/textarea";
+  useCart,
+  useProductSearch,
+} from "@shopware/composables";
 import Button from "primevue/button";
-import Stepper from "primevue/stepper";
-import StepPanels from "primevue/steppanels";
-import StepList from "primevue/steplist";
 import Message from "primevue/message";
-import StepPanel from "primevue/steppanel";
 import Step from "primevue/step";
+import StepList from "primevue/steplist";
+import StepPanel from "primevue/steppanel";
+import StepPanels from "primevue/steppanels";
+import Stepper from "primevue/stepper";
+import Textarea from "primevue/textarea";
+import { onBeforeMount, ref } from "vue";
 
 const product = ref();
 const requestComment = ref("");
@@ -21,7 +21,7 @@ const { requestQuote } = useB2bQuoteManagement();
 const { search } = useProductSearch();
 const { cartItems, refreshCart, addProduct } = useCart();
 
-const proxyAddToCart = async (quantity: number = 1) => {
+const proxyAddToCart = async (quantity = 1) => {
   await addProduct({ id: product.value?.id, quantity });
   refreshCart();
 };

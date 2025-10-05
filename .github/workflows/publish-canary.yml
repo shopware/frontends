@@ -15,7 +15,7 @@ jobs:
   publish:
     name: Publish canary version
     if: "!contains(github.event.commits[0].message, 'chore: next version release')"
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     env:
@@ -24,20 +24,12 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
-
-      - run: corepack enable
-      - run: pnpm --version
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-          cache-dependency-path: "**/pnpm-lock.yaml"
+          node-version: 22
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 

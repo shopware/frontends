@@ -1,17 +1,15 @@
-import { describe, expectTypeOf, it, assertType } from "vitest";
+import { assertType, describe, expectTypeOf, it } from "vitest";
 import type { Schemas } from "../../api-types/storeApiTypes";
 
-type Criteria = Schemas["Criteria"];
+type Associations = Schemas["Association"];
 
 describe("Criteria type", () => {
   it("Associations", () => {
-    type Associations = Criteria["associations"];
-
     // allow empty object
     assertType<Associations>({});
 
     // allow undefined
-    assertType<Associations>(undefined);
+    assertType<Schemas["Criteria"]["associations"]>(undefined);
 
     // allow passing config
     expectTypeOf({

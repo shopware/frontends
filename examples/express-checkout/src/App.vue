@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-import { loadScript, OnApproveData } from "@paypal/paypal-js";
-import { onMounted, ref, computed, watch } from "vue";
+import { type OnApproveData, loadScript } from "@paypal/paypal-js";
 import {
-  useCheckout,
-  useSessionContext,
-  useProductSearch,
-  useProductPrice,
-  usePrice,
   useAddToCart,
   useCart,
-} from "@shopware-pwa/composables-next";
+  useCheckout,
+  usePrice,
+  useProductPrice,
+  useProductSearch,
+  useSessionContext,
+} from "@shopware/composables";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
-} from "@shopware-pwa/helpers-next";
+} from "@shopware/helpers";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import type { Schemas } from "#shopware";
 import { apiClient } from "./apiClient";
 
 const route = useRoute();
@@ -134,6 +134,7 @@ onMounted(async () => {
   }
   const orderResponse = await apiClient.invoke("readOrder post /order", {
     body: {
+      // @ts-expect-error TODO: Fix it in order schema
       filter: [{ type: "equals", field: "id", value: orderId }],
       associations: {
         transactions: { associations: { paymentMethod: {} } },
@@ -179,11 +180,11 @@ onMounted(async () => {
         </a>
         <div class="px-5 pb-5">
           <a href="#">
-            <h5
+            <div
               class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
             >
               {{ productName }}
-            </h5>
+            </div>
           </a>
           <div class="flex items-center justify-between">
             <span class="text-3xl font-bold text-gray-900 dark:text-white">{{

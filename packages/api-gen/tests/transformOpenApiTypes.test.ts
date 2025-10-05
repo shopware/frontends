@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
+import { describe, expect, it } from "vitest";
 import { prepareFileContent } from "../src/generateFile";
+import { transformOpenApiTypes } from "../src/transformOpenApiTypes";
 
 describe("transformOpenApiTypes", async () => {
   const inputFileNames = readdirSync(
@@ -11,7 +11,7 @@ describe("transformOpenApiTypes", async () => {
     .filter((name) => name.endsWith(".example.ts"))
     .map((filename) => filename.replace(".example.ts", ""));
 
-  inputFileNames.forEach((exampleName) => {
+  for (const exampleName of inputFileNames) {
     it(`transform should match snapshot for file: ${exampleName}`, async () => {
       const exampleFileContent = readFileSync(
         join(
@@ -21,18 +21,18 @@ describe("transformOpenApiTypes", async () => {
         "utf-8",
       );
 
-      const [operationsMap, componentsMap, existingTypes] =
+      const [operationsMap, componentsMap, existingTypes, parametersMap] =
         transformOpenApiTypes(exampleFileContent);
 
-      expect(operationsMap).toMatchFileSnapshot(
+      await expect(operationsMap).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.operationsMap.txt`,
         `${exampleName} does not match operationsMap`,
       );
-      expect(componentsMap).toMatchFileSnapshot(
+      await expect(componentsMap).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.componentsMap.txt`,
         `${exampleName} does not match componentsMap`,
       );
-      expect(existingTypes).toMatchFileSnapshot(
+      await expect(existingTypes).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.existingTypes.txt`,
         `${exampleName} does not match existingTypes`,
       );
@@ -42,6 +42,7 @@ describe("transformOpenApiTypes", async () => {
         operationsMap,
         existingTypes,
         componentsMap: componentsMap,
+        parametersMap,
         options: {
           version: "0.0.0",
         },
@@ -55,5 +56,5 @@ describe("transformOpenApiTypes", async () => {
         `./snapshots-transformOpenApiTypes/${exampleName}.result.ts`,
       );
     });
-  });
+  }
 });
