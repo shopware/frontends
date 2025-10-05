@@ -27,7 +27,9 @@ const formatDate = (date: Date | string) =>
 
 const isExpand = ref(false);
 
-const toggleView = () => isExpand.value = !isExpand.value;
+function toggleView() {
+  isExpand.value = !isExpand.value;
+}
 
 const shippingAddress = computed(
   () => props.order.deliveries?.[0]?.shippingOrderAddress,
