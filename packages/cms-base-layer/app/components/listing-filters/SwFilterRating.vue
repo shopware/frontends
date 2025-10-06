@@ -73,7 +73,7 @@ const toggle = () => {
           @mouseleave="isHoverActive = false"
           @click="hoverRating(i); onChangeRating()"
           @mouseover="hoverRating(i)"
-          alt=""
+          :alt="`${i} star${i !== 1 ? 's' : ''}`"
         />
       </div>
     </div>

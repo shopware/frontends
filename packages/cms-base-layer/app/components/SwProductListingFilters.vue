@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
@@ -377,12 +378,7 @@ const removeFilterChip = async (chip: {
               id="menu-button" aria-expanded="false" aria-haspopup="true">
               {{ translations.listing.sort }}
               <span class="ml-1 inline-flex items-center">
-                <svg v-if="!isSortMenuOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Open sort menu">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 8.79289C8.31658 8.40237 7.68342 8.40237 7.29289 8.79289C6.90237 9.18342 6.90237 9.81658 7.29289 10.2071L11.2929 14.2071C11.6834 14.5976 12.3166 14.5976 12.7071 14.2071L16.7071 10.2071C17.0976 9.81658 17.0976 9.18342 16.7071 8.79289C16.3166 8.40237 15.6834 8.40237 15.2929 8.79289L12 12.0858L8.70711 8.79289Z" fill="currentColor"/>
-                </svg>
-                <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Close sort menu">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 15.2071C8.31658 15.5976 7.68342 15.5976 7.29289 15.2071C6.90237 14.8166 6.90237 14.1834 7.29289 13.7929L11.2929 9.79289C11.6834 9.40237 12.3166 9.40237 12.7071 9.79289L16.7071 13.7929C17.0976 14.1834 17.0976 14.8166 16.7071 15.2071C16.3166 15.5976 15.6834 15.5976 15.2929 15.2071L12 11.9142L8.70711 15.2071Z" fill="currentColor"/>
-                </svg>
+                <ChevronIcon :class="{ 'rotate-180': isSortMenuOpen }" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" class="w-6 h-6 transition-transform" />
               </span>
             </button>
             <ClientOnly>
@@ -412,17 +408,20 @@ const removeFilterChip = async (chip: {
         <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
       </div>
       <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
+        <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
           <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
             :filter="filter" class="relative" />
         </div>
         <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-          <button
-            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
-            @click="invokeCleanFilters" type="button">
+          <SwBaseButton
+            variant="primary"
+            size="medium"
+            block
+            @click="invokeCleanFilters"
+            type="button">
             {{ translations.listing.resetFilters }}
             <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-          </button>
+          </SwBaseButton>
         </div>
       </div>
     </ClientOnly>

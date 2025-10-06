@@ -84,7 +84,7 @@ const getChecked = (id: string) =>
           </div>
           <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">
             <div data-count="true" data-disabled="no" data-type="Label" class="inline-flex justify-start items-center gap-1">
-              <div class="flex-1 justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+              <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
                 {{ getTranslatedProperty(option, 'name') }}
               </div>
               <!-- Optionally, add count or color swatch here if needed -->

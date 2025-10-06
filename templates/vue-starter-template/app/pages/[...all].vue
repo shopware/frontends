@@ -63,5 +63,5 @@ function render() {
 </script>
 
 <template>
-  <render class="container mx-auto"/>
+  <render />
 </template>
