@@ -39,7 +39,7 @@ onClickOutside(dropdownElement, () => {
   isFilterVisible.value = false;
 });
 
-const handleRadioUpdate = (val: string | null | boolean) => {
+const handleRadioUpdate = (val: string | null | boolean | undefined) => {
   emits("select-value", { code: props.filter.code, value: !!val });
 };
 </script>
