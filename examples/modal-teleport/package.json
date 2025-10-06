@@ -20,6 +20,6 @@
   "dependencies": {
     "@vueuse/nuxt": "13.9.0",
     "vue": "3.5.22",
-    "vue-tsc": "2.2.10"
+    "vue-tsc": "3.1.0"
   }
 }
