@@ -1,7 +1,10 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
-import { computed } from "vue";
+import { type Ref, computed } from "vue";
 
-export default function (accountType: Ref<string>, countryId: Ref<string>) {
+export function registrationFormRules(
+  accountType: Ref<string>,
+  countryId: Ref<string>,
+) {
   const { required, minLength, email, requiredIf } = customValidators();
   const { getStatesForCountry } = useCountries();
 

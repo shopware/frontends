@@ -4,13 +4,13 @@ import type { MaybeRef } from "vue";
 const {
   placeholder,
   label = "",
-  id,
+  id = "",
   type = "text",
   errorMessage,
 } = defineProps<{
   placeholder?: string;
   label?: string;
-  id: string;
+  id?: string;
   type?: "text" | "password";
   errorMessage?: MaybeRef<string>;
   autocomplete?: string;
