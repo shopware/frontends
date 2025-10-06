@@ -39,6 +39,18 @@
           "unsubscribed": "Newsletter unsubscribe"
         }
       }
+    },
+    "address": {
+      "header": "Addresses",
+      "subHeader": "View your current default addresses or add new ones.",
+      "defaultBillingAddressSectionHeader": "Default billing address",
+      "defaultShippingAddressSectionHeader": "Default shipping address",
+      "availableAddressesSectionHeader": "Available addresses",
+      "addAddressButton": "Add new address",
+      "editAddressButton": "Edit address",
+      "deleteAddressButton": "Delete address",
+      "useAsDefaultBillingAddressButton": "Use as default billing address",
+      "useAsDefaultShippingAddressButton": "Use as default shipping address"
     }
   }
 }
