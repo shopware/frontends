@@ -1,7 +1,7 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { type Ref, computed } from "vue";
 
-export default function (accountType: Ref<string>) {
+export function personalDataFormRules(accountType: Ref<string>) {
   const { required, requiredIf } = customValidators();
   return computed(() => ({
     firstName: {

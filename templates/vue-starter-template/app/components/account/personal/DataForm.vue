@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { operations } from "#shopware";
+
 const AccountType = {
   private: "private",
   business: "business",
@@ -6,15 +8,9 @@ const AccountType = {
 
 type AccountTypeUnion = (typeof AccountType)[keyof typeof AccountType];
 
-const state = defineModel<{
-  firstName: string;
-  lastName: string;
-  salutationId: string;
-  title: string;
-  accountType: AccountTypeUnion;
-  company: string;
-  vatIds: string;
-}>({
+const state = defineModel<
+  operations["changeProfile post /account/change-profile"]["body"]
+>({
   required: true,
 });
 

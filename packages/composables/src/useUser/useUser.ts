@@ -264,10 +264,6 @@ export function useUser(): UseUserReturn {
   async function updatePersonalInfo(
     personals: operations["changeProfile post /account/change-profile"]["body"],
   ): Promise<void> {
-    if (personals.vatIds && !Array.isArray(personals.vatIds)) {
-      personals.vatIds = [personals.vatIds];
-    }
-
     await apiClient.invoke("changeProfile post /account/change-profile", {
       body: personals,
     });

@@ -2,7 +2,6 @@
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
-import registrationFormRules from "../../utils/validation/rules/registrationFormRules";
 
 const props = defineProps<{
   customerGroupId?: string;

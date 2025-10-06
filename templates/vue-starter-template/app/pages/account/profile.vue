@@ -2,7 +2,6 @@
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { onBeforeMount } from "vue";
-import personalDataFormRules from "../../utils/validation/rules/personalDataFormRules";
 
 const { user, updatePersonalInfo } = useUser();
 const { pushError, pushSuccess } = useNotifications();
