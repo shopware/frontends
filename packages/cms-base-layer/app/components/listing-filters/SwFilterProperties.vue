@@ -51,7 +51,12 @@ const getChecked = (id: string) =>
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-start items-start">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+      <button
+        @click="toggle"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="`filter-${props.filter.code}`"
+        class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none"
+      >
         <div class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
           {{ props.filter.label }}
         </div>
@@ -62,7 +67,8 @@ const getChecked = (id: string) =>
     <Transition name="fade">
       <div
         v-if="isFilterVisible"
-        :id="props.filter.code"
+        :id="`filter-${props.filter.code}`"
+        :aria-hidden="!isFilterVisible"
         class="self-stretch flex flex-col justify-start items-start gap-4"
       >
       <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">

@@ -134,7 +134,12 @@ onBeforeUnmount(() => {
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-start items-start">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+      <button
+        @click="toggle"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="`filter-${props.filter.code}`"
+        class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none"
+      >
         <div class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
           {{ props.filter.label }}
         </div>
@@ -143,7 +148,12 @@ onBeforeUnmount(() => {
       </button>
     </div>
     <Transition name="fade">
-      <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-2.5">
+      <div
+        v-if="isFilterVisible"
+        :id="`filter-${props.filter.code}`"
+        :aria-hidden="!isFilterVisible"
+        class="self-stretch flex flex-col justify-start items-start gap-2.5"
+      >
   <div data-state="Default" data-type="Range selection" class="self-stretch flex flex-col justify-start items-start gap-1">
         <div class="self-stretch inline-flex justify-between items-center gap-2">
           <div class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">

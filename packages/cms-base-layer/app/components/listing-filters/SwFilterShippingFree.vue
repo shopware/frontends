@@ -47,7 +47,12 @@ const handleRadioUpdate = (val: string | null | boolean) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none">
+    <button
+      @click="toggle"
+      :aria-expanded="isFilterVisible"
+      :aria-controls="`filter-${props.filter.code}`"
+      class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none"
+    >
       <div class="text-surface-on-surface text-base font-bold leading-normal text-left">
         {{ props.filter.label }}
       </div>
@@ -56,7 +61,12 @@ const handleRadioUpdate = (val: string | null | boolean) => {
     </button>
 
     <Transition name="fade">
-      <div v-if="isFilterVisible" class="self-stretch pt-6">
+      <div
+        v-if="isFilterVisible"
+        :id="`filter-${props.filter.code}`"
+        :aria-hidden="!isFilterVisible"
+        class="self-stretch pt-6"
+      >
       <div class="space-y-4">
         <div class="self-stretch inline-flex justify-start items-start gap-2">
           <div class="flex-1 pt-[3px]">

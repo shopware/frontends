@@ -16,7 +16,10 @@ export function getProductListingFromCmsPage<T = unknown>(
     | {
         sections?: Array<{
           blocks?: Array<{
-            slots?: Array<{ type?: string; data?: Record<string, unknown> }>;
+            slots?: Array<{
+              type?: string;
+              data?: Record<string, unknown> | null;
+            }>;
           }>;
         }>;
       }

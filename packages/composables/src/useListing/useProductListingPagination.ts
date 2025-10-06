@@ -55,7 +55,7 @@ export function useProductListingPagination(
     await core.search(
       Object.assign(
         {
-          page,
+          p: page,
         },
         query,
       ),
