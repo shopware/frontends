@@ -11,8 +11,7 @@
     }
   "
 >
-import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
-import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
+import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
@@ -57,8 +56,7 @@ const getChecked = (id: string) =>
           </div>
         </div>
         <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
-          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+          <ChevronIcon :class="{ 'rotate-180': isFilterVisible }" class="w-6 h-6 transition-transform" />
         </SwIconButton>
       </button>
     </div>

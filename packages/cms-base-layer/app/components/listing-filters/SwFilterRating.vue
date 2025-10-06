@@ -8,8 +8,7 @@
     }
   "
 >
-import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
-import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
+import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
 import StarEmptyIcon from "@cms-assets/star-empty.svg";
 import StarFilledIcon from "@cms-assets/star-filled.svg";
 import { computed, ref } from "vue";
@@ -58,8 +57,7 @@ const toggle = () => {
           </div>
         </div>
         <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="" class="w-6 h-6" />
-          <img v-else :src="ChevronUpIcon" alt="" class="w-6 h-6" />
+          <ChevronIcon :class="{ 'rotate-180': isFilterVisible }" class="w-6 h-6 transition-transform" />
         </SwIconButton>
       </button>
     </div>
