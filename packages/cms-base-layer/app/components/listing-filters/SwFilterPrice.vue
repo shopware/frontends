@@ -10,7 +10,6 @@
     }
   "
 >
-import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
 import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 import { defu } from "defu";
@@ -140,7 +139,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
         <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <ChevronIcon :class="{ 'rotate-180': isFilterVisible }" class="w-6 h-6 transition-transform" />
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
       </button>
     </div>

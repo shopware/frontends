@@ -8,9 +8,6 @@
     }
   "
 >
-import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
-import StarEmptyIcon from "@cms-assets/star-empty.svg";
-import StarFilledIcon from "@cms-assets/star-filled.svg";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -57,21 +54,20 @@ const toggle = () => {
           </div>
         </div>
         <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-          <ChevronIcon :class="{ 'rotate-180': isFilterVisible }" class="w-6 h-6 transition-transform" />
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
       </button>
     </div>
     <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center gap-2 mt-2">
-        <img
+        <div
           v-for="i in 5"
           :key="i"
-          class="h-6 w-6 cursor-pointer"
-          :src="displayedScore >= i ? StarFilledIcon : StarEmptyIcon"
+          :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
           @mouseleave="isHoverActive = false"
           @click="hoverRating(i); onChangeRating()"
           @mouseover="hoverRating(i)"
-          :alt="`${i} star${i !== 1 ? 's' : ''}`"
+          :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
         />
       </div>
     </div>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ChevronLeftIcon from "@cms-assets/chevron-left-xs.svg";
-import ChevronRightIcon from "@cms-assets/chevron-right-xs.svg";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 
@@ -38,7 +36,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current - 1)"
     >
       <span class="sr-only">{{ translations.listing.previous }}</span>
-      <img :src="ChevronLeftIcon" alt="" class="w-5 h-5" />
+      <SwChevronIcon direction="left" :size="20" />
     </button>
     <button
       v-if="current > 2"
@@ -100,7 +98,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current + 1)"
     >
       <span class="sr-only">{{ translations.listing.next }}</span>
-      <img :src="ChevronRightIcon" alt="" class="w-5 h-5" />
+      <SwChevronIcon direction="right" :size="20" />
     </button>
   </nav>
 </template>

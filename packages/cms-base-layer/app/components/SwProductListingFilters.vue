@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ChevronIcon from "@cms-assets/chevron-down-xs.svg";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
@@ -373,14 +372,21 @@ const removeFilterChip = async (chip: {
         </div>
         <div ref="dropdownElement" class="flex items-center">
           <div class="relative inline-block text-left">
-            <button type="button" @click="isSortMenuOpen = !isSortMenuOpen"
-              class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
-              id="menu-button" aria-expanded="false" aria-haspopup="true">
+            <SwBaseButton
+              variant="ghost"
+              size="medium"
+              type="button"
+              @click="isSortMenuOpen = !isSortMenuOpen"
+              id="menu-button"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="group"
+            >
               {{ translations.listing.sort }}
               <span class="ml-1 inline-flex items-center">
-                <ChevronIcon :class="{ 'rotate-180': isSortMenuOpen }" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" class="w-6 h-6 transition-transform" />
+                <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
               </span>
-            </button>
+            </SwBaseButton>
             <ClientOnly>
               <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
                 class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"

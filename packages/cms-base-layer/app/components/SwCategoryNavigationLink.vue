@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
-import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import {
   buildUrlPrefix,
   getCategoryRoute,
@@ -78,7 +76,7 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <img :src="props.isExpanded ? ChevronUpIcon : ChevronDownIcon" alt="" class="w-5 h-5" />
+        <SwChevronIcon :direction="props.isExpanded ? 'up' : 'down'" :size="20" />
       </button>
     </div>
   </div>
@@ -123,7 +121,7 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <img :src="props.isExpanded ? ChevronUpIcon : ChevronDownIcon" alt="" class="w-5 h-5" />
+        <SwChevronIcon :direction="props.isExpanded ? 'up' : 'down'" :size="20" />
       </button>
     </div>
   </div>
