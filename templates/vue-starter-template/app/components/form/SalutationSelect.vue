@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-const model = defineModel<string>({
-  required: true,
-});
+const model = defineModel<string>();
 
 const {
   id = "",

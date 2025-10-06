@@ -4,7 +4,7 @@ defineSlots<{
 }>();
 
 const { label, variant = "primary" } = defineProps<{
-  label: string;
+  label?: string;
   variant?: "primary" | "secondary" | "tertiary" | "outline";
   type?: "button" | "submit" | "reset";
 }>();

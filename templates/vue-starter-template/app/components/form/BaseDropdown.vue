@@ -10,9 +10,7 @@ defineProps<{
   loading?: boolean;
 }>();
 
-const model = defineModel<string>({
-  required: true,
-});
+const model = defineModel<string>();
 </script>
 <template>
   <div

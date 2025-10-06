@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type AccountType = "private" | "business";
 
-const model = defineModel<AccountType>();
+const model = defineModel<string>();
 
 const {
   dataTestId = "",
