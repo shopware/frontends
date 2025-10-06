@@ -475,10 +475,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.firstName.$touch()"
                   />
                   <span
-                    v-if="$v.firstName.$error"
+                    v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.firstName.$errors[0]?.$message }}
+                    {{ $v.firstName.$errors[0].$message }}
                   </span>
                 </div>
 
@@ -500,10 +500,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.lastName.$touch()"
                   />
                   <span
-                    v-if="$v.lastName.$error"
+                    v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.lastName.$errors[0]?.$message }}
+                    {{ $v.lastName.$errors[0].$message }}
                   </span>
                 </div>
 
@@ -543,10 +543,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.email.$touch()"
                   />
                   <span
-                    v-if="$v.email.$error"
+                    v-if="$v.email.$error && $v.email.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.email.$errors[0]?.$message }}
+                    {{ $v.email.$errors[0].$message }}
                   </span>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
@@ -567,10 +567,10 @@ const handleChangeBaseInfo = async (data: {
                       @blur="$v.password.$touch()"
                     />
                     <span
-                      v-if="$v.password.$error"
+                      v-if="$v.password.$error && $v.password.$errors[0]?.$message"
                       class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                     >
-                      {{ $v.password.$errors[0]?.$message }}
+                      {{ $v.password.$errors[0].$message }}
                     </span>
                   </div>
                 </div>
@@ -594,10 +594,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.street.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.street.$error"
+                    v-if="$v.billingAddress.street.$error && $v.billingAddress.street.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.billingAddress.street.$errors[0]?.$message }}
+                    {{ $v.billingAddress.street.$errors[0].$message }}
                   </span>
                 </div>
 
@@ -620,10 +620,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.zipcode.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.zipcode.$error"
+                    v-if="$v.billingAddress.zipcode.$error && $v.billingAddress.zipcode.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.billingAddress.zipcode.$errors[0]?.$message }}
+                    {{ $v.billingAddress.zipcode.$errors[0].$message }}
                   </span>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
@@ -645,10 +645,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.city.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.city.$error"
+                    v-if="$v.billingAddress.city.$error && $v.billingAddress.city.$errors[0]?.$message"
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
-                    {{ $v.billingAddress.city.$errors[0]?.$message }}
+                    {{ $v.billingAddress.city.$errors[0].$message }}
                   </span>
                 </div>
                 <SharedCountryStateInput

@@ -210,10 +210,10 @@ const invokeSubmit = async () => {
             @blur="$v.firstName.$touch()"
           />
           <span
-            v-if="$v.firstName.$error"
+            v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName.$errors[0]?.$message ?? '' }}
+            {{ $v.firstName.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-4">
@@ -234,10 +234,10 @@ const invokeSubmit = async () => {
             @blur="$v.lastName.$touch()"
           />
           <span
-            v-if="$v.lastName.$error"
+            v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName.$errors[0]?.$message ?? '' }}
+            {{ $v.lastName.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-6">
@@ -258,10 +258,10 @@ const invokeSubmit = async () => {
             @blur="$v.email.$touch()"
           />
           <span
-            v-if="$v.email.$error"
+            v-if="$v.email.$error && $v.email.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email.$errors[0]?.$message ?? '' }}
+            {{ $v.email.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-6">
@@ -282,10 +282,10 @@ const invokeSubmit = async () => {
             @blur="$v.phone.$touch()"
           />
           <span
-            v-if="$v.phone.$error"
+            v-if="$v.phone.$error && $v.phone.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.phone.$errors[0]?.$message ?? '' }}
+            {{ $v.phone.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -306,10 +306,10 @@ const invokeSubmit = async () => {
             @blur="$v.subject.$touch()"
           />
           <span
-            v-if="$v.subject.$error"
+            v-if="$v.subject.$error && $v.subject.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.subject.$errors[0]?.$message ?? '' }}
+            {{ $v.subject.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -331,10 +331,10 @@ const invokeSubmit = async () => {
             @blur="$v.comment.$touch()"
           />
           <span
-            v-if="$v.comment.$error"
+            v-if="$v.comment.$error && $v.comment.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.comment.$errors[0]?.$message || '' }}
+            {{ $v.comment.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">

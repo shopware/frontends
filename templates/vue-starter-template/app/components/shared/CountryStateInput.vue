@@ -58,10 +58,10 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="stateIdValidation?.$error"
+        v-if="stateIdValidation?.$error && stateIdValidation?.$errors[0]?.$message"
         class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
-        {{ stateIdValidation?.$errors[0]?.$message }}
+        {{ stateIdValidation.$errors[0].$message }}
       </span>
     </div>
   </div>

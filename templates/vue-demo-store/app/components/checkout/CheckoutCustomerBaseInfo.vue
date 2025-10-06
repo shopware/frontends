@@ -100,10 +100,10 @@ const handleUpdateData = async () => {
           @blur="$v.firstName.$touch()"
         />
         <span
-          v-if="$v.firstName.$error"
+          v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
           class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
         >
-          {{ $v.firstName.$errors[0]?.$message }}
+          {{ $v.firstName.$errors[0].$message }}
         </span>
       </div>
 
@@ -125,10 +125,10 @@ const handleUpdateData = async () => {
           @blur="$v.lastName.$touch()"
         />
         <span
-          v-if="$v.lastName.$error"
+          v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
           class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
         >
-          {{ $v.lastName.$errors[0]?.$message }}
+          {{ $v.lastName.$errors[0].$message }}
         </span>
       </div>
     </div>

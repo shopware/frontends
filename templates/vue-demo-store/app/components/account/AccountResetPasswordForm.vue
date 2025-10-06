@@ -98,10 +98,10 @@ const invokeReset = async (): Promise<void> => {
               :placeholder="$t('form.newPasswordPlaceholder')"
             />
             <span
-              v-if="$v.password.newPassword.$error"
+              v-if="$v.password.newPassword.$error && $v.password.newPassword.$errors[0]?.$message"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.password.newPassword.$errors[0]?.$message }}
+              {{ $v.password.newPassword.$errors[0].$message }}
             </span>
           </div>
           <div>
@@ -119,10 +119,10 @@ const invokeReset = async (): Promise<void> => {
               :placeholder="$t('form.repeatPasswordPlaceholder')"
             />
             <span
-              v-if="$v.password.newPasswordConfirm.$error"
+              v-if="$v.password.newPasswordConfirm.$error && $v.password.newPasswordConfirm.$errors[0]?.$message"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
-              {{ $v.password.newPasswordConfirm.$errors[0]?.$message }}
+              {{ $v.password.newPasswordConfirm.$errors[0].$message }}
             </span>
           </div>
         </div>
