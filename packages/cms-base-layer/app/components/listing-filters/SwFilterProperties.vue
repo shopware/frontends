@@ -48,7 +48,7 @@ const getChecked = (id: string) =>
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
+    <div class="self-stretch flex flex-col justify-center items-center">
       <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
         <div class="flex-1 flex justify-start items-center gap-2.5">
           <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
@@ -81,7 +81,7 @@ const getChecked = (id: string) =>
             />
           </div>
           <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">
-            <div data-count="true" data-disabled="no" data-type="Label" class="inline-flex justify-start items-center gap-1">
+            <div class="inline-flex justify-start items-center gap-1">
               <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
                 {{ getTranslatedProperty(option, 'name') }}
               </div>

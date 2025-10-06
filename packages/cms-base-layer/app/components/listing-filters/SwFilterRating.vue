@@ -49,7 +49,7 @@ const toggle = () => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-center items-center">
+    <div class="self-stretch flex flex-col justify-center items-center">
       <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
         <div class="flex-1 flex justify-start items-center gap-2.5">
           <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
