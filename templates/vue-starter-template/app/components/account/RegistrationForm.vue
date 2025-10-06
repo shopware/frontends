@@ -2,7 +2,6 @@
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
-import registrationFormRules from "../../utils/validation/rules/registrationFormRules";
 
 const props = defineProps<{
   customerGroupId?: string;
@@ -117,13 +116,11 @@ const accountTypeOptions = [
         {{ $t("account.signUpHeader") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
-        <FormDropdownField
+        <FormAccountTypeSelect
           class="col-span-12"
-          id="accountType"
           v-model="state.accountType"
-          :label="$t('form.accountType.title')"
-          :options="accountTypeOptions"
-          data-testid="registration-account-type-select"
+          dataTestId="registration-account-type-select"
+          id="accountType"
         />
 
         <FormInputField
