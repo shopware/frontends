@@ -3,14 +3,20 @@ const model = defineModel<string>({
   required: true,
 });
 
-const { id = "", dataTestId = "" } = defineProps<{
+const {
+  id = "",
+  dataTestId = "",
+  errorMessage = undefined,
+} = defineProps<{
   id?: string;
   dataTestId?: string;
+  errorMessage?: string;
 }>();
 
-const { apiClient } = useShopwareContext();
 const nuxtApp = useNuxtApp();
+const { apiClient } = useShopwareContext();
 const { defaultCSRCacheLifetime } = useAppConfig();
+
 const {
   data: salutationData,
   status,
@@ -20,10 +26,11 @@ const {
   () => apiClient.invoke("readSalutation post /salutation"),
   {
     transform: (apiData) => {
-      const options = apiData.data.elements.map((element) => ({
-        label: element.displayName,
-        value: element.id,
-      }));
+      const options =
+        apiData.data.elements?.map((element) => ({
+          label: element.displayName,
+          value: element.id,
+        })) || [];
       return { options, cachedDate: new Date() };
     },
     getCachedData: (key) => {
@@ -41,7 +48,8 @@ const {
   },
 );
 
-const isLoading = computed(() => status === "pending");
+const isLoading = computed(() => unref(status) === "pending");
+const errorMessageText = computed(() => (error ? error : errorMessage));
 </script>
 <template>
   <FormDropdownField
@@ -53,5 +61,7 @@ const isLoading = computed(() => status === "pending");
     :data-testid="dataTestId"
     :loading="isLoading"
   />
-  <small v-if="error" class="text-states-error">{{ error }}</small>
+  <small v-if="errorMessageText" class="text-states-error">{{
+    errorMessageText
+  }}</small>
 </template>

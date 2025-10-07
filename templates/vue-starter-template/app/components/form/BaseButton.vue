@@ -4,8 +4,9 @@ defineSlots<{
 }>();
 
 const { label, variant = "primary" } = defineProps<{
-  label: string;
+  label?: string;
   variant?: "primary" | "secondary" | "tertiary" | "outline";
+  type?: "button" | "submit" | "reset";
 }>();
 
 const variantClasses = {
@@ -19,6 +20,7 @@ const variantClasses = {
   <button
     :class="variantClasses[variant]"
     class="px-4 py-3 rounded inline-flex justify-center items-center gap-1 disabled:bg-surface-surface-disabled disabled:bg-text-bg-surface-surface-disabled"
+    :type="type"
   >
     <div class="justify-start text-base font-bold leading-normal">
       <slot> {{ label }}</slot>

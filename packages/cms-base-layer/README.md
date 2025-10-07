@@ -167,7 +167,7 @@ No additional packages needed to be installed.
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends`)
+- [👥 Community](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

@@ -24,7 +24,7 @@ function handleLogout() {
       </h2>
       <AccountMenuList @logout="handleLogout" />
     </div>
-    <div>
+    <div class="w-full">
       <slot />
     </div>
   </div>

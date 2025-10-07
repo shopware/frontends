@@ -46,7 +46,9 @@ export default defineConfig({
     presetIcons({
       collections: {
         carbon: () =>
-          import("@iconify-json/carbon/icons.json").then((i) => i.default),
+          import("@iconify-json/carbon/icons.json", {
+            with: { type: "json" },
+          }).then((i) => i.default),
       },
     }),
     presetAttributify(),
