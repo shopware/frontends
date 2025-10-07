@@ -140,49 +140,20 @@ for (const param in route.query) {
   }
 }
 
-const onOptionSelectToggle = async ({
-  code,
-  value,
-}: {
-  code: string;
-  value: string | number | boolean;
-}) => {
+const handleFiltersUpdate = async (updatedFilters: FilterState) => {
   try {
-    if (!isValidFilterCode(code)) {
-      console.warn(`Invalid filter code: ${code}`);
-      return;
-    }
-
-    if (["properties", "manufacturer"].includes(code)) {
-      const filterSet = sidebarSelectedFilters[code] as Set<string>;
-      if (!filterSet) return;
-
-      const stringValue = String(value);
-      if (filterSet.has(stringValue)) {
-        filterSet.delete(stringValue);
-      } else {
-        filterSet.add(stringValue);
-      }
-    } else {
-      if (code === "min-price" || code === "max-price") {
-        sidebarSelectedFilters[code] =
-          typeof value === "number" ? value : Number(value);
-      } else if (code === "rating") {
-        sidebarSelectedFilters[code] = Number(value);
-      } else if (code === "shipping-free") {
-        sidebarSelectedFilters[code] = Boolean(value);
-      }
-    }
+    sidebarSelectedFilters.manufacturer = updatedFilters.manufacturer;
+    sidebarSelectedFilters.properties = updatedFilters.properties;
+    sidebarSelectedFilters["min-price"] = updatedFilters["min-price"];
+    sidebarSelectedFilters["max-price"] = updatedFilters["max-price"];
+    sidebarSelectedFilters.rating = updatedFilters.rating;
+    sidebarSelectedFilters["shipping-free"] = updatedFilters["shipping-free"];
 
     await executeSearch();
   } catch (error) {
-    console.error("Filter toggle failed:", error);
+    console.error("Filter update failed:", error);
   }
 };
-
-function isValidFilterCode(code: string): code is keyof FilterState {
-  return code in sidebarSelectedFilters;
-}
 
 const executeSearch = async () => {
   try {
@@ -415,7 +386,7 @@ const removeFilterChip = async (chip: {
       </div>
       <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
         <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
-          <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
+          <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
             :filter="filter" class="relative" />
         </div>
         <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
