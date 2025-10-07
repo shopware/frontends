@@ -104,7 +104,7 @@ onBeforeMount(() => {
             @blur="$v.email.$touch()"
           />
           <span
-            v-if="$v.email.$error"
+            v-if="$v.email.$error && $v.email.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.email.$errors[0].$message }}
@@ -131,7 +131,7 @@ onBeforeMount(() => {
             @blur="$v.emailConfirmation.$touch()"
           />
           <span
-            v-if="$v.emailConfirmation.$error"
+            v-if="$v.emailConfirmation.$error && $v.emailConfirmation.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.emailConfirmation.$errors[0].$message }}
@@ -158,7 +158,7 @@ onBeforeMount(() => {
             @blur="$v.password.$touch()"
           />
           <span
-            v-if="$v.password.$error"
+            v-if="$v.password.$error && $v.password.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.password.$errors[0].$message }}

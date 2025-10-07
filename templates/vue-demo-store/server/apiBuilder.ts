@@ -5,10 +5,12 @@ const runtimeConfig = useRuntimeConfig();
 
 const shopwareEndpoint =
   runtimeConfig.public?.shopware?.endpoint ??
-  runtimeConfig.public?.shopware?.shopwareEndpoint;
+  (runtimeConfig.public?.shopware as { shopwareEndpoint?: string })
+    ?.shopwareEndpoint;
 const shopwareAccessToken =
   runtimeConfig.public?.shopware?.accessToken ??
-  runtimeConfig.public?.shopware?.shopwareAccessToken;
+  (runtimeConfig.public?.shopware as { shopwareAccessToken?: string })
+    ?.shopwareAccessToken;
 
 const apiClient = createAPIClient<operations>({
   accessToken: shopwareAccessToken,
