@@ -86,7 +86,8 @@ const debounceMaxPriceUpdate = useDebounceFn(onMaxPriceChange, 500);
 watch(() => prices.max, debounceMaxPriceUpdate);
 
 // Slider drag logic
-let dragging: "min" | "max" | null = null;
+type DragType = "min" | "max" | null;
+let dragging: DragType = null;
 let sliderRect: DOMRect | null = null;
 
 function startDrag(type: "min" | "max", event: MouseEvent) {
