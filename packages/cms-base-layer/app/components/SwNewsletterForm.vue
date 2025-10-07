@@ -78,8 +78,18 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
 
 const getFormTitle = computed(() => getConfigValue("title"));
-const state = reactive({
-  option: subscriptionOptions[0]?.value ?? "",
+
+type NewsletterFormState = {
+  option: "subscribe" | "unsubscribe";
+  salutationId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  checkbox: boolean;
+};
+
+const state = reactive<NewsletterFormState>({
+  option: subscriptionOptions[0]?.value ?? "subscribe",
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -251,8 +261,8 @@ const invokeSubmit = async () => {
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.firstName?.$error
-                ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+          ? 'border-red-600 focus:border-red-600'
+          : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="translations.form.firstNamePlaceholder"
             @blur="$v.firstName?.$touch()"
