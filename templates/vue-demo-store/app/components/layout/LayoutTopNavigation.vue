@@ -36,6 +36,7 @@ const findNavigationElement = (
 ): NavigationElement | undefined => {
   for (let i = 0; i < navigation.length; i++) {
     const navigationElement = navigation[i];
+    if (!navigationElement) continue;
     const seoUrls = navigationElement.seoUrls as
       | Schemas["SeoUrl"][]
       | undefined;
@@ -67,8 +68,10 @@ const onUpdateActiveClass = (
 
 const resetNavigationActiveClass = (navigation: NavigationElement[]) => {
   for (let ni = 0; ni < navigation.length; ++ni) {
-    navigation[ni].activeClass = false;
-    const children = navigation[ni].children;
+    const navItem = navigation[ni];
+    if (!navItem) continue;
+    navItem.activeClass = false;
+    const children = navItem.children;
     if (children) {
       resetNavigationActiveClass(children);
     }
@@ -85,20 +88,22 @@ const updateActiveClass = (
     parentId: string | undefined,
   ) => {
     for (let ni = 0; ni < navigation.length; ++ni) {
-      if (navigation[ni].id === navigationId) {
-        navigation[ni].activeClass = true;
+      const navItem = navigation[ni];
+      if (!navItem) continue;
+      if (navItem.id === navigationId) {
+        navItem.activeClass = true;
       }
-      if (navigation[ni].id === parentId) {
-        navigation[ni].activeClass = true;
+      if (navItem.id === parentId) {
+        navItem.activeClass = true;
         if (navigationElements.value) {
           setNavigationActiveClass(
             navigationElements.value,
             navigationId,
-            navigation[ni].parentId,
+            navItem.parentId,
           );
         }
       }
-      const children = navigation[ni].children;
+      const children = navItem.children;
       if (children) {
         setNavigationActiveClass(children, navigationId, parentId);
       }
@@ -122,8 +127,8 @@ onKeyStroke("ArrowDown", (e) => {
   ) {
     e.preventDefault();
     activeElement.value.parentElement.nextElementSibling
-      .getElementsByTagName("a")[0]
-      .focus();
+      ?.getElementsByTagName("a")[0]
+      ?.focus();
     return;
   }
 });
@@ -137,8 +142,8 @@ onKeyStroke("ArrowUp", (e) => {
   ) {
     e.preventDefault();
     activeElement.value?.parentElement.previousElementSibling
-      .getElementsByTagName("a")[0]
-      .focus();
+      ?.getElementsByTagName("a")[0]
+      ?.focus();
     return;
   }
 });
@@ -147,7 +152,7 @@ function isFocusInsideNav() {
   if (activeElement.value) {
     const focusInsideMenu = document
       .getElementsByTagName("nav")[0]
-      .contains(activeElement.value);
+      ?.contains(activeElement.value);
     return focusInsideMenu;
   }
   return false;
@@ -158,8 +163,8 @@ onKeyStroke("Escape", () => {
     currentMenuPosition.value = undefined;
     document
       .getElementsByTagName("header")[0]
-      .getElementsByTagName("a")[0]
-      .focus();
+      ?.getElementsByTagName("a")[0]
+      ?.focus();
   }
 });
 //#endregion - keyboard navigation
