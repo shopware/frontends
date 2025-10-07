@@ -23,23 +23,25 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="flex flex-col items-start justify-start gap-4 self-stretch p-2">
-    <div class="flex flex-col items-start justify-start gap-2 self-stretch min-h-[6rem]">
-      <div class="flex flex-col items-start justify-start gap-1 self-stretch">
-        <div v-if="productManufacturer"
-          class="text-surface-on-surface justify-start self-stretch font-['Inter'] text-sm font-bold leading-tight">
-          {{ productManufacturer }}
+  <div class="self-stretch p-2 flex flex-col justify-between items-start gap-4 flex-1">
+    <div class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div class="self-stretch flex flex-col justify-start items-start gap-2">
+        <div class="self-stretch flex flex-col justify-start items-start gap-1 min-h-24">
+          <div v-if="productManufacturer"
+            class="self-stretch justify-start text-surface-on-surface text-sm font-bold font-['Inter'] leading-tight">
+            {{ productManufacturer }}
+          </div>
+
+          <RouterLink :to="productLink"
+            class="self-stretch justify-start text-surface-on-surface text-2xl font-normal font-['Noto_Serif'] leading-9 overflow-hidden line-clamp-2 break-words"
+            data-testid="product-box-product-name-link">
+            {{ productName }}
+          </RouterLink>
         </div>
-
-        <RouterLink :to="productLink"
-          class="text-surface-on-surface justify-start self-stretch font-['Noto_Serif'] text-2xl font-normal leading-9 overflow-hidden line-clamp-2 break-words"
-          data-testid="product-box-product-name-link">
-          {{ productName }}
-        </RouterLink>
       </div>
-    </div>
 
-    <SwListingProductPrice :product="product" class="" data-testid="product-box-product-price" />
+      <SwListingProductPrice :product="product" data-testid="product-box-product-price" />
+    </div>
 
     <SwBaseButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
       data-testid="add-to-cart-button" @click="addToCartProxy">
