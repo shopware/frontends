@@ -69,16 +69,16 @@ function handleMyAccountClick() {
         </SharedModal>
       </ClientOnly>
     </div>
-    <div class="border-b relative max-lg:hidden">
+    <div
+      class="border-b relative max-lg:hidden"
+      @mouseleave="currentMenuPosition = undefined"
+    >
       <LayoutHeaderTopNavigation
         class="container mx-auto pt-6 pb-4 px-6 sm:px-0"
         v-model:current-menu-position="currentMenuPosition"
       />
       <client-only>
-        <div
-          class="absolute w-full bg-white z-10 border-b"
-          @mouseleave="currentMenuPosition = undefined"
-        >
+        <div class="absolute w-full bg-white z-10 border-b">
           <LayoutHeaderTopNavigationSubcategories
             class="container mx-auto left-0 right-0"
             :current-menu-position="currentMenuPosition"
