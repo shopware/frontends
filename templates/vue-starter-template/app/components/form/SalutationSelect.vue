@@ -26,10 +26,11 @@ const {
   () => apiClient.invoke("readSalutation post /salutation"),
   {
     transform: (apiData) => {
-      const options = apiData.data.elements.map((element) => ({
-        label: element.displayName,
-        value: element.id,
-      }));
+      const options =
+        apiData.data.elements?.map((element) => ({
+          label: element.displayName,
+          value: element.id,
+        })) || [];
       return { options, cachedDate: new Date() };
     },
     getCachedData: (key) => {
@@ -47,7 +48,7 @@ const {
   },
 );
 
-const isLoading = computed(() => status === "pending");
+const isLoading = computed(() => unref(status) === "pending");
 const errorMessageText = computed(() => (error ? error : errorMessage));
 </script>
 <template>
