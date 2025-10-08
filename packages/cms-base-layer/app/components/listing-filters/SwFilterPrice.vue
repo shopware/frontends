@@ -1,15 +1,11 @@
-<script
-  setup
-  lang="ts"
-  generic="
+<script setup lang="ts" generic="
     ListingFilter extends {
       code: string;
       min?: number;
       max?: number;
       label: string;
     }
-  "
->
+  ">
 import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 import { defu } from "defu";
@@ -48,10 +44,10 @@ const prices = reactive<{ min: number; max: number }>({
 
 onMounted(() => {
   prices.min = Math.floor(
-    props.selectedFilters.price.min ?? props.filter?.min ?? 0,
+    props.selectedFilters?.price?.min ?? props.filter?.min ?? 0,
   );
   prices.max = Math.floor(
-    props.selectedFilters.price.max ?? props.filter?.max ?? 0,
+    props.selectedFilters?.price?.max ?? props.filter?.max ?? 0,
   );
 });
 
@@ -133,73 +129,97 @@ onBeforeUnmount(() => {
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div class="self-stretch flex flex-col justify-center items-center">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+      <button @click="toggle"
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
         <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+          <div
+            class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+        <SwIconButton type="ghost" @click.stop="toggle"
+          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
           <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
       </button>
     </div>
-    <div v-show="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-2.5">
-  <div class="self-stretch flex flex-col justify-start items-start gap-1">
-        <div class="self-stretch inline-flex justify-between items-center gap-2">
-          <div class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-            <input
-              type="number"
-              :placeholder="translations.listing.min"
-              v-model.number="prices.min"
-              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
-              @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
-              :min="props.filter.min"
-              :max="prices.max"
-            />
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" :id="props.filter.code"
+        class="self-stretch flex flex-col justify-start items-start gap-2.5">
+        <div class="self-stretch flex flex-col justify-start items-start gap-1">
+          <div class="self-stretch inline-flex justify-between items-center gap-2">
+            <div
+              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
+              <input type="number" :placeholder="translations.listing.min" v-model.number="prices.min"
+                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
+                @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
+                :min="props.filter.min" :max="prices.max" />
+            </div>
+            <div
+              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
+              <input type="number" :placeholder="translations.listing.max" v-model.number="prices.max"
+                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
+                @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
+                :min="prices.min" :max="props.filter.max" />
+            </div>
           </div>
-          <div class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-            <input
-              type="number"
-              :placeholder="translations.listing.max"
-              v-model.number="prices.max"
-              class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
-              @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
-              :min="prices.min"
-              :max="props.filter.max"
-            />
-          </div>
-        </div>
-        <!-- Custom slider UI -->
-        <div class="relative w-64 h-10 mt-2 mx-auto flex items-center select-none">
-          <!-- Track -->
-          <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full"></div>
-          <!-- Active range -->
-          <div
-            class="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full"
-            :style="{
+          <!-- Custom slider UI -->
+          <div class="relative w-64 h-10 mt-2 mx-auto flex items-center select-none">
+            <!-- Track -->
+            <div
+              class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full">
+            </div>
+            <!-- Active range -->
+            <div class="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full" :style="{
               left: ((prices.min - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100 + '%',
               width: ((prices.max - prices.min) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100 + '%',
-            }"
-          ></div>
-          <!-- Min thumb -->
-          <div
-            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
-            :style="{
-              left: `calc(${((prices.min - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
-            }"
-            @mousedown.prevent="startDrag('min', $event)"
-          ></div>
-          <!-- Max thumb -->
-          <div
-            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
-            :style="{
-              left: `calc(${((prices.max - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
-            }"
-            @mousedown.prevent="startDrag('max', $event)"
-          ></div>
+            }"></div>
+            <!-- Min thumb -->
+            <div
+              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
+              :style="{
+                left: `calc(${((prices.min - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
+              }" @mousedown.prevent="startDrag('min', $event)"></div>
+            <!-- Max thumb -->
+            <div
+              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
+              :style="{
+                left: `calc(${((prices.max - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
+              }" @mousedown.prevent="startDrag('max', $event)"></div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
-    </template>
+    </transition>
+  </div>
+</template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px;
+  /* large enough to contain options */
+  opacity: 1;
+}
+</style>

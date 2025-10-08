@@ -56,22 +56,24 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
       </SwIconButton>
     </div>
 
-    <div v-show="isFilterVisible" class="self-stretch pt-6">
-      <div class="space-y-4">
-        <div class="self-stretch inline-flex justify-start items-start gap-2">
-          <div class="flex-1 pt-[3px]">
-            <SwSwitchButton
-              :model-value="currentFilterData"
-              @update:model-value="handleRadioUpdate"
-              :name="props.filter.code"
-              :aria-label="props.filter.label"
-              :label="props.filter.label"
-              :description="props.description || 'free delivery'"
-            />
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" class="self-stretch pt-6">
+        <div class="space-y-4">
+          <div class="self-stretch inline-flex justify-start items-start gap-2">
+            <div class="flex-1 pt-[3px]">
+              <SwSwitchButton
+                :model-value="currentFilterData"
+                @update:model-value="handleRadioUpdate"
+                :name="props.filter.code"
+                :aria-label="props.filter.label"
+                :label="props.filter.label"
+                :description="props.description || 'free delivery'"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 <style scoped>
@@ -83,5 +85,22 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px; /* large enough to contain options */
+  opacity: 1;
 }
 </style>

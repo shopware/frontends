@@ -58,19 +58,21 @@ const toggle = () => {
         </SwIconButton>
       </button>
     </div>
-    <div v-show="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
-      <div class="flex flex-row items-center gap-2 mt-2">
-        <div
-          v-for="i in 5"
-          :key="i"
-          :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
-          @mouseleave="isHoverActive = false"
-          @click="hoverRating(i); onChangeRating()"
-          @mouseover="hoverRating(i)"
-          :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
-        />
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+        <div class="flex flex-row items-center gap-2 mt-2">
+          <div
+            v-for="i in 5"
+            :key="i"
+            :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
+            @mouseleave="isHoverActive = false"
+            @click="hoverRating(i); onChangeRating()"
+            @mouseover="hoverRating(i)"
+            :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
+          />
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 <style scoped>
@@ -82,5 +84,22 @@ const toggle = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px; /* large enough to contain options */
+  opacity: 1;
 }
 </style>
