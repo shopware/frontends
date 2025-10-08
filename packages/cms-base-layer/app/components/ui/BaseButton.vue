@@ -2,13 +2,23 @@
 import { computed } from "vue";
 
 export interface SwBaseButtonProps {
-  variant?: "primary" | "secondary" | "success" | "warning" | "outline";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "outline"
+    | "ghost";
   size?: "small" | "medium" | "large";
   disabled?: boolean;
   loading?: boolean;
   type?: "button" | "submit" | "reset";
   block?: boolean;
 }
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const props = withDefaults(defineProps<SwBaseButtonProps>(), {
   variant: "primary",
@@ -44,6 +54,8 @@ const buttonClasses = computed(() => {
     warning: "bg-warning hover:bg-warning-600 text-white focus:ring-warning",
     outline:
       "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white focus:ring-brand-primary",
+    ghost:
+      "bg-transparent text-surface-on-surface-variant hover:text-surface-on-surface focus:ring-surface-on-surface",
   };
 
   if (props.disabled || props.loading) {
@@ -74,9 +86,10 @@ const handleClick = (event: MouseEvent) => {
     :class="buttonClasses"
     :disabled="disabled || loading"
     @click="handleClick"
+    v-bind="$attrs"
   >
     <div v-if="loading" class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-    
+
     <span :class="{ 'opacity-0': loading }">
       <slot />
     </span>
