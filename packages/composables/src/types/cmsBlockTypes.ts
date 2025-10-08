@@ -79,3 +79,5 @@ export type CmsBlockCrossSelling = BlockType<"content">;
 
 export type CmsBlockForm = BlockType<"content">;
 export type CmsBlockHtml = BlockType<"content">;
+
+export type CmsBlockImageGalleryBig = BlockType<"imageGallery">;
