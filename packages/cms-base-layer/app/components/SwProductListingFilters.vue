@@ -48,15 +48,12 @@ const route = useRoute();
 const router = useRouter();
 
 const isSortMenuOpen = ref(false);
-const {
-  changeCurrentSortingOrder,
-  filtersToQuery,
-  getCurrentFilters,
-  getCurrentSortingOrder,
-  getInitialFilters,
-  getSortingOrders,
-  search,
-} = useCategoryListing();
+
+const listing = useCategoryListing();
+const { search } = listing;
+const { changeCurrentSortingOrder, getCurrentSortingOrder, getSortingOrders } =
+  listing;
+const { filtersToQuery, getCurrentFilters, getInitialFilters } = listing;
 
 const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
   reactive<FilterState>({
@@ -199,10 +196,16 @@ const currentSortingOrder = computed({
   },
 });
 
-const selectedOptionIds = computed(() => [
-  ...(sidebarSelectedFilters.properties as Set<string>),
-  ...(sidebarSelectedFilters.manufacturer as Set<string>),
-]);
+const selectedOptionIds = computed(() => {
+  const properties = Array.from(
+    sidebarSelectedFilters.properties as Set<string>,
+  );
+  const manufacturer = Array.from(
+    sidebarSelectedFilters.manufacturer as Set<string>,
+  );
+
+  return [...properties, ...manufacturer];
+});
 provide("selectedOptionIds", selectedOptionIds);
 
 async function invokeCleanFilters() {
@@ -228,12 +231,10 @@ const handleSortingClick = (key: string) => {
   isSortMenuOpen.value = false;
 };
 
-// Active filter chips logic
 const activeFilterChips = computed(() => {
   const chips: Array<{ label: string; code: string; value: string | number }> =
     [];
 
-  // Add property filters
   for (const propertyId of sidebarSelectedFilters.properties) {
     const filter = getInitialFilters.value.find((f) => f.code === "properties");
     if (filter && "options" in filter) {
@@ -248,7 +249,6 @@ const activeFilterChips = computed(() => {
     }
   }
 
-  // Add manufacturer filters
   for (const manufacturerId of sidebarSelectedFilters.manufacturer) {
     const filter = getInitialFilters.value.find(
       (f) => f.code === "manufacturer",
@@ -265,7 +265,6 @@ const activeFilterChips = computed(() => {
     }
   }
 
-  // Add price filters
   if (
     sidebarSelectedFilters["min-price"] ||
     sidebarSelectedFilters["max-price"]
@@ -288,7 +287,6 @@ const activeFilterChips = computed(() => {
     });
   }
 
-  // Add shipping free filter
   if (sidebarSelectedFilters["shipping-free"]) {
     chips.push({
       label: "Free Shipping",
@@ -321,7 +319,6 @@ const removeFilterChip = async (chip: {
 </script>
 <template>
   <div>
-    <!-- Active Filter Chips -->
     <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
       <button
         v-for="(chip, index) in activeFilterChips"
@@ -379,28 +376,25 @@ const removeFilterChip = async (chip: {
         </div>
       </div>
     </div>
-    <!-- Filters List -->
-    <ClientOnly>
-      <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
-        <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+      <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    </div>
+    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
+      <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
+        <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
+          :filter="filter" class="relative" />
       </div>
-      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
-          <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
-            :filter="filter" class="relative" />
-        </div>
-        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-          <SwBaseButton
-            variant="primary"
-            size="medium"
-            block
-            @click="invokeCleanFilters"
-            type="button">
-            {{ translations.listing.resetFilters }}
-            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-          </SwBaseButton>
-        </div>
+      <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
+        <SwBaseButton
+          variant="primary"
+          size="medium"
+          block
+          @click="invokeCleanFilters"
+          type="button">
+          {{ translations.listing.resetFilters }}
+          <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+        </SwBaseButton>
       </div>
-    </ClientOnly>
+    </div>
   </div>
 </template>

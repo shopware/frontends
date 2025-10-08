@@ -45,15 +45,17 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
-      <div class="flex-1 flex justify-start items-center gap-2.5">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
-          {{ props.filter.label }}
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            {{ props.filter.label }}
+          </div>
         </div>
-      </div>
-      <SwIconButton type="ghost" @click="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-        <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-      </SwIconButton>
+        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
+      </button>
     </div>
 
     <transition name="filter-collapse">
@@ -85,6 +87,7 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* Smooth collapse/expand for filter options */

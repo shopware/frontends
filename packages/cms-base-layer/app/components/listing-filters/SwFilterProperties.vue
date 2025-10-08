@@ -24,9 +24,10 @@ const emits =
   defineEmits<
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
-// selectedOptionIds can be a computed ref provided by the parent or a plain array fallback
+
 const selectedOptionIds = inject<Ref<string[]>>("selectedOptionIds", ref([]));
 const isFilterVisible = ref<boolean>(false);
+
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
 };
@@ -102,6 +103,7 @@ const getChecked = (id: string) =>
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* Smooth collapse/expand for filter options */
@@ -110,14 +112,17 @@ const getChecked = (id: string) =>
   transition: max-height 240ms ease, opacity 200ms ease;
   overflow: hidden;
 }
+
 .filter-collapse-enter-from,
 .filter-collapse-leave-to {
   max-height: 0;
   opacity: 0;
 }
+
 .filter-collapse-enter-to,
 .filter-collapse-leave-from {
-  max-height: 800px; /* large enough to contain options */
+  max-height: 800px;
+  /* large enough to contain options */
   opacity: 1;
 }
 </style>
