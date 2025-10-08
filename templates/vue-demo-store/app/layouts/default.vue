@@ -19,10 +19,10 @@ const { data: footerData } = useAsyncData("mainFooterNavigation", () => {
 provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
+  <LayoutHeader />
+  <LayoutNotifications />
   <main>
-    <LayoutHeader />
-    <LayoutNotifications />
     <slot />
-    <LayoutFooter />
   </main>
+  <LayoutFooter />
 </template>

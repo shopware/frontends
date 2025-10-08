@@ -8,10 +8,6 @@
     }
   "
 >
-import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
-import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
-import StarEmptyIcon from "@cms-assets/star-empty.svg";
-import StarFilledIcon from "@cms-assets/star-filled.svg";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -50,41 +46,33 @@ const toggle = () => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div data-icon="true" data-level="1" data-state="Default" class="self-stretch flex flex-col justify-start items-start">
-      <button
-        @click="toggle"
-        :aria-expanded="isFilterVisible"
-        :aria-controls="`filter-${props.filter.code}`"
-        class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none"
-      >
-        <div class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
-          {{ props.filter.label }}
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+            {{ props.filter.label }}
+          </div>
         </div>
-        <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="Expand filter" class="w-6 h-6" />
-        <img v-else :src="ChevronUpIcon" alt="Collapse filter" class="w-6 h-6" />
+        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
       </button>
     </div>
-    <Transition name="fade">
-      <div
-        v-if="isFilterVisible"
-        :id="`filter-${props.filter.code}`"
-        :aria-hidden="!isFilterVisible"
-        class="self-stretch flex flex-col justify-start items-start gap-4"
-      >
-      <div class="flex flex-row items-center gap-2 mt-2">
-        <img
-          v-for="i in 5"
-          :key="i"
-          class="h-6 w-6 cursor-pointer"
-          :src="displayedScore >= i ? StarFilledIcon : StarEmptyIcon"
-          @mouseleave="isHoverActive = false"
-          @click="hoverRating(i); onChangeRating()"
-          @mouseover="hoverRating(i)"
-          alt=""
-        />
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+        <div class="flex flex-row items-center gap-2 mt-2">
+          <div
+            v-for="i in 5"
+            :key="i"
+            :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
+            @mouseleave="isHoverActive = false"
+            @click="hoverRating(i); onChangeRating()"
+            @mouseover="hoverRating(i)"
+            :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
+          />
+        </div>
       </div>
-      </div>
-    </Transition>
+    </transition>
   </div>
 </template>
 <style scoped>
@@ -97,5 +85,22 @@ const toggle = () => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px; /* large enough to contain options */
+  opacity: 1;
 }
 </style>

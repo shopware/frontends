@@ -34,6 +34,7 @@ export default defineConfig({
       "brand-tertiary": "#F1F1F1",
       "brand-tertiary-hover": "#E3E3E3",
       "brand-on-tertiary": "#1D1B20",
+      "other-sale": "#D12D24",
     },
     fontFamily: {
       inter: "Inter",
@@ -46,7 +47,9 @@ export default defineConfig({
     presetIcons({
       collections: {
         carbon: () =>
-          import("@iconify-json/carbon/icons.json").then((i) => i.default),
+          import("@iconify-json/carbon/icons.json", {
+            with: { type: "json" },
+          }).then((i) => i.default),
       },
     }),
     presetAttributify(),

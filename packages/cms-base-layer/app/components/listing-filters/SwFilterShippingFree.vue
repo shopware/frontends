@@ -10,8 +10,6 @@
     }
   "
 >
-import ChevronDownIcon from "@cms-assets/chevron-down-xs.svg";
-import ChevronUpIcon from "@cms-assets/chevron-up-xs.svg";
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
@@ -40,49 +38,44 @@ onClickOutside(dropdownElement, () => {
   isFilterVisible.value = false;
 });
 
-const handleRadioUpdate = (val: string | null | boolean) => {
+const handleRadioUpdate = (val: string | null | boolean | undefined) => {
   emits("select-value", { code: props.filter.code, value: !!val });
 };
 </script>
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <button
-      @click="toggle"
-      :aria-expanded="isFilterVisible"
-      :aria-controls="`filter-${props.filter.code}`"
-      class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none"
-    >
-      <div class="text-surface-on-surface text-base font-bold leading-normal text-left">
-        {{ props.filter.label }}
-      </div>
-      <img v-if="!isFilterVisible" :src="ChevronDownIcon" alt="Expand filter" class="w-6 h-6" />
-      <img v-else :src="ChevronUpIcon" alt="Collapse filter" class="w-6 h-6" />
-    </button>
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+        <div class="flex-1 flex justify-start items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            {{ props.filter.label }}
+          </div>
+        </div>
+        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
+      </button>
+    </div>
 
-    <Transition name="fade">
-      <div
-        v-if="isFilterVisible"
-        :id="`filter-${props.filter.code}`"
-        :aria-hidden="!isFilterVisible"
-        class="self-stretch pt-6"
-      >
-      <div class="space-y-4">
-        <div class="self-stretch inline-flex justify-start items-start gap-2">
-          <div class="flex-1 pt-[3px]">
-            <SwSwitchButton
-              :model-value="currentFilterData"
-              @update:model-value="handleRadioUpdate"
-              :name="props.filter.code"
-              :aria-label="props.filter.label"
-              :label="props.filter.label"
-              :description="props.description || 'free delivery'"
-            />
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" class="self-stretch pt-6">
+        <div class="space-y-4">
+          <div class="self-stretch inline-flex justify-start items-start gap-2">
+            <div class="flex-1 pt-[3px]">
+              <SwSwitchButton
+                :model-value="currentFilterData"
+                @update:model-value="handleRadioUpdate"
+                :name="props.filter.code"
+                :aria-label="props.filter.label"
+                :label="props.filter.label"
+                :description="props.description || 'free delivery'"
+              />
+            </div>
           </div>
         </div>
       </div>
-      </div>
-    </Transition>
+    </transition>
   </div>
 </template>
 <style scoped>
@@ -95,5 +88,22 @@ const handleRadioUpdate = (val: string | null | boolean) => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px; /* large enough to contain options */
+  opacity: 1;
 }
 </style>

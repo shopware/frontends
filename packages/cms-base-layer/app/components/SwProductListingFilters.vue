@@ -137,49 +137,20 @@ for (const param in route.query) {
   }
 }
 
-const onOptionSelectToggle = async ({
-  code,
-  value,
-}: {
-  code: string;
-  value: string | number | boolean;
-}) => {
+const handleFiltersUpdate = async (updatedFilters: FilterState) => {
   try {
-    if (!isValidFilterCode(code)) {
-      console.warn(`Invalid filter code: ${code}`);
-      return;
-    }
-
-    if (["properties", "manufacturer"].includes(code)) {
-      const filterSet = sidebarSelectedFilters[code] as Set<string>;
-      if (!filterSet) return;
-
-      const stringValue = String(value);
-      if (filterSet.has(stringValue)) {
-        filterSet.delete(stringValue);
-      } else {
-        filterSet.add(stringValue);
-      }
-    } else {
-      if (code === "min-price" || code === "max-price") {
-        sidebarSelectedFilters[code] =
-          typeof value === "number" ? value : Number(value);
-      } else if (code === "rating") {
-        sidebarSelectedFilters[code] = Number(value);
-      } else if (code === "shipping-free") {
-        sidebarSelectedFilters[code] = Boolean(value);
-      }
-    }
+    sidebarSelectedFilters.manufacturer = updatedFilters.manufacturer;
+    sidebarSelectedFilters.properties = updatedFilters.properties;
+    sidebarSelectedFilters["min-price"] = updatedFilters["min-price"];
+    sidebarSelectedFilters["max-price"] = updatedFilters["max-price"];
+    sidebarSelectedFilters.rating = updatedFilters.rating;
+    sidebarSelectedFilters["shipping-free"] = updatedFilters["shipping-free"];
 
     await executeSearch();
   } catch (error) {
-    console.error("Filter toggle failed:", error);
+    console.error("Filter update failed:", error);
   }
 };
-
-function isValidFilterCode(code: string): code is keyof FilterState {
-  return code in sidebarSelectedFilters;
-}
 
 const executeSearch = async () => {
   try {
@@ -369,35 +340,38 @@ const removeFilterChip = async (chip: {
         </div>
         <div ref="dropdownElement" class="flex items-center">
           <div class="relative inline-block text-left">
-            <button type="button" @click="isSortMenuOpen = !isSortMenuOpen"
-              class="group inline-flex justify-center bg-transparent text-base font-medium text-surface-on-surface-variant hover:text-surface-on-surface"
-              id="menu-button" aria-expanded="false" aria-haspopup="true">
+            <SwBaseButton
+              variant="ghost"
+              size="medium"
+              type="button"
+              @click="isSortMenuOpen = !isSortMenuOpen"
+              id="menu-button"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="group"
+            >
               {{ translations.listing.sort }}
               <span class="ml-1 inline-flex items-center">
-                <svg v-if="!isSortMenuOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Open sort menu">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 8.79289C8.31658 8.40237 7.68342 8.40237 7.29289 8.79289C6.90237 9.18342 6.90237 9.81658 7.29289 10.2071L11.2929 14.2071C11.6834 14.5976 12.3166 14.5976 12.7071 14.2071L16.7071 10.2071C17.0976 9.81658 17.0976 9.18342 16.7071 8.79289C16.3166 8.40237 15.6834 8.40237 15.2929 8.79289L12 12.0858L8.70711 8.79289Z" fill="currentColor"/>
-                </svg>
-                <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Close sort menu">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70711 15.2071C8.31658 15.5976 7.68342 15.5976 7.29289 15.2071C6.90237 14.8166 6.90237 14.1834 7.29289 13.7929L11.2929 9.79289C11.6834 9.40237 12.3166 9.40237 12.7071 9.79289L16.7071 13.7929C17.0976 14.1834 17.0976 14.8166 16.7071 15.2071C16.3166 15.5976 15.6834 15.5976 15.2929 15.2071L12 11.9142L8.70711 15.2071Z" fill="currentColor"/>
-                </svg>
+                <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
               </span>
-            </button>
-            <!-- Dropdown is hidden by default, safe to SSR -->
-            <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-              class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
-              role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-              <div class="py-1" role="none">
-                <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
-                  :class="[
-                    sorting.key === getCurrentSortingOrder
-                      ? 'font-medium text-surface-on-surface'
-                      : 'text-surface-on-surface-variant',
-                  ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-                  role="menuitem" tabindex="-1">
-                  {{ sorting.label }}
-                </button>
+            </SwBaseButton>
+            <ClientOnly>
+              <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
+                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+                  <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
+                    :class="[
+                      sorting.key === getCurrentSortingOrder
+                        ? 'font-medium text-surface-on-surface'
+                        : 'text-surface-on-surface-variant',
+                    ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
+                    role="menuitem" tabindex="-1">
+                    {{ sorting.label }}
+                  </button>
+                </div>
               </div>
-            </div>
+            </ClientOnly>
           </div>
         </div>
       </div>
@@ -406,17 +380,20 @@ const removeFilterChip = async (chip: {
       <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
     </div>
     <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-      <div v-for="filter in getInitialFilters" :key="`${filter?.id || filter?.code}`" class="mb-2 w-full">
-        <SwProductListingFilter @select-filter-value="onOptionSelectToggle" :selected-filters="getCurrentFilters"
+      <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
+        <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
           :filter="filter" class="relative" />
       </div>
       <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-        <button
-          class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-brand-on-primary bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
-          @click="invokeCleanFilters" type="button">
+        <SwBaseButton
+          variant="primary"
+          size="medium"
+          block
+          @click="invokeCleanFilters"
+          type="button">
           {{ translations.listing.resetFilters }}
           <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-        </button>
+        </SwBaseButton>
       </div>
     </div>
   </div>

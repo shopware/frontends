@@ -39,6 +39,23 @@
           "unsubscribed": "Newsletter unsubscribe"
         }
       }
+    },
+    "profile": {
+      "header": "Your profile",
+      "subHeader": "Check your personal data.",
+      "personalDataSectionHeader": "Personal data",
+      "loginDataSectionHeader": "Login data",
+      "changeEmailButton": "Change email address",
+      "changePasswordButton": "Change password",
+      "form": {
+        "accountType": "Account type",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "company": "Company",
+        "vatIds": "VAT Registration Number",
+        "buttonSubmit": "Change data",
+        "successUpdate": "Data has been updated."
+      }
     }
   }
 }

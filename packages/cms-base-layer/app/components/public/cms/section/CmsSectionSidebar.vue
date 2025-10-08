@@ -14,11 +14,11 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
 </script>
 
 <template>
-  <div class="self-stretch flex flex-col md:flex-row items-stretch gap-16">
+  <div class="self-stretch flex flex-col lg:flex-row items-stretch gap-16">
     <aside :class="{
-      'w-full md:w-72 lg:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 md:sticky md:top-20':
+      'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20':
         mobileBehavior !== 'hidden',
-      'hidden md:block': mobileBehavior === 'hidden',
+      'hidden lg:block': mobileBehavior === 'hidden',
     }">
       <div v-for="cmsBlock in sidebarBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />

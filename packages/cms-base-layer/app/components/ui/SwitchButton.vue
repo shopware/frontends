@@ -2,7 +2,6 @@
 import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
-  modelValue?: boolean | null;
   name?: string;
   ariaLabel?: string;
   label?: string;
@@ -10,12 +9,13 @@ const props = defineProps<{
   disabled?: boolean;
 }>();
 
+const modelValue = defineModel<boolean | null>();
+
 const emits = defineEmits<{
-  "update:model-value": [v: boolean | null];
   change: [v: boolean | null];
 }>();
 
-const value = computed(() => !!props.modelValue);
+const value = computed(() => !!modelValue.value);
 
 const localChecked = ref<boolean>(value.value);
 watch(value, (v) => {
@@ -33,7 +33,7 @@ const toggleState = (next?: boolean) => {
   if (props.disabled) return;
   const v = typeof next === "boolean" ? next : !localChecked.value;
   localChecked.value = v;
-  emits("update:model-value", v);
+  modelValue.value = v;
   emits("change", v);
 };
 
