@@ -31,7 +31,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@vuelidate/core": "2.0.3",
-    "nuxt": "4.1.2",
+    "nuxt": "4.1.3",
     "vue": "3.5.22"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "@vueuse/nuxt": "13.9.0",
     "typescript": "5.9.2",
     "unocss": "66.5.2",
-    "vite": "7.1.7"
+    "vite": "7.1.9"
   }
 }
