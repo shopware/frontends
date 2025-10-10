@@ -1,5 +1,8 @@
 {
   "layout": {
+    "sideMenu": {
+      "close": "Menü schließen"
+    },
     "footer": {
       "newsletter": {
         "title": "Abonnieren",

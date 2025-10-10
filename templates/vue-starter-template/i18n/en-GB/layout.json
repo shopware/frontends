@@ -1,5 +1,8 @@
 {
   "layout": {
+    "sideMenu": {
+      "close": "Close menu"
+    },
     "footer": {
       "newsletter": {
         "title": "Subscribe",
