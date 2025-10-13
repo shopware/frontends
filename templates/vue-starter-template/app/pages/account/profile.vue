@@ -6,12 +6,14 @@ import { onBeforeMount } from "vue";
 const { user, updatePersonalInfo } = useUser();
 const { pushError, pushSuccess } = useNotifications();
 
+type AccountType = "private" | "business";
+
 const state = ref({
   firstName: "",
   lastName: "",
   salutationId: "",
   title: "",
-  accountType: "",
+  accountType: "private" as AccountType,
   company: "",
   vatIds: "",
 });
@@ -41,15 +43,36 @@ async function handleSubmit() {
   }
 
   try {
-    await updatePersonalInfo(state.value);
+    const {
+      firstName,
+      lastName,
+      salutationId,
+      title,
+      accountType,
+      company,
+      vatIds,
+    } = state.value;
+    const basePayload = { firstName, lastName, salutationId, title };
+
+    await updatePersonalInfo(
+      accountType === "business"
+        ? {
+            ...basePayload,
+            accountType,
+            company: company || "",
+            vatIds: vatIds ? [vatIds] : [""],
+          }
+        : basePayload,
+    );
     pushSuccess($t("account.profile.form.successUpdate"));
   } catch (error) {
-    if (error instanceof ApiClientError)
+    if (error instanceof ApiClientError) {
       for (const errorItem of error.details.errors) {
         if (errorItem?.detail) {
           pushError(errorItem.detail);
         }
       }
+    }
   }
 }
 </script>
@@ -80,7 +103,7 @@ async function handleSubmit() {
           class="mb-4"
           :title="$t('account.profile.loginDataSectionHeader')"
         />
-        <AccountPersonalLoginData :email="user?.email" />
+        <AccountPersonalLoginData :email="user?.email || ''" />
       </div>
     </div>
   </NuxtLayout>

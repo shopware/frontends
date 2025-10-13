@@ -30,7 +30,7 @@ export function registrationFormRules(
     },
     billingAddress: {
       company: {
-        required: requiredIf(() => accountType.value === "business"),
+        required: requiredIf(() => unref(accountType) === "business"),
       },
       street: {
         required,
@@ -47,7 +47,7 @@ export function registrationFormRules(
       },
       countryStateId: {
         required: requiredIf(() => {
-          return !!getStatesForCountry(countryId)?.length;
+          return !!getStatesForCountry(unref(countryId))?.length;
         }),
       },
     },
