@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test Schema",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Tag1"
+    },
+    {
+      "name": "Tag2"
+    }
+  ],
+  "paths": {
+    "/path1": {
+      "get": {
+        "tags": ["Tag1"],
+        "summary": "Get Path1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsedComponent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/path2": {
+      "post": {
+        "tags": ["Tag2"],
+        "summary": "Post Path2",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/path3": {
+      "get": {
+        "tags": ["Tag1", "Tag2"],
+        "summary": "Get Path3",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UsedComponent": {
+        "type": "string"
+      },
+      "UnusedComponent": {
+        "type": "integer"
+      }
+    }
+  }
+}

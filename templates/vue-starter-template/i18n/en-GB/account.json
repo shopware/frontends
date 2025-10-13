@@ -51,6 +51,23 @@
       "deleteAddressButton": "Delete address",
       "useAsDefaultBillingAddressButton": "Use as default billing address",
       "useAsDefaultShippingAddressButton": "Use as default shipping address"
+    },
+    "profile": {
+      "header": "Your profile",
+      "subHeader": "Check your personal data.",
+      "personalDataSectionHeader": "Personal data",
+      "loginDataSectionHeader": "Login data",
+      "changeEmailButton": "Change email address",
+      "changePasswordButton": "Change password",
+      "form": {
+        "accountType": "Account type",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "company": "Company",
+        "vatIds": "VAT Registration Number",
+        "buttonSubmit": "Change data",
+        "successUpdate": "Data has been updated."
+      }
     }
   }
 }

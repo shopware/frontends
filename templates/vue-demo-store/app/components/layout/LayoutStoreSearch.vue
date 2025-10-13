@@ -63,6 +63,7 @@ const { push } = useRouter();
 
 const sideMenuModal = useSideMenuModal();
 
+// @ts-expect-error - useMagicKeys may return undefined
 watch(enter, (value) => {
   if (!value) return;
 

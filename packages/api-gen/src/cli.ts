@@ -5,6 +5,8 @@ import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
 import { loadSchema } from "./commands/loadSchema";
+import { split } from "./commands/split";
+import type { SplitOptions } from "./commands/split";
 import { validateJson } from "./commands/validateJson";
 
 export interface CommonOptions {
@@ -102,6 +104,46 @@ yargs(hideBin(process.argv))
         .help();
     },
     async (args) => validateJson(args),
+  )
+  .command(
+    "split <schemaFile>",
+    "Split OpenAPI schema into smaller files by tags or paths",
+    (args) => {
+      return commonOptions(args)
+        .option("outputDir", {
+          alias: "o",
+          type: "string",
+          default: "./output",
+          describe: "output directory for split files",
+        })
+        .positional("schemaFile", {
+          type: "string",
+          describe: "path to the schema file",
+        })
+        .option("splitBy", {
+          alias: "s",
+          type: "string",
+          default: "tags",
+          choices: ["tags", "paths"],
+          describe: "split by tags or paths",
+        })
+        .option("filterBy", {
+          alias: "f",
+          type: "string",
+          describe: "filter by a specific tag or path",
+        })
+        .option("verbose-linting", {
+          type: "boolean",
+          default: false,
+          describe: "show detailed linting errors",
+        })
+        .option("list", {
+          type: "string",
+          choices: ["tags", "paths"],
+          describe: "list all available tags or paths and exit",
+        });
+    },
+    async (args) => split(args as unknown as SplitOptions),
   )
   .showHelpOnFail(false)
   .alias("h", "help")
