@@ -1,0 +1,19 @@
+{
+  "layout": {
+    "sideMenu": {
+      "close": "Menü schließen"
+    },
+    "footer": {
+      "newsletter": {
+        "title": "Abonnieren",
+        "description": "Erhalten Sie die neuesten Updates zu Angeboten und Community-Updates.",
+        "placeholder": "E-Mail-Adresse eingeben",
+        "button": "Absenden",
+        "privacyPolicy": "Durch das Absenden stimmen Sie automatisch unserer Datenschutzrichtlinie zu.",
+        "messages": {
+          "subscribed": "Vielen Dank! Wir haben Ihren Newsletter abonniert."
+        }
+      }
+    }
+  }
+}

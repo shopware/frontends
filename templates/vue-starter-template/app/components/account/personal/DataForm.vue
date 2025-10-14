@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import type { operations } from "#shopware";
-
 const AccountType = {
   private: "private",
   business: "business",
 };
 
-type AccountTypeUnion = (typeof AccountType)[keyof typeof AccountType];
+type AccountTypeValue = (typeof AccountType)[keyof typeof AccountType];
 
-const state = defineModel<
-  operations["changeProfile post /account/change-profile"]["body"]
->({
+const state = defineModel<{
+  firstName: string;
+  lastName: string;
+  salutationId: string;
+  title: string;
+  accountType: AccountTypeValue;
+  company: string;
+  vatIds: string;
+}>({
   required: true,
 });
 
@@ -19,7 +23,8 @@ const emit = defineEmits<{
 }>();
 
 const { validation: $v = undefined } = defineProps<{
-  validation?: unknown;
+  // biome-ignore lint/suspicious/noExplicitAny: vuelidate validation object has complex dynamic types
+  validation?: any;
 }>();
 
 const handleSubmit = () => {
