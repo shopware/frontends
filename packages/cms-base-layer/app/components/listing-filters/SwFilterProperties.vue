@@ -12,29 +12,42 @@
   "
 >
 import { getTranslatedProperty } from "@shopware/helpers";
-import { computed, inject, ref } from "vue";
-import type { Ref } from "vue";
+import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;
+  selectedFilters: {
+    manufacturer?: string[];
+    properties?: string[];
+    [key: string]: unknown;
+  };
 }>();
 
 const emits =
   defineEmits<
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
-// selectedOptionIds can be a computed ref provided by the parent or a plain array fallback
-const selectedOptionIds = inject<Ref<string[]>>("selectedOptionIds", ref([]));
+
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
 };
 
+const selectedIds = computed(() => {
+  if (props.filter.code === "manufacturer") {
+    return props.selectedFilters?.manufacturer || [];
+  }
+  if (props.filter.code === "properties") {
+    return props.selectedFilters?.properties || [];
+  }
+  return [];
+});
+
 const getChecked = (id: string) =>
   computed<boolean>({
     get: () => {
-      return !!selectedOptionIds?.value?.includes?.(id);
+      return selectedIds.value.includes(id);
     },
     set: () => {
       emits("select-value", {
@@ -65,7 +78,7 @@ const getChecked = (id: string) =>
         <legend class="sr-only">{{ props.filter.name }}</legend>
         <label
           v-for="option in props.filter.options || props.filter.entities"
-          :key="`${option.id}-${(selectedOptionIds).includes(option.id)}`"
+          :key="`${option.id}-${selectedIds.includes(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
           @click="emits('select-value', { code: props.filter.code, value: option.id })"
         >

@@ -6,7 +6,7 @@ import type {
 import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, provide, reactive, ref, useTemplateRef } from "vue";
+import { computed, reactive, ref, useTemplateRef } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
 import { useCategoryListing } from "#imports";
@@ -70,7 +70,8 @@ const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
-    selectedOptionIds.value.length !== 0 ||
+    sidebarSelectedFilters.manufacturer.size !== 0 ||
+    sidebarSelectedFilters.properties.size !== 0 ||
     sidebarSelectedFilters["max-price"] ||
     sidebarSelectedFilters["min-price"] ||
     sidebarSelectedFilters.rating ||
@@ -199,12 +200,6 @@ const currentSortingOrder = computed({
   },
 });
 
-const selectedOptionIds = computed(() => [
-  ...(sidebarSelectedFilters.properties as Set<string>),
-  ...(sidebarSelectedFilters.manufacturer as Set<string>),
-]);
-provide("selectedOptionIds", selectedOptionIds);
-
 async function invokeCleanFilters() {
   try {
     clearFilters();
@@ -234,33 +229,47 @@ const activeFilterChips = computed(() => {
     [];
 
   // Add property filters
-  for (const propertyId of sidebarSelectedFilters.properties) {
-    const filter = getInitialFilters.value.find((f) => f.code === "properties");
-    if (filter && "options" in filter) {
-      const option = filter.options?.find((o) => o.id === propertyId);
-      if (option && "translated" in option && option.translated?.name) {
-        chips.push({
-          label: option.translated.name as string,
-          code: "properties",
-          value: propertyId,
-        });
+  const properties = Array.from(sidebarSelectedFilters.properties);
+  for (const propertyId of properties) {
+    // Check all filters, not just the one with code "properties"
+    // because properties can be in multiple filter groups
+    for (const filter of getInitialFilters.value) {
+      if ("options" in filter && filter.options) {
+        const option = filter.options.find((o) => o.id === propertyId);
+        if (option && "translated" in option) {
+          const name =
+            option.translated?.name || ("name" in option ? option.name : null);
+          if (name) {
+            chips.push({
+              label: String(name),
+              code: "properties",
+              value: propertyId,
+            });
+            break;
+          }
+        }
       }
     }
   }
 
   // Add manufacturer filters
-  for (const manufacturerId of sidebarSelectedFilters.manufacturer) {
+  const manufacturers = Array.from(sidebarSelectedFilters.manufacturer);
+  for (const manufacturerId of manufacturers) {
     const filter = getInitialFilters.value.find(
       (f) => f.code === "manufacturer",
     );
-    if (filter && "entities" in filter) {
-      const entity = filter.entities?.find((e) => e.id === manufacturerId);
-      if (entity && "translated" in entity && entity.translated?.name) {
-        chips.push({
-          label: entity.translated.name as string,
-          code: "manufacturer",
-          value: manufacturerId,
-        });
+    if (filter && "entities" in filter && filter.entities) {
+      const entity = filter.entities.find((e) => e.id === manufacturerId);
+      if (entity && "translated" in entity) {
+        const name =
+          entity.translated?.name || ("name" in entity ? entity.name : null);
+        if (name) {
+          chips.push({
+            label: String(name),
+            code: "manufacturer",
+            value: manufacturerId,
+          });
+        }
       }
     }
   }
@@ -322,19 +331,21 @@ const removeFilterChip = async (chip: {
 <template>
   <div>
     <!-- Active Filter Chips -->
-    <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
-      <button
-        v-for="(chip, index) in activeFilterChips"
-        :key="`${chip.code}-${chip.value}-${index}`"
-        @click="removeFilterChip(chip)"
-        class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
-      >
-        <span class="text-brand-on-tertiary text-base font-normal leading-normal">
-          {{ chip.label }}
-        </span>
-        <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
-      </button>
-    </div>
+    <ClientOnly>
+      <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
+        <button
+          v-for="(chip, index) in activeFilterChips"
+          :key="`${chip.code}-${chip.value}-${index}`"
+          @click="removeFilterChip(chip)"
+          class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
+        >
+          <span class="text-brand-on-tertiary text-base font-normal leading-normal">
+            {{ chip.label }}
+          </span>
+          <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
+        </button>
+      </div>
+    </ClientOnly>
 
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
