@@ -131,13 +131,13 @@ onBeforeUnmount(() => {
     <div class="self-stretch flex flex-col justify-center items-center">
       <button @click="toggle"
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
+        <div class="flex-1 flex items-center gap-2.5">
           <div
-            class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+            class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-        <SwIconButton type="ghost" @click.stop="toggle"
+        <SwIconButton type="ghost"
           :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
           <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
@@ -151,14 +151,14 @@ onBeforeUnmount(() => {
             <div
               class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
               <input type="number" :placeholder="translations.listing.min" v-model.number="prices.min"
-                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
+                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal leading-tight"
                 @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
                 :min="props.filter.min" :max="prices.max" />
             </div>
             <div
               class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
               <input type="number" :placeholder="translations.listing.max" v-model.number="prices.max"
-                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal font-['Inter'] leading-tight"
+                class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal leading-tight"
                 @change="emits('select-value', { code: props.filter.code, value: { min: prices.min, max: prices.max } })"
                 :min="prices.min" :max="props.filter.max" />
             </div>

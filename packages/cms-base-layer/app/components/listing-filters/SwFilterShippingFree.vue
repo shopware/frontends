@@ -45,16 +45,16 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
+    <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none">
       <div class="flex-1 flex justify-start items-center gap-2.5">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+        <div class="flex-1 text-surface-on-surface text-base text-left font-bold leading-normal">
           {{ props.filter.label }}
         </div>
       </div>
-      <SwIconButton type="ghost" @click="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+      <SwIconButton type="ghost" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
         <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
       </SwIconButton>
-    </div>
+    </button>
 
     <transition name="filter-collapse">
       <div v-if="isFilterVisible" class="self-stretch pt-6">

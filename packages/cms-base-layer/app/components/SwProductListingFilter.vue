@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }, FilterState extends { manufacturer: Set<string>; properties: Set<string>; 'min-price': number | undefined; 'max-price': number | undefined; rating: number | undefined; 'shipping-free': boolean | undefined; }">
+import { computed } from "vue";
 import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
@@ -13,6 +14,18 @@ const props = defineProps<{
 const emit = defineEmits<{
   "update:modelValue": [FilterState];
 }>();
+
+// Transform FilterState to match ProductListingResult currentFilters structure
+const transformedFilters = computed(() => ({
+  price: {
+    min: props.modelValue["min-price"],
+    max: props.modelValue["max-price"],
+  },
+  rating: props.modelValue.rating,
+  "shipping-free": props.modelValue["shipping-free"],
+  manufacturer: [...props.modelValue.manufacturer],
+  properties: [...props.modelValue.properties],
+}));
 
 const cmsMap = () => {
   const map: {
@@ -61,7 +74,7 @@ const handleSelectValue = ({
     <component
       :is="cmsMap()"
       :filter="filter"
-      :selected-filters="modelValue"
+      :selected-filters="transformedFilters"
       @select-value="handleSelectValue"
     />
   </div>

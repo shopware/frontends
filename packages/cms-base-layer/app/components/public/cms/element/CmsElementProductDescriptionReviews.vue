@@ -67,8 +67,8 @@ onMounted(async () => {
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
         @click="toggleSection(1)">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
             {{ translations.product.description }}
           </div>
         </div>
@@ -83,7 +83,7 @@ onMounted(async () => {
     <Transition name="accordion">
       <div v-if="isSectionOpen(1)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
         <div
-          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div v-html="description"></div>
         </div>
@@ -93,8 +93,8 @@ onMounted(async () => {
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
         @click="toggleSection(2)">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
             {{ translations.product.reviews }} ({{ reviews.length }})
           </div>
         </div>
@@ -109,7 +109,7 @@ onMounted(async () => {
     <Transition name="accordion">
       <div v-if="isSectionOpen(2)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
         <div
-          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
           <div v-if="reviews.length === 0" class="text-center py-4">
             No reviews yet
           </div>
@@ -129,8 +129,8 @@ onMounted(async () => {
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
         @click="toggleSection(3)">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
             Category
           </div>
         </div>
@@ -145,7 +145,7 @@ onMounted(async () => {
     <Transition name="accordion">
       <div v-if="isSectionOpen(3)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
         <div
-          class="self-stretch justify-start text-surface-on-surface text-base font-normal font-['Inter'] leading-normal">
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
           <div v-if="product?.categories">
             <div v-for="category in product.categories" :key="category.id" class="mb-2">
               {{ category.name }}

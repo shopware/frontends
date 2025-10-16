@@ -28,12 +28,12 @@ defineProps<{
       <div class="self-stretch flex flex-col justify-start items-start gap-2">
         <div class="self-stretch flex flex-col justify-start items-start gap-1 min-h-24">
           <div v-if="productManufacturer"
-            class="self-stretch justify-start text-surface-on-surface text-sm font-bold font-['Inter'] leading-tight">
+            class="self-stretch text-surface-on-surface text-sm font-bold leading-tight">
             {{ productManufacturer }}
           </div>
 
           <RouterLink :to="productLink"
-            class="self-stretch justify-start text-surface-on-surface text-2xl font-normal font-['Noto_Serif'] leading-9 overflow-hidden line-clamp-2 break-words"
+            class="self-stretch text-surface-on-surface text-2xl font-normal font-serif leading-9 overflow-hidden line-clamp-2 break-words"
             data-testid="product-box-product-name-link">
             {{ productName }}
           </RouterLink>

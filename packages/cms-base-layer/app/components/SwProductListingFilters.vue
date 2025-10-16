@@ -329,7 +329,7 @@ const removeFilterChip = async (chip: {
         @click="removeFilterChip(chip)"
         class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
       >
-        <span class="text-brand-on-tertiary text-base font-normal font-['Inter'] leading-normal">
+        <span class="text-brand-on-tertiary text-base font-normal leading-normal">
           {{ chip.label }}
         </span>
         <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
@@ -338,7 +338,7 @@ const removeFilterChip = async (chip: {
 
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
-        <div class="flex-1 text-surface-on-surface text-base font-bold font-['Inter'] leading-normal mb-8">
+        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal mb-8">
           {{ translations.listing.filters }}
         </div>
         <div ref="dropdownElement" class="flex items-center">

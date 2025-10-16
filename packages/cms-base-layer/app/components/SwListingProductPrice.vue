@@ -43,8 +43,8 @@ const {
 <template>
   <div :id="product.id" class="inline-flex justify-start items-center gap-2">
     <!-- Sale price display -->
-    <div v-if="isListPrice" class="flex justify-start items-center gap-2">
-      <div class="justify-start text-base font-bold font-['Inter'] leading-normal">
+    <div v-if="isListPrice" class="flex items-center gap-2">
+      <div class="text-base font-bold leading-normal">
         <SwSharedPrice :value="unitPrice">
           <template #beforePrice>
             <span v-if="displayFrom || displayFromVariants" class="text-sm">{{
@@ -53,13 +53,13 @@ const {
           </template>
         </SwSharedPrice>
       </div>
-      <div class="justify-start text-surface-on-surface-variant text-sm font-normal font-['Inter'] leading-tight line-through">
+      <div class="text-surface-on-surface-variant text-sm font-normal leading-tight line-through">
         <SwSharedPrice :value="price?.listPrice?.price" />
       </div>
     </div>
 
     <!-- Regular price display -->
-    <div v-else class="justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+    <div v-else class="text-surface-on-surface text-base font-bold leading-normal">
       <SwSharedPrice :value="unitPrice">
         <template #beforePrice>
           <span v-if="displayFrom || displayFromVariants" class="text-sm">{{
@@ -70,7 +70,7 @@ const {
     </div>
 
     <!-- Variants from price -->
-    <div v-if="displayFromVariants" class="text-surface-on-surface text-base font-bold font-['Inter'] leading-normal">
+    <div v-if="displayFromVariants" class="text-surface-on-surface text-base font-bold leading-normal">
       <SwSharedPrice :value="displayFromVariants">
         <template #beforePrice>
           <span v-if="displayFromVariants" class="text-sm">{{
