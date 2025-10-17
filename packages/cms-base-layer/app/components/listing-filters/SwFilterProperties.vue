@@ -38,10 +38,7 @@ const selectedIds = computed(() => {
   if (props.filter.code === "manufacturer") {
     return props.selectedFilters?.manufacturer || [];
   }
-  if (props.filter.code === "properties") {
-    return props.selectedFilters?.properties || [];
-  }
-  return [];
+  return props.selectedFilters?.properties || [];
 });
 
 const getChecked = (id: string) =>
@@ -50,8 +47,10 @@ const getChecked = (id: string) =>
       return selectedIds.value.includes(id);
     },
     set: () => {
+      const emitCode =
+        props.filter.code === "manufacturer" ? "manufacturer" : "properties";
       emits("select-value", {
-        code: props.filter.code,
+        code: emitCode,
         value: id,
       });
     },
@@ -80,7 +79,7 @@ const getChecked = (id: string) =>
           v-for="option in props.filter.options || props.filter.entities"
           :key="`${option.id}-${selectedIds.includes(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
-          @click="emits('select-value', { code: props.filter.code, value: option.id })"
+          @click="emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
@@ -88,7 +87,7 @@ const getChecked = (id: string) =>
               :description="undefined"
               :disabled="false"
               :model-value="getChecked(option.id).value"
-              @update:model-value="() => emits('select-value', { code: props.filter.code, value: option.id })"
+              @update:model-value="() => emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
               @click.stop
             />
           </div>
@@ -97,7 +96,6 @@ const getChecked = (id: string) =>
               <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
                 {{ getTranslatedProperty(option, 'name') }}
               </div>
-              <!-- Optionally, add count or color swatch here if needed -->
             </div>
           </div>
         </label>
@@ -117,7 +115,6 @@ const getChecked = (id: string) =>
   opacity: 0;
 }
 
-/* Smooth collapse/expand for filter options */
 .filter-collapse-enter-active,
 .filter-collapse-leave-active {
   transition: max-height 240ms ease, opacity 200ms ease;
@@ -130,7 +127,7 @@ const getChecked = (id: string) =>
 }
 .filter-collapse-enter-to,
 .filter-collapse-leave-from {
-  max-height: 800px; /* large enough to contain options */
+  max-height: 800px;
   opacity: 1;
 }
 </style>

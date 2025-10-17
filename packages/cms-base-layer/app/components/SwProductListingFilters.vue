@@ -349,7 +349,7 @@ const removeFilterChip = async (chip: {
 
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal mb-8">
+        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
           {{ translations.listing.filters }}
         </div>
         <div ref="dropdownElement" class="flex items-center">
@@ -364,14 +364,14 @@ const removeFilterChip = async (chip: {
               aria-haspopup="true"
               class="group"
             >
-              {{ translations.listing.sort }}
-              <span class="ml-1 inline-flex items-center">
+              <span class="inline-flex items-center gap-1">
+                {{ translations.listing.sort }}
                 <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
               </span>
             </SwBaseButton>
             <ClientOnly>
               <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+                class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" role="none">
                   <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"

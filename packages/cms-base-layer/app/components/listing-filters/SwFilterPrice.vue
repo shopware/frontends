@@ -7,9 +7,8 @@
     }
   ">
 import { useCmsTranslations } from "@shopware/composables";
-import { onClickOutside, useDebounceFn } from "@vueuse/core";
+import { onClickOutside, useDebounceFn, useEventListener } from "@vueuse/core";
 import { defu } from "defu";
-import { onBeforeUnmount } from "vue";
 import { onMounted, reactive, ref, watch } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -83,47 +82,54 @@ watch(() => prices.max, debounceMaxPriceUpdate);
 
 // Slider drag logic
 type DragType = "min" | "max" | null;
-let dragging: DragType = null;
-let sliderRect: DOMRect | null = null;
+const dragging = ref<DragType>(null);
+const sliderRect = ref<DOMRect | null>(null);
 
-function startDrag(type: "min" | "max", event: MouseEvent) {
-  dragging = type;
-  const slider = (event.target as HTMLElement).closest(".relative.w-64.h-10");
-  if (slider) {
-    sliderRect = slider.getBoundingClientRect();
-    window.addEventListener("mousemove", onDrag);
-    window.addEventListener("mouseup", stopDrag);
-  }
-}
+const getClientX = (event: MouseEvent | TouchEvent): number =>
+  event instanceof MouseEvent ? event.clientX : event.touches[0]?.clientX || 0;
 
-function onDrag(event: MouseEvent) {
-  if (!dragging || !sliderRect) return;
+const updateSliderValue = (clientX: number) => {
+  if (!dragging.value || !sliderRect.value) return;
+
   const min = props.filter.min ?? 0;
   const max = props.filter.max ?? 100;
   const percent = Math.min(
-    Math.max((event.clientX - sliderRect.left) / sliderRect.width, 0),
+    Math.max((clientX - sliderRect.value.left) / sliderRect.value.width, 0),
     1,
   );
   const value = Math.round(min + percent * (max - min));
-  if (dragging === "min") {
-    if (value < min || value > prices.max) return;
-    prices.min = value;
+
+  if (dragging.value === "min") {
+    if (value >= min && value <= prices.max) prices.min = value;
   } else {
-    if (value > max || value < prices.min) return;
-    prices.max = value;
+    if (value <= max && value >= prices.min) prices.max = value;
   }
-}
+};
 
-function stopDrag() {
-  dragging = null;
-  sliderRect = null;
-  window.removeEventListener("mousemove", onDrag);
-  window.removeEventListener("mouseup", stopDrag);
-}
+const onDrag = (event: MouseEvent | TouchEvent) => {
+  if (!dragging.value) return;
+  event.preventDefault();
+  updateSliderValue(getClientX(event));
+};
 
-onBeforeUnmount(() => {
-  stopDrag();
-});
+const stopDrag = () => {
+  dragging.value = null;
+  sliderRect.value = null;
+};
+
+useEventListener(window, "mousemove", onDrag);
+useEventListener(window, "mouseup", stopDrag);
+useEventListener(window, "touchmove", onDrag, { passive: false });
+useEventListener(window, "touchend", stopDrag);
+
+const startDrag = (type: "min" | "max", event: MouseEvent | TouchEvent) => {
+  event.preventDefault();
+  dragging.value = type;
+  const slider = (event.target as HTMLElement).closest(".relative.w-64.h-10");
+  if (slider) {
+    sliderRect.value = slider.getBoundingClientRect();
+  }
+};
 </script>
 
 <template>
@@ -176,16 +182,20 @@ onBeforeUnmount(() => {
             }"></div>
             <!-- Min thumb -->
             <div
-              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
+              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
               :style="{
                 left: `calc(${((prices.min - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
-              }" @mousedown.prevent="startDrag('min', $event)"></div>
+              }"
+              @mousedown.prevent="startDrag('min', $event)"
+              @touchstart.prevent="startDrag('min', $event)"></div>
             <!-- Max thumb -->
             <div
-              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer"
+              class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
               :style="{
                 left: `calc(${((prices.max - (props.filter.min ?? 0)) / ((props.filter.max ?? 100) - (props.filter.min ?? 0))) * 100}% - 10px)`
-              }" @mousedown.prevent="startDrag('max', $event)"></div>
+              }"
+              @mousedown.prevent="startDrag('max', $event)"
+              @touchstart.prevent="startDrag('max', $event)"></div>
           </div>
         </div>
       </div>
