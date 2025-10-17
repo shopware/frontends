@@ -58,12 +58,13 @@ const activateByClick = (ev?: Event) => {
 
       <div class="w-10 h-6 relative">
         <label class="inline-block cursor-pointer" :class="{ 'cursor-not-allowed': disabled }">
-          <input ref="inputRef" :id="inputId" type="checkbox" :name="inputName" class="sr-only" v-model="localChecked"
+          <input ref="inputRef" :id="inputId" type="checkbox" :name="inputName" class="sr-only" :checked="localChecked"
+            @change="toggleState()"
             :disabled="disabled" :aria-label="ariaLabel || undefined" v-bind="$attrs" />
           <span role="switch" :aria-checked="localChecked" :tabindex="disabled ? -1 : 0"
             class="w-10 h-6 relative rounded-full flex-shrink-0 inline-block switch-track cursor-pointer"
             :class="localChecked ? 'bg-brand-secondary switch-track--on' : 'bg-surface-surface-container-highest'"
-            @keydown.space.prevent="activateByKeyboard" @click="activateByClick">
+            @keydown.space.prevent="activateByKeyboard" @click.prevent="activateByClick">
             <span class="w-4 h-4 rounded-full absolute switch-knob"
               :style="{ left: localChecked ? '19px' : '4px', top: '4px' }"
               :class="localChecked ? 'bg-brand-on-secondary' : 'bg-surface-on-surface-variant'"></span>

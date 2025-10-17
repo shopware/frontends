@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }, FilterState extends { manufacturer: Set<string>; properties: Set<string>; 'min-price': number | undefined; 'max-price': number | undefined; rating: number | undefined; 'shipping-free': boolean | undefined; }">
+import { computed } from "vue";
 import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
@@ -14,37 +15,48 @@ const emit = defineEmits<{
   "update:modelValue": [FilterState];
 }>();
 
-const cmsMap = () => {
-  const map: {
-    [key: string]: Component;
-  } = {
+const transformedFilters = computed(() => ({
+  price: {
+    min: props.modelValue["min-price"],
+    max: props.modelValue["max-price"],
+  },
+  rating: props.modelValue.rating,
+  "shipping-free": props.modelValue["shipping-free"],
+  manufacturer: [...props.modelValue.manufacturer],
+  properties: [...props.modelValue.properties],
+}));
+
+const filterComponent = computed<Component | undefined>(() => {
+  const componentMap: Record<string, Component> = {
     manufacturer: SwFilterPropertiesVue,
-    properties: SwFilterPropertiesVue,
     price: SwFilterPriceVue,
     rating: SwFilterRatingVue,
     "shipping-free": SwFilterShippingFreeVue,
   };
 
-  return map[props.filter?.code];
-};
+  return (
+    componentMap[props.filter.code] ||
+    ("options" in props.filter ? SwFilterPropertiesVue : undefined)
+  );
+});
 
 const handleSelectValue = ({
   code,
   value,
 }: { code: string; value: string | number | boolean }) => {
-  const updatedFilters = { ...props.modelValue };
+  const updatedFilters = {
+    ...props.modelValue,
+    manufacturer: new Set(props.modelValue.manufacturer),
+    properties: new Set(props.modelValue.properties),
+  };
 
-  if (code === "properties" || code === "manufacturer") {
-    const filterSet = new Set(updatedFilters[code]);
+  if (code === "manufacturer" || code === "properties") {
+    const filterSet = updatedFilters[code];
     const stringValue = String(value);
 
-    if (filterSet.has(stringValue)) {
-      filterSet.delete(stringValue);
-    } else {
-      filterSet.add(stringValue);
-    }
-
-    updatedFilters[code] = filterSet;
+    filterSet.has(stringValue)
+      ? filterSet.delete(stringValue)
+      : filterSet.add(stringValue);
   } else if (code === "min-price" || code === "max-price") {
     updatedFilters[code] = typeof value === "number" ? value : Number(value);
   } else if (code === "rating") {
@@ -59,9 +71,9 @@ const handleSelectValue = ({
 <template>
   <div>
     <component
-      :is="cmsMap()"
+      :is="filterComponent"
       :filter="filter"
-      :selected-filters="modelValue"
+      :selected-filters="transformedFilters"
       @select-value="handleSelectValue"
     />
   </div>

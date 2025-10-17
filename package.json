@@ -43,7 +43,7 @@
     "husky": "9.1.7",
     "prettier": "3.6.2",
     "turbo": "2.5.8",
-    "vercel": "48.2.0"
+    "vercel": "48.2.9"
   },
   "engines": {
     "node": "^20.x || ^22.x"
@@ -107,14 +107,18 @@
       "react-router": "^7.5.2"
     },
     "peerDependencyRules": {
-      "ignoreMissing": ["webpack", "vite", "react-dom"]
+      "ignoreMissing": ["webpack", "vite", "react-dom", "postcss"],
+      "allowedVersions": {
+        "vite": "5 || 6 || 7"
+      }
     },
     "auditConfig": {
       "ignoreCves": [
         "CVE-2023-26115",
         "CVE-2023-45857",
         "CVE-2024-31207",
-        "CVE-2024-43788"
+        "CVE-2024-43788",
+        "CVE-2025-61925"
       ]
     }
   }

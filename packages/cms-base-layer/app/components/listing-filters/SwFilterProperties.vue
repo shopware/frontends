@@ -12,12 +12,16 @@
   "
 >
 import { getTranslatedProperty } from "@shopware/helpers";
-import { computed, inject, ref } from "vue";
-import type { Ref } from "vue";
+import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;
+  selectedFilters: {
+    manufacturer?: string[];
+    properties?: string[];
+    [key: string]: unknown;
+  };
 }>();
 
 const emits =
@@ -25,21 +29,29 @@ const emits =
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
 
-const selectedOptionIds = inject<Ref<string[]>>("selectedOptionIds", ref([]));
 const isFilterVisible = ref<boolean>(false);
 
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
 };
 
+const selectedIds = computed(() => {
+  if (props.filter.code === "manufacturer") {
+    return props.selectedFilters?.manufacturer || [];
+  }
+  return props.selectedFilters?.properties || [];
+});
+
 const getChecked = (id: string) =>
   computed<boolean>({
     get: () => {
-      return !!selectedOptionIds?.value?.includes?.(id);
+      return selectedIds.value.includes(id);
     },
     set: () => {
+      const emitCode =
+        props.filter.code === "manufacturer" ? "manufacturer" : "properties";
       emits("select-value", {
-        code: props.filter.code,
+        code: emitCode,
         value: id,
       });
     },
@@ -50,12 +62,12 @@ const getChecked = (id: string) =>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div class="self-stretch flex flex-col justify-center items-center">
       <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
-        <div class="flex-1 flex justify-start items-center gap-2.5">
-          <div class="flex-1 justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal text-left">
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-        <SwIconButton type="ghost" @click.stop="toggle" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+        <SwIconButton type="ghost" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
           <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
       </button>
@@ -66,9 +78,9 @@ const getChecked = (id: string) =>
         <legend class="sr-only">{{ props.filter.name }}</legend>
         <label
           v-for="option in props.filter.options || props.filter.entities"
-          :key="`${option.id}-${(selectedOptionIds).includes(option.id)}`"
+          :key="`${option.id}-${selectedIds.includes(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
-          @click="emits('select-value', { code: props.filter.code, value: option.id })"
+          @click="emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
@@ -76,7 +88,7 @@ const getChecked = (id: string) =>
               :description="undefined"
               :disabled="false"
               :model-value="getChecked(option.id).value"
-              @update:model-value="() => emits('select-value', { code: props.filter.code, value: option.id })"
+              @update:model-value="() => emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
               @click.stop
             />
           </div>
@@ -85,7 +97,6 @@ const getChecked = (id: string) =>
               <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
                 {{ getTranslatedProperty(option, 'name') }}
               </div>
-              <!-- Optionally, add count or color swatch here if needed -->
             </div>
           </div>
         </label>
@@ -106,7 +117,6 @@ const getChecked = (id: string) =>
   transform: translateY(-10px);
 }
 
-/* Smooth collapse/expand for filter options */
 .filter-collapse-enter-active,
 .filter-collapse-leave-active {
   transition: max-height 240ms ease, opacity 200ms ease;
@@ -122,7 +132,6 @@ const getChecked = (id: string) =>
 .filter-collapse-enter-to,
 .filter-collapse-leave-from {
   max-height: 800px;
-  /* large enough to contain options */
   opacity: 1;
 }
 </style>

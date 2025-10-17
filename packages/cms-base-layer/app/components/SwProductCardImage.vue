@@ -56,9 +56,8 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
-      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center"
-      data-state="default" data-type="error">
-      <div class="justify-start text-states-on-error text-xs font-bold font-['Inter'] leading-none">
+      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center">
+      <div class="text-states-on-error text-xs font-bold leading-none">
         {{ translations.product.badges.topseller }}
       </div>
     </div>
