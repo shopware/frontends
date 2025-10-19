@@ -73,7 +73,7 @@ async function handleSubmit() {
         <FormInputField
           id="newEmail"
           v-model="state.email"
-          type="text"
+          type="email"
           :label="$t('account.changeEmail.form.newEmailLabel')"
           :errorMessage="$v.email.$errors[0]?.$message"
           autocomplete="off"
@@ -82,18 +82,19 @@ async function handleSubmit() {
         <FormInputField
           id="confirmEmail"
           v-model="state.emailConfirmation"
-          type="text"
+          type="email"
           :label="$t('account.changeEmail.form.confirmEmailLabel')"
           :errorMessage="$v.emailConfirmation.$errors[0]?.$message"
           autocomplete="off"
         />
 
         <FormInputField
+          id="password"
           v-model="state.password"
           type="password"
           :label="$t('account.changeEmail.form.passwordLabel')"
           :errorMessage="$v.password.$errors[0]?.$message"
-          autocomplete="off"
+          autocomplete="current-password"
         />
 
         <div>
