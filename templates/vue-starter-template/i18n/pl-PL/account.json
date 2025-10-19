@@ -81,9 +81,9 @@
         "successUpdate": "Hasło zostało pomyślnie zaktualizowane.",
         "errorUpdate": "Nie udało się zaktualizować hasła. Spróbuj ponownie."
       }
+    },
+    "messages": {
+      "loggedInSuccess": "Zostałeś pomyślnie zalogowany."
     }
-  },
-  "messages": {
-    "loggedInSuccess": "Zostałeś pomyślnie zalogowany."
   }
 }

@@ -16,6 +16,9 @@ const emit = defineEmits<{
 async function handleLogin(formData: { username: string; password: string }) {
   try {
     await login(formData);
+    pushSuccess(t("account.messages.loggedInSuccess"));
+    mergeWishlistProducts();
+    emit("close");
   } catch (error) {
     if (error instanceof ApiClientError) {
       for (const errorItem of error.details.errors) {
@@ -25,9 +28,6 @@ async function handleLogin(formData: { username: string; password: string }) {
       }
     }
   }
-  pushSuccess(t("account.messages.loggedInSuccess"));
-  mergeWishlistProducts();
-  emit("close");
 }
 
 function handleSignUp() {

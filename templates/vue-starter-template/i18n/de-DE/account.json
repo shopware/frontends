@@ -81,9 +81,9 @@
         "successUpdate": "Passwort wurde erfolgreich aktualisiert.",
         "errorUpdate": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
       }
+    },
+    "messages": {
+      "loggedInSuccess": "Sie wurden erfolgreich eingeloggt."
     }
-  },
-  "messages": {
-    "loggedInSuccess": "Sie wurden erfolgreich eingeloggt."
   }
 }

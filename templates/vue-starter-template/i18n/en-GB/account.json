@@ -81,9 +81,9 @@
         "successUpdate": "Password has been updated successfully.",
         "errorUpdate": "Failed to update password. Please try again."
       }
+    },
+    "messages": {
+      "loggedInSuccess": "You have been logged in successfully."
     }
-  },
-  "messages": {
-    "loggedInSuccess": "You have been logged in successfully."
   }
 }
