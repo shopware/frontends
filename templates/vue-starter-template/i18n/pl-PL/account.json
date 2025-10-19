@@ -1,5 +1,6 @@
 {
   "account": {
+    "back": "Powrót",
     "signUpHeader": "Jestem tutaj nowy.",
     "yourAddress": "Twój adres",
     "order": {
@@ -55,6 +56,30 @@
         "vatIds": "Numer identyfikacji podatkowej",
         "buttonSubmit": "Zapisz",
         "successUpdate": "Dane zostały zaktualizowane."
+      }
+    },
+    "changeEmail": {
+      "header": "Zmień adres e-mail",
+      "subHeader": "Wprowadź nowy adres e-mail",
+      "form": {
+        "newEmailLabel": "Wprowadź nowy e-mail",
+        "confirmEmailLabel": "Powtórz e-mail",
+        "passwordLabel": "Aktualne hasło",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Adres e-mail został pomyślnie zaktualizowany.",
+        "errorUpdate": "Nie udało się zaktualizować adresu e-mail. Spróbuj ponownie."
+      }
+    },
+    "changePassword": {
+      "header": "Zmień hasło",
+      "subHeader": "Wprowadź nowe hasło",
+      "form": {
+        "newPasswordLabel": "Wprowadź nowe hasło*",
+        "confirmPasswordLabel": "Powtórz nowe hasło*",
+        "currentPasswordLabel": "Aktualne hasło*",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Hasło zostało pomyślnie zaktualizowane.",
+        "errorUpdate": "Nie udało się zaktualizować hasła. Spróbuj ponownie."
       }
     }
   },
