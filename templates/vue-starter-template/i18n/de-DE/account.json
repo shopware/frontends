@@ -57,5 +57,8 @@
         "successUpdate": "Daten wurden aktualisiert."
       }
     }
+  },
+  "messages": {
+    "loggedInSuccess": "Sie wurden erfolgreich eingeloggt."
   }
 }
