@@ -50,7 +50,14 @@
       "editAddressButton": "Adresse bearbeiten",
       "deleteAddressButton": "Adresse löschen",
       "useAsDefaultBillingAddressButton": "Als Standardrechnungsadresse verwenden",
-      "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden"
+      "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden",
+      "new": {
+        "header": "Neue Adresse",
+        "subHeader": "Fügen Sie eine neue Adresse zu Ihrem Konto hinzu.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "saveButton": "Adresse speichern",
+        "successMessage": "Adresse wurde erfolgreich hinzugefügt."
+      }
     },
     "profile": {
       "header": "Ihr Profil",

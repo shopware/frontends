@@ -9,9 +9,10 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  delete: [number];
-  setAsDefaultBillingAddress: [number];
-  setAsDefaultShippingAddress: [number];
+  delete: [string];
+  edit: [string];
+  setAsDefaultBillingAddress: [string];
+  setAsDefaultShippingAddress: [string];
 }>();
 
 function handleSetAsDefaultBillingAddress(address: Schemas["CustomerAddress"]) {
@@ -27,6 +28,10 @@ function handleSetAsDefaultShippingAddress(
 function handleDeleteAddress(address: Schemas["CustomerAddress"]) {
   emit("delete", address.id);
 }
+
+function handleEditAddress(addressId: string) {
+  emit("edit", addressId);
+}
 </script>
 
 <template>
@@ -39,7 +44,10 @@ function handleDeleteAddress(address: Schemas["CustomerAddress"]) {
   >
     <AccountAddressDataSection class="mb-8" :address="address" />
     <div class="flex gap-4">
-      <AccountAddressEditButton :disabled="isDeleting" />
+      <AccountAddressEditButton
+        @click="handleEditAddress(address.id)"
+        :disabled="isDeleting"
+      />
       <AccountAddressDeleteButton
         v-if="!isDefaultBillingAddress && !isDefaultShippingAddress"
         :disabled="isDeleting"

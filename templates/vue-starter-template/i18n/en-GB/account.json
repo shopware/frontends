@@ -50,7 +50,14 @@
       "editAddressButton": "Edit address",
       "deleteAddressButton": "Delete address",
       "useAsDefaultBillingAddressButton": "Use as default billing address",
-      "useAsDefaultShippingAddressButton": "Use as default shipping address"
+      "useAsDefaultShippingAddressButton": "Use as default shipping address",
+      "new": {
+        "header": "New address",
+        "subHeader": "Add a new address to your account.",
+        "personalDataSectionHeader": "Personal data",
+        "saveButton": "Save address",
+        "successMessage": "Address has been successfully added."
+      }
     },
     "profile": {
       "header": "Your profile",

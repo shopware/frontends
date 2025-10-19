@@ -50,7 +50,14 @@
       "editAddressButton": "Edytuj adres",
       "deleteAddressButton": "Usuń adres",
       "useAsDefaultBillingAddressButton": "Użyj jako domyślny adres do faktur",
-      "useAsDefaultShippingAddressButton": "Użyj jako domyślny adres do wysyłki"
+      "useAsDefaultShippingAddressButton": "Użyj jako domyślny adres do wysyłki",
+      "new": {
+        "header": "Nowy adres",
+        "subHeader": "Dodaj nowy adres do swojego konta.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "saveButton": "Zapisz adres",
+        "successMessage": "Adres został pomyślnie dodany."
+      }
     },
     "profile": {
       "header": "Twoje konto",

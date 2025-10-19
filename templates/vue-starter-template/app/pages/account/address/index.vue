@@ -15,13 +15,17 @@ const {
   setDefaultCustomerShippingAddress,
 } = useAddress();
 
-const deletingAddresses = ref<Set<number>>(new Set());
+const deletingAddresses = ref<Set<string>>(new Set());
 
 function handleAddAddress() {
-  console.log("add address");
+  navigateTo("/account/address/new");
 }
 
-async function handleDeleteAddress(addressId: number) {
+function handleEditAddress(addressId: string) {
+  navigateTo(`/account/address/edit/${addressId}`);
+}
+
+async function handleDeleteAddress(addressId: string) {
   deletingAddresses.value.add(addressId);
 
   try {
@@ -42,7 +46,7 @@ async function handleDeleteAddress(addressId: number) {
   }
 }
 
-async function handleSetAsDefaultBillingAddress(addressId: number) {
+async function handleSetAsDefaultBillingAddress(addressId: string) {
   try {
     // TODO: change it after the API is updated
     await setDefaultCustomerBillingAddress(addressId);
@@ -58,7 +62,7 @@ async function handleSetAsDefaultBillingAddress(addressId: number) {
   }
 }
 
-async function handleSetAsDefaultShippingAddress(addressId: number) {
+async function handleSetAsDefaultShippingAddress(addressId: string) {
   try {
     // TODO: change it after the API is updated
     await setDefaultCustomerShippingAddress(addressId);
@@ -141,6 +145,7 @@ onBeforeMount(async () => {
               address.id === defaultShippingAddressId
             "
             @delete="handleDeleteAddress"
+            @edit="handleEditAddress"
             @set-as-default-billing-address="handleSetAsDefaultBillingAddress"
             @set-as-default-shipping-address="handleSetAsDefaultShippingAddress"
           />
