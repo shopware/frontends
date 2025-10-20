@@ -61,16 +61,29 @@ const getChecked = (id: string) =>
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div class="self-stretch flex flex-col justify-center items-center">
-      <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 bg-transparent w-full cursor-pointer focus:outline-none">
+      <div 
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
+        @click="toggle"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="props.filter.code"
+        @keydown.enter="toggle"
+        @keydown.space.prevent="toggle"
+      >
         <div class="flex-1 flex items-center gap-2.5">
           <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
             {{ props.filter.label }}
           </div>
         </div>
-        <SwIconButton type="ghost" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
+        <SwIconButton 
+          type="ghost" 
+          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+          tabindex="-1"
+        >
           <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
         </SwIconButton>
-      </button>
+      </div>
     </div>
     <transition name="filter-collapse">
       <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">

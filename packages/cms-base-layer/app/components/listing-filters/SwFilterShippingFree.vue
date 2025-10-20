@@ -44,17 +44,32 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 </script>
 
 <template>
-  <div class="self-stretch flex flex-col justify-start items-start gap-3">
-    <button @click="toggle" class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center bg-transparent w-full cursor-pointer focus:outline-none">
-      <div class="flex-1 flex justify-start items-center gap-2.5">
-        <div class="flex-1 text-surface-on-surface text-base text-left font-bold leading-normal">
-          {{ props.filter.label }}
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div 
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
+        @click="toggle"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="`filter-${props.filter.code}`"
+        @keydown.enter="toggle"
+        @keydown.space.prevent="toggle"
+      >
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            {{ props.filter.label }}
+          </div>
         </div>
+        <SwIconButton 
+          type="ghost" 
+          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+          tabindex="-1"
+        >
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
       </div>
-      <SwIconButton type="ghost" :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'">
-        <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-      </SwIconButton>
-    </button>
+    </div>
 
     <transition name="filter-collapse">
       <div v-if="isFilterVisible" class="self-stretch pt-6">
