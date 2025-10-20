@@ -83,6 +83,8 @@ export default defineNuxtConfig({
     },
     "/**": {
       isr: 60 * 60 * 24,
+      allowQuery: undefined,
+      passQuery: true,
     },
   },
   /**
