@@ -1,0 +1,3 @@
+{
+  "buildCommand": "pnpm install --force && pnpm run build"
+}

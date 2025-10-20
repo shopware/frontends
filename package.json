@@ -104,7 +104,8 @@
       "prismjs": "^1.30.0",
       "@babel/runtime": "^7.26.10",
       "@babel/helpers": "^7.26.10",
-      "react-router": "^7.5.2"
+      "react-router": "^7.5.2",
+      "nitropack": "https://pkg.pr.new/nitrojs/nitro/nitropack@3539"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]
