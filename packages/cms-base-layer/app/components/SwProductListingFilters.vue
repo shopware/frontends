@@ -348,7 +348,7 @@ const removeFilterChip = async (chip: {
     </ClientOnly>
 
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
-      <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
+      <div class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
         <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
           {{ translations.listing.filters }}
         </div>
@@ -362,7 +362,7 @@ const removeFilterChip = async (chip: {
               id="menu-button"
               aria-expanded="false"
               aria-haspopup="true"
-              class="group"
+              class="group pr-0"
             >
               <span class="inline-flex items-center gap-1">
                 {{ translations.listing.sort }}
@@ -396,11 +396,15 @@ const removeFilterChip = async (chip: {
         <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
       </div>
       <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
-          <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
-            :filter="filter" class="relative" />
-        </div>
-        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
+        <SwProductListingFilter
+          v-for="filter in getInitialFilters"
+          :key="filter.id"
+          v-model="sidebarSelectedFilters"
+          @update:model-value="handleFiltersUpdate"
+          :filter="filter"
+          class="w-full"
+        />
+        <div v-if="showResetFiltersButton" class="w-full">
           <SwBaseButton
             variant="primary"
             size="medium"
