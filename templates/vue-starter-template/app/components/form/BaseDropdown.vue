@@ -25,7 +25,7 @@ const model = defineModel<string>({
       class="flex items-center rounded-lg px-4 py-2 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
     >
       <select
-        class="w-full outline-none"
+        class="w-full outline-none bg-transparent"
         v-model="model"
         :id="id"
         :disabled="loading"
