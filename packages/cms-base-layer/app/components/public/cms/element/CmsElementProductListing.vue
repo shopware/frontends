@@ -163,7 +163,7 @@ compareRouteQueryWithInitialListing();
       <ProductCardSkeleton v-for="index in limit" :key="index"
         class="w-full" />
     </div>
-    <div v-if="!loading && getTotalPagesCount > 1" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mt-8">
+    <div v-if="!loading && getTotalPagesCount > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mt-8">
       <div class="text-center place-self-center">
         <SwPagination :total="getTotalPagesCount" :current="Number(getCurrentPage)" @change-page="changePage" />
       </div>
