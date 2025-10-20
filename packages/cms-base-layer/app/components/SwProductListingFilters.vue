@@ -50,7 +50,6 @@ const router = useRouter();
 const isSortMenuOpen = ref(false);
 const {
   changeCurrentSortingOrder,
-  filtersToQuery,
   getCurrentFilters,
   getCurrentSortingOrder,
   getInitialFilters,
@@ -159,11 +158,22 @@ const handleFiltersUpdate = async (updatedFilters: FilterState) => {
 const executeSearch = async () => {
   try {
     await search(searchCriteriaForRequest.value);
-    const query = filtersToQuery(searchCriteriaForRequest.value);
-    const { limit: _, ...queryWithoutLimit } = query;
+
+    // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
+    const criteria = searchCriteriaForRequest.value;
+    const query: Record<string, unknown> = {};
+
+    if (criteria.manufacturer) query.manufacturer = criteria.manufacturer;
+    if (criteria.properties) query.properties = criteria.properties;
+    if (criteria["min-price"]) query["min-price"] = criteria["min-price"];
+    if (criteria["max-price"]) query["max-price"] = criteria["max-price"];
+    if (criteria.rating) query.rating = criteria.rating;
+    if (criteria["shipping-free"])
+      query["shipping-free"] = criteria["shipping-free"];
+    if (criteria.order) query.order = criteria.order;
 
     await router.push({
-      query: queryWithoutLimit as LocationQueryRaw,
+      query: query as LocationQueryRaw,
     });
   } catch (error) {
     console.error("Search execution failed:", error);
@@ -332,13 +342,11 @@ const removeFilterChip = async (chip: {
   <div>
     <!-- Active Filter Chips -->
     <ClientOnly>
-      <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
-        <button
-          v-for="(chip, index) in activeFilterChips"
-          :key="`${chip.code}-${chip.value}-${index}`"
+      <div v-if="activeFilterChips.length > 0"
+        class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
+        <button v-for="(chip, index) in activeFilterChips" :key="`${chip.code}-${chip.value}-${index}`"
           @click="removeFilterChip(chip)"
-          class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
-        >
+          class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors">
           <span class="text-brand-on-tertiary text-base font-normal leading-normal">
             {{ chip.label }}
           </span>
@@ -347,35 +355,46 @@ const removeFilterChip = async (chip: {
       </div>
     </ClientOnly>
 
-    <div class="self-stretch flex flex-col justify-start items-start gap-4">
-      <div class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
-          {{ translations.listing.filters }}
+    <ClientOnly>
+      <template #fallback>
+        <div class="self-stretch flex flex-col justify-start items-start gap-4">
+          <div
+            class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
+            <div class="h-6 w-24 bg-surface-surface-container rounded animate-pulse"></div>
+            <div class="h-10 w-20 bg-surface-surface-container rounded animate-pulse"></div>
+          </div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div v-for="i in 5" :key="i" class="w-full">
+              <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
+                <div class="h-6 w-32 bg-surface-surface-container rounded animate-pulse"></div>
+                <div class="h-6 w-6 bg-surface-surface-container rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div ref="dropdownElement" class="flex items-center">
-          <div class="relative inline-block text-left">
-            <SwBaseButton
-              variant="ghost"
-              size="medium"
-              type="button"
-              @click="isSortMenuOpen = !isSortMenuOpen"
-              id="menu-button"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="group pr-0"
-            >
-              <span class="inline-flex items-center gap-1">
-                {{ translations.listing.sort }}
-                <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
-              </span>
-            </SwBaseButton>
-            <ClientOnly>
+      </template>
+      <div class="self-stretch flex flex-col justify-start items-start gap-4">
+        <div
+          class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+            {{ translations.listing.filters }}
+          </div>
+          <div ref="dropdownElement" class="flex items-center">
+            <div class="relative inline-block text-left">
+              <SwBaseButton variant="ghost" size="medium" type="button" @click="isSortMenuOpen = !isSortMenuOpen"
+                id="menu-button" aria-expanded="false" aria-haspopup="true" class="group pr-0">
+                <span class="inline-flex items-center gap-1">
+                  {{ translations.listing.sort }}
+                  <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24"
+                    :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
+                </span>
+              </SwBaseButton>
               <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
                 class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" role="none">
-                  <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
-                    :class="[
+                  <button v-for="sorting in getSortingOrders" :key="sorting.key"
+                    @click="handleSortingClick(sorting.key)" :class="[
                       sorting.key === getCurrentSortingOrder
                         ? 'font-medium text-surface-on-surface'
                         : 'text-surface-on-surface-variant',
@@ -385,32 +404,23 @@ const removeFilterChip = async (chip: {
                   </button>
                 </div>
               </div>
-            </ClientOnly>
+
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ClientOnly>
     <!-- Filters List -->
     <ClientOnly>
-      <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+      <div v-if="!getInitialFilters.length"
+        class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
         <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
       </div>
       <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <SwProductListingFilter
-          v-for="filter in getInitialFilters"
-          :key="filter.id"
-          v-model="sidebarSelectedFilters"
-          @update:model-value="handleFiltersUpdate"
-          :filter="filter"
-          class="w-full"
-        />
+        <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id" v-model="sidebarSelectedFilters"
+          @update:model-value="handleFiltersUpdate" :filter="filter" class="w-full" />
         <div v-if="showResetFiltersButton" class="w-full">
-          <SwBaseButton
-            variant="primary"
-            size="medium"
-            block
-            @click="invokeCleanFilters"
-            type="button">
+          <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
             {{ translations.listing.resetFilters }}
             <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
           </SwBaseButton>
