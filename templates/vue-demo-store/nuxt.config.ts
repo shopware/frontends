@@ -84,18 +84,7 @@ export default defineNuxtConfig({
     "/**": {
       isr: {
         expiration: 60 * 60 * 24,
-        allowQuery: [
-          "manufacturer",
-          "order",
-          "p",
-          "min-price",
-          "max-price",
-          "search",
-          "limit",
-          "properties",
-          "shipping-free",
-          "rating",
-        ],
+        allowQuery: undefined,
         passQuery: true,
       },
     },
