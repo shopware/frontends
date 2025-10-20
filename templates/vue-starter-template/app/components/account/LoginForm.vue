@@ -1,18 +1,33 @@
 <script lang="ts" setup>
+import { ApiClientError } from "@shopware/api-client";
+
 const { push } = useRouter();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { mergeWishlistProducts } = useWishlist();
 const { login } = useUser();
+const { pushError, pushSuccess } = useNotifications();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   close: [];
 }>();
 
 async function handleLogin(formData: { username: string; password: string }) {
-  await login(formData);
-  mergeWishlistProducts();
-  emit("close");
+  try {
+    await login(formData);
+    pushSuccess(t("account.messages.loggedInSuccess"));
+    mergeWishlistProducts();
+    emit("close");
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      for (const errorItem of error.details.errors) {
+        if (errorItem?.detail) {
+          pushError(errorItem.detail);
+        }
+      }
+    }
+  }
 }
 
 function handleSignUp() {
