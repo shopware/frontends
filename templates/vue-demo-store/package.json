@@ -41,8 +41,5 @@
   },
   "engines": {
     "node": "^20.x || ^22.x"
-  },
-  "resolutions": {
-    "nitropack": "https://pkg.pr.new/nitrojs/nitro/nitropack@3539"
   }
 }
