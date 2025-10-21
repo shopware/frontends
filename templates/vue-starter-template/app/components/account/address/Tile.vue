@@ -55,22 +55,22 @@ function handleEditAddress(addressId: string) {
       />
     </div>
     <div class="flex flex-col gap-4 mt-8">
-      <AccountAddressActionLink
+      <AccountActionLink
         v-if="!isDefaultBillingAddress"
         :disabled="isDeleting"
         @click="handleSetAsDefaultBillingAddress(address)"
       >
         <Icon class="w-4.5 h-6" name="shopware:file-text" />
         {{ $t("account.address.useAsDefaultBillingAddressButton") }}
-      </AccountAddressActionLink>
-      <AccountAddressActionLink
+      </AccountActionLink>
+      <AccountActionLink
         v-if="!isDefaultShippingAddress"
         :disabled="isDeleting"
         @click="handleSetAsDefaultShippingAddress(address)"
       >
         <Icon class="w-6 h-4.5" name="shopware:truck" />
         {{ $t("account.address.useAsDefaultShippingAddressButton") }}
-      </AccountAddressActionLink>
+      </AccountActionLink>
     </div>
   </div>
 </template>
