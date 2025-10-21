@@ -43,6 +43,7 @@
     "searchPlaceholder": "Search products",
     "chooseState": "Choose state",
     "state": "State",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "requiredFieldsNote": "Fields marked with asterisks (*) are required."
   }
 }
