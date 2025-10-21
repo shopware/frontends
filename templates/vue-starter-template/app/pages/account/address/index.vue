@@ -29,9 +29,7 @@ async function handleDeleteAddress(addressId: string) {
   deletingAddresses.value.add(addressId);
 
   try {
-    // TODO: change it after the API is updated
     await deleteCustomerAddress(addressId);
-    await new Promise((resolve) => setTimeout(resolve, 300));
     await loadCustomerAddresses();
     await refreshUser();
   } catch (error) {
@@ -48,7 +46,6 @@ async function handleDeleteAddress(addressId: string) {
 
 async function handleSetAsDefaultBillingAddress(addressId: string) {
   try {
-    // TODO: change it after the API is updated
     await setDefaultCustomerBillingAddress(addressId);
     await loadCustomerAddresses();
     await refreshUser();
@@ -64,7 +61,6 @@ async function handleSetAsDefaultBillingAddress(addressId: string) {
 
 async function handleSetAsDefaultShippingAddress(addressId: string) {
   try {
-    // TODO: change it after the API is updated
     await setDefaultCustomerShippingAddress(addressId);
     await loadCustomerAddresses();
     await refreshUser();

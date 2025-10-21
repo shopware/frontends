@@ -129,7 +129,7 @@ async function handleSubmit() {
 
     <div class="flex gap-4 mt-6">
       <FormBaseButton type="submit" variant="primary">
-        {{ $t("account.address.new.saveButton") }}
+        {{ $t("account.address.saveButton") }}
       </FormBaseButton>
       <FormBaseButton
         type="button"

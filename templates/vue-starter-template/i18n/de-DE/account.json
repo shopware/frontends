@@ -44,7 +44,7 @@
     "address": {
       "notFound": "Adresse nicht gefunden",
       "header": "Adressen",
-      "subHeader": "View your current default addresses or add new ones.",
+      "subHeader": "Sehen Sie sich Ihre aktuellen Standardadressen oder fügen Sie neue hinzu.",
       "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
       "defaultShippingAddressSectionHeader": "Standardversandadresse",
       "availableAddressesSectionHeader": "Verfügbare Adressen",
@@ -53,18 +53,17 @@
       "deleteAddressButton": "Adresse löschen",
       "useAsDefaultBillingAddressButton": "Als Standardrechnungsadresse verwenden",
       "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden",
+      "saveButton": "Adresse speichern",
       "new": {
         "header": "Neue Adresse",
         "subHeader": "Fügen Sie eine neue Adresse zu Ihrem Konto hinzu.",
         "personalDataSectionHeader": "Persönliche Daten",
-        "saveButton": "Adresse speichern",
         "successMessage": "Adresse wurde erfolgreich hinzugefügt."
       },
       "edit": {
         "header": "Adresse bearbeiten",
         "subHeader": "Bearbeiten Sie Ihre Adresse.",
         "personalDataSectionHeader": "Persönliche Daten",
-        "saveButton": "Adresse speichern",
         "successMessage": "Adresse wurde erfolgreich aktualisiert."
       }
     },
