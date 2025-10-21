@@ -42,6 +42,7 @@
       }
     },
     "address": {
+      "notFound": "Adresse nicht gefunden",
       "header": "Adressen",
       "subHeader": "View your current default addresses or add new ones.",
       "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
@@ -58,6 +59,13 @@
         "personalDataSectionHeader": "Persönliche Daten",
         "saveButton": "Adresse speichern",
         "successMessage": "Adresse wurde erfolgreich hinzugefügt."
+      },
+      "edit": {
+        "header": "Adresse bearbeiten",
+        "subHeader": "Bearbeiten Sie Ihre Adresse.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "saveButton": "Adresse speichern",
+        "successMessage": "Adresse wurde erfolgreich aktualisiert."
       }
     },
     "profile": {

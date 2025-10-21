@@ -42,6 +42,7 @@
       }
     },
     "address": {
+      "notFound": "Adres nie znaleziony",
       "header": "Adresy",
       "subHeader": "Wyświetl swoje obecne domyślne adresy lub dodaj nowe.",
       "defaultBillingAddressSectionHeader": "Domyślny adres do faktur",
@@ -58,6 +59,13 @@
         "personalDataSectionHeader": "Dane osobowe",
         "saveButton": "Zapisz adres",
         "successMessage": "Adres został pomyślnie dodany."
+      },
+      "edit": {
+        "header": "Edytuj adres",
+        "subHeader": "Edytuj swój adres.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "saveButton": "Zapisz adres",
+        "successMessage": "Adres został pomyślnie zaktualizowany."
       }
     },
     "profile": {

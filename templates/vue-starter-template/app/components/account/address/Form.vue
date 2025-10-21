@@ -3,8 +3,8 @@ import { useVuelidate } from "@vuelidate/core";
 import type { Schemas } from "#shopware";
 import { addressFormRules } from "../../../utils/validation/rules/addressFormRules";
 
-defineProps<{
-  address: Omit<Schemas["CustomerAddress"], "id" | "customerId">;
+const props = defineProps<{
+  address: Schemas["CustomerAddress"];
 }>();
 
 const emit = defineEmits<{
@@ -27,6 +27,20 @@ const state = ref({
   countryStateId: "",
 });
 
+function populateStateFromAddress(address: Schemas["CustomerAddress"]) {
+  Object.assign(state.value, address);
+}
+
+watch(
+  () => props.address,
+  (newAddress) => {
+    if (newAddress) {
+      populateStateFromAddress(newAddress);
+    }
+  },
+  { immediate: true },
+);
+
 const $v = useVuelidate(addressFormRules(state), state);
 
 async function handleSubmit() {
@@ -34,7 +48,7 @@ async function handleSubmit() {
   if (!valid) {
     return;
   }
-  console.log("aaaaaaa");
+
   emit("handleSubmit", state.value);
 }
 </script>
@@ -65,14 +79,15 @@ async function handleSubmit() {
       />
     </div>
 
-    <FormInputField
+    <!-- TODO - add company input after backend #13071 -->
+    <!-- <FormInputField
       v-if="state.accountType === 'business'"
       v-model="state.company"
       id="company"
       :label="$t('form.company')"
       :placeholder="$t('form.companyPlaceholder')"
       :errorMessage="$v.company?.$errors[0]?.$message"
-    />
+    /> -->
 
     <FormInputField
       v-model="state.street"

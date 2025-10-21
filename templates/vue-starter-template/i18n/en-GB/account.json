@@ -42,6 +42,7 @@
       }
     },
     "address": {
+      "notFound": "Address not found",
       "header": "Addresses",
       "subHeader": "View your current default addresses or add new ones.",
       "defaultBillingAddressSectionHeader": "Default billing address",
@@ -58,6 +59,13 @@
         "personalDataSectionHeader": "Personal data",
         "saveButton": "Save address",
         "successMessage": "Address has been successfully added."
+      },
+      "edit": {
+        "header": "Edit address",
+        "subHeader": "Edit your address.",
+        "personalDataSectionHeader": "Personal data",
+        "saveButton": "Save address",
+        "successMessage": "Address has been successfully updated."
       }
     },
     "profile": {
