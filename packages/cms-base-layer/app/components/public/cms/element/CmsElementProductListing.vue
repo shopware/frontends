@@ -34,14 +34,10 @@ let translations: Translations = {
 };
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-const {
-  changeCurrentPage,
-  getCurrentPage,
-  getElements,
-  getTotalPagesCount,
-  loading,
-  setInitialListing,
-} = useCategoryListing();
+// Use granular composables for better separation of concerns
+const listing = useCategoryListing();
+const { getElements, loading } = listing;
+const { changeCurrentPage, getCurrentPage, getTotalPagesCount } = listing;
 const route = useRoute();
 const router = useRouter();
 const limit = ref(
@@ -142,10 +138,6 @@ const compareRouteQueryWithInitialListing = async () => {
     );
   }
 };
-
-setInitialListing(
-  props?.content?.data?.listing as Schemas["ProductListingResult"],
-);
 
 compareRouteQueryWithInitialListing();
 </script>

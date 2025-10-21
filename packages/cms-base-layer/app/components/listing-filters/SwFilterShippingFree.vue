@@ -100,6 +100,7 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* Smooth collapse/expand for filter options */
