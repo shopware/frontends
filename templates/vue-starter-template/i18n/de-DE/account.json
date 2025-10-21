@@ -1,5 +1,6 @@
 {
   "account": {
+    "back": "Zurück",
     "signUpHeader": "Ich bin neu hier.",
     "yourAddress": "Ihre Adresse",
     "order": {
@@ -75,6 +76,33 @@
         "buttonSubmit": "Speichern",
         "successUpdate": "Daten wurden aktualisiert."
       }
+    },
+    "changeEmail": {
+      "header": "E-Mail-Adresse ändern",
+      "subHeader": "Neue E-Mail-Adresse eingeben",
+      "form": {
+        "newEmailLabel": "Neue E-Mail eingeben",
+        "confirmEmailLabel": "E-Mail wiederholen",
+        "passwordLabel": "Aktuelles Passwort",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "E-Mail-Adresse wurde erfolgreich aktualisiert.",
+        "errorUpdate": "E-Mail-Adresse konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "changePassword": {
+      "header": "Passwort ändern",
+      "subHeader": "Neues Passwort eingeben",
+      "form": {
+        "newPasswordLabel": "Neues Passwort eingeben*",
+        "confirmPasswordLabel": "Neues Passwort wiederholen*",
+        "currentPasswordLabel": "Aktuelles Passwort*",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "Passwort wurde erfolgreich aktualisiert.",
+        "errorUpdate": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "messages": {
+      "loggedInSuccess": "Sie wurden erfolgreich eingeloggt."
     }
   }
 }

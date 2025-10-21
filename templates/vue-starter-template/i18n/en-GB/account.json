@@ -1,5 +1,6 @@
 {
   "account": {
+    "back": "Back",
     "signUpHeader": "I am new here.",
     "yourAddress": "Your address",
     "order": {
@@ -75,6 +76,33 @@
         "buttonSubmit": "Change data",
         "successUpdate": "Data has been updated."
       }
+    },
+    "changeEmail": {
+      "header": "Change Email Address",
+      "subHeader": "Enter new Email Address",
+      "form": {
+        "newEmailLabel": "Enter new email",
+        "confirmEmailLabel": "Repeat new email",
+        "passwordLabel": "Current password*",
+        "buttonSubmit": "Save",
+        "successUpdate": "Email address has been updated successfully.",
+        "errorUpdate": "Failed to update email address. Please try again."
+      }
+    },
+    "changePassword": {
+      "header": "Change password",
+      "subHeader": "Enter new password",
+      "form": {
+        "newPasswordLabel": "Enter new password*",
+        "confirmPasswordLabel": "Repeat new password*",
+        "currentPasswordLabel": "Current password*",
+        "buttonSubmit": "Save",
+        "successUpdate": "Password has been updated successfully.",
+        "errorUpdate": "Failed to update password. Please try again."
+      }
+    },
+    "messages": {
+      "loggedInSuccess": "You have been logged in successfully."
     }
   }
 }
