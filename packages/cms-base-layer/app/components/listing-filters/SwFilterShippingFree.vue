@@ -74,7 +74,7 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
     <transition name="filter-collapse">
       <div v-if="isFilterVisible" class="self-stretch pt-6">
         <div class="space-y-4">
-          <div class="self-stretch inline-flex justify-start items-start gap-2">
+          <div class="self-stretch inline-flex justify-start items-start gap-2 w-full">
             <div class="flex-1 pt-[3px]">
               <SwSwitchButton
                 :model-value="currentFilterData"
