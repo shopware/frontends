@@ -4,9 +4,8 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
-import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, reactive, ref, useTemplateRef } from "vue";
+import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
 import { useCategoryListing } from "#imports";
@@ -47,7 +46,6 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 const route = useRoute();
 const router = useRouter();
 
-const isSortMenuOpen = ref(false);
 const {
   changeCurrentSortingOrder,
   getCurrentFilters,
@@ -239,103 +237,11 @@ const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
 
-const dropdownElement = useTemplateRef("dropdownElement");
-onClickOutside(dropdownElement, () => {
-  isSortMenuOpen.value = false;
-});
-
-const handleSortingClick = (key: string) => {
-  currentSortingOrder.value = key;
-  isSortMenuOpen.value = false;
+const handleSortChange = (sortKey: string) => {
+  currentSortingOrder.value = sortKey;
 };
 
-// Active filter chips logic
-const activeFilterChips = computed(() => {
-  const chips: Array<{ label: string; code: string; value: string | number }> =
-    [];
-
-  // Add property filters
-  const properties = Array.from(sidebarSelectedFilters.properties);
-  for (const propertyId of properties) {
-    // Check all filters, not just the one with code "properties"
-    // because properties can be in multiple filter groups
-    for (const filter of getInitialFilters.value) {
-      if ("options" in filter && filter.options) {
-        const option = filter.options.find((o) => o.id === propertyId);
-        if (option && "translated" in option) {
-          const name =
-            option.translated?.name || ("name" in option ? option.name : null);
-          if (name) {
-            chips.push({
-              label: String(name),
-              code: "properties",
-              value: propertyId,
-            });
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  // Add manufacturer filters
-  const manufacturers = Array.from(sidebarSelectedFilters.manufacturer);
-  for (const manufacturerId of manufacturers) {
-    const filter = getInitialFilters.value.find(
-      (f) => f.code === "manufacturer",
-    );
-    if (filter && "entities" in filter && filter.entities) {
-      const entity = filter.entities.find((e) => e.id === manufacturerId);
-      if (entity && "translated" in entity) {
-        const name =
-          entity.translated?.name || ("name" in entity ? entity.name : null);
-        if (name) {
-          chips.push({
-            label: String(name),
-            code: "manufacturer",
-            value: manufacturerId,
-          });
-        }
-      }
-    }
-  }
-
-  // Add price filters
-  if (
-    sidebarSelectedFilters["min-price"] ||
-    sidebarSelectedFilters["max-price"]
-  ) {
-    const min = sidebarSelectedFilters["min-price"] || 0;
-    const max = sidebarSelectedFilters["max-price"] || "∞";
-    chips.push({
-      label: `Price: ${min} - ${max}`,
-      code: "price",
-      value: "price-range",
-    });
-  }
-
-  // Add rating filter
-  if (sidebarSelectedFilters.rating) {
-    chips.push({
-      label: `Rating: ${sidebarSelectedFilters.rating}★`,
-      code: "rating",
-      value: sidebarSelectedFilters.rating,
-    });
-  }
-
-  // Add shipping free filter
-  if (sidebarSelectedFilters["shipping-free"]) {
-    chips.push({
-      label: "Free Shipping",
-      code: "shipping-free",
-      value: "true",
-    });
-  }
-
-  return chips;
-});
-
-const removeFilterChip = async (chip: {
+const handleRemoveFilterChip = async (chip: {
   code: string;
   value: string | number;
 }) => {
@@ -357,19 +263,11 @@ const removeFilterChip = async (chip: {
 <template>
   <div>
     <!-- Active Filter Chips -->
-    <ClientOnly>
-      <div v-if="activeFilterChips.length > 0"
-        class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
-        <button v-for="(chip, index) in activeFilterChips" :key="`${chip.code}-${chip.value}-${index}`"
-          @click="removeFilterChip(chip)"
-          class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors">
-          <span class="text-brand-on-tertiary text-base font-normal leading-normal">
-            {{ chip.label }}
-          </span>
-          <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
-        </button>
-      </div>
-    </ClientOnly>
+    <SwFilterChips
+      :filters="sidebarSelectedFilters"
+      :available-filters="getInitialFilters"
+      @remove="handleRemoveFilterChip"
+    />
 
     <ClientOnly>
       <template #fallback>
@@ -395,34 +293,12 @@ const removeFilterChip = async (chip: {
           <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
             {{ translations.listing.filters }}
           </div>
-          <div ref="dropdownElement" class="flex items-center">
-            <div class="relative inline-block text-left">
-              <SwBaseButton variant="ghost" size="medium" type="button" @click="isSortMenuOpen = !isSortMenuOpen"
-                id="menu-button" aria-expanded="false" aria-haspopup="true" class="group pr-0">
-                <span class="inline-flex items-center gap-1">
-                  {{ translations.listing.sort }}
-                  <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24"
-                    :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
-                </span>
-              </SwBaseButton>
-              <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
-                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                <div class="py-1" role="none">
-                  <button v-for="sorting in getSortingOrders" :key="sorting.key"
-                    @click="handleSortingClick(sorting.key)" :class="[
-                      sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-surface-on-surface'
-                        : 'text-surface-on-surface-variant',
-                    ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-                    role="menuitem" tabindex="-1">
-                    {{ sorting.label }}
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
+          <SwSortDropdown
+            :sort-options="getSortingOrders"
+            :current-sort="getCurrentSortingOrder"
+            :label="translations.listing.sort"
+            @sort-change="handleSortChange"
+          />
         </div>
       </div>
     </ClientOnly>
