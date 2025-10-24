@@ -19,7 +19,7 @@ const { formatLink } = useInternationalization(localePath);
       >
     </h1>
     <p
-      class="text-lg font-normal text-secondary-500y-500y-500y-500y-500y-500y-500y-500 lg:text-xl dark:text-surface-on-surfacey-400y-400y-400"
+      class="text-lg font-normal text-secondary-500y-500y-500y-500y-500y-500y-500y-500 lg:text-xl dark:text-surface-on-surface-400y-400y-400"
     >
       {{ $t("checkout.unpaidStatus") }}
     </p>

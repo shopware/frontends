@@ -28,7 +28,7 @@ const { data: registrationResponse } = await useAsyncData(
     </h1>
     <div
       v-if="registrationResponse?.registrationActive"
-      class="text-lg font-normal text-secondary-500 lg:text-xl dark:text-surface-on-surfacey-400"
+      class="text-lg font-normal text-secondary-500 lg:text-xl dark:text-surface-on-surface-400"
     >
       <p class="px-6 sm:px-4 mb-6">
         {{ registrationResponse?.translated.registrationIntroduction }}

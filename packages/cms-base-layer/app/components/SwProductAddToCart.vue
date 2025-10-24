@@ -81,7 +81,7 @@ const addToCartProxy = async () => {
         @click="addToCartProxy">
         {{ translations.product.addToCart }}
       </SwBaseButton>
-      <div class="self-stretch justify-start text-surface-on-surface text-xs font-normal font-['Inter'] leading-none">
+      <div class="self-stretch text-surface-on-surface text-xs font-normal leading-none">
         {{ translations.product.productNumber }}: {{ productNumber }}
       </div>
     </div>

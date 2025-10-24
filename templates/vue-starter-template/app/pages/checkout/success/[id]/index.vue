@@ -406,7 +406,7 @@ const formatDate = (date: string) =>
                     class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-12"
                   />
                   <div
-                    class="flex gap-1 text-surface-on-surfacey-600y-600y-600y-600y-600y-600y-600y-600y-600 font-normal"
+                    class="flex gap-1 text-surface-on-surface-600y-600y-600y-600y-600y-600y-600y-600y-600 font-normal"
                     data-testid="order-total"
                   >
                     <div

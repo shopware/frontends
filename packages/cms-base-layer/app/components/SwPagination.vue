@@ -36,8 +36,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current - 1)"
     >
       <span class="sr-only">{{ translations.listing.previous }}</span>
-      <!-- Heroicon name: solid/chevron-left -->
-      <div class="w-5 h-5 i-carbon-chevron-left" />
+      <SwChevronIcon direction="left" :size="20" />
     </button>
     <button
       v-if="current > 2"
@@ -99,8 +98,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current + 1)"
     >
       <span class="sr-only">{{ translations.listing.next }}</span>
-      <!-- Heroicon name: solid/chevron-right -->
-      <div class="w-5 h-5 i-carbon-chevron-right" />
+      <SwChevronIcon direction="right" :size="20" />
     </button>
   </nav>
 </template>

@@ -45,44 +45,44 @@ const toggle = () => {
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
-      <button
-        type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div 
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
         @click="toggle"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="`filter-rating`"
+        @keydown.enter="toggle"
+        @keydown.space.prevent="toggle"
       >
-        <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
-        }}</span>
-        <span class="ml-6 flex items-center">
-          <i
-            :class="[
-              !isFilterVisible
-                ? 'i-carbon-chevron-down'
-                : 'i-carbon-chevron-up',
-            ]"
-          />
-        </span>
-      </button>
-    </h3>
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible">
-        <div class="space-y-6 mt-4">
-          <div class="flex">
-            <div
-              v-for="i in 5"
-              :key="i"
-              class="h-6 w-6 c-yellow-500"
-              :class="{
-                'i-carbon-star-filled': displayedScore >= i,
-                'i-carbon-star': displayedScore < i,
-              }"
-              @mouseleave="isHoverActive = false"
-              @click="onChangeRating()"
-              @mouseover="hoverRating(i)"
-            />
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            {{ props.filter.label }}
           </div>
+        </div>
+        <SwIconButton 
+          type="ghost" 
+          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+          tabindex="-1"
+        >
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
+      </div>
+    </div>
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" class="self-stretch flex flex-col justify-start items-start gap-4">
+        <div class="flex flex-row items-center gap-2 mt-2">
+          <div
+            v-for="i in 5"
+            :key="i"
+            :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
+            @mouseleave="isHoverActive = false"
+            @click="hoverRating(i); onChangeRating()"
+            @mouseover="hoverRating(i)"
+            :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
+          />
         </div>
       </div>
     </transition>
@@ -97,5 +97,22 @@ const toggle = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Smooth collapse/expand for filter options */
+.filter-collapse-enter-active,
+.filter-collapse-leave-active {
+  transition: max-height 240ms ease, opacity 200ms ease;
+  overflow: hidden;
+}
+.filter-collapse-enter-from,
+.filter-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.filter-collapse-enter-to,
+.filter-collapse-leave-from {
+  max-height: 800px; /* large enough to contain options */
+  opacity: 1;
 }
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
+import { computed } from "vue";
 import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
@@ -7,36 +8,57 @@ import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue"
 
 const props = defineProps<{
   filter: ListingFilter;
-  selectedFilters?: {
-    [key: string]: unknown;
-  };
+  selectedManufacturer: Set<string>;
+  selectedProperties: Set<string>;
+  selectedMinPrice: number | undefined;
+  selectedMaxPrice: number | undefined;
+  selectedRating: number | undefined;
+  selectedShippingFree: boolean | undefined;
 }>();
 
 const emit = defineEmits<{
-  selectFilterValue: [{ code: string; value: string | number | boolean }];
+  "filter-change": [{ code: string; value: string | number | boolean }];
 }>();
 
-const cmsMap = () => {
-  const map: {
-    [key: string]: Component;
-  } = {
+const transformedFilters = computed(() => ({
+  price: {
+    min: props.selectedMinPrice,
+    max: props.selectedMaxPrice,
+  },
+  rating: props.selectedRating,
+  "shipping-free": props.selectedShippingFree,
+  manufacturer: [...props.selectedManufacturer],
+  properties: [...props.selectedProperties],
+}));
+
+const filterComponent = computed<Component | undefined>(() => {
+  const componentMap: Record<string, Component> = {
     manufacturer: SwFilterPropertiesVue,
-    properties: SwFilterPropertiesVue,
     price: SwFilterPriceVue,
     rating: SwFilterRatingVue,
     "shipping-free": SwFilterShippingFreeVue,
   };
 
-  return map[props.filter?.code];
+  return (
+    componentMap[props.filter.code] ||
+    ("options" in props.filter ? SwFilterPropertiesVue : undefined)
+  );
+});
+
+const handleSelectValue = ({
+  code,
+  value,
+}: { code: string; value: string | number | boolean }) => {
+  emit("filter-change", { code, value });
 };
 </script>
 <template>
   <div>
     <component
-      :is="cmsMap()"
+      :is="filterComponent"
       :filter="filter"
-      :selected-filters="selectedFilters"
-      @select-value="emit('selectFilterValue', $event)"
+      :selected-filters="transformedFilters"
+      @select-value="handleSelectValue"
     />
   </div>
 </template>

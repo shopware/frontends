@@ -75,7 +75,7 @@ const productName = computed(() => product.value?.translated?.name || "");
     }">
         <div class="self-stretch inline-flex flex-col justify-start items-start gap-8 mt-4 min-w-0">
             <div
-                class="md:hidden self-stretch justify-start text-surface-on-surface text-4xl font-normal font-['Noto_Serif'] leading-[60px]">
+                class="md:hidden self-stretch text-surface-on-surface text-4xl font-normal font-serif leading-[60px]">
                 {{ productName }}</div>
 
             <div v-if="tierPrices.length <= 1">
@@ -83,7 +83,7 @@ const productName = computed(() => product.value?.translated?.name || "");
                     class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
                     :value="price?.listPrice?.price" />
                 <SwSharedPrice v-if="unitPrice"
-                    class="justify-start text-surface-on-surface text-base font-bold font-['Inter'] leading-normal"
+                    class="text-surface-on-surface text-base font-bold leading-normal"
                     :class="{
                         'text-red': isListPrice,
                     }" :value="unitPrice" />
