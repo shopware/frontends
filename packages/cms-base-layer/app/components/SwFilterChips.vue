@@ -27,6 +27,16 @@ const emit = defineEmits<{
   remove: [{ code: string; value: string | number }];
 }>();
 
+const getTranslatedName = (
+  item: { translated?: { name?: string }; name?: string } | undefined,
+): string | null => {
+  if (!item) return null;
+  if ("translated" in item) {
+    return item.translated?.name || ("name" in item ? item.name : null) || null;
+  }
+  return null;
+};
+
 const activeChips = computed(() => {
   const chips: Array<{ label: string; code: string; value: string | number }> =
     [];
@@ -39,17 +49,14 @@ const activeChips = computed(() => {
     for (const filter of props.availableFilters) {
       if ("options" in filter && filter.options) {
         const option = filter.options.find((o) => o.id === propertyId);
-        if (option && "translated" in option) {
-          const name =
-            option.translated?.name || ("name" in option ? option.name : null);
-          if (name) {
-            chips.push({
-              label: String(name),
-              code: "properties",
-              value: propertyId,
-            });
-            break;
-          }
+        const name = getTranslatedName(option);
+        if (name) {
+          chips.push({
+            label: name,
+            code: "properties",
+            value: propertyId,
+          });
+          break;
         }
       }
     }
@@ -63,16 +70,13 @@ const activeChips = computed(() => {
     );
     if (filter && "entities" in filter && filter.entities) {
       const entity = filter.entities.find((e) => e.id === manufacturerId);
-      if (entity && "translated" in entity) {
-        const name =
-          entity.translated?.name || ("name" in entity ? entity.name : null);
-        if (name) {
-          chips.push({
-            label: String(name),
-            code: "manufacturer",
-            value: manufacturerId,
-          });
-        }
+      const name = getTranslatedName(entity);
+      if (name) {
+        chips.push({
+          label: name,
+          code: "manufacturer",
+          value: manufacturerId,
+        });
       }
     }
   }
