@@ -140,14 +140,30 @@ for (const param in route.query) {
   }
 }
 
-const handleFiltersUpdate = async (updatedFilters: FilterState) => {
+const handleFilterChange = async (event: {
+  code: string;
+  value: string | number | boolean;
+}) => {
   try {
-    sidebarSelectedFilters.manufacturer = updatedFilters.manufacturer;
-    sidebarSelectedFilters.properties = updatedFilters.properties;
-    sidebarSelectedFilters["min-price"] = updatedFilters["min-price"];
-    sidebarSelectedFilters["max-price"] = updatedFilters["max-price"];
-    sidebarSelectedFilters.rating = updatedFilters.rating;
-    sidebarSelectedFilters["shipping-free"] = updatedFilters["shipping-free"];
+    const { code, value } = event;
+
+    if (code === "manufacturer" || code === "properties") {
+      const filterSet = sidebarSelectedFilters[code];
+      const stringValue = String(value);
+
+      if (filterSet.has(stringValue)) {
+        filterSet.delete(stringValue);
+      } else {
+        filterSet.add(stringValue);
+      }
+    } else if (code === "min-price" || code === "max-price") {
+      sidebarSelectedFilters[code] =
+        typeof value === "number" ? value : Number(value);
+    } else if (code === "rating") {
+      sidebarSelectedFilters.rating = Number(value);
+    } else if (code === "shipping-free") {
+      sidebarSelectedFilters["shipping-free"] = Boolean(value);
+    }
 
     await executeSearch();
   } catch (error) {
@@ -417,8 +433,16 @@ const removeFilterChip = async (chip: {
         <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
       </div>
       <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id" v-model="sidebarSelectedFilters"
-          @update:model-value="handleFiltersUpdate" :filter="filter" class="w-full" />
+        <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
+          :filter="filter"
+          :selected-manufacturer="sidebarSelectedFilters.manufacturer"
+          :selected-properties="sidebarSelectedFilters.properties"
+          :selected-min-price="sidebarSelectedFilters['min-price']"
+          :selected-max-price="sidebarSelectedFilters['max-price']"
+          :selected-rating="sidebarSelectedFilters.rating"
+          :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
+          @filter-change="handleFilterChange"
+          class="w-full" />
         <div v-if="showResetFiltersButton" class="w-full">
           <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
             {{ translations.listing.resetFilters }}

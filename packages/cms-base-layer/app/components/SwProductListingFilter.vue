@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="ListingFilter extends { code: string }, FilterState extends { manufacturer: Set<string>; properties: Set<string>; 'min-price': number | undefined; 'max-price': number | undefined; rating: number | undefined; 'shipping-free': boolean | undefined; }">
+<script setup lang="ts" generic="ListingFilter extends { code: string }">
 import { computed } from "vue";
 import type { Component } from "vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
@@ -8,22 +8,27 @@ import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue"
 
 const props = defineProps<{
   filter: ListingFilter;
-  modelValue: FilterState;
+  selectedManufacturer: Set<string>;
+  selectedProperties: Set<string>;
+  selectedMinPrice: number | undefined;
+  selectedMaxPrice: number | undefined;
+  selectedRating: number | undefined;
+  selectedShippingFree: boolean | undefined;
 }>();
 
 const emit = defineEmits<{
-  "update:modelValue": [FilterState];
+  "filter-change": [{ code: string; value: string | number | boolean }];
 }>();
 
 const transformedFilters = computed(() => ({
   price: {
-    min: props.modelValue["min-price"],
-    max: props.modelValue["max-price"],
+    min: props.selectedMinPrice,
+    max: props.selectedMaxPrice,
   },
-  rating: props.modelValue.rating,
-  "shipping-free": props.modelValue["shipping-free"],
-  manufacturer: [...props.modelValue.manufacturer],
-  properties: [...props.modelValue.properties],
+  rating: props.selectedRating,
+  "shipping-free": props.selectedShippingFree,
+  manufacturer: [...props.selectedManufacturer],
+  properties: [...props.selectedProperties],
 }));
 
 const filterComponent = computed<Component | undefined>(() => {
@@ -44,28 +49,7 @@ const handleSelectValue = ({
   code,
   value,
 }: { code: string; value: string | number | boolean }) => {
-  const updatedFilters = {
-    ...props.modelValue,
-    manufacturer: new Set(props.modelValue.manufacturer),
-    properties: new Set(props.modelValue.properties),
-  };
-
-  if (code === "manufacturer" || code === "properties") {
-    const filterSet = updatedFilters[code];
-    const stringValue = String(value);
-
-    filterSet.has(stringValue)
-      ? filterSet.delete(stringValue)
-      : filterSet.add(stringValue);
-  } else if (code === "min-price" || code === "max-price") {
-    updatedFilters[code] = typeof value === "number" ? value : Number(value);
-  } else if (code === "rating") {
-    updatedFilters.rating = Number(value);
-  } else if (code === "shipping-free") {
-    updatedFilters["shipping-free"] = Boolean(value);
-  }
-
-  emit("update:modelValue", updatedFilters as FilterState);
+  emit("filter-change", { code, value });
 };
 </script>
 <template>
