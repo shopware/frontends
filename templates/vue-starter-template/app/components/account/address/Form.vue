@@ -3,6 +3,10 @@ import { useVuelidate } from "@vuelidate/core";
 import type { Schemas } from "#shopware";
 import { addressFormRules } from "../../../utils/validation/rules/addressFormRules";
 
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 const props = defineProps<{
   address: Schemas["CustomerAddress"];
 }>();
@@ -12,13 +16,10 @@ const emit = defineEmits<{
 }>();
 const router = useRouter();
 
-type AccountType = "private" | "business";
-
 const state = ref({
   firstName: "",
   lastName: "",
   salutationId: "",
-  accountType: "private" as AccountType,
   company: "",
   street: "",
   zipcode: "",
@@ -79,16 +80,6 @@ async function handleSubmit() {
       />
     </div>
 
-    <!-- TODO - add company input after backend #13071 -->
-    <!-- <FormInputField
-      v-if="state.accountType === 'business'"
-      v-model="state.company"
-      id="company"
-      :label="$t('form.company')"
-      :placeholder="$t('form.companyPlaceholder')"
-      :errorMessage="$v.company?.$errors[0]?.$message"
-    /> -->
-
     <FormInputField
       v-model="state.street"
       id="street"
@@ -134,7 +125,7 @@ async function handleSubmit() {
       <FormBaseButton
         type="button"
         variant="secondary"
-        @click="router.push('/account/address')"
+        @click="router.push(formatLink('/account/address'))"
       >
         {{ $t("form.cancel") }}
       </FormBaseButton>

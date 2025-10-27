@@ -52,8 +52,8 @@ async function handleSetAsDefaultBillingAddress(addressId: string) {
   } catch (error) {
     if (error instanceof ApiClientError) {
       const errors = resolveApiErrors(error.details.errors);
-      for (const error of errors) {
-        pushError(error);
+      for (const apiError of errors) {
+        pushError(apiError);
       }
     }
   }

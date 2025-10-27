@@ -35,9 +35,7 @@ export function addressFormRules(
     },
     countryStateId: {
       required: requiredIf(() => {
-        return !!getStatesForCountry(
-          computed(() => state.value.countryId).value,
-        )?.length;
+        return !!getStatesForCountry(state.value.countryId)?.length;
       }),
     },
   }));

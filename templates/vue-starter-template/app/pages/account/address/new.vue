@@ -6,20 +6,17 @@ const { createCustomerAddress } = useAddress();
 const { pushError, pushSuccess } = useNotifications();
 const router = useRouter();
 
-type AccountType = "private" | "business";
-
 const state = ref({
   firstName: "",
   lastName: "",
   salutationId: "",
-  accountType: "private" as AccountType,
   company: "",
   street: "",
   zipcode: "",
   city: "",
   countryId: "",
   countryStateId: "",
-});
+} as Schemas["CustomerAddress"]);
 
 async function handleSubmit(
   addressData: Omit<Schemas["CustomerAddress"], "id" | "customerId">,
