@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { MaybeRef } from "vue";
+
 type AccountType = "private" | "business";
 
 const model = defineModel<string>({
@@ -12,7 +14,7 @@ const {
 } = defineProps<{
   dataTestId?: string;
   id?: string;
-  errorMessage?: string;
+  errorMessage?: MaybeRef<string>;
 }>();
 
 const { t } = useI18n();
