@@ -1,13 +1,8 @@
 ---
 "@shopware/cms-base-layer": minor
-"@shopware/helpers": patch
 ---
 
-## Summary
-
-Introduce new UI components, refine listing filters (structure and UX), add global collapse animations, and improve type safety across helpers and components.
-
-## @shopware/cms-base-layer (minor)
+Introduce new UI components, refine listing filters (structure and UX), add global collapse animations, and improve type safety.
 
 ### Features
 - New UI components:
@@ -31,16 +26,16 @@ Introduce new UI components, refine listing filters (structure and UX), add glob
 - SwFilterChips:
   - Relax prop types to accept union types compatible with both full Shopware schemas and simplified helper types.
 
-## @shopware/helpers (patch)
+### Code quality improvements
+- SwFilterPrice:
+  - Remove unnecessary optional chaining on `props.selectedFilters` to prevent masking undefined errors
+- Checkbox component:
+  - Replace `outline-blue-500` with `outline-brand-primary` for brand consistency
+  - Make `label` prop optional to support checkbox-only pattern
+- SwFilterShippingFree:
+  - Add i18n support using `useCmsTranslations` instead of hardcoded "free delivery" text
+- SwFilterProperties:
+  - Remove unnecessary empty label prop from Checkbox usage
 
-### Type updates
-- ListingFilter type enhancements (in `filters.ts`):
-  - Add optional `options?: Array<{ id: string; translated?: { name?: string } }>`
-  - Add optional `entities?: Array<{ id: string; translated?: { name?: string } }>`
-- Improve inference in `getListingFilters()` by asserting the empty array return type.
-
-## Notes
-
-- No breaking changes expected.
-- Transition classes are globally available via UnoCSS preflights; no safelist required.
+**Note:** Transition classes are globally available via UnoCSS preflights.
 
