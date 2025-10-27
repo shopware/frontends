@@ -43,10 +43,10 @@ const prices = reactive<{ min: number; max: number }>({
 
 onMounted(() => {
   prices.min = Math.floor(
-    props.selectedFilters?.price?.min ?? props.filter?.min ?? 0,
+    props.selectedFilters.price?.min ?? props.filter.min ?? 0,
   );
   prices.max = Math.floor(
-    props.selectedFilters?.price?.max ?? props.filter?.max ?? 0,
+    props.selectedFilters.price?.max ?? props.filter.max ?? 0,
   );
 });
 

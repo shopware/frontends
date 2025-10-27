@@ -10,7 +10,9 @@
     }
   "
 >
+import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside } from "@vueuse/core";
+import { defu } from "defu";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -19,6 +21,18 @@ const props = defineProps<{
   selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
   description?: string; // Optional description for i18n
 }>();
+
+type Translations = {
+  listing: {
+    freeShipping: string;
+  };
+};
+let translations: Translations = {
+  listing: {
+    freeShipping: "Free shipping",
+  },
+};
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const emits =
   defineEmits<
@@ -82,7 +96,7 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
                 :name="props.filter.code"
                 :aria-label="props.filter.label"
                 :label="props.filter.label"
-                :description="props.description || 'free delivery'"
+                :description="props.description || translations.listing.freeShipping"
               />
             </div>
           </div>

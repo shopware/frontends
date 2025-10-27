@@ -92,9 +92,6 @@ const selectValue = (id: string) => {
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
-              :label="''"
-              :description="undefined"
-              :disabled="false"
               :model-value="isChecked(option.id)"
               @update:model-value="() => selectValue(option.id)"
               @click.stop
