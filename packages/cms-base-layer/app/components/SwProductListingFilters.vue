@@ -294,8 +294,8 @@ const handleRemoveFilterChip = async (chip: {
             {{ translations.listing.filters }}
           </div>
           <SwSortDropdown
-            :sort-options="getSortingOrders"
-            :current-sort="getCurrentSortingOrder"
+            :sort-options="getSortingOrders ?? []"
+            :current-sort="getCurrentSortingOrder ?? ''"
             :label="translations.listing.sort"
             @sort-change="handleSortChange"
           />

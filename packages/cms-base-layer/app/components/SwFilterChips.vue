@@ -14,8 +14,14 @@ type FilterState = {
 type Filter = {
   id: string;
   code: string;
-  options?: Array<Schemas["PropertyGroupOption"]>;
-  entities?: Array<Schemas["ProductManufacturer"]>;
+  options?: Array<
+    | Schemas["PropertyGroupOption"]
+    | { id: string; translated?: { name?: string } }
+  >;
+  entities?: Array<
+    | Schemas["ProductManufacturer"]
+    | { id: string; translated?: { name?: string } }
+  >;
 };
 
 const props = defineProps<{
