@@ -106,10 +106,7 @@
       "react-router": "^7.5.2"
     },
     "peerDependencyRules": {
-      "ignoreMissing": ["webpack", "vite", "react-dom", "postcss"],
-      "allowedVersions": {
-        "vite": "5 || 6 || 7"
-      }
+      "ignoreMissing": ["webpack", "vite", "react-dom"]
     },
     "auditConfig": {
       "ignoreCves": [
