@@ -45,7 +45,11 @@
       "paymentMethod": "Metoda płatności",
       "repeatOrder": "Powtórz zamówienie",
       "order": "zamówienie",
-      "orders": "Zamówienia"
+      "orders": "Zamówienia",
+      "backToList": "Powrót do listy",
+      "authOrderButton": "Kontynuuj",
+      "authOrderText": "Aby zobaczyć swoje zamówienie, wprowadź swój adres e-mail i kod pocztowy podany przy adresie rozliczeniowym.",
+      "authOrderTitle": "Autoryzacja"
     },
     "orderDetails": {
       "order": "Zamówienie",
@@ -93,6 +97,8 @@
       "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w nim zawarty, aby ukończyć rejestrację.",
       "paymentMethodChanged": "Metoda płatności została zmieniona",
       "productsAdded": "Produkty zostały dodane do koszyka",
+      "orderSuccessNoOrder": "Zamówienie nie istnieje",
+      "orderWrongData": "Podane dane nie mogły zostać powiązane z zamówieniem.",
       "verifying": "Potwierdzenie konta"
     }
   }
