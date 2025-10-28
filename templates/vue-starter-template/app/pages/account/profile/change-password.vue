@@ -37,15 +37,7 @@ async function handleSubmit() {
     pushSuccess($t("account.changePassword.form.successUpdate"));
     await router.push(formatLink("/account/profile"));
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      for (const errorItem of error.details.errors) {
-        if (errorItem?.detail) {
-          pushError(errorItem.detail);
-        }
-      }
-    } else {
-      pushError($t("account.changePassword.form.errorUpdate"));
-    }
+    apiErrorHandler(error, "account_change_password_form", pushError);
   }
 }
 </script>

@@ -66,13 +66,7 @@ async function handleSubmit() {
     );
     pushSuccess($t("account.profile.form.successUpdate"));
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      for (const errorItem of error.details.errors) {
-        if (errorItem?.detail) {
-          pushError(errorItem.detail);
-        }
-      }
-    }
+    apiErrorHandler(error, "account_profile", pushError);
   }
 }
 </script>
