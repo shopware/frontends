@@ -41,6 +41,32 @@
         }
       }
     },
+    "address": {
+      "notFound": "Adres nie znaleziony",
+      "header": "Adresy",
+      "subHeader": "Wyświetl swoje obecne domyślne adresy lub dodaj nowe.",
+      "defaultBillingAddressSectionHeader": "Domyślny adres do faktur",
+      "defaultShippingAddressSectionHeader": "Domyślny adres do wysyłki",
+      "availableAddressesSectionHeader": "Dostępne adresy",
+      "addAddressButton": "Dodaj nowy adres",
+      "editAddressButton": "Edytuj adres",
+      "deleteAddressButton": "Usuń adres",
+      "useAsDefaultBillingAddressButton": "Użyj jako domyślny adres do faktur",
+      "useAsDefaultShippingAddressButton": "Użyj jako domyślny adres do wysyłki",
+      "saveButton": "Zapisz adres",
+      "new": {
+        "header": "Nowy adres",
+        "subHeader": "Dodaj nowy adres do swojego konta.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "successMessage": "Adres został pomyślnie dodany."
+      },
+      "edit": {
+        "header": "Edytuj adres",
+        "subHeader": "Edytuj swój adres.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "successMessage": "Adres został pomyślnie zaktualizowany."
+      }
+    },
     "profile": {
       "header": "Twoje konto",
       "subHeader": "Sprawdź swoje dane osobowe.",

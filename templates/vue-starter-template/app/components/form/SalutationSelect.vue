@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { MaybeRef } from "vue";
+
 const model = defineModel<string>({
   required: true,
 });
@@ -10,7 +12,7 @@ const {
 } = defineProps<{
   id?: string;
   dataTestId?: string;
-  errorMessage?: string;
+  errorMessage?: MaybeRef<string>;
 }>();
 
 const nuxtApp = useNuxtApp();
