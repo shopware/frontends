@@ -5,6 +5,7 @@ import form from "./form.json";
 import layout from "./layout.json";
 import loginForm from "./loginForm.json";
 import validations from "./validations.json";
+import wishlist from "./wishlist.json";
 
 export default {
   ...checkout,
@@ -14,4 +15,5 @@ export default {
   ...form,
   ...errors,
   ...layout,
+  ...wishlist,
 };
