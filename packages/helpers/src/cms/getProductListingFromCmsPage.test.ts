@@ -1,27 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getProductListingFromCmsPage } from "./getProductListingFromCmsPage";
 
-type ProductListingResult = {
-  total: number;
-  page: number;
-  limit?: number;
-  elements: unknown[];
-};
-
-type CmsPage = {
-  sections?: Array<{
-    blocks?: Array<{
-      slots?: Array<{
-        type: string;
-        data?: {
-          listing?: ProductListingResult;
-          [key: string]: unknown;
-        };
-      }>;
-    }>;
-  }>;
-};
-
 describe("getProductListingFromCmsPage", () => {
   it("should return null for null input", () => {
     expect(getProductListingFromCmsPage(null)).toBeNull();
@@ -31,125 +10,110 @@ describe("getProductListingFromCmsPage", () => {
     expect(getProductListingFromCmsPage(undefined)).toBeNull();
   });
 
-  it("should return null for cms page without sections", () => {
-    const cmsPage: CmsPage = {};
+  it("should return null for non-object input", () => {
+    expect(getProductListingFromCmsPage("string")).toBeNull();
+    expect(getProductListingFromCmsPage(123)).toBeNull();
+  });
+
+  it("should return null when sections is missing", () => {
+    expect(getProductListingFromCmsPage({})).toBeNull();
+  });
+
+  it("should return null when sections is not an array", () => {
+    expect(getProductListingFromCmsPage({ sections: "not-array" })).toBeNull();
+  });
+
+  it("should return null when sections array is empty", () => {
+    expect(getProductListingFromCmsPage({ sections: [] })).toBeNull();
+  });
+
+  it("should return null when section has no blocks", () => {
+    const cmsPage = {
+      sections: [{ blocks: undefined }],
+    };
     expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
   });
 
-  it("should return null when no product-listing slot exists", () => {
-    const cmsPage: CmsPage = {
-      sections: [
-        {
-          blocks: [
-            {
-              slots: [
-                {
-                  type: "image",
-                  data: {},
-                },
-              ],
-            },
-          ],
-        },
-      ],
+  it("should return null when section blocks array is empty", () => {
+    const cmsPage = {
+      sections: [{ blocks: [] }],
     };
-
     expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
   });
 
-  it("should extract product listing from cms page", () => {
-    const mockListing: ProductListingResult = {
-      total: 100,
-      page: 1,
-      limit: 24,
-      elements: [],
-    };
-
-    const cmsPage: CmsPage = {
+  it("should return null when block has no slots", () => {
+    const cmsPage = {
       sections: [
         {
-          blocks: [
-            {
-              slots: [
-                {
-                  type: "product-listing",
-                  data: {
-                    listing: mockListing,
-                  },
-                },
-              ],
-            },
-          ],
+          blocks: [{ slots: undefined }],
         },
       ],
     };
-
-    const result = getProductListingFromCmsPage<ProductListingResult>(cmsPage);
-    expect(result).toEqual(mockListing);
-    expect(result?.total).toBe(100);
+    expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
   });
 
-  it("should find product listing in nested structure", () => {
-    const mockListing: ProductListingResult = {
-      total: 50,
-      page: 2,
-      limit: 12,
-      elements: [],
-    };
-
-    const cmsPage: CmsPage = {
+  it("should return null when block slots array is empty", () => {
+    const cmsPage = {
       sections: [
         {
-          blocks: [
-            {
-              slots: [
-                {
-                  type: "image",
-                  data: {},
-                },
-              ],
-            },
-          ],
-        },
-        {
-          blocks: [
-            {
-              slots: [
-                {
-                  type: "text",
-                  data: {},
-                },
-                {
-                  type: "product-listing",
-                  data: {
-                    listing: mockListing,
-                  },
-                },
-              ],
-            },
-          ],
+          blocks: [{ slots: [] }],
         },
       ],
     };
-
-    const result = getProductListingFromCmsPage<ProductListingResult>(cmsPage);
-    expect(result).toEqual(mockListing);
+    expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
   });
 
-  it("should return first product listing if multiple exist", () => {
-    const firstListing: ProductListingResult = {
-      total: 100,
-      page: 1,
-      elements: [],
+  it("should return null when no product-listing slot type found", () => {
+    const cmsPage = {
+      sections: [
+        {
+          blocks: [
+            {
+              slots: [
+                { type: "image", data: { listing: { test: "data" } } },
+                { type: "text", data: { listing: { test: "data" } } },
+              ],
+            },
+          ],
+        },
+      ],
     };
+    expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
+  });
 
-    const secondListing: ProductListingResult = {
-      total: 200,
-      page: 2,
-      elements: [],
+  it("should return null when product-listing slot has no data", () => {
+    const cmsPage = {
+      sections: [
+        {
+          blocks: [
+            {
+              slots: [{ type: "product-listing", data: null }],
+            },
+          ],
+        },
+      ],
     };
+    expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
+  });
 
-    const cmsPage: CmsPage = {
+  it("should return null when product-listing slot data has no listing", () => {
+    const cmsPage = {
+      sections: [
+        {
+          blocks: [
+            {
+              slots: [{ type: "product-listing", data: { other: "data" } }],
+            },
+          ],
+        },
+      ],
+    };
+    expect(getProductListingFromCmsPage(cmsPage)).toBeNull();
+  });
+
+  it("should return listing data when found in first section", () => {
+    const expectedListing = { elements: [], total: 0 };
+    const cmsPage = {
       sections: [
         {
           blocks: [
@@ -157,19 +121,7 @@ describe("getProductListingFromCmsPage", () => {
               slots: [
                 {
                   type: "product-listing",
-                  data: {
-                    listing: firstListing,
-                  },
-                },
-              ],
-            },
-            {
-              slots: [
-                {
-                  type: "product-listing",
-                  data: {
-                    listing: secondListing,
-                  },
+                  data: { listing: expectedListing },
                 },
               ],
             },
@@ -177,9 +129,58 @@ describe("getProductListingFromCmsPage", () => {
         },
       ],
     };
+    expect(getProductListingFromCmsPage(cmsPage)).toEqual(expectedListing);
+  });
 
-    const result = getProductListingFromCmsPage<ProductListingResult>(cmsPage);
-    expect(result).toEqual(firstListing);
-    expect(result?.total).toBe(100);
+  it("should return listing data when found in nested structure", () => {
+    const expectedListing = { elements: [{ id: "1" }], total: 1 };
+    const cmsPage = {
+      sections: [
+        {
+          blocks: [
+            {
+              slots: [{ type: "image", data: null }],
+            },
+          ],
+        },
+        {
+          blocks: [
+            {
+              slots: [
+                { type: "text", data: null },
+                {
+                  type: "product-listing",
+                  data: { listing: expectedListing },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    expect(getProductListingFromCmsPage(cmsPage)).toEqual(expectedListing);
+  });
+
+  it("should handle generic type parameter", () => {
+    type CustomListing = { customField: string };
+    const expectedListing: CustomListing = { customField: "test" };
+    const cmsPage = {
+      sections: [
+        {
+          blocks: [
+            {
+              slots: [
+                {
+                  type: "product-listing",
+                  data: { listing: expectedListing },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const result = getProductListingFromCmsPage<CustomListing>(cmsPage);
+    expect(result).toEqual(expectedListing);
   });
 });
