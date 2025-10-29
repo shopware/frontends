@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro CMS Base Layer Example" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="bg-brand-primary text-white py-4 mb-8">
+      <div class="container mx-auto px-4">
+        <a href="/" class="text-xl font-bold hover:opacity-80">
+          Astro CMS Base Example
+        </a>
+      </div>
+    </nav>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    font-family: system-ui, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background-color: #ffffff;
+  }
+
+  code {
+    background-color: #f5f5f5;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+</style>

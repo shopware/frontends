@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Astro CMS Base Example">
+  <main class="container mx-auto px-4 py-8" data-test-id="test-wrapper">
+    <h1 class="text-4xl font-bold mb-8">Astro CMS Base Example</h1>
+
+    <div class="prose max-w-none">
+      <p class="text-lg mb-6">
+        This example demonstrates how to use <code>@shopware/cms-base-layer</code> Vue components in an Astro.js project.
+      </p>
+
+      <div class="grid gap-6 mb-8">
+        <section class="p-6 border border-outline-primary rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">Available Examples</h2>
+          <ul class="space-y-2">
+            <li>
+              <a href="/components/simple" class="text-brand-primary hover:underline">
+                Simple CMS Components - Image and Text elements
+              </a>
+            </li>
+            <li>
+              <a href="/components/ui" class="text-brand-primary hover:underline">
+                UI Components - Buttons and shared components
+              </a>
+            </li>
+            <li>
+              <a href="/components/cms-page" class="text-brand-primary hover:underline">
+                <strong>CMS Page Component - Full page with Shopware API</strong>
+              </a>
+            </li>
+            <li>
+              <a href="/components/blocks" class="text-brand-primary hover:underline">
+                CMS Block Components - Complex layouts (info only)
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="p-6 bg-surface-secondary rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">Key Features</h2>
+          <ul class="list-disc list-inside space-y-2">
+            <li>Vue 3 components from cms-base-layer</li>
+            <li>UnoCSS for styling (matching cms-base-layer theme)</li>
+            <li>Vue Router integration for compatible components</li>
+            <li>#imports alias mapped to @shopware/composables</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>

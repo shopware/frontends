@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import UiDemo from "../../components/UiDemo.vue";
+---
+
+<Layout title="UI Components - Astro CMS Base">
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <a href="/" class="text-brand-primary hover:underline">&larr; Back to home</a>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-4">UI Components</h1>
+    <p class="text-lg mb-8 text-gray-600">
+      This page demonstrates using shared UI components from cms-base-layer like buttons and icons.
+    </p>
+
+    <!-- Vue component demonstrating UI components
+         Note: Using client:only="vue" instead of client:load to avoid hydration mismatches
+         with async components. This skips SSR for this component. -->
+    <UiDemo client:only="vue" />
+  </main>
+</Layout>

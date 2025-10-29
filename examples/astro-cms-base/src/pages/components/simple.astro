@@ -1,0 +1,36 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SimpleDemo from "../../components/SimpleDemo.vue";
+---
+
+<Layout title="Simple CMS Components - Astro CMS Base">
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <a href="/" class="text-brand-primary hover:underline">&larr; Back to home</a>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-4">Simple CMS Components</h1>
+    <p class="text-lg mb-8 text-gray-600">
+      This page demonstrates using CmsElementText and CmsElementImage components from cms-base-layer.
+    </p>
+
+    <div class="bg-surface-secondary p-6 rounded-lg mb-8">
+      <h2 class="text-xl font-semibold mb-4">About this example</h2>
+      <p class="mb-4">
+        These components are imported from <code>@shopware/cms-base-layer</code> and work in Astro
+        because we've set up:
+      </p>
+      <ul class="list-disc list-inside space-y-2 ml-4">
+        <li>Vue integration with <code>@astrojs/vue</code></li>
+        <li>Alias mapping <code>#imports</code> to <code>@shopware/composables</code></li>
+        <li>UnoCSS for styling compatibility</li>
+        <li>Vue Router for components that need routing</li>
+      </ul>
+    </div>
+
+    <!-- Vue component demonstrating cms-base-layer components
+         Note: Using client:only="vue" instead of client:load to avoid hydration mismatches
+         with async components. This skips SSR for this component. -->
+    <SimpleDemo client:only="vue" />
+  </main>
+</Layout>

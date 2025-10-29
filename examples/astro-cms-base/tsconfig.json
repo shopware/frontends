@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "#imports": ["node_modules/@shopware/composables/dist/index.d.ts"]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CmsPageDemo from "../../components/CmsPageDemo.vue";
+---
+
+<Layout title="CMS Page - Astro CMS Base">
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <a href="/" class="text-brand-primary hover:underline">&larr; Back to home</a>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-4">CMS Page Component</h1>
+    <p class="text-lg mb-8 text-gray-600">
+      This page demonstrates the full CmsPage component fetching the "Summer-Trends" category from a Shopware instance.
+    </p>
+
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+      <h3 class="text-xl font-semibold mb-2">⚠️ Shopware Backend Required</h3>
+      <p class="mb-4">
+        This demo requires a running Shopware instance. Configure your API endpoint in the component.
+      </p>
+      <ul class="list-disc list-inside space-y-2 text-sm">
+        <li>Fetches the "Summer-Trends/" category page</li>
+        <li>Uses SEO URL resolver to find the category ID</li>
+        <li>Fetches category with full CMS page associations</li>
+        <li>Renders the full CmsPage component with all blocks and elements</li>
+        <li>Falls back to mock data if the API is not available</li>
+      </ul>
+    </div>
+
+    <!-- Vue component demonstrating CmsPage with real/mock data
+         Note: Using client:only="vue" to avoid hydration mismatches -->
+    <CmsPageDemo client:only="vue" />
+  </main>
+</Layout>

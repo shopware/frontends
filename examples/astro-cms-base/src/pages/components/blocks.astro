@@ -1,0 +1,121 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="CMS Blocks - Astro CMS Base">
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <a href="/" class="text-brand-primary hover:underline">&larr; Back to home</a>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-4">CMS Block Components</h1>
+    <p class="text-lg mb-8 text-gray-600">
+      CMS Block components are more complex and require full Shopware integration.
+    </p>
+
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+      <h3 class="text-xl font-semibold mb-2">⚠️ Advanced Integration Required</h3>
+      <p class="mb-4">
+        CMS Block components (like CmsBlockImageText, CmsBlockProductSlider) require:
+      </p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>Full Shopware Store API integration</li>
+        <li>Product and category data</li>
+        <li>Complex CMS page data structures</li>
+        <li>Shopware context providers and composables</li>
+      </ul>
+    </div>
+
+    <section class="border border-outline-primary rounded-lg p-6 mb-8">
+      <h3 class="text-2xl font-semibold mb-4">Available Block Components</h3>
+      <p class="mb-4">The cms-base-layer includes ~42 block components:</p>
+
+      <div class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div>
+          <h4 class="font-semibold mb-2">Layout Blocks</h4>
+          <ul class="text-sm space-y-1 list-disc list-inside">
+            <li>CmsBlockImageText</li>
+            <li>CmsBlockImageCover</li>
+            <li>CmsBlockImageThreeColumn</li>
+            <li>CmsBlockTextTwoColumn</li>
+            <li>CmsBlockTextThreeColumn</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">Commerce Blocks</h4>
+          <ul class="text-sm space-y-1 list-disc list-inside">
+            <li>CmsBlockProductListing</li>
+            <li>CmsBlockProductSlider</li>
+            <li>CmsBlockProductThreeColumn</li>
+            <li>CmsBlockCrossSelling</li>
+            <li>CmsBlockCategoryNavigation</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">Media Blocks</h4>
+          <ul class="text-sm space-y-1 list-disc list-inside">
+            <li>CmsBlockGalleryBuybox</li>
+            <li>CmsBlockImageGallery</li>
+            <li>CmsBlockImageSlider</li>
+            <li>CmsBlockVideoHero</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">Form Blocks</h4>
+          <ul class="text-sm space-y-1 list-disc list-inside">
+            <li>CmsBlockForm</li>
+            <li>CmsBlockFormContact</li>
+            <li>CmsBlockFormNewsletter</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-secondary rounded-lg p-6">
+      <h3 class="text-xl font-semibold mb-4">Using Blocks in Production</h3>
+      <p class="mb-4">To use CMS blocks in your Astro project, you would need to:</p>
+
+      <ol class="list-decimal list-inside space-y-3 mb-6">
+        <li>
+          <strong>Set up Shopware API client</strong>
+          <pre class="mt-2 text-xs bg-white p-3 rounded"><code>{`import { createAPIClient } from '@shopware/api-client';
+
+const apiClient = createAPIClient({
+  baseURL: 'https://your-shopware-instance.com',
+  accessToken: 'your-access-token'
+});`}</code></pre>
+        </li>
+
+        <li>
+          <strong>Fetch CMS page data</strong>
+          <pre class="mt-2 text-xs bg-white p-3 rounded"><code>{`const cmsPage = await apiClient.invoke(
+  'readCms post /cms-page',
+  { path: '/your-page' }
+);`}</code></pre>
+        </li>
+
+        <li>
+          <strong>Initialize Shopware context</strong>
+          <p class="text-sm mt-1 ml-6">
+            Provide session context, navigation context, and other Shopware-specific state
+          </p>
+        </li>
+
+        <li>
+          <strong>Render CMS page component</strong>
+          <pre class="mt-2 text-xs bg-white p-3 rounded"><code>&lt;CmsPage :content=&quot;cmsPage&quot; /&gt;</code></pre>
+        </li>
+      </ol>
+
+      <div class="bg-blue-100 border border-blue-300 rounded p-4">
+        <p class="text-sm">
+          <strong>Tip:</strong> For simpler integration, consider using the element-level components
+          (CmsElementText, CmsElementImage) with your own layout, rather than the complex block components.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
