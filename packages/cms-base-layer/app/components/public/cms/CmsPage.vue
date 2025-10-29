@@ -5,7 +5,7 @@ import {
   getProductListingFromCmsPage,
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
-import { computed, h, resolveComponent } from "vue";
+import { computed, h, onUnmounted, resolveComponent, watch } from "vue";
 import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -14,15 +14,38 @@ const props = defineProps<{
 }>();
 
 const { routeName } = useNavigationContext();
-if (routeName.value === "frontend.navigation.page") {
-  const initialListing = getProductListingFromCmsPage<
-    Schemas["ProductListingResult"]
-  >(props.content);
 
-  if (initialListing) {
-    createCategoryListingContext(initialListing);
+// Function to initialize or update listing context
+function updateListingContext(content: Schemas["CmsPage"]) {
+  if (routeName.value === "frontend.navigation.page") {
+    const initialListing =
+      getProductListingFromCmsPage<Schemas["ProductListingResult"]>(content);
+
+    if (initialListing) {
+      createCategoryListingContext(initialListing);
+    }
   }
 }
+
+// Initialize context on mount
+updateListingContext(props.content);
+
+// Watch for content changes and update context
+watch(
+  () => props.content,
+  (newContent) => {
+    updateListingContext(newContent);
+  },
+  { deep: true },
+);
+
+// Watch for route changes
+watch(
+  () => routeName.value,
+  () => {
+    updateListingContext(props.content);
+  },
+);
 
 const cmsSections = computed<Schemas["CmsSection"][]>(() => {
   return props.content?.sections || [];

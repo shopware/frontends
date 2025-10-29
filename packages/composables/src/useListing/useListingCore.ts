@@ -27,6 +27,7 @@ export interface UseListingCoreReturn {
   ): Promise<void>;
   searchMethod: SearchMethod;
   setInitialListing(listing: Schemas["ProductListingResult"]): void;
+  abortController: Ref<AbortController | null>;
 }
 
 export function useListingCore({
@@ -37,6 +38,7 @@ export function useListingCore({
 }: UseListingCoreOptions): UseListingCoreReturn {
   const loading = ref(false);
   const loadingMore = ref(false);
+  const abortController = ref<AbortController | null>(null);
 
   const hasExistingContext = inject<boolean>(
     `useListingContext-${listingKey}`,
@@ -64,6 +66,15 @@ export function useListingCore({
   async function search(
     criteria: operations["searchPage post /search"]["body"],
   ) {
+    // Cancel any pending search request
+    if (abortController.value) {
+      abortController.value.abort();
+    }
+
+    // Create new AbortController for this search
+    abortController.value = new AbortController();
+    const currentController = abortController.value;
+
     loading.value = true;
     try {
       const searchCriteria = merge(
@@ -73,9 +84,21 @@ export function useListingCore({
       );
       const result = await searchMethod(searchCriteria);
 
-      _storeAppliedListing.value = result;
+      // Only update state if this request wasn't cancelled
+      if (!currentController.signal.aborted) {
+        _storeAppliedListing.value = result;
+      }
+    } catch (error) {
+      // Don't throw error if request was cancelled
+      if (currentController.signal.aborted) {
+        return;
+      }
+      throw error;
     } finally {
-      loading.value = false;
+      // Only reset loading if this request wasn't cancelled
+      if (!currentController.signal.aborted) {
+        loading.value = false;
+      }
     }
   }
 
@@ -92,5 +115,6 @@ export function useListingCore({
     search,
     searchMethod,
     setInitialListing,
+    abortController,
   };
 }

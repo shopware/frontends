@@ -6,7 +6,69 @@ Refactor product listing composables into modular, context-based architecture wi
 
 ## Breaking Changes
 
-### Composable Structure
+### 1. Pagination Parameter Change
+
+**Changed:** The pagination parameter has been standardized from `page` to `p`:
+
+```typescript
+// Before
+changeCurrentPage(2);  // Sends: { body: { page: 2 } }
+
+// After
+changeCurrentPage(2);  // Sends: { body: { p: 2 } }
+```
+
+**Impact:** If you're directly using the API client or inspecting search parameters, update to use `p` instead of `page`.
+
+### 2. Error Handling - Context Required
+
+**Changed:** `useCategoryListing()` now **throws an error** if called without context:
+
+```typescript
+// Before - Would fail silently or return null
+const listing = useCategoryListing();
+
+// After - Throws clear error
+const listing = useCategoryListing();
+// Error: "[useCategoryListing] Please call `createCategoryListingContext`
+// on the appropriate parent component"
+```
+
+**Impact:** You **must** call `createCategoryListingContext(initialListing)` before using `useCategoryListing()`.
+
+### 3. Loading State Split
+
+**Changed:** Loading states are now separated:
+
+```typescript
+// Before - Single loading ref
+const { loading } = useListing();
+
+// After - Two separate refs
+const { loading, loadingMore } = useListing();
+// loading - for search operations
+// loadingMore - for pagination/load more operations
+```
+
+**Impact:** If you're checking loading state for pagination, also check `loadingMore`.
+
+### 4. Context-Based Architecture (Required for Category Pages)
+
+**New Requirement:** Category pages must create listing context in parent component:
+
+```ts
+// Required in CmsPage.vue or similar
+import { createCategoryListingContext } from "@shopware/composables";
+
+const initialListing = getProductListingFromCmsPage(props.content);
+if (initialListing) {
+  createCategoryListingContext(initialListing);
+}
+```
+
+**Impact:** Without this, child components using `useCategoryListing()` will throw errors.
+
+### 5. Composable Structure (Internal Change)
 
 The `useListing` composable has been refactored into smaller, focused composables:
 
@@ -18,28 +80,13 @@ The `useListing` composable has been refactored into smaller, focused composable
 
 **The public API of `useListing` remains the same**, but internal implementation has changed significantly.
 
-### Context-Based Architecture
-
-Introduced injection state pattern for product listings:
-
-```ts
-// New context creation helper
-import { createCategoryListingContext } from "@shopware/composables";
-
-// Create context with initial listing data (SSR-friendly)
-createCategoryListingContext(initialListing);
-
-// Access listing in any child component
-const listing = useCategoryListing();
-```
-
-This replaces the previous approach where listing data had to be passed through props.
-
-### SSR Improvements
+### 6. SSR Improvements
 
 - **Removed `<ClientOnly>` wrappers** from filter components
 - Initial listing data is now provided via context during SSR
 - Components can access listing data synchronously on server and client
+
+**Impact:** No hydration mismatches, but ensure context is created during SSR.
 
 ## Migration Guide
 
