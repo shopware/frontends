@@ -11,7 +11,7 @@ const {
   placeholder?: string;
   label?: string;
   id?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "email";
   errorMessage?: MaybeRef<string>;
   autocomplete?: string;
 }>();
