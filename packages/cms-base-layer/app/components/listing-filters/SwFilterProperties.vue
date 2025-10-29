@@ -30,7 +30,6 @@ const emits =
   >();
 
 const isFilterVisible = ref<boolean>(false);
-
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
 };
@@ -42,20 +41,16 @@ const selectedIds = computed(() => {
   return props.selectedFilters?.properties || [];
 });
 
-const getChecked = (id: string) =>
-  computed<boolean>({
-    get: () => {
-      return selectedIds.value.includes(id);
-    },
-    set: () => {
-      const emitCode =
-        props.filter.code === "manufacturer" ? "manufacturer" : "properties";
-      emits("select-value", {
-        code: emitCode,
-        value: id,
-      });
-    },
+const isChecked = (id: string) => selectedIds.value.includes(id);
+
+const selectValue = (id: string) => {
+  const emitCode =
+    props.filter.code === "manufacturer" ? "manufacturer" : "properties";
+  emits("select-value", {
+    code: emitCode,
+    value: id,
   });
+};
 </script>
 
 <template>
@@ -91,17 +86,14 @@ const getChecked = (id: string) =>
         <legend class="sr-only">{{ props.filter.name }}</legend>
         <label
           v-for="option in props.filter.options || props.filter.entities"
-          :key="`${option.id}-${selectedIds.includes(option.id)}`"
+          :key="`${option.id}-${isChecked(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
-          @click="emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
+          @click="selectValue(option.id)"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
-              :label="''"
-              :description="undefined"
-              :disabled="false"
-              :model-value="getChecked(option.id).value"
-              @update:model-value="() => emits('select-value', { code: props.filter.code === 'manufacturer' ? 'manufacturer' : 'properties', value: option.id })"
+              :model-value="isChecked(option.id)"
+              @update:model-value="() => selectValue(option.id)"
               @click.stop
             />
           </div>
@@ -118,33 +110,3 @@ const getChecked = (id: string) =>
     </transition>
   </div>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.filter-collapse-enter-active,
-.filter-collapse-leave-active {
-  transition: max-height 240ms ease, opacity 200ms ease;
-  overflow: hidden;
-}
-
-.filter-collapse-enter-from,
-.filter-collapse-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-
-.filter-collapse-enter-to,
-.filter-collapse-leave-from {
-  max-height: 800px;
-  opacity: 1;
-}
-</style>

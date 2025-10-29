@@ -7,6 +7,31 @@ import {
 } from "unocss";
 
 export default defineConfig({
+  shortcuts: {},
+  preflights: [
+    {
+      getCSS: () => `
+        /* Filter collapse transition */
+        .filter-collapse-enter-active,
+        .filter-collapse-leave-active {
+          transition: all 0.3s ease-in-out;
+          overflow: hidden;
+        }
+
+        .filter-collapse-enter-from,
+        .filter-collapse-leave-to {
+          max-height: 0;
+          opacity: 0;
+        }
+
+        .filter-collapse-enter-to,
+        .filter-collapse-leave-from {
+          max-height: 1000px;
+          opacity: 1;
+        }
+      `,
+    },
+  ],
   theme: {
     colors: {
       "brand-primary": "#543B95",

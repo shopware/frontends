@@ -43,10 +43,10 @@ const prices = reactive<{ min: number; max: number }>({
 
 onMounted(() => {
   prices.min = Math.floor(
-    props.selectedFilters?.price?.min ?? props.filter?.min ?? 0,
+    props.selectedFilters.price?.min ?? props.filter.min ?? 0,
   );
   prices.max = Math.floor(
-    props.selectedFilters?.price?.max ?? props.filter?.max ?? 0,
+    props.selectedFilters.price?.max ?? props.filter.max ?? 0,
   );
 });
 
@@ -212,34 +212,3 @@ const startDrag = (type: "min" | "max", event: MouseEvent | TouchEvent) => {
     </transition>
   </div>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Smooth collapse/expand for filter options */
-.filter-collapse-enter-active,
-.filter-collapse-leave-active {
-  transition: max-height 240ms ease, opacity 200ms ease;
-  overflow: hidden;
-}
-
-.filter-collapse-enter-from,
-.filter-collapse-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-
-.filter-collapse-enter-to,
-.filter-collapse-leave-from {
-  max-height: 800px;
-  /* large enough to contain options */
-  opacity: 1;
-}
-</style>

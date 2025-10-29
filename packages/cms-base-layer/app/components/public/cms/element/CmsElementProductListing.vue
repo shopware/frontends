@@ -83,13 +83,11 @@ const changePage = async (page: number) => {
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
-const changeLimit = async (limit: Event) => {
-  const select = limit.target as HTMLSelectElement;
-
+const changeLimit = async (newLimit: number) => {
   await router.push({
     query: {
       ...route.query,
-      limit: select.value,
+      limit: newLimit,
       p: defaultPage,
     },
   });
@@ -155,35 +153,14 @@ compareRouteQueryWithInitialListing();
       <ProductCardSkeleton v-for="index in limit" :key="index"
         class="w-full" />
     </div>
-    <div v-if="!loading && getTotalPagesCount > 1" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mt-8">
-      <div class="text-center place-self-center">
-        <SwPagination :total="getTotalPagesCount" :current="Number(getCurrentPage)" @change-page="changePage" />
-      </div>
-      <div class="text-center place-self-center mt-2 lg:mt-0">
-        <div class="inline-block align-top text-center md:text-left" data-testid="listing-pagination-limit-box">
-          <label for="limit" class="inline mr-4" data-testid="listing-pagination-limit-label">{{
-            translations.listing.perPage }}</label>
-          <select id="limit" v-model="limit" name="limitchoices"
-            class="inline appearance-none bg-surface-surface border border-outline-outline hover:border-outline-outline-primary px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-            data-testid="listing-pagination-limit-select" @change="changeLimit">
-            <option :value="1">1 {{ translations.listing.product }}</option>
-            <option :value="15">
-              15 {{ translations.listing.products }}
-            </option>
-            <option :value="30">
-              30 {{ translations.listing.products }}
-            </option>
-            <option :value="45">
-              45 {{ translations.listing.products }}
-            </option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-surface-on-surface-variant">
-            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
+    <SwProductListingPagination
+      v-if="!loading"
+      v-model:limit="limit"
+      :total="getTotalPagesCount"
+      :current="Number(getCurrentPage)"
+      :translations="translations"
+      @change-page="changePage"
+      @change-limit="changeLimit"
+    />
   </div>
 </template>

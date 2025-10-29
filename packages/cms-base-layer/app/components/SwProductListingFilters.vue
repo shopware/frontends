@@ -4,15 +4,14 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
-import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, reactive, ref, useTemplateRef } from "vue";
+import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
 import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
-const props = defineProps<{
+defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
   listingType?: string;
 }>();
@@ -47,13 +46,13 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 const route = useRoute();
 const router = useRouter();
 
-const isSortMenuOpen = ref(false);
-
-const listing = useCategoryListing();
-const { search } = listing;
-const { changeCurrentSortingOrder, getCurrentSortingOrder, getSortingOrders } =
-  listing;
-const { filtersToQuery, getCurrentFilters, getInitialFilters } = listing;
+const {
+  changeCurrentSortingOrder,
+  getCurrentSortingOrder,
+  getInitialFilters,
+  getSortingOrders,
+  search,
+} = useCategoryListing();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
   reactive<FilterState>({
@@ -138,14 +137,30 @@ for (const param in route.query) {
   }
 }
 
-const handleFiltersUpdate = async (updatedFilters: FilterState) => {
+const handleFilterChange = async (event: {
+  code: string;
+  value: string | number | boolean;
+}) => {
   try {
-    sidebarSelectedFilters.manufacturer = updatedFilters.manufacturer;
-    sidebarSelectedFilters.properties = updatedFilters.properties;
-    sidebarSelectedFilters["min-price"] = updatedFilters["min-price"];
-    sidebarSelectedFilters["max-price"] = updatedFilters["max-price"];
-    sidebarSelectedFilters.rating = updatedFilters.rating;
-    sidebarSelectedFilters["shipping-free"] = updatedFilters["shipping-free"];
+    const { code, value } = event;
+
+    if (code === "manufacturer" || code === "properties") {
+      const filterSet = sidebarSelectedFilters[code];
+      const stringValue = String(value);
+
+      if (filterSet.has(stringValue)) {
+        filterSet.delete(stringValue);
+      } else {
+        filterSet.add(stringValue);
+      }
+    } else if (code === "min-price" || code === "max-price") {
+      sidebarSelectedFilters[code] =
+        typeof value === "number" ? value : Number(value);
+    } else if (code === "rating") {
+      sidebarSelectedFilters.rating = Number(value);
+    } else if (code === "shipping-free") {
+      sidebarSelectedFilters["shipping-free"] = Boolean(value);
+    }
 
     await executeSearch();
   } catch (error) {
@@ -156,11 +171,22 @@ const handleFiltersUpdate = async (updatedFilters: FilterState) => {
 const executeSearch = async () => {
   try {
     await search(searchCriteriaForRequest.value);
-    const query = filtersToQuery(searchCriteriaForRequest.value);
-    const { limit: _, ...queryWithoutLimit } = query;
+
+    // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
+    const criteria = searchCriteriaForRequest.value;
+    const query: Record<string, unknown> = {};
+
+    if (criteria.manufacturer) query.manufacturer = criteria.manufacturer;
+    if (criteria.properties) query.properties = criteria.properties;
+    if (criteria["min-price"]) query["min-price"] = criteria["min-price"];
+    if (criteria["max-price"]) query["max-price"] = criteria["max-price"];
+    if (criteria.rating) query.rating = criteria.rating;
+    if (criteria["shipping-free"])
+      query["shipping-free"] = criteria["shipping-free"];
+    if (criteria.order) query.order = criteria.order;
 
     await router.push({
-      query: queryWithoutLimit as LocationQueryRaw,
+      query: query as LocationQueryRaw,
     });
   } catch (error) {
     console.error("Search execution failed:", error);
@@ -206,104 +232,11 @@ async function invokeCleanFilters() {
   }
 }
 
-const isDefaultSidebarFilter =
-  props.content.type === "sidebar-filter" &&
-  props.content.config?.boxLayout?.value === "standard";
-
-const dropdownElement = useTemplateRef("dropdownElement");
-onClickOutside(dropdownElement, () => {
-  isSortMenuOpen.value = false;
-});
-
-const handleSortingClick = (key: string) => {
-  currentSortingOrder.value = key;
-  isSortMenuOpen.value = false;
+const handleSortChange = (sortKey: string) => {
+  currentSortingOrder.value = sortKey;
 };
 
-const activeFilterChips = computed(() => {
-  const chips: Array<{ label: string; code: string; value: string | number }> =
-    [];
-
-  // Add property filters
-  const properties = Array.from(sidebarSelectedFilters.properties);
-  for (const propertyId of properties) {
-    // Check all filters, not just the one with code "properties"
-    // because properties can be in multiple filter groups
-    for (const filter of getInitialFilters.value) {
-      if ("options" in filter && filter.options) {
-        const option = filter.options.find((o) => o.id === propertyId);
-        if (option && "translated" in option) {
-          const name =
-            option.translated?.name || ("name" in option ? option.name : null);
-          if (name) {
-            chips.push({
-              label: String(name),
-              code: "properties",
-              value: propertyId,
-            });
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  // Add manufacturer filters
-  const manufacturers = Array.from(sidebarSelectedFilters.manufacturer);
-  for (const manufacturerId of manufacturers) {
-    const filter = getInitialFilters.value.find(
-      (f) => f.code === "manufacturer",
-    );
-    if (filter && "entities" in filter && filter.entities) {
-      const entity = filter.entities.find((e) => e.id === manufacturerId);
-      if (entity && "translated" in entity) {
-        const name =
-          entity.translated?.name || ("name" in entity ? entity.name : null);
-        if (name) {
-          chips.push({
-            label: String(name),
-            code: "manufacturer",
-            value: manufacturerId,
-          });
-        }
-      }
-    }
-  }
-
-  if (
-    sidebarSelectedFilters["min-price"] ||
-    sidebarSelectedFilters["max-price"]
-  ) {
-    const min = sidebarSelectedFilters["min-price"] || 0;
-    const max = sidebarSelectedFilters["max-price"] || "∞";
-    chips.push({
-      label: `Price: ${min} - ${max}`,
-      code: "price",
-      value: "price-range",
-    });
-  }
-
-  // Add rating filter
-  if (sidebarSelectedFilters.rating) {
-    chips.push({
-      label: `Rating: ${sidebarSelectedFilters.rating}★`,
-      code: "rating",
-      value: sidebarSelectedFilters.rating,
-    });
-  }
-
-  if (sidebarSelectedFilters["shipping-free"]) {
-    chips.push({
-      label: "Free Shipping",
-      code: "shipping-free",
-      value: "true",
-    });
-  }
-
-  return chips;
-});
-
-const removeFilterChip = async (chip: {
+const handleRemoveFilterChip = async (chip: {
   code: string;
   value: string | number;
 }) => {
@@ -325,78 +258,44 @@ const removeFilterChip = async (chip: {
 <template>
   <div>
     <!-- Active Filter Chips -->
-    <div v-if="activeFilterChips.length > 0" class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6">
-      <button
-        v-for="(chip, index) in activeFilterChips"
-        :key="`${chip.code}-${chip.value}-${index}`"
-        @click="removeFilterChip(chip)"
-        class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
-      >
-        <span class="text-brand-on-tertiary text-base font-normal leading-normal">
-          {{ chip.label }}
-        </span>
-        <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
-      </button>
-    </div>
+    <SwFilterChips
+      :filters="sidebarSelectedFilters"
+      :available-filters="getInitialFilters"
+      @remove="handleRemoveFilterChip"
+    />
 
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
-      <div class="flex flex-row items-center justify-between w-full py-3 border-b border-outline-outline-variant">
+      <div
+        class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
         <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
           {{ translations.listing.filters }}
         </div>
-        <div ref="dropdownElement" class="flex items-center">
-          <div class="relative inline-block text-left">
-            <SwBaseButton
-              variant="ghost"
-              size="medium"
-              type="button"
-              @click="isSortMenuOpen = !isSortMenuOpen"
-              id="menu-button"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="group"
-            >
-              <span class="inline-flex items-center gap-1">
-                {{ translations.listing.sort }}
-                <SwChevronIcon :direction="isSortMenuOpen ? 'up' : 'down'" :size="24" :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'" />
-              </span>
-            </SwBaseButton>
-            <ClientOnly>
-              <div :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
-                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                <div class="py-1" role="none">
-                  <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="handleSortingClick(sorting.key)"
-                    :class="[
-                      sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-surface-on-surface'
-                        : 'text-surface-on-surface-variant',
-                    ]" class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-                    role="menuitem" tabindex="-1">
-                    {{ sorting.label }}
-                  </button>
-                </div>
-              </div>
-            </ClientOnly>
-          </div>
-        </div>
+        <SwSortDropdown
+          :sort-options="getSortingOrders ?? []"
+          :current-sort="getCurrentSortingOrder ?? ''"
+          :label="translations.listing.sort"
+          @sort-change="handleSortChange"
+        />
       </div>
     </div>
-    <div v-if="!getInitialFilters.length" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+    <!-- Filters List -->
+    <div v-if="!getInitialFilters.length"
+      class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
       <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
     </div>
     <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-      <div v-for="filter in getInitialFilters" :key="filter.id" class="mb-2 w-full">
-        <SwProductListingFilter v-model="sidebarSelectedFilters" @update:model-value="handleFiltersUpdate"
-          :filter="filter" class="relative" />
-      </div>
-      <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2 w-full">
-        <SwBaseButton
-          variant="primary"
-          size="medium"
-          block
-          @click="invokeCleanFilters"
-          type="button">
+      <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
+        :filter="filter"
+        :selected-manufacturer="sidebarSelectedFilters.manufacturer"
+        :selected-properties="sidebarSelectedFilters.properties"
+        :selected-min-price="sidebarSelectedFilters['min-price']"
+        :selected-max-price="sidebarSelectedFilters['max-price']"
+        :selected-rating="sidebarSelectedFilters.rating"
+        :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
+        @filter-change="handleFilterChange"
+        class="w-full" />
+      <div v-if="showResetFiltersButton" class="w-full">
+        <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
           {{ translations.listing.resetFilters }}
           <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
         </SwBaseButton>

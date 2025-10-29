@@ -10,7 +10,9 @@
     }
   "
 >
+import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside } from "@vueuse/core";
+import { defu } from "defu";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -19,6 +21,18 @@ const props = defineProps<{
   selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
   description?: string; // Optional description for i18n
 }>();
+
+type Translations = {
+  listing: {
+    freeShipping: string;
+  };
+};
+let translations: Translations = {
+  listing: {
+    freeShipping: "Free shipping",
+  },
+};
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const emits =
   defineEmits<
@@ -72,9 +86,9 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
     </div>
 
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible" class="self-stretch pt-6">
-        <div class="space-y-4">
-          <div class="self-stretch inline-flex justify-start items-start gap-2">
+      <div v-if="isFilterVisible" class="self-stretch">
+        <div class="pt-6 space-y-4">
+          <div class="self-stretch inline-flex justify-start items-start gap-2 w-full">
             <div class="flex-1 pt-[3px]">
               <SwSwitchButton
                 :model-value="currentFilterData"
@@ -82,7 +96,7 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
                 :name="props.filter.code"
                 :aria-label="props.filter.label"
                 :label="props.filter.label"
-                :description="props.description || 'free delivery'"
+                :description="props.description || translations.listing.freeShipping"
               />
             </div>
           </div>
@@ -91,32 +105,3 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
     </transition>
   </div>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* Smooth collapse/expand for filter options */
-.filter-collapse-enter-active,
-.filter-collapse-leave-active {
-  transition: max-height 240ms ease, opacity 200ms ease;
-  overflow: hidden;
-}
-.filter-collapse-enter-from,
-.filter-collapse-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-.filter-collapse-enter-to,
-.filter-collapse-leave-from {
-  max-height: 800px; /* large enough to contain options */
-  opacity: 1;
-}
-</style>
