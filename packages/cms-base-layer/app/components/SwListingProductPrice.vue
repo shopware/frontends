@@ -41,49 +41,49 @@ const {
 </script>
 
 <template>
-  <div :id="product.id">
-    <SwSharedPrice
-      v-if="isListPrice"
-      class="text-l text-gray-900 basis-2/6 justify-end line-through"
-      :value="price?.listPrice?.price"
-    />
-    <template v-if="!isListPrice">
-      <div class="h-6"><!-- placeholder --></div>
-    </template>
-    <SwSharedPrice
-      v-if="displayFromVariants"
-      class="text-xl text-gray-900 basis-2/6 justify-end"
-      :value="displayFromVariants"
-    >
-      <template #beforePrice
-        ><span v-if="displayFromVariants" class="text-sm">{{
-          translations.listing.variantsFrom
-        }}</span></template
-      >
-    </SwSharedPrice>
-    <SwSharedPrice
-      class="text-gray-900 basis-2/6"
-      :class="{
-        'text-red-600 font-bold': isListPrice,
-        'justify-end text-xl':
-          regulationPrice || !regulationPrice || !displayFromVariants,
-      }"
-      :value="unitPrice"
-    >
-      <template #beforePrice
-        ><span v-if="displayFrom || displayFromVariants" class="text-sm">{{
-          translations.listing.from
-        }}</span></template
-      >
-    </SwSharedPrice>
-    <template v-if="regulationPrice">
-      <div class="flex gap-2 justify-end text-gray-500 text-3.5 mb-2">
-        {{ translations.listing.previously }}
-        <SwSharedPrice :value="regulationPrice" />
+  <div :id="product.id" class="inline-flex justify-start items-center gap-2">
+    <!-- Sale price display -->
+    <div v-if="isListPrice" class="flex items-center gap-2">
+      <div class="text-base font-bold leading-normal">
+        <SwSharedPrice :value="unitPrice">
+          <template #beforePrice>
+            <span v-if="displayFrom || displayFromVariants" class="text-sm">{{
+              translations.listing.from
+            }}</span>
+          </template>
+        </SwSharedPrice>
       </div>
-    </template>
-    <template v-if="!regulationPrice">
-      <div class="h-7"><!-- placeholder --></div>
-    </template>
+      <div class="text-surface-on-surface-variant text-sm font-normal leading-tight line-through">
+        <SwSharedPrice :value="price?.listPrice?.price" />
+      </div>
+    </div>
+
+    <!-- Regular price display -->
+    <div v-else class="text-surface-on-surface text-base font-bold leading-normal">
+      <SwSharedPrice :value="unitPrice">
+        <template #beforePrice>
+          <span v-if="displayFrom || displayFromVariants" class="text-sm">{{
+            translations.listing.from
+          }}</span>
+        </template>
+      </SwSharedPrice>
+    </div>
+
+    <!-- Variants from price -->
+    <div v-if="displayFromVariants" class="text-surface-on-surface text-base font-bold leading-normal">
+      <SwSharedPrice :value="displayFromVariants">
+        <template #beforePrice>
+          <span v-if="displayFromVariants" class="text-sm">{{
+            translations.listing.variantsFrom
+          }}</span>
+        </template>
+      </SwSharedPrice>
+    </div>
+
+    <!-- Regulation price -->
+    <div v-if="regulationPrice" class="flex gap-2 text-surface-on-surface-variant text-sm">
+      {{ translations.listing.previously }}
+      <SwSharedPrice :value="regulationPrice" />
+    </div>
   </div>
 </template>

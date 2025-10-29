@@ -12,112 +12,101 @@
   "
 >
 import { getTranslatedProperty } from "@shopware/helpers";
-import { inject, ref } from "vue";
+import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;
+  selectedFilters: {
+    manufacturer?: string[];
+    properties?: string[];
+    [key: string]: unknown;
+  };
 }>();
 
 const emits =
   defineEmits<
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
-const selectedOptionIds = inject<string[]>("selectedOptionIds");
+
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {
   isFilterVisible.value = !isFilterVisible.value;
 };
+
+const selectedIds = computed(() => {
+  if (props.filter.code === "manufacturer") {
+    return props.selectedFilters?.manufacturer || [];
+  }
+  return props.selectedFilters?.properties || [];
+});
+
+const isChecked = (id: string) => selectedIds.value.includes(id);
+
+const selectValue = (id: string) => {
+  const emitCode =
+    props.filter.code === "manufacturer" ? "manufacturer" : "properties";
+  emits("select-value", {
+    code: emitCode,
+    value: id,
+  });
+};
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
-    <h2 class="-my-3 flow-root">
-      <button
-        type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
+  <div class="self-stretch flex flex-col justify-start items-start gap-4">
+    <div class="self-stretch flex flex-col justify-center items-center">
+      <div 
+        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
         @click="toggle"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isFilterVisible"
+        :aria-controls="props.filter.code"
+        @keydown.enter="toggle"
+        @keydown.space.prevent="toggle"
       >
-        <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
-        }}</span>
-        <span class="ml-6 flex items-center">
-          <i
-            :class="[
-              !isFilterVisible
-                ? 'i-carbon-chevron-down'
-                : 'i-carbon-chevron-up',
-            ]"
-          />
-        </span>
-      </button>
-    </h2>
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" :id="props.filter.code" class="pt-6">
-        <fieldset class="space-y-4">
-          <legend class="sr-only">{{ props.filter.name }}</legend>
-          <div
-            v-for="option in props.filter.options || props.filter.entities"
-            :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
-            class="flex items-center"
-          >
-            <input
-              :id="`filter-mobile-${props.filter.code}-${option.id}`"
-              :checked="selectedOptionIds?.includes(option.id)"
-              :name="props.filter.name"
-              :value="option.name"
-              :aria-label="`${option.name} filter`"
-              type="checkbox"
-              class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-              @change="
-                emits('select-value', {
-                  code: props.filter.code,
-                  value: option.id,
-                })
-              "
-            />
-
-            <div v-if="option.media?.url">
-              <img
-                loading="lazy"
-                class="ml-2 h-4 w-4"
-                :src="option.media.url"
-                :alt="option.media.translated.alt || ''"
-                :class="{
-                  'border-blue border-2': selectedOptionIds?.includes(
-                    option.id,
-                  ),
-                }"
-              />
-            </div>
-            <div
-              v-else-if="option.colorHexCode"
-              class="ml-2 h-4 w-4"
-              :style="`background-color: ${option.colorHexCode}`"
-              :class="{
-                'border-blue border-2': selectedOptionIds?.includes(option.id),
-              }"
-            />
-            <label
-              :for="`filter-mobile-${props.filter.code}-${option.id}`"
-              class="ml-3 text-gray-600"
-            >
-              {{ getTranslatedProperty(option, "name") }}
-            </label>
+        <div class="flex-1 flex items-center gap-2.5">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            {{ props.filter.label }}
           </div>
+        </div>
+        <SwIconButton 
+          type="ghost" 
+          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+          tabindex="-1"
+        >
+          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+        </SwIconButton>
+      </div>
+    </div>
+    <transition name="filter-collapse">
+      <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
+        <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
+        <legend class="sr-only">{{ props.filter.name }}</legend>
+        <label
+          v-for="option in props.filter.options || props.filter.entities"
+          :key="`${option.id}-${isChecked(option.id)}`"
+          class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
+          @click="selectValue(option.id)"
+        >
+          <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
+            <SwCheckbox
+              :model-value="isChecked(option.id)"
+              @update:model-value="() => selectValue(option.id)"
+              @click.stop
+            />
+          </div>
+          <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">
+            <div class="inline-flex justify-start items-center gap-1">
+              <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
+                {{ getTranslatedProperty(option, 'name') }}
+              </div>
+            </div>
+          </div>
+        </label>
         </fieldset>
       </div>
     </transition>
   </div>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
