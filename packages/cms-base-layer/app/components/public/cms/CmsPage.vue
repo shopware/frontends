@@ -5,7 +5,7 @@ import {
   getProductListingFromCmsPage,
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
-import { computed, h, onUnmounted, resolveComponent, watch } from "vue";
+import { computed, h, resolveComponent, watchEffect } from "vue";
 import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -27,25 +27,10 @@ function updateListingContext(content: Schemas["CmsPage"]) {
   }
 }
 
-// Initialize context on mount
-updateListingContext(props.content);
-
 // Watch for content changes and update context
-watch(
-  () => props.content,
-  (newContent) => {
-    updateListingContext(newContent);
-  },
-  { deep: true },
-);
-
-// Watch for route changes
-watch(
-  () => routeName.value,
-  () => {
-    updateListingContext(props.content);
-  },
-);
+watchEffect(() => {
+  updateListingContext(props.content);
+});
 
 const cmsSections = computed<Schemas["CmsSection"][]>(() => {
   return props.content?.sections || [];
