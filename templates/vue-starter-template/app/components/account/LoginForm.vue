@@ -6,7 +6,7 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { mergeWishlistProducts } = useWishlist();
 const { login } = useUser();
-const { pushError, pushSuccess } = useNotifications();
+const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 
 const emit = defineEmits<{
@@ -20,13 +20,7 @@ async function handleLogin(formData: { username: string; password: string }) {
     mergeWishlistProducts();
     emit("close");
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      for (const errorItem of error.details.errors) {
-        if (errorItem?.detail) {
-          pushError(errorItem.detail);
-        }
-      }
-    }
+    apiErrorHandler(error, "account_login", pushError);
   }
 }
 
