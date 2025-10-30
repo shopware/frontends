@@ -46,7 +46,10 @@ function handleMyAccountClick() {
             <FormIconButton type="ghost" @click="handleMyAccountClick"
               ><LayoutHeaderMyAccountIcon
             /></FormIconButton>
-            <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+            <NuxtLink :to="formatLink('/wishlist')">
+              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+            </NuxtLink>
+
             <LayoutHeaderCartIcon :counter="cartCount" />
             <LayoutHeaderMobileMenuIcon
               class="hidden max-lg:block"
