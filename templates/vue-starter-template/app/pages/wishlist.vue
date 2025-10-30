@@ -34,30 +34,36 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   loading.value = false;
 };
 
-watch(items, (updatedItems) => {
-  if (updatedItems.length > 0) {
-    loadProductsByItemIds(updatedItems);
-  }
-});
+watch(
+  items,
+  (updatedItems) => {
+    if (updatedItems.length > 0) {
+      loadProductsByItemIds(updatedItems);
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto mb-10 px-6 sm:px-0">
     <AccountPageHeader
       class="mb-14"
       :title="$t('wishlist.header')"
       :subtitle="$t('wishlist.subHeader')"
     />
-    <div v-if="loading">
-      <div
-        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-secondary-500 mx-auto mt-5"
-      />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <template v-if="loading">
+        <WishlistProductTileSkeleton v-for="n in 8" :key="n" />
+      </template>
+      <template v-else>
+        <WishlistProductTile
+          v-for="product in products"
+          :key="product.id"
+          :product
+        />
+      </template>
     </div>
-
-    aaa
-    {{ products }}
-    <ProductTile v-for="product in products" :key="product.id" :product />
-
-    {{ items }}
   </div>
 </template>
