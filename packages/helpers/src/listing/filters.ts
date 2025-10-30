@@ -21,6 +21,8 @@ type ListingFilter = {
   code: string;
   id: string;
   name: string;
+  options?: Array<{ id: string; translated?: { name?: string } }>;
+  entities?: Array<{ id: string; translated?: { name?: string } }>;
 };
 
 const getFilter = <T extends { name: string; id: string }>(
@@ -55,7 +57,7 @@ export function getListingFilters<T extends Record<string, any>>(
   aggregations: T | undefined | null,
 ): ListingFilter[] {
   if (!aggregations) {
-    return [];
+    return [] as ListingFilter[];
   }
 
   const transformedFilters: ListingFilter[] = [];

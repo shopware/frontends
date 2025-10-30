@@ -25,6 +25,9 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  alias: {
+    "@cms-assets": resolve(layerDir, "app/assets"),
+  },
   build: {
     transpile: ["@shopware/cms-base-layer"],
   },
