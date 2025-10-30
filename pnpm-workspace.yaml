@@ -11,3 +11,4 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
+- '@astrojs/mdx'
