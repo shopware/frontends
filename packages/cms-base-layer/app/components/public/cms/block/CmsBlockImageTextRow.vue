@@ -16,16 +16,16 @@ const rightImageContent = getSlotContent("right-image");
 const rightTextContent = getSlotContent("right-text");
 </script>
 <template>
-  <div class="cms-block-image-text-row grid md:grid-cols-3 gap-10">
-    <div class="cms-block-image-text-row__column">
+  <div class="cms-block-image-text-row flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
       <CmsGenericElement :content="leftImageContent" />
       <CmsGenericElement :content="leftTextContent" />
     </div>
-    <div class="cms-block-image-text-row__column">
+    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
       <CmsGenericElement :content="centerImageContent" />
       <CmsGenericElement :content="centerTextContent" />
     </div>
-    <div class="cms-block-image-text-row__column">
+    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
       <CmsGenericElement :content="rightImageContent" />
       <CmsGenericElement :content="rightTextContent" />
     </div>
@@ -33,11 +33,15 @@ const rightTextContent = getSlotContent("right-text");
 </template>
 
 <style scoped>
-.cms-block-image-text-row .cms-element-image {
-  @apply object-cover;
+.cms-block-image-text-row :deep(.cms-element-image) {
+  @apply relative h-full w-full;
 }
 
-.cms-block-image-text-row .cms-block-image-text-row__column div:first-child {
-  @apply mb-5;
+.cms-block-image-text-row :deep(.cms-element-image img) {
+  @apply w-full h-full object-cover;
+}
+
+.cms-block-image-text-row :deep(.cms-element-text) {
+  @apply self-stretch min-h-12 inline-flex justify-start items-center;
 }
 </style>

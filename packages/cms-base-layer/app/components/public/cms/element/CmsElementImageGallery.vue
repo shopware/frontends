@@ -91,9 +91,9 @@ function onTouchEnd() {
               3D
             </span>
           </div>
-          <img v-else-if="currentImage" class="w-full h-full absolute inset-0 object-cover" :src="currentImage.url"
+          <NuxtImg v-else-if="currentImage" class="w-full h-full absolute inset-0 object-cover" :src="currentImage.url"
             :key="currentImage.url" :alt="currentImage.alt || 'Product image'" />
-          <img v-else class="w-full h-full absolute inset-0 object-cover" src="https://placehold.co/600x500"
+          <NuxtImg v-else class="w-full h-full absolute inset-0 object-cover" src="https://placehold.co/600x500"
             alt="Placeholder image" />
         </Transition>
 
