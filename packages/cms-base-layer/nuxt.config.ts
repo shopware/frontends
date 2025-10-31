@@ -6,7 +6,7 @@ import { defineNuxtConfig } from "nuxt/config";
 const layerDir = fileURLToPath(new URL("./", import.meta.url));
 
 export default defineNuxtConfig({
-  modules: ["@unocss/nuxt"],
+  modules: ["@unocss/nuxt", "@nuxt/image"],
   components: [
     {
       path: resolve(layerDir, "app/components"),

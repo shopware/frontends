@@ -64,7 +64,7 @@ const SwMedia3D = computed(() => {
   <component
     :is="imageLink.url ? 'a' : 'div'"
     v-if="imageAttrs.src"
-    class="cms-element-image relative h-full w-full"
+    class="cms-element-image self-stretch relative"
     :class="{
       'flex justify-center items-center': imageGallery,
     }"
@@ -75,7 +75,7 @@ const SwMedia3D = computed(() => {
       v-if="isVideoElement"
       controls
       :class="{
-        'h-full w-full': true,
+        'w-full h-full': true,
         'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
       }"
@@ -86,14 +86,14 @@ const SwMedia3D = computed(() => {
     <ClientOnly v-else-if="isSpatial(props.content.data.media)">
       <component :is="SwMedia3D" :src="props.content.data.media.url" />
     </ClientOnly>
-    <img
+    <NuxtImg
       v-else
       ref="imageElement"
       loading="lazy"
       :class="{
         'w-full h-full': !imageGallery,
         'w-4/5': imageGallery,
-        'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
+        'absolute left-0 top-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
         'object-contain': imageGallery,
       }"
