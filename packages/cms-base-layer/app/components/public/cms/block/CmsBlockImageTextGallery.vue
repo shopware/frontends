@@ -49,7 +49,7 @@ function onImageClick(
     class="cms-block-image-text-gallery flex flex-col sm:flex-row justify-start items-start gap-6 w-full"
     :style="{ backgroundColor: content.backgroundColor || '' }"
   >
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsElementImage
         :content="leftImageContent"
         :style="{ cursor: leftImageContent.data?.url && 'pointer' }"
@@ -60,7 +60,7 @@ function onImageClick(
         class="self-stretch"
       />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsElementImage
         :content="centerImageContent"
         :style="{
@@ -73,7 +73,7 @@ function onImageClick(
         class="self-stretch"
       />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsElementImage
         :content="rightImageContent"
         :style="{ cursor: rightImageContent.data?.url && 'pointer' }"

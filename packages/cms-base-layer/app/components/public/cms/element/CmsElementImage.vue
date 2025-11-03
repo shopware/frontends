@@ -88,6 +88,7 @@ const SwMedia3D = computed(() => {
     <NuxtImg
       v-else
       ref="imageElement"
+      preset="productDetail"
       loading="lazy"
       :class="{
         'w-full h-full': !imageGallery,

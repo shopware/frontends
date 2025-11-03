@@ -17,15 +17,15 @@ const rightTextContent = getSlotContent("right-text");
 </script>
 <template>
   <div class="cms-block-image-text-row flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsGenericElement :content="leftImageContent" />
       <CmsGenericElement :content="leftTextContent" />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsGenericElement :content="centerImageContent" />
       <CmsGenericElement :content="centerTextContent" />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <CmsGenericElement :content="rightImageContent" />
       <CmsGenericElement :content="rightTextContent" />
     </div>

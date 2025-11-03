@@ -17,7 +17,7 @@ const rightImage = getSlotContent("right-image");
 </script>
 <template>
   <div class="cms-block-image-text-bubble flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="leftImage"
@@ -26,7 +26,7 @@ const rightImage = getSlotContent("right-image");
       </div>
       <CmsGenericElement :content="leftText" class="self-stretch" />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="centerImage"
@@ -35,7 +35,7 @@ const rightImage = getSlotContent("right-image");
       </div>
       <CmsGenericElement :content="centerText" class="self-stretch" />
     </div>
-    <div class="w-full sm:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:flex-1">
       <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="rightImage"

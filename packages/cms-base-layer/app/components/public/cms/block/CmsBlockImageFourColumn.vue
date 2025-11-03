@@ -15,16 +15,16 @@ const centerRightContent = getSlotContent("center-right");
 </script>
 <template>
   <div class="cms-block-image-four-column flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap justify-start items-start gap-6 w-full">
-    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
       <CmsGenericElement :content="leftContent" />
     </div>
-    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
       <CmsGenericElement :content="centerLeftContent" />
     </div>
-    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
       <CmsGenericElement :content="centerRightContent" />
     </div>
-    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1 flex flex-col justify-center items-start gap-4">
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
       <CmsGenericElement :content="rightContent" />
     </div>
   </div>
