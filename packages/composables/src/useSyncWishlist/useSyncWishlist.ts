@@ -35,12 +35,26 @@ export type UseSyncWishlistReturn = {
    * Current page number
    */
   currentPage: ComputedRef<number>;
+  /**
+   * Limit number of products per page
+   */
+  limit: ComputedRef<number>;
+  /**
+   * Wishlist products
+   */
+  products: ComputedRef<Schemas["Product"][]>;
+  /**
+   * Indicates if the wishlist is loading
+   */
+  isLoading: Ref<boolean>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
+const _wishlistProducts: Ref<Schemas["Product"][]> = ref([]);
 const _currentPage: Ref<number> = ref(1);
+const _limit: Ref<number> = ref(15);
 const totalWishlistItemsCount: Ref<number> = ref(0);
-
+const isLoading: Ref<boolean> = ref(false);
 /**
  * Composable to manage wishlist via API
  * @public
@@ -81,8 +95,10 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
       _wishlistItems.value = [
         ...response.data.products.elements.map((element) => element.id),
       ];
+      _wishlistProducts.value = response.data.products.elements;
       totalWishlistItemsCount.value = response.data.products.total ?? 0;
       _currentPage.value = response.data.products.page ?? 1;
+      _limit.value = response.data.products.limit ?? 15;
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist
@@ -104,14 +120,19 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
   const items = computed(() => _wishlistItems.value);
   const count = computed(() => totalWishlistItemsCount.value);
   const currentPage = computed(() => _currentPage.value);
+  const products = computed(() => _wishlistProducts.value);
+  const limit = computed(() => _limit.value);
 
   return {
     getWishlistProducts,
     addToWishlistSync,
     removeFromWishlistSync,
     mergeWishlistProducts,
+    products,
     items,
     count,
     currentPage,
+    isLoading,
+    limit,
   };
 }

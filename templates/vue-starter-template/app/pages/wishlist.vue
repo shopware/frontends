@@ -1,48 +1,21 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
-
-// [TODO] prevent loading wishlist items from index
-
-const loading = ref(true);
-const products = ref<Schemas["Product"][]>([]);
-const { apiClient } = useShopwareContext();
+const loading = ref(false);
 
 const {
-  items,
-  clearWishlist,
   getWishlistProducts,
   currentPage,
   totalPagesCount,
-  canSyncWishlist,
+  productsSync,
+  limit,
 } = useWishlist();
 
-const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
-  loading.value = true;
+async function handleChangePage(page: number): Promise<void> {
+  await getWishlistProducts({ page, limit: limit.value });
+}
 
-  try {
-    const { data } = await apiClient.invoke("readProduct post /product", {
-      body: { ids: itemIds || items.value },
-    });
-
-    if (data?.elements) {
-      products.value = data.elements;
-    }
-  } catch (error) {
-    // [TODO] handle error here
-  }
-
-  loading.value = false;
-};
-
-watch(
-  items,
-  (updatedItems) => {
-    if (updatedItems.length > 0) {
-      loadProductsByItemIds(updatedItems);
-    }
-  },
-  { immediate: true },
-);
+async function handleChangeSize(size: number): Promise<void> {
+  await getWishlistProducts({ page: currentPage.value, limit: size });
+}
 </script>
 
 <template>
@@ -53,17 +26,29 @@ watch(
       :subtitle="$t('wishlist.subHeader')"
     />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10"
+    >
       <template v-if="loading">
         <WishlistProductTileSkeleton v-for="n in 8" :key="n" />
       </template>
       <template v-else>
         <WishlistProductTile
-          v-for="product in products"
+          v-for="product in productsSync"
           :key="product.id"
           :product
         />
       </template>
     </div>
+
+    <SharedElementsNavigation
+      class="block"
+      :show-page-size-selector="true"
+      :pages="totalPagesCount"
+      :current-page="currentPage"
+      :page-size="limit"
+      @change-page="handleChangePage"
+      @change-size="handleChangeSize"
+    />
   </div>
 </template>
