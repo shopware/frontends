@@ -53,7 +53,7 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
       <div ref="imageElement" class="w-full h-full absolute top-0 left-0">
         <NuxtImg preset="productCard" loading="lazy"
-          class="w-full h-full object-cover"
+          class="w-full h-full"
           :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
       </div>
     </RouterLink>

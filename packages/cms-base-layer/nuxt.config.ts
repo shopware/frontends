@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 
   // @ts-ignore - @nuxt/image config may not be typed in some layer contexts
   image: {
-    quality: 80,
+    quality: 90,
     formats: ["webp", "avif", "jpg"],
     // Custom Shopware provider that maps Nuxt Image modifiers to Shopware query parameters
     provider: "shopware",
@@ -36,7 +36,7 @@ export default defineNuxtConfig({
       productCard: {
         modifiers: {
           format: "webp",
-          quality: 85,
+          quality: 90,
           fit: "cover",
         },
       },
@@ -50,7 +50,7 @@ export default defineNuxtConfig({
       thumbnail: {
         modifiers: {
           format: "webp",
-          quality: 75,
+          quality: 90,
           width: 150,
           height: 150,
           fit: "cover",
@@ -59,7 +59,7 @@ export default defineNuxtConfig({
       hero: {
         modifiers: {
           format: "webp",
-          quality: 90,
+          quality: 95,
           fit: "cover",
         },
       },
