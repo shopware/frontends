@@ -25,32 +25,25 @@ export function getProductListingFromCmsPage<T = unknown>(
   }
 
   const page = cmsPage as {
-    sections: Array<{
-      blocks?: Array<{
-        slots?: Array<{
+    sections: {
+      blocks?: {
+        slots?: {
           type?: string;
           data?: Record<string, unknown> | null;
-        }>;
-      }>;
-    }>;
+        }[];
+      }[];
+    }[];
   };
 
-  // Optimized: avoid creating temporary arrays, use optional chaining
-  for (const section of page.sections) {
-    if (!section.blocks?.length) continue;
+  const listing = page.sections
+    .flatMap((section) => section.blocks ?? [])
+    .flatMap((block) => block.slots ?? [])
+    .find((slot) => slot.type === "product-listing")?.data?.listing as
+    | T
+    | undefined;
 
-    for (const block of section.blocks) {
-      if (!block.slots?.length) continue;
-
-      for (const slot of block.slots) {
-        if (slot.type === "product-listing") {
-          const listing = slot.data?.listing;
-          if (listing) {
-            return listing as T;
-          }
-        }
-      }
-    }
+  if (listing) {
+    return listing;
   }
 
   return null;
