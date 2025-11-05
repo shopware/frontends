@@ -26,7 +26,14 @@ export const getImage: ProviderGetImage = (src, { modifiers = {} } = {}) => {
 
   const query = params.toString();
 
+  if (!query) {
+    return { url: src };
+  }
+
+  // Check if URL already has query parameters
+  const separator = src.includes("?") ? "&" : "?";
+
   return {
-    url: query ? `${src}?${query}` : src,
+    url: `${src}${separator}${query}`,
   };
 };
