@@ -4,9 +4,8 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
-import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
-import { computed, provide, reactive, ref, useTemplateRef } from "vue";
+import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
 import { useCategoryListing } from "#imports";
@@ -25,6 +24,15 @@ type Translations = {
   };
 };
 
+type FilterState = {
+  manufacturer: Set<string>;
+  properties: Set<string>;
+  "min-price": number | undefined;
+  "max-price": number | undefined;
+  rating: number | undefined;
+  "shipping-free": boolean | undefined;
+};
+
 let translations: Translations = {
   listing: {
     filters: "Filters",
@@ -38,10 +46,8 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 const route = useRoute();
 const router = useRouter();
 
-const isSortMenuOpen = ref(false);
 const {
   changeCurrentSortingOrder,
-  filtersToQuery,
   getCurrentFilters,
   getCurrentSortingOrder,
   getInitialFilters,
@@ -49,27 +55,20 @@ const {
   search,
 } = useCategoryListing();
 
-const sidebarSelectedFilters: UnwrapNestedRefs<{
-  [key: string]: Set<string> | string | number | boolean | undefined;
-}> = reactive<{
-  manufacturer: Set<string>;
-  properties: Set<string>;
-  "min-price": string | number | undefined;
-  "max-price": string | number | undefined;
-  rating: string | number | undefined;
-  "shipping-free": boolean | undefined;
-}>({
-  manufacturer: new Set(),
-  properties: new Set(),
-  "min-price": undefined,
-  "max-price": undefined,
-  rating: undefined,
-  "shipping-free": undefined,
-});
+const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
+  reactive<FilterState>({
+    manufacturer: new Set(),
+    properties: new Set(),
+    "min-price": undefined,
+    "max-price": undefined,
+    rating: undefined,
+    "shipping-free": undefined,
+  });
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
-    selectedOptionIds.value.length !== 0 ||
+    sidebarSelectedFilters.manufacturer.size !== 0 ||
+    sidebarSelectedFilters.properties.size !== 0 ||
     sidebarSelectedFilters["max-price"] ||
     sidebarSelectedFilters["min-price"] ||
     sidebarSelectedFilters.rating ||
@@ -99,53 +98,100 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
   }));
 
 for (const param in route.query) {
-  if (Object.prototype.hasOwnProperty.call(sidebarSelectedFilters, param)) {
-    if (
-      sidebarSelectedFilters[param] &&
-      typeof sidebarSelectedFilters[param] === "object"
-    ) {
-      const elements = (route.query[param] as unknown as string).split("|");
-      for (const element of elements) {
-        sidebarSelectedFilters[param].add(element);
+  if (param in sidebarSelectedFilters) {
+    const queryValue = route.query[param];
+
+    // Skip arrays
+    if (Array.isArray(queryValue)) continue;
+
+    if (["manufacturer", "properties"].includes(param)) {
+      if (typeof queryValue === "string") {
+        const elements = queryValue.split("|");
+        const targetSet = sidebarSelectedFilters[
+          param as keyof FilterState
+        ] as Set<string>;
+        for (const element of elements) {
+          targetSet.add(element);
+        }
       }
-    } else {
-      const queryValue = route.query[param];
-      if (queryValue !== null && !Array.isArray(queryValue)) {
-        sidebarSelectedFilters[param] = queryValue;
+    } else if (queryValue && typeof queryValue === "string") {
+      // Fix: Use specific property assignments instead of generic keyof
+      if (param === "min-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["min-price"] = numValue;
+        }
+      } else if (param === "max-price") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters["max-price"] = numValue;
+        }
+      } else if (param === "rating") {
+        const numValue = Number(queryValue);
+        if (!Number.isNaN(numValue)) {
+          sidebarSelectedFilters.rating = numValue;
+        }
+      } else if (param === "shipping-free") {
+        sidebarSelectedFilters["shipping-free"] = queryValue === "true";
       }
     }
   }
 }
 
-const onOptionSelectToggle = async ({
-  code,
-  value,
-}: {
+const handleFilterChange = async (event: {
   code: string;
   value: string | number | boolean;
 }) => {
-  if (!["properties", "manufacturer"].includes(code)) {
-    sidebarSelectedFilters[code] = value;
-  } else {
-    const filterSet = sidebarSelectedFilters[code] as Set<string>;
-    const stringValue = String(value);
-    if (filterSet?.has(stringValue)) {
-      filterSet.delete(stringValue);
-    } else {
-      filterSet?.add(stringValue);
-    }
-  }
+  try {
+    const { code, value } = event;
 
-  await executeSearch();
+    if (code === "manufacturer" || code === "properties") {
+      const filterSet = sidebarSelectedFilters[code];
+      const stringValue = String(value);
+
+      if (filterSet.has(stringValue)) {
+        filterSet.delete(stringValue);
+      } else {
+        filterSet.add(stringValue);
+      }
+    } else if (code === "min-price" || code === "max-price") {
+      sidebarSelectedFilters[code] =
+        typeof value === "number" ? value : Number(value);
+    } else if (code === "rating") {
+      sidebarSelectedFilters.rating = Number(value);
+    } else if (code === "shipping-free") {
+      sidebarSelectedFilters["shipping-free"] = Boolean(value);
+    }
+
+    await executeSearch();
+  } catch (error) {
+    console.error("Filter update failed:", error);
+  }
 };
 
 const executeSearch = async () => {
-  await search(searchCriteriaForRequest.value);
-  const query = filtersToQuery(searchCriteriaForRequest.value);
-  const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
-  await router.push({
-    query: queryWithoutLimit as LocationQueryRaw,
-  });
+  try {
+    await search(searchCriteriaForRequest.value);
+
+    // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
+    const criteria = searchCriteriaForRequest.value;
+    const query: Record<string, unknown> = {};
+
+    if (criteria.manufacturer) query.manufacturer = criteria.manufacturer;
+    if (criteria.properties) query.properties = criteria.properties;
+    if (criteria["min-price"]) query["min-price"] = criteria["min-price"];
+    if (criteria["max-price"]) query["max-price"] = criteria["max-price"];
+    if (criteria.rating) query.rating = criteria.rating;
+    if (criteria["shipping-free"])
+      query["shipping-free"] = criteria["shipping-free"];
+    if (criteria.order) query.order = criteria.order;
+
+    await router.push({
+      query: query as LocationQueryRaw,
+    });
+  } catch (error) {
+    console.error("Search execution failed:", error);
+  }
 };
 
 const clearFilters = () => {
@@ -160,133 +206,126 @@ const clearFilters = () => {
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",
   set: async (order: string): Promise<void> => {
-    await router.push({
-      query: {
-        ...route.query,
-        order,
-      },
-    });
+    try {
+      await router.push({
+        query: {
+          ...route.query,
+          order,
+        },
+      });
 
-    await changeCurrentSortingOrder(order, {
-      ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-      limit: route.query.limit ? Number(route.query.limit) : 15,
-    });
+      await changeCurrentSortingOrder(order, {
+        ...(route.query as unknown as operations["searchPage post /search"]["body"]),
+        limit: route.query.limit ? Number(route.query.limit) : 15,
+      });
+    } catch (error) {
+      console.error("Sorting order change failed:", error);
+    }
   },
 });
 
-const selectedOptionIds = computed(() => [
-  ...(sidebarSelectedFilters.properties as Set<string>),
-  ...(sidebarSelectedFilters.manufacturer as Set<string>),
-]);
-provide("selectedOptionIds", selectedOptionIds);
-
 async function invokeCleanFilters() {
-  clearFilters();
-  await executeSearch();
+  try {
+    clearFilters();
+    await executeSearch();
+  } catch (error) {
+    console.error("Clear filters failed:", error);
+  }
 }
+
 const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
-const dropdownElement = useTemplateRef("dropdownElement");
-onClickOutside(dropdownElement, () => {
-  isSortMenuOpen.value = false;
-});
 
-const handleSortingClick = (key: string) => {
-  currentSortingOrder.value = key;
-  isSortMenuOpen.value = false;
+const handleSortChange = (sortKey: string) => {
+  currentSortingOrder.value = sortKey;
+};
+
+const handleRemoveFilterChip = async (chip: {
+  code: string;
+  value: string | number;
+}) => {
+  if (chip.code === "properties" || chip.code === "manufacturer") {
+    const filterSet = sidebarSelectedFilters[chip.code] as Set<string>;
+    filterSet.delete(String(chip.value));
+  } else if (chip.code === "price") {
+    sidebarSelectedFilters["min-price"] = undefined;
+    sidebarSelectedFilters["max-price"] = undefined;
+  } else if (chip.code === "rating") {
+    sidebarSelectedFilters.rating = undefined;
+  } else if (chip.code === "shipping-free") {
+    sidebarSelectedFilters["shipping-free"] = undefined;
+  }
+
+  await executeSearch();
 };
 </script>
 <template>
-  <div class="bg-white">
-    <div class="mx-auto m-0" :class="{ 'px-5': isDefaultSidebarFilter }">
-      <ClientOnly>
-        <div
-          class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
-        >
-          <div class="text-4xl tracking-tight text-gray-900">
-            {{ translations.listing.filters }}
-          </div>
+  <div>
+    <!-- Active Filter Chips -->
+    <SwFilterChips
+      :filters="sidebarSelectedFilters"
+      :available-filters="getInitialFilters"
+      @remove="handleRemoveFilterChip"
+    />
 
-          <div ref="dropdownElement" class="flex items-center">
-            <div class="relative inline-block text-left">
-              <div>
-                <button
-                  type="button"
-                  @click="isSortMenuOpen = !isSortMenuOpen"
-                  class="group inline-flex justify-center bg-transparent text-base font-medium text-gray-700 hover:text-gray-900"
-                  id="menu-button"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                >
-                  {{ translations.listing.sort }}
-                  <div
-                    class="i-carbon-chevron-down h-5 w-5 ml-1"
-                    :class="{ hidden: isSortMenuOpen }"
-                  ></div>
-                  <div
-                    class="i-carbon-chevron-up h-5 w-5 ml-1"
-                    :class="{ hidden: !isSortMenuOpen }"
-                  ></div>
-                </button>
-              </div>
-              <div
-                :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-1000"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-                tabindex="-1"
-              >
-                <div class="py-1" role="none">
-                  <button
-                    v-for="sorting in getSortingOrders"
-                    :key="sorting.key"
-                    @click="handleSortingClick(sorting.key)"
-                    :class="[
-                      sorting.key === getCurrentSortingOrder
-                        ? 'font-medium text-gray-900'
-                        : 'text-gray-500',
-                    ]"
-                    class="block px-4 py-2 text-sm bg-transparent"
-                    role="menuitem"
-                    tabindex="-1"
-                  >
-                    {{ sorting.label }}
-                  </button>
-                </div>
+    <ClientOnly>
+      <template #fallback>
+        <div class="self-stretch flex flex-col justify-start items-start gap-4">
+          <div
+            class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
+            <div class="h-6 w-24 bg-surface-surface-container rounded animate-pulse"></div>
+            <div class="h-10 w-20 bg-surface-surface-container rounded animate-pulse"></div>
+          </div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div v-for="i in 5" :key="i" class="w-full">
+              <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
+                <div class="h-6 w-32 bg-surface-surface-container rounded animate-pulse"></div>
+                <div class="h-6 w-6 bg-surface-surface-container rounded animate-pulse"></div>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="flex flex-wrap" v-if="getInitialFilters.length">
-          <div
-            v-for="filter in getInitialFilters"
-            :key="`${filter?.id || filter?.code}`"
-            class="mb-2 w-full"
-          >
-            <SwProductListingFilter
-              @select-filter-value="onOptionSelectToggle"
-              :selected-filters="getCurrentFilters"
-              :filter="filter"
-              class="relative"
-            />
+      </template>
+      <div class="self-stretch flex flex-col justify-start items-start gap-4">
+        <div
+          class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
+          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+            {{ translations.listing.filters }}
           </div>
-          <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2">
-            <button
-              class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              @click="invokeCleanFilters"
-              type="button"
-            >
-              {{ translations.listing.resetFilters
-              }}<span
-                class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
-              ></span>
-            </button>
-          </div>
+          <SwSortDropdown
+            :sort-options="getSortingOrders ?? []"
+            :current-sort="getCurrentSortingOrder ?? ''"
+            :label="translations.listing.sort"
+            @sort-change="handleSortChange"
+          />
         </div>
-      </ClientOnly>
-    </div>
+      </div>
+    </ClientOnly>
+    <!-- Filters List -->
+    <ClientOnly>
+      <div v-if="!getInitialFilters.length"
+        class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+        <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+      </div>
+      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
+        <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
+          :filter="filter"
+          :selected-manufacturer="sidebarSelectedFilters.manufacturer"
+          :selected-properties="sidebarSelectedFilters.properties"
+          :selected-min-price="sidebarSelectedFilters['min-price']"
+          :selected-max-price="sidebarSelectedFilters['max-price']"
+          :selected-rating="sidebarSelectedFilters.rating"
+          :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
+          @filter-change="handleFilterChange"
+          class="w-full" />
+        <div v-if="showResetFiltersButton" class="w-full">
+          <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
+            {{ translations.listing.resetFilters }}
+            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+          </SwBaseButton>
+        </div>
+      </div>
+    </ClientOnly>
   </div>
 </template>
