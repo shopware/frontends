@@ -8,6 +8,7 @@ const { pushError, pushSuccess } = useNotifications();
 const router = useRouter();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { handleApiError } = useApiErrorsResolver("account_change_email_form");
 
 const state = ref<operations["changeEmail post /account/change-email"]["body"]>(
   {
@@ -37,7 +38,7 @@ async function handleSubmit() {
     pushSuccess($t("account.changeEmail.form.successUpdate"));
     await router.push(formatLink("/account/profile"));
   } catch (error) {
-    apiErrorHandler(error, "account_change_email_form", pushError);
+    handleApiError(error, pushError);
   }
 }
 </script>

@@ -7,6 +7,7 @@ const newsletterDisabled = ref(false);
 const { newsletterSubscribe, SUBSRIBE_KEY } = useNewsletter();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
+const { handleApiError } = useApiErrorsResolver("newsletter_box_form");
 
 const $v = useVuelidate(footerNewsletterBoxRules(), { email });
 
@@ -23,9 +24,7 @@ async function handleSubmit() {
 
       pushSuccess(t("layout.footer.newsletter.messages.subscribed"));
     } catch (error) {
-      apiErrorHandler(error, "newsletter_box", pushError);
-    } finally {
-      newsletterDisabled.value = false;
+      handleApiError(error, pushError);
     }
   }
 }

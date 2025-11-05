@@ -1,4 +1,5 @@
 import type { ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
 
 type ContextErrors = {
   [key: string]: {
@@ -8,6 +9,7 @@ type ContextErrors = {
 
 export type UseApiErrorsResolver = {
   resolveApiErrors(errors: ApiError[]): string[];
+  handleApiError(error: unknown, errorResolver: (error: string) => void): void;
 };
 
 /**
@@ -58,7 +60,24 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
     return errorsTable;
   };
 
+  function handleApiError(
+    error: unknown,
+    errorResolver: (error: string) => void,
+  ) {
+    if (error instanceof ApiClientError) {
+      const { resolveApiErrors } = useApiErrorsResolver(context);
+      const errors = resolveApiErrors(error.details.errors);
+
+      for (const errorMessage of errors) {
+        errorResolver(errorMessage);
+      }
+    } else {
+      errorResolver(t("errors.message-default") as string);
+    }
+  }
+
   return {
     resolveApiErrors,
+    handleApiError,
   };
 }

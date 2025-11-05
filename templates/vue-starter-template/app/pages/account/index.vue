@@ -10,6 +10,7 @@ const {
   SUBSRIBE_KEY,
   confirmationNeeded,
 } = useNewsletter();
+const { handleApiError } = useApiErrorsResolver("account_newsletter_form");
 
 const newsletter = ref(false);
 const newsletterDisabled = ref(false);
@@ -31,7 +32,7 @@ async function handleNewsletterChange() {
       pushSuccess(t("account.overview.newsletter.messages.unsubscribed"));
     }
   } catch (error) {
-    apiErrorHandler(error, "account_newsletter", pushError);
+    handleApiError(error, pushError);
   } finally {
     newsletterDisabled.value = false;
   }

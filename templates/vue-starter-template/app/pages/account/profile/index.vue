@@ -5,6 +5,7 @@ import { onBeforeMount } from "vue";
 
 const { user, updatePersonalInfo } = useUser();
 const { pushError, pushSuccess } = useNotifications();
+const { handleApiError } = useApiErrorsResolver("account_profile_form");
 
 type AccountType = "private" | "business";
 
@@ -66,7 +67,7 @@ async function handleSubmit() {
     );
     pushSuccess($t("account.profile.form.successUpdate"));
   } catch (error) {
-    apiErrorHandler(error, "account_profile", pushError);
+    handleApiError(error, pushError);
   }
 }
 </script>
