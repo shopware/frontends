@@ -219,6 +219,23 @@ This layer includes a custom Shopware provider for Nuxt Image that maps modifier
 
 When you use `<NuxtImg>`, the custom provider automatically converts your component props into the correct URL format for Shopware. The images are then processed on-the-fly by Shopware Cloud (SaaS) infrastructure or your configured thumbnail processor.
 
+#### 🔍 Understanding Image Processing in Shopware
+
+**Built-in Thumbnail Generation:**
+Shopware has native thumbnail generation (using GD2 or ImageMagick) that creates predefined sizes (400x400, 800x800, 1920x1920) during image upload. These thumbnails are generated once and stored on your server.
+
+**Dynamic On-the-Fly Transformations:**
+For dynamic image transformations via query parameters (like `?width=800&format=webp`), you need **remote thumbnail generation** configured:
+
+- **Shopware Cloud (SaaS)**: ✅ Fully supported out-of-the-box via Fastly CDN - all query parameters work automatically
+- **Self-hosted**: ⚠️ Requires additional setup:
+  - Install a plugin like [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessor) for on-the-fly processing, OR
+  - Configure external middleware (Thumbor, Sharp, imgproxy) via [remote thumbnail generation](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html)
+
+**Without remote thumbnail generation configured**, query parameters will be ignored and only the predefined static thumbnails will be served.
+
+> **💡 Recommendation**: If you're self-hosting Shopware and want to use dynamic image transformations with Nuxt Image modifiers, install the FroshPlatformThumbnailProcessor plugin first to enable on-the-fly processing.
+
 ### Customizing Configuration
 
 You can extend or override the default settings in your project's `nuxt.config.ts`:
