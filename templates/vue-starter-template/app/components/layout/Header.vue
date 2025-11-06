@@ -11,11 +11,6 @@ const currentMenuPosition = ref<string | undefined>(undefined);
 const mobileSearchActive = ref(false);
 const searchText = ref("");
 
-const miniCartActive = ref(false);
-function toggleMiniCart() {
-  miniCartActive.value = !miniCartActive.value;
-}
-
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -30,21 +25,13 @@ function handleMyAccountClick() {
     push(formatLink("/account"));
   }
 }
-
-const route = useRoute();
-watch(
-  () => route.path,
-  () => {
-    miniCartActive.value = false;
-  },
-);
 </script>
 
 <template>
   <div>
     <div class="border-b">
       <div
-        class="container mx-auto flex items-center justify-between py-3.5 px-6 sm:px-0 relative"
+        class="container mx-auto flex items-center justify-between py-3.5 px-6 sm:px-0"
       >
         <template v-if="!mobileSearchActive">
           <NuxtLink :to="formatLink('/')">
@@ -60,11 +47,7 @@ watch(
               ><LayoutHeaderMyAccountIcon
             /></FormIconButton>
             <LayoutHeaderWishlistIcon :counter="wishlistCount" />
-
-            <FormIconButton type="ghost" @click="toggleMiniCart">
-              <LayoutHeaderCartIcon :counter="cartCount" />
-            </FormIconButton>
-
+            <LayoutHeaderCartIcon :counter="cartCount" />
             <LayoutHeaderMobileMenuIcon
               class="hidden max-lg:block"
               @click="sideMenuController.open"
@@ -79,16 +62,6 @@ watch(
             label="Close"
           />
         </template>
-
-        <ClientOnly>
-          <KeepAlive>
-            <LayoutMiniCart
-              v-if="miniCartActive && cartCount > 0"
-              class="absolute top-full right-0"
-              @closeMiniCart="toggleMiniCart"
-            />
-          </KeepAlive>
-        </ClientOnly>
       </div>
       <ClientOnly>
         <SharedModal v-if="!isLoggedIn" :controller="loginModalController">

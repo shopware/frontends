@@ -1,5 +1,4 @@
 import account from "./account.json";
-import cart from "./cart.json";
 import checkout from "./checkout.json";
 import errors from "./errors.json";
 import form from "./form.json";
@@ -15,5 +14,4 @@ export default {
   ...form,
   ...errors,
   ...layout,
-  ...cart,
 };

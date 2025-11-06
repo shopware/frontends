@@ -61,10 +61,6 @@ export type UseCartReturn = {
    */
   removeItem(lineItem: Schemas["LineItem"]): Promise<Schemas["Cart"]>;
   /**
-   * Removes the item with the provided id from the cart
-   */
-  removeItemById(id: string): Promise<Schemas["Cart"]>;
-  /**
    * The total price of the cart (including calculated costs like shipping)
    */
   totalPrice: ComputedRef<number>;
@@ -165,18 +161,6 @@ export function useCartFunction(): UseCartReturn {
       "removeLineItem post /checkout/cart/line-item/delete",
       {
         body: { ids: [lineItem.id] },
-      },
-    );
-    _storeCart.value = data;
-    setCartErrors(data);
-    return data;
-  }
-
-  async function removeItemById(id: string) {
-    const { data } = await apiClient.invoke(
-      "removeLineItem post /checkout/cart/line-item/delete",
-      {
-        body: { ids: [id] },
       },
     );
     _storeCart.value = data;
@@ -317,7 +301,6 @@ export function useCartFunction(): UseCartReturn {
     count,
     refreshCart,
     removeItem,
-    removeItemById,
     totalPrice,
     shippingTotal,
     subtotal,
