@@ -1,0 +1,11 @@
+{
+  "cart": {
+    "miniCart": {
+      "title": "Koszyk",
+      "subtotal": "Suma",
+      "taxEstimation": "Podatki & koszty wysyłki będą obliczone przy płatności.",
+      "proceedToCheckout": "Przejdź do kasy",
+      "goToShoppingCart": "Przejdź do koszyka"
+    }
+  }
+}

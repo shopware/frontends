@@ -16,15 +16,15 @@ const emit = defineEmits<{
 <template>
   <div class="flex gap-4">
     <NuxtImg
-      :src="getSmallestThumbnailUrl(item.cover?.media)"
+      :src="getSmallestThumbnailUrl(item.cover)"
       :alt="`${item.label || item.payload.name || ''} cart item`"
       class="object-cover object-center"
       width="151"
       height="151"
     />
     <div class="grid grid-cols-2 justify-between py-2.5 grow">
-      <div class="self-stretch justify-start text-surface-on-surface">
-        {{ item.label }}
+      <div class="text-surface-on-surface">
+        <div class="line-clamp-2">{{ item.label }}</div>
       </div>
 
       <SharedPrice
@@ -33,10 +33,18 @@ const emit = defineEmits<{
       />
 
       <div class="content-end">
-        <FormQuantitySelect v-model="quantity" size="small" @update:modelValue="emit('updateQuantity', item.id, quantity)" />
+        <FormQuantitySelect
+          v-model="quantity"
+          size="small"
+          @update:modelValue="emit('updateQuantity', item.id, quantity)"
+        />
       </div>
       <div class="content-end text-right">
-        <FormLinkButton class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none" label="Remove" @click="emit('remove', item.id)" />
+        <FormLinkButton
+          class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none"
+          label="Remove"
+          @click="emit('remove', item.id)"
+        />
       </div>
     </div>
   </div>
