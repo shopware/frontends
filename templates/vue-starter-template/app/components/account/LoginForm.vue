@@ -4,7 +4,7 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { mergeWishlistProducts } = useWishlist();
 const { login } = useUser();
-const { pushSuccess, pushError } = useNotifications();
+const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const { handleApiError } = useApiErrorsResolver("account_login_form");
 
@@ -19,7 +19,7 @@ async function handleLogin(formData: { username: string; password: string }) {
     mergeWishlistProducts();
     emit("close");
   } catch (error) {
-    handleApiError(error, pushError);
+    handleApiError(error);
   }
 }
 

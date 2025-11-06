@@ -7,7 +7,6 @@ const props = defineProps<{
 }>();
 
 const { register, isLoggedIn } = useUser();
-const { pushError } = useNotifications();
 const { handleApiError } = useApiErrorsResolver("account_registration_form");
 
 const router = useRouter();
@@ -65,7 +64,7 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
-      handleApiError(error, pushError);
+      handleApiError(error);
     } finally {
       loading.value = false;
     }

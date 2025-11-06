@@ -5,7 +5,7 @@ const email = ref("");
 const newsletterDisabled = ref(false);
 
 const { newsletterSubscribe, SUBSRIBE_KEY } = useNewsletter();
-const { pushSuccess, pushError } = useNotifications();
+const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const { handleApiError } = useApiErrorsResolver("newsletter_box_form");
 
@@ -24,7 +24,7 @@ async function handleSubmit() {
 
       pushSuccess(t("layout.footer.newsletter.messages.subscribed"));
     } catch (error) {
-      handleApiError(error, pushError);
+      handleApiError(error);
     }
   }
 }
