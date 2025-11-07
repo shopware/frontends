@@ -4,10 +4,11 @@ import { useVuelidate } from "@vuelidate/core";
 import type { operations } from "#shopware";
 
 const { apiClient } = useShopwareContext();
-const { pushError, pushSuccess } = useNotifications();
+const { pushSuccess } = useNotifications();
 const router = useRouter();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { handleApiError } = useApiErrorsResolver("account_change_email_form");
 
 const state = ref<operations["changeEmail post /account/change-email"]["body"]>(
   {
@@ -37,15 +38,7 @@ async function handleSubmit() {
     pushSuccess($t("account.changeEmail.form.successUpdate"));
     await router.push(formatLink("/account/profile"));
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      for (const errorItem of error.details.errors) {
-        if (errorItem?.detail) {
-          pushError(errorItem.detail);
-        }
-      }
-    } else {
-      pushError($t("account.changeEmail.form.errorUpdate"));
-    }
+    handleApiError(error);
   }
 }
 </script>
