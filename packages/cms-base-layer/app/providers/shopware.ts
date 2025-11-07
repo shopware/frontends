@@ -1,4 +1,4 @@
-import type { ProviderGetImage } from "@nuxt/image";
+import { defineProvider } from "@nuxt/image/runtime";
 
 /**
  * Shopware Image Provider for Nuxt Image
@@ -61,40 +61,42 @@ import type { ProviderGetImage } from "@nuxt/image";
  * @see {@link https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html | Shopware Remote Thumbnail Generation}
  * @see {@link https://image.nuxt.com/providers/custom | Nuxt Image Custom Providers}
  */
-export const getImage: ProviderGetImage = (src, { modifiers = {} } = {}) => {
-  const params = new URLSearchParams();
+export default defineProvider(() => ({
+  getImage(src, { modifiers }, _ctx) {
+    const params = new URLSearchParams();
 
-  // Map Nuxt Image modifiers to Shopware query parameters
-  if (modifiers.width) {
-    params.set("width", String(modifiers.width));
-  }
+    // Map Nuxt Image modifiers to Shopware query parameters
+    if (modifiers.width) {
+      params.set("width", String(modifiers.width));
+    }
 
-  if (modifiers.height) {
-    params.set("height", String(modifiers.height));
-  }
+    if (modifiers.height) {
+      params.set("height", String(modifiers.height));
+    }
 
-  if (modifiers.quality) {
-    params.set("quality", String(modifiers.quality));
-  }
+    if (modifiers.quality) {
+      params.set("quality", String(modifiers.quality));
+    }
 
-  if (modifiers.format) {
-    params.set("format", String(modifiers.format));
-  }
+    if (modifiers.format) {
+      params.set("format", String(modifiers.format));
+    }
 
-  if (modifiers.fit) {
-    params.set("fit", String(modifiers.fit));
-  }
+    if (modifiers.fit) {
+      params.set("fit", String(modifiers.fit));
+    }
 
-  const query = params.toString();
+    const query = params.toString();
 
-  if (!query) {
-    return { url: src };
-  }
+    if (!query) {
+      return { url: src };
+    }
 
-  // Check if URL already has query parameters
-  const separator = src.includes("?") ? "&" : "?";
+    // Check if URL already has query parameters
+    const separator = src.includes("?") ? "&" : "?";
 
-  return {
-    url: `${src}${separator}${query}`,
-  };
-};
+    return {
+      url: `${src}${separator}${query}`,
+    };
+  },
+}));

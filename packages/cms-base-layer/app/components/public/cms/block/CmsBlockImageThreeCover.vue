@@ -28,7 +28,7 @@ const centerContent = getSlotContent("center");
 
 <style scoped>
 .cms-block-image-three-cover :deep(.cms-element-image) {
-  @apply aspect-square object-cover relative h-full w-full;
+  @apply aspect-square relative h-full w-full;
 }
 
 .cms-block-image-three-cover :deep(.cms-element-image img) {

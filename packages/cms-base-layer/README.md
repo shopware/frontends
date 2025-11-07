@@ -150,10 +150,10 @@ This layer includes [Nuxt Image](https://image.nuxt.com/) configuration optimize
 The layer comes pre-configured with optimized settings. No additional setup is required! The configuration includes:
 
 **Available Presets:**
-- `productCard` - Product listing images (WebP, quality 85, cover fit)
+- `productCard` - Product listing images (WebP, quality 90, cover fit)
 - `productDetail` - Product detail page images (WebP, quality 90, contain fit)
-- `thumbnail` - Small thumbnails (150x150, WebP, quality 75)
-- `hero` - Hero banners (WebP, quality 90, cover fit)
+- `thumbnail` - Small thumbnails (150x150, WebP, quality 90)
+- `hero` - Hero banners (WebP, quality 95, cover fit)
 
 **Responsive Breakpoints:**
 - `xs: 320px`, `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`, `xxl: 1536px`
