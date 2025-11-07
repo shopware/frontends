@@ -14,9 +14,10 @@ const $v = useVuelidate(footerNewsletterBoxRules(), { email });
 async function handleSubmit() {
   $v.value.$touch();
   const valid = await $v.value.$validate();
-  console.log(valid);
+
   if (valid) {
     try {
+      newsletterDisabled.value = true;
       await newsletterSubscribe({
         email: email.value,
         option: SUBSRIBE_KEY,
@@ -25,6 +26,8 @@ async function handleSubmit() {
       pushSuccess(t("layout.footer.newsletter.messages.subscribed"));
     } catch (error) {
       handleApiError(error);
+    } finally {
+      newsletterDisabled.value = false;
     }
   }
 }
