@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
+const { handleApiError } = useApiErrorsResolver("wishlist");
 
 const defaultLimit = 15;
 const defaultPage = 1;
@@ -13,6 +14,7 @@ const {
   totalPagesCount,
   productsSync,
   limit,
+  items,
 } = useWishlist();
 
 const initialPage = route.query.p ? Number(route.query.p) : defaultPage;
@@ -28,7 +30,7 @@ async function handleChangePage(page: number): Promise<void> {
       limit: limit.value,
     },
   });
-  getWishlistProductsProxy();
+  getWishlistProductsProxy({ page });
 }
 
 async function handleChangeSize(size: number): Promise<void> {
@@ -39,32 +41,35 @@ async function handleChangeSize(size: number): Promise<void> {
       limit: size,
     },
   });
-  await getWishlistProductsProxy();
+  await getWishlistProductsProxy({ limit: size });
 }
 
-async function getWishlistProductsProxy() {
+async function getWishlistProductsProxy(options?: {
+  page?: number;
+  limit?: number;
+}) {
   loading.value = true;
   try {
     await getWishlistProducts({
-      page: initialPage,
-      limit: initialLimit,
+      page: options?.page ?? initialPage,
+      limit: options?.limit ?? initialLimit,
     });
+
+    // Check if it is not out of scope
+    if (items.value.length === 0 && currentPage.value > 1) {
+      await router.push(route.path);
+      await window.location.reload();
+    }
   } catch (error) {
-    console.error(error);
-    // TODO: handle error
+    handleApiError(error);
   } finally {
     loading.value = false;
   }
 }
 
-onMounted(async () => {
-  loading.value = true;
-  await getWishlistProducts({
-    page: initialPage,
-    limit: initialLimit,
-  });
-  loading.value = false;
-});
+loading.value = true;
+await getWishlistProductsProxy({ page: initialPage, limit: initialLimit });
+loading.value = false;
 </script>
 
 <template>

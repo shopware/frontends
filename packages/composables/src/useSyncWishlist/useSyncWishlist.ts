@@ -1,4 +1,3 @@
-import { ApiClientError } from "@shopware/api-client";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useShopwareContext } from "#imports";
@@ -87,25 +86,17 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
   async function getWishlistProducts(
     defaultSearchCriteria?: Schemas["Criteria"],
   ) {
-    try {
-      const response = await apiClient.invoke(
-        "readCustomerWishlist post /customer/wishlist",
-        { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
-      );
-      _wishlistItems.value = [
-        ...response.data.products.elements.map((element) => element.id),
-      ];
-      _wishlistProducts.value = response.data.products.elements;
-      totalWishlistItemsCount.value = response.data.products.total ?? 0;
-      _currentPage.value = response.data.products.page ?? 1;
-      _limit.value = response.data.products.limit ?? 15;
-    } catch (e) {
-      if (e instanceof ApiClientError) {
-        // If 404 ignore printing error and reset wishlist
-        if (e.status !== 404) console.error(e);
-        _wishlistItems.value = [];
-      }
-    }
+    const response = await apiClient.invoke(
+      "readCustomerWishlist post /customer/wishlist",
+      { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
+    );
+    _wishlistItems.value = [
+      ...response.data.products.elements.map((element) => element.id),
+    ];
+    _wishlistProducts.value = response.data.products.elements;
+    totalWishlistItemsCount.value = response.data.products.total ?? 0;
+    _currentPage.value = response.data.products.page ?? 1;
+    _limit.value = response.data.products.limit ?? 15;
   }
 
   async function mergeWishlistProducts(productIds: string[]) {
