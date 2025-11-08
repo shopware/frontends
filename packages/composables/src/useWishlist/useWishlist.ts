@@ -40,6 +40,14 @@ export type UseWishlistReturn = {
    * Indicates if the wishlist can be synced
    */
   canSyncWishlist: ComputedRef<boolean>;
+  /**
+   * Wishlist products
+   */
+  productsSync: ComputedRef<Schemas["Product"][]>;
+  /**
+   * Limit number of products per page
+   */
+  limit: ComputedRef<number>;
 };
 
 /**
@@ -65,21 +73,25 @@ export function useWishlist(): UseWishlistReturn {
     removeFromWishlistSync,
     count: countSync,
     currentPage,
+    products: productsSync,
+    limit: limitSync,
   } = useSyncWishlist();
 
   const limit = ref<number>(15);
 
   const getWishlistProducts = async (query?: Schemas["Criteria"]) => {
-    const wishlistQuery = {} as Schemas["Criteria"];
-    if (query) {
-      defu(wishlistQuery, query);
-    }
+    let wishlistQuery = {
+      limit: limit.value,
+    } as Schemas["Criteria"];
+
+    wishlistQuery = defu(query, wishlistQuery);
+
     if (query?.limit) {
       limit.value = query.limit;
     }
 
     if (canSyncWishlist.value) {
-      await getWishlistProductsSync(query);
+      await getWishlistProductsSync(wishlistQuery);
     } else {
       getWishlistProductsLocal();
     }
@@ -124,5 +136,7 @@ export function useWishlist(): UseWishlistReturn {
     totalPagesCount,
     count,
     canSyncWishlist,
+    productsSync,
+    limit: limitSync,
   };
 }
