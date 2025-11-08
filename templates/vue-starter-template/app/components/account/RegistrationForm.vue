@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
 
@@ -8,7 +7,7 @@ const props = defineProps<{
 }>();
 
 const { register, isLoggedIn } = useUser();
-const { pushError } = useNotifications();
+const { handleApiError } = useApiErrorsResolver("account_registration_form");
 
 const router = useRouter();
 const loading = ref<boolean>();
@@ -50,8 +49,6 @@ const $v = useVuelidate(
   registrationFormRules(state.accountType, state.billingAddress.countryId),
   state,
 );
-const { resolveApiErrors } = useApiErrorsResolver("account_login");
-
 const invokeSubmit = async () => {
   $v.value.$touch();
   const valid = await $v.value.$validate();
@@ -67,12 +64,7 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
-      if (error instanceof ApiClientError) {
-        const errors = resolveApiErrors(error.details.errors);
-        for (const error of errors) {
-          pushError(error);
-        }
-      }
+      handleApiError(error);
     } finally {
       loading.value = false;
     }

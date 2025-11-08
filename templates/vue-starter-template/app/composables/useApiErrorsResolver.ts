@@ -1,4 +1,5 @@
 import type { ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
 
 type ContextErrors = {
   [key: string]: {
@@ -8,6 +9,7 @@ type ContextErrors = {
 
 export type UseApiErrorsResolver = {
   resolveApiErrors(errors: ApiError[]): string[];
+  handleApiError(error: unknown, errorResolver?: (error: string) => void): void;
 };
 
 /**
@@ -22,6 +24,7 @@ const contextErrors: ContextErrors = {
 export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
   const { $i18n } = useNuxtApp();
   const { t, te } = $i18n;
+  const { pushError } = useNotifications();
 
   const resolveApiErrors = (errors: ApiError[]) => {
     const errorsTable = errors.map(({ detail, code, meta }) => {
@@ -58,7 +61,26 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
     return errorsTable;
   };
 
+  function handleApiError(
+    error: unknown,
+    errorResolver?: (error: string) => void,
+  ) {
+    const localErrorResolver = errorResolver || pushError;
+
+    if (error instanceof ApiClientError) {
+      const { resolveApiErrors } = useApiErrorsResolver(context);
+      const errors = resolveApiErrors(error.details.errors);
+
+      for (const errorMessage of errors) {
+        localErrorResolver(errorMessage);
+      }
+    } else {
+      localErrorResolver(t("errors.message-default") as string);
+    }
+  }
+
   return {
     resolveApiErrors,
+    handleApiError,
   };
 }
