@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   // @ts-ignore - @nuxt/image config may not be typed in some layer contexts
   image: {
     quality: 90,
-    formats: ["webp", "avif", "jpg"],
+    format: ["webp", "avif", "jpg"],
     // Custom Shopware provider that maps Nuxt Image modifiers to Shopware query parameters
     provider: "shopware",
     providers: {

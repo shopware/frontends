@@ -14,7 +14,7 @@ const props = defineProps<{
 const defaultLimit = 15;
 const defaultPage = 1;
 const defaultOrder = "name-asc";
-const productListElement = useTemplateRef("productListElement");
+const productListElement = useTemplateRef<HTMLDivElement>("productListElement");
 
 type Translations = {
   listing: {

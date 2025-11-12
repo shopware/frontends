@@ -26,7 +26,7 @@ const {
 } = useCmsElementImage(props.content);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
-const imageElement = useTemplateRef("imageElement");
+const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
 
 function roundUp(num: number) {

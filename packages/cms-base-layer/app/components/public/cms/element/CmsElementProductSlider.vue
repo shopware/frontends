@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 const { getConfigValue } = useCmsElementConfig(props.content);
 
-const productSlider = useTemplateRef("productSlider");
+const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
 const slidesToShow = ref<number>();
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
