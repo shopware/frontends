@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 
 const email = ref("");
 const newsletterDisabled = ref(false);
 
 const { newsletterSubscribe, SUBSRIBE_KEY } = useNewsletter();
-const { pushSuccess, pushError } = useNotifications();
-const { resolveApiErrors } = useApiErrorsResolver("newsletter_box");
+const { pushSuccess } = useNotifications();
 const { t } = useI18n();
+const { handleApiError } = useApiErrorsResolver("newsletter_box_form");
 
 const $v = useVuelidate(footerNewsletterBoxRules(), { email });
 
 async function handleSubmit() {
   $v.value.$touch();
   const valid = await $v.value.$validate();
-  console.log(valid);
+
   if (valid) {
     try {
+      newsletterDisabled.value = true;
       await newsletterSubscribe({
         email: email.value,
         option: SUBSRIBE_KEY,
@@ -25,12 +25,7 @@ async function handleSubmit() {
 
       pushSuccess(t("layout.footer.newsletter.messages.subscribed"));
     } catch (error) {
-      if (error instanceof ApiClientError) {
-        const errors = resolveApiErrors(error.details.errors);
-        for (const error of errors) {
-          pushError(error);
-        }
-      }
+      handleApiError(error);
     } finally {
       newsletterDisabled.value = false;
     }
