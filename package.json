@@ -42,7 +42,7 @@
     "globby": "15.0.0",
     "husky": "9.1.7",
     "prettier": "3.6.2",
-    "turbo": "2.6.0",
+    "turbo": "2.6.1",
     "vercel": "48.6.0"
   },
   "engines": {
