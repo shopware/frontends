@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const isSortMenuOpen = ref(false);
-const dropdownElement = useTemplateRef("dropdownElement");
+const dropdownElement = useTemplateRef<HTMLDivElement>("dropdownElement");
 
 onClickOutside(dropdownElement, () => {
   isSortMenuOpen.value = false;

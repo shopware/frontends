@@ -14,9 +14,15 @@ const centerContent = getSlotContent("center");
 </script>
 
 <template>
-  <div class="grid md:grid-cols-3 gap-10 place-items-center">
-    <CmsGenericElement :content="leftContent" class="w-full" />
-    <CmsGenericElement :content="centerContent" class="w-full" />
-    <CmsGenericElement :content="rightContent" class="w-full" />
+  <div class="flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="leftContent" class="w-full" />
+    </div>
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="centerContent" class="w-full" />
+    </div>
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="rightContent" class="w-full" />
+    </div>
   </div>
 </template>

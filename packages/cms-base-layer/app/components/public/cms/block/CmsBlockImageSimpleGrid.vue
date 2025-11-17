@@ -14,11 +14,17 @@ const rightContent = getSlotContent("right");
 </script>
 
 <template>
-  <div class="grid md:grid-cols-2 gap-10">
-    <div class="grid gap-10">
-      <CmsGenericElement :content="leftTopContent" />
-      <CmsGenericElement :content="leftBottomContent" />
+  <div class="flex flex-col md:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full md:flex-1 flex flex-col justify-start items-start gap-6">
+      <div class="w-full">
+        <CmsGenericElement :content="leftTopContent" />
+      </div>
+      <div class="w-full">
+        <CmsGenericElement :content="leftBottomContent" />
+      </div>
     </div>
-    <CmsGenericElement :content="rightContent" />
+    <div class="w-full md:flex-1">
+      <CmsGenericElement :content="rightContent" />
+    </div>
   </div>
 </template>

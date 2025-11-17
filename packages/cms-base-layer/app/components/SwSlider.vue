@@ -63,12 +63,12 @@ const children = computed<string[]>(() => {
   ] as string[];
 });
 const emit = defineEmits<(e: "changeSlide", index: number) => void>();
-const slider = useTemplateRef("slider");
-const imageSlider = useTemplateRef("imageSlider");
+const slider = useTemplateRef<HTMLDivElement>("slider");
+const imageSlider = useTemplateRef<HTMLDivElement>("imageSlider");
 const imageSliderTrackStyle = ref<CSSProperties>();
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
-const imageSliderTrack = useTemplateRef("imageSliderTrack");
+const imageSliderTrack = useTemplateRef<HTMLDivElement>("imageSliderTrack");
 const autoPlayInterval = ref();
 const isReady = ref<boolean>();
 const isSliding = ref<boolean>();

@@ -26,7 +26,7 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const imageElement = useTemplateRef("imageElement");
+const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { height } = useElementSize(imageElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
@@ -51,7 +51,8 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
 <template>
   <div class="self-stretch aspect-square relative flex flex-col justify-start items-start overflow-hidden">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <img ref="imageElement" class="w-full h-full absolute top-0 left-0 object-cover"
+      <NuxtImg ref="imageElement" preset="productCard" loading="lazy"
+        class="w-full h-full absolute top-0 left-0"
         :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
     </RouterLink>
 

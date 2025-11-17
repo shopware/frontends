@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const currentTabIndex = ref<number>(0);
-const crossSellContainer = useTemplateRef("crossSellContainer");
+const crossSellContainer = useTemplateRef<HTMLDivElement>("crossSellContainer");
 const config = computed<SliderElementConfig>(() => ({
   minHeight: {
     value: "300px",
