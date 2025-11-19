@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChevronSvg from "@cms-assets/chevron.svg";
+import ChevronSvg from "@cms-assets/icons/chevron.svg";
 import { computed } from "vue";
 
 const props = withDefaults(
