@@ -3,15 +3,12 @@ import StarEmptySvg from "@cms-assets/star-empty.svg";
 import StarFilledSvg from "@cms-assets/star-filled.svg";
 import { computed } from "vue";
 
-const { filled = false, size = 16 } = 
-  defineProps<{
-    filled?: boolean;
-    size?: number;
-  }>()
+const { filled = false, size = 16 } = defineProps<{
+  filled?: boolean;
+  size?: number;
+}>();
 
-const starSrc = computed(() => 
-  props.filled ? StarFilledSvg : StarEmptySvg;
-);
+const starSrc = computed(() => (filled ? StarFilledSvg : StarEmptySvg));
 </script>
 
 <template>
