@@ -1026,6 +1026,9 @@ importers:
 
   packages/cms-base-layer:
     dependencies:
+      '@iconify-json/carbon':
+        specifier: 1.2.14
+        version: 1.2.14
       '@nuxt/image':
         specifier: 2.0.0
         version: 2.0.0(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.8.1)(magicast@0.3.5)
@@ -20226,7 +20229,7 @@ snapshots:
       find-cache-dir: 3.3.2
       fs-extra: 11.3.2
       magic-string: 0.30.21
-      rollup: 4.52.5
+      rollup: 4.53.2
       vite: 5.4.21(@types/node@22.13.14)(less@4.2.0)(sass@1.89.2)(terser@5.44.1)
     optionalDependencies:
       typescript: 5.9.2
