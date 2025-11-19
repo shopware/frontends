@@ -95,23 +95,21 @@ const formatDate = (date: string) => {
       </div>
       <div
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
+        role="img"
+        :aria-label="`${review.points} out of 5 stars`"
       >
-        <IconButton
+        <SwStarIcon
           v-for="_ in review.points"
           :key="`filled-star-${_}`"
-          type="ghost"
-          disabled
-        >
-          <SwStarIcon :filled="true" :size="20" />
-        </IconButton>
-        <IconButton
+          :filled="true"
+          :size="20"
+        />
+        <SwStarIcon
           v-for="_ in 5 - (review.points || 0)"
           :key="`empty-star-${_}`"
-          type="ghost"
-          disabled
-        >
-          <SwStarIcon :filled="false" :size="20" />
-        </IconButton>
+          :filled="false"
+          :size="20"
+        />
         <div
           class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
         >

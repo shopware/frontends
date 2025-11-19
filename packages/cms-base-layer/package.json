@@ -27,7 +27,6 @@
     "check-colors": "tsx scripts/check-unused-colors.ts"
   },
   "dependencies": {
-    "@iconify-json/carbon": "1.2.14",
     "@nuxt/image": "2.0.0",
     "@nuxt/kit": "4.1.3",
     "@shopware/api-client": "workspace:*",

@@ -1030,6 +1030,9 @@ importers:
       '@iconify-json/carbon':
         specifier: 1.2.14
         version: 1.2.14
+      '@nuxt/icon':
+        specifier: 2.0.0
+        version: 2.0.0(magicast@0.3.5)(vite@7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.2))
       '@nuxt/image':
         specifier: 2.0.0
         version: 2.0.0(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.8.1)(magicast@0.3.5)
@@ -3504,9 +3507,6 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
-
-  '@jridgewell/trace-mapping@0.3.30':
-    resolution: {integrity: sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q==}
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
@@ -10888,9 +10888,6 @@ packages:
   node-fetch-native@1.6.4:
     resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
 
-  node-fetch-native@1.6.6:
-    resolution: {integrity: sha512-8Mc2HhqPdlIfedsuZoc3yioPuzp6b+L5jRCRY1QzuWZh2EGJVQrGppC6V6cF0bLdbW0+O2YpqCA25aF/1lvipQ==}
-
   node-fetch-native@1.6.7:
     resolution: {integrity: sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==}
 
@@ -12758,9 +12755,6 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  strip-literal@3.0.0:
-    resolution: {integrity: sha512-TcccoMhJOM3OebGhSBEmp3UZ2SfDMZUEBdRA/9ynfLi8yYajyWX3JiXArcJt4Umh4vISpspkQIY8ZZoCqjbviA==}
-
   strip-literal@3.1.0:
     resolution: {integrity: sha512-8r3mkIM/2+PpjHoOtiAW8Rg3jJLHaV7xPwG+YRGrv6FP0wwk/toTpATxWYOW0BKdWwl82VT2tFYi5DlROa0Mxg==}
 
@@ -13475,17 +13469,9 @@ packages:
   unplugin-export-collector@0.6.0:
     resolution: {integrity: sha512-2CEl9jnWO8mM1P5EV3gcqNnYqVrrmXT5y6SmdYPRJId3zdE7CSthZ0N+d9Y2JajQNuZpmTuR83o+6ztg9timBA==}
 
-  unplugin-utils@0.2.4:
-    resolution: {integrity: sha512-8U/MtpkPkkk3Atewj1+RcKIjb5WBimZ/WSLhhR3w6SsIj8XJuKTacSP8g+2JhfSGw0Cb125Y+2zA/IzJZDVbhA==}
-    engines: {node: '>=18.12.0'}
-
   unplugin-utils@0.2.5:
     resolution: {integrity: sha512-gwXJnPRewT4rT7sBi/IvxKTjsms7jX7QIDLOClApuZwR49SXbrB1z2NLUZ+vDHyqCj/n58OzRRqaW+B8OZi8vg==}
     engines: {node: '>=18.12.0'}
-
-  unplugin-utils@0.3.0:
-    resolution: {integrity: sha512-JLoggz+PvLVMJo+jZt97hdIIIZ2yTzGgft9e9q8iMrC4ewufl62ekeW7mixBghonn2gVb/ICjyvlmOCUBnJLQg==}
-    engines: {node: '>=20.19.0'}
 
   unplugin-utils@0.3.1:
     resolution: {integrity: sha512-5lWVjgi6vuHhJ526bI4nlCOmkCIF3nnfXkCMDeMJrtdvxTs6ZFCM8oNufGTsDbKv/tJ/xj8RpvXjRuPBZJuJog==}
@@ -14669,7 +14655,7 @@ snapshots:
   '@ampproject/remapping@2.3.0':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@antfu/install-pkg@1.1.0':
     dependencies:
@@ -16687,7 +16673,7 @@ snapshots:
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/remapping@2.3.5':
     dependencies:
@@ -16702,11 +16688,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
-
-  '@jridgewell/trace-mapping@0.3.30':
-    dependencies:
-      '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.5
 
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
@@ -16832,7 +16813,7 @@ snapshots:
 
   '@nuxt/cli@3.29.3(magicast@0.3.5)':
     dependencies:
-      c12: 3.3.0(magicast@0.3.5)
+      c12: 3.3.1(magicast@0.3.5)
       citty: 0.1.6
       clipboardy: 5.0.0
       confbox: 0.2.2
@@ -16854,7 +16835,7 @@ snapshots:
       scule: 1.3.0
       semver: 7.7.3
       srvx: 0.8.16
-      std-env: 3.9.0
+      std-env: 3.10.0
       tinyexec: 1.0.1
       ufo: 1.6.1
       undici: 6.22.0
@@ -16979,7 +16960,7 @@ snapshots:
       ohash: 2.0.11
       pathe: 2.0.3
       picomatch: 4.0.3
-      std-env: 3.9.0
+      std-env: 3.10.0
       tinyglobby: 0.2.15
     transitivePeerDependencies:
       - magicast
@@ -17025,7 +17006,7 @@ snapshots:
 
   '@nuxt/kit@3.19.2(magicast@0.3.5)':
     dependencies:
-      c12: 3.3.0(magicast@0.3.5)
+      c12: 3.3.1(magicast@0.3.5)
       consola: 3.4.2
       defu: 6.1.4
       destr: 2.0.5
@@ -17042,7 +17023,7 @@ snapshots:
       rc9: 2.1.2
       scule: 1.3.0
       semver: 7.7.3
-      std-env: 3.9.0
+      std-env: 3.10.0
       tinyglobby: 0.2.15
       ufo: 1.6.1
       unctx: 2.4.1
@@ -17053,7 +17034,7 @@ snapshots:
 
   '@nuxt/kit@3.19.3(magicast@0.3.5)':
     dependencies:
-      c12: 3.3.0(magicast@0.3.5)
+      c12: 3.3.1(magicast@0.3.5)
       consola: 3.4.2
       defu: 6.1.4
       destr: 2.0.5
@@ -17070,7 +17051,7 @@ snapshots:
       rc9: 2.1.2
       scule: 1.3.0
       semver: 7.7.3
-      std-env: 3.9.0
+      std-env: 3.10.0
       tinyglobby: 0.2.15
       ufo: 1.6.1
       unctx: 2.4.1
@@ -17177,7 +17158,7 @@ snapshots:
       package-manager-detector: 1.4.0
       pathe: 2.0.3
       rc9: 2.1.2
-      std-env: 3.9.0
+      std-env: 3.10.0
     transitivePeerDependencies:
       - magicast
 
@@ -17205,7 +17186,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.4(rollup@4.52.4)
-      std-env: 3.9.0
+      std-env: 3.10.0
       ufo: 1.6.1
       unenv: 2.0.0-rc.21
       vite: 7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
@@ -17262,7 +17243,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.4(rollup@4.52.4)
-      std-env: 3.9.0
+      std-env: 3.10.0
       ufo: 1.6.1
       unenv: 2.0.0-rc.21
       vite: 7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
@@ -17319,7 +17300,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.4(rollup@4.52.5)
-      std-env: 3.9.0
+      std-env: 3.10.0
       ufo: 1.6.1
       unenv: 2.0.0-rc.21
       vite: 7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
@@ -20564,7 +20545,7 @@ snapshots:
       pathe: 2.0.3
       perfect-debounce: 1.0.0
       tinyglobby: 0.2.15
-      unplugin-utils: 0.2.4
+      unplugin-utils: 0.2.5
 
   '@unocss/cli@66.5.4':
     dependencies:
@@ -20947,7 +20928,7 @@ snapshots:
       chokidar: 3.6.0
       magic-string: 0.30.19
       tinyglobby: 0.2.15
-      unplugin-utils: 0.2.4
+      unplugin-utils: 0.2.5
       vite: 5.4.21(@types/node@22.13.14)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)
     transitivePeerDependencies:
       - vue
@@ -21301,7 +21282,7 @@ snapshots:
     dependencies:
       '@vitest/utils': 3.2.4
       pathe: 2.0.3
-      strip-literal: 3.0.0
+      strip-literal: 3.1.0
 
   '@vitest/snapshot@3.2.4':
     dependencies:
@@ -21973,7 +21954,7 @@ snapshots:
 
   ast-v8-to-istanbul@0.3.4:
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
       estree-walker: 3.0.3
       js-tokens: 9.0.1
 
@@ -24976,7 +24957,7 @@ snapshots:
 
   istanbul-lib-source-maps@5.0.6:
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
       debug: 4.4.3(supports-color@10.0.0)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
@@ -25326,7 +25307,7 @@ snapshots:
       mlly: 1.8.0
       node-forge: 1.3.1
       pathe: 1.1.2
-      std-env: 3.9.0
+      std-env: 3.10.0
       ufo: 1.6.1
       untun: 0.1.3
       uqr: 0.1.2
@@ -26219,7 +26200,7 @@ snapshots:
       '@rollup/plugin-terser': 0.4.4(rollup@4.52.4)
       '@vercel/nft': 0.30.2(encoding@0.1.13)(rollup@4.52.4)
       archiver: 7.0.1
-      c12: 3.3.0(magicast@0.3.5)
+      c12: 3.3.1(magicast@0.3.5)
       chokidar: 4.0.3
       citty: 0.1.6
       compatx: 0.2.0
@@ -26266,7 +26247,7 @@ snapshots:
       serve-placeholder: 2.0.2
       serve-static: 1.16.2
       source-map: 0.7.6
-      std-env: 3.9.0
+      std-env: 3.10.0
       ufo: 1.6.1
       ultrahtml: 1.6.0
       uncrypto: 0.1.3
@@ -26324,8 +26305,6 @@ snapshots:
   node-domexception@1.0.0: {}
 
   node-fetch-native@1.6.4: {}
-
-  node-fetch-native@1.6.6: {}
 
   node-fetch-native@1.6.7: {}
 
@@ -28850,10 +28829,6 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  strip-literal@3.0.0:
-    dependencies:
-      js-tokens: 9.0.1
-
   strip-literal@3.1.0:
     dependencies:
       js-tokens: 9.0.1
@@ -29713,17 +29688,7 @@ snapshots:
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  unplugin-utils@0.2.4:
-    dependencies:
-      pathe: 2.0.3
-      picomatch: 4.0.3
-
   unplugin-utils@0.2.5:
-    dependencies:
-      pathe: 2.0.3
-      picomatch: 4.0.3
-
-  unplugin-utils@0.3.0:
     dependencies:
       pathe: 2.0.3
       picomatch: 4.0.3
@@ -29748,7 +29713,7 @@ snapshots:
       pathe: 2.0.3
       scule: 1.3.0
       unplugin: 2.3.10
-      unplugin-utils: 0.2.4
+      unplugin-utils: 0.2.5
       yaml: 2.7.1
     optionalDependencies:
       vue-router: 4.6.3(vue@3.5.22(typescript@5.9.2))
@@ -29812,7 +29777,7 @@ snapshots:
       destr: 2.0.5
       h3: 1.15.4
       lru-cache: 10.4.3
-      node-fetch-native: 1.6.6
+      node-fetch-native: 1.6.7
       ofetch: 1.4.1
       ufo: 1.6.1
     optionalDependencies:
@@ -30170,7 +30135,7 @@ snapshots:
       open: 10.2.0
       perfect-debounce: 2.0.0
       sirv: 3.0.2
-      unplugin-utils: 0.3.0
+      unplugin-utils: 0.3.1
       vite: 7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
       vite-dev-rpc: 1.1.0(vite@7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))
     optionalDependencies:
@@ -30187,7 +30152,7 @@ snapshots:
       open: 10.2.0
       perfect-debounce: 2.0.0
       sirv: 3.0.2
-      unplugin-utils: 0.3.0
+      unplugin-utils: 0.3.1
       vite: 7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
       vite-dev-rpc: 1.1.0(vite@7.1.11(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))
     optionalDependencies:
@@ -30204,7 +30169,7 @@ snapshots:
       open: 10.2.0
       perfect-debounce: 2.0.0
       sirv: 3.0.2
-      unplugin-utils: 0.3.0
+      unplugin-utils: 0.3.1
       vite: 5.4.21(@types/node@22.13.14)(less@4.2.0)(sass@1.89.2)(terser@5.44.0)
       vite-dev-rpc: 1.1.0(vite@5.4.21(@types/node@22.13.14)(less@4.2.0)(sass@1.89.2)(terser@5.44.0))
     transitivePeerDependencies:

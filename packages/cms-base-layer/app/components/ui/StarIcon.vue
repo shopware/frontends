@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import StarEmptySvg from "@cms-assets/star-empty.svg";
-import StarFilledSvg from "@cms-assets/star-filled.svg";
-import { computed } from "vue";
+import StarEmptySvg from "@cms-assets/icons/star-empty.svg";
+import StarFilledSvg from "@cms-assets/icons/star-filled.svg";
 
-const { filled = false, size = 16 } = defineProps<{
+const { filled = true, size = 20 } = defineProps<{
   filled?: boolean;
   size?: number;
 }>();
-
-const starSrc = computed(() => (filled ? StarFilledSvg : StarEmptySvg));
 </script>
 
 <template>
   <img
-    :src="starSrc"
+    :src="filled ? StarFilledSvg : StarEmptySvg"
     alt=""
     :style="{ width: `${size}px`, height: `${size}px` }"
   />
