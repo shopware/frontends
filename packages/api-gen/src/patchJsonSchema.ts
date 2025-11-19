@@ -62,7 +62,7 @@ export const extendedDefu = createDefu((obj, key, value) => {
     "$ref" in obj
   ) {
     const hasCompositionKeyword = compositionKeywords.some(
-      (keyword) => keyword in value
+      (keyword) => keyword in value,
     );
     if (hasCompositionKeyword) {
       // biome-ignore lint/performance/noDelete: delete $ref
@@ -98,7 +98,7 @@ export function patchJsonSchema({
     initialObject: JSON,
     schemaName: string,
     overridePatches: JSON[],
-    originalSchema: JSON | SchemaObject
+    originalSchema: JSON | SchemaObject,
   ) {
     let patchedObject = initialObject;
     const patches = Array.isArray(overridePatches)
@@ -113,7 +113,7 @@ export function patchJsonSchema({
     if (matchResult) {
       outdatedPatches.push([
         `${c.gray(
-          `\n${c.bold("Info")}: Patch for ${c.bold(schemaName)} is already applied in schema. You can remove it from overrides.`
+          `\n${c.bold("Info")}: Patch for ${c.bold(schemaName)} is already applied in schema. You can remove it from overrides.`,
         )}`,
         c.red(json5.stringify(patches)),
       ]);
@@ -122,7 +122,7 @@ export function patchJsonSchema({
       appliedPatches++;
       todosToFix.push([
         `Patch for "${c.cyan(schemaName)}" is missing in schema. \nPatched object:\n${c.cyan(
-          json5.stringify(patchedObject)
+          json5.stringify(patchedObject),
         )}`,
         diff(patchedObject, originalSchema, {
           aColor: c.green,
@@ -137,7 +137,7 @@ export function patchJsonSchema({
   function _applyPathPatches(
     pathName: string,
     httpMethod: keyof PathItemObject,
-    overridePatches: JSON[]
+    overridePatches: JSON[],
   ) {
     patchedSchema.paths[pathName] ??= {};
     patchedSchema.paths[pathName][httpMethod] ??= {};
@@ -146,14 +146,14 @@ export function patchJsonSchema({
       patchedSchema.paths[pathName][httpMethod],
       `${pathName} ${httpMethod}`,
       overridePatches,
-      (openApiSchema.paths?.[pathName] as PathItemObject)?.[httpMethod]
+      (openApiSchema.paths?.[pathName] as PathItemObject)?.[httpMethod],
     );
   }
 
   function _applyComponentsPatches(
     pathName: string,
     // httpMethod: string,
-    overridePatches: JSON[]
+    overridePatches: JSON[],
   ) {
     patchedSchema.components.schemas[pathName] ??= {} as SchemaObject;
 
@@ -161,12 +161,12 @@ export function patchJsonSchema({
       patchedSchema.components.schemas[pathName],
       pathName,
       overridePatches,
-      openApiSchema.components?.schemas?.[pathName] as SchemaObject
+      openApiSchema.components?.schemas?.[pathName] as SchemaObject,
     );
   }
 
   for (const schemaName of Object.keys(
-    openApiSchema.components?.schemas || {}
+    openApiSchema.components?.schemas || {},
   )) {
     if (jsonOverrides?.components?.[schemaName]) {
       const overridePatches = jsonOverrides?.components[schemaName];
@@ -177,7 +177,7 @@ export function patchJsonSchema({
 
   // finds not existing components and add them, mostly for backwards compatibility
   for (const [schemaName, patches] of Object.entries(
-    jsonOverrides?.components || {}
+    jsonOverrides?.components || {},
   )) {
     if (!openApiSchema.components?.schemas?.[schemaName]) {
       _applyComponentsPatches(schemaName, patches);
@@ -186,10 +186,10 @@ export function patchJsonSchema({
 
   // find non existing paths and add them to schema
   for (const [pathName, methodObject] of Object.entries(
-    jsonOverrides?.paths || {}
+    jsonOverrides?.paths || {},
   )) {
     for (const [httpMethod, overridePatches] of Object.entries(
-      methodObject || {}
+      methodObject || {},
     )) {
       if (
         !(openApiSchema.paths?.[pathName] as PathItemObject)?.[
@@ -199,14 +199,14 @@ export function patchJsonSchema({
         _applyPathPatches(
           pathName,
           httpMethod as keyof PathItemObject,
-          overridePatches
+          overridePatches,
         );
       }
     }
   }
 
   for (const [pathName, pathObject] of Object.entries(
-    openApiSchema?.paths || {}
+    openApiSchema?.paths || {},
   )) {
     for (const httpMethod of Object.keys(pathObject as PathItemObject)) {
       if (!(httpMethod in pathObject)) continue;
@@ -221,7 +221,7 @@ export function patchJsonSchema({
         _applyPathPatches(
           pathName,
           httpMethod as keyof PathItemObject,
-          overridePatches
+          overridePatches,
         );
       }
 
