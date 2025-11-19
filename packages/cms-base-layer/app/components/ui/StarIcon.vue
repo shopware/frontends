@@ -9,9 +9,9 @@ const { filled = false, size = 16 } =
     size?: number;
   }>()
 
-const starSrc = computed(() => {
-  return props.filled ? StarFilledSvg : StarEmptySvg;
-});
+const starSrc = computed(() => 
+  props.filled ? StarFilledSvg : StarEmptySvg;
+);
 </script>
 
 <template>
