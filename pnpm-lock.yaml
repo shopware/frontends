@@ -194,6 +194,8 @@ importers:
         specifier: 1.56.1
         version: 1.56.1
 
+  apps/old-docs-redirect: {}
+
   examples/adyen-dropin-component:
     devDependencies:
       '@adyen/adyen-web':

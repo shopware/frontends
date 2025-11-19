@@ -1,0 +1,10 @@
+{
+  "name": "old-docs-redirect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple redirect service to frontends.shopware.com",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve public -p 3000"
+  }
+}
