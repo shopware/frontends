@@ -17,6 +17,7 @@ type Translations = {
   product: {
     noReviews: string;
     reviewNotAccepted: string;
+    reviewFeedback: string;
   };
 };
 
@@ -24,6 +25,7 @@ let translations: Translations = {
   product: {
     noReviews: "No reviews yet.",
     reviewNotAccepted: "Your review has not been approved yet",
+    reviewFeedback: "Shop feedback",
   },
 };
 
@@ -64,23 +66,29 @@ const formatDate = (date: string) => {
 <template>
   <div
     v-if="loadingReviews"
-    class="absolute inset-0 flex items-center justify-center z-10 bg-white/75"
+    class="absolute inset-0 flex items-center justify-center z-10 bg-surface-surface/75"
   >
     <div
-      class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+      class="h-15 w-15 i-carbon-progress-bar-round animate-spin text-outline-outline"
     />
   </div>
-  <div v-else-if="reviewsList.length">
-    <div v-for="review in reviews" :key="review.id">
+  <div v-else-if="reviewsList.length" class="flex flex-col gap-6">
+    <div
+      v-for="(review, index) in reviewsList"
+      :key="review.id"
+      class="pb-6"
+      :class="{ 'border-b border-surface-surface-container-highest': index < reviewsList.length - 1 }"
+    >
       <div
         v-if="review.createdAt"
-        class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
+        class="cms-block-product-description-reviews__reviews-time text-surface-on-surface-variant text-sm"
       >
+        <span v-if="review.externalUser">{{ review.externalUser }} - </span>
         <span>{{ formatDate(review.createdAt) }}</span>
       </div>
       <div
           v-if="!review.status"
-          class="mt-2 text-3 p-2 bg-[#d4f0f5] flex gap-2 items-center"
+          class="mt-2 text-3 p-2 bg-states-info-container text-states-on-info-container flex gap-2 items-center"
         >
         <div class="w-6 h-6 i-carbon-warning" />
         {{ translations.product.reviewNotAccepted }}
@@ -88,16 +96,22 @@ const formatDate = (date: string) => {
       <div
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
       >
-        <div
+        <IconButton
           v-for="_ in review.points"
           :key="`filled-star-${_}`"
-          class="w-5 h-5 i-carbon-star-filled"
-        ></div>
-        <div
+          type="ghost"
+          disabled
+        >
+          <SwStarIcon :filled="true" :size="20" />
+        </IconButton>
+        <IconButton
           v-for="_ in 5 - (review.points || 0)"
           :key="`empty-star-${_}`"
-          class="w-5 h-5 i-carbon-star"
-        ></div>
+          type="ghost"
+          disabled
+        >
+          <SwStarIcon :filled="false" :size="20" />
+        </IconButton>
         <div
           class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
         >
@@ -105,7 +119,10 @@ const formatDate = (date: string) => {
         </div>
       </div>
       <div class="cms-block-product-description-reviews__reviews-content mt-2">
-        <span>{{ review.content }}</span>
+        <p class="break-words">{{ review.content }}</p>
+        <p v-if="review.comment" class="text-surface-on-surface-variant mt-2">
+          - {{ translations.product.reviewFeedback }}: {{ review.comment }}
+        </p>
       </div>
     </div>
   </div>

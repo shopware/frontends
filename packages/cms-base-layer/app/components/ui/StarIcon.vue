@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import StarEmptySvg from "@cms-assets/star-empty.svg";
+import StarFilledSvg from "@cms-assets/star-filled.svg";
+import { computed } from "vue";
+
+const props = withDefaults(
+  defineProps<{
+    filled?: boolean;
+    size?: number;
+  }>(),
+  {
+    filled: false,
+    size: 16,
+  },
+);
+
+const starSrc = computed(() => {
+  return props.filled ? StarFilledSvg : StarEmptySvg;
+});
+</script>
+
+<template>
+  <img
+    :src="starSrc"
+    alt=""
+    :style="{ width: `${size}px`, height: `${size}px` }"
+  />
+</template>
