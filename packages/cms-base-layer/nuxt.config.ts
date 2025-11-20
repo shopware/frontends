@@ -1,9 +1,8 @@
-import { resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { createResolver } from "@nuxt/kit";
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 
-const layerDir = fileURLToPath(new URL("./", import.meta.url));
+const { resolve: resolveLayer } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
   modules: ["@unocss/nuxt", "@nuxt/image"],
@@ -17,7 +16,7 @@ export default defineNuxtConfig({
     providers: {
       shopware: {
         name: "shopware",
-        provider: resolve(layerDir, "app/providers/shopware.ts"),
+        provider: resolveLayer("./app/providers/shopware.ts"),
       },
     },
 
@@ -68,24 +67,24 @@ export default defineNuxtConfig({
 
   components: [
     {
-      path: resolve(layerDir, "app/components"),
+      path: resolveLayer("./app/components"),
       pattern: "Sw*",
       extensions: [".vue"],
       global: true,
     },
     {
-      path: resolve(layerDir, "app/components/ui"),
+      path: resolveLayer("./app/components/ui"),
       extensions: [".vue"],
       prefix: "Sw",
       global: true,
     },
     {
-      path: resolve(layerDir, "app/components/public"),
+      path: resolveLayer("./app/components/public"),
       pathPrefix: false,
     },
   ],
   alias: {
-    "@cms-assets": resolve(layerDir, "app/assets"),
+    "@cms-assets": resolveLayer("./app/assets"),
   },
   build: {
     transpile: ["@shopware/cms-base-layer"],

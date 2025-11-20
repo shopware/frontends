@@ -110,18 +110,7 @@ onMounted(async () => {
       <div v-if="isSectionOpen(2)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
         <div
           class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
-          <div v-if="reviews.length === 0" class="text-center py-4">
-            No reviews yet
-          </div>
-          <div v-else>
-            <div v-for="review in reviews" :key="review.id"
-              class="mb-4 p-4 border border-outline-outline-variant rounded">
-              <div class="font-semibold">{{ review.title }}</div>
-              <div class="text-sm text-surface-on-surface-variant">
-                {{ review.content }}
-              </div>
-            </div>
-          </div>
+          <SwProductReviews v-if="product" :product="product" :reviews="reviews" />
         </div>
       </div>
     </Transition>
