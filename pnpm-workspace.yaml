@@ -11,3 +11,6 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
+- '*astro*' # security release, remove after 22.11.2025
+- '*vercel*' # security release, remove after 22.11.2025
+- 'glob' # security release, remove after 22.11.2025
