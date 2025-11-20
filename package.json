@@ -41,16 +41,15 @@
     "changelog-parser": "3.0.1",
     "dotenv-cli": "11.0.0",
     "esno": "4.8.0",
-    "globby": "15.0.0",
     "husky": "9.1.7",
     "prettier": "3.6.2",
     "turbo": "2.6.0",
-    "vercel": "48.6.0"
+    "vercel": "48.10.3"
   },
   "engines": {
     "node": "^20.x || ^22.x"
   },
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@10.22.0",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.10",
@@ -73,6 +72,8 @@
       "fast-loops": "^1.1.4",
       "follow-redirects": "^1.15.6",
       "form-data": "^4.0.4",
+      "glob@10": "^10.5.0",
+      "js-yaml": "^4.1.1",
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "micromatch": "^4.0.8",
