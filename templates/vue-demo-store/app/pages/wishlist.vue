@@ -32,6 +32,7 @@ const {
   totalPagesCount,
   canSyncWishlist,
 } = useWishlist();
+
 defineOptions({
   name: "WishlistPage",
 });
