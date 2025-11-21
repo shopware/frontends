@@ -144,6 +144,18 @@ describe("useCart", () => {
     );
   });
 
+  it("remove item by id", async () => {
+    await vm.removeItemById("01893ed931d571718e8138e7df7d68d1");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("removeLineItem"),
+      expect.objectContaining({
+        body: {
+          ids: ["01893ed931d571718e8138e7df7d68d1"],
+        },
+      }),
+    );
+  });
+
   it("submitPromotionCode", async () => {
     injections.apiClient.invoke.mockResolvedValue({
       data: {
