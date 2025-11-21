@@ -10,7 +10,6 @@ You can use types generated from your custom API instance to have autocompletion
 
 To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
 
-To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
 
 ## Setup
 
@@ -296,8 +295,6 @@ apiClient.updateBaseConfig({
 This allows you to dynamically change the API endpoint or access token during runtime, for example when switching between different environments or when the access token needs to be updated.
 
 ## Links
-
-- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
 
 - [📘 Documentation](https://frontends.shopware.com)
 
