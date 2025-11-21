@@ -99,8 +99,8 @@ importers:
         specifier: 2.6.1
         version: 2.6.1
       vercel:
-        specifier: 48.10.6
-        version: 48.10.6(@swc/core@1.7.10(@swc/helpers@0.5.17))(encoding@0.1.13)(rollup@4.53.2)(typescript@5.9.3)
+        specifier: 48.10.7
+        version: 48.10.7(@swc/core@1.7.10(@swc/helpers@0.5.17))(encoding@0.1.13)(rollup@4.53.2)(typescript@5.9.3)
 
   apps/docs:
     dependencies:
@@ -8213,11 +8213,11 @@ packages:
   copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
 
-  core-js-compat@3.46.0:
-    resolution: {integrity: sha512-p9hObIIEENxSV8xIu+V68JjSeARg6UVMG5mR+JEUguG3sI6MsiS1njz2jHmyJDvA+8jX/sytkBHup6kxhM9law==}
+  core-js-compat@3.47.0:
+    resolution: {integrity: sha512-IGfuznZ/n7Kp9+nypamBhvwdwLsW6KC8IOaURw2doAK5e98AG3acVLdh0woOnEqCfUtS+Vu882JE4k/DAm3ItQ==}
 
-  core-js@3.46.0:
-    resolution: {integrity: sha512-vDMm9B0xnqqZ8uSBpZ8sNtRtOdmfShrvT6h2TuQGLs0Is+cR0DYbj/KWP6ALVNbWPpqA/qPLoOuppJN07humpA==}
+  core-js@3.47.0:
+    resolution: {integrity: sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -14197,8 +14197,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vercel@48.10.6:
-    resolution: {integrity: sha512-QCshSaSS7bAGed86M3CJmR3LnvcM1nhLvSwKwaWBUg5ejEFIAHpIWuQmZ1GMZJYv9MiE8xqZ316A8b+5JiyFOw==}
+  vercel@48.10.7:
+    resolution: {integrity: sha512-gqjFEVcktEz+cpZ5Nt7p70tRROy6Rp7lDxogtx1oE5eVrm6LQqGuTxbBOZYiT6ywdkQWsmacTQZ27R4GejK7Sw==}
     engines: {node: '>= 18'}
     hasBin: true
 
@@ -16061,7 +16061,7 @@ snapshots:
       babel-plugin-polyfill-corejs2: 0.4.14(@babel/core@7.28.5)
       babel-plugin-polyfill-corejs3: 0.13.0(@babel/core@7.28.5)
       babel-plugin-polyfill-regenerator: 0.6.5(@babel/core@7.28.5)
-      core-js-compat: 3.46.0
+      core-js-compat: 3.47.0
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
@@ -24458,7 +24458,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.5
       '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.28.5)
-      core-js-compat: 3.46.0
+      core-js-compat: 3.47.0
     transitivePeerDependencies:
       - supports-color
 
@@ -25104,11 +25104,11 @@ snapshots:
     dependencies:
       toggle-selection: 1.0.6
 
-  core-js-compat@3.46.0:
+  core-js-compat@3.47.0:
     dependencies:
       browserslist: 4.28.0
 
-  core-js@3.46.0: {}
+  core-js@3.47.0: {}
 
   core-util-is@1.0.3: {}
 
@@ -26119,7 +26119,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.5
       '@babel/runtime': 7.28.4
-      core-js: 3.46.0
+      core-js: 3.47.0
       debug: 4.4.3(supports-color@10.0.0)
       glob-to-regexp: 0.4.1
       is-subset: 0.1.1
@@ -33451,7 +33451,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vercel@48.10.6(@swc/core@1.7.10(@swc/helpers@0.5.17))(encoding@0.1.13)(rollup@4.53.2)(typescript@5.9.3):
+  vercel@48.10.7(@swc/core@1.7.10(@swc/helpers@0.5.17))(encoding@0.1.13)(rollup@4.53.2)(typescript@5.9.3):
     dependencies:
       '@vercel/backends': 0.0.9(encoding@0.1.13)(rollup@4.53.2)(typescript@5.9.3)
       '@vercel/blob': 1.0.2
