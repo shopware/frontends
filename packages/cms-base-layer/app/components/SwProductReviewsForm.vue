@@ -177,7 +177,9 @@ const invokeRating = (value: number) => {
       v-if="errorMessages.length"
       class="p-3 md:p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
     >
-      <div class="w-5 h-5 i-carbon-warning text-states-error flex-shrink-0 mt-0.5" />
+      <div class="w-5 h-5 text-states-error flex-shrink-0 mt-0.5">
+        <ExclamationIcon :size="20" />
+      </div>
       <div class="flex-1">
         <p v-for="(error, index) in errorMessages" :key="index" class="text-sm text-states-error">
           {{ error.detail }}
@@ -239,7 +241,7 @@ const invokeRating = (value: number) => {
         {{ $v.review.$errors[0].$message }}
       </span>
     </div>
-    <BaseButton
+    <SwBaseButton
       type="submit"
       variant="primary"
       size="medium"
@@ -250,6 +252,6 @@ const invokeRating = (value: number) => {
       data-testid="review-submit-button"
     >
       {{ translations.product.reviewsForm.submit }}
-    </BaseButton>
+    </SwBaseButton>
   </form>
 </template>
