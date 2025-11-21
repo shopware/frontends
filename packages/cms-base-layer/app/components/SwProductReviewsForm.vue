@@ -128,7 +128,7 @@ const invokeRating = (value: number) => {
 </script>
 
 <template>
-  <form class="flex flex-col gap-4 relative" @submit.prevent="invokeSend">
+  <form class="flex flex-col gap-4 md:gap-5 relative" @submit.prevent="invokeSend">
     <div
       v-if="isLoading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-surface-surface/80 rounded-md"
@@ -139,19 +139,19 @@ const invokeRating = (value: number) => {
     </div>
     <div>
       <div class="flex flex-col gap-2">
-        <h4 class="text-xl font-bold text-surface-on-surface mt-3">
+        <h4 class="text-lg md:text-xl font-bold text-surface-on-surface mt-3">
           {{ translations.product.addReview }}
         </h4>
-        <span class="text-surface-on-surface-variant">{{
+        <span class="text-sm text-surface-on-surface-variant">{{
           translations.product.reviewsForm.rating
         }}</span>
-        <div class="flex flex-row gap-1">
+        <div class="flex flex-row gap-2 md:gap-1">
           <SwStarIcon
             v-for="index in state.rating || 0"
             :key="`filled-${index}`"
             :filled="true"
-            :size="20"
-            class="cursor-pointer hover:opacity-80 transition-opacity"
+            :size="24"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95"
             data-testid="review-filled-star"
             @click="invokeRating(index)"
           />
@@ -159,8 +159,8 @@ const invokeRating = (value: number) => {
             v-for="index in 5 - (state.rating || 0)"
             :key="`empty-${index}`"
             :filled="false"
-            :size="20"
-            class="cursor-pointer hover:opacity-80 transition-opacity"
+            :size="24"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95"
             data-testid="review-empty-star"
             @click="invokeRating((state.rating || 0) + index)"
           />
@@ -175,7 +175,7 @@ const invokeRating = (value: number) => {
     </div>
     <div
       v-if="errorMessages.length"
-      class="p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-3 items-start"
+      class="p-3 md:p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
     >
       <div class="w-5 h-5 i-carbon-warning text-states-error flex-shrink-0 mt-0.5" />
       <div class="flex-1">
@@ -193,7 +193,7 @@ const invokeRating = (value: number) => {
       <input
         id="title"
         v-model="state.title"
-        class="block w-full px-3 py-2 border rounded-md text-surface-on-surface bg-surface-surface placeholder-surface-on-surface-variant focus:outline-none focus:ring-2 focus:ring-outline-outline"
+        class="block w-full px-3 py-2.5 md:py-2 border rounded-md text-base md:text-sm text-surface-on-surface bg-surface-surface placeholder-surface-on-surface-variant focus:outline-none focus:ring-2 focus:ring-outline-outline"
         :class="[
           $v.title.$error
             ? 'border-states-error focus:ring-states-error'
@@ -221,7 +221,7 @@ const invokeRating = (value: number) => {
       <textarea
         id="review"
         v-model="state.review"
-        class="block w-full px-3 py-2 border rounded-md text-surface-on-surface bg-surface-surface placeholder-surface-on-surface-variant focus:outline-none focus:ring-2 focus:ring-outline-outline min-h-32"
+        class="block w-full px-3 py-2.5 md:py-2 border rounded-md text-base md:text-sm text-surface-on-surface bg-surface-surface placeholder-surface-on-surface-variant focus:outline-none focus:ring-2 focus:ring-outline-outline min-h-32 md:min-h-40"
         :class="[
           $v.review.$error
             ? 'border-states-error focus:ring-states-error'
