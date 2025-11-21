@@ -25,10 +25,11 @@ const rotationClass = computed(() => {
 </script>
 
 <template>
-  <img
+  <NuxtImg
     :src="ChevronSvg"
     alt=""
     :class="['transition-transform', rotationClass]"
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    :width="size"
+    :height="size"
   />
 </template>

@@ -12,9 +12,10 @@ withDefaults(
 </script>
 
 <template>
-  <img
+  <NuxtImg
     :src="ExclamationCircleSvg"
     alt=""
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    :width="size"
+    :height="size"
   />
 </template>

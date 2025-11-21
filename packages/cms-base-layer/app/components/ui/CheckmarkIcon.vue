@@ -9,9 +9,10 @@ const { filled = false, size = 24 } = defineProps<{
 </script>
 
 <template>
-  <img
+  <NuxtImg
     :src="filled ? CheckmarkFilledSvg : CheckmarkSvg"
     alt=""
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    :width="size"
+    :height="size"
   />
 </template>
