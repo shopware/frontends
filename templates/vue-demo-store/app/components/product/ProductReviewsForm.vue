@@ -95,20 +95,20 @@ const invokeRating = (value: number) => {
           {{ $t("product.addReview") }}
         </h4>
         <span>{{ $t("product.reviewsForm.rating") }}</span>
-        <div class="flex flex-row">
+        <div class="flex flex-row gap-1">
           <div
-            v-for="(value, index) in state.rating"
-            :key="index"
-            class="w-5 h-5 i-carbon-star-filled"
+            v-for="index in state.rating || 0"
+            :key="`filled-${index}`"
+            class="w-5 h-5 i-carbon-star-filled cursor-pointer hover:opacity-80 transition-opacity"
             data-testid="review-filled-star"
-            @click="invokeRating(value)"
+            @click="invokeRating(index)"
           ></div>
           <div
-            v-for="(value, index) in 5 - (state.rating || 0)"
-            :key="index"
-            class="w-5 h-5 i-carbon-star"
+            v-for="index in 5 - (state.rating || 0)"
+            :key="`empty-${index}`"
+            class="w-5 h-5 i-carbon-star cursor-pointer hover:opacity-80 transition-opacity"
             data-testid="review-empty-star"
-            @click="invokeRating(value + (state.rating || 0))"
+            @click="invokeRating((state.rating || 0) + index)"
           ></div>
         </div>
         <span
