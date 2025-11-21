@@ -2716,7 +2716,7 @@ export type Schemas = {
   };
   LineItem: {
     children?: components["schemas"]["LineItem"][];
-    cover?: components["schemas"]["ProductMedia"];
+    cover?: components["schemas"]["Media"];
     dataContextHash?: string;
     dataTimestamp?: string;
     deliveryInformation: components["schemas"]["CartDeliveryInformation"];

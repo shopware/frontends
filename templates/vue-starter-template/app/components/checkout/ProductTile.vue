@@ -15,8 +15,9 @@ const emit = defineEmits<{
 </script>
 <template>
   <div class="flex gap-4">
+    <!-- TODO: Will be fixed in the next vue-starter PR -->
     <NuxtImg
-      :src="getSmallestThumbnailUrl(item.cover?.media)"
+      :src="getSmallestThumbnailUrl(item.cover)"
       :alt="`${item.label || item.payload.name || ''} cart item`"
       class="object-cover object-center"
       width="151"
