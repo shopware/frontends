@@ -28,6 +28,9 @@ type Translations = {
       submit: string;
       rating: string;
     };
+    errors: {
+      reviewAlreadyExists: string;
+    };
   };
 };
 
@@ -42,6 +45,10 @@ let translations: Translations = {
         "Share your experience with this product (minimum 40 characters)",
       submit: "Submit",
       rating: "Your rating",
+    },
+    errors: {
+      reviewAlreadyExists:
+        "You have already submitted a review for this product",
     },
   },
 };
@@ -115,7 +122,16 @@ const invokeSend = async () => {
     emit("success");
   } catch (error) {
     if (error instanceof ApiClientError) {
-      errorMessages.value = error.details.errors;
+      // Map error messages and replace "already exists" error with user-friendly message
+      errorMessages.value = error.details.errors.map((err: ApiError) => {
+        if (err.code === "VIOLATION::ENTITY_EXISTS") {
+          return {
+            ...err,
+            detail: translations.product.errors.reviewAlreadyExists,
+          };
+        }
+        return err;
+      });
     }
   } finally {
     isLoading.value = false;
@@ -145,7 +161,7 @@ const invokeRating = (value: number) => {
         <span class="text-sm text-surface-on-surface-variant">{{
           translations.product.reviewsForm.rating
         }}</span>
-        <div class="flex flex-row gap-2 md:gap-1" role="group" :aria-label="translations.product.reviewsForm.rating">
+        <div class="flex flex-row gap-2" role="group" :aria-label="translations.product.reviewsForm.rating">
           <SwStarIcon
             v-for="index in state.rating || 0"
             :key="`filled-${index}`"
@@ -154,7 +170,7 @@ const invokeRating = (value: number) => {
             role="button"
             :aria-label="`Rate ${index} out of 5 stars`"
             tabindex="0"
-            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary rounded"
             data-testid="review-filled-star"
             @click="invokeRating(index)"
             @keydown.enter.prevent="invokeRating(index)"
@@ -168,7 +184,7 @@ const invokeRating = (value: number) => {
             role="button"
             :aria-label="`Rate ${(state.rating || 0) + index} out of 5 stars`"
             tabindex="0"
-            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary rounded"
             data-testid="review-empty-star"
             @click="invokeRating((state.rating || 0) + index)"
             @keydown.enter.prevent="invokeRating((state.rating || 0) + index)"
@@ -188,7 +204,7 @@ const invokeRating = (value: number) => {
       class="p-3 md:p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
     >
       <div class="w-5 h-5 text-states-error flex-shrink-0 mt-0.5">
-        <ExclamationIcon :size="20" />
+        <SwExclamationIcon :size="20" />
       </div>
       <div class="flex-1">
         <p v-for="(error, index) in errorMessages" :key="index" class="text-sm text-states-error">
@@ -257,8 +273,7 @@ const invokeRating = (value: number) => {
       size="medium"
       :disabled="isLoading"
       :loading="isLoading"
-      block
-      class="mt-4"
+      class="mt-4 w-full md:w-auto md:self-start"
       data-testid="review-submit-button"
     >
       {{ translations.product.reviewsForm.submit }}
