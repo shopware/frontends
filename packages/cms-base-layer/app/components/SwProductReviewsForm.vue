@@ -145,24 +145,34 @@ const invokeRating = (value: number) => {
         <span class="text-sm text-surface-on-surface-variant">{{
           translations.product.reviewsForm.rating
         }}</span>
-        <div class="flex flex-row gap-2 md:gap-1">
+        <div class="flex flex-row gap-2 md:gap-1" role="group" :aria-label="translations.product.reviewsForm.rating">
           <SwStarIcon
             v-for="index in state.rating || 0"
             :key="`filled-${index}`"
             :filled="true"
             :size="24"
-            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95"
+            role="button"
+            :aria-label="`Rate ${index} out of 5 stars`"
+            tabindex="0"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded"
             data-testid="review-filled-star"
             @click="invokeRating(index)"
+            @keydown.enter.prevent="invokeRating(index)"
+            @keydown.space.prevent="invokeRating(index)"
           />
           <SwStarIcon
             v-for="index in 5 - (state.rating || 0)"
             :key="`empty-${index}`"
             :filled="false"
             :size="24"
-            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95"
+            role="button"
+            :aria-label="`Rate ${(state.rating || 0) + index} out of 5 stars`"
+            tabindex="0"
+            class="cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded"
             data-testid="review-empty-star"
             @click="invokeRating((state.rating || 0) + index)"
+            @keydown.enter.prevent="invokeRating((state.rating || 0) + index)"
+            @keydown.space.prevent="invokeRating((state.rating || 0) + index)"
           />
         </div>
         <span

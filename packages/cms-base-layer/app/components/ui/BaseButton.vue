@@ -51,9 +51,9 @@ const buttonClasses = computed(() => {
     secondary:
       "bg-brand-secondary hover:bg-brand-secondary-hover text-brand-on-secondary focus:ring-brand-secondary",
     success:
-      "bg-states-success hover:bg-states-success text-white focus:ring-states-success",
+      "bg-states-success hover:opacity-90 text-white focus:ring-states-success transition-opacity",
     warning:
-      "bg-states-warning hover:bg-states-warning text-white focus:ring-states-warning",
+      "bg-states-warning hover:opacity-90 text-white focus:ring-states-warning transition-opacity",
     outline:
       "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-on-primary focus:ring-brand-primary",
     ghost:
