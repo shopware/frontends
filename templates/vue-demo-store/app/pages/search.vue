@@ -362,8 +362,6 @@ function addCountsToFilter() {
   }
 }
 
-addCountsToFilter();
-
 const openFilters = () => {
   const query = router.currentRoute.value.query;
   for (const [key, value] of Object.entries(query)) {
