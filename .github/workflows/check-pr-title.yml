@@ -10,9 +10,16 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@v6
-        with:
-          headerPattern: '^(?!.{69}\.\.\.$).{0,72}$'
-          subjectPatternError: 'The PR title reaches the 72-character limit and cannot end with "...". Please shorten it.'
+      - name: Check semantic PR title
+        uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check PR title length
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = github.context.payload.pull_request.title;
+            const regex = /^(?!.{69}\.\.\.$).{0,72}$/;
+            if (!regex.test(title)) {
+              throw new Error('The PR title reaches the 72-character limit and cannot end with "...". Please shorten it.');
+            }
