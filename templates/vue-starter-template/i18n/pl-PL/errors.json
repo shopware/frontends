@@ -42,6 +42,7 @@
     "CHECKOUT__ORDER_ORDER_ALREADY_PAID": "Zamówienie o numerze {orderNumber} zostało już opłacone i nie może zostać zrealizowane.",
     "CHECKOUT__ORDER_ORDER_NOT_FOUND": "Nie udało się znaleźć tego zamówienia.",
     "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED": "Adres e-mail został już potwierdzony lub URL jest nieprawidłowy.",
-    "CONTENT__NEWSLETTER_RECIPIENT_THROTTLED": "Zbyt wiele żądań. Odczekaj {seconds} sekund przed ponowną próbą."
+    "CONTENT__NEWSLETTER_RECIPIENT_THROTTLED": "Zbyt wiele żądań. Odczekaj {seconds} sekund przed ponowną próbą.",
+    "VIOLATION::ENTITY_EXISTS": "Już dodałeś recenzję tego produktu"
   }
 }
