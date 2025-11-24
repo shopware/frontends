@@ -43,7 +43,6 @@
     "CHECKOUT__ORDER_ORDER_ALREADY_PAID": "The order with the order number {orderNumber} was already paid and cannot be edited afterwards.",
     "CHECKOUT__ORDER_ORDER_NOT_FOUND": "This order could not be found.",
     "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED": "Either the email address has already been confirmed or the URL is invalid.",
-    "CONTENT__NEWSLETTER_RECIPIENT_THROTTLED": "Too many requests. Please wait {seconds} seconds before trying again.",
-    "VIOLATION::ENTITY_EXISTS": "You have already submitted a review for this product"
+    "CONTENT__NEWSLETTER_RECIPIENT_THROTTLED": "Too many requests. Please wait {seconds} seconds before trying again."
   }
 }

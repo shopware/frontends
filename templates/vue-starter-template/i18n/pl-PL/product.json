@@ -1,0 +1,20 @@
+{
+  "product": {
+    "addReview": "Dodaj recenzję",
+    "reviewsForm": {
+      "title": "Tytuł",
+      "titlePlaceholder": "Wprowadź tytuł swojej recenzji",
+      "review": "Twoja recenzja",
+      "reviewPlaceholder": "Podziel się swoim doświadczeniem z tym produktem (minimum 40 znaków)",
+      "submit": "Wyślij",
+      "rating": "Twoja ocena"
+    },
+    "errors": {
+      "reviewAlreadyExists": "Już wysłałeś recenzję tego produktu"
+    },
+    "messages": {
+      "reviewAdded": "Dziękujemy! Twoja recenzja została pomyślnie przesłana.",
+      "loginToReview": "Zaloguj się, aby napisać recenzję"
+    }
+  }
+}
