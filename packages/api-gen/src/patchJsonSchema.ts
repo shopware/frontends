@@ -60,33 +60,46 @@ export const extendedDefu = createDefu((obj, key, value) => {
 
   const objRecord = obj as Record<string, unknown>;
 
-  // Case 1: Override uses a composition keyword (e.g., oneOf, anyOf)
-  // Remove $ref from the original object since composition keywords take precedence
+  // Handle composition keyword replacement: if original has a different composition keyword or $ref,
+  // delete the old one(s) and the new composition keyword will be merged in
   //
-  // Example:
+  // Example 1 - Composition keyword replacing $ref:
   // Original: { "$ref": "#/components/schemas/Media" }
   // Override: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
   // Result:   { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
-  // (The $ref is removed from the original, and the oneOf from override is merged in)
+  //
+  // Example 2 - Different composition keyword:
+  // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
+  // Override: { "anyOf": [{ "$ref": "#/components/schemas/ProductMedia" }] }
+  // Result:   { "anyOf": [{ "$ref": "#/components/schemas/ProductMedia" }] }
+  //
+  // Example 3 - Same composition keyword (replacement):
+  // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
+  // Override: { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
+  // Result:   { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
   if (
     typeof key === "string" &&
-    COMPOSITION_KEYWORDS.includes(
-      key as (typeof COMPOSITION_KEYWORDS)[number],
-    ) &&
-    hasRef(objRecord)
+    COMPOSITION_KEYWORDS.includes(key as (typeof COMPOSITION_KEYWORDS)[number])
   ) {
-    // biome-ignore lint/performance/noDelete: delete $ref
-    delete objRecord.$ref;
+    // Remove all other composition keywords (different from the one being set)
+    for (const keyword of COMPOSITION_KEYWORDS) {
+      if (keyword !== key && keyword in objRecord) {
+        delete objRecord[keyword];
+      }
+    }
+    // Remove $ref if present (composition keywords take precedence)
+    if (hasRef(objRecord)) {
+      // biome-ignore lint/performance/noDelete: delete $ref
+      delete objRecord.$ref;
+    }
   }
 
-  // Case 2: Override uses $ref and original has composition keywords
-  // Replace the entire object with the override value to remove composition keywords
+  // Handle $ref replacing composition keywords: replace entire object with $ref
   //
   // Example:
   // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
   // Override: { "$ref": "#/components/schemas/Media" }
   // Result:   { "$ref": "#/components/schemas/Media" }
-  // (The entire object is replaced, removing the oneOf and keeping only the $ref from override)
   if (
     isPlainObject(value) &&
     hasRef(value) &&

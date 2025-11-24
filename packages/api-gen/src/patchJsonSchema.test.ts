@@ -521,6 +521,73 @@ describe("patchJsonSchema", () => {
         }
       `);
     });
+
+    it("should replace composition keywords with another composition keyword", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    allOf: [
+                    {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    {
+                    "$ref": "#/components/schemas/ProductMedia"
+                    }
+                  ]
+                  }
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                cover: {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Media",
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProductMedia",
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Media",
+                      },
+                      {
+                        "$ref": "#/components/schemas/ProductMedia",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
   });
 
   describe("paths", () => {
