@@ -10,7 +10,7 @@
 export function getMainImageUrl<
   T extends
     | {
-        cover?: {
+        cover: {
           media?: {
             url: string;
           };
@@ -24,9 +24,12 @@ export function getMainImageUrl<
         }>;
       }
     | {
-        cover?: {
+        cover: {
           url: string;
         };
+      }
+    | {
+        cover: null;
       },
 >(object: T): string {
   if (!object) return "";
