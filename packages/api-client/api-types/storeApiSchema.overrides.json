@@ -41,9 +41,13 @@
       }
     },
     "LineItem": {
+      "required": ["cover"],
       "properties": {
         "cover": {
-          "$ref": "#/components/schemas/Media"
+          "oneOf": [
+            { "$ref": "#/components/schemas/Media" },
+            { "type": "null" }
+          ]
         }
       }
     }

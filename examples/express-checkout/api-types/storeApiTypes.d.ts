@@ -2692,7 +2692,7 @@ export type Schemas = {
   };
   LineItem: {
     children?: components["schemas"]["LineItem"][];
-    cover?: components["schemas"]["Media"];
+    cover: components["schemas"]["Media"] | null;
     dataContextHash?: string;
     dataTimestamp?: string;
     deliveryInformation: components["schemas"]["CartDeliveryInformation"];
