@@ -93,42 +93,6 @@ export const extendedDefu = createDefu((obj, key, value) => {
     }
   }
 
-  // Handle replace regular object with $ref
-  // When override has $ref and original has type: "object", remove object-related keys
-  // Example:
-  // Original: { type: "object", properties: { url: { type: "string" } } }
-  // Override: { "$ref": "#/components/schemas/Media" }
-  // Result:   { "$ref": "#/components/schemas/Media" }
-  if (
-    isPlainObject(value) &&
-    hasKey(value as Record<string, unknown>, "$ref") &&
-    isPlainObject(obj[key]) &&
-    (obj[key] as Record<string, unknown>).type === "object"
-  ) {
-    const originalObj = obj[key] as Record<string, unknown>;
-    // Remove object-related keys that conflict with $ref
-    const keysToRemove = [
-      "type",
-      "properties",
-      "required",
-      "additionalProperties",
-      "patternProperties",
-      "minProperties",
-      "maxProperties",
-    ];
-    for (const keyToRemove of keysToRemove) {
-      if (keyToRemove in originalObj) {
-        delete originalObj[keyToRemove];
-      }
-    }
-    // Also remove any composition keywords that might be present
-    for (const compositionKey of KEYS_TO_HANDLE) {
-      if (compositionKey !== "$ref" && compositionKey in originalObj) {
-        delete originalObj[compositionKey];
-      }
-    }
-  }
-
   return false;
 });
 

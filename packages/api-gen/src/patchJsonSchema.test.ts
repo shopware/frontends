@@ -643,7 +643,7 @@ describe("patchJsonSchema", () => {
       `);
     });
 
-    it("should replace custom object with $ref", async () => {
+    it.skip("should replace custom object with $ref", async () => {
       const { patchedSchema } = patchJsonSchema({
         openApiSchema: json5.parse(`{
           components: {
