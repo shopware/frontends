@@ -20,15 +20,28 @@ export type OverridesSchema = {
   };
 };
 
+const KEYS_TO_HANDLE = ["oneOf", "anyOf", "allOf", "not", "$ref"] as const;
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function hasKey(
+  obj: Record<string, unknown>,
+  key: (typeof KEYS_TO_HANDLE)[number],
+): boolean {
+  return key in obj;
+}
+
 export const extendedDefu = createDefu((obj, key, value) => {
+  // Handle array merging: concat arrays but skip duplicates
   if (Array.isArray(obj[key]) && Array.isArray(value)) {
-    // concat arrays but skip duplicates
     // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
     obj[key] = [...new Set([...obj[key], ...value])].sort();
     return true;
   }
 
-  // if there is no key in object, add it
+  // If there is no key in object, add it
   if (obj[key] === undefined) {
     obj[key] = extendedDefu(value, value);
   }
@@ -37,6 +50,47 @@ export const extendedDefu = createDefu((obj, key, value) => {
   if (value === "_DELETE_") {
     delete obj[key];
     return true;
+  }
+
+  // Handle conflicts between $ref and composition keywords
+  if (!isPlainObject(obj)) {
+    return false;
+  }
+
+  const objRecord = obj as Record<string, unknown>;
+
+  // Handle composition keyword replacement: if original has a different composition keyword or $ref,
+  // delete the old one(s) and the new composition keyword will be merged in
+  //
+  // Example 1 - Composition keyword replacing $ref:
+  // Original: { "$ref": "#/components/schemas/Media" }
+  // Override: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
+  // Result:   { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
+  //
+  // Example 2 - Different composition keyword:
+  // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
+  // Override: { "anyOf": [{ "$ref": "#/components/schemas/ProductMedia" }] }
+  // Result:   { "anyOf": [{ "$ref": "#/components/schemas/ProductMedia" }] }
+  //
+  // Example 3 - Same composition keyword (replacement):
+  // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
+  // Override: { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
+  // Result:   { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
+  function replaceKey(
+    obj: Record<string, unknown>,
+    oldKey: (typeof KEYS_TO_HANDLE)[number],
+    newKey: (typeof KEYS_TO_HANDLE)[number],
+  ): void {
+    if (oldKey in obj) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+    }
+  }
+
+  for (const key of KEYS_TO_HANDLE) {
+    if (hasKey(objRecord, key)) {
+      replaceKey(objRecord, key, key);
+    }
   }
 
   return false;
