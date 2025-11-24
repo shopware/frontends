@@ -16,9 +16,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check PR title length
         uses: actions/github-script@v8
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
         with:
           script: |
-            const title = github.context.payload.pull_request.title;
+            const title = process.env.TITLE;
             const regex = /^(?!.{69}\.\.\.$).{0,72}$/;
             if (!regex.test(title)) {
               throw new Error('The PR title reaches the 72-character limit and cannot end with "...". Please shorten it.');
