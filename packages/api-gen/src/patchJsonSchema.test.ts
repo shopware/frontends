@@ -408,6 +408,289 @@ describe("patchJsonSchema", () => {
         }
       `);
     });
+
+    it("should remove $ref and add composition keyword (oneOf)", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    "$ref": "#/components/schemas/Media"
+                  }
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                cover: {
+                  oneOf: [
+                    {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    {
+                    "$ref": "#/components/schemas/ProductMedia"
+                    }
+                  ]
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Media",
+                      },
+                      {
+                        "$ref": "#/components/schemas/ProductMedia",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
+
+    it("should remove composition keywords from the original object when override uses $ref", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    oneOf: [
+                    {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    {
+                    "$ref": "#/components/schemas/ProductMedia"
+                    }
+                  ]
+                  }
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                cover: {
+                  "$ref": "#/components/schemas/Media"
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "$ref": "#/components/schemas/Media",
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
+
+    it("should replace composition keywords with another composition keyword", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    allOf: [
+                    {
+                      "$ref": "#/components/schemas/Media"
+                    },
+                    {
+                    "$ref": "#/components/schemas/ProductMedia"
+                    }
+                  ]
+                  }
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                cover: {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Media",
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProductMedia",
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Media",
+                      },
+                      {
+                        "$ref": "#/components/schemas/ProductMedia",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
+
+    it("should replace $ref keywords with custom object", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    "$ref": "#/components/schemas/Media"
+                  }
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                cover: {
+                  type: "object",
+                  properties: {
+                    url: { type: "string" },
+                  },
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
+
+    it.skip("should replace custom object with $ref", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              LineItem: {
+                properties: {
+                  cover: {
+                    type: "object",
+                    properties: {
+                      url: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            LineItem: {
+              properties: {
+                "cover": {
+                    "$ref": "#/components/schemas/Media"
+                },
+              },
+            },
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "LineItem": {
+                "properties": {
+                  "cover": {
+                    "$ref": "#/components/schemas/Media",
+                  },
+                },
+              },
+            },
+          },
+          "paths": {},
+        }
+      `);
+    });
   });
 
   describe("paths", () => {
