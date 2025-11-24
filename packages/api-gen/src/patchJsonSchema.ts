@@ -20,18 +20,17 @@ export type OverridesSchema = {
   };
 };
 
-const COMPOSITION_KEYWORDS = ["oneOf", "anyOf", "allOf", "not"] as const;
+const KEYS_TO_HANDLE = ["oneOf", "anyOf", "allOf", "not", "$ref"] as const;
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function hasCompositionKeyword(obj: Record<string, unknown>): boolean {
-  return COMPOSITION_KEYWORDS.some((keyword) => keyword in obj);
-}
-
-function hasRef(obj: Record<string, unknown>): boolean {
-  return "$ref" in obj;
+function hasKey(
+  obj: Record<string, unknown>,
+  key: (typeof KEYS_TO_HANDLE)[number],
+): boolean {
+  return key in obj;
 }
 
 export const extendedDefu = createDefu((obj, key, value) => {
@@ -77,39 +76,56 @@ export const extendedDefu = createDefu((obj, key, value) => {
   // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
   // Override: { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
   // Result:   { "oneOf": [{ "$ref": "#/components/schemas/Media" }] }
-  if (
-    typeof key === "string" &&
-    COMPOSITION_KEYWORDS.includes(key as (typeof COMPOSITION_KEYWORDS)[number])
-  ) {
-    // Remove all other composition keywords (different from the one being set)
-    for (const keyword of COMPOSITION_KEYWORDS) {
-      if (keyword !== key && keyword in objRecord) {
-        delete objRecord[keyword];
-      }
-    }
-    // Remove $ref if present (composition keywords take precedence)
-    if (hasRef(objRecord)) {
-      // biome-ignore lint/performance/noDelete: delete $ref
-      delete objRecord.$ref;
+  function replaceKey(
+    obj: Record<string, unknown>,
+    oldKey: (typeof KEYS_TO_HANDLE)[number],
+    newKey: (typeof KEYS_TO_HANDLE)[number],
+  ): void {
+    if (oldKey in obj) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
     }
   }
 
-  // Handle $ref replacing composition keywords: replace entire object with $ref
-  //
+  for (const key of KEYS_TO_HANDLE) {
+    if (hasKey(objRecord, key)) {
+      replaceKey(objRecord, key, key);
+    }
+  }
+
+  // Handle replace regular object with $ref
+  // When override has $ref and original has type: "object", remove object-related keys
   // Example:
-  // Original: { "oneOf": [{ "$ref": "#/components/schemas/Media" }, { "$ref": "#/components/schemas/ProductMedia" }] }
+  // Original: { type: "object", properties: { url: { type: "string" } } }
   // Override: { "$ref": "#/components/schemas/Media" }
   // Result:   { "$ref": "#/components/schemas/Media" }
   if (
     isPlainObject(value) &&
-    hasRef(value) &&
-    typeof key === "string" &&
-    key in objRecord
+    hasKey(value as Record<string, unknown>, "$ref") &&
+    isPlainObject(obj[key]) &&
+    (obj[key] as Record<string, unknown>).type === "object"
   ) {
-    const originalValue = objRecord[key];
-    if (isPlainObject(originalValue) && hasCompositionKeyword(originalValue)) {
-      objRecord[key] = value;
-      return true;
+    const originalObj = obj[key] as Record<string, unknown>;
+    // Remove object-related keys that conflict with $ref
+    const keysToRemove = [
+      "type",
+      "properties",
+      "required",
+      "additionalProperties",
+      "patternProperties",
+      "minProperties",
+      "maxProperties",
+    ];
+    for (const keyToRemove of keysToRemove) {
+      if (keyToRemove in originalObj) {
+        delete originalObj[keyToRemove];
+      }
+    }
+    // Also remove any composition keywords that might be present
+    for (const compositionKey of KEYS_TO_HANDLE) {
+      if (compositionKey !== "$ref" && compositionKey in originalObj) {
+        delete originalObj[compositionKey];
+      }
     }
   }
 
