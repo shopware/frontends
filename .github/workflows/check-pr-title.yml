@@ -1,11 +1,7 @@
 name: Check PR title
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
+    types: [opened, reopened, edited, synchronize]
 
 permissions:
   pull-requests: read
@@ -16,8 +12,7 @@ jobs:
     steps:
       - uses: amannn/action-semantic-pull-request@v6
         with:
-          max-title-length: 72
-          subject-pattern: '^(?!.{72}\.\.\.$).+$'
+          subject-pattern: '^(?!.{69}\.\.\.$).{0,72}$'
           subject-pattern-error: 'The PR title reaches the 72-character limit and cannot end with "...". Please shorten it.'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
