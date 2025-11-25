@@ -12,10 +12,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@unocss/nuxt": "66.5.4",
-    "@unocss/reset": "66.5.4",
+    "@unocss/nuxt": "66.5.9",
+    "@unocss/reset": "66.5.9",
     "nuxt": "4.2.1",
-    "unocss": "66.5.4"
+    "unocss": "66.5.9"
   },
   "dependencies": {
     "@vueuse/nuxt": "14.0.0",
