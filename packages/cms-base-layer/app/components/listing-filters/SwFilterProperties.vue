@@ -56,13 +56,14 @@ const selectValue = (id: string) => {
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <div class="self-stretch flex flex-col justify-center items-center">
-      <div 
+      <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
         @click="toggle"
         role="button"
         tabindex="0"
         :aria-expanded="isFilterVisible"
         :aria-controls="props.filter.code"
+        :aria-label="props.filter.label"
         @keydown.enter="toggle"
         @keydown.space.prevent="toggle"
       >

@@ -15,5 +15,5 @@ export default {
   ...form,
   ...errors,
   ...layout,
-  ...cart
+  ...cart,
 };

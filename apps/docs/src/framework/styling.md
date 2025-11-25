@@ -128,7 +128,7 @@ Remove the `unocss` dependency from the `package.json` file
 ```diff
 /* package.json */
 
--    "@unocss/nuxt": "^0.45.13",
+-    "@unocss/nuxt": "66.5.6",
 ```
 
 Remove the unocss imports, build modules and configuration from the `nuxt.config.js` file

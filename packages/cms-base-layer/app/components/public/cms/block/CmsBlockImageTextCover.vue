@@ -12,14 +12,12 @@ const leftContent = getSlotContent("left");
 const rightContent = getSlotContent("right");
 </script>
 <template>
-  <article class="md:grid md:grid-cols-2 gap-10">
-    <CmsGenericElement
-      :content="leftContent"
-      class="cms-block-image-text-cover__image"
-    />
-    <CmsGenericElement
-      :content="rightContent"
-      class="cms-block-image-text-cover__text"
-    />
+  <article class="flex flex-col md:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full md:flex-1">
+      <CmsGenericElement :content="leftContent" />
+    </div>
+    <div class="w-full md:flex-1">
+      <CmsGenericElement :content="rightContent" />
+    </div>
   </article>
 </template>

@@ -12,11 +12,15 @@ const emit = defineEmits<{
   remove: [id: string];
   updateQuantity: [id: string, quantity: number];
 }>();
+
+const cover = computed(() =>
+  item.cover ? getSmallestThumbnailUrl(item.cover) : "",
+);
 </script>
 <template>
   <div class="flex gap-4">
     <NuxtImg
-      :src="getSmallestThumbnailUrl(item.cover)"
+      :src="cover"
       :alt="`${item.label || item.payload.name || ''} cart item`"
       class="object-cover object-center"
       width="151"
