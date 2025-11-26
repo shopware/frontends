@@ -1,0 +1,11 @@
+{
+  "cart": {
+    "miniCart": {
+      "title": "My cart",
+      "subtotal": "Subtotal",
+      "taxEstimation": "Taxes & shipping estimated at checkout.",
+      "proceedToCheckout": "Proceed to checkout",
+      "goToShoppingCart": "Go to shopping cart"
+    }
+  }
+}
