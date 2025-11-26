@@ -27,8 +27,8 @@ const cover = computed(() =>
       height="151"
     />
     <div class="grid grid-cols-2 justify-between py-2.5 grow">
-      <div class="self-stretch justify-start text-surface-on-surface">
-        {{ item.label }}
+      <div class="text-surface-on-surface">
+        <div class="line-clamp-2">{{ item.label }}</div>
       </div>
 
       <SharedPrice

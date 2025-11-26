@@ -1,0 +1,11 @@
+{
+  "cart": {
+    "miniCart": {
+      "title": "Mein Warenkorb",
+      "subtotal": "Zwischensumme",
+      "taxEstimation": "Steuern & Versandkosten werden beim Checkout berechnet.",
+      "proceedToCheckout": "Zur Kasse",
+      "goToShoppingCart": "Zum Warenkorb"
+    }
+  }
+}
