@@ -7,5 +7,5 @@ const { size = 24 } = defineProps<{
 </script>
 
 <template>
-  <SwBaseIcon :src="ExclamationCircleSvg" :size="size" alt="" />
+  <SwBaseIcon :src="ExclamationCircleSvg" :size="size" alt="Error" />
 </template>

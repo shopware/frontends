@@ -11,7 +11,7 @@ const { filled = true, size = 20 } = defineProps<{
 <template>
   <NuxtImg
     :src="filled ? StarFilledSvg : StarEmptySvg"
-    alt=""
+    alt="Star"
     :width="size"
     :height="size"
   />
