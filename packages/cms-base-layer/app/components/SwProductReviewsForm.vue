@@ -32,6 +32,9 @@ type Translations = {
       reviewAlreadyExists: string;
     };
   };
+  errors?: {
+    [key: string]: string;
+  };
 };
 
 let translations: Translations = {
@@ -122,15 +125,21 @@ const invokeSend = async () => {
     emit("success");
   } catch (error) {
     if (error instanceof ApiClientError) {
-      // Map error messages and replace "already exists" error with user-friendly message
+      // Resolve error messages using i18n translations when available
       errorMessages.value = error.details.errors.map((err: ApiError) => {
-        if (err.code === "VIOLATION::ENTITY_EXISTS") {
-          return {
-            ...err,
-            detail: translations.product.errors.reviewAlreadyExists,
-          };
-        }
-        return err;
+        // Try to get translation from i18n errors namespace (if template provides it)
+        const translatedMessage =
+          (err.code && translations.errors?.[err.code]) ||
+          // Fall back to product-specific error translations
+          (err.code === "VIOLATION::ENTITY_EXISTS" &&
+            translations.product.errors.reviewAlreadyExists) ||
+          // Fall back to API error detail
+          err.detail;
+
+        return {
+          ...err,
+          detail: translatedMessage,
+        };
       });
     }
   } finally {
@@ -201,7 +210,7 @@ const invokeRating = (value: number) => {
     </div>
     <div
       v-if="errorMessages.length"
-      class="p-3 md:p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
+      class="p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
     >
       <div class="w-5 h-5 text-states-error flex-shrink-0 mt-0.5">
         <SwExclamationIcon :size="20" />

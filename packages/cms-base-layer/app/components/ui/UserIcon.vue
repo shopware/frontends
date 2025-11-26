@@ -1,21 +1,11 @@
 <script setup lang="ts">
 import UserSvg from "@cms-assets/icons/user.svg";
 
-withDefaults(
-  defineProps<{
-    size?: number;
-  }>(),
-  {
-    size: 24,
-  },
-);
+const { size = 24 } = defineProps<{
+  size?: number;
+}>();
 </script>
 
 <template>
-  <NuxtImg
-    :src="UserSvg"
-    alt=""
-    :width="size"
-    :height="size"
-  />
+  <SwBaseIcon :src="UserSvg" :size="size" alt="" />
 </template>
