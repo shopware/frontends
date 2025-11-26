@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onClickOutside } from "@vueuse/core";
+
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { cartItems, subtotal, removeItemById } = useCart();
@@ -6,6 +8,8 @@ const { cartItems, subtotal, removeItemById } = useCart();
 const emit = defineEmits<{
   closeMiniCart: [];
 }>();
+
+const miniCartContainer = useTemplateRef("miniCartContainer");
 
 function handleCloseMiniCart() {
   emit("closeMiniCart");
@@ -20,9 +24,13 @@ watch(cartItems, () => {
     handleCloseMiniCart();
   }
 });
+
+onClickOutside(miniCartContainer, () => {
+  handleCloseMiniCart();
+});
 </script>
 <template>
-  <div class="z-20 max-w-[500px] w-full">
+  <div ref="miniCartContainer" class="z-20 max-w-[500px] w-full">
     <div
       class="px-6 pt-4 pb-3 border bg-surface-surface flex items-center justify-between"
     >
@@ -31,7 +39,7 @@ watch(cartItems, () => {
       >
         {{ t("cart.miniCart.title") }}
       </div>
-      <FormIconButton type="ghost" @click.prevent="handleCloseMiniCart">
+      <FormIconButton type="ghost" @click.stop="handleCloseMiniCart">
         <Icon name="shopware:times-s" class="w-3 h-3" />
       </FormIconButton>
     </div>
@@ -66,7 +74,7 @@ watch(cartItems, () => {
       >
       <NuxtLink
         :to="localePath('/cart')"
-        class="bg-brand-secondary text-brand-on-secondart block text-center font-bold leading-6 py-1.5 rounded-md"
+        class="bg-brand-secondary text-brand-on-secondary block text-center font-bold leading-6 py-1.5 rounded-md"
         >{{ $t("cart.miniCart.goToShoppingCart") }}</NuxtLink
       >
     </div>

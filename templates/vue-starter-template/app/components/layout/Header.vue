@@ -81,13 +81,11 @@ watch(
         </template>
 
         <ClientOnly>
-          <KeepAlive>
-            <LayoutMiniCart
-              v-if="miniCartActive && cartCount > 0"
-              class="absolute top-full right-0"
-              @closeMiniCart="toggleMiniCart"
-            />
-          </KeepAlive>
+          <LayoutMiniCart
+            v-if="miniCartActive && cartCount > 0"
+            class="absolute top-full right-0"
+            @closeMiniCart="toggleMiniCart"
+          />
         </ClientOnly>
       </div>
       <ClientOnly>
