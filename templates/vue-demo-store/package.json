@@ -21,14 +21,14 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "66.5.4",
+    "@unocss/nuxt": "66.5.9",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "14.0.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.5.24"
+    "vue": "3.5.25"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
@@ -36,7 +36,7 @@
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
     "nuxt": "4.2.1",
-    "vite": "7.1.11",
+    "vite": "7.2.4",
     "typescript": "5.9.2"
   },
   "engines": {
