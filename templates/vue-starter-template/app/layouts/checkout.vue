@@ -51,8 +51,10 @@ async function onLanguageChangeHandler(id: string) {
       />
 
       <div class="border-b">
-        <div class="flex items-center justify-between container mx-auto">
-          <div class="py-3.5 px-6 sm:px-0 relative">
+        <div
+          class="flex items-center justify-between container mx-auto px-6 sm:px-0"
+        >
+          <div class="py-3.5 relative">
             <NuxtLink :to="formatLink('/')">
               <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
             </NuxtLink>

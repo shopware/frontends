@@ -17,7 +17,7 @@ function handleUpdateQuantity(id: string, quantity: number) {
 }
 </script>
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto px-6 sm:px-4">
     <h1 class="text-10 my-10 font-['Noto_Serif']">
       {{ $t("cart.title") }}
     </h1>
