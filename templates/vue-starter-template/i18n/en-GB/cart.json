@@ -1,5 +1,9 @@
 {
   "cart": {
+    "title": "My cart",
+    "emptyCartLabel": "Your cart is empty",
+    "proceedToCheckout": "Check out",
+    "continueShopping": "Continue Shopping",
     "miniCart": {
       "title": "My cart",
       "subtotal": "Subtotal",

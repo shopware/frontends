@@ -26,7 +26,10 @@ const languagesList = computed(
     }) ?? [],
 );
 
-async function onChangeHandler(id: string) {
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
+async function onLanguageChangeHandler(id: string) {
   const data = await changeLanguage(id);
 
   if (data.redirectUrl) {
@@ -44,11 +47,27 @@ async function onChangeHandler(id: string) {
         class="px-6"
         :current-language-label="currentLanguageLabel"
         :languages="languagesList"
-        @onLanguageChangeHandler="onChangeHandler"
+        @onLanguageChangeHandler="onLanguageChangeHandler"
       />
-      <LayoutHeader class="px-6" />
+
+      <div class="border-b">
+        <div class="flex items-center justify-between container mx-auto">
+          <div class="py-3.5 px-6 sm:px-0 relative">
+            <NuxtLink :to="formatLink('/')">
+              <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
+            </NuxtLink>
+          </div>
+          <div>
+            <NuxtLink
+              :to="formatLink('/')"
+              class="py-3 px-4 bg-white rounded outline outline-2 outline-offset-[-2px] outline-brand-primary inline-flex items-center gap-1 text-brand-primary font-bold leading-6"
+              >{{ $t("cart.continueShopping") }}</NuxtLink
+            >
+          </div>
+        </div>
+      </div>
     </header>
-    <main>
+    <main class="mb-20">
       <slot />
     </main>
   </div>

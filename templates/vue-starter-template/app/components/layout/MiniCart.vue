@@ -2,6 +2,7 @@
 import { onClickOutside } from "@vueuse/core";
 
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const { cartItems, subtotal, removeItemById } = useCart();
 
 const emit = defineEmits<{
@@ -67,12 +68,12 @@ onClickOutside(miniCartContainer, () => {
         {{ $t("cart.miniCart.taxEstimation") }}
       </div>
       <NuxtLink
-        :to="localePath('/checkout')"
+        :to="formatLink('/checkout')"
         class="bg-brand-primary text-brand-on-primary block text-center font-bold leading-6 py-1.5 rounded-md mb-2"
         >{{ $t("cart.miniCart.proceedToCheckout") }}</NuxtLink
       >
       <NuxtLink
-        :to="localePath('/cart')"
+        :to="formatLink('/checkout/cart')"
         class="bg-brand-secondary text-brand-on-secondary block text-center font-bold leading-6 py-1.5 rounded-md"
         >{{ $t("cart.miniCart.goToShoppingCart") }}</NuxtLink
       >
