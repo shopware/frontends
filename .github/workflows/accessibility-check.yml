@@ -3,8 +3,8 @@ name: Accessibiliy Check
 run-name: Playwright accessibility tests 🚀
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 09 * * *"
+  # schedule:
+  #   - cron: "30 09 * * *"
 jobs:
   run-accessibility-check:
     runs-on: ubuntu-latest
