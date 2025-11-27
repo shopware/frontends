@@ -22,6 +22,6 @@ jobs:
           script: |
             const title = process.env.TITLE;
             const regex = /\.{3}$/;
-            if (!regex.test(title)) {
+            if (regex.test(title)) {
               throw new Error('The PR title cannot end with "...". Please shorten it.');
             }
