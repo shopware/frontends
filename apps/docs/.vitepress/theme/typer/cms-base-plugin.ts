@@ -1,15 +1,9 @@
 import { resolve } from "node:path";
-import { findSync } from "find-in-files";
 // @ts-nocheck
 import type { Plugin } from "vite";
 
 import { readFileSync, readdirSync } from "node:fs";
-import {
-  getToggleContainer,
-  getWrappedCodeBlock,
-  prepareGithubPermalink,
-  replacer,
-} from "./utils";
+import { prepareGithubPermalink, replacer } from "./utils";
 
 export async function CmsBaseReference({
   projectRootDir,
