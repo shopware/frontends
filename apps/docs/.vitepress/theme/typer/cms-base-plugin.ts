@@ -43,16 +43,31 @@ export async function CmsBaseReference({
           continue;
 
         API += `### \`${component.name.replace(".vue", "")}\`\n`;
+
+        const componentPath =
+          component.parentPath ||
+          component.path ||
+          resolve(`${projectRootDir}/${relativeDir}`);
+        const pathParts = componentPath.split("frontends/");
+        const normalizedPath =
+          pathParts.length > 1
+            ? pathParts.pop()?.replace("/vercel/path0/", "")
+            : componentPath.replace(projectRootDir, "").replace(/^\//, "");
+
         API += prepareGithubPermalink({
           label: "source code",
-          path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
+          path: `${normalizedPath}/${component.name}`,
           project: "shopware/frontends",
         });
 
         try {
           //try to load associated readme
+          const readmePath =
+            component.parentPath ||
+            component.path ||
+            resolve(`${projectRootDir}/${relativeDir}`);
           const readme = readFileSync(
-            `${component.path}/${component.name.replace(".vue", ".md")}`,
+            `${readmePath}/${component.name.replace(".vue", ".md")}`,
             "utf8",
           );
           if (readme) {
