@@ -48,11 +48,14 @@ export async function CmsBaseReference({
           component.parentPath ||
           component.path ||
           resolve(`${projectRootDir}/${relativeDir}`);
-        const pathParts = componentPath.split("frontends/");
-        const normalizedPath =
+
+        // Remove both /vercel/path0/ and extract path after frontends/
+        let normalizedPath = componentPath.replace(/\/vercel\/path0\//g, "");
+        const pathParts = normalizedPath.split("frontends/");
+        normalizedPath =
           pathParts.length > 1
-            ? pathParts.pop()?.replace("/vercel/path0/", "")
-            : componentPath.replace(projectRootDir, "").replace(/^\//, "");
+            ? pathParts.pop() || ""
+            : normalizedPath.replace(projectRootDir, "").replace(/^\//, "");
 
         API += prepareGithubPermalink({
           label: "source code",
