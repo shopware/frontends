@@ -9,9 +9,10 @@ const { filled = true, size = 20 } = defineProps<{
 </script>
 
 <template>
-  <img
+  <NuxtImg
     :src="filled ? StarFilledSvg : StarEmptySvg"
-    alt=""
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    alt="Star"
+    :width="size"
+    :height="size"
   />
 </template>
