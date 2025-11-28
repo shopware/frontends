@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "checkout",
+});
+
 const { cart } = useCart();
 const {
   shippingMethods,

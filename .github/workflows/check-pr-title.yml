@@ -21,7 +21,7 @@ jobs:
         with:
           script: |
             const title = process.env.TITLE;
-            const regex = /^(?!.{69}\.\.\.$).{0,72}$/;
-            if (!regex.test(title)) {
-              throw new Error('The PR title reaches the 72-character limit and cannot end with "...". Please shorten it.');
+            const regex = /\.{3}$/;
+            if (regex.test(title)) {
+              throw new Error('The PR title cannot end with "...". Please shorten it.');
             }

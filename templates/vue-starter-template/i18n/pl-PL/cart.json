@@ -1,5 +1,9 @@
 {
   "cart": {
+    "title": "Mój koszyk",
+    "emptyCartLabel": "Twój koszyk jest pusty",
+    "proceedToCheckout": "Przejdź do kasy",
+    "continueShopping": "Kontynuuj zakupy",
     "miniCart": {
       "title": "Koszyk",
       "subtotal": "Suma",

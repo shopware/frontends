@@ -19,13 +19,13 @@ const cover = computed(() =>
 </script>
 <template>
   <div class="flex gap-4">
-    <NuxtImg
-      :src="cover"
-      :alt="`${item.label || item.payload.name || ''} cart item`"
-      class="object-cover object-center"
-      width="151"
-      height="151"
-    />
+    <div class="w-37.5 h-37.5">
+      <NuxtImg
+        :src="cover"
+        :alt="`${item.label || item.payload.name || ''} cart item`"
+        class="object-cover object-center"
+      />
+    </div>
     <div class="grid grid-cols-2 justify-between py-2.5 grow">
       <div class="text-surface-on-surface">
         <div class="line-clamp-2">{{ item.label }}</div>

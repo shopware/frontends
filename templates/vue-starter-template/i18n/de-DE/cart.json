@@ -1,5 +1,9 @@
 {
   "cart": {
+    "title": "Mein Warenkorb",
+    "emptyCartLabel": "Ihr Warenkorb ist leer",
+    "proceedToCheckout": "Zur Kasse",
+    "continueShopping": "Mit dem Einkauf fortfahren",
     "miniCart": {
       "title": "Mein Warenkorb",
       "subtotal": "Zwischensumme",
