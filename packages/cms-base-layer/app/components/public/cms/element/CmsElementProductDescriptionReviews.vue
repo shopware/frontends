@@ -153,7 +153,7 @@ onMounted(async () => {
           </ClientOnly>
           <div v-if="reviewAdded" class="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center">
             <div class="w-5 h-5 text-states-success flex-shrink-0">
-              <SwCheckmarkIcon :size="20" :filled="true" />
+              <SwCheckmarkIcon :size="20" :filled="true" alt="Success" />
             </div>
             <span class="text-sm text-states-success">{{ translations.product.messages.reviewAdded }}</span>
           </div>

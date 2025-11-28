@@ -6,10 +6,12 @@ const props = withDefaults(
   defineProps<{
     direction?: "up" | "down" | "left" | "right";
     size?: number;
+    alt?: string;
   }>(),
   {
     direction: "down",
     size: 24,
+    alt: "",
   },
 );
 
@@ -27,7 +29,7 @@ const rotationClass = computed(() => {
 <template>
   <NuxtImg
     :src="ChevronSvg"
-    alt=""
+    :alt="alt"
     :class="['transition-transform', rotationClass]"
     :width="size"
     :height="size"

@@ -129,10 +129,11 @@ const invokeSend = async () => {
       errorMessages.value = error.details.errors.map((err: ApiError) => {
         // Try to get translation from i18n errors namespace (if template provides it)
         const translatedMessage =
-          (err.code && translations.errors?.[err.code]) ||
+          (err.code && translations.errors?.[err.code]) ??
           // Fall back to product-specific error translations
-          (err.code === "VIOLATION::ENTITY_EXISTS" &&
-            translations.product.errors.reviewAlreadyExists) ||
+          (err.code === "VIOLATION::ENTITY_EXISTS"
+            ? translations.product.errors.reviewAlreadyExists
+            : undefined) ??
           // Fall back to API error detail
           err.detail;
 
