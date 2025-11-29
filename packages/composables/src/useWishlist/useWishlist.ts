@@ -84,10 +84,12 @@ export function useWishlist(): UseWishlistReturn {
       limit: limit.value,
     } as Schemas["Criteria"];
 
-    wishlistQuery = defu(query, wishlistQuery);
+    if (query) {
+      wishlistQuery = defu(query, wishlistQuery);
 
-    if (query?.limit) {
-      limit.value = query.limit;
+      if (query.limit) {
+        limit.value = query.limit;
+      }
     }
 
     if (canSyncWishlist.value) {

@@ -86,17 +86,21 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
   async function getWishlistProducts(
     defaultSearchCriteria?: Schemas["Criteria"],
   ) {
-    const response = await apiClient.invoke(
-      "readCustomerWishlist post /customer/wishlist",
-      { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
-    );
-    _wishlistItems.value = [
-      ...response.data.products.elements.map((element) => element.id),
-    ];
-    _wishlistProducts.value = response.data.products.elements;
-    totalWishlistItemsCount.value = response.data.products.total ?? 0;
-    _currentPage.value = response.data.products.page ?? 1;
-    _limit.value = response.data.products.limit ?? 15;
+    try {
+      const response = await apiClient.invoke(
+        "readCustomerWishlist post /customer/wishlist",
+        { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
+      );
+      _wishlistItems.value = [
+        ...response.data.products.elements.map((element) => element.id),
+      ];
+      _wishlistProducts.value = response.data.products.elements;
+      totalWishlistItemsCount.value = response.data.products.total ?? 0;
+      _currentPage.value = response.data.products.page ?? 1;
+      _limit.value = response.data.products.limit ?? 15;
+    } catch (error) {
+      console.error("[useSyncWishlist][getWishlistProducts][error]:", error);
+    }
   }
 
   async function mergeWishlistProducts(productIds: string[]) {

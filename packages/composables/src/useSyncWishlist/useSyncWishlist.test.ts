@@ -107,10 +107,10 @@ describe("useSyncWishlist", () => {
             }),
           },
         });
-        vm.getWishlistProducts();
+        await vm.getWishlistProducts();
         expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
         expect(vm.count).toBe(9);
-        expect(vm.items.length).toBe(0);
+        expect(vm.items.length).toBe(1);
       });
     });
   });
