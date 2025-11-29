@@ -1,6 +1,13 @@
 {
   "wishlist": {
     "header": "Wunschliste",
-    "subHeader": "Sieh dir deine aktuelle Wunschliste an."
+    "subHeader": "Sieh dir deine aktuelle Wunschliste an.",
+    "notLoggedIn": {
+      "title": "Ihre Wunschliste ist leer",
+      "description": "Behalten Sie Produkte im Auge, die Ihnen gefallen, indem Sie sie zu Ihrer Wunschliste hinzufügen.",
+      "login": "Anmelden",
+      "register": "Registrieren",
+      "continueShopping": "Weiter einkaufen"
+    }
   }
 }
