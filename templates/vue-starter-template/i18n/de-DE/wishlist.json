@@ -3,8 +3,8 @@
     "header": "Wunschliste",
     "subHeader": "Sieh dir deine aktuelle Wunschliste an.",
     "notLoggedIn": {
-      "title": "Ihre Wunschliste ist leer",
-      "description": "Behalten Sie Produkte im Auge, die Ihnen gefallen, indem Sie sie zu Ihrer Wunschliste hinzufügen.",
+      "title": "Deine Wunschliste ist leer",
+      "description": "Behalte Produkte im Auge, die dir gefallen, indem du sie zu deiner Wunschliste hinzufügst.",
       "login": "Anmelden",
       "register": "Registrieren",
       "continueShopping": "Weiter einkaufen"

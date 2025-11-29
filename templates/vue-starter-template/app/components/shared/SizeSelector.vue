@@ -19,6 +19,13 @@ const options = [
 function handleChange() {
   emit("change", Number(state.value));
 }
+
+watch(
+  () => props.value,
+  (newValue) => {
+    state.value = newValue.toString();
+  },
+);
 </script>
 <template>
   <FormDropdownField

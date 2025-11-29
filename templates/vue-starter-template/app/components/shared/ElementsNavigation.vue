@@ -36,6 +36,10 @@ function handleChangeSize(size: number) {
       :total="pages"
       :current="currentPage"
     />
-    <SharedSizeSelector @change="handleChangeSize" :value="pageSize ?? 15" />
+    <SharedSizeSelector
+      v-if="showPageSizeSelector"
+      @change="handleChangeSize"
+      :value="pageSize ?? 15"
+    />
   </div>
 </template>

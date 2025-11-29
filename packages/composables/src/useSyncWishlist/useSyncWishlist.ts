@@ -100,6 +100,9 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
       _limit.value = response.data.products.limit ?? 15;
     } catch (error) {
       console.error("[useSyncWishlist][getWishlistProducts][error]:", error);
+      _wishlistItems.value = [];
+      _wishlistProducts.value = [];
+      totalWishlistItemsCount.value = 0;
     }
   }
 
