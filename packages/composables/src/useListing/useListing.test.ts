@@ -229,7 +229,7 @@ describe("useListing", () => {
       expect.stringContaining("search"),
       expect.objectContaining({
         body: {
-          page: 2,
+          p: 2,
         },
         headers: {
           "sw-include-seo-urls": true,
