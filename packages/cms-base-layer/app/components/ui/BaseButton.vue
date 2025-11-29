@@ -47,13 +47,15 @@ const buttonClasses = computed(() => {
 
   const variantClasses = {
     primary:
-      "bg-brand-primary hover:bg-brand-primary-hover text-white focus:ring-brand-primary",
+      "bg-brand-primary hover:bg-brand-primary-hover text-brand-on-primary focus:ring-brand-primary",
     secondary:
-      "bg-brand-secondary hover:bg-brand-secondary-hover text-white focus:ring-brand-secondary",
-    success: "bg-success hover:bg-success-600 text-white focus:ring-success",
-    warning: "bg-warning hover:bg-warning-600 text-white focus:ring-warning",
+      "bg-brand-secondary hover:bg-brand-secondary-hover text-brand-on-secondary focus:ring-brand-secondary",
+    success:
+      "bg-states-success hover:opacity-90 text-white focus:ring-states-success transition-opacity",
+    warning:
+      "bg-states-warning hover:opacity-90 text-white focus:ring-states-warning transition-opacity",
     outline:
-      "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white focus:ring-brand-primary",
+      "border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-on-primary focus:ring-brand-primary",
     ghost:
       "bg-transparent text-surface-on-surface-variant hover:text-surface-on-surface focus:ring-surface-on-surface",
   };
