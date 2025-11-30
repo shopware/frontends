@@ -59,7 +59,9 @@ watch(
             <FormIconButton type="ghost" @click="handleMyAccountClick"
               ><LayoutHeaderMyAccountIcon
             /></FormIconButton>
-            <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+            <NuxtLink :to="formatLink('/wishlist')">
+              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+            </NuxtLink>
 
             <FormIconButton type="ghost" @click="toggleMiniCart">
               <LayoutHeaderCartIcon :counter="cartCount" />

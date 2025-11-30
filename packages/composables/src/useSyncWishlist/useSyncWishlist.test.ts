@@ -89,27 +89,44 @@ describe("useSyncWishlist", () => {
 
     describe("getWishlistProducts - error", () => {
       it("should handle error after fetching product wishlist", async () => {
-        const { vm } = useSetup(() => useSyncWishlist(), {
-          apiClient: {
-            invoke: vi.fn().mockImplementation(() => {
-              throw new ApiClientError({
-                status: 500,
-                _data: {
-                  errors: [
-                    {
-                      title: "Test error",
-                    },
-                  ],
+        const { vm, injections } = useSetup(() => useSyncWishlist());
+        // First, set up a successful call to populate state
+        injections.apiClient.invoke.mockResolvedValueOnce({
+          data: {
+            products: {
+              total: 9,
+              page: 1,
+              elements: [
+                {
+                  id: "test-id",
                 },
-              } as unknown as FetchResponse<{
-                errors: Array<{ title: string }>;
-              }>);
-            }),
+              ],
+            },
           },
         });
-        vm.getWishlistProducts();
-        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+        await vm.getWishlistProducts();
         expect(vm.count).toBe(9);
+        expect(vm.items.length).toBe(1);
+
+        // Now test error handling - state should be cleared on error
+        injections.apiClient.invoke.mockImplementation(() => {
+          throw new ApiClientError({
+            status: 500,
+            _data: {
+              errors: [
+                {
+                  title: "Test error",
+                },
+              ],
+            },
+          } as unknown as FetchResponse<{
+            errors: Array<{ title: string }>;
+          }>);
+        });
+        await vm.getWishlistProducts();
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+        // State should be cleared when error occurs
+        expect(vm.count).toBe(0);
         expect(vm.items.length).toBe(0);
       });
     });

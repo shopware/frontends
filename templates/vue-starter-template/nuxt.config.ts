@@ -84,6 +84,9 @@ export default defineNuxtConfig({
     "/account/**": {
       ssr: false,
     },
+    "/wishlist": {
+      ssr: false,
+    },
   },
   imports: {
     dirs: ["utils", "utils/**"],

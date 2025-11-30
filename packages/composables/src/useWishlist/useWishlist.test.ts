@@ -55,6 +55,9 @@ describe("useWishlist - not logged in user", () => {
       removeFromWishlistSync: () => undefined,
       count: computed(() => 17),
       currentPage: computed(() => 2),
+      limit: computed(() => 15),
+      products: computed((): Schemas["Product"][] => []),
+      isLoading: computed(() => false),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -77,6 +80,9 @@ describe("useWishlist - not logged in user", () => {
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
       currentPage: computed(() => 2),
+      limit: computed(() => 15),
+      products: computed((): Schemas["Product"][] => []),
+      isLoading: computed(() => false),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -141,6 +147,9 @@ describe("useWishlist - logged in user", () => {
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
       currentPage: computed(() => 1),
+      limit: computed(() => 15),
+      products: computed((): Schemas["Product"][] => []),
+      isLoading: computed(() => false),
     });
     const { vm } = useSetup(() => useWishlist());
 
