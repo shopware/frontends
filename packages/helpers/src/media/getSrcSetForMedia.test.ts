@@ -42,4 +42,109 @@ describe("getSrcSetForMedia", () => {
     const result = getSrcSetForMedia(media);
     expect(result).toEqual("image1.jpg 100w, image2.jpg 200w, image3.jpg 300w");
   });
+
+  it("should encode URLs with spaces in the path", () => {
+    const media = {
+      thumbnails: [
+        { width: 100, url: "https://example.com/path with spaces/image.jpg" },
+        { width: 200, url: "https://example.com/another path/image.jpg" },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/path%20with%20spaces/image.jpg 100w, https://example.com/another%20path/image.jpg 200w",
+    );
+  });
+
+  it("should encode URLs with commas in the path", () => {
+    const media = {
+      thumbnails: [
+        { width: 100, url: "https://example.com/path,with,commas/image.jpg" },
+        { width: 200, url: "https://example.com/file,name.jpg" },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/path%2Cwith%2Ccommas/image.jpg 100w, https://example.com/file%2Cname.jpg 200w",
+    );
+  });
+
+  it("should encode URLs with special characters (spaces, commas, parentheses)", () => {
+    const media = {
+      thumbnails: [
+        {
+          width: 100,
+          url: "https://example.com/path/image (1).jpg",
+        },
+        {
+          width: 200,
+          url: "https://example.com/file name, test.jpg",
+        },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/path/image%20(1).jpg 100w, https://example.com/file%20name%2C%20test.jpg 200w",
+    );
+  });
+
+  it("should handle already encoded URLs correctly", () => {
+    const media = {
+      thumbnails: [
+        {
+          width: 100,
+          url: "https://example.com/path%20with%20spaces/image.jpg",
+        },
+        { width: 200, url: "https://example.com/file%2Cname.jpg" },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/path%20with%20spaces/image.jpg 100w, https://example.com/file%2Cname.jpg 200w",
+    );
+  });
+
+  it("should preserve query parameters and fragments in URLs", () => {
+    const media = {
+      thumbnails: [
+        {
+          width: 100,
+          url: "https://example.com/image.jpg?width=100&height=200",
+        },
+        { width: 200, url: "https://example.com/image.jpg#fragment" },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/image.jpg?width=100&height=200 100w, https://example.com/image.jpg#fragment 200w",
+    );
+  });
+
+  it("should handle invalid URLs gracefully", () => {
+    const media = {
+      thumbnails: [
+        { width: 100, url: "not a valid url with spaces" },
+        { width: 200, url: "image2.jpg" },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual("not a valid url with spaces 100w, image2.jpg 200w");
+  });
+
+  it("should handle mixed valid and encoded URLs", () => {
+    const media = {
+      thumbnails: [
+        { width: 100, url: "https://example.com/normal/image.jpg" },
+        { width: 200, url: "https://example.com/path with space/image.jpg" },
+        {
+          width: 300,
+          url: "https://example.com/path%20already%20encoded/image.jpg",
+        },
+      ],
+    };
+    const result = getSrcSetForMedia(media);
+    expect(result).toEqual(
+      "https://example.com/normal/image.jpg 100w, https://example.com/path%20with%20space/image.jpg 200w, https://example.com/path%20already%20encoded/image.jpg 300w",
+    );
+  });
 });
