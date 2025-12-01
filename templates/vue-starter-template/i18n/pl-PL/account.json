@@ -4,6 +4,8 @@
     "signUpHeader": "Jestem tutaj nowy.",
     "yourAddress": "Twój adres",
     "order": {
+      "header": "Zamówienia",
+      "subHeader": "Zobacz swoje aktualne i przeszłe zamówienia",
       "product": "Produkt",
       "quantity": "Ilość",
       "price": "Cena",
