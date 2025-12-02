@@ -8,6 +8,7 @@ import {
 import { useElementSize } from "@vueuse/core";
 import { computed, useTemplateRef } from "vue";
 import type { Schemas } from "#shopware";
+import { useImagePlaceholder } from "../composables/useImagePlaceholder";
 
 type Translations = {
   product: {
@@ -35,9 +36,11 @@ function roundUp(num: number) {
 }
 
 const coverSrcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(props.product?.cover?.media)}?&height=${roundUp(
-    height.value,
-  )}&fit=cover`;
+  const thumbnailUrl = getSmallestThumbnailUrl(props.product?.cover?.media);
+  if (!thumbnailUrl) {
+    return undefined;
+  }
+  return `${thumbnailUrl}?&height=${roundUp(height.value)}&fit=cover`;
 });
 
 const coverAlt = computed(() => {
@@ -46,6 +49,8 @@ const coverAlt = computed(() => {
 
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
+
+const placeholderSvg = useImagePlaceholder();
 </script>
 
 <template>
@@ -53,6 +58,7 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
       <NuxtImg ref="imageElement" preset="productCard" loading="lazy"
         class="w-full h-full absolute top-0 left-0"
+        :placeholder="placeholderSvg"
         :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
     </RouterLink>
 
