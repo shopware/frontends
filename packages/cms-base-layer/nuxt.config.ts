@@ -81,6 +81,8 @@ export default defineNuxtConfig({
     {
       path: resolveLayer("./app/components/public"),
       pathPrefix: false,
+      global: true,
+      extensions: [".vue"],
     },
   ],
   alias: {
