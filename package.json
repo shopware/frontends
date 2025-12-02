@@ -75,6 +75,7 @@
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "micromatch": "^4.0.8",
+      "mdast-util-to-hast": "^13.2.1",
       "nanoid@3": "^3.3.8",
       "nanoid@5": "^5.0.9",
       "node-forge": "^1.3.2",
