@@ -1,10 +1,4 @@
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
-import {
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetWind3,
-} from "unocss";
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 const lumoraConfig: ConfigBase = {
@@ -62,13 +56,6 @@ const lumoraConfig: ConfigBase = {
       "lumora-separator",
       "w-full h-[1px] my-12 bg-[rgba(0,0,0,0.08)] dark:bg-[rgba(255,255,255,0.1)]",
     ],
-  ],
-
-  presets: [
-    presetWind3(),
-    presetIcons(),
-    presetAttributify(),
-    presetTypography(),
   ],
 
   preflights: [
