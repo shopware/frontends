@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware/composables";
-import { decodeHTML } from "entities";
+import { DecodingMode, decodeHTML } from "entities";
 import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { useCmsElementConfig, useUrlResolver } from "#imports";
@@ -30,7 +30,8 @@ const CmsTextRender = defineComponent({
     const { resolveUrl } = useUrlResolver();
 
     const config = {
-      textTransformer: (text: string) => decodeHTML(text),
+      textTransformer: (text: string) =>
+        decodeHTML(text, DecodingMode.Attribute),
       extraComponentsMap: {
         link: {
           conditions(node: NodeObject) {
@@ -75,8 +76,14 @@ const CmsTextRender = defineComponent({
                 "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
 
               _class = node.attrs.class
-                .replace("btn-secondary", `${btnClass} bg-dark text-white`)
-                .replace("btn-primary", `${btnClass} bg-primary text-white`);
+                .replace(
+                  "btn-secondary",
+                  `${btnClass} bg-brand-secondary text-brand-on-secondary hover:bg-brand-secondary-hover`,
+                )
+                .replace(
+                  "btn-primary",
+                  `${btnClass} bg-brand-primary text-brand-on-primary hover:bg-brand-primary-hover`,
+                );
             }
 
             return createElement(

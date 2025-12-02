@@ -195,7 +195,7 @@ const invokeSubmit = async () => {
             id="option"
             v-model="state.option"
             name="option"
-            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border border-outline-outline-variant placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:border-brand-primary focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option
               v-for="subscription in subscriptionOptions"
@@ -217,9 +217,9 @@ const invokeSubmit = async () => {
             :class="[
               $v.email.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :placeholder="translations.form.emailPlaceholder"
             @blur="$v.email.$touch()"
           />
@@ -236,7 +236,7 @@ const invokeSubmit = async () => {
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class=" border-gray-300 focus:border-indigo-500appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class=" border-outline-outline-variant focus:border-brand-primaryappearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -258,11 +258,11 @@ const invokeSubmit = async () => {
             name="first-name"
             type="text"
             autocomplete="given-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.firstName?.$error
           ? 'border-red-600 focus:border-red-600'
-          : 'border-gray-300 focus:border-indigo-500',
+          : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.firstNamePlaceholder"
             @blur="$v.firstName?.$touch()"
@@ -282,11 +282,11 @@ const invokeSubmit = async () => {
             name="last-name"
             type="text"
             autocomplete="family-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.lastName?.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.lastNamePlaceholder"
             @blur="$v.lastName?.$touch()"
@@ -306,7 +306,7 @@ const invokeSubmit = async () => {
               v-model="state.checkbox"
               name="privacy"
               type="checkbox"
-              class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
+              class="mt-1 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded"
               :class="[
                 $v.checkbox?.$error ? 'border-red-600' : 'border-gray-300',
               ]"
@@ -324,7 +324,7 @@ const invokeSubmit = async () => {
       </div>
       <div class="flex justify-end mt-10">
         <button
-          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-75"
+          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-75"
           type="submit"
         >
           {{ translations.form.submit }}
