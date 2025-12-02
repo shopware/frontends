@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { createResolver } from "@nuxt/kit";
+
+const { resolve } = createResolver(import.meta.url);
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   compatibilityDate: "2025-04-15",
@@ -27,15 +31,14 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
-  components: {
-    dirs: [
-      {
-        path: "~/components",
-        priority: 2,
-      },
-    ],
-    global: true,
-  },
+  components: [
+    {
+      path: resolve("./app/components"),
+      priority: 2,
+      global: true,
+      extensions: [".vue"],
+    },
+  ],
   i18n: {
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
