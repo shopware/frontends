@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"],
   compatibilityDate: "2025-04-15",
+  modules: ["@unocss/nuxt"],
   runtimeConfig: {
     public: {
       shopware: {
