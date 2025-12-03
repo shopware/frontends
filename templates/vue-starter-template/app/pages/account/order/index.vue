@@ -13,15 +13,14 @@ const {
 
 const defaultLimit = 15;
 const defaultPage = 1;
+const orderAssociations = useDefaultOrderAssociations();
 
 await useAsyncData("getOrders", () => {
   return loadOrders({
     limit: limit.value,
     page: route.query.p ? Number(route.query.p) : defaultPage,
     checkPromotion: true,
-    associations: {
-      stateMachineState: {},
-    },
+    associations: orderAssociations,
     sort: [
       {
         field: "createdAt",
