@@ -4,6 +4,8 @@
     "signUpHeader": "Jestem tutaj nowy.",
     "yourAddress": "Twój adres",
     "order": {
+      "header": "Zamówienia",
+      "subHeader": "Zobacz swoje aktualne i przeszłe zamówienia",
       "product": "Produkt",
       "quantity": "Ilość",
       "price": "Cena",
@@ -15,7 +17,14 @@
       "paymentMethod": "Metoda płatności",
       "repeatOrder": "Powtórz zamówienie",
       "order": "Zamówienie",
-      "orders": "Zamówienia"
+      "orders": "Zamówienia",
+      "seeMore": "Zobacz więcej",
+      "seeLess": "Zobacz mniej",
+      "orderLabel": "Zamówienie",
+      "shippingStatus": "Status wysyłki",
+      "shipping": "Wysyłka",
+      "shippingMethod": "Metoda wysyłki",
+      "total": "Całkowita kwota"
     },
     "menu": {
       "header": "Twoje konto",
@@ -106,6 +115,31 @@
         "buttonSubmit": "Zapisz",
         "successUpdate": "Hasło zostało pomyślnie zaktualizowane.",
         "errorUpdate": "Nie udało się zaktualizować hasła. Spróbuj ponownie."
+      }
+    },
+    "orderDetails": {
+      "order": "Zamówienie",
+      "placedOn": "Złożone dnia {d}",
+      "shippingAddress": "Adres wysyłki",
+      "billingAddress": "Adres rozliczeniowy",
+      "orderSummary": "Podsumowanie zamówienia",
+      "paymentMethod": "Metoda płatności",
+      "shippingMethod": "Metoda wysyłki",
+      "subtotal": "Suma częściowa",
+      "shipping": "Wysyłka",
+      "total": "Całkowita kwota",
+      "takesUpTo": "Zajmuje do",
+      "change": "Zmień",
+      "changePaymentMethod": "Zmień metodę płatności",
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź",
+      "close": "Zamknij",
+      "backToOrdersList": "Powrót do listy zamówień",
+      "itemsHeader": {
+        "item": "Przedmiot",
+        "quantity": "Ilość",
+        "price": "Cena",
+        "total": "Całkowita kwota"
       }
     },
     "messages": {

@@ -21,7 +21,7 @@ const statusClass = computed(() => {
 </script>
 <template>
   <span
-    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+    class="px-1.5 py-1 inline-flex text-xs leading-5 font-semibold rounded"
     :class="statusClass"
     >{{ state.name }}</span
   >

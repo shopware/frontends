@@ -4,6 +4,8 @@
     "signUpHeader": "Ich bin neu hier.",
     "yourAddress": "Ihre Adresse",
     "order": {
+      "header": "Bestellungen",
+      "subHeader": "Sehen Sie sich Ihre aktuellen und vergangenen Bestellungen an",
       "product": "Produkt",
       "quantity": "Menge",
       "price": "Preis",
@@ -15,7 +17,14 @@
       "paymentMethod": "Zahlungsmethode",
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
-      "orders": "Bestellungen"
+      "orders": "Bestellungen",
+      "seeMore": "Mehr anzeigen",
+      "seeLess": "Weniger anzeigen",
+      "orderLabel": "Bestellung",
+      "shippingStatus": "Versandstatus",
+      "shipping": "Versand",
+      "shippingMethod": "Versandart",
+      "total": "Gesamt"
     },
     "menu": {
       "header": "Ihr Konto",
@@ -106,6 +115,31 @@
         "buttonSubmit": "Speichern",
         "successUpdate": "Passwort wurde erfolgreich aktualisiert.",
         "errorUpdate": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "orderDetails": {
+      "order": "Bestellung",
+      "placedOn": "Bestellt am {d}",
+      "shippingAddress": "Lieferadresse",
+      "billingAddress": "Rechnungsadresse",
+      "orderSummary": "Bestellübersicht",
+      "paymentMethod": "Zahlungsmethode",
+      "shippingMethod": "Versandart",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
+      "takesUpTo": "Dauert bis zu",
+      "change": "Ändern",
+      "changePaymentMethod": "Zahlungsmethode ändern",
+      "cancel": "Stornieren",
+      "confirm": "Bestätigen",
+      "close": "Schließen",
+      "backToOrdersList": "Zurück zur Bestellliste",
+      "itemsHeader": {
+        "item": "Artikel",
+        "quantity": "Menge",
+        "price": "Preis",
+        "total": "Gesamt"
       }
     },
     "messages": {
