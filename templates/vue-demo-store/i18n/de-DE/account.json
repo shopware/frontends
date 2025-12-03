@@ -45,7 +45,11 @@
       "paymentMethod": "Zahlungsmethode",
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
-      "orders": "Bestellungen"
+      "orders": "Bestellungen",
+      "backToList": "Zurück zur Liste",
+      "authOrderButton": "Weiter",
+      "authOrderText": "Um Ihre Bestellung anzusehen, geben Sie bitte Ihre E-Mail-Adresse und die Postleitzahl Ihrer Rechnungsadresse ein.",
+      "authOrderTitle": "Authentifizierung"
     },
     "orderDetails": {
       "order": "Bestellung",
@@ -93,6 +97,8 @@
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
       "paymentMethodChanged": "Zahlungsmethode geändert",
       "productsAdded": "Produkte hinzugefügt",
+      "orderSuccessNoOrder": "Die Bestellung existiert nicht",
+      "orderWrongData": "Die angegebenen Daten konnten keiner Bestellung zugeordnet werden.",
       "verifying": "Konto bestätigen"
     }
   }
