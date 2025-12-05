@@ -16,7 +16,7 @@ const {
   getWishlistProducts,
   currentPage,
   totalPagesCount,
-  productsSync,
+  products,
   limit,
   items,
 } = useWishlist();
@@ -92,7 +92,7 @@ loading.value = false;
         </template>
         <template v-else>
           <WishlistProductTile
-            v-for="product in productsSync"
+            v-for="product in products"
             :key="product.id"
             :product
           />

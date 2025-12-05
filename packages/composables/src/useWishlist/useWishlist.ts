@@ -43,7 +43,7 @@ export type UseWishlistReturn = {
   /**
    * Wishlist products
    */
-  productsSync: ComputedRef<Schemas["Product"][]>;
+  products: ComputedRef<Schemas["Product"][]>;
   /**
    * Limit number of products per page
    */
@@ -73,7 +73,7 @@ export function useWishlist(): UseWishlistReturn {
     removeFromWishlistSync,
     count: countSync,
     currentPage,
-    products: productsSync,
+    products,
     limit: limitSync,
   } = useSyncWishlist();
 
@@ -138,7 +138,7 @@ export function useWishlist(): UseWishlistReturn {
     totalPagesCount,
     count,
     canSyncWishlist,
-    productsSync,
+    products,
     limit: limitSync,
   };
 }
