@@ -44,14 +44,14 @@ watch(
   <div>
     <div class="border-b">
       <div
-        class="container mx-auto flex items-center justify-between py-3.5 px-6 sm:px-0 relative"
+        class="container mx-auto grid grid-cols-3 items-center py-3.5 px-6 sm:px-0 relative"
       >
         <template v-if="!mobileSearchActive">
-          <NuxtLink :to="formatLink('/')">
+          <NuxtLink :to="formatLink('/')" class="justify-self-start">
             <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
           </NuxtLink>
-          <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden" />
-          <div class="flex gap-4">
+          <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden justify-self-center w-full" />
+          <div class="flex gap-4 justify-self-end">
             <LayoutHeaderSearchIcon
               @click="toggleMobileSearch"
               class="hidden max-sm:block"
@@ -59,10 +59,20 @@ watch(
             <FormIconButton type="ghost" @click="handleMyAccountClick"
               ><LayoutHeaderMyAccountIcon
             /></FormIconButton>
-            <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+            <ClientOnly>
+              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              <template #fallback>
+                <LayoutHeaderWishlistIcon :counter="0" />
+              </template>
+            </ClientOnly>
 
             <FormIconButton type="ghost" @click="toggleMiniCart">
-              <LayoutHeaderCartIcon :counter="cartCount" />
+              <ClientOnly>
+                <LayoutHeaderCartIcon :counter="cartCount" />
+                <template #fallback>
+                  <LayoutHeaderCartIcon :counter="0" />
+                </template>
+              </ClientOnly>
             </FormIconButton>
 
             <LayoutHeaderMobileMenuIcon

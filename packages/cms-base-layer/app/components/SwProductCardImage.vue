@@ -6,7 +6,7 @@ import {
   isProductTopSeller,
 } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
-import { computed, useTemplateRef } from "vue";
+import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 import { useImagePlaceholder } from "../composables/useImagePlaceholder";
 
@@ -27,7 +27,7 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
+const containerElement = ref<HTMLDivElement>();
 const { width, height } = useElementSize(containerElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
@@ -42,7 +42,7 @@ const coverSrcPath = computed(() => {
 const imageModifiers = computed(() => {
   // Use the larger dimension and apply 2x for high-DPI displays
   // For square containers, width and height should be the same
-  const containerSize = Math.max(width.value, height.value);
+  const containerSize = Math.max(width.value || 0, height.value || 0);
   const size = roundUp(containerSize * 2);
   return {
     width: size,
@@ -63,7 +63,7 @@ const placeholderSvg = useImagePlaceholder();
 <template>
   <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <NuxtImg preset="productCard" loading="lazy"
+      <NuxtImg preset="productCard"
         class="w-full h-full absolute top-0 left-0 object-cover"
         :placeholder="placeholderSvg"
         :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />

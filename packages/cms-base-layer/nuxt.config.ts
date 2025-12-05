@@ -38,6 +38,7 @@ export default defineNuxtConfig({
           quality: 90,
           fit: "cover",
         },
+        loading: "lazy",
       },
       productDetail: {
         modifiers: {

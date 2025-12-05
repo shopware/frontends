@@ -3,13 +3,24 @@
  * Note: CSS variables and currentColor don't work in data URIs since SVGs are rendered in isolation
  * For themeable placeholders, use the SwImagePlaceholder component instead
  *
- * @param color - Hex color for the placeholder (optional - defaults to appConfig.imagePlaceholder.color)
+ * @param color - Hex color for the placeholder (optional - defaults to appConfig.imagePlaceholder.color or #543B95)
  * @returns Base64-encoded SVG data URI
  */
 export function useImagePlaceholder(color?: string) {
-  const appConfig = useAppConfig();
-  const placeholderColor =
-    color || appConfig.imagePlaceholder?.color || "#543B95";
+  let configColor = "#543B95";
+
+  // Try to access useAppConfig if available (runtime only)
+  try {
+    if (import.meta.client || import.meta.server) {
+      // @ts-expect-error - useAppConfig is a Nuxt auto-import
+      const appConfig = useAppConfig();
+      configColor = appConfig.imagePlaceholder?.color || configColor;
+    }
+  } catch {
+    // useAppConfig not available (during build/typecheck), use default
+  }
+
+  const placeholderColor = color || configColor;
 
   const placeholderSvg = `data:image/svg+xml;base64,${btoa(
     `
