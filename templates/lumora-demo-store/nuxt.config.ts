@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"],
-  compatibilityDate: "2025-04-15",
+  compatibilityDate: "2025-12-05",
   modules: ["@unocss/nuxt"],
   runtimeConfig: {
     public: {
