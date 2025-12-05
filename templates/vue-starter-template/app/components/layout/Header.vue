@@ -44,14 +44,14 @@ watch(
   <div>
     <div class="border-b">
       <div
-        class="container mx-auto grid grid-cols-3 items-center py-3.5 px-6 sm:px-0 relative"
+        class="container mx-auto flex sm:grid sm:grid-cols-3 items-center justify-between py-3.5 px-6 sm:px-0 relative"
       >
         <template v-if="!mobileSearchActive">
-          <NuxtLink :to="formatLink('/')" class="justify-self-start">
+          <NuxtLink :to="formatLink('/')" class="flex-shrink-0 sm:justify-self-start">
             <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
           </NuxtLink>
           <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden justify-self-center w-full" />
-          <div class="flex gap-4 justify-self-end">
+          <div class="flex gap-4 flex-shrink-0 sm:justify-self-end">
             <LayoutHeaderSearchIcon
               @click="toggleMobileSearch"
               class="hidden max-sm:block"
