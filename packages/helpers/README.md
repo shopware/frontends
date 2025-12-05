@@ -36,8 +36,20 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.5.0
+### Latest changes: 1.6.0
 
 ### Minor Changes
 
-- [#1910](https://github.com/shopware/frontends/pull/1910) [`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add helper for getting payment and shipping method icon
+- [#1985](https://github.com/shopware/frontends/pull/1985) [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986) Thanks [@mkucmus](https://github.com/mkucmus)! - Added methods to extract product info:
+  - `isProductOnSale`
+  - `isProductTopSeller`
+  - `getProductManufacturerName`
+
+### Patch Changes
+
+- [#2030](https://github.com/shopware/frontends/pull/2030) [`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c) Thanks [@mkucmus](https://github.com/mkucmus)! - Extended `ListingFilter` type to support property options and manufacturer entities:
+  - Added optional `options` property for property group options
+  - Added optional `entities` property for manufacturer entities
+  - Improved type safety by explicitly typing empty array return in `getListingFilters()`
+
+- [#2153](https://github.com/shopware/frontends/pull/2153) [`56cd178`](https://github.com/shopware/frontends/commit/56cd178e25fe2399b7170ccac3044e980621f041) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix `getSrcSetForMedia` to properly encode special characters (spaces, commas, parentheses) in media URLs

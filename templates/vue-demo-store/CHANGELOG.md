@@ -1,5 +1,19 @@
 # vue-demo-store
 
+## 1.12.0
+
+### Minor Changes
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+
+### Patch Changes
+
+- [#1953](https://github.com/shopware/frontends/pull/1953) [`ea0824f`](https://github.com/shopware/frontends/commit/ea0824f40fc251fba125f32c817c6afcf12b9921) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove refreshing session context before login
+
+- [#1999](https://github.com/shopware/frontends/pull/1999) [`796d10b`](https://github.com/shopware/frontends/commit/796d10b3f55dd604e38514619e85aff2e618a5d2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix race condition when subscribing newsletter from my account page
+
+- [#1986](https://github.com/shopware/frontends/pull/1986) [`9ef1508`](https://github.com/shopware/frontends/commit/9ef15086c4b20fb1ed775dbde4a584fd249a3856) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Block place order button if request was sent
+
 ## 1.11.0
 
 ### Minor Changes
@@ -43,7 +57,6 @@
 ### Patch Changes
 
 - [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
-
   - Checkout page
   - SharedAccountAddressForm
   - CheckoutCustomerBaseInfo
@@ -117,7 +130,6 @@
 - [#1395](https://github.com/shopware/frontends/pull/1395) [`e18a4db`](https://github.com/shopware/frontends/commit/e18a4dba8eb9fc3e8dd8deca9edaa87ee6683268) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fixed tag text contrast (accessible issue)
 
 - [#1395](https://github.com/shopware/frontends/pull/1395) [`e18a4db`](https://github.com/shopware/frontends/commit/e18a4dba8eb9fc3e8dd8deca9edaa87ee6683268) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fixed autocomplete attribute value for inputs
-
   - first-name -> given-name
   - last-name -> family-name
   - password -> current-password
@@ -187,7 +199,6 @@
 - [#517](https://github.com/shopware/frontends/pull/517) [`f7797e8`](https://github.com/shopware/frontends/commit/f7797e8eb8cc72d425e568f3abedeb174e703de5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Adding all colors to uno.config.ts to show that they can changed via config.
 
   Changes in detail:
-
   - blue is now covered by primary.
   - gray and slate are now covered by secondary.
   - brand-primary is now primary (default).
@@ -198,7 +209,6 @@
 - [#1047](https://github.com/shopware/frontends/pull/1047) [`ddce862`](https://github.com/shopware/frontends/commit/ddce86217ee33e77061cdc30324da7e2a4a85ac6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added closing account menu after clicking outside
 
 - [#463](https://github.com/shopware/frontends/pull/463) [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add api error resolver for:
-
   - Login page
   - Account registration
   - Update product qty (cart)
@@ -257,16 +267,13 @@
 - [#514](https://github.com/shopware/frontends/pull/514) [`e6ea89c`](https://github.com/shopware/frontends/commit/e6ea89cf460177e43f2333870d67c8fe72874e1a) Thanks [@mkucmus](https://github.com/mkucmus)! - @nuxtjs/i18n module upgrade
 
 - [#1028](https://github.com/shopware/frontends/pull/1028) [`6c20fd4`](https://github.com/shopware/frontends/commit/6c20fd43e9ce3c2c5ad328c51bde75ea0692e27a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Removed duplicated search requests
-
   - Added `properties` as a search request parameter
 
 - [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.57.6** to **^0.57.7**
   - Changed dependency _vue_ from **^3.3.8** to **^3.3.9**
 
 - [#1023](https://github.com/shopware/frontends/pull/1023) [`0027cdd`](https://github.com/shopware/frontends/commit/0027cdd2a943f141ca5b12f30fbdb210299829ed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added missing `same password` error message
-
   - Changed the success message block to reset after each click on the main button
 
 - [#640](https://github.com/shopware/frontends/pull/640) [`eef5f3d`](https://github.com/shopware/frontends/commit/eef5f3d56cdaafc4da3b9f497ca83087ec97855e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change the minimum node 18 version to 18.17.x
@@ -304,12 +311,10 @@
 - [#466](https://github.com/shopware/frontends/pull/466) [`543d18d5`](https://github.com/shopware/frontends/commit/543d18d5f8523162dacb364c8e8e6adcff41c0ff) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Adjust product listing page styles
 
 - [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.57.2** to **^0.57.3**
   - Changed dependency _@vueuse/nuxt_ from **^10.5.0** to **^10.6.1**
 
 - [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.57.3** to **^0.57.6**
 
 - Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`135ca37d`](https://github.com/shopware/frontends/commit/135ca37d9c911cf47d75705006af2879ab7800a8), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
@@ -345,21 +350,17 @@
 - [#402](https://github.com/shopware/frontends/pull/402) [`9a89f409`](https://github.com/shopware/frontends/commit/9a89f40915c08ded0aee6140b42a12a18e74627f) Thanks [@mkucmus](https://github.com/mkucmus)! - Alignment to a11y standards
 
 - [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.55.7** to **^0.56.0**
 
 - [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.56.5** to **^0.57.2**
   - Changed dependency _vue_ from **^3.3.5** to **^3.3.8**
 
 - [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.56.0** to **^0.56.5**
   - Changed dependency _@vueuse/nuxt_ from **^10.4.1** to **^10.5.0**
 
 - [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _vue_ from **^3.3.4** to **^3.3.5**
 
 - [#404](https://github.com/shopware/frontends/pull/404) [`f3566759`](https://github.com/shopware/frontends/commit/f35667597b70eb719d0bcaf1c969f23216b66095) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Update error template, add terminal output for wrong nuxt config
@@ -379,11 +380,9 @@
 - [#388](https://github.com/shopware/frontends/pull/388) [`b4e51d98`](https://github.com/shopware/frontends/commit/b4e51d980bccb6a6e4ca0e914c25046bc52672dd) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix global error page
 
 - [#369](https://github.com/shopware/frontends/pull/369) [`bc7a2db2`](https://github.com/shopware/frontends/commit/bc7a2db292d67cc448a901c1b7a9b5cb7dfbcd04) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.54.1** to **^0.55.2**
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.55.2** to **^0.55.7**
   - Changed dependency _@vuelidate/validators_ from **^2.0.3** to **^2.0.4**
   - Changed dependency _@vueuse/nuxt_ from **^10.3.0** to **^10.4.1**
@@ -418,7 +417,6 @@
 ### Patch Changes
 
 - [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.53.5** to **^0.54.1**
   - Changed dependency _@vueuse/nuxt_ from **^10.2.1** to **^10.3.0**
 
@@ -453,7 +451,6 @@
 - [#307](https://github.com/shopware/frontends/pull/307) [`b3d391b`](https://github.com/shopware/frontends/commit/b3d391b3c00230ff07c088253d8465746757c945) Thanks [@mkucmus](https://github.com/mkucmus)! - Extract lang code from accept-language header in SSR for Intl.NumberFormat purposes
 
 - [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@unocss/nuxt_ from **^0.53.4** to **^0.53.5**
   - Changed dependency _@vuelidate/core_ from **^2.0.2** to **^2.0.3**
   - Changed dependency _@vuelidate/validators_ from **^2.0.2** to **^2.0.3**
