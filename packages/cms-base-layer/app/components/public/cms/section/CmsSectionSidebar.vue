@@ -19,7 +19,7 @@ const fullWidth = computed(() => section.sizingMode === "full_width");
     'px-6': fullWidth,
   }">
     <aside :class="{
-      'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20':
+      'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20 px-4 lg:px-0':
         mobileBehavior !== 'hidden',
       'hidden lg:block': mobileBehavior === 'hidden',
     }">
