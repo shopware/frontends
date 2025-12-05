@@ -1,5 +1,6 @@
 {
   "product": {
+    "addToCart": "Add to cart",
     "addReview": "Add review",
     "reviewsForm": {
       "title": "Title",
