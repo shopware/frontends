@@ -17,7 +17,7 @@ const slidesToShow = ref<number>();
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
-    value: "300px",
+    value: "450px",
     source: "static",
   },
   verticalAlign: {

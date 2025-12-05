@@ -27,8 +27,8 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
-const { height } = useElementSize(imageElement);
+const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
+const { width, height } = useElementSize(containerElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
 function roundUp(num: number) {
@@ -36,11 +36,18 @@ function roundUp(num: number) {
 }
 
 const coverSrcPath = computed(() => {
-  const thumbnailUrl = getSmallestThumbnailUrl(props.product?.cover?.media);
-  if (!thumbnailUrl) {
-    return undefined;
-  }
-  return `${thumbnailUrl}?&height=${roundUp(height.value)}&fit=cover`;
+  return getSmallestThumbnailUrl(props.product?.cover?.media);
+});
+
+const imageModifiers = computed(() => {
+  // Use the larger dimension and apply 2x for high-DPI displays
+  // For square containers, width and height should be the same
+  const containerSize = Math.max(width.value, height.value);
+  const size = roundUp(containerSize * 2);
+  return {
+    width: size,
+    height: size,
+  };
 });
 
 const coverAlt = computed(() => {
@@ -54,12 +61,12 @@ const placeholderSvg = useImagePlaceholder();
 </script>
 
 <template>
-  <div class="self-stretch aspect-square relative flex flex-col justify-start items-start overflow-hidden">
+  <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <NuxtImg ref="imageElement" preset="productCard" loading="lazy"
-        class="w-full h-full absolute top-0 left-0"
+      <NuxtImg preset="productCard" loading="lazy"
+        class="w-full h-full absolute top-0 left-0 object-cover"
         :placeholder="placeholderSvg"
-        :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
+        :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
