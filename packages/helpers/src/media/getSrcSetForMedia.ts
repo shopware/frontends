@@ -1,7 +1,13 @@
 /**
  * Encodes URL pathname to handle special characters (spaces, commas, etc.)
+ *
+ * @param urlString - The URL string to encode
+ * @returns The URL with encoded pathname
+ *
+ * @public
+ * @category Media
  */
-function encodeUrlPath(urlString: string): string {
+export function encodeUrlPath(urlString: string): string {
   try {
     const url = new URL(urlString);
     url.pathname = url.pathname

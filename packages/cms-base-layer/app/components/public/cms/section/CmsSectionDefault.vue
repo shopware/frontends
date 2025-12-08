@@ -10,7 +10,7 @@ const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
 </script>
 
 <template>
-  <div class="" :class="cssClasses" :styles="layoutStyles">
+  <div class="my-4" :class="cssClasses" :style="layoutStyles">
     <CmsGenericBlock
       v-for="cmsBlock in content.blocks"
       :key="cmsBlock.id"

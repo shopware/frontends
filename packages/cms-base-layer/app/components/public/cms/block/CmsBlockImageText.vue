@@ -13,10 +13,10 @@ const rightContent = getSlotContent("right");
 </script>
 <template>
   <div class="flex flex-col md:flex-row justify-start items-start gap-6 w-full">
-    <div class="w-full md:flex-1">
+    <div class="w-full md:flex-1 p-4">
       <CmsGenericElement :content="leftContent" />
     </div>
-    <div class="w-full md:flex-1">
+    <div class="w-full md:flex-1 p-4">
       <CmsGenericElement :content="rightContent" />
     </div>
   </div>
