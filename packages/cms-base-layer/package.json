@@ -17,7 +17,7 @@
   "main": "./nuxt.config.ts",
   "files": ["dist", "app", "helpers", "index.cjs", "nuxt.config.ts"],
   "scripts": {
-    "build": "unbuild",
+    "build": "nuxt prepare && unbuild",
     "dev": "unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm run typecheck",
