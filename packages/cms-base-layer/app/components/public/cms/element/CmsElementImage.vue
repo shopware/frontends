@@ -3,7 +3,7 @@ import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware/composables";
-import { buildUrlPrefix } from "@shopware/helpers";
+import { buildUrlPrefix, encodeUrlPath } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import { useCmsElementImage, useUrlResolver } from "#imports";
@@ -31,20 +31,6 @@ const { width, height } = useElementSize(imageElement);
 
 function roundUp(num: number) {
   return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
-}
-
-// Helper function to encode URL pathname (handles spaces and commas)
-function encodeUrlPath(urlString: string): string {
-  try {
-    const url = new URL(urlString);
-    url.pathname = url.pathname
-      .split("/")
-      .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
-      .join("/");
-    return url.toString();
-  } catch {
-    return urlString;
-  }
 }
 
 const srcPath = computed(() => {
