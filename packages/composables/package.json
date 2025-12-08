@@ -67,13 +67,13 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/kit": "4.2.1",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.15",
     "@vue/test-utils": "2.4.6",
-    "happy-dom": "20.0.10",
+    "happy-dom": "20.0.11",
     "tsconfig": "workspace:*",
     "typescript": "5.9.2",
     "unbuild": "2.0.0",
-    "vitest": "3.2.4",
+    "vitest": "4.0.15",
     "vue": "3.5.24"
   }
 }

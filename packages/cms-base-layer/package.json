@@ -50,12 +50,12 @@
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.2.1",
     "@types/three": "0.173.0",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.15",
     "nuxt": "4.2.1",
     "tsconfig": "workspace:*",
     "typescript": "5.9.2",
     "unbuild": "2.0.0",
-    "vitest": "3.2.4",
+    "vitest": "4.0.15",
     "vue-router": "4.6.3",
     "vue-tsc": "3.1.4"
   }
