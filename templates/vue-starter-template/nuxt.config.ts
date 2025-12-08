@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
-    vueI18n: "./config",
+    vueI18n: resolve("./config"),
     locales: [
       {
         code: "en-GB",
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     customCollections: [
       {
         prefix: "shopware",
-        dir: "./app/assets/icons",
+        dir: resolve("./app/assets/icons"),
       },
     ],
   },
