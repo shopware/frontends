@@ -1,3 +1,5 @@
+/// <reference types="@nuxt/schema" />
+
 export * from "@shopware/composables";
 export * from "./.nuxt/imports";
 

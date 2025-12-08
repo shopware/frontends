@@ -15,13 +15,22 @@
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
-  "files": ["dist", "app", "helpers", "index.cjs", "nuxt.config.ts"],
+  "files": [
+    "dist",
+    "app",
+    "helpers",
+    "index.cjs",
+    "index.d.ts",
+    "app.config.ts",
+    "nuxt.config.ts",
+    "uno.config.ts"
+  ],
   "scripts": {
     "build": "nuxt prepare && unbuild",
     "dev": "unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm run typecheck",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm nuxt prepare && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "check-colors": "tsx scripts/check-unused-colors.ts"

@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/vue-library.json",
-  "include": ["./components.d.ts", "."],
+  "include": ["./index.d.ts", "."],
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
