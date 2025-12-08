@@ -1,3 +1,6 @@
+export * from "@shopware/composables";
+export * from "./.nuxt/imports";
+
 declare module "nuxt/schema" {
   interface AppConfig {
     imagePlaceholder?: {
@@ -5,5 +8,3 @@ declare module "nuxt/schema" {
     };
   }
 }
-
-export type {};

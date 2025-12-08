@@ -6,7 +6,7 @@
     "jsx": "preserve",
     "lib": ["dom"],
     "paths": {
-      "#imports": ["./composables.d.ts"],
+      "#imports": ["./index.d.ts"],
       "#shopware": ["./types/api-types.ts"]
     }
   }
