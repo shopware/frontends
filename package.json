@@ -5,6 +5,7 @@
   "workspaces": ["apps/*", "packages/*", "templates/*", "examples/*"],
   "scripts": {
     "bump": "changeset version",
+    "postinstall": "pnpm run build --filter='./packages/*'",
     "changeset": "changeset",
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
