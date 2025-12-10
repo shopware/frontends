@@ -1,4 +1,5 @@
 import { defineProvider } from "@nuxt/image/runtime";
+import { encodeUrlPath } from "@shopware/helpers";
 
 /**
  * Shopware Image Provider for Nuxt Image
@@ -61,8 +62,12 @@ import { defineProvider } from "@nuxt/image/runtime";
  * @see {@link https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html | Shopware Remote Thumbnail Generation}
  * @see {@link https://image.nuxt.com/providers/custom | Nuxt Image Custom Providers}
  */
+
 export default defineProvider(() => ({
   getImage(src, { modifiers }, _ctx) {
+    // Encode special characters in the URL pathname (commas, spaces, etc.)
+    const encodedSrc = encodeUrlPath(src);
+
     const params = new URLSearchParams();
 
     // Map Nuxt Image modifiers to Shopware query parameters
@@ -89,14 +94,14 @@ export default defineProvider(() => ({
     const query = params.toString();
 
     if (!query) {
-      return { url: src };
+      return { url: encodedSrc };
     }
 
     // Check if URL already has query parameters
-    const separator = src.includes("?") ? "&" : "?";
+    const separator = encodedSrc.includes("?") ? "&" : "?";
 
     return {
-      url: `${src}${separator}${query}`,
+      url: `${encodedSrc}${separator}${query}`,
     };
   },
 }));
