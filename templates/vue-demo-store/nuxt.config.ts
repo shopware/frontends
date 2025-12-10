@@ -82,7 +82,11 @@ export default defineNuxtConfig({
       ssr: false,
     },
     "/**": {
-      isr: 60 * 60 * 24,
+      isr: {
+        expiration: 60 * 60 * 24,
+        allowQuery: undefined,
+        passQuery: true,
+      },
     },
   },
   /**
