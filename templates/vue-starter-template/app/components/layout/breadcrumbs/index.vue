@@ -5,7 +5,7 @@ const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
   <nav
-    class="hidden lg:flex max-w-screen-xl mt-8 mb-8 px-4 sm:px-6"
+    class="container hidden lg:flex mt-8 mb-8 px-4 sm:px-0 mx-auto"
     aria-label="Breadcrumb"
   >
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
