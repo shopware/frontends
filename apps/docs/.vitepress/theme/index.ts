@@ -3,6 +3,7 @@ import { SWAGTheme } from "vitepress-shopware-docs";
 import type { App } from "vue";
 // Ai component
 // import AI from "./components/AI.vue";
+import PageRef from "./components/PageRef.vue";
 import "./custom.css";
 
 export default Object.assign(
@@ -12,6 +13,7 @@ export default Object.assign(
   {
     enhanceApp({ app }: { app: App }) {
       // app.component("AI", AI);
+      app.component("PageRef", PageRef);
       // app.provide('some-injection-key-if-needed', VALUE)
     },
   },
