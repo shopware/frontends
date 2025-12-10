@@ -1,6 +1,5 @@
 ---
 "vue-starter-template": minor
-"api-client-tutorial": minor
 "vue-demo-store": minor
 "@shopware/cms-base-layer": minor
 "@shopware/composables": minor

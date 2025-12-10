@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watchDebounced } from "@vueuse/core";
 import { useTemplateRef } from "vue";
 import type { Schemas, operations } from "#shopware";
 const route = useRoute();
@@ -134,9 +135,10 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
 };
 
 const limit = ref(route.query.limit ? Number(route.query.limit) : 12);
-const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
-const loadProducts = async (cacheKey: string) => {
-  const { data: productSearch } = await useAsyncData(cacheKey, async () => {
+
+const { data: productSearch } = await useAsyncData(
+  () => `productSearch-${JSON.stringify(route.query)}`,
+  async () => {
     const filters = createFiltersFromRoute();
     await search({
       search: route.query.search as string,
@@ -180,16 +182,22 @@ const loadProducts = async (cacheKey: string) => {
       ],
     });
     return getCurrentListing.value;
-  });
+  },
+  {
+    watch: [() => route.query],
+  },
+);
 
-  return productSearch;
-};
-const productSearch = await loadProducts(cacheKey.value);
-
-watch(cacheKey, () => {
-  setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
-  addCountsToFilter();
-});
+watchDebounced(
+  getCurrentListing,
+  (newValue) => {
+    if (newValue) {
+      setInitialListing(newValue as Schemas["ProductListingResult"]);
+      addCountsToFilter();
+    }
+  },
+  { debounce: 300, immediate: true },
+);
 
 const changePage = async (page: number) => {
   await router.push({
@@ -236,12 +244,8 @@ const currentSortingOrder = computed({
         order,
       },
     });
-
-    await loadProducts(cacheKey.value);
   },
 });
-
-setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
 
 type AggregationBucket = {
   apiAlias: string;
@@ -266,45 +270,47 @@ type FilterAndAggregations = {
   apiAlias: string;
 };
 
-const addCountToFilter = (
+function addCountToFilter(
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
-) => {
+) {
   for (const option of filter.options) {
     if (aggregation.buckets) {
       const bucket = aggregation.buckets.find((bucket) =>
         bucket.key.includes(option.id),
       );
       if (bucket) {
-        option.count = bucket.count + (option.count ?? 0);
         if (bucket.parent_childs?.buckets) {
           option.count = calculateCountByParentChildsBucket(bucket);
+        } else {
+          option.count = bucket.count;
         }
       }
     }
   }
-};
+}
 
-const addCountToFilterEntities = (
+function addCountToFilterEntities(
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
-) => {
+) {
   for (const entity of filter.entities) {
     if (aggregation.buckets) {
       const bucket = aggregation.buckets.find(
         (bucket) => bucket.key === entity.id,
       );
       if (bucket) {
-        entity.count = bucket.count + (entity.count ?? 0);
         if (bucket.parent_childs?.buckets) {
           entity.count = calculateCountByParentChildsBucket(bucket);
+        } else {
+          entity.count = bucket.count;
         }
       }
     }
   }
-};
+}
 
-const calculateCountByParentChildsBucket = (bucket: AggregationBucket) => {
+function calculateCountByParentChildsBucket(bucket: AggregationBucket) {
   let count = 0;
   if (bucket.parent_childs?.buckets) {
     for (const child of bucket.parent_childs.buckets) {
@@ -316,12 +322,24 @@ const calculateCountByParentChildsBucket = (bucket: AggregationBucket) => {
     }
   }
   return count;
-};
+}
 
-const addCountsToFilter = () => {
+function addCountsToFilter() {
   if (getInitialFilters.value) {
     for (const initialFilter of getInitialFilters.value) {
       const filter = initialFilter as unknown as FilterAndAggregations;
+
+      if (filter.options) {
+        for (const option of filter.options) {
+          option.count = 0;
+        }
+      }
+      if (filter.entities) {
+        for (const entity of filter.entities) {
+          entity.count = 0;
+        }
+      }
+
       if (productSearch.value?.aggregations) {
         for (const value of Object.entries(productSearch.value.aggregations)) {
           const aggregation = value[1] as unknown as FilterAndAggregations;
@@ -342,9 +360,7 @@ const addCountsToFilter = () => {
       }
     }
   }
-};
-
-addCountsToFilter();
+}
 
 const openFilters = () => {
   const query = router.currentRoute.value.query;

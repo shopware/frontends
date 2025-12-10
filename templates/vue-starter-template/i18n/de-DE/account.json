@@ -4,6 +4,8 @@
     "signUpHeader": "Ich bin neu hier.",
     "yourAddress": "Ihre Adresse",
     "order": {
+      "header": "Bestellungen",
+      "subHeader": "Sehen Sie sich Ihre aktuellen und vergangenen Bestellungen an",
       "product": "Produkt",
       "quantity": "Menge",
       "price": "Preis",
@@ -15,7 +17,14 @@
       "paymentMethod": "Zahlungsmethode",
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
-      "orders": "Bestellungen"
+      "orders": "Bestellungen",
+      "seeMore": "Mehr anzeigen",
+      "seeLess": "Weniger anzeigen",
+      "orderLabel": "Bestellung",
+      "shippingStatus": "Versandstatus",
+      "shipping": "Versand",
+      "shippingMethod": "Versandart",
+      "total": "Gesamt"
     },
     "menu": {
       "header": "Ihr Konto",
@@ -39,6 +48,32 @@
           "subscribed": "Vielen Dank! Wir haben Ihre Adresse registriert.",
           "unsubscribed": "Newsletter-Abbestellung"
         }
+      }
+    },
+    "address": {
+      "notFound": "Adresse nicht gefunden",
+      "header": "Adressen",
+      "subHeader": "Sehen Sie sich Ihre aktuellen Standardadressen oder fügen Sie neue hinzu.",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "availableAddressesSectionHeader": "Verfügbare Adressen",
+      "addAddressButton": "Neue Adresse hinzufügen",
+      "editAddressButton": "Adresse bearbeiten",
+      "deleteAddressButton": "Adresse löschen",
+      "useAsDefaultBillingAddressButton": "Als Standardrechnungsadresse verwenden",
+      "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden",
+      "saveButton": "Adresse speichern",
+      "new": {
+        "header": "Neue Adresse",
+        "subHeader": "Fügen Sie eine neue Adresse zu Ihrem Konto hinzu.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "successMessage": "Adresse wurde erfolgreich hinzugefügt."
+      },
+      "edit": {
+        "header": "Adresse bearbeiten",
+        "subHeader": "Bearbeiten Sie Ihre Adresse.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "successMessage": "Adresse wurde erfolgreich aktualisiert."
       }
     },
     "profile": {
@@ -80,6 +115,31 @@
         "buttonSubmit": "Speichern",
         "successUpdate": "Passwort wurde erfolgreich aktualisiert.",
         "errorUpdate": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "orderDetails": {
+      "order": "Bestellung",
+      "placedOn": "Bestellt am {d}",
+      "shippingAddress": "Lieferadresse",
+      "billingAddress": "Rechnungsadresse",
+      "orderSummary": "Bestellübersicht",
+      "paymentMethod": "Zahlungsmethode",
+      "shippingMethod": "Versandart",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
+      "takesUpTo": "Dauert bis zu",
+      "change": "Ändern",
+      "changePaymentMethod": "Zahlungsmethode ändern",
+      "cancel": "Stornieren",
+      "confirm": "Bestätigen",
+      "close": "Schließen",
+      "backToOrdersList": "Zurück zur Bestellliste",
+      "itemsHeader": {
+        "item": "Artikel",
+        "quantity": "Menge",
+        "price": "Preis",
+        "total": "Gesamt"
       }
     },
     "messages": {

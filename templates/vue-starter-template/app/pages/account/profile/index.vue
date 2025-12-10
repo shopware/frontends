@@ -4,7 +4,8 @@ import { useVuelidate } from "@vuelidate/core";
 import { onBeforeMount } from "vue";
 
 const { user, updatePersonalInfo } = useUser();
-const { pushError, pushSuccess } = useNotifications();
+const { pushSuccess } = useNotifications();
+const { handleApiError } = useApiErrorsResolver("account_profile_form");
 
 type AccountType = "private" | "business";
 
@@ -66,13 +67,7 @@ async function handleSubmit() {
     );
     pushSuccess($t("account.profile.form.successUpdate"));
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      for (const errorItem of error.details.errors) {
-        if (errorItem?.detail) {
-          pushError(errorItem.detail);
-        }
-      }
-    }
+    handleApiError(error);
   }
 }
 </script>

@@ -13,15 +13,25 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <div class="cms-block-image-three-cover grid md:grid-cols-3 gap-10">
-    <CmsGenericElement :content="leftContent" />
-    <CmsGenericElement :content="centerContent" />
-    <CmsGenericElement :content="rightContent" />
+  <div class="cms-block-image-three-cover flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="leftContent" />
+    </div>
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="centerContent" />
+    </div>
+    <div class="w-full sm:flex-1">
+      <CmsGenericElement :content="rightContent" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.cms-block-image-three-cover .cms-element-image {
-  @apply aspect-square object-cover;
+.cms-block-image-three-cover :deep(.cms-element-image) {
+  @apply aspect-square relative h-full w-full;
+}
+
+.cms-block-image-three-cover :deep(.cms-element-image img) {
+  @apply w-full h-full object-cover;
 }
 </style>

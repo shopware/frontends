@@ -41,6 +41,7 @@ useSessionContext(sessionContextData.value);
 const { locale, availableLocales, defaultLocale, localeProperties, messages } =
   useI18n();
 const router = useRouter();
+const route = useRoute();
 
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
@@ -94,7 +95,10 @@ if (languages && router.currentRoute.value.name) {
 
 onMounted(() => {
   refreshCart();
-  getWishlistProducts();
+  const isWishlistPage = route.name?.toString().endsWith("wishlist") ?? false;
+  if (!isWishlistPage) {
+    getWishlistProducts();
+  }
 });
 </script>
 

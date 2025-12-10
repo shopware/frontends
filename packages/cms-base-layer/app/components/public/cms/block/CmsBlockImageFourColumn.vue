@@ -14,16 +14,28 @@ const centerLeftContent = getSlotContent("center-left");
 const centerRightContent = getSlotContent("center-right");
 </script>
 <template>
-  <div class="cms-block-image-four-column grid md:grid-cols-4 gap-10">
-    <CmsGenericElement :content="leftContent" />
-    <CmsGenericElement :content="centerLeftContent" />
-    <CmsGenericElement :content="centerRightContent" />
-    <CmsGenericElement :content="rightContent" />
+  <div class="cms-block-image-four-column flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap justify-start items-start gap-6 w-full">
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
+      <CmsGenericElement :content="leftContent" />
+    </div>
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
+      <CmsGenericElement :content="centerLeftContent" />
+    </div>
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
+      <CmsGenericElement :content="centerRightContent" />
+    </div>
+    <div class="w-full sm:w-[calc(50%-12px)] lg:flex-1">
+      <CmsGenericElement :content="rightContent" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.cms-block-image-four-column .cms-element-image {
-  @apply object-cover;
+.cms-block-image-four-column :deep(.cms-element-image) {
+  @apply relative h-full w-full;
+}
+
+.cms-block-image-four-column :deep(.cms-element-image img) {
+  @apply w-full h-full object-cover;
 }
 </style>

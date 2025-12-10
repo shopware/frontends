@@ -43,6 +43,7 @@
     "searchPlaceholder": "Szukaj produktów",
     "chooseState": "Wybierz stan",
     "state": "Stan",
-    "loading": "Ładowanie..."
+    "loading": "Ładowanie...",
+    "requiredFieldsNote": "Pola z gwiazdką (*) są wymagane."
   }
 }

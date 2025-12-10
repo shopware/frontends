@@ -26,7 +26,7 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const imageElement = useTemplateRef("imageElement");
+const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { height } = useElementSize(imageElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
@@ -49,23 +49,23 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
 </script>
 
 <template>
-  <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
-    <RouterLink :to="productLink" class="relative h-80 self-stretch overflow-hidden">
-      <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="coverSrcPath"
-        :alt="coverAlt" data-testid="product-box-img" />
+  <div class="self-stretch aspect-square relative flex flex-col justify-start items-start overflow-hidden">
+    <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
+      <NuxtImg ref="imageElement" preset="productCard" loading="lazy"
+        class="w-full h-full absolute top-0 left-0"
+        :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
-      class="absolute top-[281px] left-[8px] inline-flex items-center justify-center rounded bg-states-error px-1.5 py-1"
-      data-state="default" data-type="error">
-      <div class="justify-start font-['Inter'] text-xs font-bold leading-none text-states-on-error">
+      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center">
+      <div class="text-states-on-error text-xs font-bold leading-none">
         {{ translations.product.badges.topseller }}
       </div>
     </div>
 
     <client-only>
       <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
-        class=" bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
+        class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
         data-testid="product-box-toggle-wishlist-button" @click="toggleWishlist">
         <SwWishlistIcon :filled="isInWishlist" />
       </SwIconButton>
