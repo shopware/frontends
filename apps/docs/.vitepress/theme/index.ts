@@ -6,15 +6,4 @@ import type { App } from "vue";
 import PageRef from "./components/PageRef.vue";
 import "./custom.css";
 
-export default Object.assign(
-  {
-    ...SWAGTheme(),
-  },
-  {
-    enhanceApp({ app }: { app: App }) {
-      // app.component("AI", AI);
-      app.component("PageRef", PageRef);
-      // app.provide('some-injection-key-if-needed', VALUE)
-    },
-  },
-);
+export default SWAGTheme();
