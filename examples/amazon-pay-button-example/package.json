@@ -23,8 +23,7 @@
     "build": "pnpm run prepare && nuxt-module-build build --stub && nuxi prepare playground",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
-    "typecheck": "pnpm run prepare && vue-tsc --noEmit",
-    "prepare": "nuxt-module-build prepare"
+    "typecheck": "pnpm run prepare && vue-tsc --noEmit"
   },
   "dependencies": {
     "@nuxt/kit": "4.2.1"
