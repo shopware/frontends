@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSrcSetForMedia } from "./getSrcSetForMedia";
+import { encodeUrlPath, getSrcSetForMedia } from "./getSrcSetForMedia";
 
 describe("getSrcSetForMedia", () => {
   it("should return an empty string if media is undefined", () => {
@@ -146,5 +146,58 @@ describe("getSrcSetForMedia", () => {
     expect(result).toEqual(
       "https://example.com/normal/image.jpg 100w, https://example.com/path%20with%20space/image.jpg 200w, https://example.com/path%20already%20encoded/image.jpg 300w",
     );
+  });
+});
+
+describe("encodeUrlPath", () => {
+  it("should encode commas in pathname", () => {
+    const result = encodeUrlPath("https://example.com/path/image, test.jpg");
+    expect(result).toBe("https://example.com/path/image%2C%20test.jpg");
+  });
+
+  it("should encode spaces in pathname", () => {
+    const result = encodeUrlPath("https://example.com/path/image test.jpg");
+    expect(result).toBe("https://example.com/path/image%20test.jpg");
+  });
+
+  it("should encode special characters in filename", () => {
+    const result = encodeUrlPath(
+      "https://cdn.shopware.store/media/ChatGPT Image 2 gru 2025, 14_08_58.png",
+    );
+    expect(result).toBe(
+      "https://cdn.shopware.store/media/ChatGPT%20Image%202%20gru%202025%2C%2014_08_58.png",
+    );
+  });
+
+  it("should handle already encoded URLs correctly", () => {
+    const result = encodeUrlPath("https://example.com/path/image%20test.jpg");
+    expect(result).toBe("https://example.com/path/image%20test.jpg");
+  });
+
+  it("should encode parentheses in pathname", () => {
+    const result = encodeUrlPath("https://example.com/path/image (1).jpg");
+    expect(result).toBe("https://example.com/path/image%20(1).jpg");
+  });
+
+  it("should preserve query parameters", () => {
+    const result = encodeUrlPath(
+      "https://example.com/image.jpg?width=100&height=200",
+    );
+    expect(result).toBe("https://example.com/image.jpg?width=100&height=200");
+  });
+
+  it("should preserve fragments", () => {
+    const result = encodeUrlPath("https://example.com/image.jpg#section");
+    expect(result).toBe("https://example.com/image.jpg#section");
+  });
+
+  it("should handle invalid URLs gracefully", () => {
+    const result = encodeUrlPath("not a valid url with spaces");
+    expect(result).toBe("not a valid url with spaces");
+  });
+
+  it("should not double-encode already encoded characters", () => {
+    const result = encodeUrlPath("https://example.com/path/image%2Ctest.jpg");
+    expect(result).toBe("https://example.com/path/image%2Ctest.jpg");
   });
 });

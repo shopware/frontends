@@ -16,18 +16,24 @@ const rightImageContent = getSlotContent("right-image");
 const rightTextContent = getSlotContent("right-text");
 </script>
 <template>
-  <div class="cms-block-image-text-row flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
-    <div class="w-full sm:flex-1">
-      <CmsGenericElement :content="leftImageContent" />
-      <CmsGenericElement :content="leftTextContent" />
+  <div class="cms-block-image-text-row flex flex-col md:flex-row justify-center items-stretch gap-6 w-full">
+    <div class="w-full md:flex-1 flex flex-col">
+      <div class="flex-1 mb-4 overflow-hidden rounded-lg min-h-64">
+        <CmsGenericElement :content="leftImageContent" />
+      </div>
+      <CmsGenericElement :content="leftTextContent" class="text-center" />
     </div>
-    <div class="w-full sm:flex-1">
-      <CmsGenericElement :content="centerImageContent" />
-      <CmsGenericElement :content="centerTextContent" />
+    <div class="w-full md:flex-1 flex flex-col">
+      <div class="flex-1 mb-4 overflow-hidden rounded-lg min-h-64">
+        <CmsGenericElement :content="centerImageContent" />
+      </div>
+      <CmsGenericElement :content="centerTextContent" class="text-center" />
     </div>
-    <div class="w-full sm:flex-1">
-      <CmsGenericElement :content="rightImageContent" />
-      <CmsGenericElement :content="rightTextContent" />
+    <div class="w-full md:flex-1 flex flex-col">
+      <div class="flex-1 mb-4 overflow-hidden rounded-lg min-h-64">
+        <CmsGenericElement :content="rightImageContent" />
+      </div>
+      <CmsGenericElement :content="rightTextContent" class="text-center" />
     </div>
   </div>
 </template>
@@ -38,10 +44,10 @@ const rightTextContent = getSlotContent("right-text");
 }
 
 .cms-block-image-text-row :deep(.cms-element-image img) {
-  @apply w-full h-full object-cover;
+  @apply w-full h-full object-cover rounded-lg;
 }
 
 .cms-block-image-text-row :deep(.cms-element-text) {
-  @apply self-stretch min-h-12 inline-flex justify-start items-center;
+  @apply self-stretch min-h-12;
 }
 </style>
