@@ -52,7 +52,7 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
                 @click="sideMenuController.close"
               >
                 <span class="flex">
-                  {{ navigationElement.name }}
+                  {{ navigationElement?.translated?.name }}
                 </span>
                 <div class="flex flex-1" />
                 <button
@@ -86,7 +86,7 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
                     @click="sideMenuController.close"
                   >
                     <span>
-                      {{ childElement.name }}
+                      {{ childElement?.translated?.name }}
                     </span>
                   </NuxtLink>
                 </li>
