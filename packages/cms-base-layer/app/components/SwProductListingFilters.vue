@@ -11,7 +11,7 @@ import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
 import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
-const props = defineProps<{
+defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
   listingType?: string;
 }>();
@@ -48,7 +48,6 @@ const router = useRouter();
 
 const {
   changeCurrentSortingOrder,
-  getCurrentFilters,
   getCurrentSortingOrder,
   getInitialFilters,
   getSortingOrders,
@@ -233,10 +232,6 @@ async function invokeCleanFilters() {
   }
 }
 
-const isDefaultSidebarFilter =
-  props.content.type === "sidebar-filter" &&
-  props.content.config?.boxLayout?.value === "standard";
-
 const handleSortChange = (sortKey: string) => {
   currentSortingOrder.value = sortKey;
 };
@@ -269,63 +264,42 @@ const handleRemoveFilterChip = async (chip: {
       @remove="handleRemoveFilterChip"
     />
 
-    <ClientOnly>
-      <template #fallback>
-        <div class="self-stretch flex flex-col justify-start items-start gap-4">
-          <div
-            class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
-            <div class="h-6 w-24 bg-surface-surface-container rounded animate-pulse"></div>
-            <div class="h-10 w-20 bg-surface-surface-container rounded animate-pulse"></div>
-          </div>
-          <div class="self-stretch flex flex-col justify-start items-start gap-4">
-            <div v-for="i in 5" :key="i" class="w-full">
-              <div class="self-stretch py-3 border-b border-outline-outline-variant flex justify-between items-center">
-                <div class="h-6 w-32 bg-surface-surface-container rounded animate-pulse"></div>
-                <div class="h-6 w-6 bg-surface-surface-container rounded animate-pulse"></div>
-              </div>
-            </div>
-          </div>
+    <div class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div
+        class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
+        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+          {{ translations.listing.filters }}
         </div>
-      </template>
-      <div class="self-stretch flex flex-col justify-start items-start gap-4">
-        <div
-          class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
-            {{ translations.listing.filters }}
-          </div>
-          <SwSortDropdown
-            :sort-options="getSortingOrders ?? []"
-            :current-sort="getCurrentSortingOrder ?? ''"
-            :label="translations.listing.sort"
-            @sort-change="handleSortChange"
-          />
-        </div>
+        <SwSortDropdown
+          :sort-options="getSortingOrders ?? []"
+          :current-sort="getCurrentSortingOrder ?? ''"
+          :label="translations.listing.sort"
+          @sort-change="handleSortChange"
+        />
       </div>
-    </ClientOnly>
+    </div>
     <!-- Filters List -->
-    <ClientOnly>
-      <div v-if="!getInitialFilters.length"
-        class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
-        <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    <div v-if="!getInitialFilters.length"
+      class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
+      <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    </div>
+    <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
+      <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
+        :filter="filter"
+        :selected-manufacturer="sidebarSelectedFilters.manufacturer"
+        :selected-properties="sidebarSelectedFilters.properties"
+        :selected-min-price="sidebarSelectedFilters['min-price']"
+        :selected-max-price="sidebarSelectedFilters['max-price']"
+        :selected-rating="sidebarSelectedFilters.rating"
+        :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
+        @filter-change="handleFilterChange"
+        class="w-full" />
+      <div v-if="showResetFiltersButton" class="w-full">
+        <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
+          {{ translations.listing.resetFilters }}
+          <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+        </SwBaseButton>
       </div>
-      <div class="self-stretch flex flex-col justify-start items-start gap-4" v-else>
-        <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
-          :filter="filter"
-          :selected-manufacturer="sidebarSelectedFilters.manufacturer"
-          :selected-properties="sidebarSelectedFilters.properties"
-          :selected-min-price="sidebarSelectedFilters['min-price']"
-          :selected-max-price="sidebarSelectedFilters['max-price']"
-          :selected-rating="sidebarSelectedFilters.rating"
-          :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
-          @filter-change="handleFilterChange"
-          class="w-full" />
-        <div v-if="showResetFiltersButton" class="w-full">
-          <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
-            {{ translations.listing.resetFilters }}
-            <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
-          </SwBaseButton>
-        </div>
-      </div>
-    </ClientOnly>
+    </div>
   </div>
 </template>

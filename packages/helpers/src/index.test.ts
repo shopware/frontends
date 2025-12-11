@@ -28,6 +28,7 @@ describe("helpers - test global API", () => {
         "getProductCalculatedListingPrice": [Function],
         "getProductFreeShipping": [Function],
         "getProductFromPrice": [Function],
+        "getProductListingFromCmsPage": [Function],
         "getProductManufacturerName": [Function],
         "getProductName": [Function],
         "getProductRatingAverage": [Function],
