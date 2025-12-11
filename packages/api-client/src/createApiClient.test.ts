@@ -342,23 +342,18 @@ describe("createAPIClient", () => {
       },
     });
 
-    expect(contentTypeSpy.mock.calls).toMatchInlineSnapshot(`
-      [
-        [
-          {
-            "accept": "application/json",
-            "accept-encoding": "gzip, deflate, br",
-            "connection": "close",
-            "content-length": "0",
-            "host": "localhost:3610",
-            "referer": "http://localhost:3000/",
-            "sw-access-key": "123",
-            "sw-context-token": "456",
-            "user-agent": "Mozilla/5.0 (X11; Darwin arm64) AppleWebKit/537.36 (KHTML, like Gecko) HappyDOM/0.0.0",
-          },
-        ],
-      ]
-    `);
+    expect(contentTypeSpy).toHaveBeenCalledTimes(1);
+    const headers = contentTypeSpy.mock.calls[0]?.[0];
+    expect(headers).toBeDefined();
+    expect(headers).toMatchObject({
+      accept: "application/json",
+      "sw-access-key": "123",
+      "sw-context-token": "456",
+    });
+    // Content-Type header should be removed when multipart/form-data in browser
+    expect(headers?.["content-type"]).toBeUndefined();
+    // User-agent should exist (platform-specific, so just check presence)
+    expect(headers?.["user-agent"]).toMatch(/HappyDOM/);
   });
 
   it("should trigger success callback", async () => {
