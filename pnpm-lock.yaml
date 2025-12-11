@@ -943,8 +943,8 @@ importers:
         specifier: 5.5.3
         version: 5.5.3
       ofetch:
-        specifier: 1.5.1
-        version: 1.5.1
+        specifier: 1.4.1
+        version: 1.4.1
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -8591,9 +8591,6 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
-  destr@2.0.3:
-    resolution: {integrity: sha512-2N3BOUU4gYMpTP24s5rF5iP7BDr7uNTCs4ozw3kf/eKfvWSIu93GEBi5m427YoyJoeOzQ5smuu4nNAPGb8idSQ==}
-
   destr@2.0.5:
     resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
@@ -11229,9 +11226,6 @@ packages:
     engines: {node: '>=10.5.0'}
     deprecated: Use your platform's native DOMException instead
 
-  node-fetch-native@1.6.4:
-    resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
-
   node-fetch-native@1.6.7:
     resolution: {integrity: sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==}
 
@@ -13642,9 +13636,6 @@ packages:
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
-
-  ufo@1.5.4:
-    resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
 
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
@@ -18215,7 +18206,7 @@ snapshots:
       dotenv: 16.6.1
       git-url-parse: 16.1.0
       is-docker: 3.0.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       package-manager-detector: 1.5.0
       pathe: 2.0.3
       rc9: 2.1.2
@@ -22194,7 +22185,7 @@ snapshots:
     dependencies:
       '@iconify/utils': 2.3.0
       '@unocss/core': 0.62.4
-      ofetch: 1.5.1
+      ofetch: 1.4.1
     transitivePeerDependencies:
       - supports-color
 
@@ -22202,7 +22193,7 @@ snapshots:
     dependencies:
       '@iconify/utils': 2.3.0
       '@unocss/core': 66.0.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
     transitivePeerDependencies:
       - supports-color
 
@@ -22210,7 +22201,7 @@ snapshots:
     dependencies:
       '@iconify/utils': 3.0.2
       '@unocss/core': 66.5.4
-      ofetch: 1.5.1
+      ofetch: 1.4.1
     transitivePeerDependencies:
       - supports-color
 
@@ -22280,17 +22271,17 @@ snapshots:
   '@unocss/preset-web-fonts@0.62.4':
     dependencies:
       '@unocss/core': 0.62.4
-      ofetch: 1.5.1
+      ofetch: 1.4.1
 
   '@unocss/preset-web-fonts@66.0.0':
     dependencies:
       '@unocss/core': 66.0.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
 
   '@unocss/preset-web-fonts@66.5.4':
     dependencies:
       '@unocss/core': 66.5.4
-      ofetch: 1.5.1
+      ofetch: 1.4.1
 
   '@unocss/preset-wind3@66.0.0':
     dependencies:
@@ -23906,7 +23897,7 @@ snapshots:
       magic-string: 0.30.21
       mdbox: 0.1.1
       mlly: 1.8.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       pathe: 2.0.3
       perfect-debounce: 1.0.0
       pkg-types: 2.3.0
@@ -24870,8 +24861,6 @@ snapshots:
   depd@2.0.0: {}
 
   dequal@2.0.3: {}
-
-  destr@2.0.3: {}
 
   destr@2.0.5: {}
 
@@ -26508,7 +26497,7 @@ snapshots:
       h3: 1.15.4
       image-meta: 0.2.2
       listhen: 1.9.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       pathe: 2.0.3
       sharp: 0.33.4
       svgo: 4.0.0
@@ -28148,8 +28137,6 @@ snapshots:
 
   node-domexception@1.0.0: {}
 
-  node-fetch-native@1.6.4: {}
-
   node-fetch-native@1.6.7: {}
 
   node-fetch@2.6.7(encoding@0.1.13):
@@ -29132,9 +29119,9 @@ snapshots:
 
   ofetch@1.4.1:
     dependencies:
-      destr: 2.0.3
-      node-fetch-native: 1.6.4
-      ufo: 1.5.4
+      destr: 2.0.5
+      node-fetch-native: 1.6.7
+      ufo: 1.6.1
 
   ofetch@1.5.1:
     dependencies:
@@ -31731,8 +31718,6 @@ snapshots:
 
   uc.micro@2.1.0: {}
 
-  ufo@1.5.4: {}
-
   ufo@1.6.1: {}
 
   uglify-js@3.19.3:
@@ -31931,7 +31916,7 @@ snapshots:
   unifont@0.6.0:
     dependencies:
       css-tree: 3.1.0
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       ohash: 2.0.11
 
   unimport@5.5.0:
@@ -32329,7 +32314,7 @@ snapshots:
       h3: 1.15.4
       lru-cache: 10.4.3
       node-fetch-native: 1.6.7
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       ufo: 1.6.1
     optionalDependencies:
       '@netlify/blobs': 9.1.2
@@ -32345,7 +32330,7 @@ snapshots:
       h3: 1.15.4
       lru-cache: 10.4.3
       node-fetch-native: 1.6.7
-      ofetch: 1.5.1
+      ofetch: 1.4.1
       ufo: 1.6.1
     optionalDependencies:
       '@netlify/blobs': 9.1.2
