@@ -352,8 +352,18 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.3.3
+### Latest changes: 1.4.0
+
+### Minor Changes
+
+- [#2126](https://github.com/shopware/frontends/pull/2126) [`e595bc1`](https://github.com/shopware/frontends/commit/e595bc1ea6afe01a0065300277a78ef8c1fe5667) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhanced OpenAPI schema override merging to properly handle conflicts between `$ref` and composition keywords (`oneOf`, `anyOf`, `allOf`, `not`). When merging overrides:
+  - Composition keywords now automatically remove conflicting `$ref` properties
+  - `$ref` overrides can replace composition keywords entirely
+  - Different composition keywords can replace each other (e.g., `allOf` → `oneOf`)
+
+  This ensures correct schema merging when using composition keywords in override files, preventing invalid OpenAPI schemas with conflicting `$ref` and composition keyword properties.
 
 ### Patch Changes
 
-- [#1942](https://github.com/shopware/frontends/pull/1942) [`a344abb`](https://github.com/shopware/frontends/commit/a344abba579c91c4f775e7be27ed882ca420fdc2) Thanks [@patzick](https://github.com/patzick)! - Allow shared parameters to be available in schema resolver.
+- Updated dependencies [[`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/api-client@1.4.0
