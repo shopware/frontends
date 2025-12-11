@@ -14,4 +14,4 @@ Collection of specific Composable Frontends Features and documentation how to us
 
 ## Shopware Extensions
 
-<PageRef page="./custom-products.html" title="Custom Products" sub="Example of integration with Custom Products extension" />
+<PageRef page="/getting-started/features/custom-products.html" title="Custom Products" sub="Example of integration with Custom Products extension" />
