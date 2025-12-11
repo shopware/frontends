@@ -66,7 +66,7 @@ The demo store template is a boilerplate, so it will constantly be updated, as w
 
 One exception to the rule are CMS components. CMS components are handled as a separate package `cms-base` in Shopware Frontends and can be updated automatically. However, you can still override the components from the package in your custom project.
 
-<PageRef page="./framework/shopping-experiences.html" title="Customize CMS Components" sub="Override CMS components using the cms-base package" />
+<PageRef page="/framework/shopping-experiences.html" title="Customize CMS Components" sub="Override CMS components using the cms-base package" />
 
 ## Configure
 

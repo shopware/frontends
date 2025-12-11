@@ -17,6 +17,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>(
   sharedConfig(
     {
       extends: baseConfig.default,
+      base: process.env.VITEPRESS_BASE || "/",
       title: "Shopware Frontends",
       description: "Documentation for Shopware developers",
       srcDir: "src",
