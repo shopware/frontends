@@ -483,7 +483,7 @@ describe("createAdminAPIClient", () => {
     controller.abort();
 
     await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}order": <no response> The operation was aborted.]`,
+      `[FetchError: [GET] "${baseURL}order": <no response> signal is aborted without reason]`,
     );
   });
 
@@ -589,7 +589,7 @@ describe("createAdminAPIClient", () => {
       await expect(
         client.invoke("getOrderList get /order", {}),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}order": <no response> The operation was aborted.]`,
+        `[FetchError: [GET] "${baseURL}order": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
     });
 
@@ -720,7 +720,7 @@ describe("createAdminAPIClient", () => {
           fetchOptions: { timeout: 100 },
         }),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> The operation was aborted.]`,
+        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
     });
   });

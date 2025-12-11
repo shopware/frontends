@@ -440,7 +440,7 @@ describe("createAPIClient", () => {
     controller.abort();
 
     await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
+      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
     );
   });
 
@@ -468,7 +468,7 @@ describe("createAPIClient", () => {
         // @ts-expect-error this endpoint does not exist
         client.invoke("testTimeout get /slow-endpoint", {}),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}slow-endpoint": <no response> The operation was aborted.]`,
+        `[FetchError: [GET] "${baseURL}slow-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
     });
 
@@ -583,7 +583,7 @@ describe("createAPIClient", () => {
           fetchOptions: { timeout: 100 },
         }),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> The operation was aborted.]`,
+        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
     });
   });
