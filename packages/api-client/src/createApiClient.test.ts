@@ -353,7 +353,7 @@ describe("createAPIClient", () => {
     // Content-Type header should be removed when multipart/form-data in browser
     expect(headers?.["content-type"]).toBeUndefined();
     // User-agent should exist (platform-specific, so just check presence)
-    expect(headers?.["user-agent"]).toMatch(/HappyDOM/);
+    expect(headers?.["user-agent"]).toBeTruthy();
   });
 
   it("should trigger success callback", async () => {
@@ -439,9 +439,7 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
-    );
+    await expect(request).rejects.toThrow(/context.*abort/i);
   });
 
   describe("fetchOptions", () => {

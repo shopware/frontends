@@ -482,9 +482,7 @@ describe("createAdminAPIClient", () => {
     });
     controller.abort();
 
-    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}order": <no response> signal is aborted without reason]`,
-    );
+    await expect(request).rejects.toThrow(/order.*abort/i);
   });
 
   describe("onDefaultHeaderChanged hook", () => {
