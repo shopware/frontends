@@ -315,7 +315,7 @@ describe("createAPIClient", () => {
   });
 
   it("should remove multipart/form-data headers in case of browser", async () => {
-    // @vitest-environment jsdom
+    // @vitest-environment happy-dom
 
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
@@ -347,15 +347,14 @@ describe("createAPIClient", () => {
         [
           {
             "accept": "application/json",
-            "accept-encoding": "gzip, deflate",
-            "accept-language": "*",
-            "connection": "keep-alive",
+            "accept-encoding": "gzip, deflate, br",
+            "connection": "close",
             "content-length": "0",
             "host": "localhost:3610",
-            "sec-fetch-mode": "cors",
+            "referer": "http://localhost:3000/",
             "sw-access-key": "123",
             "sw-context-token": "456",
-            "user-agent": "node",
+            "user-agent": "Mozilla/5.0 (X11; Darwin arm64) AppleWebKit/537.36 (KHTML, like Gecko) HappyDOM/0.0.0",
           },
         ],
       ]
@@ -474,7 +473,7 @@ describe("createAPIClient", () => {
         // @ts-expect-error this endpoint does not exist
         client.invoke("testTimeout get /slow-endpoint", {}),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}slow-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+        `[FetchError: [GET] "${baseURL}slow-endpoint": <no response> The operation was aborted.]`,
       );
     });
 
@@ -589,7 +588,7 @@ describe("createAPIClient", () => {
           fetchOptions: { timeout: 100 },
         }),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> The operation was aborted.]`,
       );
     });
   });

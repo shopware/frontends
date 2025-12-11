@@ -4,6 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [codspeedPlugin()],
   test: {
+    environment: "happy-dom",
     coverage: {
       enabled: true,
       reportOnFailure: true,
