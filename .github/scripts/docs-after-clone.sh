@@ -3,5 +3,8 @@ set -e
 
 [[ -z "$1" ]] && echo "Missing working directory argument" && exit 1
 
+echo "Removing postinstall"
+sed -i '/^  "postinstall"/d' package.json
+
 echo "Installing root pnpm"
 pnpm -C $1 i
