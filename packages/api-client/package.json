@@ -60,6 +60,6 @@
   "dependencies": {
     "defu": "6.1.4",
     "hookable": "5.5.3",
-    "ofetch": "1.4.1"
+    "ofetch": "1.5.1"
   }
 }
