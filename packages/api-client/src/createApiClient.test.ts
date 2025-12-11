@@ -352,6 +352,9 @@ describe("createAPIClient", () => {
     });
     // Content-Type header should be removed when multipart/form-data in browser
     expect(headers?.["content-type"]).toBeUndefined();
+    // Verify multipart/form-data is not present in any header value
+    const headerValues = Object.values(headers || {}).join(" ");
+    expect(headerValues).not.toContain("multipart/form-data");
     // User-agent should exist (platform-specific, so just check presence)
     expect(headers?.["user-agent"]).toBeTruthy();
   });
@@ -439,7 +442,9 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    await expect(request).rejects.toThrow(/context.*abort/i);
+    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
+    );
   });
 
   describe("fetchOptions", () => {
