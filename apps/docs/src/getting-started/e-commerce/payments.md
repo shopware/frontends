@@ -123,7 +123,7 @@ However, if there are no plugin-specific endpoints to interact with, the `handle
 
 See what can be achieved on Express Checkout example for PayPal provider.
 
-<PageRef page="../../../resources/integrations/payments/" title="Payment Integrations" sub="See also all our Payment Integrations." />
+<PageRef page="/resources/integrations/payments/" title="Payment Integrations" sub="See also all our Payment Integrations." />
 
 ## App server integration
 

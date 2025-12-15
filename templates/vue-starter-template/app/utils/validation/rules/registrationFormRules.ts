@@ -1,5 +1,5 @@
-import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { type Ref, computed } from "vue";
+import { customValidators } from "#imports";
 
 export function registrationFormRules(
   accountType: Ref<string>,

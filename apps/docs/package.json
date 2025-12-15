@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vitepress",
     "build": "vitepress build",
+    "build:devhub": "VITEPRESS_BASE=/frontends/ vitepress build",
     "serve": "vitepress serve"
   },
   "dependencies": {
