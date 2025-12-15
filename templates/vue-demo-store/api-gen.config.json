@@ -1,0 +1,6 @@
+{
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+  "store-api": {
+    "patches": ["storeApiSchema.overrides.json"]
+  }
+}
