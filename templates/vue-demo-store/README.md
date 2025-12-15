@@ -4,6 +4,8 @@
 
 This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
 
+> **⚠️ Important:** The Demo Store Template is a **reference implementation** that demonstrates features and patterns you can use as inspiration for your own storefront. For production projects, we recommend using the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) which leverages Nuxt layers for better maintainability and automatic updates.
+
 **Interactive preview:**
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
