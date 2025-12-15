@@ -1,8 +1,23 @@
+type CmsPageStructure = {
+  sections: Array<{
+    blocks?: Array<{
+      slots?: Array<{
+        type?: string;
+        data?: unknown;
+        [key: string]: unknown;
+      }>;
+      [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+  }>;
+  [key: string]: unknown;
+};
+
 /**
  * Extracts the product listing data from a CMS page structure.
  * Useful for SSR to get listing data early before components render.
  *
- * @param cmsPage - The CMS page object
+ * @param cmsPage - The CMS page object (Schemas["CmsPage"])
  * @returns The product listing result or null if not found
  *
  * @example
@@ -12,39 +27,14 @@
  * ```
  */
 export function getProductListingFromCmsPage<T = unknown>(
-  cmsPage: unknown,
+  cmsPage: CmsPageStructure,
 ): T | null {
-  // Type guard to check if cmsPage has the expected structure
-  if (
-    !cmsPage ||
-    typeof cmsPage !== "object" ||
-    !("sections" in cmsPage) ||
-    !Array.isArray((cmsPage as { sections: unknown }).sections)
-  ) {
-    return null;
-  }
-
-  const page = cmsPage as {
-    sections: {
-      blocks?: {
-        slots?: {
-          type?: string;
-          data?: Record<string, unknown> | null;
-        }[];
-      }[];
-    }[];
-  };
-
-  const listing = page.sections
+  const slot = cmsPage.sections
     .flatMap((section) => section.blocks ?? [])
     .flatMap((block) => block.slots ?? [])
-    .find((slot) => slot.type === "product-listing")?.data?.listing as
-    | T
-    | undefined;
+    .find((slot) => slot.type === "product-listing");
 
-  if (listing) {
-    return listing;
-  }
+  const listing = (slot?.data as { listing?: T } | null | undefined)?.listing;
 
-  return null;
+  return listing ?? null;
 }

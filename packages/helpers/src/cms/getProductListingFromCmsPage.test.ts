@@ -2,39 +2,6 @@ import { describe, expect, it } from "vitest";
 import { getProductListingFromCmsPage } from "./getProductListingFromCmsPage";
 
 describe("getProductListingFromCmsPage", () => {
-  it("should return null when cmsPage is null", () => {
-    const result = getProductListingFromCmsPage(null);
-    expect(result).toBeNull();
-  });
-
-  it("should return null when cmsPage is undefined", () => {
-    const result = getProductListingFromCmsPage(undefined);
-    expect(result).toBeNull();
-  });
-
-  it("should return null when cmsPage is not an object", () => {
-    expect(getProductListingFromCmsPage("string")).toBeNull();
-    expect(getProductListingFromCmsPage(123)).toBeNull();
-    expect(getProductListingFromCmsPage(true)).toBeNull();
-  });
-
-  it("should return null when cmsPage does not have sections", () => {
-    const cmsPage = {
-      id: "page-1",
-      name: "Test Page",
-    };
-    const result = getProductListingFromCmsPage(cmsPage);
-    expect(result).toBeNull();
-  });
-
-  it("should return null when sections is not an array", () => {
-    const cmsPage = {
-      sections: "not-an-array",
-    };
-    const result = getProductListingFromCmsPage(cmsPage);
-    expect(result).toBeNull();
-  });
-
   it("should return null when sections array is empty", () => {
     const cmsPage = {
       sections: [],
