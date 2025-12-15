@@ -15,6 +15,7 @@ import { format } from "prettier";
 import type { TransformedElements } from "../generateFile";
 import {
   displayPatchingSummary,
+  getApiTypeConfig,
   loadApiGenConfig,
   loadJsonOverrides,
   resolveSinglePath,
@@ -87,8 +88,9 @@ export async function generate(args: {
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
       });
+      const apiTypeConfig = getApiTypeConfig(configJSON, args.apiType);
       const jsonOverrides = await loadJsonOverrides({
-        paths: configJSON?.patches,
+        paths: apiTypeConfig.patches,
         apiType: args.apiType,
       });
 

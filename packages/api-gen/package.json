@@ -20,7 +20,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": ["bin", "dist"],
+  "files": ["bin", "dist", "api-gen.schema.json"],
   "bin": {
     "api-gen": "bin/api-gen.mjs",
     "shopware-api-gen": "bin/api-gen.mjs"
