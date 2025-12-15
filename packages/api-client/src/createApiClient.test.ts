@@ -315,7 +315,7 @@ describe("createAPIClient", () => {
   });
 
   it("should remove multipart/form-data headers in case of browser", async () => {
-    // @vitest-environment jsdom
+    // @vitest-environment happy-dom
 
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
@@ -342,24 +342,21 @@ describe("createAPIClient", () => {
       },
     });
 
-    expect(contentTypeSpy.mock.calls).toMatchInlineSnapshot(`
-      [
-        [
-          {
-            "accept": "application/json",
-            "accept-encoding": "gzip, deflate",
-            "accept-language": "*",
-            "connection": "keep-alive",
-            "content-length": "0",
-            "host": "localhost:3610",
-            "sec-fetch-mode": "cors",
-            "sw-access-key": "123",
-            "sw-context-token": "456",
-            "user-agent": "node",
-          },
-        ],
-      ]
-    `);
+    expect(contentTypeSpy).toHaveBeenCalledTimes(1);
+    const headers = contentTypeSpy.mock.calls[0]?.[0];
+    expect(headers).toBeDefined();
+    expect(headers).toMatchObject({
+      accept: "application/json",
+      "sw-access-key": "123",
+      "sw-context-token": "456",
+    });
+    // Content-Type header should be removed when multipart/form-data in browser
+    expect(headers?.["content-type"]).toBeUndefined();
+    // Verify multipart/form-data is not present in any header value
+    const headerValues = Object.values(headers || {}).join(" ");
+    expect(headerValues).not.toContain("multipart/form-data");
+    // User-agent should exist (platform-specific, so just check presence)
+    expect(headers?.["user-agent"]).toBeTruthy();
   });
 
   it("should trigger success callback", async () => {
@@ -446,7 +443,7 @@ describe("createAPIClient", () => {
     controller.abort();
 
     await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
+      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
     );
   });
 

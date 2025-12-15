@@ -92,6 +92,11 @@ export default defineNuxtConfig({
     },
   },
   imports: {
-    dirs: ["utils", "utils/**"],
+    dirs: [
+      "utils",
+      "utils/**",
+      resolve("./i18n/utils"),
+      resolve("./i18n/src/helpers"),
+    ],
   },
 });

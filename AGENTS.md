@@ -8,7 +8,7 @@ This document provides guidance for AI assistants working with the Shopware Fron
 **Structure**: pnpm monorepo with Turbo
 **Tech**: Vue 3, Nuxt 4, TypeScript, Vitest, Biome
 **Key Packages**: api-client, composables, helpers, cms-base-layer, nuxt-module
-**Templates**: vue-demo-store (full featured), vue-starter-template (production), vue-blank (minimal)
+**Templates**: vue-demo-store (full featured), vue-starter-template (production), vue-starter-template-extended (layer example), vue-blank (minimal)
 
 **Quick Start**:
 ```bash
@@ -40,11 +40,12 @@ frontends/
 │   ├── api-gen/              # Type generation tool
 │   └── eslint-config-shopware/
 ├── templates/         # Starter templates
-│   ├── vue-demo-store/       # Full demo with UnoCSS, i18n, CMS
-│   ├── vue-starter-template/ # Production-ready starter
-│   ├── vue-blank/            # Minimal Nuxt setup
-│   ├── vue-vite-blank/       # Minimal Vite setup
-│   └── astro/                # Astro integration example
+│   ├── vue-demo-store/                # Full demo with UnoCSS, i18n, CMS
+│   ├── vue-starter-template/          # Production-ready starter
+│   ├── vue-starter-template-extended/ # Layer extension example
+│   ├── vue-blank/                     # Minimal Nuxt setup
+│   ├── vue-vite-blank/                # Minimal Vite setup
+│   └── astro/                         # Astro integration example
 ├── apps/              # Applications
 │   ├── docs/                 # Documentation site
 │   └── e2e-tests/            # E2E test suite
@@ -325,6 +326,70 @@ pnpm dev
 - Different SSR approach than Nuxt
 - Mix of static and dynamic content
 
+### vue-starter-template-extended
+
+**Purpose**: Example of extending templates using Nuxt layers
+
+**Location**: `templates/vue-starter-template-extended/`
+
+**What's Included**:
+- Extends vue-starter-template using Nuxt's `extends` feature
+- Minimal codebase - only customizations and overrides
+- Custom app.config.ts for theme customization (e.g., image placeholder color)
+- UnoCSS configuration with brand-specific styles
+- Example of the "Lumora" brand (home scents store)
+
+**Key Concepts**:
+
+**Layer Pattern** - Nuxt layers allow extending a base template:
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  extends: ["../vue-starter-template"],  // or npm package
+  // ... your customizations
+});
+```
+
+**Component Inheritance** - All components from the base layer are automatically available:
+- Pages (FrontendNavigationPage, FrontendDetailPage, etc.)
+- Layouts (headers, footers, navigation)
+- Forms (login, checkout, account)
+- Shared components (modals, notifications)
+
+**Component Overriding** - Create components in your `app/components/` to override base components:
+```
+your-project/
+  app/
+    components/
+      SwProductCard.vue  # Overrides base SwProductCard
+```
+
+**App Config Customization** - Use `app.config.ts` to customize layer settings:
+```typescript
+// app/app.config.ts
+export default defineAppConfig({
+  imagePlaceholder: {
+    color: "#B38A65",  // Brand color
+  },
+});
+```
+
+**Benefits**:
+- Inherits all features from vue-starter-template
+- Minimal code duplication
+- Easy to customize specific components
+- Automatic updates when base template improves
+
+**Use Case**:
+- Creating brand-specific storefronts without duplicating code
+- Maintaining multiple store variants from a single base
+- Testing customizations without modifying the base template
+- Learning the layer pattern for production projects
+
+**Dependencies**:
+- Lists `vue-starter-template` as workspace dependency
+- Includes `@shopware/cms-base-layer` for CMS components
+
 ### Template Configuration
 
 All templates support:
@@ -359,6 +424,7 @@ SHOPWARE_ACCESS_TOKEN=your-access-token
 |------|----------|
 | Learn all features | vue-demo-store |
 | Start production project | vue-starter-template |
+| Extend existing template | vue-starter-template-extended |
 | Minimal Nuxt setup | vue-blank |
 | No SSR/No Nuxt | vue-vite-blank |
 | Use Astro | astro |

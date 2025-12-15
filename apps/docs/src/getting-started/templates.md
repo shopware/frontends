@@ -41,6 +41,35 @@ It is based on Nuxt3 and Tailwind.css.
 
 <PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
+## Vue Starter Template
+
+The Vue Starter Template is a production-ready foundation for building custom Shopware storefronts. Unlike the Demo Store Template, it contains no demo UI or boilerplate - just the essential packages and configuration you need to start building.
+
+**What's included:**
+- Nuxt 4.1 with full SSR
+- All Shopware Frontends core packages
+- UnoCSS (Tailwind-compatible) styling
+- i18n support
+- TypeScript with type generation
+
+**Best for:** Starting a new production storefront project from a clean foundation.
+
+<PageRef page="./templates/vue-starter-template.html" title="Get started with Vue Starter Template" sub="Production-ready foundation for custom storefronts" />
+
+## Vue Starter Template Extended
+
+An example implementation showing how to extend the Vue Starter Template using Nuxt layers. This "Lumora" branded demo demonstrates how to create brand-specific storefronts while inheriting all base functionality.
+
+**Layer benefits:**
+- Minimal code duplication
+- Override only what you need
+- Automatic base template updates
+- Multiple brand variants from one base
+
+**Best for:** Learning the layer pattern or managing multiple brand storefronts.
+
+<PageRef page="./templates/vue-starter-template-extended.html" title="Vue Starter Template Extended" sub="Example of extending templates using Nuxt layers" />
+
 ## Blank Template
 
 <a href="./templates/blank-template.html"><img src="../.assets/blank-template.jpg" alt="Blank Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>

@@ -276,6 +276,34 @@ export default defineNuxtConfig({
 })
 ```
 
+## 🖼️ Image Placeholder
+
+This layer provides a `useImagePlaceholder` composable that generates an SVG placeholder for images during loading. The placeholder features a centered icon with a subtle background.
+
+### Customizing Placeholder Color
+
+You can customize the placeholder color globally in your project's `app.config.ts`:
+
+```ts
+export default defineAppConfig({
+  imagePlaceholder: {
+    color: "#your-color-here", // Default: #543B95
+  },
+});
+```
+
+Or use a custom color for specific instances:
+
+```vue
+<script setup>
+const customPlaceholder = useImagePlaceholder("#FF0000");
+</script>
+
+<template>
+  <NuxtImg :placeholder="customPlaceholder" src="..." />
+</template>
+```
+
 ## 📘 Available components
 
 The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base-layer.html#available-components).
