@@ -5,7 +5,7 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { type Ref, computed, onMounted, ref } from "vue";
 import xss from "xss";
-import { useProduct } from "#imports";
+import { useProduct, useShopwareContext, useUser } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -18,6 +18,7 @@ type Translations = {
     reviews: string;
     messages: {
       reviewAdded: string;
+      loginToReview: string;
     };
   };
 };
@@ -28,6 +29,7 @@ let translations: Translations = {
     reviews: "Reviews",
     messages: {
       reviewAdded: "Thank you for submitting your review",
+      loginToReview: "Please log in to write a review",
     },
   },
 };
@@ -53,10 +55,35 @@ const isSectionOpen = (sectionNumber: number) => {
 };
 
 const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
+const { apiClient } = useShopwareContext();
+const { isLoggedIn } = useUser();
+const reviewAdded = ref(false);
+
+const fetchReviews = async () => {
+  try {
+    const reviewsResponse = await apiClient.invoke(
+      "readProductReviews post /product/{productId}/reviews",
+      {
+        pathParams: { productId: product.value.id },
+      },
+    );
+    reviews.value = reviewsResponse.data.elements || [];
+  } catch (error) {
+    console.error("Failed to fetch reviews:", error);
+    // Keep existing reviews if fetch fails
+  }
+};
+
+const handleReviewAdded = () => {
+  reviewAdded.value = true;
+  fetchReviews();
+};
 
 onMounted(async () => {
-  if (props.content.data?.reviews?.elements) {
+  if (props.content.data?.reviews?.elements?.length) {
     reviews.value = props.content.data.reviews.elements;
+  } else {
+    await fetchReviews();
   }
 });
 </script>
@@ -110,17 +137,25 @@ onMounted(async () => {
       <div v-if="isSectionOpen(2)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
         <div
           class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
-          <div v-if="reviews.length === 0" class="text-center py-4">
-            No reviews yet
-          </div>
-          <div v-else>
-            <div v-for="review in reviews" :key="review.id"
-              class="mb-4 p-4 border border-outline-outline-variant rounded">
-              <div class="font-semibold">{{ review.title }}</div>
-              <div class="text-sm text-surface-on-surface-variant">
-                {{ review.content }}
+          <SwProductReviews v-if="product" :product="product" :reviews="reviews" />
+          <ClientOnly>
+            <SwProductReviewsForm
+              v-if="isLoggedIn && !reviewAdded && product"
+              :product-id="product.id"
+              @success="handleReviewAdded"
+            />
+            <div v-else-if="!isLoggedIn && product" class="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center">
+              <div class="w-5 h-5 text-surface-on-surface-variant flex-shrink-0">
+                <SwUserIcon :size="20" />
               </div>
+              <span class="text-sm text-surface-on-surface-variant">{{ translations.product.messages.loginToReview }}</span>
             </div>
+          </ClientOnly>
+          <div v-if="reviewAdded" class="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center">
+            <div class="w-5 h-5 text-states-success flex-shrink-0">
+              <SwCheckmarkIcon :size="20" :filled="true" alt="Success" />
+            </div>
+            <span class="text-sm text-states-success">{{ translations.product.messages.reviewAdded }}</span>
           </div>
         </div>
       </div>

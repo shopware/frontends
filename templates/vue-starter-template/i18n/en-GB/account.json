@@ -4,6 +4,8 @@
     "signUpHeader": "I am new here.",
     "yourAddress": "Your address",
     "order": {
+      "header": "Orders",
+      "subHeader": "View your current and past orders",
       "product": "Product",
       "quantity": "Quantity",
       "price": "Price",
@@ -15,7 +17,14 @@
       "paymentMethod": "Payment method",
       "repeatOrder": "Repeat order",
       "order": "Order",
-      "orders": "Orders"
+      "orders": "Orders",
+      "seeMore": "See more",
+      "seeLess": "See less",
+      "orderLabel": "Order",
+      "shippingStatus": "Shipping Status",
+      "shipping": "Shipping",
+      "shippingMethod": "Shipping method",
+      "total": "Total"
     },
     "menu": {
       "header": "Your account",
@@ -106,6 +115,31 @@
         "buttonSubmit": "Save",
         "successUpdate": "Password has been updated successfully.",
         "errorUpdate": "Failed to update password. Please try again."
+      }
+    },
+    "orderDetails": {
+      "order": "Order",
+      "placedOn": "Placed on {d}",
+      "shippingAddress": "Shipping address",
+      "billingAddress": "Billing address",
+      "orderSummary": "Order Summary",
+      "paymentMethod": "Payment method",
+      "shippingMethod": "Shipping method",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "takesUpTo": "Takes up to",
+      "change": "Change",
+      "changePaymentMethod": "Change payment method",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "close": "Close",
+      "backToOrdersList": "Back to orders list",
+      "itemsHeader": {
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price",
+        "total": "Total"
       }
     },
     "messages": {

@@ -14,7 +14,7 @@ const props = defineProps<{
 const defaultLimit = 15;
 const defaultPage = 1;
 const defaultOrder = "name-asc";
-const productListElement = useTemplateRef("productListElement");
+const productListElement = useTemplateRef<HTMLDivElement>("productListElement");
 
 type Translations = {
   listing: {
@@ -145,11 +145,11 @@ compareRouteQueryWithInitialListing();
     <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-surface-on-surface-variant">
       {{ translations.listing.noProducts }}
     </div>
-    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 lg:gap-8">
+    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
       <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
         :is-product-listing="isProductListing" class="w-full" />
     </div>
-    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 lg:gap-8">
+    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
       <ProductCardSkeleton v-for="index in limit" :key="index"
         class="w-full" />
     </div>

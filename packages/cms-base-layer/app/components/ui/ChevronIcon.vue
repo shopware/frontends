@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import ChevronSvg from "@cms-assets/chevron.svg";
+import ChevronSvg from "@cms-assets/icons/chevron.svg";
 import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
     direction?: "up" | "down" | "left" | "right";
     size?: number;
+    alt?: string;
   }>(),
   {
     direction: "down",
     size: 24,
+    alt: "",
   },
 );
 
@@ -25,10 +27,11 @@ const rotationClass = computed(() => {
 </script>
 
 <template>
-  <img
+  <NuxtImg
     :src="ChevronSvg"
-    alt=""
+    :alt="alt"
     :class="['transition-transform', rotationClass]"
-    :style="{ width: `${size}px`, height: `${size}px` }"
+    :width="size"
+    :height="size"
   />
 </template>

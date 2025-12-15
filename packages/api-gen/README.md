@@ -5,8 +5,6 @@ Generate TypeScript schemas from Shopware OpenAPI specification.
 
 After generating schemas, you can use them in fully typed [API Client](https://www.npmjs.com/package/@shopware/api-client).
 
-To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
-
 ## Usage
 
 <!-- automd:pm-install name="@shopware/api-gen" dev -->
@@ -343,8 +341,6 @@ await split({
 > Make sure that the required environment variables are set for the node process when executing commands programmatically.
 
 ## Links
-
-- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
 
 - [📘 Documentation](https://frontends.shopware.com)
 

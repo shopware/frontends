@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
-
-const { resolveApiErrors } = useApiErrorsResolver("account_newsletter");
 const { user } = useUser();
-const { pushSuccess, pushError } = useNotifications();
+const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const {
   isNewsletterSubscriber,
@@ -13,6 +10,7 @@ const {
   SUBSRIBE_KEY,
   confirmationNeeded,
 } = useNewsletter();
+const { handleApiError } = useApiErrorsResolver("account_newsletter_form");
 
 const newsletter = ref(false);
 const newsletterDisabled = ref(false);
@@ -34,12 +32,7 @@ async function handleNewsletterChange() {
       pushSuccess(t("account.overview.newsletter.messages.unsubscribed"));
     }
   } catch (error) {
-    if (error instanceof ApiClientError) {
-      const errors = resolveApiErrors(error.details.errors);
-      for (const error of errors) {
-        pushError(error);
-      }
-    }
+    handleApiError(error);
   } finally {
     newsletterDisabled.value = false;
   }

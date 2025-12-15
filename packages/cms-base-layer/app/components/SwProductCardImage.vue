@@ -8,6 +8,7 @@ import {
 import { useElementSize } from "@vueuse/core";
 import { computed, useTemplateRef } from "vue";
 import type { Schemas } from "#shopware";
+import { useImagePlaceholder } from "../composables/useImagePlaceholder";
 
 type Translations = {
   product: {
@@ -26,8 +27,8 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const imageElement = useTemplateRef("imageElement");
-const { height } = useElementSize(imageElement);
+const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
+const { width, height } = useElementSize(containerElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
 function roundUp(num: number) {
@@ -35,9 +36,18 @@ function roundUp(num: number) {
 }
 
 const coverSrcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(props.product?.cover?.media)}?&height=${roundUp(
-    height.value,
-  )}&fit=cover`;
+  return getSmallestThumbnailUrl(props.product?.cover?.media);
+});
+
+const imageModifiers = computed(() => {
+  // Use the larger dimension and apply 2x for high-DPI displays
+  // For square containers, width and height should be the same
+  const containerSize = Math.max(width.value || 0, height.value || 0);
+  const size = roundUp(containerSize * 2);
+  return {
+    width: size,
+    height: size,
+  };
 });
 
 const coverAlt = computed(() => {
@@ -46,13 +56,17 @@ const coverAlt = computed(() => {
 
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
+
+const placeholderSvg = useImagePlaceholder();
 </script>
 
 <template>
-  <div class="self-stretch aspect-square relative flex flex-col justify-start items-start overflow-hidden">
+  <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <img ref="imageElement" class="w-full h-full absolute top-0 left-0 object-cover"
-        :src="coverSrcPath" :alt="coverAlt" data-testid="product-box-img" />
+      <NuxtImg preset="productCard"
+        class="w-full h-full absolute top-0 left-0 object-cover"
+        :placeholder="placeholderSvg"
+        :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"

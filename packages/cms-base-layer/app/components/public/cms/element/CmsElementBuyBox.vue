@@ -132,7 +132,7 @@ const productName = computed(() => product.value?.translated?.name || "");
                     {{ referencePrice?.referenceUnit }} {{ referencePrice?.unitName }}
                 </span>
             </div>
-            <span class="text-indigo-600">
+            <span class="text-brand-primary">
                 <template v-if="taxState === 'gross'">
                     {{ translations.product.pricesIncl }}
                 </template>
