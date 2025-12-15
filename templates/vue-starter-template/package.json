@@ -12,7 +12,6 @@
   },
   "main": "./nuxt.config.ts",
   "scripts": {
-    "prepare": "nuxt prepare",
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
     "generate": "nuxt generate",
