@@ -7,8 +7,8 @@ import {
 } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, useTemplateRef } from "vue";
+import { useImagePlaceholder } from "#imports";
 import type { Schemas } from "#shopware";
-import { useImagePlaceholder } from "../composables/useImagePlaceholder";
 
 type Translations = {
   product: {
