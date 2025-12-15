@@ -39,7 +39,36 @@ The demo store template is a **reference implementation** of an online store UI.
 
 It is based on Nuxt3 and Tailwind.css.
 
-<PageRef page="./templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
+<PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
+
+## Vue Starter Template
+
+The Vue Starter Template is a production-ready foundation for building custom Shopware storefronts. Unlike the Demo Store Template, it contains no demo UI or boilerplate - just the essential packages and configuration you need to start building.
+
+**What's included:**
+- Nuxt 4.1 with full SSR
+- All Shopware Frontends core packages
+- UnoCSS (Tailwind-compatible) styling
+- i18n support
+- TypeScript with type generation
+
+**Best for:** Starting a new production storefront project from a clean foundation.
+
+<PageRef page="./templates/vue-starter-template.html" title="Get started with Vue Starter Template" sub="Production-ready foundation for custom storefronts" />
+
+## Vue Starter Template Extended
+
+An example implementation showing how to extend the Vue Starter Template using Nuxt layers. This "Lumora" branded demo demonstrates how to create brand-specific storefronts while inheriting all base functionality.
+
+**Layer benefits:**
+- Minimal code duplication
+- Override only what you need
+- Automatic base template updates
+- Multiple brand variants from one base
+
+**Best for:** Learning the layer pattern or managing multiple brand storefronts.
+
+<PageRef page="./templates/vue-starter-template-extended.html" title="Vue Starter Template Extended" sub="Example of extending templates using Nuxt layers" />
 
 ## Blank Template
 
@@ -49,7 +78,7 @@ If you like to start from scratch, you can use the blank template. It can be han
 
 The blank template has all "non-UI" packages pre-installed, but you have to bring your own styles and components.
 
-<PageRef page="./templates/blank-template.html" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
+<PageRef page="/getting-started/templates/blank-template.html" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
 
 ## Custom projects
 
@@ -57,8 +86,8 @@ It is possible to integrate Shopware Frontends into an existing project. This ca
 
 As of now, **Vue.js** and **React** projects are supported.
 
-<PageRef page="./templates/custom-vue-project.html" title="Custom Vue project" sub="Integrate Shopware Frontends into an existing Vue.js project" />
-<PageRef page="./templates/custom-react-project.html" title="Custom React project" sub="Look at the Vercel Commerce Template to learn how to setup a React project" />
+<PageRef page="/getting-started/templates/custom-vue-project.html" title="Custom Vue project" sub="Integrate Shopware Frontends into an existing Vue.js project" />
+<PageRef page="/getting-started/templates/custom-react-project.html" title="Custom React project" sub="Look at the Vercel Commerce Template to learn how to setup a React project" />
 
 ## Framework supporting Vue
 
@@ -66,4 +95,4 @@ In theory, every place where the Vue instance is available, is supported by Shop
 
 The only requirement is to have a possibility to register a Vue 3 plugin, and that's what can be done in [Astro.js](https://astro.build/) as well.
 
-<PageRef page="./templates/astro-template.html" title="Astro.js project" sub="Integrate Shopware Frontends into an SSR oriented project supporting Vue.js" />
+<PageRef page="/getting-started/templates/astro-template.html" title="Astro.js project" sub="Integrate Shopware Frontends into an SSR oriented project supporting Vue.js" />
