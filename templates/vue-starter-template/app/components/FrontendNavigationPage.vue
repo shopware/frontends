@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCmsHead } from "@/composables/useCmsHead";
 import type { Ref } from "vue";
+import { useCmsHead } from "#imports";
 import { useCategorySearch } from "#imports";
 import type { Schemas } from "#shopware";
 

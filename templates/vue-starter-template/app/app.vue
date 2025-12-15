@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { getPrefix } from "#imports";
 import type { Schemas } from "#shopware";
-import { getPrefix } from "../i18n/src/helpers/prefix";
 
 useHead({
   title: "Shopware Starter Demo store",
