@@ -27,7 +27,8 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "nuxt": "4.2.1",
-    "vue": "3.5.24"
+    "vue": "3.5.24",
+    "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
@@ -36,7 +37,6 @@
     "@unocss/nuxt": "66.5.4",
     "typescript": "5.9.2",
     "unocss": "66.5.4",
-    "vue-starter-template": "workspace:*",
     "vue-tsc": "3.1.4"
   }
 }

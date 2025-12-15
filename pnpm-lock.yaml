@@ -1471,6 +1471,9 @@ importers:
       vue:
         specifier: 3.5.24
         version: 3.5.24(typescript@5.9.2)
+      vue-starter-template:
+        specifier: workspace:*
+        version: link:../vue-starter-template
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -1490,9 +1493,6 @@ importers:
       unocss:
         specifier: 66.5.4
         version: 66.5.4(@unocss/webpack@66.5.4(webpack@5.91.0(@swc/core@1.7.10(@swc/helpers@0.5.17))))(postcss@8.5.6)(vite@7.2.2(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.1))
-      vue-starter-template:
-        specifier: workspace:*
-        version: link:../vue-starter-template
       vue-tsc:
         specifier: 3.1.4
         version: 3.1.4(typescript@5.9.2)
