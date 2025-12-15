@@ -1,8 +1,11 @@
 {
   "account": {
+    "back": "Powrót",
     "signUpHeader": "Jestem tutaj nowy.",
     "yourAddress": "Twój adres",
     "order": {
+      "header": "Zamówienia",
+      "subHeader": "Zobacz swoje aktualne i przeszłe zamówienia",
       "product": "Produkt",
       "quantity": "Ilość",
       "price": "Cena",
@@ -14,7 +17,14 @@
       "paymentMethod": "Metoda płatności",
       "repeatOrder": "Powtórz zamówienie",
       "order": "Zamówienie",
-      "orders": "Zamówienia"
+      "orders": "Zamówienia",
+      "seeMore": "Zobacz więcej",
+      "seeLess": "Zobacz mniej",
+      "orderLabel": "Zamówienie",
+      "shippingStatus": "Status wysyłki",
+      "shipping": "Wysyłka",
+      "shippingMethod": "Metoda wysyłki",
+      "total": "Całkowita kwota"
     },
     "menu": {
       "header": "Twoje konto",
@@ -39,6 +49,101 @@
           "unsubscribed": "Anulowanie subskrypcji newslettera"
         }
       }
+    },
+    "address": {
+      "notFound": "Adres nie znaleziony",
+      "header": "Adresy",
+      "subHeader": "Wyświetl swoje obecne domyślne adresy lub dodaj nowe.",
+      "defaultBillingAddressSectionHeader": "Domyślny adres do faktur",
+      "defaultShippingAddressSectionHeader": "Domyślny adres do wysyłki",
+      "availableAddressesSectionHeader": "Dostępne adresy",
+      "addAddressButton": "Dodaj nowy adres",
+      "editAddressButton": "Edytuj adres",
+      "deleteAddressButton": "Usuń adres",
+      "useAsDefaultBillingAddressButton": "Użyj jako domyślny adres do faktur",
+      "useAsDefaultShippingAddressButton": "Użyj jako domyślny adres do wysyłki",
+      "saveButton": "Zapisz adres",
+      "new": {
+        "header": "Nowy adres",
+        "subHeader": "Dodaj nowy adres do swojego konta.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "successMessage": "Adres został pomyślnie dodany."
+      },
+      "edit": {
+        "header": "Edytuj adres",
+        "subHeader": "Edytuj swój adres.",
+        "personalDataSectionHeader": "Dane osobowe",
+        "successMessage": "Adres został pomyślnie zaktualizowany."
+      }
+    },
+    "profile": {
+      "header": "Twoje konto",
+      "subHeader": "Sprawdź swoje dane osobowe.",
+      "personalDataSectionHeader": "Dane osobowe",
+      "loginDataSectionHeader": "Dane logowania",
+      "changeEmailButton": "Zmień email",
+      "changePasswordButton": "Zmień hasło",
+      "form": {
+        "accountType": "Typ konta",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "company": "Firma",
+        "vatIds": "Numer identyfikacji podatkowej",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Dane zostały zaktualizowane."
+      }
+    },
+    "changeEmail": {
+      "header": "Zmień adres e-mail",
+      "subHeader": "Wprowadź nowy adres e-mail",
+      "form": {
+        "newEmailLabel": "Wprowadź nowy e-mail",
+        "confirmEmailLabel": "Powtórz e-mail",
+        "passwordLabel": "Aktualne hasło",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Adres e-mail został pomyślnie zaktualizowany.",
+        "errorUpdate": "Nie udało się zaktualizować adresu e-mail. Spróbuj ponownie."
+      }
+    },
+    "changePassword": {
+      "header": "Zmień hasło",
+      "subHeader": "Wprowadź nowe hasło",
+      "form": {
+        "newPasswordLabel": "Wprowadź nowe hasło*",
+        "confirmPasswordLabel": "Powtórz nowe hasło*",
+        "currentPasswordLabel": "Aktualne hasło*",
+        "buttonSubmit": "Zapisz",
+        "successUpdate": "Hasło zostało pomyślnie zaktualizowane.",
+        "errorUpdate": "Nie udało się zaktualizować hasła. Spróbuj ponownie."
+      }
+    },
+    "orderDetails": {
+      "order": "Zamówienie",
+      "placedOn": "Złożone dnia {d}",
+      "shippingAddress": "Adres wysyłki",
+      "billingAddress": "Adres rozliczeniowy",
+      "orderSummary": "Podsumowanie zamówienia",
+      "paymentMethod": "Metoda płatności",
+      "shippingMethod": "Metoda wysyłki",
+      "subtotal": "Suma częściowa",
+      "shipping": "Wysyłka",
+      "total": "Całkowita kwota",
+      "takesUpTo": "Zajmuje do",
+      "change": "Zmień",
+      "changePaymentMethod": "Zmień metodę płatności",
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź",
+      "close": "Zamknij",
+      "backToOrdersList": "Powrót do listy zamówień",
+      "itemsHeader": {
+        "item": "Przedmiot",
+        "quantity": "Ilość",
+        "price": "Cena",
+        "total": "Całkowita kwota"
+      }
+    },
+    "messages": {
+      "loggedInSuccess": "Zostałeś pomyślnie zalogowany."
     }
   }
 }

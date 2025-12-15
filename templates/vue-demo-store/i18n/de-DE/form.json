@@ -5,6 +5,11 @@
       "private": "Privat",
       "business": "Gewerblich"
     },
+    "quantitySelect": {
+      "label": "Menge",
+      "increaseButton": "Zincrease Menge",
+      "decreaseButton": "Vermindern Menge"
+    },
     "salutation": "Anrede",
     "chooseSalutation": "Anrede wählen...",
     "firstName": "Vorname",

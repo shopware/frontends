@@ -95,24 +95,24 @@ const invokeRating = (value: number) => {
           {{ $t("product.addReview") }}
         </h4>
         <span>{{ $t("product.reviewsForm.rating") }}</span>
-        <div class="flex flex-row">
+        <div class="flex flex-row gap-1">
           <div
-            v-for="(value, index) in state.rating"
-            :key="index"
-            class="w-5 h-5 i-carbon-star-filled"
+            v-for="index in state.rating || 0"
+            :key="`filled-${index}`"
+            class="w-5 h-5 i-carbon-star-filled cursor-pointer hover:opacity-80 transition-opacity"
             data-testid="review-filled-star"
-            @click="invokeRating(value)"
+            @click="invokeRating(index)"
           ></div>
           <div
-            v-for="(value, index) in 5 - (state.rating || 0)"
-            :key="index"
-            class="w-5 h-5 i-carbon-star"
+            v-for="index in 5 - (state.rating || 0)"
+            :key="`empty-${index}`"
+            class="w-5 h-5 i-carbon-star cursor-pointer hover:opacity-80 transition-opacity"
             data-testid="review-empty-star"
-            @click="invokeRating(value + (state.rating || 0))"
+            @click="invokeRating((state.rating || 0) + index)"
           ></div>
         </div>
         <span
-          v-if="$v.rating.$error"
+          v-if="$v.rating.$error && $v.rating.$errors[0]?.$message"
           class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
         >
           {{ $v.rating.$errors[0].$message }}
@@ -130,7 +130,7 @@ const invokeRating = (value: number) => {
         data-testid="review-title-input"
       />
       <span
-        v-if="$v.title.$error"
+        v-if="$v.title.$error && $v.title.$errors[0]?.$message"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
         {{ $v.title.$errors[0].$message }}
@@ -146,7 +146,7 @@ const invokeRating = (value: number) => {
         data-testid="review-text-input"
       />
       <span
-        v-if="$v.review.$error"
+        v-if="$v.review.$error && $v.review.$errors[0]?.$message"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
         {{ $v.review.$errors[0].$message }}

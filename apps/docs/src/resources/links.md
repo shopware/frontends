@@ -14,7 +14,7 @@ head:
 # 🚀 Links
 
 ::: tip Do we miss some Link? 😶‍🌫️
-Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ), so we can add it.
+Please tell us via [Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ), so we can add it.
 :::
 
 ## Blog posts

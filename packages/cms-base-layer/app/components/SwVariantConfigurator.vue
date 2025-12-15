@@ -102,7 +102,7 @@ const onHandleChange = async () => {
             data-testid="product-variant"
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
             :class="{
-              'border-3 border-indigo-600': isOptionSelected(option.id),
+              'border-3 border-brand-primary': isOptionSelected(option.id),
             }"
             @click="handleChange(optionGroup.translated.name, option.id, onHandleChange)"
           >

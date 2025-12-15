@@ -78,8 +78,18 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
 
 const getFormTitle = computed(() => getConfigValue("title"));
-const state = reactive({
-  option: subscriptionOptions[0]?.value ?? "",
+
+type NewsletterFormState = {
+  option: "subscribe" | "unsubscribe";
+  salutationId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  checkbox: boolean;
+};
+
+const state = reactive<NewsletterFormState>({
+  option: subscriptionOptions[0]?.value ?? "subscribe",
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -87,7 +97,7 @@ const state = reactive({
   checkbox: false,
 });
 
-type Rules = {
+type RequiredRules = {
   email: {
     required: ValidationRuleWithoutParams;
     email: ValidationRuleWithoutParams;
@@ -96,6 +106,9 @@ type Rules = {
     required: ValidationRuleWithoutParams;
     isTrue: (value: boolean) => boolean;
   };
+};
+
+type OptionalRules = {
   firstName: {
     required: ValidationRuleWithoutParams;
     minLength: number;
@@ -105,8 +118,9 @@ type Rules = {
     minLength: number;
   };
 };
-const rules = computed(() => {
-  let temp: Partial<Rules> = {
+
+const rules = computed((): RequiredRules & Partial<OptionalRules> => {
+  const temp: RequiredRules & Partial<OptionalRules> = {
     email: {
       required,
       email,
@@ -117,16 +131,13 @@ const rules = computed(() => {
     },
   };
   if (state.option === "subscribe") {
-    temp = {
-      ...temp,
-      firstName: {
-        required,
-        minLength: 3,
-      },
-      lastName: {
-        required,
-        minLength: 3,
-      },
+    temp.firstName = {
+      required,
+      minLength: 3,
+    };
+    temp.lastName = {
+      required,
+      minLength: 3,
     };
   }
   return temp;
@@ -184,7 +195,7 @@ const invokeSubmit = async () => {
             id="option"
             v-model="state.option"
             name="option"
-            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border border-outline-outline-variant placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:border-brand-primary focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option
               v-for="subscription in subscriptionOptions"
@@ -204,19 +215,19 @@ const invokeSubmit = async () => {
             type="email"
             autocomplete="email"
             :class="[
-              $v.email?.$error
+              $v.email.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :placeholder="translations.form.emailPlaceholder"
-            @blur="$v.email?.$touch()"
+            @blur="$v.email.$touch()"
           />
           <span
-            v-if="$v.email?.$error"
+            v-if="$v.email.$error && $v.email.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email?.$errors[0]?.$message || '' }}
+            {{ $v.email.$errors[0].$message }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
@@ -225,7 +236,7 @@ const invokeSubmit = async () => {
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class=" border-gray-300 focus:border-indigo-500appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class=" border-outline-outline-variant focus:border-brand-primaryappearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -247,20 +258,20 @@ const invokeSubmit = async () => {
             name="first-name"
             type="text"
             autocomplete="given-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.firstName?.$error
-                ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+          ? 'border-red-600 focus:border-red-600'
+          : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.firstNamePlaceholder"
             @blur="$v.firstName?.$touch()"
           />
           <span
-            v-if="$v.firstName?.$error"
+            v-if="$v.firstName?.$error && $v.firstName?.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName?.$errors[0]?.$message || '' }}
+            {{ $v.firstName?.$errors[0].$message }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
@@ -271,20 +282,20 @@ const invokeSubmit = async () => {
             name="last-name"
             type="text"
             autocomplete="family-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.lastName?.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.lastNamePlaceholder"
             @blur="$v.lastName?.$touch()"
           />
           <span
-            v-if="$v.lastName?.$error"
+            v-if="$v.lastName?.$error && $v.lastName?.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName?.$errors[0]?.$message || '' }}
+            {{ $v.lastName?.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -295,7 +306,7 @@ const invokeSubmit = async () => {
               v-model="state.checkbox"
               name="privacy"
               type="checkbox"
-              class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
+              class="mt-1 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded"
               :class="[
                 $v.checkbox?.$error ? 'border-red-600' : 'border-gray-300',
               ]"
@@ -313,7 +324,7 @@ const invokeSubmit = async () => {
       </div>
       <div class="flex justify-end mt-10">
         <button
-          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-75"
+          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-75"
           type="submit"
         >
           {{ translations.form.submit }}

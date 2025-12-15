@@ -10,7 +10,6 @@ You can use types generated from your custom API instance to have autocompletion
 
 To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
 
-To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
 
 ## Setup
 
@@ -345,11 +344,9 @@ apiClient.invoke("getProducts get /product", {
 
 ## Links
 
-- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
-
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

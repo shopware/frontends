@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
-import registrationFormRules from "../../utils/validation/rules/registrationFormRules";
 
 const props = defineProps<{
   customerGroupId?: string;
 }>();
 
 const { register, isLoggedIn } = useUser();
-const { pushError } = useNotifications();
+const { handleApiError } = useApiErrorsResolver("account_registration_form");
 
 const router = useRouter();
 const loading = ref<boolean>();
@@ -51,8 +49,6 @@ const $v = useVuelidate(
   registrationFormRules(state.accountType, state.billingAddress.countryId),
   state,
 );
-const { resolveApiErrors } = useApiErrorsResolver("account_login");
-
 const invokeSubmit = async () => {
   $v.value.$touch();
   const valid = await $v.value.$validate();
@@ -68,12 +64,7 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
-      if (error instanceof ApiClientError) {
-        const errors = resolveApiErrors(error.details.errors);
-        for (const error of errors) {
-          pushError(error);
-        }
-      }
+      handleApiError(error);
     } finally {
       loading.value = false;
     }
@@ -117,13 +108,11 @@ const accountTypeOptions = [
         {{ $t("account.signUpHeader") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
-        <FormDropdownField
+        <FormAccountTypeSelect
           class="col-span-12"
-          id="accountType"
           v-model="state.accountType"
-          :label="$t('form.accountType.title')"
-          :options="accountTypeOptions"
-          data-testid="registration-account-type-select"
+          dataTestId="registration-account-type-select"
+          id="accountType"
         />
 
         <FormInputField

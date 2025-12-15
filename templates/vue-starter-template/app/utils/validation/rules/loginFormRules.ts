@@ -1,6 +1,6 @@
-import { customValidators } from "@@/i18n/utils/i18n-validators";
+import { customValidators } from "#imports";
 
-export default function () {
+export function loginFormRules() {
   const { required, minLength, email } = customValidators();
   return {
     username: {

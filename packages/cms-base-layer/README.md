@@ -130,6 +130,180 @@ export default mergeConfigs([config, {
 
 See the [UnoCSS reference](https://unocss.dev/integrations/nuxt#configuration) for more information on how to configure UnoCSS in Nuxt when work with layers.
 
+## 🖼️ Image Optimization
+
+This layer includes [Nuxt Image](https://image.nuxt.com/) configuration optimized for Shopware 6 instances, with a custom provider that maps Nuxt Image modifiers to Shopware's query parameters (`width`, `height`, `quality`, `format`, `fit`).
+
+> **Note for Cloud (SaaS) Users:** Image optimization and all modifiers used in the Nuxt Image module are handled automatically by Shopware Cloud infrastructure powered by [Fastly CDN](https://developer.shopware.com/docs/products/paas/shopware/cdn/). No additional configuration or plugins are required - simply use `<NuxtImg>` and all transformations (format conversion, quality adjustment, responsive sizing) work out of the box through Fastly's Image Optimizer.
+
+### Features
+
+- ✅ Automatic WebP/AVIF format conversion
+- ✅ Responsive image sizing based on viewport
+- ✅ Lazy loading support
+- ✅ Quality optimization
+- ✅ Multiple image presets for common use cases
+- ✅ Works with Shopware Cloud (SaaS) and self-hosted instances
+
+### Configuration
+
+The layer comes pre-configured with optimized settings. No additional setup is required! The configuration includes:
+
+**Available Presets:**
+- `productCard` - Product listing images (WebP, quality 90, cover fit)
+- `productDetail` - Product detail page images (WebP, quality 90, contain fit)
+- `thumbnail` - Small thumbnails (150x150, WebP, quality 90)
+- `hero` - Hero banners (WebP, quality 95, cover fit)
+
+**Responsive Breakpoints:**
+- `xs: 320px`, `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`, `xxl: 1536px`
+
+### Usage in Components
+
+Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
+
+```vue
+<!-- Using presets -->
+<NuxtImg
+  src="https://cdn.shopware.store/media/path/to/image.jpg"
+  preset="productCard"
+  :width="400"
+  alt="Product"
+  loading="lazy"
+/>
+
+<!-- Custom modifiers -->
+<NuxtImg
+  src="https://cdn.shopware.store/media/path/to/image.jpg"
+  :width="800"
+  :height="600"
+  format="webp"
+  :quality="85"
+  fit="cover"
+  alt="Custom image"
+/>
+
+<!-- Using with dynamic Shopware media URLs -->
+<NuxtImg
+  :src="product.cover.media.url"
+  preset="productDetail"
+  :width="800"
+  :alt="product.cover.media.alt"
+/>
+```
+
+### Supported Modifiers
+
+Shopware supports the following URL parameters for image transformation:
+
+| Modifier | Description | Example | Support |
+|----------|-------------|---------|---------|
+| `width` | Image width in pixels | `400` | ✅ Always supported |
+| `height` | Image height in pixels | `600` | ✅ Always supported |
+| `quality` | Image quality (0-100) | `85` | ⚠️ Cloud/Plugin required* |
+| `format` | Output format | `webp`, `avif`, `jpg`, `png` | ⚠️ Cloud/Plugin required* |
+| `fit` | Resize behavior | `cover`, `contain`, `fill` | ⚠️ Cloud/Plugin required* |
+
+*Advanced transformations (quality, format, fit) are available in:
+- **Shopware Cloud (SaaS)**: Built-in support via managed infrastructure. For a complete list of supported image transformation parameters, see [Fastly Image Optimizer Query Parameters](https://www.fastly.com/documentation/reference/io/#query-parameters).
+- **Self-hosted instances**: Require thumbnail processor plugins like [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessor) or third-party CDN integration
+
+### How It Works
+
+This layer includes a custom Shopware provider for Nuxt Image that maps modifiers to Shopware's query parameters:
+- `width` modifier → `?width=400`
+- `height` modifier → `?height=300`
+- `quality` modifier → `?quality=85`
+- `format` modifier → `?format=webp`
+- `fit` modifier → `?fit=cover`
+
+When you use `<NuxtImg>`, the custom provider automatically converts your component props into the correct URL format for Shopware. The images are then processed on-the-fly by Shopware Cloud (SaaS) infrastructure or your configured thumbnail processor.
+
+#### 🔍 Understanding Image Processing in Shopware
+
+**Built-in Thumbnail Generation:**
+Shopware has native thumbnail generation (using GD2 or ImageMagick) that creates predefined sizes (400x400, 800x800, 1920x1920) during image upload. These thumbnails are generated once and stored on your server.
+
+**Dynamic On-the-Fly Transformations:**
+For dynamic image transformations via query parameters (like `?width=800&format=webp`), you need **remote thumbnail generation** configured:
+
+- **Shopware Cloud (SaaS)**: ✅ Fully supported out-of-the-box via Fastly CDN - all query parameters work automatically
+- **Self-hosted**: ⚠️ Requires additional setup:
+  - Install a plugin like [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessor) for on-the-fly processing, OR
+  - Configure external middleware (Thumbor, Sharp, imgproxy) via [remote thumbnail generation](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html)
+
+**Without remote thumbnail generation configured**, query parameters will be ignored and only the predefined static thumbnails will be served.
+
+> **💡 Recommendation**: If you're self-hosting Shopware and want to use dynamic image transformations with Nuxt Image modifiers, install the FroshPlatformThumbnailProcessor plugin first to enable on-the-fly processing.
+
+### Customizing Configuration
+
+You can extend or override the default settings in your project's `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  extends: ["@shopware/cms-base-layer"],
+
+  image: {
+    // Change default quality
+    quality: 85,
+
+    // Add/change formats
+    formats: ['avif', 'webp', 'jpg'],
+
+    // Override or add presets
+    presets: {
+      // Override existing preset
+      productCard: {
+        modifiers: {
+          format: 'avif',
+          quality: 80,
+          fit: 'cover',
+        }
+      },
+      // Add custom preset
+      categoryBanner: {
+        modifiers: {
+          format: 'webp',
+          quality: 90,
+          width: 1200,
+          height: 400,
+          fit: 'cover',
+        }
+      }
+    }
+  }
+})
+```
+
+## 🖼️ Image Placeholder
+
+This layer provides a `useImagePlaceholder` composable that generates an SVG placeholder for images during loading. The placeholder features a centered icon with a subtle background.
+
+### Customizing Placeholder Color
+
+You can customize the placeholder color globally in your project's `app.config.ts`:
+
+```ts
+export default defineAppConfig({
+  imagePlaceholder: {
+    color: "#your-color-here", // Default: #543B95
+  },
+});
+```
+
+Or use a custom color for specific instances:
+
+```vue
+<script setup>
+const customPlaceholder = useImagePlaceholder("#FF0000");
+</script>
+
+<template>
+  <NuxtImg :placeholder="customPlaceholder" src="..." />
+</template>
+```
+
 ## 📘 Available components
 
 The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base-layer.html#available-components).
@@ -167,7 +341,7 @@ No additional packages needed to be installed.
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends`)
+- [👥 Community](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

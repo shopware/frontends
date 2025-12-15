@@ -8,6 +8,7 @@ describe("helpers - test global API", () => {
         "buildUrlPrefix": [Function],
         "canUseQuoteActions": [Function],
         "downloadFile": [Function],
+        "encodeUrlPath": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
         "getCategoryBreadcrumbs": [Function],

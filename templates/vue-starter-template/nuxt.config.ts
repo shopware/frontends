@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { createResolver } from "@nuxt/kit";
+
+const { resolve } = createResolver(import.meta.url);
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   compatibilityDate: "2025-04-15",
@@ -27,21 +31,20 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
-  components: {
-    dirs: [
-      {
-        path: "~/components",
-        priority: 2,
-      },
-    ],
-    global: true,
-  },
+  components: [
+    {
+      path: resolve("./app/components"),
+      priority: 2,
+      global: true,
+      extensions: [".vue"],
+    },
+  ],
   i18n: {
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
-    vueI18n: "./config",
+    vueI18n: resolve("./config"),
     locales: [
       {
         code: "en-GB",
@@ -64,7 +67,7 @@ export default defineNuxtConfig({
     customCollections: [
       {
         prefix: "shopware",
-        dir: "./app/assets/icons",
+        dir: resolve("./app/assets/icons"),
       },
     ],
   },
@@ -84,8 +87,16 @@ export default defineNuxtConfig({
     "/account/**": {
       ssr: false,
     },
+    "/wishlist": {
+      ssr: false,
+    },
   },
   imports: {
-    dirs: ["utils", "utils/**"],
+    dirs: [
+      "utils",
+      "utils/**",
+      resolve("./i18n/utils"),
+      resolve("./i18n/src/helpers"),
+    ],
   },
 });

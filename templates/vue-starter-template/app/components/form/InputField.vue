@@ -1,21 +1,26 @@
 <script lang="ts" setup>
+import type { MaybeRef } from "vue";
+
 const {
   placeholder,
   label = "",
-  id,
+  id = "",
   type = "text",
+  errorMessage,
 } = defineProps<{
   placeholder?: string;
   label?: string;
-  id: string;
-  type?: "text" | "password";
-  errorMessage?: string;
+  id?: string;
+  type?: "text" | "password" | "email";
+  errorMessage?: MaybeRef<string>;
   autocomplete?: string;
 }>();
 
 const model = defineModel<string>({
   required: true,
 });
+
+const errorText = computed(() => unref(errorMessage));
 </script>
 <template>
   <div class="relative">
@@ -33,9 +38,11 @@ const model = defineModel<string>({
       :placeholder="placeholder"
       :type="type"
       :id="id"
-      :invalid="!!errorMessage"
+      :invalid="!!errorText"
       :autocomplete="autocomplete"
     />
-    <span v-if="errorMessage" class="text-red text-xs absolute">{{ errorMessage }}</span>
+    <span v-if="errorText" class="text-states-error text-xs absolute">{{
+      errorText
+    }}</span>
   </div>
 </template>

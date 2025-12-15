@@ -1,0 +1,20 @@
+{
+  "home": "Home",
+  "layout": {
+    "sideMenu": {
+      "close": "Close menu"
+    },
+    "footer": {
+      "newsletter": {
+        "title": "Subscribe",
+        "description": "Receive the latest updates about offers and community updates.",
+        "placeholder": "Enter Email Address",
+        "button": "Submit",
+        "privacyPolicy": "By submitting you automatically agree to our privacy policy.",
+        "messages": {
+          "subscribed": "Thank you! We have signed up your address."
+        }
+      }
+    }
+  }
+}

@@ -178,7 +178,7 @@ const invokeSubmit = async () => {
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class="border-gray-300 focus:border-indigo-500 appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="border-outline-outline-variant focus:border-brand-primary appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -200,20 +200,20 @@ const invokeSubmit = async () => {
             name="first-name"
             type="text"
             autocomplete="given-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.firstName.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.firstNamePlaceholder"
             @blur="$v.firstName.$touch()"
           />
           <span
-            v-if="$v.firstName.$error"
+            v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName.$errors[0]?.$message ?? '' }}
+            {{ $v.firstName.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-4">
@@ -224,20 +224,20 @@ const invokeSubmit = async () => {
             name="last-name"
             type="text"
             autocomplete="family-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.lastNamePlaceholder"
             @blur="$v.lastName.$touch()"
           />
           <span
-            v-if="$v.lastName.$error"
+            v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName.$errors[0]?.$message ?? '' }}
+            {{ $v.lastName.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-6">
@@ -251,17 +251,17 @@ const invokeSubmit = async () => {
             :class="[
               $v.email.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :placeholder="translations.form.emailPlaceholder"
             @blur="$v.email.$touch()"
           />
           <span
-            v-if="$v.email.$error"
+            v-if="$v.email.$error && $v.email.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email.$errors[0]?.$message ?? '' }}
+            {{ $v.email.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-6">
@@ -272,20 +272,20 @@ const invokeSubmit = async () => {
             name="phone"
             type="text"
             autocomplete="phone"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.phone.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.phonePlaceholder"
             @blur="$v.phone.$touch()"
           />
           <span
-            v-if="$v.phone.$error"
+            v-if="$v.phone.$error && $v.phone.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.phone.$errors[0]?.$message ?? '' }}
+            {{ $v.phone.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -296,20 +296,20 @@ const invokeSubmit = async () => {
             name="subject"
             type="text"
             autocomplete="subject"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.subject.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.subjectPlaceholder"
             @blur="$v.subject.$touch()"
           />
           <span
-            v-if="$v.subject.$error"
+            v-if="$v.subject.$error && $v.subject.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.subject.$errors[0]?.$message ?? '' }}
+            {{ $v.subject.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -320,21 +320,21 @@ const invokeSubmit = async () => {
             name="comment"
             type="text"
             autocomplete="comment"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.comment.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.commentPlaceholder"
             rows="5"
             @blur="$v.comment.$touch()"
           />
           <span
-            v-if="$v.comment.$error"
+            v-if="$v.comment.$error && $v.comment.$errors[0]?.$message"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.comment.$errors[0]?.$message || '' }}
+            {{ $v.comment.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -345,7 +345,7 @@ const invokeSubmit = async () => {
               v-model="state.checkbox"
               name="privacy"
               type="checkbox"
-              class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
+              class="mt-1 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded"
               :class="[
                 $v.checkbox.$error ? 'border-red-600' : 'border-gray-300',
               ]"
@@ -363,7 +363,7 @@ const invokeSubmit = async () => {
       </div>
       <div class="flex justify-end mt-10">
         <button
-          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-75"
+          class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-75"
           type="submit"
         >
           {{ translations.form.submit }}

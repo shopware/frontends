@@ -128,7 +128,7 @@ const invokeChange = async (): Promise<void> => {
             :disabled="loadingData"
           />
           <span
-            v-if="$v.password.currentPassword.$error"
+            v-if="$v.password.currentPassword.$error && $v.password.currentPassword.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.password.currentPassword.$errors[0].$message }}
@@ -153,7 +153,7 @@ const invokeChange = async (): Promise<void> => {
             :disabled="loadingData"
           />
           <span
-            v-if="$v.password.newPassword.$error"
+            v-if="$v.password.newPassword.$error && $v.password.newPassword.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.password.newPassword.$errors[0].$message }}
@@ -178,7 +178,7 @@ const invokeChange = async (): Promise<void> => {
             :disabled="loadingData"
           />
           <span
-            v-if="$v.password.newPasswordConfirm.$error"
+            v-if="$v.password.newPasswordConfirm.$error && $v.password.newPasswordConfirm.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.password.newPasswordConfirm.$errors[0].$message }}

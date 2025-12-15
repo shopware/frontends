@@ -36,8 +36,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current - 1)"
     >
       <span class="sr-only">{{ translations.listing.previous }}</span>
-      <!-- Heroicon name: solid/chevron-left -->
-      <div class="w-5 h-5 i-carbon-chevron-left" />
+      <SwChevronIcon direction="left" :size="20" />
     </button>
     <button
       v-if="current > 2"
@@ -62,7 +61,7 @@ defineEmits<(e: "changePage", page: number) => void>();
     </button>
     <button
       aria-current="page"
-      class="bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+      class="bg-surface-surface-primary border-brand-primary text-brand-primary relative inline-flex items-center px-4 py-2 border text-sm font-medium"
       :class="[
         current - 1 >= 1 ? '' : 'rounded-l-md border border-secondary-300',
         total == current ? 'rounded-r-md border border-secondary-300' : '',
@@ -99,8 +98,7 @@ defineEmits<(e: "changePage", page: number) => void>();
       @click="$emit('changePage', current + 1)"
     >
       <span class="sr-only">{{ translations.listing.next }}</span>
-      <!-- Heroicon name: solid/chevron-right -->
-      <div class="w-5 h-5 i-carbon-chevron-right" />
+      <SwChevronIcon direction="right" :size="20" />
     </button>
   </nav>
 </template>

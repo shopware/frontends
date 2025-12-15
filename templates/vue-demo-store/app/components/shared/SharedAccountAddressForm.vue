@@ -159,7 +159,7 @@ const $v = useVuelidate(rules, formData);
                 data-testid="account-address-form-firstname-input"
               />
               <span
-                v-if="$v.firstName.$error"
+                v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.firstName.$errors[0].$message }}
@@ -183,7 +183,7 @@ const $v = useVuelidate(rules, formData);
                 data-testid="account-address-form-lastname-input"
               />
               <span
-                v-if="$v.lastName.$error"
+                v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.lastName.$errors[0].$message }}
@@ -215,7 +215,7 @@ const $v = useVuelidate(rules, formData);
                 data-testid="account-address-form-street-input"
               />
               <span
-                v-if="$v.street.$error"
+                v-if="$v.street.$error && $v.street.$errors[0]?.$message"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.street.$errors[0].$message }}
@@ -240,7 +240,7 @@ const $v = useVuelidate(rules, formData);
                 data-testid="account-address-form-city-input"
               />
               <span
-                v-if="$v.city.$error"
+                v-if="$v.city.$error && $v.city.$errors[0]?.$message"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.city.$errors[0].$message }}
@@ -264,7 +264,7 @@ const $v = useVuelidate(rules, formData);
                 data-testid="account-address-form-postal-code-input"
               />
               <span
-                v-if="$v.zipcode.$error"
+                v-if="$v.zipcode.$error && $v.zipcode.$errors[0]?.$message"
                 class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.zipcode.$errors[0].$message }}

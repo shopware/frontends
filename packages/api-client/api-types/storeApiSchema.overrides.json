@@ -39,6 +39,17 @@
           "type": "string"
         }
       }
+    },
+    "LineItem": {
+      "required": ["cover"],
+      "properties": {
+        "cover": {
+          "oneOf": [
+            { "$ref": "#/components/schemas/Media" },
+            { "type": "null" }
+          ]
+        }
+      }
     }
   },
   "paths": {
@@ -118,22 +129,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                "$ref": "_DELETE_",
-                "type": "object",
-                "required": ["items"], 
-                "properties": {
-                  "items": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": { 
-                      "type": "object",
-                      "required": ["id", "quantity"],
-                      "properties": {
-                        "id": { "type": "string" },
-                        "quantity": { "type": "number" }
+                  "$ref": "_DELETE_",
+                  "type": "object",
+                  "required": ["items"],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": ["id", "quantity"],
+                        "properties": {
+                          "id": { "type": "string" },
+                          "quantity": { "type": "number" }
+                        }
                       }
                     }
-                  }
                   }
                 }
               }

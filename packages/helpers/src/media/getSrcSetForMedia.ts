@@ -1,4 +1,26 @@
 /**
+ * Encodes URL pathname to handle special characters (spaces, commas, etc.)
+ *
+ * @param urlString - The URL string to encode
+ * @returns The URL with encoded pathname
+ *
+ * @public
+ * @category Media
+ */
+export function encodeUrlPath(urlString: string): string {
+  try {
+    const url = new URL(urlString);
+    url.pathname = url.pathname
+      .split("/")
+      .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+      .join("/");
+    return url.toString();
+  } catch {
+    return urlString;
+  }
+}
+
+/**
  * Returns the srcset attribute for the image, for available breakpoints
  *
  * @param media image object
@@ -20,7 +42,9 @@ export function getSrcSetForMedia<
 
   return media.thumbnails
     .map((thumbnail) => {
-      return thumbnail.url ? `${thumbnail.url} ${thumbnail.width}w` : undefined;
+      return thumbnail.url
+        ? `${encodeUrlPath(thumbnail.url)} ${thumbnail.width}w`
+        : undefined;
     })
     .filter((value) => !!value)
     .join(", ");

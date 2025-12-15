@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-defineProps<{
+import type { MaybeRef } from "vue";
+
+const { errorMessage } = defineProps<{
   placeholder?: string;
   label?: string;
   id: string;
@@ -7,12 +9,15 @@ defineProps<{
     label: string;
     value: string;
   }[];
-  errorMessage?: string;
+  errorMessage?: MaybeRef<string>;
+  loading?: boolean;
 }>();
 
 const model = defineModel<string>({
   required: true,
 });
+
+const errorText = computed(() => unref(errorMessage));
 </script>
 <template>
   <div>
@@ -30,10 +35,11 @@ const model = defineModel<string>({
       :placeholder="placeholder"
       :id="id"
       :options="options"
-      :invalid="!!errorMessage"
+      :invalid="!!errorText"
+      :loading
     />
-    <span v-if="errorMessage" class="text-red text-xs absolute">{{
-      errorMessage
+    <span v-if="errorText" class="text-red text-xs absolute">{{
+      errorText
     }}</span>
   </div>
 </template>

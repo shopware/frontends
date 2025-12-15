@@ -4,9 +4,17 @@ const { count: wishlistCount } = useWishlist();
 const { isLoggedIn } = useUser();
 const { push } = useRouter();
 const loginModalController = useModal();
+const sideMenuController = useSideMenuModal();
+
+const currentMenuPosition = ref<string | undefined>(undefined);
 
 const mobileSearchActive = ref(false);
 const searchText = ref("");
+
+const miniCartActive = ref(false);
+function toggleMiniCart() {
+  miniCartActive.value = !miniCartActive.value;
+}
 
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
@@ -22,38 +30,99 @@ function handleMyAccountClick() {
     push(formatLink("/account"));
   }
 }
+
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    miniCartActive.value = false;
+  },
+);
 </script>
 
 <template>
-  <div class="border-b">
-    <div class="container mx-auto flex items-center justify-between py-3.5">
-      <template v-if="!mobileSearchActive">
-        <NuxtLink :to="formatLink('/')">
-          <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
-        </NuxtLink>
-        <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden" />
-        <div class="flex gap-4">
-          <LayoutHeaderSearchIcon
+  <div>
+    <div class="border-b">
+      <div
+        class="container mx-auto flex sm:grid sm:grid-cols-3 items-center justify-between py-3.5 px-6 sm:px-0 relative"
+      >
+        <template v-if="!mobileSearchActive">
+          <NuxtLink :to="formatLink('/')" class="flex-shrink-0 sm:justify-self-start">
+            <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
+          </NuxtLink>
+          <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden justify-self-center w-full" />
+          <div class="flex gap-4 flex-shrink-0 sm:justify-self-end">
+            <LayoutHeaderSearchIcon
+              @click="toggleMobileSearch"
+              class="hidden max-sm:block"
+            />
+            <FormIconButton type="ghost" @click="handleMyAccountClick"
+              ><LayoutHeaderMyAccountIcon
+            /></FormIconButton>
+            <ClientOnly>
+              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              <template #fallback>
+                <LayoutHeaderWishlistIcon :counter="0" />
+              </template>
+            </ClientOnly>
+
+            <FormIconButton type="ghost" @click="toggleMiniCart">
+              <ClientOnly>
+                <LayoutHeaderCartIcon :counter="cartCount" />
+                <template #fallback>
+                  <LayoutHeaderCartIcon :counter="0" />
+                </template>
+              </ClientOnly>
+            </FormIconButton>
+
+            <LayoutHeaderMobileMenuIcon
+              class="hidden max-lg:block"
+              @click="sideMenuController.open"
+            />
+          </div>
+        </template>
+        <template v-else>
+          <LayoutHeaderSearch v-model="searchText" />
+          <FormLinkButton
+            class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none"
             @click="toggleMobileSearch"
-            class="hidden max-sm:block"
+            label="Close"
           />
-          <FormIconButton type="ghost" @click="handleMyAccountClick"
-            ><LayoutHeaderMyAccountIcon
-          /></FormIconButton>
-          <LayoutHeaderWishlistIcon :counter="wishlistCount" />
-          <LayoutHeaderCartIcon :counter="cartCount" />
-          <LayoutHeaderMobileMenuIcon class="hidden max-sm:block" />
-        </div>
-      </template>
-      <template v-else>
-        <LayoutHeaderSearch v-model="searchText" />
-        <FormLinkButton class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none" @click="toggleMobileSearch" label="Close" />
-      </template>
+        </template>
+
+        <ClientOnly>
+          <LayoutMiniCart
+            v-if="miniCartActive && cartCount > 0"
+            class="absolute top-full right-0"
+            @closeMiniCart="toggleMiniCart"
+          />
+        </ClientOnly>
+      </div>
+      <ClientOnly>
+        <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
+          <AccountLoginForm @close="loginModalController.close" />
+        </SharedModal>
+      </ClientOnly>
     </div>
-    <ClientOnly>
-      <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
-        <AccountLoginForm @close="loginModalController.close" />
-      </SharedModal>
-    </ClientOnly>
+    <div
+      class="border-b relative max-lg:hidden"
+      @mouseleave="currentMenuPosition = undefined"
+    >
+      <LayoutHeaderTopNavigation
+        class="container mx-auto pt-6 pb-4 px-6 sm:px-0"
+        v-model:current-menu-position="currentMenuPosition"
+      />
+      <client-only>
+        <div class="absolute w-full bg-white z-10 border-b">
+          <LayoutHeaderTopNavigationSubcategories
+            class="container mx-auto left-0 right-0"
+            :current-menu-position="currentMenuPosition"
+          />
+        </div>
+      </client-only>
+    </div>
+    <client-only>
+      <LayoutSideMenu />
+    </client-only>
   </div>
 </template>

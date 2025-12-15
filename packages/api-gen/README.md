@@ -5,8 +5,6 @@ Generate TypeScript schemas from Shopware OpenAPI specification.
 
 After generating schemas, you can use them in fully typed [API Client](https://www.npmjs.com/package/@shopware/api-client).
 
-To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
-
 ## Usage
 
 <!-- automd:pm-install name="@shopware/api-gen" dev -->
@@ -255,6 +253,33 @@ Prepare your config file named **api-gen.config.json**:
 }
 ```
 
+### `split` - Experimental
+
+Split an OpenAPI schema into multiple files, organized by tags or paths. This is useful for breaking down a large schema into smaller, more manageable parts.
+
+The main reason for this is that the complete JSON schema can be too large and complex for API clients like Postman or Insomnia to handle, sometimes
+causing performance issues or import failures due to the file size or circular references. This command helps developers to extract only the parts of
+the schema they need and then import it to the API client of their choice.
+
+Example usage:
+
+```bash
+# Display all available tags
+pnpx @shopware/api-gen split <path-to-schema-file> --list tags
+
+# Display all available paths
+pnpx @shopware/api-gen split <path-to-schema-file> --list paths
+
+# Split schema by tags and show detailed linting errors
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=tags --outputDir <output-directory> --verbose-linting
+
+# Split schema by a single tag
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=tags --outputDir <output-directory> --filterBy "media"
+
+# Split schema by a single path
+pnpx @shopware/api-gen split <path-to-schema-file> --splitBy=paths --outputDir <output-directory> --filterBy "/api/_action/media/{mediaId}/upload"
+```
+
 ### Programmatic usage
 
 Each command can also be used programmatically within your own scripts:
@@ -299,16 +324,27 @@ await validateJson({
 });
 ```
 
+#### `split`
+
+```ts
+import { split } from "@shopware/api-gen";
+
+await split({
+  schemaFile: "path/to/your/schema.json",
+  outputDir: "path/to/output/directory",
+  splitBy: "tags", // or "paths"
+  // filterBy: "TagName" // optional filter
+});
+```
+
 > [!NOTE]  
 > Make sure that the required environment variables are set for the node process when executing commands programmatically.
 
 ## Links
 
-- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
-
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

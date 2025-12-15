@@ -7,6 +7,7 @@ import {
 } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, useTemplateRef } from "vue";
+import { useImagePlaceholder } from "#imports";
 import type { Schemas } from "#shopware";
 
 type Translations = {
@@ -26,8 +27,8 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const imageElement = useTemplateRef("imageElement");
-const { height } = useElementSize(imageElement);
+const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
+const { width, height } = useElementSize(containerElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
 function roundUp(num: number) {
@@ -35,9 +36,18 @@ function roundUp(num: number) {
 }
 
 const coverSrcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(props.product?.cover?.media)}?&height=${roundUp(
-    height.value,
-  )}&fit=cover`;
+  return getSmallestThumbnailUrl(props.product?.cover?.media);
+});
+
+const imageModifiers = computed(() => {
+  // Use the larger dimension and apply 2x for high-DPI displays
+  // For square containers, width and height should be the same
+  const containerSize = Math.max(width.value || 0, height.value || 0);
+  const size = roundUp(containerSize * 2);
+  return {
+    width: size,
+    height: size,
+  };
 });
 
 const coverAlt = computed(() => {
@@ -46,26 +56,29 @@ const coverAlt = computed(() => {
 
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
+
+const placeholderSvg = useImagePlaceholder();
 </script>
 
 <template>
-  <div class="relative flex h-80 flex-col items-start justify-start self-stretch overflow-hidden">
-    <RouterLink :to="productLink" class="relative h-80 self-stretch overflow-hidden">
-      <img ref="imageElement" class="absolute top-[-1px] left-[-0.98px] w-full" :src="coverSrcPath"
-        :alt="coverAlt" data-testid="product-box-img" />
+  <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
+    <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
+      <NuxtImg preset="productCard"
+        class="w-full h-full absolute top-0 left-0 object-cover"
+        :placeholder="placeholderSvg"
+        :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
-      class="absolute top-[281px] left-[8px] inline-flex items-center justify-center rounded bg-states-error px-1.5 py-1"
-      data-state="default" data-type="error">
-      <div class="justify-start font-['Inter'] text-xs font-bold leading-none text-states-on-error">
+      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center">
+      <div class="text-states-on-error text-xs font-bold leading-none">
         {{ translations.product.badges.topseller }}
       </div>
     </div>
 
     <client-only>
       <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
-        class=" bg-brand-secondary absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full"
+        class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
         data-testid="product-box-toggle-wishlist-button" @click="toggleWishlist">
         <SwWishlistIcon :filled="isInWishlist" />
       </SwIconButton>

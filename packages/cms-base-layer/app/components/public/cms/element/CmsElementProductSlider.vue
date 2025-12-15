@@ -12,12 +12,12 @@ const props = defineProps<{
 }>();
 const { getConfigValue } = useCmsElementConfig(props.content);
 
-const productSlider = useTemplateRef("productSlider");
+const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
 const slidesToShow = ref<number>();
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
-    value: "300px",
+    value: "450px",
     source: "static",
   },
   verticalAlign: {
@@ -55,10 +55,10 @@ const border = computed(() => getConfigValue("border"));
 </script>
 <template>
   <div ref="productSlider" class="cms-element-product-slider">
-    <h3 v-if="title" class="mb-5 text-lg font-bold text-secondary-700">
+    <h3 v-if="title" class="pl-6 pb-6 text-center md:text-left text-surface-on-surface">
       {{ title }}
     </h3>
-    <div :class="{ 'py-5 border border-secondary-300': border }">
+    <div :class="{ 'py-5 border border-outline-outline-variant': border }">
       <SwSlider
         :config="config"
         gap="1.25rem"

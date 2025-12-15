@@ -1,15 +1,9 @@
 import { resolve } from "node:path";
-import { findSync } from "find-in-files";
 // @ts-nocheck
 import type { Plugin } from "vite";
 
 import { readFileSync, readdirSync } from "node:fs";
-import {
-  getToggleContainer,
-  getWrappedCodeBlock,
-  prepareGithubPermalink,
-  replacer,
-} from "./utils";
+import { prepareGithubPermalink, replacer } from "./utils";
 
 export async function CmsBaseReference({
   projectRootDir,
@@ -43,16 +37,34 @@ export async function CmsBaseReference({
           continue;
 
         API += `### \`${component.name.replace(".vue", "")}\`\n`;
+
+        const componentPath =
+          component.parentPath ||
+          component.path ||
+          resolve(`${projectRootDir}/${relativeDir}`);
+
+        // Remove both /vercel/path0/ and extract path after frontends/
+        let normalizedPath = componentPath.replace(/\/vercel\/path0\//g, "");
+        const pathParts = normalizedPath.split("frontends/");
+        normalizedPath =
+          pathParts.length > 1
+            ? pathParts.pop() || ""
+            : normalizedPath.replace(projectRootDir, "").replace(/^\//, "");
+
         API += prepareGithubPermalink({
           label: "source code",
-          path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
+          path: `${normalizedPath}/${component.name}`,
           project: "shopware/frontends",
         });
 
         try {
           //try to load associated readme
+          const readmePath =
+            component.parentPath ||
+            component.path ||
+            resolve(`${projectRootDir}/${relativeDir}`);
           const readme = readFileSync(
-            `${component.path}/${component.name.replace(".vue", ".md")}`,
+            `${readmePath}/${component.name.replace(".vue", ".md")}`,
             "utf8",
           );
           if (readme) {

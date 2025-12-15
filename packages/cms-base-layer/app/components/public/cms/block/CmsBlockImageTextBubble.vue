@@ -16,36 +16,33 @@ const rightText = getSlotContent("right-text");
 const rightImage = getSlotContent("right-image");
 </script>
 <template>
-  <div class="cms-block-image-text-bubble grid grid-cols-3 auto-cols-max">
-    <div class="cms-element-column p-4">
-      <div class="flex justify-center">
+  <div class="cms-block-image-text-bubble flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+    <div class="w-full sm:flex-1">
+      <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="leftImage"
-          class="object-center rounded-full"
-          style="height: calc(100vw / 3 - 64px); width: calc(100vw / 3 - 64px)"
+          class="object-center rounded-full w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64"
         />
       </div>
-      <CmsGenericElement :content="leftText" />
+      <CmsGenericElement :content="leftText" class="self-stretch" />
     </div>
-    <div class="cms-element-column p-4">
-      <div class="flex justify-center">
+    <div class="w-full sm:flex-1">
+      <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="centerImage"
-          class="object-center rounded-full"
-          style="height: calc(100vw / 3 - 64px); width: calc(100vw / 3 - 64px)"
+          class="object-center rounded-full w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64"
         />
       </div>
-      <CmsGenericElement :content="centerText" />
+      <CmsGenericElement :content="centerText" class="self-stretch" />
     </div>
-    <div class="cms-element-column p-4">
-      <div class="flex justify-center">
+    <div class="w-full sm:flex-1">
+      <div class="self-stretch flex justify-center">
         <CmsGenericElement
           :content="rightImage"
-          class="object-center rounded-full"
-          style="height: calc(100vw / 3 - 64px); width: calc(100vw / 3 - 64px)"
+          class="object-center rounded-full w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64"
         />
       </div>
-      <CmsGenericElement :content="rightText" />
+      <CmsGenericElement :content="rightText" class="self-stretch" />
     </div>
   </div>
 </template>

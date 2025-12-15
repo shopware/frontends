@@ -1,7 +1,10 @@
-import { customValidators } from "@@/i18n/utils/i18n-validators";
-import { computed } from "vue";
+import { type Ref, computed } from "vue";
+import { customValidators } from "#imports";
 
-export default function (accountType: Ref<string>, countryId: Ref<string>) {
+export function registrationFormRules(
+  accountType: Ref<string>,
+  countryId: Ref<string>,
+) {
   const { required, minLength, email, requiredIf } = customValidators();
   const { getStatesForCountry } = useCountries();
 
@@ -27,7 +30,7 @@ export default function (accountType: Ref<string>, countryId: Ref<string>) {
     },
     billingAddress: {
       company: {
-        required: requiredIf(() => accountType === "business"),
+        required: requiredIf(() => unref(accountType) === "business"),
       },
       street: {
         required,
@@ -44,7 +47,7 @@ export default function (accountType: Ref<string>, countryId: Ref<string>) {
       },
       countryStateId: {
         required: requiredIf(() => {
-          return !!getStatesForCountry(countryId)?.length;
+          return !!getStatesForCountry(unref(countryId))?.length;
         }),
       },
     },

@@ -5,6 +5,11 @@
       "private": "Osoba prywatna",
       "business": "Klient biznesowy"
     },
+    "quantitySelect": {
+      "label": "Ilość",
+      "increaseButton": "Zwiększ ilość",
+      "decreaseButton": "Zmniejsz ilość"
+    },
     "salutation": "Forma grzecznościowa",
     "chooseSalutation": "Wybierz formę grzecznościową...",
     "firstName": "Imię",

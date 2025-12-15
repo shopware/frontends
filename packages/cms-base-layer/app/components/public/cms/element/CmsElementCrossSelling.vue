@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const currentTabIndex = ref<number>(0);
-const crossSellContainer = useTemplateRef("crossSellContainer");
+const crossSellContainer = useTemplateRef<HTMLDivElement>("crossSellContainer");
 const config = computed<SliderElementConfig>(() => ({
   minHeight: {
     value: "300px",
@@ -63,9 +63,9 @@ const toggleTab = (index: number) => {
       <a
         v-for="(collection, index) of crossSellCollections"
         :key="index"
-        class="transition text-lg font-bold text-secondary-700 cursor-pointer"
+        class="transition text-lg font-semibold text-surface-on-surface-variant cursor-pointer"
         :class="{
-          'border-b-3 border-primary text-primary': currentTabIndex === index,
+          'border-b-3 border-brand-primary text-brand-primary': currentTabIndex === index,
         }"
         @click="toggleTab(index)"
       >

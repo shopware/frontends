@@ -161,7 +161,7 @@ onBeforeMount(async () => {
             </option>
           </select>
           <span
-            v-if="$v.accountType.$error"
+            v-if="$v.accountType.$error && $v.accountType.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.accountType.$errors[0].$message }}
@@ -189,7 +189,7 @@ onBeforeMount(async () => {
             @blur="$v.firstName.$touch()"
           />
           <span
-            v-if="$v.firstName.$error"
+            v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.firstName.$errors[0].$message }}
@@ -216,7 +216,7 @@ onBeforeMount(async () => {
             @blur="$v.lastName.$touch()"
           />
           <span
-            v-if="$v.lastName.$error"
+            v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.lastName.$errors[0].$message }}
@@ -244,7 +244,7 @@ onBeforeMount(async () => {
               @blur="$v.company.$touch()"
             />
             <span
-              v-if="$v.company.$error"
+              v-if="$v.company.$error && $v.company.$errors[0]?.$message"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
               {{ $v.company.$errors[0].$message }}
@@ -272,7 +272,7 @@ onBeforeMount(async () => {
               @blur="$v.vatIds.$touch()"
             />
             <span
-              v-if="$v.vatIds.$error"
+              v-if="$v.vatIds.$error && $v.vatIds.$errors[0]?.$message"
               class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
               {{ $v.vatIds.$errors[0].$message }}

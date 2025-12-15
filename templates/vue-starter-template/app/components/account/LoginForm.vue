@@ -4,15 +4,23 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { mergeWishlistProducts } = useWishlist();
 const { login } = useUser();
+const { pushSuccess } = useNotifications();
+const { t } = useI18n();
+const { handleApiError } = useApiErrorsResolver("account_login_form");
 
 const emit = defineEmits<{
   close: [];
 }>();
 
-async function handleLogin(formData) {
-  await login(formData);
-  mergeWishlistProducts();
-  emit("close");
+async function handleLogin(formData: { username: string; password: string }) {
+  try {
+    await login(formData);
+    pushSuccess(t("account.messages.loggedInSuccess"));
+    mergeWishlistProducts();
+    emit("close");
+  } catch (error) {
+    handleApiError(error);
+  }
 }
 
 function handleSignUp() {

@@ -6,3 +6,9 @@ packages:
 
 templates:
   - "templates/*"
+
+# Reduciing the risk of installing fresh compromised packages before detected
+minimumReleaseAge: 4320 ## 3 days
+minimumReleaseAgeExclude:
+- '@shopware/*'
+- 'node-forge' # security release, remove after 01.12.2025
