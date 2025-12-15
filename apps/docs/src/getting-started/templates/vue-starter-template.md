@@ -27,7 +27,7 @@ The vue-starter-template is connected to a Shopware Cloud instance by default. H
 
 The template comes with:
 
-- **Nuxt 4.1** - Latest Nuxt framework with full SSR support
+- **Nuxt 4.x** - Latest Nuxt framework with full SSR support
 - **All core packages** - Pre-installed and configured:
   - `@shopware/api-client` - HTTP client for Shopware API
   - `@shopware/composables` - Vue composables for business logic
