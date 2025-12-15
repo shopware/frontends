@@ -1,8 +1,13 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
+    "prepare": {
+      "dependsOn": ["^prepare"],
+      "outputs": [".nuxt/**"],
+      "cache": false
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "prepare"],
       "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
