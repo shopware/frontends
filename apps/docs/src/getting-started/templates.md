@@ -79,7 +79,7 @@ The demo store template is a **reference implementation** of an online store UI.
 - Checkout
 - CMS Pages
 
-It is based on Nuxt3 and Tailwind.css.
+It is based on Nuxt3 and UnoCSS (Tailwind)
 
 <PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
