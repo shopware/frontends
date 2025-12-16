@@ -294,6 +294,54 @@ apiClient.updateBaseConfig({
 
 This allows you to dynamically change the API endpoint or access token during runtime, for example when switching between different environments or when the access token needs to be updated.
 
+## Helper Functions
+
+The API client provides helper functions that can be imported separately to keep your main bundle size smaller.
+
+### encodeForQuery
+
+The `encodeForQuery` function compresses and encodes objects into base64url format for use in query strings. This is particularly useful for complex criteria objects that need to be passed as URL parameters.
+
+Related issue: https://github.com/shopware/shopware/issues/12388
+
+```typescript
+import { encodeForQuery } from "@shopware/api-client/helpers";
+
+// Example: Encoding complex search criteria
+const criteria = {
+  page: 1,
+  limit: 10,
+  filter: [
+    {
+      type: "equals",
+      field: "active",
+      value: true
+    },
+    {
+      type: "contains",
+      field: "name",
+      value: "smartphone"
+    }
+  ],
+  associations: {
+    manufacturer: {},
+    categories: {
+      associations: {
+        media: {}
+      }
+    }
+  }
+};
+
+// Use in URL
+apiClient.invoke("getProducts get /product", {
+  query: {
+    _criteria: encodeForQuery(encodedCriteria),
+  },
+});
+```
+
+
 ## Links
 
 - [📘 Documentation](https://frontends.shopware.com)
