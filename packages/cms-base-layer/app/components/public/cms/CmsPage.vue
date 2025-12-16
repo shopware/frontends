@@ -2,9 +2,10 @@
 import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
+  getProductListingFromCmsPage,
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
-import { computed, h, resolveComponent } from "vue";
+import { computed, h, resolveComponent, watchEffect } from "vue";
 import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -13,9 +14,23 @@ const props = defineProps<{
 }>();
 
 const { routeName } = useNavigationContext();
-if (routeName.value === "frontend.navigation.page") {
-  createCategoryListingContext();
+
+// Function to initialize or update listing context
+function updateListingContext(content: Schemas["CmsPage"]) {
+  if (routeName.value === "frontend.navigation.page") {
+    const initialListing =
+      getProductListingFromCmsPage<Schemas["ProductListingResult"]>(content);
+
+    if (initialListing) {
+      createCategoryListingContext(initialListing);
+    }
+  }
 }
+
+// Watch for content changes and update context
+watchEffect(() => {
+  updateListingContext(props.content);
+});
 
 const cmsSections = computed<Schemas["CmsSection"][]>(() => {
   return props.content?.sections || [];

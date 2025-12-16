@@ -125,22 +125,20 @@ const handleRemoveChip = (chip: { code: string; value: string | number }) => {
 </script>
 
 <template>
-  <ClientOnly>
-    <div
-      v-if="activeChips.length > 0"
-      class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6"
+  <div
+    v-if="activeChips.length > 0"
+    class="self-stretch inline-flex justify-start items-center gap-4 flex-wrap content-center mb-6"
+  >
+    <button
+      v-for="(chip, index) in activeChips"
+      :key="`${chip.code}-${chip.value}-${index}`"
+      @click="handleRemoveChip(chip)"
+      class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
     >
-      <button
-        v-for="(chip, index) in activeChips"
-        :key="`${chip.code}-${chip.value}-${index}`"
-        @click="handleRemoveChip(chip)"
-        class="px-4 py-1.5 bg-brand-tertiary rounded-full inline-flex justify-center items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
-      >
-        <span class="text-brand-on-tertiary text-base font-normal leading-normal">
-          {{ chip.label }}
-        </span>
-        <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
-      </button>
-    </div>
-  </ClientOnly>
+      <span class="text-brand-on-tertiary text-base font-normal leading-normal">
+        {{ chip.label }}
+      </span>
+      <span class="i-carbon-close w-5 h-5 text-brand-on-tertiary"></span>
+    </button>
+  </div>
 </template>
