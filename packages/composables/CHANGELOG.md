@@ -1,5 +1,42 @@
 # @shopware/composables
 
+## 1.10.0
+
+### Minor Changes
+
+- [#2098](https://github.com/shopware/frontends/pull/2098) [`a44d871`](https://github.com/shopware/frontends/commit/a44d8712d9ae5ee196c03ac8b894f3d1392d0e68) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhanced the `useSyncWishlist` composable by exposing the `limit`, `products`, and `isLoading` properties, allowing better control and monitoring of the wishlist state. Similarly, updated `useWishlist` to also expose `limit`, `products`, and `isLoading` properties for both local and synced wishlists, providing a consistent API and improved state handling for wishlist management.
+
+- [#1997](https://github.com/shopware/frontends/pull/1997) [`e43d9b7`](https://github.com/shopware/frontends/commit/e43d9b7f559af21be8b66f2021cea2d14940e4aa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added consts `SUBSRIBE_KEY` and `UNSUBSCRIBE_KEY` for newsletter status in useNewsletter composable
+
+- [#1974](https://github.com/shopware/frontends/pull/1974) [`7fe2ef9`](https://github.com/shopware/frontends/commit/7fe2ef96a9d9d156683b85d31f0a660458c9fbfd) Thanks [@mkucmus](https://github.com/mkucmus)! - Use proper associations format within `useDefaultOrderAssociations` (no redundant nesting).
+
+  Returned value is in type of `Schemas["Criteria"]['associations']` now:
+
+  ```ts
+  const { loadOrders } = useCustomerOrders();
+
+  loadOrders({
+    // ... other parameters
+    associations: useDefaultOrderAssociations(),
+  });
+  ```
+
+- [#2176](https://github.com/shopware/frontends/pull/2176) [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602) Thanks [@mkucmus](https://github.com/mkucmus)! - - Add `initialListing` parameter to `useListing` composable for SSR data hydration
+  - Update `createCategoryListingContext` to accept initial listing data
+  - Maintain backward compatibility with existing implementations
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+
+### Patch Changes
+
+- [`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e) Thanks [@mkucmus](https://github.com/mkucmus)! - add nested media entity association explicitly
+
+- [#1985](https://github.com/shopware/frontends/pull/1985) [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986) Thanks [@mkucmus](https://github.com/mkucmus)! - Change `isInWishlist` property type to `ComputedRef` within `useProductWishlist` composable.
+
+- Updated dependencies [[`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c), [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986), [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19), [`56cd178`](https://github.com/shopware/frontends/commit/56cd178e25fe2399b7170ccac3044e980621f041), [`e1fae3e`](https://github.com/shopware/frontends/commit/e1fae3eb6430e5c8e133456fbaf7f215f80c36f6), [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/helpers@1.6.0
+  - @shopware/api-client@1.4.0
+
 ## 1.9.1
 
 ### Patch Changes
@@ -223,7 +260,6 @@
 - [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
 
 - [#1056](https://github.com/shopware/frontends/pull/1056) [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04) Thanks [@patzick](https://github.com/patzick)! - Removed deprecations from the composables:
-
   - `createShopwareContext` is no longer accpting `apiInstance` option. Use `apiClient` instead.
   - `useCart` - `getProductItemsSeoUrlsData` is removed. Use product related methods to fetch an item's URL instead.
   - `useCartItem` - `getProductItemSeoUrlData` is removed
@@ -263,7 +299,6 @@
 ### Minor Changes
 
 - [#991](https://github.com/shopware/frontends/pull/991) [`38a3853`](https://github.com/shopware/frontends/commit/38a385374a99d114c4ed3477f14c9e06dedb0dcd) Thanks [@patzick](https://github.com/patzick)! - Few changes in composables API to access data returned from the backend:
-
   - `useAddress` - `loadCustomerAddresses` returns addresses now
   - `useCart` - `removeItem` returns updated cart
   - `useCartItem` - `removeItem` returns updated cart, similar to `useCart`
@@ -285,7 +320,6 @@
 - [#986](https://github.com/shopware/frontends/pull/986) [`013a1d6`](https://github.com/shopware/frontends/commit/013a1d6f88377686cfc1a85903a0c48d8fda67f5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added tests to achieve coverage > 80%
 
 - [#933](https://github.com/shopware/frontends/pull/933) [`04ac2ad`](https://github.com/shopware/frontends/commit/04ac2ada522c881bb06565c332baf5f2cf08643d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `checkPromotion` attribute to the `orderAssociations`
-
   - Added `statusTechnicalName` property to the `useOrderDetails` composable
   - Added `getPaymentMethods` method that allows change payment for existed order
   - Added `stateMachineState` association for loading orders
@@ -319,11 +353,9 @@
 ### Patch Changes
 
 - [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@vueuse/core_ from **^10.5.0** to **^10.6.1**
 
 - [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _scule_ from **^1.0.0** to **^1.1.0**
 
 - Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
@@ -347,7 +379,6 @@
 ### Patch Changes
 
 - [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@vueuse/core_ from **^10.4.1** to **^10.5.0**
 
 - [#409](https://github.com/shopware/frontends/pull/409) [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct active addresses location for current context
@@ -369,7 +400,6 @@
 - [#390](https://github.com/shopware/frontends/pull/390) [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Catch 404 api error - `getWishlistProducts``
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@vueuse/core_ from **^10.3.0** to **^10.4.1**
 
 - Updated dependencies []:
@@ -405,7 +435,6 @@
 ### Patch Changes
 
 - [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@vueuse/core_ from **^10.2.1** to **^10.3.0**
 
 - Updated dependencies []:

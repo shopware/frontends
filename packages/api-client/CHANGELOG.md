@@ -1,11 +1,39 @@
 # @shopware/api-client
 
+## 1.4.0
+
+### Minor Changes
+
+- [#2012](https://github.com/shopware/frontends/pull/2012) [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19) Thanks [@patzick](https://github.com/patzick)! - Added helper to support encoded `_criteria` field in GET query parameters.
+  Context information: https://github.com/shopware/shopware/issues/12388
+
+  This helper is available under the `@shopware/api-client/helpers` import path.
+
+  ```typescript
+  import { encodeForQuery } from "@shopware/api-client/helpers";
+
+  const criteria = {
+    page: 1,
+    limit: 10,
+    ...
+  }
+
+  const encodedCriteria = encodeForQuery(criteria);
+
+  const result = await apiClient.invoke("getProducts get /product", {
+    query: {
+      _criteria: encodedCriteria,
+    },
+  });
+  ```
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+
 ## 1.3.0
 
 ### Minor Changes
 
 - [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
-
   - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
   - `getBaseConfig`: Returns current baseURL and accessToken values
 
@@ -58,7 +86,6 @@
 - [#1316](https://github.com/shopware/frontends/pull/1316) [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7) Thanks [@mkucmus](https://github.com/mkucmus)! - Extend Criteria type in exported admin API schema
 
 - [#1323](https://github.com/shopware/frontends/pull/1323) [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f) Thanks [@mkucmus](https://github.com/mkucmus)! - Don't send Content-Type in case of [multipart/form-data](https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html).
-
   - Ignore `Content-Type` header in browser context when `multipart/form-data` is set.
   - _boundary_ is set by a browser automatically.
 
@@ -102,7 +129,6 @@
 - [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
 
 - [#1056](https://github.com/shopware/frontends/pull/1056) [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04) Thanks [@patzick](https://github.com/patzick)! - Removed deprecations from the code:
-
   - `onContextChanged` function inside `createAPIClient` method. Use `apiClient.hook("onContextChanged", ...)` instead.
   - `apiType` flag from the `createAPIClient`. Use separate methods to create store and admin api clients
   - `onAuthChange` from the `createAdminAPIClient`. Use `adminApiClient.hook('onAuthChange',...)` instead
@@ -197,11 +223,9 @@
 ### Patch Changes
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _ofetch_ from **^1.2.1** to **^1.3.3**
 
 - [#375](https://github.com/shopware/frontends/pull/375) [`bd88d6fa`](https://github.com/shopware/frontends/commit/bd88d6fa95de2b90f8a1e08e34159b46c5932b3b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _ofetch_ from **^1.1.1** to **^1.2.1**
 
 - [`15d6e696`](https://github.com/shopware/frontends/commit/15d6e69616bd9bc5ad32f2a5f697e00c45a94784) Thanks [@patzick](https://github.com/patzick)! - Emit cjs bundle
