@@ -183,6 +183,7 @@ export function useListing(params?: {
   listingType: ListingType;
   categoryId?: string;
   defaultSearchCriteria?: operations["searchPage post /search"]["body"];
+  initialListing?: Schemas["ProductListingResult"] | null;
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
   let categoryId = params?.categoryId || null;
@@ -241,13 +242,17 @@ export function useListing(params?: {
     searchDefaults:
       params?.defaultSearchCriteria ||
       ({} as operations["searchPage post /search"]["body"]), //getDefaults(),
+    initialListing: params?.initialListing,
   });
 }
 
 const [_createCategoryListingContext, _categoryListingContext] =
   createInjectionState(
-    () => {
-      return useListing({ listingType: "categoryListing" });
+    (initialListing?: Schemas["ProductListingResult"] | null) => {
+      return useListing({
+        listingType: "categoryListing",
+        initialListing,
+      });
     },
     {
       injectionKey: "categoryListing",
@@ -292,6 +297,7 @@ export function createListingComposable({
   searchMethod,
   searchDefaults,
   listingKey,
+  initialListing,
 }: {
   searchMethod(
     searchParams:
@@ -300,6 +306,7 @@ export function createListingComposable({
   ): Promise<Schemas["ProductListingResult"]>;
   searchDefaults: operations["searchPage post /search"]["body"];
   listingKey: string;
+  initialListing?: Schemas["ProductListingResult"] | null;
 }): UseListingReturn {
   // const COMPOSABLE_NAME = "createListingComposable";
   // const contextName = COMPOSABLE_NAME;
@@ -319,7 +326,7 @@ export function createListingComposable({
   // const { sharedRef } = useSharedState();
   const _storeInitialListing = inject<
     Ref<Schemas["ProductListingResult"] | null>
-  >(`useListingInitial-${listingKey}`, ref(null));
+  >(`useListingInitial-${listingKey}`, ref(initialListing ?? null));
   provide(`useListingInitial-${listingKey}`, _storeInitialListing);
   // const _storeInitialListing = sharedRef<Schemas["ProductListingResult"]>(
   //   `${cacheKey}-initialListing-${listingKey}`

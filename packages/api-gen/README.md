@@ -104,24 +104,55 @@ export type operations = {
 There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
 
 By default CLI is fetching the patches from the api-client repository, but you can provide your own patches file by adding a path to the `api-gen.config.json` file.
-Example:
+
+### API-specific configuration (Recommended)
+
+You can configure patches and rules separately for Store API and Admin API:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+  "store-api": {
+    "patches": [
+      "storeApiSchema.overrides.json",
+      "./api-types/myStoreApiPatches.json"
+    ],
+    "rules": ["COMPONENTS_API_ALIAS"]
+  },
+  "admin-api": {
+    "patches": ["adminApiSchema.overrides.json"],
+    "rules": ["COMPONENTS_API_ALIAS"]
+  }
+}
+```
+
+This allows you to maintain different configurations for each API type.
+
+### Legacy configuration (Deprecated)
+
+The root-level `patches` and `rules` properties are deprecated but still supported for backwards compatibility:
+
+```json
+{
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
   "patches": ["storeApiTypes.overrides.json"]
 }
 ```
 
-or you could use multiple patches and add your own overrides on top:
+> [!WARNING]
+> Root-level `patches` and `rules` are deprecated. Please migrate to the API-specific configuration (`store-api` or `admin-api`).
+
+You could also use multiple patches and add your own overrides on top:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
-  "patches": [
-    "https://raw.githubusercontent.com/shopware/frontends/refs/heads/main/packages/api-client/api-types/storeApiSchema.overrides.json",
-    "./api-types/myOwnPatches.overrides.json"
-  ]
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+  "store-api": {
+    "patches": [
+      "./node_modules/@shopware/api-client/api-types/storeApiSchema.overrides.json",
+      "./api-types/myOwnPatches.overrides.json"
+    ]
+  }
 }
 ```
 
@@ -243,15 +274,22 @@ this searches for `api-types/storeApiTypes.json` file and validates it. Use [loa
 
 Prepare your config file named **api-gen.config.json**:
 
-```JSON
+```json
 {
-  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
-  "rules": [
-    "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
-  ],
-  //"patches": "storeApiTypes.overrides.json" // -> path to your overrides file in api-types folder, default is fetched from api-client repository
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+  "store-api": {
+    "rules": ["COMPONENTS_API_ALIAS"],
+    "patches": ["storeApiSchema.overrides.json"]
+  },
+  "admin-api": {
+    "rules": ["COMPONENTS_API_ALIAS"],
+    "patches": ["adminApiSchema.overrides.json"]
+  }
 }
 ```
+
+> [!NOTE]
+> The `rules` configuration is API-type specific. When running `validateJson --apiType=store`, only the rules defined in `store-api.rules` will be applied.
 
 ### `split` - Experimental
 

@@ -246,4 +246,77 @@ describe("useListing", () => {
     );
     expect(vm.getAvailableFilters).toEqual([]);
   });
+
+  it("should accept initialListing parameter", async () => {
+    const mockListing = {
+      apiAlias: "product_listing",
+      elements: [
+        {
+          id: "product-1",
+          name: "Test Product",
+        } as Schemas["Product"],
+      ],
+      page: 1,
+      limit: 10,
+      total: 25,
+    } as Schemas["ProductListingResult"];
+
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+        initialListing: mockListing,
+      }),
+    );
+
+    expect(vm.getInitialListing).toEqual(mockListing);
+    expect(vm.getCurrentListing).toEqual(mockListing);
+    expect(vm.getElements).toEqual(mockListing.elements);
+    expect(vm.getTotal).toBe(25);
+  });
+
+  it("should handle null initialListing parameter", async () => {
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+        initialListing: null,
+      }),
+    );
+
+    expect(vm.getInitialListing).toBeNull();
+    expect(vm.getCurrentListing).toBeNull();
+    expect(vm.getElements).toEqual([]);
+  });
+
+  it("should work without initialListing parameter (backward compatibility)", async () => {
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+
+    expect(vm.getInitialListing).toBeNull();
+    expect(vm.getCurrentListing).toBeNull();
+  });
+
+  it("should initialize category listing with initialListing", async () => {
+    const mockListing = {
+      apiAlias: "product_listing",
+      elements: [{ id: "product-1" } as Schemas["Product"]],
+      page: 1,
+      limit: 10,
+      total: 1,
+    } as Schemas["ProductListingResult"];
+
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "categoryListing",
+        categoryId: "test-category",
+        initialListing: mockListing,
+      }),
+    );
+
+    expect(vm.getInitialListing).toEqual(mockListing);
+    expect(vm.getElements).toHaveLength(1);
+    expect(vm.getTotal).toBe(1);
+  });
 });

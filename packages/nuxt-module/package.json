@@ -46,7 +46,7 @@
     "@nuxt/schema": "4.2.1",
     "nuxt": "4.2.1",
     "tsconfig": "workspace:*",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "unbuild": "2.0.0"
   }
 }

@@ -20,7 +20,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": ["bin", "dist"],
+  "files": ["bin", "dist", "api-gen.schema.json"],
   "bin": {
     "api-gen": "bin/api-gen.mjs",
     "shopware-api-gen": "bin/api-gen.mjs"
@@ -53,7 +53,7 @@
     "openapi-typescript": "7.8.0",
     "prettier": "3.7.4",
     "ts-morph": "26.0.0",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "yargs": "18.0.0"
   }
 }
