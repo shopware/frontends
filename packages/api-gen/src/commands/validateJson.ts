@@ -7,6 +7,7 @@ import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 import {
   API_GEN_CONFIG_FILENAME,
   displayPatchingSummary,
+  getApiTypeConfig,
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
@@ -93,7 +94,8 @@ export async function validateJson(args: {
     process.exit(1);
   }
 
-  const rulesToProcess = configJSON.rules || [];
+  const apiTypeConfig = getApiTypeConfig(configJSON, args.apiType);
+  const rulesToProcess = apiTypeConfig.rules || [];
 
   if (!rulesToProcess.length) {
     console.error(
@@ -106,7 +108,7 @@ export async function validateJson(args: {
 
   const errors: string[] = [];
   const jsonOverrides = await loadJsonOverrides({
-    paths: configJSON.patches,
+    paths: apiTypeConfig.patches,
     apiType: args.apiType,
   });
 
