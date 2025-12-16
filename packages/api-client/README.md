@@ -354,19 +354,31 @@ apiClient.invoke("getProducts get /product", {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.3.0
+### Latest changes: 1.4.0
 
 ### Minor Changes
 
-- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
+- [#2012](https://github.com/shopware/frontends/pull/2012) [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19) Thanks [@patzick](https://github.com/patzick)! - Added helper to support encoded `_criteria` field in GET query parameters.
+  Context information: https://github.com/shopware/shopware/issues/12388
 
-  - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
-  - `getBaseConfig`: Returns current baseURL and accessToken values
+  This helper is available under the `@shopware/api-client/helpers` import path.
 
-  This change replaces the previous `updateBaseUrl` method with a more flexible configuration management system that can be extended in the future.
+  ```typescript
+  import { encodeForQuery } from "@shopware/api-client/helpers";
 
-### Patch Changes
+  const criteria = {
+    page: 1,
+    limit: 10,
+    ...
+  }
 
-- [#1801](https://github.com/shopware/frontends/pull/1801) [`a7ff606`](https://github.com/shopware/frontends/commit/a7ff60681d1a164d5c9f2020c506262e96fad5dc) Thanks [@joostaasman](https://github.com/joostaasman)! - fix: Undefined mergedHeaders["content-type"] when content-type is multipart/form-data
+  const encodedCriteria = encodeForQuery(criteria);
 
-- [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added `onRequest` hook to the API client that is triggered before each request is made. This hook provides access to the request context, allowing for request inspection and modification before it's sent.
+  const result = await apiClient.invoke("getProducts get /product", {
+    query: {
+      _criteria: encodedCriteria,
+    },
+  });
+  ```
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
