@@ -52,7 +52,6 @@ updates:
           - "dotenv"
           - "happy-dom"
           - "@faker*"
-          - "@codspeed/*"
           - "@playwright*"
       linter:
         patterns:
