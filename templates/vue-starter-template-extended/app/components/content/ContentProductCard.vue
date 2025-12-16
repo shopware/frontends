@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { getElementProperty } from "~/composables/contentHelpers";
+import { extractProperties } from "~/composables/useContentFactory";
+import type { ProductCardProperties } from "~/composables/useContentProperties";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -8,40 +9,33 @@ const props = defineProps<{
   properties: Record<string, unknown>;
 }>();
 
-const product = computed(() =>
-  getElementProperty<Schemas["Product"]>(props.element, "product"),
-);
-const displayMode = computed(() =>
-  getElementProperty<"standard" | "minimal" | "image">(
-    props.element,
-    "displayMode",
-    "standard",
-  ),
-);
-const layout = computed(() =>
-  getElementProperty<"standard" | "image">(props.element, "layout", "standard"),
-);
+// Type-safe property extraction
+const { product, displayMode, layout } =
+  extractProperties<ProductCardProperties>(props.properties, {
+    product: { default: undefined },
+    displayMode: { default: "standard" },
+    layout: { default: "standard" },
+  });
 
 const productName = computed(
-  () => product.value?.translated?.name || product.value?.name || "",
+  () => product?.translated?.name || product?.name || "",
 );
 const productDescription = computed(
-  () =>
-    product.value?.translated?.description || product.value?.description || "",
+  () => product?.translated?.description || product?.description || "",
 );
-const productImage = computed(() => product.value?.cover?.media?.url || "");
-const productPrice = computed(() => product.value?.calculatedPrice);
+const productImage = computed(() => product?.cover?.media?.url || "");
+const productPrice = computed(() => product?.calculatedPrice);
 const productUrl = computed(() => {
-  const seoUrls = product.value?.seoUrls;
+  const seoUrls = product?.seoUrls;
   if (seoUrls && seoUrls.length > 0 && seoUrls[0]) {
     return `/${seoUrls[0].seoPathInfo}`;
   }
-  return `/product/${product.value?.id}`;
+  return `/product/${product?.id}`;
 });
 
-const showDetails = computed(() => displayMode.value === "standard");
-const isMinimal = computed(() => displayMode.value === "minimal");
-const isImageOnly = computed(() => displayMode.value === "image");
+const showDetails = computed(() => displayMode === "standard");
+const isMinimal = computed(() => displayMode === "minimal");
+const isImageOnly = computed(() => displayMode === "image");
 </script>
 
 <template>

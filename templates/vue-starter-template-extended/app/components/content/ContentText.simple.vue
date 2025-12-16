@@ -13,7 +13,7 @@ const props = defineProps<{
   properties: Record<string, unknown>;
 }>();
 
-// Type-safe property extraction
+// Simple extraction with schema
 const { title, content, alignment, verticalAlignment } =
   extractProperties<TextProperties>(props.properties, {
     title: { default: "" },
@@ -22,7 +22,7 @@ const { title, content, alignment, verticalAlignment } =
     verticalAlignment: { default: "top" },
   });
 
-// Use shared style configurations
+// Direct class access from shared configs
 const alignmentClass = computed(
   () => ALIGNMENT_TEXT_CLASSES[alignment] || ALIGNMENT_TEXT_CLASSES.left,
 );
@@ -39,10 +39,7 @@ const verticalAlignClass = computed(
     class="content-text flex flex-col"
     :class="[alignmentClass, verticalAlignClass]"
   >
-    <h2
-      v-if="title"
-      class="text-2xl md:text-3xl font-bold mb-4"
-    >
+    <h2 v-if="title" class="text-2xl md:text-3xl font-bold mb-4">
       {{ title }}
     </h2>
 
@@ -52,7 +49,6 @@ const verticalAlignClass = computed(
       v-html="content"
     />
 
-    <!-- Slot for nested content -->
     <div v-if="$slots.default" class="mt-6">
       <slot />
     </div>

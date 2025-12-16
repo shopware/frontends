@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { extractProperties } from "~/composables/useContentFactory";
-import type { ButtonProperties } from "~/composables/useContentProperties";
+import {
+  type ButtonProperties,
+  useContentProperties,
+} from "~/composables/useContentProperties";
 import {
   ALIGNMENT_FLEX_CLASSES,
   BUTTON_VARIANT_CLASSES,
@@ -15,17 +17,16 @@ const props = defineProps<{
 }>();
 
 // Type-safe property extraction
-const { text, url, newTab, variant, size, alignment } =
-  extractProperties<ButtonProperties>(props.properties, {
-    text: { default: "" },
-    url: { default: "" },
-    newTab: { default: false },
-    variant: { default: "primary" },
-    size: { default: "medium" },
-    alignment: { default: "left" },
-  });
+const { get } = useContentProperties<ButtonProperties>(props.properties);
 
-// Use shared style configurations
+const text = get("text", "");
+const url = get("url", "");
+const newTab = get("newTab", false);
+const variant = get("variant", "primary");
+const size = get("size", "medium");
+const alignment = get("alignment", "left");
+
+// Computed classes using shared configurations
 const variantClass = computed(
   () => BUTTON_VARIANT_CLASSES[variant] || BUTTON_VARIANT_CLASSES.primary,
 );

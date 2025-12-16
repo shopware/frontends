@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { getElementProperty } from "~/composables/contentHelpers";
+import { extractProperties } from "~/composables/useContentFactory";
+import type { ImageProperties } from "~/composables/useContentProperties";
+import { IMAGE_DISPLAY_MODE_CLASSES } from "~/composables/useContentStyles";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -8,50 +10,33 @@ const props = defineProps<{
   properties: Record<string, unknown>;
 }>();
 
-const media = computed(() =>
-  getElementProperty<Schemas["Media"]>(props.element, "media"),
-);
-const url = computed(() =>
-  getElementProperty<string>(props.element, "url", ""),
-);
-const alt = computed(() =>
-  getElementProperty<string>(props.element, "alt", ""),
-);
-const title = computed(() =>
-  getElementProperty<string>(props.element, "title", ""),
-);
-const displayMode = computed(() =>
-  getElementProperty<"standard" | "cover" | "contain" | "auto">(
-    props.element,
-    "displayMode",
-    "standard",
-  ),
-);
-const minHeight = computed(() =>
-  getElementProperty<string>(props.element, "minHeight", ""),
-);
-const newTab = computed(() =>
-  getElementProperty<boolean>(props.element, "newTab", false),
-);
+// Type-safe property extraction
+const { media, url, alt, title, displayMode, minHeight, newTab } =
+  extractProperties<ImageProperties>(props.properties, {
+    media: { default: undefined },
+    url: { default: "" },
+    alt: { default: "" },
+    title: { default: "" },
+    displayMode: { default: "standard" },
+    minHeight: { default: "" },
+    newTab: { default: false },
+  });
 
 const imageUrl = computed(() => {
-  return media.value?.url || url.value || "";
+  return media?.url || url || "";
 });
 
-const displayModeClass = computed(() => {
-  const modeMap: Record<string, string> = {
-    standard: "object-cover",
-    cover: "object-cover",
-    contain: "object-contain",
-    auto: "object-scale-down",
-  };
-  return modeMap[displayMode.value as string] || "object-cover";
-});
+// Use shared style configuration
+const displayModeClass = computed(
+  () =>
+    IMAGE_DISPLAY_MODE_CLASSES[displayMode] ||
+    IMAGE_DISPLAY_MODE_CLASSES.standard,
+);
 
 const containerClass = computed(() => {
   const classes = ["content-image", "relative", "w-full"];
 
-  if (displayMode.value === "cover" && minHeight.value) {
+  if (displayMode === "cover" && minHeight) {
     classes.push("flex items-center justify-center");
   }
 
@@ -61,7 +46,7 @@ const containerClass = computed(() => {
 const imageClass = computed(() => {
   const classes = ["w-full", "h-auto"];
 
-  if (displayMode.value === "cover") {
+  if (displayMode === "cover") {
     classes.push("absolute inset-0 h-full", displayModeClass.value);
   } else {
     classes.push(displayModeClass.value);
@@ -71,10 +56,10 @@ const imageClass = computed(() => {
 });
 
 const imageAlt = computed(() => {
-  return alt.value || media.value?.alt || title.value || "Image";
+  return alt || media?.alt || title || "Image";
 });
 
-const linkTarget = computed(() => (newTab.value ? "_blank" : "_self"));
+const linkTarget = computed(() => (newTab ? "_blank" : "_self"));
 </script>
 
 <template>

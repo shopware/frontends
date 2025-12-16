@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { getElementProperty, getSlotNames } from "~/composables/contentHelpers";
+import { getSlotNames } from "~/composables/contentHelpers";
+import { extractProperties } from "~/composables/useContentFactory";
+import type { GridProperties } from "~/composables/useContentProperties";
+import {
+  GAP_CLASSES,
+  GRID_COLUMN_CLASSES,
+} from "~/composables/useContentStyles";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -8,47 +14,25 @@ const props = defineProps<{
   properties: Record<string, unknown>;
 }>();
 
-const columns = computed(() =>
-  getElementProperty<number>(props.element, "columns", 2),
-);
-const gap = computed(() =>
-  getElementProperty<"small" | "medium" | "large">(
-    props.element,
-    "gap",
-    "medium",
-  ),
-);
-const displayMode = computed(() =>
-  getElementProperty<"standard" | "cover">(
-    props.element,
-    "displayMode",
-    "standard",
-  ),
+// Type-safe property extraction
+const { columns, gap, displayMode } = extractProperties<GridProperties>(
+  props.properties,
+  {
+    columns: { default: 2 },
+    gap: { default: "medium" },
+    displayMode: { default: "standard" },
+  },
 );
 
-const gapClass = computed(() => {
-  const gapMap: Record<string, string> = {
-    small: "gap-4",
-    medium: "gap-6",
-    large: "gap-8",
-  };
-  return gapMap[gap.value as string] || "gap-6";
-});
+// Use shared style configurations
+const gapClass = computed(() => GAP_CLASSES[gap] || GAP_CLASSES.medium);
 
-const columnsClass = computed(() => {
-  const colsMap: Record<number, string> = {
-    1: "grid-cols-1",
-    2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
-    5: "grid-cols-1 md:grid-cols-3 lg:grid-cols-5",
-    6: "grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
-  };
-  return colsMap[columns.value as number] || colsMap[2];
-});
+const columnsClass = computed(
+  () => GRID_COLUMN_CLASSES[columns] || GRID_COLUMN_CLASSES[2],
+);
 
 const displayClass = computed(() => {
-  return displayMode.value === "cover" ? "min-h-screen" : "";
+  return displayMode === "cover" ? "min-h-screen" : "";
 });
 
 const slotNames = computed(() => getSlotNames(props.element));
