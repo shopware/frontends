@@ -32,7 +32,7 @@
     "@vitejs/plugin-vue": "6.0.1",
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "unplugin-export-collector": "0.6.0",
     "vinyl": "3.0.0"
   },
