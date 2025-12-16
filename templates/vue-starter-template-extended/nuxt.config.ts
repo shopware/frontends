@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { createResolver } from "@nuxt/kit";
+
+const { resolve } = createResolver(import.meta.url);
+
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"],
   compatibilityDate: "2025-12-05",
@@ -12,6 +16,20 @@ export default defineNuxtConfig({
       },
     },
   },
+  components: [
+    {
+      path: resolve("./app/components/public/content"),
+      pathPrefix: true,
+      global: true,
+      extensions: [".vue"],
+    },
+    {
+      path: resolve("./app/components/content"),
+      pathPrefix: false,
+      global: true,
+      extensions: [".vue"],
+    },
+  ],
   unocss: {
     nuxtLayers: true,
   },

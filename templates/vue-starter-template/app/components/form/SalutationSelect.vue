@@ -29,10 +29,12 @@ const {
   {
     transform: (apiData) => {
       const options =
-        apiData.data.elements?.map((element) => ({
-          label: element.displayName,
-          value: element.id,
-        })) || [];
+        apiData.data.elements?.map(
+          (element: { displayName: string; id: string }) => ({
+            label: element.displayName,
+            value: element.id,
+          }),
+        ) || [];
       return { options, cachedDate: new Date() };
     },
     getCachedData: (key) => {

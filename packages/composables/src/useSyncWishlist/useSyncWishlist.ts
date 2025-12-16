@@ -92,7 +92,9 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
         { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
       );
       _wishlistItems.value = [
-        ...response.data.products.elements.map((element) => element.id),
+        ...response.data.products.elements.map(
+          (element: { id: string }) => element.id,
+        ),
       ];
       _wishlistProducts.value = response.data.products.elements;
       totalWishlistItemsCount.value = response.data.products.total ?? 0;

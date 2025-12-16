@@ -281,7 +281,7 @@ export function useUser(): UseUserReturn {
     paymentMethodId: string,
   ): Promise<void> {
     await apiClient.invoke(
-      // @ts-expect-error TODO: [MAJOR] Removed since 6.7
+      // @ts-expect-error - TODO: [MAJOR] Removed since 6.7
       "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
       {
         pathParams: { paymentMethodId },
