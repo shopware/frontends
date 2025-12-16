@@ -22,31 +22,12 @@ Shopware Frontends offers shortcuts to getting started with your custom frontend
 Integrate Shopware Frontends as an **npm package** into your existing [custom Vue project](./templates/custom-vue-project).
 :::
 
-## Demo Store Template
-
-<a href="./templates/demo-store-template.html"><img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
-
-:::info
-The **Demo Store Template** is not production-ready. It is only a **reference implementation** that contains most of the features which you can use as a starting point. It is not possible to update it automatically or install Shopware extensions on it.
-:::
-
-The demo store template is a **reference implementation** of an online store UI. It comes with all default features implemented as boilerplate code - such as
-
-- Navigation & Header
-- Cart
-- Checkout
-- CMS Pages
-
-It is based on Nuxt3 and Tailwind.css.
-
-<PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
-
 ## Vue Starter Template
 
 The Vue Starter Template is a production-ready foundation for building custom Shopware storefronts. Unlike the Demo Store Template, it contains no demo UI or boilerplate - just the essential packages and configuration you need to start building.
 
 **What's included:**
-- Nuxt 4.1 with full SSR
+- Nuxt 4.x with full SSR
 - All Shopware Frontends core packages
 - UnoCSS (Tailwind-compatible) styling
 - i18n support
@@ -72,13 +53,35 @@ An example implementation showing how to extend the Vue Starter Template using N
 
 ## Blank Template
 
-<a href="./templates/blank-template.html"><img src="../.assets/blank-template.jpg" alt="Blank Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
+<a href="./templates/blank-template.html"><img src="../.assets/blank-template.jpg" alt="Blank Template Screenshot" class="border-1px border-#eeeeee rounded-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
 If you like to start from scratch, you can use the blank template. It can be handy if you want to use a different CSS framework or create a completely new frontend, but leverage the built-in functionality of all Shopware Frontends packages.
 
 The blank template has all "non-UI" packages pre-installed, but you have to bring your own styles and components.
 
 <PageRef page="/getting-started/templates/blank-template.html" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
+
+## Demo Store Template
+
+:::warning DEPRECATED
+This standalone template is deprecated. We recommend using the **Vue Starter Template** approach, which leverages Nuxt layers to extend a base template. This pattern provides better maintainability, automatic updates, and allows you to build multiple brand storefronts from a single foundation.
+:::
+<a href="./templates/demo-store-template.html"><img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
+
+:::info
+The **Demo Store Template** is not production-ready. It is only a **reference implementation** that contains most of the features which you can use as a starting point. It is not possible to update it automatically or install Shopware extensions on it.
+:::
+
+The demo store template is a **reference implementation** of an online store UI. It comes with all default features implemented as boilerplate code - such as
+
+- Navigation & Header
+- Cart
+- Checkout
+- CMS Pages
+
+It is based on Nuxt3 and UnoCSS (Tailwind)
+
+<PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
 ## Custom projects
 
