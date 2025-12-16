@@ -84,26 +84,50 @@ Content elements are mapped to Vue components based on their `component` type:
 
 Properties are dynamic and specific to each content element type. They're stored in `element.properties` and contain the configuration for that element.
 
-Use the `getElementProperty<T>()` helper to safely access properties with type checking and defaults:
+**Modern Approach (Level 2 - Recommended):**
+
+Use `extractProperties<T>()` with typed interfaces for type-safe property extraction:
 
 ```typescript
-import { getElementProperty } from "~/composables/contentHelpers";
+import { extractProperties } from "~/composables/useContentFactory";
+import type { TextProperties } from "~/composables/useContentProperties";
+import { ALIGNMENT_TEXT_CLASSES } from "~/composables/useContentStyles";
 
-// Access specific properties with type safety
-const title = computed(() => 
-  getElementProperty<string>(props.element, "title", "")
+// Define property interface (or use existing ones)
+interface MyComponentProperties extends Record<string, unknown> {
+  title?: string;
+  alignment?: "left" | "center" | "right";
+  isVisible?: boolean;
+}
+
+// Type-safe property extraction with defaults
+const { title, alignment, isVisible } = extractProperties<MyComponentProperties>(
+  props.properties,
+  {
+    title: { default: "" },
+    alignment: { default: "left" },
+    isVisible: { default: true },
+  }
 );
-const alignment = computed(() => 
-  getElementProperty<"left" | "center" | "right">(
-    props.element, 
-    "alignment", 
-    "left"
-  )
-);
-const isVisible = computed(() => 
-  getElementProperty<boolean>(props.element, "visible", true)
+
+// Use shared style configurations
+const alignmentClass = computed(() =>
+  ALIGNMENT_TEXT_CLASSES[alignment] || ALIGNMENT_TEXT_CLASSES.left
 );
 ```
+
+**Benefits:**
+- ✅ Full type safety without manual type assertions
+- ✅ Guaranteed non-undefined values from defaults
+- ✅ Shared style configurations for consistency
+- ✅ Less boilerplate code
+
+**Available Utilities:**
+- `useContentProperties.ts` - Pre-defined property type interfaces
+- `useContentStyles.ts` - Shared style class mappings
+- `useContentFactory.ts` - Property extraction utilities
+
+See [CONTENT_COMPONENT_PATTERNS.md](../../../components/content/CONTENT_COMPONENT_PATTERNS.md) for detailed patterns and examples.
 
 **Common Properties by Element Type:**
 
@@ -137,36 +161,39 @@ const isVisible = computed(() =>
   - `product: object` - Product data
   - `displayMode: "standard" | "minimal" | "cover"` - Card style
 
-**Example:**
+**Example (Modern Approach):**
 ```vue
 <!-- app/components/content/ContentText.vue -->
 <script setup lang="ts">
 import { computed } from "vue";
-import { getElementProperty } from "~/composables/contentHelpers";
+import { extractProperties } from "~/composables/useContentFactory";
+import type { TextProperties } from "~/composables/useContentProperties";
+import { ALIGNMENT_TEXT_CLASSES } from "~/composables/useContentStyles";
 import type { Schemas } from "#shopware";
 
-defineProps<{
+const props = defineProps<{
   element: Schemas["ContentElement"];
   properties: Record<string, unknown>;
 }>();
 
-const title = computed(() =>
-  getElementProperty<string>(props.element, "title", ""),
+// Type-safe property extraction
+const { title, content, alignment } = extractProperties<TextProperties>(
+  props.properties,
+  {
+    title: { default: "" },
+    content: { default: "" },
+    alignment: { default: "left" },
+  }
 );
-const content = computed(() =>
-  getElementProperty<string>(props.element, "content", ""),
-);
-const alignment = computed(() =>
-  getElementProperty<"left" | "center" | "right">(
-    props.element,
-    "alignment",
-    "left",
-  ),
+
+// Use shared style configuration
+const alignmentClass = computed(() =>
+  ALIGNMENT_TEXT_CLASSES[alignment] || ALIGNMENT_TEXT_CLASSES.left
 );
 </script>
 
 <template>
-  <div class="content-text" :class="`text-${alignment}`">
+  <div class="content-text" :class="alignmentClass">
     <h1 v-if="title">{{ title }}</h1>
     <div v-if="content" v-html="content" />
   </div>
