@@ -22,8 +22,8 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@iconify-json/carbon": "1.2.14",
-    "@iconify/utils": "3.0.2",
+    "@iconify-json/carbon": "1.2.15",
+    "@iconify/utils": "3.1.0",
     "@nuxt/image": "2.0.0",
     "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
@@ -31,21 +31,21 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@vuelidate/core": "2.0.3",
-    "nuxt": "4.2.1",
-    "vue": "3.5.24"
+    "nuxt": "4.2.2",
+    "vue": "3.5.25"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/icon": "^2.1.0",
+    "@nuxt/icon": "^2.1.1",
     "@nuxtjs/i18n": "10.0.1",
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.5.4",
-    "@vue/compiler-sfc": "3.5.24",
-    "@vueuse/core": "14.0.0",
-    "@vueuse/nuxt": "14.0.0",
+    "@unocss/nuxt": "66.5.10",
+    "@vue/compiler-sfc": "3.5.25",
+    "@vueuse/core": "14.1.0",
+    "@vueuse/nuxt": "14.1.0",
     "typescript": "5.9.3",
-    "unocss": "66.5.4",
-    "vite": "7.1.11",
-    "vue-tsc": "3.1.4"
+    "unocss": "66.5.10",
+    "vite": "7.3.0",
+    "vue-tsc": "3.1.8"
   }
 }
