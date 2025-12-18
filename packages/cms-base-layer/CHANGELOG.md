@@ -1,5 +1,122 @@
 # @shopware/cms-base-layer
 
+## 2.0.0
+
+### Major Changes
+
+- [#1944](https://github.com/shopware/frontends/pull/1944) [`c41a839`](https://github.com/shopware/frontends/commit/c41a8397538e5b18475134635cc44295c34dde2d) Thanks [@mkucmus](https://github.com/mkucmus)! - Updates the `@shopware/cms-base-layer` package with the following changes:
+  - Adds support for the new `SwQuantitySelect` component
+  - Updates the `SwProductAddToCart` component to use the new `SwQuantitySelect` component
+  - Fixes the `Status` component to use the new state classes
+  - Updates the `uno.config.ts` file to include default styling that can be used and extended in the end-project:
+
+  ## Nuxt UnoCSS Configuration Example
+
+  ```ts
+  // nuxt.config.ts in your end-project
+  {
+    unocss: {
+      nuxtLayers: true; // enable Nuxt layers support in order to merge UnoCSS configurations
+    }
+  }
+  ```
+
+  ## UnoCSS Configuration Example
+
+  ```ts
+  // uno.config.ts in your end-project
+  import { mergeConfigs } from "@unocss/core";
+  import baseConfig from "./.nuxt/uno.config.mjs";
+
+  export default mergeConfigs(baseConfig, {
+    // will be merged with the base config - all optional
+    theme: {
+      colors: {
+        "brand-primary": "#ff3e00",
+        "brand-secondary": "#ff6a00",
+      },
+    },
+    safelist: ["states-success"],
+    preflights: [
+      {
+        getCSS: () => `
+          body {
+              font-family: 'Inter', sans-serif;
+              -moz-osx-font-smoothing: grayscale;
+              -webkit-font-smoothing: antialiased;
+          }
+          `,
+      },
+    ],
+  });
+  ```
+
+### Minor Changes
+
+- [#2030](https://github.com/shopware/frontends/pull/2030) [`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c) Thanks [@mkucmus](https://github.com/mkucmus)! - Introduce new UI components, refine listing filters (structure and UX), add global collapse animations, and improve type safety.
+
+  ### Features
+  - New UI components:
+    - SwFilterChips – shows active filters as removable chips
+    - SwSortDropdown – sorting dropdown
+    - SwProductListingPagination – listing pagination
+    - Checkbox – reusable checkbox
+    - ChevronIcon – configurable chevron (up/down/left/right)
+    - RadioButton – reusable radio button
+    - SwitchButton – toggle switch
+
+  ### Refactors
+  - SwFilterProperties:
+    - Replace computed factory with `isChecked()` and `selectValue()` helpers for better performance and readability.
+  - Filter collapse animation:
+    - Unified expand/collapse animations for SwFilterProperties, SwFilterRating, SwFilterShippingFree, and SwFilterPrice using UnoCSS preflights.
+
+  ### TypeScript fixes
+  - SwProductListingFilters:
+    - Provide fallbacks (`?? []`, `?? ''`) when passing `getSortingOrders` and `getCurrentSortingOrder`.
+  - SwFilterChips:
+    - Relax prop types to accept union types compatible with both full Shopware schemas and simplified helper types.
+
+  ### Code quality improvements
+  - SwFilterPrice:
+    - Remove unnecessary optional chaining on `props.selectedFilters` to prevent masking undefined errors
+  - Checkbox component:
+    - Replace `outline-blue-500` with `outline-brand-primary` for brand consistency
+    - Make `label` prop optional to support checkbox-only pattern
+  - SwFilterShippingFree:
+    - Add i18n support using `useCmsTranslations` instead of hardcoded "free delivery" text
+  - SwFilterProperties:
+    - Remove unnecessary empty label prop from Checkbox usage
+
+  **Note:** Transition classes are globally available via UnoCSS preflights.
+
+- [#2139](https://github.com/shopware/frontends/pull/2139) [`20d1066`](https://github.com/shopware/frontends/commit/20d106638958170dd191ac3d95e3e536f3fcc787) Thanks [@mkucmus](https://github.com/mkucmus)! - Added a new `SwProductReviewsForm` component that allows logged-in customers to submit product reviews.
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+
+- [#2176](https://github.com/shopware/frontends/pull/2176) [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602) Thanks [@mkucmus](https://github.com/mkucmus)! - - Extract product listing data early from CMS page responses to enable SSR rendering
+  - Remove ClientOnly wrappers from `SwProductListingFilters` and `SwFilterChips` components
+  - Resolve hydration mismatches on category pages with filters
+
+### Patch Changes
+
+- [#2174](https://github.com/shopware/frontends/pull/2174) [`e9f3d97`](https://github.com/shopware/frontends/commit/e9f3d972d7a126ec72f405a3595e53a61f6180f9) Thanks [@mkucmus](https://github.com/mkucmus)! - Added a new image placeholder.
+
+- [#2162](https://github.com/shopware/frontends/pull/2162) [`e1fae3e`](https://github.com/shopware/frontends/commit/e1fae3eb6430e5c8e133456fbaf7f215f80c36f6) Thanks [@mkucmus](https://github.com/mkucmus)! - Replace hardcoded colors with theme tokens, add image placeholder composable, improve URL encoding for special characters in image paths, enhance CMS block layouts, and use useTemplateRef for better type safety
+
+- [#2128](https://github.com/shopware/frontends/pull/2128) [`efe125e`](https://github.com/shopware/frontends/commit/efe125e7bea273bb904356114cf93adf68a416fb) Thanks [@mkucmus](https://github.com/mkucmus)! - Enhanced SwProductReviews component with reviewer names, shop feedback, and star ratings using direct SVG imports.
+
+- [#2008](https://github.com/shopware/frontends/pull/2008) [`3a1bca9`](https://github.com/shopware/frontends/commit/3a1bca983c4fc866c67b90897bd86d7488f8cac8) Thanks [@mkucmus](https://github.com/mkucmus)! - Added missing labels for `SwQuantitySelect` component.
+
+- [#1951](https://github.com/shopware/frontends/pull/1951) [`3f2379b`](https://github.com/shopware/frontends/commit/3f2379bdc428b481943cbcf3711a37cb91e2d298) Thanks [@mkucmus](https://github.com/mkucmus)! - Use proper paths for components configuration
+
+- [#2154](https://github.com/shopware/frontends/pull/2154) [`168989e`](https://github.com/shopware/frontends/commit/168989e51e5c81c4cbb746c132d6561c019e046a) Thanks [@mkucmus](https://github.com/mkucmus)! - Implicitly set public components as global to expose them for templates that extend from the base one.
+
+- Updated dependencies [[`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e), [`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c), [`a44d871`](https://github.com/shopware/frontends/commit/a44d8712d9ae5ee196c03ac8b894f3d1392d0e68), [`e43d9b7`](https://github.com/shopware/frontends/commit/e43d9b7f559af21be8b66f2021cea2d14940e4aa), [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986), [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986), [`7fe2ef9`](https://github.com/shopware/frontends/commit/7fe2ef96a9d9d156683b85d31f0a660458c9fbfd), [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19), [`56cd178`](https://github.com/shopware/frontends/commit/56cd178e25fe2399b7170ccac3044e980621f041), [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602), [`e1fae3e`](https://github.com/shopware/frontends/commit/e1fae3eb6430e5c8e133456fbaf7f215f80c36f6), [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/composables@1.10.0
+  - @shopware/helpers@1.6.0
+  - @shopware/api-client@1.4.0
+
 ## 1.5.1
 
 ### Patch Changes
@@ -40,7 +157,6 @@
 ### Patch Changes
 
 - [#1685](https://github.com/shopware/frontends/pull/1685) [`7324620`](https://github.com/shopware/frontends/commit/7324620a3f39c1b62f7cc294192a3e8b8b336d09) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove `salutationId` as a required field from the forms:
-
   - SwNewsletterForm
   - SwContactForm
 
@@ -174,7 +290,6 @@
 - [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Upgrade eslint config to flat format + lint
 
 - [#1148](https://github.com/shopware/frontends/pull/1148) [`7c38102`](https://github.com/shopware/frontends/commit/7c38102be299756ac1c2dd690d9ace6044f35206) Thanks [@mkucmus](https://github.com/mkucmus)! - - Change resizing mode of Shopware CDN from `crop` to `cover` mode for image of product within `SwProductCart` component
-
   - Make translation for tier pricing table consistent
 
 - [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Removed optional chaining for translated properties
@@ -210,7 +325,6 @@
 ### Minor Changes
 
 - [#524](https://github.com/shopware/frontends/pull/524) [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Moved cms internal helper functions:
-
   - `buildUrlPrefix` - moved to helpers package, see `packages/helpers/src/cms/buildUrlPrefix.ts`.
   - `getCmsTranslations` - move to composables as `useCmsTranslations`
   - `getUrlPrefix` - move to composables as method in `useUrlResolver`
@@ -225,7 +339,6 @@
 ### Patch Changes
 
 - [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.8.1** to **^3.8.2**
   - Changed dependency _vue_ from **^3.3.8** to **^3.3.9**
 
@@ -270,17 +383,14 @@
 ### Patch Changes
 
 - [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.8.0** to **^3.8.1**
 
 - [#402](https://github.com/shopware/frontends/pull/402) [`9a89f409`](https://github.com/shopware/frontends/commit/9a89f40915c08ded0aee6140b42a12a18e74627f) Thanks [@mkucmus](https://github.com/mkucmus)! - Alignment to a11y standards
 
 - [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.7.4** to **^3.8.0**
 
 - [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.7.3** to **^3.7.4**
 
 - [#413](https://github.com/shopware/frontends/pull/413) [`c6db572f`](https://github.com/shopware/frontends/commit/c6db572f0b041726d89c7e2e18eaed6864189f3a) Thanks [@mkucmus](https://github.com/mkucmus)! - Render <img> element in inner CMS content
@@ -290,7 +400,6 @@
 - [#420](https://github.com/shopware/frontends/pull/420) [`f3be470b`](https://github.com/shopware/frontends/commit/f3be470b42b536ba84a9ce968f440f9d6409bc19) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add category link resolver
 
 - [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.7.1** to **^3.7.3**
 
 - Updated dependencies [[`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720), [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303), [`87213fb0`](https://github.com/shopware/frontends/commit/87213fb02b292b11f45b7fb5956fb8bc1ae33800), [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0), [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3), [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5), [`29f849d2`](https://github.com/shopware/frontends/commit/29f849d28c0d0ff8fc34f0d5e921ac2828c93f2b), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303)]:
@@ -303,7 +412,6 @@
 ### Patch Changes
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.6.5** to **^3.7.1**
   - Changed dependency _@vuelidate/validators_ from **^2.0.3** to **^2.0.4**
 
@@ -342,7 +450,6 @@
 ### Patch Changes
 
 - [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.6.3** to **^3.6.5**
 
 - Updated dependencies [[`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b)]:
@@ -363,13 +470,11 @@
 - [#321](https://github.com/shopware/frontends/pull/321) [`f6f4d5c`](https://github.com/shopware/frontends/commit/f6f4d5c85e800c6d2067c6acd594a8711f43eea1) Thanks [@akf-bw](https://github.com/akf-bw)! - Fixed CMS apply error on missing UnoCSS
 
 - [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.6.1** to **^3.6.2**
   - Changed dependency _@vuelidate/core_ from **^2.0.2** to **^2.0.3**
   - Changed dependency _@vuelidate/validators_ from **^2.0.2** to **^2.0.3**
 
 - [#328](https://github.com/shopware/frontends/pull/328) [`a75617f`](https://github.com/shopware/frontends/commit/a75617f4104f7e66599aa5341e46759bb9d414c9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _@nuxt/kit_ from **^3.6.2** to **^3.6.3**
 
 - Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d), [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337), [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9)]:

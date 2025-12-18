@@ -165,11 +165,39 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.9.1
+### Latest changes: 1.10.0
+
+### Minor Changes
+
+- [#2098](https://github.com/shopware/frontends/pull/2098) [`a44d871`](https://github.com/shopware/frontends/commit/a44d8712d9ae5ee196c03ac8b894f3d1392d0e68) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhanced the `useSyncWishlist` composable by exposing the `limit`, `products`, and `isLoading` properties, allowing better control and monitoring of the wishlist state. Similarly, updated `useWishlist` to also expose `limit`, `products`, and `isLoading` properties for both local and synced wishlists, providing a consistent API and improved state handling for wishlist management.
+
+- [#1997](https://github.com/shopware/frontends/pull/1997) [`e43d9b7`](https://github.com/shopware/frontends/commit/e43d9b7f559af21be8b66f2021cea2d14940e4aa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added consts `SUBSRIBE_KEY` and `UNSUBSCRIBE_KEY` for newsletter status in useNewsletter composable
+
+- [#1974](https://github.com/shopware/frontends/pull/1974) [`7fe2ef9`](https://github.com/shopware/frontends/commit/7fe2ef96a9d9d156683b85d31f0a660458c9fbfd) Thanks [@mkucmus](https://github.com/mkucmus)! - Use proper associations format within `useDefaultOrderAssociations` (no redundant nesting).
+
+  Returned value is in type of `Schemas["Criteria"]['associations']` now:
+
+  ```ts
+  const { loadOrders } = useCustomerOrders();
+
+  loadOrders({
+    // ... other parameters
+    associations: useDefaultOrderAssociations(),
+  });
+  ```
+
+- [#2176](https://github.com/shopware/frontends/pull/2176) [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602) Thanks [@mkucmus](https://github.com/mkucmus)! - - Add `initialListing` parameter to `useListing` composable for SSR data hydration
+  - Update `createCategoryListingContext` to accept initial listing data
+  - Maintain backward compatibility with existing implementations
+
+- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
 
 ### Patch Changes
 
-- [#1877](https://github.com/shopware/frontends/pull/1877) [`ab040bb`](https://github.com/shopware/frontends/commit/ab040bb6cc05541001a983c26d5cb6dbf3192394) Thanks [@mkucmus](https://github.com/mkucmus)! - Adjust `readSeoUrl` request in case of trailing slash when technical URL is used
+- [`87771c3`](https://github.com/shopware/frontends/commit/87771c3b7a4521fcdba43cb4c967b61f5db01b3e) Thanks [@mkucmus](https://github.com/mkucmus)! - add nested media entity association explicitly
 
-- Updated dependencies [[`c8fa438`](https://github.com/shopware/frontends/commit/c8fa438b38de6dbc43a2895f2d1906907447c384)]:
-  - @shopware/helpers@1.5.0
+- [#1985](https://github.com/shopware/frontends/pull/1985) [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986) Thanks [@mkucmus](https://github.com/mkucmus)! - Change `isInWishlist` property type to `ComputedRef` within `useProductWishlist` composable.
+
+- Updated dependencies [[`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c), [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986), [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19), [`56cd178`](https://github.com/shopware/frontends/commit/56cd178e25fe2399b7170ccac3044e980621f041), [`e1fae3e`](https://github.com/shopware/frontends/commit/e1fae3eb6430e5c8e133456fbaf7f215f80c36f6), [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/helpers@1.6.0
+  - @shopware/api-client@1.4.0

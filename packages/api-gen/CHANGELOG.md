@@ -1,5 +1,38 @@
 # @shopware/api-gen
 
+## 1.4.0
+
+### Minor Changes
+
+- [#2181](https://github.com/shopware/frontends/pull/2181) [`ed72205`](https://github.com/shopware/frontends/commit/ed72205853e9fc40db513f8a4d08acf2dd7b1fba) Thanks [@patzick](https://github.com/patzick)! - Add API-specific configuration support for `store-api` and `admin-api` in `api-gen.config.json`. This allows configuring `rules` and `patches` separately for each API type. Root-level `rules` and `patches` are now deprecated but still supported for backwards compatibility.
+
+  Example:
+
+  ```json
+  {
+    "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+    "store-api": {
+      "patches": ["storeApiSchema.overrides.json"],
+      "rules": ["COMPONENTS_API_ALIAS"]
+    },
+    "admin-api": {
+      "patches": ["adminApiSchema.overrides.json"]
+    }
+  }
+  ```
+
+- [#2126](https://github.com/shopware/frontends/pull/2126) [`e595bc1`](https://github.com/shopware/frontends/commit/e595bc1ea6afe01a0065300277a78ef8c1fe5667) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhanced OpenAPI schema override merging to properly handle conflicts between `$ref` and composition keywords (`oneOf`, `anyOf`, `allOf`, `not`). When merging overrides:
+  - Composition keywords now automatically remove conflicting `$ref` properties
+  - `$ref` overrides can replace composition keywords entirely
+  - Different composition keywords can replace each other (e.g., `allOf` → `oneOf`)
+
+  This ensures correct schema merging when using composition keywords in override files, preventing invalid OpenAPI schemas with conflicting `$ref` and composition keyword properties.
+
+### Patch Changes
+
+- Updated dependencies [[`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
+  - @shopware/api-client@1.4.0
+
 ## 1.3.3
 
 ### Patch Changes
@@ -201,7 +234,6 @@
 ### Patch Changes
 
 - [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.7.0** to **^6.7.1**
   - Changed dependency _prettier_ from **^3.0.3** to **^3.1.0**
 
@@ -214,11 +246,9 @@
 ### Patch Changes
 
 - [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.5.5** to **^6.6.1**
 
 - [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.6.1** to **^6.7.0**
 
 ## 0.0.7
@@ -226,18 +256,15 @@
 ### Patch Changes
 
 - [#369](https://github.com/shopware/frontends/pull/369) [`bc7a2db2`](https://github.com/shopware/frontends/commit/bc7a2db292d67cc448a901c1b7a9b5cb7dfbcd04) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.4.0** to **^6.5.2**
   - Changed dependency _prettier_ from **^3.0.0** to **^3.0.2**
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _ofetch_ from **^1.2.1** to **^1.3.3**
   - Changed dependency _openapi-typescript_ from **^6.5.3** to **^6.5.5**
   - Changed dependency _prettier_ from **^3.0.2** to **^3.0.3**
 
 - [#375](https://github.com/shopware/frontends/pull/375) [`bd88d6fa`](https://github.com/shopware/frontends/commit/bd88d6fa95de2b90f8a1e08e34159b46c5932b3b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _ofetch_ from **^1.1.1** to **^1.2.1**
   - Changed dependency _openapi-typescript_ from **^6.5.2** to **^6.5.3**
 
@@ -246,7 +273,6 @@
 ### Patch Changes
 
 - [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.3.4** to **^6.4.0**
 
 ## 0.0.5
@@ -256,7 +282,6 @@
 - [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
 
 - [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
   - Changed dependency _openapi-typescript_ from **^6.2.8** to **^6.3.4**
   - Changed dependency _prettier_ from **^2.8.8** to **^3.0.0**
   - Changed dependency _semver_ from **^7.5.3** to **^7.5.4**
