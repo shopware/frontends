@@ -60,12 +60,20 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Demo Store",
-            link: "/getting-started/templates/demo-store-template.html",
+            text: "Vue Starter Template",
+            link: "/getting-started/templates/vue-starter-template.html",
+          },
+          {
+            text: "Vue Starter Template Extended",
+            link: "/getting-started/templates/vue-starter-template-extended.html",
           },
           {
             text: "Blank Template",
             link: "/getting-started/templates/blank-template.html",
+          },
+          {
+            text: "Demo Store",
+            link: "/getting-started/templates/demo-store-template.html",
           },
           {
             text: "Custom Vue Project",

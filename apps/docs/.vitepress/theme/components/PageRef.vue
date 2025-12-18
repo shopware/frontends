@@ -23,17 +23,34 @@
 
 <script>
 import { ref, computed, useAttrs } from "vue";
-import { withBase } from "vitepress";
+import { withBase, useData } from "vitepress";
 
 export default {
   setup() {
     const attrs = useAttrs();
+    const { page: currentPage } = useData();
 
     const title = ref(attrs.title);
     const page = ref(attrs.page);
     const icon = ref(attrs.icon || "");
     const sub = ref(attrs.sub || "");
     const target = ref(attrs.target || "");
+
+    // Normalize path by resolving .. and . segments
+    const normalizePath = (path) => {
+      const parts = path.split("/").filter(Boolean);
+      const result = [];
+
+      for (const part of parts) {
+        if (part === "..") {
+          result.pop();
+        } else if (part !== ".") {
+          result.push(part);
+        }
+      }
+
+      return `/${result.join("/")}`;
+    };
 
     // Resolve page path with base URL support
     const resolvedPage = computed(() => {
@@ -44,8 +61,26 @@ export default {
         return pagePath;
       }
 
-      // Use withBase for internal links to handle base path correctly
-      return withBase(pagePath || "");
+      // Absolute internal path
+      if (pagePath?.startsWith("/")) {
+        return withBase(pagePath);
+      }
+
+      // Relative path - resolve against current page's directory
+      if (pagePath) {
+        const currentPath = currentPage.value.relativePath;
+        const currentDir = currentPath.substring(
+          0,
+          currentPath.lastIndexOf("/"),
+        );
+        const fullPath = currentDir
+          ? `/${currentDir}/${pagePath}`
+          : `/${pagePath}`;
+        const normalizedPath = normalizePath(fullPath);
+        return withBase(normalizedPath);
+      }
+
+      return withBase("");
     });
 
     return {

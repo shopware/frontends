@@ -8,13 +8,55 @@ import { type OverridesSchema, extendedDefu } from "./patchJsonSchema";
 import { loadLocalJSONFile } from "./utils";
 import type { validationRules } from "./validation-rules";
 
-export type ApiGenConfig = {
-  rules: Array<keyof typeof validationRules>;
+export type ApiTypeConfig = {
+  rules?: Array<keyof typeof validationRules>;
   /**
    * URL or path to the JSON file with overrides
    */
-  patches: string;
+  patches?: string | string[];
 };
+
+export type ApiGenConfig = {
+  /**
+   * Configuration specific to Store API type generation
+   */
+  "store-api"?: ApiTypeConfig;
+  /**
+   * Configuration specific to Admin API type generation
+   */
+  "admin-api"?: ApiTypeConfig;
+  /**
+   * @deprecated Use 'store-api.rules' or 'admin-api.rules' instead
+   */
+  rules?: Array<keyof typeof validationRules>;
+  /**
+   * @deprecated Use 'store-api.patches' or 'admin-api.patches' instead
+   * URL or path to the JSON file with overrides
+   */
+  patches?: string | string[];
+};
+
+/**
+ * Get the effective config for a specific API type.
+ * API-type specific config takes precedence over root-level (deprecated) config.
+ */
+export function getApiTypeConfig(
+  config: ApiGenConfig | null,
+  apiType: "store" | "admin",
+): ApiTypeConfig {
+  if (!config) {
+    return {};
+  }
+
+  const apiTypeKey = `${apiType}-api` as "store-api" | "admin-api";
+  const apiTypeConfig = config[apiTypeKey] || {};
+
+  // Merge root-level deprecated config as fallback
+  return {
+    rules: apiTypeConfig.rules ?? config.rules,
+    patches: apiTypeConfig.patches ?? config.patches,
+  };
+}
 
 export const API_GEN_CONFIG_FILENAME = "api-gen.config.json";
 
@@ -29,7 +71,25 @@ export async function loadApiGenConfig(
       // name: "api-gen", // file should be "api-gen.config.json"
       encoding: "utf-8",
     });
-    return json5.parse<ApiGenConfig>(config);
+    const parsedConfig = json5.parse<ApiGenConfig>(config);
+
+    // Show deprecation warnings for root-level config properties
+    if (parsedConfig.rules && !params.silent) {
+      console.warn(
+        c.yellow(
+          `⚠️  Deprecation warning: Root-level 'rules' in ${API_GEN_CONFIG_FILENAME} is deprecated. Use 'store-api.rules' or 'admin-api.rules' instead.`,
+        ),
+      );
+    }
+    if (parsedConfig.patches && !params.silent) {
+      console.warn(
+        c.yellow(
+          `⚠️  Deprecation warning: Root-level 'patches' in ${API_GEN_CONFIG_FILENAME} is deprecated. Use 'store-api.patches' or 'admin-api.patches' instead.`,
+        ),
+      );
+    }
+
+    return parsedConfig;
   } catch (error) {
     if (!params.silent) {
       console.error(

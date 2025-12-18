@@ -33,7 +33,7 @@ This section deals with the different packages and their abstractions. It is sor
 
 The API client provides a common interface to access the Shopware API. It can be used standalone in any JavaScript project.
 
-<PageRef page="/packages/api-client.html" title="API Client Reference" sub="Package reference with all services" />
+<PageRef page="../packages/api-client.html" title="API Client Reference" sub="Package reference with all services" />
 
 ## helpers
 
@@ -43,7 +43,7 @@ The API client provides a common interface to access the Shopware API. It can be
 
 Helpers are functions that can be used for formatting, data manipulation and other stateless tasks within any JavaScript project. They are not tied to any other components.
 
-<PageRef page="/packages/helpers.html" title="Helpers Reference" sub="Package reference with all helper methods" />
+<PageRef page="../packages/helpers.html" title="Helpers Reference" sub="Package reference with all helper methods" />
 
 ## composables
 
@@ -54,7 +54,7 @@ Helpers are functions that can be used for formatting, data manipulation and oth
 
 The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/).
 
-<PageRef page="/packages/composables.html" title="Composables Reference" sub="Package API reference with all composables" />
+<PageRef page="../packages/composables.html" title="Composables Reference" sub="Package API reference with all composables" />
 
 ## nuxt-module
 
@@ -68,7 +68,7 @@ The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends.
 
 If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-vue-project).
 
-<PageRef page="/packages/nuxt-module.html" title="Nuxt3 Module Reference" sub="Documentation about setup and basic usage" />
+<PageRef page="../packages/nuxt-module.html" title="Nuxt3 Module Reference" sub="Documentation about setup and basic usage" />
 
 ## cms-base
 
@@ -83,7 +83,7 @@ The CMS base is a Nuxt module that provides an implementation of all CMS compone
 
 Head to our [Content Pages](../getting-started/cms/content-pages#use-the-cms-base-package) guide to learn more.
 
-<PageRef page="/packages/cms-base.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
+<PageRef page="../packages/cms-base.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
 
 ## Templates & Examples
 

@@ -72,4 +72,4 @@ There is an additional attribute `target` used, in order to open a link in anoth
 
 ## Next steps
 
-<PageRef page="/getting-started/routing.html" title="Work with routing" sub="Resolve paths and fetch content dynamically" />
+<PageRef page="../routing.html" title="Work with routing" sub="Resolve paths and fetch content dynamically" />

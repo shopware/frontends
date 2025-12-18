@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-client",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "type": "module",
@@ -29,6 +29,16 @@
         "default": "./dist/index.mjs"
       }
     },
+    "./helpers": {
+      "require": {
+        "types": "./dist/helpers.d.cts",
+        "default": "./dist/helpers.cjs"
+      },
+      "import": {
+        "types": "./dist/helpers.d.mts",
+        "default": "./dist/helpers.mjs"
+      }
+    },
     "./api-types": "./api-types/storeApiTypes.d.ts",
     "./store-api-types": "./api-types/storeApiTypes.d.ts",
     "./admin-api-types": "./api-types/adminApiTypes.d.ts"
@@ -48,9 +58,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@codspeed/vitest-plugin": "5.0.1",
     "@types/prettier": "3.0.0",
     "@vitest/coverage-v8": "3.2.4",
+    "fflate": "0.8.2",
     "happy-dom": "20.0.11",
     "prettier": "3.7.4",
     "tsconfig": "workspace:*",

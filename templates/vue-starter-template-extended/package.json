@@ -1,6 +1,6 @@
 {
   "name": "lumora-demo-store",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lumora Demo Store - Modern Home Scents",
   "private": true,
   "author": "Shopware",
@@ -35,7 +35,7 @@
     "@shopware/api-gen": "canary",
     "@shopware/cms-base-layer": "workspace:*",
     "@unocss/nuxt": "66.5.4",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "unocss": "66.5.4",
     "vue-tsc": "3.1.4"
   }
