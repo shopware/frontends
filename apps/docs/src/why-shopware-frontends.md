@@ -66,4 +66,4 @@ We recommend having profound knowledge of Vue.js or another reactive Javascript 
 
 ---
 
-<PageRef page="/getting-started/templates.html" title="Getting Started" sub="Get started with Shopware Frontends" />
+<PageRef page="./getting-started/templates.html" title="Getting Started" sub="Get started with Shopware Frontends" />
