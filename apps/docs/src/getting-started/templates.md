@@ -59,7 +59,7 @@ If you like to start from scratch, you can use the blank template. It can be han
 
 The blank template has all "non-UI" packages pre-installed, but you have to bring your own styles and components.
 
-<PageRef page="/getting-started/templates/blank-template.html" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
+<PageRef page="./templates/blank-template.html" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
 
 ## Demo Store Template
 
@@ -81,7 +81,7 @@ The demo store template is a **reference implementation** of an online store UI.
 
 It is based on Nuxt3 and UnoCSS (Tailwind)
 
-<PageRef page="/getting-started/templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
+<PageRef page="./templates/demo-store-template.html" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
 ## Custom projects
 
@@ -89,8 +89,8 @@ It is possible to integrate Shopware Frontends into an existing project. This ca
 
 As of now, **Vue.js** and **React** projects are supported.
 
-<PageRef page="/getting-started/templates/custom-vue-project.html" title="Custom Vue project" sub="Integrate Shopware Frontends into an existing Vue.js project" />
-<PageRef page="/getting-started/templates/custom-react-project.html" title="Custom React project" sub="Look at the Vercel Commerce Template to learn how to setup a React project" />
+<PageRef page="./templates/custom-vue-project.html" title="Custom Vue project" sub="Integrate Shopware Frontends into an existing Vue.js project" />
+<PageRef page="./templates/custom-react-project.html" title="Custom React project" sub="Look at the Vercel Commerce Template to learn how to setup a React project" />
 
 ## Framework supporting Vue
 
@@ -98,4 +98,4 @@ In theory, every place where the Vue instance is available, is supported by Shop
 
 The only requirement is to have a possibility to register a Vue 3 plugin, and that's what can be done in [Astro.js](https://astro.build/) as well.
 
-<PageRef page="/getting-started/templates/astro-template.html" title="Astro.js project" sub="Integrate Shopware Frontends into an SSR oriented project supporting Vue.js" />
+<PageRef page="./templates/astro-template.html" title="Astro.js project" sub="Integrate Shopware Frontends into an SSR oriented project supporting Vue.js" />
