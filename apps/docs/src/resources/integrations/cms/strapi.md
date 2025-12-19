@@ -100,7 +100,7 @@ Now we can add our component to the layout.
 This example is written for the vue-starter-template and assuming that you [implemented Multiple CMS middleware](../../../getting-started/cms/multiple-cms#adding-middleware)
 :::
 
-Create new collection type `Page` on the Stripe admin site with fields:
+Create new collection type `Page` on the Strapi admin site with fields:
 
 ```ts
 interface {

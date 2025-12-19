@@ -14,7 +14,7 @@ head:
 # Work with languages
 
 :::warning
-This is the implementation working with `vue-starter-template`. To see the details, please go to the `templates/vue-starter-template` directory in the repository.
+This is the implementation working with the `vue-starter-template`. To see the details, please go to the `templates/vue-starter-template` directory in the repository.
 :::
 Each store has two sources of translations.
 
