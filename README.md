@@ -5,8 +5,8 @@
 </div>
 
 <p align="center">
-<a href="https://frontends-demo.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends.shopware.com/" target="_blank">📚 Docu</a> | <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" target="_blank"><img style="position:relative; top:3px;" src="https://d33wubrfki0l68.cloudfront.net/9a3dab7d5789ca17d6b0b9af993d40a26be9e5b6/a0243/img/theme/docs-logo.svg" alt="Try out on StackBlitz" width="16"> Try it out</a> | 
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store" target="_blank"><img src="./.readme/vercel.svg" alt="Join our Discord Channel" width="20" height="16"/> Deploy on Vercel</a>
+<a href="https://frontends-starter-template.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends.shopware.com/" target="_blank">📚 Docu</a> | <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" target="_blank"><img style="position:relative; top:3px;" src="https://d33wubrfki0l68.cloudfront.net/9a3dab7d5789ca17d6b0b9af993d40a26be9e5b6/a0243/img/theme/docs-logo.svg" alt="Try out on StackBlitz" width="16"> Try it out</a> |
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-starter-template" target="_blank"><img src="./.readme/vercel.svg" alt="Join our Discord Channel" width="20" height="16"/> Deploy on Vercel</a>
  | <a href="https://github.com/shopware/frontends/discussions">💬 Discuss</a> | <a href="https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ" target="_blank"><img src="./.readme/discord.svg" alt="Join our Discord Channel" width="20" height="16"/> Discord Channel</a>
 </p>
 
@@ -29,7 +29,7 @@ pnpm i
 pnpm run build --filter='./packages/*'
 
 # Run project base
-pnpm run dev --filter=vue-demo-store
+pnpm run dev --filter=vue-starter-template
 ```
 
 ### Run and develop docs
@@ -64,7 +64,7 @@ A set of helper functions related to price formatting, translation handling, UI 
 
 We offer different project templates to get started with Shopware Frontends.
 
-Our demo store template is a non-production-ready reference implementation of an eCommerce storefront, based on Tailwind.css and Nuxt 3.
+Our Vue Starter Template is a production-ready foundation for building custom Shopware storefronts, based on Tailwind.css and Nuxt 4.
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 

@@ -4,6 +4,19 @@
 
 A Shopware Frontends template showcasing a modern e-commerce store for home fragrances (candles, reed diffusers, and room sprays). This template extends the `vue-starter-template` as a Nuxt layer.
 
+## When to Use This Template
+
+**Use vue-starter-template-extended if:**
+- You need examples of component customization and overrides
+- You're building a similar e-commerce store and want a head start
+- You need a reference for styling, CMS integration, and Nuxt layer usage
+
+**Use [vue-starter-template](../vue-starter-template) (base) if:**
+- You're starting a project from scratch with your own design
+- You want minimal boilerplate and maximum flexibility
+- You prefer to build everything yourself without pre-built examples
+- Your store requires a completely custom structure
+
 ## Setup
 
 Install dependencies:

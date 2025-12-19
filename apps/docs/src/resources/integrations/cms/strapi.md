@@ -78,7 +78,7 @@ const bgColor = computed(() => data.attributes?.color || "#fff");
 ```
 
 Now we can add our component to the layout.
-`frontends/templates/vue-demo-store/layouts/default.vue`
+`frontends/templates/vue-starter-template/app/layouts/default.vue`
 
 ```vue
 <template>
@@ -97,10 +97,10 @@ Now we can add our component to the layout.
 ## Fetching and displaying pages
 
 :::warning
-This example is written for the vue-demo-store template and assuming that you [implemented Multiple CMS middleware](../../../getting-started/cms/multiple-cms#adding-middleware)
+This example is written for the vue-starter-template and assuming that you [implemented Multiple CMS middleware](../../../getting-started/cms/multiple-cms#adding-middleware)
 :::
 
-Create new collection type `Page` on the Stripe admin site with fields:
+Create new collection type `Page` on the Strapi admin site with fields:
 
 ```ts
 interface {
