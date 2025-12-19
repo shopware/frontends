@@ -18,27 +18,27 @@ Add another [CMS system](../../resources/integrations/cms/), but still use the S
 This documentation guides users through the process of incorporating an additional CMS instance and use it seamlessly with the Shopware Shopping Experiences.
 
 :::warning
-This example is written for the vue-demo-store template
+This example is written for the vue-starter-template
 :::
 
 ## Adding middleware
 
-All you need to do is adding a middleware injection to the main routing resolver file.
+To add multiple CMS support, you need to inject a middleware into the main routing resolver file.
 
-`templates/vue-demo-store/pages/[...all].vue`
+`templates/vue-starter-template/app/pages/[...all].vue`
 
-```ts{16-23,46-54,61-66}
+```ts{16-23,52-57}
+<script setup lang="ts">
+import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
-import { pascalCase } from "scule";
-import {
-  useNavigationContext,
-  useNavigationSearch,
-} from "@shopware/composables";
+import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
-const { clearBreadcrumbs } = useBreadcrumbs();
 
-const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
+defineOptions({
+  name: "PageResolver",
+});
+
 const { resolvePath } = useNavigationSearch();
 const route = useRoute();
 const { locale } = useI18n();
@@ -54,7 +54,7 @@ const cmsPageRenderer = inject<((path: string) => VNode | null) | null>(
 );
 
 const { data: seoResult } = await useAsyncData(
-  "cmsResponse" + routePath,
+  `cmsResponse${routePath}`,
   async () => {
     // For client links if the history state contains seo url information we can omit the api call
     if (import.meta.client) {
@@ -71,45 +71,51 @@ const { data: seoResult } = await useAsyncData(
 );
 
 const { routeName, foreignKey } = useNavigationContext(
-  seoResult as Ref<Schemas['SeoUrl']>,
+  seoResult as Ref<Schemas["SeoUrl"]>,
 );
+
+const componentName = routeName.value;
 
 /**
  * If there is no Shopware CMS component and an additional CMS
  * resolver is available, fetch content
  */
-const componentName = routeName.value;
 const path = routePath.substring(1);
 if (!componentName && cmsPageRenderer) {
   cmsPageRendererComponent = await cmsPageRenderer(path);
 }
 
-onBeforeRouteLeave(() => {
-  clearBreadcrumbs();
-});
-
 function render() {
-    /**
-     * Render additional CMS component if exists
-     */
-    if (cmsPageRendererComponent) {
-        return cmsPageRendererComponent;
-    }
+  /**
+   * Render additional CMS component if exists
+   */
+  if (cmsPageRendererComponent) {
+    return cmsPageRendererComponent;
+  }
 
-    if (!componentName)
-        return h("div", h(resolveComponent(pascalCase(NOT_FOUND_COMPONENT))));
+  if (!componentName)
+    return h("div", h("div", {}, "No component found"));
 
-    const componentNameToResolve = pascalCase(componentName as string);
-    const cmsPageView = routeName && resolveComponent(componentNameToResolve);
-    if (cmsPageView) {
-        if (cmsPageView === componentNameToResolve)
-        return h("div", {}, "Problem resolving component: " + componentName);
-        return h("div", h(cmsPageView, { navigationId: foreignKey.value }));
-    }
-    return h("div", {}, "Loading...");
+  const componentNameToResolve = pascalCase(componentName as string);
+  const cmsPageView = routeName && resolveComponent(componentNameToResolve);
+  if (cmsPageView) {
+    if (cmsPageView === componentNameToResolve)
+      return h("div", {}, `Problem resolving component: ${componentName}`);
+    return h("div", h(cmsPageView, { navigationId: foreignKey.value }));
+  }
+  return h("div", {}, "Loading...");
 }
+</script>
+
+<template>
+  <render />
+</template>
 ```
 
-You see that the `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved. But only if the `cmsPageRendererComponent` is not null and **no** routeName aka componentName is found. Further details can be found in the comments in the code above.
+The key changes are:
+- **Lines 16-23**: Inject the `pageRenderMiddlewares` to check for additional CMS resolvers
+- **Lines 52-57**: If no Shopware CMS component is found, try to render content from the additional CMS
+
+The `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved, but only if it's not null and **no** `componentName` (routeName) is found from Shopware.
 
 Also, you can find a complete example here at [Strapi CMS Integration](../../resources/integrations/cms/strapi).

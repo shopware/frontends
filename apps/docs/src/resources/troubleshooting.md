@@ -21,7 +21,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 
 ## The access token for the store API is public visible?
 
-In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-demo-store template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](../resources/community-modules/) how others are doing this.
+In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-starter-template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](../resources/community-modules/) how others are doing this.
 
 ## How to use https for your localhost with Composable Frontends?
 
