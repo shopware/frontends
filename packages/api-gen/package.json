@@ -52,7 +52,7 @@
     "ofetch": "1.4.1",
     "openapi-typescript": "7.8.0",
     "prettier": "3.7.4",
-    "ts-morph": "26.0.0",
+    "ts-morph": "27.0.2",
     "typescript": "5.9.3",
     "yargs": "18.0.0"
   }
