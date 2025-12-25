@@ -33,7 +33,7 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "4.2.1",
+    "@nuxt/kit": "4.2.2",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/schema": "4.2.1",
-    "nuxt": "4.2.1",
+    "@nuxt/schema": "4.2.2",
+    "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "unbuild": "2.0.0"
