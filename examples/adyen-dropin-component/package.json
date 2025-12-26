@@ -19,8 +19,8 @@
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@unocss/nuxt": "66.5.4",
-    "@vueuse/nuxt": "14.0.0",
-    "nuxt": "4.2.1",
-    "vue-tsc": "3.1.4"
+    "@vueuse/nuxt": "14.1.0",
+    "nuxt": "4.2.2",
+    "vue-tsc": "3.2.1"
   }
 }
