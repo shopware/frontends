@@ -1,31 +1,70 @@
-import * as validators from "@vuelidate/validators";
+import {
+  url,
+  alpha,
+  alphaNum,
+  between,
+  decimal,
+  email,
+  integer,
+  ipv4Address,
+  macAddress,
+  maxLength,
+  minLength,
+  minValue,
+  not,
+  numeric,
+  or,
+  required,
+  requiredIf,
+  requiredUnless,
+  sameAs,
+  withMessage,
+} from "@regle/rules";
 
 export const customValidators = () => {
   const { $i18n } = useNuxtApp();
-  const { createI18nMessage } = validators;
-  const withI18nMessage = createI18nMessage({ t: $i18n.t.bind($i18n) });
+  const t = $i18n.t.bind($i18n);
+
+  const getMessage = (key: string, params?: Record<string, unknown>) => {
+    return () => t(`validations.${key}`, params || {});
+  };
 
   return {
-    alpha: withI18nMessage(validators.alpha),
-    alphaNum: withI18nMessage(validators.alphaNum),
-    between: withI18nMessage(validators.between, { withArguments: true }),
-    decimal: withI18nMessage(validators.decimal),
-    email: withI18nMessage(validators.email),
-    integer: withI18nMessage(validators.integer),
-    ipAddress: withI18nMessage(validators.ipAddress),
-    macAddress: withI18nMessage(validators.macAddress),
-    maxLength: withI18nMessage(validators.maxLength, { withArguments: true }),
-    minLength: withI18nMessage(validators.minLength, { withArguments: true }),
-    minValue: withI18nMessage(validators.minValue, { withArguments: true }),
-    not: withI18nMessage(validators.not, { withArguments: true }),
-    numeric: withI18nMessage(validators.numeric),
-    or: withI18nMessage(validators.or, { withArguments: true }),
-    required: withI18nMessage(validators.required),
-    requiredIf: withI18nMessage(validators.requiredIf, { withArguments: true }),
-    requiredUnless: withI18nMessage(validators.requiredUnless, {
-      withArguments: true,
-    }),
-    sameAs: withI18nMessage(validators.sameAs, { withArguments: true }),
-    url: withI18nMessage(validators.url),
+    alpha: withMessage(alpha, getMessage("alpha")),
+    alphaNum: withMessage(alphaNum, getMessage("alphaNum")),
+    between: (min: number, max: number) =>
+      withMessage(between(min, max), getMessage("between", { min, max })),
+    decimal: withMessage(decimal, getMessage("decimal")),
+    email: withMessage(email, getMessage("email")),
+    integer: withMessage(integer, getMessage("integer")),
+    ipAddress: withMessage(ipv4Address, getMessage("ipAddress")),
+    macAddress: withMessage(macAddress, getMessage("macAddress")),
+    maxLength: (max: number) =>
+      withMessage(maxLength(max), getMessage("maxLength", { max })),
+    minLength: (min: number) =>
+      withMessage(minLength(min), getMessage("minLength", { min })),
+    minValue: (min: number) =>
+      withMessage(minValue(min), getMessage("minValue", { min })),
+    not: (validator: Parameters<typeof not>[0]) =>
+      withMessage(not(validator), getMessage("not")),
+    numeric: withMessage(numeric, getMessage("numeric")),
+    or: <T extends [Parameters<typeof or>[0], ...Parameters<typeof or>[0][]]>(
+      ...validators: T
+    ) =>
+      withMessage(
+        or(...(validators as Parameters<typeof or>)),
+        getMessage("or"),
+      ),
+    required: withMessage(required, getMessage("required")),
+    requiredIf: (condition: () => boolean) =>
+      withMessage(requiredIf(condition), getMessage("requiredIf")),
+    requiredUnless: (condition: () => boolean) =>
+      withMessage(requiredUnless(condition), getMessage("requiredUnless")),
+    sameAs: (other: unknown, otherName?: string) =>
+      withMessage(
+        sameAs(other, otherName),
+        getMessage("sameAs", { otherName }),
+      ),
+    url: withMessage(url, getMessage("url")),
   };
 };

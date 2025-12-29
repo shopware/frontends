@@ -30,7 +30,6 @@
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
-    "@vuelidate/core": "2.0.3",
     "nuxt": "4.2.1",
     "vue": "3.5.24"
   },

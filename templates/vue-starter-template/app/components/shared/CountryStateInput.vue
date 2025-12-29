@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { BaseValidation } from "@vuelidate/core";
+import type { RegleFieldStatus } from "@regle/core";
 
 const countryId = defineModel<string>("countryId", {
   required: true,
@@ -10,8 +10,8 @@ const stateId = defineModel<string>("stateId", {
 
 const { countryIdValidation = undefined, stateIdValidation = undefined } =
   defineProps<{
-    countryIdValidation?: BaseValidation;
-    stateIdValidation?: BaseValidation;
+    countryIdValidation?: RegleFieldStatus;
+    stateIdValidation?: RegleFieldStatus;
   }>();
 
 const { getStatesForCountry, getCountriesOptions } = useCountries();
@@ -32,7 +32,7 @@ function onCountrySelectChanged() {
       :label="$t('form.country')"
       :options="getCountriesOptions"
       data-testid="country-select"
-      :errorMessage="countryIdValidation?.$errors[0]?.$message"
+      :errorMessage="countryIdValidation?.$errors[0]"
     />
 
     <div v-if="states && states.length" class="w-full">
@@ -58,10 +58,10 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="stateIdValidation?.$error && stateIdValidation?.$errors[0]?.$message"
+        v-if="stateIdValidation?.$error && stateIdValidation?.$errors[0]"
         class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
-        {{ stateIdValidation.$errors[0].$message }}
+        {{ stateIdValidation.$errors[0] }}
       </span>
     </div>
   </div>

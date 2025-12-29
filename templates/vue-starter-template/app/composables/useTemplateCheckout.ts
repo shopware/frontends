@@ -1,4 +1,4 @@
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import type { Schemas } from "#shopware";
 import { customValidators } from "../../i18n/utils/i18n-validators";
 
@@ -8,8 +8,8 @@ interface UseTemplateCheckoutReturn {
   billingAddress: Ref<Omit<Schemas["CustomerAddress"], "id" | "customerId">>;
   canPlaceOrder: ComputedRef<boolean>;
   customerAddressRules: ComputedRef<object>;
-  $vBillingAddress: ReturnType<typeof useVuelidate>;
-  $vBaseInfo: ReturnType<typeof useVuelidate>;
+  $vBillingAddress: ReturnType<typeof useRegle>;
+  $vBaseInfo: ReturnType<typeof useRegle>;
   customerBaseInfo: Ref<{
     email: string;
     password: string;
@@ -77,8 +77,8 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
     },
   }));
 
-  const $vBillingAddress = useVuelidate(customerAddressRules, billingAddress);
-  const $vBaseInfo = useVuelidate(baseInfoRules, customerBaseInfo);
+  const $vBillingAddress = useRegle(billingAddress, customerAddressRules);
+  const $vBaseInfo = useRegle(customerBaseInfo, baseInfoRules);
 
   return {
     selectedShippingMethod,
