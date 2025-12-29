@@ -25,6 +25,8 @@
     "@iconify-json/carbon": "1.2.14",
     "@iconify/utils": "3.0.2",
     "@nuxt/image": "2.0.0",
+    "@regle/core": "^1.14.7",
+    "@regle/rules": "^1.14.7",
     "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
