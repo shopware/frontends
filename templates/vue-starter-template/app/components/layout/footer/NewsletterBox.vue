@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 
 const email = ref("");
 const newsletterDisabled = ref(false);
@@ -9,11 +9,11 @@ const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const { handleApiError } = useApiErrorsResolver("newsletter_box_form");
 
-const $v = useVuelidate(footerNewsletterBoxRules(), { email });
+const { r$ } = useRegle({ email }, footerNewsletterBoxRules());
 
 async function handleSubmit() {
-  $v.value.$touch();
-  const valid = await $v.value.$validate();
+  r$.$touch();
+  const { valid } = await r$.$validate();
 
   if (valid) {
     try {
@@ -45,11 +45,11 @@ async function handleSubmit() {
         <div>
           <FormInputField
             id="newsletter-email"
-            :class="[$v.email.$errors[0]?.$message ? 'mb-4' : 'mb-1']"
+            :class="[r$.email.$errors[0] ? 'mb-4' : 'mb-1']"
             v-model="email"
             :placeholder="$t('layout.footer.newsletter.placeholder')"
-            @blur="$v.email.$touch()"
-            :errorMessage="$v.email.$errors[0]?.$message"
+            @blur="r$.email.$touch()"
+            :errorMessage="r$.email.$errors[0]"
             :disabled="newsletterDisabled"
           />
           <div class="text-surface-surface-primary text-xs leading-5">

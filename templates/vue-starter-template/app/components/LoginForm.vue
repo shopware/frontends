@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 
 type LoginForm = {
   username: string;
@@ -11,15 +11,16 @@ const model = ref<LoginForm>({
   password: "",
 });
 
-const $v = useVuelidate(loginFormRules(), model);
+const { r$ } = useRegle(model, loginFormRules());
 
 const emit = defineEmits<{
   submit: [LoginForm];
 }>();
 
 async function handleSubmit() {
-  $v.value.$touch();
-  const valid = await $v.value.$validate();
+  r$.$touch();
+  const { valid } = await r$.$validate();
+
   if (valid) {
     emit("submit", model.value);
   }
@@ -32,7 +33,7 @@ async function handleSubmit() {
       v-model="model.username"
       autocomplete="username"
       :label="$t('loginForm.loginLabel')"
-      :errorMessage="$v.username.$errors[0]?.$message"
+      :errorMessage="r$.username.$errors[0]"
     />
     <FormInputField
       id="password"
@@ -40,7 +41,7 @@ async function handleSubmit() {
       autocomplete="current-password"
       type="password"
       :label="$t('loginForm.passwordLabel')"
-      :errorMessage="$v.password.$errors[0]?.$message"
+      :errorMessage="r$.password.$errors[0]"
     />
     <FormBaseButton :label="$t('loginForm.submitButtonLabel')" type="submit" />
   </form>

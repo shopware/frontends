@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import type { operations } from "#shopware";
 
 const { apiClient } = useShopwareContext();
@@ -18,11 +17,11 @@ const state = ref<operations["changeEmail post /account/change-email"]["body"]>(
   },
 );
 
-const $v = useVuelidate(changeEmailFormRules(state), state);
+const { r$ } = useRegle(state, changeEmailFormRules(state));
 
 async function handleSubmit() {
-  await $v.value.$validate();
-  if ($v.value.$invalid) {
+  await r$.$validate();
+  if (r$.$invalid) {
     return;
   }
 
@@ -68,7 +67,7 @@ async function handleSubmit() {
           v-model="state.email"
           type="email"
           :label="$t('account.changeEmail.form.newEmailLabel')"
-          :errorMessage="$v.email.$errors[0]?.$message"
+          :errorMessage="r$.email.$errors[0]"
           autocomplete="off"
         />
 
@@ -77,7 +76,7 @@ async function handleSubmit() {
           v-model="state.emailConfirmation"
           type="email"
           :label="$t('account.changeEmail.form.confirmEmailLabel')"
-          :errorMessage="$v.emailConfirmation.$errors[0]?.$message"
+          :errorMessage="r$.emailConfirmation.$errors[0]"
           autocomplete="off"
         />
 
@@ -86,7 +85,7 @@ async function handleSubmit() {
           v-model="state.password"
           type="password"
           :label="$t('account.changeEmail.form.passwordLabel')"
-          :errorMessage="$v.password.$errors[0]?.$message"
+          :errorMessage="r$.password.$errors[0]"
           autocomplete="current-password"
         />
 

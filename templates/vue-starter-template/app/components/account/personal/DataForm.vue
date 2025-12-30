@@ -36,13 +36,13 @@ const handleSubmit = () => {
     <div class="w-[240px]">
       <FormSalutationSelect
         v-model="state.salutationId"
-        :errorMessage="$v?.salutationId?.$errors[0]?.$message"
+        :errorMessage="$v?.salutationId?.$errors[0]"
       />
     </div>
     <div class="w-[240px]">
       <FormAccountTypeSelect
         v-model="state.accountType"
-        :errorMessage="$v?.accountType?.$errors[0]?.$message"
+        :errorMessage="$v?.accountType?.$errors[0]"
       />
     </div>
     <div class="flex-col md:flex-row flex gap-2">
@@ -50,13 +50,13 @@ const handleSubmit = () => {
         class="w-full"
         v-model="state.firstName"
         :label="$t('account.profile.form.firstName')"
-        :errorMessage="$v?.firstName?.$errors[0]?.$message"
+        :errorMessage="$v?.firstName?.$errors[0]"
       />
       <FormInputField
         class="w-full"
         v-model="state.lastName"
         :label="$t('account.profile.form.lastName')"
-        :errorMessage="$v?.lastName?.$errors[0]?.$message"
+        :errorMessage="$v?.lastName?.$errors[0]"
       />
     </div>
 
@@ -68,13 +68,13 @@ const handleSubmit = () => {
         class="w-full"
         v-model="state.company"
         :label="$t('account.profile.form.company')"
-        :errorMessage="$v?.company?.$errors[0]?.$message"
+        :errorMessage="$v?.company?.$errors[0]"
       />
       <FormInputField
         class="w-full"
         v-model="state.vatIds"
         :label="$t('account.profile.form.vatIds')"
-        :errorMessage="$v?.vatIds?.$errors[0]?.$message"
+        :errorMessage="$v?.vatIds?.$errors[0]"
       />
     </div>
     <FormBaseButton type="submit">
