@@ -1,6 +1,5 @@
 // TODO fix types in this plugin
 import { setupDevtoolsPlugin } from "@vue/devtools-api";
-import type { DevtoolsPluginApi } from "@vue/devtools-api";
 import { unref } from "vue";
 import type { App, InjectionKey } from "vue";
 
@@ -15,7 +14,7 @@ export function registerShopwareDevtools(
   shopwarePluginInstance: any,
 ) {
   // biome-ignore lint: not used plugin for now, ignoring type errors
-  let devtoolsApi: DevtoolsPluginApi<any>;
+  let devtoolsApi: any;
   let trackId = 0;
   // biome-ignore lint: not used plugin for now, ignoring type errors
   let currentSharedState: any = null;

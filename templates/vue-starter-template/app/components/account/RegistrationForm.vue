@@ -32,9 +32,9 @@ const initialState = {
   lastName: "",
   email: "",
   password: "",
-  vatIds: [null],
+  vatIds: [],
   billingAddress: {
-    company: null,
+    company: "",
     street: "",
     zipcode: "",
     city: "",
@@ -180,7 +180,7 @@ const accountTypeOptions = [
         {{ $t("account.yourAddress") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-5">
-        <!-- <FormInputField
+        <FormInputField
           v-if="state.accountType === 'business'"
           class="col-span-12 md:col-span-4"
           id="company"
@@ -190,7 +190,7 @@ const accountTypeOptions = [
           data-testid="registration-company-input"
           @blur="r$.billingAddress.company.$touch()"
           :errorMessage="r$.billingAddress.company.$errors[0]"
-        /> -->
+        />
 
         <FormInputField
           class="col-span-12 md:col-span-4"
