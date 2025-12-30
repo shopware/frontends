@@ -18,12 +18,14 @@ export default defineNuxtConfig({
   },
   components: [
     {
+      // Infrastructure components: ContentElement, ContentPage, ContentHydrator
       path: resolve("./app/components/public/content"),
-      pathPrefix: true,
+      pathPrefix: false,
       global: true,
       extensions: [".vue"],
     },
     {
+      // Content element components: ContentText, ContentImage, etc.
       path: resolve("./app/components/content"),
       pathPrefix: false,
       global: true,

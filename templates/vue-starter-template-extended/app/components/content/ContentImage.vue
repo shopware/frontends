@@ -1,100 +1,59 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { extractProperties } from "~/composables/useContentFactory";
-import type { ImageProperties } from "~/composables/useContentProperties";
-import { IMAGE_DISPLAY_MODE_CLASSES } from "~/composables/useContentStyles";
+import { useContentProps } from "~/composables/useContentProps";
+import type { ContentComponentProps } from "~/types/content";
+import { displayModeClasses } from "~/types/content";
 import type { Schemas } from "#shopware";
 
-const props = defineProps<{
-  element: Schemas["ContentElement"];
-  properties: Record<string, unknown>;
-}>();
+const props =
+  defineProps<ContentComponentProps<Schemas["ContentImageProps"]>>();
+const { componentProps, htmlBindings } = useContentProps(props);
 
-// Type-safe property extraction
-const { media, url, alt, title, displayMode, minHeight, newTab } =
-  extractProperties<ImageProperties>(props.properties, {
-    media: { default: undefined },
-    url: { default: "" },
-    alt: { default: "" },
-    title: { default: "" },
-    displayMode: { default: "standard" },
-    minHeight: { default: "" },
-    newTab: { default: false },
-  });
+// Extract with defaults
+const url = componentProps.value.url ?? "";
+const alt = componentProps.value.alt ?? "Image";
+const title = componentProps.value.title ?? "";
+const displayMode = componentProps.value.displayMode ?? "standard";
+const minHeight = componentProps.value.minHeight ?? "";
 
-const imageUrl = computed(() => {
-  return media?.url || url || "";
-});
-
-// Use shared style configuration
-const displayModeClass = computed(
-  () =>
-    IMAGE_DISPLAY_MODE_CLASSES[displayMode] ||
-    IMAGE_DISPLAY_MODE_CLASSES.standard,
-);
-
-const containerClass = computed(() => {
-  const classes = ["content-image", "relative", "w-full"];
-
-  if (displayMode === "cover" && minHeight) {
-    classes.push("flex items-center justify-center");
-  }
-
-  return classes;
-});
-
-const imageClass = computed(() => {
-  const classes = ["w-full", "h-auto"];
-
-  if (displayMode === "cover") {
-    classes.push("absolute inset-0 h-full", displayModeClass.value);
-  } else {
-    classes.push(displayModeClass.value);
-  }
-
-  return classes;
-});
-
-const imageAlt = computed(() => {
-  return alt || media?.alt || title || "Image";
-});
-
-const linkTarget = computed(() => (newTab ? "_blank" : "_self"));
+// Merge htmlBindings style with minHeight
+const rootStyle = computed(() => ({
+  ...htmlBindings.value.style,
+  ...(minHeight ? { minHeight } : {}),
+}));
 </script>
 
 <template>
   <div
-    :class="containerClass"
-    :style="minHeight ? { minHeight } : undefined"
+    v-bind="htmlBindings"
+    :style="rootStyle"
+    class="content-image relative w-full"
   >
-    <component
-      :is="url ? 'a' : 'div'"
-      v-if="imageUrl"
-      :href="url || undefined"
-      :target="url ? linkTarget : undefined"
-      :rel="url && newTab ? 'noopener noreferrer' : undefined"
-      class="block w-full"
-    >
-      <NuxtImg
-        :src="imageUrl"
-        :alt="imageAlt"
-        :title="title"
-        :class="imageClass"
-        loading="lazy"
-      />
-    </component>
+    <img
+      v-if="url"
+      :src="url"
+      :alt="alt"
+      :title="title"
+      class="w-full h-auto"
+      :class="[
+        displayModeClasses[displayMode],
+        displayMode === 'cover' ? 'absolute inset-0 h-full' : '',
+      ]"
+      loading="lazy"
+    />
 
-    <!-- Fallback if no image -->
     <div
       v-else
-      class="bg-gray-200 flex items-center justify-center"
-      :style="minHeight ? { minHeight } : { minHeight: '300px' }"
+      class="bg-gray-200 flex items-center justify-center rounded"
+      :style="{ minHeight: minHeight || '200px' }"
     >
-      <span class="text-gray-400 text-sm">No image</span>
+      <span class="text-gray-400 text-sm">No image URL provided</span>
     </div>
 
-    <!-- Slot for overlay content -->
-    <div v-if="$slots.default" class="absolute inset-0 flex items-center justify-center">
+    <div
+      v-if="$slots.default"
+      class="absolute inset-0 flex items-center justify-center"
+    >
       <slot />
     </div>
   </div>

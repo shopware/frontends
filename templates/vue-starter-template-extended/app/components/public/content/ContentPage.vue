@@ -69,7 +69,8 @@ function renderElement(element: Schemas["ContentElement"]) {
   // Prepare props for the element component
   const elementProps = {
     element,
-    properties: element.properties || {},
+    htmlProps: element.htmlProps,
+    props: element.props,
     "data-element-id": element.id,
     "data-component": element.component,
   };

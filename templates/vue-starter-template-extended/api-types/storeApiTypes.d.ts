@@ -1469,10 +1469,12 @@ export type Schemas = {
     apiAlias: "content_element";
     /** Element component type (e.g., Sw:Grid, Sw:Content:Text, Sw:Product:Card) */
     component: string;
+    /** Standard HTML attributes (class, id, style, aria-*) */
+    htmlProps?: components["schemas"]["ContentHtmlProps"];
     /** Unique element identifier */
     id: string;
-    /** Element properties keyed by property name */
-    properties?: {
+    /** Component-specific properties (typed per component) */
+    props?: {
       [key: string]: unknown;
     };
     /** Named slots containing child elements */
@@ -1481,6 +1483,41 @@ export type Schemas = {
       | {
           [key: string]: components["schemas"]["ContentSlotContent"];
         };
+  };
+  ContentHtmlProps: {
+    /** ID of element that describes this element */
+    ariaDescribedby?: string;
+    /** Whether element is hidden from accessibility tree */
+    ariaHidden?: boolean;
+    /** ARIA label for accessibility */
+    ariaLabel?: string;
+    /** CSS class names */
+    class?: string;
+    /** Test identifier for automated testing */
+    dataTestid?: string;
+    /** HTML id attribute */
+    id?: string;
+    /** ARIA role attribute */
+    role?: string;
+    /** Inline CSS styles as key-value pairs */
+    style?: {
+      [key: string]: string;
+    };
+  };
+  ContentImageProps: {
+    /** Alt text for accessibility */
+    alt?: string;
+    /**
+     * How the image should be displayed
+     * @enum {string}
+     */
+    displayMode?: "standard" | "cover" | "contain";
+    /** Minimum height (e.g., '400px') */
+    minHeight?: string;
+    /** Image title attribute */
+    title?: string;
+    /** Image URL */
+    url?: string;
   };
   ContentPage: {
     /** @enum {string} */
@@ -1503,6 +1540,17 @@ export type Schemas = {
     /** @enum {string} */
     apiAlias: "content_element_slot_content";
     elements: components["schemas"]["ContentElement"][];
+  };
+  ContentTextProps: {
+    /**
+     * Text alignment
+     * @enum {string}
+     */
+    alignment?: "left" | "center" | "right";
+    /** HTML content body */
+    content?: string;
+    /** Heading text */
+    title?: string;
   };
   ContextMeasurementSystemInfo: {
     /**

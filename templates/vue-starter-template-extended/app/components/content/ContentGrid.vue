@@ -1,60 +1,51 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { getSlotNames } from "~/composables/contentHelpers";
-import { extractProperties } from "~/composables/useContentFactory";
-import type { GridProperties } from "~/composables/useContentProperties";
-import {
-  GAP_CLASSES,
-  GRID_COLUMN_CLASSES,
-} from "~/composables/useContentStyles";
 import type { Schemas } from "#shopware";
+
+/**
+ * ContentGrid - Renders a grid layout with named slots
+ */
+
+// Component-specific props (add to schema later)
+type GridProps = {
+  columns?: number;
+  gap?: "none" | "small" | "medium" | "large";
+};
 
 const props = defineProps<{
   element: Schemas["ContentElement"];
-  properties: Record<string, unknown>;
+  htmlProps?: Schemas["ContentHtmlProps"];
+  props?: GridProps;
 }>();
 
-// Type-safe property extraction
-const { columns, gap, displayMode } = extractProperties<GridProperties>(
-  props.properties,
-  {
-    columns: { default: 2 },
-    gap: { default: "medium" },
-    displayMode: { default: "standard" },
-  },
-);
+const componentProps = (props.props ?? {}) as GridProps;
 
-// Use shared style configurations
-const gapClass = computed(() => GAP_CLASSES[gap] || GAP_CLASSES.medium);
+// Extract with defaults
+const columns = componentProps.columns ?? 2;
+const gap = componentProps.gap ?? "medium";
 
-const columnsClass = computed(
-  () => GRID_COLUMN_CLASSES[columns] || GRID_COLUMN_CLASSES[2],
-);
+// Column classes
+const columnClasses: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 md:grid-cols-2",
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
 
-const displayClass = computed(() => {
-  return displayMode === "cover" ? "min-h-screen" : "";
-});
-
-const slotNames = computed(() => getSlotNames(props.element));
+// Gap classes
+const gapClasses: Record<string, string> = {
+  none: "gap-0",
+  small: "gap-2",
+  medium: "gap-4",
+  large: "gap-8",
+};
 </script>
 
 <template>
   <div
-    class="content-grid grid w-full"
-    :class="[columnsClass, gapClass, displayClass]"
+    class="content-grid grid"
+    :class="[columnClasses[columns] || columnClasses[2], gapClasses[gap]]"
   >
-    <!-- Render named slots -->
-    <div
-      v-for="slotName in slotNames"
-      :key="slotName"
-      class="content-grid-item"
-    >
-      <slot :name="slotName" />
-    </div>
-
-    <!-- Default slot fallback -->
-    <div v-if="slotNames.length === 0 && $slots.default">
-      <slot />
-    </div>
+    <!-- Render all slots -->
+    <slot />
   </div>
 </template>

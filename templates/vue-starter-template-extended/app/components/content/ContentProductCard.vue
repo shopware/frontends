@@ -1,110 +1,79 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { extractProperties } from "~/composables/useContentFactory";
-import type { ProductCardProperties } from "~/composables/useContentProperties";
 import type { Schemas } from "#shopware";
+
+/**
+ * ContentProductCard - Renders a product card
+ */
+
+// Component-specific props (add to schema later)
+type ProductCardProps = {
+  product?: {
+    id: string;
+    name: string;
+    description?: string;
+    cover?: {
+      media?: {
+        url: string;
+      };
+    };
+    calculatedPrice?: {
+      totalPrice: number;
+    };
+  };
+};
 
 const props = defineProps<{
   element: Schemas["ContentElement"];
-  properties: Record<string, unknown>;
+  htmlProps?: Schemas["ContentHtmlProps"];
+  props?: ProductCardProps;
 }>();
 
-// Type-safe property extraction
-const { product, displayMode, layout } =
-  extractProperties<ProductCardProperties>(props.properties, {
-    product: { default: undefined },
-    displayMode: { default: "standard" },
-    layout: { default: "standard" },
-  });
+const componentProps = (props.props ?? {}) as ProductCardProps;
 
-const productName = computed(
-  () => product?.translated?.name || product?.name || "",
-);
-const productDescription = computed(
-  () => product?.translated?.description || product?.description || "",
-);
-const productImage = computed(() => product?.cover?.media?.url || "");
-const productPrice = computed(() => product?.calculatedPrice);
-const productUrl = computed(() => {
-  const seoUrls = product?.seoUrls;
-  if (seoUrls && seoUrls.length > 0 && seoUrls[0]) {
-    return `/${seoUrls[0].seoPathInfo}`;
-  }
-  return `/product/${product?.id}`;
-});
-
-const showDetails = computed(() => displayMode === "standard");
-const isMinimal = computed(() => displayMode === "minimal");
-const isImageOnly = computed(() => displayMode === "image");
+// Extract product with defaults
+const product = componentProps.product;
+const imageUrl = product?.cover?.media?.url ?? "";
+const price = product?.calculatedPrice?.totalPrice ?? 0;
 </script>
 
 <template>
-  <div v-if="product" class="content-product-card group">
-    <NuxtLink
-      :to="productUrl"
-      class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-full"
-    >
-      <!-- Product Image -->
-      <div class="relative aspect-square overflow-hidden bg-gray-100">
-        <NuxtImg
-          v-if="productImage"
-          :src="productImage"
-          :alt="productName"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
-        />
-        <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-          <span class="text-sm">No image</span>
-        </div>
+  <div class="content-product-card bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Product Image -->
+    <div class="aspect-square bg-gray-100">
+      <img
+        v-if="imageUrl"
+        :src="imageUrl"
+        :alt="product?.name"
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+      <div
+        v-else
+        class="w-full h-full flex items-center justify-center text-gray-400"
+      >
+        No image
       </div>
+    </div>
 
-      <!-- Product Info -->
-      <div v-if="!isImageOnly" class="p-4">
-        <!-- Product Name -->
-        <h3
-          class="font-semibold text-gray-900 mb-2 line-clamp-2"
-          :class="isMinimal ? 'text-sm' : 'text-base'"
-        >
-          {{ productName }}
-        </h3>
+    <!-- Product Info -->
+    <div class="p-4">
+      <h3 class="font-medium text-gray-900 truncate">
+        {{ product?.name ?? "Product Name" }}
+      </h3>
+      <p
+        v-if="product?.description"
+        class="text-sm text-gray-500 mt-1 line-clamp-2"
+      >
+        {{ product.description }}
+      </p>
+      <p class="text-lg font-bold text-blue-600 mt-2">
+        {{ price.toFixed(2) }} €
+      </p>
+    </div>
 
-        <!-- Product Description (standard mode only) -->
-        <p
-          v-if="showDetails && productDescription"
-          class="text-sm text-gray-600 mb-3 line-clamp-2"
-        >
-          {{ productDescription }}
-        </p>
-
-        <!-- Product Price -->
-        <div v-if="productPrice" class="flex items-center justify-between">
-          <div class="flex items-baseline gap-2">
-            <span class="text-lg font-bold text-gray-900">
-              {{ productPrice.totalPrice }}
-            </span>
-            <span
-              v-if="productPrice.listPrice?.percentage"
-              class="text-sm text-red-600 font-medium"
-            >
-              -{{ productPrice.listPrice.percentage }}%
-            </span>
-          </div>
-        </div>
-
-        <!-- Add to Cart button (standard mode only) -->
-        <button
-          v-if="showDetails"
-          class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
-          @click.prevent="$emit('add-to-cart', product)"
-        >
-          Add to Cart
-        </button>
-      </div>
-    </NuxtLink>
-  </div>
-
-  <!-- Fallback if no product -->
-  <div v-else class="content-product-card-empty bg-gray-100 rounded-lg p-8 text-center">
-    <span class="text-gray-400 text-sm">No product data</span>
+    <!-- Slot for actions -->
+    <div v-if="$slots.default" class="px-4 pb-4">
+      <slot />
+    </div>
   </div>
 </template>

@@ -42,23 +42,16 @@ const slots = computed(() => {
 });
 
 const DynamicRender = () => {
-  // Parse component type and build component name
+  // Parse component type: "Sw:Content:Text" -> { category: "Content", name: "Text" }
   const { category, name } = parseComponentType(props.element.component);
 
-  // Debug logging
-  console.log("Component resolution:", {
-    original: props.element.component,
-    parsed: { category, name },
-    categoryCheck: category !== "Content",
-  });
-
-  // Skip "Content" category as it's redundant
+  // Build Vue component name
+  // "Sw:Content:Text" -> "ContentText" (skip redundant "Content" category)
+  // "Sw:Product:Card" -> "ContentProductCard"
   const componentName =
     category && category !== "Content"
       ? `Content${category}${name}`
       : `Content${name}`;
-
-  console.log("Resolved component name:", componentName);
 
   // Resolve component within render context
   let resolvedComponent: Component | string | undefined;
@@ -67,10 +60,8 @@ const DynamicRender = () => {
   try {
     resolvedComponent = resolveComponent(componentName);
     isResolved = typeof resolvedComponent !== "string";
-  } catch (e) {
-    console.warn(
-      `Component not found: ${componentName} (${props.element.component})`,
-    );
+  } catch {
+    // Component not found - will render fallback
   }
 
   // If component not resolved, render fallback
@@ -102,12 +93,14 @@ const DynamicRender = () => {
     );
   }
 
-  // Render the resolved component
+  // Render the resolved component with separated props
   return h(
     resolvedComponent,
     {
       element: props.element,
-      properties: props.element.properties || {},
+      // Separated props from schema
+      htmlProps: props.element.htmlProps,
+      props: props.element.props,
       "data-element-id": props.element.id,
       "data-component": props.element.component,
     },

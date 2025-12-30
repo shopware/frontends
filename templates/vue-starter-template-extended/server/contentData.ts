@@ -19,7 +19,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
         apiAlias: "content_element",
         id: "hero-grid",
         component: "Sw:Grid",
-        properties: {
+        props: {
           columns: 2,
           gap: "large",
           displayMode: "cover",
@@ -32,7 +32,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "hero-text",
                 component: "Sw:Content:Text",
-                properties: {
+                props: {
                   title: `Welcome to ${type} ${id}`,
                   content:
                     "<p>This is a mock content page showcasing the new Content API. The layout is fully dynamic and hydrated from the API.</p>",
@@ -44,7 +44,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "hero-button",
                 component: "Sw:Content:Button",
-                properties: {
+                props: {
                   text: "Shop Now",
                   url: `/category/${id}`,
                   variant: "primary",
@@ -60,7 +60,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "hero-image",
                 component: "Sw:Content:Image",
-                properties: {
+                props: {
                   url: "https://images.unsplash.com/photo-1441986300917-64674bd600d8",
                   alt: "Hero Image",
                   displayMode: "cover",
@@ -76,7 +76,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
         apiAlias: "content_element",
         id: "product-grid",
         component: "Sw:Grid",
-        properties: {
+        props: {
           columns: 3,
           gap: "medium",
         },
@@ -88,7 +88,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "product-1",
                 component: "Sw:Product:Card",
-                properties: {
+                props: {
                   product: {
                     id: "product-1",
                     name: "Mock Product 1",
@@ -116,7 +116,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "product-2",
                 component: "Sw:Product:Card",
-                properties: {
+                props: {
                   product: {
                     id: "product-2",
                     name: "Mock Product 2",
@@ -144,7 +144,7 @@ export function generateMockContentPage(path: string): Schemas["ContentPage"] {
                 apiAlias: "content_element",
                 id: "product-3",
                 component: "Sw:Product:Card",
-                properties: {
+                props: {
                   product: {
                     id: "product-3",
                     name: "Mock Product 3",
@@ -189,7 +189,7 @@ export function generateMockDecomposedPage(
         apiAlias: "content_element",
         id: "hero-grid",
         component: "Sw:Grid",
-        properties: {},
+        props: {},
         slots: {
           left: {
             apiAlias: "content_element_slot_content",
@@ -198,7 +198,7 @@ export function generateMockDecomposedPage(
                 apiAlias: "content_element",
                 id: "hero-text",
                 component: "Sw:Content:Text",
-                properties: {},
+                props: {},
               },
             ],
           },
@@ -209,7 +209,7 @@ export function generateMockDecomposedPage(
                 apiAlias: "content_element",
                 id: "hero-image",
                 component: "Sw:Content:Image",
-                properties: {},
+                props: {},
               },
             ],
           },
@@ -264,7 +264,7 @@ export function generateMockSkeletonPage(
         apiAlias: "content_element",
         id: "hero-grid",
         component: "Sw:Grid",
-        properties: {},
+        props: {},
         slots: {
           left: {
             apiAlias: "content_element_slot_content",
@@ -273,13 +273,13 @@ export function generateMockSkeletonPage(
                 apiAlias: "content_element",
                 id: "hero-text",
                 component: "Sw:Content:Text",
-                properties: {},
+                props: {},
               },
               {
                 apiAlias: "content_element",
                 id: "hero-button",
                 component: "Sw:Content:Button",
-                properties: {},
+                props: {},
               },
             ],
           },
@@ -290,7 +290,7 @@ export function generateMockSkeletonPage(
                 apiAlias: "content_element",
                 id: "hero-image",
                 component: "Sw:Content:Image",
-                properties: {},
+                props: {},
               },
             ],
           },

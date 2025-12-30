@@ -1,48 +1,25 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { extractProperties } from "~/composables/useContentFactory";
-import type { TextProperties } from "~/composables/useContentProperties";
-import {
-  ALIGNMENT_TEXT_CLASSES,
-  VERTICAL_ALIGNMENT_CLASSES,
-} from "~/composables/useContentStyles";
+import { useContentProps } from "~/composables/useContentProps";
+import type { ContentComponentProps } from "~/types/content";
+import { alignmentClasses } from "~/types/content";
 import type { Schemas } from "#shopware";
 
-const props = defineProps<{
-  element: Schemas["ContentElement"];
-  properties: Record<string, unknown>;
-}>();
+const props = defineProps<ContentComponentProps<Schemas["ContentTextProps"]>>();
+const { componentProps, htmlBindings } = useContentProps(props);
 
-// Type-safe property extraction
-const { title, content, alignment, verticalAlignment } =
-  extractProperties<TextProperties>(props.properties, {
-    title: { default: "" },
-    content: { default: "" },
-    alignment: { default: "left" },
-    verticalAlignment: { default: "top" },
-  });
-
-// Use shared style configurations
-const alignmentClass = computed(
-  () => ALIGNMENT_TEXT_CLASSES[alignment] || ALIGNMENT_TEXT_CLASSES.left,
-);
-
-const verticalAlignClass = computed(
-  () =>
-    VERTICAL_ALIGNMENT_CLASSES[verticalAlignment] ||
-    VERTICAL_ALIGNMENT_CLASSES.top,
-);
+// Extract with defaults
+const title = componentProps.value.title ?? "";
+const content = componentProps.value.content ?? "";
+const alignment = componentProps.value.alignment ?? "left";
 </script>
 
 <template>
   <div
-    class="content-text flex flex-col"
-    :class="[alignmentClass, verticalAlignClass]"
+    v-bind="htmlBindings"
+    class="content-text"
+    :class="alignmentClasses[alignment]"
   >
-    <h2
-      v-if="title"
-      class="text-2xl md:text-3xl font-bold mb-4"
-    >
+    <h2 v-if="title" class="text-2xl md:text-3xl font-bold mb-4">
       {{ title }}
     </h2>
 
@@ -52,8 +29,7 @@ const verticalAlignClass = computed(
       v-html="content"
     />
 
-    <!-- Slot for nested content -->
-    <div v-if="$slots.default" class="mt-6">
+    <div v-if="$slots.default" class="mt-4">
       <slot />
     </div>
   </div>

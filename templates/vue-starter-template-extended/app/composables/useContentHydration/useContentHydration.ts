@@ -78,15 +78,15 @@ export function useContentHydration(): UseContentHydrationReturn {
     const elementAssignments = assignments[element.id];
 
     if (elementAssignments) {
-      // Initialize properties object if it doesn't exist
-      if (!hydratedElement.properties) {
-        hydratedElement.properties = {};
+      // Initialize props object if it doesn't exist
+      if (!hydratedElement.props) {
+        hydratedElement.props = {};
       }
 
       // Hydrate each property using assignments
       for (const [propKey, refId] of Object.entries(elementAssignments)) {
         if (refId in data) {
-          hydratedElement.properties[propKey] = data[refId];
+          hydratedElement.props[propKey] = data[refId];
         }
       }
     }

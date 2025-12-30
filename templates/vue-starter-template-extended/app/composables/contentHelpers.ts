@@ -162,11 +162,11 @@ export function getElementProperty<T = unknown>(
   propertyKey: string,
   defaultValue?: T,
 ): T | undefined {
-  if (!element.properties) {
+  if (!element.props) {
     return defaultValue;
   }
 
-  const value = element.properties[propertyKey];
+  const value = element.props[propertyKey];
   return value !== undefined ? (value as T) : defaultValue;
 }
 

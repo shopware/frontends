@@ -29806,6 +29806,93 @@
           "assignments"
         ]
       },
+      "ContentHtmlProps": {
+        "type": "object",
+        "description": "Standard HTML attributes that can be applied to any content element",
+        "properties": {
+          "class": {
+            "type": "string",
+            "description": "CSS class names"
+          },
+          "id": {
+            "type": "string",
+            "description": "HTML id attribute"
+          },
+          "style": {
+            "type": "object",
+            "description": "Inline CSS styles as key-value pairs",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "role": {
+            "type": "string",
+            "description": "ARIA role attribute"
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "ARIA label for accessibility"
+          },
+          "ariaDescribedby": {
+            "type": "string",
+            "description": "ID of element that describes this element"
+          },
+          "ariaHidden": {
+            "type": "boolean",
+            "description": "Whether element is hidden from accessibility tree"
+          },
+          "dataTestid": {
+            "type": "string",
+            "description": "Test identifier for automated testing"
+          }
+        }
+      },
+      "ContentTextProps": {
+        "type": "object",
+        "description": "Props for Sw:Content:Text component",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Heading text"
+          },
+          "content": {
+            "type": "string",
+            "description": "HTML content body"
+          },
+          "alignment": {
+            "type": "string",
+            "enum": ["left", "center", "right"],
+            "description": "Text alignment"
+          }
+        }
+      },
+      "ContentImageProps": {
+        "type": "object",
+        "description": "Props for Sw:Content:Image component",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Image URL"
+          },
+          "alt": {
+            "type": "string",
+            "description": "Alt text for accessibility"
+          },
+          "title": {
+            "type": "string",
+            "description": "Image title attribute"
+          },
+          "displayMode": {
+            "type": "string",
+            "enum": ["standard", "cover", "contain"],
+            "description": "How the image should be displayed"
+          },
+          "minHeight": {
+            "type": "string",
+            "description": "Minimum height (e.g., '400px')"
+          }
+        }
+      },
       "ContentElement": {
         "type": "object",
         "description": "Content element node in layout tree",
@@ -29818,9 +29905,13 @@
             "type": "string",
             "description": "Element component type (e.g., Sw:Grid, Sw:Content:Text, Sw:Product:Card)"
           },
-          "properties": {
+          "htmlProps": {
+            "$ref": "#/components/schemas/ContentHtmlProps",
+            "description": "Standard HTML attributes (class, id, style, aria-*)"
+          },
+          "props": {
             "type": "object",
-            "description": "Element properties keyed by property name",
+            "description": "Component-specific properties (typed per component)",
             "additionalProperties": true
           },
           "slots": {
