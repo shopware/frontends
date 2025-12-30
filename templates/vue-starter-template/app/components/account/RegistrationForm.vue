@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
+import type { operations } from "#shopware";
 
 const props = defineProps<{
   customerGroupId?: string;
@@ -32,7 +33,7 @@ const initialState = {
   lastName: "",
   email: "",
   password: "",
-  vatIds: [],
+  vatIds: [""] as [string, ...string[]],
   billingAddress: {
     company: "",
     street: "",
@@ -41,6 +42,7 @@ const initialState = {
     countryId: "",
     countryStateId: "",
   },
+  acceptedDataProtection: true,
 };
 
 const state = reactive<typeof initialState>(
@@ -60,7 +62,13 @@ const invokeSubmit = async () => {
   if (valid) {
     try {
       loading.value = true;
-      const response = await register(state);
+      // TODO use full type form with the new template
+      const response = await register(
+        state as unknown as Omit<
+          operations["register post /account/register"]["body"],
+          "storefrontUrl"
+        >,
+      );
       if (response?.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
