@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
-    "ofetch": "1.4.1",
+    "ofetch": "1.5.1",
     "openapi-typescript": "7.8.0",
     "prettier": "3.7.4",
     "ts-morph": "27.0.2",
