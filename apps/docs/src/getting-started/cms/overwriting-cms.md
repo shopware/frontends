@@ -23,8 +23,8 @@ More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts
 We have this cms element **component** from **cms-base package**:  
 `packages/cms-base-layer/app/components/public/cms/block/CmsBlockProductListing.vue`
 
-If we want to create our own product listing **component** in **demo-store** the correct place would be:
-`templates/vue-demo-store/components/cms/block/CmsBlockProductListing.vue`
+If we want to create our own product listing **component** in **vue-starter-template** the correct place would be:
+`templates/vue-starter-template/app/components/cms/block/CmsBlockProductListing.vue`
 
 :::tip HINT 💡
 

@@ -14,60 +14,70 @@ nav:
 import stackblitzIcon from '.assets/framework-icons/stackblitz.png';
 </script>
 
-# Demo Store Template
+# Vue Starter Template
 
-<a href="https://frontends-demo.vercel.app/" target="_blank"><img src=".assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
+<a href="https://frontends-starter-template.vercel.app/" target="_blank"><img src=".assets/demo-store-template.jpg" alt="Vue Starter Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
-The demo store template is a reference implementation of an online store UI.
+The Vue Starter Template is a production-ready foundation for building custom Shopware storefronts with Nuxt 4.x.
 
 :::info
-The **Demo Store Template** is not suitable for production stores. It is under constant development and does not adhere to any versioning. Please go to [Limitations](#limitations) for more information.
+This template provides essential packages and configuration to start building your storefront.
 :::
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" :icon="stackblitzIcon" />
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />
 
-Alternatively, set up the vue-demo-store template manually by running the following commands in a new directory:
+Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
 ```bash
-npx tiged shopware/frontends/templates/vue-demo-store demo-store && cd demo-store
+npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
 npm i && npm run dev
 ```
 
 ## Directory structure
 
-The directory structure is the same as in a [default Nuxt project](https://nuxtjs.org/docs/get-started/directory-structure/):
+The directory structure follows [Nuxt 4.x conventions](https://nuxt.com/docs/guide/directory-structure) with the `app/` directory:
 
 ```json
-demo-store/
-├─ components/
-|  ├─ layout/       /* header, footer, account menu etc. */
-|  ├─ checkout/     /* cart items, cart overview */
-|  ├─ account/      /* order history, account settings */
-|  ├─ shared/       /* modals, notifications */
-|  ├─ ...
-├─ layouts/
-│  ├─ checkout.vue  /* minimal layout without navigation and footer */
-│  ├─ default.vue   /* default layout with navigation and footer */
-├─ pages/
-│  ├─ checkout/     /* checkout pages */
-│  ├─ account/      /* user account pages */
-│  ├─ ...
-├─ app.vue          /* app root component */
-├─ nuxt.config.ts   /* app configuration */
+my-store/
+├─ app/
+│  ├─ components/
+│  │  ├─ layout/       /* header, footer, account menu etc. */
+│  │  ├─ checkout/     /* cart items, cart overview */
+│  │  ├─ account/      /* order history, account settings */
+│  │  ├─ product/      /* product components */
+│  │  ├─ form/         /* form components */
+│  │  ├─ shared/       /* modals, notifications */
+│  │  ├─ ...
+│  ├─ composables/     /* auto-imported composables */
+│  ├─ layouts/
+│  │  ├─ checkout.vue  /* minimal layout without navigation and footer */
+│  │  ├─ default.vue   /* default layout with navigation and footer */
+│  ├─ pages/
+│  │  ├─ checkout/     /* checkout pages */
+│  │  ├─ account/      /* user account pages */
+│  │  ├─ [...all].vue  /* catch-all route for CMS pages */
+│  │  ├─ ...
+│  ├─ utils/           /* utility functions */
+│  ├─ app.config.ts    /* app configuration */
+│  ├─ app.vue          /* app root component */
+├─ i18n/               /* internationalization */
+├─ public/             /* static assets */
+├─ server/             /* server-side code */
+├─ nuxt.config.ts      /* Nuxt configuration */
 ├─ package.json
 ├─ tsconfig.json
 ```
 
-The `components` directory contains components that have been extracted from their corresponding page components, so these become more readable. The components within `components` are organized based on the page and layout components they are used in. The `shared` directory contains generic components that are used across multiple pages and layouts.
+The `app/components/` directory contains components organized by their usage context. The `app/composables/` directory contains auto-imported composables for shared logic.
 
 ## Customizing the template
 
-There is no concept of overwriting components in the demo store template. Instead, all components are modified directly. When you create a new project, we recommend adding your custom Git repository as a remote repository and keeping the original demo store template as a second repository so that you can always pull changes manually (see als Git Docu [Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)).
+The Vue Starter Template is designed to be customized. All components can be modified directly in your project. You can extend the template using Nuxt layers for better maintainability and to receive updates automatically.
 
-:::warning Updates & Breaking Changes
-The demo store template is a boilerplate, so it will constantly be updated, as we will continously add new features and make improvements. These updates include breaking changes. If you want to stay up to date with the latest changes, you need to keep your project in sync manually.
+:::tip
+See the [Vue Starter Template Extended](./getting-started/templates/vue-starter-template-extended.html) example to learn how to use Nuxt layers to extend the base template while keeping your customizations separate.
 :::
 
 ### CMS Components
@@ -78,7 +88,7 @@ One exception to the rule are CMS components. CMS components are handled as a se
 
 ## Configure
 
-The blank template is pre-configured to connect to a public Shopware backend, so you start building right away.
+The Vue Starter Template is pre-configured to connect to a public Shopware backend, so you can start building right away.
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
@@ -105,16 +115,13 @@ export default defineNuxtConfig({
 
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 
-## Limitations
+## Next Steps
 
-The **Demo Store Template** suggests how to build a store UI with Shopware Frontends. It does not make any assumptions about custom implementations and hence does not contain every feature of Shopware.
+Now that you have the Vue Starter Template set up, you can:
 
-Some important limitations are
+- Explore the [CMS components](./framework/shopping-experiences.html) to customize your content
+- Learn about [routing](./getting-started/routing.html) to handle dynamic pages
+- Build [page elements](./getting-started/page-elements/) like navigation and product listings
+- Set up [e-commerce features](./getting-started/e-commerce/) like cart and checkout
 
-- Frontend settings are not synchronized from the backend - such as
-  - Available fields for checkout and registration
-  - Multiple domains
-  - Translations and snippets
-- No support for multiple currencies
-
-If you think a specific feature should be part of the demo store template, feel free to create an [issue](https://github.com/shopware/frontends/issues/new) or make a [contribution](https://github.com/shopware/frontends/pulls).
+If you need help or want to contribute, feel free to create an [issue](https://github.com/shopware/frontends/issues/new) or make a [contribution](https://github.com/shopware/frontends/pulls).
