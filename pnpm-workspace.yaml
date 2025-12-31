@@ -11,4 +11,4 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
-- 'node-forge' # security release, remove after 01.12.2025
+- 'qs' # security release, remove after 15.01.2026

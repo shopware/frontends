@@ -83,6 +83,7 @@
       "on-headers": "^1.1.0",
       "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
+      "qs": "^6.14.1",
       "rollup@3": "^3.29.5",
       "rollup": "^4.22.4",
       "semver": "^7.6.2",
