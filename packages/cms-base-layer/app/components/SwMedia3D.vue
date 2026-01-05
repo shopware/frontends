@@ -2,6 +2,7 @@
 import { OrbitControls, useGLTF } from "@tresjs/cientos";
 import { TresCanvas } from "@tresjs/core";
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from "three";
+import { computed } from "vue";
 
 const props = defineProps<{
   src: string;
@@ -17,7 +18,8 @@ const gl = {
   windowSize: false,
 };
 
-const { scene: model } = await useGLTF(props.src);
+const { state } = await useGLTF(props.src);
+const model = computed(() => state.value?.scene);
 </script>
 <template>
   <TresCanvas v-bind="gl">

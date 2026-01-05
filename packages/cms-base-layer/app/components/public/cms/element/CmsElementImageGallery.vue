@@ -86,10 +86,9 @@ function onTouchEnd() {
         @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
         <Transition name="gallery-fade" mode="out-in">
           <div v-if="currentImage && isSpatial(currentImage)" class="w-full h-full relative">
-            <CmsElementImageGallery3dPlaceholder class="w-full h-full absolute inset-0 object-cover" />
-            <span class="absolute bottom-4 right-4 text-sm bg-gray-800 rounded px-2 py-1 text-white">
-              3D
-            </span>
+            <client-only>
+              <SwMedia3D :src="currentImage.url" />
+            </client-only>
           </div>
           <NuxtImg v-else-if="currentImage" preset="hero" loading="lazy"
             class="w-full h-full absolute inset-0 object-cover" :src="currentImage.url"

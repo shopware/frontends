@@ -1051,11 +1051,11 @@ importers:
         specifier: workspace:*
         version: link:../helpers
       '@tresjs/cientos':
-        specifier: 4.3.1
-        version: 4.3.1(@tresjs/core@4.3.6(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))(@types/three@0.173.0)(react@18.3.1)(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
+        specifier: 5.2.1
+        version: 5.2.1(@tresjs/core@5.2.1(three@0.182.0)(vue@3.5.26(typescript@5.9.3)))(@types/three@0.173.0)(react@18.3.1)(three@0.182.0)(vue@3.5.26(typescript@5.9.3))
       '@tresjs/core':
-        specifier: 4.3.6
-        version: 4.3.6(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
+        specifier: 5.2.1
+        version: 5.2.1(three@0.182.0)(vue@3.5.26(typescript@5.9.3))
       '@unocss/nuxt':
         specifier: 66.5.4
         version: 66.5.4(magicast@0.5.1)(postcss@8.5.6)(vite@7.3.0(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.1))(webpack@5.91.0(@swc/core@1.7.10(@swc/helpers@0.5.17)))
@@ -1075,8 +1075,8 @@ importers:
         specifier: 0.0.6
         version: 0.0.6
       three:
-        specifier: 0.173.0
-        version: 0.173.0
+        specifier: 0.182.0
+        version: 0.182.0
       unocss:
         specifier: 66.5.4
         version: 66.5.4(@unocss/webpack@66.5.4(webpack@5.91.0(@swc/core@1.7.10(@swc/helpers@0.5.17))))(postcss@8.5.6)(vite@7.3.0(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(sass@1.89.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.1))
@@ -1621,9 +1621,6 @@ packages:
   '@algolia/requester-node-http@5.44.0':
     resolution: {integrity: sha512-MULm0qeAIk4cdzZ/ehJnl1o7uB5NMokg83/3MKhPq0Pk7+I0uELGNbzIfAkvkKKEYcHALemKdArtySF9eKzh/A==}
     engines: {node: '>= 14.0.0'}
-
-  '@alvarosabu/utils@3.2.0':
-    resolution: {integrity: sha512-aoGWRfaQjOo9TUwrBA6W0zwTHktgrXy69GIFNILT4gHsqscw6+X8P6uoSlZVQFr887SPm8x3aDin5EBVq8y4pw==}
 
   '@amazonpay/amazon-pay-api-sdk-nodejs@2.3.1':
     resolution: {integrity: sha512-ReNTBW5CDOtmCjSrAGLjcy4+NOFpyXkXK0kSRD2007mnJ4hj/DkFSibaIiRhfrydqJLMoVCrHGKs+rxo5FQ1BA==}
@@ -4222,6 +4219,9 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  '@pmndrs/pointer-events@6.6.28':
+    resolution: {integrity: sha512-kmZlcMsPiTHcotECLFbo6J/qQouX2ZeKNSMRwBWAF/EFesAV1uPwjar6SQDWkDH0fVB1snNbEoWLDLQ84tWOkw==}
+
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
@@ -6412,15 +6412,15 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@tresjs/cientos@4.3.1':
-    resolution: {integrity: sha512-3qp6lEtMrFdhxDuASP1Sz/hEi8+xcEpM6Vd6uDJysCh4uRAzyJLlBSbPoR7gVjN12wrhwJIF1AfYEFz/Vhz5ZQ==}
+  '@tresjs/cientos@5.2.1':
+    resolution: {integrity: sha512-HBXniDTN1c7rIT3jD7IC2cA+acyYpbghN03LoeauAJxpfaZpoHTFfKroAHwaPVaAFJXfXTYkuAQ2kjpbRrF8GQ==}
     peerDependencies:
-      '@tresjs/core': '>=4.2.1'
+      '@tresjs/core': 5.2.1
       three: '>=0.133'
-      vue: '>=3.3'
+      vue: '>=3.5.17'
 
-  '@tresjs/core@4.3.6':
-    resolution: {integrity: sha512-CCk4+jwbiTl7Hj3REZqweglUQQdA3cF29TqJ4dEWunaBPyfsAGLTlJExK5lGIS10ptJkr8DqPvHQT41iTIb0Yg==}
+  '@tresjs/core@5.2.1':
+    resolution: {integrity: sha512-4oVR5RvqGYzZQMPSSlCSppmddDrkyexACJES35+lQInsQzjp8rDDPo8IVW1tDHX/tiep+z/cpRAysz3UyzVuyw==}
     peerDependencies:
       three: '>=0.133'
       vue: '>=3.4'
@@ -7424,6 +7424,11 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
+  '@vueuse/core@13.9.0':
+    resolution: {integrity: sha512-ts3regBQyURfCE2BcytLqzm8+MmLlo5Ln/KLoxDVcsZ2gzIwVNnQpQOL/UKV8alUqjSZOlpFZcRNsLRqj+OzyA==}
+    peerDependencies:
+      vue: ^3.5.0
+
   '@vueuse/core@14.1.0':
     resolution: {integrity: sha512-rgBinKs07hAYyPF834mDTigH7BtPqvZ3Pryuzt1SD/lg5wEcWqvwzXXYGEDb2/cP0Sj5zSvHl3WkmMELr5kfWw==}
     peerDependencies:
@@ -7476,6 +7481,9 @@ packages:
   '@vueuse/metadata@13.3.0':
     resolution: {integrity: sha512-42IzJIOYCKIb0Yjv1JfaKpx8JlCiTmtCWrPxt7Ja6Wzoq0h79+YVXmBV03N966KEmDEESTbp5R/qO3AB5BDnGw==}
 
+  '@vueuse/metadata@13.9.0':
+    resolution: {integrity: sha512-1AFRvuiGphfF7yWixZa0KwjYH8ulyjDCC0aFgrGRz8+P4kvDFSdXLVfTk5xAN9wEuD1J6z4/myMoYbnHoX07zg==}
+
   '@vueuse/metadata@14.1.0':
     resolution: {integrity: sha512-7hK4g015rWn2PhKcZ99NyT+ZD9sbwm7SGvp7k+k+rKGWnLjS/oQozoIZzWfCewSUeBmnJkIb+CNr7Zc/EyRnnA==}
 
@@ -7490,6 +7498,11 @@ packages:
 
   '@vueuse/shared@13.3.0':
     resolution: {integrity: sha512-L1QKsF0Eg9tiZSFXTgodYnu0Rsa2P0En2LuLrIs/jgrkyiDuJSsPZK+tx+wU0mMsYHUYEjNsuE41uqqkuR8VhA==}
+    peerDependencies:
+      vue: ^3.5.0
+
+  '@vueuse/shared@13.9.0':
+    resolution: {integrity: sha512-e89uuTLMh0U5cZ9iDpEI2senqPGfbPRTHM/0AaQkcxnpqjkZqDYP8rpfm7edOz8s+pOCOROEy1PIveSW8+fL5g==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -12383,6 +12396,10 @@ packages:
   queue-tick@1.0.1:
     resolution: {integrity: sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==}
 
+  radashi@12.7.1:
+    resolution: {integrity: sha512-rwxcGY3oKMQJ+ojhS4MlxyVWqdXPVJSxg3ZjXDYYz26DYRuAAs+7XBM406/GYzPEBbjSJqdKfHDpBRfjWn34RQ==}
+    engines: {node: '>=16.0.0'}
+
   radix3@1.1.2:
     resolution: {integrity: sha512-b484I/7b8rDEdSDKckSSBA8knMpcdsXudlE/LNL639wFoHKwLbEkQFZHWEYwDC0wa0FKUcCY+GAF73Z7wxNVFA==}
 
@@ -13460,13 +13477,13 @@ packages:
       react:
         optional: true
 
-  three-stdlib@2.35.14:
-    resolution: {integrity: sha512-kpCaEg59M9usFTgHC+YZNKvx7nMoLI2zQxZBV8pjoNW6vNZmGyXpaLBL09A2oLCsS3KepgMFkOuk6lRoebTNvA==}
+  three-stdlib@2.36.1:
+    resolution: {integrity: sha512-XyGQrFmNQ5O/IoKm556ftwKsBg11TIb301MB5dWNicziQBEs2g3gtOYIf7pFiLa0zI2gUwhtCjv9fmjnxKZ1Cg==}
     peerDependencies:
       three: '>=0.128.0'
 
-  three@0.173.0:
-    resolution: {integrity: sha512-AUwVmViIEUgBwxJJ7stnF0NkPpZxx1aZ6WiAbQ/Qq61h6I9UR4grXtZDmO8mnlaNORhHnIBlXJ1uBxILEKuVyw==}
+  three@0.182.0:
+    resolution: {integrity: sha512-GbHabT+Irv+ihI1/f5kIIsZ+Ef9Sl5A1Y7imvS5RQjWgtTPfPnZ43JmlYI7NtCRDK9zir20lQpfg8/9Yd02OvQ==}
 
   throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
@@ -15331,8 +15348,6 @@ snapshots:
   '@algolia/requester-node-http@5.44.0':
     dependencies:
       '@algolia/client-common': 5.44.0
-
-  '@alvarosabu/utils@3.2.0': {}
 
   '@amazonpay/amazon-pay-api-sdk-nodejs@2.3.1':
     dependencies:
@@ -18461,6 +18476,8 @@ snapshots:
     dependencies:
       playwright: 1.57.0
 
+  '@pmndrs/pointer-events@6.6.28': {}
+
   '@polka/url@1.0.0-next.29': {}
 
   '@poppinss/colors@4.1.5':
@@ -21252,32 +21269,30 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@tresjs/cientos@4.3.1(@tresjs/core@4.3.6(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))(@types/three@0.173.0)(react@18.3.1)(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))':
+  '@tresjs/cientos@5.2.1(@tresjs/core@5.2.1(three@0.182.0)(vue@3.5.26(typescript@5.9.3)))(@types/three@0.173.0)(react@18.3.1)(three@0.182.0)(vue@3.5.26(typescript@5.9.3))':
     dependencies:
-      '@tresjs/core': 4.3.6(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
-      '@vueuse/core': 12.8.2(typescript@5.9.3)
-      camera-controls: 2.10.0(three@0.173.0)
-      stats-gl: 2.4.2(@types/three@0.173.0)(three@0.173.0)
+      '@tresjs/core': 5.2.1(three@0.182.0)(vue@3.5.26(typescript@5.9.3))
+      '@vueuse/core': 13.9.0(vue@3.5.26(typescript@5.9.3))
+      camera-controls: 2.10.0(three@0.182.0)
+      stats-gl: 2.4.2(@types/three@0.173.0)(three@0.182.0)
       stats.js: 0.17.0
-      three: 0.173.0
-      three-custom-shader-material: 5.4.0(react@18.3.1)(three@0.173.0)
-      three-stdlib: 2.35.14(three@0.173.0)
+      three: 0.182.0
+      three-custom-shader-material: 5.4.0(react@18.3.1)(three@0.182.0)
+      three-stdlib: 2.36.1(three@0.182.0)
       vue: 3.5.26(typescript@5.9.3)
     transitivePeerDependencies:
       - '@react-three/fiber'
       - '@types/three'
       - react
-      - typescript
 
-  '@tresjs/core@4.3.6(three@0.173.0)(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))':
+  '@tresjs/core@5.2.1(three@0.182.0)(vue@3.5.26(typescript@5.9.3))':
     dependencies:
-      '@alvarosabu/utils': 3.2.0
-      '@vue/devtools-api': 6.6.4
-      '@vueuse/core': 12.8.2(typescript@5.9.3)
-      three: 0.173.0
+      '@pmndrs/pointer-events': 6.6.28
+      '@vue/devtools-api': 7.7.9
+      '@vueuse/core': 13.9.0(vue@3.5.26(typescript@5.9.3))
+      radashi: 12.7.1
+      three: 0.182.0
       vue: 3.5.26(typescript@5.9.3)
-    transitivePeerDependencies:
-      - typescript
 
   '@ts-morph/common@0.11.1':
     dependencies:
@@ -22884,6 +22899,13 @@ snapshots:
       '@vueuse/shared': 13.3.0(vue@3.5.26(typescript@5.9.3))
       vue: 3.5.26(typescript@5.9.3)
 
+  '@vueuse/core@13.9.0(vue@3.5.26(typescript@5.9.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.9.0
+      '@vueuse/shared': 13.9.0(vue@3.5.26(typescript@5.9.3))
+      vue: 3.5.26(typescript@5.9.3)
+
   '@vueuse/core@14.1.0(vue@3.5.26(typescript@5.9.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
@@ -22908,6 +22930,8 @@ snapshots:
   '@vueuse/metadata@12.8.2': {}
 
   '@vueuse/metadata@13.3.0': {}
+
+  '@vueuse/metadata@13.9.0': {}
 
   '@vueuse/metadata@14.1.0': {}
 
@@ -22940,6 +22964,10 @@ snapshots:
       - typescript
 
   '@vueuse/shared@13.3.0(vue@3.5.26(typescript@5.9.3))':
+    dependencies:
+      vue: 3.5.26(typescript@5.9.3)
+
+  '@vueuse/shared@13.9.0(vue@3.5.26(typescript@5.9.3))':
     dependencies:
       vue: 3.5.26(typescript@5.9.3)
 
@@ -23779,9 +23807,9 @@ snapshots:
 
   camelcase@8.0.0: {}
 
-  camera-controls@2.10.0(three@0.173.0):
+  camera-controls@2.10.0(three@0.182.0):
     dependencies:
-      three: 0.173.0
+      three: 0.182.0
 
   caniuse-api@3.0.0:
     dependencies:
@@ -29085,6 +29113,8 @@ snapshots:
 
   queue-tick@1.0.1: {}
 
+  radashi@12.7.1: {}
+
   radix3@1.1.2: {}
 
   ramda@0.29.0: {}
@@ -30173,10 +30203,10 @@ snapshots:
 
   stat-mode@0.3.0: {}
 
-  stats-gl@2.4.2(@types/three@0.173.0)(three@0.173.0):
+  stats-gl@2.4.2(@types/three@0.173.0)(three@0.182.0):
     dependencies:
       '@types/three': 0.173.0
-      three: 0.173.0
+      three: 0.182.0
 
   stats.js@0.17.0: {}
 
@@ -30491,17 +30521,17 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  three-custom-shader-material@5.4.0(react@18.3.1)(three@0.173.0):
+  three-custom-shader-material@5.4.0(react@18.3.1)(three@0.182.0):
     dependencies:
       glsl-token-functions: 1.0.1
       glsl-token-string: 1.0.1
       glsl-tokenizer: 2.1.5
       object-hash: 3.0.0
-      three: 0.173.0
+      three: 0.182.0
     optionalDependencies:
       react: 18.3.1
 
-  three-stdlib@2.35.14(three@0.173.0):
+  three-stdlib@2.36.1(three@0.182.0):
     dependencies:
       '@types/draco3d': 1.4.10
       '@types/offscreencanvas': 2019.7.3
@@ -30509,9 +30539,9 @@ snapshots:
       draco3d: 1.5.7
       fflate: 0.6.10
       potpack: 1.0.2
-      three: 0.173.0
+      three: 0.182.0
 
-  three@0.173.0: {}
+  three@0.182.0: {}
 
   throttle-debounce@3.0.1: {}
 
