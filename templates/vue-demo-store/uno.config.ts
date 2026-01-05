@@ -98,6 +98,7 @@ const templateConfig: ConfigBase = {
       "warning-900": "#713f12",
       // Surface Colors (example for the transformer)
       "surface-surface": "#ffffff",
+      "surface-surface-primary": "#f0f8ff",
       "surface-surface-variant": "#f5f5f5",
       "surface-container": "#f0f0f0",
       "surface-container-high": "#e8e8e8",
