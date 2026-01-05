@@ -29,7 +29,7 @@ const model = computed(() => state.value?.scene);
       :look-at="[0, 0, 0]"
     />
     <OrbitControls />
-    <primitive :object="model" />
+    <primitive v-if="model" :object="model" />
     <TresDirectionalLight :position="[3, 3, 3]" :intensity="1" />
     <TresAmbientLight :intensity="2" />
   </TresCanvas>
