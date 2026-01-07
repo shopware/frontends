@@ -26,13 +26,13 @@ const slots = defineSlots<{
 </script>
 <template>
   <div
-    class="focus-within:outline-2 focus-within:outline-blue-500 focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
+    class="focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
   >
     <div
       :class="{
         'outline-states-error': invalid,
       }"
-      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px]"
+      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px]"
     >
       <slot name="leftIcon" />
       <input

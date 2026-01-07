@@ -33,7 +33,7 @@ const errorText = computed(() => unref(errorMessage));
     </label>
 
     <FormBaseInput
-      class="text-sm w-full outline-states-error"
+      class="text-sm w-full"
       v-model="model"
       :placeholder="placeholder"
       :type="type"
