@@ -33,7 +33,7 @@ const errorText = computed(() => unref(errorMessage));
     </label>
 
     <FormBaseInput
-      class="text-sm w-full"
+      class="text-sm w-full outline-states-error"
       v-model="model"
       :placeholder="placeholder"
       :type="type"
@@ -41,7 +41,7 @@ const errorText = computed(() => unref(errorMessage));
       :invalid="!!errorText"
       :autocomplete="autocomplete"
     />
-    <span v-if="errorText" class="text-states-error text-xs absolute">{{
+    <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText
     }}</span>
   </div>

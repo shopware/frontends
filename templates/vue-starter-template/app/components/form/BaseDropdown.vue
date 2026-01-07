@@ -20,7 +20,7 @@ const model = defineModel<string>({
   >
     <div
       :class="{
-        'outline-red': invalid,
+        'outline-states-error': invalid,
       }"
       class="flex items-center rounded-lg px-4 py-2 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
     >
