@@ -16,11 +16,11 @@ const model = defineModel<string>({
 </script>
 <template>
   <div
-    class="focus-within:outline-2 focus-within:outline-blue-500 focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
+    class="focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
   >
     <div
       :class="{
-        'outline-red': invalid,
+        'outline-states-error': invalid,
       }"
       class="flex items-center rounded-lg px-4 py-2 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
     >

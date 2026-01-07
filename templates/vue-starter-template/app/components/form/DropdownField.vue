@@ -38,7 +38,7 @@ const errorText = computed(() => unref(errorMessage));
       :invalid="!!errorText"
       :loading
     />
-    <span v-if="errorText" class="text-red text-xs absolute">{{
+    <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText
     }}</span>
   </div>
