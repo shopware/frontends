@@ -18,12 +18,12 @@ type ExtraComponentRenderer = (
   context: ComponentInternalInstance | null,
 ) => VNode;
 
-type ExtraComponentConfig = {
+export type ExtraComponentConfig = {
   conditions: (node: NodeObject) => boolean;
   renderer: ExtraComponentRenderer;
 };
 
-type RendererConfig = {
+export type RendererConfig = {
   container: {
     type: string;
   };

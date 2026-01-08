@@ -19,7 +19,7 @@ type ExtraComponentConfig = {
   renderer?: unknown;
 };
 
-type RectifyConfig = {
+export type RectifyConfig = {
   extraComponentsMap?: Record<string, ExtraComponentConfig>;
 };
 
