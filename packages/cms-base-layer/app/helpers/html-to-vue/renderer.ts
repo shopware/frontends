@@ -5,14 +5,14 @@
 import type { ComponentInternalInstance, VNode } from "vue";
 import { isNode } from "./ast";
 import type { NodeObject } from "./getOptionsFromNode";
-import { type Options, getOptionsFromNode } from "./getOptionsFromNode";
+import { getOptionsFromNode } from "./getOptionsFromNode";
 
 type ASTNode = NodeObject | NodeObject[];
 
 type RawChildren = string | number | boolean | VNode;
 
 type ExtraComponentRenderer = (
-  transformedNode: Options,
+  node: NodeObject,
   children: RawChildren[],
   createElement: typeof import("vue").h,
   context: ComponentInternalInstance | null,
@@ -100,12 +100,7 @@ export function renderer(
         // if it's an extra component use custom renderer
         const componentConfig = config.extraComponentsMap[node.name];
         if (componentConfig !== undefined) {
-          return componentConfig.renderer(
-            transformedNode,
-            children,
-            h,
-            context,
-          );
+          return componentConfig.renderer(node, children, h, context);
         }
         // else, create normal html element
         return h(node.name, transformedNode, [...children]);
