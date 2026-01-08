@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import type { Schemas } from "#shopware";
 import { addressFormRules } from "../../../utils/validation/rules/addressFormRules";
 
@@ -42,10 +42,10 @@ watch(
   { immediate: true },
 );
 
-const $v = useVuelidate(addressFormRules(state), state);
+const { r$ } = useRegle(state, addressFormRules(state));
 
 async function handleSubmit() {
-  const valid = await $v.value.$validate();
+  const { valid } = await r$.$validate();
   if (!valid) {
     return;
   }
@@ -58,7 +58,7 @@ async function handleSubmit() {
     <FormSalutationSelect
       v-model="state.salutationId"
       id="salutation"
-      :errorMessage="$v.salutationId?.$errors[0]?.$message"
+      :errorMessage="r$.salutationId.$errors[0]"
     />
 
     <div class="flex gap-4">
@@ -68,7 +68,7 @@ async function handleSubmit() {
         id="first-name"
         :label="$t('form.firstName')"
         :placeholder="$t('form.firstNamePlaceholder')"
-        :errorMessage="$v.firstName?.$errors[0]?.$message"
+        :errorMessage="r$.firstName.$errors[0]"
       />
       <FormInputField
         class="basis-1/2"
@@ -76,7 +76,7 @@ async function handleSubmit() {
         id="last-name"
         :label="$t('form.lastName')"
         :placeholder="$t('form.lastNamePlaceholder')"
-        :errorMessage="$v.lastName?.$errors[0]?.$message"
+        :errorMessage="r$.lastName.$errors[0]"
       />
     </div>
 
@@ -85,7 +85,7 @@ async function handleSubmit() {
       id="street"
       :label="$t('form.streetAddress')"
       :placeholder="$t('form.streetPlaceholder')"
-      :errorMessage="$v.street?.$errors[0]?.$message"
+      :errorMessage="r$.street.$errors[0]"
     />
 
     <div class="flex gap-4">
@@ -95,7 +95,7 @@ async function handleSubmit() {
         id="zipcode"
         :label="$t('form.postalCode')"
         :placeholder="$t('form.postalCodePlaceholder')"
-        :errorMessage="$v.zipcode?.$errors[0]?.$message"
+        :errorMessage="r$.zipcode.$errors[0]"
       />
       <FormInputField
         class="basis-1/2"
@@ -103,15 +103,15 @@ async function handleSubmit() {
         id="city"
         :label="$t('form.city')"
         :placeholder="$t('form.cityPlaceholder')"
-        :errorMessage="$v.city?.$errors[0]?.$message"
+        :errorMessage="r$.city.$errors[0]"
       />
     </div>
 
     <SharedCountryStateInput
       v-model:country-id="state.countryId"
       v-model:state-id="state.countryStateId"
-      :country-id-validation="$v.countryId"
-      :state-id-validation="$v.countryStateId"
+      :country-id-validation="r$.countryId"
+      :state-id-validation="r$.countryStateId"
     />
 
     <p class="text-sm text-surface-on-surface-variant">

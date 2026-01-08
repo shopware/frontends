@@ -62,13 +62,13 @@ function handleChangePaymentMethod(id: string) {
 }
 
 async function handleSaveAddress() {
-  $vBaseInfo.value.$touch();
-  $vBillingAddress.value.$touch();
+  $vBaseInfo.$touch();
+  $vBillingAddress.$touch();
 
-  const validBaseInfo = await $vBaseInfo.value.$validate();
-  const validbillingAddress = await $vBillingAddress.value.$validate();
+  const { valid: validBaseInfo } = await $vBaseInfo.$validate();
+  const { valid: validbillingAddress } = await $vBillingAddress.$validate();
 
-  if (!validBaseInfo || !validbillingAddress) {
+  if (validBaseInfo || validbillingAddress) {
     return;
   }
 
