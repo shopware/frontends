@@ -63,6 +63,7 @@ overrides:
   '@babel/runtime': ^7.26.10
   '@babel/helpers': ^7.26.10
   react-router: ^7.5.2
+  preact: ^10.28.2
 
 importers:
 
@@ -12204,14 +12205,8 @@ packages:
   potpack@1.0.2:
     resolution: {integrity: sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ==}
 
-  preact@10.22.1:
-    resolution: {integrity: sha512-jRYbDDgMpIb5LHq3hkI0bbl+l/TQ9UnkdQ0ww+lp+4MMOdqaUYdFc5qeyP+IV8FAd/2Em7drVPeKdQxsiWCf/A==}
-
-  preact@10.27.2:
-    resolution: {integrity: sha512-5SYSgFKSyhCbk6SrXyMpqjb5+MQBgfvEKE/OC+PujcY34sOpqtr+0AZQtPYx5IA6VxynQ7rUPCtKzyovpj9Bpg==}
-
-  preact@10.28.1:
-    resolution: {integrity: sha512-u1/ixq/lVQI0CakKNvLDEcW5zfCjUQfZdK9qqWuIJtsezuyG6pk9TWj75GMuI/EzRSZB/VAE43sNWWZfiy8psw==}
+  preact@10.28.2:
+    resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -15234,7 +15229,7 @@ snapshots:
       '@types/applepayjs': 14.0.8
       '@types/googlepay': 0.7.6
       classnames: 2.5.1
-      preact: 10.22.1
+      preact: 10.28.2
 
   '@adyen/bento-design-tokens@1.10.0': {}
 
@@ -16552,7 +16547,7 @@ snapshots:
   '@docsearch/js@3.8.2(@algolia/client-search@5.44.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.0)':
     dependencies:
       '@docsearch/react': 3.8.2(@algolia/client-search@5.44.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.0)
-      preact: 10.27.2
+      preact: 10.28.2
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/react'
@@ -26056,7 +26051,7 @@ snapshots:
       hogan.js: 3.0.2
       htm: 3.1.1
       instantsearch-ui-components: 0.9.0
-      preact: 10.28.1
+      preact: 10.28.2
       qs: 6.14.1
       search-insights: 2.17.0
 
@@ -28908,11 +28903,7 @@ snapshots:
 
   potpack@1.0.2: {}
 
-  preact@10.22.1: {}
-
-  preact@10.27.2: {}
-
-  preact@10.28.1: {}
+  preact@10.28.2: {}
 
   prelude-ls@1.2.1: {}
 
