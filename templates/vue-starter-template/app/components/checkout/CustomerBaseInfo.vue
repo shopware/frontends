@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { useVuelidate } from "@vuelidate/core";
+import type { Regle } from "@regle/core";
 
 const email = defineModel<string>("email", {
   required: true,
@@ -10,7 +10,12 @@ const password = defineModel<string>("password", {
 });
 
 const { errorMessages } = defineProps<{
-  errorMessages?: ReturnType<typeof useVuelidate>;
+  errorMessages?: Ref<
+    Regle<{
+      email: string;
+      password: string;
+    }>["r$"]
+  >;
 }>();
 
 const switchAnimating = ref(false);
@@ -39,9 +44,7 @@ function handleUpdateBaseInfo() {
         id="email"
         :label="$t('checkout.customerBaseInfo.emailLabel')"
         :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
-        :errorMessage="
-          errorMessages?.value?.email?.$errors?.[0]?.$message ?? ''
-        "
+        :errorMessage="errorMessages?.value?.email?.$errors?.[0] ?? ''"
       />
       <div
         class="relative transition-all"
@@ -77,9 +80,7 @@ function handleUpdateBaseInfo() {
             type="password"
             :label="$t('checkout.customerBaseInfo.passwordLabel')"
             :placeholder="$t('checkout.customerBaseInfo.passwordPlaceholder')"
-            :errorMessage="
-              errorMessages?.value?.password?.$errors?.[0]?.$message ?? ''
-            "
+            :errorMessage="errorMessages?.value?.password?.$errors?.[0] ?? ''"
           />
         </div>
       </div>

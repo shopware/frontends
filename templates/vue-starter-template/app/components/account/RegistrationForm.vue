@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
+import type { operations } from "#shopware";
 
 const props = defineProps<{
   customerGroupId?: string;
@@ -32,36 +33,48 @@ const initialState = {
   lastName: "",
   email: "",
   password: "",
-  vatIds: [null],
+  vatIds: [""] as [string, ...string[]],
   billingAddress: {
-    company: null,
+    company: "",
     street: "",
     zipcode: "",
     city: "",
     countryId: "",
     countryStateId: "",
   },
+  acceptedDataProtection: true,
 };
 
-const state = reactive(JSON.parse(JSON.stringify(initialState)));
+const state = reactive<typeof initialState>(
+  JSON.parse(JSON.stringify(initialState)),
+);
 
-const $v = useVuelidate(
-  registrationFormRules(state.accountType, state.billingAddress.countryId),
+const { r$ } = useRegle(
   state,
+  registrationFormRules(
+    computed(() => state.accountType),
+    computed(() => state.billingAddress.countryId),
+  ),
 );
 const invokeSubmit = async () => {
-  $v.value.$touch();
-  const valid = await $v.value.$validate();
+  r$.$touch();
+  const { valid } = await r$.$validate();
   if (valid) {
     try {
       loading.value = true;
-      const response = await register(state);
+      // TODO use full type form with the new template
+      const response = await register(
+        state as unknown as Omit<
+          operations["register post /account/register"]["body"],
+          "storefrontUrl"
+        >,
+      );
       if (response?.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
         doubleOptInBox.value?.scrollIntoView();
-        $v.value.$reset();
+        r$.$reset();
       } else if (response?.active) router.push("/");
     } catch (error) {
       handleApiError(error);
@@ -121,8 +134,8 @@ const accountTypeOptions = [
           v-model="state.firstName"
           autocomplete="firstName"
           :label="$t('form.firstName')"
-          :errorMessage="$v.firstName.$errors[0]?.$message"
-          @blur="$v.firstName.$touch()"
+          :errorMessage="r$.firstName.$errors[0]"
+          @blur="r$.firstName.$touch()"
           data-testid="registration-first-name-input"
         />
 
@@ -132,8 +145,8 @@ const accountTypeOptions = [
           v-model="state.lastName"
           autocomplete="family-name"
           :label="$t('form.lastName')"
-          :errorMessage="$v.lastName.$errors[0]?.$message"
-          @blur="$v.firstName.$touch()"
+          :errorMessage="r$.lastName.$errors[0]"
+          @blur="r$.lastName.$touch()"
           data-testid="registration-last-name-input"
         />
 
@@ -143,8 +156,8 @@ const accountTypeOptions = [
           v-model="state.email"
           autocomplete="email"
           :label="$t('form.email')"
-          :errorMessage="$v.email.$errors[0]?.$message"
-          @blur="$v.email.$touch()"
+          :errorMessage="r$.email.$errors[0]"
+          @blur="r$.email.$touch()"
           data-testid="registration-email-input"
         />
 
@@ -155,8 +168,8 @@ const accountTypeOptions = [
           autocomplete="current-password"
           type="password"
           :label="$t('form.password')"
-          :errorMessage="$v.password.$errors[0]?.$message"
-          @blur="$v.password.$touch()"
+          :errorMessage="r$.password.$errors[0]"
+          @blur="r$.password.$touch()"
           data-testid="registration-password-input"
         />
 
@@ -166,7 +179,7 @@ const accountTypeOptions = [
           id="vatId"
           v-model="state.vatIds[0]"
           :label="$t('form.vatId')"
-          @blur="$v.vatIds.$touch()"
+          @blur="r$.vatIds.$touch()"
           data-testid="registration-vatid-input"
         />
       </div>
@@ -183,8 +196,8 @@ const accountTypeOptions = [
           autocomplete="company"
           :label="$t('form.company')"
           data-testid="registration-company-input"
-          @blur="$v.billingAddress.company.$touch()"
-          :errorMessage="$v.billingAddress.company.$errors[0]?.$message"
+          @blur="r$.billingAddress.company.$touch()"
+          :errorMessage="r$.billingAddress.company.$errors[0]"
         />
 
         <FormInputField
@@ -194,8 +207,8 @@ const accountTypeOptions = [
           autocomplete="street-address"
           :label="$t('form.streetAddress')"
           data-testid="registration-street-input"
-          @blur="$v.billingAddress.street.$touch()"
-          :errorMessage="$v.billingAddress.street.$errors[0]?.$message"
+          @blur="r$.billingAddress.street.$touch()"
+          :errorMessage="r$.billingAddress.street.$errors[0]"
         />
 
         <FormInputField
@@ -205,8 +218,8 @@ const accountTypeOptions = [
           v-model="state.billingAddress.zipcode"
           autocomplete="postal-code"
           data-testid="registration-zipcode-input"
-          @blur="$v.billingAddress.zipcode.$touch()"
-          :errorMessage="$v.billingAddress.zipcode.$errors[0]?.$message"
+          @blur="r$.billingAddress.zipcode.$touch()"
+          :errorMessage="r$.billingAddress.zipcode.$errors[0]"
         />
 
         <FormInputField
@@ -216,15 +229,15 @@ const accountTypeOptions = [
           v-model="state.billingAddress.city"
           autocomplete="address-level2"
           data-testid="registration-city-input"
-          @blur="$v.billingAddress.city.$touch()"
-          :errorMessage="$v.billingAddress.city.$errors[0]?.$message"
+          @blur="r$.billingAddress.city.$touch()"
+          :errorMessage="r$.billingAddress.city.$errors[0]"
         />
 
         <SharedCountryStateInput
           v-model:country-id="state.billingAddress.countryId"
           v-model:state-id="state.billingAddress.countryStateId"
-          :country-id-validation="$v.billingAddress.countryId"
-          :state-id-validation="$v.billingAddress.countryStateId"
+          :country-id-validation="r$.billingAddress.countryId"
+          :state-id-validation="r$.billingAddress.countryStateId"
           class="col-span-12 md:col-span-4"
         />
       </div>
