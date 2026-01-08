@@ -146,7 +146,7 @@ const accountTypeOptions = [
           autocomplete="family-name"
           :label="$t('form.lastName')"
           :errorMessage="r$.lastName.$errors[0]"
-          @blur="r$.firstName.$touch()"
+          @blur="r$.lastName.$touch()"
           data-testid="registration-last-name-input"
         />
 

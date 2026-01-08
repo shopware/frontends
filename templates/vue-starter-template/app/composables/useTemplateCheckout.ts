@@ -1,4 +1,5 @@
 import { useRegle } from "@regle/core";
+import type { Regle } from "@regle/core";
 import type { Schemas } from "#shopware";
 import { customValidators } from "../../i18n/utils/i18n-validators";
 
@@ -8,8 +9,13 @@ interface UseTemplateCheckoutReturn {
   billingAddress: Ref<Omit<Schemas["CustomerAddress"], "id" | "customerId">>;
   canPlaceOrder: ComputedRef<boolean>;
   customerAddressRules: ComputedRef<object>;
-  $vBillingAddress: ReturnType<typeof useRegle>;
-  $vBaseInfo: ReturnType<typeof useRegle>;
+  $vBillingAddress: Regle<
+    Omit<Schemas["CustomerAddress"], "id" | "customerId">
+  >["r$"];
+  $vBaseInfo: Regle<{
+    email: string;
+    password: string;
+  }>["r$"];
   customerBaseInfo: Ref<{
     email: string;
     password: string;
@@ -77,8 +83,11 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
     },
   }));
 
-  const $vBillingAddress = useRegle(billingAddress, customerAddressRules);
-  const $vBaseInfo = useRegle(customerBaseInfo, baseInfoRules);
+  const { r$: $vBillingAddress } = useRegle(
+    billingAddress,
+    customerAddressRules,
+  );
+  const { r$: $vBaseInfo } = useRegle(customerBaseInfo, baseInfoRules);
 
   return {
     selectedShippingMethod,

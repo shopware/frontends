@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { useRegle } from "@regle/core";
+import type { Regle } from "@regle/core";
 
 const email = defineModel<string>("email", {
   required: true,
@@ -10,7 +10,12 @@ const password = defineModel<string>("password", {
 });
 
 const { errorMessages } = defineProps<{
-  errorMessages?: ReturnType<typeof useRegle>;
+  errorMessages?: Ref<
+    Regle<{
+      email: string;
+      password: string;
+    }>["r$"]
+  >;
 }>();
 
 const switchAnimating = ref(false);
