@@ -3,17 +3,10 @@
  */
 
 import type { ComponentInternalInstance, h } from "vue";
-import { generateAST, rectifyAST } from "./ast";
-import { renderer } from "./renderer";
+import { type RectifyConfig, generateAST, rectifyAST } from "./ast";
+import { type RendererConfig, renderer } from "./renderer";
 
-type DefaultConfig = {
-  container: {
-    type: string;
-  };
-  extraComponentsMap: Record<string, unknown>;
-  renderAnyway: boolean;
-  textTransformer: (text: string) => string;
-};
+type DefaultConfig = RendererConfig;
 
 const defaultConfig: DefaultConfig = {
   container: {
@@ -33,7 +26,10 @@ export function renderHtml(
 ) {
   const mergedConfig = Object.assign(defaultConfig, config);
   const _ast = generateAST(html);
-  const _rectifiedAst = rectifyAST(_ast, config);
+  const rectifyConfig: RectifyConfig = {
+    extraComponentsMap: config.extraComponentsMap,
+  };
+  const _rectifiedAst = rectifyAST(_ast, rectifyConfig);
 
   return renderer(
     _rectifiedAst,

@@ -61,7 +61,7 @@ const CmsTextRender = defineComponent({
             return (
               node.type === "tag" &&
               node.name === "a" &&
-              node.attrs?.class?.match(/btn\s?/)
+              !!node.attrs?.class?.match(/btn\s?/)
             );
           },
           renderer(
