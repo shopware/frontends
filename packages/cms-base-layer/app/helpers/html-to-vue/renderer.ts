@@ -39,7 +39,7 @@ export function renderer(ast, config, createElement, context, resolveUrl) {
         if (typeof config.extraComponentsMap[node.name] !== "undefined") {
           return config.extraComponentsMap[node.name].renderer.call(
             this,
-            transformedNode,
+            node,
             children,
             h,
             context,
