@@ -21,7 +21,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "66.5.4",
+    "@unocss/nuxt": "66.5.12",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "14.1.0",
