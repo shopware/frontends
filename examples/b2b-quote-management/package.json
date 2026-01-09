@@ -28,8 +28,8 @@
     "@types/node": "22.13.14",
     "@vitejs/plugin-vue": "6.0.3",
     "@vueuse/core": "14.1.0",
-    "unocss": "66.5.4",
+    "unocss": "66.5.12",
     "vite": "7.3.0",
-    "vue-tsc": "3.2.1"
+    "vue-tsc": "3.2.2"
   }
 }
