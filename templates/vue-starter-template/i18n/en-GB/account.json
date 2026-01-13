@@ -143,7 +143,9 @@
       }
     },
     "messages": {
-      "loggedInSuccess": "You have been logged in successfully."
+      "loggedInSuccess": "You have been logged in successfully.",
+      "verifying": "Verifying your account...",
+      "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
     }
   }
 }
