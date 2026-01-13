@@ -129,10 +129,10 @@ const displayModeValue = computed(
 );
 
 const navigationArrowsValue = computed(
-  () => props.config?.navigationArrows?.value || "none",
+  () => getConfigValue("navigationArrows") || "none",
 );
 const navigationDotsValue = computed(
-  () => props.config?.navigationDots?.value || "none",
+  () => getConfigValue("navigationDots") || "none",
 );
 
 function initSlider() {
