@@ -288,29 +288,29 @@ defineExpose({
       <button
         aria-label="Previous slide"
         :class="{
-          'absolute bg-transparent top-1/2 left-0 transform -translate-y-1/2 py-4': true,
-          'transition bg-white/20 hover:bg-white/50':
-            navigationArrowsValue === 'inside',
+          'absolute top-1/2 left-0 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="previous"
       >
-        <div class="w-15 h-15 i-carbon-chevron-left"></div>
+        <div class="w-6 h-6 i-carbon-chevron-left"></div>
       </button>
       <button
         aria-label="Next slide"
         :class="{
-          'absolute bg-transparent top-1/2 right-0 transform -translate-y-1/2 py-4': true,
-          'transition bg-white/20 hover:bg-white/50':
-            navigationArrowsValue === 'inside',
+          'absolute top-1/2 right-0 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="next"
       >
-        <div class="w-15 h-15 i-carbon-chevron-right"></div>
+        <div class="w-6 h-6 i-carbon-chevron-right"></div>
       </button>
     </div>
     <div
       :class="{
-        'absolute bottom-5 left-1/2 transform -translate-x-1/2 gap-5': true,
+        'absolute bottom-5 left-1/2 transform -translate-x-1/2 gap-2 items-center': true,
         flex: navigationDotsValue !== 'none',
         hidden: navigationDotsValue === 'none',
       }"
@@ -319,9 +319,9 @@ defineExpose({
         v-for="(_, i) of childrenRaw"
         :key="`dot-${i}`"
         :class="{
-          'w-5 h-5 rounded-full cursor-pointer': true,
-          'bg-gray-100': i === activeSlideIndex,
-          'bg-gray-500/50': i !== activeSlideIndex,
+          'rounded-full cursor-pointer transition-all duration-300': true,
+          'w-6 h-2 bg-surface-on-surface-variant': i === activeSlideIndex,
+          'w-2 h-2 bg-surface-surface-container-highest': i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
       ></div>
