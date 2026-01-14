@@ -11,7 +11,7 @@ const props = withDefaults(
   {
     rating: 0,
     reviewCount: 0,
-    starSize: 12,
+    starSize: 16,
     showCount: true,
   },
 );
@@ -20,9 +20,9 @@ const filledStars = computed(() => Math.round(props.rating));
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center">
     <div
-      class="flex items-center"
+      class="flex items-center gap-1.5"
       role="img"
       :aria-label="`${rating} out of 5 stars`"
     >

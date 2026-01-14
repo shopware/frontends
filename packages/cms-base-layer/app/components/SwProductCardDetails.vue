@@ -38,7 +38,7 @@ const isMinimalLayout = computed(() => props.layoutType === "minimal");
           </div>
 
           <RouterLink :to="productLink"
-            class="self-stretch text-surface-on-surface text-2xl font-normal font-serif leading-9 overflow-hidden line-clamp-2 break-words"
+            class="self-stretch text-surface-on-surface text-2xl font-normal font-serif leading-9 overflow-hidden line-clamp-2 break-words min-h-[4.5rem]"
             data-testid="product-box-product-name-link">
             {{ productName }}
           </RouterLink>
@@ -50,6 +50,7 @@ const isMinimalLayout = computed(() => props.layoutType === "minimal");
         v-if="isMinimalLayout"
         :rating="product?.ratingAverage ?? 0"
         :review-count="product?.productReviews?.length ?? 0"
+        class="mt-4"
       />
 
       <!-- Price for standard layout -->
