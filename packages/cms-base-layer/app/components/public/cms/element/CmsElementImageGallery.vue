@@ -17,8 +17,8 @@ const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const placeholderSvg = useImagePlaceholder();
 
 const sliderConfig = computed(() => ({
-  navigationArrows: { source: "static", value: "inside" },
-  navigationDots: { source: "static", value: "inside" },
+  navigationArrows: { source: "static" as const, value: "inside" },
+  navigationDots: { source: "static" as const, value: "inside" },
   ...props.content.config,
 }));
 </script>
