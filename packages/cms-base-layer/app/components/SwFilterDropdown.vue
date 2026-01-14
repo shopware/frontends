@@ -24,20 +24,22 @@ const toggle = () => {
     <!-- Pill button -->
     <button
       type="button"
-      class="bg-brand-tertiary rounded-full px-4 py-1.5 inline-flex items-center gap-1 hover:bg-brand-tertiary-hover transition-colors"
+      class="bg-brand-tertiary rounded-full px-4 py-1.5 inline-flex items-center hover:bg-brand-tertiary-hover transition-colors"
       :class="{ 'ring-2 ring-brand-primary': isActive }"
       @click="toggle"
       :aria-expanded="isOpen"
       aria-haspopup="true"
     >
-      <span class="text-brand-on-tertiary text-base font-normal leading-normal">
-        {{ label }}
-      </span>
-      <SwChevronIcon
-        :direction="isOpen ? 'up' : 'down'"
-        :size="24"
-        class="text-brand-on-tertiary"
-      />
+      <div class="py-1 inline-flex items-center gap-1">
+        <span class="text-brand-on-tertiary text-base font-normal leading-6">
+          {{ label }}
+        </span>
+        <SwChevronIcon
+          :direction="isOpen ? 'up' : 'down'"
+          :size="24"
+          class="text-brand-on-tertiary"
+        />
+      </div>
     </button>
 
     <!-- Dropdown panel -->
