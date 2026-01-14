@@ -10,7 +10,7 @@ import {
   useTemplateRef,
   watch,
 } from "vue";
-import type { CSSProperties, VNodeArrayChildren } from "vue";
+import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { useCmsElementConfig } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -41,9 +41,14 @@ const { getConfigValue } = useCmsElementConfig({
 const slots = useSlots() as {
   default?: () => { children: VNodeArrayChildren }[];
 };
-const childrenRaw = computed(
-  () => (slots?.default?.()[0]?.children as VNodeArrayChildren) ?? [],
-);
+
+// get fresh children from slot - call this each time to get new VNode instances
+function getSlotChildren(): VNode[] {
+  return (slots?.default?.()[0]?.children as VNode[]) ?? [];
+}
+
+const childrenRaw = computed(() => getSlotChildren());
+
 const slidesToScroll = computed(() =>
   props.slidesToScroll >= props.slidesToShow
     ? props.slidesToShow
@@ -54,14 +59,21 @@ const slidesToShow = computed(() =>
     ? childrenRaw.value.length
     : props.slidesToShow,
 );
-const children = computed<string[]>(() => {
-  if (childrenRaw.value.length === 0) return [];
+
+// build children array with fresh VNodes for infinite scroll
+// we must call getSlotChildren() separately for each section because Vue can only render each VNode once
+const children = computed<VNode[]>(() => {
+  const count = childrenRaw.value.length;
+  if (count === 0) return [];
+
+  const n = slidesToShow.value;
   return [
-    ...childrenRaw.value.slice(-slidesToShow.value),
-    ...childrenRaw.value,
-    ...childrenRaw.value.slice(0, slidesToShow.value),
-  ] as string[];
+    ...getSlotChildren().slice(-n), // prepend: last N slides
+    ...getSlotChildren(), // main slides
+    ...getSlotChildren().slice(0, n), // append: first N slides
+  ];
 });
+
 const emit = defineEmits<(e: "changeSlide", index: number) => void>();
 const slider = useTemplateRef<HTMLDivElement>("slider");
 const imageSlider = useTemplateRef<HTMLDivElement>("imageSlider");
@@ -112,7 +124,7 @@ watch(
 const imageSliderStyle = computed(() => {
   if (getConfigValue("displayMode") === "cover") {
     return {
-      height: getConfigValue("minHeight"),
+      minHeight: getConfigValue("minHeight"),
       margin: `0 -${props.gap}`,
     };
   }
@@ -288,24 +300,24 @@ defineExpose({
       <button
         aria-label="Previous slide"
         :class="{
-          'absolute top-1/2 left-0 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
           'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
           'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="previous"
       >
-        <div class="w-6 h-6 i-carbon-chevron-left"></div>
+        <SwChevronIcon direction="left" />
       </button>
       <button
         aria-label="Next slide"
         :class="{
-          'absolute top-1/2 right-0 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
           'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
           'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="next"
       >
-        <div class="w-6 h-6 i-carbon-chevron-right"></div>
+        <SwChevronIcon direction="right" />
       </button>
     </div>
     <div
