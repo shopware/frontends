@@ -29,11 +29,11 @@ const config: ComputedRef<SliderElementConfig> = computed(() => ({
     source: "static",
   },
   navigationDots: {
-    value: "",
+    value: getConfigValue("navigation") === true ? "outside" : "",
     source: "static",
   },
   navigationArrows: {
-    value: getConfigValue("navigation") ? "outside" : "",
+    value: getConfigValue("navigation") === true ? "outside" : "",
     source: "static",
   },
 }));
