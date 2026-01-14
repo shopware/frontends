@@ -1,0 +1,12 @@
+{
+  "newsletter": {
+    "subscriptionHeader": "Newsletter-Anmeldung",
+    "subscriptionCheckbox": "Ja, ich möchte den kostenlosen Newsletter abonnieren. (Ich kann mich jederzeit abmelden.)",
+    "subscriptionInfo": "Ihre Newsletter-Anmeldung wurde bestätigt. Sie erhalten nun unsere neuesten Updates und Angebote.",
+    "messages": {
+      "loading": "Ihre Newsletter-Anmeldung wird bestätigt...",
+      "newsletterSubscribed": "Vielen Dank! Wir haben Ihre E-Mail-Adresse angemeldet.",
+      "newsletterUnsubscribed": "Newsletter abbestellt"
+    }
+  }
+}
