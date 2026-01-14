@@ -6,15 +6,21 @@ import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
 import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
 
-const props = defineProps<{
-  filter: ListingFilter;
-  selectedManufacturer: Set<string>;
-  selectedProperties: Set<string>;
-  selectedMinPrice: number | undefined;
-  selectedMaxPrice: number | undefined;
-  selectedRating: number | undefined;
-  selectedShippingFree: boolean | undefined;
-}>();
+const props = withDefaults(
+  defineProps<{
+    filter: ListingFilter;
+    selectedManufacturer: Set<string>;
+    selectedProperties: Set<string>;
+    selectedMinPrice: number | undefined;
+    selectedMaxPrice: number | undefined;
+    selectedRating: number | undefined;
+    selectedShippingFree: boolean | undefined;
+    displayMode?: "accordion" | "dropdown";
+  }>(),
+  {
+    displayMode: "accordion",
+  },
+);
 
 const emit = defineEmits<{
   "filter-change": [{ code: string; value: string | number | boolean }];
@@ -58,6 +64,7 @@ const handleSelectValue = ({
       :is="filterComponent"
       :filter="filter"
       :selected-filters="transformedFilters"
+      :display-mode="displayMode"
       @select-value="handleSelectValue"
     />
   </div>
