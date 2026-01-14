@@ -35,7 +35,7 @@ const filledStars = computed(() => Math.round(props.rating));
     </div>
     <span
       v-if="showCount && reviewCount > 0"
-      class="text-surface-on-surface-variant text-base leading-normal"
+      class="ml-1 text-surface-on-surface-variant text-base leading-normal"
     >
       ({{ reviewCount }})
     </span>
