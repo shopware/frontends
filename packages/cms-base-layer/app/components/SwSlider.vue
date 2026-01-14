@@ -88,6 +88,34 @@ const isSliding = ref<boolean>();
 const { width: imageSliderWidth } = useElementSize(imageSlider);
 let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
 
+// Touch event handling for mobile swipe gestures
+const touchStartX = ref(0);
+const touchEndX = ref(0);
+
+function onTouchStart(event: TouchEvent) {
+  touchStartX.value = event.touches?.[0]?.clientX || 0;
+}
+
+function onTouchMove(event: TouchEvent) {
+  touchEndX.value = event.touches?.[0]?.clientX || 0;
+}
+
+function onTouchEnd() {
+  const deltaX = touchEndX.value - touchStartX.value;
+  const threshold = 50; // pixels
+
+  if (Math.abs(deltaX) > threshold) {
+    if (deltaX < 0) {
+      next();
+    } else {
+      previous();
+    }
+  }
+
+  touchStartX.value = 0;
+  touchEndX.value = 0;
+}
+
 onMounted(() => {
   initSlider();
 
@@ -265,6 +293,9 @@ defineExpose({
       ref="imageSlider"
       class="overflow-hidden h-full"
       :style="imageSliderStyle"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
     >
       <div
         ref="imageSliderTrack"
