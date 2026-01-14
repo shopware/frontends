@@ -12,11 +12,22 @@ const { resolveApiErrors } = useApiErrorsResolver(
 );
 
 onMounted(async () => {
+  const em = route.query.em;
+  const hash = route.query.hash;
+  const hasValidEm = typeof em === "string" && em.trim() !== "";
+  const hasValidHash = typeof hash === "string" && hash.trim() !== "";
+
+  if (!hasValidEm || !hasValidHash) {
+    error.value = true;
+    errorMessage.value = "";
+    loading.value = false;
+    return;
+  }
   try {
     await apiClient.invoke("confirmNewsletter post /newsletter/confirm", {
       body: {
-        em: route.query.em as string,
-        hash: route.query.hash as string,
+        em,
+        hash,
       },
     });
   } catch (err) {
