@@ -16,17 +16,14 @@ This document provides guidance for AI assistants working with the `@shopware/cm
 
 **Quick Start**:
 ```bash
-# In monorepo
-pnpm run build --filter=@shopware/cms-base-layer
-pnpm run dev   # Stub mode for development
-pnpm run test  # Run tests
+pnpm run build  # Build the package
+pnpm run dev    # Stub mode for development
+pnpm run test   # Run tests
 ```
 
 ## Package Overview
 
 The `@shopware/cms-base-layer` is a Nuxt layer that provides a complete implementation of Shopware's Shopping Experiences CMS system. It renders CMS pages created in Shopware Administration using Vue components styled with UnoCSS/Tailwind CSS.
-
-**Location**: `packages/cms-base-layer/`
 
 ## Architecture
 
@@ -170,11 +167,6 @@ export default defineNuxtConfig({
     "@shopware/composables/nuxt-layer",
     "@shopware/cms-base-layer"
   ],
-  modules: ["@shopware/nuxt-module"],
-  shopware: {
-    endpoint: "https://your-shop.com/store-api/",
-    accessToken: "your-access-token",
-  },
 });
 ```
 
@@ -370,19 +362,6 @@ Available presets (defined in [nuxt.config.ts](nuxt.config.ts)):
 - `productDetail` - High quality for detail pages
 - `thumbnail` - Small thumbnails (150x150)
 - `hero` - Hero/banner images
-
-## Dependencies
-
-### Required Peer Dependencies
-- `@shopware/composables` - Vue composables for Shopware
-- `@shopware/helpers` - Utility functions
-- `@shopware/api-client` - API communication
-
-### Key Dependencies
-- `@unocss/nuxt` - Styling framework
-- `@nuxt/image` - Image optimization
-- `@vuelidate/core` - Form validation
-- `three` / `@tresjs/core` - 3D product visualization
 
 ## Common Patterns
 
