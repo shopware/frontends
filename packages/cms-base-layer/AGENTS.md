@@ -174,19 +174,9 @@ export default defineNuxtConfig({
 
 ```vue
 <template>
+  <!-- Pass CMS page data from category, product, or landing page response -->
   <CmsPage v-if="cmsPage" :content="cmsPage" />
 </template>
-
-<script setup lang="ts">
-// cmsPage comes from category, product, or landing page response
-const { data } = await useAsyncData(() => 
-  apiClient.invoke('readCategory', {
-    pathParams: { navigationId: 'your-category-id' },
-    body: { slots: 'true' }  // Include CMS slots
-  })
-);
-const cmsPage = computed(() => data.value?.cmsPage);
-</script>
 ```
 
 ### Template Examples
