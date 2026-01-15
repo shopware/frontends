@@ -165,6 +165,7 @@ const productLink = computed(() =>
       :fromPrice="fromPrice"
       :addToCartProxy="addToCartProxy"
       :productLink="productLink"
+      :layoutType="layoutType"
     />
   </div>
 </template>

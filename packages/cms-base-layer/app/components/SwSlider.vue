@@ -10,7 +10,7 @@ import {
   useTemplateRef,
   watch,
 } from "vue";
-import type { CSSProperties, VNodeArrayChildren } from "vue";
+import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { useCmsElementConfig } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -41,9 +41,14 @@ const { getConfigValue } = useCmsElementConfig({
 const slots = useSlots() as {
   default?: () => { children: VNodeArrayChildren }[];
 };
-const childrenRaw = computed(
-  () => (slots?.default?.()[0]?.children as VNodeArrayChildren) ?? [],
-);
+
+// get fresh children from slot - call this each time to get new VNode instances
+function getSlotChildren(): VNode[] {
+  return (slots?.default?.()[0]?.children as VNode[]) ?? [];
+}
+
+const childrenRaw = computed(() => getSlotChildren());
+
 const slidesToScroll = computed(() =>
   props.slidesToScroll >= props.slidesToShow
     ? props.slidesToShow
@@ -54,14 +59,21 @@ const slidesToShow = computed(() =>
     ? childrenRaw.value.length
     : props.slidesToShow,
 );
-const children = computed<string[]>(() => {
-  if (childrenRaw.value.length === 0) return [];
+
+// build children array with fresh VNodes for infinite scroll
+// we must call getSlotChildren() separately for each section because Vue can only render each VNode once
+const children = computed<VNode[]>(() => {
+  const count = childrenRaw.value.length;
+  if (count === 0) return [];
+
+  const n = slidesToShow.value;
   return [
-    ...childrenRaw.value.slice(-slidesToShow.value),
-    ...childrenRaw.value,
-    ...childrenRaw.value.slice(0, slidesToShow.value),
-  ] as string[];
+    ...getSlotChildren().slice(-n), // prepend: last N slides
+    ...getSlotChildren(), // main slides
+    ...getSlotChildren().slice(0, n), // append: first N slides
+  ];
 });
+
 const emit = defineEmits<(e: "changeSlide", index: number) => void>();
 const slider = useTemplateRef<HTMLDivElement>("slider");
 const imageSlider = useTemplateRef<HTMLDivElement>("imageSlider");
@@ -75,6 +87,34 @@ const isSliding = ref<boolean>();
 
 const { width: imageSliderWidth } = useElementSize(imageSlider);
 let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
+
+// Touch event handling for mobile swipe gestures
+const touchStartX = ref(0);
+const touchEndX = ref(0);
+
+function onTouchStart(event: TouchEvent) {
+  touchStartX.value = event.touches?.[0]?.clientX || 0;
+}
+
+function onTouchMove(event: TouchEvent) {
+  touchEndX.value = event.touches?.[0]?.clientX || 0;
+}
+
+function onTouchEnd() {
+  const deltaX = touchEndX.value - touchStartX.value;
+  const threshold = 50; // pixels
+
+  if (Math.abs(deltaX) > threshold) {
+    if (deltaX < 0) {
+      next();
+    } else {
+      previous();
+    }
+  }
+
+  touchStartX.value = 0;
+  touchEndX.value = 0;
+}
 
 onMounted(() => {
   initSlider();
@@ -112,7 +152,7 @@ watch(
 const imageSliderStyle = computed(() => {
   if (getConfigValue("displayMode") === "cover") {
     return {
-      height: getConfigValue("minHeight"),
+      minHeight: getConfigValue("minHeight"),
       margin: `0 -${props.gap}`,
     };
   }
@@ -129,10 +169,10 @@ const displayModeValue = computed(
 );
 
 const navigationArrowsValue = computed(
-  () => props.config?.navigationArrows?.value || "none",
+  () => getConfigValue("navigationArrows") || "none",
 );
 const navigationDotsValue = computed(
-  () => props.config?.navigationDots?.value || "none",
+  () => getConfigValue("navigationDots") || "none",
 );
 
 function initSlider() {
@@ -253,6 +293,9 @@ defineExpose({
       ref="imageSlider"
       class="overflow-hidden h-full"
       :style="imageSliderStyle"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
     >
       <div
         ref="imageSliderTrack"
@@ -288,29 +331,29 @@ defineExpose({
       <button
         aria-label="Previous slide"
         :class="{
-          'absolute bg-transparent top-1/2 left-0 transform -translate-y-1/2 py-4': true,
-          'transition bg-white/20 hover:bg-white/50':
-            navigationArrowsValue === 'inside',
+          'absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="previous"
       >
-        <div class="w-15 h-15 i-carbon-chevron-left"></div>
+        <SwChevronIcon direction="left" />
       </button>
       <button
         aria-label="Next slide"
         :class="{
-          'absolute bg-transparent top-1/2 right-0 transform -translate-y-1/2 py-4': true,
-          'transition bg-white/20 hover:bg-white/50':
-            navigationArrowsValue === 'inside',
+          'absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
+          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
         }"
         @click="next"
       >
-        <div class="w-15 h-15 i-carbon-chevron-right"></div>
+        <SwChevronIcon direction="right" />
       </button>
     </div>
     <div
       :class="{
-        'absolute bottom-5 left-1/2 transform -translate-x-1/2 gap-5': true,
+        'absolute bottom-5 left-1/2 transform -translate-x-1/2 gap-2 items-center': true,
         flex: navigationDotsValue !== 'none',
         hidden: navigationDotsValue === 'none',
       }"
@@ -319,9 +362,9 @@ defineExpose({
         v-for="(_, i) of childrenRaw"
         :key="`dot-${i}`"
         :class="{
-          'w-5 h-5 rounded-full cursor-pointer': true,
-          'bg-gray-100': i === activeSlideIndex,
-          'bg-gray-500/50': i !== activeSlideIndex,
+          'rounded-full cursor-pointer transition-all duration-300': true,
+          'w-6 h-2 bg-surface-on-surface-variant': i === activeSlideIndex,
+          'w-2 h-2 bg-surface-surface-container-highest': i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
       ></div>
