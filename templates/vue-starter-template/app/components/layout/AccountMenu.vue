@@ -57,7 +57,7 @@ onClickOutside(accountMenuContainer, () => {
       <FormLinkButton
         class="text-other-sale text-normal hover:border-b hover:border-other-sale text-left"
         @click="handleLogout"
-        label="Logout"
+        :label="$t('account.menu.logout')"
       />
     </div>
   </div>
