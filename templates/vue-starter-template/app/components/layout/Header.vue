@@ -16,6 +16,11 @@ function toggleMiniCart() {
   miniCartActive.value = !miniCartActive.value;
 }
 
+const accountMenuActive = ref(false);
+function toggleAccountMenu() {
+  accountMenuActive.value = !accountMenuActive.value;
+}
+
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -27,7 +32,7 @@ function handleMyAccountClick() {
   if (!isLoggedIn.value) {
     loginModalController.open();
   } else {
-    push(formatLink("/account"));
+    toggleAccountMenu();
   }
 }
 
@@ -36,6 +41,7 @@ watch(
   () => route.path,
   () => {
     miniCartActive.value = false;
+    accountMenuActive.value = false;
   },
 );
 </script>
@@ -47,18 +53,45 @@ watch(
         class="container mx-auto flex sm:grid sm:grid-cols-3 items-center justify-between py-3.5 px-6 sm:px-0 relative"
       >
         <template v-if="!mobileSearchActive">
-          <NuxtLink :to="formatLink('/')" class="flex-shrink-0 sm:justify-self-start">
+          <NuxtLink
+            :to="formatLink('/')"
+            class="flex-shrink-0 sm:justify-self-start"
+          >
             <NuxtImg class="h-20 max-sm:h-10" src="/logo.svg" alt="logo" />
           </NuxtLink>
-          <LayoutHeaderSearch v-model="searchText" class="max-sm:hidden justify-self-center w-full" />
+          <LayoutHeaderSearch
+            v-model="searchText"
+            class="max-sm:hidden justify-self-center w-full"
+          />
           <div class="flex gap-4 flex-shrink-0 sm:justify-self-end">
             <LayoutHeaderSearchIcon
               @click="toggleMobileSearch"
               class="hidden max-sm:block"
             />
-            <FormIconButton type="ghost" @click="handleMyAccountClick"
-              ><LayoutHeaderMyAccountIcon
-            /></FormIconButton>
+            <div class="relative">
+              <FormIconButton
+                type="ghost"
+                @click="handleMyAccountClick"
+              >
+                <LayoutHeaderMyAccountIcon />
+              </FormIconButton>
+              <ClientOnly>
+                <Transition
+                  enter-active-class="transition ease-out duration-150"
+                  enter-from-class="opacity-0"
+                  enter-to-class="opacity-100"
+                  leave-active-class="transition ease-in duration-100"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <LayoutAccountMenu
+                    v-if="accountMenuActive && isLoggedIn"
+                    class="absolute top-full right-0 mt-2"
+                    @closeAccountMenu="toggleAccountMenu"
+                  />
+                </Transition>
+              </ClientOnly>
+            </div>
             <ClientOnly>
               <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               <template #fallback>
