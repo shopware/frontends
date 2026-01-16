@@ -37,6 +37,6 @@
     "@unocss/nuxt": "66.5.4",
     "typescript": "5.9.3",
     "unocss": "66.5.4",
-    "vue-tsc": "3.2.1"
+    "vue-tsc": "3.2.2"
   }
 }
