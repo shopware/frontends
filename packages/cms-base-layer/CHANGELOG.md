@@ -1,5 +1,13 @@
 # @shopware/cms-base-layer
 
+## 2.0.1
+
+### Patch Changes
+
+- [#2210](https://github.com/shopware/frontends/pull/2210) [`c6b88b7`](https://github.com/shopware/frontends/commit/c6b88b7d2c50054188356aeb0f83053554d442f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Anchor tags with "btn btn-primary" classes from the API were not being
+  transformed to Tailwind utility classes due to condition matching issues
+  in the html-to-vue renderer.
+
 ## 2.0.0
 
 ### Major Changes
