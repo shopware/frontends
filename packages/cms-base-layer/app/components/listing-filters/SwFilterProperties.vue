@@ -15,14 +15,20 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
-const props = defineProps<{
-  filter: ListingFilter;
-  selectedFilters: {
-    manufacturer?: string[];
-    properties?: string[];
-    [key: string]: unknown;
-  };
-}>();
+const props = withDefaults(
+  defineProps<{
+    filter: ListingFilter;
+    selectedFilters: {
+      manufacturer?: string[];
+      properties?: string[];
+      [key: string]: unknown;
+    };
+    displayMode?: "accordion" | "dropdown";
+  }>(),
+  {
+    displayMode: "accordion",
+  },
+);
 
 const emits =
   defineEmits<
@@ -55,34 +61,39 @@ const selectValue = (id: string) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div class="self-stretch flex flex-col justify-center items-center">
-      <div
-        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
-        @click="toggle"
-        role="button"
-        tabindex="0"
-        :aria-expanded="isFilterVisible"
-        :aria-controls="props.filter.code"
-        :aria-label="props.filter.label"
-        @keydown.enter="toggle"
-        @keydown.space.prevent="toggle"
-      >
-        <div class="flex-1 flex items-center gap-2.5">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-            {{ props.filter.label }}
-          </div>
-        </div>
-        <SwIconButton 
-          type="ghost" 
-          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
-          tabindex="-1"
+    <!-- Accordion header (only in accordion mode) -->
+    <template v-if="props.displayMode === 'accordion'">
+      <div class="self-stretch flex flex-col justify-center items-center">
+        <div
+          class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
+          @click="toggle"
+          role="button"
+          tabindex="0"
+          :aria-expanded="isFilterVisible"
+          :aria-controls="props.filter.code"
+          :aria-label="props.filter.label"
+          @keydown.enter="toggle"
+          @keydown.space.prevent="toggle"
         >
-          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-        </SwIconButton>
+          <div class="flex-1 flex items-center gap-2.5">
+            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+              {{ props.filter.label }}
+            </div>
+          </div>
+          <SwIconButton
+            type="ghost"
+            :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+            tabindex="-1"
+          >
+            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          </SwIconButton>
+        </div>
       </div>
-    </div>
+    </template>
+
+    <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div v-if="isFilterVisible || props.displayMode === 'dropdown'" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
         <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
         <legend class="sr-only">{{ props.filter.name }}</legend>
         <label
