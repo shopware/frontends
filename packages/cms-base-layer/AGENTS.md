@@ -181,6 +181,8 @@ export default defineNuxtConfig({
 
 ### Template Examples
 
+> **Note**: These paths reference templates within the monorepo structure.
+
 #### vue-starter-template
 
 The [vue-starter-template](../../templates/vue-starter-template/) demonstrates full cms-base-layer integration:
