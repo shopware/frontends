@@ -22,7 +22,7 @@
     "product-not-found": "The product could not be found.",
     "salutation-missing": "A salutation is missing from your profile, please choose one during checkout.",
     "login_no_matching_customer_internal": "Invalid username and/or password.",
-    "message-default": "Unfortunately, something went wrong.",
+    "message-default": "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",
     "message-404": "The requested page cannot be found.",
     "addToCartError": "An error occurred while trying to add items to the shopping cart.",
     "productNotFound": "Product {number} not found.",

@@ -22,7 +22,7 @@
     "product-not-found": "Produkt nie został znaleziony.",
     "salutation-missing": "Nie skonfigurowano żadnego pozdrowienia, prosimy o wybranie pozdrowienia podczas finalizowania zamówienia.",
     "login_no_matching_customer_internal": "Nieprawidłowa nazwa użytkownika i/lub hasło.",
-    "message-default": "Niestety wystąpił błąd.",
+    "message-default": "Niestety wystąpił błąd. Proszę spróbować ponownie za chwilę. Jeśli problem nadal występuje, możesz wrócić na stronę główną lub skontaktować się z naszym zespołem wsparcia.",
     "message-404": "Nie można znaleźć żądanej strony.",
     "addToCartError": "Wystąpił błąd podczas próby dodania produktów do koszyka.",
     "productNotFound": "Nie znaleziono produktu {number}.",
