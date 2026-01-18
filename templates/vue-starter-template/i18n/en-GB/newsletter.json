@@ -3,6 +3,7 @@
     "subscriptionHeader": "Newsletter subscription",
     "subscriptionCheckbox": "Yes, I would like to subscribe to the free newsletter. (I may unsubscribe at any time.)",
     "subscriptionInfo": "Your newsletter subscription has been confirmed. You will now receive our latest updates and offers.",
+    "backToHomepage": "Back to homepage",
     "messages": {
       "loading": "Confirming your newsletter subscription...",
       "newsletterSubscribed": "Thank you! We have signed up your address.",

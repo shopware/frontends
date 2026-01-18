@@ -83,6 +83,14 @@ onMounted(async () => {
         >
           {{ $t("newsletter.subscriptionInfo") }}
         </p>
+        <div v-if="error" class="mt-6">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-states-error text-states-on-error rounded-lg hover:opacity-90 transition-opacity font-medium"
+          >
+            {{ $t("newsletter.backToHomepage") }}
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>

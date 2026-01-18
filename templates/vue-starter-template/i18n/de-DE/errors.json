@@ -22,7 +22,7 @@
     "product-not-found": "Das Produkt wurde nicht gefunden.",
     "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus.",
     "login_no_matching_customer_internal": "Ungültiger Benutzername und/oder Passwort.",
-    "message-default": "Leider ist ein Fehler aufgetreten.",
+    "message-default": "Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es in wenigen Momenten erneut. Wenn das Problem weiterhin besteht, können Sie zur Startseite zurückkehren oder sich an unser Support-Team wenden.",
     "message-404": "Die angeforderte Seite konnte nicht gefunden werden.",
     "addToCartError": "Beim Versuch, Artikel zum Warenkorb hinzuzufügen, ist ein Fehler aufgetreten.",
     "productNotFound": "Produkt {number} nicht gefunden.",
