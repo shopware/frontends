@@ -23,6 +23,10 @@ const slots = defineSlots<{
   leftIcon(): unknown;
   rightIcon(): unknown;
 }>();
+
+const emit = defineEmits<{
+  focus: [];
+}>();
 </script>
 <template>
   <div
@@ -32,7 +36,7 @@ const slots = defineSlots<{
       :class="{
         'outline-states-error': invalid,
       }"
-      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px]"
+      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px]"
     >
       <slot name="leftIcon" />
       <input
@@ -41,6 +45,7 @@ const slots = defineSlots<{
         :placeholder="placeholder"
         :type="type"
         :autocomplete="autocomplete"
+        @focus="emit('focus')"
       />
       <slot name="rightIcon" />
     </div>
