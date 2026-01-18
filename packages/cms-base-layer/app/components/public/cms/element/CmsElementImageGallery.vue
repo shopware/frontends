@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware/composables";
 import { computed, defineAsyncComponent, ref } from "vue";
-import { useImagePlaceholder } from "#imports";
+import { useCmsElementConfig, useImagePlaceholder } from "#imports";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 // Load SwMedia3D only on client-side to avoid SSR issues with three.js packages
@@ -12,6 +12,16 @@ const SwMedia3DAsync = defineAsyncComponent(
 const props = defineProps<{
   content: CmsElementImageGallery;
 }>();
+
+const { getConfigValue } = useCmsElementConfig(props.content);
+
+const minHeight = computed(() => getConfigValue("minHeight") || "500px");
+const navigationArrows = computed(
+  () => getConfigValue("navigationArrows") || "inside",
+);
+const navigationDots = computed(
+  () => getConfigValue("navigationDots") || "inside",
+);
 
 const currentIndex = ref(0);
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
@@ -75,7 +85,8 @@ function onTouchEnd() {
     <div class="w-full">
       <!-- Main Image Display -->
       <div
-        class="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative overflow-hidden"
+        class="w-full relative overflow-hidden"
+        :style="{ minHeight }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
@@ -124,12 +135,17 @@ function onTouchEnd() {
 
       <!-- Navigation Arrows -->
       <div
-        v-if="mediaGallery.length > 1"
+        v-if="mediaGallery.length > 1 && navigationArrows !== 'none'"
         class="absolute inset-0 flex items-center justify-between px-2 sm:px-4 pointer-events-none"
       >
         <!-- Previous Button -->
         <button
-          class="w-10 h-10 rounded-full transition bg-white/20 hover:bg-white/50 disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center"
+          :class="[
+            'w-10 h-10 rounded-full transition disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center',
+            navigationArrows === 'outside'
+              ? 'bg-brand-tertiary text-surface-on-surface'
+              : 'bg-white/20 hover:bg-white/50',
+          ]"
           :disabled="currentIndex === 0"
           aria-label="Previous image"
           @click="previous"
@@ -139,7 +155,12 @@ function onTouchEnd() {
 
         <!-- Next Button -->
         <button
-          class="w-10 h-10 rounded-full transition bg-white/20 hover:bg-white/50 disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center"
+          :class="[
+            'w-10 h-10 rounded-full transition disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center',
+            navigationArrows === 'outside'
+              ? 'bg-brand-tertiary text-surface-on-surface'
+              : 'bg-white/20 hover:bg-white/50',
+          ]"
           :disabled="currentIndex === mediaGallery.length - 1"
           aria-label="Next image"
           @click="next"
@@ -150,8 +171,11 @@ function onTouchEnd() {
 
       <!-- Dot Indicators -->
       <div
-        v-if="mediaGallery.length > 1"
-        class="flex justify-center items-center gap-2 mt-2"
+        v-if="mediaGallery.length > 1 && navigationDots !== 'none'"
+        :class="[
+          'flex justify-center items-center gap-2',
+          navigationDots === 'outside' ? 'mt-4' : 'absolute bottom-4 left-1/2 transform -translate-x-1/2',
+        ]"
       >
         <button
           v-for="(image, index) in mediaGallery"
