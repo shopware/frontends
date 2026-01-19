@@ -38,7 +38,7 @@
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "defu": "6.1.4",
-    "h3": "1.15.4",
+    "h3": "1.15.5",
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
