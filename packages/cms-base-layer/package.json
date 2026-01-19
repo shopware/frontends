@@ -36,7 +36,7 @@
     "check-colors": "tsx scripts/check-unused-colors.ts"
   },
   "dependencies": {
-    "@iconify-json/carbon": "1.2.15",
+    "@iconify-json/carbon": "1.2.18",
     "@nuxt/image": "2.0.0",
     "@nuxt/kit": "4.2.2",
     "@shopware/api-client": "workspace:*",
@@ -44,14 +44,14 @@
     "@shopware/helpers": "workspace:*",
     "@tresjs/cientos": "5.2.1",
     "@tresjs/core": "5.2.1",
-    "@unocss/nuxt": "66.5.4",
+    "@unocss/nuxt": "66.6.0",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/core": "14.1.0",
     "entities": "6.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.182.0",
-    "unocss": "66.5.4",
+    "unocss": "66.6.0",
     "vue": "3.5.26",
     "xss": "1.0.15"
   },
@@ -67,6 +67,6 @@
     "unbuild": "2.0.0",
     "vitest": "3.2.4",
     "vue-router": "4.6.4",
-    "vue-tsc": "3.2.1"
+    "vue-tsc": "3.2.2"
   }
 }

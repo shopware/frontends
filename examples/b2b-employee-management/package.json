@@ -20,7 +20,7 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
-    "@unocss/nuxt": "66.5.4",
-    "unocss": "66.5.4"
+    "@unocss/nuxt": "66.6.0",
+    "unocss": "66.6.0"
   }
 }
