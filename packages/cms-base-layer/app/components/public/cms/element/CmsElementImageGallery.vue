@@ -159,7 +159,7 @@ function onTouchEnd() {
             'w-10 h-10 rounded-full transition disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center',
             navigationArrows === 'outside'
               ? 'bg-brand-tertiary text-surface-on-surface'
-              : 'bg-white/20 hover:bg-white/50',
+              : 'bg-surface-surface/20 hover:bg-surface-surface/50',
           ]"
           :disabled="currentIndex === mediaGallery.length - 1"
           aria-label="Next image"
