@@ -70,10 +70,50 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // access token for corresponding sales channel
     endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
-    devStorefrontUrl: "", // to simulate a storefrontUrl which is used in registration process and should cover the domain settings for a sales channel
+    devStorefrontUrl: "https://demo-frontends.shopware.store", // see section below
   },
 
 ```
+
+## What is `devStorefrontUrl` and when to use it?
+
+The `devStorefrontUrl` configuration option is primarily used for **customer registration** functionality. The Shopware registration endpoint requires a `storefrontUrl` parameter in its payload to identify which sales channel domain the customer is registering from.
+
+### Why is it needed?
+
+By default, the application uses `window.location.origin` (e.g., `https://your-store.com`) to determine the storefront URL. However, this fails in certain scenarios:
+
+- **Local development** - Your browser origin is `http://localhost:3000`, which doesn't match any configured sales channel domain
+- **Separate frontend/API hosting** - When your frontend runs on a different domain than what's configured in Shopware
+
+### How to configure it
+
+Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      shopware: {
+        endpoint: "https://your-shop.shopware.store/store-api",
+        accessToken: "your-access-token",
+        devStorefrontUrl: "https://your-shop.shopware.store", // must match a domain in Sales Channel settings
+      },
+    },
+  },
+});
+```
+
+Or use an environment variable:
+
+```bash
+NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
+```
+
+:::tip
+If customer registration works in production but fails locally, `devStorefrontUrl` is likely the solution. Set it to your production storefront domain during local development.
+:::
 
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 
