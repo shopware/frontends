@@ -6,15 +6,10 @@ import type {
 import { ref, watch } from "vue";
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    product: Schemas["Product"];
-    config?: Partial<SliderElementConfig>;
-  }>(),
-  {
-    config: () => ({}),
-  },
-);
+const { product, config = {} } = defineProps<{
+  product: Schemas["Product"];
+  config?: Partial<SliderElementConfig>;
+}>();
 
 const defaultConfig: SliderElementConfig = {
   minHeight: { value: "300px", source: "static" },
@@ -25,15 +20,15 @@ const defaultConfig: SliderElementConfig = {
 const content = ref<CmsElementImageGallery>();
 
 watch(
-  [() => props.product, () => props.config],
-  ([product, config]) => {
+  [() => product, () => config],
+  ([currentProduct, currentConfig]) => {
     content.value = {
       config: {
         ...defaultConfig,
-        ...config,
+        ...currentConfig,
       },
       data: {
-        sliderItems: product.media,
+        sliderItems: currentProduct.media,
       },
     } as CmsElementImageGallery;
   },
