@@ -47,7 +47,7 @@ const { data: footerData } = useAsyncData("mainFooterNavigation", () => {
 provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
-  <div>
+  <div class="flex flex-col min-h-screen">
     <header>
       <LayoutMetaNavigation
         v-if="languagesList.length > 1"
@@ -58,7 +58,7 @@ provide("swNavigation-footer-navigation", footerData);
       />
       <LayoutHeader />
     </header>
-    <main>
+    <main class="flex-1">
       <LayoutNotifications />
       <slot />
     </main>
