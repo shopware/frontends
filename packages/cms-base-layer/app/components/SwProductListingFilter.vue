@@ -6,21 +6,25 @@ import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
 import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
 
-const props = withDefaults(
-  defineProps<{
-    filter: ListingFilter;
-    selectedManufacturer: Set<string>;
-    selectedProperties: Set<string>;
-    selectedMinPrice: number | undefined;
-    selectedMaxPrice: number | undefined;
-    selectedRating: number | undefined;
-    selectedShippingFree: boolean | undefined;
-    displayMode?: "accordion" | "dropdown";
-  }>(),
-  {
-    displayMode: "accordion",
-  },
-);
+const {
+  filter,
+  selectedManufacturer,
+  selectedProperties,
+  selectedMinPrice,
+  selectedMaxPrice,
+  selectedRating,
+  selectedShippingFree,
+  displayMode = "accordion",
+} = defineProps<{
+  filter: ListingFilter;
+  selectedManufacturer: Set<string>;
+  selectedProperties: Set<string>;
+  selectedMinPrice: number | undefined;
+  selectedMaxPrice: number | undefined;
+  selectedRating: number | undefined;
+  selectedShippingFree: boolean | undefined;
+  displayMode?: "accordion" | "dropdown";
+}>();
 
 const emit = defineEmits<{
   "filter-change": [{ code: string; value: string | number | boolean }];
@@ -28,13 +32,13 @@ const emit = defineEmits<{
 
 const transformedFilters = computed(() => ({
   price: {
-    min: props.selectedMinPrice,
-    max: props.selectedMaxPrice,
+    min: selectedMinPrice,
+    max: selectedMaxPrice,
   },
-  rating: props.selectedRating,
-  "shipping-free": props.selectedShippingFree,
-  manufacturer: [...props.selectedManufacturer],
-  properties: [...props.selectedProperties],
+  rating: selectedRating,
+  "shipping-free": selectedShippingFree,
+  manufacturer: [...selectedManufacturer],
+  properties: [...selectedProperties],
 }));
 
 const filterComponent = computed<Component | undefined>(() => {
@@ -46,8 +50,8 @@ const filterComponent = computed<Component | undefined>(() => {
   };
 
   return (
-    componentMap[props.filter.code] ||
-    ("options" in props.filter ? SwFilterPropertiesVue : undefined)
+    componentMap[filter.code] ||
+    ("options" in filter ? SwFilterPropertiesVue : undefined)
   );
 });
 

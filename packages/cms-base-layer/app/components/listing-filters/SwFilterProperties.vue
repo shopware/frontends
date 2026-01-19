@@ -15,20 +15,19 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    filter: ListingFilter;
-    selectedFilters: {
-      manufacturer?: string[];
-      properties?: string[];
-      [key: string]: unknown;
-    };
-    displayMode?: "accordion" | "dropdown";
-  }>(),
-  {
-    displayMode: "accordion",
-  },
-);
+const {
+  filter,
+  selectedFilters,
+  displayMode = "accordion",
+} = defineProps<{
+  filter: ListingFilter;
+  selectedFilters: {
+    manufacturer?: string[];
+    properties?: string[];
+    [key: string]: unknown;
+  };
+  displayMode?: "accordion" | "dropdown";
+}>();
 
 const emits =
   defineEmits<
@@ -41,17 +40,17 @@ const toggle = () => {
 };
 
 const selectedIds = computed(() => {
-  if (props.filter.code === "manufacturer") {
-    return props.selectedFilters?.manufacturer || [];
+  if (filter.code === "manufacturer") {
+    return selectedFilters?.manufacturer || [];
   }
-  return props.selectedFilters?.properties || [];
+  return selectedFilters?.properties || [];
 });
 
 const isChecked = (id: string) => selectedIds.value.includes(id);
 
 const selectValue = (id: string) => {
   const emitCode =
-    props.filter.code === "manufacturer" ? "manufacturer" : "properties";
+    filter.code === "manufacturer" ? "manufacturer" : "properties";
   emits("select-value", {
     code: emitCode,
     value: id,
@@ -62,7 +61,7 @@ const selectValue = (id: string) => {
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <!-- Accordion header (only in accordion mode) -->
-    <template v-if="props.displayMode === 'accordion'">
+    <template v-if="displayMode === 'accordion'">
       <div class="self-stretch flex flex-col justify-center items-center">
         <div
           class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
@@ -70,14 +69,14 @@ const selectValue = (id: string) => {
           role="button"
           tabindex="0"
           :aria-expanded="isFilterVisible"
-          :aria-controls="props.filter.code"
-          :aria-label="props.filter.label"
+          :aria-controls="filter.code"
+          :aria-label="filter.label"
           @keydown.enter="toggle"
           @keydown.space.prevent="toggle"
         >
           <div class="flex-1 flex items-center gap-2.5">
             <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-              {{ props.filter.label }}
+              {{ filter.label }}
             </div>
           </div>
           <SwIconButton
@@ -93,11 +92,11 @@ const selectValue = (id: string) => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || props.displayMode === 'dropdown'" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div v-if="isFilterVisible || displayMode === 'dropdown'" :id="filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
         <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
-        <legend class="sr-only">{{ props.filter.name }}</legend>
+        <legend class="sr-only">{{ filter.name }}</legend>
         <label
-          v-for="option in props.filter.options || props.filter.entities"
+          v-for="option in filter.options || filter.entities"
           :key="`${option.id}-${isChecked(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
           @click="selectValue(option.id)"

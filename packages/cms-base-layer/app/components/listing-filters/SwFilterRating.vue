@@ -16,20 +16,19 @@ const emits =
     (e: "select-value", value: { code: string; value: unknown }) => void
   >();
 
-const props = withDefaults(
-  defineProps<{
-    filter: ListingFilter;
-    selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
-    displayMode?: "accordion" | "dropdown";
-  }>(),
-  {
-    displayMode: "accordion",
-  },
-);
+const {
+  filter,
+  selectedFilters,
+  displayMode = "accordion",
+} = defineProps<{
+  filter: ListingFilter;
+  selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
+  displayMode?: "accordion" | "dropdown";
+}>();
 const isHoverActive = ref(false);
 const hoveredIndex = ref(0);
 const displayedScore = computed(() =>
-  isHoverActive.value ? hoveredIndex.value : props.selectedFilters?.rating || 0,
+  isHoverActive.value ? hoveredIndex.value : selectedFilters?.rating || 0,
 );
 
 const hoverRating = (key: number) => {
@@ -38,10 +37,10 @@ const hoverRating = (key: number) => {
 };
 const onChangeRating = () => {
   const newValue =
-    props.selectedFilters?.rating !== hoveredIndex.value
+    selectedFilters?.rating !== hoveredIndex.value
       ? hoveredIndex.value
       : undefined;
-  emits("select-value", { code: props.filter?.code, value: newValue });
+  emits("select-value", { code: filter?.code, value: newValue });
 };
 
 const isFilterVisible = ref<boolean>(false);
@@ -53,7 +52,7 @@ const toggle = () => {
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
     <!-- Accordion header (only in accordion mode) -->
-    <template v-if="props.displayMode === 'accordion'">
+    <template v-if="displayMode === 'accordion'">
       <div class="self-stretch flex flex-col justify-center items-center">
         <div
           class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
@@ -67,7 +66,7 @@ const toggle = () => {
         >
           <div class="flex-1 flex items-center gap-2.5">
             <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-              {{ props.filter.label }}
+              {{ filter.label }}
             </div>
           </div>
           <SwIconButton
@@ -83,7 +82,7 @@ const toggle = () => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || props.displayMode === 'dropdown'" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div v-if="isFilterVisible || displayMode === 'dropdown'" class="self-stretch flex flex-col justify-start items-start gap-4">
         <div class="flex flex-row items-center gap-2 mt-2">
           <div
             v-for="i in 5"
