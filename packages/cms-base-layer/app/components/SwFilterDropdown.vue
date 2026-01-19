@@ -14,9 +14,9 @@ onClickOutside(dropdownElement, () => {
   isOpen.value = false;
 });
 
-const toggle = () => {
+function toggle() {
   isOpen.value = !isOpen.value;
-};
+}
 </script>
 
 <template>
