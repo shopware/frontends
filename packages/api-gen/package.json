@@ -31,7 +31,7 @@
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check --write . && pnpm run typecheck",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
     "test:watch": "vitest --typecheck"
@@ -40,6 +40,7 @@
     "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.35",
+    "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "@vitest/coverage-v8": "3.2.4",
     "json5": "2.2.3",
     "picocolors": "1.1.1",
