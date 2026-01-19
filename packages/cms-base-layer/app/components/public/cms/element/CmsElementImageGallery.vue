@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware/composables";
-import { computed, ref } from "vue";
-import { useCmsElementConfig } from "#imports";
+import { computed, defineAsyncComponent, ref } from "vue";
+import { useImagePlaceholder } from "#imports";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
-const props = withDefaults(
-  defineProps<{
-    content: CmsElementImageGallery;
-    slidesToShow?: number;
-    slidesToScroll?: number;
-  }>(),
-  {
-    slidesToShow: 5,
-    slidesToScroll: 4,
-  },
+// Load SwMedia3D only on client-side to avoid SSR issues with three.js packages
+const SwMedia3DAsync = defineAsyncComponent(
+  () => import("../../../SwMedia3D.vue"),
 );
 
-const { getConfigValue } = useCmsElementConfig(props.content);
+const props = defineProps<{
+  content: CmsElementImageGallery;
+}>();
 
 const currentIndex = ref(0);
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
+const placeholderSvg = useImagePlaceholder();
 
 function goToSlide(index: number) {
   if (index >= 0 && index < mediaGallery.value.length) {
@@ -43,7 +39,7 @@ const currentImage = computed(() => {
   return mediaGallery.value[currentIndex.value]?.media;
 });
 
-// Touch event handling for mobile swipe gestures - mobile
+// Touch event handling for mobile swipe gestures
 const touchStartX = ref(0);
 const touchEndX = ref(0);
 
@@ -57,21 +53,16 @@ function onTouchMove(event: TouchEvent) {
 
 function onTouchEnd() {
   const deltaX = touchEndX.value - touchStartX.value;
-
-  // Define a threshold for swipe detection
   const threshold = 50; // pixels
 
   if (Math.abs(deltaX) > threshold) {
     if (deltaX < 0) {
-      // Swipe Left
       next();
     } else {
-      // Swipe Right
       previous();
     }
   }
 
-  // Reset values
   touchStartX.value = 0;
   touchEndX.value = 0;
 }
@@ -83,20 +74,21 @@ function onTouchEnd() {
   >
     <div class="w-full">
       <!-- Main Image Display -->
-
       <div
-        class="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative overflow-hidden rounded-lg"
+        class="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative overflow-hidden"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
       >
         <Transition name="gallery-fade" mode="out-in">
+          <!-- 3D media -->
           <div
             v-if="currentImage && isSpatial(currentImage)"
+            :key="currentImage.url + '-3d'"
             class="w-full h-full relative"
           >
             <client-only>
-              <SwMedia3D :src="currentImage.url" />
+              <SwMedia3DAsync :src="currentImage.url" />
               <template #fallback>
                 <CmsElementImageGallery3dPlaceholder
                   class="w-full h-full absolute inset-0 object-cover"
@@ -109,24 +101,27 @@ function onTouchEnd() {
               </template>
             </client-only>
           </div>
+          <!-- Regular image -->
           <NuxtImg
             v-else-if="currentImage"
+            :key="currentImage.url"
             preset="hero"
             loading="lazy"
             class="w-full h-full absolute inset-0 object-cover"
+            :placeholder="placeholderSvg"
             :src="currentImage.url"
-            :key="currentImage.url"
             :alt="currentImage.alt || 'Product image'"
           />
-          <NuxtImg
+          <!-- Placeholder -->
+          <img
             v-else
-            preset="hero"
             class="w-full h-full absolute inset-0 object-cover"
-            src="https://placehold.co/600x500"
+            :src="placeholderSvg"
             alt="Placeholder image"
           />
         </Transition>
       </div>
+
       <!-- Navigation Arrows -->
       <div
         v-if="mediaGallery.length > 1"
@@ -134,30 +129,22 @@ function onTouchEnd() {
       >
         <!-- Previous Button -->
         <button
-          class="w-10 h-10 bg-brand-tertiary rounded-full hover:bg-brand-tertiary-hover transition-colors disabled:opacity-50 pointer-events-auto shadow-lg"
+          class="w-10 h-10 rounded-full transition bg-white/20 hover:bg-white/50 disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center"
           :disabled="currentIndex === 0"
-          @click="previous"
           aria-label="Previous image"
+          @click="previous"
         >
-          <div class="flex items-center justify-center w-full h-full">
-            <div
-              class="i-carbon-chevron-left w-5 h-5 text-brand-on-tertiary"
-            ></div>
-          </div>
+          <SwChevronIcon direction="left" />
         </button>
 
         <!-- Next Button -->
         <button
-          class="w-10 h-10 bg-brand-tertiary rounded-full hover:bg-brand-tertiary-hover transition-colors disabled:opacity-50 pointer-events-auto shadow-lg"
+          class="w-10 h-10 rounded-full transition bg-white/20 hover:bg-white/50 disabled:opacity-50 pointer-events-auto shadow-lg flex items-center justify-center"
           :disabled="currentIndex === mediaGallery.length - 1"
-          @click="next"
           aria-label="Next image"
+          @click="next"
         >
-          <div class="flex items-center justify-center w-full h-full">
-            <div
-              class="i-carbon-chevron-right w-5 h-5 text-brand-on-tertiary"
-            ></div>
-          </div>
+          <SwChevronIcon direction="right" />
         </button>
       </div>
 
@@ -168,15 +155,15 @@ function onTouchEnd() {
       >
         <button
           v-for="(image, index) in mediaGallery"
-          :key="image.media.url"
+          :key="image.media?.url"
           class="relative rounded-full transition-all duration-200 hover:scale-110"
           :class="{
             'w-6 h-2 bg-surface-on-surface-variant': index === currentIndex,
             'w-2 h-2 bg-surface-surface-container-highest':
               index !== currentIndex,
           }"
-          @click="goToSlide(index)"
           :aria-label="`Go to image ${index + 1}`"
+          @click="goToSlide(index)"
         />
       </div>
     </div>

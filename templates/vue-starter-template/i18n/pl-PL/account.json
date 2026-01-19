@@ -143,7 +143,10 @@
       }
     },
     "messages": {
-      "loggedInSuccess": "Zostałeś pomyślnie zalogowany."
+      "loggedInSuccess": "Zostałeś pomyślnie zalogowany.",
+      "verifying": "Weryfikowanie Twojego konta...",
+      "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij link w nim, aby dokończyć rejestrację.",
+      "verificationLinkInvalid": "Link weryfikacyjny jest nieprawidłowy lub wygasł. Proszę poprosić o nowy e-mail potwierdzający."
     }
   }
 }

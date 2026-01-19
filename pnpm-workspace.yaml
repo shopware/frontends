@@ -11,5 +11,7 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
+- 'vercel'
+- '@vercel/*'
 - 'qs' # security release, remove after 15.01.2026
-- 'preact' # security release, remove after 10.01.2026
+- 'tar' # security release, remove after 25.01.2026

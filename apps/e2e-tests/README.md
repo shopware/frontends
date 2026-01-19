@@ -25,6 +25,3 @@ To debug only a single test, run
 > pnpm test:e2e example-test -- --debug
 ```
 
-## gitlabCi configuration
-
-In case of a problem with launching e2e tests stage pipeline, check the version of playwright in `pnpm-lock.yaml` and `gitlab-ci.yml` file (it should be the same version)
