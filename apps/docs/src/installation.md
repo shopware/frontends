@@ -107,6 +107,8 @@ export default defineNuxtConfig({
       shopware: {
         endpoint: "https://your-business.shopware.store",
         accessToken: "access-token-from-settings",
+        // Optional: Required for local development when using customer registration
+        // devStorefrontUrl: "https://your-business.shopware.store",
       },
     },
   },
@@ -114,6 +116,10 @@ export default defineNuxtConfig({
 ```
 
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
+
+:::info devStorefrontUrl for local development
+If you're developing locally and need customer registration to work, set `devStorefrontUrl` to a domain configured in your Sales Channel settings. See the [troubleshooting guide](./resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for details.
+:::
 
 ## Next Steps
 
