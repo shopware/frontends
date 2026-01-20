@@ -4,7 +4,7 @@ const { controller: controllerProp, side = "right" } = defineProps<{
   side: "left" | "right";
 }>();
 
-const controller = toRef(controllerProp);
+const controller = toRef(() => controllerProp);
 const { isOpen, close } = controller.value;
 
 const sidebarContentElement = useTemplateRef("sidebarContentElement");

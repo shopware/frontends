@@ -6,7 +6,7 @@ const { cartItem: cartItemProp, maxQty = 100 } = defineProps<{
   maxQty?: number;
 }>();
 
-const cartItem = toRef(cartItemProp);
+const cartItem = toRef(() => cartItemProp);
 const CartItem = computed(() => {
   switch (cartItem.value?.type) {
     case "promotion":

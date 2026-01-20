@@ -13,7 +13,7 @@ const { cartItem: cartItemProp, maxQty = 100 } = defineProps<{
   maxQty?: number;
 }>();
 
-const cartItem = toRef(cartItemProp);
+const cartItem = toRef(() => cartItemProp);
 
 const isLoading = ref(false);
 const { getErrorsCodes } = useCartNotification();
