@@ -64,3 +64,14 @@ Supported managers:
 :::info
 `npm` package manager is available out of the box with Node.js installed. Other managers need manual installation.
 :::
+
+:::tip Template Compatibility
+All main templates (`vue-starter-template`, `vue-blank`, `astro`) work with **any package manager** after scaffolding. The documentation examples use `npm` for universal compatibility:
+
+```bash
+npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
+npm i && npm run dev
+```
+
+**Note:** The `vue-starter-template-extended` template uses Nuxt layers and requires additional setup. See the [template documentation](/getting-started/templates/vue-starter-template-extended.html#setup-run) for instructions.
+:::
