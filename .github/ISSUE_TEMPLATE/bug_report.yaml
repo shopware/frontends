@@ -3,19 +3,19 @@ description: Report problem with frontends package
 title: "[BUG] "
 labels: [needs-triage, bug]
 body:
-  - type: markdown
+  - type: textarea
     attributes:
       label: Problem descriprion and current behaviour
       description: A concise description of what you're experiencing.
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     attributes:
       label: Expected Behavior
       description: A concise description of what you expected to happen.
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     attributes:
       label: Steps To Reproduce
       description: Steps to reproduce the behavior.
