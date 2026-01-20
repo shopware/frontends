@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getTranslatedProperty } from "@shopware/helpers";
 import type { Schemas } from "#shopware";
+
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,
@@ -14,31 +15,32 @@ const { t } = useI18n();
 
 const emits = defineEmits<(e: "success") => void>();
 
-const props = withDefaults(
-  defineProps<{
-    address: Schemas["CustomerAddress"];
-    countries: Array<Schemas["Country"]>;
-    salutations: Array<Schemas["Salutation"]>;
-    canSetDefault?: boolean;
-    canEdit?: boolean;
-    canDelete?: boolean;
-  }>(),
-  {
-    canSetDefault: true,
-    canEdit: true,
-    canDelete: false,
-  },
-);
+const {
+  address,
+  countries,
+  salutations,
+  canSetDefault = true,
+  canEdit = true,
+  canDelete = false,
+} = defineProps<{
+  address: Schemas["CustomerAddress"];
+  countries: Array<Schemas["Country"]>;
+  salutations: Array<Schemas["Salutation"]>;
+  canSetDefault?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
+}>();
+
 const canBeDeleted = computed(
   () =>
-    props.canDelete &&
-    defaultShippingAddressId.value !== props.address.id &&
-    defaultBillingAddressId.value !== props.address.id,
+    canDelete &&
+    defaultShippingAddressId.value !== address.id &&
+    defaultBillingAddressId.value !== address.id,
 );
 
 const setDefaultShippingAddress = async () => {
   try {
-    await setDefaultCustomerShippingAddress(props.address.id);
+    await setDefaultCustomerShippingAddress(address.id);
     refreshSessionContext();
     pushSuccess(t("account.messages.defaultShippingAddressSuccess"));
   } catch (error) {
@@ -48,7 +50,7 @@ const setDefaultShippingAddress = async () => {
 
 const setDefaultBillingAddress = async () => {
   try {
-    await setDefaultCustomerBillingAddress(props.address.id);
+    await setDefaultCustomerBillingAddress(address.id);
     refreshSessionContext();
     pushSuccess(t("account.messages.defaultBillingAddressSuccess"));
   } catch (error) {

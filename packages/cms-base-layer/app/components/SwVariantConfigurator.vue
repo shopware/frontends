@@ -12,14 +12,9 @@ const { getUrlPrefix } = useUrlResolver();
 
 const prefix = getUrlPrefix();
 
-const props = withDefaults(
-  defineProps<{
-    allowRedirect?: boolean;
-  }>(),
-  {
-    allowRedirect: true,
-  },
-);
+const { allowRedirect = true } = defineProps<{
+  allowRedirect?: boolean;
+}>();
 
 type Translations = {
   product: {
@@ -61,7 +56,7 @@ const onHandleChange = async () => {
     getProductRoute(variantFound),
     prefix,
   );
-  if (props.allowRedirect && selectedOptionsVariantPath) {
+  if (allowRedirect && selectedOptionsVariantPath) {
     try {
       router.push(selectedOptionsVariantPath);
     } catch {
@@ -104,7 +99,13 @@ const onHandleChange = async () => {
             :class="{
               'border-3 border-brand-primary': isOptionSelected(option.id),
             }"
-            @click="handleChange(optionGroup.translated.name, option.id, onHandleChange)"
+            @click="
+              handleChange(
+                optionGroup.translated.name,
+                option.id,
+                onHandleChange,
+              )
+            "
           >
             <p
               :id="`${option.id}-choice-label`"

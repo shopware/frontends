@@ -20,14 +20,14 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<SwBaseButtonProps>(), {
-  variant: "primary",
-  size: "medium",
-  disabled: false,
-  loading: false,
-  type: "button",
-  block: false,
-});
+const {
+  variant = "primary",
+  size = "medium",
+  disabled = false,
+  loading = false,
+  type = "button",
+  block = false,
+} = defineProps<SwBaseButtonProps>();
 
 const emit = defineEmits<{
   click: [event: MouseEvent];
@@ -43,7 +43,7 @@ const buttonClasses = computed(() => {
     medium: "px-4 py-3 text-base",
     large: "px-6 py-4 text-lg",
   };
-  classes.push(sizeClasses[props.size]);
+  classes.push(sizeClasses[size]);
 
   const variantClasses = {
     primary:
@@ -60,15 +60,15 @@ const buttonClasses = computed(() => {
       "bg-transparent text-surface-on-surface-variant hover:text-surface-on-surface focus:ring-surface-on-surface",
   };
 
-  if (props.disabled || props.loading) {
+  if (disabled || loading) {
     classes.push(
       "bg-surface-surface-disabled text-surface-on-surface cursor-not-allowed opacity-50",
     );
   } else {
-    classes.push(variantClasses[props.variant]);
+    classes.push(variantClasses[variant]);
   }
 
-  if (props.block) {
+  if (block) {
     classes.push("w-full");
   }
 
@@ -76,7 +76,7 @@ const buttonClasses = computed(() => {
 });
 
 const handleClick = (event: MouseEvent) => {
-  if (!props.disabled && !props.loading) {
+  if (!disabled && !loading) {
     emit("click", event);
   }
 };
@@ -90,7 +90,10 @@ const handleClick = (event: MouseEvent) => {
     @click="handleClick"
     v-bind="$attrs"
   >
-    <div v-if="loading" class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+    <div
+      v-if="loading"
+      class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+    ></div>
 
     <span :class="{ 'opacity-0': loading }">
       <slot />

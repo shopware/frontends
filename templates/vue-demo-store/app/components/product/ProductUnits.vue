@@ -1,32 +1,27 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    product: Schemas["Product"];
-    showContent?: boolean;
-  }>(),
-  {
-    showContent: true,
-  },
-);
+const { product, showContent = true } = defineProps<{
+  product: Schemas["Product"];
+  showContent?: boolean;
+}>();
 
-const purchaseUnit = computed(() => props.product?.purchaseUnit);
-const unitName = computed(() => props.product?.unit?.translated.name);
+const purchaseUnit = computed(() => product?.purchaseUnit);
+const unitName = computed(() => product?.unit?.translated.name);
 const referencePrice = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.price,
+  () => product?.calculatedPrice?.referencePrice?.price,
 );
 const referenceUnit = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.referenceUnit,
+  () => product?.calculatedPrice?.referencePrice?.referenceUnit,
 );
 const referenceUnitName = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.unitName,
+  () => product?.calculatedPrice?.referencePrice?.unitName,
 );
 </script>
 
 <template>
   <div v-if="purchaseUnit" class="flex text-secondary-500 justify-end gap-1">
-    <template v-if="props.showContent">
+    <template v-if="showContent">
       {{ $t("product.content") }}: {{ purchaseUnit }} {{ unitName }}
     </template>
     <template v-if="referencePrice">

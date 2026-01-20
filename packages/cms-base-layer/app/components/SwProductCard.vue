@@ -11,7 +11,7 @@ import {
 } from "@shopware/helpers";
 import { getCmsTranslate } from "@shopware/helpers";
 import { defu } from "defu";
-import { computed, ref, toRefs } from "vue";
+import { computed, ref, toRef } from "vue";
 import {
   useAddToCart,
   useCartErrorParamsResolver,
@@ -26,19 +26,17 @@ const { pushSuccess, pushError } = useNotifications();
 const { getErrorsCodes } = useCartNotification();
 const { resolveCartError } = useCartErrorParamsResolver();
 
-const props = withDefaults(
-  defineProps<{
-    product: Schemas["Product"];
-    layoutType?: BoxLayout;
-    isProductListing?: boolean;
-    displayMode?: DisplayMode;
-  }>(),
-  {
-    layoutType: "standard",
-    displayMode: "standard",
-    isProductListing: false,
-  },
-);
+const {
+  product: productProp,
+  layoutType = "standard",
+  displayMode = "standard",
+  isProductListing = false,
+} = defineProps<{
+  product: Schemas["Product"];
+  layoutType?: BoxLayout;
+  displayMode?: DisplayMode;
+  isProductListing?: boolean;
+}>();
 
 type Translations = {
   product: {
@@ -79,7 +77,7 @@ let translations: Translations = {
 
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-const { product } = toRefs(props);
+const product = toRef(() => productProp);
 
 const { addToCart } = useAddToCart(product);
 
@@ -95,12 +93,12 @@ const toggleWishlistProduct = async () => {
     if (!isInWishlist.value) {
       await addToWishlist();
       pushSuccess(
-        `${props.product?.translated.name} ${translations.product.addedToWishlist}`,
+        `${product?.value.translated.name} ${translations.product.addedToWishlist}`,
       );
     } else {
       await removeFromWishlist();
       pushSuccess(
-        `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
+        `${product?.value.translated.name} ${translations.product.removedFromTheWishlist}`,
       );
     }
   } catch (error) {
@@ -109,7 +107,7 @@ const toggleWishlistProduct = async () => {
         ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+        `${product?.value.translated.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         },
@@ -131,11 +129,11 @@ const addToCartProxy = async () => {
 
   if (!errors.length)
     pushSuccess(
-      `${props.product?.translated.name} ${translations.product.addedToCart}`,
+      `${product?.value.translated.name} ${translations.product.addedToCart}`,
     );
 };
 
-const fromPrice = getProductFromPrice(props.product);
+const fromPrice = getProductFromPrice(product.value);
 const productName = computed(() => getProductName({ product: product.value }));
 const productManufacturer = computed(() =>
   getProductManufacturerName(product.value),

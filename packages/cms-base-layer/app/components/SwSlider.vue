@@ -14,26 +14,24 @@ import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { useCmsElementConfig } from "#imports";
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    config: SliderElementConfig;
-    slidesToShow?: number;
-    slidesToScroll?: number;
-    gap?: string;
-    autoplay?: boolean;
-    autoplaySpeed?: number;
-  }>(),
-  {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    gap: "0px",
-    autoplay: false,
-    autoplaySpeed: 3000,
-  },
-);
+const {
+  config,
+  slidesToShow: slidesToShowProp = 1,
+  slidesToScroll: slidesToScrollProp = 1,
+  gap = "0px",
+  autoplay = false,
+  autoplaySpeed = 3000,
+} = defineProps<{
+  config: SliderElementConfig;
+  slidesToShow?: number;
+  slidesToScroll?: number;
+  gap?: string;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+}>();
 
 const { getConfigValue } = useCmsElementConfig({
-  config: props.config,
+  config: config,
 } as Omit<Schemas["CmsSlot"], "config"> & {
   config: SliderElementConfig;
 });
@@ -50,14 +48,14 @@ function getSlotChildren(): VNode[] {
 const childrenRaw = computed(() => getSlotChildren());
 
 const slidesToScroll = computed(() =>
-  props.slidesToScroll >= props.slidesToShow
-    ? props.slidesToShow
-    : props.slidesToScroll,
+  slidesToScrollProp >= slidesToShowProp
+    ? slidesToShowProp
+    : slidesToScrollProp,
 );
 const slidesToShow = computed(() =>
-  props.slidesToShow >= childrenRaw.value.length
+  slidesToShowProp >= childrenRaw.value.length
     ? childrenRaw.value.length
-    : props.slidesToShow,
+    : slidesToShowProp,
 );
 
 // build children array with fresh VNodes for infinite scroll
@@ -132,12 +130,12 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => props.autoplay && isReady.value,
+  () => autoplay && isReady.value,
   (value) => {
     if (value) {
       autoPlayInterval.value = setInterval(() => {
         next();
-      }, props.autoplaySpeed);
+      }, autoplaySpeed);
     } else {
       if (autoPlayInterval.value) {
         clearInterval(autoPlayInterval.value);
@@ -153,7 +151,7 @@ const imageSliderStyle = computed(() => {
   if (getConfigValue("displayMode") === "cover") {
     return {
       minHeight: getConfigValue("minHeight"),
-      margin: `0 -${props.gap}`,
+      margin: `0 -${gap}`,
     };
   }
   return {
@@ -332,8 +330,10 @@ defineExpose({
         aria-label="Previous slide"
         :class="{
           'absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
-          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
-          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
+          'bg-brand-tertiary text-surface-on-surface':
+            navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50':
+            navigationArrowsValue === 'inside',
         }"
         @click="previous"
       >
@@ -343,8 +343,10 @@ defineExpose({
         aria-label="Next slide"
         :class="{
           'absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center': true,
-          'bg-brand-tertiary text-surface-on-surface': navigationArrowsValue === 'outside',
-          'transition bg-white/20 hover:bg-white/50': navigationArrowsValue === 'inside',
+          'bg-brand-tertiary text-surface-on-surface':
+            navigationArrowsValue === 'outside',
+          'transition bg-white/20 hover:bg-white/50':
+            navigationArrowsValue === 'inside',
         }"
         @click="next"
       >
@@ -364,7 +366,8 @@ defineExpose({
         :class="{
           'rounded-full cursor-pointer transition-all duration-300': true,
           'w-6 h-2 bg-surface-on-surface-variant': i === activeSlideIndex,
-          'w-2 h-2 bg-surface-surface-container-highest': i !== activeSlideIndex,
+          'w-2 h-2 bg-surface-surface-container-highest':
+            i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
       ></div>
