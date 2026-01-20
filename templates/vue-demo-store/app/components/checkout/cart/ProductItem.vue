@@ -8,17 +8,12 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { resolveCartError } = useCartErrorParamsResolver();
 
-const props = withDefaults(
-  defineProps<{
-    cartItem: Schemas["LineItem"];
-    maxQty?: number;
-  }>(),
-  {
-    maxQty: 100,
-  },
-);
+const { cartItem: cartItemProp, maxQty = 100 } = defineProps<{
+  cartItem: Schemas["LineItem"];
+  maxQty?: number;
+}>();
 
-const { cartItem } = toRefs(props);
+const { cartItem } = toRefs({ cartItem: cartItemProp });
 
 const isLoading = ref(false);
 const { getErrorsCodes } = useCartNotification();

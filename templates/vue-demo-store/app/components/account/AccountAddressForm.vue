@@ -15,31 +15,25 @@ const emits = defineEmits<{
   (e: "close"): void;
 }>();
 
-const props = withDefaults(
-  defineProps<{
-    address?: Schemas["CustomerAddress"];
-    title?: string;
-  }>(),
-  {
-    title: "Account address",
-    address: undefined,
-  },
-);
+const { address, title = "Account address" } = defineProps<{
+  address?: Schemas["CustomerAddress"];
+  title?: string;
+}>();
 
 const { getSalutations } = useSalutations();
 const { t } = useI18n();
 const { pushError } = useNotifications();
 
 const formData = reactive<Schemas["CustomerAddress"]>({
-  countryId: props.address?.countryId ?? "",
-  countryStateId: props.address?.countryStateId ?? "",
-  salutationId: props.address?.salutationId ?? "",
-  firstName: props.address?.firstName ?? "",
-  lastName: props.address?.lastName ?? "",
-  zipcode: props.address?.zipcode ?? "",
-  city: props.address?.city ?? "",
-  street: props.address?.street ?? "",
-  id: props.address?.id ?? "",
+  countryId: address?.countryId ?? "",
+  countryStateId: address?.countryStateId ?? "",
+  salutationId: address?.salutationId ?? "",
+  firstName: address?.firstName ?? "",
+  lastName: address?.lastName ?? "",
+  zipcode: address?.zipcode ?? "",
+  city: address?.city ?? "",
+  street: address?.street ?? "",
+  id: address?.id ?? "",
 } as Schemas["CustomerAddress"]);
 
 const invokeSave = async (): Promise<void> => {
@@ -69,7 +63,7 @@ useFocus(firstNameInputElement, { initialValue: true });
       <form id="account-address" name="account-address" method="post">
         <div class="px-4 py-5 bg-white sm:p-6">
           <h3 class="text-2xl border-b pb-3">
-            {{ props.title }}
+            {{ title }}
           </h3>
           <div class="grid grid-cols-6 gap-6 mt-8">
             <div class="col-span-6 sm:col-span-6">

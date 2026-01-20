@@ -1,15 +1,10 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    controller: ReturnType<typeof useModal>;
-    side: "left" | "right";
-  }>(),
-  {
-    side: "right",
-  },
-);
+const { controller: controllerProp, side = "right" } = defineProps<{
+  controller: ReturnType<typeof useModal>;
+  side: "left" | "right";
+}>();
 
-const { controller } = toRefs(props);
+const { controller } = toRefs({ controller: controllerProp });
 const { isOpen, close } = controller.value;
 
 const sidebarContentElement = useTemplateRef("sidebarContentElement");

@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-const props = withDefaults(
-  defineProps<{
-    rating: number;
-    reviewCount?: number;
-    starSize?: number;
-    showCount?: boolean;
-  }>(),
-  {
-    rating: 0,
-    reviewCount: 0,
-    starSize: 16,
-    showCount: true,
-  },
-);
+const {
+  rating = 0,
+  reviewCount = 0,
+  starSize = 16,
+  showCount = true,
+} = defineProps<{
+  rating: number;
+  reviewCount?: number;
+  starSize?: number;
+  showCount?: boolean;
+}>();
 
-const filledStars = computed(() => Math.round(props.rating));
+const filledStars = computed(() => Math.round(rating));
 </script>
 
 <template>

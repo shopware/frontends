@@ -2,21 +2,20 @@
 import { ref } from "vue";
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    activeCategory: Schemas["Category"];
-    elements: Schemas["Category"][];
-    level: number;
-  }>(),
-  {
-    level: 0,
-  },
-);
+const {
+  activeCategory,
+  elements,
+  level = 0,
+} = defineProps<{
+  activeCategory: Schemas["Category"];
+  elements: Schemas["Category"][];
+  level: number;
+}>();
 
 const expandedItems = ref<Set<string>>(new Set());
 
 function isActive(navigationElement: Schemas["Category"]) {
-  return navigationElement.id === props.activeCategory?.id;
+  return navigationElement.id === activeCategory?.id;
 }
 
 function toggleExpanded(id: string) {
@@ -32,9 +31,12 @@ function isExpanded(id: string) {
 }
 </script>
 <template>
-  <div v-if="props.elements?.length" class="self-stretch flex flex-col justify-start items-start gap-4">
+  <div
+    v-if="elements?.length"
+    class="self-stretch flex flex-col justify-start items-start gap-4"
+  >
     <div
-      v-for="(navigationElement, index) in props.elements"
+      v-for="(navigationElement, index) in elements"
       :key="index"
       class="w-full"
     >
@@ -42,15 +44,18 @@ function isExpanded(id: string) {
         :navigation-element="navigationElement"
         :is-active="isActive(navigationElement)"
         :is-expanded="isExpanded(navigationElement.id)"
-        :level="props.level"
+        :level="level"
         @toggle="toggleExpanded(navigationElement.id)"
       />
       <transition name="filter-collapse">
-        <div v-if="navigationElement.children && isExpanded(navigationElement.id)" class="self-stretch flex flex-col justify-start items-start">
+        <div
+          v-if="navigationElement.children && isExpanded(navigationElement.id)"
+          class="self-stretch flex flex-col justify-start items-start"
+        >
           <SwCategoryNavigation
             :elements="navigationElement.children"
-            :active-category="props.activeCategory"
-            :level="props.level + 1"
+            :active-category="activeCategory"
+            :level="level + 1"
           />
         </div>
       </transition>
@@ -60,7 +65,9 @@ function isExpanded(id: string) {
 <style scoped>
 .filter-collapse-enter-active,
 .filter-collapse-leave-active {
-  transition: max-height 240ms ease, opacity 200ms ease;
+  transition:
+    max-height 240ms ease,
+    opacity 200ms ease;
   overflow: hidden;
 }
 .filter-collapse-enter-from,
