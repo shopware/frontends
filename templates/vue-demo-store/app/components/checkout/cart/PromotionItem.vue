@@ -6,7 +6,7 @@ const { cartItem: cartItemProp, maxQty = 100 } = defineProps<{
   maxQty?: number;
 }>();
 
-const { cartItem } = toRefs({ cartItem: cartItemProp });
+const cartItem = toRef(cartItemProp);
 
 const { removeItem, itemTotalPrice, isRemovable } = useCartItem(cartItem);
 </script>

@@ -26,9 +26,7 @@ const {
   displayMode?: DisplayMode;
 }>();
 
-const { product } = toRefs({
-  product: productProp,
-});
+const product = toRef(productProp);
 const { addToCart, isInCart, count } = useAddToCart(product);
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
