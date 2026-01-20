@@ -1,8 +1,44 @@
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 // @ts-nocheck
 import type { Plugin } from "vite";
 import { prepareGithubPermalink } from "./utils";
+
+/**
+ * Transforms relative links (./path) in markdown content to full GitHub URLs.
+ * This is needed because when README files are loaded into VitePress,
+ * relative links would otherwise be resolved in the VitePress docs context
+ * instead of pointing to the original package location.
+ */
+function transformRelativeLinksToGithub(
+  content: string,
+  sourceFilePath: string,
+): string {
+  // Get the directory of the source file relative to repo root
+  // sourceFilePath is like "../../../../../examples/amazon-pay-button-example/README.md"
+  const normalizedPath = sourceFilePath.replaceAll("../", "");
+  const sourceDir = dirname(normalizedPath);
+
+  const githubBaseUrl = "https://github.com/shopware/frontends/blob/main";
+
+  // Transform markdown-style links: [text](./path)
+  let result = content.replace(
+    /\[([^\]]*)\]\(\.\/([^)]+)\)/g,
+    (_, text, relativePath) => {
+      return `[${text}](${githubBaseUrl}/${sourceDir}/${relativePath})`;
+    },
+  );
+
+  // Transform HTML-style links: href="./path" or href='./path'
+  result = result.replace(
+    /href=(["'])\.\/([^"']+)\1/g,
+    (_, quote, relativePath) => {
+      return `href=${quote}${githubBaseUrl}/${sourceDir}/${relativePath}${quote}`;
+    },
+  );
+
+  return result;
+}
 
 export async function ReadmeLoader(): Promise<Plugin> {
   return {
@@ -27,7 +63,12 @@ export async function ReadmeLoader(): Promise<Plugin> {
           );
         }
 
-        const content = `\n:::\n${readFileSync(filePath, "utf-8")}\n\n---\n\n:::info Auto-generated\nThis page is generated from an external markdown file. \nIn case of any issues or dead links, please \n${prepareGithubPermalink(
+        let fileContent = readFileSync(filePath, "utf-8");
+
+        // Transform relative links to GitHub URLs
+        fileContent = transformRelativeLinksToGithub(fileContent, path);
+
+        const content = `\n:::\n${fileContent}\n\n---\n\n:::info Auto-generated\nThis page is generated from an external markdown file. \nIn case of any issues or dead links, please \n${prepareGithubPermalink(
           {
             path,
             label: "visit the source file.",

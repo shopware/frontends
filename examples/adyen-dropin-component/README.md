@@ -72,7 +72,7 @@ runtimeConfig: {
 
 ## Use Credit Card components
 
-[Open app.vue](https://github.com/shopware/frontends/blob/main/examples/adyen-dropin-component/app.vue) file to see how it's working.
+[Open app.vue](https://github.com/shopware/frontends/blob/main/examples/adyen-dropin-component/app/app.vue) file to see how it's working.
 
 ## Development
 
