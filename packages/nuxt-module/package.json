@@ -29,7 +29,7 @@
     "dev": "unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm run typecheck",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
@@ -44,9 +44,9 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.2.2",
+    "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
-    "typescript": "5.9.3",
     "unbuild": "2.0.0"
   }
 }
