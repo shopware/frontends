@@ -2,7 +2,7 @@ name: Feature request
 description: Suggest an idea for this project
 labels: [needs-triage]
 body:
-- type: markdown
+- type: textarea
   id: feature-description
   attributes:
     label: Describe the feature
@@ -10,13 +10,13 @@ body:
     placeholder: Feature description
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
     label: WHY do we need that?
     description: Provide the main reason for this feature to be implemented.
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
     label: Acceptance Criteria
     description: Describe shortly in points the main criteria to be met in order to fulfill this request.
