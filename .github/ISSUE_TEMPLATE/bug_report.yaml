@@ -1,21 +1,21 @@
-name: 🐞 Bug
-description: File a bug/issue
+name: Bug report
+description: Report problem with frontends package
 title: "[BUG] "
-labels: ["pending triage", bug]
+labels: [needs-triage, bug]
 body:
-  - type: textarea
+  - type: markdown
     attributes:
-      label: Current Behavior
+      label: Problem descriprion and current behaviour
       description: A concise description of what you're experiencing.
     validations:
-      required: false
-  - type: textarea
+      required: true
+  - type: markdown
     attributes:
       label: Expected Behavior
       description: A concise description of what you expected to happen.
     validations:
-      required: false
-  - type: textarea
+      required: true
+  - type: markdown
     attributes:
       label: Steps To Reproduce
       description: Steps to reproduce the behavior.
@@ -25,7 +25,7 @@ body:
         3. Run '...'
         4. See error...
     validations:
-      required: false
+      required: true
   - type: textarea
     attributes:
       label: Anything else?
