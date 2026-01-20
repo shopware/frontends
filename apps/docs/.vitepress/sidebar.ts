@@ -327,7 +327,7 @@ export const sidebar = [
               },
               {
                 text: "mollie",
-                link: "/resources/integrations/payments/mollie.html",
+                link: "https://github.com/mollie/Shopware6Composables",
               },
               {
                 text: "Paypal",
