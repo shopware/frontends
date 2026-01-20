@@ -6,7 +6,7 @@ body:
       attributes:
           value: |
               Thanks for taking the time to share your idea with us!
-    - type: markdown
+    - type: textarea
       id: technical-todo
       attributes:
         label: Technical TODO
