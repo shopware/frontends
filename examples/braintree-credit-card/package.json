@@ -8,12 +8,14 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "typecheck": "nuxt prepare && vue-tsc --noEmit",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@types/braintree-web-drop-in": "^1.39.4",
     "@shopware/api-client": "canary",
+    "@shopware/api-gen": "canary",
     "@shopware/composables": "canary",
     "@shopware/nuxt-module": "canary",
     "@unocss/nuxt": "66.6.0",

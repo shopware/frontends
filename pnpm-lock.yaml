@@ -405,6 +405,9 @@ importers:
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client
+      '@shopware/api-gen':
+        specifier: canary
+        version: link:../../packages/api-gen
       '@shopware/composables':
         specifier: canary
         version: link:../../packages/composables
