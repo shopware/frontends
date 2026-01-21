@@ -46,7 +46,7 @@ overrides:
   sharp: ^0.33.4
   socks: ^2.8.3
   store2: ^2.14.4
-  tar: ^7.5.3
+  tar: ^7.5.4
   tar-fs: ^2.1.3
   tmp: ^0.2.4
   undici: ^6.23.0
@@ -13344,8 +13344,8 @@ packages:
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
 
-  tar@7.5.3:
-    resolution: {integrity: sha512-ENg5JUHUm2rDD7IvKNFGzyElLXNjachNLp6RaGf4+JOgxXHkqA+gq81ZAMCUmtMtqBsoU62lcp6S27g1LCYGGQ==}
+  tar@7.5.6:
+    resolution: {integrity: sha512-xqUeu2JAIJpXyvskvU3uvQW8PAmHrtXp2KDuMJwQqW8Sqq0CaZBAQ+dKS3RBXVhU4wC5NjAdKrmh84241gO9cA==}
     engines: {node: '>=18'}
 
   teex@1.0.1:
@@ -17322,7 +17322,7 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
       nopt: 8.1.0
       semver: 7.7.3
-      tar: 7.5.3
+      tar: 7.5.6
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -22245,7 +22245,7 @@ snapshots:
       semver: 7.7.3
       stat-mode: 0.3.0
       stream-to-promise: 2.2.0
-      tar: 7.5.3
+      tar: 7.5.6
       tinyexec: 0.3.2
       tree-kill: 1.2.2
       uid-promise: 1.0.0
@@ -25459,7 +25459,7 @@ snapshots:
       node-fetch-native: 1.6.7
       nypm: 0.5.4
       pathe: 2.0.3
-      tar: 7.5.3
+      tar: 7.5.6
 
   giget@2.0.0:
     dependencies:
@@ -30340,7 +30340,7 @@ snapshots:
       - bare-abort-controller
       - react-native-b4a
 
-  tar@7.5.3:
+  tar@7.5.6:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
