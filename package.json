@@ -40,7 +40,7 @@
     "dotenv-cli": "11.0.0",
     "esno": "4.8.0",
     "husky": "9.1.7",
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "turbo": "2.7.2",
     "vercel": "50.4.5"
   },
