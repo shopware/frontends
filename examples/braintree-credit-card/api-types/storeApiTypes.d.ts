@@ -2692,7 +2692,7 @@ export type Schemas = {
   };
   LineItem: {
     children?: components["schemas"]["LineItem"][];
-    cover?: components["schemas"]["ProductMedia"];
+    cover: components["schemas"]["Media"] | null;
     dataContextHash?: string;
     dataTimestamp?: string;
     deliveryInformation: components["schemas"]["CartDeliveryInformation"];
@@ -4393,518 +4393,527 @@ export type Schemas = {
       | "attendee.product.collection.disliked"
       | "attendee.product.collection.removed";
   };
-  ProductJsonApi: components["schemas"]["resource"] & {
-    active?: boolean;
-    readonly available?: boolean;
-    /** Format: int64 */
-    readonly availableStock?: number;
-    calculatedCheapestPrice?: GenericRecord;
-    /**
-     * Format: int64
-     * Runtime field, cannot be used as part of the criteria.
-     */
-    calculatedMaxPurchase?: number;
-    calculatedPrice?: GenericRecord;
-    calculatedPrices?: GenericRecord[];
-    canonicalProductId?: string;
-    canonicalProductVersionId?: string;
-    readonly categoryIds?: string[];
-    readonly categoryTree?: string[];
-    /** Format: int64 */
-    readonly childCount?: number;
-    cmsPageId?: string;
-    cmsPageVersionId?: string;
-    coverId?: string;
-    /** Format: date-time */
-    readonly createdAt?: string;
-    customFields?: GenericRecord;
-    deliveryTimeId?: string;
-    description?: string;
-    readonly displayGroup?: string;
-    ean?: string;
-    extensions?: {
-      attendeeProductCollections?: {
-        data?: {
-          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
-          id?: string;
-          /** @example dsr_attendee_product_collection */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
-           */
-          related?: string;
+  ProductJsonApi: unknown &
+    components["schemas"]["resource"] & {
+      active?: boolean;
+      readonly available?: boolean;
+      /** Format: int64 */
+      readonly availableStock?: number;
+      calculatedCheapestPrice?: GenericRecord;
+      /**
+       * Format: int64
+       * Runtime field, cannot be used as part of the criteria.
+       */
+      calculatedMaxPurchase?: number;
+      calculatedPrice?: GenericRecord;
+      calculatedPrices?: GenericRecord[];
+      canonicalProductId?: string;
+      canonicalProductVersionId?: string;
+      readonly categoryIds?: string[];
+      readonly categoryTree?: string[];
+      /** Format: int64 */
+      readonly childCount?: number;
+      cmsPageId?: string;
+      cmsPageVersionId?: string;
+      coverId?: string;
+      /** Format: date-time */
+      readonly createdAt?: string;
+      customFields?: GenericRecord;
+      deliveryTimeId?: string;
+      description?: string;
+      readonly displayGroup?: string;
+      ean?: string;
+      extensions?: {
+        attendeeProductCollections?: {
+          data?: {
+            /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+            id?: string;
+            /** @example dsr_attendee_product_collection */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+             */
+            related?: string;
+          };
+        };
+        reviewSummaries?: {
+          data?: {
+            /** @example c9c718522e64ffa5effb26cef94f4849 */
+            id?: string;
+            /** @example product_review_summary */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
+             */
+            related?: string;
+          };
+        };
+        swagCustomizedProductsTemplate?: {
+          data?: {
+            /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
+            id?: string;
+            /** @example swag_customized_products_template */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
+             */
+            related?: string;
+          };
         };
       };
-      reviewSummaries?: {
-        data?: {
-          /** @example c9c718522e64ffa5effb26cef94f4849 */
-          id?: string;
-          /** @example product_review_summary */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
-           */
-          related?: string;
-        };
-      };
-      swagCustomizedProductsTemplate?: {
-        data?: {
-          /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
-          id?: string;
-          /** @example swag_customized_products_template */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
-           */
-          related?: string;
-        };
-      };
-    };
-    /** Format: float */
-    height?: number;
-    id: string;
-    isCloseout?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    isNew?: boolean;
-    keywords?: string;
-    /** Format: float */
-    length?: number;
-    manufacturerId?: string;
-    manufacturerNumber?: string;
-    markAsTopseller?: boolean;
-    /** Format: int64 */
-    maxPurchase?: number;
-    measurements?: GenericRecord;
-    metaDescription?: string;
-    metaTitle?: string;
-    /** Format: int64 */
-    minPurchase?: number;
-    name: string;
-    readonly optionIds?: string[];
-    packUnit?: string;
-    packUnitPlural?: string;
-    parentId?: string;
-    parentVersionId?: string;
-    productManufacturerVersionId?: string;
-    productMediaVersionId?: string;
-    productNumber: string;
-    readonly propertyIds?: string[];
-    /** Format: int64 */
-    purchaseSteps?: number;
-    /** Format: float */
-    purchaseUnit?: number;
-    /** Format: float */
-    readonly ratingAverage?: number;
-    /** Format: float */
-    referenceUnit?: number;
-    relationships?: {
-      canonicalProduct?: {
-        data?: {
-          /** @example 023995a50b56c0de077323e958b2bbcd */
-          id?: string;
-          /** @example product */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
-           */
-          related?: string;
-        };
-      };
-      categories?: {
-        data?: {
-          /** @example b0b5ccb4a195a07fd3eed14affb8695f */
-          id?: string;
-          /** @example category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/categories
-           */
-          related?: string;
-        };
-      };
-      categoriesRo?: {
-        data?: {
-          /** @example 7f0702d3a90d965b8c9158c451f43fdb */
-          id?: string;
-          /** @example category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/categoriesRo
-           */
-          related?: string;
-        };
-      };
-      children?: {
-        data?: {
-          /** @example 268184c12df027f536154d099d497b31 */
-          id?: string;
-          /** @example product */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/children
-           */
-          related?: string;
-        };
-      };
-      cmsPage?: {
-        data?: {
-          /** @example 7b1460918b1abb93311108f3dc021c9b */
-          id?: string;
-          /** @example cms_page */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/cmsPage
-           */
-          related?: string;
-        };
-      };
-      configuratorSettings?: {
-        data?: {
-          /** @example c0827fee13725d41f1fd7e292243f5aa */
-          id?: string;
-          /** @example product_configurator_setting */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
-           */
-          related?: string;
-        };
-      };
-      cover?: {
-        data?: {
-          /** @example 41d0e299ca1abeb2094852da042165c7 */
-          id?: string;
-          /** @example product_media */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/cover
-           */
-          related?: string;
-        };
-      };
-      crossSellings?: {
-        data?: {
-          /** @example 89936e14544d1b403cecef938101b6b0 */
-          id?: string;
-          /** @example product_cross_selling */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/crossSellings
-           */
-          related?: string;
-        };
-      };
-      deliveryTime?: {
-        data?: {
-          /** @example 8c888ae25a7bd42057370e31f7e01044 */
-          id?: string;
-          /** @example delivery_time */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/deliveryTime
-           */
-          related?: string;
-        };
-      };
-      downloads?: {
-        data?: {
-          /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
-          id?: string;
-          /** @example product_download */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/downloads
-           */
-          related?: string;
-        };
-      };
-      mainCategories?: {
-        data?: {
-          /** @example 1fb731fc4139cbb575429e28846f0c39 */
-          id?: string;
-          /** @example main_category */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/mainCategories
-           */
-          related?: string;
-        };
-      };
-      manufacturer?: {
-        data?: {
-          /** @example c2904bca62b22443d6cf5e9d89cab204 */
-          id?: string;
-          /** @example product_manufacturer */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/manufacturer
-           */
-          related?: string;
-        };
-      };
-      media?: {
-        data?: {
-          /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
-          id?: string;
-          /** @example product_media */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/media
-           */
-          related?: string;
-        };
-      };
-      options?: {
-        data?: {
-          /** @example 93da65a9fd0004d9477aeac024e08e15 */
-          id?: string;
-          /** @example property_group_option */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/options
-           */
-          related?: string;
-        };
-      };
-      parent?: {
-        data?: {
-          /** @example d0e45878043844ffc41aac437e86b602 */
-          id?: string;
-          /** @example product */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/parent
-           */
-          related?: string;
-        };
-      };
-      productReviews?: {
-        data?: {
-          /** @example 01e78541ea343ed72424a5222796a4cd */
-          id?: string;
-          /** @example product_review */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/productReviews
-           */
-          related?: string;
-        };
-      };
-      properties?: {
-        data?: {
-          /** @example 74693d2fc58b46bd06410f278e39aa71 */
-          id?: string;
-          /** @example property_group_option */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/properties
-           */
-          related?: string;
-        };
-      };
-      seoCategory?: {
-        data?: {
-          /** @example 9354d004d12e03d35ad8292bf0bb234d */
-          id?: string;
-          /** @example category */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/seoCategory
-           */
-          related?: string;
-        };
-      };
-      seoUrls?: {
-        data?: {
-          /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
-          id?: string;
-          /** @example seo_url */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/seoUrls
-           */
-          related?: string;
-        };
-      };
-      streams?: {
-        data?: {
-          /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
-          id?: string;
-          /** @example product_stream */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/streams
-           */
-          related?: string;
-        };
-      };
-      tags?: {
-        data?: {
-          /** @example d57ac45256849d9b13e2422d91580fb9 */
-          id?: string;
-          /** @example tag */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/tags
-           */
-          related?: string;
-        };
-      };
-      tax?: {
-        data?: {
-          /** @example 06565e5611f23fdf8cc43e5077b92b54 */
-          id?: string;
-          /** @example tax */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/tax
-           */
-          related?: string;
-        };
-      };
-      unit?: {
-        data?: {
-          /** @example 3e34bdebd9bd5edda27e8728904a2552 */
-          id?: string;
-          /** @example unit */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /product/deb10517653c255364175796ace3553f/unit
-           */
-          related?: string;
-        };
-      };
-    };
-    /** Format: date-time */
-    releaseDate?: string;
-    /** Format: int64 */
-    restockTime?: number;
-    /** Format: int64 */
-    readonly sales?: number;
-    shippingFree?: boolean;
-    sortedProperties?: GenericRecord;
-    readonly states?: string[];
-    /** Format: int64 */
-    stock: number;
-    readonly streamIds?: string[];
-    readonly tagIds?: string[];
-    taxId: string;
-    translated: {
-      canonicalProductId: string;
-      canonicalProductVersionId: string;
-      cmsPageId: string;
-      cmsPageVersionId: string;
-      coverId: string;
-      deliveryTimeId: string;
-      description: string;
-      displayGroup: string;
-      ean: string;
-      keywords: string;
-      manufacturerId: string;
-      manufacturerNumber: string;
-      metaDescription: string;
-      metaTitle: string;
+      /** Format: float */
+      height?: number;
+      id: string;
+      isCloseout?: boolean;
+      /** Runtime field, cannot be used as part of the criteria. */
+      isNew?: boolean;
+      keywords?: string;
+      /** Format: float */
+      length?: number;
+      manufacturerId?: string;
+      manufacturerNumber?: string;
+      markAsTopseller?: boolean;
+      /** Format: int64 */
+      maxPurchase?: number;
+      measurements?: GenericRecord;
+      metaDescription?: string;
+      metaTitle?: string;
+      /** Format: int64 */
+      minPurchase?: number;
       name: string;
-      packUnit: string;
-      packUnitPlural: string;
-      parentId: string;
-      parentVersionId: string;
-      productManufacturerVersionId: string;
-      productMediaVersionId: string;
+      readonly optionIds?: string[];
+      packUnit?: string;
+      packUnitPlural?: string;
+      parentId?: string;
+      parentVersionId?: string;
+      productManufacturerVersionId?: string;
+      productMediaVersionId?: string;
       productNumber: string;
-      releaseDate: string;
+      readonly propertyIds?: string[];
+      /** Format: int64 */
+      purchaseSteps?: number;
+      /** Format: float */
+      purchaseUnit?: number;
+      /** Format: float */
+      readonly ratingAverage?: number;
+      /** Format: float */
+      referenceUnit?: number;
+      relationships?: {
+        canonicalProduct?: {
+          data?: {
+            /** @example 023995a50b56c0de077323e958b2bbcd */
+            id?: string;
+            /** @example product */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
+             */
+            related?: string;
+          };
+        };
+        categories?: {
+          data?: {
+            /** @example b0b5ccb4a195a07fd3eed14affb8695f */
+            id?: string;
+            /** @example category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/categories
+             */
+            related?: string;
+          };
+        };
+        categoriesRo?: {
+          data?: {
+            /** @example 7f0702d3a90d965b8c9158c451f43fdb */
+            id?: string;
+            /** @example category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/categoriesRo
+             */
+            related?: string;
+          };
+        };
+        children?: {
+          data?: {
+            /** @example 268184c12df027f536154d099d497b31 */
+            id?: string;
+            /** @example product */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/children
+             */
+            related?: string;
+          };
+        };
+        cmsPage?: {
+          data?: {
+            /** @example 7b1460918b1abb93311108f3dc021c9b */
+            id?: string;
+            /** @example cms_page */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/cmsPage
+             */
+            related?: string;
+          };
+        };
+        configuratorSettings?: {
+          data?: {
+            /** @example c0827fee13725d41f1fd7e292243f5aa */
+            id?: string;
+            /** @example product_configurator_setting */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
+             */
+            related?: string;
+          };
+        };
+        cover?: {
+          data?: {
+            /** @example 41d0e299ca1abeb2094852da042165c7 */
+            id?: string;
+            /** @example product_media */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/cover
+             */
+            related?: string;
+          };
+        };
+        crossSellings?: {
+          data?: {
+            /** @example 89936e14544d1b403cecef938101b6b0 */
+            id?: string;
+            /** @example product_cross_selling */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/crossSellings
+             */
+            related?: string;
+          };
+        };
+        deliveryTime?: {
+          data?: {
+            /** @example 8c888ae25a7bd42057370e31f7e01044 */
+            id?: string;
+            /** @example delivery_time */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/deliveryTime
+             */
+            related?: string;
+          };
+        };
+        downloads?: {
+          data?: {
+            /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
+            id?: string;
+            /** @example product_download */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/downloads
+             */
+            related?: string;
+          };
+        };
+        mainCategories?: {
+          data?: {
+            /** @example 1fb731fc4139cbb575429e28846f0c39 */
+            id?: string;
+            /** @example main_category */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/mainCategories
+             */
+            related?: string;
+          };
+        };
+        manufacturer?: {
+          data?: {
+            /** @example c2904bca62b22443d6cf5e9d89cab204 */
+            id?: string;
+            /** @example product_manufacturer */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/manufacturer
+             */
+            related?: string;
+          };
+        };
+        media?: {
+          data?: {
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
+            id?: string;
+            /** @example product_media */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/media
+             */
+            related?: string;
+          };
+        };
+        options?: {
+          data?: {
+            /** @example 93da65a9fd0004d9477aeac024e08e15 */
+            id?: string;
+            /** @example property_group_option */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/options
+             */
+            related?: string;
+          };
+        };
+        parent?: {
+          data?: {
+            /** @example d0e45878043844ffc41aac437e86b602 */
+            id?: string;
+            /** @example product */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/parent
+             */
+            related?: string;
+          };
+        };
+        productReviews?: {
+          data?: {
+            /** @example 01e78541ea343ed72424a5222796a4cd */
+            id?: string;
+            /** @example product_review */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/productReviews
+             */
+            related?: string;
+          };
+        };
+        properties?: {
+          data?: {
+            /** @example 74693d2fc58b46bd06410f278e39aa71 */
+            id?: string;
+            /** @example property_group_option */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/properties
+             */
+            related?: string;
+          };
+        };
+        seoCategory?: {
+          data?: {
+            /** @example 9354d004d12e03d35ad8292bf0bb234d */
+            id?: string;
+            /** @example category */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/seoCategory
+             */
+            related?: string;
+          };
+        };
+        seoUrls?: {
+          data?: {
+            /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
+            id?: string;
+            /** @example seo_url */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/seoUrls
+             */
+            related?: string;
+          };
+        };
+        streams?: {
+          data?: {
+            /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
+            id?: string;
+            /** @example product_stream */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/streams
+             */
+            related?: string;
+          };
+        };
+        tags?: {
+          data?: {
+            /** @example d57ac45256849d9b13e2422d91580fb9 */
+            id?: string;
+            /** @example tag */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/tags
+             */
+            related?: string;
+          };
+        };
+        tax?: {
+          data?: {
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
+            id?: string;
+            /** @example tax */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/tax
+             */
+            related?: string;
+          };
+        };
+        unit?: {
+          data?: {
+            /** @example 3e34bdebd9bd5edda27e8728904a2552 */
+            id?: string;
+            /** @example unit */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/unit
+             */
+            related?: string;
+          };
+        };
+      };
+      /** Format: date-time */
+      releaseDate?: string;
+      /** Format: int64 */
+      restockTime?: number;
+      /** Format: int64 */
+      readonly sales?: number;
+      shippingFree?: boolean;
+      sortedProperties?: GenericRecord;
+      readonly states?: string[];
+      /** Format: int64 */
+      stock: number;
+      readonly streamIds?: string[];
+      readonly tagIds?: string[];
       taxId: string;
-      unitId: string;
-      versionId: string;
+      translated: {
+        canonicalProductId: string;
+        canonicalProductVersionId: string;
+        cmsPageId: string;
+        cmsPageVersionId: string;
+        coverId: string;
+        deliveryTimeId: string;
+        description: string;
+        displayGroup: string;
+        ean: string;
+        keywords: string;
+        manufacturerId: string;
+        manufacturerNumber: string;
+        metaDescription: string;
+        metaTitle: string;
+        name: string;
+        packUnit: string;
+        packUnitPlural: string;
+        parentId: string;
+        parentVersionId: string;
+        productManufacturerVersionId: string;
+        productMediaVersionId: string;
+        productNumber: string;
+        releaseDate: string;
+        taxId: string;
+        unitId: string;
+        versionId: string;
+      };
+      unitId?: string;
+      /** Format: date-time */
+      readonly updatedAt?: string;
+      versionId?: string;
+      /** Format: float */
+      weight?: number;
+      /** Format: float */
+      width?: number;
+    } & components["schemas"]["DiscountLineItemPayload"] & {
+      options: {
+        group: string;
+        option: string;
+        translated: {
+          group: string;
+          option: string;
+        };
+      }[];
     };
-    unitId?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    versionId?: string;
-    /** Format: float */
-    weight?: number;
-    /** Format: float */
-    width?: number;
-  } & unknown &
-    components["schemas"]["DiscountLineItemPayload"];
   ProductKeywordDictionary: {
     id?: string;
     keyword: string;
@@ -10075,7 +10084,24 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["CartItems"];
+    body: {
+      items: (
+        | {
+            id: string;
+            quantity: number;
+            referencedId?: string;
+            /** @enum {string} */
+            type: "product" | "custom" | "credit" | "discount" | "container";
+          }
+        | {
+            id?: string;
+            quantity?: number;
+            referencedId: string;
+            /** @enum {string} */
+            type: "promotion";
+          }
+      )[];
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -10100,7 +10126,18 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["CartItems"];
+    body: {
+      items: [
+        {
+          id: string;
+          quantity: number;
+        },
+        ...{
+          id: string;
+          quantity: number;
+        }[],
+      ];
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -10756,16 +10793,16 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: {
-      /** Braintree device data for fraud protection */
-      braintreeDeviceData?: string;
-      /** Braintree payment nonce */
-      braintreeNonce?: string;
       /** URL to which the client should be redirected after erroneous payment */
       errorUrl?: string;
       /** URL to which the client should be redirected after successful payment */
       finishUrl?: string;
       /** Identifier of an order */
       orderId: string;
+      /** Braintree payment nonce */
+      braintreeNonce?: string;
+      /** Braintree device data for fraud protection */
+      braintreeDeviceData?: string;
     };
     response: {
       redirectUrl: string;
@@ -11056,7 +11093,10 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body: components["schemas"]["Criteria"] & {
+      /** List only available */
+      onlyAvailable?: boolean;
+    };
     response: {
       /** aggregation result */
       aggregations?: GenericRecord;
@@ -11542,7 +11582,6 @@ export type operations = {
   "readRoles get /role": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -11761,6 +11800,10 @@ export type operations = {
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
+    };
+    query?: {
+      /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
+      onlyAvailable?: boolean;
     };
     body?: components["schemas"]["Criteria"];
     response: {
