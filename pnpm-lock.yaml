@@ -43,6 +43,7 @@ overrides:
   rollup@3: ^3.29.5
   rollup: ^4.22.4
   semver: ^7.6.2
+  seroval: ^1.4.2
   sharp: ^0.33.4
   socks: ^2.8.3
   store2: ^2.14.4
@@ -12893,8 +12894,8 @@ packages:
   serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
 
-  seroval@1.4.0:
-    resolution: {integrity: sha512-BdrNXdzlofomLTiRnwJTSEAaGKyHHZkbMXIywOh7zlzp4uZnXErEwl9XZ+N1hJSNpeTtNxWvVwN0wUzAIQ4Hpg==}
+  seroval@1.4.2:
+    resolution: {integrity: sha512-N3HEHRCZYn3cQbsC4B5ldj9j+tHdf4JZoYPlcI4rRYu0Xy4qN8MQf1Z08EibzB0WpgRG5BGK08FTrmM66eSzKQ==}
     engines: {node: '>=10'}
 
   serve-placeholder@2.0.2:
@@ -17916,7 +17917,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.59)(rollup@4.52.4)
-      seroval: 1.4.0
+      seroval: 1.4.2
       std-env: 3.10.0
       ufo: 1.6.3
       unenv: 2.0.0-rc.24
@@ -17977,7 +17978,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.59)(rollup@4.55.1)
-      seroval: 1.4.0
+      seroval: 1.4.2
       std-env: 3.10.0
       ufo: 1.6.3
       unenv: 2.0.0-rc.24
@@ -18038,7 +18039,7 @@ snapshots:
       pkg-types: 2.3.0
       postcss: 8.5.6
       rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.59)(rollup@4.55.1)
-      seroval: 1.4.0
+      seroval: 1.4.2
       std-env: 3.10.0
       ufo: 1.6.3
       unenv: 2.0.0-rc.24
@@ -29829,7 +29830,7 @@ snapshots:
     dependencies:
       randombytes: 2.1.0
 
-  seroval@1.4.0: {}
+  seroval@1.4.2: {}
 
   serve-placeholder@2.0.2:
     dependencies:
