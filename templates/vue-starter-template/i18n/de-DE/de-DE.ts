@@ -5,6 +5,7 @@ import errors from "./errors.json";
 import form from "./form.json";
 import layout from "./layout.json";
 import loginForm from "./loginForm.json";
+import newsletter from "./newsletter.json";
 import product from "./product.json";
 import search from "./search.json";
 import validations from "./validations.json";
@@ -22,4 +23,5 @@ export default {
   ...product,
   ...search,
   ...cart,
+  ...newsletter,
 };

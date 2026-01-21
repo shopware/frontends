@@ -6,22 +6,22 @@ const emit = defineEmits<{
   (e: "update:stateId", value: string): void;
 }>();
 
-const props = withDefaults(
-  defineProps<{
-    countryId?: string;
-    stateId?: string;
-    countryIdValidation?: BaseValidation;
-    stateIdValidation?: BaseValidation;
-  }>(),
-  {
-    countryId: "",
-    stateId: "",
-    countryIdValidation: undefined,
-    stateIdValidation: undefined,
-  },
-);
+const {
+  countryId: countryIdProp = "",
+  stateId: stateIdProp = "",
+  countryIdValidation,
+  stateIdValidation,
+} = defineProps<{
+  countryId?: string;
+  stateId?: string;
+  countryIdValidation?: BaseValidation;
+  stateIdValidation?: BaseValidation;
+}>();
 
-const { countryId, stateId } = useVModels(props, emit);
+const { countryId, stateId } = useVModels(
+  { countryId: countryIdProp, stateId: stateIdProp },
+  emit,
+);
 const { getCountries, getStatesForCountry } = useCountries();
 const states = computed(() => {
   return getStatesForCountry(countryId.value || "");
@@ -62,7 +62,10 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="countryIdValidation?.$error && countryIdValidation.$errors[0]?.$message"
+        v-if="
+          countryIdValidation?.$error &&
+          countryIdValidation.$errors[0]?.$message
+        "
         class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
         {{ countryIdValidation.$errors[0].$message }}
@@ -91,7 +94,9 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="stateIdValidation?.$error && stateIdValidation.$errors[0]?.$message"
+        v-if="
+          stateIdValidation?.$error && stateIdValidation.$errors[0]?.$message
+        "
         class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
         {{ stateIdValidation.$errors[0].$message }}

@@ -15,13 +15,18 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
-const props = defineProps<{
+const {
+  filter,
+  selectedFilters,
+  displayMode = "accordion",
+} = defineProps<{
   filter: ListingFilter;
   selectedFilters: {
     manufacturer?: string[];
     properties?: string[];
     [key: string]: unknown;
   };
+  displayMode?: "accordion" | "dropdown";
 }>();
 
 const emits =
@@ -35,17 +40,17 @@ const toggle = () => {
 };
 
 const selectedIds = computed(() => {
-  if (props.filter.code === "manufacturer") {
-    return props.selectedFilters?.manufacturer || [];
+  if (filter.code === "manufacturer") {
+    return selectedFilters?.manufacturer || [];
   }
-  return props.selectedFilters?.properties || [];
+  return selectedFilters?.properties || [];
 });
 
 const isChecked = (id: string) => selectedIds.value.includes(id);
 
 const selectValue = (id: string) => {
   const emitCode =
-    props.filter.code === "manufacturer" ? "manufacturer" : "properties";
+    filter.code === "manufacturer" ? "manufacturer" : "properties";
   emits("select-value", {
     code: emitCode,
     value: id,
@@ -55,38 +60,43 @@ const selectValue = (id: string) => {
 
 <template>
   <div class="self-stretch flex flex-col justify-start items-start gap-4">
-    <div class="self-stretch flex flex-col justify-center items-center">
-      <div
-        class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
-        @click="toggle"
-        role="button"
-        tabindex="0"
-        :aria-expanded="isFilterVisible"
-        :aria-controls="props.filter.code"
-        :aria-label="props.filter.label"
-        @keydown.enter="toggle"
-        @keydown.space.prevent="toggle"
-      >
-        <div class="flex-1 flex items-center gap-2.5">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-            {{ props.filter.label }}
-          </div>
-        </div>
-        <SwIconButton 
-          type="ghost" 
-          :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
-          tabindex="-1"
+    <!-- Accordion header (only in accordion mode) -->
+    <template v-if="displayMode === 'accordion'">
+      <div class="self-stretch flex flex-col justify-center items-center">
+        <div
+          class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
+          @click="toggle"
+          role="button"
+          tabindex="0"
+          :aria-expanded="isFilterVisible"
+          :aria-controls="filter.code"
+          :aria-label="filter.label"
+          @keydown.enter="toggle"
+          @keydown.space.prevent="toggle"
         >
-          <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-        </SwIconButton>
+          <div class="flex-1 flex items-center gap-2.5">
+            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+              {{ filter.label }}
+            </div>
+          </div>
+          <SwIconButton
+            type="ghost"
+            :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
+            tabindex="-1"
+          >
+            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          </SwIconButton>
+        </div>
       </div>
-    </div>
+    </template>
+
+    <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible" :id="props.filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div v-if="isFilterVisible || displayMode === 'dropdown'" :id="filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
         <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
-        <legend class="sr-only">{{ props.filter.name }}</legend>
+        <legend class="sr-only">{{ filter.name }}</legend>
         <label
-          v-for="option in props.filter.options || props.filter.entities"
+          v-for="option in filter.options || filter.entities"
           :key="`${option.id}-${isChecked(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
           @click="selectValue(option.id)"

@@ -16,6 +16,11 @@ function toggleMiniCart() {
   miniCartActive.value = !miniCartActive.value;
 }
 
+const accountMenuActive = ref(false);
+function toggleAccountMenu() {
+  accountMenuActive.value = !accountMenuActive.value;
+}
+
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -27,7 +32,7 @@ function handleMyAccountClick() {
   if (!isLoggedIn.value) {
     loginModalController.open();
   } else {
-    push(formatLink("/account"));
+    toggleAccountMenu();
   }
 }
 
@@ -36,6 +41,7 @@ watch(
   () => route.path,
   () => {
     miniCartActive.value = false;
+    accountMenuActive.value = false;
   },
 );
 </script>
@@ -62,9 +68,30 @@ watch(
               @click="toggleMobileSearch"
               class="hidden max-sm:block"
             />
-            <FormIconButton type="ghost" @click="handleMyAccountClick"
-              ><LayoutHeaderMyAccountIcon
-            /></FormIconButton>
+            <div class="relative">
+              <FormIconButton
+                type="ghost"
+                @click="handleMyAccountClick"
+              >
+                <LayoutHeaderMyAccountIcon />
+              </FormIconButton>
+              <ClientOnly>
+                <Transition
+                  enter-active-class="transition ease-out duration-150"
+                  enter-from-class="opacity-0"
+                  enter-to-class="opacity-100"
+                  leave-active-class="transition ease-in duration-100"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <LayoutAccountMenu
+                    v-if="accountMenuActive && isLoggedIn"
+                    class="absolute top-full right-0 mt-2"
+                    @closeAccountMenu="toggleAccountMenu"
+                  />
+                </Transition>
+              </ClientOnly>
+            </div>
             <ClientOnly>
               <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               <template #fallback>
