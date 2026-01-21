@@ -326,6 +326,10 @@ export const sidebar = [
                 link: "/resources/integrations/payments/adyen.html",
               },
               {
+                text: "Braintree",
+                link: "/resources/integrations/payments/braintree.html",
+              },
+              {
                 text: "mollie",
                 link: "https://github.com/mollie/Shopware6Composables",
               },
