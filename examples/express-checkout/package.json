@@ -18,7 +18,7 @@
     "@shopware/helpers": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.26",
+    "vue": "3.5.27",
     "vue-router": "4.6.4"
   },
   "devDependencies": {

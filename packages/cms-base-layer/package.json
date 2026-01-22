@@ -52,7 +52,7 @@
     "html-to-ast": "0.0.6",
     "three": "0.182.0",
     "unocss": "66.6.0",
-    "vue": "3.5.26",
+    "vue": "3.5.27",
     "xss": "1.0.15"
   },
   "devDependencies": {
