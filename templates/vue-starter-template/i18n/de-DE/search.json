@@ -3,6 +3,12 @@
     "see": "anzeigen",
     "all": "alle",
     "result": "Ergebnis | Ergebnisse",
-    "noResults": "Keine Produkte gefunden"
+    "noResults": "Keine Produkte gefunden",
+    "resultsHeader": "Suchergebnis für",
+    "listing": {
+      "perPage": "Pro Seite:",
+      "product": "Produkt",
+      "products": "Produkte"
+    }
   }
 }

@@ -15,8 +15,8 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  changePage: [page: number];
-  changeLimit: [limit: number];
+  changePage: [number];
+  changeLimit: [number];
 }>();
 
 const limitModel = defineModel<number>("limit", { required: true });

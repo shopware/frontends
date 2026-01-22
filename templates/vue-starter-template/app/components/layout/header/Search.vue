@@ -114,6 +114,7 @@ const handleEnterKey = () => {
             v-if="suggestElementsTotal > 0"
             data-testid="layout-search-result-box-more-link"
             :to="formatLink({ path: `/search`, query: { search: model } })"
+             @click="suggestIsActive = false"
           >
             {{ $t("search.see") }}
             <span v-if="suggestElementsTotal !== 1">{{
