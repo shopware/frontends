@@ -13,5 +13,6 @@ minimumReleaseAgeExclude:
 - '@shopware/*'
 - 'vercel'
 - '@vercel/*'
-- 'qs' # security release, remove after 15.01.2026
+- 'lodash' # security release, remove after 30.01.2026
+- 'lodash-es' # security release, remove after 30.01.2026
 - 'tar' # security release, remove after 25.01.2026
