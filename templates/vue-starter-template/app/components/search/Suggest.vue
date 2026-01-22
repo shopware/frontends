@@ -12,8 +12,8 @@ const { product } = toRefs(props);
 const { unitPrice, displayFrom } = useProductPrice(product);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
-const imageElement = useTemplateRef("imageElement");
-const { width, height } = useElementSize(imageElement.value?.imgEl);
+const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
+const { width, height } = useElementSize(imageElement);
 
 function roundUp(num: number) {
   return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;

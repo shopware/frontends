@@ -9,20 +9,31 @@ const suggestElementsTotal = ref(0);
 const searchTerm = ref("");
 const loading = ref(false);
 
+const { handleApiError } = useApiErrorsResolver("suggest_search");
 const { displayTotal = 10 } = defineProps<{
   displayTotal?: number;
 }>();
 
 async function getSuggestElements(value: string) {
-  const response = await apiClient.invoke(
-    "searchSuggest post /search-suggest",
-    {
-      body: {
-        search: value,
+  try {
+    const response = await apiClient.invoke(
+      "searchSuggest post /search-suggest",
+      {
+        body: {
+          search: value,
+        },
       },
-    },
-  );
-  return response;
+    );
+    return response;
+  } catch (error) {
+    handleApiError(error);
+    return {
+      data: {
+        elements: [],
+        total: 0,
+      },
+    };
+  }
 }
 
 const localePath = useLocalePath();
@@ -31,10 +42,13 @@ const { formatLink } = useInternationalization(localePath);
 const performSuggestSearch = useDebounceFn(async (value) => {
   searchTerm.value = value;
   loading.value = true;
-  const data = await getSuggestElements(value);
-  suggestElements.value = data.data.elements;
-  suggestElementsTotal.value = data.data.total || 0;
-  loading.value = false;
+  try {
+    const data = await getSuggestElements(value);
+    suggestElements.value = data.data.elements;
+    suggestElementsTotal.value = data.data.total || 0;
+  } finally {
+    loading.value = false;
+  }
 }, 300);
 
 const showSuggest = computed(
@@ -44,6 +58,9 @@ const showSuggest = computed(
 watch(model, async (value) => {
   if (value.length >= 3) {
     performSuggestSearch(value);
+  } else {
+    suggestElements.value = [];
+    suggestElementsTotal.value = 0;
   }
 });
 
@@ -98,23 +115,23 @@ const handleEnterKey = () => {
       </NuxtLink>
 
       <div
-        class="h-11 text-sm p-3 text-center transition border-t-1 border-outline-outline-variant"
+        class="h-11 text-sm p-3 text-center transition border-t-1 border-outline-outline-variant flex items-center justify-center"
         :class="[
           loading
-            ? ['bg-brand-primary text-brand-on-primary']
+            ? ['bg-surface-surface-container text-surface-on-surface-variant']
             : ['bg-surface-surface-container text-surface-on-surface-variant'],
         ]"
       >
         <div
           v-if="loading"
-          class="w-80 h-40 bg-surface-surface-container blur-2xl fixed animate-spin"
+          class="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"
         />
-        <div v-else>
+        <div v-else class="flex items-center justify-center">
           <NuxtLink
             v-if="suggestElementsTotal > 0"
             data-testid="layout-search-result-box-more-link"
             :to="formatLink({ path: `/search`, query: { search: model } })"
-             @click="suggestIsActive = false"
+            @click="suggestIsActive = false"
           >
             {{ $t("search.see") }}
             <span v-if="suggestElementsTotal !== 1">{{

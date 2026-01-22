@@ -43,7 +43,6 @@ const changePage = async (page: number) => {
   );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
-
 const changeLimit = async (newLimit: number) => {
   await router.push({
     query: {
