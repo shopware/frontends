@@ -1,28 +1,47 @@
 <script lang="ts" setup>
 import { getProductRoute } from "@shopware/helpers";
+import type { Schemas } from "#shopware";
 
+const { apiClient } = useShopwareContext();
 const model = defineModel<string>({ required: true });
+const suggestElements = ref<Schemas["ProductListingResult"]["elements"]>([]);
+const suggestElementsTotal = ref(0);
+const searchTerm = ref("");
+const loading = ref(false);
 
 const { displayTotal = 10 } = defineProps<{
   displayTotal?: number;
 }>();
 
-const { searchTerm, search, getProducts, getTotal, loading } =
-  useProductSearchSuggest();
+async function getSuggestElements(value: string) {
+  const response = await apiClient.invoke(
+    "searchSuggest post /search-suggest",
+    {
+      body: {
+        search: value,
+      },
+    },
+  );
+  return response;
+}
 
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
-const performSuggestSearch = useDebounceFn((value) => {
+const performSuggestSearch = useDebounceFn(async (value) => {
   searchTerm.value = value;
-  search();
+  loading.value = true;
+  const data = await getSuggestElements(value);
+  suggestElements.value = data.data.elements;
+  suggestElementsTotal.value = data.data.total || 0;
+  loading.value = false;
 }, 300);
 
 const showSuggest = computed(
   () => model.value.length >= 3 && suggestIsActive.value,
 );
 
-watch(model, (value) => {
+watch(model, async (value) => {
   if (value.length >= 3) {
     performSuggestSearch(value);
   }
@@ -33,6 +52,17 @@ const suggestIsActive = ref(true);
 onClickOutside(refSearchBox, () => {
   suggestIsActive.value = false;
 });
+
+const router = useRouter();
+const handleEnterKey = () => {
+  if (showSuggest.value && model.value) {
+    suggestIsActive.value = false;
+    router.push({
+      path: "/search",
+      query: { search: model.value },
+    });
+  }
+};
 </script>
 
 <template>
@@ -42,6 +72,7 @@ onClickOutside(refSearchBox, () => {
       placeholder="Search"
       @click="suggestIsActive = true"
       @focus="suggestIsActive = true"
+      @keydown.enter="handleEnterKey"
     >
       <template #rightIcon>
         <Icon
@@ -57,10 +88,11 @@ onClickOutside(refSearchBox, () => {
       class="absolute top-full left-0 mt-2 border-1 border-outline-outline-variant rounded-lg shadow-lg overflow-hidden z-20 bg-surface-surface w-full"
     >
       <NuxtLink
-        v-for="product in getProducts?.slice(0, displayTotal)"
+        v-for="product in suggestElements?.slice(0, displayTotal)"
         :key="product.id"
         :to="formatLink(getProductRoute(product))"
         data-testid="layout-search-suggest-link"
+        @click="suggestIsActive = false"
       >
         <SearchSuggest :product="product" />
       </NuxtLink>
@@ -79,14 +111,16 @@ onClickOutside(refSearchBox, () => {
         />
         <div v-else>
           <NuxtLink
-            v-if="getTotal > 0"
+            v-if="suggestElementsTotal > 0"
             data-testid="layout-search-result-box-more-link"
             :to="formatLink({ path: `/search`, query: { search: model } })"
           >
             {{ $t("search.see") }}
-            <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
-            {{ getTotal }}
-            <span>{{ $t("search.result", getTotal) }}</span>
+            <span v-if="suggestElementsTotal !== 1">{{
+              $t("search.all")
+            }}</span>
+            {{ suggestElementsTotal }}
+            <span>{{ $t("search.result", suggestElementsTotal) }}</span>
           </NuxtLink>
           <div v-else data-testid="layout-search-result-box-no-result">
             {{ $t("search.noResults") }}

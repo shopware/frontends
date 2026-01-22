@@ -12,7 +12,7 @@ import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
-  content: CmsElementProductListing | CmsElementSidebarFilter;
+  content?: CmsElementProductListing | CmsElementSidebarFilter;
   listingType?: string;
 }>();
 
@@ -232,10 +232,6 @@ async function invokeCleanFilters() {
     console.error("Clear filters failed:", error);
   }
 }
-
-const isDefaultSidebarFilter =
-  props.content.type === "sidebar-filter" &&
-  props.content.config?.boxLayout?.value === "standard";
 
 const handleSortChange = (sortKey: string) => {
   currentSortingOrder.value = sortKey;
