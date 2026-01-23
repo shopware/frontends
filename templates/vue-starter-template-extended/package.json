@@ -27,7 +27,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "nuxt": "4.2.2",
-    "vue": "3.5.26",
+    "vue": "3.5.27",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
