@@ -86,7 +86,7 @@ const handleEnterKey = () => {
   <div ref="searchBox">
     <FormBaseInput
       v-model="model"
-      placeholder="Search"
+      :placeholder="$t('search.placeholder')"
       @click="suggestIsActive = true"
       @focus="suggestIsActive = true"
       @keydown.enter="handleEnterKey"
@@ -116,11 +116,11 @@ const handleEnterKey = () => {
 
       <div
         class="h-11 text-sm p-3 text-center transition border-t-1 border-outline-outline-variant flex items-center justify-center"
-        :class="[
-          loading
-            ? ['bg-surface-surface-container text-surface-on-surface-variant']
-            : ['bg-surface-surface-container text-surface-on-surface-variant'],
-        ]"
+        :class="{
+          loading: [
+            'bg-surface-surface-container text-surface-on-surface-variant',
+          ],
+        }"
       >
         <div
           v-if="loading"
