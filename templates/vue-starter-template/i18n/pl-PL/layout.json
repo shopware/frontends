@@ -1,5 +1,8 @@
 {
   "home": "Strona główna",
+  "breadcrumbs": {
+    "search": "Wyszukiwanie"
+  },
   "layout": {
     "sideMenu": {
       "close": "Zamknij menu"

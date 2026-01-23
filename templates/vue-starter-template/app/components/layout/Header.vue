@@ -61,7 +61,7 @@ watch(
           </NuxtLink>
           <LayoutHeaderSearch
             v-model="searchText"
-            class="max-sm:hidden justify-self-center w-full"
+            class="max-sm:hidden justify-self-center w-full relative"
           />
           <div class="flex gap-4 flex-shrink-0 sm:justify-self-end">
             <LayoutHeaderSearchIcon
