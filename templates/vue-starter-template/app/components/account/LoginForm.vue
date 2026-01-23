@@ -28,7 +28,7 @@ function handleSignUp() {
 }
 </script>
 <template>
-  <div class="w-100 flex flex flex-col gap-3 m-auto p-5">
+  <div class="w-auto sm:w-100 flex flex-col gap-3 m-auto p-5">
     <div class="mb-4">
       <h3 class="text-2xl font-bold">{{ $t("loginForm.header") }}</h3>
       <p class="text-sm text-text-bg-surface-surface-disabled">
