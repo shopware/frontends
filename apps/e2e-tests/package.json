@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@axe-core/playwright": "4.10.2",
-    "@faker-js/faker": "10.1.0",
+    "@faker-js/faker": "10.2.0",
     "@stackblitz/sdk": "1.11.0",
     "dotenv": "17.2.3",
     "http-server": "14.1.1"
