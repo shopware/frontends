@@ -1,5 +1,11 @@
 # @shopware/nuxt-module
 
+## 1.4.3
+
+### Patch Changes
+
+- [#2232](https://github.com/shopware/frontends/pull/2232) [`f52c2da`](https://github.com/shopware/frontends/commit/f52c2da685c0c5085e6579aea37f86b6ce1d8281) Thanks [@patzick](https://github.com/patzick)! - bump h3 version after security audit
+
 ## 1.4.2
 
 ### Patch Changes
