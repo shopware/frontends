@@ -180,3 +180,45 @@ For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozil
 ## CORS (Cross-Origin Resource Sharing) Issues
 
 See the [CORS](./troubleshooting/CORS) page for more information on how to handle CORS issues in your project.
+
+## [unimport] failed to find "createShopwareContext" imported from "#imports"
+
+### Problem
+
+This error occurs when `@shopware/nuxt-module` is added to your project, but `@shopware/composables/nuxt-layer` is not extended in your Nuxt configuration.
+
+### Why it happens
+
+The `@shopware/nuxt-module` plugin imports `createShopwareContext` from the `#imports` alias. The `@shopware/composables/nuxt-layer` is responsible for configuring Nuxt's auto-import system and TypeScript paths to make composables exports available via `#imports`.
+
+When you use Nuxt layers, the layer system merges TypeScript configuration files from both the composables layer and your project. This merge adds the composables exports to the `#imports` alias scope. Without extending the composables layer, these exports are not available, causing the import error.
+
+### Solution
+
+Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  extends: ["@shopware/composables/nuxt-layer"],
+  modules: ["@shopware/nuxt-module"],
+  // ... rest of your configuration
+});
+```
+
+:::tip
+If you're using `@shopware/cms-base-layer`, you can extend both layers together:
+
+```ts
+extends: [
+  "@shopware/composables/nuxt-layer",
+  "@shopware/cms-base-layer"
+],
+```
+:::
+
+### Additional Information
+
+- The `@shopware/composables/nuxt-layer` sets up auto-imports for all composables from the `src` directory
+- It also configures TypeScript path aliases (`#imports` and `#shopware`) that are required by the nuxt-module
+- Always extend the composables layer when using `@shopware/nuxt-module` in your project
