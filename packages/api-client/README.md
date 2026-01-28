@@ -95,7 +95,7 @@ const adminApiClient = createAdminAPIClient<operations>({
   credentials: {
     grant_type: "password",
     client_id: "administration",
-    scopes: "write",
+    scope: "write",
     username: process.env.SHOP_ADMIN_USERNAME,
     password: process.env.SHOP_ADMIN_PASSWORD,
   },
