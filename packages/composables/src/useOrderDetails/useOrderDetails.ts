@@ -258,7 +258,10 @@ export function useOrderDetails(
     return response.data;
   }
 
-  async function getDocumentFile(documentId: string, deepLinkCode: string) {
+  async function getDocumentFile(
+    documentId: string,
+    deepLinkCode: string,
+  ): Promise<Blob | string> {
     const response = await apiClient.invoke(
       "download post /document/download/{documentId}/{deepLinkCode}",
       {
@@ -266,6 +269,7 @@ export function useOrderDetails(
           documentId,
           deepLinkCode,
         },
+        accept: "application/pdf",
       },
     );
 
