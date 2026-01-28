@@ -41,8 +41,8 @@
     "esno": "4.8.0",
     "husky": "9.1.7",
     "prettier": "3.7.4",
-    "turbo": "2.7.5",
-    "vercel": "50.4.8"
+    "turbo": "2.7.6",
+    "vercel": "50.8.1"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
