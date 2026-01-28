@@ -149,12 +149,20 @@ export function createAdminAPIClient<
         if (params.credentials && !sessionData.refreshToken) {
           // Transform `scopes` to `scope` as expected by League OAuth2 server
           // remove workaround once related backend issue is resolved: https://github.com/shopware/shopware/issues/14570
-          const { scopes, ...restCredentials } = params.credentials as {
+          const {
+            scopes,
+            scope: existingScope,
+            ...restCredentials
+          } = params.credentials as {
             scopes?: string;
+            scope?: string;
           } & Record<string, unknown>;
-          body = scopes
-            ? { ...restCredentials, scope: scopes }
-            : { ...params.credentials };
+          // Prefer existing `scope` over `scopes` transformation
+          body = existingScope
+            ? { ...restCredentials, scope: existingScope }
+            : scopes
+              ? { ...restCredentials, scope: scopes }
+              : { ...params.credentials };
         } else {
           body = {
             grant_type: "refresh_token",
