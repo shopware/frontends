@@ -88,7 +88,7 @@ describe("createAdminAPIClient - credentials", () => {
     });
   });
 
-  it("should use credentials when no session data available and transform scopes to scope", async () => {
+  it("should use credentials when no session data available", async () => {
     const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
@@ -96,43 +96,18 @@ describe("createAdminAPIClient - credentials", () => {
         username: "user",
         password: "password",
         client_id: "administration",
-        scopes: "write",
+        scope: "write",
       },
     });
     await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
-    // `scopes` should be transformed to `scope` as expected by League OAuth2 server
     expect(authEndpointSpy).toHaveBeenCalledWith({
       grant_type: "password",
       username: "user",
       password: "password",
       client_id: "administration",
       scope: "write",
-    });
-  });
-
-  it("should use scope directly when provided instead of scopes", async () => {
-    const client = createAdminAPIClient<operations>({
-      baseURL,
-      // Using `scope` directly (RFC 6749 compliant) instead of `scopes` (OpenAPI schema)
-      credentials: {
-        grant_type: "password",
-        username: "user",
-        password: "password",
-        client_id: "administration",
-        scope: "admin",
-      } as unknown as operations["token post /oauth/token"]["body"],
-    });
-    await client.invoke("getOrderList get /order");
-
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-    expect(authEndpointSpy).toHaveBeenCalledWith({
-      grant_type: "password",
-      username: "user",
-      password: "password",
-      client_id: "administration",
-      scope: "admin",
     });
   });
 
@@ -163,7 +138,7 @@ describe("createAdminAPIClient - credentials", () => {
         username: "user",
         password: "password",
         client_id: "administration",
-        scopes: "write",
+        scope: "write",
       },
       sessionData: {
         refreshToken: "my-refresh-token",
