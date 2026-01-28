@@ -88,7 +88,7 @@ describe("createAdminAPIClient - credentials", () => {
     });
   });
 
-  it("should use credentials when no session data available", async () => {
+  it("should use credentials when no session data available and transform scopes to scope", async () => {
     const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
@@ -102,12 +102,13 @@ describe("createAdminAPIClient - credentials", () => {
     await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
+    // `scopes` should be transformed to `scope` as expected by League OAuth2 server
     expect(authEndpointSpy).toHaveBeenCalledWith({
       grant_type: "password",
       username: "user",
       password: "password",
       client_id: "administration",
-      scopes: "write",
+      scope: "write",
     });
   });
 

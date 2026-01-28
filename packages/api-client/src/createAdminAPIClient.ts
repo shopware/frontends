@@ -144,14 +144,24 @@ export function createAdminAPIClient<
           );
         }
 
-        const body =
-          params.credentials && !sessionData.refreshToken
-            ? params.credentials
-            : {
-                grant_type: "refresh_token",
-                client_id: "administration",
-                refresh_token: sessionData.refreshToken,
-              };
+        let body: Record<string, unknown>;
+
+        if (params.credentials && !sessionData.refreshToken) {
+          // Transform `scopes` to `scope` as expected by League OAuth2 server
+          // remove workaround once related backend issue is resolved: https://github.com/shopware/shopware/issues/14570
+          const { scopes, ...restCredentials } = params.credentials as {
+            scopes?: string;
+          } & Record<string, unknown>;
+          body = scopes
+            ? { ...restCredentials, scope: scopes }
+            : { ...params.credentials };
+        } else {
+          body = {
+            grant_type: "refresh_token",
+            client_id: "administration",
+            refresh_token: sessionData.refreshToken,
+          };
+        }
 
         // Access session expired, first we need to refresh it with refresh token
         await ofetch("/oauth/token", {
