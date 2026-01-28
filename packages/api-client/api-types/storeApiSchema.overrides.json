@@ -153,44 +153,31 @@
         }
       ]
     },
-    "/payment-method": {
-      "post": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "properties": {
-                      "onlyAvailable": {
-                        "description": "List only available",
-                        "type": "boolean"
-                      }
-                    },
-                    "type": "object"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
     "/role": {
       "get": {
         "requestBody": "_DELETE_"
       }
     },
-    "/shipping-method": {
+    "/dsr/customer/automatic-login": {
       "post": {
-        "parameters": [
-          {
-            "name": "onlyAvailable",
-            "in": "query",
-            "description": "List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule.",
-            "schema": { "type": "boolean" }
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "_DELETE_",
+                  "type": "object",
+                  "properties": {
+                    "redirectUrl": {
+                      "description": "Define the URL which browser will be redirected to",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ]
+        }
       }
     }
   }

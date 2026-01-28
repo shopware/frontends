@@ -97,12 +97,12 @@ export type UseOrderDetailsReturn = {
    * Get order documents
    * @param {string} documentId
    * @param {string} deepLinkCode
-   * @returns
+   * @returns Binary document content (PDF, HTML, or XML)
    */
   getDocumentFile: (
     documentId: string,
     deepLinkCode: string,
-  ) => Promise<Schemas["Document"]>;
+  ) => Promise<Blob | string>;
   /**
    * Check if order has documents
    */
