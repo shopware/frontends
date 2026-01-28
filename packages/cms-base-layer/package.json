@@ -60,12 +60,12 @@
     "@nuxt/schema": "4.2.2",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.18",
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "unbuild": "2.0.0",
-    "vitest": "3.2.4",
+    "vitest": "4.0.18",
     "vue-router": "4.6.4",
     "vue-tsc": "3.2.2"
   }
