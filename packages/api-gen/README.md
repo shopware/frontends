@@ -252,10 +252,21 @@ Remember to add `.env` file in order to authenticate with Shopware instance.
 OPENAPI_JSON_URL="https://your-shop-instance.shopware.store"
 ## This one needed to fetch store API schema
 OPENAPI_ACCESS_KEY="YOUR_STORE_API_ACCESS_KEY"
-## These two needed to fetch admin API schema
+
+## Admin API authentication (choose one method):
+
+## Option 1: Password grant (username/password)
 SHOPWARE_ADMIN_USERNAME="my@username.com"
 SHOPWARE_ADMIN_PASSWORD="my-password"
+
+## Option 2: Client credentials grant (integration)
+## Create an integration in Shopware Admin > Settings > System > Integrations
+# SHOPWARE_ADMIN_CLIENT_ID="your-integration-client-id"
+# SHOPWARE_ADMIN_CLIENT_SECRET="your-integration-secret"
 ```
+
+> [!NOTE]
+> When `SHOPWARE_ADMIN_CLIENT_SECRET` is set, the client credentials grant will be used automatically. Otherwise, the password grant with username/password is used.
 
 ### `validateJson`
 

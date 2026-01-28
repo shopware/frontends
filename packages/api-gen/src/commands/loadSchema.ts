@@ -18,10 +18,15 @@ const ADMIN_API_ENDPOINT = `/api/${SCHEMA_ENDPOINT}`;
  * - OPENAPI_JSON_URL
  * - OPENAPI_ACCESS_KEY
  *
- * For `admin` API:
+ * For `admin` API (password grant):
  * - OPENAPI_JSON_URL
  * - SHOPWARE_ADMIN_USERNAME
  * - SHOPWARE_ADMIN_PASSWORD
+ *
+ * For `admin` API (client_credentials grant):
+ * - OPENAPI_JSON_URL
+ * - SHOPWARE_ADMIN_CLIENT_ID (optional, defaults to "administration")
+ * - SHOPWARE_ADMIN_CLIENT_SECRET
  *
  */
 export async function loadSchema(args: {
@@ -51,10 +56,14 @@ export async function loadSchema(args: {
     : `${args.apiType}ApiSchema.json`;
 
   const OPENAPI_JSON_URL = process.env.OPENAPI_JSON_URL;
-  const requiredEnvVars = [];
+  const requiredEnvVars: string[] = [];
   if (isAdminApi) {
-    requiredEnvVars.push("SHOPWARE_ADMIN_USERNAME");
-    requiredEnvVars.push("SHOPWARE_ADMIN_PASSWORD");
+    // Support both password and client_credentials grant types
+    const hasClientCredentials = !!process.env.SHOPWARE_ADMIN_CLIENT_SECRET;
+    if (!hasClientCredentials) {
+      requiredEnvVars.push("SHOPWARE_ADMIN_USERNAME");
+      requiredEnvVars.push("SHOPWARE_ADMIN_PASSWORD");
+    }
   } else {
     requiredEnvVars.push("OPENAPI_ACCESS_KEY");
   }
