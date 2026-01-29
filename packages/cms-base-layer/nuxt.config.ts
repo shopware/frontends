@@ -5,7 +5,7 @@ import { defineNuxtConfig } from "nuxt/config";
 const { resolve: resolveLayer } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
-  modules: ["@unocss/nuxt", "@nuxt/image"],
+  modules: ["@unocss/nuxt", "@nuxt/image", "@tresjs/nuxt"],
 
   // @ts-ignore - @nuxt/image config may not be typed in some layer contexts
   image: {
