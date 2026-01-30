@@ -52,7 +52,7 @@
     "@shopware/api-client": "workspace:*",
     "ofetch": "1.5.1",
     "openapi-typescript": "7.8.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.1",
     "ts-morph": "27.0.2",
     "typescript": "5.9.3",
     "yargs": "18.0.0"
