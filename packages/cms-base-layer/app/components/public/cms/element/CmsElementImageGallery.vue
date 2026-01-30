@@ -102,6 +102,7 @@ function onTouchEnd() {
             v-if="currentImage && isSpatial(currentImage)"
             :key="currentImage.url + '-3d'"
             class="w-full h-full relative"
+             :style="{ minHeight }"
           >
             <client-only>
               <SwMedia3DAsync :src="currentImage.url" />
