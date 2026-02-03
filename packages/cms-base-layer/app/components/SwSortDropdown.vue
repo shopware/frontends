@@ -51,7 +51,8 @@ const handleSortingClick = (key: string) => {
           <SwChevronIcon
             :direction="isSortMenuOpen ? 'up' : 'down'"
             :size="24"
-            alt=""
+            aria-hidden="true"
+            focusable="false"
           />
         </span>
       </SwBaseButton>

@@ -18,7 +18,7 @@ function handleLogout() {
 </script>
 <template>
   <div class="container mx-auto px-6 sm:px-4 mt-5 md:mt-20 flex gap-20">
-    <nav class="flex-col gap-3 hidden md:flex text-nowrap" aria-label="Account navigation">
+    <nav class="flex-col gap-3 hidden md:flex text-nowrap" :aria-label="$t('layout.ariaLabels.accountNavigation')">
       <h2 class="text-brand-primary text-base font-bold leading-normal">
         {{ $t("account.menu.header") }}
       </h2>

@@ -14,7 +14,7 @@ const route = useRoute();
 </script>
 
 <template>
-  <nav aria-label="Main navigation">
+  <nav :aria-label="$t('layout.ariaLabels.mainNavigation')">
     <ul role="menubar" class="flex gap-8">
       <li
         v-for="(navigationElement, index) in navigationElements"
@@ -30,11 +30,6 @@ const route = useRoute();
           :aria-expanded="
             navigationElement.children?.length
               ? currentMenuPosition === navigationElement.id
-              : undefined
-          "
-          :aria-current="
-            route.path === formatLink(getCategoryRoute(navigationElement))
-              ? 'page'
               : undefined
           "
           :target="

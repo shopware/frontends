@@ -22,6 +22,16 @@
           "subscribed": "Thank you! We have signed up your address."
         }
       }
+    },
+    "ariaLabels": {
+      "mainNavigation": "Main navigation",
+      "accountNavigation": "Account navigation",
+      "mainContent": "Main content",
+      "checkout": "Checkout",
+      "pagination": "Pagination",
+      "breadcrumb": "Breadcrumb",
+      "sidebar": "Sidebar",
+      "closeNotification": "Close notification"
     }
   }
 }
