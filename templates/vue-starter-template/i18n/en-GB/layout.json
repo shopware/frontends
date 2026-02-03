@@ -7,6 +7,10 @@
     "sideMenu": {
       "close": "Close menu"
     },
+    "header": {
+      "myAccount": "My Account",
+      "cart": "Cart"
+    },
     "footer": {
       "newsletter": {
         "title": "Subscribe",

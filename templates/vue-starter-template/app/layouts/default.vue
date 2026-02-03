@@ -58,7 +58,7 @@ provide("swNavigation-footer-navigation", footerData);
       />
       <LayoutHeader />
     </header>
-    <main class="flex-1">
+    <main class="flex-1" aria-label="Main content">
       <LayoutNotifications />
       <slot />
     </main>

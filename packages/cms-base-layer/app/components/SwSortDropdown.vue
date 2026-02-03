@@ -42,7 +42,7 @@ const handleSortingClick = (key: string) => {
         type="button"
         @click="isSortMenuOpen = !isSortMenuOpen"
         id="menu-button"
-        aria-expanded="false"
+        :aria-expanded="isSortMenuOpen"
         aria-haspopup="true"
         class="group pr-0"
       >
@@ -51,7 +51,7 @@ const handleSortingClick = (key: string) => {
           <SwChevronIcon
             :direction="isSortMenuOpen ? 'up' : 'down'"
             :size="24"
-            :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'"
+            alt=""
           />
         </span>
       </SwBaseButton>

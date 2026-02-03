@@ -69,13 +69,12 @@ const toggle = () => {
               {{ filter.label }}
             </div>
           </div>
-          <SwIconButton
-            type="ghost"
-            :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
-            tabindex="-1"
+          <span
+            class="flex items-center justify-center"
+            aria-hidden="true"
           >
             <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-          </SwIconButton>
+          </span>
         </div>
       </div>
     </template>

@@ -69,7 +69,7 @@ async function onLanguageChangeHandler(id: string) {
         </div>
       </div>
     </header>
-    <main class="mb-20">
+    <main class="mb-20" aria-label="Checkout">
       <slot />
     </main>
   </div>
