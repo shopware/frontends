@@ -36,12 +36,12 @@ const emit = defineEmits<{
       :class="{
         'outline-states-error': invalid,
       }"
-      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px]"
+      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline-outline-outline-variant outline outline-1 text-surface-on-surface-variant outline-offset-[-1px] input-field bg-surface-surface"
     >
       <slot name="leftIcon" />
       <input
         v-model="model"
-        class="text-sm w-full outline-none bg-transparent text-surface-on-surface placeholder:text-white placeholder:opacity-70"
+        class="text-sm w-full outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant"
         :placeholder="placeholder"
         :type="type"
         :autocomplete="autocomplete"

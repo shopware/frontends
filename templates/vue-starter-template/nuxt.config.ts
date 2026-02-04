@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxt/a11y",
   ],
   runtimeConfig: {
     public: {

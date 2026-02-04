@@ -7,6 +7,10 @@
     "sideMenu": {
       "close": "Zamknij menu"
     },
+    "header": {
+      "myAccount": "Moje konto",
+      "cart": "Koszyk"
+    },
     "footer": {
       "newsletter": {
         "title": "Subskrybuj",
@@ -18,6 +22,16 @@
           "subscribed": "Dziękujemy! Zapisaliśmy Twój adres."
         }
       }
+    },
+    "ariaLabels": {
+      "mainNavigation": "Główne menu",
+      "accountNavigation": "Nawigacja konta",
+      "mainContent": "Główna zawartość",
+      "checkout": "Kasa",
+      "pagination": "Paginacja",
+      "breadcrumb": "Breadcrumb",
+      "sidebar": "Panel boczny",
+      "closeNotification": "Zamknij powiadomienie"
     }
   }
 }

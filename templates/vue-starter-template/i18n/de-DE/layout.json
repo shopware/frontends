@@ -7,6 +7,10 @@
     "sideMenu": {
       "close": "Menü schließen"
     },
+    "header": {
+      "myAccount": "Mein Konto",
+      "cart": "Warenkorb"
+    },
     "footer": {
       "newsletter": {
         "title": "Abonnieren",
@@ -18,6 +22,16 @@
           "subscribed": "Vielen Dank! Wir haben Ihren Newsletter abonniert."
         }
       }
+    },
+    "ariaLabels": {
+      "mainNavigation": "Hauptnavigation",
+      "accountNavigation": "Kontonavigation",
+      "mainContent": "Hauptinhalt",
+      "checkout": "Kasse",
+      "pagination": "Seitennummerierung",
+      "breadcrumb": "Breadcrumb",
+      "sidebar": "Seitenleiste",
+      "closeNotification": "Benachrichtigung schließen"
     }
   }
 }
