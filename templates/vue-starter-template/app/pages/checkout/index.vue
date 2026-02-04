@@ -3,7 +3,6 @@ definePageMeta({
   layout: "checkout",
 });
 
-const { cart } = useCart();
 const {
   shippingMethods,
   getShippingMethods,
@@ -19,7 +18,8 @@ const {
   selectedShippingMethod: sessionSelectedShippingMethod,
 } = useSessionContext();
 
-const { refreshCart } = useCart();
+const { changeProductQuantity, removeItemById, isEmpty, refreshCart, cart } =
+  useCart();
 
 const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
   useUser();
@@ -40,11 +40,11 @@ const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
 
 function handleRemoveItem(id: string) {
-  console.log(id);
+  removeItemById(id);
 }
 
 function handleUpdateQuantity(id: string, quantity: number) {
-  console.log(id, quantity);
+  changeProductQuantity({ id, quantity });
 }
 
 async function handlePlaceOrder() {
@@ -111,10 +111,23 @@ onMounted(() => {
 </script>
 <template>
   <div class="container mx-auto">
-    <h1 class="text-10 my-20 font-['Noto_Serif']">
+    <h1 v-if="!isEmpty" class="text-10 my-20 font-['Noto_Serif']">
       {{ $t("checkout.title") }}
     </h1>
-    <div class="flex gap-20 justify-between">
+
+    <div v-if="isEmpty" class="flex flex-col items-center justify-center py-20">
+      <p class="text-surface-on-surface text-lg mb-6">
+        {{ $t("cart.emptyCartLabel") }}
+      </p>
+      <NuxtLink
+        :to="formatLink('/')"
+        class="bg-brand-primary text-brand-on-primary text-center font-bold leading-6 py-3 px-4 rounded-md"
+      >
+        {{ $t("cart.continueShopping") }}
+      </NuxtLink>
+    </div>
+
+    <div v-else class="flex gap-20 justify-between">
       <div class="w-1/2">
         <CheckoutStepHeader :step="1" label="Shipping address">
           <CheckoutCustomerBaseInfo
