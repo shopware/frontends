@@ -13,6 +13,4 @@ minimumReleaseAgeExclude:
 - '@shopware/*'
 - 'vercel'
 - '@vercel/*'
-- 'lodash' # security release, remove after 30.01.2026
-- 'lodash-es' # security release, remove after 30.01.2026
-- 'tar' # security release, remove after 25.01.2026
+- '@isaacs/brace-expansion' # security release, remove after 7.02.2026
