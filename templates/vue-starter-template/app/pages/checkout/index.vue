@@ -3,7 +3,6 @@ definePageMeta({
   layout: "checkout",
 });
 
-const { cart } = useCart();
 const {
   shippingMethods,
   getShippingMethods,
@@ -19,7 +18,8 @@ const {
   selectedShippingMethod: sessionSelectedShippingMethod,
 } = useSessionContext();
 
-const { refreshCart } = useCart();
+const { changeProductQuantity, removeItemById, isEmpty, refreshCart, cart } =
+  useCart();
 
 const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
   useUser();
@@ -38,7 +38,6 @@ const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
-const { changeProductQuantity, removeItemById, isEmpty } = useCart();
 
 function handleRemoveItem(id: string) {
   removeItemById(id);
