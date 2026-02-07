@@ -79,13 +79,12 @@ const selectValue = (id: string) => {
               {{ filter.label }}
             </div>
           </div>
-          <SwIconButton
-            type="ghost"
-            :aria-label="isFilterVisible ? 'Collapse filter' : 'Expand filter'"
-            tabindex="-1"
+          <span
+            class="flex items-center justify-center"
+            aria-hidden="true"
           >
             <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
-          </SwIconButton>
+          </span>
         </div>
       </div>
     </template>
@@ -99,13 +98,11 @@ const selectValue = (id: string) => {
           v-for="option in filter.options || filter.entities"
           :key="`${option.id}-${isChecked(option.id)}`"
           class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
-          @click="selectValue(option.id)"
         >
           <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
             <SwCheckbox
               :model-value="isChecked(option.id)"
               @update:model-value="() => selectValue(option.id)"
-              @click.stop
             />
           </div>
           <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">

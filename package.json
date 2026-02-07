@@ -113,7 +113,8 @@
       "@remix-run/router": "^1.23.2",
       "h3": "^1.15.5",
       "preact": "^10.28.2",
-      "tar": "^7.5.7"
+      "tar": "^7.5.7",
+      "@isaacs/brace-expansion": "^5.0.1"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]

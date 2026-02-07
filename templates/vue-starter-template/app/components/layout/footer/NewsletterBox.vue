@@ -34,25 +34,27 @@ async function handleSubmit() {
 </script>
 <template>
   <div>
-    <h3 class="mb-2 text-surface-inverse-on-surface">
+    <div class="mb-2 text-surface-inverse-on-surface">
       {{ $t("layout.footer.newsletter.title") }}
-    </h3>
-    <div class="mb-4 text-surface-surface-primary">
+    </div>
+    <div class="mb-4 text-surface-inverse-on-surface">
       {{ $t("layout.footer.newsletter.description") }}
     </div>
     <form @submit.prevent="handleSubmit">
       <div class="flex gap-2">
         <div>
-          <FormInputField
-            id="newsletter-email"
-            :class="[r$.email.$errors[0] ? 'mb-4' : 'mb-1']"
-            v-model="email"
-            :placeholder="$t('layout.footer.newsletter.placeholder')"
-            @blur="r$.email.$touch()"
-            :errorMessage="r$.email.$errors[0]"
-            :disabled="newsletterDisabled"
-          />
-          <div class="text-surface-surface-primary text-xs leading-5">
+          <div class="newsletter-input-wrapper">
+            <FormInputField
+              id="newsletter-email"
+              :class="[r$.email.$errors[0] ? 'mb-4' : 'mb-1']"
+              v-model="email"
+              :placeholder="$t('layout.footer.newsletter.placeholder')"
+              @blur="r$.email.$touch()"
+              :errorMessage="r$.email.$errors[0]"
+              :disabled="newsletterDisabled"
+            />
+          </div>
+          <div class="text-surface-inverse-on-surface text-xs leading-5">
             {{ $t("layout.footer.newsletter.privacyPolicy") }}
           </div>
         </div>
