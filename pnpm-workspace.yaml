@@ -14,3 +14,11 @@ minimumReleaseAgeExclude:
 - 'vercel'
 - '@vercel/*'
 - '@isaacs/brace-expansion' # security release, remove after 7.02.2026
+
+
+auditConfig:
+  ignoreCves:
+    # - CVE-2024-43788
+    - CVE-2025-68458 # webpack issue, not affected
+    - CVE-2025-68157 # webpack issue, not affected
+    - CVE-2024-43788 # webpack issue, not affected
