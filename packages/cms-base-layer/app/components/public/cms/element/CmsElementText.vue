@@ -20,10 +20,10 @@ const mappedContent = computed<string>(() => {
 });
 
 const style = computed<CSSProperties>(() => ({
-  alignItems: getConfigValue("verticalAlign"),
+  alignContent: getConfigValue("verticalAlign"),
 }));
 
-const hasVerticalAlignment = computed(() => !!style.value.alignItems);
+const hasVerticalAlignment = computed(() => !!style.value.alignContent);
 
 const CmsTextRender = defineComponent({
   setup() {
@@ -148,18 +148,15 @@ const CmsTextRender = defineComponent({
         ? mappedContent.value
         : "<div class='cms-element-text missing-content-element'></div>";
 
-    return () =>
-      h("div", {}, renderHtml(rawHtml, config, h, context, resolveUrl));
+    return () => renderHtml(rawHtml, config, h, context, resolveUrl);
   },
 });
 </script>
 <template>
-  <div
-    :class="{ flex: hasVerticalAlignment, 'flex-row': hasVerticalAlignment }"
-    :style="style"
-  >
+  <div v-if="hasVerticalAlignment" class="grid h-full" :style="style">
     <CmsTextRender />
   </div>
+  <CmsTextRender v-else />
 </template>
 <style scoped>
 /** Global CSS styles for text elements */

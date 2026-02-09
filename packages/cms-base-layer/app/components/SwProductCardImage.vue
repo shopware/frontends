@@ -36,7 +36,10 @@ function roundUp(num: number) {
 }
 
 const coverSrcPath = computed(() => {
-  return getSmallestThumbnailUrl(props.product?.cover?.media);
+  return (
+    getSmallestThumbnailUrl(props.product?.cover?.media) ||
+    props.product?.cover?.media?.url
+  );
 });
 
 const imageModifiers = computed(() => {

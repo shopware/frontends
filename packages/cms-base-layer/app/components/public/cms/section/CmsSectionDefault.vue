@@ -7,10 +7,11 @@ const props = defineProps<{
 }>();
 
 const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
+const { sizingMode: _, ...sectionStyles } = layoutStyles;
 </script>
 
 <template>
-  <div class="my-4" :class="cssClasses" :style="layoutStyles as any">
+  <div class="my-4" :class="cssClasses" :style="sectionStyles as any">
     <CmsGenericBlock
       v-for="cmsBlock in content.blocks"
       :key="cmsBlock.id"

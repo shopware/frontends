@@ -304,6 +304,20 @@ const customPlaceholder = useImagePlaceholder("#FF0000");
 </template>
 ```
 
+## 🔄 UnoCSS Runtime
+
+This layer includes a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (e.g., inline styles or dynamic class bindings from the admin panel).
+
+The runtime is **enabled by default**. To disable it, set `unocssRuntime` to `false` in your project's `app.config.ts`:
+
+```ts
+export default defineAppConfig({
+  unocssRuntime: false,
+});
+```
+
+> **When to disable**: If you don't use dynamic CMS utility classes, or if you experience performance issues caused by the MutationObserver in pages with frequent DOM mutations.
+
 ## 📘 Available components
 
 The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base-layer.html#available-components).
