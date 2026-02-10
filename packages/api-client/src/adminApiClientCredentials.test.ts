@@ -96,7 +96,7 @@ describe("createAdminAPIClient - credentials", () => {
         username: "user",
         password: "password",
         client_id: "administration",
-        scopes: "write",
+        scope: "write",
       },
     });
     await client.invoke("getOrderList get /order");
@@ -107,7 +107,7 @@ describe("createAdminAPIClient - credentials", () => {
       username: "user",
       password: "password",
       client_id: "administration",
-      scopes: "write",
+      scope: "write",
     });
   });
 
@@ -138,7 +138,7 @@ describe("createAdminAPIClient - credentials", () => {
         username: "user",
         password: "password",
         client_id: "administration",
-        scopes: "write",
+        scope: "write",
       },
       sessionData: {
         refreshToken: "my-refresh-token",
