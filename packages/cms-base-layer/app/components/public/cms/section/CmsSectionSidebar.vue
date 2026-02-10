@@ -30,10 +30,10 @@ provide("cms-section-layout", "sidebar");
         <CmsGenericBlock :content="cmsBlock" />
       </div>
     </aside>
-    <main class="flex-1 flex flex-col justify-start items-stretch gap-20">
+    <div class="flex-1 flex flex-col justify-start items-stretch gap-20">
       <div v-for="cmsBlock in mainBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />
       </div>
-    </main>
+    </div>
   </div>
 </template>

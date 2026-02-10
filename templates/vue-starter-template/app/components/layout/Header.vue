@@ -72,6 +72,7 @@ watch(
               <FormIconButton
                 type="ghost"
                 @click="handleMyAccountClick"
+                :aria-label="$t('layout.header.myAccount')"
               >
                 <LayoutHeaderMyAccountIcon />
               </FormIconButton>
@@ -95,11 +96,13 @@ watch(
             <ClientOnly>
               <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               <template #fallback>
-                <LayoutHeaderWishlistIcon :counter="0" />
+                <LayoutHeaderWishlistIcon
+                  :counter="0"
+                />
               </template>
             </ClientOnly>
 
-            <FormIconButton type="ghost" @click="toggleMiniCart">
+            <FormIconButton type="ghost" @click="toggleMiniCart" :aria-label="$t('layout.header.cart')">
               <ClientOnly>
                 <LayoutHeaderCartIcon :counter="cartCount" />
                 <template #fallback>

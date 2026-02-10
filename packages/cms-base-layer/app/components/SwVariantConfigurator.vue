@@ -85,7 +85,7 @@ const onHandleChange = async () => {
       :key="optionGroup.id"
       class="mt-6"
     >
-      <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
+      <div class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</div>
       <fieldset class="mt-4 flex-1">
         <legend class="sr-only">
           {{ translations.product.chooseA }} {{ optionGroup.name }}

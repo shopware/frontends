@@ -38,7 +38,7 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
       </button>
     </div>
     <div class="flex-1 flex flex-row overflow-y-hidden max-w-2xl w-full">
-      <aside aria-label="Sidebar" class="flex flex-col overflow-y-auto w-full">
+      <aside :aria-label="$t('layout.ariaLabels.sidebar')" class="flex flex-col overflow-y-auto w-full">
         <div class="overflow-y-auto">
           <ul class="flex flex-col items-start p-x-2 space-y-2">
             <li
