@@ -9,6 +9,18 @@ import baseConfig from "./.nuxt/uno.config.mjs";
 
 const templateConfig: ConfigBase = {
   // here you can add template-specific configurations
+  safelist: [
+    // commonly CMS-provided classes not present in source — safelisted to reduce layout shift
+    "bg-overlay-dark-high",
+    "justify-self-start",
+    "leading-8",
+    "max-w-[872px]",
+    "max-w-[984px]",
+    "md:text-7xl",
+    "min-h-[420px]",
+    "min-h-[800px]",
+    "text-fixed-fixed-on-image",
+  ],
   theme: {
     colors: {
       // "brand-primary": "#123456", // overwrite base color
