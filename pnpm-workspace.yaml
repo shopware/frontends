@@ -13,7 +13,7 @@ minimumReleaseAgeExclude:
 - '@shopware/*'
 - 'vercel'
 - '@vercel/*'
-- '@isaacs/brace-expansion' # security release, remove after 7.02.2026
+- 'axios' # security release, remove after 20.02.2026
 
 
 auditConfig:
