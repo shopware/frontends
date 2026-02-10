@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.1.0
+ * Shopware API version: 6.7.5.1
  *
  */
 type GenericRecord =
@@ -17,8 +17,37 @@ type GenericRecord =
 export type components = {
   schemas: Schemas;
   parameters: {
+    CompressedCriteria: string;
+    CompressedNoneFieldsCriteria: string;
     accept: string;
     contentType: string;
+    criteriaAggregations: components["schemas"]["Aggregation"][];
+    criteriaAssociations: components["schemas"]["Associations"];
+    criteriaExcludes: components["schemas"]["Excludes"];
+    criteriaFields: string[];
+    criteriaFilter: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
+    criteriaGrouping: string[];
+    criteriaIds: string[];
+    criteriaIncludes: components["schemas"]["Includes"];
+    criteriaLimit: number;
+    criteriaPage: number;
+    criteriaPostFilter: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
+    criteriaQuery: string;
+    criteriaSort: components["schemas"]["Sort"][];
+    criteriaTerm: string;
+    criteriaTotalCountMode: components["schemas"]["TotalCountMode"];
+    noAggregations: string | null;
+    onlyAggregations: string | null;
   };
 };
 export type Schemas = {
@@ -417,6 +446,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    customFields?: GenericRecord;
     description?: string;
     id: string;
     name: string;
@@ -431,6 +461,79 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsBudget: {
+    active?: boolean;
+    allowApproval?: boolean;
+    /** Format: float */
+    amount: number;
+    costCentre?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdById?: string;
+    currency?: components["schemas"]["Currency"];
+    customerId?: string;
+    customFields?: GenericRecord;
+    endDate?: string;
+    id: string;
+    name: string;
+    notificationConfig?: {
+      type?: string;
+      value?: string;
+    };
+    notificationRecipients?: components["schemas"]["B2bEmployee"][];
+    notify?: boolean;
+    organizations?: components["schemas"]["B2bComponentsOrganization"][];
+    renewsType?: string;
+    reviewerRole?: components["schemas"]["B2bComponentsRole"];
+    reviewerRoleId?: string;
+    showRemaining?: boolean;
+    startDate: string;
+    technicalName: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Format: float */
+    readonly usedAmount?: number;
+  };
+  B2bComponentsBudgetNotificationRecipient: {
+    budget?: components["schemas"]["B2bComponentsBudget"];
+    budgetId: string;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id?: string;
+  };
+  B2bComponentsBudgetOrganization: {
+    budget?: components["schemas"]["B2bComponentsBudget"];
+    budgetId: string;
+    id?: string;
+    organization?: components["schemas"]["B2bComponentsOrganization"];
+    organizationId: string;
+  };
+  B2bComponentsEmployeeWishlist: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id: string;
+    products?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+    salesChannel?: components["schemas"]["SalesChannel"];
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsEmployeeWishlistProduct: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employeeWishlist?: components["schemas"]["B2bComponentsEmployeeWishlist"];
+    employeeWishlistId: string;
+    id: string;
+    product?: components["schemas"]["Product"];
+    productId: string;
+    productVersionId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -492,6 +595,23 @@ export type Schemas = {
     decidedById?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
+    extensions?: {
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-pending-order/e87c4279c6f83e4de2543a63bf59b373/budget
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
@@ -725,6 +845,23 @@ export type Schemas = {
     readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
+    extensions?: {
+      organization?: {
+        data?: {
+          /** @example b4c1948c087fafc89a88450fcbb64c77 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/organization
+           */
+          related?: string;
+        };
+      };
+    };
     firstName: string;
     id: string;
     language?: components["schemas"]["Language"];
@@ -983,7 +1120,9 @@ export type Schemas = {
     readonly breadcrumb: string[];
     /** Format: int64 */
     readonly childCount: number;
+    /** Child categories within this category for hierarchical navigation */
     children: components["schemas"]["Category"][];
+    /** CMS page layout for the category */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -1003,6 +1142,7 @@ export type Schemas = {
     readonly level?: number;
     linkNewTab?: boolean;
     linkType?: string;
+    /** Category image or banner */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     metaDescription?: string;
@@ -1015,7 +1155,9 @@ export type Schemas = {
     productAssignmentType?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     seoUrl?: string;
+    /** SEO-friendly URLs for the category across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
+    /** Tags for organizing and filtering categories */
     tags?: components["schemas"]["Tag"][];
     translated: {
       afterCategoryId: string;
@@ -1087,6 +1229,7 @@ export type Schemas = {
     readonly path?: string;
     productAssignmentType?: string;
     relationships?: {
+      /** Child categories within this category for hierarchical navigation */
       children?: {
         data?: {
           /** @example 268184c12df027f536154d099d497b31 */
@@ -1102,6 +1245,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** CMS page layout for the category */
       cmsPage?: {
         data?: {
           /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -1117,6 +1261,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Category image or banner */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -1147,6 +1292,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** SEO-friendly URLs for the category across different sales channels */
       seoUrls?: {
         data?: {
           /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -1162,6 +1308,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags for organizing and filtering categories */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -1262,7 +1409,7 @@ export type Schemas = {
         };
       };
     };
-    id?: string;
+    id: string;
     marginBottom?: string;
     marginLeft?: string;
     marginRight?: string;
@@ -1312,10 +1459,13 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Landing pages using this CMS layout */
     landingPages?: components["schemas"]["LandingPage"][];
     name?: string;
+    /** Preview image for the CMS page in admin panel and page selection */
     previewMedia?: components["schemas"]["Media"];
     previewMediaId?: string;
+    /** Content sections within the CMS page (layout blocks containing slots) */
     sections: components["schemas"]["CmsSection"][];
     translated: {
       cssClass: string;
@@ -1374,7 +1524,7 @@ export type Schemas = {
         };
       };
     };
-    id?: string;
+    id: string;
     mobileBehavior?: string;
     name?: string;
     page?: components["schemas"]["CmsPage"];
@@ -1466,6 +1616,40 @@ export type Schemas = {
       weight?: "g" | "kg" | "oz" | "lb";
     };
   };
+  CookieEntry: {
+    /** @enum {string} */
+    apiAlias: "cookie_entry";
+    cookie: string;
+    description?: string;
+    expiration?: number;
+    hidden: boolean;
+    name?: string;
+    value?: string;
+  };
+  CookieEntryCollection: components["schemas"]["CookieEntry"][];
+  CookieGroup: {
+    /** @enum {string} */
+    apiAlias: "cookie_group";
+    cookie?: string;
+    description?: string;
+    entries?: components["schemas"]["CookieEntryCollection"];
+    expiration?: number;
+    isRequired: boolean;
+    name: string;
+    value?: string;
+  };
+  CookieGroupCollection: components["schemas"]["CookieGroup"][];
+  CookieRouteResponse: {
+    /** @enum {string} */
+    apiAlias: "cookie_groups_hash";
+    /** Collection of cookie groups */
+    elements: components["schemas"]["CookieGroup"][];
+    /**
+     * Hash of the current cookie configuration. Can be used to detect changes in cookie configuration.
+     * @example f86b6a872cb83dbd22d838ceda1aa3d4
+     */
+    hash: string;
+  };
   Country: {
     active?: boolean;
     addressFormat: GenericRecord;
@@ -1500,6 +1684,7 @@ export type Schemas = {
     position?: number;
     postalCodeRequired?: boolean;
     shippingAvailable?: boolean;
+    /** States/provinces/regions within the country */
     states?: components["schemas"]["CountryState"][];
     translated: {
       advancedPostalCodePattern: string;
@@ -1548,6 +1733,7 @@ export type Schemas = {
     position?: number;
     postalCodeRequired?: boolean;
     relationships?: {
+      /** States/provinces/regions within the country */
       states?: {
         data?: {
           /** @example 34d955a0df5f7af9c9b4e4dccb3c3564 */
@@ -1641,6 +1827,7 @@ export type Schemas = {
   Criteria: {
     aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Associations"];
+    excludes?: components["schemas"]["Excludes"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
@@ -1817,8 +2004,11 @@ export type Schemas = {
   };
   Customer: {
     active?: boolean;
+    /** Currently active billing address in the session */
     activeBillingAddress: components["schemas"]["CustomerAddress"];
+    /** Currently active shipping address in the session */
     activeShippingAddress: components["schemas"]["CustomerAddress"];
+    /** All addresses saved for the customer */
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
     /** @enum {string} */
@@ -1830,8 +2020,10 @@ export type Schemas = {
     createdById?: string;
     customerNumber: string;
     customFields?: GenericRecord;
+    /** Default billing address for the customer */
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     defaultBillingAddressId: string;
+    /** Default shipping address for the customer */
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
     defaultShippingAddressId: string;
     /** Format: date-time */
@@ -1860,11 +2052,13 @@ export type Schemas = {
     /** Format: date-time */
     firstLogin?: string;
     firstName: string;
+    /** Customer group determining pricing and permissions */
     group?: components["schemas"]["CustomerGroup"];
     groupId: string;
     guest?: boolean;
     hash?: string;
     id: string;
+    /** Preferred language for customer communication */
     language?: components["schemas"]["Language"];
     languageId: string;
     /** Format: date-time */
@@ -1872,6 +2066,7 @@ export type Schemas = {
     lastName: string;
     /** Format: date-time */
     readonly lastOrderDate?: string;
+    /** Last used payment method by the customer */
     lastPaymentMethod?: components["schemas"]["PaymentMethod"];
     lastPaymentMethodId?: string;
     /** Format: int64 */
@@ -1881,9 +2076,11 @@ export type Schemas = {
     /** Format: int64 */
     readonly reviewCount?: number;
     salesChannelId: string;
+    /** Customer salutation (e.g., Mr., Mrs., Ms.) */
     salutation?: components["schemas"]["Salutation"];
     salutationId?: string;
     readonly tagIds?: string[];
+    /** Tags assigned to the customer for organization and segmentation */
     tags?: components["schemas"]["Tag"][];
     title?: string;
     /** Format: date-time */
@@ -2391,6 +2588,9 @@ export type Schemas = {
     type: "equals";
     value: string | number | boolean | null;
   };
+  Excludes: {
+    [key: string]: string[];
+  };
   Filters: (
     | components["schemas"]["SimpleFilter"]
     | components["schemas"]["EqualsFilter"]
@@ -2512,6 +2712,7 @@ export type Schemas = {
     active?: boolean;
     /** @enum {string} */
     apiAlias: "landing_page";
+    /** CMS page layout for the landing page */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
@@ -2523,6 +2724,7 @@ export type Schemas = {
     metaDescription?: string;
     metaTitle?: string;
     name: string;
+    /** SEO-friendly URLs for the landing page across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
     slotConfig?: GenericRecord;
     translated: {
@@ -2553,6 +2755,7 @@ export type Schemas = {
     metaTitle?: string;
     name: string;
     relationships?: {
+      /** CMS page layout for the landing page */
       cmsPage?: {
         data?: {
           /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -2568,6 +2771,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** SEO-friendly URLs for the landing page across different sales channels */
       seoUrls?: {
         data?: {
           /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -2601,22 +2805,27 @@ export type Schemas = {
     versionId?: string;
   };
   Language: {
+    active?: boolean;
+    /** Child languages inheriting from this parent language */
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
+    /** Locale defining regional settings (date, time, number formats) */
     locale?: components["schemas"]["Locale"];
     localeId: string;
     name: string;
     parent?: components["schemas"]["Language"];
     parentId?: string;
+    /** Locale used for translating content */
     translationCode?: components["schemas"]["Locale"];
     translationCodeId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   LanguageJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -2625,6 +2834,7 @@ export type Schemas = {
     name: string;
     parentId?: string;
     relationships?: {
+      /** Child languages inheriting from this parent language */
       children?: {
         data?: {
           /** @example 268184c12df027f536154d099d497b31 */
@@ -2640,6 +2850,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Locale defining regional settings (date, time, number formats) */
       locale?: {
         data?: {
           /** @example fb216d9e8791e63c8d12bdc420956839 */
@@ -2670,6 +2881,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Locale used for translating content */
       translationCode?: {
         data?: {
           /** @example 6ef2035242b8fcb7b61c3a41850e60b3 */
@@ -2762,6 +2974,9 @@ export type Schemas = {
     | "quantity"
     | "dsr-line-item-discount"
     | "dsr-cart-discount";
+  ListCategoryRouteResponse: {
+    categories: components["schemas"]["EntitySearchResult"];
+  };
   ListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
@@ -2994,6 +3209,7 @@ export type Schemas = {
     mimeType?: string;
     path: string;
     private: boolean;
+    /** Generated thumbnail images in various sizes */
     thumbnails?: components["schemas"]["MediaThumbnail"][];
     title?: string;
     translated: {
@@ -3058,6 +3274,7 @@ export type Schemas = {
     readonly height: number;
     id: string;
     mediaId: string;
+    mediaThumbnailSizeId?: string;
     path?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -3113,6 +3330,7 @@ export type Schemas = {
   NoneFieldsCriteria: {
     aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Associations"];
+    excludes?: components["schemas"]["Excludes"];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
     filter?: (
       | components["schemas"]["SimpleFilter"]
@@ -3180,12 +3398,14 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   Order: {
+    /** All addresses associated with the order (billing and shipping) */
     addresses?: components["schemas"]["OrderAddress"][];
     affiliateCode?: string;
     /** Format: float */
     readonly amountNet?: number;
     /** Format: float */
     readonly amountTotal?: number;
+    /** Billing address for the order */
     billingAddress?: components["schemas"]["OrderAddress"];
     billingAddressId: string;
     billingAddressVersionId?: string;
@@ -3193,6 +3413,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById?: string;
+    /** Currency used for the order */
     currency?: components["schemas"]["Currency"];
     /** Format: float */
     currencyFactor: number;
@@ -3200,9 +3421,41 @@ export type Schemas = {
     customerComment?: string;
     customFields?: GenericRecord;
     deepLinkCode?: string;
+    /** Delivery information including shipping address and tracking */
     deliveries?: components["schemas"]["OrderDelivery"][];
+    /** Generated documents (invoices, delivery notes, credit notes) */
     documents: components["schemas"]["Document"][];
     extensions?: {
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/budget
+           */
+          related?: string;
+        };
+      };
+      initialSubscriptions?: {
+        data?: {
+          /** @example 3b40c275cdd1f84402bcef5be1651f64 */
+          id?: string;
+          /** @example subscription */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/initialSubscriptions
+           */
+          related?: string;
+        };
+      };
       orderEmployee?: {
         data?: {
           /** @example 5ea451c08a87db806089c4031601c29a */
@@ -3280,9 +3533,12 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Language used when placing the order */
     language?: components["schemas"]["Language"];
     languageId: string;
+    /** Order line items (products, discounts, fees) */
     lineItems?: components["schemas"]["OrderLineItem"][];
+    /** Customer information associated with the order */
     orderCustomer?: components["schemas"]["OrderCustomer"];
     readonly orderDate: string;
     /** Format: date-time */
@@ -3291,9 +3547,11 @@ export type Schemas = {
     /** Format: float */
     readonly positionPrice?: number;
     price: components["schemas"]["CalculatedPrice"];
+    /** Primary delivery information for the order */
     primaryOrderDelivery?: components["schemas"]["OrderDelivery"];
     primaryOrderDeliveryId?: string;
     primaryOrderDeliveryVersionId?: string;
+    /** Primary payment transaction for the order */
     primaryOrderTransaction?: components["schemas"]["OrderTransaction"];
     primaryOrderTransactionId?: string;
     primaryOrderTransactionVersionId?: string;
@@ -3324,10 +3582,13 @@ export type Schemas = {
     /** Format: float */
     readonly shippingTotal?: number;
     source?: string;
+    /** Current order state (e.g., open, in_progress, completed, cancelled) */
     stateMachineState: components["schemas"]["StateMachineState"];
+    /** Tags assigned to the order for organization and filtering */
     tags?: components["schemas"]["Tag"][];
     taxCalculationType?: string;
     readonly taxStatus?: string;
+    /** Payment transactions for the order */
     transactions?: components["schemas"]["OrderTransaction"][];
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -3387,6 +3648,7 @@ export type Schemas = {
     id: string;
     orderId: string;
     orderVersionId?: string;
+    /** Line items included in this delivery */
     positions?: components["schemas"]["OrderDeliveryPosition"][];
     shippingCosts?: {
       calculatedTaxes?: GenericRecord;
@@ -3415,12 +3677,15 @@ export type Schemas = {
     shippingDateEarliest: string;
     /** Format: date-time */
     shippingDateLatest: string;
+    /** Shipping method used for this delivery */
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
+    /** Shipping address for this delivery */
     shippingOrderAddress?: components["schemas"]["OrderAddress"];
     shippingOrderAddressId: string;
     shippingOrderAddressVersionId?: string;
     stateId: string;
+    /** Current delivery state (e.g., open, shipped, delivered, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
     trackingCodes?: string[];
     /** Format: date-time */
@@ -3473,12 +3738,14 @@ export type Schemas = {
     /** @enum {string} */
     apiAlias: "order_line_item";
     children: components["schemas"]["OrderLineItem"][];
+    /** Line item image or thumbnail */
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
+    /** Digital downloads associated with this line item */
     downloads?: components["schemas"]["OrderLineItemDownload"][];
     extensions?: {
       returns?: {
@@ -3516,6 +3783,7 @@ export type Schemas = {
     id: string;
     identifier: string;
     label: string;
+    /** Delivery positions for this line item */
     orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
     orderId: string;
     orderVersionId?: string;
@@ -3549,6 +3817,8 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     priceDefinition?: components["schemas"]["CartPriceQuantity"];
+    /** Referenced product if this is a product line item */
+    product?: components["schemas"]["Product"];
     productId?: string;
     productVersionId?: string;
     promotionId?: string;
@@ -3742,6 +4012,7 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
+    /** Payment captures for this transaction */
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
     readonly createdAt?: string;
@@ -3749,9 +4020,11 @@ export type Schemas = {
     id: string;
     orderId: string;
     orderVersionId?: string;
+    /** Payment method used for this transaction */
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     stateId: string;
+    /** Current payment transaction state (e.g., open, paid, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -3914,6 +4187,7 @@ export type Schemas = {
     description?: string;
     readonly distinguishableName?: string;
     id: string;
+    /** Payment method logo or icon image */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
@@ -3947,6 +4221,7 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     relationships?: {
+      /** Payment method logo or icon image */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -4121,30 +4396,40 @@ export type Schemas = {
     calculatedMaxPurchase?: number;
     calculatedPrice: components["schemas"]["CalculatedPrice"];
     calculatedPrices: components["schemas"]["CalculatedPrice"][];
+    /** Canonical product reference for variant consolidation and SEO purposes */
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
+    /** Categories this product is assigned to */
     categories?: components["schemas"]["Category"][];
+    /** Read-only category tree including all parent categories for optimized queries */
     categoriesRo?: components["schemas"]["Category"][];
     readonly categoryIds?: string[];
     readonly categoryTree?: string[];
     /** Format: int64 */
     readonly childCount?: number;
+    /** Product variants that inherit from this parent product */
     children?: components["schemas"]["Product"][];
+    /** Custom CMS page layout for the product detail page */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
+    /** Variant configurator settings defining available options for product variants */
     configuratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
+    /** Main product image displayed in listings and detail pages */
     cover?: components["schemas"]["ProductMedia"];
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Cross-selling configurations (related products, accessories, similar items) */
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
     customFields?: GenericRecord;
+    /** Estimated delivery time for the product */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId?: string;
     description?: string;
     readonly displayGroup?: string;
+    /** Downloadable files associated with the product (e.g., manuals, digital content) */
     downloads?: components["schemas"]["ProductDownload"][];
     ean?: string;
     extensions?: {
@@ -4203,7 +4488,9 @@ export type Schemas = {
     keywords?: string;
     /** Format: float */
     length?: number;
+    /** Primary category assignments per sales channel for SEO and navigation */
     mainCategories?: components["schemas"]["MainCategory"][];
+    /** Product manufacturer or brand information */
     manufacturer?: components["schemas"]["ProductManufacturer"];
     manufacturerId?: string;
     manufacturerNumber?: string;
@@ -4211,6 +4498,7 @@ export type Schemas = {
     /** Format: int64 */
     maxPurchase?: number;
     measurements?: components["schemas"]["ProductMeasurements"];
+    /** Product images and media gallery */
     media?: components["schemas"]["ProductMedia"][];
     metaDescription?: string;
     metaTitle?: string;
@@ -4218,6 +4506,7 @@ export type Schemas = {
     minPurchase?: number;
     name: string;
     readonly optionIds?: string[];
+    /** Product variant options (e.g., size, color) that define different variants */
     options?: components["schemas"]["PropertyGroupOption"][];
     packUnit?: string;
     packUnitPlural?: string;
@@ -4227,7 +4516,9 @@ export type Schemas = {
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
     productNumber: string;
+    /** Customer reviews and ratings for the product */
     productReviews?: components["schemas"]["ProductReview"][];
+    /** Product properties and characteristics for filtering */
     properties?: components["schemas"]["PropertyGroupOption"][];
     readonly propertyIds?: string[];
     /** Format: int64 */
@@ -4244,7 +4535,9 @@ export type Schemas = {
     restockTime?: number;
     /** Format: int64 */
     readonly sales?: number;
+    /** Main category used for SEO URL generation in the current sales channel */
     seoCategory: components["schemas"]["Category"];
+    /** SEO-friendly URLs for the product across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
     shippingFree?: boolean;
     sortedProperties?: GenericRecord;
@@ -4252,9 +4545,12 @@ export type Schemas = {
     /** Format: int64 */
     stock: number;
     readonly streamIds?: string[];
+    /** Dynamic product streams this product belongs to based on defined filters */
     streams?: components["schemas"]["ProductStream"][];
     readonly tagIds?: string[];
+    /** Tags for organizing and filtering products */
     tags?: components["schemas"]["Tag"][];
+    /** Tax configuration (rate and calculation rules) */
     tax?: components["schemas"]["Tax"];
     taxId: string;
     translated: {
@@ -4285,6 +4581,7 @@ export type Schemas = {
       unitId: string;
       versionId: string;
     };
+    /** Product unit of measure (e.g., piece, liter, kg) */
     unit?: components["schemas"]["Unit"];
     unitId?: string;
     /** Format: date-time */
@@ -4508,6 +4805,7 @@ export type Schemas = {
       /** Format: float */
       referenceUnit?: number;
       relationships?: {
+        /** Canonical product reference for variant consolidation and SEO purposes */
         canonicalProduct?: {
           data?: {
             /** @example 023995a50b56c0de077323e958b2bbcd */
@@ -4523,6 +4821,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Categories this product is assigned to */
         categories?: {
           data?: {
             /** @example b0b5ccb4a195a07fd3eed14affb8695f */
@@ -4538,6 +4837,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Read-only category tree including all parent categories for optimized queries */
         categoriesRo?: {
           data?: {
             /** @example 7f0702d3a90d965b8c9158c451f43fdb */
@@ -4553,6 +4853,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product variants that inherit from this parent product */
         children?: {
           data?: {
             /** @example 268184c12df027f536154d099d497b31 */
@@ -4568,6 +4869,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Custom CMS page layout for the product detail page */
         cmsPage?: {
           data?: {
             /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -4583,6 +4885,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Variant configurator settings defining available options for product variants */
         configuratorSettings?: {
           data?: {
             /** @example c0827fee13725d41f1fd7e292243f5aa */
@@ -4598,6 +4901,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Main product image displayed in listings and detail pages */
         cover?: {
           data?: {
             /** @example 41d0e299ca1abeb2094852da042165c7 */
@@ -4613,6 +4917,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Cross-selling configurations (related products, accessories, similar items) */
         crossSellings?: {
           data?: {
             /** @example 89936e14544d1b403cecef938101b6b0 */
@@ -4628,6 +4933,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Estimated delivery time for the product */
         deliveryTime?: {
           data?: {
             /** @example 8c888ae25a7bd42057370e31f7e01044 */
@@ -4643,6 +4949,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Downloadable files associated with the product (e.g., manuals, digital content) */
         downloads?: {
           data?: {
             /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
@@ -4658,6 +4965,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Primary category assignments per sales channel for SEO and navigation */
         mainCategories?: {
           data?: {
             /** @example 1fb731fc4139cbb575429e28846f0c39 */
@@ -4673,6 +4981,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product manufacturer or brand information */
         manufacturer?: {
           data?: {
             /** @example c2904bca62b22443d6cf5e9d89cab204 */
@@ -4688,6 +4997,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product images and media gallery */
         media?: {
           data?: {
             /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -4703,6 +5013,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product variant options (e.g., size, color) that define different variants */
         options?: {
           data?: {
             /** @example 93da65a9fd0004d9477aeac024e08e15 */
@@ -4733,6 +5044,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Customer reviews and ratings for the product */
         productReviews?: {
           data?: {
             /** @example 01e78541ea343ed72424a5222796a4cd */
@@ -4748,6 +5060,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product properties and characteristics for filtering */
         properties?: {
           data?: {
             /** @example 74693d2fc58b46bd06410f278e39aa71 */
@@ -4763,6 +5076,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Main category used for SEO URL generation in the current sales channel */
         seoCategory?: {
           data?: {
             /** @example 9354d004d12e03d35ad8292bf0bb234d */
@@ -4778,6 +5092,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** SEO-friendly URLs for the product across different sales channels */
         seoUrls?: {
           data?: {
             /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -4793,6 +5108,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Dynamic product streams this product belongs to based on defined filters */
         streams?: {
           data?: {
             /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
@@ -4808,6 +5124,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Tags for organizing and filtering products */
         tags?: {
           data?: {
             /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -4823,6 +5140,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Tax configuration (rate and calculation rules) */
         tax?: {
           data?: {
             /** @example 06565e5611f23fdf8cc43e5077b92b54 */
@@ -4838,6 +5156,7 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Product unit of measure (e.g., piece, liter, kg) */
         unit?: {
           data?: {
             /** @example 3e34bdebd9bd5edda27e8728904a2552 */
@@ -5933,21 +6252,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  SaasSbpUserData: {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-  };
   SaasStorefrontDemoToken: {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-  };
-  SaasUserLoginToken: {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
@@ -5957,15 +6262,19 @@ export type Schemas = {
   SalesChannel: {
     active?: boolean;
     configuration?: GenericRecord;
+    /** Default country for the sales channel */
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Default currency for the sales channel */
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customerGroupId: string;
     customFields?: GenericRecord;
+    /** Domain URLs configured for the sales channel */
     domains?: components["schemas"]["SalesChannelDomain"][];
+    /** Root category for footer navigation */
     footerCategory?: components["schemas"]["Category"];
     footerCategoryId?: string;
     footerCategoryVersionId?: string;
@@ -5973,22 +6282,27 @@ export type Schemas = {
     hreflangDefaultDomain?: components["schemas"]["SalesChannelDomain"];
     hreflangDefaultDomainId?: string;
     id: string;
+    /** Default language for the sales channel */
     language?: components["schemas"]["Language"];
     languageId: string;
     mailHeaderFooterId?: string;
     maintenance?: boolean;
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     name: string;
+    /** Root category for navigation menu */
     navigationCategory?: components["schemas"]["Category"];
     /** Format: int64 */
     navigationCategoryDepth?: number;
     navigationCategoryId: string;
     navigationCategoryVersionId?: string;
+    /** Default payment method for the sales channel */
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
+    /** Root category for service pages */
     serviceCategory?: components["schemas"]["Category"];
     serviceCategoryId?: string;
     serviceCategoryVersionId?: string;
+    /** Default shipping method for the sales channel */
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
     shortName?: string;
@@ -6244,21 +6558,27 @@ export type Schemas = {
   };
   ShippingMethod: {
     active?: boolean;
+    /** Rule defining when this shipping method is available */
     availabilityRule?: components["schemas"]["Rule"];
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    /** Estimated delivery time information */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId: string;
     description?: string;
     id: string;
+    /** Shipping method logo or carrier image */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
     /** Format: int64 */
     position?: number;
+    /** Shipping prices based on weight, volume, or cart value */
     prices?: components["schemas"]["ShippingMethodPrice"][];
+    /** Tags for organizing shipping methods */
     tags?: components["schemas"]["Tag"][];
+    /** Tax configuration for shipping costs */
     tax?: components["schemas"]["Tax"];
     taxType?: string;
     technicalName: string;
@@ -6288,6 +6608,7 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     relationships?: {
+      /** Rule defining when this shipping method is available */
       availabilityRule?: {
         data?: {
           /** @example 9fbb7961d1cb158094924c679e1b302c */
@@ -6303,6 +6624,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Estimated delivery time information */
       deliveryTime?: {
         data?: {
           /** @example 8c888ae25a7bd42057370e31f7e01044 */
@@ -6318,6 +6640,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping method logo or carrier image */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -6333,6 +6656,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping prices based on weight, volume, or cart value */
       prices?: {
         data?: {
           /** @example afae32efe0f84fece3f96b377b768b33 */
@@ -6348,6 +6672,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags for organizing shipping methods */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -6363,6 +6688,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tax configuration for shipping costs */
       tax?: {
         data?: {
           /** @example 06565e5611f23fdf8cc43e5077b92b54 */
@@ -6762,6 +7088,9 @@ export type Schemas = {
     id: string;
     /** Format: int64 */
     initialExecutionCount?: number;
+    initialOrder?: components["schemas"]["Order"];
+    initialOrderId?: string;
+    initialOrderVersionId?: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     /** Format: date-time */
@@ -6844,6 +7173,8 @@ export type Schemas = {
     readonly createdAt?: string;
     cronInterval?: string;
     dateInterval?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    delayed: boolean;
     id: string;
     name: string;
     subscriptions?: components["schemas"]["Subscription"][];
@@ -7496,6 +7827,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValue: {
     advancedSurcharge?: boolean;
+    calculatedPrice?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     default?: boolean;
@@ -7531,6 +7863,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
     advancedSurcharge?: boolean;
+    calculatedPrice?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     default?: boolean;
@@ -8864,6 +9197,9 @@ export type Schemas = {
     resource_version: string;
     status: string;
   };
+  paypal_v1_webhook_list: {
+    webhooks: components["schemas"]["paypal_v1_webhook"][];
+  };
   paypal_v1_webhook_resource: {
     amount: components["schemas"]["paypal_v1_common_amount"];
     billing_agreement_id: string | null;
@@ -8914,6 +9250,10 @@ export type Schemas = {
   paypal_v2_common_phone_number: {
     country_code: string;
     national_number: string;
+  };
+  paypal_v2_common_upc: {
+    code: string;
+    type: string;
   };
   paypal_v2_order: {
     application_context: components["schemas"]["paypal_v2_order_application_context"];
@@ -9079,6 +9419,10 @@ export type Schemas = {
   paypal_v2_order_payment_source_common_attributes_customer: {
     id: string;
   };
+  paypal_v2_order_payment_source_common_attributes_order_update_callback_config: {
+    callback_events: ("SHIPPING_ADDRESS" | "SHIPPING_OPTIONS")[];
+    callback_url: string;
+  };
   paypal_v2_order_payment_source_common_attributes_vault: {
     confirm_payment_token: string;
     customer:
@@ -9106,6 +9450,7 @@ export type Schemas = {
     landing_page?: "LOGIN" | "GUEST_CHECKOUT" | "NO_PREFERENCE";
     locale: string;
     logo_url: string;
+    order_update_callback_config: components["schemas"]["paypal_v2_order_payment_source_common_attributes_order_update_callback_config"];
     /**
      * Only: PayPal Wallet
      * @enum {string}
@@ -9241,6 +9586,10 @@ export type Schemas = {
       | null;
     reference_id: string;
     shipping: components["schemas"]["paypal_v2_order_purchase_unit_shipping"];
+    shipping_options:
+      | components["schemas"]["paypal_v2_order_purchase_unit_shipping_option"][]
+      | null;
+    supplementary_data: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data"];
   };
   paypal_v2_order_purchase_unit_amount: components["schemas"]["paypal_v2_common_money"] & {
     breakdown:
@@ -9358,6 +9707,14 @@ export type Schemas = {
   paypal_v2_order_purchase_unit_shipping_name: {
     full_name: string;
   };
+  paypal_v2_order_purchase_unit_shipping_option: {
+    amount: components["schemas"]["paypal_v2_common_money"];
+    id: string;
+    label: string;
+    selected: boolean;
+    /** @enum {string} */
+    type: "SHIPPING" | "PICKUP";
+  };
   paypal_v2_order_purchase_unit_shipping_tracker: {
     id: string;
     items: components["schemas"]["paypal_v2_order_purchase_unit_item"][];
@@ -9371,6 +9728,52 @@ export type Schemas = {
     quantity: number;
     sku: string | null;
     url: string | null;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data: {
+    card: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card"];
+    risk: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_risk"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card: {
+    address: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card_level2"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_level2: {
+    invoice_id: string;
+    tax_total: components["schemas"]["paypal_v2_common_money"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_level3: {
+    discount_amount: components["schemas"]["paypal_v2_common_money"];
+    duty_amount: components["schemas"]["paypal_v2_common_money"];
+    line_items: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card_line_item"][];
+    shipping_address: components["schemas"]["paypal_v2_common_address"];
+    shipping_amount: components["schemas"]["paypal_v2_common_money"];
+    ships_from_postal_code: string;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_line_item: {
+    commodity_code: string;
+    description: string;
+    discount_amount: components["schemas"]["paypal_v2_common_money"];
+    image_url: string;
+    name: string;
+    quantity: number;
+    sku: string;
+    tax: components["schemas"]["paypal_v2_common_money"];
+    total_amount: components["schemas"]["paypal_v2_common_money"];
+    unit_amount: components["schemas"]["paypal_v2_common_money"];
+    unit_of_measure: string;
+    upc: components["schemas"]["paypal_v2_common_upc"];
+    url: string;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_risk: {
+    address: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_risk_participant_metadata"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_risk_participant_metadata: {
+    ip_address: string;
+  };
+  paypal_v2_order_shipping_callback: {
+    id: string;
+    purchase_units: components["schemas"]["paypal_v2_order_purchase_unit"][];
+    shipping_address: components["schemas"]["paypal_v2_common_address"];
+    shipping_option: components["schemas"]["paypal_v2_order_purchase_unit_shipping_option"];
   };
   paypal_v2_order_tracker: {
     capture_id: string;
@@ -9713,6 +10116,10 @@ export type operations = {
   "readCustomer post /account/customer": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
+    };
     body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["Customer"];
     responseCode: 200;
@@ -9742,6 +10149,10 @@ export type operations = {
   "listAddress post /account/list-address": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements: components["schemas"]["CustomerAddress"][];
@@ -9792,6 +10203,10 @@ export type operations = {
   "readNewsletterRecipient post /account/newsletter-recipient": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
+    };
     body?: components["schemas"]["Criteria"];
     response: components["schemas"]["AccountNewsletterRecipient"];
     responseCode: 200;
@@ -9895,6 +10310,101 @@ export type operations = {
       hash: string;
     };
     response: never;
+    responseCode: 200;
+  };
+  "listAdvancedProductCatalogCategories get /advanced-product-catalogs/categories": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body?: components["schemas"]["Criteria"];
+    response: components["schemas"]["ListCategoryRouteResponse"];
+    responseCode: 200;
+  };
+  "listAdvancedProductCatalogCategoriesPost post /advanced-product-catalogs/categories": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body?: components["schemas"]["Criteria"];
+    response: components["schemas"]["ListCategoryRouteResponse"];
+    responseCode: 200;
+  };
+  "removeAdvancedProductCatalogCategories delete /advanced-product-catalogs/categories/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body: {
+      /** The ID of the advanced product catalog */
+      id: string;
+      /** Array of category IDs to remove from the catalog */
+      removedCategories: string[];
+    };
+    response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
+  "searchAdvancedProductCatalogCategories get /advanced-product-catalogs/categories/search": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body?: components["schemas"]["Criteria"];
+    response: components["schemas"]["ListCategoryRouteResponse"];
+    responseCode: 200;
+  };
+  "saveAdvancedProductCatalog post /advanced-product-catalogs/save": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body: {
+      /** Whether to automatically add new categories to the catalog */
+      autoAddNewCategories?: boolean;
+      /** The ID of the advanced product catalog (optional, will be generated if not provided) */
+      id?: string;
+      /** The ID of the organization */
+      organizationId: string;
+      /** Array of category IDs to associate with the catalog */
+      selectedCategories?: string[];
+    };
+    response: {
+      /** The ID of the created/updated advanced product catalog */
+      id: string;
+    };
+    responseCode: 200;
+  };
+  "updateAdvancedProductCatalog patch /advanced-product-catalogs/save": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Language ID for localized content */
+      "sw-language-id"?: string;
+    };
+    body: {
+      /** Whether to automatically add new categories to the catalog */
+      autoAddNewCategories?: boolean;
+      /** The ID of the advanced product catalog (optional, will be generated if not provided) */
+      id?: string;
+      /** The ID of the organization */
+      organizationId: string;
+      /** Array of category IDs to associate with the catalog */
+      selectedCategories?: string[];
+    };
+    response: {
+      /** The ID of the created/updated advanced product catalog */
+      id: string;
+    };
     responseCode: 200;
   };
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token": {
@@ -10026,10 +10536,269 @@ export type operations = {
     response: components["schemas"]["BreadcrumbCollection"];
     responseCode: 200;
   };
+  "createBudget post /budget": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Whether the budget is active */
+      active?: boolean;
+      /** Whether budget allows approval */
+      allowApproval?: boolean;
+      /**
+       * Format: float
+       * Budget amount
+       */
+      amount: number;
+      /** Cost centre */
+      costCentre?: string;
+      /**
+       * Format: date
+       * Budget end date
+       */
+      endDate?: string;
+      /** Budget name */
+      name: string;
+      /** Notification configuration */
+      notificationConfig?: {
+        /**
+         * Notification type
+         * @enum {string}
+         */
+        type: "Percentage" | "SpecificDay" | "BeforeDay";
+        /** Notification value */
+        value: string;
+      };
+      /** Whether to send notifications */
+      notify?: boolean;
+      /** Organization unit IDs */
+      organizationUnitIds?: string[];
+      /**
+       * Budget renewal type
+       * @enum {string}
+       */
+      renewsType:
+        | "None"
+        | "Weekly"
+        | "Monthly"
+        | "Quarterly"
+        | "Biannual"
+        | "Yearly";
+      /** Reviewer role ID */
+      reviewerRoleId?: string;
+      /** Whether to show remaining budget */
+      showRemaining?: boolean;
+      /**
+       * Format: date
+       * Budget start date
+       */
+      startDate: string;
+      /** Technical name (unique identifier) */
+      technicalName: string;
+    };
+    response: {
+      b2b_components_budget?: string[];
+    };
+    responseCode: 201;
+  };
+  "readBudgetGet get /budget/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the budget to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bComponentsBudget"];
+    responseCode: 200;
+  };
+  "readBudget post /budget/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the budget to be fetched */
+      id: string;
+    };
+    body?: components["schemas"]["Criteria"];
+    response: components["schemas"]["B2bComponentsBudget"];
+    responseCode: 200;
+  };
+  "updateBudget patch /budget/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the budget to be updated */
+      id: string;
+    };
+    body: {
+      /** Whether the budget is active */
+      active?: boolean;
+      /** Whether budget allows approval */
+      allowApproval?: boolean;
+      /**
+       * Format: float
+       * Budget amount
+       */
+      amount?: number;
+      /** Cost centre */
+      costCentre?: string;
+      /** Employee IDs for notifications */
+      employeeIds?: string[];
+      /**
+       * Format: date
+       * Budget end date
+       */
+      endDate?: string;
+      /** Budget name */
+      name?: string;
+      /** Notification configuration */
+      notificationConfig?: {
+        /**
+         * Notification type
+         * @enum {string}
+         */
+        type: "Percentage" | "SpecificDay" | "BeforeDay";
+        /** Notification value */
+        value: string;
+      };
+      /** Whether to send notifications */
+      notify?: boolean;
+      /** Organization unit IDs */
+      organizationUnitIds?: string[];
+      /**
+       * Budget renewal type
+       * @enum {string}
+       */
+      renewsType?:
+        | "None"
+        | "Weekly"
+        | "Monthly"
+        | "Quarterly"
+        | "Biannual"
+        | "Yearly";
+      /** Reviewer role ID */
+      reviewerRoleId?: string;
+      /** Whether to show remaining budget */
+      showRemaining?: boolean;
+      /**
+       * Format: date
+       * Budget start date
+       */
+      startDate?: string;
+      /** Technical name (unique identifier) */
+      technicalName?: string;
+    };
+    response: string[];
+    responseCode: 200;
+  };
+  "storeBudgetRecipients post /budget/{id}/recipients": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the budget to add recipients to */
+      id: string;
+    };
+    body: {
+      /** Employee IDs to add as budget recipients */
+      employeeIds: [string, ...string[]];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "deleteBudgetRecipients delete /budget/{id}/recipients": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the budget to remove recipients from */
+      id: string;
+    };
+    body: {
+      /** Employee IDs to remove from budget recipients */
+      employeeIds: [string, ...string[]];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readBudgetsGet get /budgets": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Number of items to return */
+      limit?: number;
+      /** Page number */
+      page?: number;
+    };
+    response: {
+      elements?: components["schemas"]["B2bComponentsBudget"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readBudgets post /budgets": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsBudget"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "deleteBudgets delete /budgets/delete": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Budget IDs to delete */
+      ids: [string, ...string[]];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readCategoryListGet get /category": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements?: components["schemas"]["Category"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readCategoryList post /category": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10039,10 +10808,77 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readCategoryGet get /category/{navigationId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page. If not set, the limit will be set according to the default products per page, defined in the system settings. */
+      limit?: number;
+      /** Filter by manufacturers. List of manufacturer identifiers separated by a `|`. */
+      manufacturer?: string;
+      /** Filters by a maximum product price. Has to be higher than the `min-price` filter. */
+      "max-price"?: number;
+      /** Filters by a minimum product price. Has to be lower than the `max-price` filter. */
+      "min-price"?: number;
+      /** Specifies the sorting of the products by `availableSortings`. If not set, the default sorting will be set according to the shop settings. The available sorting options are sent within the response under the `availableSortings` key. In order to sort by a field, consider using the `sort` parameter from the listing criteria. Do not use both parameters together, as it might lead to unexpected results. */
+      order?: string;
+      /** Search result page */
+      p?: number;
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** Filters products by their properties. List of property identifiers separated by a `|`. */
+      properties?: string;
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Filter products with a minimum average rating. */
+      rating?: number;
+      /** By sending the parameter `reduce-aggregations` , the post-filters that were applied by the customer, are also applied to the aggregations. This has the consequence that only values are returned in the aggregations that would lead to further filter results. This parameter is a flag, the value has no effect. */
+      "reduce-aggregations"?: string | null;
+      /** Filters products that are marked as shipping-free. */
+      "shipping-free"?: boolean;
+      /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
+      slots?: string;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Identifier of the category to be fetched */
+      navigationId: string;
+    };
+    response: components["schemas"]["Category"];
+    responseCode: 200;
+  };
   "readCategory post /category/{navigationId}": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
@@ -10056,9 +10892,97 @@ export type operations = {
       /** Identifier of the category to be fetched */
       navigationId: string;
     };
-    body: components["schemas"]["Criteria"] &
-      components["schemas"]["ProductListingCriteria"];
+    body: components["schemas"]["ProductListingCriteria"];
     response: components["schemas"]["Category"];
+    responseCode: 200;
+  };
+  "getCheckoutBudgetStatistic get /checkout/budget/{budgetId}/statistic": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Quote ID to calculate statistics for (optional) */
+      quoteId?: string;
+    };
+    pathParams: {
+      /** Budget ID to get statistics for */
+      budgetId: string;
+    };
+    response: {
+      data?: {
+        /** Whether budget allows approval */
+        allowApproval: boolean;
+        /**
+         * Format: float
+         * Budget total amount
+         */
+        amount?: number;
+        /**
+         * Format: float
+         * Currency factor
+         */
+        factor?: number;
+        /** Whether budget is exceeded */
+        isExceeded: boolean;
+        /**
+         * Format: float
+         * Budget used amount
+         */
+        usedAmount?: number;
+      };
+    };
+    responseCode: 200;
+  };
+  "getCheckoutBudgetStatisticPost post /checkout/budget/{budgetId}/statistic": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Budget ID to get statistics for */
+      budgetId: string;
+    };
+    body: {
+      /** Quote ID to calculate statistics for (optional) */
+      quoteId?: string;
+    };
+    response: {
+      data?: {
+        /** Whether budget allows approval */
+        allowApproval: boolean;
+        /**
+         * Format: float
+         * Budget total amount
+         */
+        amount?: number;
+        /**
+         * Format: float
+         * Currency factor
+         */
+        factor?: number;
+        /** Whether budget is exceeded */
+        isExceeded: boolean;
+        /**
+         * Format: float
+         * Budget used amount
+         */
+        usedAmount?: number;
+      };
+    };
+    responseCode: 200;
+  };
+  "getCheckoutAvailableBudgets get /checkout/budgets": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      budgets?: components["schemas"]["B2bComponentsBudget"][];
+    };
+    responseCode: 200;
+  };
+  "getCheckoutAvailableBudgetsPost post /checkout/budgets": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: GenericRecord;
+    response: {
+      budgets?: components["schemas"]["B2bComponentsBudget"][];
+    };
     responseCode: 200;
   };
   "readCart get /checkout/cart": {
@@ -10202,10 +11126,75 @@ export type operations = {
     response: components["schemas"]["Order"];
     responseCode: 200;
   };
+  "readCmsGet get /cms/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page. If not set, the limit will be set according to the default products per page, defined in the system settings. */
+      limit?: number;
+      /** Filter by manufacturers. List of manufacturer identifiers separated by a `|`. */
+      manufacturer?: string;
+      /** Filters by a maximum product price. Has to be higher than the `min-price` filter. */
+      "max-price"?: number;
+      /** Filters by a minimum product price. Has to be lower than the `max-price` filter. */
+      "min-price"?: number;
+      /** Specifies the sorting of the products by `availableSortings`. If not set, the default sorting will be set according to the shop settings. The available sorting options are sent within the response under the `availableSortings` key. In order to sort by a field, consider using the `sort` parameter from the listing criteria. Do not use both parameters together, as it might lead to unexpected results. */
+      order?: string;
+      /** Search result page */
+      p?: number;
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** Filters products by their properties. List of property identifiers separated by a `|`. */
+      properties?: string;
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Filter products with a minimum average rating. */
+      rating?: number;
+      /** By sending the parameter `reduce-aggregations` , the post-filters that were applied by the customer, are also applied to the aggregations. This has the consequence that only values are returned in the aggregations that would lead to further filter results. This parameter is a flag, the value has no effect. */
+      "reduce-aggregations"?: string | null;
+      /** Filters products that are marked as shipping-free. */
+      "shipping-free"?: boolean;
+      /** Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character. */
+      slots?: string;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Identifier of the CMS page to be resolved */
+      id: string;
+    };
+    response: components["schemas"]["CmsPage"];
+    responseCode: 200;
+  };
   "readCms post /cms/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10288,6 +11277,19 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "contextGatewayGet get /context/gateway": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      appName: string;
+      data?: GenericRecord;
+    };
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
   "contextGateway post /context/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10301,10 +11303,61 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "readCookieGroups get /cookie-groups": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: components["schemas"]["CookieRouteResponse"];
+    responseCode: 200;
+  };
+  "readCountryGet get /country": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements?: components["schemas"]["Country"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readCountry post /country": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10314,10 +11367,58 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readCountryStateGet get /country-state/{countryId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      countryId: string;
+    };
+    response: {
+      elements?: components["schemas"]["CountryState"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readCountryState post /country-state/{countryId}": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10330,10 +11431,51 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readCurrencyGet get /currency": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
+      _criteria?: components["parameters"]["CompressedNoneFieldsCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: components["schemas"]["Currency"][];
+    responseCode: 200;
+  };
   "readCurrency post /currency": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10359,6 +11501,8 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10396,21 +11540,160 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
-  "download post /document/download/{documentId}/{deepLinkCode}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
-    };
-    pathParams: {
-      deepLinkCode: string;
-      documentId: string;
-    };
-    body?: components["schemas"]["Criteria"];
-    response: components["schemas"]["Document"];
-    responseCode: 200;
-  };
+  "downloadGet get /document/download/{documentId}/{deepLinkCode}":
+    | {
+        contentType?: "application/json";
+        accept: "application/pdf";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        query?: {
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          email?: string;
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          zipcode?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        response: Blob;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/xml";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        query?: {
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          email?: string;
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          zipcode?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        response: string;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "text/html";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        query?: {
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          email?: string;
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          zipcode?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        response: string;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        query?: {
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          email?: string;
+          /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
+          zipcode?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        response: never;
+        responseCode: 204;
+      };
+  "download post /document/download/{documentId}/{deepLinkCode}":
+    | {
+        contentType?: "application/json";
+        accept: "application/pdf";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        body?: {
+          email?: string;
+          zipcode?: string;
+        };
+        response: Blob;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/xml";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        body?: {
+          email?: string;
+          zipcode?: string;
+        };
+        response: string;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "text/html";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        body?: {
+          email?: string;
+          zipcode?: string;
+        };
+        response: string;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
+          "sw-language-id"?: string;
+        };
+        pathParams: {
+          deepLinkCode: string;
+          documentId: string;
+        };
+        body?: {
+          email?: string;
+          zipcode?: string;
+        };
+        response: never;
+        responseCode: 204;
+      };
   "dsrAccountUpdateDefaultInfo post /dsr/account/update-default-info": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10616,6 +11899,31 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "dsrAutomaticLogin post /dsr/customer/automatic-login": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
+  "dsrGenerateLoginToken post /dsr/customer/generate-login-token": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** @default dsr.storefront-login.response */
+      apiAlias?: string;
+      token?: string;
+    };
+    responseCode: 200;
+  };
+  "dsrMigrateVisitorSession post /dsr/customer/migrate-visitor-session": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 204;
+  };
   "dsrLoadCustomerWishlistProductIds post /dsr/customer/wishlist-product-ids": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10789,6 +12097,22 @@ export type operations = {
     response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
   };
+  "handlePaymentMethodGet get /handle-payment": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** URL to which the client should be redirected after erroneous payment */
+      errorUrl?: string;
+      /** URL to which the client should be redirected after successful payment */
+      finishUrl?: string;
+      /** Identifier of an order */
+      orderId: string;
+    };
+    response: {
+      redirectUrl: string;
+    };
+    responseCode: 200;
+  };
   "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -10813,6 +12137,8 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10828,10 +12154,55 @@ export type operations = {
     response: components["schemas"]["LandingPage"];
     responseCode: 200;
   };
+  "readLanguagesGet get /language": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements: components["schemas"]["Language"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readLanguages post /language": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10839,6 +12210,16 @@ export type operations = {
     response: {
       elements: components["schemas"]["Language"][];
     } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readMediaGet get /media": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** Identifier (UUID) of the media entity to be fetched. */
+      "ids[]": string[];
+    };
+    response: components["schemas"]["Media"][];
     responseCode: 200;
   };
   "readMedia post /media": {
@@ -10851,10 +12232,63 @@ export type operations = {
     response: components["schemas"]["Media"][];
     responseCode: 200;
   };
+  "readNavigationGet get /navigation/{activeId}/{rootId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
+      _criteria?: components["parameters"]["CompressedNoneFieldsCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Return the categories as a tree or as a flat list. */
+      buildTree?: GenericRecord[];
+      /** Determines the depth of fetched navigation levels. */
+      depth?: number;
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
+      activeId: string | components["schemas"]["NavigationType"];
+      /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
+      rootId: string | components["schemas"]["NavigationType"];
+    };
+    response: components["schemas"]["NavigationRouteResponse"];
+    responseCode: 200;
+  };
   "readNavigation post /navigation/{activeId}/{rootId}": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
@@ -10936,6 +12370,8 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -10955,6 +12391,8 @@ export type operations = {
         type: "equals";
         value: string;
       }[];
+      /** If set and when handling a guest order, a context token will be returned in the response header with a logged-in session. */
+      login?: boolean;
       /** The zip/postal code of the billing address of the customer. Pass this value to allow for guest user authentification. Not required, if a user (guest or not) is already logged in. */
       zipcode?: string;
     };
@@ -11086,10 +12524,59 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readPaymentMethodGet get /payment-method": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      /** aggregation result */
+      aggregations?: GenericRecord;
+      elements?: components["schemas"]["PaymentMethod"][];
+      /** Total amount */
+      total?: number;
+    };
+    responseCode: 200;
+  };
   "readPaymentMethod post /payment-method": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11156,6 +12643,13 @@ export type operations = {
       token: string;
     };
     response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
+  "handlePayPalExpressShippingCallback post /paypal/express/shipping-callback/{salesChannelId}/{token}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["paypal_v2_order_shipping_callback"];
+    response: components["schemas"]["paypal_v2_order"];
     responseCode: 200;
   };
   "setPaymentMethodEligibility post /paypal/payment-method-eligibility": {
@@ -11307,10 +12801,55 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readProductGet get /product": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements: components["schemas"]["Product"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readProduct post /product": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11332,10 +12871,79 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
+  "readProductListingGet get /product-listing/{categoryId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Determines if the response must contain a SeoUrl entity for a product entity */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page. If not set, the limit will be set according to the default products per page, defined in the system settings. */
+      limit?: number;
+      /** Filter by manufacturers. List of manufacturer identifiers separated by a `|`. */
+      manufacturer?: string;
+      /** Filters by a maximum product price. Has to be higher than the `min-price` filter. */
+      "max-price"?: number;
+      /** Filters by a minimum product price. Has to be lower than the `max-price` filter. */
+      "min-price"?: number;
+      /** Resets all aggregations in the criteria. This parameter is a flag, the value has no effect. */
+      "no-aggregations"?: components["parameters"]["noAggregations"];
+      /** If this flag is set, no products are fetched. Sorting and associations are also ignored. This parameter is a flag, the value has no effect. */
+      "only-aggregations"?: components["parameters"]["onlyAggregations"];
+      /** Specifies the sorting of the products by `availableSortings`. If not set, the default sorting will be set according to the shop settings. The available sorting options are sent within the response under the `availableSortings` key. In order to sort by a field, consider using the `sort` parameter from the listing criteria. Do not use both parameters together, as it might lead to unexpected results. */
+      order?: string;
+      /** Search result page */
+      p?: number;
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** Filters products by their properties. List of property identifiers separated by a `|`. */
+      properties?: string;
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Filter products with a minimum average rating. */
+      rating?: number;
+      /** By sending the parameter `reduce-aggregations` , the post-filters that were applied by the customer, are also applied to the aggregations. This has the consequence that only values are returned in the aggregations that would lead to further filter results. This parameter is a flag, the value has no effect. */
+      "reduce-aggregations"?: string | null;
+      /** Filters products that are marked as shipping-free. */
+      "shipping-free"?: boolean;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Identifier of a category. */
+      categoryId: string;
+    };
+    response: components["schemas"]["ProductListingResult"];
+    responseCode: 200;
+  };
   "readProductListing post /product-listing/{categoryId}": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Determines if the response must contain a SeoUrl entity for a product entity */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
@@ -11354,7 +12962,81 @@ export type operations = {
     response: components["schemas"]["ProductListingResult"];
     responseCode: 200;
   };
+  "readProductDetailGet get /product/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
+      _criteria?: components["parameters"]["CompressedNoneFieldsCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Instructs Shopware to skip loading the CMS page data */
+      skipCmsPage?: boolean;
+      /** Instructs Shopware to skip loading the configurator data */
+      skipConfigurator?: boolean;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Product ID */
+      productId: string;
+    };
+    response: components["schemas"]["ProductDetailResponse"];
+    responseCode: 200;
+  };
   "readProductDetail post /product/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Instructs Shopware to skip loading the CMS page data */
+      skipCmsPage?: boolean;
+      /** Instructs Shopware to skip loading the configurator data */
+      skipConfigurator?: boolean;
+    };
+    pathParams: {
+      /** Product ID */
+      productId: string;
+    };
+    body?: components["schemas"]["NoneFieldsCriteria"];
+    response: components["schemas"]["ProductDetailResponse"];
+    responseCode: 200;
+  };
+  "readProductCrossSellingsGet get /product/{productId}/cross-selling": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
@@ -11367,8 +13049,7 @@ export type operations = {
       /** Product ID */
       productId: string;
     };
-    body?: components["schemas"]["NoneFieldsCriteria"];
-    response: components["schemas"]["ProductDetailResponse"];
+    response: components["schemas"]["CrossSellingElementCollection"];
     responseCode: 200;
   };
   "readProductCrossSellings post /product/{productId}/cross-selling": {
@@ -11385,6 +13066,26 @@ export type operations = {
       productId: string;
     };
     response: components["schemas"]["CrossSellingElementCollection"];
+    responseCode: 200;
+  };
+  "searchProductVariantIdsGet get /product/{productId}/find-variant": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query: {
+      /** The options parameter for the variant to find. Array of option IDs. */
+      "options[]": string[];
+      /** The id of the option group that has been switched. */
+      switchedGroup?: string;
+    };
+    pathParams: {
+      /** Product ID */
+      productId: string;
+    };
+    response: components["schemas"]["FindProductVariantRouteResponse"];
     responseCode: 200;
   };
   "searchProductVariantIds post /product/{productId}/find-variant": {
@@ -11439,10 +13140,59 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
+  "readProductReviewsGet get /product/{productId}/reviews": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** Identifier of the product. */
+      productId: string;
+    };
+    response: {
+      elements?: components["schemas"]["ProductReview"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readProductReviews post /product/{productId}/reviews": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11675,10 +13425,55 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
+  "readSalutationGet get /salutation": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements?: components["schemas"]["Salutation"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readSalutation post /salutation": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11758,10 +13553,77 @@ export type operations = {
         response: never;
         responseCode: 204;
       };
+  "searchPageGet get /search": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page. If not set, the limit will be set according to the default products per page, defined in the system settings. */
+      limit?: number;
+      /** Filter by manufacturers. List of manufacturer identifiers separated by a `|`. */
+      manufacturer?: string;
+      /** Filters by a maximum product price. Has to be higher than the `min-price` filter. */
+      "max-price"?: number;
+      /** Filters by a minimum product price. Has to be lower than the `max-price` filter. */
+      "min-price"?: number;
+      /** Resets all aggregations in the criteria. This parameter is a flag, the value has no effect. */
+      "no-aggregations"?: components["parameters"]["noAggregations"];
+      /** If this flag is set, no products are fetched. Sorting and associations are also ignored. This parameter is a flag, the value has no effect. */
+      "only-aggregations"?: components["parameters"]["onlyAggregations"];
+      /** Specifies the sorting of the products by `availableSortings`. If not set, the default sorting will be set according to the shop settings. The available sorting options are sent within the response under the `availableSortings` key. In order to sort by a field, consider using the `sort` parameter from the listing criteria. Do not use both parameters together, as it might lead to unexpected results. */
+      order?: string;
+      /** Search result page */
+      p?: number;
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** Filters products by their properties. List of property identifiers separated by a `|`. */
+      properties?: string;
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Filter products with a minimum average rating. */
+      rating?: number;
+      /** By sending the parameter `reduce-aggregations` , the post-filters that were applied by the customer, are also applied to the aggregations. This has the consequence that only values are returned in the aggregations that would lead to further filter results. This parameter is a flag, the value has no effect. */
+      "reduce-aggregations"?: string | null;
+      /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
+      search?: string;
+      /** Filters products that are marked as shipping-free. */
+      "shipping-free"?: boolean;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: components["schemas"]["ProductListingResult"];
+    responseCode: 200;
+  };
   "searchPage post /search": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
@@ -11779,10 +13641,75 @@ export type operations = {
     response: components["schemas"]["ProductListingResult"];
     responseCode: 200;
   };
+  "searchSuggestGet get /search-suggest": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query: {
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page. If not set, the limit will be set according to the default products per page, defined in the system settings. */
+      limit?: number;
+      /** Filter by manufacturers. List of manufacturer identifiers separated by a `|`. */
+      manufacturer?: string;
+      /** Filters by a maximum product price. Has to be higher than the `min-price` filter. */
+      "max-price"?: number;
+      /** Filters by a minimum product price. Has to be lower than the `max-price` filter. */
+      "min-price"?: number;
+      /** Resets all aggregations in the criteria. This parameter is a flag, the value has no effect. */
+      "no-aggregations"?: components["parameters"]["noAggregations"];
+      /** If this flag is set, no products are fetched. Sorting and associations are also ignored. This parameter is a flag, the value has no effect. */
+      "only-aggregations"?: components["parameters"]["onlyAggregations"];
+      /** Specifies the sorting of the products by `availableSortings`. If not set, the default sorting will be set according to the shop settings. The available sorting options are sent within the response under the `availableSortings` key. In order to sort by a field, consider using the `sort` parameter from the listing criteria. Do not use both parameters together, as it might lead to unexpected results. */
+      order?: string;
+      /** Search result page */
+      p?: number;
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** Filters products by their properties. List of property identifiers separated by a `|`. */
+      properties?: string;
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Filter products with a minimum average rating. */
+      rating?: number;
+      /** By sending the parameter `reduce-aggregations` , the post-filters that were applied by the customer, are also applied to the aggregations. This has the consequence that only values are returned in the aggregations that would lead to further filter results. This parameter is a flag, the value has no effect. */
+      "reduce-aggregations"?: string | null;
+      /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
+      search: string;
+      /** Filters products that are marked as shipping-free. */
+      "shipping-free"?: boolean;
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: components["schemas"]["ProductListingResult"];
+    responseCode: 200;
+  };
   "searchSuggest post /search-suggest": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11798,10 +13725,55 @@ export type operations = {
     response: components["schemas"]["ProductListingResult"];
     responseCode: 200;
   };
+  "readSeoUrlGet get /seo-url": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      elements: components["schemas"]["SeoUrl"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readSeoUrl post /seo-url": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
@@ -11811,10 +13783,59 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "readShippingMethodGet get /shipping-method": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    response: {
+      /** aggregation result */
+      aggregations?: GenericRecord;
+      elements: components["schemas"]["ShippingMethod"][];
+      /** Total amount */
+      total?: number;
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readShippingMethod post /shipping-method": {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+      "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };

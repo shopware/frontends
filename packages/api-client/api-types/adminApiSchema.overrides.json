@@ -1,14 +1,5 @@
 {
   "components": {
-    "DynamicProductListingPageOpenedPayload": {
-      "required": ["page"],
-      "properties": {
-        "page": {
-          "type": "integer",
-          "description": "Current page position in the pagination"
-        }
-      }
-    },
     "Include": {
       "type": "object",
       "additionalProperties": {
@@ -80,16 +71,6 @@
         }
       },
       "required": ["type", "field", "parameters"]
-    },
-    "Sort": {
-      "type": "object",
-      "properties": {
-        "field": { "type": "string" },
-        "order": { "type": "string", "enum": ["ASC", "DESC"] },
-        "naturalSorting": { "type": "boolean" },
-        "type": { "type": "string" }
-      },
-      "required": ["field", "order"]
     },
     "Association": {
       "type": "object",

@@ -12,7 +12,7 @@ export function getAdminApiClient() {
       credentials: {
         grant_type: "password",
         client_id: "administration",
-        scopes: "write",
+        scope: "write",
         username: process.env.SHOPWARE_ADMIN_USERNAME || "",
         password: process.env.SHOPWARE_ADMIN_PASSWORD || "",
       },
