@@ -20,7 +20,6 @@ const templateConfig: ConfigBase = {
     "min-h-[420px]",
     "min-h-[800px]",
     "text-fixed-fixed-on-image",
-    "font-Noto_Serif",
   ],
   theme: {
     colors: {
