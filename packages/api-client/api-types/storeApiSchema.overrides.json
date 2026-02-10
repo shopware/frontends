@@ -157,28 +157,6 @@
       "get": {
         "requestBody": "_DELETE_"
       }
-    },
-    "/dsr/customer/automatic-login": {
-      "post": {
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "_DELETE_",
-                  "type": "object",
-                  "properties": {
-                    "redirectUrl": {
-                      "description": "Define the URL which browser will be redirected to",
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 }
