@@ -18,6 +18,9 @@ export function useCmsElementConfig<
   const getConfigValue = <ELEMENT_CONFIG extends keyof T["config"]>(
     key: ELEMENT_CONFIG,
   ): (typeof element.config)[ELEMENT_CONFIG]["value"] => {
+    if (!element?.config) {
+      return undefined as (typeof element.config)[ELEMENT_CONFIG]["value"];
+    }
     return (
       element.config[key]?.source !== "mapped" && element.config[key]?.value
     );

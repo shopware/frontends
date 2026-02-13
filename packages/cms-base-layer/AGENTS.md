@@ -236,6 +236,7 @@ export default defineAppConfig({
 
 Available configuration:
 - `imagePlaceholder.color` - SVG placeholder background color
+- `unocssRuntime` - Enable/disable the client-side UnoCSS runtime plugin (default: `true`). Resolves dynamic CMS utility classes at runtime via MutationObserver. Disable if not needed or if it causes performance issues.
 
 ### Theme Customization
 
@@ -412,6 +413,13 @@ const { elements, total } = getCurrentListing();
 1. Ensure UnoCSS is configured with `nuxtLayers: true`
 2. Check for CSS class conflicts
 3. Verify color tokens are defined in theme
+
+### UnoCSS Runtime Crashes
+
+If the browser tab crashes or you see `clearDeps` errors from `@vueuse/core`, the UnoCSS runtime MutationObserver may be conflicting with reactive DOM changes. Disable it via `app.config.ts`:
+```ts
+export default defineAppConfig({ unocssRuntime: false });
+```
 
 ### Type Errors
 

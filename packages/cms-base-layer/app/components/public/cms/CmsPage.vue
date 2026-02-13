@@ -64,6 +64,7 @@ const DynamicRender = () => {
       class: {
         ...cssClasses,
         "max-w-screen-2xl w-full mx-auto": layoutStyles?.sizingMode === "boxed",
+        "w-full": layoutStyles?.sizingMode === "full_width",
       },
       style: {
         backgroundColor: layoutStyles?.backgroundColor,
