@@ -115,7 +115,8 @@ const SwMedia3D = computed(() => {
       preset="productDetail"
       loading="lazy"
       :class="{
-        'w-full h-full': !imageGallery,
+        'w-full': !imageGallery,
+        'h-full': !imageGallery && ['cover', 'stretch'].includes(displayMode),
         'w-4/5': imageGallery,
         'absolute left-0 top-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',

@@ -423,7 +423,7 @@ const pageTitle = computed(
 
       <div
         v-if="isChangePaymentModalOpen"
-        class="fixed inset-0 bg-opacity-opacity-dark overflow-y-auto h-full w-full flex items-center justify-center"
+        class="fixed inset-0 bg-overlay-dark overflow-y-auto h-full w-full flex items-center justify-center"
       >
         <div
           class="bg-surface-surface p-8 rounded-lg shadow-xl max-w-md w-full"

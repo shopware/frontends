@@ -37,10 +37,12 @@ const DynamicRender = () => {
     const containerStyles = {
       backgroundColor: layoutStyles.backgroundColor,
       backgroundImage: layoutStyles.backgroundImage,
+      backgroundSize: layoutStyles.backgroundSize,
     };
 
     layoutStyles.backgroundColor = null;
     layoutStyles.backgroundImage = null;
+    layoutStyles.backgroundSize = null;
     return h(
       "div",
       {
