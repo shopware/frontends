@@ -48,7 +48,9 @@ const crossSellCollections = computed(() => {
 const { width } = useElementSize(crossSellContainer);
 const slidesToShow = computed(() => {
   const minWidth = +(config.value.minWidth?.value.replace(/\D+/g, "") || 0);
-  return Math.floor(width.value / (minWidth * 1.2));
+  // SSR: useElementSize returns 0, fallback to 1200px estimate
+  const containerWidth = width.value || 1200;
+  return Math.max(1, Math.ceil(containerWidth / (minWidth * 1.2)));
 });
 
 const toggleTab = (index: number) => {

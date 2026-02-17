@@ -35,20 +35,21 @@ const appConfig = useAppConfig();
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
 
-const srcSet = computed(
-  () =>
-    imageAttrs.value.srcset ||
-    generateCdnSrcSet(imageAttrs.value.src, undefined, {
-      format: appConfig.backgroundImage?.format,
-      quality: appConfig.backgroundImage?.quality,
-    }),
+const cdnOptions = computed(() => ({
+  format: appConfig.backgroundImage?.format,
+  quality: appConfig.backgroundImage?.quality,
+}));
+
+const srcSet = computed(() =>
+  generateCdnSrcSet(imageAttrs.value.src, undefined, cdnOptions.value),
 );
 
 const srcPath = computed(() =>
-  buildCdnImageUrl(imageAttrs.value.src, {
-    width: width.value,
-    height: height.value,
-  }),
+  buildCdnImageUrl(
+    imageAttrs.value.src,
+    { width: width.value, height: height.value },
+    cdnOptions.value,
+  ),
 );
 
 const imageComputedContainerAttrs = computed(() => {

@@ -73,6 +73,7 @@ export function generateCdnSrcSet(
 export function buildCdnImageUrl(
   src: string | undefined,
   dimensions: { width: number; height: number },
+  options?: { format?: string; quality?: number },
 ): string {
   if (!src) return "";
 
@@ -95,6 +96,12 @@ export function buildCdnImageUrl(
     }
 
     url.searchParams.set("fit", "crop,smart");
+    if (options?.format) {
+      url.searchParams.set("format", options.format);
+    }
+    if (options?.quality) {
+      url.searchParams.set("quality", String(options.quality));
+    }
     return url.toString();
   } catch {
     return src;

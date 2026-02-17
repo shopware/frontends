@@ -86,6 +86,17 @@ const isSliding = ref<boolean>();
 const { width: imageSliderWidth } = useElementSize(imageSlider);
 let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
 
+// SSR-safe fallback: percentage-based layout so the first slide is visible before JS hydrates
+const ssrTrackStyle = computed<CSSProperties>(() => {
+  const total = children.value.length;
+  const n = slidesToShow.value;
+  if (total === 0 || n === 0) return {};
+  return {
+    width: `${(total / n) * 100}%`,
+    transform: `translateX(-${(n / total) * 100}%)`,
+  };
+});
+
 // Touch event handling for mobile swipe gestures
 const touchStartX = ref(0);
 const touchEndX = ref(0);
@@ -284,7 +295,6 @@ defineExpose({
       'relative overflow-hidden h-full': true,
       'px-10': navigationArrowsValue === 'outside',
       'pb-15': navigationDotsValue === 'outside',
-      'opacity-0': !isReady,
     }"
   >
     <div
@@ -307,7 +317,7 @@ defineExpose({
           'items-end':
             displayModeValue === 'contain' && verticalAlignValue === 'flex-end',
         }"
-        :style="imageSliderTrackStyle"
+        :style="imageSliderTrackStyle || ssrTrackStyle"
       >
         <div
           v-for="(child, index) of children"
@@ -316,7 +326,7 @@ defineExpose({
           :style="{
             width: imageSliderWidth
               ? `${imageSliderWidth / slidesToShow}px`
-              : 'auto',
+              : `${100 / children.length}%`,
             padding: `0 ${gap}`,
             height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"

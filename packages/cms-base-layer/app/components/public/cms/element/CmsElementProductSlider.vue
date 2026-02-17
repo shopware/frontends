@@ -13,7 +13,13 @@ const props = defineProps<{
 const { getConfigValue } = useCmsElementConfig(props.content);
 
 const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
-const slidesToShow = ref<number>();
+const elMinWidth = computed(
+  () => +getConfigValue("elMinWidth").replace(/\D+/g, "") || 300,
+);
+// SSR: estimate from config minWidth assuming ~1200px container; refined on mount
+const slidesToShow = ref<number>(
+  Math.max(1, Math.ceil(1200 / (elMinWidth.value * 1.2))),
+);
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
@@ -40,12 +46,12 @@ const config: ComputedRef<SliderElementConfig> = computed(() => ({
 
 onMounted(() => {
   setTimeout(() => {
-    let temp = 1;
-    const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
     if (productSlider.value?.clientWidth) {
-      temp = Math.ceil(productSlider.value?.clientWidth / (minWidth * 1.2));
+      slidesToShow.value = Math.max(
+        1,
+        Math.ceil(productSlider.value.clientWidth / (elMinWidth.value * 1.2)),
+      );
     }
-    slidesToShow.value = temp;
   }, 100);
 });
 
