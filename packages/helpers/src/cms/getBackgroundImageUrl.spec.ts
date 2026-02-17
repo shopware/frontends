@@ -92,3 +92,40 @@ describe("getBackgroundImageUrl, url too long", () => {
     });
   }
 });
+
+describe("getBackgroundImageUrl, with format and quality options", () => {
+  const element = cmsSectionTestCaseTwo;
+
+  it("should append format and quality when both provided", () => {
+    const result = getBackgroundImageUrl(
+      "url(https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg)",
+      element,
+      { format: "webp", quality: 85 },
+    );
+    expect(result).toBe(
+      'url("https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")',
+    );
+  });
+
+  it("should append only format when quality is not provided", () => {
+    const result = getBackgroundImageUrl(
+      "url(https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg)",
+      element,
+      { format: "avif" },
+    );
+    expect(result).toBe(
+      'url("https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg?width=1000&fit=crop,smart&format=avif")',
+    );
+  });
+
+  it("should not append format or quality when options are empty", () => {
+    const result = getBackgroundImageUrl(
+      "url(https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg)",
+      element,
+      {},
+    );
+    expect(result).toBe(
+      'url("https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/image.jpg?width=1000&fit=crop,smart")',
+    );
+  });
+});

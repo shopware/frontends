@@ -207,9 +207,12 @@ src/
 
 **Key Areas**:
 - Price formatting
-- URL handling
+- URL handling (including `getBackgroundImageUrl` for CMS background image optimization)
 - Translation helpers
 - Data transformation
+
+**Key Function — `getBackgroundImageUrl`**:
+Generates optimized CSS `url()` values for CMS background images. Accepts an optional `BackgroundImageOptions` parameter (`{ format?: string; quality?: number }`) to append `&format=` and `&quality=` query parameters to the image URL. Used by `CmsPage` and `CmsGenericBlock` in `cms-base-layer`.
 
 **Testing**: Pure functions, easy to test
 

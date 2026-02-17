@@ -1,6 +1,23 @@
-An entrypoint to render the whole CMS object
+An entrypoint to render the whole CMS object.
 
-Example usage:
+Resolves all CMS sections dynamically and applies their layout configuration. When a section has a `backgroundMedia` set, the component automatically optimizes the background image URL using the `getBackgroundImageUrl` helper from `@shopware/helpers`, appending `format` and `quality` parameters from the `backgroundImage` app config.
+
+### Background Image Optimization
+
+Background image settings are read from `app.config.ts`:
+
+```ts
+export default defineAppConfig({
+  backgroundImage: {
+    format: "webp", // output format
+    quality: 85, // image quality (0-100)
+  },
+});
+```
+
+See the [cms-base-layer README](../../../../../../README.md#%EF%B8%8F-background-image-optimization) for full details.
+
+### Example usage
 
 ```vue{29}
 <script setup lang="ts">
