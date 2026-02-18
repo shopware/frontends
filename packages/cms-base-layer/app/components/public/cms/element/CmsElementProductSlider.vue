@@ -18,7 +18,7 @@ const elMinWidth = computed(
 );
 // SSR: estimate from config minWidth assuming ~1200px container; refined on mount
 const slidesToShow = ref<number>(
-  Math.max(1, Math.ceil(1200 / (elMinWidth.value * 1.2))),
+  Math.max(1, Math.floor(1200 / elMinWidth.value)),
 );
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
@@ -49,10 +49,20 @@ onMounted(() => {
     if (productSlider.value?.clientWidth) {
       slidesToShow.value = Math.max(
         1,
-        Math.ceil(productSlider.value.clientWidth / (elMinWidth.value * 1.2)),
+        Math.floor(productSlider.value.clientWidth / elMinWidth.value),
       );
     }
   }, 100);
+});
+
+// Responsive SSR breakpoints: n items require n * minWidth viewport width
+const ssrBreakpoints = computed(() => {
+  const max = slidesToShow.value;
+  const bp: Record<string, number> = {};
+  for (let n = 2; n <= max; n++) {
+    bp[`(min-width: ${elMinWidth.value * n}px)`] = n;
+  }
+  return bp;
 });
 
 const autoplay = computed(() => getConfigValue("rotate"));
@@ -81,6 +91,7 @@ const hasVerticalAlignment = computed(
           :slides-to-show="slidesToShow"
           :slides-to-scroll="1"
           :autoplay="autoplay"
+          :ssr-breakpoints="ssrBreakpoints"
         >
           <SwProductCard
             v-for="product of products"

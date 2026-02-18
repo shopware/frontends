@@ -11,7 +11,7 @@ import {
   watch,
 } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
-import { useCmsElementConfig } from "#imports";
+import { useCmsElementConfig, useHead, useId } from "#imports";
 import type { Schemas } from "#shopware";
 
 const {
@@ -21,6 +21,7 @@ const {
   gap = "0px",
   autoplay = false,
   autoplaySpeed = 3000,
+  ssrBreakpoints,
 } = defineProps<{
   config: SliderElementConfig;
   slidesToShow?: number;
@@ -28,7 +29,14 @@ const {
   gap?: string;
   autoplay?: boolean;
   autoplaySpeed?: number;
+  /** CSS media query breakpoints for responsive SSR layout.
+   *  Keys are media queries, values are number of visible slides.
+   *  e.g. { '(min-width: 768px)': 2, '(min-width: 1280px)': 4 }
+   *  Base case (mobile) defaults to 1 visible slide. */
+  ssrBreakpoints?: Record<string, number>;
 }>();
+
+const sliderId = useId();
 
 const { getConfigValue } = useCmsElementConfig({
   config: config,
@@ -86,15 +94,46 @@ const isSliding = ref<boolean>();
 const { width: imageSliderWidth } = useElementSize(imageSlider);
 let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
 
-// SSR-safe fallback: percentage-based layout so the first slide is visible before JS hydrates
+// SSR-safe fallback so the first slide is visible before JS hydrates
 const ssrTrackStyle = computed<CSSProperties>(() => {
   const total = children.value.length;
   const n = slidesToShow.value;
   if (total === 0 || n === 0) return {};
+
+  // Transform is constant: always skip N prepended clones
+  const transform = `translateX(-${(n / total) * 100}%)`;
+
+  if (ssrBreakpoints) {
+    // Track width handled by CSS media queries via useHead
+    return { transform };
+  }
+
   return {
     width: `${(total / n) * 100}%`,
-    transform: `translateX(-${(n / total) * 100}%)`,
+    transform,
   };
+});
+
+// Inject responsive CSS into <head> — only track width varies per breakpoint
+useHead({
+  style: [
+    {
+      innerHTML: computed(() => {
+        if (!ssrBreakpoints || imageSliderTrackStyle.value) return "";
+        const total = children.value.length;
+        if (total === 0) return "";
+
+        const sel = `[data-ssr-slider="${sliderId}"]`;
+        // Base (mobile): 1 slide visible
+        let css = `${sel}{width:${total * 100}%}`;
+        // Breakpoints for larger viewports
+        for (const [query, slides] of Object.entries(ssrBreakpoints)) {
+          css += `@media ${query}{${sel}{width:${(total / slides) * 100}%}}`;
+        }
+        return css;
+      }),
+    },
+  ],
 });
 
 // Touch event handling for mobile swipe gestures
@@ -307,6 +346,7 @@ defineExpose({
     >
       <div
         ref="imageSliderTrack"
+        :data-ssr-slider="ssrBreakpoints ? sliderId : undefined"
         :class="{
           flex: true,
           'items-center':
