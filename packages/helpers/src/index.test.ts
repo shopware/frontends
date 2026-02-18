@@ -5,10 +5,12 @@ describe("helpers - test global API", () => {
   it("global API should match snapshot", () => {
     expect(helpers).toMatchInlineSnapshot(`
       {
+        "buildCdnImageUrl": [Function],
         "buildUrlPrefix": [Function],
         "canUseQuoteActions": [Function],
         "downloadFile": [Function],
         "encodeUrlPath": [Function],
+        "generateCdnSrcSet": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
         "getCategoryBreadcrumbs": [Function],
