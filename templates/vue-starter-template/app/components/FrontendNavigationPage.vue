@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
 import { useCmsHead } from "#imports";
 import { useCategorySearch } from "#imports";
@@ -62,9 +63,15 @@ if (!categoryResponse.value) {
 
 const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
+
+const categoryName = computed(() =>
+  getTranslatedProperty(category.value, "name"),
+);
 </script>
 
 <template>
   <LayoutBreadcrumbs v-if="route.path != '/'" />
-  <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
+  <div class="text-lg">
+    <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
+  </div>
 </template>

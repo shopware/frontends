@@ -24,9 +24,10 @@
   "dependencies": {
     "@iconify-json/carbon": "1.2.18",
     "@iconify/utils": "3.1.0",
+    "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/image": "2.0.0",
-    "@regle/core": "^1.17.0",
-    "@regle/rules": "^1.17.0",
+    "@regle/core": "1.17.0",
+    "@regle/rules": "1.17.0",
     "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",

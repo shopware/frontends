@@ -137,7 +137,7 @@ const pageTitle = computed(
       </p>
       <AccountPageHeader class="mb-14" :title="pageTitle" />
 
-      <main>
+      <div>
         <div class="bg-surface-surface overflow-hidden sm:rounded-lg">
           <div class="bg-surface-surface">
             <div class="flex flex-col sm:flex-row justify-between mb-6">
@@ -419,11 +419,11 @@ const pageTitle = computed(
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
       <div
         v-if="isChangePaymentModalOpen"
-        class="fixed inset-0 bg-opacity-opacity-dark overflow-y-auto h-full w-full flex items-center justify-center"
+        class="fixed inset-0 bg-overlay-dark overflow-y-auto h-full w-full flex items-center justify-center"
       >
         <div
           class="bg-surface-surface p-8 rounded-lg shadow-xl max-w-md w-full"

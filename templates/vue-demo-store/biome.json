@@ -13,6 +13,7 @@
     "indentStyle": "space"
   },
   "files": {
+    "maxSize": 1258291,
     "ignore": [
       "dist",
       "node_modules",

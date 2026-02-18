@@ -14,12 +14,13 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxt/a11y",
   ],
   runtimeConfig: {
     public: {
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
-        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
         devStorefrontUrl: "https://frontends-demo.vercel.app",
       },
     },

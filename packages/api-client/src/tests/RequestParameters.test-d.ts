@@ -12,7 +12,7 @@ describe("requestParameters type", () => {
           client_id: "administration",
           password: "somepassword",
           username: "something",
-          scopes: "write",
+          scope: "write",
         },
       });
     });
@@ -24,7 +24,7 @@ describe("requestParameters type", () => {
           client_id: "administration",
           password: "somepassword",
           username: "something",
-          scopes: "write",
+          scope: "write",
           // @ts-expect-error should not allow this property
           client_secret: "somepassword",
         },
@@ -61,7 +61,7 @@ describe("requestParameters type", () => {
           client_id: "ANOTHER_CLIENT_ID",
           password: "somepassword",
           username: "something",
-          scopes: "write",
+          scope: "write",
         },
       });
     });

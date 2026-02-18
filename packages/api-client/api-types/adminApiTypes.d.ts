@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.1.0
+ * Shopware API version: 6.7.5.1
  *
  */
 type GenericRecord =
@@ -780,6 +780,19 @@ export type Schemas = {
      */
     type: "terms";
   };
+  Aggregations: (
+    | components["schemas"]["AggregationMetrics"]
+    | (components["schemas"]["AggregationEntity"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationFilter"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationTerms"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationHistogram"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationRange"] &
+        components["schemas"]["SubAggregations"])
+  )[];
   App: {
     aclRole?: components["schemas"]["AclRole"];
     aclRoleId: string;
@@ -1704,6 +1717,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  Association: {
+    [key: string]: components["schemas"]["Criteria"];
+  };
   Associations: {
     [key: string]: components["schemas"]["Criteria"];
   };
@@ -1783,6 +1799,7 @@ export type Schemas = {
     id: string;
     organization?: components["schemas"]["B2bComponentsOrganization"];
     organizationId: string;
+    salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     salesChannels?: components["schemas"]["SalesChannel"];
     /** Format: date-time */
@@ -1896,6 +1913,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      salesChannel?: {
+        data?: {
+          /** @example ec3712a84143b57e0db620eaac6e55b8 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-advanced-product-catalogs/9a15f9857bdcf1231c8fd8d719c177a9/salesChannel
+           */
+          related?: string;
+        };
+      };
       salesChannels?: {
         data?: {
           /** @example 986f6f891e90ab91c091ff4a1a460777 */
@@ -1940,6 +1972,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    customFields?: GenericRecord;
     description?: string;
     id: string;
     name: string;
@@ -2018,6 +2051,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    customFields?: GenericRecord;
     description?: string;
     id: string;
     name: string;
@@ -2086,6 +2120,294 @@ export type Schemas = {
       };
     };
     reviewerRoleId?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsBudget: {
+    active?: boolean;
+    allowApproval?: boolean;
+    /** Format: float */
+    amount: number;
+    costCentre?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdBy?: components["schemas"]["User"];
+    createdById?: string;
+    currency?: components["schemas"]["Currency"];
+    currencyId: string;
+    customerId?: string;
+    customFields?: GenericRecord;
+    endDate?: string;
+    id: string;
+    readonly lastRenews?: string;
+    name: string;
+    readonly nextRenews?: string;
+    notificationConfig?: {
+      type?: string;
+      value?: string;
+    };
+    notificationRecipients?: components["schemas"]["B2bEmployee"][];
+    notify?: boolean;
+    organizations?: components["schemas"]["B2bComponentsOrganization"][];
+    renewsType?: string;
+    reviewerRole?: components["schemas"]["B2bComponentsRole"];
+    reviewerRoleId?: string;
+    readonly sent?: boolean;
+    showRemaining?: boolean;
+    startDate: string;
+    technicalName: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Format: float */
+    readonly usedAmount?: number;
+  };
+  B2bComponentsBudgetJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
+    allowApproval?: boolean;
+    /** Format: float */
+    amount: number;
+    costCentre?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdById?: string;
+    currencyId: string;
+    customerId?: string;
+    customFields?: GenericRecord;
+    endDate?: string;
+    id: string;
+    readonly lastRenews?: string;
+    name: string;
+    readonly nextRenews?: string;
+    notificationConfig?: {
+      type?: string;
+      value?: string;
+    };
+    notify?: boolean;
+    relationships?: {
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/createdBy
+           */
+          related?: string;
+        };
+      };
+      currency?: {
+        data?: {
+          /** @example 1af0389838508d7016a9841eb6273962 */
+          id?: string;
+          /** @example currency */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/currency
+           */
+          related?: string;
+        };
+      };
+      notificationRecipients?: {
+        data?: {
+          /** @example bd4a2b3045182246fac51c0abc10c4d7 */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/notificationRecipients
+           */
+          related?: string;
+        };
+      };
+      organizations?: {
+        data?: {
+          /** @example d9811f03b461a380c0d6b4a497dbac37 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/organizations
+           */
+          related?: string;
+        };
+      };
+      reviewerRole?: {
+        data?: {
+          /** @example 06ec286ee4d03afb4028caa32c0ef40b */
+          id?: string;
+          /** @example b2b_components_role */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/reviewerRole
+           */
+          related?: string;
+        };
+      };
+    };
+    renewsType?: string;
+    reviewerRoleId?: string;
+    readonly sent?: boolean;
+    showRemaining?: boolean;
+    startDate: string;
+    technicalName: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Format: float */
+    readonly usedAmount?: number;
+  };
+  B2bComponentsBudgetNotificationRecipient: {
+    budget?: components["schemas"]["B2bComponentsBudget"];
+    budgetId: string;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id?: string;
+  };
+  B2bComponentsBudgetOrganization: {
+    budget?: components["schemas"]["B2bComponentsBudget"];
+    budgetId: string;
+    id?: string;
+    organization?: components["schemas"]["B2bComponentsOrganization"];
+    organizationId: string;
+  };
+  B2bComponentsEmployeeWishlist: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id: string;
+    products?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+    salesChannel?: components["schemas"]["SalesChannel"];
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsEmployeeWishlistJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employeeId: string;
+    id: string;
+    relationships?: {
+      employee?: {
+        data?: {
+          /** @example fa5473530e4d1a5a1e1eb53d2fedb10c */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-employee-wishlist/f98316a3fc328d78253ed1a43405272c/employee
+           */
+          related?: string;
+        };
+      };
+      products?: {
+        data?: {
+          /** @example 86024cad1e83101d97359d7351051156 */
+          id?: string;
+          /** @example b2b_components_employee_wishlist_product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-employee-wishlist/f98316a3fc328d78253ed1a43405272c/products
+           */
+          related?: string;
+        };
+      };
+      salesChannel?: {
+        data?: {
+          /** @example ec3712a84143b57e0db620eaac6e55b8 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-employee-wishlist/f98316a3fc328d78253ed1a43405272c/salesChannel
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsEmployeeWishlistProduct: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employeeWishlist?: components["schemas"]["B2bComponentsEmployeeWishlist"];
+    employeeWishlistId: string;
+    id: string;
+    product?: components["schemas"]["Product"];
+    productId: string;
+    productVersionId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsEmployeeWishlistProductJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: GenericRecord;
+    employeeWishlistId: string;
+    id: string;
+    productId: string;
+    productVersionId: string;
+    relationships?: {
+      employeeWishlist?: {
+        data?: {
+          /** @example 396edf0709663088597d101284333942 */
+          id?: string;
+          /** @example b2b_components_employee_wishlist */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-employee-wishlist-product/897dd62afed3c3d7592a194fe2df9218/employeeWishlist
+           */
+          related?: string;
+        };
+      };
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-employee-wishlist-product/897dd62afed3c3d7592a194fe2df9218/product
+           */
+          related?: string;
+        };
+      };
+    };
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -2376,6 +2698,23 @@ export type Schemas = {
     designatedPayerIds?: string[];
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
+    extensions?: {
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-pending-order/e87c4279c6f83e4de2543a63bf59b373/budget
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     itemRounding: {
       /** Format: int64 */
@@ -2576,6 +2915,23 @@ export type Schemas = {
     decidedById?: string;
     designatedPayerIds?: string[];
     employeeId: string;
+    extensions?: {
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-pending-order/e87c4279c6f83e4de2543a63bf59b373/budget
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     itemRounding: {
       /** Format: int64 */
@@ -3744,7 +4100,9 @@ export type Schemas = {
     readonly breadcrumb?: GenericRecord[];
     /** Format: int64 */
     readonly childCount?: number;
+    /** Child categories within this category for hierarchical navigation */
     children?: components["schemas"]["Category"][];
+    /** CMS page layout for the category */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -3814,6 +4172,7 @@ export type Schemas = {
     linkNewTab?: boolean;
     linkType?: string;
     mainCategories?: components["schemas"]["MainCategory"][];
+    /** Category image or banner */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     metaDescription?: string;
@@ -3829,9 +4188,11 @@ export type Schemas = {
     products?: components["schemas"]["Product"][];
     productStream?: components["schemas"]["ProductStream"];
     productStreamId?: string;
+    /** SEO-friendly URLs for the category across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
     serviceSalesChannels?: components["schemas"]["SalesChannel"][];
     slotConfig?: GenericRecord;
+    /** Tags for organizing and filtering categories */
     tags?: components["schemas"]["Tag"][];
     translated: {
       afterCategoryId: string;
@@ -3952,6 +4313,7 @@ export type Schemas = {
     productAssignmentType?: string;
     productStreamId?: string;
     relationships?: {
+      /** Child categories within this category for hierarchical navigation */
       children?: {
         data?: {
           /** @example 268184c12df027f536154d099d497b31 */
@@ -3967,6 +4329,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** CMS page layout for the category */
       cmsPage?: {
         data?: {
           /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -4012,6 +4375,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Category image or banner */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -4102,6 +4466,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** SEO-friendly URLs for the category across different sales channels */
       seoUrls?: {
         data?: {
           /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -4132,6 +4497,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags for organizing and filtering categories */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -4491,12 +4857,15 @@ export type Schemas = {
     };
     homeSalesChannels?: components["schemas"]["SalesChannel"][];
     id: string;
+    /** Landing pages using this CMS layout */
     landingPages?: components["schemas"]["LandingPage"][];
     locked?: boolean;
     name?: string;
+    /** Preview image for the CMS page in admin panel and page selection */
     previewMedia?: components["schemas"]["Media"];
     previewMediaId?: string;
     products?: components["schemas"]["Product"][];
+    /** Content sections within the CMS page (layout blocks containing slots) */
     sections?: components["schemas"]["CmsSection"][];
     translated: {
       cssClass: string;
@@ -4761,6 +5130,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Landing pages using this CMS layout */
       landingPages?: {
         data?: {
           /** @example d60b77f2b3bd69591e3d5e3100926b4d */
@@ -4776,6 +5146,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Preview image for the CMS page in admin panel and page selection */
       previewMedia?: {
         data?: {
           /** @example a7a817fb0e422cff87e878b8ff7ca914 */
@@ -4806,6 +5177,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Content sections within the CMS page (layout blocks containing slots) */
       sections?: {
         data?: {
           /** @example ff4dee88db82e98f0e0d524d965b9aa7 */
@@ -5189,6 +5561,7 @@ export type Schemas = {
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
     shippingAvailable?: boolean;
+    /** States/provinces/regions within the country */
     states?: components["schemas"]["CountryState"][];
     taxRules?: components["schemas"]["TaxRule"][];
     translated: {
@@ -5360,6 +5733,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** States/provinces/regions within the country */
       states?: {
         data?: {
           /** @example 34d955a0df5f7af9c9b4e4dccb3c3564 */
@@ -5558,12 +5932,17 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   Criteria: {
-    aggregations?: components["schemas"]["Aggregation"][];
-    associations?: components["schemas"]["Associations"];
+    aggregations?: components["schemas"]["Aggregations"];
+    associations?: components["schemas"]["Association"];
+    excludes?: components["schemas"]["Excludes"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
     filter?: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
       | components["schemas"]["SimpleFilter"]
       | components["schemas"]["EqualsFilter"]
       | components["schemas"]["MultiNotFilter"]
@@ -5573,7 +5952,7 @@ export type Schemas = {
     grouping?: string[];
     /** List of ids to search for */
     ids?: string[];
-    includes?: components["schemas"]["Includes"];
+    includes?: components["schemas"]["Include"];
     /** Number of items per result page */
     limit?: number;
     /** Search result page */
@@ -5584,7 +5963,13 @@ export type Schemas = {
       | components["schemas"]["EqualsFilter"]
       | components["schemas"]["MultiNotFilter"]
       | components["schemas"]["RangeFilter"]
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
     )[];
+    /** The query string to search for */
+    query?: string;
     /** Sorting in the search result. */
     sort?: {
       field: string;
@@ -6368,8 +6753,11 @@ export type Schemas = {
   };
   Customer: {
     active?: boolean;
+    /** Currently active billing address in the session */
     activeBillingAddress?: components["schemas"]["CustomerAddress"];
+    /** Currently active shipping address in the session */
     activeShippingAddress?: components["schemas"]["CustomerAddress"];
+    /** All addresses saved for the customer */
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
     /** Format: int64 */
@@ -6384,8 +6772,10 @@ export type Schemas = {
     createdById?: string;
     customerNumber: string;
     customFields?: GenericRecord;
+    /** Default billing address for the customer */
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     defaultBillingAddressId: string;
+    /** Default shipping address for the customer */
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
     defaultShippingAddressId: string;
     /** Format: date-time */
@@ -6669,11 +7059,13 @@ export type Schemas = {
     /** Format: date-time */
     firstLogin?: string;
     firstName: string;
+    /** Customer group determining pricing and permissions */
     group?: components["schemas"]["CustomerGroup"];
     groupId: string;
     guest?: boolean;
     hash?: string;
     id: string;
+    /** Preferred language for customer communication */
     language?: components["schemas"]["Language"];
     languageId: string;
     /** Format: date-time */
@@ -6681,6 +7073,7 @@ export type Schemas = {
     lastName: string;
     /** Format: date-time */
     readonly lastOrderDate?: string;
+    /** Last used payment method by the customer */
     lastPaymentMethod?: components["schemas"]["PaymentMethod"];
     lastPaymentMethodId?: string;
     /** Format: int64 */
@@ -6698,9 +7091,11 @@ export type Schemas = {
     readonly reviewCount?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
+    /** Customer salutation (e.g., Mr., Mrs., Ms.) */
     salutation?: components["schemas"]["Salutation"];
     salutationId?: string;
     readonly tagIds?: string[];
+    /** Tags assigned to the customer for organization and segmentation */
     tags?: components["schemas"]["Tag"][];
     title?: string;
     /** Format: date-time */
@@ -7366,6 +7761,7 @@ export type Schemas = {
     /** Format: float */
     readonly orderTotalAmount?: number;
     relationships?: {
+      /** Currently active billing address in the session */
       activeBillingAddress?: {
         data?: {
           /** @example 1a4362407b6a71fa80952dcd4ba7feb3 */
@@ -7381,6 +7777,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Currently active shipping address in the session */
       activeShippingAddress?: {
         data?: {
           /** @example f6e2f5dd29b543b8547e30d2d71a6974 */
@@ -7396,6 +7793,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** All addresses saved for the customer */
       addresses?: {
         data?: {
           /** @example 963e3a2fe559e393bad631f3dc686f69 */
@@ -7441,6 +7839,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default billing address for the customer */
       defaultBillingAddress?: {
         data?: {
           /** @example 263d0f6e5d8d71fc4c288736f7c90990 */
@@ -7456,6 +7855,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default shipping address for the customer */
       defaultShippingAddress?: {
         data?: {
           /** @example 8218c377171d06883caea7e2baf67f31 */
@@ -7471,6 +7871,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Customer group determining pricing and permissions */
       group?: {
         data?: {
           /** @example db0f6f37ebeb6ea09489124345af2a45 */
@@ -7486,6 +7887,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Preferred language for customer communication */
       language?: {
         data?: {
           /** @example 8512ae7d57b1396273f76fe6ed341a23 */
@@ -7501,6 +7903,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Last used payment method by the customer */
       lastPaymentMethod?: {
         data?: {
           /** @example bb083200005a374b86f6f5fbbff6f0e0 */
@@ -7606,6 +8009,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Customer salutation (e.g., Mr., Mrs., Ms.) */
       salutation?: {
         data?: {
           /** @example 7a6efb02514153b5aa9a8f40c6f8bcc3 */
@@ -7621,6 +8025,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags assigned to the customer for organization and segmentation */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -9274,7 +9679,14 @@ export type Schemas = {
     type: "equals";
     value: string | number | boolean | null;
   };
+  Excludes: {
+    [key: string]: string[];
+  };
   Filters: (
+    | components["schemas"]["SimpleFilter"]
+    | components["schemas"]["EqualsFilter"]
+    | components["schemas"]["MultiNotFilter"]
+    | components["schemas"]["RangeFilter"]
     | components["schemas"]["SimpleFilter"]
     | components["schemas"]["EqualsFilter"]
     | components["schemas"]["MultiNotFilter"]
@@ -9861,6 +10273,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  Include: {
+    [key: string]: string[];
+  };
   Includes: {
     [key: string]: string[];
   };
@@ -10029,6 +10444,7 @@ export type Schemas = {
   };
   LandingPage: {
     active?: boolean;
+    /** CMS page layout for the landing page */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
@@ -10058,6 +10474,7 @@ export type Schemas = {
     metaTitle?: string;
     name: string;
     salesChannels?: components["schemas"]["SalesChannel"][];
+    /** SEO-friendly URLs for the landing page across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
     slotConfig?: GenericRecord;
     tags?: components["schemas"]["Tag"][];
@@ -10106,6 +10523,7 @@ export type Schemas = {
     metaTitle?: string;
     name: string;
     relationships?: {
+      /** CMS page layout for the landing page */
       cmsPage?: {
         data?: {
           /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -10136,6 +10554,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** SEO-friendly URLs for the landing page across different sales channels */
       seoUrls?: {
         data?: {
           /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -10200,6 +10619,8 @@ export type Schemas = {
     tagId: string;
   };
   Language: {
+    active?: boolean;
+    /** Child languages inheriting from this parent language */
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
     readonly createdAt?: string;
@@ -10328,6 +10749,7 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Locale defining regional settings (date, time, number formats) */
     locale?: components["schemas"]["Locale"];
     localeId: string;
     name: string;
@@ -10342,12 +10764,14 @@ export type Schemas = {
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannelDomains?: components["schemas"]["SalesChannelDomain"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
+    /** Locale used for translating content */
     translationCode?: components["schemas"]["Locale"];
     translationCodeId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   LanguageJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
@@ -10478,6 +10902,7 @@ export type Schemas = {
     name: string;
     parentId?: string;
     relationships?: {
+      /** Child languages inheriting from this parent language */
       children?: {
         data?: {
           /** @example 268184c12df027f536154d099d497b31 */
@@ -10508,6 +10933,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Locale defining regional settings (date, time, number formats) */
       locale?: {
         data?: {
           /** @example fb216d9e8791e63c8d12bdc420956839 */
@@ -10673,6 +11099,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Locale used for translating content */
       translationCode?: {
         data?: {
           /** @example 6ef2035242b8fcb7b61c3a41850e60b3 */
@@ -11308,6 +11735,7 @@ export type Schemas = {
     };
   };
   Media: {
+    a11yDocuments?: components["schemas"]["Document"][];
     alt?: string;
     appPaymentMethods?: components["schemas"]["AppPaymentMethod"][];
     appShippingMethods?: components["schemas"]["AppShippingMethod"][];
@@ -11515,6 +11943,7 @@ export type Schemas = {
     propertyGroupOptions?: components["schemas"]["PropertyGroupOption"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
     tags?: components["schemas"]["Tag"][];
+    /** Generated thumbnail images in various sizes */
     thumbnails?: components["schemas"]["MediaThumbnail"][];
     title?: string;
     translated: {
@@ -11994,6 +12423,21 @@ export type Schemas = {
     path?: string;
     private?: boolean;
     relationships?: {
+      a11yDocuments?: {
+        data?: {
+          /** @example f6c460e0d75110fa1ec7529fe364dbb5 */
+          id?: string;
+          /** @example document */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/a11yDocuments
+           */
+          related?: string;
+        };
+      };
       appPaymentMethods?: {
         data?: {
           /** @example e53c737d351047e64a02b7a2a4caffe3 */
@@ -12309,6 +12753,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Generated thumbnail images in various sizes */
       thumbnails?: {
         data?: {
           /** @example 3b8779ba05b8f0aed49650f3ff8beb4b */
@@ -12378,6 +12823,8 @@ export type Schemas = {
     id?: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
+    mediaThumbnailSize?: components["schemas"]["MediaThumbnailSize"];
+    mediaThumbnailSizeId?: string;
     path?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -12394,6 +12841,7 @@ export type Schemas = {
     readonly height: number;
     id: string;
     mediaId: string;
+    mediaThumbnailSizeId?: string;
     path?: string;
     relationships?: {
       media?: {
@@ -12407,6 +12855,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /media-thumbnail/3863c110ff436b51dbc09a6ea14c56e0/media
+           */
+          related?: string;
+        };
+      };
+      mediaThumbnailSize?: {
+        data?: {
+          /** @example 0d0b8659a3a47e9d7e1481961f127fd0 */
+          id?: string;
+          /** @example media_thumbnail_size */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media-thumbnail/3863c110ff436b51dbc09a6ea14c56e0/mediaThumbnailSize
            */
           related?: string;
         };
@@ -12427,6 +12890,7 @@ export type Schemas = {
     height: number;
     id: string;
     mediaFolderConfigurations?: components["schemas"]["MediaFolderConfiguration"][];
+    mediaThumbnails?: components["schemas"]["MediaThumbnail"][];
     /** Format: date-time */
     readonly updatedAt?: string;
     /** Format: int64 */
@@ -12455,6 +12919,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      mediaThumbnails?: {
+        data?: {
+          /** @example 76ebc340ac8f9754c760c3ec742d2407 */
+          id?: string;
+          /** @example media_thumbnail */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media-thumbnail-size/122652279edf3cc398ca024851b6f53f/mediaThumbnails
+           */
+          related?: string;
+        };
+      };
     };
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -12463,7 +12942,7 @@ export type Schemas = {
   };
   MultiNotFilter: {
     /** @enum {string} */
-    operator?: "and" | "or" | "nor" | "nand";
+    operator: "AND" | "OR" | "and" | "nand" | "nor" | "or";
     queries: components["schemas"]["Filters"];
     /** @enum {string} */
     type: "multi" | "not";
@@ -12939,7 +13418,7 @@ export type Schemas = {
     client_id: "administration";
     /** Password of the user that should be authenticated. */
     password: string;
-    scopes: components["schemas"]["OAuthScopes"];
+    scope: components["schemas"]["OAuthScopes"];
     /** Username of the user that should be authenticated. */
     username: string;
   } & {
@@ -12960,7 +13439,7 @@ export type Schemas = {
     client_id: "administration";
     /** The refresh token that should be used to refresh the access token. */
     refresh_token: string;
-    scopes: components["schemas"]["OAuthScopes"];
+    scope: components["schemas"]["OAuthScopes"];
   } & {
     /**
      * discriminator enum property added by openapi-typescript
@@ -12976,7 +13455,35 @@ export type Schemas = {
     | "write admin"
     | "user-verified admin"
     | "write user-verified admin";
+  Options:
+    | ({
+        /** Array of language UUIDs (hex). Provided language IDs will be mapped to locale codes server-side; supply this OR `locales`. */
+        languageIds?: string[];
+        /** Desired length of the generated summary in number of characters (optional, default: 300). */
+        length?: number;
+        /** Array of locale codes (e.g. `de-DE`, `en-GB`). Supply this OR `languageIds`. At least one of `languageIds` or `locales` must be present. */
+        locales?: string[];
+        /**
+         * Tone/mood to guide summary generation (optional).
+         * @enum {string}
+         */
+        mood?: "positive" | "neutral";
+        /** Product UUID (hex) identifying the product to generate summaries for. This field is required. */
+        productId: string;
+        reviews?: {
+          content: string;
+          points: string;
+          title: string;
+        }[];
+        /** Sales channel UUID (hex) used to scope generation and locale/context resolution. This field is required. */
+        salesChannelId: string;
+      } & {
+        [key: string]: unknown;
+      })
+    | unknown
+    | unknown;
   Order: {
+    /** All addresses associated with the order (billing and shipping) */
     addresses?: components["schemas"]["OrderAddress"][];
     affiliateCode?: string;
     /** Format: float */
@@ -12985,6 +13492,7 @@ export type Schemas = {
     readonly amountTotal?: number;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** Billing address for the order */
     billingAddress?: components["schemas"]["OrderAddress"];
     billingAddressId: string;
     billingAddressVersionId?: string;
@@ -12993,6 +13501,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
+    /** Currency used for the order */
     currency?: components["schemas"]["Currency"];
     /** Format: float */
     currencyFactor: number;
@@ -13000,7 +13509,9 @@ export type Schemas = {
     customerComment?: string;
     customFields?: GenericRecord;
     deepLinkCode?: string;
+    /** Delivery information including shipping address and tracking */
     deliveries?: components["schemas"]["OrderDelivery"][];
+    /** Generated documents (invoices, delivery notes, credit notes) */
     documents?: components["schemas"]["Document"][];
     extensions?: {
       b2bPendingOrder?: {
@@ -13018,6 +13529,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/budget
+           */
+          related?: string;
+        };
+      };
       delayActions?: {
         data?: {
           /** @example edfed55799054673006c4b5a643489ac */
@@ -13029,6 +13555,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /order/a240fa27925a635b08dc28c9e4f9216d/delayActions
+           */
+          related?: string;
+        };
+      };
+      initialSubscriptions?: {
+        data?: {
+          /** @example 3b40c275cdd1f84402bcef5be1651f64 */
+          id?: string;
+          /** @example subscription */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/initialSubscriptions
            */
           related?: string;
         };
@@ -13163,9 +13704,12 @@ export type Schemas = {
       interval: number;
       roundForNet: boolean;
     };
+    /** Language used when placing the order */
     language?: components["schemas"]["Language"];
     languageId: string;
+    /** Order line items (products, discounts, fees) */
     lineItems?: components["schemas"]["OrderLineItem"][];
+    /** Customer information associated with the order */
     orderCustomer?: components["schemas"]["OrderCustomer"];
     readonly orderDate?: string;
     /** Format: date-time */
@@ -13186,9 +13730,11 @@ export type Schemas = {
       /** Format: float */
       totalPrice: number;
     };
+    /** Primary delivery information for the order */
     primaryOrderDelivery?: components["schemas"]["OrderDelivery"];
     primaryOrderDeliveryId?: string;
     primaryOrderDeliveryVersionId?: string;
+    /** Primary payment transaction for the order */
     primaryOrderTransaction?: components["schemas"]["OrderTransaction"];
     primaryOrderTransactionId?: string;
     primaryOrderTransactionVersionId?: string;
@@ -13222,7 +13768,9 @@ export type Schemas = {
     readonly shippingTotal?: number;
     source?: string;
     stateId: string;
+    /** Current order state (e.g., open, in_progress, completed, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
+    /** Tags assigned to the order for organization and filtering */
     tags?: components["schemas"]["Tag"][];
     taxCalculationType?: string;
     readonly taxStatus?: string;
@@ -13233,6 +13781,7 @@ export type Schemas = {
       interval: number;
       roundForNet: boolean;
     };
+    /** Payment transactions for the order */
     transactions?: components["schemas"]["OrderTransaction"][];
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13478,6 +14027,7 @@ export type Schemas = {
     order?: components["schemas"]["Order"];
     orderId: string;
     orderVersionId?: string;
+    /** Line items included in this delivery */
     positions?: components["schemas"]["OrderDeliveryPosition"][];
     primaryOrder?: components["schemas"]["Order"];
     shippingCosts?: {
@@ -13507,12 +14057,15 @@ export type Schemas = {
     shippingDateEarliest: string;
     /** Format: date-time */
     shippingDateLatest: string;
+    /** Shipping method used for this delivery */
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
+    /** Shipping address for this delivery */
     shippingOrderAddress?: components["schemas"]["OrderAddress"];
     shippingOrderAddressId: string;
     shippingOrderAddressVersionId?: string;
     stateId: string;
+    /** Current delivery state (e.g., open, shipped, delivered, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
     trackingCodes?: string[];
     /** Format: date-time */
@@ -13542,6 +14095,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Line items included in this delivery */
       positions?: {
         data?: {
           /** @example 365a4a972db646c76d115b3897f2d4de */
@@ -13572,6 +14126,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping method used for this delivery */
       shippingMethod?: {
         data?: {
           /** @example e97bfcdc0cae44bc9e4ab35762eaf0e1 */
@@ -13587,6 +14142,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping address for this delivery */
       shippingOrderAddress?: {
         data?: {
           /** @example 39a8592767b8b6a5d6b1dbc47e4058ca */
@@ -13602,6 +14158,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Current delivery state (e.g., open, shipped, delivered, cancelled) */
       stateMachineState?: {
         data?: {
           /** @example 1ab22d393154f21e3be76aca3ec3ee31 */
@@ -13808,6 +14365,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budget?: {
+        data?: {
+          /** @example 2f212049ce79d2b949fd242043004288 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/budget
+           */
+          related?: string;
+        };
+      };
       delayActions?: {
         data?: {
           /** @example edfed55799054673006c4b5a643489ac */
@@ -13819,6 +14391,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /order/a240fa27925a635b08dc28c9e4f9216d/delayActions
+           */
+          related?: string;
+        };
+      };
+      initialSubscriptions?: {
+        data?: {
+          /** @example 3b40c275cdd1f84402bcef5be1651f64 */
+          id?: string;
+          /** @example subscription */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/initialSubscriptions
            */
           related?: string;
         };
@@ -13978,6 +14565,7 @@ export type Schemas = {
     primaryOrderTransactionId?: string;
     primaryOrderTransactionVersionId?: string;
     relationships?: {
+      /** All addresses associated with the order (billing and shipping) */
       addresses?: {
         data?: {
           /** @example 963e3a2fe559e393bad631f3dc686f69 */
@@ -13993,6 +14581,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Billing address for the order */
       billingAddress?: {
         data?: {
           /** @example 7fee8ff88b768662dd8fc06e1b6997d2 */
@@ -14023,6 +14612,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Currency used for the order */
       currency?: {
         data?: {
           /** @example 1af0389838508d7016a9841eb6273962 */
@@ -14038,6 +14628,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Delivery information including shipping address and tracking */
       deliveries?: {
         data?: {
           /** @example 6fc31b6b9cd717cc0dcb81152308f8af */
@@ -14053,6 +14644,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Generated documents (invoices, delivery notes, credit notes) */
       documents?: {
         data?: {
           /** @example 21f64da1e5792c8295b964d159a14491 */
@@ -14068,6 +14660,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Language used when placing the order */
       language?: {
         data?: {
           /** @example 8512ae7d57b1396273f76fe6ed341a23 */
@@ -14083,6 +14676,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Order line items (products, discounts, fees) */
       lineItems?: {
         data?: {
           /** @example a042af1aa9f3853fe3cd7dabc065568f */
@@ -14098,6 +14692,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Customer information associated with the order */
       orderCustomer?: {
         data?: {
           /** @example e90c9c228c1510f5a25902f7a1e8426a */
@@ -14113,6 +14708,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Primary delivery information for the order */
       primaryOrderDelivery?: {
         data?: {
           /** @example fdeeebdae32b4dfa39d3f4372d0554e9 */
@@ -14128,6 +14724,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Primary payment transaction for the order */
       primaryOrderTransaction?: {
         data?: {
           /** @example bbaa9e50388c524d97853a4fc4476b0e */
@@ -14158,6 +14755,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Current order state (e.g., open, in_progress, completed, cancelled) */
       stateMachineState?: {
         data?: {
           /** @example 1ab22d393154f21e3be76aca3ec3ee31 */
@@ -14173,6 +14771,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags assigned to the order for organization and filtering */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -14188,6 +14787,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Payment transactions for the order */
       transactions?: {
         data?: {
           /** @example c15b977dd99332ca8623fbdfb86827e8 */
@@ -14264,12 +14864,14 @@ export type Schemas = {
   };
   OrderLineItem: {
     children: components["schemas"]["OrderLineItem"][];
+    /** Line item image or thumbnail */
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
+    /** Digital downloads associated with this line item */
     downloads?: components["schemas"]["OrderLineItemDownload"][];
     extensions?: {
       returns?: {
@@ -14308,6 +14910,7 @@ export type Schemas = {
     identifier: string;
     label: string;
     order?: components["schemas"]["Order"];
+    /** Delivery positions for this line item */
     orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
     orderId: string;
     orderTransactionCaptureRefundPositions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
@@ -14342,6 +14945,7 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: GenericRecord;
+    /** Referenced product if this is a product line item */
     product?: components["schemas"]["Product"];
     productId?: string;
     productVersionId?: string;
@@ -14521,6 +15125,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Line item image or thumbnail */
       cover?: {
         data?: {
           /** @example 41d0e299ca1abeb2094852da042165c7 */
@@ -14536,6 +15141,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Digital downloads associated with this line item */
       downloads?: {
         data?: {
           /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
@@ -14566,6 +15172,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Delivery positions for this line item */
       orderDeliveryPositions?: {
         data?: {
           /** @example 76d4619a36f864b08f57415baaa685ec */
@@ -14611,6 +15218,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Referenced product if this is a product line item */
       product?: {
         data?: {
           /** @example f5bf48aa40cad7891eb709fcf1fde128 */
@@ -15162,6 +15770,7 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
+    /** Payment captures for this transaction */
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
     readonly createdAt?: string;
@@ -15170,10 +15779,12 @@ export type Schemas = {
     order?: components["schemas"]["Order"];
     orderId: string;
     orderVersionId?: string;
+    /** Payment method used for this transaction */
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     primaryOrder?: components["schemas"]["Order"];
     stateId: string;
+    /** Current payment transaction state (e.g., open, paid, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -15572,6 +16183,7 @@ export type Schemas = {
     orderVersionId?: string;
     paymentMethodId: string;
     relationships?: {
+      /** Payment captures for this transaction */
       captures?: {
         data?: {
           /** @example 8856ffdd044d57cd4124a6be5dcea329 */
@@ -15602,6 +16214,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Payment method used for this transaction */
       paymentMethod?: {
         data?: {
           /** @example 68ec1eeea9f1b7744e231b5bd0d97df0 */
@@ -15632,6 +16245,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Current payment transaction state (e.g., open, paid, cancelled) */
       stateMachineState?: {
         data?: {
           /** @example 1ab22d393154f21e3be76aca3ec3ee31 */
@@ -15818,6 +16432,7 @@ export type Schemas = {
     readonly formattedHandlerIdentifier?: string;
     handlerIdentifier?: string;
     id: string;
+    /** Payment method logo or icon image */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
@@ -16002,6 +16617,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Payment method logo or icon image */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -16248,34 +16864,44 @@ export type Schemas = {
     readonly available?: boolean;
     /** Format: int64 */
     readonly availableStock?: number;
+    /** Canonical product reference for variant consolidation and SEO purposes */
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
+    /** Categories this product is assigned to */
     categories?: components["schemas"]["Category"][];
+    /** Read-only category tree including all parent categories for optimized queries */
     categoriesRo?: components["schemas"]["Category"][];
     readonly categoryIds?: string[];
     readonly categoryTree?: string[];
     /** Format: int64 */
     readonly childCount?: number;
+    /** Product variants that inherit from this parent product */
     children?: components["schemas"]["Product"][];
+    /** Custom CMS page layout for the product detail page */
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
+    /** Variant configurator settings defining available options for product variants */
     configuratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
+    /** Main product image displayed in listings and detail pages */
     cover?: components["schemas"]["ProductMedia"];
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     crossSellingAssignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
+    /** Cross-selling configurations (related products, accessories, similar items) */
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
     customFields?: GenericRecord;
     customFieldSets?: components["schemas"]["CustomFieldSet"][];
     customFieldSetSelectionActive?: boolean;
     customSearchKeywords?: GenericRecord[];
+    /** Estimated delivery time for the product */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId?: string;
     description?: string;
     readonly displayGroup?: string;
+    /** Downloadable files associated with the product (e.g., manuals, digital content) */
     downloads?: components["schemas"]["ProductDownload"][];
     ean?: string;
     extensions?: {
@@ -16305,6 +16931,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/customPrice
+           */
+          related?: string;
+        };
+      };
+      employeeWishlists?: {
+        data?: {
+          /** @example e91afc4e24376c8b995cece3ce354b4e */
+          id?: string;
+          /** @example b2b_components_employee_wishlist_product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/employeeWishlists
            */
           related?: string;
         };
@@ -16515,13 +17156,16 @@ export type Schemas = {
     keywords?: string;
     /** Format: float */
     length?: number;
+    /** Primary category assignments per sales channel for SEO and navigation */
     mainCategories?: components["schemas"]["MainCategory"][];
+    /** Product manufacturer or brand information */
     manufacturer?: components["schemas"]["ProductManufacturer"];
     manufacturerId?: string;
     manufacturerNumber?: string;
     markAsTopseller?: boolean;
     /** Format: int64 */
     maxPurchase?: number;
+    /** Product images and media gallery */
     media?: components["schemas"]["ProductMedia"][];
     metaDescription?: string;
     metaTitle?: string;
@@ -16529,6 +17173,7 @@ export type Schemas = {
     minPurchase?: number;
     name: string;
     readonly optionIds?: string[];
+    /** Product variant options (e.g., size, color) that define different variants */
     options?: components["schemas"]["PropertyGroupOption"][];
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     packUnit?: string;
@@ -16541,7 +17186,9 @@ export type Schemas = {
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
     productNumber: string;
+    /** Customer reviews and ratings for the product */
     productReviews?: components["schemas"]["ProductReview"][];
+    /** Product properties and characteristics for filtering */
     properties?: components["schemas"]["PropertyGroupOption"][];
     readonly propertyIds?: string[];
     purchasePrices?: components["schemas"]["Price"][];
@@ -16560,6 +17207,7 @@ export type Schemas = {
     /** Format: int64 */
     readonly sales?: number;
     searchKeywords?: components["schemas"]["ProductSearchKeyword"][];
+    /** SEO-friendly URLs for the product across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
     shippingFree?: boolean;
     slotConfig?: GenericRecord;
@@ -16567,9 +17215,12 @@ export type Schemas = {
     /** Format: int64 */
     stock: number;
     readonly streamIds?: string[];
+    /** Dynamic product streams this product belongs to based on defined filters */
     streams?: components["schemas"]["ProductStream"][];
     readonly tagIds?: string[];
+    /** Tags for organizing and filtering products */
     tags?: components["schemas"]["Tag"][];
+    /** Tax configuration (rate and calculation rules) */
     tax?: components["schemas"]["Tax"];
     taxId: string;
     translated: {
@@ -16601,6 +17252,7 @@ export type Schemas = {
       unitId: string;
       versionId: string;
     };
+    /** Product unit of measure (e.g., piece, liter, kg) */
     unit?: components["schemas"]["Unit"];
     unitId?: string;
     /** Format: date-time */
@@ -17188,6 +17840,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      employeeWishlists?: {
+        data?: {
+          /** @example e91afc4e24376c8b995cece3ce354b4e */
+          id?: string;
+          /** @example b2b_components_employee_wishlist_product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/employeeWishlists
+           */
+          related?: string;
+        };
+      };
       orderWarehouses?: {
         data?: {
           /** @example 5331369e2f71d048521bd35d80975314 */
@@ -17423,6 +18090,7 @@ export type Schemas = {
     /** Format: float */
     referenceUnit?: number;
     relationships?: {
+      /** Canonical product reference for variant consolidation and SEO purposes */
       canonicalProduct?: {
         data?: {
           /** @example 023995a50b56c0de077323e958b2bbcd */
@@ -17438,6 +18106,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Categories this product is assigned to */
       categories?: {
         data?: {
           /** @example b0b5ccb4a195a07fd3eed14affb8695f */
@@ -17453,6 +18122,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Read-only category tree including all parent categories for optimized queries */
       categoriesRo?: {
         data?: {
           /** @example 7f0702d3a90d965b8c9158c451f43fdb */
@@ -17468,6 +18138,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product variants that inherit from this parent product */
       children?: {
         data?: {
           /** @example 268184c12df027f536154d099d497b31 */
@@ -17483,6 +18154,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Custom CMS page layout for the product detail page */
       cmsPage?: {
         data?: {
           /** @example 7b1460918b1abb93311108f3dc021c9b */
@@ -17498,6 +18170,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Variant configurator settings defining available options for product variants */
       configuratorSettings?: {
         data?: {
           /** @example c0827fee13725d41f1fd7e292243f5aa */
@@ -17513,6 +18186,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Main product image displayed in listings and detail pages */
       cover?: {
         data?: {
           /** @example 41d0e299ca1abeb2094852da042165c7 */
@@ -17543,6 +18217,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Cross-selling configurations (related products, accessories, similar items) */
       crossSellings?: {
         data?: {
           /** @example 89936e14544d1b403cecef938101b6b0 */
@@ -17573,6 +18248,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Estimated delivery time for the product */
       deliveryTime?: {
         data?: {
           /** @example 8c888ae25a7bd42057370e31f7e01044 */
@@ -17588,6 +18264,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Downloadable files associated with the product (e.g., manuals, digital content) */
       downloads?: {
         data?: {
           /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
@@ -17618,6 +18295,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Primary category assignments per sales channel for SEO and navigation */
       mainCategories?: {
         data?: {
           /** @example 1fb731fc4139cbb575429e28846f0c39 */
@@ -17633,6 +18311,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product manufacturer or brand information */
       manufacturer?: {
         data?: {
           /** @example c2904bca62b22443d6cf5e9d89cab204 */
@@ -17648,6 +18327,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product images and media gallery */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -17663,6 +18343,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product variant options (e.g., size, color) that define different variants */
       options?: {
         data?: {
           /** @example 93da65a9fd0004d9477aeac024e08e15 */
@@ -17723,6 +18404,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Customer reviews and ratings for the product */
       productReviews?: {
         data?: {
           /** @example 01e78541ea343ed72424a5222796a4cd */
@@ -17738,6 +18420,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product properties and characteristics for filtering */
       properties?: {
         data?: {
           /** @example 74693d2fc58b46bd06410f278e39aa71 */
@@ -17768,6 +18451,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** SEO-friendly URLs for the product across different sales channels */
       seoUrls?: {
         data?: {
           /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
@@ -17783,6 +18467,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Dynamic product streams this product belongs to based on defined filters */
       streams?: {
         data?: {
           /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
@@ -17798,6 +18483,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags for organizing and filtering products */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -17813,6 +18499,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tax configuration (rate and calculation rules) */
       tax?: {
         data?: {
           /** @example 06565e5611f23fdf8cc43e5077b92b54 */
@@ -17828,6 +18515,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Product unit of measure (e.g., piece, liter, kg) */
       unit?: {
         data?: {
           /** @example 3e34bdebd9bd5edda27e8728904a2552 */
@@ -17928,16 +18616,7 @@ export type Schemas = {
     weight?: number;
     /** Format: float */
     width?: number;
-  } & components["schemas"]["DiscountLineItemPayload"] & {
-      options: {
-        group: string;
-        option: string;
-        translated: {
-          group: string;
-          option: string;
-        };
-      }[];
-    };
+  } & components["schemas"]["DiscountLineItemPayload"];
   ProductKeywordDictionary: {
     id: string;
     keyword: string;
@@ -21148,13 +21827,22 @@ export type Schemas = {
   RangeFilter: {
     field: string;
     parameters: {
-      gt?: number | string;
-      gte?: number | string;
-      lt?: number | string;
-      lte?: number | string;
+      gt?: number;
+      gte?: number;
+      lt?: number;
+      lte?: number;
     };
     /** @enum {string} */
     type: "range";
+  };
+  ReviewSummaryByLanguage: {
+    [key: string]: string;
+  };
+  ReviewSummaryItem: {
+    languageId?: string;
+    summary?: string;
+  } & {
+    [key: string]: unknown;
   };
   Rule: {
     readonly areas?: GenericRecord[];
@@ -21849,50 +22537,6 @@ export type Schemas = {
     readonly updatedAt?: string;
     viewInheritance?: string[];
   };
-  SaasSbpUserData: {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id: string;
-    /** Format: date-time */
-    readonly lastSbpStatusChange?: string;
-    readonly sbpAccessToken?: GenericRecord;
-    readonly sbpStatus?: string;
-    readonly sbpUserId: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    user?: components["schemas"]["User"];
-    readonly userId: string;
-  };
-  SaasSbpUserDataJsonApi: components["schemas"]["resource"] & {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id: string;
-    /** Format: date-time */
-    readonly lastSbpStatusChange?: string;
-    relationships?: {
-      user?: {
-        data?: {
-          /** @example ee11cbb19052e40b07aac0ca060c23ee */
-          id?: string;
-          /** @example user */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /saas-sbp-user-data/d271f61e3b0f14048b1d3280fbd44718/user
-           */
-          related?: string;
-        };
-      };
-    };
-    readonly sbpAccessToken?: GenericRecord;
-    readonly sbpStatus?: string;
-    readonly sbpUserId: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    readonly userId: string;
-  };
   SaasStorefrontDemoToken: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -21933,46 +22577,6 @@ export type Schemas = {
     readonly updatedAt?: string;
     userId: string;
   };
-  SaasUserLoginToken: {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    /** Format: date-time */
-    readonly expiresAt: string;
-    id: string;
-    readonly token: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    user?: components["schemas"]["User"];
-    userId: string;
-  };
-  SaasUserLoginTokenJsonApi: components["schemas"]["resource"] & {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    /** Format: date-time */
-    readonly expiresAt: string;
-    id: string;
-    relationships?: {
-      user?: {
-        data?: {
-          /** @example ee11cbb19052e40b07aac0ca060c23ee */
-          id?: string;
-          /** @example user */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /saas-user-login-token/57e8c4fa360d6f7647f64b6c2f53d3bc/user
-           */
-          related?: string;
-        };
-      };
-    };
-    readonly token: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    userId: string;
-  };
   SalesChannel: {
     accessKey: string;
     active?: boolean;
@@ -21981,11 +22585,13 @@ export type Schemas = {
     boundCustomers?: components["schemas"]["Customer"][];
     configuration?: GenericRecord;
     countries?: components["schemas"]["Country"][];
+    /** Default country for the sales channel */
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
     currencies?: components["schemas"]["Currency"][];
+    /** Default currency for the sales channel */
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customerGroup?: components["schemas"]["CustomerGroup"];
@@ -21994,6 +22600,7 @@ export type Schemas = {
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     documentBaseConfigSalesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
+    /** Domain URLs configured for the sales channel */
     domains?: components["schemas"]["SalesChannelDomain"][];
     extensions?: {
       advancedProductCatalogs?: {
@@ -22162,6 +22769,7 @@ export type Schemas = {
         };
       };
     };
+    /** Root category for footer navigation */
     footerCategory?: components["schemas"]["Category"];
     footerCategoryId?: string;
     footerCategoryVersionId?: string;
@@ -22179,6 +22787,7 @@ export type Schemas = {
     hreflangDefaultDomainId?: string;
     id: string;
     landingPages?: components["schemas"]["LandingPage"][];
+    /** Default language for the sales channel */
     language?: components["schemas"]["Language"];
     languageId: string;
     languages?: components["schemas"]["Language"][];
@@ -22189,6 +22798,7 @@ export type Schemas = {
     maintenanceIpWhitelist?: GenericRecord[];
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     name: string;
+    /** Root category for navigation menu */
     navigationCategory?: components["schemas"]["Category"];
     /** Format: int64 */
     navigationCategoryDepth?: number;
@@ -22197,6 +22807,7 @@ export type Schemas = {
     newsletterRecipients?: components["schemas"]["NewsletterRecipient"][];
     numberRangeSalesChannels?: components["schemas"]["NumberRangeSalesChannel"][];
     orders?: components["schemas"]["Order"][];
+    /** Default payment method for the sales channel */
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     readonly paymentMethodIds?: string[];
@@ -22207,9 +22818,11 @@ export type Schemas = {
     promotionSalesChannels?: components["schemas"]["PromotionSalesChannel"][];
     seoUrls?: components["schemas"]["SeoUrl"][];
     seoUrlTemplates?: components["schemas"]["SeoUrlTemplate"][];
+    /** Root category for service pages */
     serviceCategory?: components["schemas"]["Category"];
     serviceCategoryId?: string;
     serviceCategoryVersionId?: string;
+    /** Default shipping method for the sales channel */
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
     shippingMethods?: components["schemas"]["ShippingMethod"][];
@@ -22745,6 +23358,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default country for the sales channel */
       country?: {
         data?: {
           /** @example e909c2d7067ea37437cf97fe11d91bd0 */
@@ -22775,6 +23389,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default currency for the sales channel */
       currency?: {
         data?: {
           /** @example 1af0389838508d7016a9841eb6273962 */
@@ -22850,6 +23465,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Domain URLs configured for the sales channel */
       domains?: {
         data?: {
           /** @example e4e46deb7f9cc58c7abfb32e5570b6f3 */
@@ -22865,6 +23481,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Root category for footer navigation */
       footerCategory?: {
         data?: {
           /** @example a609a222a2767cf322ee21d72a0ddb3e */
@@ -22925,6 +23542,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default language for the sales channel */
       language?: {
         data?: {
           /** @example 8512ae7d57b1396273f76fe6ed341a23 */
@@ -22985,6 +23603,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Root category for navigation menu */
       navigationCategory?: {
         data?: {
           /** @example 2194fe03b676158bb7a3a03f1b98b80e */
@@ -23045,6 +23664,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default payment method for the sales channel */
       paymentMethod?: {
         data?: {
           /** @example 68ec1eeea9f1b7744e231b5bd0d97df0 */
@@ -23165,6 +23785,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Root category for service pages */
       serviceCategory?: {
         data?: {
           /** @example bc70a595d052072b5d94cffea6d8d5bb */
@@ -23180,6 +23801,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Default shipping method for the sales channel */
       shippingMethod?: {
         data?: {
           /** @example e97bfcdc0cae44bc9e4ab35762eaf0e1 */
@@ -23787,11 +24409,13 @@ export type Schemas = {
   ShippingMethod: {
     active?: boolean;
     appShippingMethod?: components["schemas"]["AppShippingMethod"];
+    /** Rule defining when this shipping method is available */
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    /** Estimated delivery time information */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId: string;
     description?: string;
@@ -23858,16 +24482,20 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Shipping method logo or carrier image */
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
     orderDeliveries?: components["schemas"]["OrderDelivery"][];
     /** Format: int64 */
     position?: number;
+    /** Shipping prices based on weight, volume, or cart value */
     prices?: components["schemas"]["ShippingMethodPrice"][];
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
+    /** Tags for organizing shipping methods */
     tags?: components["schemas"]["Tag"][];
+    /** Tax configuration for shipping costs */
     tax?: components["schemas"]["Tax"];
     taxId?: string;
     taxType?: string;
@@ -23978,6 +24606,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Rule defining when this shipping method is available */
       availabilityRule?: {
         data?: {
           /** @example 9fbb7961d1cb158094924c679e1b302c */
@@ -23993,6 +24622,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Estimated delivery time information */
       deliveryTime?: {
         data?: {
           /** @example 8c888ae25a7bd42057370e31f7e01044 */
@@ -24008,6 +24638,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping method logo or carrier image */
       media?: {
         data?: {
           /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
@@ -24038,6 +24669,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Shipping prices based on weight, volume, or cart value */
       prices?: {
         data?: {
           /** @example afae32efe0f84fece3f96b377b768b33 */
@@ -24083,6 +24715,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tags for organizing shipping methods */
       tags?: {
         data?: {
           /** @example d57ac45256849d9b13e2422d91580fb9 */
@@ -24098,6 +24731,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Tax configuration for shipping costs */
       tax?: {
         data?: {
           /** @example 06565e5611f23fdf8cc43e5077b92b54 */
@@ -24225,19 +24859,12 @@ export type Schemas = {
     tag?: components["schemas"]["Tag"];
     tagId: string;
   };
-  SimpleFilter:
-    | {
-        field: string;
-        /** @enum {string} */
-        type: "contains" | "equalsAny" | "prefix" | "suffix";
-        value: string;
-      }
-    | {
-        field: string;
-        /** @enum {string} */
-        type: "equalsAny" | "equalsAll";
-        value: string[];
-      };
+  SimpleFilter: {
+    field: string;
+    /** @enum {string} */
+    type: "contains" | "equalsAny" | "prefix" | "suffix";
+    value: string;
+  };
   Snippet: {
     author: string;
     /** Format: date-time */
@@ -25916,6 +26543,12 @@ export type Schemas = {
       | components["schemas"]["AggregationFilter"]
       | components["schemas"]["AggregationTerms"]
       | components["schemas"]["AggregationHistogram"]
+      | components["schemas"]["AggregationRange"]
+      | components["schemas"]["AggregationMetrics"]
+      | components["schemas"]["AggregationEntity"]
+      | components["schemas"]["AggregationFilter"]
+      | components["schemas"]["AggregationTerms"]
+      | components["schemas"]["AggregationHistogram"]
       | components["schemas"]["AggregationRange"];
   };
   Subscription: {
@@ -25940,6 +26573,9 @@ export type Schemas = {
     id: string;
     /** Format: int64 */
     initialExecutionCount?: number;
+    initialOrder?: components["schemas"]["Order"];
+    initialOrderId?: string;
+    initialOrderVersionId?: string;
     itemRounding: {
       /** Format: int64 */
       decimals: number;
@@ -26225,6 +26861,8 @@ export type Schemas = {
     readonly createdAt?: string;
     cronInterval?: string;
     dateInterval?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    delayed: boolean;
     id: string;
     name: string;
     subscriptionPlans?: components["schemas"]["SubscriptionPlan"][];
@@ -26245,6 +26883,8 @@ export type Schemas = {
     readonly createdAt?: string;
     cronInterval?: string;
     dateInterval?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    delayed: boolean;
     id: string;
     name: string;
     relationships?: {
@@ -26322,6 +26962,8 @@ export type Schemas = {
     id: string;
     /** Format: int64 */
     initialExecutionCount?: number;
+    initialOrderId?: string;
+    initialOrderVersionId?: string;
     itemRounding: {
       /** Format: int64 */
       decimals: number;
@@ -26375,6 +27017,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /subscription/787ad0b7a17de4ad6b1711bbf8d79fcb/currency
+           */
+          related?: string;
+        };
+      };
+      initialOrder?: {
+        data?: {
+          /** @example 5dd26f6705e75ee9dc0876dc5cdc739a */
+          id?: string;
+          /** @example order */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /subscription/787ad0b7a17de4ad6b1711bbf8d79fcb/initialOrder
            */
           related?: string;
         };
@@ -27795,6 +28452,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValue: {
     advancedSurcharge?: boolean;
+    calculatedPrice?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     default?: boolean;
@@ -27830,6 +28488,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
     advancedSurcharge?: boolean;
+    calculatedPrice?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     default?: boolean;
@@ -30132,21 +30791,6 @@ export type Schemas = {
           related?: string;
         };
       };
-      readonly demoToken?: {
-        data?: {
-          /** @example 69de4ff786578920993323df63a4439a */
-          id?: string;
-          /** @example saas_storefront_demo_token */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
-           */
-          related?: string;
-        };
-      };
       dsrAppointmentGuideUser?: {
         data?: {
           /** @example e8e8e4db862bed157007764e46f5aecb */
@@ -30158,21 +30802,6 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/dsrAppointmentGuideUser
-           */
-          related?: string;
-        };
-      };
-      readonly loginToken?: {
-        data?: {
-          /** @example 4750140e5c1fe2a486703813ab519180 */
-          id?: string;
-          /** @example saas_user_login_token */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/loginToken
            */
           related?: string;
         };
@@ -30248,21 +30877,6 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/quotesUpdated
-           */
-          related?: string;
-        };
-      };
-      readonly sbpUserData?: {
-        data?: {
-          /** @example 7afee5a98234c94ed28df8d4f2f78b96 */
-          id?: string;
-          /** @example saas_sbp_user_data */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/sbpUserData
            */
           related?: string;
         };
@@ -30543,21 +31157,6 @@ export type Schemas = {
           related?: string;
         };
       };
-      readonly demoToken?: {
-        data?: {
-          /** @example 69de4ff786578920993323df63a4439a */
-          id?: string;
-          /** @example saas_storefront_demo_token */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
-           */
-          related?: string;
-        };
-      };
       dsrAppointmentGuideUser?: {
         data?: {
           /** @example e8e8e4db862bed157007764e46f5aecb */
@@ -30569,21 +31168,6 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/dsrAppointmentGuideUser
-           */
-          related?: string;
-        };
-      };
-      readonly loginToken?: {
-        data?: {
-          /** @example 4750140e5c1fe2a486703813ab519180 */
-          id?: string;
-          /** @example saas_user_login_token */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/loginToken
            */
           related?: string;
         };
@@ -30659,21 +31243,6 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/quotesUpdated
-           */
-          related?: string;
-        };
-      };
-      readonly sbpUserData?: {
-        data?: {
-          /** @example 7afee5a98234c94ed28df8d4f2f78b96 */
-          id?: string;
-          /** @example saas_sbp_user_data */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /user/8f9bfe9d1345237cb3b2b205864da075/sbpUserData
            */
           related?: string;
         };
@@ -31351,28 +31920,74 @@ export type Schemas = {
     meta: components["schemas"]["meta"];
   };
   infoConfigResponse: {
-    /** Information about the admin worker. */
-    adminWorker?: {
-      /** State of the admin worker. */
+    /** Admin worker feature flags and transport configuration. */
+    adminWorker: {
+      /** Whether the admin background worker is enabled. */
       enableAdminWorker?: boolean;
-      /** Configured transports. */
+      /** Whether the notification worker is enabled. */
+      enableNotificationWorker?: boolean;
+      /** Whether the queue statistics worker is enabled. */
+      enableQueueStatsWorker?: boolean;
+      /** Configured Symfony Messenger transports used by the admin workers. */
       transports?: string[];
     };
-    /** Asset files of active extensions */
-    bundles?: {
-      [key: string]: {
-        css?: string[];
-        js?: string[];
-      };
+    /** Active extension assets (plugins & apps) keyed by technical name. */
+    bundles: {
+      [key: string]:
+        | {
+            /** Base URL to a (micro frontend) admin entry point, if provided. */
+            baseUrl?: string | null;
+            css?: string[];
+            js?: string[];
+            /** @enum {string} */
+            type: "plugin";
+          }
+        | {
+            active: boolean;
+            baseUrl: string;
+            /** Optional CSS assets if provided. */
+            css?: string[];
+            /** Lowercase hex integration id. */
+            integrationId: string;
+            /** Optional JS assets if provided. */
+            js?: string[];
+            name: string;
+            /** Grouped privileges: key = privilege scope, value = list of entities. */
+            permissions: {
+              [key: string]: string[];
+            };
+            /** @enum {string} */
+            type: "app";
+            version: string;
+          };
     };
-    settings?: {
-      /** State of the `urlFeature` setting. */
+    /** In-app purchase meta data (structure may vary). */
+    inAppPurchases: {
+      [key: string]: unknown;
+    }[];
+    /** Selected environment and feature settings consumed by the administration. */
+    settings: {
+      /** True if at least one installed app requires a reachable APP_URL. */
+      appsRequireAppUrl?: boolean;
+      /** Whether configured APP_URL is externally reachable. */
+      appUrlReachable?: boolean;
+      /** True if runtime extension management is disabled. */
+      disableExtensionManagement?: boolean;
+      /** Whether HTML sanitizer is enabled. */
+      enableHtmlSanitizer?: boolean;
+      /** Whether staging mode banner is enabled. */
+      enableStagingMode?: boolean;
+      /** State of the URL upload feature. */
       enableUrlFeature?: boolean;
+      /** Whitelisted file extensions for private filesystem uploads. */
+      private_allowed_extensions?: string[];
     };
-    /** The Shopware version. */
-    version?: string;
-    /** The Shopware version revision. */
-    versionRevision?: string;
+    /** Unique shop identifier. */
+    shopId: string;
+    /** Shopware version. */
+    version: string;
+    /** Shopware version revision (build hash/revision). */
+    versionRevision: string;
   };
   jsonapi: {
     meta?: components["schemas"]["meta"];
@@ -32196,6 +32811,9 @@ export type Schemas = {
     resource_version: string;
     status: string;
   };
+  paypal_v1_webhook_list: {
+    webhooks: components["schemas"]["paypal_v1_webhook"][];
+  };
   paypal_v1_webhook_resource: {
     amount: components["schemas"]["paypal_v1_common_amount"];
     billing_agreement_id: string | null;
@@ -32246,6 +32864,10 @@ export type Schemas = {
   paypal_v2_common_phone_number: {
     country_code: string;
     national_number: string;
+  };
+  paypal_v2_common_upc: {
+    code: string;
+    type: string;
   };
   paypal_v2_order: {
     application_context: components["schemas"]["paypal_v2_order_application_context"];
@@ -32411,6 +33033,10 @@ export type Schemas = {
   paypal_v2_order_payment_source_common_attributes_customer: {
     id: string;
   };
+  paypal_v2_order_payment_source_common_attributes_order_update_callback_config: {
+    callback_events: ("SHIPPING_ADDRESS" | "SHIPPING_OPTIONS")[];
+    callback_url: string;
+  };
   paypal_v2_order_payment_source_common_attributes_vault: {
     confirm_payment_token: string;
     customer:
@@ -32438,6 +33064,7 @@ export type Schemas = {
     landing_page?: "LOGIN" | "GUEST_CHECKOUT" | "NO_PREFERENCE";
     locale: string;
     logo_url: string;
+    order_update_callback_config: components["schemas"]["paypal_v2_order_payment_source_common_attributes_order_update_callback_config"];
     /**
      * Only: PayPal Wallet
      * @enum {string}
@@ -32573,6 +33200,10 @@ export type Schemas = {
       | null;
     reference_id: string;
     shipping: components["schemas"]["paypal_v2_order_purchase_unit_shipping"];
+    shipping_options:
+      | components["schemas"]["paypal_v2_order_purchase_unit_shipping_option"][]
+      | null;
+    supplementary_data: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data"];
   };
   paypal_v2_order_purchase_unit_amount: components["schemas"]["paypal_v2_common_money"] & {
     breakdown:
@@ -32690,6 +33321,14 @@ export type Schemas = {
   paypal_v2_order_purchase_unit_shipping_name: {
     full_name: string;
   };
+  paypal_v2_order_purchase_unit_shipping_option: {
+    amount: components["schemas"]["paypal_v2_common_money"];
+    id: string;
+    label: string;
+    selected: boolean;
+    /** @enum {string} */
+    type: "SHIPPING" | "PICKUP";
+  };
   paypal_v2_order_purchase_unit_shipping_tracker: {
     id: string;
     items: components["schemas"]["paypal_v2_order_purchase_unit_item"][];
@@ -32703,6 +33342,52 @@ export type Schemas = {
     quantity: number;
     sku: string | null;
     url: string | null;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data: {
+    card: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card"];
+    risk: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_risk"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card: {
+    address: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card_level2"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_level2: {
+    invoice_id: string;
+    tax_total: components["schemas"]["paypal_v2_common_money"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_level3: {
+    discount_amount: components["schemas"]["paypal_v2_common_money"];
+    duty_amount: components["schemas"]["paypal_v2_common_money"];
+    line_items: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_card_line_item"][];
+    shipping_address: components["schemas"]["paypal_v2_common_address"];
+    shipping_amount: components["schemas"]["paypal_v2_common_money"];
+    ships_from_postal_code: string;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_card_line_item: {
+    commodity_code: string;
+    description: string;
+    discount_amount: components["schemas"]["paypal_v2_common_money"];
+    image_url: string;
+    name: string;
+    quantity: number;
+    sku: string;
+    tax: components["schemas"]["paypal_v2_common_money"];
+    total_amount: components["schemas"]["paypal_v2_common_money"];
+    unit_amount: components["schemas"]["paypal_v2_common_money"];
+    unit_of_measure: string;
+    upc: components["schemas"]["paypal_v2_common_upc"];
+    url: string;
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_risk: {
+    address: components["schemas"]["paypal_v2_order_purchase_unit_supplementary_data_risk_participant_metadata"];
+  };
+  paypal_v2_order_purchase_unit_supplementary_data_risk_participant_metadata: {
+    ip_address: string;
+  };
+  paypal_v2_order_shipping_callback: {
+    id: string;
+    purchase_units: components["schemas"]["paypal_v2_order_purchase_unit"][];
+    shipping_address: components["schemas"]["paypal_v2_common_address"];
+    shipping_option: components["schemas"]["paypal_v2_order_purchase_unit_shipping_option"];
   };
   paypal_v2_order_tracker: {
     capture_id: string;
@@ -33606,6 +34291,20 @@ export type operations = {
         response: never;
         responseCode: 204;
       };
+  "assignVideoCover post /_action/media/{mediaId}/video-cover": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** ID of the video media entity */
+      mediaId: string;
+    };
+    body: {
+      /** ID of the image media entity to use as cover. Set to null to remove the cover. */
+      coverMediaId?: string | null;
+    };
+    response: never;
+    responseCode: 204;
+  };
   "externalLink post /_action/media/external-link": {
     contentType: "application\/json";
     accept: "application\/json";
@@ -34294,6 +34993,12 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
+  "inviteUser post /_action/sso/invite-user": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 200;
+  };
   "sync post /_action/sync": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -34555,6 +35260,12 @@ export type operations = {
     responseCode: 200;
   };
   "healthCheck get /_info/health-check": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 200;
+  };
+  "isSso get /_info/is-sso": {
     contentType?: "application/json";
     accept?: "application/json";
     response: never;
@@ -36577,6 +37288,78 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsBudget post /aggregate/b2b-components-budget":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsBudget"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsBudget"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsEmployeeWishlist post /aggregate/b2b-components-employee-wishlist":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsEmployeeWishlistProduct post /aggregate/b2b-components-employee-wishlist-product":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
         };
         responseCode: 200;
       };
@@ -39844,30 +40627,6 @@ export type operations = {
         };
         responseCode: 200;
       };
-  "aggregateSaasSbpUserData post /aggregate/saas-sbp-user-data":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: {
-          aggregations: components["schemas"]["Aggregation"][];
-        };
-        response: {
-          data?: components["schemas"]["SaasSbpUserData"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        body: {
-          aggregations: components["schemas"]["Aggregation"][];
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasSbpUserData"][];
-        };
-        responseCode: 200;
-      };
   "aggregateSaasStorefrontDemoToken post /aggregate/saas-storefront-demo-token":
     | {
         contentType?: "application/json";
@@ -39889,30 +40648,6 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SaasStorefrontDemoToken"][];
-        };
-        responseCode: 200;
-      };
-  "aggregateSaasUserLoginToken post /aggregate/saas-user-login-token":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: {
-          aggregations: components["schemas"]["Aggregation"][];
-        };
-        response: {
-          data?: components["schemas"]["SaasUserLoginToken"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        body: {
-          aggregations: components["schemas"]["Aggregation"][];
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasUserLoginToken"][];
         };
         responseCode: 200;
       };
@@ -41932,6 +42667,15 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "generateReviewSummary post /api/_action/generate-review-summary": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Options"];
+    response:
+      | components["schemas"]["ReviewSummaryItem"][]
+      | components["schemas"]["ReviewSummaryByLanguage"];
+    responseCode: 200;
+  };
   "rulePreview post /api/_admin/rule-builder-preview/{orderId}": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -44031,6 +44775,444 @@ export type operations = {
         body: components["schemas"]["B2bComponentsApprovalRule"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsApprovalRule"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsBudgetList get /b2b-components-budget":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsBudget"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsBudget"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-budget?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-budget?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-budget?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-budget?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsBudget post /b2b-components-budget":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsBudget"];
+        response: {
+          data: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsBudget"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsBudget get /b2b-components-budget/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_budget */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_budget */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsBudget delete /b2b-components-budget/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_budget */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsBudget patch /b2b-components-budget/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_budget */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsBudget"];
+        response: {
+          data: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_budget */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsBudget"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsBudget"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsEmployeeWishlistList get /b2b-components-employee-wishlist":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsEmployeeWishlist"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-employee-wishlist?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-employee-wishlist?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-employee-wishlist?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-employee-wishlist?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsEmployeeWishlist post /b2b-components-employee-wishlist":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsEmployeeWishlistProductList get /b2b-components-employee-wishlist-product":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-employee-wishlist-product?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-employee-wishlist-product?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-employee-wishlist-product?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-employee-wishlist-product?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsEmployeeWishlistProduct post /b2b-components-employee-wishlist-product":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsEmployeeWishlistProduct get /b2b-components-employee-wishlist-product/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist_product */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist_product */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsEmployeeWishlistProduct delete /b2b-components-employee-wishlist-product/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_employee_wishlist_product */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsEmployeeWishlistProduct patch /b2b-components-employee-wishlist-product/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist_product */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist_product */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsEmployeeWishlist get /b2b-components-employee-wishlist/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsEmployeeWishlist delete /b2b-components-employee-wishlist/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_employee_wishlist */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsEmployeeWishlist patch /b2b-components-employee-wishlist/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        response: {
+          data: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_employee_wishlist */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsEmployeeWishlist"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"];
         };
         responseCode: 200;
       };
@@ -55422,6 +56604,23 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "callBackWithCode get /oauth/sso/code": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: GenericRecord;
+    responseCode: 200;
+  };
+  "loadSsoLoginConfig get /oauth/sso/config": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** Experimental: Contains the return url for the Shopware SSO login. */
+      url?: string;
+      /** Experimental: Indicates which login is used. Default or SSO. */
+      useDefault?: boolean;
+    };
+    responseCode: 200;
+  };
   "token post /oauth/token": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -64045,152 +65244,6 @@ export type operations = {
         };
         responseCode: 200;
       };
-  "getSaasSbpUserDataList get /saas-sbp-user-data":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Max amount of resources to be returned in a page */
-          limit?: number;
-          /** The page to be returned */
-          page?: number;
-          /** Encoded SwagQL in JSON */
-          query?: string;
-        };
-        response: {
-          data?: components["schemas"]["SaasSbpUserData"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Max amount of resources to be returned in a page */
-          limit?: number;
-          /** The page to be returned */
-          page?: number;
-          /** Encoded SwagQL in JSON */
-          query?: string;
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["data"] &
-            components["schemas"]["SaasSbpUserData"][];
-          links?: components["schemas"]["pagination"] & {
-            /** @example /saas-sbp-user-data?limit=25 */
-            first?: unknown;
-            /** @example /saas-sbp-user-data?limit=25&page=11 */
-            last?: unknown;
-            /** @example /saas-sbp-user-data?limit=25&page=4 */
-            next?: unknown;
-            /** @example /saas-sbp-user-data?limit=25&page=2 */
-            prev?: unknown;
-          };
-        };
-        responseCode: 200;
-      };
-  "createSaasSbpUserData post /saas-sbp-user-data":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: "basic" | "detail";
-        };
-        body: components["schemas"]["SaasSbpUserData"];
-        response: {
-          data: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: "basic" | "detail";
-        };
-        body: components["schemas"]["SaasSbpUserData"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      };
-  "getSaasSbpUserData get /saas-sbp-user-data/{id}":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        pathParams: {
-          /** Identifier for the saas_sbp_user_data */
-          id: string;
-        };
-        response: {
-          data: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        pathParams: {
-          /** Identifier for the saas_sbp_user_data */
-          id: string;
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      };
-  "deleteSaasSbpUserData delete /saas-sbp-user-data/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query?: {
-      /** Data format for response. Empty if none is provided. */
-      _response?: string;
-    };
-    pathParams: {
-      /** Identifier for the saas_sbp_user_data */
-      id: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "updateSaasSbpUserData patch /saas-sbp-user-data/{id}":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: string;
-        };
-        pathParams: {
-          /** Identifier for the saas_sbp_user_data */
-          id: string;
-        };
-        body: components["schemas"]["SaasSbpUserData"];
-        response: {
-          data: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: string;
-        };
-        pathParams: {
-          /** Identifier for the saas_sbp_user_data */
-          id: string;
-        };
-        body: components["schemas"]["SaasSbpUserData"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasSbpUserData"];
-        };
-        responseCode: 200;
-      };
   "getSaasStorefrontDemoTokenList get /saas-storefront-demo-token":
     | {
         contentType?: "application/json";
@@ -64334,152 +65387,6 @@ export type operations = {
         body: components["schemas"]["SaasStorefrontDemoToken"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SaasStorefrontDemoToken"];
-        };
-        responseCode: 200;
-      };
-  "getSaasUserLoginTokenList get /saas-user-login-token":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Max amount of resources to be returned in a page */
-          limit?: number;
-          /** The page to be returned */
-          page?: number;
-          /** Encoded SwagQL in JSON */
-          query?: string;
-        };
-        response: {
-          data?: components["schemas"]["SaasUserLoginToken"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Max amount of resources to be returned in a page */
-          limit?: number;
-          /** The page to be returned */
-          page?: number;
-          /** Encoded SwagQL in JSON */
-          query?: string;
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["data"] &
-            components["schemas"]["SaasUserLoginToken"][];
-          links?: components["schemas"]["pagination"] & {
-            /** @example /saas-user-login-token?limit=25 */
-            first?: unknown;
-            /** @example /saas-user-login-token?limit=25&page=11 */
-            last?: unknown;
-            /** @example /saas-user-login-token?limit=25&page=4 */
-            next?: unknown;
-            /** @example /saas-user-login-token?limit=25&page=2 */
-            prev?: unknown;
-          };
-        };
-        responseCode: 200;
-      };
-  "createSaasUserLoginToken post /saas-user-login-token":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: "basic" | "detail";
-        };
-        body: components["schemas"]["SaasUserLoginToken"];
-        response: {
-          data: components["schemas"]["SaasUserLoginToken"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: "basic" | "detail";
-        };
-        body: components["schemas"]["SaasUserLoginToken"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasUserLoginToken"];
-        };
-        responseCode: 200;
-      };
-  "getSaasUserLoginToken get /saas-user-login-token/{id}":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        pathParams: {
-          /** Identifier for the saas_user_login_token */
-          id: string;
-        };
-        response: {
-          data: components["schemas"]["SaasUserLoginToken"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        pathParams: {
-          /** Identifier for the saas_user_login_token */
-          id: string;
-        };
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasUserLoginToken"];
-        };
-        responseCode: 200;
-      };
-  "deleteSaasUserLoginToken delete /saas-user-login-token/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query?: {
-      /** Data format for response. Empty if none is provided. */
-      _response?: string;
-    };
-    pathParams: {
-      /** Identifier for the saas_user_login_token */
-      id: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "updateSaasUserLoginToken patch /saas-user-login-token/{id}":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: string;
-        };
-        pathParams: {
-          /** Identifier for the saas_user_login_token */
-          id: string;
-        };
-        body: components["schemas"]["SaasUserLoginToken"];
-        response: {
-          data: components["schemas"]["SaasUserLoginToken"];
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        query?: {
-          /** Data format for response. Empty if none is provided. */
-          _response?: string;
-        };
-        pathParams: {
-          /** Identifier for the saas_user_login_token */
-          id: string;
-        };
-        body: components["schemas"]["SaasUserLoginToken"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasUserLoginToken"];
         };
         responseCode: 200;
       };
@@ -65509,6 +66416,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AclRole"][];
@@ -65519,6 +66430,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AclRole"][];
@@ -65529,6 +66444,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchAction"][];
@@ -65539,6 +66458,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchAction"][];
@@ -65549,6 +66472,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchActionSearchTerm"][];
@@ -65559,6 +66486,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchActionSearchTerm"][];
@@ -65569,6 +66500,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchBoosting"][];
@@ -65579,6 +66514,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchBoosting"][];
@@ -65589,6 +66528,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchConfig"][];
@@ -65599,6 +66542,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchConfig"][];
@@ -65609,6 +66556,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchConfigField"][];
@@ -65619,6 +66570,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchConfigField"][];
@@ -65629,6 +66584,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchEntityStream"][];
@@ -65639,6 +66598,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchEntityStream"][];
@@ -65649,6 +66612,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchEntityStreamFilter"][];
@@ -65659,6 +66626,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchEntityStreamFilter"][];
@@ -65669,6 +66640,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AdvancedSearchSynonym"][];
@@ -65679,6 +66654,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AdvancedSearchSynonym"][];
@@ -65689,6 +66668,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["App"][];
@@ -65699,6 +66682,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["App"][];
@@ -65709,6 +66696,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppActionButton"][];
@@ -65719,6 +66710,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppActionButton"][];
@@ -65729,6 +66724,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppAdministrationSnippet"][];
@@ -65739,6 +66738,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppAdministrationSnippet"][];
@@ -65749,6 +66752,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppCmsBlock"][];
@@ -65759,6 +66766,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppCmsBlock"][];
@@ -65769,6 +66780,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppFlowAction"][];
@@ -65779,6 +66794,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppFlowAction"][];
@@ -65789,6 +66808,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppFlowEvent"][];
@@ -65799,6 +66822,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppFlowEvent"][];
@@ -65809,6 +66836,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppPaymentMethod"][];
@@ -65819,6 +66850,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppPaymentMethod"][];
@@ -65829,6 +66864,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppScriptCondition"][];
@@ -65839,6 +66878,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppScriptCondition"][];
@@ -65849,6 +66892,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppShippingMethod"][];
@@ -65859,6 +66906,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppShippingMethod"][];
@@ -65869,6 +66920,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["AppTemplate"][];
@@ -65879,6 +66934,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["AppTemplate"][];
@@ -65889,6 +66948,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bBusinessPartner"][];
@@ -65899,6 +66962,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bBusinessPartner"][];
@@ -65909,6 +66976,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsAdvancedProductCatalogs"][];
@@ -65919,6 +66990,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsAdvancedProductCatalogs"][];
@@ -65929,6 +67004,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsApprovalRule"][];
@@ -65939,6 +67018,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsApprovalRule"][];
@@ -65949,6 +67032,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
@@ -65959,9 +67046,97 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsBudget post /search/b2b-components-budget":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsBudget"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsBudget"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsEmployeeWishlist post /search/b2b-components-employee-wishlist":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlist"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsEmployeeWishlistProduct post /search/b2b-components-employee-wishlist-product":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsEmployeeWishlistProduct"][];
         };
         responseCode: 200;
       };
@@ -65969,6 +67144,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsOrganization"][];
@@ -65979,6 +67158,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsOrganization"][];
@@ -65989,6 +67172,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsOrganizationCustomerAddress"][];
@@ -65999,6 +67186,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsOrganizationCustomerAddress"][];
@@ -66009,6 +67200,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsPendingOrder"][];
@@ -66019,6 +67214,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsPendingOrder"][];
@@ -66029,6 +67228,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsPendingOrderAddress"][];
@@ -66039,6 +67242,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsPendingOrderAddress"][];
@@ -66049,6 +67256,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsRole"][];
@@ -66059,6 +67270,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsRole"][];
@@ -66069,6 +67284,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsShoppingList"][];
@@ -66079,6 +67298,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsShoppingList"][];
@@ -66089,6 +67312,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
@@ -66099,6 +67326,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
@@ -66109,6 +67340,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bEmployee"][];
@@ -66119,6 +67354,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bEmployee"][];
@@ -66129,6 +67368,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bOrderEmployee"][];
@@ -66139,6 +67382,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bOrderEmployee"][];
@@ -66149,6 +67396,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["B2bPermission"][];
@@ -66159,6 +67410,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bPermission"][];
@@ -66169,6 +67424,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Category"][];
@@ -66179,6 +67438,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Category"][];
@@ -66189,6 +67452,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CeSpatialPreview"][];
@@ -66199,6 +67466,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CeSpatialPreview"][];
@@ -66209,6 +67480,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsBlock"][];
@@ -66219,6 +67494,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsBlock"][];
@@ -66229,6 +67508,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsPage"][];
@@ -66239,6 +67522,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsPage"][];
@@ -66249,6 +67536,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsPageActivity"][];
@@ -66259,6 +67550,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsPageActivity"][];
@@ -66269,6 +67564,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsPageDraft"][];
@@ -66279,6 +67578,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsPageDraft"][];
@@ -66289,6 +67592,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsSection"][];
@@ -66299,6 +67606,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsSection"][];
@@ -66309,6 +67620,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CmsSlot"][];
@@ -66319,6 +67634,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CmsSlot"][];
@@ -66329,6 +67648,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Country"][];
@@ -66339,6 +67662,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Country"][];
@@ -66349,6 +67676,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CountryState"][];
@@ -66359,6 +67690,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CountryState"][];
@@ -66369,6 +67704,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Currency"][];
@@ -66379,6 +67718,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Currency"][];
@@ -66389,6 +67732,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CurrencyCountryRounding"][];
@@ -66399,6 +67746,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CurrencyCountryRounding"][];
@@ -66409,6 +67760,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomEntity"][];
@@ -66419,6 +67774,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomEntity"][];
@@ -66429,6 +67788,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomField"][];
@@ -66439,6 +67802,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomField"][];
@@ -66449,6 +67816,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomFieldSet"][];
@@ -66459,6 +67830,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomFieldSet"][];
@@ -66469,6 +67844,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomFieldSetRelation"][];
@@ -66479,6 +67858,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomFieldSetRelation"][];
@@ -66489,6 +67872,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomPrice"][];
@@ -66499,6 +67886,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomPrice"][];
@@ -66509,6 +67900,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Customer"][];
@@ -66519,6 +67914,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Customer"][];
@@ -66529,6 +67928,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerAddress"][];
@@ -66539,6 +67942,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerAddress"][];
@@ -66549,6 +67956,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerGroup"][];
@@ -66559,6 +67970,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerGroup"][];
@@ -66569,6 +67984,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerRecovery"][];
@@ -66579,6 +67998,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerRecovery"][];
@@ -66589,6 +68012,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerSpecificFeatures"][];
@@ -66599,6 +68026,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerSpecificFeatures"][];
@@ -66609,6 +68040,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerWishlist"][];
@@ -66619,6 +68054,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerWishlist"][];
@@ -66629,6 +68068,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["CustomerWishlistProduct"][];
@@ -66639,6 +68082,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["CustomerWishlistProduct"][];
@@ -66649,6 +68096,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DeliveryTime"][];
@@ -66659,6 +68110,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DeliveryTime"][];
@@ -66669,6 +68124,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Document"][];
@@ -66679,6 +68138,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Document"][];
@@ -66689,6 +68152,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DocumentBaseConfig"][];
@@ -66699,6 +68166,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentBaseConfig"][];
@@ -66709,6 +68180,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
@@ -66719,6 +68194,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
@@ -66729,6 +68208,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DocumentType"][];
@@ -66739,6 +68222,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentType"][];
@@ -66749,6 +68236,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrAppointment"][];
@@ -66759,6 +68250,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrAppointment"][];
@@ -66769,6 +68264,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrAppointmentAttendee"][];
@@ -66779,6 +68278,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrAppointmentAttendee"][];
@@ -66789,6 +68292,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrAppointmentRequest"][];
@@ -66799,6 +68306,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrAppointmentRequest"][];
@@ -66809,6 +68320,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrAppointmentVideoChat"][];
@@ -66819,6 +68334,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrAppointmentVideoChat"][];
@@ -66829,6 +68348,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrAttendeeProductCollection"][];
@@ -66839,6 +68362,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrAttendeeProductCollection"][];
@@ -66849,6 +68376,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrCmsSlide"][];
@@ -66859,6 +68390,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrCmsSlide"][];
@@ -66869,6 +68404,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrInteraction"][];
@@ -66879,6 +68418,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrInteraction"][];
@@ -66889,6 +68432,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrPresentation"][];
@@ -66899,6 +68446,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrPresentation"][];
@@ -66909,6 +68460,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["DsrPresentationCmsPage"][];
@@ -66919,6 +68474,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DsrPresentationCmsPage"][];
@@ -66929,6 +68488,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Flow"][];
@@ -66939,6 +68502,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Flow"][];
@@ -66949,6 +68516,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["FlowSequence"][];
@@ -66959,6 +68530,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["FlowSequence"][];
@@ -66969,6 +68544,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["FlowTemplate"][];
@@ -66979,6 +68558,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["FlowTemplate"][];
@@ -66989,6 +68572,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ImportExportFile"][];
@@ -66999,6 +68586,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ImportExportFile"][];
@@ -67009,6 +68600,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ImportExportLog"][];
@@ -67019,6 +68614,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ImportExportLog"][];
@@ -67029,6 +68628,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ImportExportProfile"][];
@@ -67039,6 +68642,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ImportExportProfile"][];
@@ -67049,6 +68656,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Integration"][];
@@ -67059,6 +68670,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Integration"][];
@@ -67069,6 +68684,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["LandingPage"][];
@@ -67079,6 +68698,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["LandingPage"][];
@@ -67089,6 +68712,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Language"][];
@@ -67099,6 +68726,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Language"][];
@@ -67109,6 +68740,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Locale"][];
@@ -67119,6 +68754,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Locale"][];
@@ -67129,6 +68768,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["LogEntry"][];
@@ -67139,6 +68782,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["LogEntry"][];
@@ -67149,6 +68796,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MailHeaderFooter"][];
@@ -67159,6 +68810,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MailHeaderFooter"][];
@@ -67169,6 +68824,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MailTemplate"][];
@@ -67179,6 +68838,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MailTemplate"][];
@@ -67189,6 +68852,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MailTemplateType"][];
@@ -67199,6 +68866,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MailTemplateType"][];
@@ -67209,6 +68880,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MainCategory"][];
@@ -67219,6 +68894,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MainCategory"][];
@@ -67229,6 +68908,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MeasurementDisplayUnit"][];
@@ -67239,6 +68922,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MeasurementDisplayUnit"][];
@@ -67249,6 +68936,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MeasurementSystem"][];
@@ -67259,6 +68950,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MeasurementSystem"][];
@@ -67269,6 +68964,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Media"][];
@@ -67279,6 +68978,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Media"][];
@@ -67289,6 +68992,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaAiTag"][];
@@ -67299,6 +69006,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaAiTag"][];
@@ -67309,6 +69020,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaDefaultFolder"][];
@@ -67319,6 +69034,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaDefaultFolder"][];
@@ -67329,6 +69048,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaFolder"][];
@@ -67339,6 +69062,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaFolder"][];
@@ -67349,6 +69076,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaFolderConfiguration"][];
@@ -67359,6 +69090,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaFolderConfiguration"][];
@@ -67369,6 +69104,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaThumbnail"][];
@@ -67379,6 +69118,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaThumbnail"][];
@@ -67389,6 +69132,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["MediaThumbnailSize"][];
@@ -67399,6 +69146,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["MediaThumbnailSize"][];
@@ -67409,6 +69160,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["NewsletterRecipient"][];
@@ -67419,6 +69174,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["NewsletterRecipient"][];
@@ -67429,6 +69188,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Notification"][];
@@ -67439,6 +69202,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Notification"][];
@@ -67449,6 +69216,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["NumberRange"][];
@@ -67459,6 +69230,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["NumberRange"][];
@@ -67469,6 +69244,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["NumberRangeSalesChannel"][];
@@ -67479,6 +69258,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["NumberRangeSalesChannel"][];
@@ -67489,6 +69272,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["NumberRangeState"][];
@@ -67499,6 +69286,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["NumberRangeState"][];
@@ -67509,6 +69300,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["NumberRangeType"][];
@@ -67519,6 +69314,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["NumberRangeType"][];
@@ -67529,6 +69328,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Order"][];
@@ -67539,6 +69342,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Order"][];
@@ -67549,6 +69356,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderAddress"][];
@@ -67559,6 +69370,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderAddress"][];
@@ -67569,6 +69384,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderCustomer"][];
@@ -67579,6 +69398,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderCustomer"][];
@@ -67589,6 +69412,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderDelivery"][];
@@ -67599,6 +69426,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderDelivery"][];
@@ -67609,6 +69440,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderDeliveryPosition"][];
@@ -67619,6 +69454,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderDeliveryPosition"][];
@@ -67629,6 +69468,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderLineItem"][];
@@ -67639,6 +69482,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderLineItem"][];
@@ -67649,6 +69496,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderLineItemDownload"][];
@@ -67659,6 +69510,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderLineItemDownload"][];
@@ -67669,6 +69524,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderProductWarehouse"][];
@@ -67679,6 +69538,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderProductWarehouse"][];
@@ -67689,6 +69552,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderReturn"][];
@@ -67699,6 +69566,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderReturn"][];
@@ -67709,6 +69580,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderReturnLineItem"][];
@@ -67719,6 +69594,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderReturnLineItem"][];
@@ -67729,6 +69608,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderReturnLineItemReason"][];
@@ -67739,6 +69622,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderReturnLineItemReason"][];
@@ -67749,6 +69636,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderTransaction"][];
@@ -67759,6 +69650,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderTransaction"][];
@@ -67769,6 +69664,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderTransactionCapture"][];
@@ -67779,6 +69678,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderTransactionCapture"][];
@@ -67789,6 +69692,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderTransactionCaptureRefund"][];
@@ -67799,6 +69706,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderTransactionCaptureRefund"][];
@@ -67809,6 +69720,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
@@ -67819,6 +69734,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
@@ -67829,6 +69748,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["OrderWarehouseGroup"][];
@@ -67839,6 +69762,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["OrderWarehouseGroup"][];
@@ -67849,6 +69776,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PaymentMethod"][];
@@ -67859,6 +69790,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PaymentMethod"][];
@@ -67869,6 +69804,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Plugin"][];
@@ -67879,6 +69818,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Plugin"][];
@@ -67889,6 +69832,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Product"][];
@@ -67899,6 +69846,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Product"][];
@@ -67909,6 +69860,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductConfiguratorSetting"][];
@@ -67919,6 +69874,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductConfiguratorSetting"][];
@@ -67929,6 +69888,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductCrossSelling"][];
@@ -67939,6 +69902,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductCrossSelling"][];
@@ -67949,6 +69916,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
@@ -67959,6 +69930,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
@@ -67969,6 +69944,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductDownload"][];
@@ -67979,6 +69958,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductDownload"][];
@@ -67989,6 +69972,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductExport"][];
@@ -67999,6 +69986,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductExport"][];
@@ -68009,6 +70000,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductFeatureSet"][];
@@ -68019,6 +70014,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductFeatureSet"][];
@@ -68029,6 +70028,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductKeywordDictionary"][];
@@ -68039,6 +70042,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductKeywordDictionary"][];
@@ -68049,6 +70056,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductManufacturer"][];
@@ -68059,6 +70070,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductManufacturer"][];
@@ -68069,6 +70084,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductMedia"][];
@@ -68079,6 +70098,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductMedia"][];
@@ -68089,6 +70112,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductPrice"][];
@@ -68099,6 +70126,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductPrice"][];
@@ -68109,6 +70140,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductReview"][];
@@ -68119,6 +70154,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductReview"][];
@@ -68129,6 +70168,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductReviewSummary"][];
@@ -68139,6 +70182,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductReviewSummary"][];
@@ -68149,6 +70196,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductSearchConfig"][];
@@ -68159,6 +70210,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductSearchConfig"][];
@@ -68169,6 +70224,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductSearchConfigField"][];
@@ -68179,6 +70238,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductSearchConfigField"][];
@@ -68189,6 +70252,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductSearchKeyword"][];
@@ -68199,6 +70266,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductSearchKeyword"][];
@@ -68209,6 +70280,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductSorting"][];
@@ -68219,6 +70294,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductSorting"][];
@@ -68229,6 +70308,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductStream"][];
@@ -68239,6 +70322,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductStream"][];
@@ -68249,6 +70336,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductStreamFilter"][];
@@ -68259,6 +70350,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductStreamFilter"][];
@@ -68269,6 +70364,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductVisibility"][];
@@ -68279,6 +70378,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductVisibility"][];
@@ -68289,6 +70392,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ProductWarehouse"][];
@@ -68299,6 +70406,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ProductWarehouse"][];
@@ -68309,6 +70420,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Promotion"][];
@@ -68319,6 +70434,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Promotion"][];
@@ -68329,6 +70448,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PromotionDiscount"][];
@@ -68339,6 +70462,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PromotionDiscount"][];
@@ -68349,6 +70476,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PromotionDiscountPrices"][];
@@ -68359,6 +70490,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PromotionDiscountPrices"][];
@@ -68369,6 +70504,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PromotionIndividualCode"][];
@@ -68379,6 +70518,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PromotionIndividualCode"][];
@@ -68389,6 +70532,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PromotionSalesChannel"][];
@@ -68399,6 +70546,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PromotionSalesChannel"][];
@@ -68409,6 +70560,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PromotionSetgroup"][];
@@ -68419,6 +70574,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PromotionSetgroup"][];
@@ -68429,6 +70588,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PropertyGroup"][];
@@ -68439,6 +70602,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PropertyGroup"][];
@@ -68449,6 +70616,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["PropertyGroupOption"][];
@@ -68459,6 +70630,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["PropertyGroupOption"][];
@@ -68469,6 +70644,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Quote"][];
@@ -68479,6 +70658,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Quote"][];
@@ -68489,6 +70672,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteComment"][];
@@ -68499,6 +70686,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteComment"][];
@@ -68509,6 +70700,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteDelivery"][];
@@ -68519,6 +70714,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteDelivery"][];
@@ -68529,6 +70728,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteDeliveryPosition"][];
@@ -68539,6 +70742,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteDeliveryPosition"][];
@@ -68549,6 +70756,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteDocument"][];
@@ -68559,6 +70770,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteDocument"][];
@@ -68569,6 +70784,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteEmployee"][];
@@ -68579,6 +70798,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteEmployee"][];
@@ -68589,6 +70812,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteLineItem"][];
@@ -68599,6 +70826,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteLineItem"][];
@@ -68609,6 +70840,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["QuoteTransaction"][];
@@ -68619,6 +70854,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["QuoteTransaction"][];
@@ -68629,6 +70868,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Rule"][];
@@ -68639,6 +70882,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Rule"][];
@@ -68649,6 +70896,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["RuleCondition"][];
@@ -68659,6 +70910,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["RuleCondition"][];
@@ -68669,6 +70924,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SaasAppStorefrontConfig"][];
@@ -68679,29 +70938,13 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SaasAppStorefrontConfig"][];
-        };
-        responseCode: 200;
-      };
-  "searchSaasSbpUserData post /search/saas-sbp-user-data":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: components["schemas"]["Criteria"];
-        response: {
-          data?: components["schemas"]["SaasSbpUserData"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        body: components["schemas"]["Criteria"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasSbpUserData"][];
         };
         responseCode: 200;
       };
@@ -68709,6 +70952,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SaasStorefrontDemoToken"][];
@@ -68719,29 +70966,13 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SaasStorefrontDemoToken"][];
-        };
-        responseCode: 200;
-      };
-  "searchSaasUserLoginToken post /search/saas-user-login-token":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: components["schemas"]["Criteria"];
-        response: {
-          data?: components["schemas"]["SaasUserLoginToken"][];
-          total?: number;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/vnd.api+json";
-        body: components["schemas"]["Criteria"];
-        response: components["schemas"]["success"] & {
-          data?: components["schemas"]["SaasUserLoginToken"][];
         };
         responseCode: 200;
       };
@@ -68749,6 +70980,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SalesChannel"][];
@@ -68759,6 +70994,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SalesChannel"][];
@@ -68769,6 +71008,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SalesChannelAnalytics"][];
@@ -68779,6 +71022,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SalesChannelAnalytics"][];
@@ -68789,6 +71036,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SalesChannelDomain"][];
@@ -68799,6 +71050,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SalesChannelDomain"][];
@@ -68809,6 +71064,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SalesChannelType"][];
@@ -68819,6 +71078,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SalesChannelType"][];
@@ -68829,6 +71092,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Salutation"][];
@@ -68839,6 +71106,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Salutation"][];
@@ -68849,6 +71120,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ScheduledTask"][];
@@ -68859,6 +71134,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ScheduledTask"][];
@@ -68869,6 +71148,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Script"][];
@@ -68879,6 +71162,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Script"][];
@@ -68889,6 +71176,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SeoUrl"][];
@@ -68899,6 +71190,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SeoUrl"][];
@@ -68909,6 +71204,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SeoUrlTemplate"][];
@@ -68919,6 +71218,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SeoUrlTemplate"][];
@@ -68929,6 +71232,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ShippingMethod"][];
@@ -68939,6 +71246,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ShippingMethod"][];
@@ -68949,6 +71260,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["ShippingMethodPrice"][];
@@ -68959,6 +71274,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["ShippingMethodPrice"][];
@@ -68969,6 +71288,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Snippet"][];
@@ -68979,6 +71302,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Snippet"][];
@@ -68989,6 +71316,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SnippetSet"][];
@@ -68999,6 +71330,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SnippetSet"][];
@@ -69009,6 +71344,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialRenderConfigSize"][];
@@ -69019,6 +71358,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialRenderConfigSize"][];
@@ -69029,6 +71372,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialScene"][];
@@ -69039,6 +71386,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialScene"][];
@@ -69049,6 +71400,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialSceneCamera"][];
@@ -69059,6 +71414,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialSceneCamera"][];
@@ -69069,6 +71428,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialSceneGroup"][];
@@ -69079,6 +71442,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialSceneGroup"][];
@@ -69089,6 +71456,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialSceneLight"][];
@@ -69099,6 +71470,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialSceneLight"][];
@@ -69109,6 +71484,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialSceneMaterial"][];
@@ -69119,6 +71498,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialSceneMaterial"][];
@@ -69129,6 +71512,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialSceneObject"][];
@@ -69139,6 +71526,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialSceneObject"][];
@@ -69149,6 +71540,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SpatialScenePrimitive"][];
@@ -69159,6 +71554,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SpatialScenePrimitive"][];
@@ -69169,6 +71568,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SsoProvider"][];
@@ -69179,6 +71582,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SsoProvider"][];
@@ -69189,6 +71596,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SsoProviderCustomer"][];
@@ -69199,6 +71610,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SsoProviderCustomer"][];
@@ -69209,6 +71624,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["StateMachine"][];
@@ -69219,6 +71638,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["StateMachine"][];
@@ -69229,6 +71652,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["StateMachineHistory"][];
@@ -69239,6 +71666,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["StateMachineHistory"][];
@@ -69249,6 +71680,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["StateMachineState"][];
@@ -69259,6 +71694,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["StateMachineState"][];
@@ -69269,6 +71708,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["StateMachineTransition"][];
@@ -69279,6 +71722,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["StateMachineTransition"][];
@@ -69289,6 +71736,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Subscription"][];
@@ -69299,6 +71750,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Subscription"][];
@@ -69309,6 +71764,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SubscriptionAddress"][];
@@ -69319,6 +71778,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SubscriptionAddress"][];
@@ -69329,6 +71792,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SubscriptionCustomer"][];
@@ -69339,6 +71806,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SubscriptionCustomer"][];
@@ -69349,6 +71820,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SubscriptionInterval"][];
@@ -69359,6 +71834,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SubscriptionInterval"][];
@@ -69369,6 +71848,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SubscriptionPlan"][];
@@ -69379,6 +71862,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SubscriptionPlan"][];
@@ -69389,6 +71876,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsBlockRule"][];
@@ -69399,6 +71890,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsBlockRule"][];
@@ -69409,6 +71904,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsForm"][];
@@ -69419,6 +71918,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsForm"][];
@@ -69429,6 +71932,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsFormGroup"][];
@@ -69439,6 +71946,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsFormGroup"][];
@@ -69449,6 +71960,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsFormGroupField"][];
@@ -69459,6 +71974,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsFormGroupField"][];
@@ -69469,6 +71988,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsQuickview"][];
@@ -69479,6 +72002,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsQuickview"][];
@@ -69489,6 +72016,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsScrollNavigation"][];
@@ -69499,6 +72030,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsScrollNavigation"][];
@@ -69509,6 +72044,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCmsExtensionsScrollNavigationPageSettings"][];
@@ -69519,6 +72058,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCmsExtensionsScrollNavigationPageSettings"][];
@@ -69529,6 +72072,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplate"][];
@@ -69539,6 +72086,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplate"][];
@@ -69549,6 +72100,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
@@ -69559,6 +72114,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
@@ -69569,6 +72128,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
@@ -69579,6 +72142,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
@@ -69589,6 +72156,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
@@ -69599,6 +72170,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
@@ -69609,6 +72184,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
@@ -69619,6 +72198,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
@@ -69629,6 +72212,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusionOperator"][];
@@ -69639,6 +72226,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateExclusionOperator"][];
@@ -69649,6 +72240,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
@@ -69659,6 +72254,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
@@ -69669,6 +72268,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
@@ -69679,6 +72282,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
@@ -69689,6 +72296,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
@@ -69699,6 +72310,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
@@ -69709,6 +72324,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
@@ -69719,6 +72338,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
@@ -69729,6 +72352,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagDelayAction"][];
@@ -69739,6 +72366,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagDelayAction"][];
@@ -69749,6 +72380,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagLanguagePackLanguage"][];
@@ -69759,6 +72394,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagLanguagePackLanguage"][];
@@ -69769,6 +72408,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationConnection"][];
@@ -69779,6 +72422,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationConnection"][];
@@ -69789,6 +72436,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationData"][];
@@ -69799,6 +72450,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationData"][];
@@ -69809,6 +72464,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationGeneralSetting"][];
@@ -69819,6 +72478,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationGeneralSetting"][];
@@ -69829,6 +72492,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationLogging"][];
@@ -69839,6 +72506,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationLogging"][];
@@ -69849,6 +72520,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationMapping"][];
@@ -69859,6 +72534,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationMapping"][];
@@ -69869,6 +72548,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationMediaFile"][];
@@ -69879,6 +72562,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationMediaFile"][];
@@ -69889,6 +72576,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagMigrationRun"][];
@@ -69899,6 +72590,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationRun"][];
@@ -69909,6 +72604,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalPosSalesChannel"][];
@@ -69919,6 +72618,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalPosSalesChannel"][];
@@ -69929,6 +72632,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalPosSalesChannelRun"][];
@@ -69939,6 +72646,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalPosSalesChannelRun"][];
@@ -69949,6 +72660,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalPosSalesChannelRunLog"][];
@@ -69959,6 +72674,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalPosSalesChannelRunLog"][];
@@ -69969,6 +72688,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalTransactionReport"][];
@@ -69979,6 +72702,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalTransactionReport"][];
@@ -69989,6 +72716,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalVaultToken"][];
@@ -69999,6 +72730,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalVaultToken"][];
@@ -70009,6 +72744,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagPaypalVaultTokenMapping"][];
@@ -70019,6 +72758,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagPaypalVaultTokenMapping"][];
@@ -70029,6 +72772,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagSocialShoppingCustomer"][];
@@ -70039,6 +72786,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagSocialShoppingCustomer"][];
@@ -70049,6 +72800,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagSocialShoppingOrder"][];
@@ -70059,6 +72814,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagSocialShoppingOrder"][];
@@ -70069,6 +72828,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagSocialShoppingProductError"][];
@@ -70079,6 +72842,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagSocialShoppingProductError"][];
@@ -70089,6 +72856,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SwagSocialShoppingSalesChannel"][];
@@ -70099,6 +72870,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagSocialShoppingSalesChannel"][];
@@ -70109,6 +72884,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["SystemConfig"][];
@@ -70119,6 +72898,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SystemConfig"][];
@@ -70129,6 +72912,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Tag"][];
@@ -70139,6 +72926,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Tag"][];
@@ -70149,6 +72940,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Tax"][];
@@ -70159,6 +72954,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Tax"][];
@@ -70169,6 +72968,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["TaxProvider"][];
@@ -70179,6 +72982,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["TaxProvider"][];
@@ -70189,6 +72996,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["TaxRule"][];
@@ -70199,6 +73010,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["TaxRule"][];
@@ -70209,6 +73024,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["TaxRuleType"][];
@@ -70219,6 +73038,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["TaxRuleType"][];
@@ -70229,6 +73052,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Theme"][];
@@ -70239,6 +73066,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Theme"][];
@@ -70249,6 +73080,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Unit"][];
@@ -70259,6 +73094,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Unit"][];
@@ -70269,6 +73108,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["User"][];
@@ -70279,6 +73122,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["User"][];
@@ -70289,6 +73136,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["UserAccessKey"][];
@@ -70299,6 +73150,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["UserAccessKey"][];
@@ -70309,6 +73164,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["UserConfig"][];
@@ -70319,6 +73178,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["UserConfig"][];
@@ -70329,6 +73192,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["UserRecovery"][];
@@ -70339,6 +73206,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["UserRecovery"][];
@@ -70349,6 +73220,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Warehouse"][];
@@ -70359,6 +73234,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Warehouse"][];
@@ -70369,6 +73248,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["WarehouseGroup"][];
@@ -70379,6 +73262,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["WarehouseGroup"][];
@@ -70389,6 +73276,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["Webhook"][];
@@ -70399,6 +73290,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Webhook"][];
@@ -70409,6 +73304,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: {
           data?: components["schemas"]["WebhookEventLog"][];
@@ -70419,6 +73318,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["WebhookEventLog"][];
@@ -70769,8 +73672,6 @@ export type operations = {
         query?: {
           /** Data format for response. Empty if none is provided. */
           _response?: "basic" | "detail";
-          /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
-          onlyAvailable?: boolean;
         };
         body: components["schemas"]["ShippingMethod"];
         response: {
@@ -70784,8 +73685,6 @@ export type operations = {
         query?: {
           /** Data format for response. Empty if none is provided. */
           _response?: "basic" | "detail";
-          /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
-          onlyAvailable?: boolean;
         };
         body: components["schemas"]["ShippingMethod"];
         response: components["schemas"]["success"] & {
