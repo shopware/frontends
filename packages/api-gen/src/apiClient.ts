@@ -8,19 +8,20 @@ let storeApiClient: ReturnType<typeof createAPIClient<operations>>;
 export function getAdminApiClient() {
   if (!adminApiClient) {
     // Support both password and client_credentials grant types
-    const credentials = process.env.SHOPWARE_ADMIN_CLIENT_SECRET
-      ? ({
-          grant_type: "client_credentials",
-          client_id: process.env.SHOPWARE_ADMIN_CLIENT_ID || "administration",
-          client_secret: process.env.SHOPWARE_ADMIN_CLIENT_SECRET,
-        } as const)
-      : ({
-          grant_type: "password",
-          client_id: "administration",
-          scope: "write",
-          username: process.env.SHOPWARE_ADMIN_USERNAME || "",
-          password: process.env.SHOPWARE_ADMIN_PASSWORD || "",
-        } as unknown as adminOperations["token post /oauth/token"]["body"]);
+    const credentials: adminOperations["token post /oauth/token"]["body"] =
+      process.env.SHOPWARE_ADMIN_CLIENT_SECRET
+        ? {
+            grant_type: "client_credentials",
+            client_id: process.env.SHOPWARE_ADMIN_CLIENT_ID || "administration",
+            client_secret: process.env.SHOPWARE_ADMIN_CLIENT_SECRET,
+          }
+        : {
+            grant_type: "password",
+            client_id: "administration",
+            scope: "write",
+            username: process.env.SHOPWARE_ADMIN_USERNAME || "",
+            password: process.env.SHOPWARE_ADMIN_PASSWORD || "",
+          };
 
     adminApiClient = createAdminAPIClient<adminOperations>({
       baseURL: `${process.env.OPENAPI_JSON_URL}/api`,
