@@ -26,7 +26,7 @@ const ADMIN_API_ENDPOINT = `/api/${SCHEMA_ENDPOINT}`;
  *
  * For `admin` API (client_credentials grant):
  * - OPENAPI_JSON_URL
- * - SHOPWARE_ADMIN_CLIENT_ID (optional, defaults to "administration")
+ * - SHOPWARE_ADMIN_CLIENT_ID
  * - SHOPWARE_ADMIN_CLIENT_SECRET
  *
  */
