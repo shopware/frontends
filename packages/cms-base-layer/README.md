@@ -304,6 +304,136 @@ const customPlaceholder = useImagePlaceholder("#FF0000");
 </template>
 ```
 
+## 🖼️ Background Image Optimization
+
+CMS sections and blocks can have background images set via the Shopware admin. This layer automatically optimizes those background image URLs by appending `format` and `quality` query parameters — bringing the same optimization applied to `<NuxtImg>` components to CSS background images.
+
+Both `CmsPage` (for section backgrounds) and `CmsGenericBlock` (for block backgrounds) read the configuration from `app.config.ts` and pass it to the `getBackgroundImageUrl` helper from `@shopware/helpers`.
+
+### Configuration
+
+Default values are set in `app.config.ts` and can be overridden in your project:
+
+```ts
+export default defineAppConfig({
+  backgroundImage: {
+    format: "webp", // Default: "webp" — output format ("webp" | "avif" | "jpg" | "png")
+    quality: 90, // Default: 90 — image quality (0-100)
+  },
+});
+```
+
+Setting `format` or `quality` to `undefined` (or omitting the key) will skip that parameter in the generated URL.
+
+### How It Works
+
+When a CMS section or block has a `backgroundMedia` set, the components call `getBackgroundImageUrl()` which:
+
+1. Extracts the raw image URL from the CSS `url()` value
+2. Appends `width` or `height` based on the image's original dimensions (capped at 1920px)
+3. Adds `fit=crop,smart` for intelligent cropping
+4. Appends `format` and `quality` from `app.config.ts` if provided
+
+**Example generated URL:**
+```
+url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")
+```
+
+> **Note:** Like other dynamic image transformations, background image optimization requires remote thumbnail generation support. See the [Image Optimization](#%EF%B8%8F-image-optimization) section above for Shopware Cloud vs. self-hosted requirements.
+
+## LCP Image Preload
+
+This layer includes a `useLcpImagePreload` composable that automatically preloads the first image found in CMS page content. This targets the [Largest Contentful Paint (LCP)](https://web.dev/lcp/) element, which is often a hero background image or the first visible image element.
+
+### How it works
+
+The composable scans CMS sections in document order, checking:
+1. Section background images (`section.backgroundMedia`)
+2. Block background images (`block.backgroundMedia`)
+3. Image element media (`slot.data.media`)
+
+The first image found is injected as a `<link rel="preload" as="image" fetchpriority="high">` in the `<head>` during SSR. This allows the browser to start fetching the LCP image immediately, before parsing CSS or executing JavaScript. The `fetchpriority="high"` attribute ensures the preload is prioritized — this is especially useful for background images which don't natively support `fetchpriority`.
+
+### Usage
+
+The composable is already called in `CmsPage.vue`. If you override `CmsPage`, you can use it in your custom component:
+
+```vue
+<script setup>
+import { useLcpImagePreload } from "@shopware/cms-base-layer/composables/useLcpImagePreload";
+
+const props = defineProps<{ content: Schemas["CmsPage"] }>();
+
+useLcpImagePreload(props.content?.sections || []);
+</script>
+```
+
+For background images, the preload URL includes the optimized `format` and `quality` parameters from `app.config.ts`. For element images (e.g. `<NuxtImg>`), the raw media URL is preloaded.
+
+## Responsive CMS Images
+
+CMS image elements (`CmsElementImage`) automatically serve appropriately-sized images using responsive `srcset` and `sizes` attributes. This prevents the browser from downloading images larger than their displayed dimensions — a common Lighthouse performance issue.
+
+### How it works
+
+1. **`CmsGenericBlock`** counts the number of slots in each block and `provide`s a responsive `sizes` value (e.g., a 2-slot block means images are ~50% viewport width on desktop).
+2. **`CmsElementImage`** `inject`s the sizes hint and applies it to `<NuxtImg>`.
+3. If the media has **pre-generated thumbnails** from Shopware, the existing `srcset` from thumbnails is used.
+4. If **no thumbnails** exist, a synthetic `srcset` is generated using CDN width-based resizing (`?width=400`, `?width=800`, etc.) via the `generateCdnSrcSet` helper from `@shopware/helpers`.
+
+The browser combines `sizes` + `srcset` to download only the image size it actually needs — during HTML parsing, before any JavaScript runs.
+
+### Configuration
+
+Default slot-count-to-sizes mappings are set in `app.config.ts` and can be overridden:
+
+```ts
+export default defineAppConfig({
+  imageSizes: {
+    // slot count → sizes attribute value
+    1: "(max-width: 768px) 100vw, 100vw",   // full-width blocks
+    2: "(max-width: 768px) 100vw, 50vw",    // two-column blocks (e.g., image-text)
+    3: "(max-width: 768px) 100vw, 33vw",    // three-column blocks
+    default: "(max-width: 768px) 50vw, 25vw", // 4+ columns
+  },
+});
+```
+
+For example, to cap image sizes at a fixed pixel width for boxed layouts:
+
+```ts
+export default defineAppConfig({
+  imageSizes: {
+    1: "(max-width: 768px) 100vw, 1200px",
+    2: "(max-width: 768px) 100vw, 600px",
+    3: "(max-width: 768px) 100vw, 400px",
+    default: "(max-width: 768px) 50vw, 300px",
+  },
+});
+```
+
+### Per-block override
+
+Individual block components can override the sizes value by calling `provide("cms-image-sizes", "custom value")` — this takes precedence over the default from `CmsGenericBlock`.
+
+### Synthetic srcset fallback
+
+When Shopware media has no thumbnails (common in Cloud/SaaS setups using CDN-based resizing), the layer generates a synthetic `srcset` using CDN query parameters:
+
+```html
+<img srcset="
+  ...image.jpg?width=400&fit=crop,smart&format=webp&quality=90 400w,
+  ...image.jpg?width=800&fit=crop,smart&format=webp&quality=90 800w,
+  ...image.jpg?width=1200&fit=crop,smart&format=webp&quality=90 1200w,
+  ...image.jpg?width=1600&fit=crop,smart&format=webp&quality=90 1600w"
+  sizes="(max-width: 768px) 100vw, 50vw"
+>
+```
+
+The `format` and `quality` values are taken from the `backgroundImage` config in `app.config.ts`.
+
+> **Note:** Synthetic srcset requires CDN-based image resizing support. See the [Image Optimization](#%EF%B8%8F-image-optimization) section for requirements.
+
 ## 🔄 UnoCSS Runtime
 
 This layer includes a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (e.g., inline styles or dynamic class bindings from the admin panel).

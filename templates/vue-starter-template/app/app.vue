@@ -8,6 +8,12 @@ useHead({
   htmlAttrs: {
     lang: "en",
   },
+  link: [
+    {
+      rel: "preconnect",
+      href: "https://cdn.shopware.store",
+    },
+  ],
 });
 
 const { apiClient } = useShopwareContext();

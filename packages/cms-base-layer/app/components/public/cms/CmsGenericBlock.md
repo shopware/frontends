@@ -1,6 +1,21 @@
-Renders a Block type structure
+Renders a Block type structure.
 
-Example usage:
+Resolves the correct CMS block component dynamically and applies layout configuration (CSS classes, background color, background image). When a block has a `backgroundMedia` set, the component automatically optimizes the background image URL using the `getBackgroundImageUrl` helper from `@shopware/helpers`, appending `format` and `quality` parameters from the `backgroundImage` app config.
+
+### Background Image Optimization
+
+Background image settings are read from `app.config.ts`:
+
+```ts
+export default defineAppConfig({
+  backgroundImage: {
+    format: "webp",
+    quality: 85,
+  },
+});
+```
+
+### Example usage
 
 ```vue{14-19}
 <script setup lang="ts">
