@@ -12,12 +12,19 @@
 export function validateAdminEnvVars(
   env: Record<string, string | undefined>,
 ): string[] {
-  const hasClientSecret = !!env.SHOPWARE_ADMIN_CLIENT_SECRET;
-  const hasClientId = !!env.SHOPWARE_ADMIN_CLIENT_ID;
+  const hasClientSecret = !!env.SHOPWARE_ADMIN_CLIENT_SECRET?.trim();
+  const hasClientId = !!env.SHOPWARE_ADMIN_CLIENT_ID?.trim();
 
   if (hasClientSecret || hasClientId) {
-    // client_credentials flow — CLIENT_SECRET is required, CLIENT_ID is optional (defaults to "administration")
-    return hasClientSecret ? [] : ["SHOPWARE_ADMIN_CLIENT_SECRET"];
+    // client_credentials flow — both CLIENT_ID and CLIENT_SECRET are required
+    const missing: string[] = [];
+    if (!hasClientId) {
+      missing.push("SHOPWARE_ADMIN_CLIENT_ID");
+    }
+    if (!hasClientSecret) {
+      missing.push("SHOPWARE_ADMIN_CLIENT_SECRET");
+    }
+    return missing;
   }
 
   // password flow — both username and password are required

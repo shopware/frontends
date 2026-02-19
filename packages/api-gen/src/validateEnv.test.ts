@@ -10,11 +10,11 @@ describe("validateAdminEnvVars", () => {
     expect(result).toEqual([]);
   });
 
-  it("should pass when only CLIENT_SECRET is set (CLIENT_ID defaults to 'administration')", () => {
+  it("should require CLIENT_ID when only CLIENT_SECRET is set", () => {
     const result = validateAdminEnvVars({
       SHOPWARE_ADMIN_CLIENT_SECRET: "my-secret",
     });
-    expect(result).toEqual([]);
+    expect(result).toEqual(["SHOPWARE_ADMIN_CLIENT_ID"]);
   });
 
   it("should require CLIENT_SECRET when only CLIENT_ID is set", () => {
@@ -54,8 +54,37 @@ describe("validateAdminEnvVars", () => {
     ]);
   });
 
+  it("should treat empty CLIENT_ID as unset and fall back to password flow", () => {
+    const result = validateAdminEnvVars({
+      SHOPWARE_ADMIN_CLIENT_ID: "",
+      SHOPWARE_ADMIN_USERNAME: "admin",
+      SHOPWARE_ADMIN_PASSWORD: "shopware",
+    });
+    expect(result).toEqual([]);
+  });
+
+  it("should treat whitespace-only CLIENT_ID as unset", () => {
+    const result = validateAdminEnvVars({
+      SHOPWARE_ADMIN_CLIENT_ID: "  ",
+    });
+    expect(result).toEqual([
+      "SHOPWARE_ADMIN_USERNAME",
+      "SHOPWARE_ADMIN_PASSWORD",
+    ]);
+  });
+
+  it("should treat empty CLIENT_SECRET as unset and fall back to password flow", () => {
+    const result = validateAdminEnvVars({
+      SHOPWARE_ADMIN_CLIENT_SECRET: "",
+      SHOPWARE_ADMIN_USERNAME: "admin",
+      SHOPWARE_ADMIN_PASSWORD: "shopware",
+    });
+    expect(result).toEqual([]);
+  });
+
   it("should prefer client_credentials flow when both flows have vars set", () => {
     const result = validateAdminEnvVars({
+      SHOPWARE_ADMIN_CLIENT_ID: "my-integration",
       SHOPWARE_ADMIN_CLIENT_SECRET: "my-secret",
       SHOPWARE_ADMIN_USERNAME: "admin",
       SHOPWARE_ADMIN_PASSWORD: "shopware",
