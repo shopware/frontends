@@ -60,7 +60,7 @@
       "vue-i18n": "^11.1.10",
       "@sentry/browser": "^7.119.1",
       "@types/node": "22.13.14",
-      "axios": "^1.12.0",
+      "axios": "^1.13.5",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
       "devalue": "^5.6.2",
@@ -76,6 +76,7 @@
       "lodash": "^4.17.23",
       "lodash-es": "^4.17.23",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
+      "markdown-it": "^14.1.1",
       "micromatch": "^4.0.8",
       "mdast-util-to-hast": "^13.2.1",
       "nanoid@3": "^3.3.8",
@@ -85,7 +86,7 @@
       "on-headers": "^1.1.0",
       "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
-      "qs": "^6.14.1",
+      "qs": "^6.14.2",
       "rollup@3": "^3.29.5",
       "rollup": "^4.22.4",
       "semver": "^7.6.2",
@@ -118,9 +119,6 @@
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]
-    },
-    "auditConfig": {
-      "ignoreCves": ["CVE-2024-43788"]
     }
   }
 }

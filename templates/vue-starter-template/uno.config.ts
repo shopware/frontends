@@ -9,6 +9,18 @@ import baseConfig from "./.nuxt/uno.config.mjs";
 
 const templateConfig: ConfigBase = {
   // here you can add template-specific configurations
+  safelist: [
+    // commonly CMS-provided classes not present in source — safelisted to reduce layout shift
+    "bg-overlay-dark-high",
+    "justify-self-start",
+    "leading-8",
+    "max-w-[872px]",
+    "max-w-[984px]",
+    "md:text-7xl",
+    "min-h-[420px]",
+    "min-h-[800px]",
+    "text-fixed-fixed-on-image",
+  ],
   theme: {
     colors: {
       // "brand-primary": "#123456", // overwrite base color
@@ -74,17 +86,16 @@ const templateConfig: ConfigBase = {
       "fixed-fixed-on-image": "#FFFFFF",
       "other-sale": "#D12D24",
       "other-shadow": "#000000",
-      "opacity-opacity-dark-highest": "rgba(0, 0, 0, 0.75)",
-      "opacity-opacity-dark-high": "rgba(0, 0, 0, 0.5)",
-      "opacity-opacity-dark": "rgba(0, 0, 0, 0.30000001192092896)",
-      "opacity-opacity-dark-low": "rgba(0, 0, 0, 0.11999999731779099)",
-      "opacity-opacity-dark-lowest": "rgba(0, 0, 0, 0.07999999821186066)",
-      "opacity-opacity-light-highest": "rgba(255, 255, 255, 0.75)",
-      "opacity-opacity-light-high": "rgba(255, 255, 255, 0.5)",
-      "opacity-opacity-light": "rgba(255, 255, 255, 0.25)",
-      "opacity-opacity-light-low": "rgba(255, 255, 255, 0.11999999731779099)",
-      "opacity-opacity-light-lowest":
-        "rgba(255, 255, 255, 0.07999999821186066)",
+      "overlay-dark-highest": "rgba(0, 0, 0, 0.75)",
+      "overlay-dark-high": "rgba(0, 0, 0, 0.5)",
+      "overlay-dark": "rgba(0, 0, 0, 0.30000001192092896)",
+      "overlay-dark-low": "rgba(0, 0, 0, 0.11999999731779099)",
+      "overlay-dark-lowest": "rgba(0, 0, 0, 0.07999999821186066)",
+      "overlay-light-highest": "rgba(255, 255, 255, 0.75)",
+      "overlay-light-high": "rgba(255, 255, 255, 0.5)",
+      "overlay-light": "rgba(255, 255, 255, 0.25)",
+      "overlay-light-low": "rgba(255, 255, 255, 0.11999999731779099)",
+      "overlay-light-lowest": "rgba(255, 255, 255, 0.07999999821186066)",
     },
     fontFamily: {
       inter: "Inter",

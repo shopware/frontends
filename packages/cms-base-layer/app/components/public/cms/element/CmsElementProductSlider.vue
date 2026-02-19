@@ -4,7 +4,7 @@ import type {
   SliderElementConfig,
 } from "@shopware/composables";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
-import type { ComputedRef } from "vue";
+import type { CSSProperties, ComputedRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
@@ -52,29 +52,40 @@ onMounted(() => {
 const autoplay = computed(() => getConfigValue("rotate"));
 const title = computed(() => getConfigValue("title"));
 const border = computed(() => getConfigValue("border"));
+
+const verticalAlignStyle = computed<CSSProperties>(() => ({
+  alignContent: getConfigValue("verticalAlign"),
+}));
+const hasVerticalAlignment = computed(
+  () => !!verticalAlignStyle.value.alignContent,
+);
 </script>
 <template>
-  <div ref="productSlider" class="cms-element-product-slider">
-    <h3 v-if="title" class="pl-6 pb-6 text-center md:text-left text-surface-on-surface">
-      {{ title }}
-    </h3>
-    <div :class="{ 'py-5 border border-outline-outline-variant': border }">
-      <SwSlider
-        :config="config"
-        gap="1.25rem"
-        :slides-to-show="slidesToShow"
-        :slides-to-scroll="1"
-        :autoplay="autoplay"
-      >
-        <SwProductCard
-          v-for="product of products"
-          :key="product.id"
-          class="h-full"
-          :product="product"
-          :layout-type="getConfigValue('boxLayout')"
-          :display-mode="getConfigValue('displayMode')"
-        />
-      </SwSlider>
+  <div
+    :style="hasVerticalAlignment ? verticalAlignStyle : undefined"
+  >
+    <div ref="productSlider" class="cms-element-product-slider">
+      <h3 v-if="title" class="pl-6 pb-6 text-center md:text-left text-surface-on-surface">
+        {{ title }}
+      </h3>
+      <div :class="{ 'py-5 border border-outline-outline-variant': border }">
+        <SwSlider
+          :config="config"
+          gap="1.25rem"
+          :slides-to-show="slidesToShow"
+          :slides-to-scroll="1"
+          :autoplay="autoplay"
+        >
+          <SwProductCard
+            v-for="product of products"
+            :key="product.id"
+            class="h-full"
+            :product="product"
+            :layout-type="getConfigValue('boxLayout')"
+            :display-mode="getConfigValue('displayMode')"
+          />
+        </SwSlider>
+      </div>
     </div>
   </div>
 </template>

@@ -13,4 +13,14 @@ minimumReleaseAgeExclude:
 - '@shopware/*'
 - 'vercel'
 - '@vercel/*'
-- '@isaacs/brace-expansion' # security release, remove after 7.02.2026
+- 'axios' # security release, remove after 20.02.2026
+
+
+auditConfig:
+  ignoreGhsas:
+    - GHSA-92fh-27vv-894w # not vulnerable - https://github.com/unjs/nanotar/issues/59
+  ignoreCves:
+    # - CVE-2024-43788
+    - CVE-2025-68458 # webpack issue, not affected
+    - CVE-2025-68157 # webpack issue, not affected
+    - CVE-2024-43788 # webpack issue, not affected

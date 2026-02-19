@@ -71,8 +71,7 @@ const categoryName = computed(() =>
 
 <template>
   <LayoutBreadcrumbs v-if="route.path != '/'" />
-  <div class="container mx-auto text-lg">
-    <h1>{{ categoryName }}</h1>
+  <div class="text-lg">
     <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
   </div>
 </template>

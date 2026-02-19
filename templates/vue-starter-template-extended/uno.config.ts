@@ -58,6 +58,8 @@ const lumoraConfig: ConfigBase = {
     ],
   ],
 
+  safelist: ["text-shadow-md"],
+
   preflights: [
     {
       getCSS: () => `

@@ -59,6 +59,14 @@ describe("useCmsElementConfig", () => {
         expect(getConfigValue("alignment")).toEqual("flex-start");
       });
 
+      it("should return undefined if element config is undefined", () => {
+        const { getConfigValue } = useCmsElementConfig({
+          config: undefined,
+        } as unknown as CmsElementBuyBox);
+
+        expect(getConfigValue("alignment")).toBeUndefined();
+      });
+
       it("should return undefined if config value is undefined", () => {
         const { getConfigValue } = useCmsElementConfig({
           config: {
