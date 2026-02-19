@@ -28,6 +28,64 @@ describe("useOrderDetails", () => {
     );
   });
 
+  it("should load order by deep link code when isDeepLinkCode option is true", async () => {
+    const { vm, injections } = useSetup(() =>
+      useOrderDetails("VNHzUJi2ioujVWdnCeYzExOihpHcxX3S", undefined, {
+        isDeepLinkCode: true,
+      }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+
+    await vm.loadOrderDetails();
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readOrder"),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          filter: [
+            {
+              field: "deepLinkCode",
+              type: "equals",
+              value: "VNHzUJi2ioujVWdnCeYzExOihpHcxX3S",
+            },
+          ],
+          checkPromotion: true,
+        }),
+      }),
+    );
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readOrder"),
+      expect.objectContaining({
+        body: expect.not.objectContaining({
+          ids: expect.anything(),
+        }),
+      }),
+    );
+
+    expect(vm.personalDetails).toEqual({
+      email: Order.orders.elements?.[0]?.orderCustomer.email,
+      firstName: Order.orders.elements?.[0]?.orderCustomer.firstName,
+      lastName: Order.orders.elements?.[0]?.orderCustomer.lastName,
+    });
+  });
+
+  it("should load order by id when isDeepLinkCode option is false", async () => {
+    const { vm, injections } = useSetup(() =>
+      useOrderDetails("123-test", undefined, { isDeepLinkCode: false }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+
+    await vm.loadOrderDetails();
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readOrder"),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          ids: ["123-test"],
+          checkPromotion: true,
+        }),
+      }),
+    );
+  });
+
   it("should handle setting the order payment", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
     injections.apiClient.invoke.mockResolvedValue({ data: {} });

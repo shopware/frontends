@@ -4,6 +4,15 @@ import type { ComputedRef, Ref } from "vue";
 import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
+export type UseOrderDetailsOptions = {
+  /**
+   * When true, the first parameter is treated as a deep link code
+   * instead of an order ID. This enables fetching orders for guest
+   * users who are not logged in.
+   */
+  isDeepLinkCode?: boolean;
+};
+
 export type UseOrderDetailsReturn = {
   /**
    * {@link Schemas['Order']} object
@@ -127,6 +136,7 @@ export type UseOrderDetailsReturn = {
 export function useOrderDetails(
   orderId: string,
   associations?: Schemas["Criteria"]["associations"],
+  options?: UseOrderDetailsOptions,
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
 
@@ -182,11 +192,28 @@ export function useOrderDetails(
       orderAssociations,
       associations ? associations : {},
     );
-    const params: operations["readOrder post /order"]["body"] = {
-      ids: [orderId],
+
+    const baseParams = {
       associations: mergedAssociations,
       checkPromotion: true,
     };
+
+    const params: operations["readOrder post /order"]["body"] =
+      options?.isDeepLinkCode
+        ? {
+            ...baseParams,
+            filter: [
+              {
+                field: "deepLinkCode",
+                type: "equals",
+                value: orderId,
+              },
+            ],
+          }
+        : {
+            ...baseParams,
+            ids: [orderId],
+          };
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",
