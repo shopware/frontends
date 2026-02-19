@@ -12,7 +12,7 @@ export function getAdminApiClient() {
       process.env.SHOPWARE_ADMIN_CLIENT_SECRET
         ? {
             grant_type: "client_credentials",
-            client_id: process.env.SHOPWARE_ADMIN_CLIENT_ID || "administration",
+            client_id: process.env.SHOPWARE_ADMIN_CLIENT_ID || "",
             client_secret: process.env.SHOPWARE_ADMIN_CLIENT_SECRET,
           }
         : {
