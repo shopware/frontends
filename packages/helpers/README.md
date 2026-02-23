@@ -115,6 +115,7 @@ const url = buildCdnImageUrl(
 |-----------|------|-------------|
 | `src` | `string \| undefined` | Base image URL |
 | `dimensions` | `{ width: number; height: number }` | Rendered element dimensions in pixels |
+| `options` | `{ format?: string; quality?: number }` (optional) | Format and quality settings |
 
 Returns an empty string if `src` is falsy. Returns the original `src` if URL parsing fails.
 

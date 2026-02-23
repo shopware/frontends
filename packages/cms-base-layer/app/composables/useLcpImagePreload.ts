@@ -23,7 +23,7 @@ function findFirstCmsImageUrl(
         `url("${section.backgroundMedia.url}")`,
         section,
         options,
-      ).replace(/^url\("(.*)"\)$/, "$1");
+      ).replace(/^url\("([^"]+)"\)$/, "$1");
     }
 
     if (!section.blocks) continue;
@@ -35,7 +35,7 @@ function findFirstCmsImageUrl(
           `url("${block.backgroundMedia.url}")`,
           block,
           options,
-        ).replace(/^url\("(.*)"\)$/, "$1");
+        ).replace(/^url\("([^"]+)"\)$/, "$1");
       }
 
       if (!block.slots) continue;
