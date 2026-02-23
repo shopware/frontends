@@ -45,6 +45,10 @@ export default defineNuxtConfig({
 });
 ```
 
+## 3D / spatial media support
+
+Shopping Experiences also support 3D models (GLB format) in image elements, image galleries, and the Spatial Viewer block. The 3D viewer is loaded on demand to keep the default bundle small. See [Working with Images — 3D and spatial media](../getting-started/page-elements/images.html#_3d-and-spatial-media-glb) for setup instructions.
+
 ## How to build Pages, Elements and Blocks?
 
 <PageRef page="../getting-started/cms/" title="BUILDGING > CMS" sub="See the buliding chapter about CMS." />

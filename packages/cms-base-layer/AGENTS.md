@@ -119,6 +119,7 @@ cms-base-layer/
 | `CmsBlockImageGallery` | Image gallery grid |
 | `CmsBlockForm` | Contact/newsletter forms |
 | `CmsBlockCategoryNavigation` | Category tree navigation |
+| `CmsBlockSpatialViewer` | 3D model viewer (GLB) — dynamically imports SwMedia3D |
 
 ### Common Elements
 
@@ -146,6 +147,14 @@ These are reusable components used across CMS and templates:
 | `SwSlider` | Generic slider/carousel |
 | `SwProductListingFilters` | Filter sidebar |
 | `SwProductListingFiltersHorizontal` | Horizontal filter bar |
+
+### On-demand Components (not auto-imported)
+
+| Component | Purpose |
+|-----------|---------|
+| `SwMedia3D` | Renders 3D models (GLB) using TresJS/Three.js |
+
+`SwMedia3D` is **excluded from Nuxt auto-import** to avoid bundling heavy 3D libraries in the initial bundle. It is dynamically imported via `defineAsyncComponent` by `CmsElementImage`, `CmsElementImageGallery`, and `CmsBlockSpatialViewer` when the media has a `.glb` extension. Apps that need 3D support must add `@tresjs/nuxt` to their `nuxt.config.ts` modules.
 
 ### UI Components (Sw prefix via ui/)
 
