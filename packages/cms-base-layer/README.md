@@ -368,7 +368,7 @@ useLcpImagePreload(props.content?.sections || []);
 </script>
 ```
 
-For background images, the preload URL includes the optimized `format` and `quality` parameters from `app.config.ts`. For element images (e.g. `<NuxtImg>`), the raw media URL is preloaded.
+The preload URL includes the optimized `format` and `quality` parameters from `app.config.ts` for both background images and element images.
 
 ## Responsive CMS Images
 
@@ -376,10 +376,11 @@ CMS image elements (`CmsElementImage`) automatically serve appropriately-sized i
 
 ### How it works
 
-1. **`CmsGenericBlock`** counts the number of slots in each block and `provide`s a responsive `sizes` value (e.g., a 2-slot block means images are ~50% viewport width on desktop).
+1. **`CmsGenericBlock`** counts the number of slots in each block, `provide`s a responsive `sizes` value (e.g., a 2-slot block means images are ~50% viewport width on desktop), and `provide`s the slot count via `cms-block-slot-count` for slider SSR breakpoint scaling.
 2. **`CmsElementImage`** `inject`s the sizes hint and applies it to `<NuxtImg>`.
 3. If the media has **pre-generated thumbnails** from Shopware, the existing `srcset` from thumbnails is used.
 4. If **no thumbnails** exist, a synthetic `srcset` is generated using CDN width-based resizing (`?width=400`, `?width=800`, etc.) via the `generateCdnSrcSet` helper from `@shopware/helpers`.
+5. **Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport (e.g., a 2-slot block doubles the breakpoint thresholds).
 
 The browser combines `sizes` + `srcset` to download only the image size it actually needs — during HTML parsing, before any JavaScript runs.
 

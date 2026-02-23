@@ -397,7 +397,7 @@ Set `format` or `quality` to `undefined` to omit that parameter. Requires remote
 
 CMS images use a provide/inject pattern for responsive sizing:
 
-1. **`CmsGenericBlock`** counts slots and calls `provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes))`
+1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)` and `provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes))`
 2. **`CmsElementImage`** calls `inject("cms-image-sizes", "100vw")` and passes it to `<NuxtImg :sizes="...">`
 3. If media has thumbnails → native `srcset` from `getSrcSetForMedia()`. If not → synthetic `srcset` via `generateCdnSrcSet()` from `@shopware/helpers`
 4. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
