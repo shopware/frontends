@@ -56,7 +56,7 @@ const getOrderData = async () => {
         }
       }
     }
-    order.value = null;
+    return null;
   }
 };
 
@@ -72,10 +72,6 @@ const authOrder = async () => {
     isOrderLoading.value = false;
   }
 };
-
-onMounted(() => {
-  getOrderData();
-});
 </script>
 <template>
   <div class="container mx-auto my-8 px-4 sm:px-6 lg:px-8">
@@ -90,9 +86,7 @@ onMounted(() => {
     </div>
 
     <div v-if="errorNotFound && !isOrderLoading">
-      <div
-        class="flex flex-col items-center justify-center py-20 text-center"
-      >
+      <div class="flex flex-col items-center justify-center py-20 text-center">
         <div
           class="w-16 h-16 i-carbon-document-unknown text-surface-on-surface-variant mb-4"
         />
