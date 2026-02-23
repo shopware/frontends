@@ -45,7 +45,13 @@
       "paymentMethod": "Zahlungsmethode",
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
-      "orders": "Bestellungen"
+      "orders": "Bestellungen",
+      "backToList": "Zurück zur Bestellliste",
+      "authOrderTitle": "Bestellung verifizieren",
+      "authOrderText": "Bitte geben Sie die E-Mail-Adresse und die Postleitzahl ein, die bei der Bestellung verwendet wurden.",
+      "authOrderButton": "Bestellung verifizieren",
+      "emailPlaceholder": "E-Mail-Adresse",
+      "postalCodePlaceholder": "Postleitzahl"
     },
     "orderDetails": {
       "order": "Bestellung",
@@ -93,7 +99,9 @@
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
       "paymentMethodChanged": "Zahlungsmethode geändert",
       "productsAdded": "Produkte hinzugefügt",
-      "verifying": "Konto bestätigen"
+      "verifying": "Konto bestätigen",
+      "orderNotFound": "Die Bestellung konnte nicht gefunden werden.",
+      "orderWrongData": "Die E-Mail-Adresse oder Postleitzahl ist falsch. Bitte versuchen Sie es erneut."
     }
   }
 }
