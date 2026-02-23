@@ -24,7 +24,13 @@
       "shippingStatus": "Versandstatus",
       "shipping": "Versand",
       "shippingMethod": "Versandart",
-      "total": "Gesamt"
+      "total": "Gesamt",
+      "backToList": "Zurück zur Bestellliste",
+      "authOrderTitle": "Bestellung verifizieren",
+      "authOrderText": "Bitte geben Sie die E-Mail-Adresse und die Postleitzahl ein, die bei der Bestellung verwendet wurden.",
+      "authOrderButton": "Bestellung verifizieren",
+      "emailPlaceholder": "E-Mail-Adresse",
+      "postalCodePlaceholder": "Postleitzahl"
     },
     "menu": {
       "header": "Ihr Konto",
@@ -146,7 +152,11 @@
       "loggedInSuccess": "Sie wurden erfolgreich eingeloggt.",
       "verifying": "Ihr Konto wird überprüft...",
       "signUpSuccess": "Vielen Dank für Ihre Anmeldung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Anmeldung abzuschließen.",
-      "verificationLinkInvalid": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie eine neue Bestätigungs-E-Mail an."
+      "verificationLinkInvalid": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie eine neue Bestätigungs-E-Mail an.",
+      "orderSuccessNoOrder": "Die Bestellung konnte nicht gefunden werden.",
+      "orderWrongData": "Die E-Mail-Adresse oder Postleitzahl ist falsch. Bitte versuchen Sie es erneut.",
+      "paymentMethodChanged": "Zahlungsmethode wurde erfolgreich geändert.",
+      "productsAdded": "Produkte wurden dem Warenkorb hinzugefügt."
     }
   }
 }

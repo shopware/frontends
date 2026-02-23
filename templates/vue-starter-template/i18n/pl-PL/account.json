@@ -24,7 +24,13 @@
       "shippingStatus": "Status wysyłki",
       "shipping": "Wysyłka",
       "shippingMethod": "Metoda wysyłki",
-      "total": "Całkowita kwota"
+      "total": "Całkowita kwota",
+      "backToList": "Powrót do listy zamówień",
+      "authOrderTitle": "Zweryfikuj swoje zamówienie",
+      "authOrderText": "Wprowadź adres e-mail i kod pocztowy użyte podczas składania zamówienia.",
+      "authOrderButton": "Zweryfikuj zamówienie",
+      "emailPlaceholder": "Adres e-mail",
+      "postalCodePlaceholder": "Kod pocztowy"
     },
     "menu": {
       "header": "Twoje konto",
@@ -146,7 +152,11 @@
       "loggedInSuccess": "Zostałeś pomyślnie zalogowany.",
       "verifying": "Weryfikowanie Twojego konta...",
       "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij link w nim, aby dokończyć rejestrację.",
-      "verificationLinkInvalid": "Link weryfikacyjny jest nieprawidłowy lub wygasł. Proszę poprosić o nowy e-mail potwierdzający."
+      "verificationLinkInvalid": "Link weryfikacyjny jest nieprawidłowy lub wygasł. Proszę poprosić o nowy e-mail potwierdzający.",
+      "orderSuccessNoOrder": "Nie znaleziono zamówienia.",
+      "orderWrongData": "Adres e-mail lub kod pocztowy jest nieprawidłowy. Spróbuj ponownie.",
+      "paymentMethodChanged": "Metoda płatności została pomyślnie zmieniona.",
+      "productsAdded": "Produkty zostały dodane do koszyka."
     }
   }
 }
