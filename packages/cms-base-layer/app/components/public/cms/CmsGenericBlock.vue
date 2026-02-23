@@ -16,6 +16,7 @@ const props = defineProps<{
 const appConfig = useAppConfig();
 
 const slotCount = props.content.slots?.length || 1;
+provide("cms-block-slot-count", slotCount);
 provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
 
 const DynamicRender = () => {

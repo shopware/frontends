@@ -44,7 +44,18 @@ function findFirstCmsImageUrl(
         // 3. Image element media
         const media = (slot.data as { media?: Schemas["Media"] })?.media;
         if (media?.url) {
-          return media.url;
+          try {
+            const url = new URL(media.url);
+            if (options?.format) {
+              url.searchParams.set("format", options.format);
+            }
+            if (typeof options?.quality === "number") {
+              url.searchParams.set("quality", String(options.quality));
+            }
+            return url.toString();
+          } catch {
+            return media.url;
+          }
         }
       }
     }

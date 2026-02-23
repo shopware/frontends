@@ -104,8 +104,8 @@ const ssrTrackStyle = computed<CSSProperties>(() => {
   const transform = `translateX(-${(n / total) * 100}%)`;
 
   if (ssrBreakpoints) {
-    // Track width handled by CSS media queries via useHead
-    return { transform };
+    // Both width and transform handled by CSS media queries via useHead
+    return {};
   }
 
   return {
@@ -124,11 +124,11 @@ useHead({
         if (total === 0) return "";
 
         const sel = `[data-ssr-slider="${sliderId}"]`;
-        // Base (mobile): 1 slide visible
-        let css = `${sel}{width:${total * 100}%}`;
+        // Base (mobile): 1 slide visible, transform skips 1 prepended clone
+        let css = `${sel}{width:${total * 100}%;transform:translateX(-${(1 / total) * 100}%)}`;
         // Breakpoints for larger viewports
         for (const [query, slides] of Object.entries(ssrBreakpoints)) {
-          css += `@media ${query}{${sel}{width:${(total / slides) * 100}%}}`;
+          css += `@media ${query}{${sel}{width:${(total / slides) * 100}%;transform:translateX(-${(slides / total) * 100}%)}}`;
         }
         return css;
       }),

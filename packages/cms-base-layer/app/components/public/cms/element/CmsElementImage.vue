@@ -40,17 +40,24 @@ const cdnOptions = computed(() => ({
   quality: appConfig.backgroundImage?.quality,
 }));
 
-const srcSet = computed(() =>
-  generateCdnSrcSet(imageAttrs.value.src, undefined, cdnOptions.value),
+const srcSet = computed(
+  () =>
+    imageAttrs.value.srcset ||
+    generateCdnSrcSet(imageAttrs.value.src, undefined, cdnOptions.value),
 );
 
-const srcPath = computed(() =>
-  buildCdnImageUrl(
-    imageAttrs.value.src,
-    { width: width.value, height: height.value },
-    cdnOptions.value,
-  ),
-);
+const srcPath = computed(() => {
+  // Only add dimension params after mount to avoid hydration mismatch
+  // (useElementSize returns 0 during SSR). The srcset handles responsive loading.
+  if (width.value || height.value) {
+    return buildCdnImageUrl(
+      imageAttrs.value.src,
+      { width: width.value, height: height.value },
+      cdnOptions.value,
+    );
+  }
+  return imageAttrs.value.src || "";
+});
 
 const imageComputedContainerAttrs = computed(() => {
   const imageAttrsCopy = Object.assign({}, imageContainerAttrs.value);

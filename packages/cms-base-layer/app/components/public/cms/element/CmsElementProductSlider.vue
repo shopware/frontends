@@ -3,7 +3,7 @@ import type {
   CmsElementProductSlider,
   SliderElementConfig,
 } from "@shopware/composables";
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { computed, inject, onMounted, ref, useTemplateRef } from "vue";
 import type { CSSProperties, ComputedRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 
@@ -13,12 +13,13 @@ const props = defineProps<{
 const { getConfigValue } = useCmsElementConfig(props.content);
 
 const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
+const slotCount = inject<number>("cms-block-slot-count", 1);
 const elMinWidth = computed(
   () => +getConfigValue("elMinWidth").replace(/\D+/g, "") || 300,
 );
-// SSR: estimate from config minWidth assuming ~1200px container; refined on mount
+// SSR: estimate from config minWidth assuming ~1200px container divided by slot count; refined on mount
 const slidesToShow = ref<number>(
-  Math.max(1, Math.floor(1200 / elMinWidth.value)),
+  Math.max(1, Math.floor(1200 / slotCount / elMinWidth.value)),
 );
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
@@ -55,12 +56,12 @@ onMounted(() => {
   }, 100);
 });
 
-// Responsive SSR breakpoints: n items require n * minWidth viewport width
+// Responsive SSR breakpoints: scale by slotCount since container is ~1/slotCount of viewport
 const ssrBreakpoints = computed(() => {
   const max = slidesToShow.value;
   const bp: Record<string, number> = {};
   for (let n = 2; n <= max; n++) {
-    bp[`(min-width: ${elMinWidth.value * n}px)`] = n;
+    bp[`(min-width: ${elMinWidth.value * n * slotCount}px)`] = n;
   }
   return bp;
 });
