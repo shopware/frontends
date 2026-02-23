@@ -11,9 +11,8 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
-- 'vercel'
-- '@vercel/*'
 - 'axios' # security release, remove after 20.02.2026
+- 'tar' # audit fix, remove after 25.02.2026
 
 
 auditConfig:
