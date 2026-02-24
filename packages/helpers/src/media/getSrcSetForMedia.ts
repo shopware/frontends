@@ -61,7 +61,8 @@ export function generateCdnSrcSet(
 
 /**
  * Builds an optimized CDN image URL with size parameters.
- * Adds width or height (whichever is larger) rounded up to the nearest 100px.
+ * Adds width or height (whichever is larger, width if equal)
+ * rounded up to the nearest 100px.
  *
  * @param src - Base image URL
  * @param dimensions - Rendered element dimensions (width and height)
@@ -88,14 +89,13 @@ export function buildCdnImageUrl(
       : DEFAULT_SIZE;
 
     if (w > DEFAULT_SIZE || h > DEFAULT_SIZE) {
-      if (dimensions.width > dimensions.height) {
+      if (dimensions.width >= dimensions.height) {
         url.searchParams.set("width", String(w));
       } else {
         url.searchParams.set("height", String(h));
       }
+      url.searchParams.set("fit", "crop,smart");
     }
-
-    url.searchParams.set("fit", "crop,smart");
     if (options?.format) {
       url.searchParams.set("format", options.format);
     }

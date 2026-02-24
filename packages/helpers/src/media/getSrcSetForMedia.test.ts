@@ -241,13 +241,23 @@ describe("buildCdnImageUrl", () => {
     );
   });
 
-  it("should set height param when height >= width", () => {
+  it("should set height param when height > width", () => {
     const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
       width: 200,
       height: 350,
     });
     expect(result).toBe(
       "https://cdn.example.com/image.jpg?height=400&fit=crop%2Csmart",
+    );
+  });
+
+  it("should set width param when width equals height", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 300,
+      height: 300,
+    });
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=300&fit=crop%2Csmart",
     );
   });
 
@@ -261,13 +271,13 @@ describe("buildCdnImageUrl", () => {
     );
   });
 
-  it("should use DEFAULT_SIZE when dimensions are 0", () => {
+  it("should skip dimension and fit params when dimensions are 0", () => {
     const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
       width: 0,
       height: 0,
     });
-    // Both default to 10, neither > 10, so no width/height param
-    expect(result).toBe("https://cdn.example.com/image.jpg?fit=crop%2Csmart");
+    // Both default to 10, neither > 10, so no width/height/fit params
+    expect(result).toBe("https://cdn.example.com/image.jpg");
   });
 
   it("should include format and quality options", () => {

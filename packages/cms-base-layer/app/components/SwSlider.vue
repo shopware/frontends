@@ -114,27 +114,30 @@ const ssrTrackStyle = computed<CSSProperties>(() => {
   };
 });
 
-// Inject responsive CSS into <head> — only track width varies per breakpoint
-useHead({
-  style: [
-    {
-      innerHTML: computed(() => {
-        if (!ssrBreakpoints || imageSliderTrackStyle.value) return "";
-        const total = children.value.length;
-        if (total === 0) return "";
+// Inject responsive CSS into <head> for SSR breakpoints.
+// Transform is constant: always skip N prepended clones (`n / total`),
+// because translateX(%) is relative to the element's own width which scales
+// proportionally with the number of visible slides. Only width varies per breakpoint.
+// Removed entirely once client-side JS sets imageSliderTrackStyle.
+useHead(
+  computed(() => {
+    if (!ssrBreakpoints || imageSliderTrackStyle.value) return {};
+    const total = children.value.length;
+    const n = slidesToShow.value;
+    if (total === 0 || n === 0) return {};
 
-        const sel = `[data-ssr-slider="${sliderId}"]`;
-        // Base (mobile): 1 slide visible, transform skips 1 prepended clone
-        let css = `${sel}{width:${total * 100}%;transform:translateX(-${(1 / total) * 100}%)}`;
-        // Breakpoints for larger viewports
-        for (const [query, slides] of Object.entries(ssrBreakpoints)) {
-          css += `@media ${query}{${sel}{width:${(total / slides) * 100}%;transform:translateX(-${(slides / total) * 100}%)}}`;
-        }
-        return css;
-      }),
-    },
-  ],
-});
+    const sel = `[data-ssr-slider="${sliderId}"]`;
+    const tx = `translateX(-${(n / total) * 100}%)`;
+
+    // Mobile base: 1 slide visible
+    let css = `${sel}{width:${total * 100}%;transform:${tx}}`;
+    // Breakpoint overrides — only width changes
+    for (const [query, slides] of Object.entries(ssrBreakpoints)) {
+      css += `@media ${query}{${sel}{width:${(total / slides) * 100}%}}`;
+    }
+    return { style: [{ innerHTML: css }] };
+  }),
+);
 
 // Touch event handling for mobile swipe gestures
 const touchStartX = ref(0);
