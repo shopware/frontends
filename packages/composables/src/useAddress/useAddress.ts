@@ -15,6 +15,12 @@ export type UseAddressReturn = {
    */
   loadCustomerAddresses(): Promise<Schemas["CustomerAddress"][]>;
   /**
+   * Fetches a single customer address by ID
+   */
+  getCustomerAddress(
+    addressId: string,
+  ): Promise<Schemas["CustomerAddress"] | null>;
+  /**
    * Allows to create new address for a current customer
    */
   createCustomerAddress(
@@ -52,6 +58,7 @@ export type UseAddressReturn = {
  * With this composable you can:
  * - Fetch customer addresses
  * - Return customer addresses
+ * - Fetch single address by ID
  * - Create new customer address
  * - Update existing customer address
  * - Delete existing customer address
@@ -98,6 +105,23 @@ export function useAddress(): UseAddressReturn {
   }
 
   /**
+   * Get single customer address by ID
+   */
+  async function getCustomerAddress(
+    addressId: string,
+  ): Promise<Schemas["CustomerAddress"] | null> {
+    const result = await apiClient.invoke(
+      "listAddress post /account/list-address",
+      {
+        body: {
+          ids: [addressId],
+        },
+      },
+    );
+    return result.data.elements[0] ?? null;
+  }
+
+  /**
    * Add new customer address
    */
   async function createCustomerAddress(
@@ -118,8 +142,6 @@ export function useAddress(): UseAddressReturn {
   async function updateCustomerAddress(
     customerAddress: Schemas["CustomerAddress"],
   ): Promise<Schemas["CustomerAddress"]> {
-    // customerAddress.addressId = customerAddress.id;
-
     const result = await apiClient.invoke(
       "updateCustomerAddress patch /account/address/{addressId}",
       {
@@ -192,6 +214,7 @@ export function useAddress(): UseAddressReturn {
   return {
     customerAddresses: computed(() => _storeCustomerAddresses.value || []),
     loadCustomerAddresses,
+    getCustomerAddress,
     createCustomerAddress,
     updateCustomerAddress,
     deleteCustomerAddress,

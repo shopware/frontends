@@ -28,6 +28,36 @@ describe("useAddress", () => {
     );
   });
 
+  it("get customer address by id", async () => {
+    const { vm, injections } = await useSetup(useAddress);
+    const address = {
+      id: "addr-1",
+      ...MOCKED_ADDRESS,
+    } as Schemas["CustomerAddress"];
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [address] },
+    });
+
+    const result = await vm.getCustomerAddress("addr-1");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("listAddress"),
+      expect.objectContaining({ body: { ids: ["addr-1"] } }),
+    );
+    expect(result).toEqual(address);
+  });
+
+  it("get customer address by id - not found returns null", async () => {
+    const { vm, injections } = await useSetup(useAddress);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [] },
+    });
+
+    const result = await vm.getCustomerAddress("unknown-id");
+
+    expect(result).toBeNull();
+  });
+
   it("load customer address - error", async () => {
     const { vm } = await useSetup(useAddress, {
       apiClient: {
