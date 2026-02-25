@@ -11,6 +11,7 @@ export function useAuthGuardRedirection() {
   const localePath = useLocalePath();
   const { formatLink } = useInternationalization(localePath);
   const { pushInfo } = useNotifications();
+  const { t } = useI18n();
 
   watch(
     isLoggedIn,
@@ -19,9 +20,7 @@ export function useAuthGuardRedirection() {
         const loginPath = formatLink("/account/login");
         const redirect = encodeURIComponent(route.fullPath);
         router.push(`${loginPath}?redirect=${redirect}`);
-        pushInfo(
-          "Login is required to access this page. You are redirected to the login page.",
-        );
+        pushInfo(t("account.messages.loginRequired"));
       }
     },
     {

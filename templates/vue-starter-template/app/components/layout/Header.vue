@@ -29,7 +29,9 @@ function toggleMobileSearch() {
 
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
-    push(formatLink("/account/login"));
+    push(
+      `${formatLink("/account/login")}?redirect=${encodeURIComponent(route.fullPath)}`,
+    );
   } else {
     toggleAccountMenu();
   }
@@ -95,13 +97,15 @@ watch(
             <ClientOnly>
               <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               <template #fallback>
-                <LayoutHeaderWishlistIcon
-                  :counter="0"
-                />
+                <LayoutHeaderWishlistIcon :counter="0" />
               </template>
             </ClientOnly>
 
-            <FormIconButton type="ghost" @click="toggleMiniCart" :aria-label="$t('layout.header.cart')">
+            <FormIconButton
+              type="ghost"
+              @click="toggleMiniCart"
+              :aria-label="$t('layout.header.cart')"
+            >
               <ClientOnly>
                 <LayoutHeaderCartIcon :counter="cartCount" />
                 <template #fallback>

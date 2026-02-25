@@ -7,6 +7,7 @@ const { login } = useUser();
 const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const { handleApiError } = useApiErrorsResolver("account_login_form");
+const route = useRoute();
 
 const { hideSignUp = false } = defineProps<{
   hideSignUp?: boolean;
@@ -17,7 +18,9 @@ async function handleLogin(formData: { username: string; password: string }) {
     await login(formData);
     pushSuccess(t("account.messages.loggedInSuccess"));
     mergeWishlistProducts();
-    push(formatLink("/"));
+
+    const redirect = route.query.redirect as string | undefined;
+    await push(redirect || formatLink("/"));
   } catch (error) {
     handleApiError(error);
   }

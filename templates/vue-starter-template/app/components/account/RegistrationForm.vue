@@ -15,6 +15,10 @@ const loading = ref<boolean>();
 const doubleOptInBox = useTemplateRef("doubleOptInBox");
 const showDoubleOptInBox = ref(false);
 
+const { push } = useRouter();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 if (import.meta.client && isLoggedIn.value) {
   navigateTo({ path: redirectUrl || "/account" });
 }
