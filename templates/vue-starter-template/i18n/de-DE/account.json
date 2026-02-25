@@ -1,7 +1,8 @@
 {
   "account": {
     "back": "Zurück",
-    "signUpHeader": "Ich bin neu hier.",
+    "signUpHeader": "Konto erstellen",
+    "signUpSubHeader": "Registrieren Sie sich, um loszulegen",
     "yourAddress": "Ihre Adresse",
     "order": {
       "header": "Bestellungen",

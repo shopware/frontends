@@ -122,13 +122,13 @@ loading.value = false;
           class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6"
         >
           <NuxtLink
-            :to="formatLink('/login')"
+            :to="`${formatLink('/account/login')}?redirect=${encodeURIComponent(route.fullPath)}`"
             class="px-4 py-3 rounded bg-brand-primary text-brand-on-primary text-base font-bold leading-normal inline-flex justify-center items-center gap-1 hover:bg-brand-primary-hover transition-colors"
           >
             {{ $t("wishlist.notLoggedIn.login") }}
           </NuxtLink>
           <NuxtLink
-            :to="formatLink('/register')"
+            :to="`${formatLink('/account/login')}?redirect=${encodeURIComponent(route.fullPath)}#registration`"
             class="px-4 py-3 rounded bg-brand-secondary text-brand-on-secondary text-base font-bold leading-normal inline-flex justify-center items-center gap-1 hover:bg-brand-secondary-hover transition-colors"
           >
             {{ $t("wishlist.notLoggedIn.register") }}

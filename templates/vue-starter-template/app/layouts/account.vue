@@ -2,11 +2,7 @@
 const { logout } = useUser();
 const router = useRouter();
 
-const route = useRoute();
-const to = route.query.to as string;
-const params = { to: to };
-
-useAuthGuardRedirection(params);
+useAuthGuardRedirection();
 
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);

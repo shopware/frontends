@@ -3,7 +3,6 @@ const { count: cartCount } = useCart();
 const { count: wishlistCount } = useWishlist();
 const { isLoggedIn } = useUser();
 const { push } = useRouter();
-const loginModalController = useModal();
 const sideMenuController = useSideMenuModal();
 
 const currentMenuPosition = ref<string | undefined>(undefined);
@@ -30,7 +29,7 @@ function toggleMobileSearch() {
 
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
-    loginModalController.open();
+    push(formatLink("/account/login"));
   } else {
     toggleAccountMenu();
   }
@@ -134,11 +133,6 @@ watch(
           />
         </ClientOnly>
       </div>
-      <ClientOnly>
-        <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
-          <AccountLoginForm @close="loginModalController.close" />
-        </SharedModal>
-      </ClientOnly>
     </div>
     <div
       class="border-b relative max-lg:hidden"

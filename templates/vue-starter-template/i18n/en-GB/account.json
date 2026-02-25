@@ -1,7 +1,8 @@
 {
   "account": {
     "back": "Back",
-    "signUpHeader": "I am new here.",
+    "signUpHeader": "Create an account",
+    "signUpSubHeader": "Register to get started",
     "yourAddress": "Your address",
     "order": {
       "header": "Orders",
