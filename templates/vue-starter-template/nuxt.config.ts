@@ -77,7 +77,8 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/**": {
-      isr: 60 * 60 * 24,
+      // 60-minute ISR — increase for mostly-static storefronts, decrease for frequently updated content
+      isr: 60 * 60,
     },
     "/**/*.svg": {
       headers: {

@@ -11,6 +11,7 @@ useHead({
   link: [
     {
       rel: "preconnect",
+      // Update this to your CDN domain in production
       href: "https://cdn.shopware.store",
     },
   ],

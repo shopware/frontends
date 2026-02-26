@@ -12,7 +12,7 @@ import type { Schemas } from "#shopware";
  * Returns the URL with optimized format/quality params applied,
  * or undefined if no image is found.
  */
-function findFirstCmsImageUrl(
+export function findFirstCmsImageUrl(
   sections: Schemas["CmsSection"][],
   options?: { format?: string; quality?: number },
 ): string | undefined {
