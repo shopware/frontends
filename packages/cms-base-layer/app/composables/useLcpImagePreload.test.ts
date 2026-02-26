@@ -1,14 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
-
-// Mock Nuxt auto-imports before importing the module
-vi.mock("#imports", () => ({
-  useAppConfig: () => ({}),
-  useHead: () => {},
-}));
-
-vi.mock("#shopware", () => ({}));
-
-const { findFirstCmsImageUrl } = await import("./useLcpImagePreload");
+import { describe, expect, it } from "vitest";
+import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
 
 type Sections = Parameters<typeof findFirstCmsImageUrl>[0];
 
