@@ -12,8 +12,12 @@ export type UseAddressReturn = {
   customerAddresses: ComputedRef<Schemas["CustomerAddress"][]>;
   /**
    * Loads the addresses that are available under `customerAddresses` property
+   *
+   * @param criteria Optional criteria object to filter or extend the loaded addresses.
    */
-  loadCustomerAddresses(): Promise<Schemas["CustomerAddress"][]>;
+  loadCustomerAddresses(
+    criteria?: Schemas["Criteria"],
+  ): Promise<Schemas["CustomerAddress"][]>;
   /**
    * Fetches a single customer address by ID
    */
