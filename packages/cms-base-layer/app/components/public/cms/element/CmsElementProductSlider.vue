@@ -3,7 +3,8 @@ import type {
   CmsElementProductSlider,
   SliderElementConfig,
 } from "@shopware/composables";
-import { computed, inject, onMounted, ref, useTemplateRef } from "vue";
+import { useElementSize } from "@vueuse/core";
+import { computed, inject, useTemplateRef } from "vue";
 import type { CSSProperties, ComputedRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 
@@ -17,10 +18,12 @@ const slotCount = inject<number>("cms-block-slot-count", 1);
 const elMinWidth = computed(
   () => +getConfigValue("elMinWidth").replace(/\D+/g, "") || 300,
 );
-// SSR: estimate from config minWidth assuming ~1200px container divided by slot count; refined on mount
-const slidesToShow = ref<number>(
-  Math.max(1, Math.floor(1200 / slotCount / elMinWidth.value)),
-);
+const { width } = useElementSize(productSlider);
+const slidesToShow = computed(() => {
+  // SSR: useElementSize returns 0, fallback to 1200px estimate divided by slot count
+  const containerWidth = width.value || 1200 / slotCount;
+  return Math.max(1, Math.floor(containerWidth / elMinWidth.value));
+});
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
@@ -44,17 +47,6 @@ const config: ComputedRef<SliderElementConfig> = computed(() => ({
     source: "static",
   },
 }));
-
-onMounted(() => {
-  setTimeout(() => {
-    if (productSlider.value?.clientWidth) {
-      slidesToShow.value = Math.max(
-        1,
-        Math.floor(productSlider.value.clientWidth / elMinWidth.value),
-      );
-    }
-  }, 100);
-});
 
 // Responsive SSR breakpoints: scale by slotCount since container is ~1/slotCount of viewport
 const ssrBreakpoints = computed(() => {
