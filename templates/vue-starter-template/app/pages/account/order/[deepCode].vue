@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
 
 const { apiClient } = useShopwareContext();
 const localePath = useLocalePath();

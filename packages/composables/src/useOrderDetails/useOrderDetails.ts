@@ -10,7 +10,7 @@ export type UseOrderDetailsOptions = {
    * instead of an order ID. This enables fetching orders for guest
    * users who are not logged in.
    */
-  isDeepLinkCode?: boolean;
+  isGuestOrder?: boolean;
 };
 
 export type UseOrderDetailsReturn = {
@@ -199,7 +199,7 @@ export function useOrderDetails(
     };
 
     const params: operations["readOrder post /order"]["body"] =
-      options?.isDeepLinkCode
+      options?.isGuestOrder
         ? {
             ...baseParams,
             filter: [

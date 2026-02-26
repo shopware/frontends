@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
 
 const { apiClient } = useShopwareContext();
 const localePath = useLocalePath();
@@ -56,7 +56,7 @@ const getOrderData = async () => {
         }
       }
     }
-    order.value = null;
+    return null;
   }
 };
 
@@ -72,15 +72,9 @@ const authOrder = async () => {
     isOrderLoading.value = false;
   }
 };
-
-onMounted(() => {
-  getOrderData();
-});
 </script>
 <template>
-  <div
-    class="max-w-2xl mx-auto py-4 px-4 sm:py-8 sm:px-6 lg:max-w-5xl lg:px-8"
-  >
+  <div class="max-w-2xl mx-auto py-4 px-4 sm:py-8 sm:px-6 lg:max-w-5xl lg:px-8">
     <div v-if="isLoggedIn" class="mb-5">
       <NuxtLink
         :to="formatLink('/account/order')"
@@ -93,9 +87,7 @@ onMounted(() => {
 
     <div v-if="errorNotFound && !isOrderLoading">
       <div class="flex flex-col items-center justify-center py-20 text-center">
-        <div
-          class="w-16 h-16 i-carbon-document-unknown text-gray-400 mb-4"
-        />
+        <div class="w-16 h-16 i-carbon-document-unknown text-gray-400 mb-4" />
         <h2 class="text-xl font-semibold text-gray-800 mb-2">
           {{ $t("account.messages.orderNotFound") }}
         </h2>

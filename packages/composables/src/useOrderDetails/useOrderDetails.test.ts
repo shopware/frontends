@@ -28,10 +28,10 @@ describe("useOrderDetails", () => {
     );
   });
 
-  it("should load order by deep link code when isDeepLinkCode option is true", async () => {
+  it("should load order by deep link code when isGuestOrder option is true", async () => {
     const { vm, injections } = useSetup(() =>
       useOrderDetails("VNHzUJi2ioujVWdnCeYzExOihpHcxX3S", undefined, {
-        isDeepLinkCode: true,
+        isGuestOrder: true,
       }),
     );
     injections.apiClient.invoke.mockResolvedValue({ data: Order });
@@ -68,9 +68,9 @@ describe("useOrderDetails", () => {
     });
   });
 
-  it("should load order by id when isDeepLinkCode option is false", async () => {
+  it("should load order by id when isGuestOrder option is false", async () => {
     const { vm, injections } = useSetup(() =>
-      useOrderDetails("123-test", undefined, { isDeepLinkCode: false }),
+      useOrderDetails("123-test", undefined, { isGuestOrder: false }),
     );
     injections.apiClient.invoke.mockResolvedValue({ data: Order });
 
