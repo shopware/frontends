@@ -14,20 +14,29 @@ describe("useSyncWishlist", () => {
   describe("methods", () => {
     describe("addToWishlist", () => {
       it("should add product to the wishlist", async () => {
-        const { vm } = useSetup(() => useSyncWishlist());
+        const { vm, injections } = useSetup(() => useSyncWishlist());
+        injections.apiClient.invoke.mockResolvedValue({});
 
-        await expect(vm.addToWishlistSync("some-id")).resolves.toBe(undefined);
+        await vm.addToWishlistSync("some-id");
+
+        expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+          "addProductOnWishlist post /customer/wishlist/add/{productId}",
+          { pathParams: { productId: "some-id" } },
+        );
       });
     });
 
     describe("removeFromWishlist", () => {
-      it("should remove product from the wishlist", () => {
-        const { vm } = useSetup(() => useSyncWishlist());
+      it("should remove product from the wishlist", async () => {
+        const { vm, injections } = useSetup(() => useSyncWishlist());
+        injections.apiClient.invoke.mockResolvedValue({});
 
-        vm.getWishlistProducts();
-        vm.removeFromWishlistSync("some-id");
-        // Mocked value
-        expect(vm.count).toBe(vm.count);
+        await vm.removeFromWishlistSync("some-id");
+
+        expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+          "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}",
+          { pathParams: { productId: "some-id" } },
+        );
       });
     });
 
@@ -84,6 +93,49 @@ describe("useSyncWishlist", () => {
         );
         expect(vm.count).toBe(9);
         expect(vm.items.length).toBe(1);
+        expect(vm.products).toStrictEqual([{ id: "test-id" }]);
+      });
+
+      it("getWishlistProducts with custom criteria", async () => {
+        const { vm, injections } = useSetup(() => useSyncWishlist());
+        injections.apiClient.invoke.mockResolvedValue({
+          data: {
+            products: {
+              elements: [],
+              total: 0,
+            },
+          },
+        });
+
+        await vm.getWishlistProducts({ limit: 10, page: 2 });
+
+        expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+          expect.stringContaining("readCustomerWishlist"),
+          expect.objectContaining({
+            body: expect.objectContaining({
+              limit: 10,
+              page: 2,
+              "total-count-mode": "exact",
+            }),
+          }),
+        );
+      });
+
+      it("getWishlistProducts with null total, page, limit uses defaults", async () => {
+        const { vm, injections } = useSetup(() => useSyncWishlist());
+        injections.apiClient.invoke.mockResolvedValue({
+          data: {
+            products: {
+              elements: [{ id: "id-1" }],
+            },
+          },
+        });
+
+        await vm.getWishlistProducts();
+
+        expect(vm.count).toBe(0);
+        expect(vm.currentPage).toBe(1);
+        expect(vm.limit).toBe(15);
       });
     });
 

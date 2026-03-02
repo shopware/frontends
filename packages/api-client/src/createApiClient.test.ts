@@ -693,6 +693,90 @@ describe("createAPIClient", () => {
       );
     });
 
+    it("should update only access token without recreating the fetch client", async () => {
+      const appSpy = vi.fn().mockImplementation(() => {});
+      const app = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          appSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+
+      client.updateBaseConfig({
+        accessToken: "UPDATED_TOKEN",
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(appSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          "sw-access-key": "UPDATED_TOKEN",
+        }),
+      );
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL,
+        accessToken: "UPDATED_TOKEN",
+      });
+    });
+
+    it("should not recreate client when baseURL is the same", async () => {
+      const appSpy = vi.fn().mockImplementation(() => {});
+      const app = createApp().use(
+        "/checkout/cart",
+        eventHandler(async (event) => {
+          const requestHeaders = getHeaders(event);
+          appSpy(requestHeaders);
+          return {};
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+
+      client.updateBaseConfig({
+        baseURL,
+        accessToken: "CHANGED_TOKEN",
+      });
+
+      await client.invoke("readCart get /checkout/cart");
+
+      expect(appSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          "sw-access-key": "CHANGED_TOKEN",
+        }),
+      );
+    });
+
+    it("should not update accessToken when it is the same", () => {
+      const client = createAPIClient<operations>({
+        accessToken: "SAME_TOKEN",
+        baseURL: "https://example.com",
+      });
+
+      client.updateBaseConfig({
+        accessToken: "SAME_TOKEN",
+      });
+
+      expect(client.getBaseConfig()).toEqual({
+        baseURL: "https://example.com",
+        accessToken: "SAME_TOKEN",
+      });
+    });
+
     it("should return current base configuration", () => {
       const client = createAPIClient<operations>({
         accessToken: "INITIAL_TOKEN",

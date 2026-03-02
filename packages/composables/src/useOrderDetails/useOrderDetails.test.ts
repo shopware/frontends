@@ -6,12 +6,21 @@ import { useOrderDetails } from "./useOrderDetails";
 describe("useOrderDetails", () => {
   it("init details", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+
+    expect(vm.documents).toStrictEqual([]);
+
     injections.apiClient.invoke.mockResolvedValue({ data: Order });
 
     await vm.loadOrderDetails();
+    expect(vm.hasDocuments).toBe(false);
+    expect(vm.documents).toStrictEqual([]);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readOrder"),
-      expect.objectContaining({}),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          associations: expect.anything(),
+        }),
+      }),
     );
 
     expect(vm.personalDetails).toEqual({
@@ -26,11 +35,25 @@ describe("useOrderDetails", () => {
           id === Order.orders.elements?.[0]?.billingAddressId,
       ),
     );
+
+    expect(vm.order).toBeDefined();
+    expect(vm.status).toBe(
+      Order.orders.elements?.[0]?.stateMachineState.translated.name,
+    );
+    expect(vm.statusTechnicalName).toBe(
+      Order.orders.elements?.[0]?.stateMachineState.technicalName,
+    );
+    expect(vm.shippingAddress).toBeUndefined();
+    expect(vm.total).toBe(Order.orders.elements?.[0]?.price?.totalPrice);
+    expect(vm.subtotal).toBe(Order.orders.elements?.[0]?.price?.positionPrice);
+    expect(vm.shippingCosts).toBe(Order.orders.elements?.[0]?.shippingTotal);
   });
 
   it("should handle setting the order payment", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { redirectUrl: "https://payment.example.com" },
+    });
     await vm.handlePayment();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -40,6 +63,24 @@ describe("useOrderDetails", () => {
           errorUrl: undefined,
           finishUrl: undefined,
           orderId: "123-test",
+        },
+      }),
+    );
+    expect(vm.paymentUrl).toBe("https://payment.example.com");
+  });
+
+  it("should handle payment with success and error URLs", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.handlePayment("https://success.com", "https://error.com");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("handlePaymentMethod"),
+      expect.objectContaining({
+        body: {
+          orderId: "123-test",
+          finishUrl: "https://success.com",
+          errorUrl: "https://error.com",
         },
       }),
     );
@@ -112,7 +153,7 @@ describe("useOrderDetails", () => {
   it("getPaymentMethods", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.getPaymentMethods();
+    const result = await vm.getPaymentMethods();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readPaymentMethod"),
@@ -122,6 +163,18 @@ describe("useOrderDetails", () => {
         },
       }),
     );
+    expect(result).toEqual([]);
+  });
+
+  it("getPaymentMethods returns elements when available", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    const paymentMethods = [{ id: "1", name: "Invoice" }];
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: paymentMethods },
+    });
+    const result = await vm.getPaymentMethods();
+
+    expect(result).toEqual(paymentMethods);
   });
 
   it("paymentChangeable", async () => {
@@ -130,6 +183,42 @@ describe("useOrderDetails", () => {
     expect(vm.paymentChangeable).toEqual(false);
     await vm.loadOrderDetails();
     expect(vm.paymentChangeable).toEqual(true);
+  });
+
+  it("loadOrderDetails with custom associations", async () => {
+    const customAssociations = { lineItems: { associations: { cover: {} } } };
+    const { vm, injections } = useSetup(() =>
+      useOrderDetails("123-test", customAssociations),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+    await vm.loadOrderDetails();
+
+    const call = injections.apiClient.invoke.mock.calls.at(0);
+    expect(call).toBeDefined();
+    if (call) {
+      const args = call[1] as { body: { associations: unknown } };
+      expect(call[0]).toContain("readOrder");
+      expect(args.body.associations).toMatchObject(customAssociations);
+    }
+  });
+
+  it("hasDocuments and documents when order has documents", async () => {
+    const orderElement = Order.orders.elements[0];
+    const orderWithDocs = {
+      ...orderElement,
+      documents: [{ id: "doc-1", deepLinkCode: "abc" }],
+    };
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: { elements: [orderWithDocs] },
+        paymentChangeable: { "123-test": true },
+      },
+    });
+    await vm.loadOrderDetails();
+
+    expect(vm.hasDocuments).toBe(true);
+    expect(vm.documents).toStrictEqual([{ id: "doc-1", deepLinkCode: "abc" }]);
   });
 
   it("should return current payment method", async () => {

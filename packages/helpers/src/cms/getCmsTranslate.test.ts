@@ -21,4 +21,10 @@ describe("useCmsTranslate", () => {
   it("should return text without placeholder (params missing)", async () => {
     expect(getCmsTranslate("Hello, world!")).toBe("Hello, world!");
   });
+
+  it("should not replace placeholder when param value is falsy", async () => {
+    expect(getCmsTranslate("Hello, {name}!", { name: null })).toBe(
+      "Hello, {name}!",
+    );
+  });
 });
