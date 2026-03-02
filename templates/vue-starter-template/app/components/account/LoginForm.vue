@@ -7,9 +7,10 @@ const { login } = useUser();
 const { pushSuccess } = useNotifications();
 const { t } = useI18n();
 const { handleApiError } = useApiErrorsResolver("account_login_form");
+const route = useRoute();
 
-const emit = defineEmits<{
-  close: [];
+const { hideSignUp = false } = defineProps<{
+  hideSignUp?: boolean;
 }>();
 
 async function handleLogin(formData: { username: string; password: string }) {
@@ -17,18 +18,20 @@ async function handleLogin(formData: { username: string; password: string }) {
     await login(formData);
     pushSuccess(t("account.messages.loggedInSuccess"));
     mergeWishlistProducts();
-    emit("close");
+
+    const redirect = route.query.redirect as string | undefined;
+    await push(redirect || formatLink("/"));
   } catch (error) {
     handleApiError(error);
   }
 }
 
 function handleSignUp() {
-  push(formatLink("/register"));
+  push(formatLink("/account/login"));
 }
 </script>
 <template>
-  <div class="w-auto sm:w-100 flex flex-col gap-3 m-auto p-5">
+  <div class="w-full flex flex-col gap-3 p-5">
     <div class="mb-4">
       <h3 class="text-2xl font-bold">{{ $t("loginForm.header") }}</h3>
       <p class="text-sm text-text-bg-surface-surface-disabled">
@@ -38,6 +41,7 @@ function handleSignUp() {
 
     <LoginForm @submit="handleLogin" />
     <FormBaseButton
+      v-if="!hideSignUp"
       :label="$t('loginForm.signUpButtonLabel')"
       variant="secondary"
       @click="handleSignUp"

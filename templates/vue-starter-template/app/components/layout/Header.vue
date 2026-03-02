@@ -3,7 +3,6 @@ const { count: cartCount } = useCart();
 const { count: wishlistCount } = useWishlist();
 const { isLoggedIn } = useUser();
 const { push } = useRouter();
-const loginModalController = useModal();
 const sideMenuController = useSideMenuModal();
 
 const currentMenuPosition = ref<string | undefined>(undefined);
@@ -30,7 +29,9 @@ function toggleMobileSearch() {
 
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
-    loginModalController.open();
+    push(
+      `${formatLink("/account/login")}?redirect=${encodeURIComponent(route.fullPath)}`,
+    );
   } else {
     toggleAccountMenu();
   }
@@ -96,13 +97,15 @@ watch(
             <ClientOnly>
               <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               <template #fallback>
-                <LayoutHeaderWishlistIcon
-                  :counter="0"
-                />
+                <LayoutHeaderWishlistIcon :counter="0" />
               </template>
             </ClientOnly>
 
-            <FormIconButton type="ghost" @click="toggleMiniCart" :aria-label="$t('layout.header.cart')">
+            <FormIconButton
+              type="ghost"
+              @click="toggleMiniCart"
+              :aria-label="$t('layout.header.cart')"
+            >
               <ClientOnly>
                 <LayoutHeaderCartIcon :counter="cartCount" />
                 <template #fallback>
@@ -134,11 +137,6 @@ watch(
           />
         </ClientOnly>
       </div>
-      <ClientOnly>
-        <SharedModal v-if="!isLoggedIn" :controller="loginModalController">
-          <AccountLoginForm @close="loginModalController.close" />
-        </SharedModal>
-      </ClientOnly>
     </div>
     <div
       class="border-b relative max-lg:hidden"

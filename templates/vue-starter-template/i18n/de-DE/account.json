@@ -1,7 +1,8 @@
 {
   "account": {
     "back": "Zurück",
-    "signUpHeader": "Ich bin neu hier.",
+    "signUpHeader": "Konto erstellen",
+    "signUpSubHeader": "Registrieren Sie sich, um loszulegen",
     "yourAddress": "Ihre Adresse",
     "order": {
       "header": "Bestellungen",
@@ -146,7 +147,8 @@
       "loggedInSuccess": "Sie wurden erfolgreich eingeloggt.",
       "verifying": "Ihr Konto wird überprüft...",
       "signUpSuccess": "Vielen Dank für Ihre Anmeldung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Anmeldung abzuschließen.",
-      "verificationLinkInvalid": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie eine neue Bestätigungs-E-Mail an."
+      "verificationLinkInvalid": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie eine neue Bestätigungs-E-Mail an.",
+      "loginRequired": "Zum Zugriff auf diese Seite ist eine Anmeldung erforderlich. Sie werden zur Anmeldeseite weitergeleitet."
     }
   }
 }
