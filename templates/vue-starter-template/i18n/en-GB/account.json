@@ -24,7 +24,13 @@
       "shippingStatus": "Shipping Status",
       "shipping": "Shipping",
       "shippingMethod": "Shipping method",
-      "total": "Total"
+      "total": "Total",
+      "backToList": "Back to orders list",
+      "authOrderTitle": "Verify your order",
+      "authOrderText": "Please enter the email address and postal code used when placing the order.",
+      "authOrderButton": "Verify order",
+      "emailPlaceholder": "Email address",
+      "postalCodePlaceholder": "Postal code"
     },
     "menu": {
       "header": "Your account",
@@ -146,7 +152,11 @@
       "loggedInSuccess": "You have been logged in successfully.",
       "verifying": "Verifying your account...",
       "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-      "verificationLinkInvalid": "The verification link is invalid or has expired. Please request a new confirmation email."
+      "verificationLinkInvalid": "The verification link is invalid or has expired. Please request a new confirmation email.",
+      "orderSuccessNoOrder": "The order could not be found.",
+      "orderWrongData": "The email address or postal code is incorrect. Please try again.",
+      "paymentMethodChanged": "Payment method changed successfully.",
+      "productsAdded": "Products have been added to the cart."
     }
   }
 }
