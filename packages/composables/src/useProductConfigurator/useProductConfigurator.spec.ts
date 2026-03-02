@@ -74,4 +74,42 @@ describe("useProductConfigurator", () => {
     expect(vm.isLoadingOptions).toBe(true);
     expect(vm.getOptionGroups).toStrictEqual([]);
   });
+
+  it("getSelectedOptions returns selected options", () => {
+    vi.mocked(useProduct).mockReturnValue({
+      configurator: ref(mockedConfigurator),
+      product: ref(mockedProduct),
+    } as unknown as ReturnType<typeof useProduct>);
+    const { vm } = useSetup(useProductConfigurator);
+
+    expect(vm.getSelectedOptions).toEqual({
+      Colour: "cc02c6cf39ad43d5856a25f8928490bf",
+    });
+  });
+
+  it("handleChange without callback", async () => {
+    vi.mocked(useProduct).mockReturnValue({
+      configurator: ref(mockedConfigurator),
+      product: ref(mockedProduct),
+    } as unknown as ReturnType<typeof useProduct>);
+    const { vm } = useSetup(useProductConfigurator);
+
+    await vm.handleChange("test-group", "test-option");
+    expect(vm.getSelectedOptions).toMatchObject({
+      "test-group": "test-option",
+    });
+  });
+
+  it("getSelectedOptions skips optionIds not in configurator", () => {
+    vi.mocked(useProduct).mockReturnValue({
+      configurator: ref(mockedConfigurator),
+      product: ref({
+        ...mockedProduct,
+        optionIds: ["non-existent-option-id"],
+      }),
+    } as unknown as ReturnType<typeof useProduct>);
+    const { vm } = useSetup(useProductConfigurator);
+
+    expect(vm.getSelectedOptions).toEqual({});
+  });
 });

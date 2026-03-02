@@ -95,6 +95,29 @@ describe("useCmsElementImage", () => {
         });
       });
 
+      it("should return imageContainerAttrs without url", () => {
+        const { imageContainerAttrs } = useCmsElementImage({
+          data: {
+            newTab: false,
+          },
+        } as CmsElementImage);
+
+        expect(imageContainerAttrs.value).toEqual({});
+      });
+
+      it("should return imageContainerAttrs with url but no newTab", () => {
+        const { imageContainerAttrs } = useCmsElementImage({
+          data: {
+            url: "https://shopware.com/logo.png",
+            newTab: false,
+          },
+        } as CmsElementImage);
+
+        expect(imageContainerAttrs.value).toEqual({
+          href: "https://shopware.com/logo.png",
+        });
+      });
+
       it("should return imageLink", () => {
         const { imageLink } = useCmsElementImage({
           data: {
