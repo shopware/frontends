@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.13.0
+
+### Minor Changes
+
+- [#2241](https://github.com/shopware/frontends/pull/2241) [`9ccbaa1`](https://github.com/shopware/frontends/commit/9ccbaa1fb6cc1f790d979c3dd3745c5402b6d8d1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `withDefaults` by props destructure
+
 ## 1.12.0
 
 ### Minor Changes

@@ -401,35 +401,13 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.4.0
+### Latest changes: 1.5.0
 
 ### Minor Changes
 
-- [#2181](https://github.com/shopware/frontends/pull/2181) [`ed72205`](https://github.com/shopware/frontends/commit/ed72205853e9fc40db513f8a4d08acf2dd7b1fba) Thanks [@patzick](https://github.com/patzick)! - Add API-specific configuration support for `store-api` and `admin-api` in `api-gen.config.json`. This allows configuring `rules` and `patches` separately for each API type. Root-level `rules` and `patches` are now deprecated but still supported for backwards compatibility.
-
-  Example:
-
-  ```json
-  {
-    "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
-    "store-api": {
-      "patches": ["storeApiSchema.overrides.json"],
-      "rules": ["COMPONENTS_API_ALIAS"]
-    },
-    "admin-api": {
-      "patches": ["adminApiSchema.overrides.json"]
-    }
-  }
-  ```
-
-- [#2126](https://github.com/shopware/frontends/pull/2126) [`e595bc1`](https://github.com/shopware/frontends/commit/e595bc1ea6afe01a0065300277a78ef8c1fe5667) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Enhanced OpenAPI schema override merging to properly handle conflicts between `$ref` and composition keywords (`oneOf`, `anyOf`, `allOf`, `not`). When merging overrides:
-  - Composition keywords now automatically remove conflicting `$ref` properties
-  - `$ref` overrides can replace composition keywords entirely
-  - Different composition keywords can replace each other (e.g., `allOf` → `oneOf`)
-
-  This ensures correct schema merging when using composition keywords in override files, preventing invalid OpenAPI schemas with conflicting `$ref` and composition keyword properties.
+- [#2262](https://github.com/shopware/frontends/pull/2262) [`7a20ea0`](https://github.com/shopware/frontends/commit/7a20ea0454ee237c772e532a03408477e968a958) Thanks [@mkucmus](https://github.com/mkucmus)! - Added support for `client_credentials` grant type authentication when loading Admin API schema. Set `SHOPWARE_ADMIN_CLIENT_SECRET` and `SHOPWARE_ADMIN_CLIENT_ID`environment variables to use integration credentials instead of username/password.
 
 ### Patch Changes
 
-- Updated dependencies [[`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19), [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b)]:
-  - @shopware/api-client@1.4.0
+- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf)]:
+  - @shopware/api-client@1.5.0

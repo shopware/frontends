@@ -1,5 +1,16 @@
 # @shopware/api-gen
 
+## 1.5.0
+
+### Minor Changes
+
+- [#2262](https://github.com/shopware/frontends/pull/2262) [`7a20ea0`](https://github.com/shopware/frontends/commit/7a20ea0454ee237c772e532a03408477e968a958) Thanks [@mkucmus](https://github.com/mkucmus)! - Added support for `client_credentials` grant type authentication when loading Admin API schema. Set `SHOPWARE_ADMIN_CLIENT_SECRET` and `SHOPWARE_ADMIN_CLIENT_ID`environment variables to use integration credentials instead of username/password.
+
+### Patch Changes
+
+- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf)]:
+  - @shopware/api-client@1.5.0
+
 ## 1.4.0
 
 ### Minor Changes

@@ -1,5 +1,42 @@
 # @shopware/cms-base-layer
 
+## 2.1.0
+
+### Minor Changes
+
+- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - - Add configurable UnoCSS runtime plugin for dynamic CMS class support
+  - Extend theme with overlay and fixed color tokens
+
+- [#2223](https://github.com/shopware/frontends/pull/2223) [`1db8704`](https://github.com/shopware/frontends/commit/1db870413dcea13c690504ffcaee13526bc8035f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add horizontal filter layout for product listings. When the sidebar filter element is placed outside a sidebar section, filters now display as horizontal dropdowns.
+
+  Includes new `SwFilterDropdown` and `SwProductListingFiltersHorizontal` components, with a `displayMode` prop added to all filter components to support both layouts.
+
+- [#2287](https://github.com/shopware/frontends/pull/2287) [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add responsive image sizing (srcset/sizes) via provide/inject, LCP preload with fetchpriority, configurable imageSizes in app.config, ISR route rules, inline styles, and AppConfig type declarations
+
+- [#2241](https://github.com/shopware/frontends/pull/2241) [`9ccbaa1`](https://github.com/shopware/frontends/commit/9ccbaa1fb6cc1f790d979c3dd3745c5402b6d8d1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `withDefaults` by props destructure
+
+- [#2273](https://github.com/shopware/frontends/pull/2273) [`18455e7`](https://github.com/shopware/frontends/commit/18455e77221fcc77b119d0ba7eae89dfce0e2941) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove SwMedia3D.vue component from autoload
+
+- [#2268](https://github.com/shopware/frontends/pull/2268) [`c3fff84`](https://github.com/shopware/frontends/commit/c3fff847e46a17c9c905bd893f1c1de287426c65) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Improve accessibility (A11y) of CMS base layer components.
+
+- [#2214](https://github.com/shopware/frontends/pull/2214) [`ccb9384`](https://github.com/shopware/frontends/commit/ccb93849be07f1b6a4e192de02579a528b5b6ac4) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add full TypeScript typing to html-to-vue helper functions
+
+### Patch Changes
+
+- [#2226](https://github.com/shopware/frontends/pull/2226) [`d77eacc`](https://github.com/shopware/frontends/commit/d77eaccdec6c56a6f2d999048c751fb9f01177d4) Thanks [@mkucmus](https://github.com/mkucmus)! - Add config prop support to `SwProductGallery` and make `CmsElementImageGallery` respect `minHeight`, `navigationArrows`, and `navigationDots` config values.
+
+- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - - Fix CMS block layout: height propagation in CmsBlockImageText, conditional `h-full` in CmsElementImage, `backgroundSize` forwarding in CmsGenericBlock, `w-full` for full_width sizing mode, and exclude `sizingMode` from section inline styles
+  - Fix vertical alignment support in CmsElementText and CmsElementProductSlider using `align-content` CSS property
+  - Remove rounded corners from image placeholder SVG and simplify CmsBlockTextOnImage structure
+
+- [#2210](https://github.com/shopware/frontends/pull/2210) [`c6b88b7`](https://github.com/shopware/frontends/commit/c6b88b7d2c50054188356aeb0f83053554d442f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Anchor tags with "btn btn-primary" classes from the API were not being
+  transformed to Tailwind utility classes due to condition matching issues
+  in the html-to-vue renderer.
+- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f)]:
+  - @shopware/api-client@1.5.0
+  - @shopware/composables@1.10.1
+  - @shopware/helpers@1.7.0
+
 ## 2.0.0
 
 ### Major Changes
