@@ -354,31 +354,14 @@ apiClient.invoke("getProducts get /product", {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.4.0
+### Latest changes: 1.5.0
 
 ### Minor Changes
 
-- [#2012](https://github.com/shopware/frontends/pull/2012) [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19) Thanks [@patzick](https://github.com/patzick)! - Added helper to support encoded `_criteria` field in GET query parameters.
-  Context information: https://github.com/shopware/shopware/issues/12388
+- [#2263](https://github.com/shopware/frontends/pull/2263) [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a) Thanks [@mkucmus](https://github.com/mkucmus)! - Regenerated Store API schemas from the latest backend. Removed obsolete schema patches that were fixed upstream.
 
-  This helper is available under the `@shopware/api-client/helpers` import path.
+- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - update admin API types to be aligned with the backend.
 
-  ```typescript
-  import { encodeForQuery } from "@shopware/api-client/helpers";
+### Patch Changes
 
-  const criteria = {
-    page: 1,
-    limit: 10,
-    ...
-  }
-
-  const encodedCriteria = encodeForQuery(criteria);
-
-  const result = await apiClient.invoke("getProducts get /product", {
-    query: {
-      _criteria: encodedCriteria,
-    },
-  });
-  ```
-
-- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - Changed `scopes` to `scope` in OAuth token request types to align with RFC 6749 and League OAuth2 server implementation.

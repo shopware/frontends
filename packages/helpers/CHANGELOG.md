@@ -1,5 +1,11 @@
 # @shopware/helpers
 
+## 1.7.0
+
+### Minor Changes
+
+- [#2287](https://github.com/shopware/frontends/pull/2287) [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add generateCdnSrcSet and buildCdnImageUrl helpers for synthetic responsive image srcset generation via CDN query params
+
 ## 1.6.0
 
 ### Minor Changes
