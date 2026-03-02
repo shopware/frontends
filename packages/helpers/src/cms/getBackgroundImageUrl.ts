@@ -13,6 +13,11 @@ const getUrlFromBackgroundImage = (url: string) => {
   return !match ? url : match[1];
 };
 
+export type BackgroundImageOptions = {
+  format?: string;
+  quality?: number;
+};
+
 export function getBackgroundImageUrl<
   T extends {
     backgroundMedia?: {
@@ -22,7 +27,7 @@ export function getBackgroundImageUrl<
       };
     };
   },
->(url: string, element: T): string {
+>(url: string, element: T, options?: BackgroundImageOptions): string {
   const backgroundImage = getUrlFromBackgroundImage(url);
   const width = element.backgroundMedia?.metaData?.width ?? 0;
   const height = element.backgroundMedia?.metaData?.height ?? 0;
@@ -30,7 +35,15 @@ export function getBackgroundImageUrl<
     width > height
       ? `width=${roundUp(width > 1920 ? 1900 : width)}`
       : `height=${roundUp(height > 1920 ? 1900 : height)}`;
-  const srcPath = `${backgroundImage}?${biggestParam}&fit=crop,smart`;
+
+  let srcPath = `${backgroundImage}?${biggestParam}&fit=crop,smart`;
+
+  if (options?.format) {
+    srcPath += `&format=${options.format}`;
+  }
+  if (options?.quality) {
+    srcPath += `&quality=${options.quality}`;
+  }
 
   return `url("${srcPath}")`;
 }

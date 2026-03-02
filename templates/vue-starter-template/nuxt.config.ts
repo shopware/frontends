@@ -28,6 +28,9 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  features: {
+    inlineStyles: true,
+  },
   css: ["@unocss/reset/tailwind-compat.css"],
   unocss: {
     nuxtLayers: true,
@@ -73,6 +76,15 @@ export default defineNuxtConfig({
     ],
   },
   routeRules: {
+    "/**": {
+      // 60-minute ISR — increase for mostly-static storefronts, decrease for frequently updated content
+      isr: 60 * 60,
+    },
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
     "/checkout": {
       ssr: false,
       headers: {

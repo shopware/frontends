@@ -4,7 +4,7 @@ import type {
   SliderElementConfig,
 } from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, inject, ref, useTemplateRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
@@ -46,9 +46,24 @@ const crossSellCollections = computed(() => {
 });
 
 const { width } = useElementSize(crossSellContainer);
+const slotCount = inject<number>("cms-block-slot-count", 1);
+const elMinWidth = computed(
+  () => +(config.value.minWidth?.value.replace(/\D+/g, "") || 300),
+);
 const slidesToShow = computed(() => {
-  const minWidth = +(config.value.minWidth?.value.replace(/\D+/g, "") || 0);
-  return Math.floor(width.value / (minWidth * 1.2));
+  // SSR: useElementSize returns 0, fallback to 1200px estimate divided by slot count
+  const containerWidth = width.value || 1200 / slotCount;
+  return Math.max(1, Math.floor(containerWidth / elMinWidth.value));
+});
+
+// Responsive SSR breakpoints: scale by slotCount since container is ~1/slotCount of viewport
+const ssrBreakpoints = computed(() => {
+  const max = slidesToShow.value;
+  const bp: Record<string, number> = {};
+  for (let n = 2; n <= max; n++) {
+    bp[`(min-width: ${elMinWidth.value * n * slotCount}px)`] = n;
+  }
+  return bp;
 });
 
 const toggleTab = (index: number) => {
@@ -80,6 +95,7 @@ const toggleTab = (index: number) => {
         :slides-to-show="slidesToShow"
         :slides-to-scroll="1"
         :autoplay="false"
+        :ssr-breakpoints="ssrBreakpoints"
       >
         <SwProductCard
           v-for="product of crossSellCollections[currentTabIndex]?.products"

@@ -11,7 +11,7 @@ import {
   watch,
 } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
-import { useCmsElementConfig } from "#imports";
+import { useCmsElementConfig, useHead, useId } from "#imports";
 import type { Schemas } from "#shopware";
 
 const {
@@ -21,6 +21,7 @@ const {
   gap = "0px",
   autoplay = false,
   autoplaySpeed = 3000,
+  ssrBreakpoints,
 } = defineProps<{
   config: SliderElementConfig;
   slidesToShow?: number;
@@ -28,7 +29,14 @@ const {
   gap?: string;
   autoplay?: boolean;
   autoplaySpeed?: number;
+  /** CSS media query breakpoints for responsive SSR layout.
+   *  Keys are media queries, values are number of visible slides.
+   *  e.g. { '(min-width: 768px)': 2, '(min-width: 1280px)': 4 }
+   *  Base case (mobile) defaults to 1 visible slide. */
+  ssrBreakpoints?: Record<string, number>;
 }>();
+
+const sliderId = useId();
 
 const { getConfigValue } = useCmsElementConfig({
   config: config,
@@ -85,6 +93,51 @@ const isSliding = ref<boolean>();
 
 const { width: imageSliderWidth } = useElementSize(imageSlider);
 let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
+
+// SSR-safe fallback so the first slide is visible before JS hydrates
+const ssrTrackStyle = computed<CSSProperties>(() => {
+  const total = children.value.length;
+  const n = slidesToShow.value;
+  if (total === 0 || n === 0) return {};
+
+  // Transform is constant: always skip N prepended clones
+  const transform = `translateX(-${(n / total) * 100}%)`;
+
+  if (ssrBreakpoints) {
+    // Both width and transform handled by CSS media queries via useHead
+    return {};
+  }
+
+  return {
+    width: `${(total / n) * 100}%`,
+    transform,
+  };
+});
+
+// Inject responsive CSS into <head> for SSR breakpoints.
+// Transform is constant: always skip N prepended clones (`n / total`),
+// because translateX(%) is relative to the element's own width which scales
+// proportionally with the number of visible slides. Only width varies per breakpoint.
+// Removed entirely once client-side JS sets imageSliderTrackStyle.
+useHead(
+  computed(() => {
+    if (!ssrBreakpoints || imageSliderTrackStyle.value) return {};
+    const total = children.value.length;
+    const n = slidesToShow.value;
+    if (total === 0 || n === 0) return {};
+
+    const sel = `[data-ssr-slider="${sliderId}"]`;
+    const tx = `translateX(-${(n / total) * 100}%)`;
+
+    // Mobile base: 1 slide visible
+    let css = `${sel}{width:${total * 100}%;transform:${tx}}`;
+    // Breakpoint overrides — only width changes
+    for (const [query, slides] of Object.entries(ssrBreakpoints)) {
+      css += `@media ${query}{${sel}{width:${(total / slides) * 100}%}}`;
+    }
+    return { style: [{ innerHTML: css }] };
+  }),
+);
 
 // Touch event handling for mobile swipe gestures
 const touchStartX = ref(0);
@@ -284,7 +337,6 @@ defineExpose({
       'relative overflow-hidden h-full': true,
       'px-10': navigationArrowsValue === 'outside',
       'pb-15': navigationDotsValue === 'outside',
-      'opacity-0': !isReady,
     }"
   >
     <div
@@ -297,6 +349,7 @@ defineExpose({
     >
       <div
         ref="imageSliderTrack"
+        :data-ssr-slider="ssrBreakpoints ? sliderId : undefined"
         :class="{
           flex: true,
           'items-center':
@@ -307,7 +360,7 @@ defineExpose({
           'items-end':
             displayModeValue === 'contain' && verticalAlignValue === 'flex-end',
         }"
-        :style="imageSliderTrackStyle"
+        :style="imageSliderTrackStyle || ssrTrackStyle"
       >
         <div
           v-for="(child, index) of children"
@@ -316,7 +369,7 @@ defineExpose({
           :style="{
             width: imageSliderWidth
               ? `${imageSliderWidth / slidesToShow}px`
-              : 'auto',
+              : `${100 / children.length}%`,
             padding: `0 ${gap}`,
             height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"

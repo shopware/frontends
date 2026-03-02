@@ -3,7 +3,8 @@ import type {
   CmsElementProductSlider,
   SliderElementConfig,
 } from "@shopware/composables";
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { useElementSize } from "@vueuse/core";
+import { computed, inject, useTemplateRef } from "vue";
 import type { CSSProperties, ComputedRef } from "vue";
 import { useCmsElementConfig } from "#imports";
 
@@ -13,7 +14,16 @@ const props = defineProps<{
 const { getConfigValue } = useCmsElementConfig(props.content);
 
 const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
-const slidesToShow = ref<number>();
+const slotCount = inject<number>("cms-block-slot-count", 1);
+const elMinWidth = computed(
+  () => +getConfigValue("elMinWidth").replace(/\D+/g, "") || 300,
+);
+const { width } = useElementSize(productSlider);
+const slidesToShow = computed(() => {
+  // SSR: useElementSize returns 0, fallback to 1200px estimate divided by slot count
+  const containerWidth = width.value || 1200 / slotCount;
+  return Math.max(1, Math.floor(containerWidth / elMinWidth.value));
+});
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
@@ -38,15 +48,14 @@ const config: ComputedRef<SliderElementConfig> = computed(() => ({
   },
 }));
 
-onMounted(() => {
-  setTimeout(() => {
-    let temp = 1;
-    const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
-    if (productSlider.value?.clientWidth) {
-      temp = Math.ceil(productSlider.value?.clientWidth / (minWidth * 1.2));
-    }
-    slidesToShow.value = temp;
-  }, 100);
+// Responsive SSR breakpoints: scale by slotCount since container is ~1/slotCount of viewport
+const ssrBreakpoints = computed(() => {
+  const max = slidesToShow.value;
+  const bp: Record<string, number> = {};
+  for (let n = 2; n <= max; n++) {
+    bp[`(min-width: ${elMinWidth.value * n * slotCount}px)`] = n;
+  }
+  return bp;
 });
 
 const autoplay = computed(() => getConfigValue("rotate"));
@@ -75,6 +84,7 @@ const hasVerticalAlignment = computed(
           :slides-to-show="slidesToShow"
           :slides-to-scroll="1"
           :autoplay="autoplay"
+          :ssr-breakpoints="ssrBreakpoints"
         >
           <SwProductCard
             v-for="product of products"

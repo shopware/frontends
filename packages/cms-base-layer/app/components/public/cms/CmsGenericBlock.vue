@@ -4,12 +4,20 @@ import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
-import { h } from "vue";
+import { h, provide } from "vue";
+import { useAppConfig } from "#imports";
 import type { Schemas } from "#shopware";
+import { getImageSizes } from "../../../helpers/cms/getImageSizes";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
+
+const appConfig = useAppConfig();
+
+const slotCount = props.content.slots?.length || 1;
+provide("cms-block-slot-count", slotCount);
+provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
 
 const DynamicRender = () => {
   const {
@@ -31,6 +39,10 @@ const DynamicRender = () => {
       layoutStyles.backgroundImage = getBackgroundImageUrl(
         layoutStyles.backgroundImage,
         props.content,
+        {
+          format: appConfig.backgroundImage?.format,
+          quality: appConfig.backgroundImage?.quality,
+        },
       );
     }
 
