@@ -6,6 +6,7 @@ import { useSetup } from "../_test";
 import { useAddress } from "./useAddress";
 
 const MOCKED_ADDRESS = {
+  id: "address-id",
   countryId: "6777d83705454d078fc9a7419296c7dc",
   countryStateId: "",
   salutationId: "d5e543063dd642b48ef94b02d68e5785",
@@ -19,13 +20,17 @@ const MOCKED_ADDRESS = {
 describe("useAddress", () => {
   it("load customer address", async () => {
     const { vm, injections } = await useSetup(useAddress);
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.loadCustomerAddresses();
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [MOCKED_ADDRESS] },
+    });
+    const result = await vm.loadCustomerAddresses();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("listAddress"),
       expect.objectContaining({}),
     );
+    expect(result).toEqual([MOCKED_ADDRESS]);
+    expect(vm.customerAddresses).toEqual([MOCKED_ADDRESS]);
   });
 
   it("load customer address - error", async () => {
@@ -49,6 +54,7 @@ describe("useAddress", () => {
     });
 
     await expect(vm.loadCustomerAddresses()).rejects.toThrowError();
+    expect(vm.customerAddresses).toEqual([]);
   });
 
   it("create address", async () => {
@@ -108,6 +114,39 @@ describe("useAddress", () => {
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("defaultShippingAddress"),
       expect.objectContaining({ pathParams: { addressId: "address-id" } }),
+    );
+  });
+
+  it("load customer address - ApiClientError non-403", async () => {
+    const { vm } = await useSetup(useAddress, {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new ApiClientError({
+            status: 500,
+            _data: {
+              errors: [{ code: "SERVER", status: 500, detail: "Error" }],
+            },
+          } as unknown as FetchResponse<{
+            errors: Array<{ title: string }>;
+          }>);
+        }),
+      },
+    });
+
+    await expect(vm.loadCustomerAddresses()).rejects.toThrowError();
+  });
+
+  it("load customer address - non-ApiClientError", async () => {
+    const { vm } = await useSetup(useAddress, {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new Error("Network error");
+        }),
+      },
+    });
+
+    await expect(vm.loadCustomerAddresses()).rejects.toThrowError(
+      "Network error",
     );
   });
 

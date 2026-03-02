@@ -12,4 +12,25 @@ describe("useCmsElementProductBox", () => {
 
     expect(vm.product).toEqual(CmsProductBox.data.product);
   });
+
+  it("should use injected product when provided", () => {
+    const injectedProduct = { id: "injected-id", name: "Injected Product" };
+    const { vm } = useSetup(
+      () =>
+        useCmsElementProductBox(
+          CmsProductBox as unknown as CmsElementProductBox,
+        ),
+      { product: injectedProduct } as Parameters<typeof useSetup>[1],
+    );
+
+    expect(vm.product).toEqual(injectedProduct);
+  });
+
+  it("should return boxLayout from config", () => {
+    const { vm } = useSetup(() =>
+      useCmsElementProductBox(CmsProductBox as unknown as CmsElementProductBox),
+    );
+
+    expect(vm.boxLayout).toEqual("standard");
+  });
 });

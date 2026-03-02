@@ -116,11 +116,41 @@ describe("useCartNotification", () => {
     ]);
   });
 
+  it("should exclude success codes from getErrorsCodes", () => {
+    vi.mocked(useCart).mockReturnValue({
+      consumeCartErrors: vi.fn(() => {
+        return JSON.parse(
+          JSON.stringify({
+            "promotion-discount-added-1326f60448d84aed964d77ca1c2dde90": {
+              message: "Discount has been added",
+              code: 0,
+              key: "promotion-discount-added-1326f60448d84aed964d77ca1c2dde90",
+              level: 0,
+              messageKey: "promotion-discount-added",
+            },
+          }),
+        );
+      }),
+    } as unknown as ReturnType<typeof useCart>);
+    const { vm } = useSetup(() => useCartNotification());
+
+    expect(vm.getErrorsCodes()).toEqual([]);
+  });
+
   it("should return empty array if errors are not present", () => {
     vi.mocked(useCart).mockReturnValue({
       consumeCartErrors: vi.fn(() => {
         return null;
       }),
+    } as unknown as ReturnType<typeof useCart>);
+
+    const { vm } = useSetup(() => useCartNotification());
+    expect(vm.getErrorsCodes()).toEqual([]);
+  });
+
+  it("should return empty array when errors is array", () => {
+    vi.mocked(useCart).mockReturnValue({
+      consumeCartErrors: vi.fn(() => []),
     } as unknown as ReturnType<typeof useCart>);
 
     const { vm } = useSetup(() => useCartNotification());

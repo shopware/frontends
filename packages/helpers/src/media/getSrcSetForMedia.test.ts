@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { encodeUrlPath, getSrcSetForMedia } from "./getSrcSetForMedia";
+import {
+  buildCdnImageUrl,
+  encodeUrlPath,
+  generateCdnSrcSet,
+  getSrcSetForMedia,
+} from "./getSrcSetForMedia";
 
 describe("getSrcSetForMedia", () => {
   it("should return an empty string if media is undefined", () => {
@@ -146,6 +151,149 @@ describe("getSrcSetForMedia", () => {
     expect(result).toEqual(
       "https://example.com/normal/image.jpg 100w, https://example.com/path%20with%20space/image.jpg 200w, https://example.com/path%20already%20encoded/image.jpg 300w",
     );
+  });
+});
+
+describe("generateCdnSrcSet", () => {
+  it("should return undefined if src is undefined", () => {
+    expect(generateCdnSrcSet(undefined)).toBeUndefined();
+  });
+
+  it("should return undefined if src is empty string", () => {
+    expect(generateCdnSrcSet("")).toBeUndefined();
+  });
+
+  it("should generate srcset with default widths", () => {
+    const result = generateCdnSrcSet("https://cdn.example.com/image.jpg");
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart 400w, " +
+        "https://cdn.example.com/image.jpg?width=800&fit=crop%2Csmart 800w, " +
+        "https://cdn.example.com/image.jpg?width=1200&fit=crop%2Csmart 1200w, " +
+        "https://cdn.example.com/image.jpg?width=1600&fit=crop%2Csmart 1600w",
+    );
+  });
+
+  it("should generate srcset with custom widths", () => {
+    const result = generateCdnSrcSet(
+      "https://cdn.example.com/image.jpg",
+      [200, 600],
+    );
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=200&fit=crop%2Csmart 200w, " +
+        "https://cdn.example.com/image.jpg?width=600&fit=crop%2Csmart 600w",
+    );
+  });
+
+  it("should include format option when provided", () => {
+    const result = generateCdnSrcSet(
+      "https://cdn.example.com/image.jpg",
+      [400],
+      { format: "webp" },
+    );
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart&format=webp 400w",
+    );
+  });
+
+  it("should include quality option when provided", () => {
+    const result = generateCdnSrcSet(
+      "https://cdn.example.com/image.jpg",
+      [400],
+      { quality: 80 },
+    );
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart&quality=80 400w",
+    );
+  });
+
+  it("should include both format and quality options", () => {
+    const result = generateCdnSrcSet(
+      "https://cdn.example.com/image.jpg",
+      [400],
+      { format: "webp", quality: 85 },
+    );
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart&format=webp&quality=85 400w",
+    );
+  });
+
+  it("should return undefined for invalid URLs", () => {
+    expect(generateCdnSrcSet("not a url", [400])).toBeUndefined();
+  });
+});
+
+describe("buildCdnImageUrl", () => {
+  it("should return empty string if src is undefined", () => {
+    expect(buildCdnImageUrl(undefined, { width: 100, height: 100 })).toBe("");
+  });
+
+  it("should return empty string if src is empty", () => {
+    expect(buildCdnImageUrl("", { width: 100, height: 100 })).toBe("");
+  });
+
+  it("should set width param when width > height", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 350,
+      height: 200,
+    });
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart",
+    );
+  });
+
+  it("should set height param when height > width", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 200,
+      height: 350,
+    });
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?height=400&fit=crop%2Csmart",
+    );
+  });
+
+  it("should set width param when width equals height", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 300,
+      height: 300,
+    });
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=300&fit=crop%2Csmart",
+    );
+  });
+
+  it("should round dimensions up to nearest 100", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 501,
+      height: 100,
+    });
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=600&fit=crop%2Csmart",
+    );
+  });
+
+  it("should skip dimension and fit params when dimensions are 0", () => {
+    const result = buildCdnImageUrl("https://cdn.example.com/image.jpg", {
+      width: 0,
+      height: 0,
+    });
+    // Both default to 10, neither > 10, so no width/height/fit params
+    expect(result).toBe("https://cdn.example.com/image.jpg");
+  });
+
+  it("should include format and quality options", () => {
+    const result = buildCdnImageUrl(
+      "https://cdn.example.com/image.jpg",
+      { width: 400, height: 200 },
+      { format: "webp", quality: 90 },
+    );
+    expect(result).toBe(
+      "https://cdn.example.com/image.jpg?width=400&fit=crop%2Csmart&format=webp&quality=90",
+    );
+  });
+
+  it("should return src for invalid URLs", () => {
+    const result = buildCdnImageUrl("not a url", { width: 100, height: 100 });
+    expect(result).toBe("not a url");
   });
 });
 

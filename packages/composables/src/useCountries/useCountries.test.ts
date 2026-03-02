@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
 import { useSetup } from "../_test";
 import CountryMock from "../mocks/Country";
 import { useCountries } from "./useCountries";
@@ -101,5 +102,18 @@ describe("useCountries", () => {
     });
 
     expect(vm.getCountriesOptions).toStrictEqual([]);
+  });
+
+  it("should not fetch when swCountries already populated", async () => {
+    const preloadedCountries = ref(CountryMock.elements);
+    const { vm, injections } = await useSetup(useCountries, {
+      apiClient: { invoke: vi.fn() },
+      swCountries: preloadedCountries,
+    } as Parameters<typeof useSetup>[1]);
+
+    await vm.mountedCallback();
+
+    expect(injections.apiClient.invoke).not.toHaveBeenCalled();
+    expect(vm.getCountries).toStrictEqual(CountryMock.elements);
   });
 });
