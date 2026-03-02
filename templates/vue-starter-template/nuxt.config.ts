@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
-  css: ["@unocss/reset/tailwind-compat.css"],
+  css: ["~/assets/css/variables.css", "@unocss/reset/tailwind-compat.css"],
   unocss: {
     nuxtLayers: true,
   },
