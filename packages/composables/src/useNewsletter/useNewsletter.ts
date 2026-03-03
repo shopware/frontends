@@ -40,7 +40,7 @@ export type UseNewsletterReturn = {
   /**
    * Subscribe key
    */
-  SUBSRIBE_KEY: string;
+  SUBSCRIBE_KEY: string;
   /**
    * Unsubscribe key
    */
@@ -53,7 +53,7 @@ export type UseNewsletterReturn = {
  * @category Customer & Account
  */
 export function useNewsletter(): UseNewsletterReturn {
-  const SUBSRIBE_KEY = "subscribe";
+  const SUBSCRIBE_KEY = "subscribe";
   const UNSUBSCRIBE_KEY = "unsubscribe";
 
   const { apiClient } = useShopwareContext();
@@ -116,7 +116,7 @@ export function useNewsletter(): UseNewsletterReturn {
     getNewsletterStatus,
     newsletterStatus,
     confirmationNeeded,
-    SUBSRIBE_KEY,
+    SUBSCRIBE_KEY,
     UNSUBSCRIBE_KEY,
   };
 }

@@ -7,7 +7,7 @@ const {
   newsletterUnsubscribe,
   newsletterSubscribe,
   getNewsletterStatus,
-  SUBSRIBE_KEY,
+  SUBSCRIBE_KEY,
   confirmationNeeded,
 } = useNewsletter();
 const { handleApiError } = useApiErrorsResolver("account_newsletter_form");
@@ -22,7 +22,7 @@ async function handleNewsletterChange() {
     if (newsletter.value) {
       await newsletterSubscribe({
         email: user.value?.email || "",
-        option: SUBSRIBE_KEY,
+        option: SUBSCRIBE_KEY,
       });
       // Wait to avoid UI flickering
       await getNewsletterStatus();
