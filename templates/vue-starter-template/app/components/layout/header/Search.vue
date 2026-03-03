@@ -85,6 +85,7 @@ const handleEnterKey = () => {
 <template>
   <div ref="searchBox">
     <FormBaseInput
+      id="search-input"
       v-model="model"
       :placeholder="$t('search.placeholder')"
       @click="suggestIsActive = true"

@@ -33,7 +33,7 @@ function handleSignUp() {
 <template>
   <div class="w-full flex flex-col gap-3 p-5">
     <div class="mb-4">
-      <h3 class="text-2xl font-bold">{{ $t("loginForm.header") }}</h3>
+      <h1 class="text-2xl font-bold">{{ $t("loginForm.header") }}</h1>
       <p class="text-sm text-text-bg-surface-surface-disabled">
         {{ $t("loginForm.subHeader") }}
       </p>

@@ -4,6 +4,8 @@
     "signUpHeader": "Create an account",
     "signUpSubHeader": "Register to get started",
     "yourAddress": "Your address",
+    "loginPageTitle": "Login & Registration",
+    "loginPageHeader": "Log in or create account",
     "order": {
       "header": "Orders",
       "subHeader": "View your current and past orders",

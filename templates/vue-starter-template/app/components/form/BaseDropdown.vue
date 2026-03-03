@@ -8,6 +8,7 @@ defineProps<{
   id: string;
   invalid?: boolean;
   loading?: boolean;
+  autocomplete?: string;
 }>();
 
 const model = defineModel<string>({
@@ -29,6 +30,7 @@ const model = defineModel<string>({
         v-model="model"
         :id="id"
         :disabled="loading"
+        :autocomplete
       >
         <option v-if="loading" value="" selected disabled>
           {{ $t("form.loading") }}

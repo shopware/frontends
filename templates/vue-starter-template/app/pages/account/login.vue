@@ -2,6 +2,12 @@
 definePageMeta({
   layout: "default",
 });
+
+const { t } = useI18n();
+
+useSeoMeta({
+  title: () => t("account.loginPageTitle"),
+});
 </script>
 <template>
   <div class="container mx-auto px-6 sm:px-4 my-10 md:my-20">

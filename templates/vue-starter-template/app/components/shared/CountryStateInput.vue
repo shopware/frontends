@@ -26,6 +26,7 @@ function onCountrySelectChanged() {
 <template>
   <div class="flex gap-6">
     <FormDropdownField
+      autocomplete="country-name"
       class="w-full"
       id="country"
       v-model="countryId"

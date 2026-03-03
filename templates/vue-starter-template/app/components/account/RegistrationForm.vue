@@ -20,7 +20,7 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 if (import.meta.client && isLoggedIn.value) {
-  navigateTo({ path: redirectUrl || "/account" });
+  navigateTo({ path: redirectUrl || formatLink("/account") });
 }
 
 watch(isLoggedIn, (isLoggedIn) => {
@@ -32,22 +32,7 @@ watch(isLoggedIn, (isLoggedIn) => {
 type RegistrationFormState = Omit<
   operations["register post /account/register"]["body"],
   "storefrontUrl"
-> & {
-  accountType: "private" | "business";
-  vatIds: [string, ...string[]];
-  billingAddress: {
-    id: string;
-    customerId: string;
-    firstName: string;
-    lastName: string;
-    company: string;
-    street: string;
-    zipcode: string;
-    city: string;
-    countryId: string;
-    countryStateId: string;
-  };
-};
+>;
 
 const initialState: RegistrationFormState = {
   accountType: "private",
@@ -75,10 +60,53 @@ const state = reactive<RegistrationFormState>(
   JSON.parse(JSON.stringify(initialState)),
 );
 
+const accountTypeModel = computed({
+  get: () => state.accountType ?? "private",
+  set: (value: "private" | "business") => {
+    state.accountType = value;
+  },
+});
+
+const vatIdModel = computed({
+  get: () => state.vatIds?.[0] ?? "",
+  set: (value: string) => {
+    if (state.vatIds) state.vatIds[0] = value;
+    else state.vatIds = [value];
+  },
+});
+
+const companyModel = computed({
+  get: () => state.billingAddress.company ?? "",
+  set: (value: string) => {
+    state.billingAddress.company = value;
+  },
+});
+
+const zipcodeModel = computed({
+  get: () => state.billingAddress.zipcode ?? "",
+  set: (value: string) => {
+    state.billingAddress.zipcode = value;
+  },
+});
+
+const countryIdModel = computed({
+  get: () => state.billingAddress.countryId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryId = value;
+  },
+});
+
+const countryStateIdModel = computed({
+  get: () => state.billingAddress.countryStateId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryStateId = value;
+  },
+});
+
 const { r$ } = useRegle(
   state,
   registrationFormRules(
-    computed(() => state.accountType),
+    computed(() => state.accountType ?? "private"),
     computed(() => state.billingAddress.countryId),
   ),
 );
@@ -113,11 +141,15 @@ const invokeSubmit = async () => {
       v-if="showDoubleOptInBox"
       ref="doubleOptInBox"
       class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
+      role="status"
+      aria-live="polite"
     >
       {{ $t("account.messages.signUpSuccess") }}
     </div>
     <div class="mb-1 p-5">
-      <h3 class="text-2xl font-bold">{{ $t("account.signUpHeader") }}</h3>
+      <h2 id="sign-up-heading" class="text-2xl font-bold">
+        {{ $t("account.signUpHeader") }}
+      </h2>
       <p class="text-sm text-text-bg-surface-surface-disabled">
         {{ $t("account.signUpSubHeader") }}
       </p>
@@ -125,12 +157,13 @@ const invokeSubmit = async () => {
     <form
       class="w-full relative px-5"
       data-testid="registration-form"
+      aria-labelledby="sign-up-heading"
       @submit.prevent="invokeSubmit"
     >
       <div class="grid grid-cols-12 gap-5 mb-10">
         <FormAccountTypeSelect
           class="col-span-12"
-          v-model="state.accountType"
+          v-model="accountTypeModel"
           dataTestId="registration-account-type-select"
           id="accountType"
         />
@@ -139,7 +172,7 @@ const invokeSubmit = async () => {
           class="col-span-12 md:col-span-4"
           id="firstName"
           v-model="state.firstName"
-          autocomplete="firstName"
+          autocomplete="given-name"
           :label="$t('form.firstName')"
           :errorMessage="r$.firstName.$errors[0]"
           @blur="r$.firstName.$touch()"
@@ -172,7 +205,7 @@ const invokeSubmit = async () => {
           class="col-span-12 md:col-span-4"
           id="password"
           v-model="state.password"
-          autocomplete="current-password"
+          autocomplete="new-password"
           type="password"
           :label="$t('form.password')"
           :errorMessage="r$.password.$errors[0]"
@@ -184,22 +217,25 @@ const invokeSubmit = async () => {
           v-if="state.accountType === 'business'"
           class="col-span-12 md:col-span-4"
           id="vatId"
-          v-model="state.vatIds[0]"
+          v-model="vatIdModel"
           :label="$t('form.vatId')"
-          @blur="r$.vatIds.$touch()"
+          @blur="r$.vatIds?.$touch()"
           data-testid="registration-vatid-input"
         />
       </div>
 
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+      <h3 id="address-heading" class="block border-b-1 mb-5 pb-2 font-bold">
         {{ $t("account.yourAddress") }}
       </h3>
-      <div class="grid grid-cols-12 gap-5 mb-5">
+      <div
+        class="grid grid-cols-12 gap-5 mb-5"
+        aria-labelledby="address-heading"
+      >
         <FormInputField
           v-if="state.accountType === 'business'"
           class="col-span-12 md:col-span-4"
           id="company"
-          v-model="state.billingAddress.company"
+          v-model="companyModel"
           autocomplete="company"
           :label="$t('form.company')"
           data-testid="registration-company-input"
@@ -222,7 +258,7 @@ const invokeSubmit = async () => {
           class="col-span-12 md:col-span-4"
           :label="$t('form.postalCode')"
           id="zipcode"
-          v-model="state.billingAddress.zipcode"
+          v-model="zipcodeModel"
           autocomplete="postal-code"
           data-testid="registration-zipcode-input"
           @blur="r$.billingAddress.zipcode.$touch()"
@@ -241,8 +277,8 @@ const invokeSubmit = async () => {
         />
 
         <SharedCountryStateInput
-          v-model:country-id="state.billingAddress.countryId"
-          v-model:state-id="state.billingAddress.countryStateId"
+          v-model:country-id="countryIdModel"
+          v-model:state-id="countryStateIdModel"
           :country-id-validation="r$.billingAddress.countryId"
           :state-id-validation="r$.billingAddress.countryStateId"
           class="col-span-12 md:col-span-4"
@@ -252,6 +288,7 @@ const invokeSubmit = async () => {
         <FormBaseButton
           :label="$t('form.submit')"
           type="submit"
+          :aria-busy="loading"
           data-testid="registration-submit-button"
         />
       </div>
