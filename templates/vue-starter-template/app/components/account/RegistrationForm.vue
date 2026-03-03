@@ -282,7 +282,7 @@ const invokeSubmit = async () => {
           v-model:state-id="countryStateIdModel"
           :country-id-validation="r$.billingAddress.countryId"
           :state-id-validation="r$.billingAddress.countryStateId"
-          class="col-span-12 md:col-span-4"
+          class="col-span-12 md:col-span-8"
         />
       </div>
       <div class="mb-5 text-right">
