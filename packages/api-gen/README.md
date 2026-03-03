@@ -302,6 +302,38 @@ Prepare your config file named **api-gen.config.json**:
 > [!NOTE]
 > The `rules` configuration is API-type specific. When running `validateJson --apiType=store`, only the rules defined in `store-api.rules` will be applied.
 
+### `phpDto`
+
+Generate PHP DTO classes from an OpenAPI JSON schema. Each component schema and each request/response body produces a separate PHP class file with typed properties, validation attributes, and PHPDoc annotations.
+
+Two actions are available:
+
+- **`generate`** — cleans the output directory and writes all PHP DTO files from scratch.
+- **`check`** — compares the output directory against what would be generated and exits with code 1 if anything is missing, extra, or different. Useful in CI to ensure generated files are committed and up to date.
+
+```bash
+# Generate PHP DTOs from a Store API schema
+pnpx @shopware/api-gen phpDto generate --schemaFile ./api-types/storeApiSchema.json --outputDir ./dto
+
+# Generate with a PHP namespace
+pnpx @shopware/api-gen phpDto generate \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --namespace "App\\DTO"
+
+# Check that generated files are up to date (CI usage)
+pnpx @shopware/api-gen phpDto check \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --namespace "App\\DTO"
+```
+
+flags:
+
+- `--schemaFile` / `-f` (required) — path to the OpenAPI JSON schema file
+- `--outputDir` / `-o` (default: `./dto`) — output directory for generated PHP files
+- `--namespace` / `-n` (optional) — PHP namespace added to every generated class
+
 ### `split` - Experimental
 
 Split an OpenAPI schema into multiple files, organized by tags or paths. This is useful for breaking down a large schema into smaller, more manageable parts.
@@ -370,6 +402,28 @@ await validateJson({
   apiType: "store",
   logPatches: true,
   debug: true,
+});
+```
+
+#### `phpDto`
+
+```ts
+import { phpDto } from "@shopware/api-gen";
+
+// Generate PHP DTO files
+await phpDto({
+  action: "generate",
+  schemaFile: "api-types/storeApiSchema.json",
+  outputDir: "./dto",
+  namespace: "App\\DTO", // optional
+});
+
+// Check that generated files are up to date
+await phpDto({
+  action: "check",
+  schemaFile: "api-types/storeApiSchema.json",
+  outputDir: "./dto",
+  namespace: "App\\DTO",
 });
 ```
 

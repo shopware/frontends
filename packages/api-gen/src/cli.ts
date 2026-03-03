@@ -5,6 +5,8 @@ import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
 import { loadSchema } from "./commands/loadSchema";
+import { phpDto } from "./commands/phpDto";
+import type { PhpDtoOptions } from "./commands/phpDto";
 import { split } from "./commands/split";
 import type { SplitOptions } from "./commands/split";
 import { validateJson } from "./commands/validateJson";
@@ -144,6 +146,37 @@ yargs(hideBin(process.argv))
         });
     },
     async (args) => split(args as unknown as SplitOptions),
+  )
+  .command(
+    "phpDto <action>",
+    "Generate PHP DTO classes from an OpenAPI JSON schema",
+    (args) => {
+      return commonOptions(args)
+        .positional("action", {
+          type: "string",
+          choices: ["generate", "check"],
+          describe:
+            "'generate' cleans output dir and regenerates files; 'check' verifies existing files match",
+        })
+        .option("schemaFile", {
+          alias: "f",
+          type: "string",
+          demandOption: true,
+          describe: "path to the OpenAPI JSON schema file",
+        })
+        .option("outputDir", {
+          alias: "o",
+          type: "string",
+          default: "./dto",
+          describe: "output directory for generated PHP files",
+        })
+        .option("namespace", {
+          alias: "n",
+          type: "string",
+          describe: "PHP namespace for generated classes",
+        });
+    },
+    async (args) => phpDto(args as unknown as PhpDtoOptions),
   )
   .showHelpOnFail(false)
   .alias("h", "help")
