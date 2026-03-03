@@ -494,10 +494,10 @@ describe("generator", () => {
       const files = generateAllFiles(dtos);
 
       expect(files).toHaveLength(2);
-      expect(files[0].fileName).toBe("ProductDTO.php");
-      expect(files[1].fileName).toBe("CartDTO.php");
-      expect(files[0].content).toContain("class ProductDTO");
-      expect(files[1].content).toContain("class CartDTO");
+      expect(files[0]?.fileName).toBe("ProductDTO.php");
+      expect(files[1]?.fileName).toBe("CartDTO.php");
+      expect(files[0]?.content).toContain("class ProductDTO");
+      expect(files[1]?.content).toContain("class CartDTO");
     });
 
     it("passes namespace to all generated files", () => {
@@ -518,7 +518,7 @@ describe("generator", () => {
 
       const files = generateAllFiles(dtos, { namespace: "App\\DTO" });
 
-      expect(files[0].content).toContain("namespace App\\DTO;");
+      expect(files[0]?.content).toContain("namespace App\\DTO;");
     });
   });
 });
