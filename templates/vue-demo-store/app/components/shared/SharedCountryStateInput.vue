@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { BaseValidation } from "@vuelidate/core";
+import type { Schemas } from "#shopware";
 
 const emit = defineEmits<{
   (e: "update:countryId", value: string): void;
@@ -26,8 +27,13 @@ const { getCountries, getStatesForCountry } = useCountries();
 const states = computed(() => {
   return getStatesForCountry(countryId.value || "");
 });
+
 function onCountrySelectChanged() {
   stateId.value = "";
+}
+
+function getStateName(state: Schemas["CountryState"]) {
+  return state.translated?.name ?? state.name;
 }
 </script>
 
@@ -90,7 +96,7 @@ function onCountrySelectChanged() {
         </option>
 
         <option v-for="state in states" :key="state.id" :value="state.id">
-          {{ state.name }}
+          {{ getStateName(state) }}
         </option>
       </select>
       <span

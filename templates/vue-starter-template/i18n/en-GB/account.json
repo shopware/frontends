@@ -1,8 +1,11 @@
 {
   "account": {
     "back": "Back",
-    "signUpHeader": "I am new here.",
+    "signUpHeader": "Create an account",
+    "signUpSubHeader": "Register to get started",
     "yourAddress": "Your address",
+    "loginPageTitle": "Login & Registration",
+    "loginPageHeader": "Log in or create account",
     "order": {
       "header": "Orders",
       "subHeader": "View your current and past orders",
@@ -146,7 +149,8 @@
       "loggedInSuccess": "You have been logged in successfully.",
       "verifying": "Verifying your account...",
       "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-      "verificationLinkInvalid": "The verification link is invalid or has expired. Please request a new confirmation email."
+      "verificationLinkInvalid": "The verification link is invalid or has expired. Please request a new confirmation email.",
+      "loginRequired": "Login is required to access this page. You are being redirected to the login page."
     }
   }
 }

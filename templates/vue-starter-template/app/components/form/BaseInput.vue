@@ -8,11 +8,16 @@ type InputTypeAttribute =
   | "time"
   | "url";
 
-const { placeholder, type = "text" } = defineProps<{
+const {
+  placeholder,
+  type = "text",
+  id = "",
+} = defineProps<{
   placeholder?: string;
   type?: InputTypeAttribute;
   invalid?: boolean;
   autocomplete?: string;
+  id?: string;
 }>();
 
 const model = defineModel<string>({
@@ -40,6 +45,7 @@ const emit = defineEmits<{
     >
       <slot name="leftIcon" />
       <input
+        :id="id"
         v-model="model"
         class="text-sm w-full outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant"
         :placeholder="placeholder"
