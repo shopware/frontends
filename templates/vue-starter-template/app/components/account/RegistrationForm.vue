@@ -20,7 +20,8 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 if (import.meta.client && isLoggedIn.value) {
-  navigateTo({ path: redirectUrl || formatLink("/account") });
+  const path = (redirectUrl ?? formatLink("/account")) as string;
+  navigateTo({ path });
 }
 
 watch(isLoggedIn, (isLoggedIn) => {
