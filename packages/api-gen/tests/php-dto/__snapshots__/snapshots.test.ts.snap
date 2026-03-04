@@ -12,12 +12,12 @@ class CartCreateDTO
 {
     public function __construct(
         /** Name of the cart, e.g. guest-cart */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $name,
         /**
          * @var list<LineItemDTO> Initial line items to add to the cart
          */
-        public array $lineItems,
+        public ?array $lineItems = null,
     ) {
     }
 }
@@ -36,21 +36,21 @@ class CartDTO
 {
     public function __construct(
         /** Name of the cart, e.g. guest-cart */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $name,
-        /**
-         * @var list<LineItemDTO> Initial line items to add to the cart
-         */
-        public array $lineItems,
         /** Unique identifier of the cart */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $id,
         /** Date and time the cart was created */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
         /** Date and time the cart was last modified */
-        public string $updatedAt,
+        public ?string $updatedAt = null,
     ) {
     }
 }
@@ -69,12 +69,12 @@ class CreateCartRequestDTO
 {
     public function __construct(
         /** Name of the cart, e.g. guest-cart */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $name,
         /**
          * @var list<LineItemDTO> Initial line items to add to the cart
          */
-        public array $lineItems,
+        public ?array $lineItems = null,
     ) {
     }
 }
@@ -93,16 +93,26 @@ class LineItemDTO
 {
     public function __construct(
         /** Product identifier */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $id,
         /** Number of items */
         #[Assert\\NotNull]
         public int $quantity,
         /** Display label */
-        public string $label,
+        public ?string $label = null,
     ) {
     }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
 }
 "
 `;
@@ -112,23 +122,9 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates correct cont
 
 namespace App\\DTO;
 
-use Symfony\\Component\\Validator\\Constraints as Assert;
-
-/**
- * Payload for creating a new cart
- */
-class CartCreateDTO
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
 {
-    public function __construct(
-        /** Name of the cart, e.g. guest-cart */
-        #[Assert\\NotNull]
-        public string $name,
-        /**
-         * @var list<LineItemDTO> Initial line items to add to the cart
-         */
-        public array $lineItems,
-    ) {
-    }
 }
 "
 `;
@@ -139,10 +135,11 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates expected fil
   "CartDTO.php",
   "CreateCartRequestDTO.php",
   "LineItemDTO.php",
+  "PreserveNull.php",
 ]
 `;
 
-exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `4`;
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `5`;
 
 exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -153,7 +150,7 @@ class Api-infoRequestDTO
 {
     public function __construct(
         /** Type of the api */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $type,
     ) {
     }
@@ -170,9 +167,19 @@ exports[`php-dto snapshot tests > invalidNames.json > generates correct content 
 class Api-infoResponseDTO
 {
     public function __construct(
-        public string $version,
+        public ?string $version = null,
     ) {
     }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
 }
 "
 `;
@@ -183,8 +190,8 @@ exports[`php-dto snapshot tests > invalidNames.json > generates correct content 
 class Simple-ProductDTO
 {
     public function __construct(
-        public string $id,
-        public string $name,
+        public ?string $id = null,
+        public ?string $name = null,
     ) {
     }
 }
@@ -199,9 +206,9 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class errorDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $code,
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $message,
     ) {
     }
@@ -218,7 +225,7 @@ class errorResponseDTO
         /**
          * @var list<errorDTO>
          */
-        public array $errors,
+        public ?array $errors = null,
     ) {
     }
 }
@@ -230,13 +237,9 @@ exports[`php-dto snapshot tests > invalidNames.json > generates correct content 
 
 namespace App\\DTO;
 
-class Simple-ProductDTO
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
 {
-    public function __construct(
-        public string $id,
-        public string $name,
-    ) {
-    }
 }
 "
 `;
@@ -245,13 +248,14 @@ exports[`php-dto snapshot tests > invalidNames.json > generates expected file na
 [
   "Api-infoRequestDTO.php",
   "Api-infoResponseDTO.php",
+  "PreserveNull.php",
   "Simple-ProductDTO.php",
   "errorDTO.php",
   "errorResponseDTO.php",
 ]
 `;
 
-exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `5`;
+exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `6`;
 
 exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for OrderBillingAddressCountryDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -263,8 +267,8 @@ class OrderBillingAddressCountryDTO
 {
     public function __construct(
         /** ISO 3166-1 alpha-2 code */
-        public string $iso,
-        public string $name,
+        public ?string $iso = null,
+        public ?string $name = null,
     ) {
     }
 }
@@ -282,14 +286,14 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class OrderBillingAddressDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $street,
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $city,
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $zipcode,
         /** Country details */
-        public OrderBillingAddressCountryDTO $country,
+        public ?OrderBillingAddressCountryDTO $country = null,
     ) {
     }
 }
@@ -307,7 +311,7 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class OrderDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $id,
         /** The billing address */
@@ -315,6 +319,16 @@ class OrderDTO
         public OrderBillingAddressDTO $billingAddress,
     ) {
     }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
 }
 "
 `;
@@ -328,18 +342,18 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates correct content
 class SalesChannelContextContextDTO
 {
     public function __construct(
-        public string $versionId,
-        public string $currencyId,
-        public int $currencyFactor,
-        public int $currencyPrecision,
+        public ?string $versionId = null,
+        public ?string $currencyId = null,
+        public ?int $currencyFactor = null,
+        public ?int $currencyPrecision = null,
         /**
          * @var list<string>
          */
-        public array $languageIdChain,
-        public string $scope,
-        public SalesChannelContextContextSourceDTO $source,
-        public string $taxState,
-        public bool $useCache,
+        public ?array $languageIdChain = null,
+        public ?string $scope = null,
+        public ?SalesChannelContextContextSourceDTO $source = null,
+        public ?string $taxState = null,
+        public ?bool $useCache = null,
     ) {
     }
 }
@@ -354,10 +368,10 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class SalesChannelContextContextSourceDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Choice(choices: ['sales-channel', 'shop-api'])]
         public string $type,
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $salesChannelId,
     ) {
     }
@@ -375,9 +389,9 @@ class SalesChannelContextCurrentCustomerGroupDTO
 {
     public function __construct(
         /** Name of the group */
-        public string $name,
+        public ?string $name = null,
         /** Whether prices are displayed gross */
-        public bool $displayGross,
+        public ?bool $displayGross = null,
     ) {
     }
 }
@@ -395,20 +409,20 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class SalesChannelContextDTO
 {
     public function __construct(
-        /** Context token */
-        public string $token,
         #[Assert\\NotNull]
         public SalesChannelDTO $salesChannel,
-        /** Core context with general configuration values and state */
-        public SalesChannelContextContextDTO $context,
-        /** Customer group of the current user */
-        public SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup,
         #[Assert\\NotNull]
         public SalesChannelContextItemRoundingDTO $itemRounding,
+        /** Context token */
+        public ?string $token = null,
+        /** Core context with general configuration values and state */
+        public ?SalesChannelContextContextDTO $context = null,
+        /** Customer group of the current user */
+        public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,
         /**
          * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
          */
-        public array $taxRules,
+        public ?array $taxRules = null,
     ) {
     }
 }
@@ -445,7 +459,7 @@ class SalesChannelContextTaxRulesDTO
     public function __construct(
         #[Assert\\NotNull]
         public float $taxRate,
-        public string $name,
+        public ?string $name = null,
     ) {
     }
 }
@@ -460,10 +474,10 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class SalesChannelDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $id,
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $name,
     ) {
     }
@@ -476,30 +490,9 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates correct content
 
 namespace App\\DTO;
 
-use Symfony\\Component\\Validator\\Constraints as Assert;
-
-/**
- * Sales channel context
- */
-class SalesChannelContextDTO
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
 {
-    public function __construct(
-        /** Context token */
-        public string $token,
-        #[Assert\\NotNull]
-        public SalesChannelDTO $salesChannel,
-        /** Core context with general configuration values and state */
-        public SalesChannelContextContextDTO $context,
-        /** Customer group of the current user */
-        public SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup,
-        #[Assert\\NotNull]
-        public SalesChannelContextItemRoundingDTO $itemRounding,
-        /**
-         * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
-         */
-        public array $taxRules,
-    ) {
-    }
 }
 "
 `;
@@ -509,6 +502,7 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates expected file n
   "OrderBillingAddressCountryDTO.php",
   "OrderBillingAddressDTO.php",
   "OrderDTO.php",
+  "PreserveNull.php",
   "SalesChannelContextContextDTO.php",
   "SalesChannelContextContextSourceDTO.php",
   "SalesChannelContextCurrentCustomerGroupDTO.php",
@@ -519,7 +513,7 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates expected file n
 ]
 `;
 
-exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `10`;
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `11`;
 
 exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for CalculatedPriceDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -527,8 +521,8 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates correct content 
 class CalculatedPriceDTO
 {
     public function __construct(
-        public float $unitPrice,
-        public float $totalPrice,
+        public ?float $unitPrice = null,
+        public ?float $totalPrice = null,
     ) {
     }
 }
@@ -547,18 +541,18 @@ class CartDTO
 {
     public function __construct(
         /** Context token identifying the cart */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $token,
         /** Name of the cart */
-        public string $name,
-        public CalculatedPriceDTO $price,
+        public ?string $name = null,
+        public ?CalculatedPriceDTO $price = null,
         /**
          * @var list<LineItemDTO> All items within the cart
          */
-        public array $lineItems,
-        public int $totalItems,
-        public bool $active,
-        public float $taxRate,
+        public ?array $lineItems = null,
+        public ?int $totalItems = null,
+        public ?bool $active = null,
+        public ?float $taxRate = null,
     ) {
     }
 }
@@ -573,7 +567,7 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class DefaultValuesDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $query,
         public int $limit = 10,
         public string $sortOrder = 'relevance',
@@ -598,12 +592,12 @@ use Symfony\\Component\\Validator\\Constraints as Assert;
 class LineItemDTO
 {
     public function __construct(
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $id,
         #[Assert\\NotNull]
         public int $quantity,
-        public string $label,
+        public ?string $label = null,
     ) {
     }
 }
@@ -622,16 +616,16 @@ class NavigationTypeDTO
 {
     public function __construct(
         /** Type of the navigation entry */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Choice(choices: ['page', 'link', 'folder'])]
         public string $type,
         /** Route name for the navigation */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Choice(choices: ['frontend.navigation.page', 'frontend.landing.page', 'frontend.detail.page'])]
         public string $routeName,
         /** Type of the link if type is link */
         #[Assert\\Choice(choices: ['external', 'category', 'product', 'landing_page'])]
-        public string $linkType,
+        public ?string $linkType = null,
     ) {
     }
 }
@@ -644,11 +638,23 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates correct content 
 class NullableUnionDTO
 {
     public function __construct(
+        #[PreserveNull]
         public ?string $value = null,
         /** Nullable count using type array */
+        #[PreserveNull]
         public ?int $count = null,
     ) {
     }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
 }
 "
 `;
@@ -662,7 +668,7 @@ class ReadProductRequestDTO
 {
     public function __construct(
         /** Product ID */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
         public string $productId,
     ) {
@@ -680,9 +686,9 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates correct content 
 class ReadProductResponseDTO
 {
     public function __construct(
-        public string $id,
-        public string $name,
-        public float $price,
+        public ?string $id = null,
+        public ?string $name = null,
+        public ?float $price = null,
     ) {
     }
 }
@@ -701,19 +707,19 @@ class SendContactMailRequestDTO
 {
     public function __construct(
         /** Email address */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $email,
         /** The subject of the contact form. */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $subject,
         /** The message of the contact form */
-        #[Assert\\NotNull]
+        #[Assert\\NotBlank]
         public string $comment,
         /** Identifier of the salutation. */
         #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
-        public string $salutationId,
-        public string $firstName,
-        public string $lastName,
+        public ?string $salutationId = null,
+        public ?string $firstName = null,
+        public ?string $lastName = null,
     ) {
     }
 }
@@ -725,29 +731,9 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates correct content 
 
 namespace App\\DTO;
 
-use Symfony\\Component\\Validator\\Constraints as Assert;
-
-/**
- * Shopping cart
- */
-class CartDTO
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
 {
-    public function __construct(
-        /** Context token identifying the cart */
-        #[Assert\\NotNull]
-        public string $token,
-        /** Name of the cart */
-        public string $name,
-        public CalculatedPriceDTO $price,
-        /**
-         * @var list<LineItemDTO> All items within the cart
-         */
-        public array $lineItems,
-        public int $totalItems,
-        public bool $active,
-        public float $taxRate,
-    ) {
-    }
 }
 "
 `;
@@ -760,10 +746,11 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates expected file na
   "LineItemDTO.php",
   "NavigationTypeDTO.php",
   "NullableUnionDTO.php",
+  "PreserveNull.php",
   "ReadProductRequestDTO.php",
   "ReadProductResponseDTO.php",
   "SendContactMailRequestDTO.php",
 ]
 `;
 
-exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `9`;
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `10`;

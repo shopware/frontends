@@ -3,6 +3,7 @@ import {
   dtoToFileName,
   generateAllFiles,
   generatePhpClass,
+  generatePreserveNullAttribute,
 } from "../../src/php-dto/generator";
 import type { DtoDefinition } from "../../src/php-dto/schemaParser";
 
@@ -51,9 +52,9 @@ describe("generator", () => {
       expect(result).toContain(" * Contact form request");
       expect(result).toContain("public function __construct(");
       expect(result).toContain("/** Email address */");
-      expect(result).toContain("#[Assert\\NotNull]");
+      expect(result).toContain("#[Assert\\NotBlank]");
       expect(result).toContain("public string $email,");
-      expect(result).toContain("public string $firstName,");
+      expect(result).toContain("public ?string $firstName = null,");
       expect(result).toContain("public ?string $nickname = null,");
       expect(result).toContain("    ) {");
       expect(result).not.toContain("namespace");
@@ -78,13 +79,20 @@ describe("generator", () => {
       expect(result).toContain("namespace App\\DTO;");
     });
 
-    it("adds Assert\\NotNull for required non-nullable properties", () => {
+    it("uses NotBlank for required strings, NotNull for other required types", () => {
       const dto: DtoDefinition = {
         name: "TestDTO",
         properties: [
           {
             name: "id",
             phpType: "string",
+            nullable: false,
+            required: true,
+            isArray: false,
+          },
+          {
+            name: "count",
+            phpType: "int",
             nullable: false,
             required: true,
             isArray: false,
@@ -112,15 +120,18 @@ describe("generator", () => {
         "use Symfony\\Component\\Validator\\Constraints as Assert;",
       );
       expect(result).toContain(
-        "#[Assert\\NotNull]\n        public string $id,",
+        "#[Assert\\NotBlank]\n        public string $id,",
+      );
+      expect(result).toContain(
+        "#[Assert\\NotNull]\n        public int $count,",
       );
       expect(result).not.toContain(
-        "#[Assert\\NotNull]\n        public string $label,",
+        "#[Assert\\NotBlank]\n        public ?string $label",
       );
       expect(result).not.toContain(
-        "#[Assert\\NotNull]\n        public ?string $status",
+        "#[Assert\\NotBlank]\n        public ?string $status",
       );
-      expect(result).toContain("public string $label,");
+      expect(result).toContain("public ?string $label = null,");
       expect(result).toContain("public ?string $status = null,");
     });
 
@@ -311,7 +322,7 @@ describe("generator", () => {
 
       expect(result).not.toContain("use Symfony");
       expect(result).not.toContain("Assert");
-      expect(result).toContain("public string $name,");
+      expect(result).toContain("public ?string $name = null,");
       expect(result).toContain("public ?string $label = null,");
     });
 
@@ -558,6 +569,57 @@ describe("generator", () => {
       expect(result).toContain("public string $greeting = 'it\\'s',");
     });
 
+    it("adds PreserveNull for schema-nullable properties", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "title",
+            phpType: "string",
+            nullable: true,
+            required: false,
+            isArray: false,
+          },
+          {
+            name: "label",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain(
+        "#[PreserveNull]\n        public ?string $title",
+      );
+      expect(result).not.toContain(
+        "#[PreserveNull]\n        public ?string $label",
+      );
+    });
+
+    it("does not add PreserveNull for optional-only nullable fallback", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "name",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain("public ?string $name = null,");
+      expect(result).not.toContain("#[PreserveNull]");
+    });
+
     it("handles multiline description", () => {
       const dto: DtoDefinition = {
         name: "TestDTO",
@@ -580,8 +642,28 @@ describe("generator", () => {
     });
   });
 
+  describe("generatePreserveNullAttribute", () => {
+    it("generates the attribute class", () => {
+      const result = generatePreserveNullAttribute();
+
+      expect(result).toContain("<?php declare(strict_types=1);");
+      expect(result).toContain("#[\\Attribute(\\Attribute::TARGET_PROPERTY)]");
+      expect(result).toContain("class PreserveNull");
+      expect(result).not.toContain("namespace");
+    });
+
+    it("includes namespace when provided", () => {
+      const result = generatePreserveNullAttribute({
+        namespace: "App\\DTO",
+      });
+
+      expect(result).toContain("namespace App\\DTO;");
+      expect(result).toContain("class PreserveNull");
+    });
+  });
+
   describe("generateAllFiles", () => {
-    it("generates one file per DTO", () => {
+    it("includes PreserveNull attribute file and one file per DTO", () => {
       const dtos: DtoDefinition[] = [
         {
           name: "ProductDTO",
@@ -611,14 +693,14 @@ describe("generator", () => {
 
       const files = generateAllFiles(dtos);
 
-      expect(files).toHaveLength(2);
-      expect(files[0]?.fileName).toBe("ProductDTO.php");
-      expect(files[1]?.fileName).toBe("CartDTO.php");
-      expect(files[0]?.content).toContain("class ProductDTO");
-      expect(files[1]?.content).toContain("class CartDTO");
+      expect(files).toHaveLength(3);
+      expect(files[0]?.fileName).toBe("PreserveNull.php");
+      expect(files[0]?.content).toContain("class PreserveNull");
+      expect(files[1]?.fileName).toBe("ProductDTO.php");
+      expect(files[2]?.fileName).toBe("CartDTO.php");
     });
 
-    it("passes namespace to all generated files", () => {
+    it("passes namespace to all generated files including PreserveNull", () => {
       const dtos: DtoDefinition[] = [
         {
           name: "TestDTO",
@@ -636,7 +718,9 @@ describe("generator", () => {
 
       const files = generateAllFiles(dtos, { namespace: "App\\DTO" });
 
+      expect(files[0]?.fileName).toBe("PreserveNull.php");
       expect(files[0]?.content).toContain("namespace App\\DTO;");
+      expect(files[1]?.content).toContain("namespace App\\DTO;");
     });
   });
 });

@@ -19,7 +19,7 @@ function formatPhpDefault(value: string | number | boolean): string {
 }
 
 function hasDefault(prop: DtoProperty): boolean {
-  return prop.defaultValue !== undefined || prop.nullable;
+  return prop.defaultValue !== undefined || prop.nullable || !prop.required;
 }
 
 function renderConstructorParam(prop: DtoProperty): string {
@@ -37,13 +37,21 @@ function renderConstructorParam(prop: DtoProperty): string {
   }
 
   if (prop.required && !prop.nullable) {
-    lines.push("        #[Assert\\NotNull]");
+    if (prop.phpType === "string") {
+      lines.push("        #[Assert\\NotBlank]");
+    } else {
+      lines.push("        #[Assert\\NotNull]");
+    }
   }
 
   if (prop.pattern) {
     lines.push(
       `        #[Assert\\Regex(pattern: '/${escapePhpSingleQuoted(prop.pattern)}/')]`,
     );
+  }
+
+  if (prop.nullable) {
+    lines.push("        #[PreserveNull]");
   }
 
   if (prop.enum && prop.enum.length > 0) {
@@ -53,11 +61,14 @@ function renderConstructorParam(prop: DtoProperty): string {
     lines.push(`        #[Assert\\Choice(choices: [${choices}])]`);
   }
 
-  const typePrefix = prop.nullable ? "?" : "";
+  const needsNullFallback =
+    !prop.required && !prop.nullable && prop.defaultValue === undefined;
+  const effectiveNullable = prop.nullable || needsNullFallback;
+  const typePrefix = effectiveNullable ? "?" : "";
   let defaultSuffix = "";
   if (prop.defaultValue !== undefined) {
     defaultSuffix = ` = ${formatPhpDefault(prop.defaultValue)}`;
-  } else if (prop.nullable) {
+  } else if (effectiveNullable) {
     defaultSuffix = " = null";
   }
   lines.push(
@@ -130,12 +141,38 @@ export interface GeneratedFile {
   content: string;
 }
 
+export function generatePreserveNullAttribute(
+  options: GeneratorOptions = {},
+): string {
+  const lines: string[] = [];
+  lines.push("<?php declare(strict_types=1);");
+  lines.push("");
+  if (options.namespace) {
+    lines.push(`namespace ${options.namespace};`);
+    lines.push("");
+  }
+  lines.push("#[\\Attribute(\\Attribute::TARGET_PROPERTY)]");
+  lines.push("class PreserveNull");
+  lines.push("{");
+  lines.push("}");
+  lines.push("");
+  return lines.join("\n");
+}
+
 export function generateAllFiles(
   dtos: DtoDefinition[],
   options: GeneratorOptions = {},
 ): GeneratedFile[] {
-  return dtos.map((dto) => ({
+  const dtoFiles = dtos.map((dto) => ({
     fileName: dtoToFileName(dto.name),
     content: generatePhpClass(dto, options),
   }));
+
+  return [
+    {
+      fileName: "PreserveNull.php",
+      content: generatePreserveNullAttribute(options),
+    },
+    ...dtoFiles,
+  ];
 }
