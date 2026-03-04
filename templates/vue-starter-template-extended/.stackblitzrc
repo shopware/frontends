@@ -1,0 +1,4 @@
+{
+  "installDependencies": false,
+  "startCommand": "npx tiged shopware/frontends/templates/vue-starter-template#main base-template --force && pnpm install && pnpm dev"
+}
