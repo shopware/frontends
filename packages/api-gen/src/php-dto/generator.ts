@@ -18,27 +18,31 @@ function formatPhpDefault(value: string | number | boolean): string {
   return String(value);
 }
 
-function renderPropertyBlock(prop: DtoProperty): string {
+function hasDefault(prop: DtoProperty): boolean {
+  return prop.defaultValue !== undefined || prop.nullable;
+}
+
+function renderConstructorParam(prop: DtoProperty): string {
   const lines: string[] = [];
   const hasTypedArray = prop.isArray && prop.arrayItemType;
 
   if (hasTypedArray) {
-    lines.push("    /**");
+    lines.push("        /**");
     lines.push(
-      `     * @var list<${prop.arrayItemType}>${prop.description ? ` ${escapePhpDocComment(prop.description)}` : ""}`,
+      `         * @var list<${prop.arrayItemType}>${prop.description ? ` ${escapePhpDocComment(prop.description)}` : ""}`,
     );
-    lines.push("     */");
+    lines.push("         */");
   } else if (prop.description) {
-    lines.push(`    /** ${escapePhpDocComment(prop.description)} */`);
+    lines.push(`        /** ${escapePhpDocComment(prop.description)} */`);
   }
 
   if (prop.required && !prop.nullable) {
-    lines.push("    #[Assert\\NotNull]");
+    lines.push("        #[Assert\\NotNull]");
   }
 
   if (prop.pattern) {
     lines.push(
-      `    #[Assert\\Regex(pattern: '/${escapePhpSingleQuoted(prop.pattern)}/')]`,
+      `        #[Assert\\Regex(pattern: '/${escapePhpSingleQuoted(prop.pattern)}/')]`,
     );
   }
 
@@ -46,7 +50,7 @@ function renderPropertyBlock(prop: DtoProperty): string {
     const choices = prop.enum
       .map((v) => `'${escapePhpSingleQuoted(v)}'`)
       .join(", ");
-    lines.push(`    #[Assert\\Choice(choices: [${choices}])]`);
+    lines.push(`        #[Assert\\Choice(choices: [${choices}])]`);
   }
 
   const typePrefix = prop.nullable ? "?" : "";
@@ -57,7 +61,7 @@ function renderPropertyBlock(prop: DtoProperty): string {
     defaultSuffix = " = null";
   }
   lines.push(
-    `    public ${typePrefix}${prop.phpType} $${prop.name}${defaultSuffix};`,
+    `        public ${typePrefix}${prop.phpType} $${prop.name}${defaultSuffix},`,
   );
 
   return lines.join("\n");
@@ -97,8 +101,19 @@ export function generatePhpClass(
   lines.push(`class ${dto.name}`);
   lines.push("{");
 
-  const propertyBlocks = dto.properties.map(renderPropertyBlock);
-  lines.push(propertyBlocks.join("\n\n"));
+  const sorted = [...dto.properties].sort((a, b) => {
+    const ad = hasDefault(a);
+    const bd = hasDefault(b);
+    if (ad === bd) return 0;
+    return ad ? 1 : -1;
+  });
+
+  const paramBlocks = sorted.map(renderConstructorParam);
+
+  lines.push("    public function __construct(");
+  lines.push(paramBlocks.join("\n"));
+  lines.push("    ) {");
+  lines.push("    }");
 
   lines.push("}");
   lines.push("");

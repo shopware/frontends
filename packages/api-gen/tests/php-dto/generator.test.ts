@@ -49,11 +49,13 @@ describe("generator", () => {
       expect(result).toContain("<?php declare(strict_types=1);");
       expect(result).toContain("class ContactFormRequestDTO");
       expect(result).toContain(" * Contact form request");
+      expect(result).toContain("public function __construct(");
       expect(result).toContain("/** Email address */");
       expect(result).toContain("#[Assert\\NotNull]");
-      expect(result).toContain("public string $email;");
-      expect(result).toContain("public string $firstName;");
-      expect(result).toContain("public ?string $nickname = null;");
+      expect(result).toContain("public string $email,");
+      expect(result).toContain("public string $firstName,");
+      expect(result).toContain("public ?string $nickname = null,");
+      expect(result).toContain("    ) {");
       expect(result).not.toContain("namespace");
     });
 
@@ -109,15 +111,17 @@ describe("generator", () => {
       expect(result).toContain(
         "use Symfony\\Component\\Validator\\Constraints as Assert;",
       );
-      expect(result).toContain("#[Assert\\NotNull]\n    public string $id;");
-      expect(result).not.toContain(
-        "#[Assert\\NotNull]\n    public string $label;",
+      expect(result).toContain(
+        "#[Assert\\NotNull]\n        public string $id,",
       );
       expect(result).not.toContain(
-        "#[Assert\\NotNull]\n    public ?string $status",
+        "#[Assert\\NotNull]\n        public string $label,",
       );
-      expect(result).toContain("public string $label;");
-      expect(result).toContain("public ?string $status = null;");
+      expect(result).not.toContain(
+        "#[Assert\\NotNull]\n        public ?string $status",
+      );
+      expect(result).toContain("public string $label,");
+      expect(result).toContain("public ?string $status = null,");
     });
 
     it("adds Assert import when patterns exist", () => {
@@ -211,7 +215,7 @@ describe("generator", () => {
       expect(result).toContain(
         "#[Assert\\Choice(choices: ['page', 'link', 'folder'])]",
       );
-      expect(result).toContain("public string $type;");
+      expect(result).toContain("public string $type,");
     });
 
     it("adds Assert\\Choice for optional enum properties", () => {
@@ -234,7 +238,7 @@ describe("generator", () => {
       expect(result).toContain(
         "#[Assert\\Choice(choices: ['physical', 'digital'])]",
       );
-      expect(result).toContain("public ?string $productType = null;");
+      expect(result).toContain("public ?string $productType = null,");
     });
 
     it("adds Assert import when only enums exist (no patterns)", () => {
@@ -257,7 +261,7 @@ describe("generator", () => {
       expect(result).toContain(
         "use Symfony\\Component\\Validator\\Constraints as Assert;",
       );
-      expect(result).not.toContain("Assert\\Regex");
+      expect(result).not.toContain("#[Assert\\Regex");
     });
 
     it("escapes single quotes in enum values", () => {
@@ -307,8 +311,8 @@ describe("generator", () => {
 
       expect(result).not.toContain("use Symfony");
       expect(result).not.toContain("Assert");
-      expect(result).toContain("public string $name;");
-      expect(result).toContain("public ?string $label = null;");
+      expect(result).toContain("public string $name,");
+      expect(result).toContain("public ?string $label = null,");
     });
 
     it("generates list<T> PHPDoc for typed arrays with description", () => {
@@ -334,7 +338,7 @@ describe("generator", () => {
         "* @var list<LineItemDTO> All items within the cart",
       );
       expect(result).toContain("*/");
-      expect(result).toContain("public array $lineItems;");
+      expect(result).toContain("public array $lineItems,");
     });
 
     it("generates list<T> PHPDoc for typed arrays without description", () => {
@@ -380,7 +384,7 @@ describe("generator", () => {
       expect(result).toContain("/**");
       expect(result).toContain("* @var list<LineItemDTO> Order line items");
       expect(result).toContain("*/");
-      expect(result).toContain("public ?array $items = null;");
+      expect(result).toContain("public ?array $items = null,");
     });
 
     it("generates correct type hint for nested object DTO references", () => {
@@ -408,10 +412,10 @@ describe("generator", () => {
       const result = generatePhpClass(dto);
 
       expect(result).toContain(
-        "public SalesChannelContextItemRoundingDTO $itemRounding;",
+        "public SalesChannelContextItemRoundingDTO $itemRounding,",
       );
       expect(result).toContain(
-        "public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null;",
+        "public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,",
       );
       expect(result).toContain("/** Customer group of the current user */");
     });
@@ -437,7 +441,7 @@ describe("generator", () => {
       expect(result).toContain(
         "* @var list<SalesChannelContextTaxRulesDTO> Active tax rules",
       );
-      expect(result).toContain("public ?array $taxRules = null;");
+      expect(result).toContain("public ?array $taxRules = null,");
     });
 
     it("renders string default value", () => {
@@ -456,7 +460,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public string $sortOrder = 'relevance';");
+      expect(result).toContain("public string $sortOrder = 'relevance',");
     });
 
     it("renders integer default value", () => {
@@ -475,7 +479,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public int $limit = 10;");
+      expect(result).toContain("public int $limit = 10,");
     });
 
     it("renders boolean default value", () => {
@@ -494,7 +498,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public bool $active = true;");
+      expect(result).toContain("public bool $active = true,");
     });
 
     it("renders default on nullable property instead of null", () => {
@@ -513,7 +517,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public ?string $mode = 'auto';");
+      expect(result).toContain("public ?string $mode = 'auto',");
       expect(result).not.toContain("= null");
     });
 
@@ -532,7 +536,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public ?string $label = null;");
+      expect(result).toContain("public ?string $label = null,");
     });
 
     it("escapes single quotes in string default values", () => {
@@ -551,7 +555,7 @@ describe("generator", () => {
       };
 
       const result = generatePhpClass(dto);
-      expect(result).toContain("public string $greeting = 'it\\'s';");
+      expect(result).toContain("public string $greeting = 'it\\'s',");
     });
 
     it("handles multiline description", () => {
