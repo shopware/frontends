@@ -1,0 +1,166 @@
+{
+  "account": {
+    "back": "Zurück",
+    "signUpHeader": "Konto erstellen",
+    "signUpSubHeader": "Registrieren Sie sich, um loszulegen",
+    "yourAddress": "Ihre Adresse",
+    "loginPageTitle": "Anmelden & Registrieren",
+    "loginPageHeader": "Anmelden oder Konto erstellen",
+    "order": {
+      "header": "Bestellungen",
+      "subHeader": "Sehen Sie sich Ihre aktuellen und vergangenen Bestellungen an",
+      "product": "Produkt",
+      "quantity": "Menge",
+      "price": "Preis",
+      "subtotal": "Zwischensumme",
+      "orderNumber": "Bestellnummer",
+      "totalAmount": "Gesamtbetrag",
+      "orderDate": "Bestelldatum",
+      "orderStatus": "Bestellstatus",
+      "paymentMethod": "Zahlungsmethode",
+      "repeatOrder": "Bestellung wiederholen",
+      "order": "Bestellung",
+      "orders": "Bestellungen",
+      "seeMore": "Mehr anzeigen",
+      "seeLess": "Weniger anzeigen",
+      "orderLabel": "Bestellung",
+      "shippingStatus": "Versandstatus",
+      "shipping": "Versand",
+      "shippingMethod": "Versandart",
+      "total": "Gesamt",
+      "backToList": "Zurück zur Bestellliste",
+      "authOrderTitle": "Bestellung verifizieren",
+      "authOrderText": "Bitte geben Sie die E-Mail-Adresse und die Postleitzahl ein, die bei der Bestellung verwendet wurden.",
+      "authOrderButton": "Bestellung verifizieren",
+      "emailPlaceholder": "E-Mail-Adresse",
+      "postalCodePlaceholder": "Postleitzahl"
+    },
+    "menu": {
+      "header": "Ihr Konto",
+      "overview": "Übersicht",
+      "yourProfile": "Ihr Profil",
+      "addresses": "Adressen",
+      "orders": "Bestellungen",
+      "logout": "Abmelden"
+    },
+    "overview": {
+      "header": "Übersicht",
+      "subHeader": "Direkt auf Ihre Profilinformationen, die Standardzahlungsmethode und die gegebenen Adressen zugreifen.",
+      "personalDataSectionHeader": "Persönliche Daten",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "newsletter": {
+        "subscriptionSectionHeader": "Newsletter-Abonnement",
+        "subscriptionLabel": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann jederzeit abbestellen.)",
+        "confirmationNeeded": "Bitte bestätigen Sie Ihre E-Mail-Adresse, bevor Sie sich für den Newsletter anmelden.",
+        "messages": {
+          "subscribed": "Vielen Dank! Wir haben Ihre Adresse registriert.",
+          "unsubscribed": "Newsletter-Abbestellung"
+        }
+      }
+    },
+    "address": {
+      "notFound": "Adresse nicht gefunden",
+      "header": "Adressen",
+      "subHeader": "Sehen Sie sich Ihre aktuellen Standardadressen oder fügen Sie neue hinzu.",
+      "defaultBillingAddressSectionHeader": "Standardrechnungsadresse",
+      "defaultShippingAddressSectionHeader": "Standardversandadresse",
+      "availableAddressesSectionHeader": "Verfügbare Adressen",
+      "addAddressButton": "Neue Adresse hinzufügen",
+      "editAddressButton": "Adresse bearbeiten",
+      "deleteAddressButton": "Adresse löschen",
+      "useAsDefaultBillingAddressButton": "Als Standardrechnungsadresse verwenden",
+      "useAsDefaultShippingAddressButton": "Als Standardversandadresse verwenden",
+      "saveButton": "Adresse speichern",
+      "new": {
+        "header": "Neue Adresse",
+        "subHeader": "Fügen Sie eine neue Adresse zu Ihrem Konto hinzu.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "successMessage": "Adresse wurde erfolgreich hinzugefügt."
+      },
+      "edit": {
+        "header": "Adresse bearbeiten",
+        "subHeader": "Bearbeiten Sie Ihre Adresse.",
+        "personalDataSectionHeader": "Persönliche Daten",
+        "successMessage": "Adresse wurde erfolgreich aktualisiert."
+      }
+    },
+    "profile": {
+      "header": "Ihr Profil",
+      "subHeader": "Überprüfen Sie Ihre persönlichen Daten.",
+      "personalDataSectionHeader": "Persönliche Daten",
+      "loginDataSectionHeader": "Login-Daten",
+      "changeEmailButton": "Email-Adresse ändern",
+      "changePasswordButton": "Passwort ändern",
+      "form": {
+        "accountType": "Kontotyp",
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "company": "Firma",
+        "vatIds": "Umsatzsteuer-Identifikationsnummer",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "Daten wurden aktualisiert."
+      }
+    },
+    "changeEmail": {
+      "header": "E-Mail-Adresse ändern",
+      "subHeader": "Neue E-Mail-Adresse eingeben",
+      "form": {
+        "newEmailLabel": "Neue E-Mail eingeben",
+        "confirmEmailLabel": "E-Mail wiederholen",
+        "passwordLabel": "Aktuelles Passwort",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "E-Mail-Adresse wurde erfolgreich aktualisiert.",
+        "errorUpdate": "E-Mail-Adresse konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "changePassword": {
+      "header": "Passwort ändern",
+      "subHeader": "Neues Passwort eingeben",
+      "form": {
+        "newPasswordLabel": "Neues Passwort eingeben*",
+        "confirmPasswordLabel": "Neues Passwort wiederholen*",
+        "currentPasswordLabel": "Aktuelles Passwort*",
+        "buttonSubmit": "Speichern",
+        "successUpdate": "Passwort wurde erfolgreich aktualisiert.",
+        "errorUpdate": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "orderDetails": {
+      "order": "Bestellung",
+      "placedOn": "Bestellt am {d}",
+      "shippingAddress": "Lieferadresse",
+      "billingAddress": "Rechnungsadresse",
+      "orderSummary": "Bestellübersicht",
+      "paymentMethod": "Zahlungsmethode",
+      "shippingMethod": "Versandart",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
+      "takesUpTo": "Dauert bis zu",
+      "change": "Ändern",
+      "changePaymentMethod": "Zahlungsmethode ändern",
+      "cancel": "Stornieren",
+      "confirm": "Bestätigen",
+      "close": "Schließen",
+      "backToOrdersList": "Zurück zur Bestellliste",
+      "itemsHeader": {
+        "item": "Artikel",
+        "quantity": "Menge",
+        "price": "Preis",
+        "total": "Gesamt"
+      }
+    },
+    "messages": {
+      "loggedInSuccess": "Sie wurden erfolgreich eingeloggt.",
+      "verifying": "Ihr Konto wird überprüft...",
+      "signUpSuccess": "Vielen Dank für Ihre Anmeldung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Anmeldung abzuschließen.",
+      "verificationLinkInvalid": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie eine neue Bestätigungs-E-Mail an.",
+      "orderSuccessNoOrder": "Die Bestellung konnte nicht gefunden werden.",
+      "orderWrongData": "Die E-Mail-Adresse oder Postleitzahl ist falsch. Bitte versuchen Sie es erneut.",
+      "paymentMethodChanged": "Zahlungsmethode wurde erfolgreich geändert.",
+      "productsAdded": "Produkte wurden dem Warenkorb hinzugefügt.",
+      "loginRequired": "Zum Zugriff auf diese Seite ist eine Anmeldung erforderlich. Sie werden zur Anmeldeseite weitergeleitet."
+    }
+  }
+}
