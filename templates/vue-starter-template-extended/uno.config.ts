@@ -1,5 +1,5 @@
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
-import baseConfig from "../vue-starter-template/.nuxt/uno.config.mjs";
+import baseConfig from "vue-starter-template/uno.config.ts";
 
 const lumoraConfig: ConfigBase = {
   theme: {

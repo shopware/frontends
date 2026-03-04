@@ -1,3 +1,4 @@
+import baseConfig from "@shopware/cms-base-layer/uno.config.ts";
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
 import {
   presetAttributify,
@@ -5,7 +6,6 @@ import {
   presetTypography,
   presetWind3,
 } from "unocss";
-import baseConfig from "./.nuxt/uno.config.mjs";
 
 const templateConfig: ConfigBase = {
   // here you can add template-specific configurations
