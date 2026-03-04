@@ -20,6 +20,7 @@ export interface DtoProperty {
   description?: string;
   pattern?: string;
   enum?: string[];
+  defaultValue?: string | number | boolean;
   isArray: boolean;
   arrayItemType?: string;
 }
@@ -57,6 +58,30 @@ function dereferenceSchema(
     if (resolved) return resolved;
   }
   return schema;
+}
+
+function resolveDefaultValue(
+  schema: SchemaObject,
+): string | number | boolean | undefined {
+  const raw = schema.default;
+  if (
+    typeof raw === "string" ||
+    typeof raw === "number" ||
+    typeof raw === "boolean"
+  ) {
+    return raw;
+  }
+  if (raw === undefined && schema.enum && schema.enum.length === 1) {
+    const single = schema.enum[0];
+    if (
+      typeof single === "string" ||
+      typeof single === "number" ||
+      typeof single === "boolean"
+    ) {
+      return single;
+    }
+  }
+  return undefined;
 }
 
 function isInlineObject(schema: SchemaObject): boolean {
@@ -124,6 +149,7 @@ function extractPropertiesFromSchema(
         description: propSchema.description,
         pattern: propSchema.pattern,
         enum: enumValues,
+        defaultValue: resolveDefaultValue(propSchema),
         isArray: false,
         arrayItemType: undefined,
       });
@@ -162,6 +188,7 @@ function extractPropertiesFromSchema(
         description: propSchema.description,
         pattern: propSchema.pattern,
         enum: enumValues,
+        defaultValue: resolveDefaultValue(propSchema),
         isArray: true,
         arrayItemType: nestedName,
       });
@@ -178,6 +205,7 @@ function extractPropertiesFromSchema(
       description: propSchema.description,
       pattern: propSchema.pattern,
       enum: enumValues,
+      defaultValue: resolveDefaultValue(propSchema),
       isArray: typeResult.isArray,
       arrayItemType: typeResult.arrayItemType,
     });
@@ -294,6 +322,7 @@ export function parseRequestBodies(schema: OpenApiSchema): DtoDefinition[] {
               required: param.required === true,
               description: param.description,
               pattern: param.schema.pattern,
+              defaultValue: resolveDefaultValue(param.schema),
               isArray: typeResult.isArray,
               arrayItemType: typeResult.arrayItemType,
             });

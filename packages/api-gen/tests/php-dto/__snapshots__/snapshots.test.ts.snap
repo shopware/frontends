@@ -541,6 +541,33 @@ class CartDTO
 "
 `;
 
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DefaultValuesDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class DefaultValuesDTO
+{
+    #[Assert\\NotNull]
+    public string $query;
+
+    public int $limit = 10;
+
+    public string $sortOrder = 'relevance';
+
+    public bool $active = true;
+
+    /** Single-value enum, should default to the only value */
+    #[Assert\\Choice(choices: ['storefront'])]
+    public string $source = 'storefront';
+
+    /** Multi-value enum with explicit default */
+    #[Assert\\Choice(choices: ['web', 'api'])]
+    public string $channel = 'web';
+}
+"
+`;
+
 exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for LineItemDTO.php 1`] = `
 "<?php declare(strict_types=1);
 
@@ -704,6 +731,7 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates expected file na
 [
   "CalculatedPriceDTO.php",
   "CartDTO.php",
+  "DefaultValuesDTO.php",
   "LineItemDTO.php",
   "NavigationTypeDTO.php",
   "NullableUnionDTO.php",
@@ -713,4 +741,4 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates expected file na
 ]
 `;
 
-exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `8`;
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `9`;

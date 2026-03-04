@@ -11,6 +11,7 @@ export interface SchemaObject {
   pattern?: string;
   format?: string;
   enum?: unknown[];
+  default?: unknown;
   additionalProperties?: boolean | SchemaObject;
 }
 

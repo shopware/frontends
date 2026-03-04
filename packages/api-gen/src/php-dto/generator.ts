@@ -12,6 +12,12 @@ function escapePhpSingleQuoted(text: string): string {
   return text.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
+function formatPhpDefault(value: string | number | boolean): string {
+  if (typeof value === "string") return `'${escapePhpSingleQuoted(value)}'`;
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return String(value);
+}
+
 function renderPropertyBlock(prop: DtoProperty): string {
   const lines: string[] = [];
   const hasTypedArray = prop.isArray && prop.arrayItemType;
@@ -44,7 +50,12 @@ function renderPropertyBlock(prop: DtoProperty): string {
   }
 
   const typePrefix = prop.nullable ? "?" : "";
-  const defaultSuffix = prop.nullable ? " = null" : "";
+  let defaultSuffix = "";
+  if (prop.defaultValue !== undefined) {
+    defaultSuffix = ` = ${formatPhpDefault(prop.defaultValue)}`;
+  } else if (prop.nullable) {
+    defaultSuffix = " = null";
+  }
   lines.push(
     `    public ${typePrefix}${prop.phpType} $${prop.name}${defaultSuffix};`,
   );

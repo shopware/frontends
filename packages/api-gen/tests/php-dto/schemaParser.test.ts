@@ -123,6 +123,46 @@ describe("schemaParser", () => {
       expect(name?.required).toBe(false);
     });
 
+    it("extracts explicit default values", () => {
+      const dtos = parseComponentSchemas(fixtureSchema);
+      const defaults = dtos.find((d) => d.name === "DefaultValuesDTO");
+      expect(defaults).toBeDefined();
+
+      const limit = defaults?.properties.find((p) => p.name === "limit");
+      expect(limit?.defaultValue).toBe(10);
+
+      const sortOrder = defaults?.properties.find(
+        (p) => p.name === "sortOrder",
+      );
+      expect(sortOrder?.defaultValue).toBe("relevance");
+
+      const active = defaults?.properties.find((p) => p.name === "active");
+      expect(active?.defaultValue).toBe(true);
+    });
+
+    it("uses single-enum value as default when no explicit default", () => {
+      const dtos = parseComponentSchemas(fixtureSchema);
+      const defaults = dtos.find((d) => d.name === "DefaultValuesDTO");
+
+      const source = defaults?.properties.find((p) => p.name === "source");
+      expect(source?.defaultValue).toBe("storefront");
+    });
+
+    it("prefers explicit default over single-enum fallback", () => {
+      const dtos = parseComponentSchemas(fixtureSchema);
+      const defaults = dtos.find((d) => d.name === "DefaultValuesDTO");
+
+      const channel = defaults?.properties.find((p) => p.name === "channel");
+      expect(channel?.defaultValue).toBe("web");
+    });
+
+    it("does not set default for multi-value enum without explicit default", () => {
+      const dtos = parseComponentSchemas(fixtureSchema);
+      const navType = dtos.find((d) => d.name === "NavigationTypeDTO");
+      const type = navType?.properties.find((p) => p.name === "type");
+      expect(type?.defaultValue).toBeUndefined();
+    });
+
     it("handles empty schema", () => {
       const dtos = parseComponentSchemas({ components: { schemas: {} } });
       expect(dtos).toHaveLength(0);

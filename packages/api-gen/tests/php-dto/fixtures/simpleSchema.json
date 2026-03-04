@@ -96,6 +96,38 @@
       "EmptySchema": {
         "type": "string"
       },
+      "DefaultValues": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 10
+          },
+          "sortOrder": {
+            "type": "string",
+            "default": "relevance"
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "source": {
+            "type": "string",
+            "enum": ["storefront"],
+            "description": "Single-value enum, should default to the only value"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["web", "api"],
+            "default": "web",
+            "description": "Multi-value enum with explicit default"
+          }
+        }
+      },
       "NullableUnion": {
         "type": "object",
         "properties": {

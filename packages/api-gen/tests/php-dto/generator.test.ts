@@ -440,6 +440,120 @@ describe("generator", () => {
       expect(result).toContain("public ?array $taxRules = null;");
     });
 
+    it("renders string default value", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "sortOrder",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            defaultValue: "relevance",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public string $sortOrder = 'relevance';");
+    });
+
+    it("renders integer default value", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "limit",
+            phpType: "int",
+            nullable: false,
+            required: false,
+            defaultValue: 10,
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public int $limit = 10;");
+    });
+
+    it("renders boolean default value", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "active",
+            phpType: "bool",
+            nullable: false,
+            required: false,
+            defaultValue: true,
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public bool $active = true;");
+    });
+
+    it("renders default on nullable property instead of null", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "mode",
+            phpType: "string",
+            nullable: true,
+            required: false,
+            defaultValue: "auto",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public ?string $mode = 'auto';");
+      expect(result).not.toContain("= null");
+    });
+
+    it("renders nullable without default as = null", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "label",
+            phpType: "string",
+            nullable: true,
+            required: false,
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public ?string $label = null;");
+    });
+
+    it("escapes single quotes in string default values", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "greeting",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            defaultValue: "it's",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+      expect(result).toContain("public string $greeting = 'it\\'s';");
+    });
+
     it("handles multiline description", () => {
       const dto: DtoDefinition = {
         name: "TestDTO",
