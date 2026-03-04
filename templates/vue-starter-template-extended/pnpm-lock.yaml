@@ -27,8 +27,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-starter-template:
-        specifier: github:shopware/frontends#feat/extended-template-for-stackblitz&path:templates/vue-starter-template
-        version: https://codeload.github.com/shopware/frontends/tar.gz/f24231bf45508ceddf2f6bd2418f802fb7b68186#path:templates/vue-starter-template(@biomejs/biome@1.8.3)(@parcel/watcher@2.5.6)(@rollup/pluginutils@5.3.0(rollup@4.59.0))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@tresjs/core@5.5.0(three@0.182.0)(vue@3.5.27(typescript@5.9.3)))(@types/node@25.3.3)(@types/three@0.183.1)(@unocss/webpack@66.6.0(webpack@5.105.4(esbuild@0.27.3)))(@vue/compiler-sfc@3.5.29)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(esbuild@0.27.3)(ioredis@5.10.0)(lightningcss@1.31.1)(magicast@0.5.2)(postcss@8.5.8)(rollup@4.59.0)(tailwindcss@4.2.1)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.105.4(esbuild@0.27.3))(yaml@2.8.2)(yjs@13.6.29)
+        specifier: file:./base-template
+        version: file:base-template(@biomejs/biome@1.8.3)(@parcel/watcher@2.5.6)(@rollup/pluginutils@5.3.0(rollup@4.59.0))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@tresjs/core@5.5.0(three@0.182.0)(vue@3.5.27(typescript@5.9.3)))(@types/node@25.3.3)(@types/three@0.183.1)(@unocss/webpack@66.6.0(webpack@5.105.4(esbuild@0.27.3)))(@vue/compiler-sfc@3.5.29)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(esbuild@0.27.3)(ioredis@5.10.0)(lightningcss@1.31.1)(magicast@0.5.2)(postcss@8.5.8)(rollup@4.59.0)(tailwindcss@4.2.1)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.105.4(esbuild@0.27.3))(yaml@2.8.2)(yjs@13.6.29)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -4877,9 +4877,8 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/f24231bf45508ceddf2f6bd2418f802fb7b68186#path:templates/vue-starter-template:
-    resolution: {path: templates/vue-starter-template, tarball: https://codeload.github.com/shopware/frontends/tar.gz/f24231bf45508ceddf2f6bd2418f802fb7b68186}
-    version: 0.1.0
+  vue-starter-template@file:base-template:
+    resolution: {directory: base-template, type: directory}
 
   vue-tsc@3.2.2:
     resolution: {integrity: sha512-r9YSia/VgGwmbbfC06hDdAatH634XJ9nVl6Zrnz1iK4ucp8Wu78kawplXnIDa3MSu1XdQQePTHLXYwPDWn+nyQ==}
@@ -10669,8 +10668,8 @@ snapshots:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.27(typescript@5.9.3)
 
-  ? vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/f24231bf45508ceddf2f6bd2418f802fb7b68186#path:templates/vue-starter-template(@biomejs/biome@1.8.3)(@parcel/watcher@2.5.6)(@rollup/pluginutils@5.3.0(rollup@4.59.0))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@tresjs/core@5.5.0(three@0.182.0)(vue@3.5.27(typescript@5.9.3)))(@types/node@25.3.3)(@types/three@0.183.1)(@unocss/webpack@66.6.0(webpack@5.105.4(esbuild@0.27.3)))(@vue/compiler-sfc@3.5.29)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(esbuild@0.27.3)(ioredis@5.10.0)(lightningcss@1.31.1)(magicast@0.5.2)(postcss@8.5.8)(rollup@4.59.0)(tailwindcss@4.2.1)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.105.4(esbuild@0.27.3))(yaml@2.8.2)(yjs@13.6.29)
-  : dependencies:
+  vue-starter-template@file:base-template(@biomejs/biome@1.8.3)(@parcel/watcher@2.5.6)(@rollup/pluginutils@5.3.0(rollup@4.59.0))(@tiptap/extensions@3.20.0(@tiptap/core@3.20.0(@tiptap/pm@3.20.0))(@tiptap/pm@3.20.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@tresjs/core@5.5.0(three@0.182.0)(vue@3.5.27(typescript@5.9.3)))(@types/node@25.3.3)(@types/three@0.183.1)(@unocss/webpack@66.6.0(webpack@5.105.4(esbuild@0.27.3)))(@vue/compiler-sfc@3.5.29)(cac@6.7.14)(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(esbuild@0.27.3)(ioredis@5.10.0)(lightningcss@1.31.1)(magicast@0.5.2)(postcss@8.5.8)(rollup@4.59.0)(tailwindcss@4.2.1)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.105.4(esbuild@0.27.3))(yaml@2.8.2)(yjs@13.6.29):
+    dependencies:
       '@iconify-json/carbon': 1.2.18
       '@iconify/utils': 3.1.0
       '@nuxt/a11y': 1.0.0-alpha.1(magicast@0.5.2)(vite@7.3.1(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))
