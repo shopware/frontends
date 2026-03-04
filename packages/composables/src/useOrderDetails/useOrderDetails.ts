@@ -1,347 +1,313 @@
-import { defu } from "defu";
-import { computed, inject, provide, ref } from "vue";
-import type { ComputedRef, Ref } from "vue";
-import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
-import type { Schemas, operations } from "#shopware";
+import { describe, expect, it } from "vitest";
+import { useSetup } from "../_test";
+import Order from "../mocks/Order";
+import { useOrderDetails } from "./useOrderDetails";
 
-export type UseOrderDetailsOptions = {
-  /**
-   * When true, the first parameter is treated as a deep link code
-   * instead of an order ID. This enables fetching orders for guest
-   * users who are not logged in.
-   */
-  isGuestOrder?: boolean;
-};
+describe("useOrderDetails", () => {
+  it("init details", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
 
-export type UseOrderDetailsReturn = {
-  /**
-   * {@link Schemas['Order']} object
-   */
-  order: ComputedRef<Schemas["Order"] | undefined | null>;
-  /**
-   * Order status (e.g. 'Open', 'Cancelled')
-   */
-  status: ComputedRef<string | undefined>;
-  /**
-   * Order status technical name (e.g. 'open', 'cancelled')
-   */
-  statusTechnicalName: ComputedRef<string | undefined>;
-  /**
-   * Order total price
-   */
-  total: ComputedRef<number | undefined>;
-  /**
-   * Order subtotal price for all items
-   */
-  subtotal: ComputedRef<number | undefined>;
-  /**
-   * Order shipping costs
-   */
-  shippingCosts: ComputedRef<number | undefined>;
-  /**
-   * Shipping address
-   */
-  shippingAddress: ComputedRef<Schemas["OrderAddress"] | undefined>;
-  /**
-   * Billing address
-   */
-  billingAddress: ComputedRef<Schemas["OrderAddress"] | undefined>;
-  /**
-   * Basic personal details
-   */
-  personalDetails: ComputedRef<{
-    email: string | undefined;
-    firstName: string | undefined;
-    lastName: string | undefined;
-  }>;
-  /**
-   * Payment URL for external payment methods (e.g. async payment in external payment gateway)
-   */
-  paymentUrl: Ref<null | string>;
-  /**
-   * Returns current selected shipping method for the order. Last element in delivery array.
-   */
-  shippingMethod: ComputedRef<Schemas["ShippingMethod"] | undefined | null>;
-  /**
-   * Returns current selected payment method for the order. Last element in transactions array.
-   */
-  paymentMethod: ComputedRef<Schemas["PaymentMethod"] | undefined | null>;
-  /**
-   * Get order object including additional associations.
-   * useDefaults describes what order object should look like.
-   */
-  loadOrderDetails(): Promise<Schemas["OrderRouteResponse"]>;
-  /**
-   * Handle payment for existing error.
-   *
-   * Pass custom success and error URLs (optionally).
-   */
-  handlePayment(
-    successUrl?: string,
-    errorUrl?: string,
-    paymentDetails?: unknown,
-  ): void;
-  /**
-   * Cancel an order.
-   *
-   * Action cannot be reverted.
-   */
-  cancel(): Promise<Schemas["StateMachineState"]>;
-  /**
-   * Changes the payment method for current cart.
-   * @param paymentMethodId - ID of the payment method to be set
-   * @returns
-   */
-  changePaymentMethod(
-    paymentMethodId: string,
-  ): Promise<Schemas["SuccessResponse"]>;
-  /**
-   * Get media content
-   *
-   * @param {string} downloadId
-   * @returns {Blob}
-   */
-  getMediaFile: (downloadId: string) => Promise<Blob>;
-  /**
-   * Get order documents
-   * @param {string} documentId
-   * @param {string} deepLinkCode
-   * @returns Binary document content (PDF, HTML, or XML)
-   */
-  getDocumentFile: (
-    documentId: string,
-    deepLinkCode: string,
-  ) => Promise<Blob | string>;
-  /**
-   * Check if order has documents
-   */
-  hasDocuments: ComputedRef<boolean>;
-  /**
-   * Get order documents
-   */
-  documents: ComputedRef<Schemas["Document"][]>;
-  /**
-   * Fetches all available payment methods
-   */
-  getPaymentMethods(): Promise<Schemas["PaymentMethod"][]>;
+    expect(vm.documents).toStrictEqual([]);
 
-  paymentChangeable: ComputedRef<boolean>;
-};
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
 
-/**
- * Composable for managing an existing order.
- * @public
- * @category Customer & Account
- */
-export function useOrderDetails(
-  orderId: string,
-  associations?: Schemas["Criteria"]["associations"],
-  options?: UseOrderDetailsOptions,
-): UseOrderDetailsReturn {
-  const { apiClient } = useShopwareContext();
+    await vm.loadOrderDetails();
+    expect(vm.hasDocuments).toBe(false);
+    expect(vm.documents).toStrictEqual([]);
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readOrder"),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          associations: expect.anything(),
+        }),
+      }),
+    );
 
-  const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
-  const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
-    "swOrderDetails",
-    ref(),
-  );
-  provide("swOrderDetails", _sharedOrder);
+    expect(vm.personalDetails).toEqual({
+      email: Order.orders.elements?.[0]?.orderCustomer.email,
+      firstName: Order.orders.elements?.[0]?.orderCustomer.firstName,
+      lastName: Order.orders.elements?.[0]?.orderCustomer.lastName,
+    });
 
-  const orderAssociations = useDefaultOrderAssociations();
+    expect(vm.billingAddress).toEqual(
+      Order.orders.elements?.[0]?.addresses.find(
+        ({ id }: { id: string }) =>
+          id === Order.orders.elements?.[0]?.billingAddressId,
+      ),
+    );
 
-  const paymentMethod = computed(() => {
-    const transactions = _sharedOrder.value?.transactions;
-    if (!transactions?.length) return undefined;
-    return transactions[transactions.length - 1]?.paymentMethod;
+    expect(vm.order).toBeDefined();
+    expect(vm.status).toBe(
+      Order.orders.elements?.[0]?.stateMachineState.translated.name,
+    );
+    expect(vm.statusTechnicalName).toBe(
+      Order.orders.elements?.[0]?.stateMachineState.technicalName,
+    );
+    expect(vm.shippingAddress).toBeUndefined();
+    expect(vm.total).toBe(Order.orders.elements?.[0]?.price?.totalPrice);
+    expect(vm.subtotal).toBe(Order.orders.elements?.[0]?.price?.positionPrice);
+    expect(vm.shippingCosts).toBe(Order.orders.elements?.[0]?.shippingTotal);
   });
 
-  const shippingMethod = computed(() => {
-    const deliveries = _sharedOrder.value?.deliveries;
-    if (!deliveries?.length) return undefined;
-    return deliveries[deliveries.length - 1]?.shippingMethod;
+  it("should handle setting the order payment", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { redirectUrl: "https://payment.example.com" },
+    });
+    await vm.handlePayment();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("handlePaymentMethod"),
+      expect.objectContaining({
+        body: {
+          errorUrl: undefined,
+          finishUrl: undefined,
+          orderId: "123-test",
+        },
+      }),
+    );
+    expect(vm.paymentUrl).toBe("https://payment.example.com");
   });
 
-  const paymentUrl = ref();
+  it("should handle payment with success and error URLs", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.handlePayment("https://success.com", "https://error.com");
 
-  const personalDetails = computed(() => ({
-    email: _sharedOrder.value?.orderCustomer?.email,
-    firstName: _sharedOrder.value?.orderCustomer?.firstName,
-    lastName: _sharedOrder.value?.orderCustomer?.lastName,
-  }));
-  const billingAddress = computed(() =>
-    _sharedOrder.value?.addresses?.find(
-      ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
-    ),
-  );
-  const shippingAddress = computed(
-    () => _sharedOrder.value?.deliveries?.[0]?.shippingOrderAddress,
-  );
-
-  const shippingCosts = computed(() => _sharedOrder.value?.shippingTotal);
-  const subtotal = computed(() => _sharedOrder.value?.price?.positionPrice);
-  const total = computed(() => _sharedOrder.value?.price?.totalPrice);
-  const status = computed(
-    () => _sharedOrder.value?.stateMachineState?.translated.name,
-  );
-  const statusTechnicalName = computed(
-    () => _sharedOrder.value?.stateMachineState?.technicalName,
-  );
-
-  async function loadOrderDetails() {
-    const mergedAssociations = defu(
-      orderAssociations,
-      associations ? associations : {},
-    );
-
-    const baseParams = {
-      associations: mergedAssociations,
-      checkPromotion: true,
-    };
-
-    const params: operations["readOrder post /order"]["body"] =
-      options?.isGuestOrder
-        ? {
-            ...baseParams,
-            filter: [
-              {
-                field: "deepLinkCode",
-                type: "equals",
-                value: orderId,
-              },
-            ],
-          }
-        : {
-            ...baseParams,
-            ids: [orderId],
-          };
-
-    const orderDetailsResponse = await apiClient.invoke(
-      "readOrder post /order",
-      {
-        body: params,
-      },
-    );
-    _sharedOrder.value =
-      orderDetailsResponse.data.orders?.elements?.[0] ?? undefined;
-    paymentChangeableList.value =
-      orderDetailsResponse.data.paymentChangeable ?? {};
-    return orderDetailsResponse.data;
-  }
-
-  async function handlePayment(finishUrl?: string, errorUrl?: string) {
-    const resp = await apiClient.invoke(
-      "handlePaymentMethod post /handle-payment",
-      {
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("handlePaymentMethod"),
+      expect.objectContaining({
         body: {
-          orderId,
-          finishUrl,
-          errorUrl,
+          orderId: "123-test",
+          finishUrl: "https://success.com",
+          errorUrl: "https://error.com",
         },
-      },
+      }),
     );
+  });
 
-    paymentUrl.value = resp.data.redirectUrl;
-  }
+  it("should cancel the order", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.cancel();
 
-  async function cancel() {
-    const resp = await apiClient.invoke(
-      "cancelOrder post /order/state/cancel",
-      {
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("cancelOrder"),
+      expect.objectContaining({
         body: {
-          orderId,
+          orderId: "123-test",
         },
-      },
+      }),
     );
-    await loadOrderDetails();
-    return resp.data;
-  }
-  async function changePaymentMethod(paymentMethodId: string) {
-    const response = await apiClient.invoke(
-      "orderSetPayment post /order/payment",
-      {
+  });
+
+  it("changePaymentMethod", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.changePaymentMethod("test");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("orderSetPayment"),
+      expect.objectContaining({
         body: {
-          orderId: orderId,
-          paymentMethodId: paymentMethodId,
+          orderId: "123-test",
+          paymentMethodId: "test",
         },
-      },
+      }),
     );
+  });
 
-    await loadOrderDetails();
-    return response.data;
-  }
+  it("getMediaFile", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getMediaFile("file-123");
 
-  async function getMediaFile(downloadId: string) {
-    const response = await apiClient.invoke(
-      "orderDownloadFile get /order/download/{orderId}/{downloadId}",
-      {
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("orderDownloadFile"),
+      expect.objectContaining({
         accept: "application/octet-stream",
         pathParams: {
-          orderId,
-          downloadId,
+          orderId: "123-test",
+          downloadId: "file-123",
         },
-      },
+      }),
     );
-
-    return response.data;
-  }
-
-  async function getDocumentFile(
-    documentId: string,
-    deepLinkCode: string,
-  ): Promise<Blob | string> {
-    const response = await apiClient.invoke(
-      "download post /document/download/{documentId}/{deepLinkCode}",
-      {
-        pathParams: {
-          documentId,
-          deepLinkCode,
-        },
-        accept: "application/pdf",
-      },
-    );
-
-    return response.data;
-  }
-
-  const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
-  const documents = computed(() => _sharedOrder.value?.documents || []);
-
-  const paymentChangeable = computed(() => {
-    return paymentChangeableList.value?.[orderId as string] ?? false;
   });
 
-  const getPaymentMethods = async () => {
-    const response = await apiClient.invoke(
-      "readPaymentMethod post /payment-method",
-      {
-        body: { onlyAvailable: true },
-      },
-    );
-    return response.data.elements || [];
-  };
+  it("getDocumentFile", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getDocumentFile("file-123", "code-123");
 
-  return {
-    order: computed(() => _sharedOrder.value),
-    status,
-    statusTechnicalName,
-    total,
-    subtotal,
-    shippingCosts,
-    shippingAddress,
-    billingAddress,
-    personalDetails,
-    paymentUrl,
-    shippingMethod,
-    paymentMethod,
-    hasDocuments,
-    documents,
-    loadOrderDetails,
-    handlePayment,
-    cancel,
-    changePaymentMethod,
-    getMediaFile,
-    getDocumentFile,
-    paymentChangeable,
-    getPaymentMethods,
-  };
-}
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("download"),
+      expect.objectContaining({
+        pathParams: {
+          documentId: "file-123",
+          deepLinkCode: "code-123",
+        },
+      }),
+    );
+  });
+
+  it("getPaymentMethods", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    const result = await vm.getPaymentMethods();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readPaymentMethod"),
+      expect.objectContaining({
+        body: {
+          onlyAvailable: true,
+        },
+      }),
+    );
+    expect(result).toEqual([]);
+  });
+
+  it("getPaymentMethods returns elements when available", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    const paymentMethods = [{ id: "1", name: "Invoice" }];
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: paymentMethods },
+    });
+    const result = await vm.getPaymentMethods();
+
+    expect(result).toEqual(paymentMethods);
+  });
+
+  it("paymentChangeable", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test", {}));
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+    expect(vm.paymentChangeable).toEqual(false);
+    await vm.loadOrderDetails();
+    expect(vm.paymentChangeable).toEqual(true);
+  });
+
+  it("loadOrderDetails with custom associations", async () => {
+    const customAssociations = { lineItems: { associations: { cover: {} } } };
+    const { vm, injections } = useSetup(() =>
+      useOrderDetails("123-test", customAssociations),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+    await vm.loadOrderDetails();
+
+    const call = injections.apiClient.invoke.mock.calls.at(0);
+    expect(call).toBeDefined();
+    if (call) {
+      const args = call[1] as { body: { associations: unknown } };
+      expect(call[0]).toContain("readOrder");
+      expect(args.body.associations).toMatchObject(customAssociations);
+    }
+  });
+
+  it("hasDocuments and documents when order has documents", async () => {
+    const orderElement = Order.orders.elements[0];
+    const orderWithDocs = {
+      ...orderElement,
+      documents: [{ id: "doc-1", deepLinkCode: "abc" }],
+    };
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: { elements: [orderWithDocs] },
+        paymentChangeable: { "123-test": true },
+      },
+    });
+    await vm.loadOrderDetails();
+
+    expect(vm.hasDocuments).toBe(true);
+    expect(vm.documents).toStrictEqual([{ id: "doc-1", deepLinkCode: "abc" }]);
+  });
+
+  it("should return current payment method", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              transactions: [
+                {
+                  paymentMethod: {
+                    shortName: "invoice_payment",
+                  },
+                },
+                {
+                  paymentMethod: {
+                    shortName: "cash_payment",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.paymentMethod?.shortName).toEqual("cash_payment");
+  });
+
+  it("should return current delivery method", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              deliveries: [
+                {
+                  shippingMethod: {
+                    name: "test",
+                  },
+                },
+                {
+                  shippingMethod: {
+                    name: "Standard",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.shippingMethod?.name).toEqual("Standard");
+  });
+
+  it("should return undefined if payment method does not exists", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              transactions: [],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.paymentMethod?.shortName).toEqual(undefined);
+  });
+
+  it("should return undefined if shipping method does not exists", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        orders: {
+          elements: [
+            {
+              deliveries: [],
+            },
+          ],
+        },
+      },
+    });
+    await vm.loadOrderDetails();
+    expect(vm.shippingMethod?.name).toEqual(undefined);
+  });
+});
