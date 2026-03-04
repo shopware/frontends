@@ -1,5 +1,17 @@
 # @shopware/composables
 
+## 1.10.1
+
+### Patch Changes
+
+- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - Guard against undefined config in `useCmsElementConfig`.
+
+- [#2263](https://github.com/shopware/frontends/pull/2263) [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a) Thanks [@mkucmus](https://github.com/mkucmus)! - Fixed `getDocumentFile` return type in `useOrderDetails` to correctly return `Blob | string` instead of `Document` schema.
+
+- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f)]:
+  - @shopware/api-client@1.5.0
+  - @shopware/helpers@1.7.0
+
 ## 1.10.0
 
 ### Minor Changes
