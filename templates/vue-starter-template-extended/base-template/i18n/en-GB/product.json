@@ -1,0 +1,21 @@
+{
+  "product": {
+    "addToCart": "Add to cart",
+    "addReview": "Add review",
+    "reviewsForm": {
+      "title": "Title",
+      "titlePlaceholder": "Enter a title for your review",
+      "review": "Your review",
+      "reviewPlaceholder": "Share your experience with this product (minimum 40 characters)",
+      "submit": "Submit",
+      "rating": "Your rating"
+    },
+    "errors": {
+      "reviewAlreadyExists": "You have already submitted a review for this product"
+    },
+    "messages": {
+      "reviewAdded": "Thank you! Your review has been submitted successfully.",
+      "loginToReview": "Please log in to write a review"
+    }
+  }
+}

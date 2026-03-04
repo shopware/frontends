@@ -1,0 +1,37 @@
+{
+  "home": "Strona główna",
+  "breadcrumbs": {
+    "search": "Wyszukiwanie"
+  },
+  "layout": {
+    "sideMenu": {
+      "close": "Zamknij menu"
+    },
+    "header": {
+      "myAccount": "Moje konto",
+      "cart": "Koszyk"
+    },
+    "footer": {
+      "newsletter": {
+        "title": "Subskrybuj",
+        "description": "Otrzymuj najnowsze informacje o ofertach i aktualnościach społeczności.",
+        "placeholder": "Wpisz adres e-mail",
+        "button": "Wyślij",
+        "privacyPolicy": "Klikając przycisk Wyślij, zgadzasz się na naszą politykę prywatności.",
+        "messages": {
+          "subscribed": "Dziękujemy! Zapisaliśmy Twój adres."
+        }
+      }
+    },
+    "ariaLabels": {
+      "mainNavigation": "Główne menu",
+      "accountNavigation": "Nawigacja konta",
+      "mainContent": "Główna zawartość",
+      "checkout": "Kasa",
+      "pagination": "Paginacja",
+      "breadcrumb": "Breadcrumb",
+      "sidebar": "Panel boczny",
+      "closeNotification": "Zamknij powiadomienie"
+    }
+  }
+}

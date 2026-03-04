@@ -1,4 +1,4 @@
 {
-  "installDependencies": false,
-  "startCommand": "npx --yes giget gh:shopware/frontends/templates/vue-starter-template#main base-template --force && pnpm install && pnpm dev"
+  "installDependencies": true,
+  "startCommand": "pnpm dev"
 }
