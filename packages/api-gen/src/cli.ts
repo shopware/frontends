@@ -174,6 +174,12 @@ yargs(hideBin(process.argv))
           alias: "n",
           type: "string",
           describe: "PHP namespace for generated classes",
+        })
+        .option("rawNames", {
+          type: "boolean",
+          default: false,
+          describe:
+            "skip auto-converting class names to PascalCase; fail on invalid names instead",
         });
     },
     async (args) => phpDto(args as unknown as PhpDtoOptions),

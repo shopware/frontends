@@ -10,7 +10,9 @@ import { resolve } from "node:path";
 import pc from "picocolors";
 import { generateAllFiles } from "../php-dto/generator";
 import type { GeneratorOptions } from "../php-dto/generator";
+import type { DtoDefinition } from "../php-dto/schemaParser";
 import { parseAllDtos } from "../php-dto/schemaParser";
+import { isValidPhpClassName, toPascalCase } from "../php-dto/typeMapper";
 import { loadLocalJSONFile } from "../utils";
 
 export interface PhpDtoOptions {
@@ -18,11 +20,50 @@ export interface PhpDtoOptions {
   schemaFile: string;
   outputDir: string;
   namespace?: string;
+  rawNames?: boolean;
   cwd?: string;
 }
 
+function sanitizeDtoNames(dtos: DtoDefinition[]): DtoDefinition[] {
+  const renameMap = new Map<string, string>();
+
+  for (const dto of dtos) {
+    const sanitized = toPascalCase(dto.name);
+    if (sanitized !== dto.name) {
+      renameMap.set(dto.name, sanitized);
+    }
+  }
+
+  if (renameMap.size === 0) return dtos;
+
+  return dtos.map((dto) => ({
+    ...dto,
+    name: renameMap.get(dto.name) ?? dto.name,
+    properties: dto.properties.map((prop) => ({
+      ...prop,
+      phpType: renameMap.get(prop.phpType) ?? prop.phpType,
+      arrayItemType: prop.arrayItemType
+        ? renameMap.get(prop.arrayItemType) ?? prop.arrayItemType
+        : prop.arrayItemType,
+    })),
+  }));
+}
+
+function validateDtoNames(dtos: DtoDefinition[]): void {
+  const invalidNames = dtos
+    .map((d) => d.name)
+    .filter((name) => !isValidPhpClassName(name));
+
+  if (invalidNames.length > 0) {
+    const list = invalidNames.map((n) => `  - ${n}`).join("\n");
+    throw new Error(
+      `Invalid PHP class names found:\n${list}\n\nRemove --rawNames to auto-convert names to valid PascalCase.`,
+    );
+  }
+}
+
 export async function phpDto(options: PhpDtoOptions): Promise<void> {
-  const { action, schemaFile, outputDir, namespace } = options;
+  const { action, schemaFile, outputDir, namespace, rawNames } = options;
   const cwd = options.cwd || process.cwd();
   const outputPath = resolve(cwd, outputDir);
 
@@ -31,11 +72,19 @@ export async function phpDto(options: PhpDtoOptions): Promise<void> {
   if (!schema) {
     throw new Error(`Schema file not found: ${schemaPath}`);
   }
-  const dtos = parseAllDtos(schema);
+  const rawDtos = parseAllDtos(schema);
 
-  if (dtos.length === 0) {
+  if (rawDtos.length === 0) {
     console.log(pc.yellow("No DTO definitions found in the schema."));
     return;
+  }
+
+  let dtos: DtoDefinition[];
+  if (rawNames) {
+    validateDtoNames(rawDtos);
+    dtos = rawDtos;
+  } else {
+    dtos = sanitizeDtoNames(rawDtos);
   }
 
   const generatorOptions: GeneratorOptions = { namespace };

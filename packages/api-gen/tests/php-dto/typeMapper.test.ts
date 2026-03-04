@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   getSchemaType,
   hasTypeNull,
+  isValidPhpClassName,
   mapOpenApiTypeToPhp,
   resolveRefName,
   toDtoClassName,
+  toPascalCase,
 } from "../../src/php-dto/typeMapper";
 
 describe("typeMapper", () => {
@@ -223,6 +225,58 @@ describe("typeMapper", () => {
 
     it("does not treat plain string type as nullable", () => {
       expect(mapOpenApiTypeToPhp({ type: "string" }).nullable).toBe(false);
+    });
+  });
+
+  describe("toPascalCase", () => {
+    it("converts hyphenated names", () => {
+      expect(toPascalCase("api-info")).toBe("ApiInfo");
+      expect(toPascalCase("Api-info")).toBe("ApiInfo");
+    });
+
+    it("converts underscored names", () => {
+      expect(toPascalCase("some_thing")).toBe("SomeThing");
+    });
+
+    it("converts mixed separators", () => {
+      expect(toPascalCase("my-special_name.test")).toBe("MySpecialNameTest");
+    });
+
+    it("preserves already PascalCase names", () => {
+      expect(toPascalCase("CartDTO")).toBe("CartDTO");
+      expect(toPascalCase("ProductDTO")).toBe("ProductDTO");
+    });
+
+    it("handles names with numbers", () => {
+      expect(toPascalCase("b2b-components")).toBe("B2bComponents");
+    });
+
+    it("handles names ending with DTO suffix through separators", () => {
+      expect(toPascalCase("Api-infoRequestDTO")).toBe("ApiInfoRequestDTO");
+    });
+  });
+
+  describe("isValidPhpClassName", () => {
+    it("accepts valid class names", () => {
+      expect(isValidPhpClassName("CartDTO")).toBe(true);
+      expect(isValidPhpClassName("ProductDTO")).toBe(true);
+      expect(isValidPhpClassName("_Internal")).toBe(true);
+    });
+
+    it("rejects names with hyphens", () => {
+      expect(isValidPhpClassName("Api-infoDTO")).toBe(false);
+    });
+
+    it("rejects names with dots", () => {
+      expect(isValidPhpClassName("Some.ClassDTO")).toBe(false);
+    });
+
+    it("rejects names starting with a digit", () => {
+      expect(isValidPhpClassName("2FactorDTO")).toBe(false);
+    });
+
+    it("rejects empty string", () => {
+      expect(isValidPhpClassName("")).toBe(false);
     });
   });
 

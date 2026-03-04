@@ -197,4 +197,111 @@ describe("phpDto command", () => {
       }),
     ).rejects.toThrow("Schema file not found");
   });
+
+  describe("name handling", () => {
+    const INVALID_SCHEMA = resolve(__dirname, "fixtures/invalidNames.json");
+
+    it("default: converts hyphenated names to PascalCase", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-pascal");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: INVALID_SCHEMA,
+        outputDir,
+      });
+
+      const files = readdirSync(outputDir).filter((f) => f.endsWith(".php"));
+      expect(files).toContain("SimpleProductDTO.php");
+      expect(files).toContain("ApiInfoRequestDTO.php");
+      expect(files).not.toContain("Simple-ProductDTO.php");
+      expect(files).not.toContain("Api-infoRequestDTO.php");
+
+      const content = readFileSync(
+        resolve(outputDir, "SimpleProductDTO.php"),
+        "utf-8",
+      );
+      expect(content).toContain("class SimpleProductDTO");
+    });
+
+    it("default: uppercases lowercase names in both file and class", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-lowercase");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: INVALID_SCHEMA,
+        outputDir,
+      });
+
+      const files = readdirSync(outputDir).filter((f) => f.endsWith(".php"));
+      expect(files).toContain("ErrorDTO.php");
+      expect(files).not.toContain("errorDTO.php");
+
+      const content = readFileSync(resolve(outputDir, "ErrorDTO.php"), "utf-8");
+      expect(content).toContain("class ErrorDTO");
+      expect(content).not.toContain("class errorDTO");
+    });
+
+    it("default: updates $ref type references to renamed DTOs", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-pascal-refs");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: INVALID_SCHEMA,
+        outputDir,
+      });
+
+      const content = readFileSync(
+        resolve(outputDir, "ErrorResponseDTO.php"),
+        "utf-8",
+      );
+      expect(content).toContain("class ErrorResponseDTO");
+      expect(content).toContain("@var list<ErrorDTO>");
+      expect(content).not.toContain("errorDTO");
+    });
+
+    it("rawNames: throws listing invalid class names", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-error");
+
+      await expect(
+        phpDto({
+          action: "generate",
+          schemaFile: INVALID_SCHEMA,
+          outputDir,
+          rawNames: true,
+        }),
+      ).rejects.toThrow("Invalid PHP class names found");
+    });
+
+    it("rawNames: includes all invalid names in error message", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-error-list");
+
+      try {
+        await phpDto({
+          action: "generate",
+          schemaFile: INVALID_SCHEMA,
+          outputDir,
+          rawNames: true,
+        });
+        expect.unreachable("should have thrown");
+      } catch (err) {
+        const message = (err as Error).message;
+        expect(message).toContain("Simple-ProductDTO");
+        expect(message).toContain("Api-infoRequestDTO");
+        expect(message).toContain("--rawNames");
+      }
+    });
+
+    it("rawNames: passes for schemas with valid names", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "name-error-valid");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: FIXTURE_SCHEMA,
+        outputDir,
+        rawNames: true,
+      });
+
+      expect(existsSync(outputDir)).toBe(true);
+    });
+  });
 });

@@ -138,6 +138,100 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates expected fil
 
 exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `4`;
 
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class Api-infoRequestDTO
+{
+    /** Type of the api */
+    #[Assert\\NotNull]
+    public string $type;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+/**
+ * API info
+ */
+class Api-infoResponseDTO
+{
+    public string $version;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Simple-ProductDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+class Simple-ProductDTO
+{
+    public string $id;
+
+    public string $name;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for errorDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class errorDTO
+{
+    #[Assert\\NotNull]
+    public string $code;
+
+    #[Assert\\NotNull]
+    public string $message;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for errorResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+class errorResponseDTO
+{
+    /**
+     * @var list<errorDTO>
+     */
+    public array $errors;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+class Simple-ProductDTO
+{
+    public string $id;
+
+    public string $name;
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected file names 1`] = `
+[
+  "Api-infoRequestDTO.php",
+  "Api-infoResponseDTO.php",
+  "Simple-ProductDTO.php",
+  "errorDTO.php",
+  "errorResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `5`;
+
 exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for OrderBillingAddressCountryDTO.php 1`] = `
 "<?php declare(strict_types=1);
 

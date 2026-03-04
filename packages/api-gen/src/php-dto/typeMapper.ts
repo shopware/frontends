@@ -34,6 +34,20 @@ export function resolveRefName(ref: string): string {
   return parts.at(-1) ?? ref;
 }
 
+export function toPascalCase(str: string): string {
+  return str
+    .split(/[^a-zA-Z0-9]+/)
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join("");
+}
+
+const PHP_CLASS_NAME_REGEX = /^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/;
+
+export function isValidPhpClassName(name: string): boolean {
+  return PHP_CLASS_NAME_REGEX.test(name);
+}
+
 export function toDtoClassName(schemaName: string): string {
   return `${schemaName}DTO`;
 }
