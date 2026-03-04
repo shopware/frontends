@@ -65,7 +65,7 @@ describe("useNewsletter", () => {
 
   it("returns SUBSRIBE_KEY and UNSUBSCRIBE_KEY", () => {
     const { vm } = useSetup(useNewsletter);
-    expect(vm.SUBSRIBE_KEY).toBe("subscribe");
+    expect(vm.SUBSCRIBE_KEY).toBe("subscribe");
     expect(vm.UNSUBSCRIBE_KEY).toBe("unsubscribe");
   });
 });
