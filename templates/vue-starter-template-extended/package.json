@@ -28,7 +28,7 @@
     "@shopware/nuxt-module": "canary",
     "nuxt": "4.2.2",
     "vue": "3.5.27",
-    "vue-starter-template": "https://gitpkg.vercel.app/shopware/frontends/templates/vue-starter-template?feat/extended-tempalte-for-stackblitz"
+    "vue-starter-template": "github:shopware/frontends#feat/extended-template-for-stackblitz&path:templates/vue-starter-template"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
