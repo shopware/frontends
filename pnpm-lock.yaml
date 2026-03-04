@@ -1526,8 +1526,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-starter-template:
-        specifier: github:shopware/frontends#main&path:/templates/vue-starter-template
-        version: https://codeload.github.com/shopware/frontends/tar.gz/76b42541dc5a57faa2940e1d0c6e0c9765017b61#path:/templates/vue-starter-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
+        specifier: github:shopware/frontends#feat/extended-template-for-stackblitz&path:templates/vue-starter-template
+        version: https://codeload.github.com/shopware/frontends/tar.gz/34b36879c5ad3c38164a887f1143122290139eee#path:templates/vue-starter-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -12305,8 +12305,8 @@ packages:
       esbuild: ^0.25.0
       vue: ^3.5.13
 
-  vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/76b42541dc5a57faa2940e1d0c6e0c9765017b61#path:/templates/vue-starter-template:
-    resolution: {path: /templates/vue-starter-template, tarball: https://codeload.github.com/shopware/frontends/tar.gz/76b42541dc5a57faa2940e1d0c6e0c9765017b61}
+  vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/34b36879c5ad3c38164a887f1143122290139eee#path:templates/vue-starter-template:
+    resolution: {path: templates/vue-starter-template, tarball: https://codeload.github.com/shopware/frontends/tar.gz/34b36879c5ad3c38164a887f1143122290139eee}
     version: 0.1.0
 
   vue-tsc@3.2.2:
@@ -26674,7 +26674,7 @@ snapshots:
       esbuild: 0.25.12
       vue: 3.5.27(typescript@5.9.3)
 
-  vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/76b42541dc5a57faa2940e1d0c6e0c9765017b61#path:/templates/vue-starter-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1):
+  vue-starter-template@https://codeload.github.com/shopware/frontends/tar.gz/34b36879c5ad3c38164a887f1143122290139eee#path:templates/vue-starter-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1):
     dependencies:
       '@iconify-json/carbon': 1.2.18
       '@iconify/utils': 3.1.0
