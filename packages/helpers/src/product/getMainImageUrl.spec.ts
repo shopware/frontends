@@ -105,6 +105,17 @@ describe("Helpers - getMainImageUrl", () => {
     expect(coverUrl).toEqual("");
   });
 
+  it("should return empty string if cover exists but has neither media nor url", () => {
+    const product = {
+      cover: {
+        id: "some-id",
+      },
+    };
+    // @ts-expect-error - cover shape doesn't match expected types
+    const coverUrl = getMainImageUrl(product);
+    expect(coverUrl).toEqual("");
+  });
+
   it("should return empty string if media is defined but url is not", () => {
     const product = {
       media: [

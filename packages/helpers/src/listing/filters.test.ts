@@ -89,6 +89,19 @@ describe("getListingFilters", () => {
     ]);
   });
 
+  it("should skip options aggregation", () => {
+    const aggregations = {
+      options: {
+        name: "options",
+        apiAlias: "options_aggregation",
+        entities: [],
+      },
+    };
+
+    const result = getListingFilters(aggregations);
+    expect(result).toEqual([]);
+  });
+
   it("should transform properties aggregation", () => {
     const aggregations = {
       properties: {

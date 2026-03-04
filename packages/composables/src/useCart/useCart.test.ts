@@ -260,4 +260,34 @@ describe("useCart", () => {
 
     expect(vm.shippingCosts.length).toEqual(0);
   });
+
+  it("should return true for isVirtualCart when all items are digital", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        lineItems: [
+          {
+            type: "product",
+            good: true,
+            quantity: 1,
+            states: ["is-download"],
+          },
+        ],
+      },
+    });
+    await vm.refreshCart();
+    expect(vm.isVirtualCart).toBe(true);
+  });
+
+  it("consumeCartErrors returns null when no errors", async () => {
+    await vm.refreshCart();
+    expect(vm.consumeCartErrors()).toEqual(null);
+  });
+
+  it("isEmpty should return true when cart has no items", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { lineItems: [] },
+    });
+    await vm.refreshCart();
+    expect(vm.isEmpty).toBe(true);
+  });
 });

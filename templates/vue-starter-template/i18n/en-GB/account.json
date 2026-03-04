@@ -1,8 +1,11 @@
 {
   "account": {
     "back": "Back",
-    "signUpHeader": "I am new here.",
+    "signUpHeader": "Create an account",
+    "signUpSubHeader": "Register to get started",
     "yourAddress": "Your address",
+    "loginPageTitle": "Login & Registration",
+    "loginPageHeader": "Log in or create account",
     "order": {
       "header": "Orders",
       "subHeader": "View your current and past orders",
@@ -156,7 +159,8 @@
       "orderSuccessNoOrder": "The order could not be found.",
       "orderWrongData": "The email address or postal code is incorrect. Please try again.",
       "paymentMethodChanged": "Payment method changed successfully.",
-      "productsAdded": "Products have been added to the cart."
+      "productsAdded": "Products have been added to the cart.",
+      "loginRequired": "Login is required to access this page. You are being redirected to the login page."
     }
   }
 }

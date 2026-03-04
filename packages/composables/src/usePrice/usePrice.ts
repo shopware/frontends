@@ -38,13 +38,8 @@ function _usePrice(params?: {
 }): UsePriceReturn {
   const { sessionContext } = useSessionContext();
   const { browserLocale } = useShopwareContext();
-  const currencyLocale = ref<string>(browserLocale);
-  const currencyCode = ref<string>("");
-
-  if (params) {
-    currencyCode.value = params.currencyCode;
-    _setLocaleCode(params.localeCode);
-  }
+  const currencyCode = ref<string>(params?.currencyCode ?? "");
+  const currencyLocale = ref<string>(params?.localeCode || browserLocale);
 
   function update(params: {
     localeCode?: string | undefined;

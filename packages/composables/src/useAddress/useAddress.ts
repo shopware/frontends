@@ -190,7 +190,7 @@ export function useAddress(): UseAddressReturn {
   }
 
   return {
-    customerAddresses: computed(() => _storeCustomerAddresses.value || []),
+    customerAddresses: computed(() => _storeCustomerAddresses.value),
     loadCustomerAddresses,
     createCustomerAddress,
     updateCustomerAddress,

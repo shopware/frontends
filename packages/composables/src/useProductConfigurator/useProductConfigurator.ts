@@ -11,7 +11,7 @@ export type UseProductConfiguratorReturn = {
   handleChange(
     attribute: string,
     option: string,
-    onChangeHandled: () => void,
+    onChangeHandled?: () => void,
   ): Promise<void>;
 
   findVariantForSelectedOptions(options?: {

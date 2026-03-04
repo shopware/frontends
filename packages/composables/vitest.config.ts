@@ -16,6 +16,7 @@ export default defineConfig({
         "**/src/**/*.test.ts",
         "**/src/**/*.spec.ts",
         "**/src/**/*.demo.vue",
+        "**/src/**/*.md",
         // After refactoring should be removed - https://github.com/shopware/frontends/issues/1057
         "**/src/useListing/**",
       ],

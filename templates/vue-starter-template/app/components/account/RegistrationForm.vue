@@ -3,38 +3,50 @@ import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
 import type { operations } from "#shopware";
 
-const props = defineProps<{
+const { redirectUrl, customerGroupId } = defineProps<{
   customerGroupId?: string;
+  redirectUrl?: string | null;
 }>();
 
 const { register, isLoggedIn } = useUser();
 const { handleApiError } = useApiErrorsResolver("account_registration_form");
 
-const router = useRouter();
 const loading = ref<boolean>();
 const doubleOptInBox = useTemplateRef("doubleOptInBox");
 const showDoubleOptInBox = ref(false);
-const { t } = useI18n();
+
+const { push } = useRouter();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 if (import.meta.client && isLoggedIn.value) {
-  // redirect to account page if user is logged in
-  navigateTo({ path: "/account" });
+  const path = (redirectUrl ?? formatLink("/account")) as string;
+  navigateTo({ path });
 }
 
 watch(isLoggedIn, (isLoggedIn) => {
   if (isLoggedIn) {
-    navigateTo({ path: "/account" });
+    navigateTo({ path: redirectUrl || "/account" });
   }
 });
 
-const initialState = {
-  requestedGroupId: props.customerGroupId,
+type RegistrationFormState = Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+>;
+
+const initialState: RegistrationFormState = {
   accountType: "private",
   firstName: "",
   lastName: "",
   email: "",
   password: "",
-  vatIds: [""] as [string, ...string[]],
+  vatIds: [""],
   billingAddress: {
+    id: "",
+    customerId: "",
+    firstName: "",
+    lastName: "",
     company: "",
     street: "",
     zipcode: "",
@@ -45,14 +57,57 @@ const initialState = {
   acceptedDataProtection: true,
 };
 
-const state = reactive<typeof initialState>(
+const state = reactive<RegistrationFormState>(
   JSON.parse(JSON.stringify(initialState)),
 );
+
+const accountTypeModel = computed({
+  get: () => state.accountType ?? "private",
+  set: (value: "private" | "business") => {
+    state.accountType = value;
+  },
+});
+
+const vatIdModel = computed({
+  get: () => state.vatIds?.[0] ?? "",
+  set: (value: string) => {
+    if (state.vatIds) state.vatIds[0] = value;
+    else state.vatIds = [value];
+  },
+});
+
+const companyModel = computed({
+  get: () => state.billingAddress.company ?? "",
+  set: (value: string) => {
+    state.billingAddress.company = value;
+  },
+});
+
+const zipcodeModel = computed({
+  get: () => state.billingAddress.zipcode ?? "",
+  set: (value: string) => {
+    state.billingAddress.zipcode = value;
+  },
+});
+
+const countryIdModel = computed({
+  get: () => state.billingAddress.countryId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryId = value;
+  },
+});
+
+const countryStateIdModel = computed({
+  get: () => state.billingAddress.countryStateId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryStateId = value;
+  },
+});
 
 const { r$ } = useRegle(
   state,
   registrationFormRules(
-    computed(() => state.accountType),
+    computed(() => state.accountType ?? "private"),
     computed(() => state.billingAddress.countryId),
   ),
 );
@@ -62,20 +117,17 @@ const invokeSubmit = async () => {
   if (valid) {
     try {
       loading.value = true;
-      // TODO use full type form with the new template
-      const response = await register(
-        state as unknown as Omit<
-          operations["register post /account/register"]["body"],
-          "storefrontUrl"
-        >,
-      );
+      const response = await register({
+        ...state,
+        ...(customerGroupId ? { requestedGroupId: customerGroupId } : {}),
+      });
       if (response?.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
         doubleOptInBox.value?.scrollIntoView();
         r$.$reset();
-      } else if (response?.active) router.push("/");
+      } else if (response?.active) await push(formatLink("/"));
     } catch (error) {
       handleApiError(error);
     } finally {
@@ -83,46 +135,36 @@ const invokeSubmit = async () => {
     }
   }
 };
-
-useBreadcrumbs([
-  {
-    name: t("breadcrumbs.register"),
-    path: "/register",
-  },
-]);
-
-const accountTypeOptions = [
-  {
-    label: t("form.accountType.private"),
-    value: "private",
-  },
-  {
-    label: t("form.accountType.business"),
-    value: "business",
-  },
-];
 </script>
 <template>
-  <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
+  <div>
     <div
       v-if="showDoubleOptInBox"
       ref="doubleOptInBox"
       class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
+      role="status"
+      aria-live="polite"
     >
       {{ $t("account.messages.signUpSuccess") }}
     </div>
+    <div class="mb-1 p-5">
+      <h2 id="sign-up-heading" class="text-2xl font-bold">
+        {{ $t("account.signUpHeader") }}
+      </h2>
+      <p class="text-sm text-text-bg-surface-surface-disabled">
+        {{ $t("account.signUpSubHeader") }}
+      </p>
+    </div>
     <form
-      class="w-full relative mt-10"
+      class="w-full relative px-5"
       data-testid="registration-form"
+      aria-labelledby="sign-up-heading"
       @submit.prevent="invokeSubmit"
     >
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
-        {{ $t("account.signUpHeader") }}
-      </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <FormAccountTypeSelect
           class="col-span-12"
-          v-model="state.accountType"
+          v-model="accountTypeModel"
           dataTestId="registration-account-type-select"
           id="accountType"
         />
@@ -131,7 +173,7 @@ const accountTypeOptions = [
           class="col-span-12 md:col-span-4"
           id="firstName"
           v-model="state.firstName"
-          autocomplete="firstName"
+          autocomplete="given-name"
           :label="$t('form.firstName')"
           :errorMessage="r$.firstName.$errors[0]"
           @blur="r$.firstName.$touch()"
@@ -164,7 +206,7 @@ const accountTypeOptions = [
           class="col-span-12 md:col-span-4"
           id="password"
           v-model="state.password"
-          autocomplete="current-password"
+          autocomplete="new-password"
           type="password"
           :label="$t('form.password')"
           :errorMessage="r$.password.$errors[0]"
@@ -176,22 +218,25 @@ const accountTypeOptions = [
           v-if="state.accountType === 'business'"
           class="col-span-12 md:col-span-4"
           id="vatId"
-          v-model="state.vatIds[0]"
+          v-model="vatIdModel"
           :label="$t('form.vatId')"
-          @blur="r$.vatIds.$touch()"
+          @blur="r$.vatIds?.$touch()"
           data-testid="registration-vatid-input"
         />
       </div>
 
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+      <h3 id="address-heading" class="block border-b-1 mb-5 pb-2 font-bold">
         {{ $t("account.yourAddress") }}
       </h3>
-      <div class="grid grid-cols-12 gap-5 mb-5">
+      <div
+        class="grid grid-cols-12 gap-5 mb-5"
+        aria-labelledby="address-heading"
+      >
         <FormInputField
           v-if="state.accountType === 'business'"
           class="col-span-12 md:col-span-4"
           id="company"
-          v-model="state.billingAddress.company"
+          v-model="companyModel"
           autocomplete="company"
           :label="$t('form.company')"
           data-testid="registration-company-input"
@@ -214,7 +259,7 @@ const accountTypeOptions = [
           class="col-span-12 md:col-span-4"
           :label="$t('form.postalCode')"
           id="zipcode"
-          v-model="state.billingAddress.zipcode"
+          v-model="zipcodeModel"
           autocomplete="postal-code"
           data-testid="registration-zipcode-input"
           @blur="r$.billingAddress.zipcode.$touch()"
@@ -233,17 +278,18 @@ const accountTypeOptions = [
         />
 
         <SharedCountryStateInput
-          v-model:country-id="state.billingAddress.countryId"
-          v-model:state-id="state.billingAddress.countryStateId"
+          v-model:country-id="countryIdModel"
+          v-model:state-id="countryStateIdModel"
           :country-id-validation="r$.billingAddress.countryId"
           :state-id-validation="r$.billingAddress.countryStateId"
-          class="col-span-12 md:col-span-4"
+          class="col-span-12 md:col-span-8"
         />
       </div>
       <div class="mb-5 text-right">
         <FormBaseButton
           :label="$t('form.submit')"
           type="submit"
+          :aria-busy="loading"
           data-testid="registration-submit-button"
         />
       </div>

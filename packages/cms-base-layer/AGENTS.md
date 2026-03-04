@@ -73,7 +73,9 @@ cms-base-layer/
 │   │   │       └── skeleton/     # Loading skeleton components
 │   │   └── ui/                   # Base UI components (prefixed with Sw)
 │   ├── composables/              # Layer-specific composables
+│   │   └── useLcpImagePreload.ts # LCP image preload via <link rel="preload">
 │   ├── helpers/                  # Utility functions
+│   │   └── cms/getImageSizes.ts  # Slot count → responsive sizes mapping
 │   ├── plugins/                  # Nuxt plugins
 │   └── providers/                # Image providers (Shopware)
 ├── nuxt.config.ts                # Layer configuration
@@ -92,8 +94,10 @@ cms-base-layer/
 ### Core CMS Components
 
 - [app/components/public/cms/CmsPage.vue](app/components/public/cms/CmsPage.vue) - Main entry point for rendering CMS pages
-- [app/components/public/cms/CmsGenericBlock.vue](app/components/public/cms/CmsGenericBlock.vue) - Generic block renderer
+- [app/components/public/cms/CmsGenericBlock.vue](app/components/public/cms/CmsGenericBlock.vue) - Generic block renderer (provides responsive image sizes via inject)
 - [app/components/public/cms/CmsGenericElement.vue](app/components/public/cms/CmsGenericElement.vue) - Generic element renderer
+- [app/composables/useLcpImagePreload.ts](app/composables/useLcpImagePreload.ts) - Preloads LCP image during SSR
+- [app/helpers/cms/getImageSizes.ts](app/helpers/cms/getImageSizes.ts) - Maps block slot count to responsive `sizes` attribute
 
 ### Sections (Layout)
 
@@ -245,6 +249,9 @@ export default defineAppConfig({
 
 Available configuration:
 - `imagePlaceholder.color` - SVG placeholder background color
+- `backgroundImage.format` - Output format for CMS background images (default: `"webp"`). Appended as `&format=` to background image URLs. Accepts `"webp"`, `"avif"`, `"jpg"`, `"png"`.
+- `backgroundImage.quality` - Image quality for CMS background images (default: `90`). Appended as `&quality=` to background image URLs. Accepts `0`-`100`.
+- `imageSizes` - Maps CMS block slot count to responsive `sizes` attribute values. Used by `CmsGenericBlock` via provide/inject to give `CmsElementImage` sizing hints. See [Responsive CMS Images](#responsive-cms-images) in README.
 - `unocssRuntime` - Enable/disable the client-side UnoCSS runtime plugin (default: `true`). Resolves dynamic CMS utility classes at runtime via MutationObserver. Disable if not needed or if it causes performance issues.
 
 ### Theme Customization
@@ -364,6 +371,40 @@ Available presets (defined in [nuxt.config.ts](nuxt.config.ts)):
 - `productDetail` - High quality for detail pages
 - `thumbnail` - Small thumbnails (150x150)
 - `hero` - Hero/banner images
+
+### Background Image Optimization
+
+CMS sections and blocks with `backgroundMedia` are automatically optimized. `CmsPage` and `CmsGenericBlock` read `format` and `quality` from `app.config.ts` and pass them to `getBackgroundImageUrl()` from `@shopware/helpers`:
+
+```typescript
+// app.config.ts defaults
+export default defineAppConfig({
+  backgroundImage: {
+    format: "webp",  // appended as &format=webp
+    quality: 85,     // appended as &quality=85
+  },
+});
+```
+
+The helper generates URLs like:
+```
+url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")
+```
+
+Set `format` or `quality` to `undefined` to omit that parameter. Requires remote thumbnail generation support (built-in on Shopware Cloud, plugin-based on self-hosted).
+
+## Responsive Image Architecture
+
+CMS images use a provide/inject pattern for responsive sizing:
+
+1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)` and `provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes))`
+2. **`CmsElementImage`** calls `inject("cms-image-sizes", "100vw")` and passes it to `<NuxtImg :sizes="...">`
+3. If media has thumbnails → native `srcset` from `getSrcSetForMedia()`. If not → synthetic `srcset` via `generateCdnSrcSet()` from `@shopware/helpers`
+4. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
+
+### Type Declarations
+
+`index.d.ts` augments `nuxt/schema`'s `AppConfig` interface with JSDoc-documented types for all app.config options. This provides IDE autocompletion and type hints when using `useAppConfig()` or `defineAppConfig()` in end projects.
 
 ## Common Patterns
 

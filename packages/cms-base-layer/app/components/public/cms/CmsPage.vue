@@ -6,14 +6,20 @@ import {
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
 import { computed, h, resolveComponent, watchEffect } from "vue";
-import { createCategoryListingContext, useNavigationContext } from "#imports";
+import {
+  createCategoryListingContext,
+  useAppConfig,
+  useNavigationContext,
+} from "#imports";
 import type { Schemas } from "#shopware";
+import { useLcpImagePreload } from "../../../composables/useLcpImagePreload";
 
 const props = defineProps<{
   content: Schemas["CmsPage"];
 }>();
 
 const { routeName } = useNavigationContext();
+const appConfig = useAppConfig();
 
 // Function to initialize or update listing context
 function updateListingContext(content: Schemas["CmsPage"]) {
@@ -36,6 +42,8 @@ const cmsSections = computed<Schemas["CmsSection"][]>(() => {
   return props.content?.sections || [];
 });
 
+useLcpImagePreload(props.content?.sections || []);
+
 const DynamicRender = () => {
   const componentsMap = cmsSections.value.map((section) => {
     return {
@@ -56,6 +64,7 @@ const DynamicRender = () => {
       layoutStyles.backgroundImage = getBackgroundImageUrl(
         layoutStyles.backgroundImage,
         componentObject.section,
+        appConfig.backgroundImage,
       );
     }
 

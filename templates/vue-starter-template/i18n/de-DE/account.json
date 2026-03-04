@@ -1,8 +1,11 @@
 {
   "account": {
     "back": "Zurück",
-    "signUpHeader": "Ich bin neu hier.",
+    "signUpHeader": "Konto erstellen",
+    "signUpSubHeader": "Registrieren Sie sich, um loszulegen",
     "yourAddress": "Ihre Adresse",
+    "loginPageTitle": "Anmelden & Registrieren",
+    "loginPageHeader": "Anmelden oder Konto erstellen",
     "order": {
       "header": "Bestellungen",
       "subHeader": "Sehen Sie sich Ihre aktuellen und vergangenen Bestellungen an",
@@ -156,7 +159,8 @@
       "orderSuccessNoOrder": "Die Bestellung konnte nicht gefunden werden.",
       "orderWrongData": "Die E-Mail-Adresse oder Postleitzahl ist falsch. Bitte versuchen Sie es erneut.",
       "paymentMethodChanged": "Zahlungsmethode wurde erfolgreich geändert.",
-      "productsAdded": "Produkte wurden dem Warenkorb hinzugefügt."
+      "productsAdded": "Produkte wurden dem Warenkorb hinzugefügt.",
+      "loginRequired": "Zum Zugriff auf diese Seite ist eine Anmeldung erforderlich. Sie werden zur Anmeldeseite weitergeleitet."
     }
   }
 }
