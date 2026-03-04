@@ -22,20 +22,14 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@shopware/api-client": "canary",
-    "@shopware/composables": "canary",
-    "@shopware/helpers": "canary",
-    "@shopware/nuxt-module": "canary",
     "nuxt": "4.2.2",
-    "vue": "3.5.27"
+    "vue": "3.5.27",
+    "vue-starter-template": "file:./base-template"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
-    "@shopware/cms-base-layer": "canary",
-    "@unocss/nuxt": "66.6.0",
     "typescript": "5.9.3",
-    "unocss": "66.6.0",
     "vue-tsc": "3.2.2"
   }
 }
