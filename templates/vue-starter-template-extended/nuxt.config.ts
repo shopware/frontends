@@ -15,10 +15,8 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
-  vite: {
-    optimizeDeps: {
-      include: ["@babel/traverse"],
-    },
+  image: {
+    provider: "none",
   },
   app: {
     head: {
