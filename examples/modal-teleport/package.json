@@ -14,12 +14,12 @@
     "@biomejs/biome": "1.8.3",
     "@unocss/nuxt": "66.6.0",
     "@unocss/reset": "66.6.0",
-    "nuxt": "4.2.2",
+    "nuxt": "4.3.1",
     "unocss": "66.6.0"
   },
   "dependencies": {
-    "@vueuse/nuxt": "14.1.0",
-    "vue": "3.5.27",
-    "vue-tsc": "3.2.2"
+    "@vueuse/nuxt": "14.2.1",
+    "vue": "3.5.29",
+    "vue-tsc": "3.2.5"
   }
 }
