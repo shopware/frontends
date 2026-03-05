@@ -3,6 +3,26 @@ export default defineNuxtConfig({
   extends: ["./base-template"],
   compatibilityDate: "2025-12-05",
   modules: ["@unocss/nuxt"],
+  sourcemap: {
+    client: false,
+    server: false,
+  },
+  vite: {
+    resolve: {
+      alias: {
+        "source-map-js/lib/source-map-generator.js": "source-map-js",
+      },
+    },
+    optimizeDeps: {
+      force: true,
+      include: [
+        "@unocss/transformer-attributify-jsx",
+        "@babel/traverse",
+        "source-map-js",
+        "source-map",
+      ],
+    },
+  },
   runtimeConfig: {
     public: {
       shopware: {
