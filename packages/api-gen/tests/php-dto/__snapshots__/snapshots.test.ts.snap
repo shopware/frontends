@@ -1,0 +1,1263 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for CreateCartRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CreateCartRequestDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for CreateCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * The newly created cart
+ */
+class CreateCartResponseDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Current cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for shared/CartCreateDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CartCreateDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for shared/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Full cart entity as returned by the API
+ */
+class CartDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for shared/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * A single item in the cart
+ */
+class LineItemDTO
+{
+    public function __construct(
+        /** Product identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Number of items */
+        #[Assert\\NotNull]
+        public int $quantity,
+        /** Display label */
+        public ?string $label = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected file names 1`] = `
+[
+  "CreateCartRequestDTO.php",
+  "CreateCartResponseDTO.php",
+  "PreserveNull.php",
+  "ReadCartResponseDTO.php",
+  "shared/CartCreateDTO.php",
+  "shared/CartDTO.php",
+  "shared/LineItemDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `7`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for shared/UserProfileDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * User profile with various formatted fields
+ */
+class UserProfileDTO
+{
+    public function __construct(
+        /** Unique identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $id,
+        /** Email address */
+        #[Assert\\NotBlank]
+        #[Assert\\Email]
+        public string $email,
+        /** Creation timestamp */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        #[Assert\\Url]
+        public ?string $website = null,
+        #[Assert\\Date]
+        public ?string $birthday = null,
+        /** Should not produce a format assert */
+        public ?string $avatar = null,
+        public ?int $fileSize = null,
+        public ?float $price = null,
+        /** Plain string without format */
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected file names 1`] = `
+[
+  "PreserveNull.php",
+  "shared/UserProfileDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected number of files 1`] = `2`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class Api-infoRequestDTO
+{
+    public function __construct(
+        /** Type of the api */
+        #[Assert\\NotBlank]
+        public string $type,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+/**
+ * API info
+ */
+class Api-infoResponseDTO
+{
+    public function __construct(
+        public ?string $version = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for shared/Simple-ProductDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+class Simple-ProductDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for shared/errorDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class errorDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $code,
+        #[Assert\\NotBlank]
+        public string $message,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for shared/errorResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\errorDTO;
+
+class errorResponseDTO
+{
+    public function __construct(
+        /**
+         * @var list<errorDTO>
+         */
+        public ?array $errors = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected file names 1`] = `
+[
+  "Api-infoRequestDTO.php",
+  "Api-infoResponseDTO.php",
+  "PreserveNull.php",
+  "shared/Simple-ProductDTO.php",
+  "shared/errorDTO.php",
+  "shared/errorResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `6`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/OrderBillingAddressCountryDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+/**
+ * Country details
+ */
+class OrderBillingAddressCountryDTO
+{
+    public function __construct(
+        /** ISO 3166-1 alpha-2 code */
+        public ?string $iso = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/OrderBillingAddressDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\OrderBillingAddressCountryDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * The billing address
+ */
+class OrderBillingAddressDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $street,
+        #[Assert\\NotBlank]
+        public string $city,
+        #[Assert\\NotBlank]
+        public string $zipcode,
+        /** Country details */
+        public ?OrderBillingAddressCountryDTO $country = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/OrderDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\OrderBillingAddressDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * An order entity
+ */
+class OrderDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** The billing address */
+        #[Assert\\NotNull]
+        public OrderBillingAddressDTO $billingAddress,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextContextDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\SalesChannelContextContextSourceDTO;
+
+/**
+ * Core context with general configuration values and state
+ */
+class SalesChannelContextContextDTO
+{
+    public function __construct(
+        public ?string $versionId = null,
+        public ?string $currencyId = null,
+        public ?int $currencyFactor = null,
+        public ?int $currencyPrecision = null,
+        /**
+         * @var list<string>
+         */
+        public ?array $languageIdChain = null,
+        public ?string $scope = null,
+        public ?SalesChannelContextContextSourceDTO $source = null,
+        public ?string $taxState = null,
+        public ?bool $useCache = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextContextSourceDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextContextSourceDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['sales-channel', 'shop-api'])]
+        public string $type,
+        #[Assert\\NotBlank]
+        public string $salesChannelId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextCurrentCustomerGroupDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+/**
+ * Customer group of the current user
+ */
+class SalesChannelContextCurrentCustomerGroupDTO
+{
+    public function __construct(
+        /** Name of the group */
+        public ?string $name = null,
+        /** Whether prices are displayed gross */
+        public ?bool $displayGross = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\SalesChannelContextContextDTO;
+use Shared\\SalesChannelContextCurrentCustomerGroupDTO;
+use Shared\\SalesChannelContextItemRoundingDTO;
+use Shared\\SalesChannelContextTaxRulesDTO;
+use Shared\\SalesChannelDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Sales channel context
+ */
+class SalesChannelContextDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public SalesChannelDTO $salesChannel,
+        #[Assert\\NotNull]
+        public SalesChannelContextItemRoundingDTO $itemRounding,
+        /** Context token */
+        public ?string $token = null,
+        /** Core context with general configuration values and state */
+        public ?SalesChannelContextContextDTO $context = null,
+        /** Customer group of the current user */
+        public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,
+        /**
+         * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
+         */
+        public ?array $taxRules = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextItemRoundingDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextItemRoundingDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public int $decimals,
+        #[Assert\\NotNull]
+        public float $interval,
+        #[Assert\\NotNull]
+        public bool $roundForNet,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelContextTaxRulesDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextTaxRulesDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public float $taxRate,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/SalesChannelDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected file names 1`] = `
+[
+  "PreserveNull.php",
+  "shared/OrderBillingAddressCountryDTO.php",
+  "shared/OrderBillingAddressDTO.php",
+  "shared/OrderDTO.php",
+  "shared/SalesChannelContextContextDTO.php",
+  "shared/SalesChannelContextContextSourceDTO.php",
+  "shared/SalesChannelContextCurrentCustomerGroupDTO.php",
+  "shared/SalesChannelContextDTO.php",
+  "shared/SalesChannelContextItemRoundingDTO.php",
+  "shared/SalesChannelContextTaxRulesDTO.php",
+  "shared/SalesChannelDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `11`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\CalculatedPriceDTO;
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        /** Context token identifying the cart */
+        #[Assert\\NotBlank]
+        public string $token,
+        /** Name of the cart */
+        public ?string $name = null,
+        public ?CalculatedPriceDTO $price = null,
+        /**
+         * @var list<LineItemDTO> All items within the cart
+         */
+        public ?array $lineItems = null,
+        public ?int $totalItems = null,
+        public ?bool $active = null,
+        public ?float $taxRate = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadProductRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ReadProductRequestDTO
+{
+    public function __construct(
+        /** Product ID */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $productId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadProductResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+/**
+ * Product found
+ */
+class ReadProductResponseDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+        public ?float $price = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for SendContactMailRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Used for submitting contact forms.
+ */
+class SendContactMailRequestDTO
+{
+    public function __construct(
+        /** Email address */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** The subject of the contact form. */
+        #[Assert\\NotBlank]
+        public string $subject,
+        /** The message of the contact form */
+        #[Assert\\NotBlank]
+        public string $comment,
+        /** Identifier of the salutation. */
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public ?string $salutationId = null,
+        public ?string $firstName = null,
+        public ?string $lastName = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/CalculatedPriceDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+class CalculatedPriceDTO
+{
+    public function __construct(
+        public ?float $unitPrice = null,
+        public ?float $totalPrice = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\CalculatedPriceDTO;
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Shopping cart
+ */
+class CartDTO
+{
+    public function __construct(
+        /** Context token identifying the cart */
+        #[Assert\\NotBlank]
+        public string $token,
+        /** Name of the cart */
+        public ?string $name = null,
+        public ?CalculatedPriceDTO $price = null,
+        /**
+         * @var list<LineItemDTO> All items within the cart
+         */
+        public ?array $lineItems = null,
+        public ?int $totalItems = null,
+        public ?bool $active = null,
+        public ?float $taxRate = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/DefaultValuesDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class DefaultValuesDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $query,
+        public int $limit = 10,
+        public string $sortOrder = 'relevance',
+        public bool $active = true,
+        /** Single-value enum, should default to the only value */
+        #[Assert\\Choice(choices: ['storefront'])]
+        public string $source = 'storefront',
+        /** Multi-value enum with explicit default */
+        #[Assert\\Choice(choices: ['web', 'api'])]
+        public string $channel = 'web',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class LineItemDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotNull]
+        public int $quantity,
+        public ?string $label = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/NavigationTypeDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Navigation entry type
+ */
+class NavigationTypeDTO
+{
+    public function __construct(
+        /** Type of the navigation entry */
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['page', 'link', 'folder'])]
+        public string $type,
+        /** Route name for the navigation */
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['frontend.navigation.page', 'frontend.landing.page', 'frontend.detail.page'])]
+        public string $routeName,
+        /** Type of the link if type is link */
+        #[Assert\\Choice(choices: ['external', 'category', 'product', 'landing_page'])]
+        public ?string $linkType = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for shared/NullableUnionDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use PreserveNull;
+
+class NullableUnionDTO
+{
+    public function __construct(
+        #[PreserveNull]
+        public ?string $value = null,
+        /** Nullable count using type array */
+        #[PreserveNull]
+        public ?int $count = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected file names 1`] = `
+[
+  "PreserveNull.php",
+  "ReadCartResponseDTO.php",
+  "ReadProductRequestDTO.php",
+  "ReadProductResponseDTO.php",
+  "SendContactMailRequestDTO.php",
+  "shared/CalculatedPriceDTO.php",
+  "shared/CartDTO.php",
+  "shared/DefaultValuesDTO.php",
+  "shared/LineItemDTO.php",
+  "shared/NavigationTypeDTO.php",
+  "shared/NullableUnionDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `11`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for AddLineItemRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class AddLineItemRequestDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $productId,
+        public int $quantity = 1,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for AddLineItemResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Updated cart
+ */
+class AddLineItemResponseDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Current cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadCategoriesResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\CategoryDTO;
+
+/**
+ * Category list
+ */
+class ReadCategoriesResponseDTO
+{
+    public function __construct(
+        /**
+         * @var list<CategoryDTO>
+         */
+        public ?array $elements = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadProductRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ReadProductRequestDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadProductResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+use Shared\\ProductDTO;
+
+/**
+ * Product detail
+ */
+class ReadProductResponseDTO
+{
+    public function __construct(
+        public ?ProductDTO $product = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for shared/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CartDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for shared/CategoryDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+class CategoryDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for shared/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\ProductDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class LineItemDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotNull]
+        public int $quantity,
+        public ?ProductDTO $product = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for shared/MediaDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+class MediaDTO
+{
+    public function __construct(
+        public ?string $url = null,
+        public ?string $alt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for shared/ProductDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Shared\\MediaDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ProductDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+        public ?MediaDTO $cover = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates expected file names 1`] = `
+[
+  "AddLineItemRequestDTO.php",
+  "AddLineItemResponseDTO.php",
+  "PreserveNull.php",
+  "ReadCartResponseDTO.php",
+  "ReadCategoriesResponseDTO.php",
+  "ReadProductRequestDTO.php",
+  "ReadProductResponseDTO.php",
+  "shared/CartDTO.php",
+  "shared/CategoryDTO.php",
+  "shared/LineItemDTO.php",
+  "shared/MediaDTO.php",
+  "shared/ProductDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates expected number of files 1`] = `12`;
