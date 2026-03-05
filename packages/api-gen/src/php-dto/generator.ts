@@ -25,6 +25,15 @@ function hasDefault(prop: DtoProperty): boolean {
   return prop.defaultValue !== undefined || prop.nullable || !prop.required;
 }
 
+const FORMAT_ASSERT_MAP: Record<string, string> = {
+  email: "#[Assert\\Email]",
+  uuid: "#[Assert\\Uuid]",
+  uri: "#[Assert\\Url]",
+  "date-time":
+    "#[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]",
+  date: "#[Assert\\Date]",
+};
+
 const PHP_PRIMITIVE_TYPES = new Set([
   "string",
   "int",
@@ -106,6 +115,10 @@ function renderConstructorParam(prop: DtoProperty): string {
     }
   }
 
+  if (prop.format && FORMAT_ASSERT_MAP[prop.format]) {
+    lines.push(`        ${FORMAT_ASSERT_MAP[prop.format]}`);
+  }
+
   if (prop.pattern) {
     lines.push(
       `        #[Assert\\Regex(pattern: '/${escapePhpSingleQuoted(prop.pattern)}/')]`,
@@ -147,7 +160,10 @@ export function generatePhpClass(
   const lines: string[] = [];
   const needsAssert = dto.properties.some(
     (p) =>
-      p.pattern || (p.enum && p.enum.length > 0) || (p.required && !p.nullable),
+      p.pattern ||
+      (p.format && FORMAT_ASSERT_MAP[p.format]) ||
+      (p.enum && p.enum.length > 0) ||
+      (p.required && !p.nullable),
   );
 
   lines.push("<?php declare(strict_types=1);");

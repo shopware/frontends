@@ -620,6 +620,165 @@ describe("generator", () => {
       expect(result).not.toContain("#[PreserveNull]");
     });
 
+    it("adds Assert\\Email for format: email", () => {
+      const dto: DtoDefinition = {
+        name: "UserDTO",
+        properties: [
+          {
+            name: "email",
+            phpType: "string",
+            nullable: false,
+            required: true,
+            format: "email",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain(
+        "use Symfony\\Component\\Validator\\Constraints as Assert;",
+      );
+      expect(result).toContain("#[Assert\\Email]");
+      expect(result).toContain("#[Assert\\NotBlank]");
+      expect(result).toContain("public string $email,");
+    });
+
+    it("adds Assert\\Uuid for format: uuid", () => {
+      const dto: DtoDefinition = {
+        name: "EntityDTO",
+        properties: [
+          {
+            name: "id",
+            phpType: "string",
+            nullable: false,
+            required: true,
+            format: "uuid",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain("#[Assert\\Uuid]");
+    });
+
+    it("adds Assert\\Url for format: uri", () => {
+      const dto: DtoDefinition = {
+        name: "LinkDTO",
+        properties: [
+          {
+            name: "website",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            format: "uri",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain("#[Assert\\Url]");
+    });
+
+    it("adds Assert\\DateTime for format: date-time", () => {
+      const dto: DtoDefinition = {
+        name: "EventDTO",
+        properties: [
+          {
+            name: "createdAt",
+            phpType: "string",
+            nullable: false,
+            required: true,
+            format: "date-time",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain(
+        "#[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]",
+      );
+    });
+
+    it("adds Assert\\Date for format: date", () => {
+      const dto: DtoDefinition = {
+        name: "ProfileDTO",
+        properties: [
+          {
+            name: "birthday",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            format: "date",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain("#[Assert\\Date]");
+    });
+
+    it("does not add format assert for unknown formats like int64 or uri-reference", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "fileSize",
+            phpType: "int",
+            nullable: false,
+            required: false,
+            format: "int64",
+            isArray: false,
+          },
+          {
+            name: "avatar",
+            phpType: "string",
+            nullable: false,
+            required: false,
+            format: "uri-reference",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).not.toContain("use Symfony");
+      expect(result).not.toContain("Assert");
+    });
+
+    it("combines format assert with pattern and required asserts", () => {
+      const dto: DtoDefinition = {
+        name: "TestDTO",
+        properties: [
+          {
+            name: "email",
+            phpType: "string",
+            nullable: false,
+            required: true,
+            format: "email",
+            pattern: "^.+@.+$",
+            isArray: false,
+          },
+        ],
+      };
+
+      const result = generatePhpClass(dto);
+
+      expect(result).toContain("#[Assert\\NotBlank]");
+      expect(result).toContain("#[Assert\\Email]");
+      expect(result).toContain("#[Assert\\Regex(pattern: '/^.+@.+$/')]");
+    });
+
     it("handles multiline description", () => {
       const dto: DtoDefinition = {
         name: "TestDTO",

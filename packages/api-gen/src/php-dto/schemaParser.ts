@@ -20,6 +20,7 @@ export interface DtoProperty {
   required: boolean;
   description?: string;
   pattern?: string;
+  format?: string;
   enum?: string[];
   defaultValue?: string | number | boolean;
   isArray: boolean;
@@ -197,6 +198,7 @@ function extractPropertiesFromSchema(
         required: isRequired,
         description: propSchema.description,
         pattern: propSchema.pattern,
+        format: propSchema.format,
         enum: enumValues,
         defaultValue: resolveDefaultValue(propSchema),
         isArray: false,
@@ -237,6 +239,7 @@ function extractPropertiesFromSchema(
         required: isRequired,
         description: propSchema.description,
         pattern: propSchema.pattern,
+        format: propSchema.format,
         enum: enumValues,
         defaultValue: resolveDefaultValue(propSchema),
         isArray: true,
@@ -254,6 +257,7 @@ function extractPropertiesFromSchema(
       required: isRequired,
       description: propSchema.description,
       pattern: propSchema.pattern,
+      format: propSchema.format,
       enum: enumValues,
       defaultValue: resolveDefaultValue(propSchema),
       isArray: typeResult.isArray,
@@ -384,6 +388,7 @@ export function parseRequestBodies(
               required: param.required === true,
               description: param.description,
               pattern: param.schema.pattern,
+              format: param.schema.format,
               defaultValue: resolveDefaultValue(param.schema),
               isArray: typeResult.isArray,
               arrayItemType: typeResult.arrayItemType,

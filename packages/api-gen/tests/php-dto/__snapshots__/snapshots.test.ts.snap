@@ -46,12 +46,14 @@ class CreateCartResponseDTO
         public string $id,
         /** Date and time the cart was created */
         #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public string $createdAt,
         /**
          * @var list<LineItemDTO> Initial line items to add to the cart
          */
         public ?array $lineItems = null,
         /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public ?string $updatedAt = null,
     ) {
     }
@@ -90,12 +92,14 @@ class ReadCartResponseDTO
         public string $id,
         /** Date and time the cart was created */
         #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public string $createdAt,
         /**
          * @var list<LineItemDTO> Initial line items to add to the cart
          */
         public ?array $lineItems = null,
         /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public ?string $updatedAt = null,
     ) {
     }
@@ -153,12 +157,14 @@ class CartDTO
         public string $id,
         /** Date and time the cart was created */
         #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public string $createdAt,
         /**
          * @var list<LineItemDTO> Initial line items to add to the cart
          */
         public ?array $lineItems = null,
         /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
         public ?string $updatedAt = null,
     ) {
     }
@@ -219,6 +225,78 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates expected fil
 `;
 
 exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `7`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for shared/UserProfileDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Shared;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * User profile with various formatted fields
+ */
+class UserProfileDTO
+{
+    public function __construct(
+        /** Unique identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $id,
+        /** Email address */
+        #[Assert\\NotBlank]
+        #[Assert\\Email]
+        public string $email,
+        /** Creation timestamp */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        #[Assert\\Url]
+        public ?string $website = null,
+        #[Assert\\Date]
+        public ?string $birthday = null,
+        /** Should not produce a format assert */
+        public ?string $avatar = null,
+        public ?int $fileSize = null,
+        public ?float $price = null,
+        /** Plain string without format */
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+namespace App\\DTO;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected file names 1`] = `
+[
+  "PreserveNull.php",
+  "shared/UserProfileDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected number of files 1`] = `2`;
 
 exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
 "<?php declare(strict_types=1);
