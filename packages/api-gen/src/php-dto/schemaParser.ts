@@ -1,6 +1,7 @@
 import type {
   OpenApiSchema,
   OperationObject,
+  ResponseObject,
   SchemaObject,
 } from "./openApiTypes";
 import {
@@ -25,10 +26,13 @@ export interface DtoProperty {
   arrayItemType?: string;
 }
 
+export type DtoSource = "operation" | "component";
+
 export interface DtoDefinition {
   name: string;
   description?: string;
   properties: DtoProperty[];
+  source?: DtoSource;
 }
 
 type SchemaRegistry = Record<string, SchemaObject>;
@@ -60,6 +64,18 @@ function dereferenceSchema(
   return schema;
 }
 
+function dereferenceResponse(
+  response: ResponseObject,
+  responseRegistry: Record<string, ResponseObject>,
+): ResponseObject {
+  if (response.$ref) {
+    const refName = resolveRefName(response.$ref);
+    const resolved = responseRegistry[refName];
+    if (resolved) return resolved;
+  }
+  return response;
+}
+
 function resolveDefaultValue(
   schema: SchemaObject,
 ): string | number | boolean | undefined {
@@ -82,6 +98,38 @@ function resolveDefaultValue(
     }
   }
   return undefined;
+}
+
+function collectReferencedSchemas(
+  schema: SchemaObject,
+  registry: SchemaRegistry,
+  visited: Set<string>,
+): void {
+  if (schema.$ref) {
+    const name = resolveRefName(schema.$ref);
+    if (visited.has(name)) return;
+    visited.add(name);
+    const resolved = registry[name];
+    if (resolved) collectReferencedSchemas(resolved, registry, visited);
+  }
+  if (schema.properties) {
+    for (const prop of Object.values(schema.properties)) {
+      collectReferencedSchemas(prop, registry, visited);
+    }
+  }
+  if (schema.items) collectReferencedSchemas(schema.items, registry, visited);
+  if (schema.allOf) {
+    for (const s of schema.allOf)
+      collectReferencedSchemas(s, registry, visited);
+  }
+  if (schema.oneOf) {
+    for (const s of schema.oneOf)
+      collectReferencedSchemas(s, registry, visited);
+  }
+  if (schema.anyOf) {
+    for (const s of schema.anyOf)
+      collectReferencedSchemas(s, registry, visited);
+  }
 }
 
 function isInlineObject(schema: SchemaObject): boolean {
@@ -138,6 +186,7 @@ function extractPropertiesFromSchema(
         name: nestedName,
         description: propSchema.description,
         properties: nested.properties,
+        source: "component",
       });
       nestedDtos.push(...nested.nestedDtos);
 
@@ -177,6 +226,7 @@ function extractPropertiesFromSchema(
         name: nestedName,
         description: propSchema.items.description,
         properties: nested.properties,
+        source: "component",
       });
       nestedDtos.push(...nested.nestedDtos);
 
@@ -245,6 +295,7 @@ function extractDtoFromSchema(
   schema: SchemaObject,
   registry: SchemaRegistry,
   description?: string,
+  source: DtoSource = "component",
 ): DtoDefinition[] {
   const resolved = resolveSchemaProperties(schema, registry);
 
@@ -264,12 +315,16 @@ function extractDtoFromSchema(
       name,
       description: description || schema.description,
       properties,
+      source,
     },
     ...nestedDtos,
   ];
 }
 
-export function parseComponentSchemas(schema: OpenApiSchema): DtoDefinition[] {
+export function parseComponentSchemas(
+  schema: OpenApiSchema,
+  schemaFilter?: Set<string>,
+): DtoDefinition[] {
   const dtos: DtoDefinition[] = [];
   const components = schema.components?.schemas;
   const registry: SchemaRegistry = components || {};
@@ -277,6 +332,8 @@ export function parseComponentSchemas(schema: OpenApiSchema): DtoDefinition[] {
   if (!components) return dtos;
 
   for (const [schemaName, schemaObj] of Object.entries(components)) {
+    if (schemaFilter && !schemaFilter.has(schemaName)) continue;
+
     const extracted = extractDtoFromSchema(
       toDtoClassName(schemaName),
       schemaObj,
@@ -288,7 +345,10 @@ export function parseComponentSchemas(schema: OpenApiSchema): DtoDefinition[] {
   return dtos;
 }
 
-export function parseRequestBodies(schema: OpenApiSchema): DtoDefinition[] {
+export function parseRequestBodies(
+  schema: OpenApiSchema,
+  operationFilter?: Set<string>,
+): DtoDefinition[] {
   const dtos: DtoDefinition[] = [];
   const paths = schema.paths;
   const registry: SchemaRegistry = schema.components?.schemas || {};
@@ -299,6 +359,8 @@ export function parseRequestBodies(schema: OpenApiSchema): DtoDefinition[] {
     for (const method of HTTP_METHODS) {
       const operation = pathMethods[method] as OperationObject | undefined;
       if (!operation?.operationId) continue;
+      if (operationFilter && !operationFilter.has(operation.operationId))
+        continue;
 
       const dtoName = `${capitalizeFirst(operation.operationId)}RequestDTO`;
 
@@ -356,6 +418,7 @@ export function parseRequestBodies(schema: OpenApiSchema): DtoDefinition[] {
         name: dtoName,
         description: bodyDescription || operation.description,
         properties: allProperties,
+        source: "operation",
       });
       dtos.push(...bodyNestedDtos);
     }
@@ -364,10 +427,14 @@ export function parseRequestBodies(schema: OpenApiSchema): DtoDefinition[] {
   return dtos;
 }
 
-export function parseResponseBodies(schema: OpenApiSchema): DtoDefinition[] {
+export function parseResponseBodies(
+  schema: OpenApiSchema,
+  operationFilter?: Set<string>,
+): DtoDefinition[] {
   const dtos: DtoDefinition[] = [];
   const paths = schema.paths;
   const registry: SchemaRegistry = schema.components?.schemas || {};
+  const responseRegistry = schema.components?.responses || {};
 
   if (!paths) return dtos;
 
@@ -375,24 +442,33 @@ export function parseResponseBodies(schema: OpenApiSchema): DtoDefinition[] {
     for (const method of HTTP_METHODS) {
       const operation = pathMethods[method] as OperationObject | undefined;
       if (!operation?.operationId) continue;
+      if (operationFilter && !operationFilter.has(operation.operationId))
+        continue;
 
       const responses = operation.responses;
       if (!responses) continue;
 
-      const successResponse = responses["200"] || responses["201"];
-      if (!successResponse?.content) continue;
+      const rawSuccessResponse = responses["200"] || responses["201"];
+      if (!rawSuccessResponse) continue;
 
-      const responseSchema =
+      const successResponse = dereferenceResponse(
+        rawSuccessResponse,
+        responseRegistry,
+      );
+      if (!successResponse.content) continue;
+
+      const rawResponseSchema =
         successResponse.content["application/json"]?.schema;
-      if (!responseSchema) continue;
+      if (!rawResponseSchema) continue;
 
-      if (responseSchema.$ref) continue;
+      const responseSchema = dereferenceSchema(rawResponseSchema, registry);
 
       const extracted = extractDtoFromSchema(
         `${capitalizeFirst(operation.operationId)}ResponseDTO`,
         responseSchema,
         registry,
         successResponse.description,
+        "operation",
       );
 
       dtos.push(...extracted);
@@ -402,7 +478,69 @@ export function parseResponseBodies(schema: OpenApiSchema): DtoDefinition[] {
   return dtos;
 }
 
-export function parseAllDtos(schema: OpenApiSchema): DtoDefinition[] {
+export interface ParseOptions {
+  tag?: string;
+}
+
+function collectTagDependencies(
+  schema: OpenApiSchema,
+  tag: string,
+): { operationIds: Set<string>; schemaNames: Set<string> } {
+  const operationIds = new Set<string>();
+  const schemaNames = new Set<string>();
+  const registry: SchemaRegistry = schema.components?.schemas || {};
+  const responseRegistry = schema.components?.responses || {};
+
+  for (const pathMethods of Object.values(schema.paths || {})) {
+    for (const method of HTTP_METHODS) {
+      const op = pathMethods[method] as OperationObject | undefined;
+      if (!op?.operationId || !op.tags?.includes(tag)) continue;
+
+      operationIds.add(op.operationId);
+
+      const reqSchema = op.requestBody?.content?.["application/json"]?.schema;
+      if (reqSchema) collectReferencedSchemas(reqSchema, registry, schemaNames);
+
+      if (op.parameters) {
+        for (const param of op.parameters) {
+          if (param.schema) {
+            collectReferencedSchemas(param.schema, registry, schemaNames);
+          }
+        }
+      }
+
+      const responses = op.responses;
+      if (responses) {
+        const rawSuccess = responses["200"] || responses["201"];
+        if (rawSuccess) {
+          const success = dereferenceResponse(rawSuccess, responseRegistry);
+          const resSchema = success.content?.["application/json"]?.schema;
+          if (resSchema) {
+            collectReferencedSchemas(resSchema, registry, schemaNames);
+          }
+        }
+      }
+    }
+  }
+
+  return { operationIds, schemaNames };
+}
+
+export function parseAllDtos(
+  schema: OpenApiSchema,
+  options?: ParseOptions,
+): DtoDefinition[] {
+  if (options?.tag) {
+    const { operationIds, schemaNames } = collectTagDependencies(
+      schema,
+      options.tag,
+    );
+    const components = parseComponentSchemas(schema, schemaNames);
+    const requestBodies = parseRequestBodies(schema, operationIds);
+    const responseBodies = parseResponseBodies(schema, operationIds);
+    return [...components, ...requestBodies, ...responseBodies];
+  }
+
   const components = parseComponentSchemas(schema);
   const requestBodies = parseRequestBodies(schema);
   const responseBodies = parseResponseBodies(schema);

@@ -4,9 +4,10 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import pc from "picocolors";
 import { generateAllFiles } from "../php-dto/generator";
 import type { GeneratorOptions } from "../php-dto/generator";
@@ -21,6 +22,7 @@ export interface PhpDtoOptions {
   outputDir: string;
   namespace?: string;
   rawNames?: boolean;
+  tag?: string;
   cwd?: string;
 }
 
@@ -63,7 +65,7 @@ function validateDtoNames(dtos: DtoDefinition[]): void {
 }
 
 export async function phpDto(options: PhpDtoOptions): Promise<void> {
-  const { action, schemaFile, outputDir, namespace, rawNames } = options;
+  const { action, schemaFile, outputDir, namespace, rawNames, tag } = options;
   const cwd = options.cwd || process.cwd();
   const outputPath = resolve(cwd, outputDir);
 
@@ -72,7 +74,7 @@ export async function phpDto(options: PhpDtoOptions): Promise<void> {
   if (!schema) {
     throw new Error(`Schema file not found: ${schemaPath}`);
   }
-  const rawDtos = parseAllDtos(schema);
+  const rawDtos = parseAllDtos(schema, { tag });
 
   if (rawDtos.length === 0) {
     console.log(pc.yellow("No DTO definitions found in the schema."));
@@ -108,12 +110,27 @@ async function runGenerate(
 
   for (const file of files) {
     const filePath = resolve(outputPath, file.fileName);
+    mkdirSync(dirname(filePath), { recursive: true });
     writeFileSync(filePath, file.content, "utf-8");
   }
 
   console.log(
     pc.green(`Generated ${files.length} PHP DTO files in ${outputPath}`),
   );
+}
+
+function collectPhpFiles(dir: string, base: string): string[] {
+  const results: string[] = [];
+  if (!existsSync(dir)) return results;
+  for (const entry of readdirSync(dir)) {
+    const fullPath = resolve(dir, entry);
+    if (statSync(fullPath).isDirectory()) {
+      results.push(...collectPhpFiles(fullPath, base));
+    } else if (entry.endsWith(".php")) {
+      results.push(relative(base, fullPath));
+    }
+  }
+  return results;
 }
 
 async function runCheck(
@@ -127,9 +144,7 @@ async function runCheck(
     process.exit(1);
   }
 
-  const existingFiles = new Set(
-    readdirSync(outputPath).filter((f) => f.endsWith(".php")),
-  );
+  const existingFiles = new Set(collectPhpFiles(outputPath, outputPath));
   const expectedFiles = new Set(files.map((f) => f.fileName));
 
   for (const fileName of expectedFiles) {

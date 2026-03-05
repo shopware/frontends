@@ -3,11 +3,27 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { phpDto } from "../../src/commands/phpDto";
+
+function collectPhpFiles(dir: string, base?: string): string[] {
+  const root = base ?? dir;
+  const results: string[] = [];
+  if (!existsSync(dir)) return results;
+  for (const entry of readdirSync(dir)) {
+    const fullPath = resolve(dir, entry);
+    if (statSync(fullPath).isDirectory()) {
+      results.push(...collectPhpFiles(fullPath, root));
+    } else if (entry.endsWith(".php")) {
+      results.push(relative(root, fullPath));
+    }
+  }
+  return results;
+}
 
 const TEST_OUTPUT_DIR = resolve(__dirname, "test-output-phpDto");
 const FIXTURE_SCHEMA = resolve(__dirname, "fixtures/simpleSchema.json");
@@ -23,7 +39,7 @@ describe("phpDto command", () => {
     rmSync(TEST_OUTPUT_DIR, { recursive: true, force: true });
   });
 
-  it("generate: creates PHP files in output directory", async () => {
+  it("generate: creates PHP files in output directory with shared/ for components", async () => {
     const outputDir = resolve(TEST_OUTPUT_DIR, "generate");
 
     await phpDto({
@@ -34,13 +50,13 @@ describe("phpDto command", () => {
 
     expect(existsSync(outputDir)).toBe(true);
 
-    const files = readdirSync(outputDir).filter((f) => f.endsWith(".php"));
+    const files = collectPhpFiles(outputDir);
     expect(files.length).toBeGreaterThan(0);
-    expect(files).toContain("CartDTO.php");
+    expect(files).toContain("shared/CartDTO.php");
     expect(files).toContain("SendContactMailRequestDTO.php");
 
     const cartContent = readFileSync(
-      resolve(outputDir, "CartDTO.php"),
+      resolve(outputDir, "shared/CartDTO.php"),
       "utf-8",
     );
     expect(cartContent).toContain("class CartDTO");
@@ -58,10 +74,10 @@ describe("phpDto command", () => {
     });
 
     const cartContent = readFileSync(
-      resolve(outputDir, "CartDTO.php"),
+      resolve(outputDir, "shared/CartDTO.php"),
       "utf-8",
     );
-    expect(cartContent).toContain("namespace App\\DTO;");
+    expect(cartContent).toContain("namespace App\\DTO\\Shared;");
   });
 
   it("generate: cleans output directory on re-run", async () => {
@@ -116,7 +132,7 @@ describe("phpDto command", () => {
       outputDir,
     });
 
-    rmSync(resolve(outputDir, "CartDTO.php"));
+    rmSync(resolve(outputDir, "shared/CartDTO.php"));
 
     const spy = vi.spyOn(process, "exit").mockImplementation(() => {
       throw new Error("process.exit called");
@@ -143,7 +159,10 @@ describe("phpDto command", () => {
       outputDir,
     });
 
-    writeFileSync(resolve(outputDir, "CartDTO.php"), "<?php // modified");
+    writeFileSync(
+      resolve(outputDir, "shared/CartDTO.php"),
+      "<?php // modified",
+    );
 
     const spy = vi.spyOn(process, "exit").mockImplementation(() => {
       throw new Error("process.exit called");
@@ -210,14 +229,14 @@ describe("phpDto command", () => {
         outputDir,
       });
 
-      const files = readdirSync(outputDir).filter((f) => f.endsWith(".php"));
-      expect(files).toContain("SimpleProductDTO.php");
+      const files = collectPhpFiles(outputDir);
+      expect(files).toContain("shared/SimpleProductDTO.php");
       expect(files).toContain("ApiInfoRequestDTO.php");
-      expect(files).not.toContain("Simple-ProductDTO.php");
+      expect(files).not.toContain("shared/Simple-ProductDTO.php");
       expect(files).not.toContain("Api-infoRequestDTO.php");
 
       const content = readFileSync(
-        resolve(outputDir, "SimpleProductDTO.php"),
+        resolve(outputDir, "shared/SimpleProductDTO.php"),
         "utf-8",
       );
       expect(content).toContain("class SimpleProductDTO");
@@ -232,11 +251,14 @@ describe("phpDto command", () => {
         outputDir,
       });
 
-      const files = readdirSync(outputDir).filter((f) => f.endsWith(".php"));
-      expect(files).toContain("ErrorDTO.php");
-      expect(files).not.toContain("errorDTO.php");
+      const files = collectPhpFiles(outputDir);
+      expect(files).toContain("shared/ErrorDTO.php");
+      expect(files).not.toContain("shared/errorDTO.php");
 
-      const content = readFileSync(resolve(outputDir, "ErrorDTO.php"), "utf-8");
+      const content = readFileSync(
+        resolve(outputDir, "shared/ErrorDTO.php"),
+        "utf-8",
+      );
       expect(content).toContain("class ErrorDTO");
       expect(content).not.toContain("class errorDTO");
     });
@@ -251,7 +273,7 @@ describe("phpDto command", () => {
       });
 
       const content = readFileSync(
-        resolve(outputDir, "ErrorResponseDTO.php"),
+        resolve(outputDir, "shared/ErrorResponseDTO.php"),
         "utf-8",
       );
       expect(content).toContain("class ErrorResponseDTO");
@@ -302,6 +324,61 @@ describe("phpDto command", () => {
       });
 
       expect(existsSync(outputDir)).toBe(true);
+    });
+  });
+
+  describe("tag filtering", () => {
+    const TAG_SCHEMA = resolve(__dirname, "fixtures/tagSchema.json");
+
+    it("generates only DTOs for the specified tag and its dependencies", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "tag-cart");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: TAG_SCHEMA,
+        outputDir,
+        tag: "Cart",
+      });
+
+      const files = collectPhpFiles(outputDir);
+
+      expect(files).toContain("PreserveNull.php");
+      expect(files).toContain("shared/CartDTO.php");
+      expect(files).toContain("shared/LineItemDTO.php");
+      expect(files).toContain("shared/ProductDTO.php");
+      expect(files).toContain("shared/MediaDTO.php");
+      expect(files).toContain("AddLineItemRequestDTO.php");
+
+      expect(files).not.toContain("shared/CategoryDTO.php");
+      expect(files).not.toContain("ReadCategoriesResponseDTO.php");
+    });
+
+    it("without tag generates all DTOs", async () => {
+      const outputDir = resolve(TEST_OUTPUT_DIR, "tag-none");
+
+      await phpDto({
+        action: "generate",
+        schemaFile: TAG_SCHEMA,
+        outputDir,
+      });
+
+      const files = collectPhpFiles(outputDir);
+
+      expect(files).toContain("shared/CartDTO.php");
+      expect(files).toContain("shared/CategoryDTO.php");
+      expect(files).toContain("shared/ProductDTO.php");
+      expect(files).toContain("ReadCategoriesResponseDTO.php");
+    });
+
+    it("with non-matching tag produces no DTOs", async () => {
+      await expect(
+        phpDto({
+          action: "generate",
+          schemaFile: TAG_SCHEMA,
+          outputDir: resolve(TEST_OUTPUT_DIR, "tag-empty"),
+          tag: "NonExistent",
+        }),
+      ).resolves.toBeUndefined();
     });
   });
 });

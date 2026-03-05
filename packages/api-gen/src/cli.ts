@@ -180,6 +180,12 @@ yargs(hideBin(process.argv))
           default: false,
           describe:
             "skip auto-converting class names to PascalCase; fail on invalid names instead",
+        })
+        .option("tag", {
+          alias: "t",
+          type: "string",
+          describe:
+            "only generate DTOs for endpoints with this tag (and their referenced schemas)",
         });
     },
     async (args) => phpDto(args as unknown as PhpDtoOptions),

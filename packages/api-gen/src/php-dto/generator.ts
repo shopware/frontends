@@ -1,7 +1,10 @@
-import type { DtoDefinition, DtoProperty } from "./schemaParser";
+import type { DtoDefinition, DtoProperty, DtoSource } from "./schemaParser";
 
 export interface GeneratorOptions {
   namespace?: string;
+  /** Original base namespace before shared/ resolution, used for computing use statements */
+  baseNamespace?: string;
+  dtoSourceMap?: Map<string, DtoSource>;
 }
 
 function escapePhpDocComment(text: string): string {
@@ -20,6 +23,65 @@ function formatPhpDefault(value: string | number | boolean): string {
 
 function hasDefault(prop: DtoProperty): boolean {
   return prop.defaultValue !== undefined || prop.nullable || !prop.required;
+}
+
+const PHP_PRIMITIVE_TYPES = new Set([
+  "string",
+  "int",
+  "float",
+  "bool",
+  "array",
+  "mixed",
+]);
+
+function resolveNamespace(
+  baseNamespace: string | undefined,
+  source: DtoSource,
+): string | undefined {
+  if (source === "component") {
+    return baseNamespace ? `${baseNamespace}\\Shared` : "Shared";
+  }
+  return baseNamespace;
+}
+
+function collectReferencedDtoNames(properties: DtoProperty[]): Set<string> {
+  const refs = new Set<string>();
+  for (const prop of properties) {
+    if (!PHP_PRIMITIVE_TYPES.has(prop.phpType)) {
+      refs.add(prop.phpType);
+    }
+    if (prop.arrayItemType && !PHP_PRIMITIVE_TYPES.has(prop.arrayItemType)) {
+      refs.add(prop.arrayItemType);
+    }
+  }
+  return refs;
+}
+
+function buildUseStatements(
+  baseNamespace: string | undefined,
+  referencedNames: Set<string>,
+  dtoSourceMap: Map<string, DtoSource>,
+  usesPreserveNull: boolean,
+): string[] {
+  const imports: string[] = [];
+
+  if (usesPreserveNull) {
+    const preserveNullNs = baseNamespace;
+    const fqcn = preserveNullNs
+      ? `${preserveNullNs}\\PreserveNull`
+      : "PreserveNull";
+    imports.push(fqcn);
+  }
+
+  for (const name of referencedNames) {
+    const refSource = dtoSourceMap.get(name) ?? "component";
+    const refNs = resolveNamespace(baseNamespace, refSource);
+    const fqcn = refNs ? `${refNs}\\${name}` : name;
+    imports.push(fqcn);
+  }
+
+  imports.sort();
+  return imports;
 }
 
 function renderConstructorParam(prop: DtoProperty): string {
@@ -96,8 +158,31 @@ export function generatePhpClass(
     lines.push("");
   }
 
+  const useLines: string[] = [];
+
   if (needsAssert) {
-    lines.push("use Symfony\\Component\\Validator\\Constraints as Assert;");
+    useLines.push("use Symfony\\Component\\Validator\\Constraints as Assert;");
+  }
+
+  if (options.dtoSourceMap) {
+    const usesPreserveNull = dto.properties.some((p) => p.nullable);
+    const referencedNames = collectReferencedDtoNames(dto.properties);
+    const imports = buildUseStatements(
+      options.baseNamespace,
+      referencedNames,
+      options.dtoSourceMap,
+      usesPreserveNull,
+    );
+    for (const fqcn of imports) {
+      useLines.push(`use ${fqcn};`);
+    }
+  }
+
+  if (useLines.length > 0) {
+    useLines.sort();
+    for (const line of useLines) {
+      lines.push(line);
+    }
     lines.push("");
   }
 
@@ -163,10 +248,26 @@ export function generateAllFiles(
   dtos: DtoDefinition[],
   options: GeneratorOptions = {},
 ): GeneratedFile[] {
-  const dtoFiles = dtos.map((dto) => ({
-    fileName: dtoToFileName(dto.name),
-    content: generatePhpClass(dto, options),
-  }));
+  const dtoSourceMap = new Map<string, DtoSource>();
+  for (const dto of dtos) {
+    dtoSourceMap.set(dto.name, dto.source ?? "component");
+  }
+
+  const dtoFiles = dtos.map((dto) => {
+    const source = dto.source ?? "component";
+    const dir = source === "component" ? "shared/" : "";
+    const effectiveNs = resolveNamespace(options.namespace, source);
+    const fileOptions: GeneratorOptions = {
+      ...options,
+      namespace: effectiveNs,
+      baseNamespace: options.namespace,
+      dtoSourceMap,
+    };
+    return {
+      fileName: `${dir}${dtoToFileName(dto.name)}`,
+      content: generatePhpClass(dto, fileOptions),
+    };
+  });
 
   return [
     {

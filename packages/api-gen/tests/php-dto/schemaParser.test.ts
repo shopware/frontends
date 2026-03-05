@@ -16,6 +16,10 @@ const nestedSchema = JSON.parse(
   readFileSync(resolve(__dirname, "fixtures/nestedObjects.json"), "utf-8"),
 );
 
+const tagSchema = JSON.parse(
+  readFileSync(resolve(__dirname, "fixtures/tagSchema.json"), "utf-8"),
+);
+
 describe("schemaParser", () => {
   describe("parseComponentSchemas", () => {
     it("extracts DTO definitions from components/schemas", () => {
@@ -26,6 +30,13 @@ describe("schemaParser", () => {
       expect(names).toContain("CalculatedPriceDTO");
       expect(names).toContain("LineItemDTO");
       expect(names).toContain("NullableUnionDTO");
+    });
+
+    it("sets source to component for component schemas", () => {
+      const dtos = parseComponentSchemas(fixtureSchema);
+      for (const dto of dtos) {
+        expect(dto.source).toBe("component");
+      }
     });
 
     it("skips schemas without object properties", () => {
@@ -333,6 +344,13 @@ describe("schemaParser", () => {
       expect(names).toContain("SendContactMailRequestDTO");
     });
 
+    it("sets source to operation for request DTOs", () => {
+      const dtos = parseRequestBodies(fixtureSchema);
+      for (const dto of dtos) {
+        expect(dto.source).toBe("operation");
+      }
+    });
+
     it("parses sendContactMail request body correctly", () => {
       const dtos = parseRequestBodies(fixtureSchema);
       const dto = dtos.find((d) => d.name === "SendContactMailRequestDTO");
@@ -394,11 +412,18 @@ describe("schemaParser", () => {
       expect(names).toContain("ReadProductResponseDTO");
     });
 
-    it("skips responses that are $ref only", () => {
+    it("sets source to operation for response DTOs", () => {
+      const dtos = parseResponseBodies(fixtureSchema);
+      for (const dto of dtos) {
+        expect(dto.source).toBe("operation");
+      }
+    });
+
+    it("resolves $ref responses to component schemas", () => {
       const dtos = parseResponseBodies(fixtureSchema);
       const names = dtos.map((d) => d.name);
 
-      expect(names).not.toContain("ReadCartResponseDTO");
+      expect(names).toContain("ReadCartResponseDTO");
     });
 
     it("handles missing paths", () => {
@@ -415,6 +440,51 @@ describe("schemaParser", () => {
       expect(names).toContain("CartDTO");
       expect(names).toContain("SendContactMailRequestDTO");
       expect(names).toContain("ReadProductResponseDTO");
+    });
+
+    it("without tag returns all DTOs", () => {
+      const all = parseAllDtos(tagSchema);
+      const names = all.map((d) => d.name);
+
+      expect(names).toContain("ProductDTO");
+      expect(names).toContain("CartDTO");
+      expect(names).toContain("CategoryDTO");
+      expect(names).toContain("AddLineItemRequestDTO");
+      expect(names).toContain("ReadCategoriesResponseDTO");
+    });
+
+    it("with tag filters to matching operations and referenced schemas", () => {
+      const dtos = parseAllDtos(tagSchema, { tag: "Cart" });
+      const names = dtos.map((d) => d.name);
+
+      expect(names).toContain("AddLineItemRequestDTO");
+      expect(names).toContain("CartDTO");
+      expect(names).toContain("LineItemDTO");
+      expect(names).toContain("ProductDTO");
+      expect(names).toContain("MediaDTO");
+
+      expect(names).not.toContain("CategoryDTO");
+      expect(names).not.toContain("ReadCategoriesResponseDTO");
+      expect(names).not.toContain("ReadProductRequestDTO");
+    });
+
+    it("with tag includes transitively referenced schemas", () => {
+      const dtos = parseAllDtos(tagSchema, { tag: "Product" });
+      const names = dtos.map((d) => d.name);
+
+      expect(names).toContain("ProductDTO");
+      expect(names).toContain("MediaDTO");
+      expect(names).toContain("ReadProductRequestDTO");
+      expect(names).toContain("ReadProductResponseDTO");
+
+      expect(names).not.toContain("CartDTO");
+      expect(names).not.toContain("LineItemDTO");
+      expect(names).not.toContain("CategoryDTO");
+    });
+
+    it("with non-matching tag returns empty", () => {
+      const dtos = parseAllDtos(tagSchema, { tag: "NonExistent" });
+      expect(dtos).toHaveLength(0);
     });
   });
 });

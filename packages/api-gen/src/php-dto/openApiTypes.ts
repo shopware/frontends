@@ -23,7 +23,19 @@ export interface ParameterObject {
   schema?: SchemaObject;
 }
 
+export interface ResponseObject {
+  $ref?: string;
+  description?: string;
+  content?: Record<
+    string,
+    {
+      schema?: SchemaObject;
+    }
+  >;
+}
+
 export interface OperationObject {
+  tags?: string[];
   operationId?: string;
   summary?: string;
   description?: string;
@@ -37,23 +49,13 @@ export interface OperationObject {
       }
     >;
   };
-  responses?: Record<
-    string,
-    {
-      description?: string;
-      content?: Record<
-        string,
-        {
-          schema?: SchemaObject;
-        }
-      >;
-    }
-  >;
+  responses?: Record<string, ResponseObject>;
 }
 
 export interface OpenApiSchema {
   components?: {
     schemas?: Record<string, SchemaObject>;
+    responses?: Record<string, ResponseObject>;
   };
   paths?: Record<string, Record<string, OperationObject>>;
 }
