@@ -1,4 +1,4 @@
 {
   "installDependencies": false,
-  "startCommand": "pnpm install && pnpm dev"
+  "startCommand": "pnpm install && npx nuxt prepare --cwd base-template && pnpm dev"
 }
