@@ -1507,24 +1507,15 @@ importers:
 
   templates/vue-starter-template-extended:
     dependencies:
-      '@shopware/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
-      '@shopware/composables':
-        specifier: canary
-        version: link:../../packages/composables
-      '@shopware/helpers':
-        specifier: canary
-        version: link:../../packages/helpers
-      '@shopware/nuxt-module':
-        specifier: canary
-        version: link:../../packages/nuxt-module
       nuxt:
         specifier: 4.2.2
         version: 4.2.2(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
       vue:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
+      vue-starter-template:
+        specifier: file:./base-template
+        version: file:templates/vue-starter-template-extended/base-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@unocss/webpack@66.6.0(webpack@5.91.0))(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.91.0)(yaml@2.8.1)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -1532,18 +1523,9 @@ importers:
       '@shopware/api-gen':
         specifier: canary
         version: link:../../packages/api-gen
-      '@shopware/cms-base-layer':
-        specifier: workspace:*
-        version: link:../../packages/cms-base-layer
-      '@unocss/nuxt':
-        specifier: 66.6.0
-        version: 66.6.0(magicast@0.5.2)(postcss@8.5.6)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(webpack@5.91.0)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
-      unocss:
-        specifier: 66.6.0
-        version: 66.6.0(@unocss/webpack@66.6.0(webpack@5.91.0))(postcss@8.5.6)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))
       vue-tsc:
         specifier: 3.2.2
         version: 3.2.2(typescript@5.9.3)
@@ -12302,6 +12284,9 @@ packages:
       esbuild: ^0.25.0
       vue: ^3.5.13
 
+  vue-starter-template@file:templates/vue-starter-template-extended/base-template:
+    resolution: {directory: templates/vue-starter-template-extended/base-template, type: directory}
+
   vue-tsc@3.2.2:
     resolution: {integrity: sha512-r9YSia/VgGwmbbfC06hDdAatH634XJ9nVl6Zrnz1iK4ucp8Wu78kawplXnIDa3MSu1XdQQePTHLXYwPDWn+nyQ==}
     hasBin: true
@@ -14119,6 +14104,33 @@ snapshots:
       - supports-color
       - typescript
 
+  '@intlify/unplugin-vue-i18n@6.0.8(eslint@10.0.2(jiti@2.6.1))(rollup@3.30.0)(typescript@5.9.3)(vue-i18n@11.1.10(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      '@eslint-community/eslint-utils': 4.7.0(eslint@10.0.2(jiti@2.6.1))
+      '@intlify/bundle-utils': 10.0.1(vue-i18n@11.1.10(vue@3.5.27(typescript@5.9.3)))
+      '@intlify/shared': 11.1.10
+      '@intlify/vue-i18n-extensions': 8.0.0(@intlify/shared@11.1.10)(@vue/compiler-dom@3.5.27)(vue-i18n@11.1.10(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@rollup/pluginutils': 5.3.0(rollup@3.30.0)
+      '@typescript-eslint/scope-manager': 8.17.0
+      '@typescript-eslint/typescript-estree': 8.32.0(typescript@5.9.3)
+      debug: 4.4.3(supports-color@10.0.0)
+      fast-glob: 3.3.3
+      js-yaml: 4.1.1
+      json5: 2.2.3
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+      unplugin: 1.16.1
+      vue: 3.5.27(typescript@5.9.3)
+    optionalDependencies:
+      vue-i18n: 11.1.10(vue@3.5.27(typescript@5.9.3))
+    transitivePeerDependencies:
+      - '@vue/compiler-dom'
+      - eslint
+      - rollup
+      - supports-color
+      - typescript
+
   '@intlify/utils@0.13.0': {}
 
   '@intlify/vue-i18n-extensions@8.0.0(@intlify/shared@11.1.10)(@vue/compiler-dom@3.5.27)(vue-i18n@11.1.10(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))':
@@ -14211,6 +14223,12 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@miyaneee/rollup-plugin-json5@1.2.0(rollup@3.30.0)':
+    dependencies:
+      '@rollup/pluginutils': 5.3.0(rollup@3.30.0)
+      json5: 2.2.3
+      rollup: 3.30.0
 
   '@miyaneee/rollup-plugin-json5@1.2.0(rollup@4.59.0)':
     dependencies:
@@ -15485,6 +15503,63 @@ snapshots:
       - uploadthing
       - vue
 
+  '@nuxtjs/i18n@10.0.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.2)(rollup@3.30.0)(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      '@intlify/core': 11.1.10
+      '@intlify/h3': 0.6.1
+      '@intlify/shared': 11.1.10
+      '@intlify/unplugin-vue-i18n': 6.0.8(eslint@10.0.2(jiti@2.6.1))(rollup@3.30.0)(typescript@5.9.3)(vue-i18n@11.1.10(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@intlify/utils': 0.13.0
+      '@miyaneee/rollup-plugin-json5': 1.2.0(rollup@3.30.0)
+      '@nuxt/kit': 4.2.2(magicast@0.5.2)
+      '@rollup/plugin-yaml': 4.1.2(rollup@3.30.0)
+      '@vue/compiler-sfc': 3.5.22
+      cookie-es: 2.0.0
+      defu: 6.1.4
+      devalue: 5.6.3
+      esbuild: 0.25.5
+      estree-walker: 3.0.3
+      h3: 1.15.5
+      knitwork: 1.2.0
+      magic-string: 0.30.17
+      mlly: 1.7.4
+      nuxt-define: 1.0.0
+      oxc-parser: 0.72.3
+      pathe: 2.0.3
+      typescript: 5.9.3
+      ufo: 1.6.1
+      unplugin: 2.3.5
+      unplugin-vue-router: 0.12.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      unstorage: 1.16.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.8.2)
+      vue-i18n: 11.1.10(vue@3.5.27(typescript@5.9.3))
+      vue-router: 4.6.4(vue@3.5.27(typescript@5.9.3))
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - '@vue/compiler-dom'
+      - aws4fetch
+      - db0
+      - eslint
+      - idb-keyval
+      - ioredis
+      - magicast
+      - petite-vue-i18n
+      - rollup
+      - supports-color
+      - uploadthing
+      - vue
+
   '@one-ini/wasm@0.1.1': {}
 
   '@oslojs/encoding@1.1.0': {}
@@ -16239,6 +16314,14 @@ snapshots:
       terser: 5.46.0
     optionalDependencies:
       rollup: 4.59.0
+
+  '@rollup/plugin-yaml@4.1.2(rollup@3.30.0)':
+    dependencies:
+      '@rollup/pluginutils': 5.3.0(rollup@3.30.0)
+      js-yaml: 4.1.1
+      tosource: 2.0.0-alpha.3
+    optionalDependencies:
+      rollup: 3.30.0
 
   '@rollup/plugin-yaml@4.1.2(rollup@4.59.0)':
     dependencies:
@@ -26666,6 +26749,96 @@ snapshots:
       '@vue/compiler-core': 3.5.27
       esbuild: 0.25.12
       vue: 3.5.27(typescript@5.9.3)
+
+  vue-starter-template@file:templates/vue-starter-template-extended/base-template(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@unocss/webpack@66.6.0(webpack@5.91.0))(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(webpack@5.91.0)(yaml@2.8.1):
+    dependencies:
+      '@iconify-json/carbon': 1.2.18
+      '@iconify/utils': 3.1.0
+      '@nuxt/a11y': 1.0.0-alpha.1(magicast@0.5.2)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))
+      '@nuxt/icon': 2.2.1(magicast@0.5.2)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue@3.5.27(typescript@5.9.3))
+      '@nuxt/image': 2.0.0(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.8.2)(magicast@0.5.2)
+      '@nuxtjs/i18n': 10.0.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.2)(rollup@3.30.0)(vue@3.5.27(typescript@5.9.3))
+      '@regle/core': 1.17.0(vue@3.5.27(typescript@5.9.3))
+      '@regle/rules': 1.17.0(vue@3.5.27(typescript@5.9.3))
+      '@shopware/api-client': link:packages/api-client
+      '@shopware/cms-base-layer': link:packages/cms-base-layer
+      '@shopware/composables': link:packages/composables
+      '@shopware/helpers': link:packages/helpers
+      '@shopware/nuxt-module': link:packages/nuxt-module
+      '@unocss/nuxt': 66.6.0(magicast@0.5.2)(postcss@8.5.6)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(webpack@5.91.0)
+      '@vueuse/core': 14.1.0(vue@3.5.27(typescript@5.9.3))
+      '@vueuse/nuxt': 14.1.0(magicast@0.5.2)(nuxt@4.2.2(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1))(vue@3.5.27(typescript@5.9.3))
+      nuxt: 4.2.2(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.8.2)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
+      unocss: 66.6.0(@unocss/webpack@66.6.0(webpack@5.91.0))(postcss@8.5.6)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))
+      vue: 3.5.27(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@biomejs/biome'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@netlify/blobs'
+      - '@parcel/watcher'
+      - '@planetscale/database'
+      - '@types/node'
+      - '@unocss/webpack'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - '@vitejs/devtools'
+      - '@vue/compiler-dom'
+      - '@vue/compiler-sfc'
+      - aws4fetch
+      - bare-abort-controller
+      - better-sqlite3
+      - bufferutil
+      - cac
+      - commander
+      - db0
+      - drizzle-orm
+      - encoding
+      - eslint
+      - idb-keyval
+      - ioredis
+      - less
+      - lightningcss
+      - magicast
+      - meow
+      - mysql2
+      - optionator
+      - oxlint
+      - petite-vue-i18n
+      - pinia
+      - postcss
+      - react-native-b4a
+      - rolldown
+      - rollup
+      - sass
+      - sass-embedded
+      - sqlite3
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - uploadthing
+      - utf-8-validate
+      - vite
+      - vls
+      - vti
+      - vue-tsc
+      - webpack
+      - xml2js
+      - yaml
 
   vue-tsc@3.2.2(typescript@5.9.3):
     dependencies:
