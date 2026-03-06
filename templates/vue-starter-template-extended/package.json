@@ -12,13 +12,13 @@
   },
   "main": "./nuxt.config.ts",
   "scripts": {
-    "dev": "nuxt prepare && nuxt dev",
-    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare --cwd base-template && nuxt prepare && nuxt dev",
+    "build": "nuxt prepare --cwd base-template && nuxt prepare && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "biome check .",
     "lint:fix": "biome check --write . && pnpm run typecheck",
-    "typecheck": "nuxt prepare && vue-tsc -b --noEmit",
+    "typecheck": "nuxt prepare --cwd base-template && nuxt prepare && vue-tsc -b --noEmit",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
