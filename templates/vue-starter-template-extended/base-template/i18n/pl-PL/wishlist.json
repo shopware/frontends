@@ -1,0 +1,13 @@
+{
+  "wishlist": {
+    "header": "Lista życzeń",
+    "subHeader": "Zobacz swoją aktualną listę życzeń.",
+    "notLoggedIn": {
+      "title": "Twoja lista życzeń jest pusta",
+      "description": "Śledź produkty, które Ci się podobają, dodając je do swojej listy życzeń.",
+      "login": "Zaloguj się",
+      "register": "Zarejestruj się",
+      "continueShopping": "Kontynuuj zakupy"
+    }
+  }
+}

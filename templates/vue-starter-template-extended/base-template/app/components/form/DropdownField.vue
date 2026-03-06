@@ -1,0 +1,47 @@
+<script lang="ts" setup>
+import type { MaybeRef } from "vue";
+
+const { errorMessage } = defineProps<{
+  placeholder?: string;
+  label?: string;
+  id: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+  errorMessage?: MaybeRef<string>;
+  loading?: boolean;
+  autocomplete?: string;
+}>();
+
+const model = defineModel<string>({
+  required: true,
+});
+
+const errorText = computed(() => unref(errorMessage));
+</script>
+<template>
+  <div>
+    <label
+      class="text-surface-on-surface text-sm mb-1 block"
+      v-if="label"
+      :for="id"
+    >
+      {{ label }}
+    </label>
+
+    <FormBaseDropdown
+      class="text-sm w-full"
+      v-model="model"
+      :placeholder="placeholder"
+      :id="id"
+      :options="options"
+      :invalid="!!errorText"
+      :loading
+      :autocomplete
+    />
+    <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
+      errorText
+    }}</span>
+  </div>
+</template>
