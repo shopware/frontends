@@ -36,11 +36,12 @@ export type UseProductPriceReturn = {
    */
   tierPrices: ComputedRef<TierPrice[]>;
   /**
-   * Whether the product has a list price set (e.g. for strikethrough / discount display).
+   * Whether the product currently has a list price reduction / discount
+   * (e.g. for strikethrough / discount display, typically based on `listPrice.percentage`).
    */
   hasListPrice: ComputedRef<boolean>;
   /**
-   * Whether the product has a list price set.
+   * Whether the product currently has a list price reduction / discount.
    * @deprecated Use `hasListPrice` instead. Will be removed in a future version.
    */
   isListPrice: ComputedRef<boolean>;
