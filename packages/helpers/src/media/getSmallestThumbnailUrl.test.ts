@@ -7,10 +7,22 @@ describe("getSmallestThumbnailUrl", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined if media has no thumbnails", () => {
+  it("should return undefined if media has no thumbnails and no url", () => {
     const media = {};
     const result = getSmallestThumbnailUrl(media);
     expect(result).toBeUndefined();
+  });
+
+  it("should return media.url when media has no thumbnails but has url", () => {
+    const media = { url: "fallback.jpg" };
+    const result = getSmallestThumbnailUrl(media);
+    expect(result).toBe("fallback.jpg");
+  });
+
+  it("should return media.url when media has empty thumbnails array but has url", () => {
+    const media = { thumbnails: [], url: "main.jpg" };
+    const result = getSmallestThumbnailUrl(media);
+    expect(result).toBe("main.jpg");
   });
 
   it("should return the URL of the smallest thumbnail", () => {

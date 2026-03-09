@@ -12,9 +12,13 @@ export function getSmallestThumbnailUrl<
       width: number;
       url: string;
     }>;
+    url?: string;
   },
 >(media?: T): string | undefined {
   if (!media || !media?.thumbnails?.length) {
+    if (media?.url) {
+      return media.url;
+    }
     return;
   }
 
