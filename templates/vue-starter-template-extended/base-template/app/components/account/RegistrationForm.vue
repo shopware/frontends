@@ -1,0 +1,298 @@
+<script setup lang="ts">
+import { useRegle } from "@regle/core";
+import { useTemplateRef } from "vue";
+import type { operations } from "#shopware";
+
+const { redirectUrl, customerGroupId } = defineProps<{
+  customerGroupId?: string;
+  redirectUrl?: string | null;
+}>();
+
+const { register, isLoggedIn } = useUser();
+const { handleApiError } = useApiErrorsResolver("account_registration_form");
+
+const loading = ref<boolean>();
+const doubleOptInBox = useTemplateRef("doubleOptInBox");
+const showDoubleOptInBox = ref(false);
+
+const { push } = useRouter();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
+if (import.meta.client && isLoggedIn.value) {
+  const path = (redirectUrl ?? formatLink("/account")) as string;
+  navigateTo({ path });
+}
+
+watch(isLoggedIn, (isLoggedIn) => {
+  if (isLoggedIn) {
+    navigateTo({ path: redirectUrl || "/account" });
+  }
+});
+
+type RegistrationFormState = Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+>;
+
+const initialState: RegistrationFormState = {
+  accountType: "private",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  vatIds: [""],
+  billingAddress: {
+    id: "",
+    customerId: "",
+    firstName: "",
+    lastName: "",
+    company: "",
+    street: "",
+    zipcode: "",
+    city: "",
+    countryId: "",
+    countryStateId: "",
+  },
+  acceptedDataProtection: true,
+};
+
+const state = reactive<RegistrationFormState>(
+  JSON.parse(JSON.stringify(initialState)),
+);
+
+const accountTypeModel = computed({
+  get: () => state.accountType ?? "private",
+  set: (value: "private" | "business") => {
+    state.accountType = value;
+  },
+});
+
+const vatIdModel = computed({
+  get: () => state.vatIds?.[0] ?? "",
+  set: (value: string) => {
+    if (state.vatIds) state.vatIds[0] = value;
+    else state.vatIds = [value];
+  },
+});
+
+const companyModel = computed({
+  get: () => state.billingAddress.company ?? "",
+  set: (value: string) => {
+    state.billingAddress.company = value;
+  },
+});
+
+const zipcodeModel = computed({
+  get: () => state.billingAddress.zipcode ?? "",
+  set: (value: string) => {
+    state.billingAddress.zipcode = value;
+  },
+});
+
+const countryIdModel = computed({
+  get: () => state.billingAddress.countryId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryId = value;
+  },
+});
+
+const countryStateIdModel = computed({
+  get: () => state.billingAddress.countryStateId ?? "",
+  set: (value: string) => {
+    state.billingAddress.countryStateId = value;
+  },
+});
+
+const { r$ } = useRegle(
+  state,
+  registrationFormRules(
+    computed(() => state.accountType ?? "private"),
+    computed(() => state.billingAddress.countryId),
+  ),
+);
+const invokeSubmit = async () => {
+  r$.$touch();
+  const { valid } = await r$.$validate();
+  if (valid) {
+    try {
+      loading.value = true;
+      const response = await register({
+        ...state,
+        ...(customerGroupId ? { requestedGroupId: customerGroupId } : {}),
+      });
+      if (response?.doubleOptInRegistration) {
+        Object.assign(state, JSON.parse(JSON.stringify(initialState)));
+        showDoubleOptInBox.value = true;
+        await nextTick();
+        doubleOptInBox.value?.scrollIntoView();
+        r$.$reset();
+      } else if (response?.active) await push(formatLink("/"));
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      loading.value = false;
+    }
+  }
+};
+</script>
+<template>
+  <div>
+    <div
+      v-if="showDoubleOptInBox"
+      ref="doubleOptInBox"
+      class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
+      role="status"
+      aria-live="polite"
+    >
+      {{ $t("account.messages.signUpSuccess") }}
+    </div>
+    <div class="mb-1 p-5">
+      <h2 id="sign-up-heading" class="text-2xl font-bold">
+        {{ $t("account.signUpHeader") }}
+      </h2>
+      <p class="text-sm text-text-bg-surface-surface-disabled">
+        {{ $t("account.signUpSubHeader") }}
+      </p>
+    </div>
+    <form
+      class="w-full relative px-5"
+      data-testid="registration-form"
+      aria-labelledby="sign-up-heading"
+      @submit.prevent="invokeSubmit"
+    >
+      <div class="grid grid-cols-12 gap-5 mb-10">
+        <FormAccountTypeSelect
+          class="col-span-12"
+          v-model="accountTypeModel"
+          dataTestId="registration-account-type-select"
+          id="accountType"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          id="firstName"
+          v-model="state.firstName"
+          autocomplete="given-name"
+          :label="$t('form.firstName')"
+          :errorMessage="r$.firstName.$errors[0]"
+          @blur="r$.firstName.$touch()"
+          data-testid="registration-first-name-input"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          id="lastName"
+          v-model="state.lastName"
+          autocomplete="family-name"
+          :label="$t('form.lastName')"
+          :errorMessage="r$.lastName.$errors[0]"
+          @blur="r$.lastName.$touch()"
+          data-testid="registration-last-name-input"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-6"
+          id="emailAddress"
+          v-model="state.email"
+          autocomplete="email"
+          :label="$t('form.email')"
+          :errorMessage="r$.email.$errors[0]"
+          @blur="r$.email.$touch()"
+          data-testid="registration-email-input"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          id="password"
+          v-model="state.password"
+          autocomplete="new-password"
+          type="password"
+          :label="$t('form.password')"
+          :errorMessage="r$.password.$errors[0]"
+          @blur="r$.password.$touch()"
+          data-testid="registration-password-input"
+        />
+
+        <FormInputField
+          v-if="state.accountType === 'business'"
+          class="col-span-12 md:col-span-4"
+          id="vatId"
+          v-model="vatIdModel"
+          :label="$t('form.vatId')"
+          @blur="r$.vatIds?.$touch()"
+          data-testid="registration-vatid-input"
+        />
+      </div>
+
+      <h3 id="address-heading" class="block border-b-1 mb-5 pb-2 font-bold">
+        {{ $t("account.yourAddress") }}
+      </h3>
+      <div
+        class="grid grid-cols-12 gap-5 mb-5"
+        aria-labelledby="address-heading"
+      >
+        <FormInputField
+          v-if="state.accountType === 'business'"
+          class="col-span-12 md:col-span-4"
+          id="company"
+          v-model="companyModel"
+          autocomplete="company"
+          :label="$t('form.company')"
+          data-testid="registration-company-input"
+          @blur="r$.billingAddress.company.$touch()"
+          :errorMessage="r$.billingAddress.company.$errors[0]"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          id="street"
+          v-model="state.billingAddress.street"
+          autocomplete="street-address"
+          :label="$t('form.streetAddress')"
+          data-testid="registration-street-input"
+          @blur="r$.billingAddress.street.$touch()"
+          :errorMessage="r$.billingAddress.street.$errors[0]"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          :label="$t('form.postalCode')"
+          id="zipcode"
+          v-model="zipcodeModel"
+          autocomplete="postal-code"
+          data-testid="registration-zipcode-input"
+          @blur="r$.billingAddress.zipcode.$touch()"
+          :errorMessage="r$.billingAddress.zipcode.$errors[0]"
+        />
+
+        <FormInputField
+          class="col-span-12 md:col-span-4"
+          :label="$t('form.city')"
+          id="city"
+          v-model="state.billingAddress.city"
+          autocomplete="address-level2"
+          data-testid="registration-city-input"
+          @blur="r$.billingAddress.city.$touch()"
+          :errorMessage="r$.billingAddress.city.$errors[0]"
+        />
+
+        <SharedCountryStateInput
+          v-model:country-id="countryIdModel"
+          v-model:state-id="countryStateIdModel"
+          :country-id-validation="r$.billingAddress.countryId"
+          :state-id-validation="r$.billingAddress.countryStateId"
+          class="col-span-12 md:col-span-8"
+        />
+      </div>
+      <div class="mb-5 text-right">
+        <FormBaseButton
+          :label="$t('form.submit')"
+          type="submit"
+          :aria-busy="loading"
+          data-testid="registration-submit-button"
+        />
+      </div>
+    </form>
+  </div>
+</template>

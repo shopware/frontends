@@ -1,0 +1,166 @@
+{
+  "account": {
+    "back": "Back",
+    "signUpHeader": "Create an account",
+    "signUpSubHeader": "Register to get started",
+    "yourAddress": "Your address",
+    "loginPageTitle": "Login & Registration",
+    "loginPageHeader": "Log in or create account",
+    "order": {
+      "header": "Orders",
+      "subHeader": "View your current and past orders",
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "subtotal": "Subtotal",
+      "orderNumber": "Order number",
+      "totalAmount": "Total amount",
+      "orderDate": "Order date",
+      "orderStatus": "Order status",
+      "paymentMethod": "Payment method",
+      "repeatOrder": "Repeat order",
+      "order": "Order",
+      "orders": "Orders",
+      "seeMore": "See more",
+      "seeLess": "See less",
+      "orderLabel": "Order",
+      "shippingStatus": "Shipping Status",
+      "shipping": "Shipping",
+      "shippingMethod": "Shipping method",
+      "total": "Total",
+      "backToList": "Back to orders list",
+      "authOrderTitle": "Verify your order",
+      "authOrderText": "Please enter the email address and postal code used when placing the order.",
+      "authOrderButton": "Verify order",
+      "emailPlaceholder": "Email address",
+      "postalCodePlaceholder": "Postal code"
+    },
+    "menu": {
+      "header": "Your account",
+      "overview": "Overview",
+      "yourProfile": "Your profile",
+      "addresses": "Addresses",
+      "orders": "Orders",
+      "logout": "Logout"
+    },
+    "overview": {
+      "header": "Overview",
+      "subHeader": "Directly access your profile information, the default payment method and given addresses.",
+      "personalDataSectionHeader": "Personal data",
+      "defaultBillingAddressSectionHeader": "Default billing address",
+      "defaultShippingAddressSectionHeader": "Default shipping address",
+      "newsletter": {
+        "subscriptionSectionHeader": "Newsletter subscription",
+        "subscriptionLabel": "Yes, I would like to subscribe to the free Demostore newsletter. (I may unsubscribe at any time.)",
+        "confirmationNeeded": "Please confirm your email address before subscribing to the newsletter.",
+        "messages": {
+          "subscribed": "Thank you! We have signed up your address.",
+          "unsubscribed": "Newsletter unsubscribe"
+        }
+      }
+    },
+    "address": {
+      "notFound": "Address not found",
+      "header": "Addresses",
+      "subHeader": "View your current default addresses or add new ones.",
+      "defaultBillingAddressSectionHeader": "Default billing address",
+      "defaultShippingAddressSectionHeader": "Default shipping address",
+      "availableAddressesSectionHeader": "Available addresses",
+      "addAddressButton": "Add new address",
+      "editAddressButton": "Edit address",
+      "deleteAddressButton": "Delete address",
+      "useAsDefaultBillingAddressButton": "Use as default billing address",
+      "useAsDefaultShippingAddressButton": "Use as default shipping address",
+      "saveButton": "Save address",
+      "new": {
+        "header": "New address",
+        "subHeader": "Add a new address to your account.",
+        "personalDataSectionHeader": "Personal data",
+        "successMessage": "Address has been successfully added."
+      },
+      "edit": {
+        "header": "Edit address",
+        "subHeader": "Edit your address.",
+        "personalDataSectionHeader": "Personal data",
+        "successMessage": "Address has been successfully updated."
+      }
+    },
+    "profile": {
+      "header": "Your profile",
+      "subHeader": "Check your personal data.",
+      "personalDataSectionHeader": "Personal data",
+      "loginDataSectionHeader": "Login data",
+      "changeEmailButton": "Change email address",
+      "changePasswordButton": "Change password",
+      "form": {
+        "accountType": "Account type",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "company": "Company",
+        "vatIds": "VAT Registration Number",
+        "buttonSubmit": "Change data",
+        "successUpdate": "Data has been updated."
+      }
+    },
+    "changeEmail": {
+      "header": "Change Email Address",
+      "subHeader": "Enter new Email Address",
+      "form": {
+        "newEmailLabel": "Enter new email",
+        "confirmEmailLabel": "Repeat new email",
+        "passwordLabel": "Current password*",
+        "buttonSubmit": "Save",
+        "successUpdate": "Email address has been updated successfully.",
+        "errorUpdate": "Failed to update email address. Please try again."
+      }
+    },
+    "changePassword": {
+      "header": "Change password",
+      "subHeader": "Enter new password",
+      "form": {
+        "newPasswordLabel": "Enter new password*",
+        "confirmPasswordLabel": "Repeat new password*",
+        "currentPasswordLabel": "Current password*",
+        "buttonSubmit": "Save",
+        "successUpdate": "Password has been updated successfully.",
+        "errorUpdate": "Failed to update password. Please try again."
+      }
+    },
+    "orderDetails": {
+      "order": "Order",
+      "placedOn": "Placed on {d}",
+      "shippingAddress": "Shipping address",
+      "billingAddress": "Billing address",
+      "orderSummary": "Order Summary",
+      "paymentMethod": "Payment method",
+      "shippingMethod": "Shipping method",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total",
+      "takesUpTo": "Takes up to",
+      "change": "Change",
+      "changePaymentMethod": "Change payment method",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "close": "Close",
+      "backToOrdersList": "Back to orders list",
+      "itemsHeader": {
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price",
+        "total": "Total"
+      }
+    },
+    "messages": {
+      "loggedInSuccess": "You have been logged in successfully.",
+      "verifying": "Verifying your account...",
+      "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
+      "verificationLinkInvalid": "The verification link is invalid or has expired. Please request a new confirmation email.",
+      "orderSuccessNoOrder": "The order could not be found.",
+      "orderWrongData": "The email address or postal code is incorrect. Please try again.",
+      "paymentMethodChanged": "Payment method changed successfully.",
+      "productsAdded": "Products have been added to the cart.",
+      "loginRequired": "Login is required to access this page. You are being redirected to the login page."
+    }
+  }
+}
