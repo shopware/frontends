@@ -22,7 +22,7 @@ describe("useProductPrice", () => {
     expect(vm.referencePrice).toStrictEqual(
       mockedProduct.calculatedPrice?.referencePrice,
     );
-    expect(vm.isListPrice).toBe(false);
+    expect(vm.hasListPrice).toBe(false);
     expect(vm.regulationPrice).toBe(80);
   });
 
@@ -60,10 +60,10 @@ describe("useProductPrice", () => {
       ),
     );
     expect(vm.displayFrom).toBe(false);
-    expect(vm.isListPrice).toBe(false);
+    expect(vm.hasListPrice).toBe(false);
   });
 
-  it("isListPrice should be false with more than one calculatedPrices value", () => {
+  it("hasListPrice should be false with more than one calculatedPrices value", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref(
@@ -85,10 +85,10 @@ describe("useProductPrice", () => {
       ),
     );
     expect(vm.displayFrom).toBe(true);
-    expect(vm.isListPrice).toBe(false);
+    expect(vm.hasListPrice).toBe(false);
   });
 
-  it("isListPrice should be true with one calculatedPrices value", () => {
+  it("hasListPrice should be true with one calculatedPrices value", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref({
@@ -103,7 +103,7 @@ describe("useProductPrice", () => {
       ),
     );
     expect(vm.displayFrom).toBe(false);
-    expect(vm.isListPrice).toBe(true);
+    expect(vm.hasListPrice).toBe(true);
   });
 
   it("displayFrom - second variant", async () => {
@@ -121,6 +121,6 @@ describe("useProductPrice", () => {
       ),
     );
     expect(vm.displayFrom).toBe(false);
-    expect(vm.isListPrice).toBe(false);
+    expect(vm.hasListPrice).toBe(false);
   });
 });

@@ -35,7 +35,7 @@ const {
   unitPrice,
   displayFromVariants,
   displayFrom,
-  isListPrice,
+  hasListPrice,
   regulationPrice,
 } = useProductPrice(product);
 </script>
@@ -43,7 +43,7 @@ const {
 <template>
   <div :id="product.id" class="inline-flex justify-start items-center gap-2">
     <!-- Sale price display -->
-    <div v-if="isListPrice" class="flex items-center gap-2">
+    <div v-if="hasListPrice" class="flex items-center gap-2">
       <div class="text-base font-bold leading-normal">
         <SwSharedPrice :value="unitPrice">
           <template #beforePrice>
