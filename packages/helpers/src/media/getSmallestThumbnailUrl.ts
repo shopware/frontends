@@ -1,5 +1,5 @@
 /**
- * Returns the smallest thumbnail url from the media object
+ * Returns the smallest thumbnail url from the media object or the media.url if no thumbnails are available
  *
  * @param media image object
  *
