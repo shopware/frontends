@@ -8,6 +8,11 @@ export default defineNuxtConfig({
     server: false,
   },
   vite: {
+    server: {
+      fs: {
+        allow: ["./base-template"],
+      },
+    },
     resolve: {
       alias: {
         "source-map-js/lib/source-map-generator.js": "source-map-js",
