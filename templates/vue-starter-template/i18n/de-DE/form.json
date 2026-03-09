@@ -7,7 +7,7 @@
     },
     "quantitySelect": {
       "label": "Menge",
-      "increaseButton": "Zincrease Menge",
+      "increaseButton": "Menge erhöhen",
       "decreaseButton": "Vermindern Menge"
     },
     "salutation": "Anrede",
