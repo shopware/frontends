@@ -30,7 +30,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsgo --noEmit",
-    "test": "echo \"Warn: no test specified yet\""
+    "test": "vitest run"
   },
   "dependencies": {
     "@nuxt/kit": "4.2.2",
@@ -47,6 +47,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vitest": "4.0.18"
   }
 }
