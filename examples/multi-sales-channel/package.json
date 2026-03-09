@@ -19,11 +19,11 @@
     "@shopware/api-gen": "canary",
     "@types/node": "22.13.14",
     "js-cookie": "3.0.5",
-    "nuxt": "4.2.2",
+    "nuxt": "4.3.1",
     "typescript": "5.9.3",
-    "vue": "3.5.27",
-    "vue-tsc": "3.2.2",
-    "@unocss/nuxt": "66.6.0"
+    "vue": "3.5.29",
+    "vue-tsc": "3.2.5",
+    "@unocss/nuxt": "66.6.6"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3"
