@@ -61,16 +61,6 @@ class CreateCartResponseDTO
 "
 `;
 
-exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
-}
-"
-`;
-
 exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for ReadCartResponseDTO.php 1`] = `
 "<?php declare(strict_types=1);
 
@@ -203,11 +193,26 @@ class LineItemDTO
 exports[`php-dto snapshot tests > createReadEntity.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Shared;
 
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
+use App\\DTO\\Shared\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CartCreateDTO
 {
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
 }
 "
 `;
@@ -216,7 +221,6 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates expected fil
 [
   "CreateCartRequestDTO.php",
   "CreateCartResponseDTO.php",
-  "PreserveNull.php",
   "ReadCartResponseDTO.php",
   "shared/CartCreateDTO.php",
   "shared/CartDTO.php",
@@ -224,17 +228,7 @@ exports[`php-dto snapshot tests > createReadEntity.json > generates expected fil
 ]
 `;
 
-exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `7`;
-
-exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
-}
-"
-`;
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `6`;
 
 exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for shared/UserProfileDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -280,23 +274,51 @@ class UserProfileDTO
 exports[`php-dto snapshot tests > formatAssertions.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Shared;
 
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * User profile with various formatted fields
+ */
+class UserProfileDTO
 {
+    public function __construct(
+        /** Unique identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $id,
+        /** Email address */
+        #[Assert\\NotBlank]
+        #[Assert\\Email]
+        public string $email,
+        /** Creation timestamp */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        #[Assert\\Url]
+        public ?string $website = null,
+        #[Assert\\Date]
+        public ?string $birthday = null,
+        /** Should not produce a format assert */
+        public ?string $avatar = null,
+        public ?int $fileSize = null,
+        public ?float $price = null,
+        /** Plain string without format */
+        public ?string $name = null,
+    ) {
+    }
 }
 "
 `;
 
 exports[`php-dto snapshot tests > formatAssertions.json > generates expected file names 1`] = `
 [
-  "PreserveNull.php",
   "shared/UserProfileDTO.php",
 ]
 `;
 
-exports[`php-dto snapshot tests > formatAssertions.json > generates expected number of files 1`] = `2`;
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected number of files 1`] = `1`;
 
 exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -327,16 +349,6 @@ class Api-infoResponseDTO
         public ?string $version = null,
     ) {
     }
-}
-"
-`;
-
-exports[`php-dto snapshot tests > invalidNames.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
 }
 "
 `;
@@ -400,11 +412,15 @@ class errorResponseDTO
 exports[`php-dto snapshot tests > invalidNames.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Shared;
 
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
+class Simple-ProductDTO
 {
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
 }
 "
 `;
@@ -413,24 +429,13 @@ exports[`php-dto snapshot tests > invalidNames.json > generates expected file na
 [
   "Api-infoRequestDTO.php",
   "Api-infoResponseDTO.php",
-  "PreserveNull.php",
   "shared/Simple-ProductDTO.php",
   "shared/errorDTO.php",
   "shared/errorResponseDTO.php",
 ]
 `;
 
-exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `6`;
-
-exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
-}
-"
-`;
+exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `5`;
 
 exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for shared/OrderBillingAddressCountryDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -682,18 +687,43 @@ class SalesChannelDTO
 exports[`php-dto snapshot tests > nestedObjects.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Shared;
 
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
+use App\\DTO\\Shared\\SalesChannelContextContextDTO;
+use App\\DTO\\Shared\\SalesChannelContextCurrentCustomerGroupDTO;
+use App\\DTO\\Shared\\SalesChannelContextItemRoundingDTO;
+use App\\DTO\\Shared\\SalesChannelContextTaxRulesDTO;
+use App\\DTO\\Shared\\SalesChannelDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Sales channel context
+ */
+class SalesChannelContextDTO
 {
+    public function __construct(
+        #[Assert\\NotNull]
+        public SalesChannelDTO $salesChannel,
+        #[Assert\\NotNull]
+        public SalesChannelContextItemRoundingDTO $itemRounding,
+        /** Context token */
+        public ?string $token = null,
+        /** Core context with general configuration values and state */
+        public ?SalesChannelContextContextDTO $context = null,
+        /** Customer group of the current user */
+        public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,
+        /**
+         * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
+         */
+        public ?array $taxRules = null,
+    ) {
+    }
 }
 "
 `;
 
 exports[`php-dto snapshot tests > nestedObjects.json > generates expected file names 1`] = `
 [
-  "PreserveNull.php",
   "shared/OrderBillingAddressCountryDTO.php",
   "shared/OrderBillingAddressDTO.php",
   "shared/OrderDTO.php",
@@ -707,17 +737,7 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates expected file n
 ]
 `;
 
-exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `11`;
-
-exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
-}
-"
-`;
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `10`;
 
 exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadCartResponseDTO.php 1`] = `
 "<?php declare(strict_types=1);
@@ -814,6 +834,18 @@ class SendContactMailRequestDTO
         public ?string $lastName = null,
     ) {
     }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for attributes/PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+namespace Attributes;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
 }
 "
 `;
@@ -952,7 +984,7 @@ exports[`php-dto snapshot tests > simpleSchema.json > generates correct content 
 
 namespace Shared;
 
-use PreserveNull;
+use Attributes\\PreserveNull;
 
 class NullableUnionDTO
 {
@@ -971,7 +1003,7 @@ class NullableUnionDTO
 exports[`php-dto snapshot tests > simpleSchema.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Attributes;
 
 #[\\Attribute(\\Attribute::TARGET_PROPERTY)]
 class PreserveNull
@@ -982,11 +1014,11 @@ class PreserveNull
 
 exports[`php-dto snapshot tests > simpleSchema.json > generates expected file names 1`] = `
 [
-  "PreserveNull.php",
   "ReadCartResponseDTO.php",
   "ReadProductRequestDTO.php",
   "ReadProductResponseDTO.php",
   "SendContactMailRequestDTO.php",
+  "attributes/PreserveNull.php",
   "shared/CalculatedPriceDTO.php",
   "shared/CartDTO.php",
   "shared/DefaultValuesDTO.php",
@@ -1036,16 +1068,6 @@ class AddLineItemResponseDTO
         public ?array $lineItems = null,
     ) {
     }
-}
-"
-`;
-
-exports[`php-dto snapshot tests > tagSchema.json > generates correct content for PreserveNull.php 1`] = `
-"<?php declare(strict_types=1);
-
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
-{
 }
 "
 `;
@@ -1234,11 +1256,22 @@ class ProductDTO
 exports[`php-dto snapshot tests > tagSchema.json > generates correct content with namespace 1`] = `
 "<?php declare(strict_types=1);
 
-namespace App\\DTO;
+namespace App\\DTO\\Shared;
 
-#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
-class PreserveNull
+use App\\DTO\\Shared\\MediaDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ProductDTO
 {
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+        public ?MediaDTO $cover = null,
+    ) {
+    }
 }
 "
 `;
@@ -1247,7 +1280,6 @@ exports[`php-dto snapshot tests > tagSchema.json > generates expected file names
 [
   "AddLineItemRequestDTO.php",
   "AddLineItemResponseDTO.php",
-  "PreserveNull.php",
   "ReadCartResponseDTO.php",
   "ReadCategoriesResponseDTO.php",
   "ReadProductRequestDTO.php",
@@ -1260,4 +1292,4 @@ exports[`php-dto snapshot tests > tagSchema.json > generates expected file names
 ]
 `;
 
-exports[`php-dto snapshot tests > tagSchema.json > generates expected number of files 1`] = `12`;
+exports[`php-dto snapshot tests > tagSchema.json > generates expected number of files 1`] = `11`;

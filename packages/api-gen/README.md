@@ -333,6 +333,28 @@ flags:
 - `--schemaFile` / `-f` (required) — path to the OpenAPI JSON schema file
 - `--outputDir` / `-o` (default: `./dto`) — output directory for generated PHP files
 - `--namespace` / `-n` (optional) — PHP namespace added to every generated class
+- `--tag` / `-t` (optional) — generate only DTOs for endpoints tagged with the given value (and all transitively referenced schemas)
+- `--rawNames` (optional) — disable automatic PascalCase conversion for class/file names; errors on invalid PHP class names instead
+
+#### Generated file structure
+
+- **Root directory** — request, response, and parameter DTOs derived from API operations
+- **`shared/` subdirectory** — component schema DTOs referenced by the operation-level DTOs
+
+#### `PreserveNull` attribute
+
+Every generated batch includes a `PreserveNull.php` file containing a custom PHP attribute:
+
+```php
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+```
+
+This attribute is added to every constructor parameter where the OpenAPI schema **explicitly declares `null` as a possible type** (e.g. `type: ["string", "null"]` or `oneOf`/`anyOf` containing a null variant). It distinguishes properties that are *intentionally nullable* from properties that default to `null` only for runtime safety (optional, non-required fields without an explicit default).
+
+Use `PreserveNull` in your deserialization/serialization layer to decide whether a `null` value should be preserved and sent to the API, or stripped from the payload. For example, a Symfony serializer normalizer can check for this attribute and keep `null` values in the output only for marked properties.
 
 ### `split` - Experimental
 

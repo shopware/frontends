@@ -75,11 +75,10 @@ function buildUseStatements(
   const imports: string[] = [];
 
   if (usesPreserveNull) {
-    const preserveNullNs = baseNamespace;
-    const fqcn = preserveNullNs
-      ? `${preserveNullNs}\\PreserveNull`
-      : "PreserveNull";
-    imports.push(fqcn);
+    const attrNs = baseNamespace
+      ? `${baseNamespace}\\Attributes`
+      : "Attributes";
+    imports.push(`${attrNs}\\PreserveNull`);
   }
 
   for (const name of referencedNames) {
@@ -245,13 +244,14 @@ export interface GeneratedFile {
 export function generatePreserveNullAttribute(
   options: GeneratorOptions = {},
 ): string {
+  const ns = options.namespace
+    ? `${options.namespace}\\Attributes`
+    : "Attributes";
   const lines: string[] = [];
   lines.push("<?php declare(strict_types=1);");
   lines.push("");
-  if (options.namespace) {
-    lines.push(`namespace ${options.namespace};`);
-    lines.push("");
-  }
+  lines.push(`namespace ${ns};`);
+  lines.push("");
   lines.push("#[\\Attribute(\\Attribute::TARGET_PROPERTY)]");
   lines.push("class PreserveNull");
   lines.push("{");
@@ -285,11 +285,19 @@ export function generateAllFiles(
     };
   });
 
-  return [
-    {
-      fileName: "PreserveNull.php",
-      content: generatePreserveNullAttribute(options),
-    },
-    ...dtoFiles,
-  ];
+  const usesPreserveNull = dtos.some((dto) =>
+    dto.properties.some((p) => p.nullable),
+  );
+
+  if (usesPreserveNull) {
+    return [
+      {
+        fileName: "attributes/PreserveNull.php",
+        content: generatePreserveNullAttribute(options),
+      },
+      ...dtoFiles,
+    ];
+  }
+
+  return dtoFiles;
 }

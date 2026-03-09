@@ -342,7 +342,6 @@ describe("phpDto command", () => {
 
       const files = collectPhpFiles(outputDir);
 
-      expect(files).toContain("PreserveNull.php");
       expect(files).toContain("shared/CartDTO.php");
       expect(files).toContain("shared/LineItemDTO.php");
       expect(files).toContain("shared/ProductDTO.php");
