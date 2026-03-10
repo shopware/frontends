@@ -16,13 +16,19 @@ import { parseAllDtos } from "../php-dto/schemaParser";
 import { isValidPhpClassName, toPascalCase } from "../php-dto/typeMapper";
 import { loadLocalJSONFile } from "../utils";
 
+export interface PhpDtoConfig {
+  schemaUrl: string;
+  outputDir?: string;
+  namespace?: string;
+  tag?: string;
+  routes?: Record<string, string>;
+}
+
 export interface PhpDtoOptions {
   action: "generate" | "check";
-  schemaFile: string;
-  outputDir: string;
-  namespace?: string;
+  config: string;
+  schemaFile?: string;
   rawNames?: boolean;
-  tag?: string;
   cwd?: string;
 }
 
@@ -64,19 +70,56 @@ function validateDtoNames(dtos: DtoDefinition[]): void {
   }
 }
 
+async function loadSchema(
+  config: PhpDtoConfig,
+  schemaFileOverride: string | undefined,
+  cwd: string,
+): Promise<Record<string, unknown>> {
+  if (schemaFileOverride) {
+    const schemaPath = resolve(cwd, schemaFileOverride);
+    const schema = await loadLocalJSONFile<Record<string, unknown>>(schemaPath);
+    if (!schema) {
+      throw new Error(`Schema file not found: ${schemaPath}`);
+    }
+    return schema;
+  }
+
+  if (!config.schemaUrl) {
+    throw new Error(
+      "No schema source: provide schemaUrl in config or use --schemaFile CLI override.",
+    );
+  }
+
+  console.log(pc.blue(`Fetching schema from ${config.schemaUrl}...`));
+  const response = await fetch(config.schemaUrl);
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch schema from ${config.schemaUrl}: ${response.status} ${response.statusText}`,
+    );
+  }
+  return (await response.json()) as Record<string, unknown>;
+}
+
 export async function phpDto(options: PhpDtoOptions): Promise<void> {
-  const { action, schemaFile, outputDir, namespace, rawNames, tag } = options;
+  const { action, config: configPath, schemaFile, rawNames } = options;
   const cwd = options.cwd || process.cwd();
+
+  const resolvedConfigPath = resolve(cwd, configPath);
+  const config = await loadLocalJSONFile<PhpDtoConfig>(resolvedConfigPath);
+  if (!config) {
+    throw new Error(`Config file not found: ${resolvedConfigPath}`);
+  }
+
+  const outputDir = config.outputDir ?? "./dto";
   const outputPath = resolve(cwd, outputDir);
 
-  const schemaPath = resolve(cwd, schemaFile);
-  const schema = await loadLocalJSONFile<Record<string, unknown>>(schemaPath);
-  if (!schema) {
-    throw new Error(`Schema file not found: ${schemaPath}`);
-  }
-  const rawDtos = parseAllDtos(schema, { tag });
+  const schema = await loadSchema(config, schemaFile, cwd);
+  const rawDtos = parseAllDtos(schema, { tag: config.tag });
 
   if (rawDtos.length === 0) {
+    if (action === "generate") {
+      removeDtoFilesInDir(outputPath);
+    }
     console.log(pc.yellow("No DTO definitions found in the schema."));
     return;
   }
@@ -89,8 +132,26 @@ export async function phpDto(options: PhpDtoOptions): Promise<void> {
     dtos = sanitizeDtoNames(rawDtos);
   }
 
-  const generatorOptions: GeneratorOptions = { namespace };
-  const files = generateAllFiles(dtos, generatorOptions);
+  const pathMapping = config.routes;
+  const generatorOptions: GeneratorOptions = {
+    namespace: config.namespace,
+    pathMapping,
+  };
+  const { files, unmappedPaths } = generateAllFiles(dtos, generatorOptions);
+
+  if (unmappedPaths.length > 0) {
+    console.warn(
+      pc.yellow(
+        `Warning: The following API paths are not mapped in ${configPath}:`,
+      ),
+    );
+    for (const p of unmappedPaths) {
+      console.warn(pc.yellow(`  - ${p}`));
+    }
+    console.warn(
+      pc.yellow("Add glob patterns for these paths to generate their DTOs."),
+    );
+  }
 
   if (action === "generate") {
     await runGenerate(outputPath, files);
@@ -99,13 +160,27 @@ export async function phpDto(options: PhpDtoOptions): Promise<void> {
   }
 }
 
+function removeDtoFilesInDir(dir: string): void {
+  if (!existsSync(dir)) return;
+  for (const entry of readdirSync(dir)) {
+    const fullPath = resolve(dir, entry);
+    if (statSync(fullPath).isDirectory()) {
+      removeDtoFilesInDir(fullPath);
+      if (readdirSync(fullPath).length === 0) {
+        rmSync(fullPath, { recursive: true });
+      }
+    } else if (entry.endsWith("DTO.php") || entry === "PreserveNull.php") {
+      rmSync(fullPath);
+    }
+  }
+}
+
 async function runGenerate(
   outputPath: string,
   files: { fileName: string; content: string }[],
 ): Promise<void> {
-  if (existsSync(outputPath)) {
-    rmSync(outputPath, { recursive: true, force: true });
-  }
+  removeDtoFilesInDir(outputPath);
+
   mkdirSync(outputPath, { recursive: true });
 
   for (const file of files) {

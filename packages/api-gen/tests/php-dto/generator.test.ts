@@ -822,7 +822,7 @@ describe("generator", () => {
   });
 
   describe("generateAllFiles", () => {
-    it("puts operation DTOs in root and component DTOs in shared/", () => {
+    it("puts operation DTOs in root and component DTOs in DTO/", () => {
       const dtos: DtoDefinition[] = [
         {
           name: "ReadProductResponseDTO",
@@ -852,14 +852,14 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos);
+      const { files } = generateAllFiles(dtos);
 
       expect(files).toHaveLength(2);
       expect(files[0]?.fileName).toBe("ReadProductResponseDTO.php");
-      expect(files[1]?.fileName).toBe("shared/ProductDTO.php");
+      expect(files[1]?.fileName).toBe("DTO/ProductDTO.php");
     });
 
-    it("defaults to shared/ when source is not set", () => {
+    it("defaults to DTO/ when source is not set", () => {
       const dtos: DtoDefinition[] = [
         {
           name: "CartDTO",
@@ -875,13 +875,13 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos);
+      const { files } = generateAllFiles(dtos);
 
       expect(files).toHaveLength(1);
-      expect(files[0]?.fileName).toBe("shared/CartDTO.php");
+      expect(files[0]?.fileName).toBe("DTO/CartDTO.php");
     });
 
-    it("without --namespace: shared DTOs get namespace Shared, root DTOs get use imports", () => {
+    it("without --namespace: component DTOs get namespace DTO, root DTOs get use imports", () => {
       const dtos: DtoDefinition[] = [
         {
           name: "RegisterRequestDTO",
@@ -924,18 +924,18 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos);
+      const { files } = generateAllFiles(dtos);
 
       const requestContent = files[0]?.content ?? "";
       expect(requestContent).not.toContain("namespace ");
-      expect(requestContent).toContain("use Shared\\CustomerAddressDTO;");
+      expect(requestContent).toContain("use DTO\\CustomerAddressDTO;");
 
       const addressContent = files[1]?.content ?? "";
-      expect(addressContent).toContain("namespace Shared;");
-      expect(addressContent).toContain("use Shared\\CountryDTO;");
+      expect(addressContent).toContain("namespace DTO;");
+      expect(addressContent).toContain("use DTO\\CountryDTO;");
 
       const countryContent = files[2]?.content ?? "";
-      expect(countryContent).toContain("namespace Shared;");
+      expect(countryContent).toContain("namespace DTO;");
     });
 
     it("adds namespace and use imports with --namespace", () => {
@@ -981,17 +981,17 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos, { namespace: "App\\DTO" });
+      const { files } = generateAllFiles(dtos, { namespace: "App\\DTO" });
 
       const requestContent = files[0]?.content ?? "";
       expect(requestContent).toContain("namespace App\\DTO;");
       expect(requestContent).toContain(
-        "use App\\DTO\\Shared\\CustomerAddressDTO;",
+        "use App\\DTO\\DTO\\CustomerAddressDTO;",
       );
 
       const addressContent = files[1]?.content ?? "";
-      expect(addressContent).toContain("namespace App\\DTO\\Shared;");
-      expect(addressContent).toContain("use App\\DTO\\Shared\\CountryDTO;");
+      expect(addressContent).toContain("namespace App\\DTO\\DTO;");
+      expect(addressContent).toContain("use App\\DTO\\DTO\\CountryDTO;");
     });
 
     it("operation DTOs keep base namespace, component DTOs get Shared suffix", () => {
@@ -1024,11 +1024,11 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos, { namespace: "App\\DTO" });
+      const { files } = generateAllFiles(dtos, { namespace: "App\\DTO" });
 
       expect(files[0]?.content).toContain("namespace App\\DTO;");
       expect(files[0]?.content).not.toContain("Shared");
-      expect(files[1]?.content).toContain("namespace App\\DTO\\Shared;");
+      expect(files[1]?.content).toContain("namespace App\\DTO\\DTO;");
     });
 
     it("omits PreserveNull.php when no property is nullable", () => {
@@ -1048,7 +1048,7 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos);
+      const { files } = generateAllFiles(dtos);
 
       expect(
         files.every((f) => f.fileName !== "attributes/PreserveNull.php"),
@@ -1072,7 +1072,7 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos);
+      const { files } = generateAllFiles(dtos);
 
       expect(files[0]?.fileName).toBe("attributes/PreserveNull.php");
       expect(files[0]?.content).toContain("namespace Attributes;");
@@ -1096,10 +1096,10 @@ describe("generator", () => {
         },
       ];
 
-      const files = generateAllFiles(dtos, { namespace: "App\\DTO" });
+      const { files } = generateAllFiles(dtos, { namespace: "App\\DTO" });
       const productContent = files[1]?.content ?? "";
 
-      expect(productContent).toContain("namespace App\\DTO\\Shared;");
+      expect(productContent).toContain("namespace App\\DTO\\DTO;");
       expect(productContent).toContain(
         "use App\\DTO\\Attributes\\PreserveNull;",
       );

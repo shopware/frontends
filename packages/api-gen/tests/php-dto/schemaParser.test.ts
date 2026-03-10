@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import type { OpenApiSchema } from "../../src/php-dto/openApiTypes";
 import {
   parseAllDtos,
   parseComponentSchemas,
@@ -485,6 +486,54 @@ describe("schemaParser", () => {
     it("with non-matching tag returns empty", () => {
       const dtos = parseAllDtos(tagSchema, { tag: "NonExistent" });
       expect(dtos).toHaveLength(0);
+    });
+  });
+
+  describe("oneOf request bodies", () => {
+    let oneOfSchema: Record<string, unknown>;
+
+    beforeAll(async () => {
+      oneOfSchema = JSON.parse(
+        readFileSync(resolve(__dirname, "fixtures/oneOfRequest.json"), "utf-8"),
+      );
+    });
+
+    it("generates a separate DTO per oneOf variant using title", () => {
+      const dtos = parseRequestBodies(oneOfSchema as OpenApiSchema);
+      const names = dtos.map((d) => d.name);
+
+      expect(names).toContain("LegacyImpersonationPayloadDTO");
+      expect(names).toContain("JwtImpersonationPayloadDTO");
+      expect(names).not.toContain("ImitateCustomerLoginRequestDTO");
+    });
+
+    it("variant DTOs have correct properties", () => {
+      const dtos = parseRequestBodies(oneOfSchema as OpenApiSchema);
+
+      const legacy = dtos.find(
+        (d) => d.name === "LegacyImpersonationPayloadDTO",
+      );
+      expect(legacy).toBeDefined();
+      expect(legacy?.properties.map((p) => p.name)).toEqual(
+        expect.arrayContaining(["token", "customerId", "userId"]),
+      );
+      expect(legacy?.properties.find((p) => p.name === "token")?.required).toBe(
+        true,
+      );
+
+      const jwt = dtos.find((d) => d.name === "JwtImpersonationPayloadDTO");
+      expect(jwt).toBeDefined();
+      expect(jwt?.properties).toHaveLength(1);
+      expect(jwt?.properties[0]?.name).toBe("token");
+    });
+
+    it("variant DTOs are marked as operation source with endpoint path", () => {
+      const dtos = parseRequestBodies(oneOfSchema as OpenApiSchema);
+
+      for (const dto of dtos) {
+        expect(dto.source).toBe("operation");
+        expect(dto.endpointPath).toBe("/account/login/imitate-customer");
+      }
     });
   });
 });

@@ -17,8 +17,8 @@ describe("php-dto snapshot tests", () => {
         readFileSync(resolve(FIXTURES_DIR, fixtureFile), "utf-8"),
       );
       const dtos = parseAllDtos(schema);
-      const files = generateAllFiles(dtos);
-      const filesWithNamespace = generateAllFiles(dtos, {
+      const { files } = generateAllFiles(dtos);
+      const { files: filesWithNamespace } = generateAllFiles(dtos, {
         namespace: "App\\DTO",
       });
 

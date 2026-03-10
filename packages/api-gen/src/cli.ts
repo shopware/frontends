@@ -158,34 +158,24 @@ yargs(hideBin(process.argv))
           describe:
             "'generate' cleans output dir and regenerates files; 'check' verifies existing files match",
         })
+        .option("config", {
+          alias: "c",
+          type: "string",
+          demandOption: true,
+          describe:
+            "path to JSON config file (schemaUrl, outputDir, namespace, tag, routes)",
+        })
         .option("schemaFile", {
           alias: "f",
           type: "string",
-          demandOption: true,
-          describe: "path to the OpenAPI JSON schema file",
-        })
-        .option("outputDir", {
-          alias: "o",
-          type: "string",
-          default: "./dto",
-          describe: "output directory for generated PHP files",
-        })
-        .option("namespace", {
-          alias: "n",
-          type: "string",
-          describe: "PHP namespace for generated classes",
+          describe:
+            "override: load schema from a local file instead of fetching schemaUrl",
         })
         .option("rawNames", {
           type: "boolean",
           default: false,
           describe:
             "skip auto-converting class names to PascalCase; fail on invalid names instead",
-        })
-        .option("tag", {
-          alias: "t",
-          type: "string",
-          describe:
-            "only generate DTOs for endpoints with this tag (and their referenced schemas)",
         });
     },
     async (args) => phpDto(args as unknown as PhpDtoOptions),

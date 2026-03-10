@@ -34,6 +34,7 @@ export interface DtoDefinition {
   description?: string;
   properties: DtoProperty[];
   source?: DtoSource;
+  endpointPath?: string;
 }
 
 type SchemaRegistry = Record<string, SchemaObject>;
@@ -359,7 +360,7 @@ export function parseRequestBodies(
 
   if (!paths) return dtos;
 
-  for (const pathMethods of Object.values(paths)) {
+  for (const [pathKey, pathMethods] of Object.entries(paths)) {
     for (const method of HTTP_METHODS) {
       const operation = pathMethods[method] as OperationObject | undefined;
       if (!operation?.operationId) continue;
@@ -399,6 +400,38 @@ export function parseRequestBodies(
 
       if (!requestSchema && paramProperties.length === 0) continue;
 
+      const variants = requestSchema?.oneOf ?? requestSchema?.anyOf;
+      if (variants && variants.length > 1) {
+        for (const variant of variants) {
+          const resolved = dereferenceSchema(variant, registry);
+          const variantTitle = (variant as { title?: string }).title;
+          const variantName = variantTitle
+            ? toDtoClassName(variantTitle)
+            : dtoName;
+
+          const variantResolved = resolveSchemaProperties(resolved, registry);
+          const extracted = extractPropertiesFromSchema(
+            { properties: variantResolved.properties },
+            variantResolved.required,
+            variantName,
+            registry,
+          );
+
+          const allProperties = [...extracted.properties, ...paramProperties];
+          if (allProperties.length === 0) continue;
+
+          dtos.push({
+            name: variantName,
+            description: resolved.description || operation.description,
+            properties: allProperties,
+            source: "operation",
+            endpointPath: pathKey,
+          });
+          dtos.push(...extracted.nestedDtos);
+        }
+        continue;
+      }
+
       let bodyProperties: DtoProperty[] = [];
       let bodyNestedDtos: DtoDefinition[] = [];
       let bodyDescription: string | undefined;
@@ -424,6 +457,7 @@ export function parseRequestBodies(
         description: bodyDescription || operation.description,
         properties: allProperties,
         source: "operation",
+        endpointPath: pathKey,
       });
       dtos.push(...bodyNestedDtos);
     }
@@ -443,7 +477,7 @@ export function parseResponseBodies(
 
   if (!paths) return dtos;
 
-  for (const pathMethods of Object.values(paths)) {
+  for (const [pathKey, pathMethods] of Object.entries(paths)) {
     for (const method of HTTP_METHODS) {
       const operation = pathMethods[method] as OperationObject | undefined;
       if (!operation?.operationId) continue;
@@ -475,6 +509,12 @@ export function parseResponseBodies(
         successResponse.description,
         "operation",
       );
+
+      for (const dto of extracted) {
+        if (dto.source === "operation") {
+          dto.endpointPath = pathKey;
+        }
+      }
 
       dtos.push(...extracted);
     }

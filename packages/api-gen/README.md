@@ -335,11 +335,63 @@ flags:
 - `--namespace` / `-n` (optional) — PHP namespace added to every generated class
 - `--tag` / `-t` (optional) — generate only DTOs for endpoints tagged with the given value (and all transitively referenced schemas)
 - `--rawNames` (optional) — disable automatic PascalCase conversion for class/file names; errors on invalid PHP class names instead
+- `--pathConfig` / `-p` (optional) — path to a JSON file that maps API path globs to output subdirectories (see [Path-based routing](#path-based-routing))
 
 #### Generated file structure
 
+Without `--pathConfig`:
+
 - **Root directory** — request, response, and parameter DTOs derived from API operations
-- **`shared/` subdirectory** — component schema DTOs referenced by the operation-level DTOs
+- **`DTO/` subdirectory** — component schema DTOs referenced by the operation-level DTOs
+
+#### Path-based routing
+
+When `--pathConfig` is provided, operation DTOs are grouped into subdirectories based on their endpoint path. Each group gets its own `DTO/` subfolder containing only the component DTOs referenced by that group. Endpoints that don't match any pattern are **skipped** with a warning.
+
+Create a JSON config file (e.g. `phpDto.paths.json`):
+
+```json
+{
+  "/account/**": "account",
+  "/checkout/cart/**": "cart",
+  "/product/**": "product",
+  "/context/**": "context"
+}
+```
+
+Keys are glob patterns matched against the OpenAPI endpoint path. Values are the output subdirectory names.
+
+```bash
+pnpx @shopware/api-gen phpDto generate \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --pathConfig ./phpDto.paths.json
+```
+
+This produces a directory structure like:
+
+```
+dto/
+  attributes/
+    PreserveNull.php
+  account/
+    LoginCustomerRequestDTO.php
+    RegisterRequestDTO.php
+    DTO/
+      CustomerDTO.php
+      CustomerAddressDTO.php
+  cart/
+    AddLineItemRequestDTO.php
+    DTO/
+      CartDTO.php
+      LineItemDTO.php
+  product/
+    ReadProductRequestDTO.php
+    DTO/
+      ProductDTO.php
+```
+
+When combined with `--namespace`, each group receives its own sub-namespace (e.g. `App\DTO\Account`, `App\DTO\Account\DTO`).
 
 #### `PreserveNull` attribute
 
