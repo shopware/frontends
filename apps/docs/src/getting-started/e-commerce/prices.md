@@ -97,7 +97,7 @@ const { search } = useProductSearch();
 
 const { product } = await search('some-product-id');
 
-const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(ref(product));
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(product));
 </script>
 
 <template>
@@ -111,7 +111,7 @@ const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(ref(produc
         incl. {{ price.taxRules[0].taxRate }}% tax
       </small>
     </div>
-    <div v-if="isListPrice">
+    <div v-if="hasListPrice">
       <small>
         <del>
           {{ getFormattedPrice(price.listPrice.price) }}
@@ -338,7 +338,7 @@ In this case, there are few options to display:
 - Tier prices
 
 ```ts
-const { totalPrice, price, tierPrices, isListPrice } = useProductPrice(product);
+const { totalPrice, price, tierPrices, hasListPrice } = useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 ```
 
@@ -346,7 +346,7 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 
 ```vue
 <template>
-  <div v-if="isListPrice" class="old-price line-through">
+  <div v-if="hasListPrice" class="old-price line-through">
     {{ price?.listPrice?.price }} $
     <!-- old price before discount -->
   </div>

@@ -18,7 +18,7 @@ export type UseProductPriceReturn = {
    */
   unitPrice: ComputedRef<number | undefined>;
   /**
-   * Can be used if isListPrice is set to true
+   * Can be used if hasListPrice is set to true
    */
   referencePrice: ComputedRef<
     Schemas["CalculatedPrice"]["referencePrice"] | undefined
@@ -36,7 +36,13 @@ export type UseProductPriceReturn = {
    */
   tierPrices: ComputedRef<TierPrice[]>;
   /**
-   * determines whether a discount price is set
+   * Whether the product currently has a list price reduction / discount
+   * (e.g. for strikethrough / discount display, typically based on `listPrice.percentage`).
+   */
+  hasListPrice: ComputedRef<boolean>;
+  /**
+   * Whether the product currently has a list price reduction / discount.
+   * @deprecated Use `hasListPrice` instead. Will be removed in a future version.
    */
   isListPrice: ComputedRef<boolean>;
   /**
@@ -107,7 +113,7 @@ export function useProductPrice(
     () => _price.value,
   );
 
-  const isListPrice: ComputedRef<boolean> = computed(() => {
+  const hasListPrice: ComputedRef<boolean> = computed(() => {
     return !!_price.value?.listPrice?.percentage;
   });
 
@@ -125,7 +131,9 @@ export function useProductPrice(
     displayFrom,
     tierPrices,
     referencePrice,
-    isListPrice,
+    hasListPrice,
+    /** @deprecated Use hasListPrice instead */
+    isListPrice: hasListPrice,
     regulationPrice,
   };
 }

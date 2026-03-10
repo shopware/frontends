@@ -37,7 +37,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 
-const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 </script>
 
@@ -45,7 +45,7 @@ const { getFormattedPrice } = usePrice();
   <div>
     <div v-if="!tierPrices.length">
       <SwSharedPrice
-        v-if="isListPrice"
+        v-if="hasListPrice"
         class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
         :value="price?.listPrice?.price"
       />
@@ -53,7 +53,7 @@ const { getFormattedPrice } = usePrice();
         v-if="unitPrice"
         class="text-3xl text-gray-900 basis-2/6 justify-end"
         :class="{
-          'text-red': isListPrice,
+          'text-red': hasListPrice,
         }"
         :value="unitPrice"
       />
