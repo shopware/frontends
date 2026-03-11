@@ -153,11 +153,16 @@ export async function phpDto(options: PhpDtoOptions): Promise<void> {
     );
   }
 
+  const start = performance.now();
+
   if (action === "generate") {
     await runGenerate(outputPath, files);
   } else if (action === "check") {
     await runCheck(outputPath, files);
   }
+
+  const elapsed = (performance.now() - start).toFixed(0);
+  console.log(pc.dim(`Done in ${elapsed}ms`));
 }
 
 function removeDtoFilesInDir(dir: string): void {

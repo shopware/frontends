@@ -1,5 +1,132 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content for CreateItemsRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CreateItemsRequestDTO
+{
+    public function __construct(
+        /**
+         * @var list<string> List of tags
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $tags,
+        /**
+         * @var list<string> List of UUIDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 2)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $ids,
+        /**
+         * @var list<int> Optional scores
+         */
+        #[Assert\\All(new Assert\\Type('int'))]
+        public ?array $scores = null,
+        /**
+         * @var list<bool> Boolean flags
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('bool'))]
+        public ?array $flags = null,
+        /**
+         * @var list<string> Non-blank strings
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All([new Assert\\Type('string'), new Assert\\NotBlank])]
+        public ?array $vatIds = null,
+        /** Untyped array */
+        public ?array $untyped = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content for CreateItemsResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Success
+ */
+class CreateItemsResponseDTO
+{
+    public function __construct(
+        public ?int $created = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CreateItemsRequestDTO
+{
+    public function __construct(
+        /**
+         * @var list<string> List of tags
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $tags,
+        /**
+         * @var list<string> List of UUIDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 2)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $ids,
+        /**
+         * @var list<int> Optional scores
+         */
+        #[Assert\\All(new Assert\\Type('int'))]
+        public ?array $scores = null,
+        /**
+         * @var list<bool> Boolean flags
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('bool'))]
+        public ?array $flags = null,
+        /**
+         * @var list<string> Non-blank strings
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All([new Assert\\Type('string'), new Assert\\NotBlank])]
+        public ?array $vatIds = null,
+        /** Untyped array */
+        public ?array $untyped = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates expected file names 1`] = `
+[
+  "CreateItemsRequestDTO.php",
+  "CreateItemsResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates expected number of files 1`] = `2`;
+
 exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for CreateCartRequestDTO.php 1`] = `
 "<?php declare(strict_types=1);
 
@@ -555,6 +682,7 @@ exports[`php-dto snapshot tests > nestedObjects.json > generates correct content
 namespace DTO;
 
 use DTO\\SalesChannelContextContextSourceDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
 
 /**
  * Core context with general configuration values and state
@@ -569,6 +697,7 @@ class SalesChannelContextContextDTO
         /**
          * @var list<string>
          */
+        #[Assert\\All(new Assert\\Type('string'))]
         public ?array $languageIdChain = null,
         public ?string $scope = null,
         public ?SalesChannelContextContextSourceDTO $source = null,
@@ -905,6 +1034,129 @@ exports[`php-dto snapshot tests > oneOfRequest.json > generates expected file na
 `;
 
 exports[`php-dto snapshot tests > oneOfRequest.json > generates expected number of files 1`] = `3`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for BusinessRegistrationDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class BusinessRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Company name */
+        #[Assert\\NotBlank]
+        public string $company,
+        /**
+         * @var list<string> VAT IDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $vatIds,
+        /** Account type */
+        #[Assert\\Choice(choices: ['business'])]
+        public string $accountType = 'business',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for PrivateRegistrationDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class PrivateRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Account type */
+        #[Assert\\Choice(choices: ['private'])]
+        public string $accountType = 'private',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for RegisterResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Success
+ */
+class RegisterResponseDTO
+{
+    public function __construct(
+        public ?string $id = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class PrivateRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Account type */
+        #[Assert\\Choice(choices: ['private'])]
+        public string $accountType = 'private',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates expected file names 1`] = `
+[
+  "BusinessRegistrationDTO.php",
+  "PrivateRegistrationDTO.php",
+  "RegisterResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates expected number of files 1`] = `3`;
 
 exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/CalculatedPriceDTO.php 1`] = `
 "<?php declare(strict_types=1);

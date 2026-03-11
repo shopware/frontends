@@ -144,6 +144,35 @@ function renderConstructorParam(prop: DtoProperty): string {
     lines.push(`        #[Assert\\Choice(choices: [${choices}])]`);
   }
 
+  if (prop.isArray && prop.minItems !== undefined && prop.minItems > 0) {
+    lines.push(`        #[Assert\\Count(min: ${prop.minItems})]`);
+  }
+
+  if (prop.isArray && prop.arrayItemType) {
+    const phpToSymfonyType: Record<string, string> = {
+      string: "string",
+      int: "int",
+      float: "float",
+      bool: "bool",
+    };
+    const sfType = phpToSymfonyType[prop.arrayItemType];
+    if (sfType) {
+      const itemConstraints: string[] = [];
+      itemConstraints.push(`new Assert\\Type('${sfType}')`);
+      if (
+        prop.arrayItemMinLength !== undefined &&
+        prop.arrayItemMinLength >= 1
+      ) {
+        itemConstraints.push("new Assert\\NotBlank");
+      }
+      if (itemConstraints.length === 1) {
+        lines.push(`        #[Assert\\All(${itemConstraints[0]})]`);
+      } else {
+        lines.push(`        #[Assert\\All([${itemConstraints.join(", ")}])]`);
+      }
+    }
+  }
+
   const needsNullFallback =
     !prop.required && !prop.nullable && prop.defaultValue === undefined;
   const effectiveNullable = prop.nullable || needsNullFallback;
@@ -166,12 +195,17 @@ export function generatePhpClass(
   options: GeneratorOptions = {},
 ): string {
   const lines: string[] = [];
+  const PRIMITIVE_ARRAY_TYPES = new Set(["string", "int", "float", "bool"]);
   const needsAssert = dto.properties.some(
     (p) =>
       p.pattern ||
       (p.format && FORMAT_ASSERT_MAP[p.format]) ||
       (p.enum && p.enum.length > 0) ||
-      (p.required && !p.nullable),
+      (p.required && !p.nullable) ||
+      (p.isArray && p.minItems !== undefined && p.minItems > 0) ||
+      (p.isArray &&
+        p.arrayItemType &&
+        PRIMITIVE_ARRAY_TYPES.has(p.arrayItemType)),
   );
 
   lines.push("<?php declare(strict_types=1);");

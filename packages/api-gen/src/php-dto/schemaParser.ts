@@ -25,6 +25,8 @@ export interface DtoProperty {
   defaultValue?: string | number | boolean;
   isArray: boolean;
   arrayItemType?: string;
+  minItems?: number;
+  arrayItemMinLength?: number;
 }
 
 export type DtoSource = "operation" | "component";
@@ -245,6 +247,7 @@ function extractPropertiesFromSchema(
         defaultValue: resolveDefaultValue(propSchema),
         isArray: true,
         arrayItemType: nestedName,
+        minItems: propSchema.minItems,
       });
       continue;
     }
@@ -263,6 +266,8 @@ function extractPropertiesFromSchema(
       defaultValue: resolveDefaultValue(propSchema),
       isArray: typeResult.isArray,
       arrayItemType: typeResult.arrayItemType,
+      minItems: propSchema.minItems,
+      arrayItemMinLength: propSchema.items?.minLength,
     });
   }
 
@@ -393,6 +398,7 @@ export function parseRequestBodies(
               defaultValue: resolveDefaultValue(param.schema),
               isArray: typeResult.isArray,
               arrayItemType: typeResult.arrayItemType,
+              minItems: param.schema.minItems,
             });
           }
         }
@@ -402,6 +408,9 @@ export function parseRequestBodies(
 
       const variants = requestSchema?.oneOf ?? requestSchema?.anyOf;
       if (variants && variants.length > 1) {
+        const sharedProps = requestSchema?.properties ?? {};
+        const sharedRequired = requestSchema?.required ?? [];
+
         for (const variant of variants) {
           const resolved = dereferenceSchema(variant, registry);
           const variantTitle = (variant as { title?: string }).title;
@@ -409,10 +418,18 @@ export function parseRequestBodies(
             ? toDtoClassName(variantTitle)
             : dtoName;
 
-          const variantResolved = resolveSchemaProperties(resolved, registry);
+          const mergedProperties = {
+            ...sharedProps,
+            ...(resolved.properties ?? {}),
+          };
+          const mergedRequired = [
+            ...sharedRequired,
+            ...(resolved.required ?? []),
+          ];
+
           const extracted = extractPropertiesFromSchema(
-            { properties: variantResolved.properties },
-            variantResolved.required,
+            { properties: mergedProperties },
+            mergedRequired,
             variantName,
             registry,
           );

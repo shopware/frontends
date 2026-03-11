@@ -12,6 +12,8 @@ export interface SchemaObject {
   format?: string;
   enum?: unknown[];
   default?: unknown;
+  minItems?: number;
+  minLength?: number;
   additionalProperties?: boolean | SchemaObject;
 }
 

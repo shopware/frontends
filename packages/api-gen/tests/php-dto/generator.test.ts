@@ -1105,5 +1105,140 @@ describe("generator", () => {
       );
       expect(productContent).toContain("#[PreserveNull]");
     });
+
+    it("generates Assert\\Count for arrays with minItems", () => {
+      const dto: DtoDefinition = {
+        name: "TagsDTO",
+        properties: [
+          {
+            name: "tags",
+            phpType: "array",
+            nullable: false,
+            required: true,
+            isArray: true,
+            arrayItemType: "string",
+            minItems: 1,
+          },
+          {
+            name: "ids",
+            phpType: "array",
+            nullable: false,
+            required: true,
+            isArray: true,
+            arrayItemType: "string",
+            minItems: 3,
+          },
+          {
+            name: "labels",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+            arrayItemType: "string",
+          },
+        ],
+      };
+
+      const output = generatePhpClass(dto);
+      expect(output).toContain("#[Assert\\Count(min: 1)]");
+      expect(output).toContain("#[Assert\\Count(min: 3)]");
+      expect(output).not.toMatch(/labels[\s\S]*?#\[Assert\\Count/);
+    });
+
+    it("generates Assert\\All with Assert\\Type for primitive array items", () => {
+      const dto: DtoDefinition = {
+        name: "MixedArraysDTO",
+        properties: [
+          {
+            name: "names",
+            phpType: "array",
+            nullable: false,
+            required: true,
+            isArray: true,
+            arrayItemType: "string",
+          },
+          {
+            name: "counts",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+            arrayItemType: "int",
+          },
+          {
+            name: "prices",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+            arrayItemType: "float",
+          },
+          {
+            name: "flags",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+            arrayItemType: "bool",
+          },
+          {
+            name: "items",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+            arrayItemType: "LineItemDTO",
+          },
+          {
+            name: "untyped",
+            phpType: "array",
+            nullable: false,
+            required: false,
+            isArray: true,
+          },
+        ],
+      };
+
+      const output = generatePhpClass(dto);
+      expect(output).toContain("#[Assert\\All(new Assert\\Type('string'))]");
+      expect(output).toContain("#[Assert\\All(new Assert\\Type('int'))]");
+      expect(output).toContain("#[Assert\\All(new Assert\\Type('float'))]");
+      expect(output).toContain("#[Assert\\All(new Assert\\Type('bool'))]");
+      expect(output).not.toContain("Type('LineItemDTO')");
+      expect(output).not.toMatch(/untyped[\s\S]*?#\[Assert\\All/);
+    });
+
+    it("generates Assert\\All with NotBlank when arrayItemMinLength >= 1", () => {
+      const dto: DtoDefinition = {
+        name: "ItemMinLengthDTO",
+        properties: [
+          {
+            name: "vatIds",
+            phpType: "array",
+            nullable: false,
+            required: true,
+            isArray: true,
+            arrayItemType: "string",
+            minItems: 1,
+            arrayItemMinLength: 1,
+          },
+          {
+            name: "tags",
+            phpType: "array",
+            nullable: false,
+            required: true,
+            isArray: true,
+            arrayItemType: "string",
+          },
+        ],
+      };
+
+      const output = generatePhpClass(dto);
+      expect(output).toContain(
+        "#[Assert\\All([new Assert\\Type('string'), new Assert\\NotBlank])]",
+      );
+      const tagsSection = output.slice(output.indexOf("$tags"));
+      expect(tagsSection).not.toContain("NotBlank");
+    });
   });
 });

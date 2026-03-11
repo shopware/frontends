@@ -536,4 +536,143 @@ describe("schemaParser", () => {
       }
     });
   });
+
+  describe("oneOf with shared top-level fields", () => {
+    let sharedFieldsSchema: Record<string, unknown>;
+
+    beforeAll(async () => {
+      sharedFieldsSchema = JSON.parse(
+        readFileSync(
+          resolve(__dirname, "fixtures/oneOfSharedFields.json"),
+          "utf-8",
+        ),
+      );
+    });
+
+    it("merges shared properties into each variant", () => {
+      const dtos = parseRequestBodies(sharedFieldsSchema as OpenApiSchema);
+      const names = dtos.map((d) => d.name);
+
+      expect(names).toContain("PrivateRegistrationDTO");
+      expect(names).toContain("BusinessRegistrationDTO");
+      expect(names).not.toContain("RegisterRequestDTO");
+    });
+
+    it("each variant contains shared fields plus its own", () => {
+      const dtos = parseRequestBodies(sharedFieldsSchema as OpenApiSchema);
+
+      const privateDtos = dtos.find((d) => d.name === "PrivateRegistrationDTO");
+      const privateNames = privateDtos?.properties.map((p) => p.name) ?? [];
+      expect(privateNames).toContain("email");
+      expect(privateNames).toContain("firstName");
+      expect(privateNames).toContain("lastName");
+      expect(privateNames).toContain("accountType");
+
+      const businessDtos = dtos.find(
+        (d) => d.name === "BusinessRegistrationDTO",
+      );
+      const businessNames = businessDtos?.properties.map((p) => p.name) ?? [];
+      expect(businessNames).toContain("email");
+      expect(businessNames).toContain("firstName");
+      expect(businessNames).toContain("lastName");
+      expect(businessNames).toContain("accountType");
+      expect(businessNames).toContain("company");
+      expect(businessNames).toContain("vatIds");
+    });
+
+    it("shared required fields apply to all variants", () => {
+      const dtos = parseRequestBodies(sharedFieldsSchema as OpenApiSchema);
+
+      const privateDtos = dtos.find((d) => d.name === "PrivateRegistrationDTO");
+      expect(
+        privateDtos?.properties.find((p) => p.name === "email")?.required,
+      ).toBe(true);
+      expect(
+        privateDtos?.properties.find((p) => p.name === "firstName")?.required,
+      ).toBe(true);
+
+      const businessDtos = dtos.find(
+        (d) => d.name === "BusinessRegistrationDTO",
+      );
+      expect(
+        businessDtos?.properties.find((p) => p.name === "email")?.required,
+      ).toBe(true);
+      expect(
+        businessDtos?.properties.find((p) => p.name === "company")?.required,
+      ).toBe(true);
+      expect(
+        businessDtos?.properties.find((p) => p.name === "vatIds")?.required,
+      ).toBe(true);
+    });
+
+    it("variant-specific properties override shared ones", () => {
+      const dtos = parseRequestBodies(sharedFieldsSchema as OpenApiSchema);
+
+      const businessDtos = dtos.find(
+        (d) => d.name === "BusinessRegistrationDTO",
+      );
+      const accountType = businessDtos?.properties.find(
+        (p) => p.name === "accountType",
+      );
+      expect(accountType?.enum).toEqual(["business"]);
+    });
+  });
+
+  describe("array validation (minItems and item types)", () => {
+    let arraySchema: Record<string, unknown>;
+
+    beforeAll(() => {
+      arraySchema = JSON.parse(
+        readFileSync(
+          resolve(__dirname, "fixtures/arrayValidation.json"),
+          "utf-8",
+        ),
+      );
+    });
+
+    it("parses minItems on array properties", () => {
+      const dtos = parseRequestBodies(arraySchema as OpenApiSchema);
+      const dto = dtos.find((d) => d.name === "CreateItemsRequestDTO");
+      expect(dto).toBeDefined();
+
+      const tags = dto?.properties.find((p) => p.name === "tags");
+      expect(tags?.minItems).toBe(1);
+
+      const ids = dto?.properties.find((p) => p.name === "ids");
+      expect(ids?.minItems).toBe(2);
+
+      const scores = dto?.properties.find((p) => p.name === "scores");
+      expect(scores?.minItems).toBeUndefined();
+    });
+
+    it("parses item types for typed arrays", () => {
+      const dtos = parseRequestBodies(arraySchema as OpenApiSchema);
+      const dto = dtos.find((d) => d.name === "CreateItemsRequestDTO");
+
+      expect(
+        dto?.properties.find((p) => p.name === "tags")?.arrayItemType,
+      ).toBe("string");
+      expect(
+        dto?.properties.find((p) => p.name === "scores")?.arrayItemType,
+      ).toBe("int");
+      expect(
+        dto?.properties.find((p) => p.name === "flags")?.arrayItemType,
+      ).toBe("bool");
+      expect(
+        dto?.properties.find((p) => p.name === "untyped")?.arrayItemType,
+      ).toBeUndefined();
+    });
+
+    it("parses arrayItemMinLength from items.minLength", () => {
+      const dtos = parseRequestBodies(arraySchema as OpenApiSchema);
+      const dto = dtos.find((d) => d.name === "CreateItemsRequestDTO");
+
+      expect(
+        dto?.properties.find((p) => p.name === "vatIds")?.arrayItemMinLength,
+      ).toBe(1);
+      expect(
+        dto?.properties.find((p) => p.name === "tags")?.arrayItemMinLength,
+      ).toBeUndefined();
+    });
+  });
 });
