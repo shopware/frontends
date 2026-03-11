@@ -199,14 +199,14 @@ async function runGenerate(
   );
 }
 
-function collectPhpFiles(dir: string, base: string): string[] {
+function collectDtoFiles(dir: string, base: string): string[] {
   const results: string[] = [];
   if (!existsSync(dir)) return results;
   for (const entry of readdirSync(dir)) {
     const fullPath = resolve(dir, entry);
     if (statSync(fullPath).isDirectory()) {
-      results.push(...collectPhpFiles(fullPath, base));
-    } else if (entry.endsWith(".php")) {
+      results.push(...collectDtoFiles(fullPath, base));
+    } else if (entry.endsWith("DTO.php") || entry === "PreserveNull.php") {
       results.push(relative(base, fullPath));
     }
   }
@@ -224,7 +224,7 @@ async function runCheck(
     process.exit(1);
   }
 
-  const existingFiles = new Set(collectPhpFiles(outputPath, outputPath));
+  const existingFiles = new Set(collectDtoFiles(outputPath, outputPath));
   const expectedFiles = new Set(files.map((f) => f.fileName));
 
   for (const fileName of expectedFiles) {
