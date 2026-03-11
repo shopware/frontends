@@ -21,9 +21,29 @@ const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 
 const { refreshCart } = useCart();
-const { getWishlistProducts } = useWishlist();
+const { getWishlistProducts, mergeWishlistProducts } = useWishlist();
 
-useNotifications();
+const { pushSuccess } = useNotifications();
+const { login } = useUser();
+const { handleApiError } = useApiErrorsResolver("login_modal");
+
+const { controller: loginModalController, handleSuccess: onLoginSuccess } =
+  provideLoginModal();
+
+async function handleModalLogin(formData: {
+  username: string;
+  password: string;
+}) {
+  try {
+    await login(formData);
+    pushSuccess(t("account.messages.loggedInSuccess"));
+    mergeWishlistProducts();
+    onLoginSuccess();
+    loginModalController.close();
+  } catch (error) {
+    handleApiError(error);
+  }
+}
 
 const {
   getAvailableLanguages,
@@ -45,8 +65,14 @@ sessionContextData.value = contextResponse.data;
 
 useSessionContext(sessionContextData.value);
 
-const { locale, availableLocales, defaultLocale, localeProperties, messages } =
-  useI18n();
+const {
+  t,
+  locale,
+  availableLocales,
+  defaultLocale,
+  localeProperties,
+  messages,
+} = useI18n();
 const router = useRouter();
 const route = useRoute();
 
@@ -115,5 +141,15 @@ onMounted(() => {
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+
+    <SharedModal :controller="loginModalController">
+      <div class="w-full flex flex-col gap-3 p-5">
+        <h1 class="text-2xl font-bold">{{ $t("loginForm.header") }}</h1>
+        <p class="text-sm text-text-bg-surface-surface-disabled">
+          {{ $t("loginForm.subHeader") }}
+        </p>
+        <LoginForm @submit="handleModalLogin" />
+      </div>
+    </SharedModal>
   </div>
 </template>

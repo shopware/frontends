@@ -1,6 +1,7 @@
 {
   "product": {
     "addToCart": "Add to cart",
+    "toggleWishlist": "Toggle wishlist",
     "addReview": "Add review",
     "reviewsForm": {
       "title": "Title",
