@@ -37,8 +37,8 @@ async function handleModalLogin(formData: {
   try {
     await login(formData);
     pushSuccess(t("account.messages.loggedInSuccess"));
-    mergeWishlistProducts();
-    onLoginSuccess();
+    await mergeWishlistProducts();
+    await onLoginSuccess();
     loginModalController.close();
   } catch (error) {
     handleApiError(error);
