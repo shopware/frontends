@@ -21,7 +21,7 @@ const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 
 const { refreshCart } = useCart();
-const { getWishlistProducts, mergeWishlistProducts } = useWishlist();
+const { getWishlistProducts } = useWishlist();
 
 const { pushSuccess } = useNotifications();
 const { login } = useUser();
@@ -37,8 +37,7 @@ async function handleModalLogin(formData: {
   try {
     await login(formData);
     pushSuccess(t("account.messages.loggedInSuccess"));
-    await mergeWishlistProducts();
-    await onLoginSuccess();
+    onLoginSuccess();
     loginModalController.close();
   } catch (error) {
     handleApiError(error);
