@@ -32,7 +32,7 @@
   "devDependencies": {
     "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.1",
     "@biomejs/biome": "1.8.3",
-    "@nuxt/devtools": "3.1.1",
+    "@nuxt/devtools": "3.2.3",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/schema": "4.2.2",
     "@shopware/composables": "canary",
@@ -41,6 +41,6 @@
     "@types/node": "22.13.14",
     "nuxt": "4.2.2",
     "typescript": "5.9.3",
-    "vue-tsc": "3.2.2"
+    "vue-tsc": "3.2.5"
   }
 }
