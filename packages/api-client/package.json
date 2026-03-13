@@ -63,7 +63,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "fflate": "0.8.2",
     "happy-dom": "20.7.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "4.0.18"
