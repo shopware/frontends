@@ -18,8 +18,8 @@
     "@shopware/helpers": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.27",
-    "vue-router": "4.6.4"
+    "vue": "3.5.30",
+    "vue-router": "5.0.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
@@ -27,6 +27,6 @@
     "@types/node": "22.13.14",
     "@vitejs/plugin-vue": "6.0.3",
     "vite": "7.3.1",
-    "vue-tsc": "3.2.2"
+    "vue-tsc": "3.2.5"
   }
 }
