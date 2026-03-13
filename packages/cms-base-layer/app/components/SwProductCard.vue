@@ -50,6 +50,7 @@ type Translations = {
     badges: {
       topseller: string;
     };
+    toggleWishlist: string;
   };
   errors: {
     [key: string]: string;
@@ -68,6 +69,7 @@ let translations: Translations = {
     badges: {
       topseller: "Tip",
     },
+    toggleWishlist: "Toggle wishlist",
   },
   errors: {
     "product-stock-reached":

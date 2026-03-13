@@ -1,6 +1,7 @@
 {
   "product": {
     "addToCart": "Zum Warenkorb hinzufügen",
+    "toggleWishlist": "Wunschliste umschalten",
     "addReview": "Bewertung hinzufügen",
     "reviewsForm": {
       "title": "Titel",

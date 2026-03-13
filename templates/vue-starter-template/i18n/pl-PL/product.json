@@ -1,6 +1,7 @@
 {
   "product": {
     "addToCart": "Dodaj do koszyka",
+    "toggleWishlist": "Przełącz listę życzeń",
     "addReview": "Dodaj recenzję",
     "reviewsForm": {
       "title": "Tytuł",
