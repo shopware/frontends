@@ -302,6 +302,112 @@ Prepare your config file named **api-gen.config.json**:
 > [!NOTE]
 > The `rules` configuration is API-type specific. When running `validateJson --apiType=store`, only the rules defined in `store-api.rules` will be applied.
 
+### `phpDto`
+
+Generate PHP DTO classes from an OpenAPI JSON schema. Each component schema and each request/response body produces a separate PHP class file with typed properties, validation attributes, and PHPDoc annotations.
+
+Two actions are available:
+
+- **`generate`** — cleans the output directory and writes all PHP DTO files from scratch.
+- **`check`** — compares the output directory against what would be generated and exits with code 1 if anything is missing, extra, or different. Useful in CI to ensure generated files are committed and up to date.
+
+```bash
+# Generate PHP DTOs from a Store API schema
+pnpx @shopware/api-gen phpDto generate --schemaFile ./api-types/storeApiSchema.json --outputDir ./dto
+
+# Generate with a PHP namespace
+pnpx @shopware/api-gen phpDto generate \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --namespace "App\\DTO"
+
+# Check that generated files are up to date (CI usage)
+pnpx @shopware/api-gen phpDto check \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --namespace "App\\DTO"
+```
+
+flags:
+
+- `--schemaFile` / `-f` (required) — path to the OpenAPI JSON schema file
+- `--outputDir` / `-o` (default: `./dto`) — output directory for generated PHP files
+- `--namespace` / `-n` (optional) — PHP namespace added to every generated class
+- `--tag` / `-t` (optional) — generate only DTOs for endpoints tagged with the given value (and all transitively referenced schemas)
+- `--rawNames` (optional) — disable automatic PascalCase conversion for class/file names; errors on invalid PHP class names instead
+- `--pathConfig` / `-p` (optional) — path to a JSON file that maps API path globs to output subdirectories (see [Path-based routing](#path-based-routing))
+
+#### Generated file structure
+
+Without `--pathConfig`:
+
+- **Root directory** — request, response, and parameter DTOs derived from API operations
+- **`DTO/` subdirectory** — component schema DTOs referenced by the operation-level DTOs
+
+#### Path-based routing
+
+When `--pathConfig` is provided, operation DTOs are grouped into subdirectories based on their endpoint path. Each group gets its own `DTO/` subfolder containing only the component DTOs referenced by that group. Endpoints that don't match any pattern are **skipped** with a warning.
+
+Create a JSON config file (e.g. `phpDto.paths.json`):
+
+```json
+{
+  "/account/**": "account",
+  "/checkout/cart/**": "cart",
+  "/product/**": "product",
+  "/context/**": "context"
+}
+```
+
+Keys are glob patterns matched against the OpenAPI endpoint path. Values are the output subdirectory names.
+
+```bash
+pnpx @shopware/api-gen phpDto generate \
+  --schemaFile ./api-types/storeApiSchema.json \
+  --outputDir ./dto \
+  --pathConfig ./phpDto.paths.json
+```
+
+This produces a directory structure like:
+
+```
+dto/
+  attributes/
+    PreserveNull.php
+  account/
+    LoginCustomerRequestDTO.php
+    RegisterRequestDTO.php
+    DTO/
+      CustomerDTO.php
+      CustomerAddressDTO.php
+  cart/
+    AddLineItemRequestDTO.php
+    DTO/
+      CartDTO.php
+      LineItemDTO.php
+  product/
+    ReadProductRequestDTO.php
+    DTO/
+      ProductDTO.php
+```
+
+When combined with `--namespace`, each group receives its own sub-namespace (e.g. `App\DTO\Account`, `App\DTO\Account\DTO`).
+
+#### `PreserveNull` attribute
+
+Every generated batch includes a `PreserveNull.php` file containing a custom PHP attribute:
+
+```php
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+```
+
+This attribute is added to every constructor parameter where the OpenAPI schema **explicitly declares `null` as a possible type** (e.g. `type: ["string", "null"]` or `oneOf`/`anyOf` containing a null variant). It distinguishes properties that are *intentionally nullable* from properties that default to `null` only for runtime safety (optional, non-required fields without an explicit default).
+
+Use `PreserveNull` in your deserialization/serialization layer to decide whether a `null` value should be preserved and sent to the API, or stripped from the payload. For example, a Symfony serializer normalizer can check for this attribute and keep `null` values in the output only for marked properties.
+
 ### `split` - Experimental
 
 Split an OpenAPI schema into multiple files, organized by tags or paths. This is useful for breaking down a large schema into smaller, more manageable parts.
@@ -370,6 +476,28 @@ await validateJson({
   apiType: "store",
   logPatches: true,
   debug: true,
+});
+```
+
+#### `phpDto`
+
+```ts
+import { phpDto } from "@shopware/api-gen";
+
+// Generate PHP DTO files
+await phpDto({
+  action: "generate",
+  schemaFile: "api-types/storeApiSchema.json",
+  outputDir: "./dto",
+  namespace: "App\\DTO", // optional
+});
+
+// Check that generated files are up to date
+await phpDto({
+  action: "check",
+  schemaFile: "api-types/storeApiSchema.json",
+  outputDir: "./dto",
+  namespace: "App\\DTO",
 });
 ```
 

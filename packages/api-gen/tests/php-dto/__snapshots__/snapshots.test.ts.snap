@@ -1,0 +1,1762 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content for CreateItemsRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CreateItemsRequestDTO
+{
+    public function __construct(
+        /**
+         * @var list<string> List of tags
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $tags,
+        /**
+         * @var list<string> List of UUIDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 2)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $ids,
+        /**
+         * @var list<int> Optional scores
+         */
+        #[Assert\\All(new Assert\\Type('int'))]
+        public ?array $scores = null,
+        /**
+         * @var list<bool> Boolean flags
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('bool'))]
+        public ?array $flags = null,
+        /**
+         * @var list<string> Non-blank strings
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All([new Assert\\Type('string'), new Assert\\NotBlank])]
+        public ?array $vatIds = null,
+        /** Untyped array */
+        public ?array $untyped = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content for CreateItemsResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Success
+ */
+class CreateItemsResponseDTO
+{
+    public function __construct(
+        public ?int $created = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CreateItemsRequestDTO
+{
+    public function __construct(
+        /**
+         * @var list<string> List of tags
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $tags,
+        /**
+         * @var list<string> List of UUIDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\Count(min: 2)]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $ids,
+        /**
+         * @var list<int> Optional scores
+         */
+        #[Assert\\All(new Assert\\Type('int'))]
+        public ?array $scores = null,
+        /**
+         * @var list<bool> Boolean flags
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All(new Assert\\Type('bool'))]
+        public ?array $flags = null,
+        /**
+         * @var list<string> Non-blank strings
+         */
+        #[Assert\\Count(min: 1)]
+        #[Assert\\All([new Assert\\Type('string'), new Assert\\NotBlank])]
+        public ?array $vatIds = null,
+        /** Untyped array */
+        public ?array $untyped = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates expected file names 1`] = `
+[
+  "CreateItemsRequestDTO.php",
+  "CreateItemsResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > arrayValidation.json > generates expected number of files 1`] = `2`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for CreateCartRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CreateCartRequestDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for CreateCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * The newly created cart
+ */
+class CreateCartResponseDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for DTO/CartCreateDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CartCreateDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for DTO/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Full cart entity as returned by the API
+ */
+class CartDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for DTO/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * A single item in the cart
+ */
+class LineItemDTO
+{
+    public function __construct(
+        /** Product identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Number of items */
+        #[Assert\\NotNull]
+        public int $quantity,
+        /** Display label */
+        public ?string $label = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Current cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /** Unique identifier of the cart */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** Date and time the cart was created */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+        /** Date and time the cart was last modified */
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public ?string $updatedAt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\DTO;
+
+use App\\DTO\\DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Payload for creating a new cart
+ */
+class CartCreateDTO
+{
+    public function __construct(
+        /** Name of the cart, e.g. guest-cart */
+        #[Assert\\NotBlank]
+        public string $name,
+        /**
+         * @var list<LineItemDTO> Initial line items to add to the cart
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected file names 1`] = `
+[
+  "CreateCartRequestDTO.php",
+  "CreateCartResponseDTO.php",
+  "DTO/CartCreateDTO.php",
+  "DTO/CartDTO.php",
+  "DTO/LineItemDTO.php",
+  "ReadCartResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > createReadEntity.json > generates expected number of files 1`] = `6`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content for DTO/UserProfileDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * User profile with various formatted fields
+ */
+class UserProfileDTO
+{
+    public function __construct(
+        /** Unique identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $id,
+        /** Email address */
+        #[Assert\\NotBlank]
+        #[Assert\\Email]
+        public string $email,
+        /** Creation timestamp */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        #[Assert\\Url]
+        public ?string $website = null,
+        #[Assert\\Date]
+        public ?string $birthday = null,
+        /** Should not produce a format assert */
+        public ?string $avatar = null,
+        public ?int $fileSize = null,
+        public ?float $price = null,
+        /** Plain string without format */
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * User profile with various formatted fields
+ */
+class UserProfileDTO
+{
+    public function __construct(
+        /** Unique identifier */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $id,
+        /** Email address */
+        #[Assert\\NotBlank]
+        #[Assert\\Email]
+        public string $email,
+        /** Creation timestamp */
+        #[Assert\\NotBlank]
+        #[Assert\\DateTime(format: \\Shopware\\Core\\Defaults::STORAGE_DATE_TIME_FORMAT)]
+        public string $createdAt,
+        #[Assert\\Url]
+        public ?string $website = null,
+        #[Assert\\Date]
+        public ?string $birthday = null,
+        /** Should not produce a format assert */
+        public ?string $avatar = null,
+        public ?int $fileSize = null,
+        public ?float $price = null,
+        /** Plain string without format */
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected file names 1`] = `
+[
+  "DTO/UserProfileDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > formatAssertions.json > generates expected number of files 1`] = `1`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class Api-infoRequestDTO
+{
+    public function __construct(
+        /** Type of the api */
+        #[Assert\\NotBlank]
+        public string $type,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for Api-infoResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * API info
+ */
+class Api-infoResponseDTO
+{
+    public function __construct(
+        public ?string $version = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for DTO/Simple-ProductDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+class Simple-ProductDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for DTO/errorDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class errorDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $code,
+        #[Assert\\NotBlank]
+        public string $message,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content for DTO/errorResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\errorDTO;
+
+class errorResponseDTO
+{
+    public function __construct(
+        /**
+         * @var list<errorDTO>
+         */
+        public ?array $errors = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\DTO;
+
+class Simple-ProductDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected file names 1`] = `
+[
+  "Api-infoRequestDTO.php",
+  "Api-infoResponseDTO.php",
+  "DTO/Simple-ProductDTO.php",
+  "DTO/errorDTO.php",
+  "DTO/errorResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > invalidNames.json > generates expected number of files 1`] = `5`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/OrderBillingAddressCountryDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+/**
+ * Country details
+ */
+class OrderBillingAddressCountryDTO
+{
+    public function __construct(
+        /** ISO 3166-1 alpha-2 code */
+        public ?string $iso = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/OrderBillingAddressDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\OrderBillingAddressCountryDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * The billing address
+ */
+class OrderBillingAddressDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $street,
+        #[Assert\\NotBlank]
+        public string $city,
+        #[Assert\\NotBlank]
+        public string $zipcode,
+        /** Country details */
+        public ?OrderBillingAddressCountryDTO $country = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/OrderDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\OrderBillingAddressDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * An order entity
+ */
+class OrderDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        /** The billing address */
+        #[Assert\\NotNull]
+        public OrderBillingAddressDTO $billingAddress,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextContextDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\SalesChannelContextContextSourceDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Core context with general configuration values and state
+ */
+class SalesChannelContextContextDTO
+{
+    public function __construct(
+        public ?string $versionId = null,
+        public ?string $currencyId = null,
+        public ?int $currencyFactor = null,
+        public ?int $currencyPrecision = null,
+        /**
+         * @var list<string>
+         */
+        #[Assert\\All(new Assert\\Type('string'))]
+        public ?array $languageIdChain = null,
+        public ?string $scope = null,
+        public ?SalesChannelContextContextSourceDTO $source = null,
+        public ?string $taxState = null,
+        public ?bool $useCache = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextContextSourceDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextContextSourceDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['sales-channel', 'shop-api'])]
+        public string $type,
+        #[Assert\\NotBlank]
+        public string $salesChannelId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextCurrentCustomerGroupDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+/**
+ * Customer group of the current user
+ */
+class SalesChannelContextCurrentCustomerGroupDTO
+{
+    public function __construct(
+        /** Name of the group */
+        public ?string $name = null,
+        /** Whether prices are displayed gross */
+        public ?bool $displayGross = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\SalesChannelContextContextDTO;
+use DTO\\SalesChannelContextCurrentCustomerGroupDTO;
+use DTO\\SalesChannelContextItemRoundingDTO;
+use DTO\\SalesChannelContextTaxRulesDTO;
+use DTO\\SalesChannelDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Sales channel context
+ */
+class SalesChannelContextDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public SalesChannelDTO $salesChannel,
+        #[Assert\\NotNull]
+        public SalesChannelContextItemRoundingDTO $itemRounding,
+        /** Context token */
+        public ?string $token = null,
+        /** Core context with general configuration values and state */
+        public ?SalesChannelContextContextDTO $context = null,
+        /** Customer group of the current user */
+        public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,
+        /**
+         * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
+         */
+        public ?array $taxRules = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextItemRoundingDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextItemRoundingDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public int $decimals,
+        #[Assert\\NotNull]
+        public float $interval,
+        #[Assert\\NotNull]
+        public bool $roundForNet,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelContextTaxRulesDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelContextTaxRulesDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public float $taxRate,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content for DTO/SalesChannelDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class SalesChannelDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\DTO;
+
+use App\\DTO\\DTO\\SalesChannelContextContextDTO;
+use App\\DTO\\DTO\\SalesChannelContextCurrentCustomerGroupDTO;
+use App\\DTO\\DTO\\SalesChannelContextItemRoundingDTO;
+use App\\DTO\\DTO\\SalesChannelContextTaxRulesDTO;
+use App\\DTO\\DTO\\SalesChannelDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Sales channel context
+ */
+class SalesChannelContextDTO
+{
+    public function __construct(
+        #[Assert\\NotNull]
+        public SalesChannelDTO $salesChannel,
+        #[Assert\\NotNull]
+        public SalesChannelContextItemRoundingDTO $itemRounding,
+        /** Context token */
+        public ?string $token = null,
+        /** Core context with general configuration values and state */
+        public ?SalesChannelContextContextDTO $context = null,
+        /** Customer group of the current user */
+        public ?SalesChannelContextCurrentCustomerGroupDTO $currentCustomerGroup = null,
+        /**
+         * @var list<SalesChannelContextTaxRulesDTO> Active tax rules
+         */
+        public ?array $taxRules = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected file names 1`] = `
+[
+  "DTO/OrderBillingAddressCountryDTO.php",
+  "DTO/OrderBillingAddressDTO.php",
+  "DTO/OrderDTO.php",
+  "DTO/SalesChannelContextContextDTO.php",
+  "DTO/SalesChannelContextContextSourceDTO.php",
+  "DTO/SalesChannelContextCurrentCustomerGroupDTO.php",
+  "DTO/SalesChannelContextDTO.php",
+  "DTO/SalesChannelContextItemRoundingDTO.php",
+  "DTO/SalesChannelContextTaxRulesDTO.php",
+  "DTO/SalesChannelDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > nestedObjects.json > generates expected number of files 1`] = `10`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates correct content for ImitateCustomerLoginResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Returns context token
+ */
+class ImitateCustomerLoginResponseDTO
+{
+    public function __construct(
+        /** Redirect URL if any */
+        public ?string $redirectUrl = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates correct content for JwtImpersonationPayloadDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Imitate the log in as a customer given a generated token.
+ */
+class JwtImpersonationPayloadDTO
+{
+    public function __construct(
+        /** Generated customer impersonation JWT token. */
+        #[Assert\\NotBlank]
+        public string $token,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates correct content for LegacyImpersonationPayloadDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Imitate the log in as a customer given a generated token.
+ */
+class LegacyImpersonationPayloadDTO
+{
+    public function __construct(
+        /** Generated customer impersonation token (legacy UUID token). */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $token,
+        /** ID of the customer. */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $customerId,
+        /** ID of the user who generated the token. */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $userId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Imitate the log in as a customer given a generated token.
+ */
+class LegacyImpersonationPayloadDTO
+{
+    public function __construct(
+        /** Generated customer impersonation token (legacy UUID token). */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $token,
+        /** ID of the customer. */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $customerId,
+        /** ID of the user who generated the token. */
+        #[Assert\\NotBlank]
+        #[Assert\\Uuid]
+        public string $userId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates expected file names 1`] = `
+[
+  "ImitateCustomerLoginResponseDTO.php",
+  "JwtImpersonationPayloadDTO.php",
+  "LegacyImpersonationPayloadDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > oneOfRequest.json > generates expected number of files 1`] = `3`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for BusinessRegistrationDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class BusinessRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Company name */
+        #[Assert\\NotBlank]
+        public string $company,
+        /**
+         * @var list<string> VAT IDs
+         */
+        #[Assert\\NotNull]
+        #[Assert\\All(new Assert\\Type('string'))]
+        public array $vatIds,
+        /** Account type */
+        #[Assert\\Choice(choices: ['business'])]
+        public string $accountType = 'business',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for PrivateRegistrationDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class PrivateRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Account type */
+        #[Assert\\Choice(choices: ['private'])]
+        public string $accountType = 'private',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content for RegisterResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Success
+ */
+class RegisterResponseDTO
+{
+    public function __construct(
+        public ?string $id = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class PrivateRegistrationDTO
+{
+    public function __construct(
+        /** Email of the customer */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** Customer first name */
+        #[Assert\\NotBlank]
+        public string $firstName,
+        /** Customer last name */
+        #[Assert\\NotBlank]
+        public string $lastName,
+        /** Account type */
+        #[Assert\\Choice(choices: ['private'])]
+        public string $accountType = 'private',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates expected file names 1`] = `
+[
+  "BusinessRegistrationDTO.php",
+  "PrivateRegistrationDTO.php",
+  "RegisterResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > oneOfSharedFields.json > generates expected number of files 1`] = `3`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/CalculatedPriceDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+class CalculatedPriceDTO
+{
+    public function __construct(
+        public ?float $unitPrice = null,
+        public ?float $totalPrice = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\CalculatedPriceDTO;
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Shopping cart
+ */
+class CartDTO
+{
+    public function __construct(
+        /** Context token identifying the cart */
+        #[Assert\\NotBlank]
+        public string $token,
+        /** Name of the cart */
+        public ?string $name = null,
+        public ?CalculatedPriceDTO $price = null,
+        /**
+         * @var list<LineItemDTO> All items within the cart
+         */
+        public ?array $lineItems = null,
+        public ?int $totalItems = null,
+        public ?bool $active = null,
+        public ?float $taxRate = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/DefaultValuesDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class DefaultValuesDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $query,
+        public int $limit = 10,
+        public string $sortOrder = 'relevance',
+        public bool $active = true,
+        /** Single-value enum, should default to the only value */
+        #[Assert\\Choice(choices: ['storefront'])]
+        public string $source = 'storefront',
+        /** Multi-value enum with explicit default */
+        #[Assert\\Choice(choices: ['web', 'api'])]
+        public string $channel = 'web',
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class LineItemDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotNull]
+        public int $quantity,
+        public ?string $label = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/NavigationTypeDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Navigation entry type
+ */
+class NavigationTypeDTO
+{
+    public function __construct(
+        /** Type of the navigation entry */
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['page', 'link', 'folder'])]
+        public string $type,
+        /** Route name for the navigation */
+        #[Assert\\NotBlank]
+        #[Assert\\Choice(choices: ['frontend.navigation.page', 'frontend.landing.page', 'frontend.detail.page'])]
+        public string $routeName,
+        /** Type of the link if type is link */
+        #[Assert\\Choice(choices: ['external', 'category', 'product', 'landing_page'])]
+        public ?string $linkType = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for DTO/NullableUnionDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use Attributes\\PreserveNull;
+
+class NullableUnionDTO
+{
+    public function __construct(
+        #[PreserveNull]
+        public ?string $value = null,
+        /** Nullable count using type array */
+        #[PreserveNull]
+        public ?int $count = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\CalculatedPriceDTO;
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        /** Context token identifying the cart */
+        #[Assert\\NotBlank]
+        public string $token,
+        /** Name of the cart */
+        public ?string $name = null,
+        public ?CalculatedPriceDTO $price = null,
+        /**
+         * @var list<LineItemDTO> All items within the cart
+         */
+        public ?array $lineItems = null,
+        public ?int $totalItems = null,
+        public ?bool $active = null,
+        public ?float $taxRate = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadProductRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ReadProductRequestDTO
+{
+    public function __construct(
+        /** Product ID */
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $productId,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for ReadProductResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+/**
+ * Product found
+ */
+class ReadProductResponseDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+        public ?float $price = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for SendContactMailRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Used for submitting contact forms.
+ */
+class SendContactMailRequestDTO
+{
+    public function __construct(
+        /** Email address */
+        #[Assert\\NotBlank]
+        public string $email,
+        /** The subject of the contact form. */
+        #[Assert\\NotBlank]
+        public string $subject,
+        /** The message of the contact form */
+        #[Assert\\NotBlank]
+        public string $comment,
+        /** Identifier of the salutation. */
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public ?string $salutationId = null,
+        public ?string $firstName = null,
+        public ?string $lastName = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content for attributes/PreserveNull.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace Attributes;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\Attributes;
+
+#[\\Attribute(\\Attribute::TARGET_PROPERTY)]
+class PreserveNull
+{
+}
+"
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected file names 1`] = `
+[
+  "DTO/CalculatedPriceDTO.php",
+  "DTO/CartDTO.php",
+  "DTO/DefaultValuesDTO.php",
+  "DTO/LineItemDTO.php",
+  "DTO/NavigationTypeDTO.php",
+  "DTO/NullableUnionDTO.php",
+  "ReadCartResponseDTO.php",
+  "ReadProductRequestDTO.php",
+  "ReadProductResponseDTO.php",
+  "SendContactMailRequestDTO.php",
+  "attributes/PreserveNull.php",
+]
+`;
+
+exports[`php-dto snapshot tests > simpleSchema.json > generates expected number of files 1`] = `11`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for AddLineItemRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class AddLineItemRequestDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $productId,
+        public int $quantity = 1,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for AddLineItemResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Updated cart
+ */
+class AddLineItemResponseDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for DTO/CartDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class CartDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for DTO/CategoryDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+class CategoryDTO
+{
+    public function __construct(
+        public ?string $id = null,
+        public ?string $name = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for DTO/LineItemDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\ProductDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class LineItemDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotNull]
+        public int $quantity,
+        public ?ProductDTO $product = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for DTO/MediaDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+class MediaDTO
+{
+    public function __construct(
+        public ?string $url = null,
+        public ?string $alt = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for DTO/ProductDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace DTO;
+
+use DTO\\MediaDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ProductDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+        public ?MediaDTO $cover = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadCartResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\LineItemDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+/**
+ * Current cart
+ */
+class ReadCartResponseDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        public string $token,
+        /**
+         * @var list<LineItemDTO>
+         */
+        public ?array $lineItems = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadCategoriesResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\CategoryDTO;
+
+/**
+ * Category list
+ */
+class ReadCategoriesResponseDTO
+{
+    public function __construct(
+        /**
+         * @var list<CategoryDTO>
+         */
+        public ?array $elements = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadProductRequestDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ReadProductRequestDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content for ReadProductResponseDTO.php 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+use DTO\\ProductDTO;
+
+/**
+ * Product detail
+ */
+class ReadProductResponseDTO
+{
+    public function __construct(
+        public ?ProductDTO $product = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates correct content with namespace 1`] = `
+"<?php declare(strict_types=1);
+
+// This file is auto-generated. Do not edit manually.
+
+namespace App\\DTO\\DTO;
+
+use App\\DTO\\DTO\\MediaDTO;
+use Symfony\\Component\\Validator\\Constraints as Assert;
+
+class ProductDTO
+{
+    public function __construct(
+        #[Assert\\NotBlank]
+        #[Assert\\Regex(pattern: '/^[0-9a-f]{32}$/')]
+        public string $id,
+        #[Assert\\NotBlank]
+        public string $name,
+        public ?MediaDTO $cover = null,
+    ) {
+    }
+}
+"
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates expected file names 1`] = `
+[
+  "AddLineItemRequestDTO.php",
+  "AddLineItemResponseDTO.php",
+  "DTO/CartDTO.php",
+  "DTO/CategoryDTO.php",
+  "DTO/LineItemDTO.php",
+  "DTO/MediaDTO.php",
+  "DTO/ProductDTO.php",
+  "ReadCartResponseDTO.php",
+  "ReadCategoriesResponseDTO.php",
+  "ReadProductRequestDTO.php",
+  "ReadProductResponseDTO.php",
+]
+`;
+
+exports[`php-dto snapshot tests > tagSchema.json > generates expected number of files 1`] = `11`;
