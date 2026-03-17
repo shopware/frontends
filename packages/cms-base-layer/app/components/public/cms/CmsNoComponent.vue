@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["CmsBlock"];
+  content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"];
 }>();
 
 const elementType = computed(() =>
@@ -15,13 +15,88 @@ const elementType = computed(() =>
 );
 
 const componentName = computed(() => props.content.type);
+
+const expectedComponentName = computed(() => {
+  const type = elementType.value;
+  const name = componentName.value ?? "";
+  const pascal = name
+    .split(/[-_]/)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join("");
+  return `Cms${type}${pascal}`;
+});
+
+const docsUrl =
+  "https://frontends.shopware.com/getting-started/cms/missing-component";
+
+const aiPrompt = computed(() => {
+  const schemaType =
+    props.content.apiAlias === "cms_block"
+      ? 'Schemas["CmsBlock"]'
+      : props.content.apiAlias === "cms_section"
+        ? 'Schemas["CmsSection"]'
+        : 'Schemas["CmsSlot"]';
+
+  const contentJson = JSON.stringify(props.content, null, 2);
+  const type = elementType.value.toLowerCase();
+  const name = componentName.value;
+  const compName = expectedComponentName.value;
+
+  return [
+    `Create a Vue 3 component \`${compName}.vue\` for a Shopware Frontends headless storefront.`,
+    "",
+    `This component renders the CMS ${type} type: "${name}" (apiAlias: "${props.content.apiAlias}").`,
+    "",
+    "Requirements:",
+    `- Accept a \`content: ${schemaType}\` prop`,
+    `- Render the data for CMS ${type} type "${name}"`,
+    `- Follow patterns from existing Cms${elementType.value} components in packages/cms-base-layer/app/components/public/cms/${type}/`,
+    "- Use composables from @shopware/composables where applicable",
+    "",
+    `The full content prop for this ${type} is:`,
+    contentJson,
+    "",
+    `Reference: ${docsUrl}`,
+  ].join("\n");
+});
+
+const copied = ref(false);
+
+async function copyPrompt() {
+  await navigator.clipboard.writeText(aiPrompt.value);
+  copied.value = true;
+  setTimeout(() => {
+    copied.value = false;
+  }, 2000);
+}
 </script>
-Ū
+
 <template>
-  <span class="sw-text-error">
-    <b>
-      {{ elementType }}<i> {{ componentName }} </i>
-    </b>
-    is not implemented yet!
-  </span>
+  <div
+    class="sw-cms-no-component box-border min-h-[40px] rounded border-2 border-dashed border-brand-primary bg-brand-secondary font-mono text-[11px] text-brand-on-secondary"
+  >
+    <div class="flex flex-wrap items-center gap-1.5 px-2 py-1.5">
+      <span class="text-brand-primary">⚠ missing implementation:</span>
+      <span class="font-semibold">{{ expectedComponentName }}</span>
+
+      <a
+        :href="docsUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="View CMS documentation"
+        class="whitespace-nowrap rounded border border-outline-outline-primary bg-surface-surface px-[5px] py-px text-[10px] leading-none text-brand-primary no-underline hover:bg-brand-secondary-hover"
+      >
+        docs ↗
+      </a>
+
+      <button
+        type="button"
+        :title="aiPrompt"
+        class="cursor-pointer whitespace-nowrap rounded border border-outline-outline-primary bg-surface-surface px-[5px] py-px font-mono text-[10px] leading-none text-brand-primary hover:bg-brand-secondary-hover"
+        @click.stop="copyPrompt"
+      >
+        {{ copied ? "copied ✓" : "copy AI prompt" }}
+      </button>
+    </div>
+  </div>
 </template>
