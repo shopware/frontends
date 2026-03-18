@@ -12,13 +12,13 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.5.27"
+    "vue": "3.5.30"
   },
   "devDependencies": {
     "@types/node": "22.13.14",
-    "@vitejs/plugin-vue": "6.0.3",
+    "@vitejs/plugin-vue": "6.0.5",
     "typescript": "5.9.3",
-    "vite": "7.3.1",
+    "vite": "8.0.0",
     "vue-tsc": "3.2.2"
   },
   "engines": {

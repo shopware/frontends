@@ -14,10 +14,10 @@
     "@shopware/api-gen": "canary",
     "@shopware/composables": "canary",
     "@shopware/nuxt-module": "canary",
-    "nuxt": "4.2.2",
+    "nuxt": "4.4.2",
     "nuxt-toast": "1.4.0",
-    "vue": "3.5.27",
-    "vue-router": "4.6.4"
+    "vue": "3.5.30",
+    "vue-router": "5.0.3"
   },
   "devDependencies": {
     "@unocss/nuxt": "66.6.0",
