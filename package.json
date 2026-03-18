@@ -110,7 +110,8 @@
       "flatted": "^3.4.0",
       "immutable": "^5.1.5",
       "simple-git": "^3.32.3",
-      "unhead": "^2.1.11"
+      "unhead": "^2.1.11",
+      "nitropack": "2.12.9"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["webpack", "vite", "react-dom"]

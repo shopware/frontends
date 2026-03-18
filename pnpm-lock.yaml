@@ -67,6 +67,7 @@ overrides:
   immutable: ^5.1.5
   simple-git: ^3.32.3
   unhead: ^2.1.11
+  nitropack: 2.12.9
 
 importers:
 
@@ -4242,14 +4243,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@poppinss/colors@4.1.5':
-    resolution: {integrity: sha512-FvdDqtcRCtz6hThExcFOgW0cWX+xwSMWcRuQe5ZEb2m7cVQOAVZOIMt+/v9RxGiD9/OY16qJBXK4CVKWAPalBw==}
-
   '@poppinss/colors@4.1.6':
     resolution: {integrity: sha512-H9xkIdFswbS8n1d6vmRd8+c10t2Qe+rZITbbDHHkQixH5+2x1FDGmi/0K+WgWiqQFKPSlIYB7jlH6Kpfn6Fleg==}
-
-  '@poppinss/dumper@0.6.5':
-    resolution: {integrity: sha512-NBdYIb90J7LfOI32dOewKI1r7wnkiH6m920puQ3qHUeZkxNkQiFnXVWoE6YtFSv6QOiPPf7ys6i+HWWecDz7sw==}
 
   '@poppinss/dumper@0.7.0':
     resolution: {integrity: sha512-0UTYalzk2t6S4rA2uHOz5bSSW2CHdv4vggJI6Alg90yvl0UgXs6XSXpH96OH+bRkX4J/06djv29pqXJ0lq5Kag==}
@@ -4515,15 +4510,6 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-alias@6.0.0':
-    resolution: {integrity: sha512-tPCzJOtS7uuVZd+xPhoy5W4vThe6KWXNmsFCNktaAh5RTqcLiSfT4huPQIXkgJ6YCOjJHvecOAzQxLFhPxKr+g==}
-    engines: {node: '>=20.19.0'}
-    peerDependencies:
-      rollup: ^4.59.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
   '@rollup/plugin-commonjs@25.0.7':
     resolution: {integrity: sha512-nEvcR+LRjEjsaSsc4x3XZfCCvZIaSMenZu/OiwOKGN2UhQpAYI7ru7czFvyWbErlpoGjnSX3D5Ch5FcMA3kRWQ==}
     engines: {node: '>=14.0.0'}
@@ -4542,8 +4528,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-commonjs@29.0.0':
-    resolution: {integrity: sha512-U2YHaxR2cU/yAiwKJtJRhnyLk7cifnQw0zUpISsocBDoHDJn+HTV74ABqnwr5bEgWUwFZC9oFL6wLe21lHu5eQ==}
+  '@rollup/plugin-commonjs@28.0.9':
+    resolution: {integrity: sha512-PIR4/OHZ79romx0BVVll/PkwWpJ7e5lsqFa3gFfcrFPWwLXLV39JVUzQV9RKjWerE7B845Hqjj9VYlQeieZ2dA==}
     engines: {node: '>=16.0.0 || 14 >= 14.17'}
     peerDependencies:
       rollup: ^3.30.0
@@ -4982,9 +4968,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@speed-highlight/core@1.2.12':
-    resolution: {integrity: sha512-uilwrK0Ygyri5dToHYdZSjcvpS2ZwX0w5aSt3GCEN9hrjxWCoeV4Z2DTXuxjwbntaLQIEEAlCeNQss5SoHvAEA==}
 
   '@speed-highlight/core@1.2.14':
     resolution: {integrity: sha512-G4ewlBNhUtlLvrJTb88d2mdy2KRijzs4UhnlrOSRT4bmjh/IqNElZa3zkrZ+TC47TwtlDWzVLFADljF1Ijp5hA==}
@@ -6138,9 +6121,9 @@ packages:
     resolution: {integrity: sha512-Im/KeFH4oPx7UsM+QiteimnE07bIUD7JK6CBafI9Z0jRFogaialTBMiZj8EKk/30ctUYsrpIIyP9iIY1YxWnUQ==}
     engines: {node: '>=16.14'}
 
-  '@vercel/nft@1.3.2':
-    resolution: {integrity: sha512-HC8venRc4Ya7vNeBsJneKHHMDDWpQie7VaKhAIOst3MKO+DES+Y/SbzSp8mFkD7OzwAE2HhHkeSuSmwS20mz3A==}
-    engines: {node: '>=20'}
+  '@vercel/nft@0.30.4':
+    resolution: {integrity: sha512-wE6eAGSXScra60N2l6jWvNtVK0m+sh873CpfZW4KI2v8EHuUQp+mSEi4T+IcdPCSEDgCdAS/7bizbhQlkjzrSA==}
+    engines: {node: '>=18'}
     hasBin: true
 
   '@vitejs/plugin-vue-jsx@4.2.0':
@@ -8269,12 +8252,7 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
-
-  glob@13.0.0:
-    resolution: {integrity: sha512-tvZgpqk6fz4BaNZ66ZsRaZnbHvP/jG3uKJvAZOwEVUL4RTA5nJeeLYfyN9/VA8NX/V3IBG+hkeuGpKjvELkVhA==}
-    engines: {node: 20 || >=22}
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
@@ -8301,8 +8279,8 @@ packages:
     resolution: {integrity: sha512-Y1zNGV+pzQdh7H39l9zgB4PJqjRNqydvdYCDG4HFXM4XuvSaQQlEc91IU1yALL8gUTDomgBAfz3XJdmUS+oo0w==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  globby@16.1.0:
-    resolution: {integrity: sha512-+A4Hq7m7Ze592k9gZRy4gJ27DrXRNnC1vPjxTt1qQxEY8RxagBkBxivkCwg7FxSTG0iLLEMaUx13oOr0R2/qcQ==}
+  globby@15.0.0:
+    resolution: {integrity: sha512-oB4vkQGqlMl682wL1IlWd02tXCbquGWM4voPEI85QmNKCaw8zGTm1f1rubFgkg3Eli2PtKlFgrnmUqasbQWlkw==}
     engines: {node: '>=20'}
 
   glsl-token-functions@1.0.1:
@@ -9792,8 +9770,8 @@ packages:
     resolution: {integrity: sha512-Nc3loyVASW59W+8fLDZT1lncpG7llffyZ2o0UQLx/Fr20i7P8oP+lE7+TEcFvXj9IUWU6LjB9P3BH+iFGyp+mg==}
     engines: {node: ^14.16.0 || >=16.0.0}
 
-  nitropack@2.13.1:
-    resolution: {integrity: sha512-2dDj89C4wC2uzG7guF3CnyG+zwkZosPEp7FFBGHB3AJo11AywOolWhyQJFHDzve8COvGxJaqscye9wW2IrUsNw==}
+  nitropack@2.12.9:
+    resolution: {integrity: sha512-t6qqNBn2UDGMWogQuORjbL2UPevB8PvIPsPHmqvWpeGOlPr4P8Oc5oA8t3wFwGmaolM2M/s2SwT23nx9yARmOg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -10161,13 +10139,13 @@ packages:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
 
-  path-scurry@2.0.1:
-    resolution: {integrity: sha512-oWyT4gICAu+kaA7QWk/jvCHWarMKNs6pXOGWKDTr7cw4IGcUbW+PeTfbaQiLGheFRpjo6O9J0PmyMfQPjH71oA==}
-    engines: {node: 20 || >=22}
-
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+
+  path-type@6.0.0:
+    resolution: {integrity: sha512-Vj7sf++t5pBD637NSfkxpHSMfWaeig5+DKWLhcqIYx6mWQz5hdJTGDVMQiJcw1ZYkhs7AazKDGpRVji1LJCZUQ==}
+    engines: {node: '>=18'}
 
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
@@ -11779,10 +11757,6 @@ packages:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
     engines: {node: '>=18'}
 
-  unicorn-magic@0.4.0:
-    resolution: {integrity: sha512-wH590V9VNgYH9g3lH9wWjTrUoKsjLF6sGLjhR4sH1LWpLmCOH0Zf7PukhDA8BiS7KHe4oPNkcTHqYkj7SOGUOw==}
-    engines: {node: '>=20'}
-
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
 
@@ -12241,8 +12215,8 @@ packages:
     resolution: {integrity: sha512-nwNCjxJTjNuLCgFr42fEak5OcLuB3ecca+9ksPFNvtfYSLpjf+iJqSIaSnIile6ZPbKYxI5k2AfXqeopGudK/g==}
     hasBin: true
 
-  unwasm@0.5.3:
-    resolution: {integrity: sha512-keBgTSfp3r6+s9ZcSma+0chwxQdmLbB5+dAD9vjtB21UTMYuKAxHXCU1K2CbCtnP09EaWeRvACnXk0EJtUx+hw==}
+  unwasm@0.3.11:
+    resolution: {integrity: sha512-Vhp5gb1tusSQw5of/g3Q697srYgMXvwMgXMjcG4ZNga02fDX9coxJ9fAb0Ci38hM2Hv/U1FXRPGgjP2BYqhNoQ==}
 
   update-browserslist-db@1.2.2:
     resolution: {integrity: sha512-E85pfNzMQ9jpKkA7+TJAi4TJN+tBCuWh5rUcS/sv6cFi+1q9LYDwDI5dpUL0u/73EElyQ8d3TEaeW4sPedBqYA==}
@@ -13022,9 +12996,6 @@ packages:
 
   youch@4.1.0:
     resolution: {integrity: sha512-cYekNh2tUoU+voS11X0D0UQntVCSO6LQ1h10VriQGmfbpf0mnGTruwZICts23UUNiZCXm8H8hQBtRrdsbhuNNg==}
-
-  youch@4.1.0-beta.13:
-    resolution: {integrity: sha512-3+AG1Xvt+R7M7PSDudhbfbwiyveW6B8PLBIwTyEC598biEYIjHhC89i6DBEvR0EZUjGY3uGSnC429HpIa2Z09g==}
 
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
@@ -15042,7 +15013,7 @@ snapshots:
       ufo: 1.6.3
       unifont: 0.6.0
       unplugin: 2.3.11
-      unstorage: 1.17.3(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0)
+      unstorage: 1.17.4(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -15292,7 +15263,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@4.59.0))(rollup@4.59.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -15362,7 +15333,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.30)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@3.30.0))(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -15432,7 +15403,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.30)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@3.30.0))(rollup@3.30.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -15502,7 +15473,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.30)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@4.59.0))(rollup@4.59.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -15572,7 +15543,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.30)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@4.59.0))(rollup@4.59.0)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -15642,7 +15613,7 @@ snapshots:
       impound: 1.1.5
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
+      nitropack: 2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1)
       nuxt: 4.4.2(@babel/core@7.29.0)(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.0))(@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.29.0))(@biomejs/biome@1.8.3)(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@22.13.14)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.30)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(eslint@10.0.2(jiti@2.6.1))(ioredis@5.10.0)(less@4.2.0)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.1)(rollup@4.59.0))(rollup@4.59.0)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1))(vue-tsc@3.2.2(typescript@5.9.3))(yaml@2.8.1)
       nypm: 0.6.5
       ohash: 2.0.11
@@ -16718,19 +16689,9 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@poppinss/colors@4.1.5':
-    dependencies:
-      kleur: 4.1.5
-
   '@poppinss/colors@4.1.6':
     dependencies:
       kleur: 4.1.5
-
-  '@poppinss/dumper@0.6.5':
-    dependencies:
-      '@poppinss/colors': 4.1.5
-      '@sindresorhus/is': 7.1.1
-      supports-color: 10.2.2
 
   '@poppinss/dumper@0.7.0':
     dependencies:
@@ -16962,10 +16923,6 @@ snapshots:
     optionalDependencies:
       rollup: 4.59.0
 
-  '@rollup/plugin-alias@6.0.0(rollup@4.59.0)':
-    optionalDependencies:
-      rollup: 4.59.0
-
   '@rollup/plugin-commonjs@25.0.7(rollup@3.30.0)':
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@3.30.0)
@@ -16989,7 +16946,7 @@ snapshots:
     optionalDependencies:
       rollup: 4.59.0
 
-  '@rollup/plugin-commonjs@29.0.0(rollup@4.59.0)':
+  '@rollup/plugin-commonjs@28.0.9(rollup@4.59.0)':
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.59.0)
       commondir: 1.0.1
@@ -17486,8 +17443,6 @@ snapshots:
   '@sindresorhus/is@7.1.1': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@speed-highlight/core@1.2.12': {}
 
   '@speed-highlight/core@1.2.14': {}
 
@@ -19210,7 +19165,7 @@ snapshots:
       undici: 6.24.1
     optional: true
 
-  '@vercel/nft@1.3.2(encoding@0.1.13)(rollup@4.59.0)':
+  '@vercel/nft@0.30.4(encoding@0.1.13)(rollup@4.59.0)':
     dependencies:
       '@mapbox/node-pre-gyp': 2.0.3(encoding@0.1.13)
       '@rollup/pluginutils': 5.3.0(rollup@4.59.0)
@@ -19219,7 +19174,7 @@ snapshots:
       async-sema: 3.1.1
       bindings: 1.5.0
       estree-walker: 2.0.2
-      glob: 13.0.0
+      glob: 10.5.0
       graceful-fs: 4.2.11
       node-gyp-build: 4.8.4
       picomatch: 4.0.3
@@ -21698,7 +21653,7 @@ snapshots:
       pathe: 2.0.3
       ufo: 1.6.3
       unifont: 0.6.0
-      unstorage: 1.17.3(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0)
+      unstorage: 1.17.4(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0)
     optionalDependencies:
       vite: 7.3.1(@types/node@22.13.14)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.31.1)(sass@1.89.2)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.1)
     transitivePeerDependencies:
@@ -21895,12 +21850,6 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  glob@13.0.0:
-    dependencies:
-      minimatch: 10.2.4
-      minipass: 7.1.2
-      path-scurry: 2.0.1
-
   glob@7.2.3:
     dependencies:
       fs.realpath: 1.0.0
@@ -21941,14 +21890,14 @@ snapshots:
       merge2: 1.4.1
       slash: 4.0.0
 
-  globby@16.1.0:
+  globby@15.0.0:
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
       fast-glob: 3.3.3
       ignore: 7.0.5
-      is-path-inside: 4.0.0
+      path-type: 6.0.0
       slash: 5.1.0
-      unicorn-magic: 0.4.0
+      unicorn-magic: 0.3.0
 
   glsl-token-functions@1.0.1: {}
 
@@ -23709,20 +23658,20 @@ snapshots:
       qs: 6.15.0
     optional: true
 
-  nitropack@2.13.1(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1):
+  nitropack@2.12.9(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(encoding@0.1.13)(rolldown@1.0.0-rc.1):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.2
-      '@rollup/plugin-alias': 6.0.0(rollup@4.59.0)
-      '@rollup/plugin-commonjs': 29.0.0(rollup@4.59.0)
+      '@rollup/plugin-alias': 5.1.1(rollup@4.59.0)
+      '@rollup/plugin-commonjs': 28.0.9(rollup@4.59.0)
       '@rollup/plugin-inject': 5.0.5(rollup@4.59.0)
       '@rollup/plugin-json': 6.1.0(rollup@4.59.0)
       '@rollup/plugin-node-resolve': 16.0.3(rollup@4.59.0)
       '@rollup/plugin-replace': 6.0.3(rollup@4.59.0)
       '@rollup/plugin-terser': 0.4.4(rollup@4.59.0)
-      '@vercel/nft': 1.3.2(encoding@0.1.13)(rollup@4.59.0)
+      '@vercel/nft': 0.30.4(encoding@0.1.13)(rollup@4.59.0)
       archiver: 7.0.1
       c12: 3.3.3(magicast@0.5.2)
-      chokidar: 5.0.0
+      chokidar: 4.0.3
       citty: 0.1.6
       compatx: 0.2.0
       confbox: 0.2.4
@@ -23738,7 +23687,7 @@ snapshots:
       escape-string-regexp: 5.0.0
       etag: 1.8.1
       exsolve: 1.0.8
-      globby: 16.1.0
+      globby: 15.0.0
       gzip-size: 7.0.0
       h3: 1.15.5
       hookable: 5.5.3
@@ -23778,8 +23727,8 @@ snapshots:
       unplugin-utils: 0.3.1
       unstorage: 1.17.4(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0)
       untyped: 2.0.0
-      unwasm: 0.5.3
-      youch: 4.1.0-beta.13
+      unwasm: 0.3.11
+      youch: 4.1.0
       youch-core: 0.3.3
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -24997,12 +24946,9 @@ snapshots:
       lru-cache: 10.4.3
       minipass: 7.1.2
 
-  path-scurry@2.0.1:
-    dependencies:
-      lru-cache: 11.2.4
-      minipass: 7.1.2
-
   path-type@4.0.0: {}
+
+  path-type@6.0.0: {}
 
   pathe@1.1.2: {}
 
@@ -26843,8 +26789,6 @@ snapshots:
 
   unicorn-magic@0.3.0: {}
 
-  unicorn-magic@0.4.0: {}
-
   unified@11.0.5:
     dependencies:
       '@types/unist': 3.0.3
@@ -27294,6 +27238,7 @@ snapshots:
       '@vercel/blob': 1.0.2
       db0: 0.3.4
       ioredis: 5.10.0
+    optional: true
 
   unstorage@1.17.4(@netlify/blobs@9.1.2)(@vercel/blob@1.0.2)(db0@0.3.4)(ioredis@5.10.0):
     dependencies:
@@ -27337,14 +27282,14 @@ snapshots:
       knitwork: 1.3.0
       scule: 1.3.0
 
-  unwasm@0.5.3:
+  unwasm@0.3.11:
     dependencies:
-      exsolve: 1.0.8
       knitwork: 1.3.0
       magic-string: 0.30.21
       mlly: 1.8.1
       pathe: 2.0.3
       pkg-types: 2.3.0
+      unplugin: 2.3.11
 
   update-browserslist-db@1.2.2(browserslist@4.26.3):
     dependencies:
@@ -28327,14 +28272,6 @@ snapshots:
       '@poppinss/colors': 4.1.6
       '@poppinss/dumper': 0.7.0
       '@speed-highlight/core': 1.2.14
-      cookie-es: 2.0.0
-      youch-core: 0.3.3
-
-  youch@4.1.0-beta.13:
-    dependencies:
-      '@poppinss/colors': 4.1.5
-      '@poppinss/dumper': 0.6.5
-      '@speed-highlight/core': 1.2.12
       cookie-es: 2.0.0
       youch-core: 0.3.3
 
