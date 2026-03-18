@@ -63,11 +63,17 @@ const aiPrompt = computed(() => {
 const copied = ref(false);
 
 async function copyPrompt() {
-  await navigator.clipboard.writeText(aiPrompt.value);
-  copied.value = true;
-  setTimeout(() => {
-    copied.value = false;
-  }, 2000);
+  try {
+    await navigator.clipboard.writeText(aiPrompt.value);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
+  } catch {
+    // Fallback: clipboard API unavailable (non-secure origin, unfocused document)
+    console.warn("[CMS] Could not copy to clipboard. Prompt logged below:");
+    console.info(aiPrompt.value);
+  }
 }
 </script>
 
@@ -91,7 +97,7 @@ async function copyPrompt() {
 
       <button
         type="button"
-        :title="aiPrompt"
+        title="Copy AI prompt to clipboard"
         class="cursor-pointer whitespace-nowrap rounded border border-outline-outline-primary bg-surface-surface px-[5px] py-px font-mono text-[10px] leading-none text-brand-primary hover:bg-brand-secondary-hover"
         @click.stop="copyPrompt"
       >
