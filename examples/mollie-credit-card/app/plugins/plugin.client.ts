@@ -5,7 +5,7 @@ import type {
 } from "@/types";
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 
-declare module "@nuxt/schema" {
+declare module "nuxt/schema" {
   interface PublicRuntimeConfig {
     mollie: MollieOptions;
   }
