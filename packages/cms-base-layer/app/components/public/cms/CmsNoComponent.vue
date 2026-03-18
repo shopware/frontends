@@ -26,8 +26,13 @@ const expectedComponentName = computed(() => {
   return `Cms${type}${pascal}`;
 });
 
-const docsUrl =
-  "https://frontends.shopware.com/getting-started/cms/missing-component";
+const docsUrl = computed(() => {
+  const params = new URLSearchParams({
+    component: expectedComponentName.value,
+    type: elementType.value.toLowerCase(),
+  });
+  return `https://frontends.shopware.com/getting-started/cms/missing-component?${params}`;
+});
 
 const aiPrompt = computed(() => {
   const schemaType =
@@ -56,7 +61,7 @@ const aiPrompt = computed(() => {
     `The full content prop for this ${type} is:`,
     contentJson,
     "",
-    `Reference: ${docsUrl}`,
+    `Reference: ${docsUrl.value}`,
   ].join("\n");
 });
 

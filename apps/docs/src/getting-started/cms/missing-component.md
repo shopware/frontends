@@ -13,9 +13,52 @@ nav:
   position: 25
 ---
 
+<script setup>
+import { useRoute } from 'vitepress'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+const params = computed(() => {
+  if (typeof window === 'undefined') return {}
+  const sp = new URLSearchParams(window.location.search)
+  return {
+    component: sp.get('component'),
+    type: sp.get('type'),
+  }
+})
+
+// Sanitize: only allow valid PascalCase component names (letters, numbers)
+const componentName = computed(() => {
+  const raw = params.value.component || ''
+  const sanitized = raw.replace(/[^a-zA-Z0-9]/g, '')
+  return sanitized && /^Cms[A-Z]/.test(sanitized) ? sanitized : 'CmsElementMyCustomSlider'
+})
+const cmsType = computed(() => {
+  const allowed = ['element', 'block', 'section']
+  return allowed.includes(params.value.type || '') ? params.value.type : 'element'
+})
+const hasContext = computed(() => !!params.value.component)
+
+const schemaType = computed(() => {
+  switch (cmsType.value) {
+    case 'block': return 'CmsBlock'
+    case 'section': return 'CmsSection'
+    default: return 'CmsSlot'
+  }
+})
+
+const fileDir = computed(() => cmsType.value + '/')
+</script>
+
 # Implement a Missing CMS Component
 
-You are here because a CMS element or block in your storefront has no matching Vue component. In development mode this shows as a highlighted placeholder instead of the actual content.
+<div v-if="hasContext" class="custom-block tip">
+  <p class="custom-block-title">Your missing component</p>
+  <p>You need to create <strong>{{ componentName }}.vue</strong> ({{ cmsType }})</p>
+</div>
+
+You are here because a CMS {{ cmsType }} in your storefront has no matching Vue component. In development mode this shows as a highlighted placeholder instead of the actual content.
 
 This page will take you from placeholder to working component in a few minutes.
 
@@ -45,68 +88,37 @@ Add the **`cms-base`** label to the issue. Include the component name shown in t
 
 If the component belongs to a custom plugin or you created the block yourself in the Shopware backend, continue with the steps below.
 
-## Step 1 — Find the component name
+## Step 1 — Create the file
 
-The placeholder in the browser already tells you exactly what to create:
-
-```
-⚠ missing implementation: CmsElementMyCustomSlider
-```
-
-That is the filename you need: **`CmsElementMyCustomSlider.vue`**.
-
-## Step 2 — Create the file
+<div v-if="hasContext" class="custom-block tip">
+  <p class="custom-block-title">Your component</p>
+  <p>Create <code>components/{{ componentName }}.vue</code></p>
+</div>
 
 Create the file anywhere inside your `components/` directory. Nuxt picks it up automatically as a global component:
 
 ```
 your-project/
 └── components/
-    └── CmsElementMyCustomSlider.vue   ← create this
+    └── {{ componentName }}.vue   ← create this
 ```
 
-## Step 3 — Define the props
+## Step 2 — Define the props
 
 Every CMS component receives a single `content` prop. Use the Shopware schema type matching the CMS node type:
 
-::: code-group
-
-```vue [Element (cms_slot)]
-<!-- components/CmsElementMyCustomSlider.vue -->
+```vue
+<!-- components/{{ componentName }}.vue -->
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["CmsSlot"];
+  content: Schemas["{{ schemaType }}"];
 }>();
 </script>
 ```
 
-```vue [Block (cms_block)]
-<!-- components/CmsBlockMyCustomBanner.vue -->
-<script setup lang="ts">
-import type { Schemas } from "#shopware";
-
-const props = defineProps<{
-  content: Schemas["CmsBlock"];
-}>();
-</script>
-```
-
-```vue [Section (cms_section)]
-<!-- components/CmsSectionMyCustomLayout.vue -->
-<script setup lang="ts">
-import type { Schemas } from "#shopware";
-
-const props = defineProps<{
-  content: Schemas["CmsSection"];
-}>();
-</script>
-```
-
-:::
-
-## Step 4 — Render the content
+## Step 3 — Render the content
 
 The `content` prop contains everything the API returned for that node. The exact fields depend on your CMS configuration in Shopware, but the structure is always:
 
@@ -114,12 +126,38 @@ The `content` prop contains everything the API returned for that node. The exact
 - **`content.data`** — resolved data (media objects, products, etc.)
 - **`content.translated`** — translated field values
 
-Use the **copy AI prompt** button on the placeholder to get a pre-filled prompt that includes the full `content` JSON for your specific element — paste it into any AI assistant to generate a working first draft.
+Use the **copy AI prompt** button on the placeholder to get a pre-filled prompt that includes the full `content` JSON for your specific {{ cmsType }} — paste it into any AI assistant to generate a working first draft.
 
-A minimal working element:
+A minimal working {{ cmsType }}:
+
+<div v-if="cmsType === 'block'">
 
 ```vue
-<!-- components/CmsElementMyCustomSlider.vue -->
+<!-- components/{{ componentName }}.vue -->
+<script setup lang="ts">
+import type { Schemas } from "#shopware";
+
+const props = defineProps<{
+  content: Schemas["CmsBlock"];
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+const mainContent = getSlotContent("main");
+</script>
+
+<template>
+  <div>
+    <CmsGenericElement :content="mainContent" />
+  </div>
+</template>
+```
+
+</div>
+
+<div v-else>
+
+```vue
+<!-- components/{{ componentName }}.vue -->
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
@@ -139,29 +177,9 @@ const title = props.content.config?.title?.value as string | undefined;
 </template>
 ```
 
-For blocks, use `useCmsBlock` to access named slots:
+</div>
 
-```vue
-<!-- components/CmsBlockMyCustomBanner.vue -->
-<script setup lang="ts">
-import type { Schemas } from "#shopware";
-
-const props = defineProps<{
-  content: Schemas["CmsBlock"];
-}>();
-
-const { getSlotContent } = useCmsBlock(props.content);
-const heroContent = getSlotContent("hero");
-</script>
-
-<template>
-  <div class="my-banner">
-    <CmsGenericElement :content="heroContent" />
-  </div>
-</template>
-```
-
-## Step 5 — Verify
+## Step 4 — Verify
 
 Save the file. Vite will hot-reload and the placeholder will be replaced by your component. If it still shows, check that:
 
