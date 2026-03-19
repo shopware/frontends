@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { pascalCase } from "scule";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -16,15 +17,9 @@ const elementType = computed(() =>
 
 const componentName = computed(() => props.content.type);
 
-const expectedComponentName = computed(() => {
-  const type = elementType.value;
-  const name = componentName.value ?? "";
-  const pascal = name
-    .split(/[-_]/)
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join("");
-  return `Cms${type}${pascal}`;
-});
+const expectedComponentName = computed(() =>
+  pascalCase(`Cms-${elementType.value}-${componentName.value ?? ""}`),
+);
 
 const docsUrl = computed(() => {
   const params = new URLSearchParams({

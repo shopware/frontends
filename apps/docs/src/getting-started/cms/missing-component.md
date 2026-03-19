@@ -15,13 +15,16 @@ nav:
 
 <script setup>
 import { useRoute } from 'vitepress'
-import { computed } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 
 const route = useRoute()
 
+const rawSearch = ref('')
+onMounted(() => { rawSearch.value = window.location.search })
+watch(() => route.path, () => { rawSearch.value = window.location.search })
+
 const params = computed(() => {
-  if (typeof window === 'undefined') return {}
-  const sp = new URLSearchParams(window.location.search)
+  const sp = new URLSearchParams(rawSearch.value)
   return {
     component: sp.get('component'),
     type: sp.get('type'),
@@ -47,8 +50,6 @@ const schemaType = computed(() => {
     default: return 'CmsSlot'
   }
 })
-
-const fileDir = computed(() => cmsType.value + '/')
 </script>
 
 # Implement a Missing CMS Component
