@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/kit": "4.2.2",
+    "@nuxt/kit": "4.3.1",
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
