@@ -1,6 +1,8 @@
-# Nuxt Minimal Starter
+# Vue Starter Template
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A Nuxt storefront foundation with all Shopware Frontends packages pre-configured.
+
+**[Live Demo →](https://frontends-starter-template.vercel.app/)**
 
 ## Setup
 
