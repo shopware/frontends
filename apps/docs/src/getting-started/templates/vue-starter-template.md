@@ -10,6 +10,8 @@ The Vue Starter Template is a production-ready Nuxt application with all Shopwar
 Unlike the Demo Store Template, the **Vue Starter Template** is designed for production use and can be used as a foundation for your custom storefront.
 :::
 
+**[Live Demo →](https://frontends-starter-template.vercel.app/)**
+
 ## Setup & run
 
 <PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />

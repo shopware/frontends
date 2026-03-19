@@ -35,6 +35,8 @@ The Vue Starter Template is a production-ready foundation for building custom Sh
 
 **Best for:** Starting a new production storefront project from a clean foundation.
 
+**[Live Demo →](https://frontends-starter-template.vercel.app/)**
+
 <PageRef page="./templates/vue-starter-template.html" title="Get started with Vue Starter Template" sub="Production-ready foundation for custom storefronts" />
 
 ## Vue Starter Template Extended
@@ -48,6 +50,8 @@ An example implementation showing how to extend the Vue Starter Template using N
 - Multiple brand variants from one base
 
 **Best for:** Learning the layer pattern or managing multiple brand storefronts.
+
+**[Live Demo →](https://frontends-extended-starter-template.vercel.app/)**
 
 <PageRef page="./templates/vue-starter-template-extended.html" title="Vue Starter Template Extended" sub="Example of extending templates using Nuxt layers" />
 

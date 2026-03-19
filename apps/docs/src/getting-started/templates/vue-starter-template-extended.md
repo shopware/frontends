@@ -10,6 +10,8 @@ The Vue Starter Template Extended (Lumora Demo Store) is an example implementati
 This template showcases the **Nuxt layer pattern** - a powerful way to create brand-specific storefronts without code duplication.
 :::
 
+**[Live Demo →](https://frontends-extended-starter-template.vercel.app/)**
+
 ## Setup & run
 
 This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) and extends the `vue-starter-template`. You need both templates to run it.
