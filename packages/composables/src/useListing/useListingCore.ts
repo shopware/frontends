@@ -3,6 +3,10 @@ import type { Ref } from "vue";
 import type { Schemas, operations } from "#shopware";
 import { merge } from "./utils";
 
+export const LISTING_CONTEXT_KEY = "listingCoreContext";
+
+export type ListingCoreContext = ReturnType<typeof useListingCore>;
+
 export function useListingCore({
   listingKey,
   searchMethod,
@@ -121,11 +125,12 @@ export function useListingCore({
     }
   };
 
-  return {
+  const context = {
     _storeInitialListing,
     _storeAppliedListing,
     loading,
     loadingMore,
+    searchDefaults,
     getInitialListing,
     setInitialListing,
     getCurrentListing,
@@ -136,4 +141,18 @@ export function useListingCore({
     search,
     loadMore,
   };
+
+  provide(LISTING_CONTEXT_KEY, context);
+
+  return context;
+}
+
+export function useListingCoreContext(): ListingCoreContext {
+  const context = inject<ListingCoreContext>(LISTING_CONTEXT_KEY);
+  if (!context) {
+    throw new Error(
+      "[useListingCoreContext] Listing context not found. Make sure `createCategoryListingContext` was called in a parent component.",
+    );
+  }
+  return context;
 }

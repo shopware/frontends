@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware/composables";
-import { useCmsTranslations } from "@shopware/composables";
+import {
+  useCmsTranslations,
+  useListingCoreContext,
+  useProductListingPagination,
+} from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useCategoryListing, useCmsElementConfig } from "#imports";
+import { useCmsElementConfig } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
@@ -35,14 +39,9 @@ let translations: Translations = {
 };
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-const {
-  changeCurrentPage,
-  getCurrentPage,
-  getElements,
-  getTotalPagesCount,
-  loading,
-  setInitialListing,
-} = useCategoryListing();
+const { getElements, loading, setInitialListing } = useListingCoreContext();
+const { changeCurrentPage, getCurrentPage, getTotalPagesCount } =
+  useProductListingPagination();
 const route = useRoute();
 const router = useRouter();
 const limit = ref(

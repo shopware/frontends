@@ -9,19 +9,19 @@ defineOptions({
   name: "SearchResultPage",
 });
 
+const listing = useProductSearchListing();
 const {
-  changeCurrentPage,
   getCurrentListing,
-  getCurrentPage,
-  getCurrentSortingOrder,
   getElements: products,
-  getInitialFilters,
-  getSortingOrders,
-  getTotalPagesCount,
   loading,
   search,
   setInitialListing,
-} = useProductSearchListing();
+} = listing;
+const { changeCurrentPage, getCurrentPage, getTotalPagesCount } =
+  useProductListingPagination(listing);
+const { getCurrentSortingOrder, getSortingOrders } =
+  useProductListingSorting(listing);
+const { getInitialFilters } = useProductListingFilters(listing);
 const { t } = useI18n();
 const productListElement = useTemplateRef("productListElement");
 

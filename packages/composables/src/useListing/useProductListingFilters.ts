@@ -1,24 +1,30 @@
 import { getListingFilters } from "@shopware/helpers";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import type { Schemas, operations } from "#shopware";
+import { useListingCoreContext } from "./useListingCore";
+import type { ListingCoreContext } from "./useListingCore";
 import type { ShortcutFilterParam } from "./utils";
 
-export function useProductListingFilters({
-  getInitialListing,
-  getCurrentListing,
-  _storeAppliedListing,
-  search,
-  searchDefaults,
-}: {
+type UseProductListingFiltersParams = {
   getInitialListing: ComputedRef<Schemas["ProductListingResult"] | null>;
   getCurrentListing: ComputedRef<Schemas["ProductListingResult"] | null>;
-  _storeAppliedListing: Ref<Schemas["ProductListingResult"] | null>;
+  _storeAppliedListing?: Ref<Schemas["ProductListingResult"] | null>;
   search(
     criteria: operations["searchPage post /search"]["body"],
   ): Promise<void>;
-  searchDefaults: operations["searchPage post /search"]["body"];
-}) {
+  searchDefaults?: operations["searchPage post /search"]["body"];
+};
+
+export function useProductListingFilters(
+  params?: UseProductListingFiltersParams,
+) {
+  const resolved = params || (useListingCoreContext() as ListingCoreContext);
+  const { getInitialListing, getCurrentListing, search } = resolved;
+  const _storeAppliedListing = resolved._storeAppliedListing ?? ref(null);
+  const searchDefaults =
+    resolved.searchDefaults ??
+    ({} as operations["searchPage post /search"]["body"]);
   const getInitialFilters = computed(() => {
     return getListingFilters(getInitialListing.value?.aggregations);
   });

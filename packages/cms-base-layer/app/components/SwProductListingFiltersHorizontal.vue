@@ -3,12 +3,16 @@ import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
 } from "@shopware/composables";
-import { useCmsTranslations } from "@shopware/composables";
+import {
+  useCmsTranslations,
+  useListingCoreContext,
+  useProductListingFilters,
+  useProductListingSorting,
+} from "@shopware/composables";
 import { defu } from "defu";
 import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
-import { useCategoryListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
@@ -46,13 +50,10 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 const route = useRoute();
 const router = useRouter();
 
-const {
-  changeCurrentSortingOrder,
-  getCurrentSortingOrder,
-  getInitialFilters,
-  getSortingOrders,
-  search,
-} = useCategoryListing();
+const { search } = useListingCoreContext();
+const { getInitialFilters } = useProductListingFilters();
+const { getSortingOrders, getCurrentSortingOrder, changeCurrentSortingOrder } =
+  useProductListingSorting();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
   reactive<FilterState>({
