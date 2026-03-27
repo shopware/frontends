@@ -60,15 +60,12 @@ const aiPrompt = computed(() => {
   ].join("\n");
 });
 
-const copied = ref(false);
+const copied = refAutoReset(false, 2000);
 
 async function copyPrompt() {
   try {
     await navigator.clipboard.writeText(aiPrompt.value);
     copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 2000);
   } catch {
     // Fallback: clipboard API unavailable (non-secure origin, unfocused document)
     console.warn("[CMS] Could not copy to clipboard. Prompt logged below:");
