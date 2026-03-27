@@ -5,6 +5,8 @@ import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
 import { loadSchema } from "./commands/loadSchema";
+import { phpDto } from "./commands/phpDto";
+import type { PhpDtoOptions } from "./commands/phpDto";
 import { split } from "./commands/split";
 import type { SplitOptions } from "./commands/split";
 import { validateJson } from "./commands/validateJson";
@@ -144,6 +146,39 @@ yargs(hideBin(process.argv))
         });
     },
     async (args) => split(args as unknown as SplitOptions),
+  )
+  .command(
+    "phpDto <action>",
+    "Generate PHP DTO classes from an OpenAPI JSON schema",
+    (args) => {
+      return commonOptions(args)
+        .positional("action", {
+          type: "string",
+          choices: ["generate", "check"],
+          describe:
+            "'generate' cleans output dir and regenerates files; 'check' verifies existing files match",
+        })
+        .option("config", {
+          alias: "c",
+          type: "string",
+          demandOption: true,
+          describe:
+            "path to JSON config file (schemaUrl, outputDir, namespace, tag, routes)",
+        })
+        .option("schemaFile", {
+          alias: "f",
+          type: "string",
+          describe:
+            "override: load schema from a local file instead of fetching schemaUrl",
+        })
+        .option("rawNames", {
+          type: "boolean",
+          default: false,
+          describe:
+            "skip auto-converting class names to PascalCase; fail on invalid names instead",
+        });
+    },
+    async (args) => phpDto(args as unknown as PhpDtoOptions),
   )
   .showHelpOnFail(false)
   .alias("h", "help")
