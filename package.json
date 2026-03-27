@@ -103,11 +103,11 @@
       "@babel/helpers": "^7.26.10",
       "react-router": "^7.12.0",
       "@remix-run/router": "^1.23.2",
-      "h3": "^1.15.5",
+      "h3": "^1.15.9",
       "preact": "^10.28.2",
       "tar": "^7.5.10",
       "svgo": "^4.0.1",
-      "flatted": "^3.4.0",
+      "flatted": "^3.4.2",
       "immutable": "^5.1.5",
       "simple-git": "^3.32.3",
       "unhead": "^2.1.11"

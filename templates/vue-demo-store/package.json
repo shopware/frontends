@@ -33,7 +33,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@iconify-json/carbon": "1.2.18",
-    "@nuxtjs/i18n": "10.0.1",
+    "@nuxtjs/i18n": "10.2.4",
     "@shopware/api-gen": "canary",
     "nuxt": "4.2.2",
     "vite": "7.3.1",

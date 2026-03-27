@@ -27,7 +27,7 @@
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/icon": "2.2.1",
     "@nuxt/image": "2.0.0",
-    "@nuxtjs/i18n": "10.0.1",
+    "@nuxtjs/i18n": "10.2.4",
     "@regle/core": "1.17.0",
     "@regle/rules": "1.17.0",
     "@shopware/api-client": "canary",
