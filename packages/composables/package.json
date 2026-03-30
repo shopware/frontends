@@ -70,7 +70,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
-    "happy-dom": "20.7.0",
+    "happy-dom": "20.8.9",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "unbuild": "2.0.0",
