@@ -1,5 +1,18 @@
 # @shopware/nuxt-module
 
+## 1.4.3
+
+### Patch Changes
+
+- [#2232](https://github.com/shopware/frontends/pull/2232) [`f52c2da`](https://github.com/shopware/frontends/commit/f52c2da685c0c5085e6579aea37f86b6ce1d8281) Thanks [@patzick](https://github.com/patzick)! - bump h3 version after security audit
+
+- [#2321](https://github.com/shopware/frontends/pull/2321) [`5a785cc`](https://github.com/shopware/frontends/commit/5a785ccff72c4fe95ec3f774eeb7053e8b1e55fa) Thanks [@mkucmus](https://github.com/mkucmus)! - Auto-inject `#shopware` types via `addTypeTemplate`, skip if project provides own `shopware.d.ts`
+
+- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b40305f`](https://github.com/shopware/frontends/commit/b40305f9e2ec51f29c279650e411bb773438faed), [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`a871c7b`](https://github.com/shopware/frontends/commit/a871c7b6256b75c2e40d93fc0354ba1971420062), [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f)]:
+  - @shopware/api-client@1.5.0
+  - @shopware/composables@1.11.0
+  - @shopware/helpers@1.7.0
+
 ## 1.4.2
 
 ### Patch Changes
