@@ -3,7 +3,7 @@ name: Audit check
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 8 * * *"
+    - cron: "30 8 * * 1"
   push:
     branches: ["main"]
     paths:
