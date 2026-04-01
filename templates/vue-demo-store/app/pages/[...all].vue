@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { pascalCase } from "scule";
-import { resolveComponent } from "vue";
+import { computed, resolveComponent } from "vue";
 import type { Ref } from "vue";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
@@ -29,8 +29,7 @@ const { data: seoResult } = await useAsyncData(
         };
       }
     }
-    const seoUrl = await resolvePath(routePath);
-    return seoUrl;
+    return await resolvePath(routePath);
   },
 );
 
@@ -47,27 +46,27 @@ const { routeName, foreignKey } = useNavigationContext(
   seoResult as Ref<Schemas["SeoUrl"]>,
 );
 
-const componentName = routeName.value;
+const componentName = computed(() =>
+  pascalCase(routeName.value ?? NOT_FOUND_COMPONENT),
+);
 
 onBeforeRouteLeave(() => {
   clearBreadcrumbs();
 });
 
-function render() {
-  if (!componentName)
-    return h("div", h(resolveComponent(pascalCase(NOT_FOUND_COMPONENT))));
-
-  const componentNameToResolve = pascalCase(componentName as string);
-  const cmsPageView = routeName && resolveComponent(componentNameToResolve);
-  if (cmsPageView) {
-    if (cmsPageView === componentNameToResolve)
-      return h("div", {}, `Problem resolving component: ${componentName}`);
-    return h("div", h(cmsPageView, { navigationId: foreignKey.value }));
-  }
-  return h("div", {}, "Loading...");
-}
+const resolvedPageComponent = computed(() => {
+  const component = resolveComponent(componentName.value);
+  return component === componentName.value ? null : component;
+});
 </script>
 
 <template>
-  <render />
+  <component
+    :is="resolvedPageComponent"
+    v-if="resolvedPageComponent"
+    :navigation-id="foreignKey"
+  />
+  <div v-else>
+    {{ `Problem resolving component: ${componentName}` }}
+  </div>
 </template>

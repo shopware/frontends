@@ -1,3 +1,8 @@
+import {
+  getRouteFromPathInfo,
+  isTechnicalPath,
+  normalizePath,
+} from "@shopware/helpers";
 import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -30,16 +35,11 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       } as Schemas["SeoUrl"];
     }
 
-    const isTechnicalUrl =
-      path.startsWith("/navigation/") ||
-      path.startsWith("/detail/") ||
-      path.startsWith("/landingPage/");
+    const isTechnicalUrl = isTechnicalPath(path);
 
     // remove leading slash in case of seo url or remove trailing slash in case of technical url
     const normalizedPath = isTechnicalUrl
-      ? path.endsWith("/")
-        ? path.slice(0, -1)
-        : path
+      ? normalizePath(path)
       : path.substring(1);
 
     const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
@@ -54,7 +54,17 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       },
     });
 
-    return seoResult.data.elements?.[0] ?? null;
+    const element = seoResult.data.elements?.[0];
+    if (element) {
+      return element;
+    }
+
+    const fallback = getRouteFromPathInfo(path);
+    if (fallback) {
+      return fallback as Schemas["SeoUrl"];
+    }
+
+    return null;
   }
 
   return {
