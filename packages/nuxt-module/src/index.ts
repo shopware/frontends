@@ -67,6 +67,16 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         src: "https://frontends.shopware.com/",
       },
     });
+
+    addCustomTab({
+      name: "shopware-cms",
+      title: "CMS Elements",
+      icon: "carbon:assembly-cluster",
+      view: {
+        type: "iframe",
+        src: "https://frontends.shopware.com/getting-started/cms/",
+      },
+    });
   },
 });
 
