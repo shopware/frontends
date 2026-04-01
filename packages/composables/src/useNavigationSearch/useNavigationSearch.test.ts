@@ -59,7 +59,10 @@ describe("useNavigationSearch", () => {
     const { vm, injections } = useSetup(useNavigationSearch);
     injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
 
-    await vm.resolvePath("/landingPage/test");
+    await expect(vm.resolvePath("/landingPage/test")).resolves.toMatchObject({
+      routeName: "frontend.landing.page",
+      foreignKey: "test",
+    });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readSeoUrl"),
@@ -80,7 +83,10 @@ describe("useNavigationSearch", () => {
     const { vm, injections } = useSetup(useNavigationSearch);
     injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
 
-    await vm.resolvePath("/detail/test/");
+    await expect(vm.resolvePath("/detail/test/")).resolves.toMatchObject({
+      routeName: "frontend.detail.page",
+      foreignKey: "test",
+    });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readSeoUrl"),
@@ -97,6 +103,93 @@ describe("useNavigationSearch", () => {
       }),
     );
   });
+  it("should resolve navigation technical url by pathInfo", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    const navigationSeoResponse = {
+      ...mockedResponse,
+      routeName: "frontend.navigation.page",
+      foreignKey: "12b149be1e924fc45e4e43b5cdc49225",
+      pathInfo: "/navigation/12b149be1e924fc45e4e43b5cdc49225",
+    };
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [navigationSeoResponse] },
+    });
+
+    expect(
+      await vm.resolvePath("/navigation/12b149be1e924fc45e4e43b5cdc49225"),
+    ).toStrictEqual(navigationSeoResponse);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        body: {
+          filter: [
+            {
+              type: "equals",
+              field: "pathInfo",
+              value: "/navigation/12b149be1e924fc45e4e43b5cdc49225",
+            },
+          ],
+        },
+      }),
+    );
+  });
+
+  it("should synthesize navigation route when API returns no seo mapping for technical url", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    await expect(
+      vm.resolvePath("/navigation/12b149be1e924fc45e4e43b5cdc49225"),
+    ).resolves.toMatchObject({
+      routeName: "frontend.navigation.page",
+      foreignKey: "12b149be1e924fc45e4e43b5cdc49225",
+    });
+  });
+
+  it("should normalize navigation technical url with trailing slash", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    await expect(
+      vm.resolvePath("/navigation/12b149be1e924fc45e4e43b5cdc49225/"),
+    ).resolves.toMatchObject({
+      routeName: "frontend.navigation.page",
+      foreignKey: "12b149be1e924fc45e4e43b5cdc49225",
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        body: {
+          filter: [
+            {
+              type: "equals",
+              field: "pathInfo",
+              value: "/navigation/12b149be1e924fc45e4e43b5cdc49225",
+            },
+          ],
+        },
+      }),
+    );
+  });
+
+  it("should return null for non-technical path when API returns no mapping", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    expect(
+      await vm.resolvePath("/some-seo-path-that-does-not-exist"),
+    ).toBeNull();
+  });
+
+  it("should return null when technical path has no seo row and does not match a resolvable segment", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
+    expect(await vm.resolvePath("/navigation/cat/extra/segment")).toBeNull();
+  });
+
   it("should not invoke api call for / search ", async () => {
     const { vm, injections } = useSetup(useNavigationSearch);
     injections.apiClient.invoke.mockResolvedValue({
