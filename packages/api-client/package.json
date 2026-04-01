@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-client",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "type": "module",
@@ -62,8 +62,8 @@
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
     "@vitest/coverage-v8": "4.0.18",
     "fflate": "0.8.2",
-    "happy-dom": "20.7.0",
-    "prettier": "3.7.4",
+    "happy-dom": "20.8.9",
+    "prettier": "3.8.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "4.0.18"
