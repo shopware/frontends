@@ -45,6 +45,7 @@ function createNuxtMock(rootDir: string) {
     options: {
       rootDir,
       runtimeConfig: {
+        shopware: {},
         public: {
           shopware: {
             endpoint: "https://test.shopware.store/store-api/",
@@ -108,6 +109,33 @@ describe("@shopware/nuxt-module", () => {
 
     expect(addPluginMock).toHaveBeenCalledWith({
       src: "/mocked-module-dir/../plugin.ts",
+    });
+  });
+
+  it("should persist the resolved SSR endpoint into private runtime config", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+    const nuxt = createNuxtMock("/tmp/test-project");
+
+    await setup({}, nuxt);
+
+    expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+      endpoint: "https://test.shopware.store/store-api/",
+    });
+  });
+
+  it("should preserve an explicit private SSR endpoint", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+    const nuxt = createNuxtMock("/tmp/test-project");
+    nuxt.options.runtimeConfig.shopware = {
+      endpoint: "http://internal.shopware/store-api/",
+    };
+
+    await setup({}, nuxt);
+
+    expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+      endpoint: "http://internal.shopware/store-api/",
     });
   });
 });

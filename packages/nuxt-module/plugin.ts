@@ -31,14 +31,18 @@ export default defineNuxtPlugin((NuxtApp) => {
 
   const shopwareRuntimeConfigPublic = runtimeConfig.public
     .shopware as ShopwareNuxtOptions;
-  const shopwareRuntimeConfig = runtimeConfig.shopware as ShopwareNuxtOptions;
+  const shopwareRuntimeConfig = import.meta.server
+    ? (runtimeConfig.shopware as ShopwareNuxtOptions)
+    : undefined;
 
   const shopwareEndpointCSR =
     shopwareRuntimeConfigPublic?.endpoint ??
     shopwareRuntimeConfigPublic?.shopwareEndpoint;
 
   const shopwareEndpointSSR =
-    (NuxtApp.ssrContext && shopwareRuntimeConfig?.endpoint) ||
+    (NuxtApp.ssrContext &&
+      (shopwareRuntimeConfig?.endpoint ??
+        shopwareRuntimeConfig?.shopwareEndpoint)) ||
     shopwareEndpointCSR;
 
   const shopwareEndpoint = import.meta.server
@@ -68,6 +72,10 @@ export default defineNuxtPlugin((NuxtApp) => {
     headers?: Record<string, string>;
   };
 
+  const privateApiClientConfig = import.meta.server
+    ? (runtimeConfig.apiClientConfig as ApiClientConfig)
+    : undefined;
+
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
@@ -75,8 +83,7 @@ export default defineNuxtPlugin((NuxtApp) => {
       ? contextTokenFromCookie
       : "",
     defaultHeaders:
-      (NuxtApp.ssrContext &&
-        (runtimeConfig.apiClientConfig as ApiClientConfig)?.headers) ||
+      (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
       (runtimeConfig.public?.apiClientConfig as ApiClientConfig)?.headers,
   });
 

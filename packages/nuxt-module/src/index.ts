@@ -23,6 +23,10 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
   async setup(options: ShopwareNuxtOptions, nuxt) {
     const logger = useLogger(MODULE_ID);
     const resolver = createResolver(import.meta.url);
+    nuxt.options.runtimeConfig.shopware = defu(
+      nuxt.options.runtimeConfig.shopware || {},
+      options || {},
+    );
     const shopwareConfig =
       (nuxt.options.runtimeConfig?.public?.shopware as ShopwareNuxtOptions) ??
       undefined;
@@ -30,22 +34,47 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       nuxt.options.runtimeConfig.public.shopware || {},
       options || {},
     );
+    const resolvedPublicShopwareConfig = nuxt.options.runtimeConfig.public
+      .shopware as ShopwareNuxtOptions;
+    const resolvedPrivateShopwareConfig = nuxt.options.runtimeConfig
+      .shopware as ShopwareNuxtOptions;
 
     if (isConfigDeprecated(shopwareConfig)) {
       logger.warn(
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
     }
-    if (shopwareConfig?.endpoint as string) {
-      logger.info(
-        `You are using SSR Shopware API endpoint: ${shopwareConfig.endpoint}`,
+    const envPublicEndpoint =
+      process.env.NUXT_PUBLIC_SHOPWARE_ENDPOINT ||
+      process.env.NUXT_PUBLIC_SHOPWARE_SHOPWARE_ENDPOINT;
+    const envPrivateEndpoint =
+      process.env.NUXT_SHOPWARE_ENDPOINT ||
+      process.env.NUXT_SHOPWARE_SHOPWARE_ENDPOINT;
+
+    const csrEndpoint =
+      envPublicEndpoint ||
+      resolvedPublicShopwareConfig?.endpoint ||
+      resolvedPublicShopwareConfig?.shopwareEndpoint;
+
+    const ssrEndpoint =
+      envPrivateEndpoint ||
+      resolvedPrivateShopwareConfig?.endpoint ||
+      resolvedPrivateShopwareConfig?.shopwareEndpoint ||
+      csrEndpoint;
+
+    if (ssrEndpoint) {
+      nuxt.options.runtimeConfig.shopware = defu(
+        nuxt.options.runtimeConfig.shopware || {},
+        {
+          endpoint: ssrEndpoint,
+        },
       );
     }
-    logger.info(
-      `CSR Shopware API endpoint: ${
-        shopwareConfig?.endpoint ?? shopwareConfig?.shopwareEndpoint
-      }`,
-    );
+
+    if (ssrEndpoint) {
+      logger.info(`You are using SSR Shopware API endpoint: ${ssrEndpoint}`);
+    }
+    logger.info(`CSR Shopware API endpoint: ${csrEndpoint}`);
     addPlugin({
       src: resolver.resolve("../plugin.ts"),
     });
