@@ -23,13 +23,11 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
   async setup(options: ShopwareNuxtOptions, nuxt) {
     const logger = useLogger(MODULE_ID);
     const resolver = createResolver(import.meta.url);
+
     nuxt.options.runtimeConfig.shopware = defu(
       nuxt.options.runtimeConfig.shopware || {},
       options || {},
     );
-    const shopwareConfig =
-      (nuxt.options.runtimeConfig?.public?.shopware as ShopwareNuxtOptions) ??
-      undefined;
     nuxt.options.runtimeConfig.public.shopware = defu(
       nuxt.options.runtimeConfig.public.shopware || {},
       options || {},
@@ -39,7 +37,10 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     const resolvedPrivateShopwareConfig = nuxt.options.runtimeConfig
       .shopware as ShopwareNuxtOptions;
 
-    if (isConfigDeprecated(shopwareConfig)) {
+    if (
+      isConfigDeprecated(resolvedPublicShopwareConfig) ||
+      isConfigDeprecated(resolvedPrivateShopwareConfig)
+    ) {
       logger.warn(
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
