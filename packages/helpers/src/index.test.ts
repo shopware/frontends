@@ -38,6 +38,7 @@ describe("helpers - test global API", () => {
         "getProductRoute": [Function],
         "getProductTierPrices": [Function],
         "getProductUrl": [Function],
+        "getRouteFromPathInfo": [Function],
         "getShippingMethodDeliveryTime": [Function],
         "getShippingMethodIcon": [Function],
         "getSmallestThumbnailUrl": [Function],
@@ -54,6 +55,8 @@ describe("helpers - test global API", () => {
         "isProduct": [Function],
         "isProductOnSale": [Function],
         "isProductTopSeller": [Function],
+        "isTechnicalPath": [Function],
+        "normalizePath": [Function],
         "relativeUrlSlash": [Function],
         "urlIsAbsolute": [Function],
       }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { resolveCmsComponent } from "@shopware/composables";
 import { getCmsLayoutConfiguration } from "@shopware/helpers";
-import { h } from "vue";
+import { h, resolveComponent } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -28,7 +28,12 @@ const DynamicRender = () => {
       class: cssClasses,
     });
   }
-  console.error(`Component not resolved: ${componentNameToResolve}`);
+  if (import.meta.dev) {
+    console.warn(
+      `[CMS] Element type "${componentName}" is not implemented.\n  → Create a component named "${componentNameToResolve}.vue" to render it.\n  📖 Docs: https://frontends.shopware.com/getting-started/cms/create-elements`,
+    );
+    return h(resolveComponent("CmsNoComponent"), { content: props.content });
+  }
   return h("div", {}, "");
 };
 </script>

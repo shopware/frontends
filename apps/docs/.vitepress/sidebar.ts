@@ -109,6 +109,10 @@ export const sidebar = [
             link: "/getting-started/cms/customize-components.html",
           },
           {
+            text: "Implement Missing Component",
+            link: "/getting-started/cms/missing-component.html",
+          },
+          {
             text: "Create Blocks",
             link: "/getting-started/cms/create-blocks.html",
           },
