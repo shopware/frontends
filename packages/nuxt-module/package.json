@@ -37,7 +37,7 @@
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "defu": "6.1.4",
+    "defu": "6.1.5",
     "h3": "1.15.9",
     "js-cookie": "3.0.5"
   },
