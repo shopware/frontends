@@ -8,6 +8,7 @@ export default defineAppConfig({
     format: "webp",
     quality: 90,
   },
+  lcpImagePreload: false,
   imageSizes: {
     1: "(max-width: 768px) 100vw, 100vw",
     2: "(max-width: 768px) 100vw, 50vw",

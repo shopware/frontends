@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const { controller: controllerProp, side = "right" } = defineProps<{
+const { controller, side = "right" } = defineProps<{
   controller: ReturnType<typeof useModal>;
-  side: "left" | "right";
+  side?: "left" | "right";
 }>();
 
-const { controller } = toRefs({ controller: controllerProp, side });
-const { isOpen, close } = controller.value;
+const { isOpen, close } = controller;
 
 const sidebarContentElement = useTemplateRef("sidebarContentElement");
 onClickOutside(sidebarContentElement, () => close());

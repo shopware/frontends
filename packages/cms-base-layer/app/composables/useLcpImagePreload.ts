@@ -12,12 +12,15 @@ import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
  */
 export function useLcpImagePreload(sections: Schemas["CmsSection"][]) {
   const appConfig = useAppConfig();
+  const isEnabled = appConfig.lcpImagePreload === true;
 
   const lcpImageHref = computed(() =>
-    findFirstCmsImageUrl(sections, {
-      format: appConfig.backgroundImage?.format,
-      quality: appConfig.backgroundImage?.quality,
-    }),
+    isEnabled
+      ? findFirstCmsImageUrl(sections, {
+          format: appConfig.backgroundImage?.format,
+          quality: appConfig.backgroundImage?.quality,
+        })
+      : undefined,
   );
 
   useHead(
