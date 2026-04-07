@@ -1,3 +1,4 @@
+import transformerDirectives from "@unocss/transformer-directives";
 import {
   defineConfig,
   presetAttributify,
@@ -91,4 +92,5 @@ export default defineConfig({
     presetAttributify(),
     presetTypography(),
   ],
+  transformers: [transformerDirectives()],
 });
