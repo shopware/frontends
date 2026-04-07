@@ -5,15 +5,15 @@ import {
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
 import { h, provide, resolveComponent } from "vue";
-import { useAppConfig } from "#imports";
 import type { Schemas } from "#shopware";
+import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 import { getImageSizes } from "../../../helpers/cms/getImageSizes";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const appConfig = useAppConfig();
+const appConfig = useTypedAppConfig();
 
 const slotCount = props.content.slots?.length || 1;
 provide("cms-block-slot-count", slotCount);

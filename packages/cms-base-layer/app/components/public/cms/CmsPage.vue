@@ -6,20 +6,17 @@ import {
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
 import { computed, h, resolveComponent, watchEffect } from "vue";
-import {
-  createCategoryListingContext,
-  useAppConfig,
-  useNavigationContext,
-} from "#imports";
+import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
 import { useLcpImagePreload } from "../../../composables/useLcpImagePreload";
+import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 
 const props = defineProps<{
   content: Schemas["CmsPage"];
 }>();
 
 const { routeName } = useNavigationContext();
-const appConfig = useAppConfig();
+const appConfig = useTypedAppConfig();
 
 // Function to initialize or update listing context
 function updateListingContext(content: Schemas["CmsPage"]) {
