@@ -1,4 +1,4 @@
-import { useAppConfig } from "nuxt/app";
+import { useTypedAppConfig } from "./useTypedAppConfig";
 
 /**
  * Composable that provides an SVG placeholder image as a data URI
@@ -8,7 +8,7 @@ import { useAppConfig } from "nuxt/app";
  * @returns Base64-encoded SVG data URI
  */
 export function useImagePlaceholder(color?: string) {
-  const appConfig = useAppConfig();
+  const appConfig = useTypedAppConfig();
   const placeholderColor =
     color || appConfig.imagePlaceholder?.color || "#543B95";
 

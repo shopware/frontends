@@ -48,6 +48,7 @@ export const sidebar = [
         link: "/framework/shopping-experiences.html",
       },
       { text: "Styling", link: "/framework/styling.html" },
+      { text: "Design Tokens", link: "/framework/design-tokens.html" },
     ],
   },
   {
@@ -107,6 +108,10 @@ export const sidebar = [
           {
             text: "Customize Components",
             link: "/getting-started/cms/customize-components.html",
+          },
+          {
+            text: "Implement Missing Component",
+            link: "/getting-started/cms/missing-component.html",
           },
           {
             text: "Create Blocks",

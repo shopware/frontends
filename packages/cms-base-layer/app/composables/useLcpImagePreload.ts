@@ -1,7 +1,8 @@
 import { computed } from "vue";
-import { useAppConfig, useHead } from "#imports";
+import { useHead } from "#imports";
 import type { Schemas } from "#shopware";
 import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
+import { useTypedAppConfig } from "./useTypedAppConfig";
 
 /**
  * Preloads the first image found in CMS sections (background or element).
@@ -11,13 +12,16 @@ import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
  * allowing the browser to fetch the image before parsing CSS.
  */
 export function useLcpImagePreload(sections: Schemas["CmsSection"][]) {
-  const appConfig = useAppConfig();
+  const appConfig = useTypedAppConfig();
+  const isEnabled = Boolean(appConfig.lcpImagePreload);
 
   const lcpImageHref = computed(() =>
-    findFirstCmsImageUrl(sections, {
-      format: appConfig.backgroundImage?.format,
-      quality: appConfig.backgroundImage?.quality,
-    }),
+    isEnabled
+      ? findFirstCmsImageUrl(sections, {
+          format: appConfig.backgroundImage?.format,
+          quality: appConfig.backgroundImage?.quality,
+        })
+      : undefined,
   );
 
   useHead(

@@ -1,5 +1,17 @@
 # vue-demo-store
 
+## 1.13.0
+
+### Minor Changes
+
+- [#2290](https://github.com/shopware/frontends/pull/2290) [`afaf751`](https://github.com/shopware/frontends/commit/afaf751294a9940d92478759bbdf39bed71ba535) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added order detail page by deep link code (`/account/order/[deepCode]`) with guest verification (email + postal code)
+  - Added dedicated order details page at `/account/order/details/[id]` for logged-in users
+  - Added order detail components (View, LineItems, PriceSummary, Addresses, etc.) and i18n for order auth and messages
+
+- [#2241](https://github.com/shopware/frontends/pull/2241) [`9ccbaa1`](https://github.com/shopware/frontends/commit/9ccbaa1fb6cc1f790d979c3dd3745c5402b6d8d1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `withDefaults` by props destructure
+
+- [#2300](https://github.com/shopware/frontends/pull/2300) [`76b4254`](https://github.com/shopware/frontends/commit/76b42541dc5a57faa2940e1d0c6e0c9765017b61) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix state name displaying for SharedCountryStateInput component
+
 ## 1.12.0
 
 ### Minor Changes

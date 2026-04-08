@@ -1,5 +1,15 @@
 # @shopware/helpers
 
+## 1.7.0
+
+### Minor Changes
+
+- [#2287](https://github.com/shopware/frontends/pull/2287) [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add generateCdnSrcSet and buildCdnImageUrl helpers for synthetic responsive image srcset generation via CDN query params
+
+### Patch Changes
+
+- [#2320](https://github.com/shopware/frontends/pull/2320) [`a871c7b`](https://github.com/shopware/frontends/commit/a871c7b6256b75c2e40d93fc0354ba1971420062) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Improve getSmallestThumbnailUrl - add media.url fallback when thumbnails are missing or empty
+
 ## 1.6.0
 
 ### Minor Changes

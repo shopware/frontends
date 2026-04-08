@@ -11,3 +11,4 @@ nav:
 <PageRef title="Composables" sub="The section on composables describes context composables, shared composables and how to overwrite composables." page="composables.html" />
 <PageRef title="Shopping Experiences" sub="This guide will discuss how to use and customize Shopping Experiences in your Shopware Frontends project." page="shopping-experiences.html" />
 <PageRef title="Styling" sub="Shopware Frontends Demo Store Template applies a utility-first styling approach based on unocss. You can either follow this approach or use custom styling." page="styling.html" />
+<PageRef title="Design Tokens" sub="Composable Frontends color design tokens — naming conventions, visual reference, and a ready-to-paste Uno theme snippet." page="design-tokens.html" />

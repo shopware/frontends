@@ -111,6 +111,11 @@ export default defineNuxtConfig({
   build: {
     transpile: ["@shopware/cms-base-layer"],
   },
+  vite: {
+    optimizeDeps: {
+      include: ["xss"],
+    },
+  },
   telemetry: {
     enabled: false,
   },
