@@ -41,6 +41,9 @@ export type ShortcutFilterParam<
   value: Schemas["ProductListingCriteria"][T];
 };
 
+/**
+ * @deprecated Use the modular composable return types from `useListingCore`, `useProductListingFilters`, `useProductListingPagination`, and `useProductListingSorting` instead.
+ */
 export type UseListingReturn = {
   /**
    * Listing that is currently set

@@ -7,13 +7,67 @@ nav:
 
 In this chapter you will learn how to
 
-- Initialize the `useListing` composable
+- Use the modular listing composables (`useListingCore`, `useProductListingFilters`, `useProductListingPagination`, `useProductListingSorting`)
 - Search for products
 - Display products in a listing
 - Implement a pagination
 - Apply sortings, pagination, and filters
 - Use the `helpers` package
 - Configure variants presentation for store API
+
+## Modular listing composables
+
+The listing logic is split into focused, modular composables that can be used independently:
+
+| Composable                       | Responsibility                                |
+| -------------------------------- | --------------------------------------------- |
+| `useListingCore`                 | Core state, search, loadMore, initial listing |
+| `useProductListingFilters`       | Filter management (get, set, reset)           |
+| `useProductListingPagination`    | Page navigation                               |
+| `useProductListingSorting`       | Sort order management                         |
+
+These composables work via Vue's `provide`/`inject`. A parent component sets up the listing context, and child components consume specific concerns.
+
+**Parent component** — creates the listing context (e.g. `CmsPage`):
+
+```vue
+<script setup lang="ts">
+import { createCategoryListingContext } from "@shopware/composables";
+
+// Extract listing from CMS page data and provide context to children
+const initialListing = getProductListingFromCmsPage(props.content);
+if (initialListing) {
+  createCategoryListingContext(initialListing);
+}
+</script>
+```
+
+**Child component** — uses the modular composables to access specific concerns:
+
+```vue
+<script setup lang="ts">
+import {
+  useListingCoreContext,
+  useProductListingPagination,
+} from "@shopware/composables";
+
+// Inject core listing state from parent
+const { getElements, loading, setInitialListing } = useListingCoreContext();
+// Use focused composables for specific concerns
+const { changeCurrentPage, getCurrentPage, getTotalPagesCount } =
+  useProductListingPagination();
+</script>
+```
+
+**Search page** — for product search, use the shared composable:
+
+```vue
+<script setup lang="ts">
+import { useProductSearchListing } from "@shopware/composables";
+
+const listing = useProductSearchListing();
+</script>
+```
 
 ## Listing context
 
@@ -24,6 +78,10 @@ Product listing is a structure related to the predefined areas and it has always
 - Cms Page (via `product-listing` element, nested among other CMS element)
 
 ## Listing type and context
+
+:::warning Deprecated
+`useListing` is deprecated. Use `useListingCore` with the modular composables (`useProductListingFilters`, `useProductListingPagination`, `useProductListingSorting`) instead.
+:::
 
 Before using the composable, define the type related to the context:
 
@@ -105,11 +163,28 @@ search({ // invoke search() method
 
 ## Sorting
 
-Available methods of `useListing` to manage sorting order:
+Available methods to manage sorting order:
 
-- `getSortingOrders()` - returns all available sorting options
-- `getCurrentSortingOrder()` - returns the current order, available in the response
-- `changeCurrentSortingOrder()` - sets the new order, invoking a `search` method internally
+- `getSortingOrders` - returns all available sorting options
+- `getCurrentSortingOrder` - returns the current order, available in the response
+- `changeCurrentSortingOrder` - sets the new order, invoking a `search` method internally
+
+Using the modular composable (recommended):
+
+```ts
+// part of <script setup> section
+import { useProductListingSorting } from "@shopware/composables";
+
+// Injects listing context from parent component
+const {
+  getCurrentSortingOrder,
+  getSortingOrders,
+  changeCurrentSortingOrder,
+} = useProductListingSorting();
+```
+
+<details>
+<summary>Legacy approach (deprecated)</summary>
 
 ```ts{3-5}
 // part of <script setup> section
@@ -126,6 +201,7 @@ const {
   },
 });
 ```
+</details>
 
 Show all available sortings:
 
@@ -186,11 +262,28 @@ Alternative tip - Instead of using `useCart`, you can use `useAddToCart` composa
 
 ## Add pagination
 
-Pagination is available by using three methods from `useListing` composable:
+Pagination is available by using three methods:
 
 - `getCurrentPage`
 - `changeCurrentPage` - invokes `search()` method internally with the provided number of the page
 - `getTotalPagesCount` - calculates the number of available pages depending on products per page parameters (i.e. `limit` in search criteria)
+
+Using the modular composable (recommended):
+
+```ts
+// part of <script setup> section
+import { useProductListingPagination } from "@shopware/composables";
+
+// Injects listing context from parent component
+const {
+    getCurrentPage,
+    changeCurrentPage,
+    getTotalPagesCount,
+} = useProductListingPagination();
+```
+
+<details>
+<summary>Legacy approach (deprecated)</summary>
 
 ```ts{5-7}
 // part of <script setup> section
@@ -210,6 +303,7 @@ const {
     },
 })
 ```
+</details>
 
 The implementation can look similar to:
 
@@ -257,10 +351,14 @@ Built-in aggregations:
 
 The diagram explains the source of available filters. The API response contains aggregations that are parsed into one interface structure.
 
-In order to get the list of available filters, use the following command:
+In order to get the list of available filters, use the following composable:
 
 ```ts
-const { getAvailableFilters } = useListing(/** parameters omitted */);
+import { useProductListingFilters } from "@shopware/composables";
+
+// Injects listing context from parent component
+const { getAvailableFilters, getCurrentFilters, setCurrentFilters, resetFilters } =
+  useProductListingFilters();
 ```
 
 You can then iterate the filter objects available in the array. The filter object has a [ListingFilter](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L19) interface and depending on the `code`, or `displayType`, the handling process can be different. Let us have a closer look at it:
@@ -269,7 +367,7 @@ You can then iterate the filter objects available in the array. The filter objec
 
 ```vue{15,17}
 <script setup lang="ts">
-const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useListing(/** parameters omitted */)
+const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useProductListingFilters()
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
   setCurrentFilters({
@@ -374,7 +472,7 @@ In order to apply a specific filter you need to be aware of:
 
 ```vue
 <script setup lang="ts">
-const { setCurrentFilters } = useListing(/** parameters omitted */);
+const { setCurrentFilters } = useProductListingFilters();
 
 setCurrentFilters({
   code: "properties",
@@ -396,7 +494,7 @@ setCurrentFilters({
 
 ```vue
 <script setup lang="ts">
-const { getCurrentFilters } = useListing(/** parameters omitted */);
+const { getCurrentFilters } = useProductListingFilters();
 </script>
 <template>
   {{ getCurrentFilters.navigationId }}

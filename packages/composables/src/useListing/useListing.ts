@@ -19,6 +19,7 @@ export { useProductListingFilters } from "./useProductListingFilters";
 import type { ListingType, UseListingReturn } from "./utils";
 
 /**
+ * @deprecated Use `useListingCore` with `useProductListingFilters`, `useProductListingPagination`, and `useProductListingSorting` instead.
  * @public
  * @category Product
  */
@@ -134,6 +135,7 @@ export const useProductSearchListing = createSharedComposable(() =>
  * By default you can use useListing composable, which provides you predefined listings for category(cms) listing and product search listing.
  * Using factory you can provide our own compatible search method and use it for example for creating listing of orders in my account.
  *
+ * @deprecated Use `useListingCore` with `useProductListingFilters`, `useProductListingPagination`, and `useProductListingSorting` instead.
  * @public
  */
 export function createListingComposable({
