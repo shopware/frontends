@@ -56,7 +56,7 @@ const { product, changeVariant } = useProduct(
   props.content.data.product,
   props.content.data.configuratorSettings || [],
 );
-const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(product);
 const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 const { getFormattedPrice } = usePrice();
 const referencePrice = computed(
@@ -79,13 +79,13 @@ const productName = computed(() => product.value?.translated?.name || "");
                 {{ productName }}</div>
 
             <div v-if="tierPrices.length <= 1">
-                <SwSharedPrice v-if="isListPrice"
+                <SwSharedPrice v-if="hasListPrice"
                     class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
                     :value="price?.listPrice?.price" />
                 <SwSharedPrice v-if="unitPrice"
                     class="text-surface-on-surface text-base font-bold leading-normal"
                     :class="{
-                        'text-red': isListPrice,
+                        'text-red': hasListPrice,
                     }" :value="unitPrice" />
                 <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
                     {{ translations.product.previously }}

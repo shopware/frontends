@@ -11,4 +11,17 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
-- 'node-forge' # security release, remove after 01.12.2025
+- 'minimatch' # security release, remove after 05.03.2026
+- 'tar' # audit fix, remove after 25.02.2026
+- 'serialize-javascript' # audit fix, remove after 12.03.2026
+- 'vite' # security release, remove after 10.04.2026
+
+
+auditConfig:
+  ignoreGhsas:
+    - GHSA-92fh-27vv-894w # not vulnerable - https://github.com/unjs/nanotar/issues/59
+  ignoreCves:
+    # - CVE-2024-43788
+    - CVE-2025-68458 # webpack issue, not affected
+    - CVE-2025-68157 # webpack issue, not affected
+    - CVE-2024-43788 # webpack issue, not affected

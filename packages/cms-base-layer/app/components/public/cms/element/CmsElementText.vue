@@ -20,10 +20,10 @@ const mappedContent = computed<string>(() => {
 });
 
 const style = computed<CSSProperties>(() => ({
-  alignItems: getConfigValue("verticalAlign"),
+  alignContent: getConfigValue("verticalAlign"),
 }));
 
-const hasVerticalAlignment = computed(() => !!style.value.alignItems);
+const hasVerticalAlignment = computed(() => !!style.value.alignContent);
 
 const CmsTextRender = defineComponent({
   setup() {
@@ -37,7 +37,7 @@ const CmsTextRender = defineComponent({
             return (
               node.type === "tag" &&
               node.name === "a" &&
-              !node.attrs?.class?.match(/btn\s?/)
+              !node.attrs?.class?.includes("btn")
             );
           },
           renderer(
@@ -61,7 +61,7 @@ const CmsTextRender = defineComponent({
             return (
               node.type === "tag" &&
               node.name === "a" &&
-              node.attrs?.class?.match(/btn\s?/)
+              !!node.attrs?.class?.includes("btn")
             );
           },
           renderer(
@@ -75,6 +75,7 @@ const CmsTextRender = defineComponent({
                 "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
 
               _class = node.attrs.class
+                .replace(/\bbtn\s+/, "")
                 .replace(
                   "btn-secondary",
                   `${btnClass} bg-brand-secondary text-brand-on-secondary hover:bg-brand-secondary-hover`,
@@ -82,7 +83,8 @@ const CmsTextRender = defineComponent({
                 .replace(
                   "btn-primary",
                   `${btnClass} bg-brand-primary text-brand-on-primary hover:bg-brand-primary-hover`,
-                );
+                )
+                .trim();
             }
 
             return createElement(
@@ -146,18 +148,15 @@ const CmsTextRender = defineComponent({
         ? mappedContent.value
         : "<div class='cms-element-text missing-content-element'></div>";
 
-    return () =>
-      h("div", {}, renderHtml(rawHtml, config, h, context, resolveUrl));
+    return () => renderHtml(rawHtml, config, h, context, resolveUrl);
   },
 });
 </script>
 <template>
-  <div
-    :class="{ flex: hasVerticalAlignment, 'flex-row': hasVerticalAlignment }"
-    :style="style"
-  >
+  <div v-if="hasVerticalAlignment" class="grid h-full" :style="style">
     <CmsTextRender />
   </div>
+  <CmsTextRender v-else />
 </template>
 <style scoped>
 /** Global CSS styles for text elements */

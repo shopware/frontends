@@ -6,6 +6,7 @@ import json5 from "json5";
 import c from "picocolors";
 import { format } from "prettier";
 import { getAdminApiClient, getStoreApiClient } from "../apiClient";
+import { validateAdminEnvVars } from "../validateEnv";
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
 const STORE_API_ENDPOINT = `/store-api/${SCHEMA_ENDPOINT}`;
@@ -18,10 +19,15 @@ const ADMIN_API_ENDPOINT = `/api/${SCHEMA_ENDPOINT}`;
  * - OPENAPI_JSON_URL
  * - OPENAPI_ACCESS_KEY
  *
- * For `admin` API:
+ * For `admin` API (password grant):
  * - OPENAPI_JSON_URL
  * - SHOPWARE_ADMIN_USERNAME
  * - SHOPWARE_ADMIN_PASSWORD
+ *
+ * For `admin` API (client_credentials grant):
+ * - OPENAPI_JSON_URL
+ * - SHOPWARE_ADMIN_CLIENT_ID
+ * - SHOPWARE_ADMIN_CLIENT_SECRET
  *
  */
 export async function loadSchema(args: {
@@ -51,17 +57,11 @@ export async function loadSchema(args: {
     : `${args.apiType}ApiSchema.json`;
 
   const OPENAPI_JSON_URL = process.env.OPENAPI_JSON_URL;
-  const requiredEnvVars = [];
-  if (isAdminApi) {
-    requiredEnvVars.push("SHOPWARE_ADMIN_USERNAME");
-    requiredEnvVars.push("SHOPWARE_ADMIN_PASSWORD");
-  } else {
-    requiredEnvVars.push("OPENAPI_ACCESS_KEY");
-  }
-
-  const missingEnvVars = requiredEnvVars.filter(
-    (envVar) => !process.env[envVar],
-  );
+  const missingEnvVars = isAdminApi
+    ? validateAdminEnvVars(process.env)
+    : process.env.OPENAPI_ACCESS_KEY
+      ? []
+      : ["OPENAPI_ACCESS_KEY"];
   try {
     if (missingEnvVars.length || !OPENAPI_JSON_URL) {
       console.error(

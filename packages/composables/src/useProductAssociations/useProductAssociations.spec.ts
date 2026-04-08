@@ -19,6 +19,7 @@ describe("useProductAssociations", () => {
     );
 
     expect(vm.productAssociations).toStrictEqual([]);
+    expect(vm.isLoading).toBe(false);
   });
 
   it("load productAssociations - GET - Error", async () => {

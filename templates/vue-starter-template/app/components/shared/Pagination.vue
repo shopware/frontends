@@ -11,7 +11,7 @@ defineEmits<{
 <template>
   <nav
     class="relative z-0 inline-flex rounded-md shadow-sm space-x-px"
-    aria-label="Pagination"
+    :aria-label="$t('layout.ariaLabels.pagination')"
   >
     <button
       v-if="current - 1 >= 2"

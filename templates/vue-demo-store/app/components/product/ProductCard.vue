@@ -16,18 +16,17 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { resolveCartError } = useCartErrorParamsResolver();
 
-const props = withDefaults(
-  defineProps<{
-    product: Schemas["Product"];
-    layoutType?: BoxLayout;
-    displayMode?: DisplayMode;
-  }>(),
-  {
-    layoutType: "standard",
-    displayMode: "standard",
-  },
-);
-const { product } = toRefs(props);
+const {
+  product: productProp,
+  layoutType = "standard",
+  displayMode = "standard",
+} = defineProps<{
+  product: Schemas["Product"];
+  layoutType?: BoxLayout;
+  displayMode?: DisplayMode;
+}>();
+
+const product = toRef(() => productProp);
 const { addToCart, isInCart, count } = useAddToCart(product);
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
@@ -39,7 +38,7 @@ const toggleWishlistProduct = async () => {
       await addToWishlist();
       return pushSuccess(
         t("product.messages.addedToWishlist", {
-          p: props.product?.translated.name,
+          p: product?.value.translated.name,
         }),
       );
     } catch (error) {
@@ -48,7 +47,7 @@ const toggleWishlistProduct = async () => {
           ? `Reason: ${error.details.errors?.[0]?.detail}`
           : "";
         return pushError(
-          `${props.product?.translated.name} cannot be added to wishlist.\n${reason}`,
+          `${product?.value.translated.name} cannot be added to wishlist.\n${reason}`,
           {
             timeout: 5000,
           },
@@ -70,11 +69,11 @@ const addToCartProxy = async () => {
 
   if (!errors.length)
     pushSuccess(
-      t("cart.messages.addedToCart", { p: props.product?.translated.name }),
+      t("cart.messages.addedToCart", { p: product?.value.translated.name }),
     );
 };
 
-const fromPrice = getProductFromPrice(props.product);
+const fromPrice = getProductFromPrice(product.value);
 
 const imageElement = useTemplateRef("imageElement");
 const { height } = useElementSize(imageElement);

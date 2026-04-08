@@ -10,14 +10,44 @@ The Vue Starter Template Extended (Lumora Demo Store) is an example implementati
 This template showcases the **Nuxt layer pattern** - a powerful way to create brand-specific storefronts without code duplication.
 :::
 
+**[Live Demo →](https://frontends-extended-starter-template.vercel.app/)**
+
 ## Setup & run
 
-Set up the vue-starter-template-extended manually by running the following commands in a new directory:
+This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) and extends the `vue-starter-template`. You need both templates to run it.
+
+### Quick setup
+
+Scaffold both templates side by side:
 
 ```bash
-npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-store && cd lumora-store
+npx tiged shopware/frontends/templates/vue-starter-template vue-starter-template
+npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-store
+```
+
+Update the `lumora-store/package.json` to reference local paths instead of workspace protocol:
+
+```diff
+  "dependencies": {
+-   "vue-starter-template": "workspace:*"
++   "vue-starter-template": "file:../vue-starter-template"
+  },
+  "devDependencies": {
+-   "@shopware/cms-base-layer": "workspace:*",
++   "@shopware/cms-base-layer": "canary",
+  }
+```
+
+Then install and run:
+
+```bash
+cd lumora-store
 npm i && npm run dev
 ```
+
+:::tip
+This setup works with **npm**, **yarn**, **pnpm**, or **bun**.
+:::
 
 ## What is Lumora?
 

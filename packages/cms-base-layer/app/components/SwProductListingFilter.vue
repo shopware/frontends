@@ -6,7 +6,16 @@ import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
 import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
 
-const props = defineProps<{
+const {
+  filter,
+  selectedManufacturer,
+  selectedProperties,
+  selectedMinPrice,
+  selectedMaxPrice,
+  selectedRating,
+  selectedShippingFree,
+  displayMode = "accordion",
+} = defineProps<{
   filter: ListingFilter;
   selectedManufacturer: Set<string>;
   selectedProperties: Set<string>;
@@ -14,6 +23,7 @@ const props = defineProps<{
   selectedMaxPrice: number | undefined;
   selectedRating: number | undefined;
   selectedShippingFree: boolean | undefined;
+  displayMode?: "accordion" | "dropdown";
 }>();
 
 const emit = defineEmits<{
@@ -22,13 +32,13 @@ const emit = defineEmits<{
 
 const transformedFilters = computed(() => ({
   price: {
-    min: props.selectedMinPrice,
-    max: props.selectedMaxPrice,
+    min: selectedMinPrice,
+    max: selectedMaxPrice,
   },
-  rating: props.selectedRating,
-  "shipping-free": props.selectedShippingFree,
-  manufacturer: [...props.selectedManufacturer],
-  properties: [...props.selectedProperties],
+  rating: selectedRating,
+  "shipping-free": selectedShippingFree,
+  manufacturer: [...selectedManufacturer],
+  properties: [...selectedProperties],
 }));
 
 const filterComponent = computed<Component | undefined>(() => {
@@ -40,8 +50,8 @@ const filterComponent = computed<Component | undefined>(() => {
   };
 
   return (
-    componentMap[props.filter.code] ||
-    ("options" in props.filter ? SwFilterPropertiesVue : undefined)
+    componentMap[filter.code] ||
+    ("options" in filter ? SwFilterPropertiesVue : undefined)
   );
 });
 
@@ -58,6 +68,7 @@ const handleSelectValue = ({
       :is="filterComponent"
       :filter="filter"
       :selected-filters="transformedFilters"
+      :display-mode="displayMode"
       @select-value="handleSelectValue"
     />
   </div>

@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { getProductRoute } from "@shopware/helpers";
-
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 import { useTemplateRef } from "vue";
 
-withDefaults(
-  defineProps<{
-    displayTotal?: number;
-  }>(),
-  { displayTotal: 10 },
-);
+const { displayTotal = 10 } = defineProps<{
+  displayTotal?: number;
+}>();
 
 defineEmits<(e: "link-clicked") => void>();
 

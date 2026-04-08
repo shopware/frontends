@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCmsSection } from "@shopware/composables";
 import type { CmsSectionSidebar } from "@shopware/composables";
-import { computed } from "vue";
+import { computed, provide } from "vue";
 
 const props = defineProps<{
   content: CmsSectionSidebar;
@@ -12,6 +12,9 @@ const sidebarBlocks = getPositionContent("sidebar");
 const mainBlocks = getPositionContent("main");
 const mobileBehavior = computed(() => props.content.mobileBehavior);
 const fullWidth = computed(() => section.sizingMode === "full_width");
+
+// Provide layout context for child components
+provide("cms-section-layout", "sidebar");
 </script>
 
 <template>
@@ -27,10 +30,10 @@ const fullWidth = computed(() => section.sizingMode === "full_width");
         <CmsGenericBlock :content="cmsBlock" />
       </div>
     </aside>
-    <main class="flex-1 flex flex-col justify-start items-stretch gap-20">
+    <div class="flex-1 flex flex-col justify-start items-stretch gap-20">
       <div v-for="cmsBlock in mainBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />
       </div>
-    </main>
+    </div>
   </div>
 </template>

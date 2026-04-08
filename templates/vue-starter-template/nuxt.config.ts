@@ -14,18 +14,22 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/icon",
     "@nuxt/image",
+    "@nuxt/a11y",
   ],
   runtimeConfig: {
     public: {
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
-        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
         devStorefrontUrl: "https://frontends-demo.vercel.app",
       },
     },
   },
   typescript: {
     strict: true,
+  },
+  features: {
+    inlineStyles: true,
   },
   css: ["@unocss/reset/tailwind-compat.css"],
   unocss: {
@@ -72,6 +76,15 @@ export default defineNuxtConfig({
     ],
   },
   routeRules: {
+    "/**": {
+      // 60-minute ISR — increase for mostly-static storefronts, decrease for frequently updated content
+      isr: 60 * 60,
+    },
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
     "/checkout": {
       ssr: false,
       headers: {

@@ -2,18 +2,15 @@
 import ChevronSvg from "@cms-assets/icons/chevron.svg";
 import { computed } from "vue";
 
-const props = withDefaults(
-  defineProps<{
-    direction?: "up" | "down" | "left" | "right";
-    size?: number;
-    alt?: string;
-  }>(),
-  {
-    direction: "down",
-    size: 24,
-    alt: "",
-  },
-);
+const {
+  direction = "down",
+  size = 24,
+  alt = "",
+} = defineProps<{
+  direction?: "up" | "down" | "left" | "right";
+  size?: number;
+  alt?: string;
+}>();
 
 const rotationClass = computed(() => {
   const rotations = {
@@ -22,7 +19,7 @@ const rotationClass = computed(() => {
     left: "rotate-90",
     right: "-rotate-90",
   };
-  return rotations[props.direction];
+  return rotations[direction];
 });
 </script>
 

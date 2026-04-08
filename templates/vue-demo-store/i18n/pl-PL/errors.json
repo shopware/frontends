@@ -1,4 +1,7 @@
 {
+  "messages": {
+    "error": "Wystąpił błąd. Spróbuj ponownie."
+  },
   "errors": {
     "promotions-on-cart-price-zero-error": "Promocje są wyłączone dla koszyka, ponieważ wartość koszyka wynosi zero",
     "product-stock-reached": "Produkt {name} jest dostępny tylko {quantity} razy",

@@ -86,13 +86,23 @@ export type UseSessionContextReturn = {
    */
   salesChannelCountryId: ComputedRef<string | undefined>;
   /**
-   * current language id
+   * @deprecated use salesChannelLanguageId instead
+   * sales channel language id
    */
   languageId: ComputedRef<string | undefined>;
   /**
+   * sales channel language code
+   */
+  salesChannelLanguageId: ComputedRef<string | undefined>;
+  /**
+   * @deprecated use currentLanguageId instead
    * current language id chain
    */
   languageIdChain: ComputedRef<string>;
+  /**
+   * current language code
+   */
+  currentLanguageId: ComputedRef<string | undefined>;
   /**
    * current context's customer object
    */
@@ -275,6 +285,8 @@ export function useSessionContext(
     setLanguage,
     languageId,
     languageIdChain,
+    salesChannelLanguageId: languageId,
+    currentLanguageId: languageIdChain,
     setCountry,
     setContext,
   };

@@ -4,13 +4,14 @@ import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useCategoryListing } from "#imports";
+import { useCategoryListing, useCmsElementConfig } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing;
 }>();
 
+const { getConfigValue } = useCmsElementConfig(props.content);
 const defaultLimit = 15;
 const defaultPage = 1;
 const defaultOrder = "name-asc";
@@ -154,8 +155,14 @@ compareRouteQueryWithInitialListing();
       {{ translations.listing.noProducts }}
     </div>
     <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
-      <SwProductCard v-for="product in getElements" :key="product.id" :product="product"
-        :is-product-listing="isProductListing" class="w-full" />
+      <SwProductCard
+        v-for="product in getElements"
+        :key="product.id"
+        :product="product"
+        :is-product-listing="isProductListing"
+        :layout-type="getConfigValue('boxLayout')"
+        class="w-full"
+      />
     </div>
     <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
       <ProductCardSkeleton v-for="index in limit" :key="index"

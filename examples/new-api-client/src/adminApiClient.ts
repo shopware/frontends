@@ -29,7 +29,7 @@ export async function login(params: {
     body: {
       grant_type: "password",
       client_id: "administration",
-      scopes: "write",
+      scope: "write",
       ...params,
     },
   });

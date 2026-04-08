@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
-const props = withDefaults(
-  defineProps<{
-    cartItem: Schemas["LineItem"];
-    maxQty?: number;
-  }>(),
-  {
-    maxQty: 100,
-  },
-);
+const { cartItem: cartItemProp, maxQty = 100 } = defineProps<{
+  cartItem: Schemas["LineItem"];
+  maxQty?: number;
+}>();
 
-const { cartItem } = toRefs(props);
+const cartItem = toRef(() => cartItemProp);
 
 const { removeItem, itemTotalPrice, isRemovable } = useCartItem(cartItem);
 </script>

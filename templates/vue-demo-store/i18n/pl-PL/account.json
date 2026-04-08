@@ -45,7 +45,13 @@
       "paymentMethod": "Metoda płatności",
       "repeatOrder": "Powtórz zamówienie",
       "order": "zamówienie",
-      "orders": "Zamówienia"
+      "orders": "Zamówienia",
+      "backToList": "Powrót do listy zamówień",
+      "authOrderTitle": "Zweryfikuj swoje zamówienie",
+      "authOrderText": "Wprowadź adres e-mail i kod pocztowy użyte podczas składania zamówienia.",
+      "authOrderButton": "Zweryfikuj zamówienie",
+      "emailPlaceholder": "Adres e-mail",
+      "postalCodePlaceholder": "Kod pocztowy"
     },
     "orderDetails": {
       "order": "Zamówienie",
@@ -93,7 +99,9 @@
       "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w nim zawarty, aby ukończyć rejestrację.",
       "paymentMethodChanged": "Metoda płatności została zmieniona",
       "productsAdded": "Produkty zostały dodane do koszyka",
-      "verifying": "Potwierdzenie konta"
+      "verifying": "Potwierdzenie konta",
+      "orderNotFound": "Nie znaleziono zamówienia.",
+      "orderWrongData": "Adres e-mail lub kod pocztowy jest nieprawidłowy. Spróbuj ponownie."
     }
   }
 }

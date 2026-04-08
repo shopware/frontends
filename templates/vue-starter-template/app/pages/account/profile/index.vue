@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import { onBeforeMount } from "vue";
 
 const { user, updatePersonalInfo } = useUser();
@@ -32,14 +31,14 @@ onBeforeMount(() => {
   }
 });
 
-const $v = useVuelidate(
-  personalDataFormRules(computed(() => state.value.accountType)),
+const { r$ } = useRegle(
   state,
+  personalDataFormRules(computed(() => state.value.accountType)),
 );
 
 async function handleSubmit() {
-  await $v.value.$validate();
-  if ($v.value.$invalid) {
+  await r$.$validate();
+  if (r$.$invalid) {
     return;
   }
 
@@ -88,7 +87,7 @@ async function handleSubmit() {
         />
         <AccountPersonalDataForm
           v-model="state"
-          :validation="$v"
+          :validation="r$"
           @submit="handleSubmit"
         />
       </div>

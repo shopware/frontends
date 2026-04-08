@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defu } from "defu";
-import { computed, getCurrentInstance } from "vue";
+import { computed, useId } from "vue";
 import { useCmsTranslations } from "#imports";
 
 type Translations = {
@@ -43,12 +43,9 @@ const {
   id?: string;
 }>();
 
-// generate an id that prefers a provided prop and otherwise uses the component uid
-const inputId = computed(() => {
-  if (propId) return propId;
-  const uid = Math.random().toString(36).substr(2, 9);
-  return `sw-quantity-${uid}`;
-});
+// generate an id that prefers a provided prop and otherwise uses Vue's useId for SSR/CSR consistency
+const generatedId = useId();
+const inputId = computed(() => propId || generatedId);
 
 function increaseQty() {
   quantity.value++;

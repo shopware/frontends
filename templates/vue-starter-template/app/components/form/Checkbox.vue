@@ -17,7 +17,7 @@ const {
 <template>
   <label class="flex items-start gap-2">
     <input
-      class="accent-brand-primary w-4 h-4 focus-within:outline-2 focus-within:outline-blue-500 focus-within:outline focus-within:outline-offset-[2px] focus-within"
+      class="accent-brand-primary w-4 h-4 focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px] focus-within"
       type="checkbox"
       v-model="model"
       :disabled

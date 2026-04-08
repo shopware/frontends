@@ -7,7 +7,7 @@ export type NodeObject = {
   content: string;
 };
 
-type Options = {
+export type Options = {
   align?: string;
   attrs: Record<string, string>;
   class?: string;

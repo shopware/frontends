@@ -5,10 +5,12 @@ describe("helpers - test global API", () => {
   it("global API should match snapshot", () => {
     expect(helpers).toMatchInlineSnapshot(`
       {
+        "buildCdnImageUrl": [Function],
         "buildUrlPrefix": [Function],
         "canUseQuoteActions": [Function],
         "downloadFile": [Function],
         "encodeUrlPath": [Function],
+        "generateCdnSrcSet": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
         "getCategoryBreadcrumbs": [Function],
@@ -36,6 +38,7 @@ describe("helpers - test global API", () => {
         "getProductRoute": [Function],
         "getProductTierPrices": [Function],
         "getProductUrl": [Function],
+        "getRouteFromPathInfo": [Function],
         "getShippingMethodDeliveryTime": [Function],
         "getShippingMethodIcon": [Function],
         "getSmallestThumbnailUrl": [Function],
@@ -52,6 +55,8 @@ describe("helpers - test global API", () => {
         "isProduct": [Function],
         "isProductOnSale": [Function],
         "isProductTopSeller": [Function],
+        "isTechnicalPath": [Function],
+        "normalizePath": [Function],
         "relativeUrlSlash": [Function],
         "urlIsAbsolute": [Function],
       }

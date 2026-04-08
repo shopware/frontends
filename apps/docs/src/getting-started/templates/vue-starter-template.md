@@ -10,6 +10,8 @@ The Vue Starter Template is a production-ready Nuxt application with all Shopwar
 Unlike the Demo Store Template, the **Vue Starter Template** is designed for production use and can be used as a foundation for your custom storefront.
 :::
 
+**[Live Demo →](https://frontends-starter-template.vercel.app/)**
+
 ## Setup & run
 
 <PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />
@@ -70,6 +72,8 @@ export default defineNuxtConfig({
       shopware: {
         endpoint: "https://your-shop.shopware.store/store-api",
         accessToken: "your-access-token",
+        // Optional: Required for local development when using customer registration
+        // devStorefrontUrl: "https://your-shop.shopware.store",
       },
     },
   },
@@ -81,7 +85,13 @@ You can also use a `.env` file to override configuration:
 ```bash
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.shopware.store/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
+# Optional: Required for local development when using customer registration
+# NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
+
+:::info devStorefrontUrl
+The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See the [troubleshooting guide](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for more details.
+:::
 
 ### Generate Types
 

@@ -93,26 +93,13 @@ const formatDate = (date: string) => {
         <div class="w-6 h-6 i-carbon-warning" />
         {{ translations.product.reviewNotAccepted }}
       </div>
-      <div
-        class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
-        role="img"
-        :aria-label="`${review.points} out of 5 stars`"
-      >
-        <SwStarIcon
-          v-for="_ in review.points"
-          :key="`filled-star-${_}`"
-          :filled="true"
-          :size="20"
+      <div class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2">
+        <SwProductRating
+          :rating="review.points ?? 0"
+          :star-size="20"
+          :show-count="false"
         />
-        <SwStarIcon
-          v-for="_ in 5 - (review.points || 0)"
-          :key="`empty-star-${_}`"
-          :filled="false"
-          :size="20"
-        />
-        <div
-          class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
-        >
+        <div class="cms-block-product-description-reviews__reviews-title font-semibold ml-2">
           <p>{{ review.title }}</p>
         </div>
       </div>

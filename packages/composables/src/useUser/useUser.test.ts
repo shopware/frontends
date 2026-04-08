@@ -73,8 +73,10 @@ describe("useUser", () => {
 
   it("register function", async () => {
     const { vm, injections } = useSetup(() => useUser());
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.register(REGISTRATION_DATA);
+    const registeredCustomer = { id: "reg-1", email: "test@test.testwwww" };
+    injections.apiClient.invoke.mockResolvedValue({ data: registeredCustomer });
+
+    const result = await vm.register(REGISTRATION_DATA);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("register"),
@@ -85,6 +87,7 @@ describe("useUser", () => {
         },
       }),
     );
+    expect(result).toEqual(registeredCustomer);
   });
 
   it("register function with refresh", async () => {
@@ -138,26 +141,32 @@ describe("useUser", () => {
 
   it("logout", async () => {
     const { vm, injections } = useSetup(() => useUser());
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.logout();
+    const logoutResponse = { data: { redirectUrl: "/" } };
+    injections.apiClient.invoke.mockResolvedValue(logoutResponse);
+
+    const result = await vm.logout();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("logoutCustomer"),
     );
+    expect(result).toEqual(logoutResponse.data);
   });
 
   it("refreshUser", async () => {
     const { vm, injections } = useSetup(() => useUser());
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.refreshUser();
+    const customerData = { id: "cust-1", email: "test@test.com" };
+    injections.apiClient.invoke.mockResolvedValue({ data: customerData });
+
+    const result = await vm.refreshUser();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readCustomer"),
       expect.anything(),
     );
+    expect(result).toEqual(customerData);
   });
 
-  it("refreshUser - error", async () => {
+  it("refreshUser - error clears user", async () => {
     const { vm } = useSetup(() => useUser(), {
       apiClient: {
         invoke: vi.fn().mockImplementation(() => {
@@ -165,10 +174,10 @@ describe("useUser", () => {
         }),
       },
     });
+    userFromContextRef.value = { id: "existing", active: true, guest: false };
 
-    await expect(async () => {
-      await vm.refreshUser();
-    }).rejects.toThrowError();
+    await expect(vm.refreshUser()).rejects.toThrowError();
+    expect(vm.user).toBeUndefined();
   });
 
   it("loadCountry", async () => {
@@ -324,8 +333,12 @@ describe("useUser", () => {
 
   it("loadSalutation", async () => {
     const { vm, injections } = useSetup(() => useUser());
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.loadSalutation("test");
+    const salutationData = { elements: [{ id: "test", name: "test" }] };
+    injections.apiClient.invoke.mockResolvedValue({
+      data: salutationData,
+    });
+
+    const result = await vm.loadSalutation("test");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readSalutation"),
@@ -341,13 +354,19 @@ describe("useUser", () => {
         },
       }),
     );
-
-    injections.apiClient.invoke.mockResolvedValue({
-      data: { elements: [{ id: "test", name: "test" }] },
-    });
-    await vm.loadSalutation("test");
-
     expect(vm.salutation).toEqual({ id: "test", name: "test" });
+    expect(result).toEqual(salutationData);
+  });
+
+  it("loadSalutation with empty elements sets salutation to null", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [] },
+    });
+
+    await vm.loadSalutation("non-existent");
+
+    expect(vm.salutation).toBeNull();
   });
 
   it("userDefaultPaymentMethod - should fallback to legacy defaultPaymentMethod when lastPaymentMethod is not available", () => {
@@ -372,6 +391,19 @@ describe("useUser", () => {
     userFromContextRef.value = undefined;
   });
 
+  it("isLoggedIn - false when user has id but active is false", () => {
+    const { vm } = useSetup(() => useUser());
+    userFromContextRef.value = {
+      id: "user-1",
+      active: false,
+      guest: false,
+    };
+
+    expect(vm.isLoggedIn).toBe(false);
+
+    userFromContextRef.value = undefined;
+  });
+
   it("userDefaultPaymentMethod - should return null when no payment methods are available", () => {
     const { vm } = useSetup(() => useUser());
 
@@ -386,6 +418,66 @@ describe("useUser", () => {
 
     // Clean up
     userFromContextRef.value = undefined;
+  });
+
+  it("register function with inactive user", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { active: false, id: "inactive-1" },
+    });
+    const result = await vm.register(REGISTRATION_DATA);
+    expect(result).toEqual({ active: false, id: "inactive-1" });
+    expect(vm.isLoggedIn).toBe(false);
+  });
+
+  it("loadCountry with empty elements", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [] },
+    });
+    await vm.loadCountry("non-existent");
+    expect(vm.country).toBeNull();
+  });
+
+  it("isCustomerSession and isGuestSession", () => {
+    const { vm } = useSetup(() => useUser());
+    userFromContextRef.value = { id: "cust-1", active: true, guest: false };
+    expect(vm.isCustomerSession).toBe(true);
+    expect(vm.isGuestSession).toBe(false);
+
+    userFromContextRef.value = { id: "guest-1", active: true, guest: true };
+    expect(vm.isCustomerSession).toBe(false);
+    expect(vm.isGuestSession).toBe(true);
+  });
+
+  it("userDefaultBillingAddress and userDefaultShippingAddress", () => {
+    const { vm } = useSetup(() => useUser());
+
+    expect(vm.userDefaultBillingAddress).toBeNull();
+    expect(vm.userDefaultShippingAddress).toBeNull();
+
+    userFromContextRef.value = {
+      id: "cust-1",
+      defaultBillingAddress: { city: "Berlin" },
+      defaultShippingAddress: { city: "Munich" },
+    };
+    expect(vm.userDefaultBillingAddress).toStrictEqual({ city: "Berlin" });
+    expect(vm.userDefaultShippingAddress).toStrictEqual({ city: "Munich" });
+  });
+
+  it("defaultBillingAddressId and defaultShippingAddressId", () => {
+    const { vm } = useSetup(() => useUser());
+
+    expect(vm.defaultBillingAddressId).toBeNull();
+    expect(vm.defaultShippingAddressId).toBeNull();
+
+    userFromContextRef.value = {
+      id: "cust-1",
+      defaultBillingAddressId: "billing-1",
+      defaultShippingAddressId: "shipping-1",
+    };
+    expect(vm.defaultBillingAddressId).toBe("billing-1");
+    expect(vm.defaultShippingAddressId).toBe("shipping-1");
   });
 
   it("userDefaultPaymentMethod - should fallback when lastPaymentMethod.translated is falsy", () => {

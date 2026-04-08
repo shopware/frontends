@@ -47,7 +47,13 @@
       "paymentMethod": "Payment method",
       "repeatOrder": "Repeat order",
       "order": "Order",
-      "orders": "Orders"
+      "orders": "Orders",
+      "backToList": "Back to orders list",
+      "authOrderTitle": "Verify your order",
+      "authOrderText": "Please enter the email address and postal code used when placing the order.",
+      "authOrderButton": "Verify order",
+      "emailPlaceholder": "Email address",
+      "postalCodePlaceholder": "Postal code"
     },
     "orderDetails": {
       "order": "Order",
@@ -95,7 +101,9 @@
       "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
       "paymentMethodChanged": "Payment method changed successfully",
       "productsAdded": "Products added to cart",
-      "verifying": "Account confirmation"
+      "verifying": "Account confirmation",
+      "orderNotFound": "The order could not be found.",
+      "orderWrongData": "The email address or postal code is incorrect. Please try again."
     }
   }
 }

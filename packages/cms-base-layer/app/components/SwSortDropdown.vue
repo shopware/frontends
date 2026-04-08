@@ -4,7 +4,10 @@ import { ref, useTemplateRef } from "vue";
 
 type SortOption = {
   key: string;
-  label: string;
+  label: string | null;
+  translated?: {
+    label: string;
+  };
 };
 
 defineProps<{
@@ -39,7 +42,7 @@ const handleSortingClick = (key: string) => {
         type="button"
         @click="isSortMenuOpen = !isSortMenuOpen"
         id="menu-button"
-        aria-expanded="false"
+        :aria-expanded="isSortMenuOpen"
         aria-haspopup="true"
         class="group pr-0"
       >
@@ -48,13 +51,14 @@ const handleSortingClick = (key: string) => {
           <SwChevronIcon
             :direction="isSortMenuOpen ? 'up' : 'down'"
             :size="24"
-            :aria-label="isSortMenuOpen ? 'Close sort menu' : 'Open sort menu'"
+            aria-hidden="true"
+            focusable="false"
           />
         </span>
       </SwBaseButton>
       <div
         :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-        class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-opacity-dark-low focus:outline-none z-1000"
+        class="origin-top-right right-0 mt-2 w-40 rounded-md shadow-2xl bg-surface-surface ring-1 ring-outline-outline-variant focus:outline-none z-50"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
@@ -70,11 +74,11 @@ const handleSortingClick = (key: string) => {
                 ? 'font-medium text-surface-on-surface'
                 : 'text-surface-on-surface-variant',
             ]"
-            class="block px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
+            class="block w-full text-left px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
             role="menuitem"
             tabindex="-1"
           >
-            {{ sorting.label }}
+            {{ sorting.translated?.label }}
           </button>
         </div>
       </div>

@@ -21,7 +21,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 
 ## The access token for the store API is public visible?
 
-In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-demo-store template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](../resources/community-modules/) how others are doing this.
+In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-starter-template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](../resources/community-modules/) how others are doing this.
 
 ## How to use https for your localhost with Composable Frontends?
 
@@ -70,10 +70,50 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // access token for corresponding sales channel
     endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
-    devStorefrontUrl: "", // to simulate a storefrontUrl which is used in registration process and should cover the domain settings for a sales channel
+    devStorefrontUrl: "https://demo-frontends.shopware.store", // see section below
   },
 
 ```
+
+## What is `devStorefrontUrl` and when to use it?
+
+The `devStorefrontUrl` configuration option is primarily used for **customer registration** functionality. The Shopware registration endpoint requires a `storefrontUrl` parameter in its payload to identify which sales channel domain the customer is registering from.
+
+### Why is it needed?
+
+By default, the application uses `window.location.origin` (e.g., `https://your-store.com`) to determine the storefront URL. However, this fails in certain scenarios:
+
+- **Local development** - Your browser origin is `http://localhost:3000`, which doesn't match any configured sales channel domain
+- **Separate frontend/API hosting** - When your frontend runs on a different domain than what's configured in Shopware
+
+### How to configure it
+
+Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      shopware: {
+        endpoint: "https://your-shop.shopware.store/store-api",
+        accessToken: "your-access-token",
+        devStorefrontUrl: "https://your-shop.shopware.store", // must match a domain in Sales Channel settings
+      },
+    },
+  },
+});
+```
+
+Or use an environment variable:
+
+```bash
+NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
+```
+
+:::tip
+If customer registration works in production but fails locally, `devStorefrontUrl` is likely the solution. Set it to your production storefront domain during local development.
+:::
 
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 
@@ -140,3 +180,45 @@ For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozil
 ## CORS (Cross-Origin Resource Sharing) Issues
 
 See the [CORS](./troubleshooting/CORS) page for more information on how to handle CORS issues in your project.
+
+## [unimport] failed to find "createShopwareContext" imported from "#imports"
+
+### Problem
+
+This error occurs when `@shopware/nuxt-module` is added to your project, but `@shopware/composables/nuxt-layer` is not extended in your Nuxt configuration.
+
+### Why it happens
+
+The `@shopware/nuxt-module` plugin imports `createShopwareContext` from the `#imports` alias. The `@shopware/composables/nuxt-layer` is responsible for configuring Nuxt's auto-import system and TypeScript paths to make composables exports available via `#imports`.
+
+When you use Nuxt layers, the layer system merges TypeScript configuration files from both the composables layer and your project. This merge adds the composables exports to the `#imports` alias scope. Without extending the composables layer, these exports are not available, causing the import error.
+
+### Solution
+
+Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  extends: ["@shopware/composables/nuxt-layer"],
+  modules: ["@shopware/nuxt-module"],
+  // ... rest of your configuration
+});
+```
+
+:::tip
+If you're using `@shopware/cms-base-layer`, you can extend both layers together:
+
+```ts
+extends: [
+  "@shopware/composables/nuxt-layer",
+  "@shopware/cms-base-layer"
+],
+```
+:::
+
+### Additional Information
+
+- The `@shopware/composables/nuxt-layer` sets up auto-imports for all composables from the `src` directory
+- It also configures TypeScript path aliases (`#imports` and `#shopware`) that are required by the nuxt-module
+- Always extend the composables layer when using `@shopware/nuxt-module` in your project

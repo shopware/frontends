@@ -155,4 +155,37 @@ The `src` attribute points to the main image URL (not resized) as a fallback.
 
 As long as `thumbnails` array is fulfilled, the same strategy can be applied when we work with every `media` object for each entity available in Shopware 6.
 
+## 3D and spatial media (GLB)
+
+Besides regular images and videos, Shopware media can also be **3D models** in the [GLB](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) format. When a media object has a `.glb` file extension, the `@shopware/cms-base-layer` automatically renders it as an interactive 3D viewer instead of a flat image. This works in:
+
+- **CmsElementImage** and **CmsElementImageGallery** — when the assigned media is a `.glb` file
+- **CmsBlockSpatialViewer** — a dedicated CMS block for embedding 3D models
+
+The 3D rendering is handled by the `SwMedia3D` component, which uses [TresJS](https://tresjs.org/) (a Vue wrapper for Three.js) to display the model with orbit controls, lighting, and a perspective camera.
+
+### Why SwMedia3D is not auto-imported
+
+Three.js and TresJS are large libraries. To avoid adding their weight to the initial bundle for every project — even those that never use 3D media — `SwMedia3D` is **excluded from Nuxt's auto-import**. It is loaded on demand via `defineAsyncComponent` only when a spatial media object is actually present on the page. Projects that do not use 3D models pay no bundle-size cost.
+
+### Enabling 3D support
+
+The cms-base-layer provides the `SwMedia3D` component and the dynamic imports, but it does **not** ship the TresJS Nuxt module. To enable 3D rendering in your app, add `@tresjs/nuxt` to your Nuxt modules:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: [
+    // ...other modules
+    "@tresjs/nuxt",
+  ],
+});
+```
+
+You do not need to register `SwMedia3D` manually. The cms-base-layer already dynamically imports it wherever spatial media is detected. Once `@tresjs/nuxt` is installed, GLB media in image elements, image galleries, and the Spatial Viewer block will render as interactive 3D viewers automatically.
+
+:::info
+If `@tresjs/nuxt` is not installed, components that encounter `.glb` media will attempt to load `SwMedia3D` but the TresJS runtime will not be available. Make sure to install the module before uploading GLB files to your Shopware media library.
+:::
+
 <PageRef page="../../best-practices/images.html" title="Best Practices" sub="Best Practices to work with images" />

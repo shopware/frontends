@@ -65,6 +65,16 @@ describe("usePrice", () => {
     expect(vm.getFormattedPrice("2")).toBe("$2.00");
   });
 
+  it("should init price object with params and undefined localeCode", () => {
+    const { vm } = useSetup(() =>
+      usePrice({
+        currencyCode: "EUR",
+      }),
+    );
+
+    expect(vm.currencyCode).toBe("EUR");
+  });
+
   it("should update config", async () => {
     const { vm } = useSetup(usePrice);
 

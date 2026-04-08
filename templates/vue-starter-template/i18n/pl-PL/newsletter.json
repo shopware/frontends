@@ -1,0 +1,13 @@
+{
+  "newsletter": {
+    "subscriptionHeader": "Subskrypcja newslettera",
+    "subscriptionCheckbox": "Tak, chcę otrzymywać bezpłatny newsletter. (Mogę wypisać się w każdej chwili.)",
+    "subscriptionInfo": "Twoja subskrypcja newslettera została potwierdzona. Otrzymasz teraz nasze najnowsze aktualizacje i oferty.",
+    "backToHomepage": "Powrót na stronę główną",
+    "messages": {
+      "loading": "Potwierdzanie subskrypcji newslettera...",
+      "newsletterSubscribed": "Dziękujemy! Zapisaliśmy Twój adres e-mail.",
+      "newsletterUnsubscribed": "Wypisanie z newslettera"
+    }
+  }
+}

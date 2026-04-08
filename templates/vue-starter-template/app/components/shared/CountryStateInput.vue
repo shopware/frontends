@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { BaseValidation } from "@vuelidate/core";
+import type { RegleFieldStatus } from "@regle/core";
 
 const countryId = defineModel<string>("countryId", {
   required: true,
@@ -10,59 +10,52 @@ const stateId = defineModel<string>("stateId", {
 
 const { countryIdValidation = undefined, stateIdValidation = undefined } =
   defineProps<{
-    countryIdValidation?: BaseValidation;
-    stateIdValidation?: BaseValidation;
+    countryIdValidation?: RegleFieldStatus;
+    stateIdValidation?: RegleFieldStatus;
   }>();
 
 const { getStatesForCountry, getCountriesOptions } = useCountries();
 
 const states = computed(() => getStatesForCountry(countryId.value || ""));
 
-function onCountrySelectChanged() {
-  stateId.value = "";
-}
+const stateOptions = computed(() =>
+  (states.value ?? []).map((state) => ({
+    label: state.translated?.name ?? state.name ?? "",
+    value: state.id,
+  })),
+);
+
+watch(countryId, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    stateId.value = "";
+  }
+});
 </script>
 
 <template>
   <div class="flex gap-6">
     <FormDropdownField
+      autocomplete="country-name"
       class="w-full"
       id="country"
       v-model="countryId"
       :label="$t('form.country')"
       :options="getCountriesOptions"
       data-testid="country-select"
-      :errorMessage="countryIdValidation?.$errors[0]?.$message"
+      :errorMessage="countryIdValidation?.$errors[0]"
     />
 
-    <div v-if="states && states.length" class="w-full">
-      <label for="state" class="block text-sm font-medium text-secondary-700">{{
-        $t("form.state")
-      }}</label>
-      <select
-        id="state"
-        v-model="stateId"
-        required
-        name="state"
-        autocomplete="off"
-        class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
-        data-testid="checkout-pi-state-input"
-        @blur="stateIdValidation?.$touch()"
-      >
-        <option disabled selected value="">
-          {{ $t("form.chooseState") }}
-        </option>
-
-        <option v-for="state in states" :key="state.id" :value="state.id">
-          {{ state.name }}
-        </option>
-      </select>
-      <span
-        v-if="stateIdValidation?.$error && stateIdValidation?.$errors[0]?.$message"
-        class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
-      >
-        {{ stateIdValidation.$errors[0].$message }}
-      </span>
-    </div>
+    <FormDropdownField
+      v-if="states?.length"
+      id="state"
+      v-model="stateId"
+      class="w-full"
+      autocomplete="off"
+      :placeholder="$t('form.chooseState')"
+      :label="$t('form.state')"
+      :options="stateOptions"
+      data-testid="checkout-pi-state-input"
+      :errorMessage="stateIdValidation?.$errors[0]"
+    />
   </div>
 </template>

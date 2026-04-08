@@ -7,6 +7,9 @@ const { size = "large" } = defineProps<{
   size?: "small" | "large";
 }>();
 
+const { t } = useI18n();
+const inputId = useId();
+
 function increaseQty() {
   qty.value++;
 }
@@ -29,6 +32,8 @@ const sizeClasses = {
     <button
       :class="sizeClasses[size]"
       class="bg-surface-surface border-0 border-r-1 cursor-pointer hover:bg-brand-tertiary-hover font-semibold"
+      type="button"
+      :aria-label="t('form.quantitySelect.decreaseButton')"
       @click="decreaseQty"
     >
       -
@@ -37,15 +42,20 @@ const sizeClasses = {
       class="bg-white border-l border-r border-outline-outline inline-flex flex-col justify-center items-center"
     >
       <input
+        :id="inputId"
         :class="sizeClasses[size]"
         class="self-stretch text-center justify-start text-surface-on-surface text-xs font-bold leading-[18px] appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         type="number"
         v-model="qty"
+        :name="inputId"
+        :aria-label="t('form.quantitySelect.label')"
       />
     </div>
     <button
       :class="sizeClasses[size]"
       class="w-10 bg-surface-surface border-0 border-l-1 cursor-pointer hover:bg-brand-tertiary-hover font-semibold"
+      type="button"
+      :aria-label="t('form.quantitySelect.increaseButton')"
       @click="increaseQty"
     >
       +

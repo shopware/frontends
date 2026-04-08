@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ApiClientError } from "@shopware/api-client";
-import { useVuelidate } from "@vuelidate/core";
+import { useRegle } from "@regle/core";
 import type { operations } from "#shopware";
 
 const { apiClient } = useShopwareContext();
@@ -18,11 +17,11 @@ const state = ref<
   password: "",
 });
 
-const $v = useVuelidate(changePasswordFormRules(state), state);
+const { r$ } = useRegle(state, changePasswordFormRules(state));
 
 async function handleSubmit() {
-  await $v.value.$validate();
-  if ($v.value.$invalid) {
+  await r$.$validate();
+  if (r$.$invalid) {
     return;
   }
 
@@ -68,7 +67,7 @@ async function handleSubmit() {
           v-model="state.newPassword"
           type="password"
           :label="$t('account.changePassword.form.newPasswordLabel')"
-          :errorMessage="$v.newPassword.$errors[0]?.$message"
+          :errorMessage="r$.newPassword.$errors[0]"
           autocomplete="new-password"
         />
 
@@ -77,7 +76,7 @@ async function handleSubmit() {
           v-model="state.newPasswordConfirm"
           type="password"
           :label="$t('account.changePassword.form.confirmPasswordLabel')"
-          :errorMessage="$v.newPasswordConfirm.$errors[0]?.$message"
+          :errorMessage="r$.newPasswordConfirm.$errors[0]"
           autocomplete="new-password"
         />
 
@@ -86,7 +85,7 @@ async function handleSubmit() {
           v-model="state.password"
           type="password"
           :label="$t('account.changePassword.form.currentPasswordLabel')"
-          :errorMessage="$v.password.$errors[0]?.$message"
+          :errorMessage="r$.password.$errors[0]"
           autocomplete="current-password"
         />
 

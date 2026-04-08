@@ -8,12 +8,15 @@ import { pascalCase } from "scule";
 import { computed, h, resolveComponent, watchEffect } from "vue";
 import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
+import { useLcpImagePreload } from "../../../composables/useLcpImagePreload";
+import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 
 const props = defineProps<{
   content: Schemas["CmsPage"];
 }>();
 
 const { routeName } = useNavigationContext();
+const appConfig = useTypedAppConfig();
 
 // Function to initialize or update listing context
 function updateListingContext(content: Schemas["CmsPage"]) {
@@ -36,6 +39,8 @@ const cmsSections = computed<Schemas["CmsSection"][]>(() => {
   return props.content?.sections || [];
 });
 
+useLcpImagePreload(props.content?.sections || []);
+
 const DynamicRender = () => {
   const componentsMap = cmsSections.value.map((section) => {
     return {
@@ -56,6 +61,7 @@ const DynamicRender = () => {
       layoutStyles.backgroundImage = getBackgroundImageUrl(
         layoutStyles.backgroundImage,
         componentObject.section,
+        appConfig.backgroundImage,
       );
     }
 
@@ -64,6 +70,7 @@ const DynamicRender = () => {
       class: {
         ...cssClasses,
         "max-w-screen-2xl w-full mx-auto": layoutStyles?.sizingMode === "boxed",
+        "w-full": layoutStyles?.sizingMode === "full_width",
       },
       style: {
         backgroundColor: layoutStyles?.backgroundColor,

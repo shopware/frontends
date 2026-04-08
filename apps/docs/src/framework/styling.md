@@ -115,6 +115,10 @@ Similar to viewport breakpoints, you can also use state variants with prefixes:
         placeholder="Hover me 🙂" />
 </div>
 
+## Design Tokens
+
+Shopware Composable Frontends defines a comprehensive set of color design tokens as UnoCSS theme colors. See the [Design Tokens](./design-tokens) page for the full reference, naming conventions, and an exportable Uno config snippet.
+
 ## Use a custom CSS Framework
 
 If you want to use a different CSS framework or fully custom styling, it's recommended to use the [Blank Template](../getting-started/templates/blank-template) as a starting point. It has no pre-installed CSS framework and you can install you own.

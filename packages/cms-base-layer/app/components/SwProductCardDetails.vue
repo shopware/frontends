@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { BoxLayout } from "@shopware/composables";
 import type { UrlRouteOutput } from "@shopware/helpers";
+import { computed } from "vue";
 import type { Schemas } from "#shopware";
 
 type Translations = {
@@ -12,7 +14,7 @@ type Translations = {
   };
 };
 
-defineProps<{
+const props = defineProps<{
   product: Schemas["Product"];
   productName: string | null;
   productManufacturer?: string | null;
@@ -20,7 +22,10 @@ defineProps<{
   fromPrice?: number;
   addToCartProxy: () => Promise<void>;
   productLink: UrlRouteOutput;
+  layoutType?: BoxLayout;
 }>();
+
+const isMinimalLayout = computed(() => props.layoutType === "minimal");
 </script>
 <template>
   <div class="self-stretch p-2 flex flex-col justify-between items-start gap-4 flex-1">
@@ -33,25 +38,37 @@ defineProps<{
           </div>
 
           <RouterLink :to="productLink"
-            class="self-stretch text-surface-on-surface text-2xl font-normal font-serif leading-9 overflow-hidden line-clamp-2 break-words"
+            class="self-stretch text-surface-on-surface text-2xl font-normal font-serif leading-9 overflow-hidden line-clamp-2 break-words min-h-[4.5rem]"
             data-testid="product-box-product-name-link">
             {{ productName }}
           </RouterLink>
         </div>
       </div>
 
-      <SwListingProductPrice :product="product" data-testid="product-box-product-price" />
+      <!-- Star rating for minimal layout -->
+      <SwProductRating
+        v-if="isMinimalLayout"
+        :rating="product?.ratingAverage ?? 0"
+        :review-count="product?.productReviews?.length ?? 0"
+        class="mt-4"
+      />
+
+      <!-- Price for standard layout -->
+      <SwListingProductPrice v-else :product="product" data-testid="product-box-product-price" />
     </div>
 
-    <SwBaseButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
-      data-testid="add-to-cart-button" @click="addToCartProxy">
-      {{ translations.product.addToCart }}
-    </SwBaseButton>
-
-    <RouterLink v-else :to="productLink" class="self-stretch">
-      <SwBaseButton block>
-        {{ translations.product.details }}
+    <!-- CTA buttons only for non-minimal layout -->
+    <template v-if="!isMinimalLayout">
+      <SwBaseButton variant="primary" v-if="!fromPrice" size="medium" :disabled="!product?.available" block
+        data-testid="add-to-cart-button" @click="addToCartProxy">
+        {{ translations.product.addToCart }}
       </SwBaseButton>
-    </RouterLink>
+
+      <RouterLink v-else :to="productLink" class="self-stretch">
+        <SwBaseButton block>
+          {{ translations.product.details }}
+        </SwBaseButton>
+      </RouterLink>
+    </template>
   </div>
 </template>

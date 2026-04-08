@@ -9,7 +9,7 @@ const { link, label } = defineProps<{
 
 <template>
   <NuxtLink
-    class="text-surface-on-surface hover:border-b hover:border-surface-on-surface"
+    class="text-surface-on-surface border-b border-transparent hover:border-surface-on-surface mt-[-1px]"
     :to="link"
     active-class="border-b border-surface-on-surface"
   >

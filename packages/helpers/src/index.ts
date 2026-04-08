@@ -2,6 +2,7 @@ export * from "./product";
 export * from "./category";
 export * from "./ui-interfaces";
 export * from "./cms";
+export * from "./getRouteFromPathInfo";
 export * from "./getTranslatedProperty";
 export * from "./listing";
 export * from "./price";

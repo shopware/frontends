@@ -39,8 +39,14 @@ nav:
   </div>
     <div>
     <a href="amazon-pay.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
-      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/amazon-pay.png" alt="Adyen Logo" class="my-8 h-20 inline" /></span>
+      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/amazon-pay.png" alt="Amazon Pay Logo" class="my-8 h-20 inline" /></span>
       <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Offer shoppers an easy, secure, and fast way to check out on your site using the shipping and payment information stored in their Amazon account.</p>
+    </a>
+  </div>
+  <div>
+    <a href="braintree.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../../.assets/payment-icons/braintree.png" alt="Braintree Logo" class="my-8 h-20 inline" /></span>
+      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Accept credit card payments using the official Shopware Braintree App. Includes Drop-in UI integration for headless frontends.</p>
     </a>
   </div>
 </div>

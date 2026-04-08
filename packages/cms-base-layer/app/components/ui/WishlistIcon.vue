@@ -1,12 +1,7 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    filled?: boolean;
-  }>(),
-  {
-    filled: false,
-  },
-);
+const { filled = false } = defineProps<{
+  filled?: boolean;
+}>();
 </script>
 <template>
   <div class="relative">

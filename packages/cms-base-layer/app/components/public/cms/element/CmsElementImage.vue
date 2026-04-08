@@ -3,10 +3,15 @@ import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware/composables";
-import { buildUrlPrefix, encodeUrlPath } from "@shopware/helpers";
+import {
+  buildCdnImageUrl,
+  buildUrlPrefix,
+  generateCdnSrcSet,
+} from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
-import { computed, defineAsyncComponent, useTemplateRef } from "vue";
+import { computed, defineAsyncComponent, inject, useTemplateRef } from "vue";
 import { useCmsElementImage, useUrlResolver } from "#imports";
+import { useTypedAppConfig } from "../../../../composables/useTypedAppConfig";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 const props = defineProps<{
@@ -25,44 +30,36 @@ const {
   mimeType,
 } = useCmsElementImage(props.content);
 
-const DEFAULT_THUMBNAIL_SIZE = 10;
+const imageSizes = inject<string>("cms-image-sizes", "100vw");
+const appConfig = useTypedAppConfig();
+
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
 
-function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
-}
+const cdnOptions = computed(() => ({
+  format: appConfig.backgroundImage?.format,
+  quality: appConfig.backgroundImage?.quality,
+}));
+
+const srcSet = computed(
+  () =>
+    imageAttrs.value.srcset ||
+    generateCdnSrcSet(imageAttrs.value.src, undefined, cdnOptions.value),
+);
 
 const srcPath = computed(() => {
-  if (!imageAttrs.value.src) return "";
-
-  try {
-    // Encode the URL first to handle special characters
-    const encodedUrl = encodeUrlPath(imageAttrs.value.src);
-    const url = new URL(encodedUrl);
-
-    // Only add size parameters if dimensions are available (after mount)
-    // This prevents hydration mismatch
-    const w = roundUp(width.value);
-    const h = roundUp(height.value);
-
-    if (w > DEFAULT_THUMBNAIL_SIZE || h > DEFAULT_THUMBNAIL_SIZE) {
-      if (width.value > height.value) {
-        url.searchParams.set("width", String(w));
-      } else {
-        url.searchParams.set("height", String(h));
-      }
-    }
-
-    // Add fit parameter
-    url.searchParams.set("fit", "crop,smart");
-
-    return url.toString();
-  } catch {
-    // Fallback if URL parsing fails
-    return imageAttrs.value.src;
+  // Only add dimension params after mount to avoid hydration mismatch
+  // (useElementSize returns 0 during SSR). The srcset handles responsive loading.
+  if (width.value || height.value) {
+    return buildCdnImageUrl(
+      imageAttrs.value.src,
+      { width: width.value, height: height.value },
+      cdnOptions.value,
+    );
   }
+  return imageAttrs.value.src || "";
 });
+
 const imageComputedContainerAttrs = computed(() => {
   const imageAttrsCopy = Object.assign({}, imageContainerAttrs.value);
   if (imageAttrsCopy?.href) {
@@ -114,8 +111,10 @@ const SwMedia3D = computed(() => {
       ref="imageElement"
       preset="productDetail"
       loading="lazy"
+      :sizes="imageSizes"
       :class="{
-        'w-full h-full': !imageGallery,
+        'w-full': !imageGallery,
+        'h-full': !imageGallery && ['cover', 'stretch'].includes(displayMode),
         'w-4/5': imageGallery,
         'absolute left-0 top-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
@@ -123,7 +122,7 @@ const SwMedia3D = computed(() => {
       }"
       :alt="imageAttrs.alt"
       :src="srcPath"
-      :srcset="imageAttrs.srcset"
+      :srcset="srcSet"
     />
   </component>
 </template>

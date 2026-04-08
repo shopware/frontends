@@ -33,7 +33,7 @@ const languagesListVisibility = ref(false);
 
         <ul
           v-show="languagesListVisibility"
-          class="absolute bg-surface-surface-primary top-8 p-2 w-full cursor-pointer"
+          class="absolute bg-surface-surface-primary top-8 p-2 w-full cursor-pointer z-20"
         >
           <li
             v-for="language in languages"

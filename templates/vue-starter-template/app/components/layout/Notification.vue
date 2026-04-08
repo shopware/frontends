@@ -57,7 +57,7 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
       type="button"
       class="ml-auto -mx-1.5 -my-1.5 bg-white rounded-lg focus:ring-2 p-1.5 inline-flex h-8 w-8"
       :data-dismiss-target="`toast-${notification.id}`"
-      aria-label="Close notification"
+      :aria-label="$t('layout.ariaLabels.closeNotification')"
       @click="$emit('click:close', notification.id)"
     >
       <span class="sr-only">{{ $t("close") }}</span>

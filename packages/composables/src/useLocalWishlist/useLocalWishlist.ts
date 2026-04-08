@@ -43,10 +43,11 @@ export function useLocalWishlist(): UseLocalWishlistReturn {
       JSON.stringify(_wishlistItems.value),
     );
   };
-  /* istanbul ignore next */
   const getFromStorage = () => {
-    if (typeof window !== "undefined" && localStorage) {
+    try {
       return JSON.parse(localStorage.getItem("sw-wishlist-items") ?? "[]");
+    } catch {
+      return undefined;
     }
   };
 

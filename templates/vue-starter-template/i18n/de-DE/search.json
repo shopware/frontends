@@ -1,0 +1,15 @@
+{
+  "search": {
+    "placeholder": "Produkte suchen",
+    "see": "anzeigen",
+    "all": "alle",
+    "result": "Ergebnis | Ergebnisse",
+    "noResults": "Keine Produkte gefunden",
+    "resultsHeader": "Suchergebnis für",
+    "listing": {
+      "perPage": "Pro Seite:",
+      "product": "Produkt",
+      "products": "Produkte"
+    }
+  }
+}

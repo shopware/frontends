@@ -1,6 +1,6 @@
-name: 🚀 Feature request
+name: Feature request
 description: Suggest an idea for this project
-labels: ["pending triage"]
+labels: [needs-triage]
 body:
 - type: textarea
   id: feature-description
@@ -12,8 +12,8 @@ body:
     required: true
 - type: textarea
   attributes:
-    label: Description
-    description: A brief description of the feature you are requesting. Please mention use cases, possible solutions and alternatives. 
+    label: WHY do we need that?
+    description: Provide the main reason for this feature to be implemented.
   validations:
     required: true
 - type: textarea
@@ -21,14 +21,14 @@ body:
     label: Acceptance Criteria
     description: Describe shortly in points the main criteria to be met in order to fulfill this request.
   validations:
-    required: false
+    required: true
 - type: checkboxes
   id: additional-info
   attributes:
     label: Additional information
     description: Additional information that helps us decide how to proceed.
     options:
-      - label: Would you be willing to help implement this feature?
+      - label: I want to implement this feature.
 - type: checkboxes
   id: required-info
   attributes:
