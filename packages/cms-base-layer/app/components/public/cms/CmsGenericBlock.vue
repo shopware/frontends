@@ -4,16 +4,16 @@ import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
-import { h, provide } from "vue";
-import { useAppConfig } from "#imports";
+import { h, provide, resolveComponent } from "vue";
 import type { Schemas } from "#shopware";
+import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 import { getImageSizes } from "../../../helpers/cms/getImageSizes";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const appConfig = useAppConfig();
+const appConfig = useTypedAppConfig();
 
 const slotCount = props.content.slots?.length || 1;
 provide("cms-block-slot-count", slotCount);
@@ -67,7 +67,12 @@ const DynamicRender = () => {
       }),
     );
   }
-  console.error(`Component not resolve: ${componentNameToResolve}`);
+  if (import.meta.dev) {
+    console.warn(
+      `[CMS] Block type "${componentName}" is not implemented.\n  → Create a component named "${componentNameToResolve}.vue" to render it.\n  📖 Docs: https://frontends.shopware.com/getting-started/cms/create-blocks`,
+    );
+    return h(resolveComponent("CmsNoComponent"), { content: props.content });
+  }
   return h("div", {}, "");
 };
 </script>

@@ -3,10 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const addPluginMock = vi.fn();
 const addTypeTemplateMock = vi.fn();
 const addCustomTabMock = vi.fn();
-const useLoggerMock = vi.fn(() => ({
+const loggerMock = {
   info: vi.fn(),
   warn: vi.fn(),
-}));
+};
+const useLoggerMock = vi.fn(() => loggerMock);
 const createResolverMock = vi.fn(() => ({
   resolve: (path: string) => `/mocked-module-dir/${path}`,
 }));
@@ -15,6 +16,8 @@ const defineNuxtModuleMock = vi.fn(
 );
 
 const existsSyncMock = vi.fn();
+
+const isConfigDeprecatedMock = vi.fn(() => false);
 
 vi.mock("node:fs", () => ({
   existsSync: existsSyncMock,
@@ -37,7 +40,7 @@ vi.mock("defu", () => ({
 }));
 
 vi.mock("./utils", () => ({
-  isConfigDeprecated: () => false,
+  isConfigDeprecated: isConfigDeprecatedMock,
 }));
 
 function createNuxtMock(rootDir: string) {
@@ -45,6 +48,7 @@ function createNuxtMock(rootDir: string) {
     options: {
       rootDir,
       runtimeConfig: {
+        shopware: {},
         public: {
           shopware: {
             endpoint: "https://test.shopware.store/store-api/",
@@ -68,6 +72,7 @@ async function getModuleSetup() {
 describe("@shopware/nuxt-module", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    isConfigDeprecatedMock.mockReturnValue(false);
   });
 
   it("should inject default shopware.d.ts when project has no custom types", async () => {
@@ -109,5 +114,44 @@ describe("@shopware/nuxt-module", () => {
     expect(addPluginMock).toHaveBeenCalledWith({
       src: "/mocked-module-dir/../plugin.ts",
     });
+  });
+
+  it("should persist the resolved SSR endpoint into private runtime config", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+    const nuxt = createNuxtMock("/tmp/test-project");
+
+    await setup({}, nuxt);
+
+    expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+      endpoint: "https://test.shopware.store/store-api/",
+    });
+  });
+
+  it("should preserve an explicit private SSR endpoint", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+    const nuxt = createNuxtMock("/tmp/test-project");
+    nuxt.options.runtimeConfig.shopware = {
+      endpoint: "http://internal.shopware/store-api/",
+    };
+
+    await setup({}, nuxt);
+
+    expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+      endpoint: "http://internal.shopware/store-api/",
+    });
+  });
+
+  it("should warn when deprecated config keys are used", async () => {
+    existsSyncMock.mockReturnValue(false);
+    isConfigDeprecatedMock.mockReturnValue(true);
+    const setup = await getModuleSetup();
+
+    await setup({}, createNuxtMock("/tmp/test-project"));
+
+    expect(loggerMock.warn).toHaveBeenCalledWith(
+      "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
+    );
   });
 });

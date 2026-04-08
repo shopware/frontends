@@ -17,7 +17,11 @@ const {
 
 const nuxtApp = useNuxtApp();
 const { apiClient } = useShopwareContext();
-const { defaultCSRCacheLifetime } = useAppConfig();
+const appConfig = useAppConfig();
+const defaultCSRCacheLifetime =
+  typeof appConfig.defaultCSRCacheLifetime === "number"
+    ? appConfig.defaultCSRCacheLifetime
+    : 86_400_000;
 
 const {
   data: salutationData,
