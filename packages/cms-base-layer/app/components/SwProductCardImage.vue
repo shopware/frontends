@@ -69,7 +69,7 @@ const placeholderSvg = useImagePlaceholder();
       <NuxtImg preset="productCard"
         class="w-full h-full absolute top-0 left-0 object-cover"
         :placeholder="placeholderSvg"
-        :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />
+        :src="coverSrcPath" :alt="coverAlt" :width="imageModifiers.width" :height="imageModifiers.height" :modifiers="imageModifiers" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
