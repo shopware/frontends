@@ -48,6 +48,7 @@ export const sidebar = [
         link: "/framework/shopping-experiences.html",
       },
       { text: "Styling", link: "/framework/styling.html" },
+      { text: "Design Tokens", link: "/framework/design-tokens.html" },
     ],
   },
   {
