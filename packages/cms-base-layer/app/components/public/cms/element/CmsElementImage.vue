@@ -10,7 +10,8 @@ import {
 } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, defineAsyncComponent, inject, useTemplateRef } from "vue";
-import { useAppConfig, useCmsElementImage, useUrlResolver } from "#imports";
+import { useCmsElementImage, useUrlResolver } from "#imports";
+import { useTypedAppConfig } from "../../../../composables/useTypedAppConfig";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 const props = defineProps<{
@@ -30,7 +31,7 @@ const {
 } = useCmsElementImage(props.content);
 
 const imageSizes = inject<string>("cms-image-sizes", "100vw");
-const appConfig = useAppConfig();
+const appConfig = useTypedAppConfig();
 
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
