@@ -28,13 +28,13 @@ const {
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
 
-const DEFAULT_THUMBNAIL_SIZE = 400;
 function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
+  return Math.ceil(num / 100) * 100;
 }
 
 const imageSize = computed(() => {
   const containerSize = Math.max(width.value || 0, height.value || 0);
+  if (!containerSize) return undefined;
   return roundUp(containerSize * 2);
 });
 
