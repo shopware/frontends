@@ -30,9 +30,8 @@ const props = defineProps<{
 const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
 const { width, height } = useElementSize(containerElement);
 
-const DEFAULT_THUMBNAIL_SIZE = 10;
 function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
+  return Math.ceil(num / 100) * 100;
 }
 
 const coverSrcPath = computed(() => {
@@ -42,15 +41,10 @@ const coverSrcPath = computed(() => {
   );
 });
 
-const imageModifiers = computed(() => {
-  // Use the larger dimension and apply 2x for high-DPI displays
-  // For square containers, width and height should be the same
+const imageSize = computed(() => {
   const containerSize = Math.max(width.value || 0, height.value || 0);
-  const size = roundUp(containerSize * 2);
-  return {
-    width: size,
-    height: size,
-  };
+  if (!containerSize) return undefined;
+  return roundUp(containerSize * 2);
 });
 
 const coverAlt = computed(() => {
@@ -66,10 +60,12 @@ const placeholderSvg = useImagePlaceholder();
 <template>
   <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <NuxtImg preset="productCard"
+      <img v-if="!imageSize" :src="placeholderSvg" class="w-full h-full absolute top-0 left-0 object-cover" :alt="coverAlt" />
+      <NuxtImg v-else preset="productCard"
+        loading="lazy"
         class="w-full h-full absolute top-0 left-0 object-cover"
         :placeholder="placeholderSvg"
-        :src="coverSrcPath" :alt="coverAlt" :width="imageModifiers.width" :height="imageModifiers.height" :modifiers="imageModifiers" data-testid="product-box-img" />
+        :src="coverSrcPath" :alt="coverAlt" :width="imageSize" :height="imageSize" data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
