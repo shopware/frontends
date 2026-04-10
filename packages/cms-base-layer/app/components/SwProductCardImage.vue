@@ -5,9 +5,7 @@ import {
   isProductOnSale,
   isProductTopSeller,
 } from "@shopware/helpers";
-import { useElementSize } from "@vueuse/core";
-import { computed, useTemplateRef } from "vue";
-import { useImagePlaceholder } from "#imports";
+import { computed } from "vue";
 import type { Schemas } from "#shopware";
 
 type Translations = {
@@ -27,24 +25,11 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
-const { width, height } = useElementSize(containerElement);
-
-function roundUp(num: number) {
-  return Math.ceil(num / 100) * 100;
-}
-
 const coverSrcPath = computed(() => {
   return (
-    getSmallestThumbnailUrl(props.product?.cover?.media) ||
-    props.product?.cover?.media?.url
+    props.product?.cover?.media?.url ||
+    getSmallestThumbnailUrl(props.product?.cover?.media)
   );
-});
-
-const imageSize = computed(() => {
-  const containerSize = Math.max(width.value || 0, height.value || 0);
-  if (!containerSize) return undefined;
-  return roundUp(containerSize * 2);
 });
 
 const coverAlt = computed(() => {
@@ -53,19 +38,18 @@ const coverAlt = computed(() => {
 
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
-
-const placeholderSvg = useImagePlaceholder();
 </script>
 
 <template>
-  <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
+  <div class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <img v-if="!imageSize" :src="placeholderSvg" class="w-full h-full absolute top-0 left-0 object-cover" :alt="coverAlt" />
-      <NuxtImg v-else preset="productCard"
-        loading="lazy"
+      <NuxtImg preset="productCard"
         class="w-full h-full absolute top-0 left-0 object-cover"
-        :placeholder="placeholderSvg"
-        :src="coverSrcPath" :alt="coverAlt" :width="imageSize" :height="imageSize" data-testid="product-box-img" />
+        :src="coverSrcPath" :alt="coverAlt"
+        width="400" height="400"
+        densities="1x"
+        loading="lazy"
+        data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"

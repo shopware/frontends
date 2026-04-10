@@ -2,4 +2,4 @@
 "@shopware/cms-base-layer": patch
 ---
 
-Pass `width` and `height` props to `NuxtImg` in `CmsElementImage` to serve properly sized images instead of originals
+Fix product card and CMS image sizing to prevent duplicate/oversized image requests. Move fixed dimensions and `densities="1x"` into the `productCard` preset, and use `useElementSize`-based `width`/`height` props for `CmsElementImage`.
