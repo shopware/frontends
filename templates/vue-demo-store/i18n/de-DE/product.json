@@ -34,7 +34,8 @@
     "badges": {
       "topseller": "Tipp"
     },
-    "toggleWishlist": "Wunschliste anzeigen",
+    "addToWishlist": "Zur Wunschliste hinzufügen",
+    "removeFromWishlist": "Von der Wunschliste entfernen",
     "to": "Bis",
     "from": "Ab",
     "pricesIncl": "Preise inkl. MwSt. zzgl. Versandkosten",

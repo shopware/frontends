@@ -1,7 +1,8 @@
 {
   "product": {
     "addToCart": "Dodaj do koszyka",
-    "toggleWishlist": "Przełącz listę życzeń",
+    "addToWishlist": "Dodaj do listy życzeń",
+    "removeFromWishlist": "Usuń z listy życzeń",
     "addReview": "Dodaj recenzję",
     "reviewsForm": {
       "title": "Tytuł",

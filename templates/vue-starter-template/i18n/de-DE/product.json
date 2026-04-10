@@ -1,7 +1,8 @@
 {
   "product": {
     "addToCart": "Zum Warenkorb hinzufügen",
-    "toggleWishlist": "Wunschliste anzeigen",
+    "addToWishlist": "Zur Wunschliste hinzufügen",
+    "removeFromWishlist": "Von der Wunschliste entfernen",
     "addReview": "Bewertung hinzufügen",
     "reviewsForm": {
       "title": "Titel",

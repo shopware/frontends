@@ -50,7 +50,8 @@ type Translations = {
     badges: {
       topseller: string;
     };
-    toggleWishlist: string;
+    addToWishlist: string;
+    removeFromWishlist: string;
   };
   errors: {
     [key: string]: string;
@@ -69,7 +70,8 @@ let translations: Translations = {
     badges: {
       topseller: "Tip",
     },
-    toggleWishlist: "Toggle wishlist",
+    addToWishlist: "Add to wishlist",
+    removeFromWishlist: "Remove from wishlist",
   },
   errors: {
     "product-stock-reached":

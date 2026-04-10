@@ -15,7 +15,8 @@ type Translations = {
     badges: {
       topseller: string;
     };
-    toggleWishlist: string;
+    addToWishlist: string;
+    removeFromWishlist: string;
   };
 };
 
@@ -94,7 +95,9 @@ function handleWishlistClick() {
     </div>
 
     <client-only>
-      <SwIconButton type="secondary" :aria-label="translations.product.toggleWishlist" :disabled="isLoading"
+      <SwIconButton type="secondary"
+        :aria-label="isInWishlist ? translations.product.removeFromWishlist : translations.product.addToWishlist"
+        :disabled="isLoading"
         class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
         data-testid="product-box-toggle-wishlist-button" @click="handleWishlistClick">
         <SwWishlistIcon :filled="isInWishlist" />

@@ -34,7 +34,8 @@
     "badges": {
       "topseller": "Tip"
     },
-    "toggleWishlist": "Przełącz listę życzeń",
+    "addToWishlist": "Dodaj do listy życzeń",
+    "removeFromWishlist": "Usuń z listy życzeń",
     "to": "Do",
     "from": "Od",
     "pricesIncl": "Ceny zawierają VAT plus koszty wysyłki",
