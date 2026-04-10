@@ -395,12 +395,47 @@ Set `format` or `quality` to `undefined` to omit that parameter. Requires remote
 
 ## Responsive Image Architecture
 
-CMS images use a provide/inject pattern for responsive sizing:
+### Product Card Images (`SwProductCardImage`)
 
-1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)` and `provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes))`
-2. **`CmsElementImage`** calls `inject("cms-image-sizes", "100vw")` and passes it to `<NuxtImg :sizes="...">`
-3. If media has thumbnails → native `srcset` from `getSrcSetForMedia()`. If not → synthetic `srcset` via `generateCdnSrcSet()` from `@shopware/helpers`
-4. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` must stay on the component — NuxtImg presets don't propagate these reliably:
+
+```ts
+// nuxt.config.ts
+productCard: {
+  modifiers: { format: "webp", quality: 90, fit: "cover" },
+}
+```
+
+```vue
+<NuxtImg preset="productCard"
+  :src="coverSrcPath"
+  width="400" height="400"
+  densities="1x"
+  loading="lazy" />
+```
+
+- Fixed `width`/`height` (400) avoid hydration mismatches caused by dynamic DOM measurement
+- `densities="1x"` prevents duplicate retina requests
+- `loading="lazy"` defers off-viewport images
+
+> **Note:** Avoid adding `decoding` or `sizes` props on the component — they've caused Vue hydration attribute mismatches with NuxtImg, which trigger duplicate image requests.
+
+### CMS Images (`CmsElementImage`)
+
+CMS images use `useElementSize()` to measure the rendered container and pass the size to NuxtImg via `width`/`height` props:
+
+```vue
+<NuxtImg :width="imageSize" :height="imageSize" :src="imageAttrs.src" loading="lazy" />
+```
+
+- Returns `undefined` during SSR (no image fetched until client measurement)
+- After hydration, `useElementSize()` measures the container and NuxtImg fetches the correctly sized image
+- The size is multiplied by 2 (for retina) and rounded up to the nearest 100px
+
+### Other patterns
+
+1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)`
+2. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
 
 ### Type Declarations
 
