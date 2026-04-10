@@ -3,15 +3,10 @@ import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware/composables";
-import {
-  buildCdnImageUrl,
-  buildUrlPrefix,
-  generateCdnSrcSet,
-} from "@shopware/helpers";
+import { buildUrlPrefix } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
-import { computed, defineAsyncComponent, inject, useTemplateRef } from "vue";
+import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import { useCmsElementImage, useUrlResolver } from "#imports";
-import { useTypedAppConfig } from "../../../../composables/useTypedAppConfig";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 const props = defineProps<{
@@ -30,34 +25,17 @@ const {
   mimeType,
 } = useCmsElementImage(props.content);
 
-const imageSizes = inject<string>("cms-image-sizes", "100vw");
-const appConfig = useTypedAppConfig();
-
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
 
-const cdnOptions = computed(() => ({
-  format: appConfig.backgroundImage?.format,
-  quality: appConfig.backgroundImage?.quality,
-}));
+function roundUp(num: number) {
+  return Math.ceil(num / 100) * 100;
+}
 
-const srcSet = computed(
-  () =>
-    imageAttrs.value.srcset ||
-    generateCdnSrcSet(imageAttrs.value.src, undefined, cdnOptions.value),
-);
-
-const srcPath = computed(() => {
-  // Only add dimension params after mount to avoid hydration mismatch
-  // (useElementSize returns 0 during SSR). The srcset handles responsive loading.
-  if (width.value || height.value) {
-    return buildCdnImageUrl(
-      imageAttrs.value.src,
-      { width: width.value, height: height.value },
-      cdnOptions.value,
-    );
-  }
-  return imageAttrs.value.src || "";
+const imageSize = computed(() => {
+  const containerSize = Math.max(width.value || 0, height.value || 0);
+  if (!containerSize) return undefined;
+  return roundUp(containerSize * 2);
 });
 
 const imageComputedContainerAttrs = computed(() => {
@@ -111,7 +89,8 @@ const SwMedia3D = computed(() => {
       ref="imageElement"
       preset="productDetail"
       loading="lazy"
-      :sizes="imageSizes"
+      :width="imageSize"
+      :height="imageSize"
       :class="{
         'w-full': !imageGallery,
         'h-full': !imageGallery && ['cover', 'stretch'].includes(displayMode),
@@ -121,8 +100,7 @@ const SwMedia3D = computed(() => {
         'object-contain': imageGallery || displayMode !== 'cover',
       }"
       :alt="imageAttrs.alt"
-      :src="srcPath"
-      :srcset="srcSet"
+      :src="imageAttrs.src"
     />
   </component>
 </template>
