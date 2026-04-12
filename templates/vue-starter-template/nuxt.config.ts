@@ -77,8 +77,11 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/**": {
-      // 60-minute ISR — increase for mostly-static storefronts, decrease for frequently updated content
-      isr: 60 * 60,
+      // 24-hour ISR — reduce for frequently updated catalogs or CMS-heavy storefronts
+      isr: 60 * 60 * 24,
+      headers: {
+        "Surrogate-Control": "max-age=86400, stale-while-revalidate=86400",
+      },
     },
     "/**/*.svg": {
       headers: {
@@ -89,19 +92,32 @@ export default defineNuxtConfig({
       ssr: false,
       headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Surrogate-Control": "no-store",
       },
     },
     "/checkout/**": {
       ssr: false,
+      headers: {
+        "Surrogate-Control": "no-store",
+      },
     },
     "/account": {
       ssr: false,
+      headers: {
+        "Surrogate-Control": "no-store",
+      },
     },
     "/account/**": {
       ssr: false,
+      headers: {
+        "Surrogate-Control": "no-store",
+      },
     },
     "/wishlist": {
       ssr: false,
+      headers: {
+        "Surrogate-Control": "no-store",
+      },
     },
   },
   imports: {
