@@ -39,7 +39,6 @@
     "@iconify-json/carbon": "1.2.18",
     "@nuxt/image": "2.0.0",
     "@nuxt/kit": "4.2.2",
-    "@oxc-parser/binding-wasm32-wasi": "^0.124.0",
     "@shopware/api-client": "workspace:*",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",

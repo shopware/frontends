@@ -1088,9 +1088,6 @@ importers:
       '@nuxt/kit':
         specifier: 4.2.2
         version: 4.2.2(magicast@0.5.2)
-      '@oxc-parser/binding-wasm32-wasi':
-        specifier: ^0.124.0
-        version: 0.124.0(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)
       '@shopware/api-client':
         specifier: workspace:*
         version: link:../api-client
@@ -13614,6 +13611,7 @@ snapshots:
     dependencies:
       '@emnapi/wasi-threads': 1.1.0
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/runtime@1.7.1':
     dependencies:
@@ -13623,10 +13621,12 @@ snapshots:
   '@emnapi/runtime@1.8.1':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/wasi-threads@1.1.0':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@esbuild/aix-ppc64@0.25.0':
     optional: true
@@ -14168,6 +14168,7 @@ snapshots:
       '@emnapi/core': 1.8.1
       '@emnapi/runtime': 1.8.1
       '@tybys/wasm-util': 0.10.1
+    optional: true
 
   '@netlify/blobs@9.1.2':
     dependencies:
@@ -15998,6 +15999,7 @@ snapshots:
     transitivePeerDependencies:
       - '@emnapi/core'
       - '@emnapi/runtime'
+    optional: true
 
   '@oxc-parser/binding-win32-arm64-msvc@0.102.0':
     optional: true
@@ -17966,6 +17968,7 @@ snapshots:
   '@tybys/wasm-util@0.10.1':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@types/applepayjs@14.0.8': {}
 
