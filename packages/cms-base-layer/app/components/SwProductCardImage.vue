@@ -5,7 +5,8 @@ import {
   isProductOnSale,
   isProductTopSeller,
 } from "@shopware/helpers";
-import { computed } from "vue";
+import { computed, inject } from "vue";
+import { useUser } from "#imports";
 import type { Schemas } from "#shopware";
 
 type Translations = {
@@ -13,6 +14,8 @@ type Translations = {
     badges: {
       topseller: string;
     };
+    addToWishlist: string;
+    removeFromWishlist: string;
   };
 };
 
@@ -38,6 +41,19 @@ const coverAlt = computed(() => {
 
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
+
+const { isLoggedIn } = useUser();
+const loginModal = inject<{
+  open: (options?: { onSuccess?: () => void | Promise<void> }) => void;
+} | null>("loginModal", null);
+
+function handleWishlistClick() {
+  if (isLoggedIn.value || !loginModal) {
+    props.toggleWishlist();
+    return;
+  }
+  loginModal.open({ onSuccess: props.toggleWishlist });
+}
 </script>
 
 <template>
@@ -60,9 +76,11 @@ const isTopseller = computed(() => isProductTopSeller(props.product));
     </div>
 
     <client-only>
-      <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
+      <SwIconButton type="secondary"
+        :aria-label="isInWishlist ? translations.product.removeFromWishlist : translations.product.addToWishlist"
+        :disabled="isLoading"
         class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
-        data-testid="product-box-toggle-wishlist-button" @click="toggleWishlist">
+        data-testid="product-box-toggle-wishlist-button" @click="handleWishlistClick">
         <SwWishlistIcon :filled="isInWishlist" />
       </SwIconButton>
     </client-only>
