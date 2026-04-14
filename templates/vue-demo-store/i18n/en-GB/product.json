@@ -34,6 +34,8 @@
     "badges": {
       "topseller": "Tip"
     },
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
     "to": "To",
     "from": "From",
     "pricesIncl": "Prices incl. VAT plus shipping costs",

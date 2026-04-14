@@ -16,7 +16,7 @@ This repository is an example demo application built with Shopware Frontends Fra
 
 ## What's inside
 
-- Nuxt 3 application
+- Nuxt 4 application
 - Required libraries (API client, CMS components, composables, Nuxt 3 module)
 - Pre-configured demo Shopware 6 API
 

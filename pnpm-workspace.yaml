@@ -11,10 +11,7 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
-- 'minimatch' # security release, remove after 05.03.2026
-- 'tar' # audit fix, remove after 25.02.2026
-- 'serialize-javascript' # audit fix, remove after 12.03.2026
-- 'vite' # security release, remove after 10.04.2026
+- 'follow-redirects' # audit fix, remove after 15.04.2026
 
 
 auditConfig:
