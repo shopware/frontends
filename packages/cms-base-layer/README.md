@@ -372,68 +372,48 @@ The preload URL includes the optimized `format` and `quality` parameters from `a
 
 ## Responsive CMS Images
 
-CMS image elements (`CmsElementImage`) automatically serve appropriately-sized images using responsive `srcset` and `sizes` attributes. This prevents the browser from downloading images larger than their displayed dimensions — a common Lighthouse performance issue.
+Images are optimized to prevent the browser from downloading images larger than their displayed dimensions — a common Lighthouse performance issue.
 
-### How it works
+### Product Card Images (`SwProductCardImage`)
 
-1. **`CmsGenericBlock`** counts the number of slots in each block, `provide`s a responsive `sizes` value (e.g., a 2-slot block means images are ~50% viewport width on desktop), and `provide`s the slot count via `cms-block-slot-count` for slider SSR breakpoint scaling.
-2. **`CmsElementImage`** `inject`s the sizes hint and applies it to `<NuxtImg>`.
-3. If the media has **pre-generated thumbnails** from Shopware, the existing `srcset` from thumbnails is used.
-4. If **no thumbnails** exist, a synthetic `srcset` is generated using CDN width-based resizing (`?width=400`, `?width=800`, etc.) via the `generateCdnSrcSet` helper from `@shopware/helpers`.
-5. **Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport (e.g., a 2-slot block doubles the breakpoint thresholds).
-
-The browser combines `sizes` + `srcset` to download only the image size it actually needs — during HTML parsing, before any JavaScript runs.
-
-### Configuration
-
-Default slot-count-to-sizes mappings are set in `app.config.ts` and can be overridden:
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` stay on the component — NuxtImg presets don't propagate these reliably:
 
 ```ts
-export default defineAppConfig({
-  imageSizes: {
-    // slot count → sizes attribute value
-    1: "(max-width: 768px) 100vw, 100vw",   // full-width blocks
-    2: "(max-width: 768px) 100vw, 50vw",    // two-column blocks (e.g., image-text)
-    3: "(max-width: 768px) 100vw, 33vw",    // three-column blocks
-    default: "(max-width: 768px) 50vw, 25vw", // 4+ columns
-  },
-});
+// nuxt.config.ts
+productCard: {
+  modifiers: { format: "webp", quality: 90, fit: "cover" },
+}
 ```
 
-For example, to cap image sizes at a fixed pixel width for boxed layouts:
-
-```ts
-export default defineAppConfig({
-  imageSizes: {
-    1: "(max-width: 768px) 100vw, 1200px",
-    2: "(max-width: 768px) 100vw, 600px",
-    3: "(max-width: 768px) 100vw, 400px",
-    default: "(max-width: 768px) 50vw, 300px",
-  },
-});
+```vue
+<NuxtImg preset="productCard"
+  :src="coverSrcPath"
+  width="400" height="400"
+  densities="1x"
+  loading="lazy" />
 ```
 
-### Per-block override
+- **Fixed `width`/`height`** (400px) — avoid hydration mismatches caused by dynamic DOM measurement
+- **`densities="1x"`** — prevents duplicate retina requests
+- **`loading="lazy"`** — defers off-viewport images
 
-Individual block components can override the sizes value by calling `provide("cms-image-sizes", "custom value")` — this takes precedence over the default from `CmsGenericBlock`.
+> **⚠️ Avoid** adding `decoding` or `sizes` props on the component — they trigger Vue hydration attribute mismatches with NuxtImg, which cause duplicate image requests.
 
-### Synthetic srcset fallback
+### CMS Images (`CmsElementImage`)
 
-When Shopware media has no thumbnails (common in Cloud/SaaS setups using CDN-based resizing), the layer generates a synthetic `srcset` using CDN query parameters:
+CMS image elements use `useElementSize()` to measure the rendered container and pass the size to `<NuxtImg>` via `width`/`height` props:
 
-```html
-<img srcset="
-  ...image.jpg?width=400&fit=crop,smart&format=webp&quality=90 400w,
-  ...image.jpg?width=800&fit=crop,smart&format=webp&quality=90 800w,
-  ...image.jpg?width=1200&fit=crop,smart&format=webp&quality=90 1200w,
-  ...image.jpg?width=1600&fit=crop,smart&format=webp&quality=90 1600w"
-  sizes="(max-width: 768px) 100vw, 50vw"
->
-```
+- During SSR, no image is fetched (size is `undefined`)
+- After hydration, the container is measured and a single correctly-sized image is requested
+- The size is multiplied by 2 (for retina) and rounded up to the nearest 100px
 
-The `format` and `quality` values are taken from the `backgroundImage` config in `app.config.ts`.
+### Slider Components
 
-> **Note:** Synthetic srcset requires CDN-based image resizing support. See the [Image Optimization](#%EF%B8%8F-image-optimization) section for requirements.
+**Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count via `cms-block-slot-count` to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport.
+
+### LCP Image Preloading
+
+**`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR.
 
 ## 🔄 UnoCSS Runtime
 
