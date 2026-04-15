@@ -7,8 +7,8 @@
       "version": "22"
     }
   },
-  "postCreateCommand": "npm install -g pnpm",
-  "postAttachCommand": "pnpm install && pnpm run dev",
+  "postCreateCommand": "npm install -g pnpm && pnpm install --filter vue-starter-template",
+  "postAttachCommand": "pnpm run dev",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
