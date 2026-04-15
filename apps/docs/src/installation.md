@@ -22,7 +22,7 @@ This template provides essential packages and configuration to start building yo
 
 ## Setup & run
 
-<PageRef target="blank" title="Open in GitHub Codespaces" page="https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=templates/vue-starter-template/.devcontainer/devcontainer.json" sub="Launch the Vue Starter Template in a cloud development environment" />
+<PageRef target="blank" title="Open in GitHub Codespaces" page="https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/vue-starter-template/devcontainer.json" sub="Launch the Vue Starter Template in a cloud development environment" />
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
