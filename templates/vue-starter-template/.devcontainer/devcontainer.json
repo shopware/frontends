@@ -1,6 +1,7 @@
 {
   "name": "Shopware Vue Starter Template",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/templates/vue-starter-template",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
