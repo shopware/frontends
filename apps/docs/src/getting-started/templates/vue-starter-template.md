@@ -1,7 +1,3 @@
-<script setup>
-import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
-</script>
-
 # Vue Starter Template
 
 The Vue Starter Template is a production-ready Nuxt application with all Shopware Frontends core packages pre-configured. It provides a clean foundation for building your custom storefront without the demo content or boilerplate UI found in the Demo Store Template.
@@ -14,7 +10,7 @@ Unlike the Demo Store Template, the **Vue Starter Template** is designed for pro
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />
+<PageRef target="blank" title="Open in GitHub Codespaces" page="https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=templates/vue-starter-template/.devcontainer/devcontainer.json" sub="Launch the Vue Starter Template in a cloud development environment" />
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
