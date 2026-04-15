@@ -35,7 +35,7 @@ function focusObject() {
     />
     <OrbitControls make-default />
     <Bounds ref="boundsRef" clip use-mounted>
-      <primitive v-if="model" :object="model" @click="() => focusObject()" />
+      <primitive v-if="model" :object="model" @click="focusObject" />
     </Bounds>
     <TresDirectionalLight :position="[3, 3, 3]" :intensity="1" />
     <TresAmbientLight :intensity="2" />
