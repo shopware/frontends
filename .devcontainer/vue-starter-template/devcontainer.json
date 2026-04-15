@@ -7,8 +7,8 @@
       "version": "22"
     }
   },
-  "postCreateCommand": "npm install -g pnpm && pnpm install",
-  "postStartCommand": "pnpm run dev",
+  "postCreateCommand": "npm install -g pnpm",
+  "postAttachCommand": "pnpm install && pnpm run dev",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
