@@ -8,7 +8,7 @@
     }
   },
   "postCreateCommand": "npm install -g pnpm",
-  "postAttachCommand": "pnpm install --filter vue-starter-template --ignore-scripts && pnpm run dev",
+  "postAttachCommand": "pnpm install --ignore-scripts && pnpm run dev",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
