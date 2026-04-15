@@ -7,8 +7,12 @@
       "version": "22"
     }
   },
+  "containerEnv": {
+    "TURBO_TOKEN": "${localEnv:TURBO_TOKEN}",
+    "TURBO_TEAM": "${localEnv:TURBO_TEAM}"
+  },
   "postCreateCommand": "npm install -g pnpm",
-  "postAttachCommand": "pnpm install --ignore-scripts && pnpm run dev",
+  "postAttachCommand": "pnpm install && pnpm run dev",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
