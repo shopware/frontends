@@ -1,4 +1,5 @@
 import type { ConfigBase } from "@unocss/core";
+import { presetWind3 } from "@unocss/preset-wind3";
 
 const templateConfig: ConfigBase = {
   theme: {
@@ -76,6 +77,7 @@ const templateConfig: ConfigBase = {
       "overlay-light-lowest": "rgba(255, 255, 255, 0.07999999821186066)",
     },
   },
+  presets: [presetWind3()],
 };
 
 export default templateConfig;

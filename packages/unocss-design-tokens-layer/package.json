@@ -25,6 +25,8 @@
   },
   "dependencies": {
     "@unocss/nuxt": "66.6.0",
+    "@unocss/preset-wind3": "66.6.0",
+    "@unocss/runtime": "66.6.0",
     "unocss": "66.6.0"
   },
   "devDependencies": {

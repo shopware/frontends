@@ -35,6 +35,7 @@ The template comes with:
   - `@shopware/composables` - Vue composables for business logic
   - `@shopware/helpers` - Utility functions
   - `@shopware/cms-base-layer` - CMS component integration
+  - `@shopware/unocss-design-tokens-layer` - shared UnoCSS design tokens layer
   - `@shopware/nuxt-module` - Nuxt module for Shopware
 - **UnoCSS** - Utility-first CSS framework (Tailwind-compatible)
 - **i18n support** - Internationalization ready
@@ -54,7 +55,7 @@ vue-starter-template/
 │  └─ ...
 ├─ public/             /* Static assets */
 ├─ nuxt.config.ts      /* Nuxt configuration */
-├─ uno.config.ts       /* UnoCSS configuration */
+├─ uno.config.ts       /* Template-specific UnoCSS extensions */
 ├─ package.json
 ├─ tsconfig.json
 ```
@@ -135,17 +136,23 @@ For example, to override the product card:
 
 ### Styling with UnoCSS
 
-The template uses UnoCSS (Tailwind-compatible). Customize your theme in `uno.config.ts`:
+The template extends three Nuxt layers:
+
+- `@shopware/composables/nuxt-layer`
+- `@shopware/cms-base-layer`
+- `@shopware/unocss-design-tokens-layer`
+
+The design-tokens layer provides the shared UnoCSS setup and token palette. Your local `uno.config.ts` should only add template-specific customizations on top of the generated config:
 
 ```ts
 import { mergeConfigs } from '@unocss/core'
-import config from './.nuxt/uno.config.mjs'
+import baseConfig from './.nuxt/uno.config.mjs'
 
-export default mergeConfigs([config, {
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
-      primary: '#your-brand-color',
-      secondary: '#your-secondary-color',
+      'brand-primary': '#your-brand-color',
+      'brand-secondary': '#your-secondary-color',
     },
   },
 }])
