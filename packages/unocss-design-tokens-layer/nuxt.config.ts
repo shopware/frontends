@@ -1,4 +1,3 @@
-import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
@@ -10,4 +9,4 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
-}) as NuxtConfig;
+});

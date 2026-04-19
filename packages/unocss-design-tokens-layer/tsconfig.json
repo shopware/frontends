@@ -5,6 +5,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "lib": ["dom", "esnext"],
+    "types": ["@unocss/nuxt"],
     "paths": {
       "#imports": ["./index.d.ts"]
     }
