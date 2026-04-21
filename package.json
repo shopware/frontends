@@ -69,7 +69,14 @@
       "follow-redirects": "^1.16.0"
     },
     "peerDependencyRules": {
-      "ignoreMissing": ["webpack", "vite", "react-dom"]
+      "ignoreMissing": [
+        "webpack",
+        "vite",
+        "react-dom",
+        "react",
+        "@types/react",
+        "@algolia/client-search"
+      ]
     }
   }
 }

@@ -38,7 +38,7 @@
     "@unocss/nuxt": "66.6.0",
     "@vueuse/core": "14.1.0",
     "@vueuse/nuxt": "14.1.0",
-    "nuxt": "4.2.2",
+    "nuxt": "4.4.2",
     "unocss": "66.6.0",
     "vue": "3.5.27"
   },
@@ -49,5 +49,10 @@
     "typescript": "5.9.3",
     "vite": "7.3.2",
     "vue-tsc": "3.2.2"
+  },
+  "overrides": {
+    "glob": "^13",
+    "vue-i18n": "^11",
+    "eslint-visitor-keys": "^4"
   }
 }

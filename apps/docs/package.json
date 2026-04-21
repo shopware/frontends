@@ -35,16 +35,6 @@
     "unplugin-export-collector": "0.6.0",
     "vinyl": "3.0.0"
   },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "react",
-        "react-dom",
-        "@types/react"
-      ]
-    }
-  },
   "engines": {
     "node": ">=22"
   }
