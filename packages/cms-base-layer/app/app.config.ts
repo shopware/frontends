@@ -15,4 +15,5 @@ export default defineAppConfig({
     3: "(max-width: 768px) 100vw, 33vw",
     default: "(max-width: 768px) 50vw, 25vw",
   },
+  unocssRuntime: true,
 });
