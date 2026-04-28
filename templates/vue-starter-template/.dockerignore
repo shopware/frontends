@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.turbo
+.vercel
+.env
+.env.*
+!.env.template
+dist
+coverage
+*.log
+.DS_Store
