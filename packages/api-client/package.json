@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
-    "build:types": "tsgo ./src/*.ts --ignoreConfig --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
+    "build:types": "tsgo --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm typecheck",
