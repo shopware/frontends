@@ -1,5 +1,5 @@
 import type { ConfigBase } from "@unocss/core";
-import { presetWind3 } from "@unocss/preset-wind3";
+import { presetIcons, presetWind3 } from "unocss";
 
 const templateConfig: ConfigBase = {
   theme: {
@@ -77,7 +77,17 @@ const templateConfig: ConfigBase = {
       "overlay-light-lowest": "rgba(255, 255, 255, 0.07999999821186066)",
     },
   },
-  presets: [presetWind3()],
+  presets: [
+    presetWind3(),
+    presetIcons({
+      collections: {
+        carbon: () =>
+          import("@iconify-json/carbon/icons.json", {
+            with: { type: "json" },
+          }).then((i) => i.default),
+      },
+    }),
+  ],
 };
 
 export default templateConfig;
