@@ -1473,6 +1473,9 @@ importers:
       '@shopware/unocss-design-tokens-layer':
         specifier: workspace:*
         version: link:../../packages/unocss-design-tokens-layer
+      '@unocss/core':
+        specifier: 66.6.0
+        version: 66.6.0
       '@unocss/nuxt':
         specifier: 66.6.0
         version: 66.6.0(magicast@0.5.2)(postcss@8.5.10)(vite@6.4.2(@types/node@25.6.0)(jiti@2.6.1)(less@4.2.0)(lightningcss@1.32.0)(sass@1.89.2)(terser@5.46.2)(tsx@4.21.0)(yaml@2.8.3))(webpack@5.105.4)
@@ -26405,7 +26408,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.46.1
+      terser: 5.46.2
       webpack: 5.105.4
 
   terser@5.46.1:
@@ -26421,7 +26424,6 @@ snapshots:
       acorn: 8.16.0
       commander: 2.20.3
       source-map-support: 0.5.21
-    optional: true
 
   test-exclude@6.0.0:
     dependencies:
