@@ -1,7 +1,7 @@
 {
   "name": "@shopware/unocss-design-tokens-layer",
   "version": "0.0.0",
-  "description": "Reusable Nuxt layer for Shopware UnoCSS design tokens",
+  "description": "Reusable Nuxt Layer for Shopware design tokens and UnoCSS configuration",
   "author": "Shopware",
   "repository": {
     "type": "git",
