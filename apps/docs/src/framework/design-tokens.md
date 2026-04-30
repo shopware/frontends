@@ -15,9 +15,9 @@ nav:
 
 # Design Tokens
 
-Shopware Composable Frontends provides a curated set of **color design tokens** defined as [UnoCSS theme colors](https://unocss.dev/config/theme). They follow a Material-style naming scheme and serve as the foundation for consistent color usage across all Frontends projects and templates.
+Shopware Frontends provides a curated set of **color design tokens** through the `@shopware/unocss-design-tokens-layer` Nuxt layer. They are exposed as [UnoCSS theme colors](https://unocss.dev/config/theme), follow a Material-style naming scheme, and serve as the foundation for consistent color usage across templates and layered storefronts.
 
-Templates like the [Vue Starter Template](../getting-started/templates/vue-starter-template) and its [extended variant](../getting-started/templates/vue-starter-template-extended) consume these tokens out of the box.
+Templates like the [Vue Starter Template](../getting-started/templates/vue-starter-template) and its [extended variant](../getting-started/templates/vue-starter-template-extended) consume these tokens out of the box by extending the design-tokens layer.
 
 ## Naming convention
 
@@ -66,7 +66,7 @@ theme: {
 }
 ```
 
-The documentation keeps a copy of the token map in [`apps/docs/.vitepress/data/design-tokens-colors.ts`](https://github.com/shopware/frontends/blob/main/apps/docs/.vitepress/data/design-tokens-colors.ts) (aligned with [`templates/vue-starter-template/uno.config.ts`](https://github.com/shopware/frontends/blob/main/templates/vue-starter-template/uno.config.ts) `theme.colors`). Use the export button below to grab the full snippet ready to paste into your Uno config.
+The documentation keeps a copy of the token map in [`apps/docs/.vitepress/data/design-tokens-colors.ts`](https://github.com/shopware/frontends/blob/main/apps/docs/.vitepress/data/design-tokens-colors.ts), aligned with [`packages/unocss-design-tokens-layer/uno.config.ts`](https://github.com/shopware/frontends/blob/main/packages/unocss-design-tokens-layer/uno.config.ts). Use the export button below to grab the full snippet ready to paste into your Uno config.
 
 ## Token reference
 
