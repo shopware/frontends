@@ -140,6 +140,147 @@ adminApiClient.hook("onAuthChange", (sessionData) => {
 
 the rest works the same as store-api client.
 
+## Customizing API Types
+
+The client is fully typed via a generic `operations` parameter. You can use the bundled default types or generate and override types from your own Shopware instance.
+
+### Generating types from your instance
+
+Use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) to generate TypeScript types directly from your Shopware instance's OpenAPI schema.
+
+```bash
+# 1. Load the schema from your running Shopware instance
+pnpx @shopware/api-gen loadSchema --apiType=store
+
+# 2. Generate TypeScript types
+pnpx @shopware/api-gen generate --apiType=store
+```
+
+This creates `api-types/storeApiTypes.ts` (or `adminApiTypes.ts` for Admin API). Point `shopware.d.ts` to your generated types instead of the bundled defaults:
+
+```typescript
+// shopware.d.ts
+declare module "#shopware" {
+  import type { createAPIClient } from "@shopware/api-client";
+
+  export type operations = import("./api-types/storeApiTypes").operations;
+  export type Schemas = import("./api-types/storeApiTypes").components["schemas"];
+  export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
+}
+```
+
+All code importing from `#shopware` will now use your instance's types automatically.
+
+Add a script to `package.json` to make regeneration easy:
+
+```json
+{
+  "scripts": {
+    "generate-types": "shopware-api-gen generate --apiType=store"
+  }
+}
+```
+
+### TypeScript overrides
+
+If your instance has custom fields, custom endpoints, or incorrect types in the OpenAPI spec, you can override or extend the generated types without modifying the generated file directly.
+
+Create an overrides file next to the generated types:
+
+- `api-types/storeApiTypes.overrides.ts` — for Store API
+- `api-types/adminApiTypes.overrides.ts` — for Admin API
+
+Create `api-types/storeApiTypes.overrides.ts` with your merged types:
+
+```typescript
+// api-types/storeApiTypes.overrides.ts
+import type { components as mainComponents } from "./storeApiTypes";
+
+// Extend schemas with your custom fields
+export type components = mainComponents & {
+  schemas: Schemas;
+};
+
+export type Schemas = {
+  // Fully override an existing schema
+  Product: mainComponents["schemas"]["Product"] & {
+    customFields: {
+      my_custom_field: string;
+    };
+  };
+};
+
+// Add or override operations
+export type operations = {
+  // Add a custom endpoint
+  "myCustomEndpoint post /custom/endpoint": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: { id: string };
+    response: components["schemas"]["Product"];
+    responseCode: 200;
+  };
+  // Override an existing operation (e.g. restrict the request body)
+  "updateCustomerAddress patch /account/address/{addressId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: { city: string };
+    response: components["schemas"]["CustomerAddress"];
+    responseCode: 200;
+  };
+};
+```
+
+> [!IMPORTANT]
+> Overriding a schema or operation requires a **full object definition** — partial overrides are not supported in TypeScript overlay files.
+
+Then point `shopware.d.ts` to the overrides file instead of the generated one:
+
+```typescript
+// shopware.d.ts
+declare module "#shopware" {
+  import type { createAPIClient } from "@shopware/api-client";
+
+  export type operations = import("./api-types/storeApiTypes.overrides").operations;
+  export type Schemas = import("./api-types/storeApiTypes.overrides").components["schemas"];
+  export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
+}
+```
+
+Your `apiClient.ts` already imports from `#shopware`, so no change is needed there — the overridden types flow through automatically.
+
+### JSON patch overrides (partial schema fixes)
+
+For fine-grained, field-level corrections to the JSON schema (e.g. marking a field as `required`, fixing a wrong type), use patch files. These are applied before TypeScript generation and support partial changes.
+
+Create a `storeApiTypes.overrides.json` patch file:
+
+```json
+{
+  "components": {
+    "Cart": {
+      "required": ["price", "errors"]
+    }
+  }
+}
+```
+
+Reference it in `api-gen.config.json`:
+
+```json
+{
+  "$schema": "./node_modules/@shopware/api-gen/api-gen.schema.json",
+  "store-api": {
+    "patches": [
+      "storeApiSchema.overrides.json",
+      "./api-types/myCustomPatches.json"
+    ]
+  }
+}
+```
+
+See the [@shopware/api-gen documentation](https://www.npmjs.com/package/@shopware/api-gen) for the full patching reference and available configuration options.
+
 ## Basic usage
 
 Take a look at [example project using API Client](https://stackblitz.com/github/shopware/frontends/tree/main/examples/new-api-client).
@@ -354,31 +495,14 @@ apiClient.invoke("getProducts get /product", {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.4.0
+### Latest changes: 1.5.0
 
 ### Minor Changes
 
-- [#2012](https://github.com/shopware/frontends/pull/2012) [`70dcf95`](https://github.com/shopware/frontends/commit/70dcf95d4370c63964d877a5cab113a53f93ca19) Thanks [@patzick](https://github.com/patzick)! - Added helper to support encoded `_criteria` field in GET query parameters.
-  Context information: https://github.com/shopware/shopware/issues/12388
+- [#2263](https://github.com/shopware/frontends/pull/2263) [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a) Thanks [@mkucmus](https://github.com/mkucmus)! - Regenerated Store API schemas from the latest backend. Removed obsolete schema patches that were fixed upstream.
 
-  This helper is available under the `@shopware/api-client/helpers` import path.
+- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - update admin API types to be aligned with the backend.
 
-  ```typescript
-  import { encodeForQuery } from "@shopware/api-client/helpers";
+### Patch Changes
 
-  const criteria = {
-    page: 1,
-    limit: 10,
-    ...
-  }
-
-  const encodedCriteria = encodeForQuery(criteria);
-
-  const result = await apiClient.invoke("getProducts get /product", {
-    query: {
-      _criteria: encodedCriteria,
-    },
-  });
-  ```
-
-- [#1959](https://github.com/shopware/frontends/pull/1959) [`c77daa6`](https://github.com/shopware/frontends/commit/c77daa6a11e96c7f3688b16f7da010b54c7f5e8b) Thanks [@patzick](https://github.com/patzick)! - Updated default types to Shopware 6.7
+- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - Changed `scopes` to `scope` in OAuth token request types to align with RFC 6749 and League OAuth2 server implementation.

@@ -5,13 +5,12 @@ This document provides guidance for AI assistants working with the `@shopware/cm
 ## TL;DR
 
 **What**: Nuxt layer providing Vue components for Shopware 6 Shopping Experiences (CMS)
-**Purpose**: Pre-built, customizable CMS components styled with UnoCSS/Tailwind
-**Tech**: Vue 3, Nuxt 4, UnoCSS, @shopware/composables, @shopware/helpers
+**Purpose**: Pre-built, customizable CMS components
+**Tech**: Vue 3, Nuxt 4, @shopware/composables, @shopware/helpers
 
 **Key Concepts**:
 - CMS Page → Sections → Blocks → Elements (hierarchical structure)
 - Components auto-registered globally via Nuxt layer
-- Styling via UnoCSS utility classes
 - Customizable via app.config.ts and component overriding
 
 **Quick Start**:
@@ -23,7 +22,7 @@ pnpm run test   # Run tests
 
 ## Package Overview
 
-The `@shopware/cms-base-layer` is a Nuxt layer that provides a complete implementation of Shopware's Shopping Experiences CMS system. It renders CMS pages created in Shopware Administration using Vue components styled with UnoCSS/Tailwind CSS.
+The `@shopware/cms-base-layer` is a Nuxt layer that provides a complete implementation of Shopware's Shopping Experiences CMS system. It renders CMS pages created in Shopware Administration using Vue components.
 
 ## Architecture
 
@@ -79,7 +78,6 @@ cms-base-layer/
 │   ├── plugins/                  # Nuxt plugins
 │   └── providers/                # Image providers (Shopware)
 ├── nuxt.config.ts                # Layer configuration
-├── uno.config.ts                 # UnoCSS/Tailwind configuration
 └── package.json
 ```
 
@@ -88,7 +86,6 @@ cms-base-layer/
 ### Entry Points
 
 - [nuxt.config.ts](nuxt.config.ts) - Layer configuration, component registration, image presets
-- [uno.config.ts](uno.config.ts) - Default theme colors, fonts, CSS presets
 - [app/app.config.ts](app/app.config.ts) - Runtime configuration defaults
 
 ### Core CMS Components
@@ -252,34 +249,6 @@ Available configuration:
 - `backgroundImage.format` - Output format for CMS background images (default: `"webp"`). Appended as `&format=` to background image URLs. Accepts `"webp"`, `"avif"`, `"jpg"`, `"png"`.
 - `backgroundImage.quality` - Image quality for CMS background images (default: `90`). Appended as `&quality=` to background image URLs. Accepts `0`-`100`.
 - `imageSizes` - Maps CMS block slot count to responsive `sizes` attribute values. Used by `CmsGenericBlock` via provide/inject to give `CmsElementImage` sizing hints. See [Responsive CMS Images](#responsive-cms-images) in README.
-- `unocssRuntime` - Enable/disable the client-side UnoCSS runtime plugin (default: `true`). Resolves dynamic CMS utility classes at runtime via MutationObserver. Disable if not needed or if it causes performance issues.
-
-### Theme Customization
-
-Override UnoCSS theme in your project:
-
-```typescript
-// your-project/uno.config.ts
-import { defineConfig } from "unocss";
-
-export default defineConfig({
-  theme: {
-    colors: {
-      "brand-primary": "#YOUR_COLOR",
-      "brand-primary-hover": "#YOUR_HOVER_COLOR",
-      // ... other color overrides
-    },
-  },
-});
-```
-
-Default theme colors (defined in [uno.config.ts](uno.config.ts)):
-- `brand-primary` - Primary brand color (#543B95)
-- `brand-secondary` - Secondary actions (#E1D5FF)
-- `brand-tertiary` - Tertiary elements (#F1F1F1)
-- `states-success`, `states-error`, `states-warning` - State colors
-- `surface-*` - Surface and background colors
-- `outline-*` - Border and outline colors
 
 ### Component Overriding
 
@@ -395,12 +364,47 @@ Set `format` or `quality` to `undefined` to omit that parameter. Requires remote
 
 ## Responsive Image Architecture
 
-CMS images use a provide/inject pattern for responsive sizing:
+### Product Card Images (`SwProductCardImage`)
 
-1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)` and `provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes))`
-2. **`CmsElementImage`** calls `inject("cms-image-sizes", "100vw")` and passes it to `<NuxtImg :sizes="...">`
-3. If media has thumbnails → native `srcset` from `getSrcSetForMedia()`. If not → synthetic `srcset` via `generateCdnSrcSet()` from `@shopware/helpers`
-4. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` must stay on the component — NuxtImg presets don't propagate these reliably:
+
+```ts
+// nuxt.config.ts
+productCard: {
+  modifiers: { format: "webp", quality: 90, fit: "cover" },
+}
+```
+
+```vue
+<NuxtImg preset="productCard"
+  :src="coverSrcPath"
+  width="400" height="400"
+  densities="1x"
+  loading="lazy" />
+```
+
+- Fixed `width`/`height` (400) avoid hydration mismatches caused by dynamic DOM measurement
+- `densities="1x"` prevents duplicate retina requests
+- `loading="lazy"` defers off-viewport images
+
+> **Note:** Avoid adding `decoding` or `sizes` props on the component — they've caused Vue hydration attribute mismatches with NuxtImg, which trigger duplicate image requests.
+
+### CMS Images (`CmsElementImage`)
+
+CMS images use `useElementSize()` to measure the rendered container and pass the size to NuxtImg via `width`/`height` props:
+
+```vue
+<NuxtImg :width="imageSize" :height="imageSize" :src="imageAttrs.src" loading="lazy" />
+```
+
+- Returns `undefined` during SSR (no image fetched until client measurement)
+- After hydration, `useElementSize()` measures the container and NuxtImg fetches the correctly sized image
+- The size is multiplied by 2 (for retina) and rounded up to the nearest 100px
+
+### Other patterns
+
+1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)`
+2. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
 
 ### Type Declarations
 
@@ -458,18 +462,6 @@ const { elements, total } = getCurrentListing();
 2. Check component naming matches Shopware CMS type
 3. Verify `@shopware/composables/nuxt-layer` is also extended
 
-### Styling Issues
-
-1. Ensure UnoCSS is configured with `nuxtLayers: true`
-2. Check for CSS class conflicts
-3. Verify color tokens are defined in theme
-
-### UnoCSS Runtime Crashes
-
-If the browser tab crashes or you see `clearDeps` errors from `@vueuse/core`, the UnoCSS runtime MutationObserver may be conflicting with reactive DOM changes. Disable it via `app.config.ts`:
-```ts
-export default defineAppConfig({ unocssRuntime: false });
-```
 
 ### Type Errors
 
@@ -490,17 +482,15 @@ pnpm run typecheck
 
 1. **Use semantic component names** - Follow `CmsBlock{Type}`, `CmsElement{Type}` pattern
 2. **Leverage composables** - Use `@shopware/composables` for business logic
-3. **Style with utility classes** - Use UnoCSS/Tailwind for styling
-4. **Override, don't modify** - Create overriding components instead of editing source
-5. **Test CMS rendering** - Verify with actual Shopware CMS content
-6. **Document custom blocks** - Add `.md` files for custom components
+3. **Override, don't modify** - Create overriding components instead of editing source
+4. **Test CMS rendering** - Verify with actual Shopware CMS content
+5. **Document custom blocks** - Add `.md` files for custom components
 
 ## References
 
 - [Shopware Frontends Documentation](https://frontends.shopware.com/)
 - [Shopping Experiences Guide](https://frontends.shopware.com/framework/shopping-experiences.html)
 - [Nuxt Layers](https://nuxt.com/docs/getting-started/layers)
-- [UnoCSS Documentation](https://unocss.dev/)
 
 ---
 

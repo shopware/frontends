@@ -5,9 +5,8 @@ import {
   isProductOnSale,
   isProductTopSeller,
 } from "@shopware/helpers";
-import { useElementSize } from "@vueuse/core";
-import { computed, useTemplateRef } from "vue";
-import { useImagePlaceholder } from "#imports";
+import { computed, inject } from "vue";
+import { useUser } from "#imports";
 import type { Schemas } from "#shopware";
 
 type Translations = {
@@ -15,6 +14,8 @@ type Translations = {
     badges: {
       topseller: string;
     };
+    addToWishlist: string;
+    removeFromWishlist: string;
   };
 };
 
@@ -27,30 +28,11 @@ const props = defineProps<{
   productLink: UrlRouteOutput;
 }>();
 
-const containerElement = useTemplateRef<HTMLDivElement>("containerElement");
-const { width, height } = useElementSize(containerElement);
-
-const DEFAULT_THUMBNAIL_SIZE = 10;
-function roundUp(num: number) {
-  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
-}
-
 const coverSrcPath = computed(() => {
   return (
-    getSmallestThumbnailUrl(props.product?.cover?.media) ||
-    props.product?.cover?.media?.url
+    props.product?.cover?.media?.url ||
+    getSmallestThumbnailUrl(props.product?.cover?.media)
   );
-});
-
-const imageModifiers = computed(() => {
-  // Use the larger dimension and apply 2x for high-DPI displays
-  // For square containers, width and height should be the same
-  const containerSize = Math.max(width.value || 0, height.value || 0);
-  const size = roundUp(containerSize * 2);
-  return {
-    width: size,
-    height: size,
-  };
 });
 
 const coverAlt = computed(() => {
@@ -60,16 +42,30 @@ const coverAlt = computed(() => {
 const isOnSale = computed(() => isProductOnSale(props.product));
 const isTopseller = computed(() => isProductTopSeller(props.product));
 
-const placeholderSvg = useImagePlaceholder();
+const { isLoggedIn } = useUser();
+const loginModal = inject<{
+  open: (options?: { onSuccess?: () => void | Promise<void> }) => void;
+} | null>("loginModal", null);
+
+function handleWishlistClick() {
+  if (isLoggedIn.value || !loginModal) {
+    props.toggleWishlist();
+    return;
+  }
+  loginModal.open({ onSuccess: props.toggleWishlist });
+}
 </script>
 
 <template>
-  <div ref="containerElement" class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
+  <div class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
     <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
       <NuxtImg preset="productCard"
         class="w-full h-full absolute top-0 left-0 object-cover"
-        :placeholder="placeholderSvg"
-        :src="coverSrcPath" :alt="coverAlt" :modifiers="imageModifiers" data-testid="product-box-img" />
+        :src="coverSrcPath" :alt="coverAlt"
+        width="400" height="400"
+        densities="1x"
+        loading="lazy"
+        data-testid="product-box-img" />
     </RouterLink>
 
     <div v-if="isTopseller || isOnSale"
@@ -80,9 +76,11 @@ const placeholderSvg = useImagePlaceholder();
     </div>
 
     <client-only>
-      <SwIconButton type="secondary" aria-label="Toggle wishlist" :disabled="isLoading"
+      <SwIconButton type="secondary"
+        :aria-label="isInWishlist ? translations.product.removeFromWishlist : translations.product.addToWishlist"
+        :disabled="isLoading"
         class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
-        data-testid="product-box-toggle-wishlist-button" @click="toggleWishlist">
+        data-testid="product-box-toggle-wishlist-button" @click="handleWishlistClick">
         <SwWishlistIcon :filled="isInWishlist" />
       </SwIconButton>
     </client-only>

@@ -1,6 +1,6 @@
 {
   "name": "@shopware/nuxt-module",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
@@ -37,8 +37,8 @@
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "defu": "6.1.4",
-    "h3": "1.15.5",
+    "defu": "6.1.5",
+    "h3": "1.15.9",
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
@@ -48,6 +48,6 @@
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "4.0.18"
+    "vitest": "4.1.5"
   }
 }
