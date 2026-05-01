@@ -48,6 +48,9 @@ provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
   <div class="flex flex-col min-h-screen">
+
+<ShopwareBanner />
+
     <header>
       <LayoutMetaNavigation
         v-if="languagesList.length > 1"

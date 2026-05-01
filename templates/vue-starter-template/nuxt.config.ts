@@ -2,6 +2,7 @@
 import { createResolver } from "@nuxt/kit";
 
 const { resolve } = createResolver(import.meta.url);
+const isDev = import.meta.dev;
 
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
@@ -15,6 +16,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "@nuxt/a11y",
+    ...(isDev ? ["@shopware/guidance-banner"] : []),
   ],
   runtimeConfig: {
     public: {
