@@ -28,14 +28,16 @@
     "@nuxt/icon": "2.2.1",
     "@nuxt/image": "2.0.0",
     "@nuxtjs/i18n": "10.2.4",
-    "@regle/core": "1.17.0",
-    "@regle/rules": "1.17.0",
+    "@regle/core": "1.23.0",
+    "@regle/rules": "1.23.0",
     "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
+    "@shopware/unocss-design-tokens-layer": "workspace:*",
     "@unocss/nuxt": "66.6.0",
+    "@unocss/core": "66.6.0",
     "@vueuse/core": "14.1.0",
     "@vueuse/nuxt": "14.1.0",
     "nuxt": "4.2.2",
@@ -49,5 +51,10 @@
     "typescript": "5.9.3",
     "vite": "7.3.2",
     "vue-tsc": "3.2.2"
+  },
+  "overrides": {
+    "glob": "^13",
+    "vue-i18n": "^11",
+    "eslint-visitor-keys": "^4"
   }
 }

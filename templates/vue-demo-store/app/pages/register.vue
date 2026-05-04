@@ -4,5 +4,5 @@ defineOptions({
 });
 </script>
 <template>
-  <AccountRegisterForm />
+  <AccountRegistrationForm />
 </template>

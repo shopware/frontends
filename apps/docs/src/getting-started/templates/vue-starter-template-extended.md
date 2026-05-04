@@ -91,7 +91,7 @@ lumora-store/
 │  └─ app.config.ts        # Brand customizations (colors, settings)
 ├─ public/                  # Brand-specific assets (logo, favicon)
 ├─ nuxt.config.ts          # Layer configuration
-├─ uno.config.ts           # Custom theme styles
+├─ uno.config.ts           # Layer-specific UnoCSS extensions
 └─ package.json            # Dependencies
 ```
 
@@ -114,18 +114,21 @@ This setting is used by the `useImagePlaceholder` composable from `@shopware/cms
 
 ### Theme Customization
 
-Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles:
+Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on top of the shared base config generated from the extended layers:
 
 ```ts
 // uno.config.ts
-export default mergeConfigs([config, {
+import { mergeConfigs } from "@unocss/core";
+import baseConfig from "./.nuxt/uno.config.mjs";
+
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
       'brand-primary': '#B38A65',
       'brand-secondary': '#2C2C2C',
     },
   },
-}])
+}]);
 ```
 
 ## Overriding Components

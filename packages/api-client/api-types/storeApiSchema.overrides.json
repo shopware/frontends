@@ -50,6 +50,16 @@
           ]
         }
       }
+    },
+    "CustomerGroup": {
+      "properties": {
+        "translated": {
+          "type": "object",
+          "properties": {
+            "registrationOnlyCompanyRegistration": { "type": "boolean" }
+          }
+        }
+      }
     }
   },
   "paths": {

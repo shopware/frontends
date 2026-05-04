@@ -59,7 +59,7 @@ async function invokeLogin(): Promise<void> {
       <div>
         <img
           class="mx-auto h-12 w-auto"
-          src="/logo.svg"
+          :src="'/logo.svg'"
           alt="logo of the shop"
         />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-secondary-900">

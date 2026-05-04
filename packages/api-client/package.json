@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
-    "build:types": "tsgo ./src/*.ts --ignoreConfig --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
+    "build:types": "tsgo --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm typecheck",
@@ -60,13 +60,13 @@
     "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@typescript/native-preview": "7.0.0-dev.20260111.1",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.5",
     "fflate": "0.8.2",
-    "happy-dom": "20.8.9",
+    "happy-dom": "20.9.0",
     "prettier": "3.8.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "4.0.18"
+    "vitest": "4.1.5"
   },
   "dependencies": {
     "defu": "6.1.5",

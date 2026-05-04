@@ -1,7 +1,6 @@
-import { presetWind3 } from "@unocss/preset-wind3";
 import initUnocssRuntime from "@unocss/runtime";
 import { defineNuxtPlugin, useAppConfig } from "#imports";
-import { cmsBaseLayerUnoTheme } from "../utils/unocss-theme";
+import config from "../../uno.config";
 
 // Resolves UnoCSS utility classes at runtime via DOM MutationObserver.
 // Needed when CMS content contains dynamic classes not known at build time,
@@ -14,10 +13,5 @@ export default defineNuxtPlugin(() => {
   const appConfig = useAppConfig();
   if (!appConfig.unocssRuntime) return;
 
-  initUnocssRuntime({
-    defaults: {
-      theme: cmsBaseLayerUnoTheme,
-      presets: [presetWind3()],
-    },
-  });
+  initUnocssRuntime({ defaults: config });
 });

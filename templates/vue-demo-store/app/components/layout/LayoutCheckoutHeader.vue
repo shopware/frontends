@@ -14,7 +14,7 @@ const { formatLink } = useInternationalization(localePath);
             <span class="sr-only">Shopware</span>
             <img
               class="h-8 w-auto sm:h-10"
-              src="/logo.svg"
+              :src="'/logo.svg'"
               alt="logo of the shop"
               width="40px"
               height="40px"
