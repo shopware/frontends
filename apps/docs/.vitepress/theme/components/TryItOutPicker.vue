@@ -15,6 +15,7 @@ interface Env {
   title: string;
   pitch: string;
   expectedDuration: string;
+  tip?: string;
   buildOpenUrl: (template: TemplateId) => string | null;
   buildCommand?: (template: TemplateId) => string;
 }
@@ -54,6 +55,7 @@ const environmentsById: Record<EnvId, Env> = {
     title: "StackBlitz",
     pitch: "Fastest to open in the browser. Some boot noise is expected.",
     expectedDuration: "~30 seconds to first preview",
+    tip: "If the preview hangs on the loading state, refresh the page once — startup occasionally stalls in the sandbox.",
     buildOpenUrl: (t) =>
       `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${t}`,
   },
@@ -63,8 +65,9 @@ const environmentsById: Record<EnvId, Env> = {
     pitch:
       "Clean cloud dev environment. Slower cold start, full VS Code experience.",
     expectedDuration: "~2-3 minutes on first boot",
+    tip: "Pick a 4-core or larger machine type on the Codespaces creation page — the default 2-core makes installs and the dev server noticeably slower.",
     buildOpenUrl: (t) =>
-      `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
+      `https://github.com/codespaces/new?repo=shopware/frontends&ref=feat/try-it-out-landing&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
   },
 };
 
@@ -185,6 +188,10 @@ async function copyAiPrompt() {
         <span class="try-it-out-launch-divider">in</span>
         <strong>{{ env.title }}</strong>
       </div>
+
+      <p v-if="env.tip" class="try-it-out-launch-tip">
+        💡 {{ env.tip }}
+      </p>
 
       <a
         v-if="openUrl"
@@ -318,6 +325,17 @@ async function copyAiPrompt() {
 .try-it-out-launch-label,
 .try-it-out-launch-divider {
   color: var(--vp-c-text-2);
+}
+
+.try-it-out-launch-tip {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--vp-c-text-1);
 }
 
 .try-it-out-launch-btn {
