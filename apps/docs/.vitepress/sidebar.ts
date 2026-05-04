@@ -55,6 +55,7 @@ export const sidebar = [
     text: "BUILDING",
     link: "/getting-started/",
     items: [
+      { text: "Try it out", link: "/getting-started/try-it-out.html" },
       {
         text: "Setup Templates",
         link: "/getting-started/templates.html",
