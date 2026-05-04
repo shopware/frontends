@@ -34,7 +34,9 @@
     "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
     "@shopware/cms-base-layer": "workspace:*",
+    "@shopware/unocss-design-tokens-layer": "workspace:*",
     "@unocss/nuxt": "66.6.0",
+    "@unocss/core": "66.6.0",
     "typescript": "5.9.3",
     "unocss": "66.6.0",
     "vue-tsc": "3.2.2"

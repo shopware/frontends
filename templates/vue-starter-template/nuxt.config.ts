@@ -5,7 +5,11 @@ const { resolve } = createResolver(import.meta.url);
 const isDev = import.meta.dev;
 
 export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
   compatibilityDate: "2025-04-15",
   devtools: { enabled: true },
   modules: [

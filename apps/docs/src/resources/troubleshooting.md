@@ -212,7 +212,8 @@ If you're using `@shopware/cms-base-layer`, you can extend both layers together:
 ```ts
 extends: [
   "@shopware/composables/nuxt-layer",
-  "@shopware/cms-base-layer"
+  "@shopware/cms-base-layer",
+  "@shopware/unocss-design-tokens-layer"
 ],
 ```
 :::
