@@ -2,8 +2,7 @@
   "env": {
     "NODE_OPTIONS": "--no-warnings=ExperimentalWarning",
     "NUXT_TELEMETRY_DISABLED": "1",
-    "SHOPWARE_STACKBLITZ": "true",
-    "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": "https://demo-frontends.shopware.store"
+    "SHOPWARE_STACKBLITZ": "true"
   },
   "startCommand": "pnpm exec nuxt prepare && pnpm exec nuxt dev --no-qr"
 }
