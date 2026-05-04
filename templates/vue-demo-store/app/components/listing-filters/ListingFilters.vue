@@ -4,13 +4,11 @@ import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import type { operations } from "#shopware";
 import ListingFilter from "./ListingFilter.vue";
 
-const {
-  filtersToQuery,
-  getCurrentFilters,
-  getCurrentSortingOrder,
-  getInitialFilters,
-  search,
-} = useProductSearchListing();
+const listing = useProductSearchListing();
+const { search } = listing;
+const { filtersToQuery, getCurrentFilters, getInitialFilters } =
+  useProductListingFilters(listing);
+const { getCurrentSortingOrder } = useProductListingSorting(listing);
 
 const route = useRoute();
 const router = useRouter();

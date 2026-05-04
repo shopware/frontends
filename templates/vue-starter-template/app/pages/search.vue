@@ -6,14 +6,10 @@ const route = useRoute();
 const router = useRouter();
 const initLoading = ref(true);
 
-const {
-  changeCurrentPage,
-  getCurrentPage,
-  getElements: products,
-  getTotalPagesCount,
-  loading,
-  search,
-} = useProductSearchListing();
+const listing = useProductSearchListing();
+const { getElements: products, loading, search } = listing;
+const { changeCurrentPage, getCurrentPage, getTotalPagesCount } =
+  useProductListingPagination(listing);
 
 const { t } = useI18n();
 const productListElement = useTemplateRef("productListElement");
