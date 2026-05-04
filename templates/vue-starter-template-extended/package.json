@@ -40,5 +40,10 @@
     "typescript": "5.9.3",
     "unocss": "66.6.0",
     "vue-tsc": "3.2.2"
+  },
+  "overrides": {
+    "glob": "^13",
+    "vue-i18n": "^11",
+    "eslint-visitor-keys": "^4"
   }
 }
