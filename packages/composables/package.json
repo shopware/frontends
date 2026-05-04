@@ -44,7 +44,8 @@
     "src",
     "composables",
     "nuxt.config.ts",
-    "types"
+    "types",
+    "app.config.ts"
   ],
   "scripts": {
     "build": "unbuild && pnpm build:types",
