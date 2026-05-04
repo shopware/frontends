@@ -57,6 +57,7 @@
       "lodash-es": "^4.18.0",
       "markdown-it": "^14.1.1",
       "minimatch": "^10.2.4",
+      "node-forge": "^1.4.0",
       "semver": "^7.6.2",
       "qs": "^6.14.2",
       "undici": "^6.24.0",
@@ -71,7 +72,14 @@
       "follow-redirects": "^1.16.0"
     },
     "peerDependencyRules": {
-      "ignoreMissing": ["webpack", "vite", "react-dom"]
+      "ignoreMissing": [
+        "webpack",
+        "vite",
+        "react-dom",
+        "react",
+        "@types/react",
+        "@algolia/client-search"
+      ]
     }
   }
 }

@@ -1,6 +1,7 @@
+import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 
-export default defineNuxtConfig({
+const config: NuxtConfig = defineNuxtConfig({
   telemetry: {
     enabled: false,
   },
@@ -10,3 +11,5 @@ export default defineNuxtConfig({
     nuxtLayers: true,
   },
 });
+
+export default config;
