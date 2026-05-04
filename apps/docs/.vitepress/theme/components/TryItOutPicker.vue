@@ -19,40 +19,28 @@ interface Env {
   buildCommand?: (template: TemplateId) => string;
 }
 
-const templates: Template[] = [
-  {
+const templatesById: Record<TemplateId, Template> = {
+  "vue-starter-template": {
     id: "vue-starter-template",
     title: "Vue Starter Template",
     pitch:
       "Production-ready blank starter with all core packages pre-configured.",
   },
-  {
+  "vue-starter-template-extended": {
     id: "vue-starter-template-extended",
     title: "Vue Starter Template Extended (Lumora)",
     pitch:
       "Branded demo store layered on top of the starter — shows the Nuxt layer pattern.",
   },
+};
+
+const templates: Template[] = [
+  templatesById["vue-starter-template"],
+  templatesById["vue-starter-template-extended"],
 ];
 
-const environments: Env[] = [
-  {
-    id: "stackblitz",
-    title: "StackBlitz",
-    pitch: "Fastest to open in the browser. Some boot noise is expected.",
-    expectedDuration: "~30 seconds to first preview",
-    buildOpenUrl: (t) =>
-      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${t}`,
-  },
-  {
-    id: "codespaces",
-    title: "GitHub Codespaces",
-    pitch:
-      "Clean cloud dev environment. Slower cold start, full VS Code experience.",
-    expectedDuration: "~2-3 minutes on first boot",
-    buildOpenUrl: (t) =>
-      `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
-  },
-  {
+const environmentsById: Record<EnvId, Env> = {
+  local: {
     id: "local",
     title: "Local clone",
     pitch: "Fastest after first install. Run on your machine.",
@@ -61,17 +49,36 @@ const environments: Env[] = [
     buildCommand: (t) =>
       `npx tiged shopware/frontends/templates/${t} my-store && cd my-store && npm install && npm run dev`,
   },
+  stackblitz: {
+    id: "stackblitz",
+    title: "StackBlitz",
+    pitch: "Fastest to open in the browser. Some boot noise is expected.",
+    expectedDuration: "~30 seconds to first preview",
+    buildOpenUrl: (t) =>
+      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${t}`,
+  },
+  codespaces: {
+    id: "codespaces",
+    title: "GitHub Codespaces",
+    pitch:
+      "Clean cloud dev environment. Slower cold start, full VS Code experience.",
+    expectedDuration: "~2-3 minutes on first boot",
+    buildOpenUrl: (t) =>
+      `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
+  },
+};
+
+const environments: Env[] = [
+  environmentsById.local,
+  environmentsById.stackblitz,
+  environmentsById.codespaces,
 ];
 
 const selectedTemplate = ref<TemplateId>("vue-starter-template");
-const selectedEnv = ref<EnvId>("codespaces");
+const selectedEnv = ref<EnvId>("local");
 
-const env = computed(
-  () => environments.find((e) => e.id === selectedEnv.value)!,
-);
-const template = computed(
-  () => templates.find((t) => t.id === selectedTemplate.value)!,
-);
+const env = computed(() => environmentsById[selectedEnv.value]);
+const template = computed(() => templatesById[selectedTemplate.value]);
 
 const openUrl = computed(() => env.value.buildOpenUrl(selectedTemplate.value));
 const command = computed(() =>
@@ -85,7 +92,50 @@ async function copyCommand() {
   if (!command.value) return;
   await navigator.clipboard.writeText(command.value);
   copied.value = true;
-  setTimeout(() => (copied.value = false), 2000);
+  setTimeout(() => {
+    copied.value = false;
+  }, 2000);
+}
+
+const aiPrompts: Record<TemplateId, string> = {
+  "vue-starter-template": `I want to set up the Shopware Frontends Vue Starter Template for local development.
+
+In my current working directory, please:
+
+1. Run \`npx tiged shopware/frontends/templates/vue-starter-template my-store\`
+2. \`cd my-store\`
+3. Run \`npm install\`
+4. Start the dev server with \`npm run dev\` and tell me when it's ready on http://localhost:3000
+
+If anything fails, surface the error and stop — don't try to "fix" peer-dep warnings unless I ask.
+
+The template is Nuxt 4 + UnoCSS + the Shopware composables/cms-base layers, pre-configured against a public demo backend. After it's running, point me at \`app/\` for components and pages, and \`nuxt.config.ts\` for runtime configuration.`,
+  "vue-starter-template-extended": `I want to set up the Shopware Frontends Vue Starter Template Extended (Lumora demo) for local development.
+
+This template is a Nuxt layer that extends \`vue-starter-template\`, so we need both. In my current working directory, please:
+
+1. Scaffold the base: \`npx tiged shopware/frontends/templates/vue-starter-template vue-starter-template\`
+2. Scaffold the extended: \`npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-store\`
+3. In \`lumora-store/package.json\`:
+   - replace \`"vue-starter-template": "workspace:*"\` with \`"vue-starter-template": "file:../vue-starter-template"\`
+   - replace any other \`workspace:*\` dep with \`"canary"\` (the published npm tag)
+   - tell me exactly what you changed
+4. \`cd lumora-store\`, run \`npm install\`, then \`npm run dev\`. Confirm when the storefront is up on http://localhost:3000.
+
+Peer-dep warnings during install are safe to ignore. If any package fails to resolve, stop and report.
+
+After it's running, point me at \`lumora-store/app/app.config.ts\` (brand config) and \`lumora-store/uno.config.ts\` (theme overrides).`,
+};
+
+const aiPrompt = computed(() => aiPrompts[selectedTemplate.value]);
+
+const promptCopied = ref(false);
+async function copyAiPrompt() {
+  await navigator.clipboard.writeText(aiPrompt.value);
+  promptCopied.value = true;
+  setTimeout(() => {
+    promptCopied.value = false;
+  }, 2000);
 }
 </script>
 
@@ -155,6 +205,25 @@ async function copyCommand() {
           <span v-else>Copy command</span>
         </button>
       </div>
+    </section>
+
+    <section class="try-it-out-ai">
+      <div class="try-it-out-ai-header">
+        <h3 class="try-it-out-section-title">Or: delegate to an AI agent</h3>
+        <p class="try-it-out-ai-hint">
+          Paste this prompt into Claude, Cursor, Copilot, or any code assistant.
+          The prompt is tailored to <strong>{{ template.title }}</strong>.
+        </p>
+      </div>
+      <pre class="try-it-out-command try-it-out-ai-prompt"><code>{{ aiPrompt }}</code></pre>
+      <button
+        class="try-it-out-launch-btn secondary"
+        type="button"
+        @click="copyAiPrompt"
+      >
+        <span v-if="promptCopied">Copied!</span>
+        <span v-else>Copy AI prompt</span>
+      </button>
     </section>
   </div>
 </template>
@@ -302,5 +371,35 @@ async function copyCommand() {
   font-size: 13px;
   overflow-x: auto;
   white-space: pre;
+}
+
+.try-it-out-ai {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  padding: 18px;
+  background: var(--vp-c-bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.try-it-out-ai-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.try-it-out-ai-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+}
+
+.try-it-out-ai-prompt {
+  white-space: pre-wrap;
+  max-height: 320px;
+  overflow-y: auto;
+  font-size: 12px;
 }
 </style>
