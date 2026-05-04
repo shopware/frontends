@@ -37,9 +37,9 @@ useSeoMeta({
       class="text-lg font-normal text-surface-on-surface-variant lg:text-xl"
     >
       <div
-        v-if="registrationResponse.translated.registrationIntroduction"
+        v-if="registrationResponse?.translated.registrationIntroduction"
         class="px-6 sm:px-4 mb-6"
-        v-html="registrationResponse?.translated.registrationIntroduction"
+        v-html="registrationResponse.translated.registrationIntroduction"
       />
       <AccountRegistrationForm
         :customer-group-id="registrationResponse?.id"
