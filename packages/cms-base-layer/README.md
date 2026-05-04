@@ -5,14 +5,14 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using atomic css syntax (UnoCss / Tailwind).
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html).
 
-It is useful for projects that want to use the CMS components but design their own layout.
+It is useful for projects that want to use the CMS components while keeping CMS functionality separate from the styling system and design tokens.
 
 ## Features
 
 - Vue components for [Shopping Experiences](https://www.shopware.com/en/products/shopping-experiences/) CMS
-- CMS sections, blocks and elements styled using [Tailwind CSS](https://tailwindcss.com/) classes
+- CMS sections, blocks and elements implemented with utility-class-based markup
 - 🚀 Empowered by [@shopware/composables](https://www.npmjs.com/package/@shopware/composables)
 
 ## Setup
@@ -42,6 +42,8 @@ deno install --dev @shopware/cms-base-layer
 ```
 
 <!-- /automd -->
+
+If you also want the shared Shopware Frontends UnoCSS setup, install `@shopware/unocss-design-tokens-layer` in your app and extend it alongside `@shopware/cms-base-layer`.
 
 Then, register the Nuxt layer in `nuxt.config.ts` file:
 
@@ -83,15 +85,20 @@ Since all CMS components are registered in your Nuxt application, you can now st
 </template>
 ```
 
-> You can use default styling by installing/importing Tailwind CSS stylesheet in your project.
+> `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) how to use `cms-base` package in your project based on Nuxt v3.
+See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
 
-## Default styling
+## Styling and Design Tokens
 
-The components are styled using [Tailwind CSS](https://tailwindcss.com/) utility classes, so you can use them in your project without any additional configuration if your project uses Tailwind CSS. 
+The components use utility classes, but the shared UnoCSS configuration, design tokens, and runtime handling for dynamic CMS classes are now provided by `@shopware/unocss-design-tokens-layer`.
 
-This layer provides a default Tailwind CSS configuration (see [uno.config.ts](./uno.config.ts) for details), which is used to style the components. If you want to customize the styling, you can do so by creating your own Tailwind CSS configuration file and extending the default one:
+This means you have two options:
+
+- extend `@shopware/unocss-design-tokens-layer` to use the shared Shopware Frontends token palette and UnoCSS defaults
+- keep only `@shopware/cms-base-layer` and provide your own UnoCSS or Tailwind setup
+
+When you use the design-tokens layer, you can customize the generated config in your project's `uno.config.ts`:
 
 ```ts [nuxt.config.ts]
 // nuxt.config.ts
@@ -104,24 +111,14 @@ export default defineNuxtConfig({
 ```
 
 ```ts [uno.config.ts]
-// uno.config.ts
-import config from './.nuxt/uno.config.mjs'
-
-export default config
-```
-
-Thanks to this, you can **use the default configuration** provided by this layer, or **extend/overwrite** it with your own customizations in your end-project:
-
-```ts [uno.config.ts]
-// uno.config.ts
 import { mergeConfigs } from '@unocss/core'
-import config from './.nuxt/uno.config.mjs'
+import baseConfig from './.nuxt/uno.config.mjs'
 
-export default mergeConfigs([config, {
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
-      primary: '#ff3e00',
-      secondary: '#1c1c1c',
+      'brand-primary': '#ff3e00',
+      'brand-secondary': '#1c1c1c',
     },
   },
 }])
@@ -417,7 +414,7 @@ CMS image elements use `useElementSize()` to measure the rendered container and 
 
 ## 🔄 UnoCSS Runtime
 
-This layer includes a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (e.g., inline styles or dynamic class bindings from the admin panel).
+When you extend `@shopware/unocss-design-tokens-layer`, you also get a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (for example inline utility classes configured in the admin panel).
 
 The runtime is **enabled by default**. To disable it, set `unocssRuntime` to `false` in your project's `app.config.ts`:
 

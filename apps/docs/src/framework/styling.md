@@ -15,7 +15,13 @@ nav:
 
 # Styling
 
-Shopware Frontends [Demo Store Template](../getting-started/templates/demo-store-template) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use [custom styling](#use-a-custom-css-framework).
+Shopware Frontends templates use a utility-first styling approach based on [UnoCSS](https://github.com/unocss/unocss). In the current layered setup, CMS rendering and design tokens are separated:
+
+- `@shopware/cms-base-layer` provides CMS components and image-related Nuxt configuration
+- `@shopware/unocss-design-tokens-layer` provides UnoCSS integration, shared design tokens, and runtime resolution for dynamic utility classes
+- project-level `uno.config.ts` files extend the generated base config with brand-specific colors, safelists, presets, or preflights
+
+This keeps CMS functionality independent from visual design choices and makes layered storefronts easier to extend.
 
 ## Utility CSS
 
@@ -117,49 +123,20 @@ Similar to viewport breakpoints, you can also use state variants with prefixes:
 
 ## Design Tokens
 
-Shopware Composable Frontends defines a comprehensive set of color design tokens as UnoCSS theme colors. See the [Design Tokens](./design-tokens) page for the full reference, naming conventions, and an exportable Uno config snippet.
+Shopware Frontends provides a shared set of color design tokens through the `@shopware/unocss-design-tokens-layer` package. See the [Design Tokens](./design-tokens) page for the full reference, naming conventions, and an exportable Uno config snippet.
 
 ## Use a custom CSS Framework
 
 If you want to use a different CSS framework or fully custom styling, it's recommended to use the [Blank Template](../getting-started/templates/blank-template) as a starting point. It has no pre-installed CSS framework and you can install you own.
 
-### Remove unocss from the Demo Store Template
+### Remove UnoCSS from a Nuxt project
 
-However, it's also possible to remove unocss from the [Demo Store Template](../getting-started/templates/demo-store-template). This might be applicable when you want to make use of the component structure and logic that's already provided by the template.
+If you want to replace UnoCSS entirely, the easiest option is to start from the [Blank Template](../getting-started/templates/blank-template). If you already use a layered Nuxt setup such as the Vue Starter Template, remove:
 
-Remove the `unocss` dependency from the `package.json` file
+- `@unocss/nuxt` from `modules`
+- `@shopware/unocss-design-tokens-layer` from `extends`
+- the UnoCSS reset import from `css`
+- `unocss` configuration from `nuxt.config.ts`
+- your local `uno.config.ts` if it is no longer needed
 
-```diff
-/* package.json */
-
--    "@unocss/nuxt": "66.5.6",
-```
-
-Remove the unocss imports, build modules and configuration from the `nuxt.config.js` file
-
-```diff
-/* nuxt.config.js */
-
- import { defineNuxtConfig } from "nuxt";
--import transformerDirective from "@unocss/transformer-directives";
--import presetIcons from "@unocss/preset-icons";
-
- export default defineNuxtConfig({
-   },
-   buildModules: [
-     "@vueuse/nuxt",
--    "@unocss/nuxt",
-     "@shopware/nuxt-module"
-   ],
-   vueuse: {
-     ssrHandlers: true,
-   },
--  unocss: {
--    uno: true, // enabled `@unocss/preset-uno`
--    icons: true, // enabled `@unocss/preset-icons`
--    attributify: true, // enabled `@unocss/preset-attributify`,
--    ...
--  },
-```
-
-Eventually, run `pnpm install` to remove the unocss dependency from your installation.
+After that, install your preferred styling solution and add its configuration normally.
