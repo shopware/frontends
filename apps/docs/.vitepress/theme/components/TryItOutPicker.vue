@@ -67,7 +67,7 @@ const environmentsById: Record<EnvId, Env> = {
     expectedDuration: "~2-3 minutes on first boot",
     tip: "Pick a 4-core or larger machine type on the Codespaces creation page — the default 2-core makes installs and the dev server noticeably slower.",
     buildOpenUrl: (t) =>
-      `https://github.com/codespaces/new?repo=shopware/frontends&ref=feat/try-it-out-landing&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
+      `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
   },
 };
 
