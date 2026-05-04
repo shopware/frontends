@@ -1,6 +1,6 @@
 {
   "env": {
-    "NODE_OPTIONS": "--no-warnings=ExperimentalWarning"
+    "NODE_OPTIONS": "--no-warnings"
   },
   "startCommand": "pnpm dev"
 }

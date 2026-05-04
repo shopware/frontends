@@ -1,6 +1,6 @@
 {
   "env": {
-    "NODE_OPTIONS": "--no-warnings=ExperimentalWarning",
+    "NODE_OPTIONS": "--no-warnings",
     "NUXT_TELEMETRY_DISABLED": "1",
     "SHOPWARE_STACKBLITZ": "true"
   },
