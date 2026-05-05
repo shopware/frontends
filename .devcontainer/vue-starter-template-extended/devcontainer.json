@@ -1,0 +1,31 @@
+{
+  "name": "Shopware Vue Starter Template Extended (Lumora)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "workspaceFolder": "/workspaces/frontends/templates/vue-starter-template-extended",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+  "containerEnv": {
+    "TURBO_TOKEN": "${localEnv:TURBO_TOKEN}",
+    "TURBO_TEAM": "${localEnv:TURBO_TEAM}"
+  },
+  "postCreateCommand": "npm install -g pnpm",
+  "postAttachCommand": "pnpm install && pnpm run dev",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Storefront",
+      "onAutoForward": "openBrowserOnce"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": ["vue.volar", "antfu.unocss"]
+    }
+  }
+}
