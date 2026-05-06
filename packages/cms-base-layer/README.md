@@ -51,8 +51,11 @@ Then, register the Nuxt layer in `nuxt.config.ts` file:
 
 ```ts [nuxt.config.ts]
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",

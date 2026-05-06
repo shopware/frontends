@@ -1,6 +1,6 @@
 {
   "name": "@shopware/unocss-design-tokens-layer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Reusable Nuxt Layer for Shopware design tokens and UnoCSS configuration",
   "author": "Shopware",
   "repository": {
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.2.2",
-    "@typescript/native-preview": "7.0.0-dev.20260111.1",
+    "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
