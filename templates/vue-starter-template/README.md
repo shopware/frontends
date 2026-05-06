@@ -89,6 +89,16 @@ docker run --rm -p 3000:3000 \
   shopware-vue-starter
 ```
 
+You can also bake the Shopware configuration into the image at build time:
+
+```bash
+docker build -t shopware-vue-starter \
+  --build-arg NUXT_PUBLIC_SHOPWARE_ENDPOINT="https://your-shop.example/store-api/" \
+  --build-arg NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN="your-sales-channel-token" \
+  --build-arg NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL="" \
+  .
+```
+
 You can also pass environment variables from a local `.env` file:
 
 ```bash
@@ -107,6 +117,8 @@ NUXT_SHOPWARE_ENDPOINT=
 `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is mainly useful for local development when the Shopware sales channel domain does not match `localhost`. In production, leave it empty unless you specifically need to override it.
 
 `NUXT_SHOPWARE_ENDPOINT` is optional. Use it only when server-side requests from the container should target a different internal URL than the browser-facing `NUXT_PUBLIC_SHOPWARE_ENDPOINT`.
+
+Build args are copied into the image as environment variables. Runtime `docker run -e ...` or `--env-file ...` values still override the baked defaults.
 
 The template includes a `.dockerignore` file so local `node_modules`, `.nuxt`, `.output`, and `.env` files are not copied into the image. This is important:
 
