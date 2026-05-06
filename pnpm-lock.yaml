@@ -1476,7 +1476,7 @@ importers:
         specifier: canary
         version: link:../../packages/nuxt-module
       '@shopware/unocss-design-tokens-layer':
-        specifier: workspace:*
+        specifier: canary
         version: link:../../packages/unocss-design-tokens-layer
       '@unocss/core':
         specifier: 66.6.0
@@ -1550,10 +1550,10 @@ importers:
         specifier: canary
         version: link:../../packages/api-gen
       '@shopware/cms-base-layer':
-        specifier: workspace:*
+        specifier: canary
         version: link:../../packages/cms-base-layer
       '@shopware/unocss-design-tokens-layer':
-        specifier: workspace:*
+        specifier: canary
         version: link:../../packages/unocss-design-tokens-layer
       '@unocss/core':
         specifier: 66.6.0
