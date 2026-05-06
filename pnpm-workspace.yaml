@@ -11,6 +11,7 @@ templates:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
+- '@typescript/native-preview'
 - 'follow-redirects' # audit fix, remove after 15.04.2026
 
 
