@@ -81,7 +81,6 @@ function getLinkRel(link: (typeof links)[number]) {
 
   return isExternalLink(link.href) ? 'noreferrer' : undefined
 }
-
 </script>
 
 <template>
