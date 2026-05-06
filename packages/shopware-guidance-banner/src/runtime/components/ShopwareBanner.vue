@@ -34,6 +34,9 @@ const isVisible = computed(() => isMounted.value && !isDismissed.value)
 onMounted(() => {
   isMounted.value = true
   isDismissed.value = localStorage.getItem(storageKey) === 'true'
+  if (isDismissed.value) {
+    return
+  }
   window.addEventListener('resize', syncBodyPadding)
   void nextTick(syncBodyPadding)
 })
@@ -79,7 +82,7 @@ function getLinkRel(link: (typeof links)[number]) {
     return undefined
   }
 
-  return isExternalLink(link.href) ? 'noreferrer' : undefined
+  return isExternalLink(link.href) ? 'noopener noreferrer' : undefined
 }
 </script>
 

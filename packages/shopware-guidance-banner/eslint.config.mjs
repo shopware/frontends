@@ -10,6 +10,6 @@ export default createConfigForNuxt({
     stylistic: true,
   },
   dirs: {
-    src: ["./playground"],
+    src: ["./src"],
   },
 });
