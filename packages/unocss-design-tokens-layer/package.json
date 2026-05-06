@@ -1,6 +1,6 @@
 {
   "name": "@shopware/unocss-design-tokens-layer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Reusable Nuxt Layer for Shopware design tokens and UnoCSS configuration",
   "author": "Shopware",
   "repository": {
@@ -15,18 +15,8 @@
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
-  "files": [
-    "dist",
-    "app",
-    "nuxt.config.ts",
-    "index.cjs",
-    "index.d.ts",
-    "app.config.ts",
-    "uno.config.ts"
-  ],
+  "files": ["app", "nuxt.config.ts", "index.d.ts", "uno.config.ts"],
   "scripts": {
-    "build": "nuxt prepare && unbuild",
-    "dev": "unbuild --stub",
     "lint": "biome check .",
     "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit"
@@ -41,7 +31,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.2.2",
-    "@typescript/native-preview": "7.0.0-dev.20260111.1",
+    "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "nuxt": "4.2.2",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
