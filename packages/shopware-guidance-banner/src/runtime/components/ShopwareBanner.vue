@@ -1,98 +1,95 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue'
 
-const storageKey = "shopware-guidance-banner-dismissed";
+const storageKey = 'shopware-guidance-banner-dismissed'
 
-const isMounted = ref(false);
-const isDismissed = ref(false);
+const isMounted = ref(false)
+const isDismissed = ref(false)
+const bannerElement = ref<HTMLElement | null>(null)
 
 const links = [
   {
-    label: "Open preview",
-    href: "/",
-    variant: "primary",
-    type: "link",
+    label: 'View code',
+    href: 'https://github.com/shopware/frontends/tree/main/templates/vue-starter-template',
+    variant: 'primary',
+    type: 'link',
   },
   {
-    label: "View code",
-    href: "https://github.com/shopware/frontends/tree/main/templates/vue-starter-template",
-    variant: "secondary",
-    type: "link",
+    label: 'Docs',
+    href: 'https://frontends.shopware.com/',
+    variant: 'secondary',
+    type: 'link',
   },
-  {
-    label: "Docs",
-    href: "https://frontends.shopware.com/",
-    variant: "secondary",
-    type: "link",
-  },
-  {
-    label: "DevTools",
-    variant: "secondary",
-    type: "action",
-  },
-];
+]
 
-const isVisible = computed(() => isMounted.value && !isDismissed.value);
+const isVisible = computed(() => isMounted.value && !isDismissed.value)
 
 onMounted(() => {
-  isMounted.value = true;
-  isDismissed.value = localStorage.getItem(storageKey) === "true";
-});
+  isMounted.value = true
+  isDismissed.value = localStorage.getItem(storageKey) === 'true'
+  window.addEventListener('resize', syncBodyPadding)
+  void nextTick(syncBodyPadding)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', syncBodyPadding)
+  document.body.style.paddingBottom = ''
+})
+
+watch(isVisible, async () => {
+  await nextTick()
+  syncBodyPadding()
+})
 
 function closeBanner() {
-  isDismissed.value = true;
-  localStorage.setItem(storageKey, "true");
+  isDismissed.value = true
+  localStorage.setItem(storageKey, 'true')
+}
+
+function syncBodyPadding() {
+  if (!isVisible.value || !bannerElement.value) {
+    document.body.style.paddingBottom = ''
+    return
+  }
+
+  document.body.style.paddingBottom = `${bannerElement.value.offsetHeight + 12}px`
 }
 
 function isExternalLink(href: string) {
-  return href.startsWith("http");
+  return href.startsWith('http')
 }
 
 function getLinkTarget(link: (typeof links)[number]) {
-  if (link.type !== "link" || !link.href) {
-    return undefined;
+  if (link.type !== 'link' || !link.href) {
+    return undefined
   }
 
-  return isExternalLink(link.href) ? "_blank" : undefined;
+  return isExternalLink(link.href) ? '_blank' : undefined
 }
 
 function getLinkRel(link: (typeof links)[number]) {
-  if (link.type !== "link" || !link.href) {
-    return undefined;
+  if (link.type !== 'link' || !link.href) {
+    return undefined
   }
 
-  return isExternalLink(link.href) ? "noreferrer" : undefined;
+  return isExternalLink(link.href) ? 'noreferrer' : undefined
 }
 
-function openDevTools() {
-  const eventConfig = {
-    key: "D",
-    code: "KeyD",
-    altKey: true,
-    shiftKey: true,
-    bubbles: true,
-  };
-
-  window.dispatchEvent(new KeyboardEvent("keydown", eventConfig));
-  document.dispatchEvent(new KeyboardEvent("keydown", eventConfig));
-  window.dispatchEvent(new KeyboardEvent("keyup", eventConfig));
-  document.dispatchEvent(new KeyboardEvent("keyup", eventConfig));
-}
-
-function handleClick(link: (typeof links)[number], event: MouseEvent) {
-  if (link.type !== "action") {
-    return;
-  }
-
-  event.preventDefault();
-  openDevTools();
-}
 </script>
 
 <template>
-  <div v-if="isVisible" aria-hidden="true" class="h-52 sm:h-40 lg:h-32" />
-
-  <aside v-if="isVisible" class="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 sm:px-6 sm:pb-6">
+  <aside
+    v-if="isVisible"
+    ref="bannerElement"
+    class="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 sm:px-6 sm:pb-6"
+  >
     <div class="mx-auto max-w-6xl">
       <div
         class="relative overflow-hidden rounded-[28px] border border-white/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(244,247,251,0.98)_45%,rgba(236,246,255,0.98)_100%)] shadow-[0_24px_80px_rgba(15,23,42,0.18)] ring-1 ring-slate-200/70 backdrop-blur-xl"
@@ -124,14 +121,31 @@ function handleClick(link: (typeof links)[number], event: MouseEvent) {
               Explore the starter, inspect the codebase, open the docs, or jump
               straight into DevTools to continue building.
             </p>
+            <p
+              class="mt-3 inline-flex flex-wrap items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-xs font-medium text-slate-500"
+            >
+              <span>Press</span>
+              <kbd
+                class="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700 shadow-sm"
+              >
+                F12
+              </kbd>
+              <span>or</span>
+              <kbd
+                class="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700 shadow-sm"
+              >
+                ⌘⌥I
+              </kbd>
+              <span>to open DevTools</span>
+            </p>
           </div>
 
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div class="flex flex-wrap gap-2.5">
               <component
+                :is="link.type === 'action' ? 'button' : 'a'"
                 v-for="link in links"
                 :key="link.label"
-                :is="link.type === 'action' ? 'button' : 'a'"
                 :href="link.type === 'link' ? link.href : undefined"
                 :type="link.type === 'action' ? 'button' : undefined"
                 class="inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
@@ -142,7 +156,6 @@ function handleClick(link: (typeof links)[number], event: MouseEvent) {
                 "
                 :target="getLinkTarget(link)"
                 :rel="getLinkRel(link)"
-                @click="handleClick(link, $event)"
               >
                 {{ link.label }}
               </component>
@@ -154,7 +167,10 @@ function handleClick(link: (typeof links)[number], event: MouseEvent) {
               aria-label="Close banner"
               @click="closeBanner"
             >
-              <span aria-hidden="true" class="text-xl leading-none">&times;</span>
+              <span
+                aria-hidden="true"
+                class="text-xl leading-none"
+              >&times;</span>
             </button>
           </div>
         </div>

@@ -2,7 +2,6 @@
 import { createResolver } from "@nuxt/kit";
 
 const { resolve } = createResolver(import.meta.url);
-const isDev = import.meta.dev;
 const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
 
 export default defineNuxtConfig({
@@ -21,7 +20,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "@nuxt/a11y",
-    ...(isDev ? ["@shopware/guidance-banner"] : []),
+    "@shopware/guidance-banner",
   ],
   runtimeConfig: {
     public: {

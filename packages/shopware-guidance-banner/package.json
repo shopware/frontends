@@ -33,11 +33,9 @@
     "dev": "npm run dev:prepare && nuxt dev playground",
     "dev:build": "nuxt build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+    "lint": "eslint src --ext .ts,.vue",
+    "lint:fix": "eslint src --ext .ts,.vue --fix",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
     "@nuxt/kit": "^4.4.2"
@@ -50,7 +48,6 @@
     "@nuxt/test-utils": "^4.0.2",
     "@types/node": "latest",
     "changelogen": "^0.6.2",
-    "eslint": "^10.2.1",
     "nuxt": "^4.4.2",
     "typescript": "~6.0.3",
     "vitest": "^4.1.5",
