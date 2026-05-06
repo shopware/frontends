@@ -1,5 +1,16 @@
 # @shopware/helpers
 
+## 1.7.1
+
+### Patch Changes
+
+- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
+
+  This adds helpers to detect and normalize technical Shopware paths and updates
+  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
+  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
+  mapping row is returned.
+
 ## 1.7.0
 
 ### Minor Changes

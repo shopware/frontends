@@ -1,5 +1,21 @@
 # @shopware/composables
 
+## 1.11.1
+
+### Patch Changes
+
+- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
+
+  This adds helpers to detect and normalize technical Shopware paths and updates
+  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
+  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
+  mapping row is returned.
+
+- [#2407](https://github.com/shopware/frontends/pull/2407) [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Correct `useNewsletter` `subscribeToNewsletter` return type: it now resolves to the Store API response type for `POST /newsletter/subscribe` instead of `void`.
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00)]:
+  - @shopware/helpers@1.7.1
+
 ## 1.11.0
 
 ### Minor Changes

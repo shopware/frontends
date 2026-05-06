@@ -165,18 +165,18 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.11.0
-
-### Minor Changes
-
-- [#2318](https://github.com/shopware/frontends/pull/2318) [`b40305f`](https://github.com/shopware/frontends/commit/b40305f9e2ec51f29c279650e411bb773438faed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useProductPrice` now returns `hasListPrice` (boolean indicating whether the product has a list price set). `isListPrice` is deprecated and aliased to `hasListPrice`; use `hasListPrice` in new code.
+### Latest changes: 1.11.1
 
 ### Patch Changes
 
-- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - Guard against undefined config in `useCmsElementConfig`.
+- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
 
-- [#2263](https://github.com/shopware/frontends/pull/2263) [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a) Thanks [@mkucmus](https://github.com/mkucmus)! - Fixed `getDocumentFile` return type in `useOrderDetails` to correctly return `Blob | string` instead of `Document` schema.
+  This adds helpers to detect and normalize technical Shopware paths and updates
+  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
+  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
+  mapping row is returned.
 
-- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`a871c7b`](https://github.com/shopware/frontends/commit/a871c7b6256b75c2e40d93fc0354ba1971420062), [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f)]:
-  - @shopware/api-client@1.5.0
-  - @shopware/helpers@1.7.0
+- [#2407](https://github.com/shopware/frontends/pull/2407) [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Correct `useNewsletter` `subscribeToNewsletter` return type: it now resolves to the Store API response type for `POST /newsletter/subscribe` instead of `void`.
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00)]:
+  - @shopware/helpers@1.7.1

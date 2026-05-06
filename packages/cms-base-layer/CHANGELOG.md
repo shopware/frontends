@@ -1,5 +1,37 @@
 # @shopware/cms-base-layer
 
+## 3.0.0
+
+### Major Changes
+
+- [#2406](https://github.com/shopware/frontends/pull/2406) [`df93461`](https://github.com/shopware/frontends/commit/df93461434cb79ec9d722cdbd42a37a9af07fb03) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove bundled UnoCSS configuration and design tokens from the CMS layer. Consumers who relied on the previous default UnoCSS setup should extend `@shopware/unocss-design-tokens-layer` alongside this package. See the package README and framework docs for migration steps.
+
+### Minor Changes
+
+- [#2420](https://github.com/shopware/frontends/pull/2420) [`9e37ab6`](https://github.com/shopware/frontends/commit/9e37ab6897f501ed3d261fa619aee349e46342c2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add FrontendAccountCustomerGroupRegistrationPage component for customer group view
+
+### Patch Changes
+
+- [#2389](https://github.com/shopware/frontends/pull/2389) [`05438c6`](https://github.com/shopware/frontends/commit/05438c636a6c99b48e87d8f2ff5b03bf313c4e67) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix product card and CMS image sizing to prevent duplicate/oversized image requests. Move fixed dimensions and `densities="1x"` into the `productCard` preset, and use `useElementSize`-based `width`/`height` props for `CmsElementImage`.
+
+- [#2378](https://github.com/shopware/frontends/pull/2378) [`c36bc1f`](https://github.com/shopware/frontends/commit/c36bc1ff17e8e34c52fa91e6388ce210fffb7e8e) Thanks [@patzick](https://github.com/patzick)! - Add UnoCSS directive transformation for CMS block styles so layered Nuxt apps do not emit CSS minification warnings from raw `@apply` directives during production builds.
+
+- [#2369](https://github.com/shopware/frontends/pull/2369) [`3c16985`](https://github.com/shopware/frontends/commit/3c16985ddf3878bc207c514a5ab8e4a6409f809c) Thanks [@mkucmus](https://github.com/mkucmus)! - Fixed `xss` library loading issue in Vite dev server by adding it to `optimizeDeps.include`
+
+- [#2371](https://github.com/shopware/frontends/pull/2371) [`33e0c69`](https://github.com/shopware/frontends/commit/33e0c69afc3de854733ab61f866ba65cce1489f6) Thanks [@patzick](https://github.com/patzick)! - Disable automatic CMS LCP image preload by default.
+
+  The preload helper now only injects image preload tags when
+  `appConfig.lcpImagePreload` is explicitly enabled, which avoids noisy preload
+  warnings on storefront pages that do not immediately use the detected image.
+
+- [#2326](https://github.com/shopware/frontends/pull/2326) [`e7efff8`](https://github.com/shopware/frontends/commit/e7efff8c615ae8d0858572933285216cc533dd0b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Gate wishlist button behind login when useLoginModal is provided via provide/inject. For guests, show login modal on wishlist click and add product to wishlist after successful login.
+
+- [#2346](https://github.com/shopware/frontends/pull/2346) [`a47143a`](https://github.com/shopware/frontends/commit/a47143a670f49deecc35dce4bb8b6bd12d9a3b47) Thanks [@joberthel](https://github.com/joberthel)! - Improve `SwMedia3D` model framing by fitting loaded 3D models into the viewport automatically. This fixes cases where very small 3D files appeared tiny and hard to inspect.
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00), [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef)]:
+  - @shopware/helpers@1.7.1
+  - @shopware/composables@1.11.1
+
 ## 2.1.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # docs
 
+## 1.10.5
+
+### Patch Changes
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00), [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef)]:
+  - @shopware/helpers@1.7.1
+  - @shopware/composables@1.11.1
+
 ## 1.10.4
 
 ### Patch Changes
