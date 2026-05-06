@@ -474,42 +474,34 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 2.1.0
+### Latest changes: 3.0.0
+
+### Major Changes
+
+- [#2406](https://github.com/shopware/frontends/pull/2406) [`df93461`](https://github.com/shopware/frontends/commit/df93461434cb79ec9d722cdbd42a37a9af07fb03) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove bundled UnoCSS configuration and design tokens from the CMS layer. Consumers who relied on the previous default UnoCSS setup should extend `@shopware/unocss-design-tokens-layer` alongside this package. See the package README and framework docs for migration steps.
 
 ### Minor Changes
 
-- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - - Add configurable UnoCSS runtime plugin for dynamic CMS class support
-  - Extend theme with overlay and fixed color tokens
-
-- [#2223](https://github.com/shopware/frontends/pull/2223) [`1db8704`](https://github.com/shopware/frontends/commit/1db870413dcea13c690504ffcaee13526bc8035f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add horizontal filter layout for product listings. When the sidebar filter element is placed outside a sidebar section, filters now display as horizontal dropdowns.
-
-  Includes new `SwFilterDropdown` and `SwProductListingFiltersHorizontal` components, with a `displayMode` prop added to all filter components to support both layouts.
-
-- [#2287](https://github.com/shopware/frontends/pull/2287) [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add responsive image sizing (srcset/sizes) via provide/inject, LCP preload with fetchpriority, configurable imageSizes in app.config, ISR route rules, inline styles, and AppConfig type declarations
-
-- [#2241](https://github.com/shopware/frontends/pull/2241) [`9ccbaa1`](https://github.com/shopware/frontends/commit/9ccbaa1fb6cc1f790d979c3dd3745c5402b6d8d1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `withDefaults` by props destructure
-
-- [#2273](https://github.com/shopware/frontends/pull/2273) [`18455e7`](https://github.com/shopware/frontends/commit/18455e77221fcc77b119d0ba7eae89dfce0e2941) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove SwMedia3D.vue component from autoload
-
-- [#2268](https://github.com/shopware/frontends/pull/2268) [`c3fff84`](https://github.com/shopware/frontends/commit/c3fff847e46a17c9c905bd893f1c1de287426c65) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Improve accessibility (A11y) of CMS base layer components.
-
-- [#2214](https://github.com/shopware/frontends/pull/2214) [`ccb9384`](https://github.com/shopware/frontends/commit/ccb93849be07f1b6a4e192de02579a528b5b6ac4) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add full TypeScript typing to html-to-vue helper functions
+- [#2420](https://github.com/shopware/frontends/pull/2420) [`9e37ab6`](https://github.com/shopware/frontends/commit/9e37ab6897f501ed3d261fa619aee349e46342c2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add FrontendAccountCustomerGroupRegistrationPage component for customer group view
 
 ### Patch Changes
 
-- [#2226](https://github.com/shopware/frontends/pull/2226) [`d77eacc`](https://github.com/shopware/frontends/commit/d77eaccdec6c56a6f2d999048c751fb9f01177d4) Thanks [@mkucmus](https://github.com/mkucmus)! - Add config prop support to `SwProductGallery` and make `CmsElementImageGallery` respect `minHeight`, `navigationArrows`, and `navigationDots` config values.
+- [#2389](https://github.com/shopware/frontends/pull/2389) [`05438c6`](https://github.com/shopware/frontends/commit/05438c636a6c99b48e87d8f2ff5b03bf313c4e67) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix product card and CMS image sizing to prevent duplicate/oversized image requests. Move fixed dimensions and `densities="1x"` into the `productCard` preset, and use `useElementSize`-based `width`/`height` props for `CmsElementImage`.
 
-- [#2275](https://github.com/shopware/frontends/pull/2275) [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c) Thanks [@mkucmus](https://github.com/mkucmus)! - - Fix CMS block layout: height propagation in CmsBlockImageText, conditional `h-full` in CmsElementImage, `backgroundSize` forwarding in CmsGenericBlock, `w-full` for full_width sizing mode, and exclude `sizingMode` from section inline styles
-  - Fix vertical alignment support in CmsElementText and CmsElementProductSlider using `align-content` CSS property
-  - Remove rounded corners from image placeholder SVG and simplify CmsBlockTextOnImage structure
+- [#2378](https://github.com/shopware/frontends/pull/2378) [`c36bc1f`](https://github.com/shopware/frontends/commit/c36bc1ff17e8e34c52fa91e6388ce210fffb7e8e) Thanks [@patzick](https://github.com/patzick)! - Add UnoCSS directive transformation for CMS block styles so layered Nuxt apps do not emit CSS minification warnings from raw `@apply` directives during production builds.
 
-- [#2210](https://github.com/shopware/frontends/pull/2210) [`c6b88b7`](https://github.com/shopware/frontends/commit/c6b88b7d2c50054188356aeb0f83053554d442f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Anchor tags with "btn btn-primary" classes from the API were not being
-  transformed to Tailwind utility classes due to condition matching issues
-  in the html-to-vue renderer.
+- [#2369](https://github.com/shopware/frontends/pull/2369) [`3c16985`](https://github.com/shopware/frontends/commit/3c16985ddf3878bc207c514a5ab8e4a6409f809c) Thanks [@mkucmus](https://github.com/mkucmus)! - Fixed `xss` library loading issue in Vite dev server by adding it to `optimizeDeps.include`
 
-- [#2318](https://github.com/shopware/frontends/pull/2318) [`b40305f`](https://github.com/shopware/frontends/commit/b40305f9e2ec51f29c279650e411bb773438faed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Components (CmsElementBuyBox, SwListingProductPrice, SwProductPrice) updated to use `hasListPrice` instead of deprecated `isListPrice`.
+- [#2371](https://github.com/shopware/frontends/pull/2371) [`33e0c69`](https://github.com/shopware/frontends/commit/33e0c69afc3de854733ab61f866ba65cce1489f6) Thanks [@patzick](https://github.com/patzick)! - Disable automatic CMS LCP image preload by default.
 
-- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b40305f`](https://github.com/shopware/frontends/commit/b40305f9e2ec51f29c279650e411bb773438faed), [`432dd24`](https://github.com/shopware/frontends/commit/432dd246571dfa8c149293da97d5bb16f505e54c), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`a871c7b`](https://github.com/shopware/frontends/commit/a871c7b6256b75c2e40d93fc0354ba1971420062), [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f)]:
-  - @shopware/api-client@1.5.0
-  - @shopware/composables@1.11.0
-  - @shopware/helpers@1.7.0
+  The preload helper now only injects image preload tags when
+  `appConfig.lcpImagePreload` is explicitly enabled, which avoids noisy preload
+  warnings on storefront pages that do not immediately use the detected image.
+
+- [#2326](https://github.com/shopware/frontends/pull/2326) [`e7efff8`](https://github.com/shopware/frontends/commit/e7efff8c615ae8d0858572933285216cc533dd0b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Gate wishlist button behind login when useLoginModal is provided via provide/inject. For guests, show login modal on wishlist click and add product to wishlist after successful login.
+
+- [#2346](https://github.com/shopware/frontends/pull/2346) [`a47143a`](https://github.com/shopware/frontends/commit/a47143a670f49deecc35dce4bb8b6bd12d9a3b47) Thanks [@joberthel](https://github.com/joberthel)! - Improve `SwMedia3D` model framing by fitting loaded 3D models into the viewport automatically. This fixes cases where very small 3D files appeared tiny and hard to inspect.
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00), [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef)]:
+  - @shopware/helpers@1.7.1
+  - @shopware/composables@1.11.1

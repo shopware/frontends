@@ -1,5 +1,19 @@
 # @shopware/nuxt-module
 
+## 1.4.4
+
+### Patch Changes
+
+- [#2370](https://github.com/shopware/frontends/pull/2370) [`9661432`](https://github.com/shopware/frontends/commit/96614324dfed3d9d83fbf85710145dd529a23f46) Thanks [@patzick](https://github.com/patzick)! - Fix SSR and CSR Shopware endpoint handling in the Nuxt module.
+
+  The module now persists the resolved SSR endpoint into private runtime config,
+  avoids reading private runtime config on the client, and correctly honors both
+  `endpoint` and deprecated `shopwareEndpoint` values during server rendering.
+
+- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00), [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef)]:
+  - @shopware/helpers@1.7.1
+  - @shopware/composables@1.11.1
+
 ## 1.4.3
 
 ### Patch Changes
