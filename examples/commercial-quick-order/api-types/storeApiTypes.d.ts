@@ -2672,6 +2672,7 @@ export type Schemas = {
     translated: {
       name: string;
       registrationIntroduction: string;
+      registrationOnlyCompanyRegistration?: boolean;
       registrationSeoMetaDescription: string;
       registrationTitle: string;
     };

@@ -3,6 +3,7 @@ import { createResolver } from "@nuxt/kit";
 
 const { resolve } = createResolver(import.meta.url);
 const isDev = import.meta.dev;
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
 
 export default defineNuxtConfig({
   extends: [
@@ -11,7 +12,7 @@ export default defineNuxtConfig({
     "@shopware/unocss-design-tokens-layer",
   ],
   compatibilityDate: "2025-04-15",
-  devtools: { enabled: true },
+  devtools: { enabled: !isStackBlitz },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
@@ -118,4 +119,5 @@ export default defineNuxtConfig({
       resolve("./i18n/src/helpers"),
     ],
   },
+  telemetry: false,
 });
