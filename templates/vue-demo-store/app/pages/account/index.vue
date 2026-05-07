@@ -61,9 +61,6 @@ async function updateNewsletterStatus() {
       }
     }
   } finally {
-    await getNewsletterStatus();
-
-    newsletter.value = isNewsletterSubscriber.value;
     newsletterDisabled.value = false;
   }
 }

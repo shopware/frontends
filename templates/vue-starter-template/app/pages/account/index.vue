@@ -24,8 +24,6 @@ async function handleNewsletterChange() {
         email: user.value?.email || "",
         option: SUBSCRIBE_KEY,
       });
-      // Wait to avoid UI flickering
-      await getNewsletterStatus();
       pushSuccess(t("account.overview.newsletter.messages.subscribed"));
     } else {
       await newsletterUnsubscribe(user.value?.email || "");
