@@ -20,6 +20,8 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "@nuxt/a11y",
+    // TODO: waiting for the package to be published
+    // "@shopware/guidance-banner",
   ],
   runtimeConfig: {
     public: {
