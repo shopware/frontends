@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
+
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"],
   compatibilityDate: "2025-12-05",
+  ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
   modules: ["@unocss/nuxt"],
   runtimeConfig: {
     public: {
@@ -26,4 +29,5 @@ export default defineNuxtConfig({
       ],
     },
   },
+  telemetry: false,
 });

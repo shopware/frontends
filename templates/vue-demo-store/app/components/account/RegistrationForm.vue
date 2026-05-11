@@ -6,6 +6,7 @@ const { required, minLength, email, requiredIf } = customValidators();
 
 const props = defineProps<{
   customerGroupId?: string;
+  companyOnly?: boolean;
 }>();
 
 const { getSalutations } = useSalutations();
@@ -31,7 +32,7 @@ watch(isLoggedIn, (isLoggedIn) => {
 
 const initialState = {
   requestedGroupId: props.customerGroupId,
-  accountType: "private",
+  accountType: props.companyOnly ? "business" : "private",
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -153,6 +154,7 @@ useBreadcrumbs([
         <div class="col-span-12">
           <label for="accountType">{{ $t("form.accountType.title") }} *</label>
           <select
+            v-if="!companyOnly"
             id="accountType"
             v-model="state.accountType"
             name="accountType"
@@ -337,7 +339,10 @@ useBreadcrumbs([
             @blur="$v.billingAddress.company.$touch()"
           />
           <span
-            v-if="$v.billingAddress.company.$error && $v.billingAddress.company.$errors[0]?.$message"
+            v-if="
+              $v.billingAddress.company.$error &&
+              $v.billingAddress.company.$errors[0]?.$message
+            "
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.company.$errors[0].$message }}
@@ -362,7 +367,10 @@ useBreadcrumbs([
             @blur="$v.billingAddress.street.$touch()"
           />
           <span
-            v-if="$v.billingAddress.street.$error && $v.billingAddress.street.$errors[0]?.$message"
+            v-if="
+              $v.billingAddress.street.$error &&
+              $v.billingAddress.street.$errors[0]?.$message
+            "
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.street.$errors[0].$message }}
@@ -388,7 +396,10 @@ useBreadcrumbs([
             @blur="$v.billingAddress.zipcode.$touch()"
           />
           <span
-            v-if="$v.billingAddress.zipcode.$error && $v.billingAddress.zipcode.$errors[0]?.$message"
+            v-if="
+              $v.billingAddress.zipcode.$error &&
+              $v.billingAddress.zipcode.$errors[0]?.$message
+            "
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.zipcode.$errors[0].$message }}
@@ -414,7 +425,10 @@ useBreadcrumbs([
             @blur="$v.billingAddress.city.$touch()"
           />
           <span
-            v-if="$v.billingAddress.city.$error && $v.billingAddress.city.$errors[0]?.$message"
+            v-if="
+              $v.billingAddress.city.$error &&
+              $v.billingAddress.city.$errors[0]?.$message
+            "
             class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.city.$errors[0].$message }}

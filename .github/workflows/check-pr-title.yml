@@ -15,7 +15,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check PR title length
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           TITLE: ${{ github.event.pull_request.title }}
         with:

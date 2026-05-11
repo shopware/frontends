@@ -1,2 +1,2 @@
-import find from "find-up";
-export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
+import { findUp } from "find-up";
+export const findEnv = () => findUp(process.env.ENV_FILE || ".env");

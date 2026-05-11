@@ -127,9 +127,11 @@ The template includes a `.dockerignore` file so local `node_modules`, `.nuxt`, `
 
 ## Styling and Shopping Experiences integration
 
-This tempalte uses [UnoCSS](https://unocss.dev/) for styling, which is a utility-first CSS framework. It is configured to use the [Tailwind CSS](https://tailwindcss.com/) classes.
+This template uses [UnoCSS](https://unocss.dev/) for styling and follows a layered setup:
 
-The template also includes a [CMS Base nuxt layer](https://www.npmjs.com/package/@shopware/cms-base-layer) to provide the CMS components for Shopping Experiences integration. The layer is registered in the `nuxt.config.ts` file. In order to override the default Tailwind CSS configuration, you can create your own `uno.config.ts` file in the root of your project and extend the default configuration.
+- [`@shopware/cms-base-layer`](https://www.npmjs.com/package/@shopware/cms-base-layer) provides the CMS components for Shopping Experiences
+- `@shopware/unocss-design-tokens-layer` provides the shared UnoCSS defaults and design tokens
+- the local `uno.config.ts` extends the generated base config with template-specific safelists, fonts, and overrides
 
 ## Need a More Complete Example?
 

@@ -1,7 +1,3 @@
-<script setup>
-import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
-</script>
-
 # Vue Starter Template Extended
 
 The Vue Starter Template Extended (Lumora Demo Store) is an example implementation that demonstrates how to extend the Vue Starter Template using [Nuxt layers](https://nuxt.com/docs/getting-started/layers). This approach allows you to inherit all features from a base template while maintaining only your customizations.
@@ -13,6 +9,8 @@ This template showcases the **Nuxt layer pattern** - a powerful way to create br
 **[Live Demo →](https://frontends-extended-starter-template.vercel.app/)**
 
 ## Setup & run
+
+<PageRef page="../try-it-out.html" title="Try it out" sub="Pick a template and an environment (StackBlitz, Codespaces, or local) and launch in seconds" />
 
 This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) and extends the `vue-starter-template`. You need both templates to run it.
 
@@ -93,7 +91,7 @@ lumora-store/
 │  └─ app.config.ts        # Brand customizations (colors, settings)
 ├─ public/                  # Brand-specific assets (logo, favicon)
 ├─ nuxt.config.ts          # Layer configuration
-├─ uno.config.ts           # Custom theme styles
+├─ uno.config.ts           # Layer-specific UnoCSS extensions
 └─ package.json            # Dependencies
 ```
 
@@ -116,18 +114,21 @@ This setting is used by the `useImagePlaceholder` composable from `@shopware/cms
 
 ### Theme Customization
 
-Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles:
+Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on top of the shared base config generated from the extended layers:
 
 ```ts
 // uno.config.ts
-export default mergeConfigs([config, {
+import { mergeConfigs } from "@unocss/core";
+import baseConfig from "./.nuxt/uno.config.mjs";
+
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
       'brand-primary': '#B38A65',
       'brand-secondary': '#2C2C2C',
     },
   },
-}])
+}]);
 ```
 
 ## Overriding Components

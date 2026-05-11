@@ -10,10 +10,6 @@ nav:
   hidden: true
 ---
 
-<script setup>
-import stackblitzIcon from '.assets/framework-icons/stackblitz.png';
-</script>
-
 # Vue Starter Template
 
 <a href="https://frontends-starter-template.vercel.app/" target="_blank"><img src=".assets/demo-store-template.jpg" alt="Vue Starter Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
@@ -26,7 +22,7 @@ This template provides essential packages and configuration to start building yo
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />
+<PageRef page="./getting-started/try-it-out.html" title="Try it out" sub="Pick a template and an environment (StackBlitz, Codespaces, or local) and launch in seconds" />
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 

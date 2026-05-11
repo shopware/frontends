@@ -25,7 +25,7 @@ If your project is based on the [Demo Store Template](../getting-started/templat
 
 ## Install the package
 
-The `@shopware/cms-base-layer` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. It uses Tailwind.css syntax for styling. You will now use it to render a content page.
+The `@shopware/cms-base-layer` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. The components use utility classes for styling, but the shared UnoCSS configuration and design tokens now live in a separate layer: `@shopware/unocss-design-tokens-layer`.
 
 First of all, add the package to your project:
 
@@ -33,17 +33,24 @@ First of all, add the package to your project:
 npm install -D @shopware/cms-base-layer
 ```
 
-Next, you need to register all components in its `components/public` directory globally. How to do it, depends on your environment. However, the package also comes with a nuxt module which does that for you. So in any Nuxt application, you can just add if to the `modules` section of your Nuxt config file:
+In a Nuxt application, extend the CMS layer and, if you want the shared styling defaults, also extend the design-tokens layer:
 
-```diff
-/* nuxt.config.ts */
-
+```ts
 export default defineNuxtConfig({
-  /* ... */
-- modules: [/* ... */, "@shopware/nuxt-module"],
-+ modules: [/* ... */, "@shopware/cms-base-layer"],
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
+  modules: ["@shopware/nuxt-module", "@unocss/nuxt"],
+  css: ["@unocss/reset/tailwind-compat.css"],
+  unocss: {
+    nuxtLayers: true,
+  },
 });
 ```
+
+If you already have your own UnoCSS or Tailwind setup, you can keep using `@shopware/cms-base-layer` without the design-tokens layer and provide your own styling configuration instead.
 
 ## CMS rendering workflow
 
