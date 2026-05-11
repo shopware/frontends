@@ -10,6 +10,18 @@ export default defineNuxtConfig({
     "@shopware/cms-base-layer",
     "@shopware/unocss-design-tokens-layer",
   ],
+  runtimeConfig: {
+    shopware: {
+      endpoint: "",
+    },
+    public: {
+      shopware: {
+        endpoint: "",
+        accessToken: "",
+        devStorefrontUrl: "",
+      },
+    },
+  },
   compatibilityDate: "2025-04-15",
   devtools: { enabled: !isStackBlitz },
   modules: [
