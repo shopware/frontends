@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const storageKey = "shopware-guidance-banner-dismissed";
 
@@ -38,7 +31,6 @@ onMounted(() => {
     return;
   }
   window.addEventListener("resize", syncBodyPadding);
-  void nextTick(syncBodyPadding);
 });
 
 onBeforeUnmount(() => {
@@ -46,10 +38,7 @@ onBeforeUnmount(() => {
   document.body.style.paddingBottom = "";
 });
 
-watch(isVisible, async () => {
-  await nextTick();
-  syncBodyPadding();
-});
+watch(isVisible, syncBodyPadding, { flush: "post" });
 
 function closeBanner() {
   isDismissed.value = true;

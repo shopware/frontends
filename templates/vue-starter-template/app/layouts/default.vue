@@ -47,7 +47,10 @@ const { data: footerData } = useAsyncData("mainFooterNavigation", () => {
 provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
-  <ShopwareBanner />
+  <DevOnly>
+    <ShopwareBanner />
+  </DevOnly>
+
   <div class="flex flex-col min-h-screen">
     <header>
       <LayoutMetaNavigation
