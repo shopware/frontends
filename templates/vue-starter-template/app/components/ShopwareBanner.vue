@@ -6,83 +6,83 @@ import {
   onMounted,
   ref,
   watch,
-} from 'vue'
+} from "vue";
 
-const storageKey = 'shopware-guidance-banner-dismissed'
+const storageKey = "shopware-guidance-banner-dismissed";
 
-const isMounted = ref(false)
-const isDismissed = ref(false)
-const bannerElement = ref<HTMLElement | null>(null)
+const isMounted = ref(false);
+const isDismissed = ref(false);
+const bannerElement = ref<HTMLElement | null>(null);
 
 const links = [
   {
-    label: 'View code',
-    href: 'https://github.com/shopware/frontends/tree/main/templates/vue-starter-template', 
-    variant: 'primary',
-    type: 'link',
+    label: "View code",
+    href: "https://github.com/shopware/frontends/tree/main/templates/vue-starter-template",
+    variant: "primary",
+    type: "link",
   },
   {
-    label: 'Docs',
-    href: 'https://frontends.shopware.com/', 
-    variant: 'secondary',
-    type: 'link',
+    label: "Docs",
+    href: "https://frontends.shopware.com/",
+    variant: "secondary",
+    type: "link",
   },
-] 
+];
 
-const isVisible = computed(() => isMounted.value && !isDismissed.value)
+const isVisible = computed(() => isMounted.value && !isDismissed.value);
 
 onMounted(() => {
-  isMounted.value = true
-  isDismissed.value = localStorage.getItem(storageKey) === 'true'
+  isMounted.value = true;
+  isDismissed.value = localStorage.getItem(storageKey) === "true";
   if (isDismissed.value) {
-    return
+    return;
   }
-  window.addEventListener('resize', syncBodyPadding)
-  void nextTick(syncBodyPadding)
-}) 
+  window.addEventListener("resize", syncBodyPadding);
+  void nextTick(syncBodyPadding);
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', syncBodyPadding)
-  document.body.style.paddingBottom = ''
-})
+  window.removeEventListener("resize", syncBodyPadding);
+  document.body.style.paddingBottom = "";
+});
 
 watch(isVisible, async () => {
-  await nextTick()
-  syncBodyPadding()
-})
+  await nextTick();
+  syncBodyPadding();
+});
 
 function closeBanner() {
-  isDismissed.value = true
-  localStorage.setItem(storageKey, 'true')
+  isDismissed.value = true;
+  localStorage.setItem(storageKey, "true");
 }
 
 function syncBodyPadding() {
   if (!isVisible.value || !bannerElement.value) {
-    document.body.style.paddingBottom = ''
-    return
+    document.body.style.paddingBottom = "";
+    return;
   }
 
-  document.body.style.paddingBottom = `${bannerElement.value.offsetHeight + 12}px`
+  document.body.style.paddingBottom = `${bannerElement.value.offsetHeight + 12}px`;
 }
 
 function isExternalLink(href: string) {
-  return href.startsWith('http')
+  return href.startsWith("http");
 }
 
 function getLinkTarget(link: (typeof links)[number]) {
-  if (link.type !== 'link' || !link.href) {
-    return undefined
+  if (link.type !== "link" || !link.href) {
+    return undefined;
   }
 
-  return isExternalLink(link.href) ? '_blank' : undefined
+  return isExternalLink(link.href) ? "_blank" : undefined;
 }
 
 function getLinkRel(link: (typeof links)[number]) {
-  if (link.type !== 'link' || !link.href) {
-    return undefined
+  if (link.type !== "link" || !link.href) {
+    return undefined;
   }
 
-  return isExternalLink(link.href) ? 'noopener noreferrer' : undefined
+  return isExternalLink(link.href) ? "noopener noreferrer" : undefined;
 }
 </script>
 
@@ -116,10 +116,14 @@ function getLinkRel(link: (typeof links)[number]) {
               Guided setup
             </div>
 
-            <h2 class="mt-3 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">
+            <h2
+              class="mt-3 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl"
+            >
               Your Frontends project is ready
             </h2>
-            <p class="mt-2 max-w-xl text-sm leading-6 text-slate-600 sm:text-[15px]">
+            <p
+              class="mt-2 max-w-xl text-sm leading-6 text-slate-600 sm:text-[15px]"
+            >
               Explore the starter, inspect the codebase, open the docs, or jump
               straight into DevTools to continue building.
             </p>
@@ -142,7 +146,9 @@ function getLinkRel(link: (typeof links)[number]) {
             </p>
           </div>
 
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div
+            class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+          >
             <div class="flex flex-wrap gap-2.5">
               <component
                 :is="link.type === 'action' ? 'button' : 'a'"
@@ -169,10 +175,9 @@ function getLinkRel(link: (typeof links)[number]) {
               aria-label="Close banner"
               @click="closeBanner"
             >
-              <span
-                aria-hidden="true"
-                class="text-xl leading-none"
-              >&times;</span>
+              <span aria-hidden="true" class="text-xl leading-none"
+                >&times;</span
+              >
             </button>
           </div>
         </div>
