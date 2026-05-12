@@ -61,6 +61,7 @@ async function updateNewsletterStatus() {
       }
     }
   } finally {
+    newsletter.value = isNewsletterSubscriber.value;
     newsletterDisabled.value = false;
   }
 }
