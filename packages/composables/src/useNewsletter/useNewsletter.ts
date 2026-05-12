@@ -78,6 +78,7 @@ export function useNewsletter(): UseNewsletterReturn {
         },
       },
     );
+    newsletterStatus.value = result.data.status;
     return result.data;
   }
 

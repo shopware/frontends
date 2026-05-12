@@ -5,7 +5,9 @@ import { useNewsletter } from "./useNewsletter";
 describe("useNewsletter", () => {
   it("newsletter subscribe", async () => {
     const { vm, injections } = useSetup(useNewsletter);
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { status: "direct" },
+    });
 
     await vm.newsletterSubscribe({
       email: "test@shopware.com",
@@ -16,6 +18,7 @@ describe("useNewsletter", () => {
       expect.stringContaining("subscribeToNewsletter"),
       expect.anything(),
     );
+    expect(vm.newsletterStatus).toBe("direct");
   });
 
   it("newsletter unsubscribe", async () => {
