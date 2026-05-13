@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.9.0
+ * Shopware API version: 6.7.10.0
  *
  */
 type GenericRecord =
@@ -2398,6 +2398,8 @@ export type Schemas = {
      * Sum of total amount to be paid.
      */
     readonly orderTotalAmount?: number;
+    /** Unique identity of requested group. */
+    requestedGroupId?: string;
     /**
      * Format: int64
      * Number of reviews the customer has given.
@@ -5021,20 +5023,41 @@ export type Schemas = {
     }[];
   };
   Price: {
+    /** Unique identity of the associated currency. */
     currencyId: string;
+    /** Gross price for the associated currency. */
     gross: number;
+    /** Whether gross and net prices are linked through the tax configuration. */
     linked?: boolean;
+    /** Reference list price for displaying discounts. */
     listPrice?: {
+      /** Unique identity of the associated currency. */
       currencyId?: string;
+      /** Gross list price for the associated currency. */
       gross: number;
+      /** Whether gross and net list prices are linked through the tax configuration. */
       linked?: boolean;
+      /** Net list price for the associated currency. */
       net: number;
     };
+    /** Net price for the associated currency. */
     net: number;
-    regulationPrice?: {
-      currencyId?: string;
+    /** Discount percentage relative to the list price for the gross and net amounts. `null` when no list price is set. */
+    percentage?: {
+      /** Discount percentage relative to the gross list price. */
       gross: number;
+      /** Discount percentage relative to the net list price. */
+      net: number;
+    } | null;
+    /** Reference price used for legal price disclosures. */
+    regulationPrice?: {
+      /** Unique identity of the associated currency. */
+      currencyId?: string;
+      /** Gross regulation price for the associated currency. */
+      gross: number;
+      /** Whether gross and net regulation prices are linked through the tax configuration. */
       linked?: boolean;
+      /** Net regulation price for the associated currency. */
       net: number;
     };
   };
@@ -5047,6 +5070,7 @@ export type Schemas = {
     readonly available?: boolean;
     /**
      * Format: int64
+     * @deprecated
      * Indicates the number of products still available. This value results from the stock minus the open orders.
      */
     readonly availableStock?: number;
@@ -5298,6 +5322,12 @@ export type Schemas = {
      */
     minPurchase?: number;
     name: string;
+    ogDescription?: string;
+    ogTitle?: string;
+    /** Open Graph image for social media sharing */
+    openGraphMedia?: components["schemas"]["Media"];
+    /** Media used as Open Graph image for social media sharing. */
+    openGraphMediaId?: string;
     readonly optionIds?: string[];
     /** Product variant options (e.g., size, color) that define different variants */
     options?: components["schemas"]["PropertyGroupOption"][];
@@ -5391,6 +5421,9 @@ export type Schemas = {
       metaDescription: string;
       metaTitle: string;
       name: string;
+      ogDescription: string;
+      ogTitle: string;
+      openGraphMediaId: string;
       packUnit: string;
       packUnitPlural: string;
       parentId: string;
@@ -5554,6 +5587,7 @@ export type Schemas = {
       readonly available?: boolean;
       /**
        * Format: int64
+       * @deprecated
        * Indicates the number of products still available. This value results from the stock minus the open orders.
        */
       readonly availableStock?: number;
@@ -5766,6 +5800,10 @@ export type Schemas = {
        */
       minPurchase?: number;
       name: string;
+      ogDescription?: string;
+      ogTitle?: string;
+      /** Media used as Open Graph image for social media sharing. */
+      openGraphMediaId?: string;
       readonly optionIds?: string[];
       packUnit?: string;
       packUnitPlural?: string;
@@ -6005,6 +6043,22 @@ export type Schemas = {
             related?: string;
           };
         };
+        /** Open Graph image for social media sharing */
+        openGraphMedia?: {
+          data?: {
+            /** @example bbda52d941a3452369a00f2880f4f358 */
+            id?: string;
+            /** @example media */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/openGraphMedia
+             */
+            related?: string;
+          };
+        };
         /** Product variant options (e.g., size, color) that define different variants */
         options?: {
           data?: {
@@ -6211,6 +6265,9 @@ export type Schemas = {
         metaDescription: string;
         metaTitle: string;
         name: string;
+        ogDescription: string;
+        ogTitle: string;
+        openGraphMediaId: string;
         packUnit: string;
         packUnitPlural: string;
         parentId: string;
@@ -6456,6 +6513,20 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+  };
+  ProductPurchaseLimit: {
+    /** @enum {string} */
+    apiAlias: "product_purchase_limit";
+    /** Maximum quantity a customer can purchase, reflecting current stock for closeout products. */
+    maxPurchase: number;
+    /** Minimum quantity a customer can purchase. */
+    minPurchase: number;
+    /** The product ID. */
+    productId: string;
+    /** Step increment for quantity selection. */
+    purchaseSteps: number;
+    /** Current stock level of the product. */
+    stock: number | null;
   };
   ProductReview: {
     /** Detailed review about the product. */
@@ -7504,6 +7575,20 @@ export type Schemas = {
     /** URL of the sales channel domain. */
     url: string;
   };
+  SalesChannelTrackingCustomer: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  SalesChannelTrackingOrder: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   SalesChannelType: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -7518,6 +7603,11 @@ export type Schemas = {
     displayName: string;
     id: string;
     letterName: string;
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined salutations must be displayed in the frontend.
+     */
+    position?: number;
     /** Technical name given to salutation. For example: mr */
     salutationKey: string;
     translated: {
@@ -7535,6 +7625,11 @@ export type Schemas = {
     displayName: string;
     id: string;
     letterName: string;
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined salutations must be displayed in the frontend.
+     */
+    position?: number;
     /** Technical name given to salutation. For example: mr */
     salutationKey: string;
     translated: {
@@ -11566,6 +11661,8 @@ export type operations = {
       lastName: string;
       /** Password for the customer. Required, unless `guest` is `true` */
       password: string;
+      /** Optional customer group registration request. The customer is created in the current sales channel group and this field stores the requested target group. The group must be available for registration in the current sales channel. */
+      requestedGroupId?: string;
       /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
       salutationId?: string;
       shippingAddress?: components["schemas"]["CustomerAddress"];
@@ -14577,6 +14674,16 @@ export type operations = {
       query?: string;
     };
     response: components["schemas"]["NaturalLanguageSearchTermResponse"];
+    responseCode: 200;
+  };
+  "readProductsPurchaseLimit get /product/purchase-limit": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** List of product IDs to fetch quantity limits for. */
+      "ids[]": string[];
+    };
+    response: components["schemas"]["ProductPurchaseLimit"][];
     responseCode: 200;
   };
   "switchPaymentOrShippingMethod post /quote/{id}/configure": {
