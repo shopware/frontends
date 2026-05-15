@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
-  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@shopware/nuxt-module"],
+  modules: ["@unocss/nuxt", "@shopware/nuxt-module"],
   shopware: {
     // Shopware 6 instance with Braintree app installed
     endpoint: "https://demo-frontends.shopware.store/store-api",
