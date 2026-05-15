@@ -1,3 +1,5 @@
+import { createSharedComposable } from "@vueuse/core";
+
 /**
  * Use it to create simple modal controllers
  */
