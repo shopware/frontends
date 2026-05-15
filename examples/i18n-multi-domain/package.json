@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.2.4",
-    "@unocss/nuxt": "66.6.0",
-    "unocss": "66.6.0"
+    "@unocss/nuxt": "66.6.0"
   }
 }
