@@ -63,16 +63,18 @@ export function useCmsHead(
       return;
     }
 
-    return isProduct(unrefEntity)
-      ? getSmallestThumbnailUrl(unrefEntity.openGraphMedia) ||
-          getSmallestThumbnailUrl(unrefEntity.cover?.media)
-      : getCategoryImageUrl(unrefEntity as Schemas["Category"]);
+    if (isProduct(unrefEntity)) {
+      return (
+        getSmallestThumbnailUrl(unrefEntity.openGraphMedia) ||
+        getSmallestThumbnailUrl(unrefEntity.cover?.media)
+      );
+    }
+    const url = getCategoryImageUrl(unrefEntity as Schemas["Category"]);
+    return url || undefined;
   });
 
   const additionalMeta = computed(() =>
-    meta.value.filter(
-      (entry: MetaEntry) => !["title", "description"].includes(entry.name),
-    ),
+    meta.value.filter((entry: MetaEntry) => entry.name !== "description"),
   );
 
   useSeoMeta({
