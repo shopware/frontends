@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   extends: ["../vue-starter-template"],
   compatibilityDate: "2025-12-05",
   ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
-  modules: ["@unocss/nuxt"],
   runtimeConfig: {
     public: {
       shopware: {
