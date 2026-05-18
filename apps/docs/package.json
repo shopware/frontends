@@ -33,8 +33,11 @@
     "ts-dox": "0.1.0",
     "typescript": "5.9.3",
     "unplugin-export-collector": "0.6.0",
-    "vinyl": "3.0.1",
-    "@oxc-minify/binding-darwin-arm64": "0.131.0"
+    "vinyl": "3.0.1"
+  },
+  "optionalDependencies": {
+    "@oxc-minify/binding-darwin-arm64": "0.131.0",
+    "@oxc-minify/binding-linux-x64-gnu": "0.131.0"
   },
   "engines": {
     "node": ">=22"
