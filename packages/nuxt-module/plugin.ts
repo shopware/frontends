@@ -1,13 +1,16 @@
 import { createAPIClient } from "@shopware/api-client";
-import { createShopwareContext } from "@shopware/composables";
 import { isMaintenanceMode } from "@shopware/helpers";
 import { getCookie } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
-import { defineNuxtPlugin, useRuntimeConfig } from "#app/nuxt";
-import { showError } from "#app/composables/error";
-import { useRequestHeaders } from "#app/composables/ssr";
-import { useState } from "#app/composables/state";
+import {
+  createShopwareContext,
+  defineNuxtPlugin,
+  showError,
+  useRequestHeaders,
+  useRuntimeConfig,
+  useState,
+} from "#imports";
 import type { ApiClient } from "#shopware";
 import type { ShopwareNuxtOptions } from "./src";
 

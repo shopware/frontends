@@ -8,7 +8,6 @@
     "paths": {
       "#imports": ["./imports.d.ts"],
       "#app": ["./node_modules/nuxt/dist/app"],
-      "#app/*": ["./node_modules/nuxt/dist/app/*"]
     }
   }
 }
