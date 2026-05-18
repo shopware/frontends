@@ -40,12 +40,13 @@ export default defineNuxtConfig({
        * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
        */
       broadcasting: false,
+      devStorefrontUrl: "https://demo-frontends.shopware.store",
     },
   },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
-    devStorefrontUrl: "",
+    devStorefrontUrl: "https://demo-frontends.shopware.store",
   },
   routeRules: {
     "/": {
@@ -157,4 +158,7 @@ export default defineNuxtConfig({
     ],
   },
   telemetry: false,
+  experimental: {
+    payloadExtraction: false,
+  },
 });

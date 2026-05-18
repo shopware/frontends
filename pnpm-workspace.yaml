@@ -16,7 +16,17 @@ minimumReleaseAgeExclude:
 - 'astro' # audit fix, remove after 18.05.2026
 - 'nitropack' # audit fix, remove after 18.05.2026
 - 'devalue' # audit fix, remove after 18.05.2026
-
+- 'nuxt' # audit fix, remove after 20.05.2026
+- '@nuxt/schema' # audit fix, remove after 20.05.2026
+- 'oxc-minify' # audit fix, remove after 20.05.2026
+- '@nuxt/nitro-server' # audit fix, remove after 20.05.2026
+- 'oxc-transform' # audit fix, remove after 20.05.2026
+- '@nuxt/kit' # audit fix, remove after 20.05.2026
+- 'oxc-parser' # audit fix, remove after 20.05.2026
+- '@nuxt/vite-builder' # audit fix, remove after 20.05.2026
+- 'oxc-babel' # audit fix, remove after 20.05.2026
+- '@oxc-project/types' # audit fix, remove after 20.05.2026
+- '@oxc-minify/binding-darwin-arm64' # audit fix, remove after 20.05.2026
 
 auditConfig:
   ignoreGhsas:

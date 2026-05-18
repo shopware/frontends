@@ -1,4 +1,4 @@
-import defu from "defu";
+import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchOptions,
@@ -195,10 +195,10 @@ export function createAdminAPIClient<
         ? R
         : never
       : never,
-    CURRENT_OPERATION extends
-      OPERATIONS[OPERATION_NAME] = OPERATION_NAME extends keyof OPERATIONS
-      ? OPERATIONS[OPERATION_NAME]
-      : never,
+    CURRENT_OPERATION extends OPERATIONS[OPERATION_NAME] =
+      OPERATION_NAME extends keyof OPERATIONS
+        ? OPERATIONS[OPERATION_NAME]
+        : never,
   >(
     pathParam: OPERATION_NAME extends keyof OPERATIONS ? OPERATION_NAME : never,
     ...params: SimpleUnionOmit<
