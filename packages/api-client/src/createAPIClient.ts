@@ -143,10 +143,10 @@ export function createAPIClient<
         ? R
         : never
       : never,
-    CURRENT_OPERATION extends OPERATIONS[OPERATION_NAME] =
-      OPERATION_NAME extends keyof OPERATIONS
-        ? OPERATIONS[OPERATION_NAME]
-        : never,
+    CURRENT_OPERATION extends
+      OPERATIONS[OPERATION_NAME] = OPERATION_NAME extends keyof OPERATIONS
+      ? OPERATIONS[OPERATION_NAME]
+      : never,
   >(
     pathParam: OPERATION_NAME extends keyof OPERATIONS ? OPERATION_NAME : never,
     ...params: SimpleUnionOmit<
