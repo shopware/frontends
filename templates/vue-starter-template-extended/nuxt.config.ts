@@ -29,4 +29,7 @@ export default defineNuxtConfig({
     },
   },
   telemetry: false,
+  experimental: {
+    payloadExtraction: false,
+  },
 });

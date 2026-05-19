@@ -1,4 +1,4 @@
-import defu from "defu";
+import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchContext,

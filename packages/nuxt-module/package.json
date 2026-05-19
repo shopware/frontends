@@ -33,21 +33,21 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@nuxt/kit": "4.2.2",
+    "@nuxt/kit": "4.4.6",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "defu": "6.1.5",
-    "h3": "1.15.9",
+    "defu": "6.1.7",
+    "h3": "1.15.11",
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@nuxt/schema": "4.2.2",
+    "@nuxt/schema": "4.4.6",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "nuxt": "4.2.2",
+    "nuxt": "4.4.6",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "4.1.5"
+    "vitest": "4.1.6"
   }
 }
