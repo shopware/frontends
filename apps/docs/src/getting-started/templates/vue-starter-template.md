@@ -1,7 +1,3 @@
-<script setup>
-import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
-</script>
-
 # Vue Starter Template
 
 The Vue Starter Template is a production-ready Nuxt application with all Shopware Frontends core packages pre-configured. It provides a clean foundation for building your custom storefront without the demo content or boilerplate UI found in the Demo Store Template.
@@ -14,7 +10,7 @@ Unlike the Demo Store Template, the **Vue Starter Template** is designed for pro
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-starter-template" sub="Open the Vue Starter Template with our browser IDE in a new window" :icon="stackblitzIcon" />
+<PageRef page="../try-it-out.html" title="Try it out" sub="Pick a template and an environment (StackBlitz, Codespaces, or local) and launch in seconds" />
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
@@ -35,6 +31,7 @@ The template comes with:
   - `@shopware/composables` - Vue composables for business logic
   - `@shopware/helpers` - Utility functions
   - `@shopware/cms-base-layer` - CMS component integration
+  - `@shopware/unocss-design-tokens-layer` - shared UnoCSS design tokens layer
   - `@shopware/nuxt-module` - Nuxt module for Shopware
 - **UnoCSS** - Utility-first CSS framework (Tailwind-compatible)
 - **i18n support** - Internationalization ready
@@ -54,7 +51,7 @@ vue-starter-template/
 │  └─ ...
 ├─ public/             /* Static assets */
 ├─ nuxt.config.ts      /* Nuxt configuration */
-├─ uno.config.ts       /* UnoCSS configuration */
+├─ uno.config.ts       /* Template-specific UnoCSS extensions */
 ├─ package.json
 ├─ tsconfig.json
 ```
@@ -135,17 +132,23 @@ For example, to override the product card:
 
 ### Styling with UnoCSS
 
-The template uses UnoCSS (Tailwind-compatible). Customize your theme in `uno.config.ts`:
+The template extends three Nuxt layers:
+
+- `@shopware/composables/nuxt-layer`
+- `@shopware/cms-base-layer`
+- `@shopware/unocss-design-tokens-layer`
+
+The design-tokens layer provides the shared UnoCSS setup and token palette. Your local `uno.config.ts` should only add template-specific customizations on top of the generated config:
 
 ```ts
 import { mergeConfigs } from '@unocss/core'
-import config from './.nuxt/uno.config.mjs'
+import baseConfig from './.nuxt/uno.config.mjs'
 
-export default mergeConfigs([config, {
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
-      primary: '#your-brand-color',
-      secondary: '#your-secondary-color',
+      'brand-primary': '#your-brand-color',
+      'brand-secondary': '#your-secondary-color',
     },
   },
 }])

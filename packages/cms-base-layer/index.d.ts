@@ -31,8 +31,6 @@ type CmsBaseLayerAppConfig = {
    * ```
    */
   imageSizes?: Record<string | number, string>;
-  /** Enable UnoCSS runtime for dynamic class generation */
-  unocssRuntime?: boolean;
 };
 
 declare module "nuxt/schema" {

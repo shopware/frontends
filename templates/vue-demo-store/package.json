@@ -25,17 +25,18 @@
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "14.1.0",
-    "defu": "6.1.5",
+    "defu": "6.1.7",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.5.27"
+    "vue": "3.5.34"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@iconify-json/carbon": "1.2.18",
+    "@iconify/utils": "3.1.0",
     "@nuxtjs/i18n": "10.2.4",
     "@shopware/api-gen": "canary",
-    "nuxt": "4.2.2",
+    "nuxt": "4.4.6",
     "vite": "7.3.2",
     "typescript": "5.9.3"
   },

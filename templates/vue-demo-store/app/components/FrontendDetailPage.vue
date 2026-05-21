@@ -17,6 +17,11 @@ const { data, error } = await useAsyncData(
       search(props.navigationId, {
         withCmsAssociations: true,
         associations: {
+          openGraphMedia: {
+            associations: {
+              thumbnails: {},
+            },
+          },
           seoUrls: {},
         },
       }),

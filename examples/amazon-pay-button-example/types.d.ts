@@ -20,7 +20,3 @@ declare module "@amazonpay/amazon-pay-api-sdk-nodejs" {
     ): Promise<unknown>;
   }
 }
-
-declare module "uuid/v4" {
-  export default function (): string;
-}

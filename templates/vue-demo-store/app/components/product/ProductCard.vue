@@ -132,7 +132,11 @@ const srcPath = computed(() => {
       </RouterLink>
     </div>
     <button
-      aria-label="Add to wishlist"
+      :aria-label="
+        isInWishlist
+          ? t('product.removeFromWishlist')
+          : t('product.addToWishlist')
+      "
       type="button"
       class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
       data-testid="product-box-toggle-wishlist-button"

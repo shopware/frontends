@@ -3,9 +3,14 @@ import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
 import type { operations } from "#shopware";
 
-const { redirectUrl, customerGroupId } = defineProps<{
+const {
+  redirectUrl,
+  customerGroupId,
+  companyOnly = false,
+} = defineProps<{
   customerGroupId?: string;
   redirectUrl?: string | null;
+  companyOnly?: boolean;
 }>();
 
 const { register, isLoggedIn } = useUser();
@@ -36,7 +41,7 @@ type RegistrationFormState = Omit<
 >;
 
 const initialState: RegistrationFormState = {
-  accountType: "private",
+  accountType: companyOnly ? "business" : "private",
   firstName: "",
   lastName: "",
   email: "",
@@ -163,6 +168,7 @@ const invokeSubmit = async () => {
     >
       <div class="grid grid-cols-12 gap-5 mb-10">
         <FormAccountTypeSelect
+          v-if="!companyOnly"
           class="col-span-12"
           v-model="accountTypeModel"
           dataTestId="registration-account-type-select"

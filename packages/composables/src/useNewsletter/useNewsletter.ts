@@ -13,7 +13,9 @@ export type UseNewsletterReturn = {
       operations["subscribeToNewsletter post /newsletter/subscribe"]["body"],
       "storefrontUrl"
     >,
-  ): Promise<void>;
+  ): Promise<
+    operations["subscribeToNewsletter post /newsletter/subscribe"]["response"]
+  >;
   /**
    * Removes the email from the newsletter
    * @param email
@@ -76,6 +78,7 @@ export function useNewsletter(): UseNewsletterReturn {
         },
       },
     );
+    newsletterStatus.value = result.data.status;
     return result.data;
   }
 

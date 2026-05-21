@@ -2,7 +2,7 @@ import fs from "node:fs";
 import * as path from "node:path";
 import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { defineEventHandler } from "h3";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import { useRuntimeConfig } from "#imports";
 
 export default defineEventHandler(async (event) => {
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
   };
 
   const headers = {
-    "x-amz-pay-idempotency-key": uuidv4().toString().replace(/-/g, ""),
+    "x-amz-pay-idempotency-key": uuidv4().replace(/-/g, ""),
   };
   try {
     const aPayClient = new Client.WebStoreClient(config);

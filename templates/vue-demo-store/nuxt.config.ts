@@ -1,6 +1,9 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
   runtimeConfig: {
     shopware: {
       /**
@@ -154,4 +157,7 @@ export default defineNuxtConfig({
     ],
   },
   telemetry: false,
+  experimental: {
+    payloadExtraction: false,
+  },
 });

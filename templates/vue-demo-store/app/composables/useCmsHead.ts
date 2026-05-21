@@ -1,6 +1,7 @@
 import {
   getCategoryImageUrl,
   getSmallestThumbnailUrl,
+  getTranslatedProperty,
   isLandingPage,
   isProduct,
 } from "@shopware/helpers";
@@ -17,6 +18,11 @@ type MetaEntry = {
   name: string;
   content: string;
 };
+
+function getMetaContent(meta: MetaEntry[], name: string) {
+  return meta.find((entry) => entry.name === name)?.content;
+}
+
 export function useCmsHead(
   entity: Ref<CmsPageEntity> | ComputedRef<CmsPageEntity>,
   options?: {
@@ -35,48 +41,53 @@ export function useCmsHead(
     return title;
   });
 
-  // Add metadata according to Open Graph protocol: https://ogp.me
-  const ogMetaAllowedKeys = ["title", "description"];
-  const ogMeta = computed(() =>
-    meta.value
-      .filter((meta: MetaEntry) => ogMetaAllowedKeys.includes(meta.name))
-      .map((meta: MetaEntry) => ({
-        name: `og:${meta.name}`,
-        content: meta.content,
-      })),
+  const description = computed(() => getMetaContent(meta.value, "description"));
+
+  const ogTitle = computed(() =>
+    isProduct(unrefEntity)
+      ? getTranslatedProperty(unrefEntity, "ogTitle") ||
+        getMetaContent(meta.value, "title") ||
+        title.value
+      : getMetaContent(meta.value, "title"),
+  );
+
+  const ogDescription = computed(() =>
+    isProduct(unrefEntity)
+      ? getTranslatedProperty(unrefEntity, "ogDescription") || description.value
+      : description.value,
   );
 
   // access to image varies depending on the type of the entity
   const ogImage = computed(() => {
     if (isLandingPage(unrefEntity)) {
-      return {};
+      return;
     }
 
-    return {
-      name: "og:image",
-      content: isProduct(unrefEntity)
-        ? getSmallestThumbnailUrl(unrefEntity.media)
-        : getCategoryImageUrl(unrefEntity as Schemas["Category"]),
-    };
+    if (isProduct(unrefEntity)) {
+      return (
+        getSmallestThumbnailUrl(unrefEntity.openGraphMedia) ||
+        getSmallestThumbnailUrl(unrefEntity.cover?.media)
+      );
+    }
+    const url = getCategoryImageUrl(unrefEntity as Schemas["Category"]);
+    return url || undefined;
   });
 
-  const enhancedMeta = computed(() => [
-    ...meta.value,
-    ...ogMeta.value,
-    ogImage.value,
-    {
-      name: "og:type",
-      content: "website",
-    },
-    {
-      name: "og:site_name",
-      content: title.value,
-    },
-  ]);
+  const additionalMeta = computed(() =>
+    meta.value.filter((entry: MetaEntry) => entry.name !== "description"),
+  );
 
-  // set head internally
-  useHead({
+  useSeoMeta({
     title,
-    meta: enhancedMeta,
+    description,
+    ogTitle,
+    ogDescription,
+    ogImage,
+    ogType: "website",
+    ogSiteName: title,
+  });
+
+  useHead({
+    meta: additionalMeta,
   });
 }

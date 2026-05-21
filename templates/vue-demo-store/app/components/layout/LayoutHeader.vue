@@ -19,7 +19,7 @@ const miniCartModal = useMiniCartModal();
               <span class="sr-only">Shopware</span>
               <img
                 class="h-10 w-10 lg:h-12 lg:w-12"
-                src="/logo.svg"
+                :src="'/logo.svg'"
                 alt="logo of the shop"
                 width="40px"
                 height="40px"

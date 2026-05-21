@@ -44,6 +44,9 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
+const { controller: loginModalController, handleSuccess: onLoginSuccess } =
+  provideLoginModal();
+
 const { locale, availableLocales, defaultLocale, localeProperties, messages } =
   useI18n();
 
@@ -124,6 +127,13 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+
+  <SharedModal :controller="loginModalController">
+    <AccountLoginForm
+      @close="loginModalController.close"
+      @success="onLoginSuccess"
+    />
+  </SharedModal>
 </template>
 
 <style>

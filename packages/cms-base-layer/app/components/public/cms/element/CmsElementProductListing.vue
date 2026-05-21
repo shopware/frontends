@@ -3,8 +3,12 @@ import type { CmsElementProductListing } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useCategoryListing, useCmsElementConfig } from "#imports";
+import {
+  useCategoryListing,
+  useCmsElementConfig,
+  useRoute,
+  useRouter,
+} from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{

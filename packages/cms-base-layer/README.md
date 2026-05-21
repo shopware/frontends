@@ -5,14 +5,14 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using atomic css syntax (UnoCss / Tailwind).
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html).
 
-It is useful for projects that want to use the CMS components but design their own layout.
+It is useful for projects that want to use the CMS components while keeping CMS functionality separate from the styling system and design tokens.
 
 ## Features
 
 - Vue components for [Shopping Experiences](https://www.shopware.com/en/products/shopping-experiences/) CMS
-- CMS sections, blocks and elements styled using [Tailwind CSS](https://tailwindcss.com/) classes
+- CMS sections, blocks and elements implemented with utility-class-based markup
 - 🚀 Empowered by [@shopware/composables](https://www.npmjs.com/package/@shopware/composables)
 
 ## Setup
@@ -43,14 +43,19 @@ deno install --dev @shopware/cms-base-layer
 
 <!-- /automd -->
 
+If you also want the shared Shopware Frontends UnoCSS setup, install `@shopware/unocss-design-tokens-layer` in your app and extend it alongside `@shopware/cms-base-layer`.
+
 Then, register the Nuxt layer in `nuxt.config.ts` file:
 
 <!-- automd:file src="templates/vue-blank/nuxt.config.ts" code -->
 
 ```ts [nuxt.config.ts]
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -83,15 +88,20 @@ Since all CMS components are registered in your Nuxt application, you can now st
 </template>
 ```
 
-> You can use default styling by installing/importing Tailwind CSS stylesheet in your project.
+> `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) how to use `cms-base` package in your project based on Nuxt v3.
+See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
 
-## Default styling
+## Styling and Design Tokens
 
-The components are styled using [Tailwind CSS](https://tailwindcss.com/) utility classes, so you can use them in your project without any additional configuration if your project uses Tailwind CSS. 
+The components use utility classes, but the shared UnoCSS configuration, design tokens, and runtime handling for dynamic CMS classes are now provided by `@shopware/unocss-design-tokens-layer`.
 
-This layer provides a default Tailwind CSS configuration (see [uno.config.ts](./uno.config.ts) for details), which is used to style the components. If you want to customize the styling, you can do so by creating your own Tailwind CSS configuration file and extending the default one:
+This means you have two options:
+
+- extend `@shopware/unocss-design-tokens-layer` to use the shared Shopware Frontends token palette and UnoCSS defaults
+- keep only `@shopware/cms-base-layer` and provide your own UnoCSS or Tailwind setup
+
+When you use the design-tokens layer, you can customize the generated config in your project's `uno.config.ts`:
 
 ```ts [nuxt.config.ts]
 // nuxt.config.ts
@@ -104,24 +114,14 @@ export default defineNuxtConfig({
 ```
 
 ```ts [uno.config.ts]
-// uno.config.ts
-import config from './.nuxt/uno.config.mjs'
-
-export default config
-```
-
-Thanks to this, you can **use the default configuration** provided by this layer, or **extend/overwrite** it with your own customizations in your end-project:
-
-```ts [uno.config.ts]
-// uno.config.ts
 import { mergeConfigs } from '@unocss/core'
-import config from './.nuxt/uno.config.mjs'
+import baseConfig from './.nuxt/uno.config.mjs'
 
-export default mergeConfigs([config, {
+export default mergeConfigs([baseConfig, {
   theme: {
     colors: {
-      primary: '#ff3e00',
-      secondary: '#1c1c1c',
+      'brand-primary': '#ff3e00',
+      'brand-secondary': '#1c1c1c',
     },
   },
 }])
@@ -372,72 +372,52 @@ The preload URL includes the optimized `format` and `quality` parameters from `a
 
 ## Responsive CMS Images
 
-CMS image elements (`CmsElementImage`) automatically serve appropriately-sized images using responsive `srcset` and `sizes` attributes. This prevents the browser from downloading images larger than their displayed dimensions — a common Lighthouse performance issue.
+Images are optimized to prevent the browser from downloading images larger than their displayed dimensions — a common Lighthouse performance issue.
 
-### How it works
+### Product Card Images (`SwProductCardImage`)
 
-1. **`CmsGenericBlock`** counts the number of slots in each block, `provide`s a responsive `sizes` value (e.g., a 2-slot block means images are ~50% viewport width on desktop), and `provide`s the slot count via `cms-block-slot-count` for slider SSR breakpoint scaling.
-2. **`CmsElementImage`** `inject`s the sizes hint and applies it to `<NuxtImg>`.
-3. If the media has **pre-generated thumbnails** from Shopware, the existing `srcset` from thumbnails is used.
-4. If **no thumbnails** exist, a synthetic `srcset` is generated using CDN width-based resizing (`?width=400`, `?width=800`, etc.) via the `generateCdnSrcSet` helper from `@shopware/helpers`.
-5. **Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport (e.g., a 2-slot block doubles the breakpoint thresholds).
-
-The browser combines `sizes` + `srcset` to download only the image size it actually needs — during HTML parsing, before any JavaScript runs.
-
-### Configuration
-
-Default slot-count-to-sizes mappings are set in `app.config.ts` and can be overridden:
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` stay on the component — NuxtImg presets don't propagate these reliably:
 
 ```ts
-export default defineAppConfig({
-  imageSizes: {
-    // slot count → sizes attribute value
-    1: "(max-width: 768px) 100vw, 100vw",   // full-width blocks
-    2: "(max-width: 768px) 100vw, 50vw",    // two-column blocks (e.g., image-text)
-    3: "(max-width: 768px) 100vw, 33vw",    // three-column blocks
-    default: "(max-width: 768px) 50vw, 25vw", // 4+ columns
-  },
-});
+// nuxt.config.ts
+productCard: {
+  modifiers: { format: "webp", quality: 90, fit: "cover" },
+}
 ```
 
-For example, to cap image sizes at a fixed pixel width for boxed layouts:
-
-```ts
-export default defineAppConfig({
-  imageSizes: {
-    1: "(max-width: 768px) 100vw, 1200px",
-    2: "(max-width: 768px) 100vw, 600px",
-    3: "(max-width: 768px) 100vw, 400px",
-    default: "(max-width: 768px) 50vw, 300px",
-  },
-});
+```vue
+<NuxtImg preset="productCard"
+  :src="coverSrcPath"
+  width="400" height="400"
+  densities="1x"
+  loading="lazy" />
 ```
 
-### Per-block override
+- **Fixed `width`/`height`** (400px) — avoid hydration mismatches caused by dynamic DOM measurement
+- **`densities="1x"`** — prevents duplicate retina requests
+- **`loading="lazy"`** — defers off-viewport images
 
-Individual block components can override the sizes value by calling `provide("cms-image-sizes", "custom value")` — this takes precedence over the default from `CmsGenericBlock`.
+> **⚠️ Avoid** adding `decoding` or `sizes` props on the component — they trigger Vue hydration attribute mismatches with NuxtImg, which cause duplicate image requests.
 
-### Synthetic srcset fallback
+### CMS Images (`CmsElementImage`)
 
-When Shopware media has no thumbnails (common in Cloud/SaaS setups using CDN-based resizing), the layer generates a synthetic `srcset` using CDN query parameters:
+CMS image elements use `useElementSize()` to measure the rendered container and pass the size to `<NuxtImg>` via `width`/`height` props:
 
-```html
-<img srcset="
-  ...image.jpg?width=400&fit=crop,smart&format=webp&quality=90 400w,
-  ...image.jpg?width=800&fit=crop,smart&format=webp&quality=90 800w,
-  ...image.jpg?width=1200&fit=crop,smart&format=webp&quality=90 1200w,
-  ...image.jpg?width=1600&fit=crop,smart&format=webp&quality=90 1600w"
-  sizes="(max-width: 768px) 100vw, 50vw"
->
-```
+- During SSR, no image is fetched (size is `undefined`)
+- After hydration, the container is measured and a single correctly-sized image is requested
+- The size is multiplied by 2 (for retina) and rounded up to the nearest 100px
 
-The `format` and `quality` values are taken from the `backgroundImage` config in `app.config.ts`.
+### Slider Components
 
-> **Note:** Synthetic srcset requires CDN-based image resizing support. See the [Image Optimization](#%EF%B8%8F-image-optimization) section for requirements.
+**Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count via `cms-block-slot-count` to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport.
+
+### LCP Image Preloading
+
+**`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR.
 
 ## 🔄 UnoCSS Runtime
 
-This layer includes a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (e.g., inline styles or dynamic class bindings from the admin panel).
+When you extend `@shopware/unocss-design-tokens-layer`, you also get a client-side [UnoCSS runtime](https://unocss.dev/integrations/runtime) plugin that resolves utility classes dynamically at runtime using a DOM MutationObserver. This is useful when CMS content from Shopware contains utility classes that aren't known at build time (for example inline utility classes configured in the admin panel).
 
 The runtime is **enabled by default**. To disable it, set `unocssRuntime` to `false` in your project's `app.config.ts`:
 

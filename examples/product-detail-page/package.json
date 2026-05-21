@@ -12,15 +12,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@shopware/composables": "canary",
-    "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
     "@types/node": "22.13.14",
-    "@vueuse/nuxt": "14.1.0",
-    "nuxt": "4.2.2",
+    "nuxt": "4.4.6",
     "typescript": "5.9.3",
-    "vue": "3.5.27",
-    "vue-tsc": "3.2.2"
+    "vue": "3.5.34",
+    "vue-tsc": "3.2.9"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"

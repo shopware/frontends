@@ -8,7 +8,6 @@ type CmsBaseLayerAppConfig = ReturnType<typeof useAppConfig> & {
   backgroundImage?: BackgroundImageOptions;
   imageSizes?: Record<string, string>;
   lcpImagePreload?: boolean;
-  unocssRuntime?: boolean;
 };
 
 export function useTypedAppConfig() {

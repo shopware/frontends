@@ -1,6 +1,8 @@
 {
   "product": {
     "addToCart": "Dodaj do koszyka",
+    "addToWishlist": "Dodaj do listy życzeń",
+    "removeFromWishlist": "Usuń z listy życzeń",
     "addReview": "Dodaj recenzję",
     "reviewsForm": {
       "title": "Tytuł",

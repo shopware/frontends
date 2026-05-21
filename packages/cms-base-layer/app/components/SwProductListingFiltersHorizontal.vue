@@ -7,8 +7,8 @@ import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
-import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
-import { useCategoryListing } from "#imports";
+import type { LocationQueryRaw } from "vue-router";
+import { useCategoryListing, useRoute, useRouter } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{

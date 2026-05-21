@@ -2,11 +2,16 @@
 import { createResolver } from "@nuxt/kit";
 
 const { resolve } = createResolver(import.meta.url);
+const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
 
 export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
   compatibilityDate: "2025-04-15",
-  devtools: { enabled: true },
+  devtools: { enabled: !isStackBlitz },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
@@ -111,5 +116,9 @@ export default defineNuxtConfig({
       resolve("./i18n/utils"),
       resolve("./i18n/src/helpers"),
     ],
+  },
+  telemetry: false,
+  experimental: {
+    payloadExtraction: false,
   },
 });
