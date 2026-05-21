@@ -52,7 +52,7 @@ const loginAction = async () => {
     >
       {{ isSubmitting ? "Logging in..." : "Login" }}
     </button>
-    <p v-if="errorMessage" class="mt-4 text-sm text-red-600">
+    <p v-if="errorMessage" role="alert" class="mt-4 text-sm text-red-600">
       {{ errorMessage }}
     </p>
   </form>

@@ -104,7 +104,7 @@ const updateRoles = async () => {
     </div>
 
     <div v-if="responseErrors.length" class="rounded-lg border border-red-200 bg-red-50 p-6">
-      <p class="text-sm font-semibold uppercase tracking-wide text-red-700">
+      <p class="text-sm font-semibold uppercase tracking-wide text-red-700" role="alert">
         {{ responseErrors[0]?.status ? `Error ${responseErrors[0].status}` : "API error" }}
       </p>
       <h3 class="mt-2 text-2xl font-semibold text-red-950">
@@ -133,9 +133,10 @@ const updateRoles = async () => {
         <button
           type="button"
           class="rounded-md bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+          :disabled="isLoading"
           @click="updateRoles"
         >
-          Try again
+          {{ isLoading ? "Trying again..." : "Try again" }}
         </button>
         <NuxtLink
           to="/"

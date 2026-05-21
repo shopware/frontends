@@ -164,9 +164,10 @@ const handleDeleteEmployee = async (employeeId: string) => {
         <button
           type="button"
           class="rounded-md bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+          :disabled="isLoading"
           @click="getEmployees"
         >
-          Try again
+          {{ isLoading ? "Loading..." : "Try again" }}
         </button>
         <NuxtLink
           to="/"
