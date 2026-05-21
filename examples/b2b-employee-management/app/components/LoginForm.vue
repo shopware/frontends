@@ -4,13 +4,23 @@ const state = reactive({
   username: "",
   password: "",
 });
+const isSubmitting = ref(false);
+const errorMessage = ref("");
 
 const loginAction = async () => {
-  const session = login({
-    username: state.username,
-    password: state.password,
-  });
-  console.log(session);
+  isSubmitting.value = true;
+  errorMessage.value = "";
+  try {
+    await login({
+      username: state.username,
+      password: state.password,
+    });
+  } catch (error) {
+    console.error(error);
+    errorMessage.value = "Login failed. Check the credentials and try again.";
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 </script>
 
@@ -37,9 +47,13 @@ const loginAction = async () => {
     </div>
     <button
       type="submit"
-      class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200"
+      class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+      :disabled="isSubmitting"
     >
-      Login
+      {{ isSubmitting ? "Logging in..." : "Login" }}
     </button>
+    <p v-if="errorMessage" class="mt-4 text-sm text-red-600">
+      {{ errorMessage }}
+    </p>
   </form>
 </template>
