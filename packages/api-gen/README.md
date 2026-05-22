@@ -20,13 +20,13 @@ npm install -D @shopware/api-gen
 yarn add -D @shopware/api-gen
 
 # pnpm
-pnpm install -D @shopware/api-gen
+pnpm add -D @shopware/api-gen
 
 # bun
 bun install -D @shopware/api-gen
 
 # deno
-deno install --dev @shopware/api-gen
+deno install --dev npm:@shopware/api-gen
 ```
 
 <!-- /automd -->
