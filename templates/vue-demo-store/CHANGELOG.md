@@ -1,5 +1,24 @@
 # vue-demo-store
 
+## 1.14.0
+
+### Minor Changes
+
+- [#2326](https://github.com/shopware/frontends/pull/2326) [`e7efff8`](https://github.com/shopware/frontends/commit/e7efff8c615ae8d0858572933285216cc533dd0b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Gate wishlist button behind login when useLoginModal is provided. Show login modal for guests and add product to wishlist after successful login.
+
+### Patch Changes
+
+- [#2447](https://github.com/shopware/frontends/pull/2447) [`8fb3fb0`](https://github.com/shopware/frontends/commit/8fb3fb05d925408be825f209f871026636b95d50) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Use product Open Graph SEO fields for detail pages, including `ogTitle`, `ogDescription`, and `openGraphMedia`.
+
+- [#2371](https://github.com/shopware/frontends/pull/2371) [`33e0c69`](https://github.com/shopware/frontends/commit/33e0c69afc3de854733ab61f866ba65cce1489f6) Thanks [@patzick](https://github.com/patzick)! - Fix catch-all page resolution for technical Shopware routes and serve Nuxt dev's
+  `/dev-sw.js` request as a static asset in the Nuxt templates.
+
+- [#2435](https://github.com/shopware/frontends/pull/2435) [`b8c0091`](https://github.com/shopware/frontends/commit/b8c00913c3afb5e1e63de9565105f8f8e3bf299f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove redundant newsletter status refresh on the account overview now that `useNewsletter` updates state after subscribe.
+
+- [#2401](https://github.com/shopware/frontends/pull/2401) [`f566e97`](https://github.com/shopware/frontends/commit/f566e972ca5551a24e56774f24628b55ff7a758c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Use bound src attributes for public images in vue-demo-store so asset URLs are handled consistently by the Vue template compiler.
+
+- [#2406](https://github.com/shopware/frontends/pull/2406) [`df93461`](https://github.com/shopware/frontends/commit/df93461434cb79ec9d722cdbd42a37a9af07fb03) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Align `uno.config.ts` with the split CMS and design-token layers: add presets and CMS base layer color tokens so the demo store keeps parity with the shared UnoCSS setup.
+
 ## 1.13.0
 
 ### Minor Changes
