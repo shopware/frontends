@@ -48,7 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
 
       - name: Publish canary packages
-        run: pnpm changeset publish --no-git-tag --no-git-checks --tag canary
+        run: pnpm changeset publish --no-git-tag --tag canary
 
   release:
     name: Create release PR or publish merged changesets
