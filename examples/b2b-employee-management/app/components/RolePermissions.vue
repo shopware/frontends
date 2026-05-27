@@ -37,11 +37,7 @@
 </template>
 
 <script setup lang="ts">
-type PermissionOption = {
-  permissionDependencies?: string[];
-  permissionGroupName?: string;
-  permissionName?: string;
-};
+import type { PermissionOption } from "~/types/b2b";
 
 type PermissionGroup = {
   name: string;
