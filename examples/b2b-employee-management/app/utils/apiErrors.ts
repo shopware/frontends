@@ -1,3 +1,5 @@
+import { isRecord } from "./records";
+
 export type ExampleApiError = {
   code?: string;
   detail?: string;
@@ -11,9 +13,6 @@ type ErrorContainer = {
   errors?: unknown;
   response?: unknown;
 };
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
 
 const isApiError = (value: unknown): value is ExampleApiError =>
   isRecord(value) &&

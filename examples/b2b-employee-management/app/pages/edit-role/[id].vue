@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type { PermissionOption } from "~/types/b2b";
-
-type PermissionRecord = Record<string, unknown>;
-
-const isRecord = (value: unknown): value is PermissionRecord =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+import { isRecord } from "~/utils/records";
 
 const getPermissionName = (permission: unknown): string | undefined => {
   if (typeof permission === "string") {

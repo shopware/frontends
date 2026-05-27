@@ -1,18 +1,15 @@
-type ContextRecord = Record<string, unknown>;
-
-const isRecord = (value: unknown): value is ContextRecord =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+import { type UnknownRecord, isRecord } from "~/utils/records";
 
 const getRecord = (
-  source: ContextRecord | undefined,
+  source: UnknownRecord | undefined,
   key: string,
-): ContextRecord | undefined => {
+): UnknownRecord | undefined => {
   const value = source?.[key];
   return isRecord(value) ? value : undefined;
 };
 
 const getString = (
-  source: ContextRecord | undefined,
+  source: UnknownRecord | undefined,
   keys: string[],
 ): string | undefined => {
   for (const key of keys) {
@@ -30,7 +27,7 @@ export const useB2bEmployeeSession = () => {
   const isLoggingOut = ref(false);
 
   const b2bEmployee = computed(() => {
-    const context = sessionContext.value as ContextRecord | undefined;
+    const context = sessionContext.value as UnknownRecord | undefined;
     const extensions = getRecord(context, "extensions");
     return getRecord(extensions, "b2bEmployee");
   });
