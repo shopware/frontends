@@ -31,6 +31,7 @@ export function useProductAssociations(
   product: ComputedRef<Schemas["Product"]>,
   options: {
     associationContext: "cross-selling" | "reviews";
+    includeSeoUrls?: boolean;
   },
 ): UseProductAssociationsReturn {
   if (!product.value)
@@ -84,6 +85,11 @@ export function useProductAssociations(
       const response = await apiClient.invoke(
         "readProductCrossSellings post /product/{productId}/cross-selling",
         {
+          ...(options.includeSeoUrls && {
+            headers: {
+              "sw-include-seo-urls": true,
+            },
+          }),
           pathParams: { productId: product.value.id },
         },
       );
