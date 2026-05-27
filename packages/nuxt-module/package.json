@@ -1,6 +1,6 @@
 {
   "name": "@shopware/nuxt-module",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
@@ -39,7 +39,7 @@
     "@shopware/api-client": "workspace:*",
     "defu": "6.1.7",
     "h3": "1.15.11",
-    "js-cookie": "3.0.5"
+    "js-cookie": "3.0.7"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
