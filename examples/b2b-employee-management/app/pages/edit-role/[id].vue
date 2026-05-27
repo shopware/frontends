@@ -1,9 +1,34 @@
 <script setup lang="ts">
+type PermissionOption = {
+  permissionDependencies?: string[];
+  permissionGroupName?: string;
+  permissionName?: string;
+};
+
+type PermissionRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is PermissionRecord =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const getPermissionName = (permission: unknown): string | undefined => {
+  if (typeof permission === "string") {
+    return permission;
+  }
+
+  if (!isRecord(permission)) {
+    return;
+  }
+
+  const name = permission.permissionName || permission.name;
+  return typeof name === "string" ? name : undefined;
+};
+
 const { params } = useRoute();
 const { apiClient } = useShopwareContext();
+const roleId = computed(() => String(params.id));
 
-const permissions = ref([]);
-const selectedPermissions = ref([]);
+const permissions = ref<PermissionOption[]>([]);
+const selectedPermissions = ref<string[]>([]);
 
 const state = reactive({
   id: "",
@@ -14,28 +39,35 @@ const state = reactive({
 onMounted(async () => {
   const { data: roleData } = await apiClient.invoke("readRole get /role/{id}", {
     pathParams: {
-      id: params.id,
+      id: roleId.value,
     },
   });
   const { data: permissionsData } = await apiClient.invoke(
     "readPermissions get /permission",
   );
-  permissions.value = permissionsData;
+  permissions.value = permissionsData.elements || [];
 
   state.id = roleData.id;
   state.roleName = roleData.name;
-  selectedPermissions.value = roleData.permissions ?? [];
+  state.isDefault = Boolean(roleData.default);
+  selectedPermissions.value =
+    roleData.permissions?.flatMap(
+      (permission) => getPermissionName(permission) || [],
+    ) || [];
 });
 
-const handleUpdateRole = () => {
-  apiClient.invoke("updateRole patch /role/{id}", {
+const handleUpdateRole = async () => {
+  await apiClient.invoke("updateRole patch /role/{id}", {
     pathParams: {
       id: state.id,
     },
     body: {
-      name: state.name,
+      name: state.roleName,
+      isDefaultRole: state.isDefault,
+      permissions: selectedPermissions.value,
     },
   });
+  await navigateTo("/roles");
 };
 </script>
 <template>

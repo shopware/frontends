@@ -36,73 +36,95 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from "vue";
+<script setup lang="ts">
+type PermissionOption = {
+  permissionDependencies?: string[];
+  permissionGroupName?: string;
+  permissionName?: string;
+};
 
-const props = defineProps({
-  permissions: {
-    type: Array,
-    required: true,
-  },
-});
+type PermissionGroup = {
+  name: string;
+  permissions: Required<PermissionOption>[];
+};
 
-const model = defineModel();
+const props = defineProps<{
+  permissions: PermissionOption[];
+}>();
 
-const groupedPermissions = computed(() => {
-  const groups = {};
-  props.permissions.forEach((permission) => {
-    if (!groups[permission.permissionGroupName]) {
-      groups[permission.permissionGroupName] = {
-        name: permission.permissionGroupName,
-        permissions: [],
-      };
+const model = defineModel<string[]>({ default: () => [] });
+
+const groupedPermissions = computed<PermissionGroup[]>(() => {
+  const groups: Record<string, PermissionGroup> = {};
+
+  for (const permission of props.permissions) {
+    if (!permission.permissionGroupName || !permission.permissionName) {
+      continue;
     }
-    groups[permission.permissionGroupName].permissions.push(permission);
-  });
+
+    const normalizedPermission = {
+      permissionDependencies: permission.permissionDependencies || [],
+      permissionGroupName: permission.permissionGroupName,
+      permissionName: permission.permissionName,
+    };
+
+    groups[permission.permissionGroupName] ??= {
+      name: permission.permissionGroupName,
+      permissions: [],
+    };
+    groups[permission.permissionGroupName].permissions.push(
+      normalizedPermission,
+    );
+  }
+
   return Object.values(groups);
 });
 
-const isGroupChecked = (group) => {
+const isGroupChecked = (group: PermissionGroup) => {
   return group.permissions.every((permission) =>
     model.value.includes(permission.permissionName),
   );
 };
 
-const toggleGroup = (group) => {
+const toggleGroup = (group: PermissionGroup) => {
   const allSelected = isGroupChecked(group);
-  group.permissions.forEach((permission) => {
+  for (const permission of group.permissions) {
     const index = model.value.indexOf(permission.permissionName);
     if (allSelected && index !== -1) {
       model.value.splice(index, 1);
     } else if (!allSelected && index === -1) {
       model.value.push(permission.permissionName);
     }
-  });
+  }
   updateAllDependencies();
 };
 
 const updateAllDependencies = () => {
-  let changed;
+  let changed = false;
   do {
     changed = false;
-    props.permissions.forEach((permission) => {
+    for (const permission of props.permissions) {
+      if (!permission.permissionName) {
+        continue;
+      }
+
       if (model.value.includes(permission.permissionName)) {
-        permission.permissionDependencies.forEach((dep) => {
+        for (const dep of permission.permissionDependencies || []) {
           if (!model.value.includes(dep)) {
             model.value.push(dep);
             changed = true;
           }
-        });
+        }
       }
-    });
+    }
   } while (changed);
 };
 
-const formatGroupName = (name) => {
+const formatGroupName = (name: string) => {
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
 
-const formatPermissionName = (name) => {
+const formatPermissionName = (name: string) => {
   return name
     .split(".")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

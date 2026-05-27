@@ -1,4 +1,9 @@
 <script setup lang="ts">
+type RoleOption = {
+  id: string;
+  name: string;
+};
+
 const { languages, getAvailableLanguages } = useInternationalization();
 const { apiClient } = useShopwareContext();
 
@@ -8,30 +13,30 @@ const handleCreateEmployee = async () => {
       firstName: state.firstName,
       lastName: state.lastName,
       email: state.email,
-      roleID: state.roleID,
+      roleId: state.roleId,
       languageId: languageId.value,
     },
   });
 
-  navigateTo("/employees");
+  await navigateTo("/employees");
 };
 const state = reactive({
   firstName: "",
   lastName: "",
   email: "",
-  roleID: "",
+  roleId: "",
 });
 
-const languageId = ref(null);
+const languageId = ref("");
 
-const roles = ref([]);
+const roles = ref<RoleOption[]>([]);
 
 onMounted(async () => {
   await getAvailableLanguages();
   const {
     data: { elements },
   } = await apiClient.invoke("readRoles get /role");
-  roles.value = elements;
+  roles.value = elements || [];
 });
 </script>
 <template>
@@ -79,7 +84,7 @@ onMounted(async () => {
       </div>
       <div class="flex flex-col">
         <label for="role" class="mb-2 font-semibold">Role</label>
-        <select id="role" v-model="state.roleID" class="p-2 border rounded">
+        <select id="role" v-model="state.roleId" class="p-2 border rounded">
           <option v-for="role in roles" :key="role.id" :value="role.id">
             {{ role.name }}
           </option>
