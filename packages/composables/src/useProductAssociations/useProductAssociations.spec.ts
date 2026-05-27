@@ -90,6 +90,53 @@ describe("useProductAssociations", () => {
     expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
   });
 
+  it("sends sw-include-seo-urls header when includeSeoUrls is true", async () => {
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(
+        computed(() => mockedProduct),
+        {
+          associationContext: "cross-selling",
+          includeSeoUrls: true,
+        },
+      ),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: mockedCrossSelling });
+
+    await vm.loadAssociations({
+      method: "post",
+      searchParams: {},
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readProductCrossSellings"),
+      expect.objectContaining({
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+      }),
+    );
+  });
+
+  it("omits sw-include-seo-urls header when includeSeoUrls is not set", async () => {
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(
+        computed(() => mockedProduct),
+        {
+          associationContext: "cross-selling",
+        },
+      ),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: mockedCrossSelling });
+
+    await vm.loadAssociations({
+      method: "post",
+      searchParams: {},
+    });
+
+    const invokeOptions = injections.apiClient.invoke.mock.calls[0]?.[1];
+    expect(invokeOptions).not.toHaveProperty("headers");
+  });
+
   it("init without product should throw an error", () => {
     expect(() =>
       useSetup(() =>
