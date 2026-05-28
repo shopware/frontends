@@ -14,25 +14,23 @@ const { data: landingResponse, error } = await useAsyncData(
 );
 
 if (!landingResponse.value) {
-  console.error("[FrontendLandingPage.vue]", error.value?.message);
+  const statusMessage = error.value?.message || "No landing page found";
+  console.error("[FrontendLandingPage.vue]", statusMessage);
   throw createError({
     statusCode: 500,
-    message: error.value?.message,
+    message: statusMessage,
   });
 }
 
-useBreadcrumbs(getCmsBreadcrumbs(landingResponse.value));
+const landingPage = landingResponse.value;
 
-const landingPage = computed(() => {
-  if (!landingResponse.value) {
-    throw createError({
-      statusCode: 500,
-      message: error.value?.message,
-    });
-  }
-  return landingResponse.value;
-});
-useCmsHead(landingPage, { mainShopTitle: "Shopware Frontends Demo Store" });
+useBreadcrumbs(getCmsBreadcrumbs(landingPage));
+useCmsHead(
+  computed(() => landingPage),
+  {
+    mainShopTitle: "Shopware Frontends Demo Store",
+  },
+);
 </script>
 
 <template>
