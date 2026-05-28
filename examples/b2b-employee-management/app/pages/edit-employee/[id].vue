@@ -1,58 +1,61 @@
 <script setup lang="ts">
 import { useInternationalization, useShopwareContext } from "#imports";
 
+type RoleOption = {
+  id: string;
+  name: string;
+};
+
 const { params } = useRoute();
 const { languages, getAvailableLanguages } = useInternationalization();
 
 const { apiClient } = useShopwareContext();
+const employeeId = computed(() => String(params.id));
 
 const handleEditEmployee = async () => {
-  const response = await apiClient.invoke(
-    "updateEmployee patch /employee/{id}",
-    {
-      pathParams: {
-        id: params.id,
-      },
-      body: {
-        firstName: state.firstName,
-        lastName: state.lastName,
-        email: state.email,
-        roleId: state.roleID,
-      },
+  await apiClient.invoke("updateEmployee patch /employee/{id}", {
+    pathParams: {
+      id: employeeId.value,
     },
-  );
+    body: {
+      firstName: state.firstName,
+      lastName: state.lastName,
+      email: state.email,
+      roleId: state.roleId,
+    },
+  });
   await navigateTo("/employees");
 };
 const state = reactive({
   firstName: "",
   lastName: "",
   email: "",
-  roleID: "",
+  roleId: "",
 });
 
-const languageId = ref(null);
+const languageId = ref("");
 
-const roles = ref([]);
+const roles = ref<RoleOption[]>([]);
 
 onMounted(async () => {
   await getAvailableLanguages();
   const {
     data: { elements },
   } = await apiClient.invoke("readRoles get /role");
-  roles.value = elements;
+  roles.value = elements || [];
 
   const { data: employeeData } = await apiClient.invoke(
     "readB2bEmployee get /employee/{id}",
     {
       pathParams: {
-        id: params.id,
+        id: employeeId.value,
       },
     },
   );
 
   state.firstName = employeeData.firstName;
   state.email = employeeData.email;
-  state.roleID = employeeData.role;
+  state.roleId = employeeData.role?.id || "";
   state.lastName = employeeData.lastName;
   languageId.value = employeeData.languageId;
 });
@@ -102,7 +105,7 @@ onMounted(async () => {
       </div>
       <div class="flex flex-col">
         <label for="role" class="mb-2 font-semibold">Role</label>
-        <select id="role" v-model="state.roleID" class="p-2 border rounded">
+        <select id="role" v-model="state.roleId" class="p-2 border rounded">
           <option v-for="role in roles" :key="role.id" :value="role.id">
             {{ role.name }}
           </option>
