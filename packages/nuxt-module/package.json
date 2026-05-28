@@ -48,6 +48,6 @@
     "nuxt": "4.4.6",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "4.1.6"
+    "vitest": "4.1.7"
   }
 }
