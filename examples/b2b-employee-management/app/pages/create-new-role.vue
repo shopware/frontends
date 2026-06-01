@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const permissions = ref([]);
+import type { PermissionOption } from "~/types/b2b";
+
+const permissions = ref<PermissionOption[]>([]);
 const state = reactive({
   roleName: "",
   isDefault: false,
 });
-const selectedPermissions = ref([]);
+const selectedPermissions = ref<string[]>([]);
 const { apiClient } = useShopwareContext();
 
 onMounted(async () => {
   const { data } = await apiClient.invoke("readPermissions get /permission");
-  permissions.value = data;
+  permissions.value = data.elements || [];
 });
 
 const handleCreateRole = async () => {
@@ -21,7 +23,7 @@ const handleCreateRole = async () => {
     },
   });
 
-  navigateTo("/roles");
+  await navigateTo("/roles");
 };
 </script>
 <template>

@@ -125,12 +125,13 @@ Returns an empty string if `src` is falsy. Returns the original `src` if URL par
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.7.0
-
-### Minor Changes
-
-- [#2287](https://github.com/shopware/frontends/pull/2287) [`c9bde38`](https://github.com/shopware/frontends/commit/c9bde38d497d5c6c2fbd97700a362eb44ce8881f) Thanks [@mkucmus](https://github.com/mkucmus)! - Add generateCdnSrcSet and buildCdnImageUrl helpers for synthetic responsive image srcset generation via CDN query params
+### Latest changes: 1.7.1
 
 ### Patch Changes
 
-- [#2320](https://github.com/shopware/frontends/pull/2320) [`a871c7b`](https://github.com/shopware/frontends/commit/a871c7b6256b75c2e40d93fc0354ba1971420062) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Improve getSmallestThumbnailUrl - add media.url fallback when thumbnails are missing or empty
+- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
+
+  This adds helpers to detect and normalize technical Shopware paths and updates
+  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
+  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
+  mapping row is returned.

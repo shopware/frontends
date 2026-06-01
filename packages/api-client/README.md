@@ -28,13 +28,13 @@ npm install @shopware/api-client
 yarn add @shopware/api-client
 
 # pnpm
-pnpm install @shopware/api-client
+pnpm add @shopware/api-client
 
 # bun
 bun install @shopware/api-client
 
 # deno
-deno install @shopware/api-client
+deno install npm:@shopware/api-client
 ```
 
 <!-- /automd -->

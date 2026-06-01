@@ -51,13 +51,13 @@ npm install -D @shopware/cms-base-layer
 yarn add -D @shopware/cms-base-layer
 
 # pnpm
-pnpm install -D @shopware/cms-base-layer
+pnpm add -D @shopware/cms-base-layer
 
 # bun
 bun install -D @shopware/cms-base-layer
 
 # deno
-deno install --dev @shopware/cms-base-layer
+deno install --dev npm:@shopware/cms-base-layer
 ```
 
 <!-- /automd -->
