@@ -241,6 +241,23 @@ export const sidebar = [
     ],
   },
   {
+    text: "FRONTENDS RECIPES",
+    link: "/frontends-recipes/",
+    items: [
+      {
+        text: "Account",
+        link: "/frontends-recipes/account/",
+        collapsed: true,
+        items: [
+          {
+            text: "Login",
+            link: "/frontends-recipes/account/login.html",
+          },
+        ],
+      },
+    ],
+  },
+  {
     text: "BEST PRACTICES",
     link: "/best-practices/",
     items: [
