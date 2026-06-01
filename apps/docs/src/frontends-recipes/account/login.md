@@ -22,6 +22,7 @@ recipe:
 
 <script setup>
 import LoginFlowDiagram from "../../components/LoginFlowDiagram.vue";
+import LoginVueFlowDiagram from "../../components/LoginVueFlowDiagram.vue";
 </script>
 
 # Login
@@ -33,6 +34,10 @@ Build a customer login flow and understand what happens after credentials are su
 ## Shopware Flow
 
 Login is a small form action, but it changes the whole sales channel session. The important part is that `POST /account/login` only authenticates the customer. The UI becomes reliable after the session context and cart are refreshed.
+
+<ClientOnly>
+  <LoginVueFlowDiagram />
+</ClientOnly>
 
 <LoginFlowDiagram />
 

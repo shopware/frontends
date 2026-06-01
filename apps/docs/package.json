@@ -14,6 +14,7 @@
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
+    "@vue-flow/core": "^1.48.2",
     "flexsearch": "0.8.212",
     "markdown-it": "14.1.1",
     "vitepress": "1.6.4",
