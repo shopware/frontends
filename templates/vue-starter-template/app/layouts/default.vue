@@ -9,14 +9,13 @@ const { data } = useAsyncData("mainNavigation", () => {
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();
 const { languageIdChain } = useSessionContext();
+const {
+  currenciesList,
+  currentCurrencyId,
+  changingCurrencyId,
+  changeCurrency,
+} = useCurrencySwitcher();
 provide("swNavigation-main-navigation", data);
-
-const currentLanguageLabel = computed(() => {
-  const currentLanguage = languages.value?.find(
-    (language) => language.id === languageIdChain.value,
-  );
-  return currentLanguage ? getLanguageName(currentLanguage) : "";
-});
 
 const languagesList = computed(
   () =>
@@ -38,6 +37,10 @@ async function onChangeHandler(id: string) {
   }
 }
 
+async function onCurrencyChangeHandler(id: string) {
+  await changeCurrency(id);
+}
+
 const { loadNavigationElements: loadFooterNavigationElements } = useNavigation({
   type: "footer-navigation",
 });
@@ -54,11 +57,15 @@ provide("swNavigation-footer-navigation", footerData);
   <div class="flex flex-col min-h-screen">
     <header>
       <LayoutMetaNavigation
-        v-if="languagesList.length > 1"
+        v-if="languagesList.length > 1 || currenciesList.length > 0"
         class="px-6"
-        :current-language-label="currentLanguageLabel"
+        :current-language-id="languageIdChain"
         :languages="languagesList"
+        :current-currency-id="currentCurrencyId"
+        :currencies="currenciesList"
+        :changing-currency-id="changingCurrencyId"
         @onLanguageChangeHandler="onChangeHandler"
+        @onCurrencyChangeHandler="onCurrencyChangeHandler"
       />
       <LayoutHeader />
     </header>

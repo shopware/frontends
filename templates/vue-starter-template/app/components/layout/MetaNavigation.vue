@@ -1,10 +1,16 @@
 <script setup lang="ts">
-defineProps<{
-  currentLanguageLabel: string;
+const props = defineProps<{
+  currentLanguageId: string;
   languages: {
     id: string;
     label: string;
   }[];
+  currentCurrencyId: string;
+  currencies: {
+    id: string;
+    label: string;
+  }[];
+  changingCurrencyId?: string;
 }>();
 
 defineSlots<{
@@ -13,36 +19,88 @@ defineSlots<{
 
 const emit = defineEmits<{
   onLanguageChangeHandler: [string];
+  onCurrencyChangeHandler: [string];
 }>();
 
-const languagesListVisibility = ref(false);
+function changeLanguage(event: Event) {
+  const languageId = (event.target as HTMLSelectElement).value;
+  if (languageId && languageId !== props.currentLanguageId) {
+    emit("onLanguageChangeHandler", languageId);
+  }
+}
+
+function changeCurrency(event: Event) {
+  const currencyId = (event.target as HTMLSelectElement).value;
+  if (currencyId && currencyId !== props.currentCurrencyId) {
+    emit("onCurrencyChangeHandler", currencyId);
+  }
+}
 </script>
 <template>
-  <div class="bg-surface-surface-primary py-2">
+  <div class="bg-surface-surface-primary py-2.5">
     <div
       class="flex items-center justify-between container mx-auto color-surface-on-surface-primary"
     >
-      <div class="flex items-center relative">
-        <div
-          @click="languagesListVisibility = !languagesListVisibility"
-          class="flex items-center gap-3.5"
+      <div class="flex flex-wrap items-center gap-2">
+        <label
+          v-if="languages.length > 1"
+          class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
         >
-          <Icon size="1.5rem" name="material-symbols:language" />
-          <span>{{ currentLanguageLabel }}</span>
-        </div>
-
-        <ul
-          v-show="languagesListVisibility"
-          class="absolute bg-surface-surface-primary top-8 p-2 w-full cursor-pointer z-20"
-        >
-          <li
-            v-for="language in languages"
-            :key="language.id"
-            @click="emit('onLanguageChangeHandler', language.id)"
+          <Icon size="1.125rem" name="material-symbols:language" />
+          <span class="sr-only">
+            {{ $t("layout.ariaLabels.languageSwitcher") }}
+          </span>
+          <select
+            class="h-full min-w-24 appearance-none bg-transparent pr-7 text-sm font-medium outline-none"
+            :aria-label="$t('layout.ariaLabels.languageSwitcher')"
+            :value="currentLanguageId"
+            @change="changeLanguage"
           >
-            {{ language.label }}
-          </li>
-        </ul>
+            <option
+              v-for="language in languages"
+              :key="language.id"
+              :value="language.id"
+            >
+              {{ language.label }}
+            </option>
+          </select>
+          <Icon
+            size="1rem"
+            name="material-symbols:keyboard-arrow-down"
+            class="pointer-events-none absolute right-2"
+          />
+        </label>
+
+        <label
+          v-if="currencies.length > 0"
+          class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
+          :class="{ 'opacity-60': Boolean(props.changingCurrencyId) }"
+        >
+          <Icon size="1.125rem" name="material-symbols:payments" />
+          <span class="sr-only">
+            {{ $t("layout.ariaLabels.currencySwitcher") }}
+          </span>
+          <select
+            class="h-full min-w-23 appearance-none bg-transparent pr-7 text-sm font-medium outline-none disabled:cursor-not-allowed"
+            :aria-label="$t('layout.ariaLabels.currencySwitcher')"
+            :value="currentCurrencyId"
+            :disabled="currencies.length < 2 || Boolean(props.changingCurrencyId)"
+            @change="changeCurrency"
+          >
+            <option
+              v-for="currency in currencies"
+              :key="currency.id"
+              :value="currency.id"
+            >
+              {{ currency.label }}
+            </option>
+          </select>
+          <Icon
+            size="1rem"
+            name="material-symbols:keyboard-arrow-down"
+            class="pointer-events-none absolute right-2"
+          />
+        </label>
       </div>
       <menu>
         <slot name="menu" />

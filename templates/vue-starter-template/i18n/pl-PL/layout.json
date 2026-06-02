@@ -31,7 +31,9 @@
       "pagination": "Paginacja",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Panel boczny",
-      "closeNotification": "Zamknij powiadomienie"
+      "closeNotification": "Zamknij powiadomienie",
+      "languageSwitcher": "Zmień język",
+      "currencySwitcher": "Zmień walutę"
     }
   }
 }
