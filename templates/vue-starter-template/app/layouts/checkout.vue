@@ -7,7 +7,7 @@ import { getLanguageName } from "@shopware/helpers";
 
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();
-const { languageIdChain } = useSessionContext();
+const { currentLanguageId } = useSessionContext();
 const {
   currenciesList,
   currentCurrencyId,
@@ -46,9 +46,12 @@ async function onCurrencyChangeHandler(id: string) {
   <div>
     <header>
       <LayoutMetaNavigation
-        v-if="languagesList.length > 1 || currenciesList.length > 0"
+        v-if="
+          (languagesList.length > 1 || currenciesList.length > 0) &&
+          currentLanguageId
+        "
         class="px-6"
-        :current-language-id="languageIdChain"
+        :current-language-id="currentLanguageId"
         :languages="languagesList"
         :current-currency-id="currentCurrencyId"
         :currencies="currenciesList"

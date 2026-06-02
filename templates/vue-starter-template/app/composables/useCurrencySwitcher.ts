@@ -73,12 +73,12 @@ export function useCurrencySwitcher() {
       changingCurrencyId.value = currencyId;
       await setCurrency(currency);
       await refreshCart();
+    } finally {
+      changingCurrencyId.value = undefined;
 
       if (import.meta.client) {
         window.location.reload();
       }
-    } finally {
-      changingCurrencyId.value = undefined;
     }
   }
 
