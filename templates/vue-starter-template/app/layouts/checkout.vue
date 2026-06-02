@@ -7,14 +7,13 @@ import { getLanguageName } from "@shopware/helpers";
 
 const { languages, changeLanguage, replaceToDevStorefront } =
   useInternationalization();
-const { languageIdChain } = useSessionContext();
-
-const currentLanguageLabel = computed(() => {
-  const currentLanguage = languages.value?.find(
-    (language) => language.id === languageIdChain.value,
-  );
-  return currentLanguage ? getLanguageName(currentLanguage) : "";
-});
+const { currentLanguageId } = useSessionContext();
+const {
+  currenciesList,
+  currentCurrencyId,
+  changingCurrencyId,
+  changeCurrency,
+} = useCurrencySwitcher();
 
 const languagesList = computed(
   () =>
@@ -38,16 +37,27 @@ async function onLanguageChangeHandler(id: string) {
     window.location.reload();
   }
 }
+
+async function onCurrencyChangeHandler(id: string) {
+  await changeCurrency(id);
+}
 </script>
 <template>
   <div>
     <header>
       <LayoutMetaNavigation
-        v-if="languagesList.length > 1"
+        v-if="
+          (languagesList.length > 1 || currenciesList.length > 0) &&
+          currentLanguageId
+        "
         class="px-6"
-        :current-language-label="currentLanguageLabel"
+        :current-language-id="currentLanguageId"
         :languages="languagesList"
+        :current-currency-id="currentCurrencyId"
+        :currencies="currenciesList"
+        :changing-currency-id="changingCurrencyId"
         @onLanguageChangeHandler="onLanguageChangeHandler"
+        @onCurrencyChangeHandler="onCurrencyChangeHandler"
       />
 
       <div class="border-b">

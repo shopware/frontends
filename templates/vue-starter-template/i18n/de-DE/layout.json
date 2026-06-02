@@ -31,7 +31,9 @@
       "pagination": "Seitennummerierung",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Seitenleiste",
-      "closeNotification": "Benachrichtigung schließen"
+      "closeNotification": "Benachrichtigung schließen",
+      "languageSwitcher": "Sprache ändern",
+      "currencySwitcher": "Währung ändern"
     }
   }
 }
