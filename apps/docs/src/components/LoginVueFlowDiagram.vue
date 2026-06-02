@@ -3,84 +3,103 @@ import { VueFlow } from "@vue-flow/core";
 import "@vue-flow/core/dist/style.css";
 import "@vue-flow/core/dist/theme-default.css";
 import { computed, ref } from "vue";
+import SchemaTypeTooltip from "./SchemaTypeTooltip.vue";
 
 const nodes = ref([
   {
     id: "ui-submit",
-    label: "Login form",
+    type: "flowStep",
     position: { x: 0, y: 80 },
     class: "login-vue-flow__node login-vue-flow__node--ui",
     data: {
+      label: "Login form",
+      action: "Submit credentials",
       title: "UI: submit credentials",
       description:
         "The component collects username and password, then calls the composable. Loading and form errors stay local to the UI.",
       code: "submit() -> login(credentials)",
       state: "local form state",
+      typeKeys: ["LoginBody"],
     },
   },
   {
     id: "use-user",
-    label: "useUser().login()",
+    type: "flowStep",
     position: { x: 240, y: 80 },
     class: "login-vue-flow__node login-vue-flow__node--composable",
     data: {
+      label: "useUser().login()",
+      action: "Run login workflow",
       title: "Composable: own the workflow",
       description:
         "useUser sends credentials to the Store API and then coordinates the context and cart refreshes.",
       code: "useUser().login(credentials)",
       state: "customer workflow",
+      typeKeys: ["LoginBody", "ContextTokenResponse"],
     },
   },
   {
     id: "login-api",
-    label: "POST /account/login",
+    type: "flowStep",
     position: { x: 520, y: 0 },
     class: "login-vue-flow__node login-vue-flow__node--api",
     data: {
+      label: "POST /account/login",
+      action: "Authenticate customer",
       title: "Store API: authenticate",
       description:
         "The generated operation validates credentials and can affect the active sales channel session.",
       code: "loginCustomer post /account/login",
       state: "sw-context-token",
+      typeKeys: ["LoginBody", "ContextTokenResponse", "ApiError"],
     },
   },
   {
     id: "context",
-    label: "GET /context",
+    type: "flowStep",
     position: { x: 520, y: 170 },
     class: "login-vue-flow__node login-vue-flow__node--context",
     data: {
+      label: "GET /context",
+      action: "Refresh session",
       title: "Context: refresh session",
       description:
         "The refreshed context provides the current customer, customer group, currency, rules, and other context-dependent values.",
       code: "refreshSessionContext()",
       state: "user, isLoggedIn, sales channel context",
+      typeKeys: ["SalesChannelContext", "Customer"],
     },
   },
   {
     id: "cart",
-    label: "refreshCart()",
+    type: "flowStep",
     position: { x: 800, y: 80 },
     class: "login-vue-flow__node login-vue-flow__node--cart",
     data: {
+      label: "refreshCart()",
+      action: "Reload cart",
       title: "Cart: reload customer-aware data",
       description:
         "Cart data is loaded again because prices, promotions, and line items can depend on the authenticated customer context.",
       code: "refreshCart()",
       state: "cart, prices, promotions",
+      typeKeys: ["Cart"],
     },
   },
   {
     id: "ui-reactive",
-    label: "Reactive UI",
+    type: "flowStep",
     position: { x: 1060, y: 80 },
     class: "login-vue-flow__node login-vue-flow__node--ui",
     data: {
+      label: "Reactive UI",
+      action: "Render new state",
       title: "UI: render new state",
       description:
         "The page reads user, isLoggedIn, and cart data from composables instead of keeping a separate copy.",
       code: "user + isLoggedIn + cart",
       state: "reactive UI",
+      typeKeys: ["Customer", "Cart"],
     },
   },
 ]);
@@ -151,7 +170,23 @@ function selectNode(event: { node: (typeof nodes.value)[number] }) {
         :min-zoom="0.55"
         :max-zoom="1.2"
         @node-click="selectNode"
-      />
+      >
+        <template #node-flowStep="{ data }">
+          <div class="login-flow-node">
+            <strong>{{ data.label }}</strong>
+            <span>{{ data.action }}</span>
+            <div class="login-flow-node__types">
+              <span
+                v-for="typeKey in data.typeKeys"
+                :key="typeKey"
+                class="login-flow-node__type"
+              >
+                <SchemaTypeTooltip :type-key="typeKey" />
+              </span>
+            </div>
+          </div>
+        </template>
+      </VueFlow>
     </div>
 
     <!-- <aside class="login-vue-flow__panel">
@@ -176,10 +211,8 @@ function selectNode(event: { node: (typeof nodes.value)[number] }) {
 
 <style>
 .login-vue-flow .vue-flow__node.login-vue-flow__node {
-  width: 170px;
-  min-height: 72px;
-  display: grid;
-  place-items: center;
+  width: 190px;
+  min-height: 112px;
   padding: 12px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
@@ -189,6 +222,30 @@ function selectNode(event: { node: (typeof nodes.value)[number] }) {
   font-size: 13px;
   font-weight: 700;
   text-align: center;
+}
+
+.login-vue-flow .vue-flow {
+  overflow: visible;
+}
+
+.login-vue-flow .login-flow-node {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.login-vue-flow .login-flow-node > span {
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.login-vue-flow .login-flow-node__types {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
 }
 
 .login-vue-flow .vue-flow__node.login-vue-flow__node.selected {
@@ -239,7 +296,7 @@ function selectNode(event: { node: (typeof nodes.value)[number] }) {
   height: 360px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   background:
     linear-gradient(var(--vp-c-bg-soft), var(--vp-c-bg-soft)),
     var(--vp-c-bg);

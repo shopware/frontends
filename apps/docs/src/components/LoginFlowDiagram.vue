@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import SchemaTypeTooltip from "./SchemaTypeTooltip.vue";
 
 const steps = [
   {
@@ -9,6 +10,7 @@ const steps = [
       "The login form collects username and password, then calls the composable. The component owns loading and form error state only.",
     code: "submit() -> login(credentials)",
     state: "local form state",
+    typeKeys: ["LoginBody"],
   },
   {
     title: "Composable",
@@ -17,6 +19,7 @@ const steps = [
       "useUser owns the Shopware-specific workflow. It sends credentials first, then refreshes context and cart data.",
     code: "useUser().login(credentials)",
     state: "customer workflow",
+    typeKeys: ["LoginBody", "ContextTokenResponse"],
   },
   {
     title: "Store API",
@@ -25,6 +28,7 @@ const steps = [
       "The API client invokes the generated operation for POST /account/login. This step validates credentials.",
     code: 'apiClient.invoke("loginCustomer post /account/login")',
     state: "sw-context-token",
+    typeKeys: ["LoginBody", "ContextTokenResponse", "ApiError"],
   },
   {
     title: "Context",
@@ -33,6 +37,7 @@ const steps = [
       "The session context is fetched again so customer, customer group, currency, rules, and other context-dependent values are current.",
     code: 'apiClient.invoke("readContext get /context")',
     state: "user, isLoggedIn, sales channel context",
+    typeKeys: ["SalesChannelContext", "Customer"],
   },
   {
     title: "Cart",
@@ -41,6 +46,7 @@ const steps = [
       "The cart is refreshed because prices, promotions, and line items can depend on the authenticated customer context.",
     code: "refreshCart()",
     state: "cart, prices, promotions",
+    typeKeys: ["Cart"],
   },
   {
     title: "UI",
@@ -49,6 +55,7 @@ const steps = [
       "The UI reads user, isLoggedIn, and cart data from composables instead of keeping its own copy.",
     code: "user + isLoggedIn + cart",
     state: "reactive UI",
+    typeKeys: ["Customer", "Cart"],
   },
 ];
 
@@ -92,6 +99,16 @@ const activeStep = computed(() => steps[activeStepIndex.value]);
           <dt>State</dt>
           <dd>{{ activeStep.state }}</dd>
         </div>
+        <div>
+          <dt>Types</dt>
+          <dd class="login-flow__types">
+            <SchemaTypeTooltip
+              v-for="typeKey in activeStep.typeKeys"
+              :key="typeKey"
+              :type-key="typeKey"
+            />
+          </dd>
+        </div>
       </dl>
     </div>
   </section>
@@ -102,7 +119,7 @@ const activeStep = computed(() => steps[activeStepIndex.value]);
   margin: 24px 0;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   background: var(--vp-c-bg-soft);
 }
 
@@ -229,6 +246,12 @@ const activeStep = computed(() => steps[activeStepIndex.value]);
 .login-flow__facts code {
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+.login-flow__types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 @media (max-width: 960px) {

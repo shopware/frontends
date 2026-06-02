@@ -23,6 +23,7 @@ recipe:
 <script setup>
 import LoginFlowDiagram from "../../components/LoginFlowDiagram.vue";
 import LoginVueFlowDiagram from "../../components/LoginVueFlowDiagram.vue";
+import SchemaTypeTooltip from "../../components/SchemaTypeTooltip.vue";
 </script>
 
 # Login
@@ -38,6 +39,8 @@ Login is a small form action, but it changes the whole sales channel session. Th
 <ClientOnly>
   <LoginVueFlowDiagram />
 </ClientOnly>
+
+Hover a type chip to inspect fields generated from the current Store API schema.
 
 <LoginFlowDiagram />
 
@@ -56,9 +59,9 @@ You usually do not need to call `readContext get /context` manually after login,
 
 | Step | Code | Store API | Type |
 |---|---|---|---|
-| Submit credentials | `login(credentials)` | `POST /account/login` | `operations["loginCustomer post /account/login"]["body"]` |
-| Refresh session context | `refreshSessionContext()` | `GET /context` | `operations["readContext get /context"]["response"]` |
-| Logout customer | `logout()` | `POST /account/logout` | `operations["logoutCustomer post /account/logout"]["response"]` |
+| Submit credentials | `login(credentials)` | `POST /account/login` | <SchemaTypeTooltip type-key="LoginBody" label='operations["loginCustomer post /account/login"]["body"]' /> |
+| Refresh session context | `refreshSessionContext()` | `GET /context` | <SchemaTypeTooltip type-key="SalesChannelContext" label='operations["readContext get /context"]["response"]' /> |
+| Logout customer | `logout()` | `POST /account/logout` | <SchemaTypeTooltip type-key="LogoutResponse" label='operations["logoutCustomer post /account/logout"]["response"]' /> |
 
 ## Composables
 
@@ -69,6 +72,14 @@ You usually do not need to call `readContext get /context` manually after login,
 ## Types
 
 Use generated Store API types when you need to type credentials, responses, or lower-level API client calls:
+
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 18px;">
+  <SchemaTypeTooltip type-key="LoginBody" />
+  <SchemaTypeTooltip type-key="ContextTokenResponse" />
+  <SchemaTypeTooltip type-key="SalesChannelContext" />
+  <SchemaTypeTooltip type-key="Customer" />
+  <SchemaTypeTooltip type-key="Cart" />
+</div>
 
 ```ts
 import type { Schemas, operations } from "#shopware";
