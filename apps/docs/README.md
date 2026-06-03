@@ -38,3 +38,35 @@ _Just some thoughts and guides about how the documentation should work._
     _Just for copy and past examples strictly no guides here._
   - **Community Modules**
     _List of know community Modules for Fronteds._
+
+## Workflow
+
+*This repository is embedded into [developer-portal](https://github.com/shopware/developer-portal) under the [/frontends/](https://developer.shopware.com/frontends/). This repository is also connected to the Shopware Dev Docs connector GitHub app which manages commit status checks in PRs and triggers production deployments.
+
+## Development
+
+1. Clone this repository
+
+```bash
+cd /www/
+git clone git@github.com:shopware/frontends.git
+cd frontends
+```
+
+2. Make sure you have your local copy of the developer-portal repository in the same parent directory.
+
+```bash
+pnpm docs:env
+```
+
+3. Link articles from your local copy of the release-notes into the developer-portal.
+
+```bash
+pnpm docs:link
+```
+
+4. Start the development server.
+
+```bash
+pnpm docs:preview
+```
