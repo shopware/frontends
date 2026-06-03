@@ -55,7 +55,7 @@ export function useNavigation(params?: {
   ) {
     try {
       // `buildTree`/`depth` are dedicated GET query params, not part of `_criteria`.
-      const { buildTree, depth, ...criteria } = params ?? {};
+      const { buildTree, depth, ...criteria } = params;
       const navigationResponse = cacheableReads
         ? await apiClient.invoke(
             "readNavigationGet get /navigation/{activeId}/{rootId}",
@@ -69,8 +69,8 @@ export function useNavigation(params?: {
               },
               query: {
                 _criteria: encodeForQuery(criteria),
-                ...(buildTree !== undefined ? { buildTree } : {}),
-                ...(depth !== undefined ? { depth } : {}),
+                buildTree,
+                depth,
               },
             },
           )
