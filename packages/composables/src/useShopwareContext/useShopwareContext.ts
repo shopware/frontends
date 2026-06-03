@@ -13,6 +13,15 @@ export type ShopwareContext = {
    * If not provided, it will be "en-US"
    */
   browserLocale: string;
+  /**
+   * When `true`, composables read data through the cacheable GET variants of
+   * the Store API (criteria compressed into the `_criteria` query param)
+   * instead of POST. This unlocks HTTP/CDN caching and drops the CORS
+   * preflight, but requires a backend that supports the GET read routes.
+   *
+   * @default false
+   */
+  cacheableReads: boolean;
 };
 
 /**
@@ -33,5 +42,6 @@ export function useShopwareContext(): ShopwareContext {
     apiClient,
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
     browserLocale: shopwareContext.browserLocale || "en-US",
+    cacheableReads: shopwareContext.cacheableReads ?? false,
   };
 }
