@@ -53,7 +53,7 @@ git clone git@github.com:shopware/frontends.git
 cd frontends
 ```
 
-2. Make sure you have your local copy of the developer-portal repository in the same parent directory.
+2. Make sure you have your local copy of the `developer-portal` repository in the same parent directory.
 
 ```bash
 pnpm docs:env
