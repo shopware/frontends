@@ -134,7 +134,7 @@ export type ShopwareNuxtOptions = {
   /**
    * Read anonymous Store API data through cacheable GET routes instead of POST.
    * Criteria is compressed into the `_criteria` query param, which lets CDNs /
-   * reverse proxies cache the responses and removes the CORS preflight.
+   * reverse proxies / the browser cache the responses.
    *
    * Requires a Shopware backend that supports the GET read routes and the
    * `_criteria` query param. Leave disabled unless your caching layer is set up.

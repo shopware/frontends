@@ -80,8 +80,7 @@ export type RouteObject = {
 export function useInternationalization(
   pathResolver?: (path: string) => string,
 ): UseInternationalizationReturn {
-  const { devStorefrontUrl } = useShopwareContext();
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { devStorefrontUrl, apiClient, cacheableReads } = useShopwareContext();
 
   const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
