@@ -1456,6 +1456,9 @@ importers:
         specifier: 3.5.34
         version: 3.5.34(typescript@5.9.3)
     devDependencies:
+      '@types/js-cookie':
+        specifier: 3.0.6
+        version: 3.0.6
       '@types/node':
         specifier: 22.13.14
         version: 22.13.14
@@ -4891,6 +4894,9 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
+  '@types/js-cookie@3.0.6':
+    resolution: {integrity: sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==}
 
   '@types/jsesc@2.5.1':
     resolution: {integrity: sha512-9VN+6yxLOPLOav+7PwjZbxiID2bVaeq0ED4qSQmdQTdjnXJSaCVKTR58t15oqH1H5t8Ng2ZX1SabJVoN9Q34bw==}
@@ -16238,6 +16244,8 @@ snapshots:
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
+
+  '@types/js-cookie@3.0.6': {}
 
   '@types/jsesc@2.5.1': {}
 
