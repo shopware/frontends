@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
@@ -40,7 +41,7 @@ export type UseProductConfiguratorReturn = {
  * @category Product
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
 
   const { configurator, product } = useProduct();
 
@@ -91,19 +92,24 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
       ),
     ];
     try {
-      const response = await apiClient.invoke("readProduct post /product", {
-        body: {
-          filter,
-          limit: 1,
-          includes: {
-            product: ["id", "translated", "productNumber", "seoUrls"],
-            seo_url: ["seoPathInfo"],
-          },
-          associations: {
-            seoUrls: {},
-          },
+      const criteria = {
+        filter,
+        limit: 1,
+        includes: {
+          product: ["id", "translated", "productNumber", "seoUrls"],
+          seo_url: ["seoPathInfo"],
         },
-      });
+        associations: {
+          seoUrls: {},
+        },
+      };
+      const response = cacheableReads
+        ? await apiClient.invoke("readProductGet get /product", {
+            query: { _criteria: encodeForQuery(criteria) },
+          })
+        : await apiClient.invoke("readProduct post /product", {
+            body: criteria,
+          });
       return response.data.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);

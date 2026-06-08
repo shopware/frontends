@@ -22,7 +22,7 @@ export type UseSalutationsReturn = {
  * @category Context & Language
  */
 export function useSalutations(): UseSalutationsReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
 
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
@@ -30,7 +30,9 @@ export function useSalutations(): UseSalutationsReturn {
   const fetchSalutations = async (): Promise<
     operations["readSalutation post /salutation"]["response"]
   > => {
-    const result = await apiClient.invoke("readSalutation post /salutation");
+    const result = cacheableReads
+      ? await apiClient.invoke("readSalutationGet get /salutation")
+      : await apiClient.invoke("readSalutation post /salutation");
     _salutations.value = result.data.elements;
     return result.data;
   };

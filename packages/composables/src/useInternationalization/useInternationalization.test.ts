@@ -28,7 +28,18 @@ describe("useInternationalization", () => {
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     vm.getAvailableLanguages();
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readLanguages"),
+      expect.stringContaining("readLanguages post"),
+    );
+  });
+
+  it("getAvailableLanguages uses the cacheable GET variant when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(useInternationalization, {
+      shopware: { cacheableReads: true },
+    } as Parameters<typeof useSetup>[1]);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getAvailableLanguages();
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readLanguagesGet get /language",
     );
   });
 

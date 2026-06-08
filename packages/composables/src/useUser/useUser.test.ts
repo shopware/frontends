@@ -1,4 +1,5 @@
 import type { operations } from "@shopware/api-client/api-types";
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { useSetup } from "../_test";
@@ -187,7 +188,7 @@ describe("useUser", () => {
     await vm.loadCountry(countryId);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCountry"),
+      expect.stringContaining("readCountry post"),
       expect.objectContaining({
         body: {
           filter: [
@@ -341,7 +342,7 @@ describe("useUser", () => {
     const result = await vm.loadSalutation("test");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readSalutation"),
+      expect.stringContaining("readSalutation post"),
       expect.objectContaining({
         body: {
           filter: [
@@ -356,6 +357,37 @@ describe("useUser", () => {
     );
     expect(vm.salutation).toEqual({ id: "test", name: "test" });
     expect(result).toEqual(salutationData);
+  });
+
+  it("loadCountry / loadSalutation use GET variants when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(() => useUser(), {
+      shopware: { cacheableReads: true },
+    });
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    await vm.loadCountry("country-id");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCountryGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({
+            filter: [{ field: "id", type: "equals", value: "country-id" }],
+          }),
+        },
+      }),
+    );
+
+    await vm.loadSalutation("salutation-id");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSalutationGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({
+            filter: [{ field: "id", type: "equals", value: "salutation-id" }],
+          }),
+        },
+      }),
+    );
   });
 
   it("loadSalutation with empty elements sets salutation to null", async () => {
