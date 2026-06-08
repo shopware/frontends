@@ -75,7 +75,7 @@
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "unbuild": "2.0.0",
-    "vitest": "4.1.6",
+    "vitest": "4.1.8",
     "vue": "3.5.34"
   }
 }
