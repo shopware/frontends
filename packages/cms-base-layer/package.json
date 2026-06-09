@@ -63,7 +63,7 @@
     "nuxt": "4.4.6",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "unbuild": "2.0.0",
+    "unbuild": "3.6.1",
     "vitest": "4.1.6",
     "vue-router": "5.0.7",
     "vue-tsc": "3.2.9"

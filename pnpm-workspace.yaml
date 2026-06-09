@@ -3,6 +3,7 @@ packages:
   - "packages/*"
   - "templates/*"
   - "examples/*"
+  - "!examples/amazon-pay-button-example"
 
 templates:
   - "templates/*"

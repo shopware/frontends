@@ -41,7 +41,7 @@
     "@vitest/coverage-v8": "4.1.5",
     "happy-dom": "20.9.0",
     "tsconfig": "workspace:*",
-    "unbuild": "2.0.0",
+    "unbuild": "3.6.1",
     "vitest": "4.1.5"
   }
 }
