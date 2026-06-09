@@ -13,6 +13,9 @@ minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
 - '@typescript/native-preview'
+- 'happy-dom'
+- '@vue/test-utils'
+- '@adyen/adyen-web'
 
 auditConfig:
   ignoreGhsas:

@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { useNavigationSearch, useSessionContext } from "#imports";
@@ -220,5 +221,32 @@ describe("useNavigationSearch", () => {
       foreignKey: "categoryIdTest",
       routeName: "frontend.navigation.page",
     });
+  });
+
+  it("uses the cacheable GET variant when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch, {
+      shopware: { cacheableReads: true },
+    });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [mockedResponse] },
+    });
+
+    expect(await vm.resolvePath("/test")).toStrictEqual(mockedResponse);
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrlGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({
+            filter: [
+              {
+                type: "equals",
+                field: "seoPathInfo",
+                value: "test",
+              },
+            ],
+          }),
+        },
+      }),
+    );
   });
 });

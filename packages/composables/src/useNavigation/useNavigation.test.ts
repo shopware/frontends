@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { useSetup } from "../_test";
 import Menu from "../mocks/Menu";
@@ -59,9 +60,30 @@ describe("useNavigation", () => {
       includes: { category: ["name"] },
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readNavigation"),
+      expect.stringContaining("readNavigation post"),
       expect.objectContaining({
         body: { depth: 2, includes: { category: ["name"] } },
+      }),
+    );
+  });
+
+  it("should use the cacheable GET variant when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(useNavigation, {
+      shopware: { cacheableReads: true },
+    });
+    injections.apiClient.invoke.mockResolvedValue({ data: undefined });
+
+    await vm.loadNavigationElements({
+      depth: 2,
+      includes: { category: ["name"] },
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readNavigationGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({ includes: { category: ["name"] } }),
+          depth: 2,
+        },
       }),
     );
   });

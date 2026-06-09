@@ -125,6 +125,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     enableDevtools: true,
     devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,
     browserLocale,
+    cacheableReads: shopwareRuntimeConfigPublic?.cacheableReads ?? false,
   });
   NuxtApp.vueApp.provide("shopware", shopwareContext);
 

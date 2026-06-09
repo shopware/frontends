@@ -36,6 +36,20 @@ describe("useSalutations", () => {
     expect(vm.getSalutations).toStrictEqual([]);
   });
 
+  it("uses the cacheable GET variant when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(useSalutations, {
+      shopware: { cacheableReads: true },
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({ data: { elements: Salutations } }),
+      },
+    } as Parameters<typeof useSetup>[1]);
+    await vm.fetchSalutations();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readSalutationGet get /salutation",
+    );
+  });
+
   it("should not fetch when swSalutations already populated", async () => {
     const preloadedSalutations = ref(Salutations);
     const { vm, injections } = useSetup(useSalutations, {

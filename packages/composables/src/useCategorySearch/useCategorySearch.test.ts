@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
@@ -91,6 +92,33 @@ describe("useCategorySearch", () => {
         body: {
           ...cmsAssociations,
           limit: 10,
+        },
+      }),
+    );
+  });
+
+  it("advancedSearch uses the cacheable GET variant when cacheableReads is enabled", () => {
+    const { vm, injections } = useSetup(useCategorySearch, {
+      shopware: { cacheableReads: true },
+    });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {},
+    });
+
+    vm.advancedSearch({
+      query: {
+        limit: 10,
+      },
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCategoryListGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({
+            associations: {},
+            limit: 10,
+          }),
         },
       }),
     );
