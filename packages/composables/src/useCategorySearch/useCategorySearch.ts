@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 import { cmsAssociations } from "../cms/cmsAssociations";
@@ -30,7 +31,7 @@ export type UseCategorySearchReturn = {
  * @category Navigation & Routing
  */
 export function useCategorySearch(): UseCategorySearchReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
 
   async function search(
     categoryId: string,
@@ -65,12 +66,17 @@ export function useCategorySearch(): UseCategorySearchReturn {
     const associations = options?.withCmsAssociations
       ? cmsAssociations.associations
       : {};
-    const result = await apiClient.invoke("readCategoryList post /category", {
-      body: {
-        associations,
-        ...options?.query,
-      },
-    });
+    const criteria = {
+      associations,
+      ...options?.query,
+    };
+    const result = cacheableReads
+      ? await apiClient.invoke("readCategoryListGet get /category", {
+          query: { _criteria: encodeForQuery(criteria) },
+        })
+      : await apiClient.invoke("readCategoryList post /category", {
+          body: criteria,
+        });
     return result.data.elements ?? [];
   }
 

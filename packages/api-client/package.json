@@ -60,13 +60,13 @@
     "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.6",
+    "@vitest/coverage-v8": "4.1.8",
     "fflate": "0.8.3",
-    "happy-dom": "20.9.0",
+    "happy-dom": "20.10.1",
     "prettier": "3.8.3",
     "tsconfig": "workspace:*",
-    "unbuild": "2.0.0",
-    "vitest": "4.1.6"
+    "unbuild": "3.6.1",
+    "vitest": "4.1.8"
   },
   "dependencies": {
     "defu": "6.1.7",

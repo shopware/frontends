@@ -14,6 +14,13 @@ export function createShopwareContext(
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
     browserLocale?: string;
+    /**
+     * Opt in to reading data via cacheable GET Store API routes instead of
+     * POST. Surfaced on the Shopware context as `cacheableReads`.
+     *
+     * @default false
+     */
+    cacheableReads?: boolean;
   },
 ) {
   const scope: EffectScope = effectScope(true);
@@ -36,6 +43,7 @@ export function createShopwareContext(
     devStorefrontUrl: options.devStorefrontUrl,
     state,
     browserLocale: options.browserLocale || "en-US",
+    cacheableReads: options.cacheableReads ?? false,
   });
 
   if (options?.enableDevtools && typeof window !== "undefined") {

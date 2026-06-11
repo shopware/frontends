@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import {
   getRouteFromPathInfo,
   isTechnicalPath,
@@ -20,7 +21,7 @@ export type UseNavigationSearchReturn = {
  * @category Navigation & Routing
  */
 export function useNavigationSearch(): UseNavigationSearchReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
   const { sessionContext } = useSessionContext();
 
   async function resolvePath(path: string): Promise<Schemas["SeoUrl"] | null> {
@@ -42,17 +43,22 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       ? normalizePath(path)
       : path.substring(1);
 
-    const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
-      body: {
-        filter: [
-          {
-            type: "equals",
-            field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
-            value: normalizedPath,
-          },
-        ],
-      },
-    });
+    const criteria = {
+      filter: [
+        {
+          type: "equals" as const,
+          field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
+          value: normalizedPath,
+        },
+      ],
+    };
+    const seoResult = cacheableReads
+      ? await apiClient.invoke("readSeoUrlGet get /seo-url", {
+          query: { _criteria: encodeForQuery(criteria) },
+        })
+      : await apiClient.invoke("readSeoUrl post /seo-url", {
+          body: criteria,
+        });
 
     const element = seoResult.data.elements?.[0];
     if (element) {

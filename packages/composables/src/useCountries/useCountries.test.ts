@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { useSetup } from "../_test";
@@ -102,6 +103,23 @@ describe("useCountries", () => {
     });
 
     expect(vm.getCountriesOptions).toStrictEqual([]);
+  });
+
+  it("uses the cacheable GET variant when cacheableReads is enabled", async () => {
+    const { vm, injections } = await useSetup(useCountries, {
+      shopware: { cacheableReads: true },
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
+      },
+    } as Parameters<typeof useSetup>[1]);
+    await vm.fetchCountries();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCountryGet get"),
+      expect.objectContaining({
+        query: { _criteria: encodeForQuery({ associations: { states: {} } }) },
+      }),
+    );
   });
 
   it("should not fetch when swCountries already populated", async () => {

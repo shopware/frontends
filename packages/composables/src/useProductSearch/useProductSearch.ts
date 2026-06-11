@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { defu } from "defu";
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
@@ -28,7 +29,7 @@ export type UseProductSearchReturn = {
  * @category Navigation & Routing
  */
 export function useProductSearch(): UseProductSearchReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
 
   const search = async (
     productId: string,
@@ -39,16 +40,26 @@ export function useProductSearch(): UseProductSearchReturn {
       options?.criteria,
       { associations: options?.associations ?? {} },
     );
-    const result = await apiClient.invoke(
-      "readProductDetail post /product/{productId}",
-      {
-        headers: {
-          "sw-include-seo-urls": true,
-        },
-        pathParams: { productId },
-        body: associations,
-      },
-    );
+    const result = cacheableReads
+      ? await apiClient.invoke(
+          "readProductDetailGet get /product/{productId}",
+          {
+            headers: {
+              "sw-include-seo-urls": true,
+            },
+            pathParams: { productId },
+            query: {
+              _criteria: encodeForQuery(associations),
+            },
+          },
+        )
+      : await apiClient.invoke("readProductDetail post /product/{productId}", {
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          pathParams: { productId },
+          body: associations,
+        });
     return result.data;
   };
 

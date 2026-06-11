@@ -15,7 +15,7 @@ export default defineAppConfig({
 });
 ```
 
-See the [cms-base-layer README](../../../../../../README.md#%EF%B8%8F-background-image-optimization) for full details.
+See the [cms-base-layer README](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer#%EF%B8%8F-background-image-optimization) for full details.
 
 ### Example usage
 

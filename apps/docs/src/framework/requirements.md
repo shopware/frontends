@@ -73,5 +73,5 @@ npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-st
 npm i && npm run dev
 ```
 
-**Note:** The `vue-starter-template-extended` template uses Nuxt layers and requires additional setup. See the [template documentation](/getting-started/templates/vue-starter-template-extended.html#setup-run) for instructions.
+**Note:** The `vue-starter-template-extended` template uses Nuxt layers and requires additional setup. See the [template documentation](../getting-started/templates/vue-starter-template-extended.html#setup-run) for instructions.
 :::

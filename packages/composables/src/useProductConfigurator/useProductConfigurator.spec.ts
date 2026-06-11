@@ -40,6 +40,28 @@ describe("useProductConfigurator", () => {
     );
   });
 
+  it("findVariantForSelectedOptions uses the cacheable GET variant when cacheableReads is enabled", async () => {
+    vi.mocked(useProduct).mockReturnValue({
+      configurator: ref(mockedConfigurator),
+      product: ref(mockedProduct),
+    } as unknown as ReturnType<typeof useProduct>);
+    const { vm, injections } = useSetup(useProductConfigurator, {
+      shopware: { cacheableReads: true },
+    } as Parameters<typeof useSetup>[1]);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [mockedProduct] },
+    });
+
+    await vm.findVariantForSelectedOptions({ test: "test" });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readProductGet get /product",
+      expect.objectContaining({
+        query: expect.objectContaining({ _criteria: expect.any(String) }),
+      }),
+    );
+  });
+
   it("findVariantForSelectedOptions - error", async () => {
     console.error = vi.fn();
     const { vm, injections } = useSetup(useProductConfigurator);

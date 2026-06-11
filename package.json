@@ -49,23 +49,11 @@
   "packageManager": "pnpm@10.23.0",
   "pnpm": {
     "overrides": {
-      "@sentry/browser": "^7.119.1",
-      "@remix-run/router": "^1.23.2",
-      "esbuild": "^0.25.0",
-      "js-cookie": "^3.0.7",
       "axios": "^1.16.1",
-      "semver": "^7.8.0",
-      "markdown-it": "^14.1.1",
       "minimatch": "^10.2.5",
-      "react-router": "^7.12.0",
       "undici": "^6.24.0",
-      "lodash": "^4.18.0",
-      "lodash-es": "^4.18.0",
-      "vite": "^6.4.2",
-      "uuid": "^14.0.0",
-      "brace-expansion": "^5.0.6",
-      "ws": "^8.20.1",
-      "qs": "^6.15.1"
+      "unbuild": "^3.6.1",
+      "uuid": "^14.0.0"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
