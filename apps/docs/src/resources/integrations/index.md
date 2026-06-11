@@ -41,7 +41,7 @@ ensuring a harmonious and efficient synergy between your Shopware store and dive
     </a>
   </div>
   <div>
-    <a href="payments/paypal-express.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+    <a href="payments/paypal.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
       <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../.assets/payment-icons/paypal-express.png" alt="PayPal Express Logo" class="my-8 h-20 inline" /></span>
       <p class="font-normal text-gray-700 dark:text-gray-400 h-40">PayPal Express will increase your conversions. You can use PayPal Express with Shopware and Composable Frontends. Read more about this in this integration guide.</p>
     </a>
