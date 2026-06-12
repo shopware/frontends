@@ -7553,7 +7553,9 @@ export type Schemas = {
     };
     customer?: null | components["schemas"]["Customer"];
     extensions?: {
-      adyenData?: GenericRecord;
+      adyenData?: {
+        [key: string]: unknown;
+      };
     };
     /** Fallback group if the default customer group is not applicable */
     fallbackCustomerGroup?: {
