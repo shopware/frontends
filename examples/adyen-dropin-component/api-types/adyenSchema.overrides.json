@@ -1,0 +1,18 @@
+{
+  "components": {
+    "SalesChannelContext": [
+      {
+        "properties": {
+          "extensions": {
+            "type": "object",
+            "properties": {
+              "adyenData": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

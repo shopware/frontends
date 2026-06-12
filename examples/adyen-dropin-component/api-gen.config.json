@@ -3,7 +3,8 @@
   "store-api": {
     "patches": [
       "storeApiSchema.overrides.json",
-      "storeApiSchemaCommercial.overrides.json"
+      "storeApiSchemaCommercial.overrides.json",
+      "adyenSchema.overrides.json"
     ]
   }
 }

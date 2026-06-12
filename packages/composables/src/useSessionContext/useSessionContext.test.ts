@@ -72,7 +72,7 @@ describe("useSessionContext", () => {
     injections.apiClient.invoke.mockResolvedValue({
       data: {
         languageInfo: { name: "English", localeCode: "en-GB" },
-      } as Schemas["SalesChannelContext"],
+      },
     });
     await vm.refreshSessionContext();
     expect(vm.currentLocaleCode).toBe("en-GB");

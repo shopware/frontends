@@ -101,8 +101,6 @@ if (languages && router.currentRoute.value.name) {
       languageToChangeId = localeProperties.value.localeId as string;
     }
   } else {
-    // Prefer the active locale from the context's `languageInfo`; fall back to
-    // mapping the language id against the fetched list for older backends.
     const sessionLanguage =
       currentLocaleCode.value ?? getLanguageCodeFromId(languageIdChain.value);
 
