@@ -7,6 +7,7 @@ nav:
 
 # BEST PRACTICES
 
+<PageRef title="Caching" sub="Available caching strategies across the request, render, edge, backend, client, and asset layers." page="caching.html" />
 <PageRef title="Deployment" sub="Collection of good practices to help you provide a reliable application." page="deployment.html" />
 <PageRef title="Error Handling" sub="Describes different ways of handling errors in different cases." page="error-handling.html" />
 <PageRef title="Images" sub="Collection of good practices to manage images." page="images.html" />
