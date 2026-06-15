@@ -15,7 +15,7 @@ nav:
 
 # Caching
 
-A Shopware Frontends storefront caches at several independent layers. Each one solves a different problem, and they compose: a request can be served from the browser cache, a CDN, an ISR-rendered HTML page, the Shopware backend HTTP cache, or fall through to a fresh Store API call. This page describes the strategies available with `@shopware/frontends` (Nuxt 4 / Vue 3), when to reach for each, and how to configure them.
+A Shopware Frontends storefront caches at several independent layers. Each one solves a different problem, and they compose: a request can be served from the browser cache, a CDN, an ISR-rendered HTML page, the Shopware backend HTTP cache, or fall through to a fresh Store API call. This page describes the strategies available in a Shopware Frontends project (Nuxt 4 / Vue 3, built on packages such as `@shopware/nuxt-module` and `@shopware/composables`), when to reach for each, and how to configure them.
 
 ## Caching at a glance
 
@@ -36,7 +36,7 @@ ISR and route-rule caching are honored only by deployment targets that support t
 
 ## Request layer: `cacheableReads`
 
-`cacheableReads` is the headline new capability. It is an opt-in boolean flag (default `false`) that switches a defined set of read composables from POST to the cacheable GET variants of the Store API. POST responses are never HTTP-cacheable; GET responses can be cached by a CDN, a reverse proxy, or the browser. Enabling the flag is what makes that possible from the frontend side.
+`cacheableReads` is the headline new capability. It is an opt-in boolean flag (default `false`) that switches a defined set of read composables from POST to the cacheable GET variants of the Store API. POST responses are not cached by CDNs, reverse proxies, or browsers in practice (HTTP allows it only when explicitly marked, which shared caches generally ignore), whereas GET responses are cacheable by default. Enabling the flag is what makes that possible from the frontend side.
 
 When enabled, the affected composables encode the Shopware Criteria object into a `_criteria` query parameter (gzip + base64url, via `encodeForQuery` from `@shopware/api-client/helpers`) and call the GET route instead of sending a POST body.
 
@@ -44,7 +44,7 @@ When enabled, the affected composables encode the Shopware Criteria object into 
 
 Routing reads through GET is a deliberate Shopware platform decision, not just a frontend trick. The Store API [cache strategy](https://developer.shopware.com/docs/resources/references/adr/2025-09-15-store-api-cache-strategy.html) is to "prefer GET for non-mutating endpoints returning non-sensitive data", because GET responses are cacheable by default under HTTP semantics while POST responses are not. Several read routes historically defaulted to POST only so a large Criteria object could travel in the request body - and that body is exactly what makes them uncacheable.
 
-The `_criteria` query parameter exists to remove that constraint. Its encoding - JSON -> gzip -> base64url - is defined by the platform, and `encodeForQuery` in `@shopware/api-client/helpers` implements precisely that format so the compressed Criteria fits in a URL without hitting length limits. On the backend, `RequestCriteriaBuilder` decodes `_criteria` and rebuilds the same Criteria it would have parsed from a POST body, so the GET and POST variants return identical data. This is a transitional design: the interim approach until the HTTP `QUERY` method (a cacheable method that carries a body) is standardized.
+The `_criteria` query parameter exists to remove that constraint. Its encoding - JSON -> gzip -> base64url - is defined by the platform, and `encodeForQuery` in `@shopware/api-client/helpers` implements precisely that format, keeping the Criteria small enough to travel in the URL for typical reads (very large criteria can still exceed environment URL-length limits). On the backend, `RequestCriteriaBuilder` decodes `_criteria` and rebuilds the same Criteria it would have parsed from a POST body, so the GET and POST variants return identical data. This is a transitional design: the interim approach until the HTTP `QUERY` method (a cacheable method that carries a body) is standardized.
 
 A route can only be migrated to GET once its GET variant declares `_criteria` in the OpenAPI schema, because the generated, typed client is built from that schema. That schema gap - not a runtime limitation - is the only reason the reads listed further down stay on POST; the backend already honors `_criteria` on those GET routes at runtime.
 
