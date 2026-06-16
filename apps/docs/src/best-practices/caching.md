@@ -15,7 +15,7 @@ nav:
 
 # Caching
 
-A Shopware Frontends storefront caches at several independent layers. Each one solves a different problem, and they compose: a request can be served from the browser cache, a CDN, an ISR-rendered HTML page, the Shopware backend HTTP cache, or fall through to a fresh Store API call. This page describes the strategies available in a Shopware Frontends project (Nuxt 4 / Vue 3, built on packages such as `@shopware/nuxt-module` and `@shopware/composables`), when to reach for each, and how to configure them.
+Shopware Frontends templates cache at several independent layers. Each one solves a different problem, and they compose: a request can be served from the browser cache, a CDN, an ISR-rendered HTML page, the Shopware backend HTTP cache, or fall through to a fresh Store API call. This page describes the strategies available in a Shopware Frontends project (Nuxt 4 / Vue 3, built on packages such as `@shopware/nuxt-module`, `@shopware/composables`, and `@shopware/api-client`), when to reach for each, and how to configure them.
 
 ## Caching at a glance
 
@@ -28,7 +28,7 @@ A Shopware Frontends storefront caches at several independent layers. Each one s
 | Client state | Session, cart, user, listings, navigation | Browser memory (per session) | Shared composables, `provide`/`inject` |
 | Assets / images | Optimized images, SVGs, static files | CDN / browser | `@nuxt/image` presets, route headers |
 
-The first three layers are about HTTP responses. The backend HTTP cache is a platform concern that the request layer unlocks. The last two are about avoiding work the storefront already did.
+The first three layers are about HTTP responses; the last two are about avoiding work the storefront already did. Most of them are not specific to Shopware Frontends: the render layer (`routeRules`, ISR / SWR / prerender), Nitro cache storage, asset caching, and client-side shared state are standard [Nuxt](https://nuxt.com) / Nitro / Vue capabilities that a Shopware Frontends project configures like any other Nuxt app - we are one use case of what the framework already provides. Only the request layer (`cacheableReads`) and the Shopware backend HTTP cache it unlocks are Shopware-specific. This page focuses on how a storefront wires these pieces together and links out to the Nuxt and Nitro docs for the underlying features.
 
 ::: info
 ISR and route-rule caching are honored only by deployment targets that support them (a Node server, Vercel, Netlify, or another Nitro-compatible host) and only in a production build. They have no effect under `nuxt dev`. See [Deployment](/best-practices/deployment.html) for hosting models.
