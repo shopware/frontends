@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import * as path from "node:path";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { defineEventHandler, getQuery } from "h3";
 import { useRuntimeConfig } from "#imports";
+import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 export default defineEventHandler((event) => {
   const query = getQuery(event);

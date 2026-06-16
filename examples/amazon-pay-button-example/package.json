@@ -27,10 +27,10 @@
     "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
-    "@nuxt/kit": "4.4.6"
+    "@nuxt/kit": "4.4.6",
+    "axios": "1.16.1"
   },
   "devDependencies": {
-    "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.4",
     "@biomejs/biome": "1.8.3",
     "@nuxt/devtools": "3.2.4",
     "@nuxt/module-builder": "1.0.2",

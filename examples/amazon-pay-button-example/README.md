@@ -47,7 +47,9 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
    - [@shopware/nuxt-module](https://www.npmjs.com/package/@shopware/nuxt-module) - sets up your project to be Shopware 6 aware
    - [@shopware/composables](https://www.npmjs.com/package/@shopware/composables) - installs all the dependencies for the logic layer
    - [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) - API client for your REST API Shopware 6 backend
-   - [@amazonpay/amazon-pay-api-sdk-nodejs](https://www.npmjs.com/package/@amazonpay/amazon-pay-api-sdk-nodejs) - nodejs client for Amazon Pay API
+   - [axios](https://www.npmjs.com/package/axios) - HTTP client used by the vendored Amazon Pay SDK source
+
+   > Note: this example vendors the source code of [@amazonpay/amazon-pay-api-sdk-nodejs](https://www.npmjs.com/package/@amazonpay/amazon-pay-api-sdk-nodejs) under `src/runtime/server/vendor/amazon-pay-api-sdk-nodejs`. We do this because the currently published package is not up to date and brings vulnerable dependencies. Keeping the SDK source in the example lets us control the installed dependency versions directly. Once Amazon updates the package and resolves those dependency issues, this example should remove the vendored copy and return to the npm dependency.
 
 1. Register the module in your Nuxt 3 project
 

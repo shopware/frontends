@@ -1,0 +1,6 @@
+{
+  "extends": ["../../biome.json"],
+  "files": {
+    "ignore": ["src/runtime/server/vendor/amazon-pay-api-sdk-nodejs"]
+  }
+}

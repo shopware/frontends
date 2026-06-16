@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import * as path from "node:path";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { defineEventHandler } from "h3";
 import { v4 as uuidv4 } from "uuid";
 import { useRuntimeConfig } from "#imports";
+import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig();
