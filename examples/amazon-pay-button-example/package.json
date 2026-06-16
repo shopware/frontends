@@ -39,7 +39,7 @@
     "@shopware/api-client": "canary",
     "@shopware/nuxt-module": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.4.6",
+    "nuxt": "4.4.8",
     "typescript": "5.9.3",
     "uuid": "^14.0.0",
     "vue-tsc": "3.2.9"
