@@ -19,7 +19,7 @@
     "@shopware/helpers": "canary",
     "@unocss/nuxt": "66.6.8",
     "js-cookie": "3.0.7",
-    "nuxt": "4.4.6",
+    "nuxt": "4.4.7",
     "vue": "3.5.34"
   },
   "devDependencies": {
