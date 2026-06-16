@@ -81,11 +81,31 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     });
 
     const projectShopwareTypes = resolve(nuxt.options.rootDir, "shopware.d.ts");
-    if (!existsSync(projectShopwareTypes)) {
-      addTypeTemplate({
-        filename: "shopware.d.ts",
-        src: resolver.resolve("../shopware.d.ts"),
-      });
+    // Register `#shopware` in every type-check context, not just the app one.
+    const shopwareTypeContexts = {
+      nuxt: true,
+      nitro: true,
+      node: true,
+      shared: true,
+    };
+    if (existsSync(projectShopwareTypes)) {
+      // Reference the project's file in place so its relative imports keep resolving.
+      const referencePath = projectShopwareTypes.replace(/\\/g, "/");
+      addTypeTemplate(
+        {
+          filename: "shopware.d.ts",
+          getContents: () => `/// <reference path="${referencePath}" />\n`,
+        },
+        shopwareTypeContexts,
+      );
+    } else {
+      addTypeTemplate(
+        {
+          filename: "shopware.d.ts",
+          src: resolver.resolve("../shopware.d.ts"),
+        },
+        shopwareTypeContexts,
+      );
     }
 
     addCustomTab({

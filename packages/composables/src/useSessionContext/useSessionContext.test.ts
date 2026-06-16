@@ -67,6 +67,22 @@ describe("useSessionContext", () => {
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
   });
 
+  it("currentLocaleCode reads languageInfo.localeCode from the context", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        languageInfo: { name: "English", localeCode: "en-GB" },
+      },
+    });
+    await vm.refreshSessionContext();
+    expect(vm.currentLocaleCode).toBe("en-GB");
+  });
+
+  it("currentLocaleCode is undefined when the context has no languageInfo", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    expect(vm.currentLocaleCode).toBeUndefined();
+  });
+
   it("setShippingMethod", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });

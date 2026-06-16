@@ -104,6 +104,12 @@ export type UseSessionContextReturn = {
    */
   currentLanguageId: ComputedRef<string | undefined>;
   /**
+   * Locale code of the active language (e.g. `"en-GB"`), read from the
+   * context's `languageInfo`. Available from the session context alone — no
+   * separate language list request is required to detect the current locale.
+   */
+  currentLocaleCode: ComputedRef<string | undefined>;
+  /**
    * current context's customer object
    */
   userFromContext: ComputedRef<Schemas["Customer"] | undefined | null>;
@@ -262,6 +268,9 @@ export function useSessionContext(
   const languageIdChain = computed(
     () => sessionContext.value?.context?.languageIdChain?.[0] || "",
   );
+  const currentLocaleCode = computed(
+    () => sessionContext.value?.languageInfo?.localeCode,
+  );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);
 
@@ -287,6 +296,7 @@ export function useSessionContext(
     languageIdChain,
     salesChannelLanguageId: languageId,
     currentLanguageId: languageIdChain,
+    currentLocaleCode,
     setCountry,
     setContext,
   };

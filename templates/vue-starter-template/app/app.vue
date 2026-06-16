@@ -75,7 +75,8 @@ const {
 const router = useRouter();
 const route = useRoute();
 
-const { languageIdChain, refreshSessionContext } = useSessionContext();
+const { languageIdChain, currentLocaleCode, refreshSessionContext } =
+  useSessionContext();
 
 let languageToChangeId: string | null = null;
 
@@ -100,7 +101,8 @@ if (languages && router.currentRoute.value.name) {
       languageToChangeId = localeProperties.value.localeId as string;
     }
   } else {
-    const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
+    const sessionLanguage =
+      currentLocaleCode.value ?? getLanguageCodeFromId(languageIdChain.value);
 
     // If languages are not the same, set one from prefix
     if (sessionLanguage !== prefix) {
