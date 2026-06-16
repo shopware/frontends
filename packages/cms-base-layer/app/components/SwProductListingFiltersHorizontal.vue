@@ -8,13 +8,20 @@ import { defu } from "defu";
 import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import type { LocationQueryRaw } from "vue-router";
-import { useCategoryListing, useRoute, useRouter } from "#imports";
+import {
+  useCategoryListing,
+  useProductSearchListing,
+  useRoute,
+  useRouter,
+} from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
   listingType?: string;
 }>();
+
+const isProductSearch = props.listingType === "productSearchListing";
 
 type Translations = {
   listing: {
@@ -52,7 +59,7 @@ const {
   getInitialFilters,
   getSortingOrders,
   search,
-} = useCategoryListing();
+} = isProductSearch ? useProductSearchListing() : useCategoryListing();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
   reactive<FilterState>({
@@ -92,7 +99,7 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
     order: getCurrentSortingOrder.value as string,
     "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
     rating: sidebarSelectedFilters.rating as number,
-    search: "",
+    search: isProductSearch ? (route.query.search as string) ?? "" : "",
     limit: route.query.limit ? Number(route.query.limit) : 15,
   }));
 
@@ -184,6 +191,9 @@ const executeSearch = async () => {
     if (criteria["shipping-free"])
       query["shipping-free"] = criteria["shipping-free"];
     if (criteria.order) query.order = criteria.order;
+    // Keep the search term in the URL so filtering on the search page does not reset the query
+    if (isProductSearch && route.query.search)
+      query.search = route.query.search;
 
     await router.push({
       query: query as LocationQueryRaw,
