@@ -35,7 +35,6 @@
   },
   "overrides": {
     "glob": "^13",
-    "vue-i18n": "^11",
     "eslint-visitor-keys": "^4"
   }
 }

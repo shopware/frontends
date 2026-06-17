@@ -28,7 +28,7 @@
     "@nuxt/icon": "2.2.2",
     "@nuxt/image": "2.0.0",
     "@nuxt/vite-builder": "4.4.5",
-    "@nuxtjs/i18n": "10.3.0",
+    "@nuxtjs/i18n": "10.4.0",
     "@regle/core": "1.25.2",
     "@regle/rules": "1.25.2",
     "@shopware/api-client": "canary",
@@ -55,7 +55,6 @@
   },
   "overrides": {
     "glob": "^13",
-    "vue-i18n": "^11",
     "eslint-visitor-keys": "^4"
   }
 }
