@@ -50,22 +50,30 @@ const buildSearchCriteria =
     return criteria;
   };
 
-await useAsyncData(
+const { data: listing } = await useAsyncData(
   () => `productSearch-${JSON.stringify(route.query)}`,
   async () => {
     await search(buildSearchCriteria());
-    if (getCurrentListing.value) {
-      // Expose the result (and its aggregations) as the initial listing so the
-      // filter sidebar can build its options from getInitialFilters.
-      setInitialListing(
-        getCurrentListing.value as Schemas["ProductListingResult"],
-      );
-    }
     return getCurrentListing.value;
   },
   {
     watch: [() => route.query],
   },
+);
+
+// `listing` is serialized into the Nuxt payload, so mirror it into the shared
+// listing on both server and client. The composable's own refs are
+// request-scoped and don't transfer, so without this the client would render
+// an empty listing (hydration mismatch) and the filter sidebar would have no
+// options to build from getInitialFilters.
+watch(
+  listing,
+  (value) => {
+    if (value) {
+      setInitialListing(value as Schemas["ProductListingResult"]);
+    }
+  },
+  { immediate: true },
 );
 
 const changePage = async (page: number) => {
