@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "nuxt": "4.4.8",
-    "vue": "3.5.34",
+    "vue": "3.5.38",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "@shopware/api-gen": "canary",
     "@unocss/core": "66.6.8",
     "typescript": "5.9.3",
-    "vue-tsc": "3.2.9"
+    "vue-tsc": "3.3.5"
   },
   "overrides": {
     "glob": "^13",
