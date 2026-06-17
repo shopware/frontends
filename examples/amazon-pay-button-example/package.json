@@ -34,14 +34,14 @@
     "@biomejs/biome": "1.8.3",
     "@nuxt/devtools": "3.2.4",
     "@nuxt/module-builder": "1.0.2",
-    "@nuxt/schema": "4.4.6",
+    "@nuxt/schema": "4.4.8",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/nuxt-module": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.4.6",
+    "nuxt": "4.4.8",
     "typescript": "5.9.3",
     "uuid": "^14.0.0",
-    "vue-tsc": "3.2.9"
+    "vue-tsc": "3.3.5"
   }
 }
