@@ -31,7 +31,7 @@ Shopware Frontends templates cache at several independent layers. Each one solve
 The first three layers are about HTTP responses; the last two are about avoiding work the storefront already did. Most of them are not specific to Shopware Frontends: the render layer (`routeRules`, ISR / SWR / prerender), Nitro cache storage, asset caching, and client-side shared state are standard [Nuxt](https://nuxt.com) / Nitro / Vue capabilities that a Shopware Frontends project configures like any other Nuxt app - we are one use case of what the framework already provides. Only the request layer (`cacheableReads`) and the Shopware backend HTTP cache it unlocks are Shopware-specific. This page focuses on how a storefront wires these pieces together and links out to the Nuxt and Nitro docs for the underlying features.
 
 ::: info
-ISR and route-rule caching are honored only by deployment targets that support them (a Node server, Vercel, Netlify, or another Nitro-compatible host) and only in a production build. They have no effect under `nuxt dev`. See [Deployment](/best-practices/deployment.html) for hosting models.
+ISR and route-rule caching are honored only by deployment targets that support them (a Node server, Vercel, Netlify, or another Nitro-compatible host) and only in a production build. They have no effect under `nuxt dev`. See [Deployment](./deployment) for hosting models.
 :::
 
 ## Request layer: `cacheableReads`
