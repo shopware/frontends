@@ -46,24 +46,5 @@
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
   },
-  "packageManager": "pnpm@10.23.0",
-  "pnpm": {
-    "overrides": {
-      "axios": "^1.16.1",
-      "minimatch": "^10.2.5",
-      "undici": "^6.24.0",
-      "unbuild": "^3.6.1",
-      "uuid": "^14.0.0"
-    },
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "webpack",
-        "vite",
-        "react-dom",
-        "react",
-        "@types/react",
-        "@algolia/client-search"
-      ]
-    }
-  }
+  "packageManager": "pnpm@11.5.2"
 }
