@@ -18,11 +18,6 @@ minimumReleaseAgeExclude:
 - 'axios' # remove after 18/06/2026
 - 'astro' # remove after 17/06/2026
 
-auditConfig:
-  ignoreGhsas:
-    - CVE-2025-68458
-    - CVE-2025-68157
-    - CVE-2024-43788
 overrides:
   axios: ^1.18.0
   minimatch: ^10.2.5
