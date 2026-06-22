@@ -27,7 +27,7 @@
     "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
-    "@nuxt/kit": "4.4.6",
+    "@nuxt/kit": "4.4.8",
     "axios": "1.16.1"
   },
   "devDependencies": {
