@@ -16,18 +16,21 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
+    "@shopware/api-client": "canary",
     "@shopware/cms-base-layer": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
-    "@shopware/api-client": "canary",
+    "@unocss/core": "66.7.2",
     "@unocss/nuxt": "66.7.2",
+    "@unocss/transformer-directives": "66.7.2",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "14.3.0",
     "defu": "6.1.7",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
+    "unocss": "66.7.2",
     "vue": "3.5.38"
   },
   "devDependencies": {
@@ -37,8 +40,8 @@
     "@nuxtjs/i18n": "10.4.0",
     "@shopware/api-gen": "canary",
     "nuxt": "4.4.8",
-    "vite": "8.0.16",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "8.0.16"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
