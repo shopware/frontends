@@ -22,11 +22,11 @@
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit"
   },
   "dependencies": {
-    "@unocss/nuxt": "66.6.0",
-    "@unocss/core": "66.6.0",
-    "@unocss/preset-wind3": "66.6.0",
-    "@unocss/runtime": "66.6.0",
-    "unocss": "66.6.0"
+    "@unocss/nuxt": "66.7.2",
+    "@unocss/core": "66.7.2",
+    "@unocss/preset-wind3": "66.7.2",
+    "@unocss/runtime": "66.7.2",
+    "unocss": "66.7.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
