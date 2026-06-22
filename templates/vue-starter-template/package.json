@@ -50,7 +50,7 @@
     "@shopware/api-gen": "canary",
     "@vue/compiler-sfc": "3.5.34",
     "typescript": "5.9.3",
-    "vite": "7.3.2",
+    "vite": "7.3.5",
     "vue-tsc": "3.3.5"
   },
   "overrides": {
