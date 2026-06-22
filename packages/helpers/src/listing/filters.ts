@@ -52,7 +52,7 @@ function isEntitiesAggregation(
  * @beta
  */
 
-// biome-ignore lint/suspicious/noExplicitAny: Listing filters needs to be improved when schema types are ready
+// TODO: Listing filters need better schema-backed types.
 export function getListingFilters<T extends Record<string, any>>(
   aggregations: T | undefined | null,
 ): ListingFilter[] {

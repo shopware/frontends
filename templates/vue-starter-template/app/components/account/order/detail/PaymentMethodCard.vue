@@ -41,13 +41,9 @@ const emit = defineEmits<{
     <div v-else class="animate-pulse">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <div
-            class="w-32 h-4 bg-surface-surface-container rounded"
-          ></div>
+          <div class="w-32 h-4 bg-surface-surface-container rounded"></div>
         </div>
-        <div
-          class="w-24 h-8 bg-surface-surface-container rounded"
-        ></div>
+        <div class="w-24 h-8 bg-surface-surface-container rounded"></div>
       </div>
     </div>
   </div>

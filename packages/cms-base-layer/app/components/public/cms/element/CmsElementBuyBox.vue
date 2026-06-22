@@ -67,79 +67,96 @@ const unitName = computed(() => product.value?.unit?.name);
 const productName = computed(() => product.value?.translated?.name || "");
 </script>
 <template>
-    <div v-if="product" :class="{
-        'h-full w-full flex flex-col': true,
-        'justify-start': alignment === 'flex-start',
-        'justify-end': alignment === 'flex-end',
-        'justify-center': alignment === 'center',
-    }">
-        <div class="self-stretch inline-flex flex-col justify-start items-start gap-8 mt-4 min-w-0">
-            <div
-                class="md:hidden self-stretch text-surface-on-surface text-4xl font-normal font-serif leading-[60px]">
-                {{ productName }}</div>
+  <div
+    v-if="product"
+    :class="{
+      'h-full w-full flex flex-col': true,
+      'justify-start': alignment === 'flex-start',
+      'justify-end': alignment === 'flex-end',
+      'justify-center': alignment === 'center',
+    }"
+  >
+    <div
+      class="self-stretch inline-flex flex-col justify-start items-start gap-8 mt-4 min-w-0"
+    >
+      <div
+        class="md:hidden self-stretch text-surface-on-surface text-4xl font-normal font-serif leading-[60px]"
+      >
+        {{ productName }}
+      </div>
 
-            <div v-if="tierPrices.length <= 1">
-                <SwSharedPrice v-if="hasListPrice"
-                    class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
-                    :value="price?.listPrice?.price" />
-                <SwSharedPrice v-if="unitPrice"
-                    class="text-surface-on-surface text-base font-bold leading-normal"
-                    :class="{
-                        'text-red': hasListPrice,
-                    }" :value="unitPrice" />
-                <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
-                    {{ translations.product.previously }}
-                    <SwSharedPrice class="ml-1" :value="regulationPrice" />
-                </div>
-            </div>
-            <div v-else>
-                <table class="border-collapse table-auto w-full text-sm mb-8">
-                    <thead>
-                        <tr>
-                            <th
-                                class="border-b dark:border-secondary-600 font-medium p-4 pl-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left">
-                                {{ translations.product.amount }}
-                            </th>
-
-                            <th
-                                class="border-b dark:border-secondary-600 font-medium p-4 pr-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left">
-                                {{ translations.product.price.label }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white dark:bg-secondary-800">
-                        <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
-                            <td
-                                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pl-8 font-medium text-secondary-500 dark:text-secondary-400">
-                                <span v-if="index < tierPrices.length - 1">{{
-                                    translations.product.to
-                                    }}</span><span v-else>{{ translations.product.from }}</span>
-                                {{ tierPrice.quantity }}
-                            </td>
-                            <td
-                                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pr-8 font-medium text-current-500 dark:text-secondary-400">
-                                {{ getFormattedPrice(tierPrice.unitPrice) }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div v-if="purchaseUnit && unitName" class="mt-1">
-                <span class="font-light"> {{ translations.product.content }}: </span>
-                <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>
-                <span v-if="referencePrice" class="font-light">
-                    {{ currency?.symbol }} {{ referencePrice?.price }} / /
-                    {{ referencePrice?.referenceUnit }} {{ referencePrice?.unitName }}
-                </span>
-            </div>
-            <span class="text-brand-primary">
-                <template v-if="taxState === 'gross'">
-                    {{ translations.product.pricesIncl }}
-                </template>
-                <template v-else> {{ translations.product.pricesExcl }} </template>
-            </span>
-            <SwVariantConfigurator @change="changeVariant" />
-            <SwProductAddToCart :product="product" />
+      <div v-if="tierPrices.length <= 1">
+        <SwSharedPrice
+          v-if="hasListPrice"
+          class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
+          :value="price?.listPrice?.price"
+        />
+        <SwSharedPrice
+          v-if="unitPrice"
+          class="text-surface-on-surface text-base font-bold leading-normal"
+          :class="{
+            'text-red': hasListPrice,
+          }"
+          :value="unitPrice"
+        />
+        <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
+          {{ translations.product.previously }}
+          <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>
+      </div>
+      <div v-else>
+        <table class="border-collapse table-auto w-full text-sm mb-8">
+          <thead>
+            <tr>
+              <th
+                class="border-b dark:border-secondary-600 font-medium p-4 pl-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left"
+              >
+                {{ translations.product.amount }}
+              </th>
+
+              <th
+                class="border-b dark:border-secondary-600 font-medium p-4 pr-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left"
+              >
+                {{ translations.product.price.label }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-secondary-800">
+            <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
+              <td
+                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pl-8 font-medium text-secondary-500 dark:text-secondary-400"
+              >
+                <span v-if="index < tierPrices.length - 1">{{
+                  translations.product.to
+                }}</span
+                ><span v-else>{{ translations.product.from }}</span>
+                {{ tierPrice.quantity }}
+              </td>
+              <td
+                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pr-8 font-medium text-current-500 dark:text-secondary-400"
+              >
+                {{ getFormattedPrice(tierPrice.unitPrice) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-if="purchaseUnit && unitName" class="mt-1">
+        <span class="font-light"> {{ translations.product.content }}: </span>
+        <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>
+        <span v-if="referencePrice" class="font-light">
+          {{ currency?.symbol }} {{ referencePrice?.price }} / /
+          {{ referencePrice?.referenceUnit }} {{ referencePrice?.unitName }}
+        </span>
+      </div>
+      <span class="text-brand-primary">
+        <template v-if="taxState === 'gross'">
+          {{ translations.product.pricesIncl }}
+        </template>
+        <template v-else> {{ translations.product.pricesExcl }} </template>
+      </span>
+      <SwVariantConfigurator @change="changeVariant" />
+      <SwProductAddToCart :product="product" />
     </div>
+  </div>
 </template>

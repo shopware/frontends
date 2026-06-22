@@ -3,6 +3,6 @@
     "esbenp.prettier-vscode",
     "Vue.volar",
     "Gruntfuggly.todo-tree",
-    "biomejs.biome"
+    "oxc.oxc-vscode"
   ]
 }

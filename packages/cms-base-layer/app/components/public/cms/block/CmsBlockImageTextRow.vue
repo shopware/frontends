@@ -16,7 +16,9 @@ const rightImageContent = getSlotContent("right-image");
 const rightTextContent = getSlotContent("right-text");
 </script>
 <template>
-  <div class="cms-block-image-text-row flex flex-col md:flex-row justify-center items-stretch gap-6 w-full">
+  <div
+    class="cms-block-image-text-row flex flex-col md:flex-row justify-center items-stretch gap-6 w-full"
+  >
     <div class="w-full md:flex-1 flex flex-col">
       <div class="flex-1 mb-4 overflow-hidden rounded-lg min-h-64">
         <CmsGenericElement :content="leftImageContent" />

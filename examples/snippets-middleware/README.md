@@ -127,7 +127,6 @@ Since the pretty URLs can also be translated, the example shows how to achieve p
 
 the example uses [Summer Trends](https://frontends-demo.vercel.app/Summer-Trends/) page that has a a different URL for different language
 
-
 ## FURTHER STEPS
 
 1. Add caching layers (HTTP Cache / LRU Cache /... ) to speed up

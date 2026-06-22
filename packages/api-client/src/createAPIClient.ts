@@ -73,7 +73,7 @@ export type ApiClientHooks = {
 };
 
 export function createAPIClient<
-  // biome-ignore lint/suspicious/noExplicitAny: we allow for broader types to be used
+  // TODO: Keep this broad until generated operation types are narrowed.
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
 >(params: {
@@ -143,10 +143,10 @@ export function createAPIClient<
         ? R
         : never
       : never,
-    CURRENT_OPERATION extends
-      OPERATIONS[OPERATION_NAME] = OPERATION_NAME extends keyof OPERATIONS
-      ? OPERATIONS[OPERATION_NAME]
-      : never,
+    CURRENT_OPERATION extends OPERATIONS[OPERATION_NAME] =
+      OPERATION_NAME extends keyof OPERATIONS
+        ? OPERATIONS[OPERATION_NAME]
+        : never,
   >(
     pathParam: OPERATION_NAME extends keyof OPERATIONS ? OPERATION_NAME : never,
     ...params: SimpleUnionOmit<

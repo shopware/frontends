@@ -58,9 +58,7 @@ const miniCartModal = useMiniCartModal();
                   {{ wishlistCount }}
                 </span>
                 <template #fallback>
-                  <div
-                    class="w-7 h-7 i-carbon-favorite text-secondary-600"
-                  />
+                  <div class="w-7 h-7 i-carbon-favorite text-secondary-600" />
                 </template>
               </ClientOnly>
             </NuxtLink>

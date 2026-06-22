@@ -65,15 +65,17 @@ const toggle = () => {
           @keydown.space.prevent="toggle"
         >
           <div class="flex-1 flex items-center gap-2.5">
-            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            <div
+              class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left"
+            >
               {{ filter.label }}
             </div>
           </div>
-          <span
-            class="flex items-center justify-center"
-            aria-hidden="true"
-          >
-            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          <span class="flex items-center justify-center" aria-hidden="true">
+            <SwChevronIcon
+              :direction="isFilterVisible ? 'up' : 'down'"
+              :size="24"
+            />
           </span>
         </div>
       </div>
@@ -81,14 +83,23 @@ const toggle = () => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || displayMode === 'dropdown'" class="self-stretch flex flex-col justify-start items-start gap-4">
+      <div
+        v-if="isFilterVisible || displayMode === 'dropdown'"
+        class="self-stretch flex flex-col justify-start items-start gap-4"
+      >
         <div class="flex flex-row items-center gap-2 mt-2">
           <div
             v-for="i in 5"
             :key="i"
-            :class="['h-6 w-6 cursor-pointer', displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star']"
+            :class="[
+              'h-6 w-6 cursor-pointer',
+              displayedScore >= i ? 'i-carbon-star-filled' : 'i-carbon-star',
+            ]"
             @mouseleave="isHoverActive = false"
-            @click="hoverRating(i); onChangeRating()"
+            @click="
+              hoverRating(i);
+              onChangeRating();
+            "
             @mouseover="hoverRating(i)"
             :aria-label="`${i} star${i !== 1 ? 's' : ''}`"
           />

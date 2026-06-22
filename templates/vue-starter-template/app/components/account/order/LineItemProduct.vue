@@ -22,7 +22,7 @@ const getMediaFileHandler = async (mediaId: string, fileName: string) => {
 </script>
 <template>
   <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-1 sm:gap-y-10 gap-x-1 py-4 border-t  border-outline-outline text-surface-on-surface sm:items-center"
+    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-1 sm:gap-y-10 gap-x-1 py-4 border-t border-outline-outline text-surface-on-surface sm:items-center"
   >
     <div
       class="sm:flex items-center sm:items-center col-span-2 text-surface-on-surface"

@@ -77,15 +77,17 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
           @keydown.space.prevent="toggle"
         >
           <div class="flex-1 flex items-center gap-2.5">
-            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            <div
+              class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left"
+            >
               {{ filter.label }}
             </div>
           </div>
-          <span
-            class="flex items-center justify-center"
-            aria-hidden="true"
-          >
-            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          <span class="flex items-center justify-center" aria-hidden="true">
+            <SwChevronIcon
+              :direction="isFilterVisible ? 'up' : 'down'"
+              :size="24"
+            />
           </span>
         </div>
       </div>
@@ -93,9 +95,14 @@ const handleRadioUpdate = (val: string | null | boolean | undefined) => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || displayMode === 'dropdown'" class="self-stretch">
+      <div
+        v-if="isFilterVisible || displayMode === 'dropdown'"
+        class="self-stretch"
+      >
         <div class="pt-6 space-y-4">
-          <div class="self-stretch inline-flex justify-start items-start gap-2 w-full">
+          <div
+            class="self-stretch inline-flex justify-start items-start gap-2 w-full"
+          >
             <div class="flex-1 pt-[3px]">
               <SwSwitchButton
                 :model-value="currentFilterData"

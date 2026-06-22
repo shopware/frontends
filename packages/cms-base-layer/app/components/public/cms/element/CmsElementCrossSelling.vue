@@ -80,7 +80,8 @@ const toggleTab = (index: number) => {
         :key="index"
         class="transition text-lg font-semibold text-surface-on-surface-variant cursor-pointer"
         :class="{
-          'border-b-3 border-brand-primary text-brand-primary': currentTabIndex === index,
+          'border-b-3 border-brand-primary text-brand-primary':
+            currentTabIndex === index,
         }"
         @click="toggleTab(index)"
       >

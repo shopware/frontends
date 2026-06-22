@@ -147,9 +147,7 @@ const handleDownload = async (mediaId: string, fileName: string) => {
             <div class="h-3 bg-gray-200 rounded w-1/4" />
             <div class="h-3 bg-gray-200 rounded w-1/5" />
           </div>
-          <div
-            class="border-t border-gray-200 mt-2 pt-2 flex justify-between"
-          >
+          <div class="border-t border-gray-200 mt-2 pt-2 flex justify-between">
             <div class="h-4 bg-gray-200 rounded w-1/4" />
             <div class="h-4 bg-gray-200 rounded w-1/5" />
           </div>

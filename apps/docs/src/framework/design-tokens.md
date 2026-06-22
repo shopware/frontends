@@ -23,24 +23,22 @@ Templates like the [Vue Starter Template](../getting-started/templates/vue-start
 
 Every token name follows the pattern **`<category>-<role>[-<variant>]`**.
 
-| Category | Purpose | Examples |
-|----------|---------|----------|
-| `brand` | Primary, secondary, and tertiary brand colours with hover/pressed states | `brand-primary`, `brand-on-secondary` |
-| `surface` | Backgrounds, containers, and their foreground (on-*) counterparts | `surface-surface-container-high`, `surface-on-surface` |
-| `outline` | Borders and dividers | `outline-outline`, `outline-outline-focus` |
-| `states` | Semantic feedback colours — info, success, warning, error | `states-error`, `states-on-warning-container` |
-| `fixed` | Colours that do not change between themes | `fixed-fixed-on-image` |
-| `other` | Miscellaneous — sale badges, shadows | `other-sale`, `other-shadow` |
-| `overlay` | Semi-transparent dark/light overlays | `overlay-dark-high`, `overlay-light-low` |
+| Category  | Purpose                                                                  | Examples                                               |
+| --------- | ------------------------------------------------------------------------ | ------------------------------------------------------ |
+| `brand`   | Primary, secondary, and tertiary brand colours with hover/pressed states | `brand-primary`, `brand-on-secondary`                  |
+| `surface` | Backgrounds, containers, and their foreground (on-\*) counterparts       | `surface-surface-container-high`, `surface-on-surface` |
+| `outline` | Borders and dividers                                                     | `outline-outline`, `outline-outline-focus`             |
+| `states`  | Semantic feedback colours — info, success, warning, error                | `states-error`, `states-on-warning-container`          |
+| `fixed`   | Colours that do not change between themes                                | `fixed-fixed-on-image`                                 |
+| `other`   | Miscellaneous — sale badges, shadows                                     | `other-sale`, `other-shadow`                           |
+| `overlay` | Semi-transparent dark/light overlays                                     | `overlay-dark-high`, `overlay-light-low`               |
 
 ## Usage
 
 Because the tokens are registered as Uno `theme.colors`, they work with every color utility:
 
 ```html
-<div class="bg-brand-primary text-brand-on-primary">
-  Primary button
-</div>
+<div class="bg-brand-primary text-brand-on-primary">Primary button</div>
 
 <p class="text-states-error">Something went wrong.</p>
 
@@ -48,9 +46,7 @@ Because the tokens are registered as Uno `theme.colors`, they work with every co
   Card with outline border
 </div>
 
-<div class="bg-overlay-dark-high">
-  Dark overlay at 50 % opacity
-</div>
+<div class="bg-overlay-dark-high">Dark overlay at 50 % opacity</div>
 ```
 
 ## Customising tokens

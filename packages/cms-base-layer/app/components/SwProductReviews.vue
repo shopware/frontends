@@ -77,7 +77,10 @@ const formatDate = (date: string) => {
       v-for="(review, index) in reviewsList"
       :key="review.id"
       class="pb-6"
-      :class="{ 'border-b border-surface-surface-container-highest': index < reviewsList.length - 1 }"
+      :class="{
+        'border-b border-surface-surface-container-highest':
+          index < reviewsList.length - 1,
+      }"
     >
       <div
         v-if="review.createdAt"
@@ -87,19 +90,23 @@ const formatDate = (date: string) => {
         <span>{{ formatDate(review.createdAt) }}</span>
       </div>
       <div
-          v-if="!review.status"
-          class="mt-2 text-3 p-2 bg-states-info-container text-states-on-info-container flex gap-2 items-center"
-        >
+        v-if="!review.status"
+        class="mt-2 text-3 p-2 bg-states-info-container text-states-on-info-container flex gap-2 items-center"
+      >
         <div class="w-6 h-6 i-carbon-warning" />
         {{ translations.product.reviewNotAccepted }}
       </div>
-      <div class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2">
+      <div
+        class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
+      >
         <SwProductRating
           :rating="review.points ?? 0"
           :star-size="20"
           :show-count="false"
         />
-        <div class="cms-block-product-description-reviews__reviews-title font-semibold ml-2">
+        <div
+          class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
+        >
           <p>{{ review.title }}</p>
         </div>
       </div>

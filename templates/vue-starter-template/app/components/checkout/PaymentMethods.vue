@@ -52,7 +52,11 @@ function handleChange(id: string) {
           </div>
         </div>
         <div class="ml-auto">
-          <NuxtImg :src="getPaymentMethodIcon(paymentMethod)" height="32" :alt="paymentMethod.translated.name" />
+          <NuxtImg
+            :src="getPaymentMethodIcon(paymentMethod)"
+            height="32"
+            :alt="paymentMethod.translated.name"
+          />
         </div>
       </label>
     </div>

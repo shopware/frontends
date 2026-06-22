@@ -299,7 +299,9 @@ const hasActiveFilter = (filter: { code: string }) => {
         type="button"
       >
         {{ translations.listing.resetFilters }}
-        <span class="w-5 h-5 i-carbon-close inline-block align-middle ml-1"></span>
+        <span
+          class="w-5 h-5 i-carbon-close inline-block align-middle ml-1"
+        ></span>
       </SwBaseButton>
     </div>
   </div>

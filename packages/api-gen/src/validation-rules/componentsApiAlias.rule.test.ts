@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import componentsApiAliasRule from "./componentsApiAlias.rule";
 
 function _uncolorize(str: string | null) {
-  // biome-ignore lint: noControlCharactersInRegex used to decolorize output
+  // oxlint-disable-next-line no-control-regex
   return str?.replace(/\u001b[^m]*?m/g, "");
 }
 

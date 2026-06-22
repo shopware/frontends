@@ -37,9 +37,6 @@ export function useProductAssociations(
   if (!product.value)
     throw new Error("[useProductAssociations]: Product is not provided.");
 
-  // @ts-ignore: temporary until fixed or removed
-  const association = options.associationContext;
-
   const { apiClient } = useShopwareContext();
   const isLoading = ref(false);
   const associations = ref<Schemas["CrossSellingElementCollection"]>([]);

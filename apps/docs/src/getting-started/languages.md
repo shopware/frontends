@@ -160,7 +160,7 @@ To handle multiple domains for different languages, you can configure your appli
 
 [Check example](https://github.com/shopware/frontends/tree/main/examples/i18n-multi-domain)
 
-*This example should be run locally because of the multi-domain requirements*
+_This example should be run locally because of the multi-domain requirements_
 
 ## Switching language locally
 
@@ -182,8 +182,8 @@ const onChangeHandler = async (option: Event) => {
 
 This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
 
-
 ### Locally host overrides
+
 The idea of this solution is to override the domain locally in the `hosts` file.
 
 Windows: `C:\Windows\System32\drivers\etc`
@@ -218,7 +218,7 @@ const onChangeHandler = async (option: Event) => {
     window.location.replace(`${window.location.origin}/${locale.value}`);
     return;
   }
-  
+
   if (data.redirectUrl) {
     window.location.replace(replaceToDevStorefront(data.redirectUrl));
   } else {
@@ -233,7 +233,7 @@ When deploying your application behind a reverse proxy, such as Fastly, Cloudfla
 
 To face possible issues with language switching, you would need to understand how [@nuxtjs/i18n](https://i18n.nuxtjs.org/) module works:
 
-###  **Language Detection**
+### **Language Detection**
 
 The i18n module detects the user's preferred language based on the URL or the `Accept-Language` header.xz
 The setting can be disabled by setting `detectBrowserLanguage: false` in the i18n module configuration. Then, the language will be determined solely based on the URL and the configured locales.
@@ -242,8 +242,8 @@ The setting can be disabled by setting `detectBrowserLanguage: false` in the i18
 
 The i18n module uses a specific URL structure to differentiate between languages. For example, it might use `/en/` for English and `/de/` for German. There are two strategies for this:
 
-   - `prefix_except_default`: This strategy adds a prefix to the URL for all languages except the default one.
-   - `prefix_and_default`: This strategy adds a prefix to the URL for all languages, including the default one.
+- `prefix_except_default`: This strategy adds a prefix to the URL for all languages except the default one.
+- `prefix_and_default`: This strategy adds a prefix to the URL for all languages, including the default one.
 
 ### Multiple locales for the same domain
 

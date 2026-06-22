@@ -89,28 +89,39 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full self-stretch inline-flex flex-col justify-start items-start gap-4">
+  <div
+    class="w-full self-stretch inline-flex flex-col justify-start items-start gap-4"
+  >
     <div class="self-stretch flex flex-col justify-center items-center">
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
-        @click="toggleSection(1)">
+        @click="toggleSection(1)"
+      >
         <div class="flex-1 flex items-center gap-2.5">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+          <div
+            class="flex-1 text-surface-on-surface text-base font-bold leading-normal"
+          >
             {{ translations.product.description }}
           </div>
         </div>
         <div class="w-6 h-6 relative">
           <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
-            <div class="i-carbon-chevron-down transition-transform duration-200"
-              :class="{ 'rotate-180': isSectionOpen(1) }"></div>
+            <div
+              class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(1) }"
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <Transition name="accordion">
-      <div v-if="isSectionOpen(1)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+      <div
+        v-if="isSectionOpen(1)"
+        class="self-stretch flex flex-col justify-center items-center gap-2.5"
+      >
         <div
-          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal"
+        >
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div v-html="description"></div>
         </div>
@@ -119,43 +130,68 @@ onMounted(async () => {
     <div class="self-stretch flex flex-col justify-center items-center">
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
-        @click="toggleSection(2)">
+        @click="toggleSection(2)"
+      >
         <div class="flex-1 flex items-center gap-2.5">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+          <div
+            class="flex-1 text-surface-on-surface text-base font-bold leading-normal"
+          >
             {{ translations.product.reviews }} ({{ reviews.length }})
           </div>
         </div>
         <div class="w-6 h-6 relative">
           <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
-            <div class="i-carbon-chevron-down transition-transform duration-200"
-              :class="{ 'rotate-180': isSectionOpen(2) }"></div>
+            <div
+              class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(2) }"
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <Transition name="accordion">
-      <div v-if="isSectionOpen(2)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+      <div
+        v-if="isSectionOpen(2)"
+        class="self-stretch flex flex-col justify-center items-center gap-2.5"
+      >
         <div
-          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
-          <SwProductReviews v-if="product" :product="product" :reviews="reviews" />
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal"
+        >
+          <SwProductReviews
+            v-if="product"
+            :product="product"
+            :reviews="reviews"
+          />
           <ClientOnly>
             <SwProductReviewsForm
               v-if="isLoggedIn && !reviewAdded && product"
               :product-id="product.id"
               @success="handleReviewAdded"
             />
-            <div v-else-if="!isLoggedIn && product" class="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center">
-              <div class="w-5 h-5 text-surface-on-surface-variant flex-shrink-0">
+            <div
+              v-else-if="!isLoggedIn && product"
+              class="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center"
+            >
+              <div
+                class="w-5 h-5 text-surface-on-surface-variant flex-shrink-0"
+              >
                 <SwUserIcon :size="20" />
               </div>
-              <span class="text-sm text-surface-on-surface-variant">{{ translations.product.messages.loginToReview }}</span>
+              <span class="text-sm text-surface-on-surface-variant">{{
+                translations.product.messages.loginToReview
+              }}</span>
             </div>
           </ClientOnly>
-          <div v-if="reviewAdded" class="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center">
+          <div
+            v-if="reviewAdded"
+            class="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center"
+          >
             <div class="w-5 h-5 text-states-success flex-shrink-0">
               <SwCheckmarkIcon :size="20" :filled="true" alt="Success" />
             </div>
-            <span class="text-sm text-states-success">{{ translations.product.messages.reviewAdded }}</span>
+            <span class="text-sm text-states-success">{{
+              translations.product.messages.reviewAdded
+            }}</span>
           </div>
         </div>
       </div>
@@ -163,32 +199,43 @@ onMounted(async () => {
     <div class="self-stretch flex flex-col justify-center items-center">
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
-        @click="toggleSection(3)">
+        @click="toggleSection(3)"
+      >
         <div class="flex-1 flex items-center gap-2.5">
-          <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+          <div
+            class="flex-1 text-surface-on-surface text-base font-bold leading-normal"
+          >
             Category
           </div>
         </div>
         <div class="w-6 h-6 relative">
           <div class="w-2.5 h-1.5 left-[7px] top-[9.50px] absolute">
-            <div class="i-carbon-chevron-down transition-transform duration-200"
-              :class="{ 'rotate-180': isSectionOpen(3) }"></div>
+            <div
+              class="i-carbon-chevron-down transition-transform duration-200"
+              :class="{ 'rotate-180': isSectionOpen(3) }"
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <Transition name="accordion">
-      <div v-if="isSectionOpen(3)" class="self-stretch flex flex-col justify-center items-center gap-2.5">
+      <div
+        v-if="isSectionOpen(3)"
+        class="self-stretch flex flex-col justify-center items-center gap-2.5"
+      >
         <div
-          class="self-stretch text-surface-on-surface text-base font-normal leading-normal">
+          class="self-stretch text-surface-on-surface text-base font-normal leading-normal"
+        >
           <div v-if="product?.categories">
-            <div v-for="category in product.categories" :key="category.id" class="mb-2">
+            <div
+              v-for="category in product.categories"
+              :key="category.id"
+              class="mb-2"
+            >
               {{ category.name }}
             </div>
           </div>
-          <div v-else>
-            No categories available
-          </div>
+          <div v-else>No categories available</div>
         </div>
       </div>
     </Transition>

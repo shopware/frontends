@@ -46,9 +46,7 @@ const emit = defineEmits<{
           </th>
         </tr>
       </thead>
-      <tbody
-        class="bg-surface-surface divide-y divide-outline-outline-variant"
-      >
+      <tbody class="bg-surface-surface divide-y divide-outline-outline-variant">
         <template v-for="item in lineItems" :key="item.id">
           <tr>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -66,9 +64,7 @@ const emit = defineEmits<{
                   ></div>
                 </div>
                 <div class="ml-4">
-                  <div
-                    class="text-sm font-medium text-surface-on-surface"
-                  >
+                  <div class="text-sm font-medium text-surface-on-surface">
                     {{ item.label }}
 
                     <span
@@ -106,10 +102,7 @@ const emit = defineEmits<{
           </tr>
           <tr v-if="item.downloads?.length">
             <td colspan="4" class="py-3">
-              <template
-                v-for="media in getMedia(item)"
-                :key="media.id"
-              >
+              <template v-for="media in getMedia(item)" :key="media.id">
                 <div
                   v-if="media.accessGranted"
                   class="flex gap-2 cursor-pointer pl-5 pb-3 hover:text-brand-primary"

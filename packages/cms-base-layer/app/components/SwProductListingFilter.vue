@@ -58,7 +58,10 @@ const filterComponent = computed<Component | undefined>(() => {
 const handleSelectValue = ({
   code,
   value,
-}: { code: string; value: string | number | boolean }) => {
+}: {
+  code: string;
+  value: string | number | boolean;
+}) => {
   emit("filter-change", { code, value });
 };
 </script>

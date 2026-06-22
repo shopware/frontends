@@ -389,7 +389,7 @@ const handleChangeBaseInfo = async (data: {
                 {{ $t("checkout.personalInformationInfo") }}
               </div>
               <button
-              v-if="isUserSession"
+                v-if="isUserSession"
                 class="cursor-pointer i-carbon-edit text-xl inline-block absolute right-0 top-0"
                 data-testid="personal-information-edit"
                 @click.prevent="editPersonalInfo = !editPersonalInfo"
@@ -475,7 +475,9 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.firstName.$touch()"
                   />
                   <span
-                    v-if="$v.firstName.$error && $v.firstName.$errors[0]?.$message"
+                    v-if="
+                      $v.firstName.$error && $v.firstName.$errors[0]?.$message
+                    "
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.firstName.$errors[0].$message }}
@@ -500,7 +502,9 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.lastName.$touch()"
                   />
                   <span
-                    v-if="$v.lastName.$error && $v.lastName.$errors[0]?.$message"
+                    v-if="
+                      $v.lastName.$error && $v.lastName.$errors[0]?.$message
+                    "
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.lastName.$errors[0].$message }}
@@ -567,7 +571,9 @@ const handleChangeBaseInfo = async (data: {
                       @blur="$v.password.$touch()"
                     />
                     <span
-                      v-if="$v.password.$error && $v.password.$errors[0]?.$message"
+                      v-if="
+                        $v.password.$error && $v.password.$errors[0]?.$message
+                      "
                       class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                     >
                       {{ $v.password.$errors[0].$message }}
@@ -594,7 +600,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.street.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.street.$error && $v.billingAddress.street.$errors[0]?.$message"
+                    v-if="
+                      $v.billingAddress.street.$error &&
+                      $v.billingAddress.street.$errors[0]?.$message
+                    "
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.street.$errors[0].$message }}
@@ -620,7 +629,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.zipcode.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.zipcode.$error && $v.billingAddress.zipcode.$errors[0]?.$message"
+                    v-if="
+                      $v.billingAddress.zipcode.$error &&
+                      $v.billingAddress.zipcode.$errors[0]?.$message
+                    "
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.zipcode.$errors[0].$message }}
@@ -645,7 +657,10 @@ const handleChangeBaseInfo = async (data: {
                     @blur="$v.billingAddress.city.$touch()"
                   />
                   <span
-                    v-if="$v.billingAddress.city.$error && $v.billingAddress.city.$errors[0]?.$message"
+                    v-if="
+                      $v.billingAddress.city.$error &&
+                      $v.billingAddress.city.$errors[0]?.$message
+                    "
                     class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.city.$errors[0].$message }}
@@ -1036,11 +1051,19 @@ const handleChangeBaseInfo = async (data: {
             <ul role="list" class="-my-4 divide-y divide-secondary-200 pl-0">
               <template v-if="isLoading['cart']">
                 <li v-for="n in 3" :key="n" class="flex py-6">
-                  <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-secondary-200 animate-pulse"></div>
+                  <div
+                    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-secondary-200 animate-pulse"
+                  ></div>
                   <div class="ml-4 flex flex-1 flex-col">
-                    <div class="h-4 bg-secondary-200 rounded w-3/4 animate-pulse"></div>
-                    <div class="mt-2 h-4 bg-secondary-200 rounded w-1/2 animate-pulse"></div>
-                    <div class="mt-2 h-4 bg-secondary-200 rounded w-1/4 animate-pulse"></div>
+                    <div
+                      class="h-4 bg-secondary-200 rounded w-3/4 animate-pulse"
+                    ></div>
+                    <div
+                      class="mt-2 h-4 bg-secondary-200 rounded w-1/2 animate-pulse"
+                    ></div>
+                    <div
+                      class="mt-2 h-4 bg-secondary-200 rounded w-1/4 animate-pulse"
+                    ></div>
                   </div>
                 </li>
               </template>
@@ -1057,7 +1080,10 @@ const handleChangeBaseInfo = async (data: {
 
             <div class="flex justify-between text-sm text-secondary-500">
               <p>{{ $t("checkout.subtotal") }}</p>
-              <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
+              <div
+                v-if="isLoading['cart']"
+                class="h-4 bg-secondary-200 rounded w-20 animate-pulse"
+              ></div>
               <SharedPrice
                 v-else
                 :value="subtotal"
@@ -1076,7 +1102,10 @@ const handleChangeBaseInfo = async (data: {
                 v-if="shippingCost.shippingCosts?.totalPrice"
                 class="flex text-secondary-900"
               >
-                <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
+                <div
+                  v-if="isLoading['cart']"
+                  class="h-4 bg-secondary-200 rounded w-20 animate-pulse"
+                ></div>
                 <SharedPrice
                   v-else
                   :value="shippingCost.shippingCosts.totalPrice"
@@ -1088,7 +1117,10 @@ const handleChangeBaseInfo = async (data: {
 
             <div class="flex justify-between text-secondary-900 font-medium">
               <p>{{ $t("checkout.orderTotal") }}l</p>
-              <div v-if="isLoading['cart']" class="h-4 bg-secondary-200 rounded w-20 animate-pulse"></div>
+              <div
+                v-if="isLoading['cart']"
+                class="h-4 bg-secondary-200 rounded w-20 animate-pulse"
+              ></div>
               <SharedPrice
                 v-else
                 :value="totalPrice"

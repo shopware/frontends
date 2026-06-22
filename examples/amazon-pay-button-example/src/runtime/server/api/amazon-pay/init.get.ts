@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useRuntimeConfig } from "#imports";
 import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const runtimeConfig = useRuntimeConfig();
   const STORE_ID = runtimeConfig.amazonPay?.storeId;
   const PUBLIC_KEY_ID = runtimeConfig.amazonPay?.publicKeyId;

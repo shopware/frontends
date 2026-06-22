@@ -120,7 +120,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.vueApp.provide("apiClient", apiClient);
   // Shopware context
   // TODO fix type App<Element>
-  // biome-ignore lint: ignore type error
+  // TODO: Improve this typing.
   const shopwareContext = createShopwareContext(NuxtApp.vueApp as any, {
     enableDevtools: true,
     devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,

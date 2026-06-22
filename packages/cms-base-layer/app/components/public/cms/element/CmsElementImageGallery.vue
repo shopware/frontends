@@ -102,7 +102,7 @@ function onTouchEnd() {
             v-if="currentImage && isSpatial(currentImage)"
             :key="currentImage.url + '-3d'"
             class="w-full h-full relative"
-             :style="{ minHeight }"
+            :style="{ minHeight }"
           >
             <client-only>
               <SwMedia3DAsync :src="currentImage.url" />
@@ -180,7 +180,9 @@ function onTouchEnd() {
         v-if="mediaGallery.length > 1 && navigationDots !== 'none'"
         :class="[
           'flex justify-center items-center gap-2',
-          navigationDots === 'outside' ? 'mt-4' : 'absolute bottom-4 left-1/2 transform -translate-x-1/2',
+          navigationDots === 'outside'
+            ? 'mt-4'
+            : 'absolute bottom-4 left-1/2 transform -translate-x-1/2',
         ]"
       >
         <button

@@ -9,6 +9,7 @@ This document provides guidance for AI assistants working with the `@shopware/ap
 **Types**: Generated from OpenAPI spec via `@shopware/api-gen` CLI
 
 **Quick Start**:
+
 ```bash
 pnpm run build    # Build the package
 pnpm run dev      # Stub mode for development (hot reload)
@@ -59,6 +60,7 @@ createAPIClient<operations>()  →  client.invoke("operationId method /path", bo
 The `operations` type is a map of `"operationId method /path"` keys to objects describing `body`, `query`, `pathParams`, `response`, and `responseCode`.
 
 **Three sources for `operations`**:
+
 1. **Bundled default** — `@shopware/api-client/store-api-types` or `@shopware/api-client/admin-api-types`
 2. **Generated from instance** — `./api-types/storeApiTypes` (via `@shopware/api-gen`)
 3. **Extended/overridden** — `./api-types/storeApiTypes.overrides.ts` (merges generated + custom)
@@ -78,10 +80,12 @@ Error parsing lives in `errorInterceptor.ts`. The `ApiClientError` class wraps r
 ### Updating bundled types
 
 Bundled types (`api-types/*.d.ts`) are generated — do not edit them. To update:
+
 ```bash
 # From repo root
 pnpm run generate-types
 ```
+
 This runs `@shopware/api-gen` against the configured Shopware instance and regenerates the `.d.ts` files.
 
 ### Adding new `fetchOptions`
@@ -104,8 +108,15 @@ Tests exercise `invoke()` calls, hook firing, error parsing, and auth flows. Whe
 `@shopware/api-gen` is the CLI companion that produces the `operations` and `components` types consumed here. The two packages are decoupled — `api-client` ships default types for convenience, but end users are encouraged to generate their own.
 
 The default patches file `api-types/storeApiSchema.overrides.json` is referenced by `api-gen` users via:
+
 ```json
-{ "store-api": { "patches": ["./node_modules/@shopware/api-client/api-types/storeApiSchema.overrides.json"] } }
+{
+  "store-api": {
+    "patches": [
+      "./node_modules/@shopware/api-client/api-types/storeApiSchema.overrides.json"
+    ]
+  }
+}
 ```
 
 Keep this file in sync when the bundled types are regenerated.

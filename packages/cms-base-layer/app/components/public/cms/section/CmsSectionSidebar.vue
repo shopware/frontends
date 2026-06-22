@@ -18,14 +18,19 @@ provide("cms-section-layout", "sidebar");
 </script>
 
 <template>
-  <div class="self-stretch flex flex-col lg:flex-row items-stretch gap-16" :class="{
-    'px-6': fullWidth,
-  }">
-    <aside :class="{
-      'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20 px-4 lg:px-0':
-        mobileBehavior !== 'hidden',
-      'hidden lg:block': mobileBehavior === 'hidden',
-    }">
+  <div
+    class="self-stretch flex flex-col lg:flex-row items-stretch gap-16"
+    :class="{
+      'px-6': fullWidth,
+    }"
+  >
+    <aside
+      :class="{
+        'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20 px-4 lg:px-0':
+          mobileBehavior !== 'hidden',
+        'hidden lg:block': mobileBehavior === 'hidden',
+      }"
+    >
       <div v-for="cmsBlock in sidebarBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />
       </div>

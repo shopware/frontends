@@ -268,8 +268,11 @@ const handleRemoveFilterChip = async (chip: {
     <!-- Filters Header -->
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <div
-        class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant">
-        <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal">
+        class="flex flex-row items-center justify-between w-full mb-4 py-3 border-b border-outline-outline-variant"
+      >
+        <div
+          class="flex-1 text-surface-on-surface text-base font-bold leading-normal"
+        >
           {{ translations.listing.filters }}
         </div>
         <SwSortDropdown
@@ -283,7 +286,9 @@ const handleRemoveFilterChip = async (chip: {
 
     <!-- Filters List -->
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
-      <SwProductListingFilter v-for="filter in getInitialFilters" :key="filter.id"
+      <SwProductListingFilter
+        v-for="filter in getInitialFilters"
+        :key="filter.id"
         :filter="filter"
         :selected-manufacturer="sidebarSelectedFilters.manufacturer"
         :selected-properties="sidebarSelectedFilters.properties"
@@ -292,11 +297,20 @@ const handleRemoveFilterChip = async (chip: {
         :selected-rating="sidebarSelectedFilters.rating"
         :selected-shipping-free="sidebarSelectedFilters['shipping-free']"
         @filter-change="handleFilterChange"
-        class="w-full" />
+        class="w-full"
+      />
       <div v-if="showResetFiltersButton" class="w-full">
-        <SwBaseButton variant="primary" size="medium" block @click="invokeCleanFilters" type="button">
+        <SwBaseButton
+          variant="primary"
+          size="medium"
+          block
+          @click="invokeCleanFilters"
+          type="button"
+        >
           {{ translations.listing.resetFilters }}
-          <span class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"></span>
+          <span
+            class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
+          ></span>
         </SwBaseButton>
       </div>
     </div>

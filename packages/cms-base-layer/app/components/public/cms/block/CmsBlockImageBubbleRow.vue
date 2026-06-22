@@ -13,7 +13,9 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <div class="cms-block-image-bubble-row flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+  <div
+    class="cms-block-image-bubble-row flex flex-col sm:flex-row justify-start items-start gap-6 w-full"
+  >
     <div class="w-full sm:flex-1 flex items-center justify-center">
       <CmsGenericElement :content="leftContent" class="w-full" />
     </div>

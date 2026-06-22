@@ -39,15 +39,25 @@ onMounted(async () => {
 </script>
 <template>
   <ClientOnly>
-    <div v-if="!loading && categoryNavigation && categoryNavigation.length" class="self-stretch inline-flex flex-col justify-start items-start gap-3">
+    <div
+      v-if="!loading && categoryNavigation && categoryNavigation.length"
+      class="self-stretch inline-flex flex-col justify-start items-start gap-3"
+    >
       <SwCategoryNavigation
         :level="0"
         :elements="categoryNavigation"
         :active-category="activeCategory"
       />
     </div>
-    <div v-else-if="loading" class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse">
-      <div v-for="i in 3" :key="i" class="w-full h-12 bg-surface-surface-container rounded"></div>
+    <div
+      v-else-if="loading"
+      class="self-stretch flex flex-col justify-start items-start gap-4 animate-pulse"
+    >
+      <div
+        v-for="i in 3"
+        :key="i"
+        class="w-full h-12 bg-surface-surface-container rounded"
+      ></div>
     </div>
   </ClientOnly>
 </template>

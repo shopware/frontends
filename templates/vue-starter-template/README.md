@@ -89,6 +89,7 @@ This template uses [UnoCSS](https://unocss.dev/) for styling and follows a layer
 If you're looking for a more comprehensive example with pre-built pages, custom styling, and real-world e-commerce patterns, check out the [vue-starter-template-extended](../vue-starter-template-extended).
 
 The extended template:
+
 - Extends this base template as a Nuxt layer
 - Includes a complete store theme (Lumora - Modern Home Scents)
 - Demonstrates component overrides and customization patterns

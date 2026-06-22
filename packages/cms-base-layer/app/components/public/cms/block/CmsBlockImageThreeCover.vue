@@ -13,7 +13,9 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <div class="cms-block-image-three-cover flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+  <div
+    class="cms-block-image-three-cover flex flex-col sm:flex-row justify-start items-start gap-6 w-full"
+  >
     <div class="w-full sm:flex-1">
       <CmsGenericElement :content="leftContent" />
     </div>

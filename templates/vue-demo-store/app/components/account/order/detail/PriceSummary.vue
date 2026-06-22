@@ -37,12 +37,10 @@ defineProps<{
             :value="shippingCosts"
             class="text-secondary-600 font-normal"
             data-testid="order-shipping"
-          /></span>
+        /></span>
       </div>
 
-      <div
-        class="border-t border-gray-200 mt-2 pt-2 flex justify-between"
-      >
+      <div class="border-t border-gray-200 mt-2 pt-2 flex justify-between">
         <span class="text-base font-semibold text-gray-900">{{
           $t("account.orderDetails.total")
         }}</span>
@@ -51,7 +49,7 @@ defineProps<{
             :value="total"
             class="text-secondary-600 font-normal"
             data-testid="order-total"
-          /></span>
+        /></span>
       </div>
     </div>
   </div>

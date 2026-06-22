@@ -236,7 +236,7 @@ const invokeSubmit = async () => {
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class=" border-outline-outline-variant focus:border-brand-primaryappearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
+            class="border-outline-outline-variant focus:border-brand-primaryappearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -261,8 +261,8 @@ const invokeSubmit = async () => {
             class="appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-none focus:ring-brand-primary focus:z-10 sm:text-sm"
             :class="[
               $v.firstName?.$error
-          ? 'border-red-600 focus:border-red-600'
-          : 'border-outline-outline-variant focus:border-brand-primary',
+                ? 'border-red-600 focus:border-red-600'
+                : 'border-outline-outline-variant focus:border-brand-primary',
             ]"
             :placeholder="translations.form.firstNamePlaceholder"
             @blur="$v.firstName?.$touch()"
