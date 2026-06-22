@@ -56,7 +56,7 @@ frontends/
 
 - **Framework**: Vue 3, Nuxt 4.1
 - **Build**: Vite 7, Turbo, unbuild
-- **Package Manager**: pnpm 10.17.0
+- **Package Manager**: pnpm 11.5.2
 - **Language**: TypeScript
 - **Styling**: UnoCSS, Tailwind.css
 - **Testing**: Vitest (unit), Playwright (e2e)
