@@ -35,6 +35,6 @@
     "nuxt": "4.4.8",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1"
   }
 }
