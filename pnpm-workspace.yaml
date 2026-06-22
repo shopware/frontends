@@ -12,12 +12,49 @@ minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
 - '@shopware/*'
 - '@typescript/native-preview'
+- 'happy-dom'
+- '@vue/test-utils'
+- '@adyen/adyen-web'
+- 'axios' # remove after 18/06/2026
+- 'astro' # remove after 17/06/2026
 
-auditConfig:
-  ignoreGhsas:
-    - GHSA-92fh-27vv-894w # not vulnerable - https://github.com/unjs/nanotar/issues/59
-  ignoreCves:
-    # - CVE-2024-43788
-    - CVE-2025-68458 # webpack issue, not affected
-    - CVE-2025-68157 # webpack issue, not affected
-    - CVE-2024-43788 # webpack issue, not affected
+overrides:
+  axios: ^1.18.0
+  minimatch: ^10.2.5
+  undici: ^6.27.0
+  unbuild: ^3.6.1
+  uuid: ^14.0.0
+  shell-quote: ^1.8.4
+  esbuild: ^0.28.1
+  ws: ^8.21.0
+  form-data: ^4.0.6
+  vite: ^7.3.5
+  tar: ^7.5.16
+  launch-editor: ^2.14.1
+  js-yaml: ^4.2.0
+  markdown-it: ^14.2.0
+  "@babel/core": "^7.29.6"
+
+peerDependencyRules:
+  ignoreMissing:
+    - webpack
+    - vite
+    - react-dom
+    - react
+    - '@types/react'
+    - '@algolia/client-search'
+shamefullyHoist: true
+autoInstallPeers: true
+strictPeerDependencies: false
+preferWorkspacePackages: true
+enablePrePostScripts: true
+preferFrozenLockfile: true
+preferOffline: true
+verifyDepsBeforeRun: false
+linkWorkspacePackages: deep
+allowBuilds:
+  '@biomejs/biome': true
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+  vue-demi: true

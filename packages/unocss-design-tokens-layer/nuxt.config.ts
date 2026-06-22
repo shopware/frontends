@@ -1,7 +1,6 @@
-import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 
-const config: NuxtConfig = defineNuxtConfig({
+const config: ReturnType<typeof defineNuxtConfig> = defineNuxtConfig({
   telemetry: {
     enabled: false,
   },

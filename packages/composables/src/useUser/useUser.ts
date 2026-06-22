@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { syncRefs } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
@@ -129,7 +130,7 @@ export type UseUserReturn = {
  * @category Customer & Account
  */
 export function useUser(): UseUserReturn {
-  const { apiClient } = useShopwareContext();
+  const { apiClient, cacheableReads } = useShopwareContext();
   const { userFromContext, refreshSessionContext } = useSessionContext();
 
   const _user = useContext<Schemas["Customer"] | undefined>("customer");
@@ -224,17 +225,22 @@ export function useUser(): UseUserReturn {
   async function loadCountry(
     countryId: string,
   ): Promise<operations["readCountry post /country"]["response"]> {
-    const countries = await apiClient.invoke("readCountry post /country", {
-      body: {
-        filter: [
-          {
-            field: "id",
-            type: "equals",
-            value: countryId,
-          },
-        ],
-      },
-    });
+    const criteria = {
+      filter: [
+        {
+          field: "id",
+          type: "equals" as const,
+          value: countryId,
+        },
+      ],
+    };
+    const countries = cacheableReads
+      ? await apiClient.invoke("readCountryGet get /country", {
+          query: { _criteria: encodeForQuery(criteria) },
+        })
+      : await apiClient.invoke("readCountry post /country", {
+          body: criteria,
+        });
 
     country.value = countries.data.elements?.[0] ?? null;
     return countries.data;
@@ -243,20 +249,22 @@ export function useUser(): UseUserReturn {
   async function loadSalutation(
     salutationId: string,
   ): Promise<operations["readSalutation post /salutation"]["response"]> {
-    const salutations = await apiClient.invoke(
-      "readSalutation post /salutation",
-      {
-        body: {
-          filter: [
-            {
-              field: "id",
-              type: "equals",
-              value: salutationId,
-            },
-          ],
+    const criteria = {
+      filter: [
+        {
+          field: "id",
+          type: "equals" as const,
+          value: salutationId,
         },
-      },
-    );
+      ],
+    };
+    const salutations = cacheableReads
+      ? await apiClient.invoke("readSalutationGet get /salutation", {
+          query: { _criteria: encodeForQuery(criteria) },
+        })
+      : await apiClient.invoke("readSalutation post /salutation", {
+          body: criteria,
+        });
     salutation.value = salutations.data.elements?.[0] ?? null;
     return salutations.data;
   }

@@ -31,7 +31,9 @@
       "pagination": "Pagination",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Sidebar",
-      "closeNotification": "Close notification"
+      "closeNotification": "Close notification",
+      "languageSwitcher": "Change language",
+      "currencySwitcher": "Change currency"
     }
   }
 }

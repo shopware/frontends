@@ -7526,6 +7526,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SalesChannelContext: {
+    /** @enum {string} */
     apiAlias: "sales_channel_context";
     /** Core context with general configuration values and state */
     context?: {
@@ -7533,66 +7534,57 @@ export type Schemas = {
       currencyId?: string;
       /** Format: int32 */
       currencyPrecision?: number;
-      languageIdChain?: string[]; // TODO: [OpenAPI][SalesChannelContext] languageIdChain field should be defined properly in context
+      languageIdChain?: string[];
       scope?: string;
-      source?: string;
+      source?: {
+        salesChannelId: string;
+        /** @enum {string} */
+        type: "sales-channel" | "shop-api";
+      };
       taxState?: string;
       useCache?: boolean;
       versionId?: string;
     };
-    /** Currency associated with the current user */
-    currency?: components["schemas"]["Currency"]; // TODO: [OpenAPI][SalesChannelContext] currency field should be defined reusing Currency schema
+    currency?: components["schemas"]["Currency"];
     /** Customer group of the current user */
     currentCustomerGroup?: {
       displayGross?: boolean;
       name?: string;
     };
-    customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
-    extensions: {
-      adyenData: object;
+    customer?: null | components["schemas"]["Customer"];
+    extensions?: {
+      adyenData?: {
+        [key: string]: unknown;
+      };
     };
     /** Fallback group if the default customer group is not applicable */
     fallbackCustomerGroup?: {
       displayGross?: boolean;
       name?: string;
     };
-    /** Selected payment method */
-    paymentMethod?: components["schemas"]["PaymentMethod"] & {
-      fundingSource: components["schemas"]["AdyenPaymentMethod"]["fundingSource"];
-    }; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
-    /** Information about the current sales channel */
-    salesChannel?: {
-      accessKey?: string;
-      active?: boolean;
-      analyticsId?: string;
-      countryId?: string;
-      currencyId?: string;
-      customerGroupId?: string;
-      footerCategoryId?: string;
-      hreflangActive?: boolean;
-      hreflangDefaultDomainId?: string;
-      languageId?: string;
-      mailHeaderFooterId?: string;
-      maintenance?: boolean;
-      maintenanceIpWhitelist?: string;
-      name?: string;
+    itemRounding: {
+      /** @enum {string} */
+      apiAlias: "shopware_core_framework_data_abstraction_layer_pricing_cash_rounding_config";
       /** Format: int32 */
-      navigationCategoryDepth?: number;
-      navigationCategoryId?: string;
-      paymentMethodId?: string;
-      serviceCategoryId?: string;
-      shippingMethodId?: string;
-      shortName?: string;
-      typeId?: string;
+      decimals: number;
+      /** Format: float */
+      interval: number;
+      roundForNet: boolean;
     };
+    languageInfo: {
+      localeCode: string;
+      name: string;
+    };
+    measurementSystem?: components["schemas"]["ContextMeasurementSystemInfo"];
+    paymentMethod?: components["schemas"]["PaymentMethod"];
+    salesChannel: components["schemas"]["SalesChannel"];
     shippingLocation?: {
-      // TODO: [OpenAPI][SalesChannelContext] shippingLocation field should be defined properly
-      apiAlias: "cart_delivery_shipping_location";
-      country: components["schemas"]["Country"];
-      address: components["schemas"]["CustomerAddress"];
+      address?: components["schemas"]["CustomerAddress"];
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_shipping_location";
+      country?: components["schemas"]["Country"];
     };
-    /** Selected shipping method */
-    shippingMethod?: components["schemas"]["ShippingMethod"]; // TODO: [OpenAPI][SalesChannelContext] shippingMethod field should be defined properly reusing ShippingMethod schema
+    shippingMethod?: components["schemas"]["ShippingMethod"];
     /** Currently active tax rules and/or rates */
     taxRules?: {
       name?: string;
@@ -7601,6 +7593,15 @@ export type Schemas = {
     }[];
     /** Context the user session */
     token?: string;
+    totalRounding: {
+      /** @enum {string} */
+      apiAlias: "shopware_core_framework_data_abstraction_layer_pricing_cash_rounding_config";
+      /** Format: int32 */
+      decimals: number;
+      /** Format: float */
+      interval: number;
+      roundForNet: boolean;
+    };
   };
   SalesChannelDomain: {
     /** Format: date-time */

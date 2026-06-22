@@ -75,25 +75,44 @@ describe("@shopware/nuxt-module", () => {
     isConfigDeprecatedMock.mockReturnValue(false);
   });
 
-  it("should inject default shopware.d.ts when project has no custom types", async () => {
+  const ALL_TYPE_CONTEXTS = {
+    nuxt: true,
+    nitro: true,
+    node: true,
+    shared: true,
+  };
+
+  it("should inject default shopware.d.ts in all type contexts when project has no custom types", async () => {
     existsSyncMock.mockReturnValue(false);
     const setup = await getModuleSetup();
 
     await setup({}, createNuxtMock("/tmp/test-project"));
 
-    expect(addTypeTemplateMock).toHaveBeenCalledWith({
-      filename: "shopware.d.ts",
-      src: "/mocked-module-dir/../shopware.d.ts",
-    });
+    expect(addTypeTemplateMock).toHaveBeenCalledWith(
+      {
+        filename: "shopware.d.ts",
+        src: "/mocked-module-dir/../shopware.d.ts",
+      },
+      ALL_TYPE_CONTEXTS,
+    );
   });
 
-  it("should skip injecting shopware.d.ts when project has custom types", async () => {
+  it("should reference the project's own shopware.d.ts in all type contexts when it exists", async () => {
     existsSyncMock.mockReturnValue(true);
     const setup = await getModuleSetup();
 
     await setup({}, createNuxtMock("/tmp/test-project"));
 
-    expect(addTypeTemplateMock).not.toHaveBeenCalled();
+    expect(addTypeTemplateMock).toHaveBeenCalledTimes(1);
+    const [template, context] = addTypeTemplateMock.mock.calls[0] as [
+      { filename: string; getContents: () => string },
+      Record<string, boolean>,
+    ];
+    expect(template.filename).toBe("shopware.d.ts");
+    expect(template.getContents()).toContain(
+      '/// <reference path="/tmp/test-project/shopware.d.ts" />',
+    );
+    expect(context).toEqual(ALL_TYPE_CONTEXTS);
   });
 
   it("should check for shopware.d.ts in the project root directory", async () => {
