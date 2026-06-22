@@ -10,18 +10,21 @@ templates:
 # Reduciing the risk of installing fresh compromised packages before detected
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
-- '@shopware/*'
-- '@typescript/native-preview'
-- 'happy-dom'
-- '@vue/test-utils'
-- '@adyen/adyen-web'
-- 'axios' # remove after 18/06/2026
-- 'astro' # remove after 17/06/2026
+  - '@shopware/*'
+  - '@typescript/native-preview'
+  - 'happy-dom'
+  - '@vue/test-utils'
+  - '@adyen/adyen-web'
+  - 'axios' # remove after 18/06/2026
+  - 'astro' # remove after 17/06/2026
 
 overrides:
   axios: ^1.18.0
   minimatch: ^10.2.5
   undici: ^6.24.0
+  # jsdom (pulled in by @sanity/codegen via @nuxtjs/sanity) needs undici 7.
+  # Scope it to jsdom so the rest of the workspace keeps the undici ^6 pin.
+  "jsdom>undici": "^7"
   unbuild: ^3.6.1
   uuid: ^14.0.0
   shell-quote: ^1.8.4

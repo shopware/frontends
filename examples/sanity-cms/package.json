@@ -1,0 +1,32 @@
+{
+  "name": "example-sanity-cms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@nuxtjs/sanity": "2.3.0",
+    "@nuxtjs/tailwindcss": "6.14.0",
+    "@shopware/api-client": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
+    "@tailwindcss/typography": "0.5.16",
+    "@types/node": "22.13.14",
+    "fflate": "^0.8.3",
+    "nuxt": "4.4.8",
+    "typescript": "5.9.3",
+    "vue": "3.5.38",
+    "vue-tsc": "3.3.5"
+  },
+  "engines": {
+    "node": "^20.x || ^22.x || ^24.x"
+  }
+}

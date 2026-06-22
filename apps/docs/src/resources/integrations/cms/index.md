@@ -32,4 +32,10 @@ nav:
       <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Storyblok is a headless Content Management System (CMS) that allows developers to manage and distribute content across multiple platforms. Use the Nuxt Module to integrate it into Composable Frontends.</p>
     </a>
   </div>
+  <div>
+    <a href="sanity.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 my-5 text-center">
+      <span class="block mb-2 text-2xl font-bold tracking-tight text-gray-900"><img src="../../../.assets/cms-icons/sanity.svg" alt="Sanity Logo" class="my-8 h-14 inline" /></span>
+      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Sanity is a headless CMS where the content model lives in code and editors compose pages in a real-time Studio. This example pairs a Sanity Page Builder for content with Shopware for live commerce (products &amp; cart).</p>
+    </a>
+  </div>
 </div>
