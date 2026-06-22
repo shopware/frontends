@@ -96,6 +96,7 @@ docker build -t shopware-vue-starter \
   --build-arg NUXT_PUBLIC_SHOPWARE_ENDPOINT="https://your-shop.example/store-api/" \
   --build-arg NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN="your-sales-channel-token" \
   --build-arg NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL="" \
+  --build-arg NUXT_SHOPWARE_ENDPOINT="" \
   .
 ```
 
@@ -152,7 +153,7 @@ The extended template:
 
 This template uses Nuxt route rules with ISR for public storefront pages and adds `Surrogate-Control` headers for CDN caching:
 
-- public storefront routes: `Surrogate-Control: max-age=3600, stale-while-revalidate=86400`
+- public storefront routes: `Surrogate-Control: max-age=86400, stale-while-revalidate=86400`
 - checkout, account, and wishlist routes: `Surrogate-Control: no-store`
 
 For a Fastly-backed Node deployment, the usual setup is:

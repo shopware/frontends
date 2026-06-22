@@ -16,9 +16,9 @@ export default defineNuxtConfig({
     },
     public: {
       shopware: {
-        endpoint: "",
-        accessToken: "",
-        devStorefrontUrl: "",
+        endpoint: "https://demo-frontends.shopware.store/store-api/",
+        accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
+        devStorefrontUrl: "https://frontends-demo.vercel.app",
       },
     },
   },
