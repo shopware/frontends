@@ -25,6 +25,16 @@ overrides:
   # jsdom (pulled in by @sanity/codegen via @nuxtjs/sanity) needs undici 7.
   # Scope it to jsdom so the rest of the workspace keeps the undici ^6 pin.
   "jsdom>undici": "^7"
+  # Sanity Studio's CLI/build stack natively requires Vite 8 (its @vitejs/plugin-react@6
+  # imports `vite/internal`, which only exists in Vite 8). The global `vite: ^7.3.5`
+  # pin below would cap it at Vite 7 and break `sanity build`, so scope Vite 8 to the
+  # Sanity chain only - the storefront packages keep the Vite 7 line.
+  "@sanity/cli>vite": "^8.0.16"
+  "@sanity/cli-core>vite": "^8.0.16"
+  "@sanity/cli-build>vite": "^8.0.16"
+  "@sanity/runtime-cli>vite": "^8.0.16"
+  "@vitejs/plugin-react>vite": "^8.0.16"
+  "@rolldown/plugin-babel>vite": "^8.0.16"
   unbuild: ^3.6.1
   uuid: ^14.0.0
   shell-quote: ^1.8.4
