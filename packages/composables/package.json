@@ -69,13 +69,13 @@
     "@biomejs/biome": "1.8.3",
     "@nuxt/kit": "4.4.6",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.8",
+    "@vitest/coverage-v8": "4.1.9",
     "@vue/test-utils": "2.4.11",
-    "happy-dom": "20.10.1",
+    "happy-dom": "20.10.6",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "unbuild": "2.0.0",
-    "vitest": "4.1.8",
+    "unbuild": "3.6.1",
+    "vitest": "4.1.9",
     "vue": "3.5.38"
   }
 }

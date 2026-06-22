@@ -244,6 +244,7 @@ export const sidebar = [
     text: "BEST PRACTICES",
     link: "/best-practices/",
     items: [
+      { text: "Caching", link: "/best-practices/caching.html" },
       { text: "Deployment", link: "/best-practices/deployment.html" },
       {
         text: "Error Handling",
