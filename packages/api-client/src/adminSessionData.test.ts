@@ -7,7 +7,8 @@ const baseURL = "https://demo-frontends.shopware.store/store-api";
 const test = baseTest.extend<{
   adminApiClient: ReturnType<typeof createAdminAPIClient<operations>>;
 }>({
-  adminApiClient: async (_context, use) => {
+  // oxlint-disable-next-line no-empty-pattern
+  adminApiClient: async ({}, use) => {
     // setup the fixture before each test function
     const adminApiClient = createAdminAPIClient<operations>({
       baseURL,
