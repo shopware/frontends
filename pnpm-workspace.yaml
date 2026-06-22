@@ -21,7 +21,7 @@ minimumReleaseAgeExclude:
 overrides:
   axios: ^1.18.0
   minimatch: ^10.2.5
-  undici: ^6.24.0
+  undici: ^6.27.0
   unbuild: ^3.6.1
   uuid: ^14.0.0
   shell-quote: ^1.8.4
