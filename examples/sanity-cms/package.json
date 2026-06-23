@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "oxlint . && oxfmt --check .",
-    "lint:fix": "oxlint --fix . && oxfmt --write ."
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit"
   },
   "devDependencies": {
     "@nuxtjs/sanity": "2.3.0",

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 // Rich text block: renders Sanity Portable Text. The `prose` classes come from
 // the @tailwindcss/typography plugin.
-defineProps<{ section: { content?: unknown[] } }>();
+defineProps<{
+  section: {
+    content?: Array<{ _type: string; _key?: string; [key: string]: unknown }>;
+  };
+}>();
 </script>
 
 <template>

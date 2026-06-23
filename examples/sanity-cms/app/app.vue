@@ -62,7 +62,7 @@ onMounted(() => {
           :class="
             n.type === 'success'
               ? 'bg-gradient-to-r from-emerald-500 to-green-600'
-              : n.type === 'error'
+              : n.type === 'danger'
                 ? 'bg-gradient-to-r from-rose-500 to-red-600'
                 : 'bg-slate-800'
           "

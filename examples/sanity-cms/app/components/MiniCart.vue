@@ -34,7 +34,7 @@ const remove = async (item: Schemas["LineItem"]) => {
           >
             <img
               class="h-12 w-12 shrink-0 rounded-xl bg-slate-50 object-contain"
-              :src="getSmallestThumbnailUrl(item.cover)"
+              :src="getSmallestThumbnailUrl(item.cover ?? undefined)"
               :alt="item.label"
             />
             <div class="min-w-0 flex-1">
