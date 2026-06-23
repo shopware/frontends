@@ -9,7 +9,7 @@ const { formatLink } = useInternationalization(localePath);
     :aria-label="$t('layout.ariaLabels.breadcrumb')"
   >
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
-      <li   class="inline-flex items-center">
+      <li class="inline-flex items-center">
         <LayoutBreadcrumbsElement :to="formatLink(`/`)">
           <div class="flex items-center">
             <div class="w-5 h-5 i-carbon-home mr-2" />

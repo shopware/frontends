@@ -3,6 +3,7 @@
  */
 
 import type { ComponentInternalInstance, VNode } from "vue";
+
 import { isNode } from "./ast";
 import type { NodeObject } from "./getOptionsFromNode";
 import { getOptionsFromNode } from "./getOptionsFromNode";

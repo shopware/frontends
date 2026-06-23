@@ -6,11 +6,12 @@ This document provides guidance for AI assistants working with the Shopware Fron
 
 **What**: Vue.js framework for Shopware 6 eCommerce storefronts
 **Structure**: pnpm monorepo with Turbo
-**Tech**: Vue 3, Nuxt 4, TypeScript, Vitest, Biome
+**Tech**: Vue 3, Nuxt 4, TypeScript, Vitest, Oxlint, Oxfmt
 **Key Packages**: api-client, composables, helpers, cms-base-layer, nuxt-module
 **Templates**: vue-demo-store (full featured), vue-starter-template (production), vue-starter-template-extended (layer example), vue-blank (minimal)
 
 **Quick Start**:
+
 ```bash
 pnpm i                                    # Install
 pnpm run build --filter='./packages/*'   # Build packages
@@ -60,12 +61,13 @@ frontends/
 - **Language**: TypeScript
 - **Styling**: UnoCSS, Tailwind.css
 - **Testing**: Vitest (unit), Playwright (e2e)
-- **Linting**: Biome (replaces ESLint + Prettier)
+- **Linting/Formatting**: Oxlint and Oxfmt
 - **Versioning**: Changesets
 
 ## Common Development Commands
 
 ### Package Management
+
 ```bash
 pnpm i                                    # Install dependencies
 pnpm run build                            # Build all packages
@@ -74,12 +76,14 @@ pnpm run build --filter=api-client       # Build specific package
 ```
 
 ### Development
+
 ```bash
 pnpm run dev --filter=vue-demo-store     # Run demo store
 pnpm run dev --filter=docs               # Run documentation
 ```
 
 ### Quality Assurance
+
 ```bash
 pnpm run lint                             # Lint all packages
 pnpm run lint:fix                         # Fix linting issues
@@ -87,10 +91,11 @@ pnpm run typecheck                        # TypeScript checking
 pnpm run test                             # Run tests
 pnpm run test:watch                       # Watch mode
 pnpm run test:e2e                         # E2E tests
-pnpm format                               # Format with Biome
+pnpm format                               # Format with Oxfmt
 ```
 
 ### Type Generation
+
 ```bash
 pnpm run generate-types                   # Generate API types
 ```
@@ -100,6 +105,7 @@ pnpm run generate-types                   # Generate API types
 ### 1. Workspace Dependencies
 
 Packages use workspace protocol for internal dependencies:
+
 ```json
 {
   "dependencies": {
@@ -112,11 +118,13 @@ Packages use workspace protocol for internal dependencies:
 ### 2. Build Order
 
 Packages must be built in dependency order (handled by Turbo):
+
 - `api-client` → `helpers` → `composables` → `cms-base-layer` → `nuxt-module`
 
 ### 3. Package Exports
 
 Modern packages use conditional exports:
+
 ```json
 {
   "exports": {
@@ -135,16 +143,28 @@ Modern packages use conditional exports:
 - **composables**: Source in `src/`, exports TypeScript directly
 - **helpers**: Source in `src/`, builds to `dist/`
 
+### 5. Caching
+
+Caching spans several independent layers. The full reference is [Best practices: Caching](apps/docs/src/best-practices/caching.md); the essentials for code changes:
+
+- **`cacheableReads` (request layer)**: an opt-in context flag (default `false`) that switches a defined set of anonymous read composables from POST to the cacheable GET variant of the Store API. It is wired `nuxt.config` (`shopware: { cacheableReads: true }`) -> `createShopwareContext` -> `useShopwareContext()`. GET-over-POST is a Shopware platform decision: POST bodies are not HTTP-cacheable, so reads compress the Criteria into a `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers` (JSON -> gzip -> base64url, matching the backend `RequestCriteriaBuilder`).
+  - When adding/editing a read composable, branch on `cacheableReads` and call the GET route with `query: { _criteria: encodeForQuery(criteria) }`; keep the POST variant as the `else`. A route can only move to GET once its GET variant declares `_criteria` in the generated Store API types (`useListing`, single-category `useCategorySearch.search`, and `useLandingSearch` stay POST until then). Mutations always stay POST/PATCH.
+- **`routeRules` (render layer)**: page-level caching lives in each template's `nuxt.config.ts` `routeRules` (`isr` for catalog/content, `ssr: false` for personalized routes like `/checkout` and `/account/**`, immutable `Cache-Control` for static assets). Do not bake personalized data into ISR-cached HTML.
+- **Client state**: shared composables (`createSharedComposable`) and `provide`/`inject` context dedupe work in-memory per session; they are not a durable response cache.
+
 ## Key Files to Know
 
 ### Root Configuration
+
 - [package.json](package.json) - Root workspace config
 - [turbo.json](turbo.json) - Build pipeline configuration
 - [pnpm-workspace.yaml](pnpm-workspace.yaml) - Workspace definition
-- [biome.json](biome.json) - Linting/formatting config
-- [.changeset/](\.changeset/) - Changesets for versioning
+- [.oxlintrc.json](.oxlintrc.json) - Oxlint config
+- [.oxfmtrc.json](.oxfmtrc.json) - Oxfmt config
+- [.changeset/](.changeset/) - Changesets for versioning
 
 ### Package Configs
+
 - Each package has its own `package.json`, `tsconfig.json`
 - Build configs: `unbuild.config.ts` or `build.config.ts`
 - Test configs: `vitest.config.ts`
@@ -156,12 +176,14 @@ Modern packages use conditional exports:
 **Purpose**: HTTP client abstraction for Shopware Store API and Admin API
 
 **Key Files**:
+
 - [src/createAPIClient.ts](packages/api-client/src/createAPIClient.ts) - Store API client factory
 - [src/createAdminAPIClient.ts](packages/api-client/src/createAdminAPIClient.ts) - Admin API client factory
 - [api-types/storeApiTypes.d.ts](packages/api-client/api-types/storeApiTypes.d.ts) - Generated Store API types
 - [api-types/adminApiTypes.d.ts](packages/api-client/api-types/adminApiTypes.d.ts) - Generated Admin API types
 
 **Common Tasks**:
+
 - Adding new endpoints: Extend type definitions or regenerate types
 - Error handling: Check [src/errorInterceptor.ts](packages/api-client/src/errorInterceptor.ts)
 - Testing: Uses Vitest with mock server
@@ -173,12 +195,14 @@ Modern packages use conditional exports:
 **Available as Nuxt Layer**: Can be used as a Nuxt layer via `@shopware/composables/nuxt-layer`
 
 **Key Files**:
+
 - [src/index.ts](packages/composables/src/index.ts) - Main exports
 - [nuxt.config.ts](packages/composables/nuxt.config.ts) - Nuxt layer configuration
 - Individual composables in `src/use*/` directories
 - Each composable has `.ts` and `.test.ts` files
 
 **Structure**:
+
 ```
 src/
 ├── useProduct/
@@ -191,6 +215,7 @@ src/
 ```
 
 **Common Composables**:
+
 - `useProduct` - Product data and operations
 - `useCart` - Shopping cart management
 - `useUser` - User authentication and profile
@@ -206,6 +231,7 @@ src/
 **Purpose**: Framework-agnostic utility functions
 
 **Key Areas**:
+
 - Price formatting
 - URL handling (including `getBackgroundImageUrl` for CMS background image optimization)
 - Translation helpers
@@ -223,6 +249,7 @@ Generates optimized CSS `url()` values for CMS background images. Accepts an opt
 **Available as Nuxt Layer**: Provides full Nuxt layer functionality for seamless integration
 
 **Key Features**:
+
 - Auto-imports composables
 - Configures API client
 - Provides plugins and middleware
@@ -239,6 +266,7 @@ Templates are starter projects demonstrating different use cases and setups.
 **Location**: `templates/vue-demo-store/`
 
 **What's Included**:
+
 - Nuxt 4.1 with full SSR
 - UnoCSS (Tailwind-compatible) styling
 - i18n (internationalization) support
@@ -247,6 +275,7 @@ Templates are starter projects demonstrating different use cases and setups.
 - Pre-configured with demo Shopware 6 API
 
 **Key Files**:
+
 - `nuxt.config.ts` - Nuxt and Shopware configuration
 - `uno.config.ts` - UnoCSS styling configuration
 - `app/` - Application pages and components
@@ -255,6 +284,7 @@ Templates are starter projects demonstrating different use cases and setups.
 **Use Case**: Full reference for production applications, learning all features
 
 **How to Use**:
+
 ```bash
 # From root
 pnpm run dev --filter=vue-demo-store
@@ -272,6 +302,7 @@ pnpm dev
 **Location**: `templates/vue-starter-template/`
 
 **What's Included**:
+
 - Nuxt 4.1 setup
 - All core Shopware packages
 - UnoCSS styling
@@ -288,6 +319,7 @@ pnpm dev
 **Location**: `templates/vue-blank/`
 
 **What's Included**:
+
 - Bare minimum Nuxt 4.1 configuration
 - Shopware core packages only
 - No styling framework
@@ -303,6 +335,7 @@ pnpm dev
 **Location**: `templates/vue-vite-blank/`
 
 **What's Included**:
+
 - Plain Vite + Vue 3
 - Shopware composables and API client
 - No SSR (client-side only)
@@ -317,6 +350,7 @@ pnpm dev
 **Location**: `templates/astro/`
 
 **What's Included**:
+
 - Astro 5.x setup
 - Vue integration for Shopware composables
 - Shopware API client
@@ -325,6 +359,7 @@ pnpm dev
 **Use Case**: Using Shopware with Astro framework, content-focused sites
 
 **Key Differences**:
+
 - Astro's island architecture
 - Different SSR approach than Nuxt
 - Mix of static and dynamic content
@@ -336,6 +371,7 @@ pnpm dev
 **Location**: `templates/vue-starter-template-extended/`
 
 **What's Included**:
+
 - Extends vue-starter-template using Nuxt's `extends` feature
 - Minimal codebase - only customizations and overrides
 - Custom app.config.ts for theme customization (e.g., image placeholder color)
@@ -345,21 +381,24 @@ pnpm dev
 **Key Concepts**:
 
 **Layer Pattern** - Nuxt layers allow extending a base template:
+
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  extends: ["../vue-starter-template"],  // or npm package
+  extends: ["../vue-starter-template"], // or npm package
   // ... your customizations
 });
 ```
 
 **Component Inheritance** - All components from the base layer are automatically available:
+
 - Pages (FrontendNavigationPage, FrontendDetailPage, etc.)
 - Layouts (headers, footers, navigation)
 - Forms (login, checkout, account)
 - Shared components (modals, notifications)
 
 **Component Overriding** - Create components in your `app/components/` to override base components:
+
 ```
 your-project/
   app/
@@ -368,28 +407,32 @@ your-project/
 ```
 
 **App Config Customization** - Use `app.config.ts` to customize layer settings:
+
 ```typescript
 // app/app.config.ts
 export default defineAppConfig({
   imagePlaceholder: {
-    color: "#B38A65",  // Brand color
+    color: "#B38A65", // Brand color
   },
 });
 ```
 
 **Benefits**:
+
 - Inherits all features from vue-starter-template
 - Minimal code duplication
 - Easy to customize specific components
 - Automatic updates when base template improves
 
 **Use Case**:
+
 - Creating brand-specific storefronts without duplicating code
 - Maintaining multiple store variants from a single base
 - Testing customizations without modifying the base template
 - Learning the layer pattern for production projects
 
 **Dependencies**:
+
 - Lists `vue-starter-template` as workspace dependency
 - Includes `@shopware/cms-base-layer` for CMS components
 
@@ -398,6 +441,7 @@ export default defineAppConfig({
 All templates support:
 
 **API Configuration** (`nuxt.config.ts` or equivalent):
+
 ```typescript
 export default defineNuxtConfig({
   modules: ["@shopware/nuxt-module"],
@@ -409,6 +453,7 @@ export default defineNuxtConfig({
 ```
 
 **Type Generation** (all Nuxt templates):
+
 ```bash
 pnpm run generate-types
 # Uses @shopware/api-gen to generate types from your Shopware instance
@@ -416,6 +461,7 @@ pnpm run generate-types
 
 **Environment Variables**:
 Create `.env` file (use `.env.template` as reference):
+
 ```bash
 SHOPWARE_ENDPOINT=https://your-shop.com/store-api
 SHOPWARE_ACCESS_TOKEN=your-access-token
@@ -423,14 +469,14 @@ SHOPWARE_ACCESS_TOKEN=your-access-token
 
 ### Choosing a Template
 
-| Need | Template |
-|------|----------|
-| Learn all features | vue-demo-store |
-| Start production project | vue-starter-template |
+| Need                     | Template                      |
+| ------------------------ | ----------------------------- |
+| Learn all features       | vue-demo-store                |
+| Start production project | vue-starter-template          |
 | Extend existing template | vue-starter-template-extended |
-| Minimal Nuxt setup | vue-blank |
-| No SSR/No Nuxt | vue-vite-blank |
-| Use Astro | astro |
+| Minimal Nuxt setup       | vue-blank                     |
+| No SSR/No Nuxt           | vue-vite-blank                |
+| Use Astro                | astro                         |
 
 ## Making Changes
 
@@ -508,21 +554,25 @@ This creates a file in `.changeset/` - commit it with your changes.
 ## Testing Strategy
 
 ### Unit Tests (Vitest)
+
 - Located next to source files (`.test.ts`)
 - Run with `pnpm test`
 - Coverage with `pnpm run coverage` (in package directory)
 
 ### E2E Tests (Playwright)
+
 - Located in `apps/e2e-tests/`
 - Run with `pnpm run test:e2e`
 
 ### Type Tests
+
 - TypeScript compilation checks
 - Run with `pnpm run typecheck`
 
 ## Common Issues and Solutions
 
 ### Issue: Type errors after changes
+
 ```bash
 # Rebuild packages
 pnpm run build --filter='./packages/*'
@@ -531,6 +581,7 @@ pnpm run typecheck
 ```
 
 ### Issue: Changes not reflected in template
+
 ```bash
 # Packages need to be built, or use stub mode
 cd packages/[package-name]
@@ -538,6 +589,7 @@ pnpm run dev  # Runs unbuild --stub for hot reload
 ```
 
 ### Issue: Dependency conflicts
+
 ```bash
 # Check pnpm overrides in root package.json
 # Clear and reinstall
@@ -546,6 +598,7 @@ pnpm i
 ```
 
 ### Issue: Turbo cache issues
+
 ```bash
 # Clear Turbo cache
 rm -rf .turbo
@@ -591,6 +644,7 @@ pnpm run build
 ## References for Deep Work
 
 When working on specific features, consult:
+
 - API client: Check Store API types in `api-types/storeApiTypes.d.ts`
 - Composables: Review tests for usage examples
 - CMS: Check [cms-base-layer](packages/cms-base-layer/) for component structure
@@ -633,6 +687,7 @@ pnpm changeset
 ## Security Note
 
 This is a frontend framework for eCommerce. Be mindful of:
+
 - Authentication flows
 - Payment integrations
 - Customer data handling

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageGallery } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

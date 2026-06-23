@@ -113,6 +113,7 @@ function render() {
 ```
 
 The key changes are:
+
 - **Lines 17-24**: Inject the `pageRenderMiddlewares` to check for additional CMS resolvers
 - **Lines 49-56**: If no Shopware CMS component is found, try to render content from the additional CMS
 

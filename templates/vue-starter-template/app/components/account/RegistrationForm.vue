@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
+
 import type { operations } from "#shopware";
 
 const {

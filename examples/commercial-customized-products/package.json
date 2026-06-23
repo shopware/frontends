@@ -8,11 +8,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "generate-types": "shopware-api-gen generate --apiType=store",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write"
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write ."
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@shopware/composables": "canary",
@@ -22,7 +21,9 @@
     "nuxt": "4.4.8",
     "typescript": "5.9.3",
     "vue": "3.5.38",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.5",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"

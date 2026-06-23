@@ -1,4 +1,5 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
+
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 
@@ -14,12 +15,12 @@ test.describe("Search phrase", { tag: "@vue-demo-store" }, () => {
     await homePage.visitMainPage();
   });
 
-  test("Search phrase and verify result page", async ({ page }) => {
+  test("Search phrase and verify result page", async () => {
     await homePage.typeSearchPhrase("bag");
     await resultPage.searchResultBox.isVisible();
   });
 
-  test("Search phrase by suggest and verify result page", async ({ page }) => {
+  test("Search phrase by suggest and verify result page", async () => {
     await homePage.searchBySuggest("bag");
     await resultPage.searchResultBox.isVisible();
   });

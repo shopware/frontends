@@ -1,4 +1,5 @@
 import type { Schemas } from "#shopware";
+
 import type { ElementConfig } from "../types";
 
 /**

@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
 import type { Schemas } from "#shopware";
+
 import ListingFiltersPrice from "./ListingFiltersPrice.vue";
 import ListingFiltersProperties from "./ListingFiltersProperties.vue";
 import ListingFiltersRating from "./ListingFiltersRating.vue";

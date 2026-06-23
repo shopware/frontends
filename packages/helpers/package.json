@@ -9,14 +9,20 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/helpers.html",
-  "keywords": ["shopware", "api", "helpers"],
+  "keywords": [
+    "shopware",
+    "api",
+    "helpers"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": {
@@ -29,19 +35,18 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsgo ./src/*.ts --ignoreConfig --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "tsgo --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.8",
-    "happy-dom": "20.10.1",
+    "@vitest/coverage-v8": "4.1.9",
+    "happy-dom": "20.10.6",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.8"
+    "vitest": "4.1.9"
   }
 }

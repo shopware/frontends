@@ -1,5 +1,6 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
+
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
 import { useCategorySearch } from "./useCategorySearch";

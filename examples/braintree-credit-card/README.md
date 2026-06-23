@@ -9,15 +9,19 @@ The integration uses Shopware's App System to authenticate requests to the Brain
 ### Authentication Flow
 
 1. **Get app token** from Shopware Store-API:
+
    ```
    POST /store-api/app-system/SwagBraintreeApp/generate-token
    ```
+
    Returns `{ token, shopId }`
 
 2. **Get Braintree client config** from the Braintree app:
+
    ```
    POST https://braintree.shopware.com/api/client/config?shop-id=...&currency-id=...&sales-channel-id=...
    ```
+
    Headers (important!):
    - `shopware-app-token: <token>` (NOT `Authorization: Bearer`)
    - `shopware-app-shop-id: <shopId>`
@@ -47,6 +51,7 @@ The integration uses Shopware's App System to authenticate requests to the Brain
 ## Setup
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
@@ -70,6 +75,7 @@ The integration uses Shopware's App System to authenticate requests to the Brain
 ## Test Card Numbers
 
 For Braintree sandbox testing:
+
 - Visa: `4111 1111 1111 1111`
 - Any future expiration date
 - Any 3-digit CVV
@@ -101,7 +107,7 @@ Do NOT use `Authorization: Bearer` - this will result in 500 errors.
 dropin.create({
   authorization: clientToken,
   container: "#container",
-  dataCollector: true  // Required for fraud detection
+  dataCollector: true, // Required for fraud detection
 });
 ```
 

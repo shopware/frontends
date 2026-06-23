@@ -1,6 +1,7 @@
 import type { Argv } from "yargs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+
 import packageJson from "../package.json";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";

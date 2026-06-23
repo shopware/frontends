@@ -8,7 +8,11 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt-module",
-  "keywords": ["Nuxt", "Shopware", "Vue"],
+  "keywords": [
+    "Nuxt",
+    "Shopware",
+    "Vue"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -23,17 +27,22 @@
       "require": "./index.cjs"
     }
   },
-  "files": ["dist", "plugin.ts", "shopware.d.ts", "index.cjs"],
+  "files": [
+    "dist",
+    "plugin.ts",
+    "shopware.d.ts",
+    "index.cjs"
+  ],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "tsgo --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
-    "@nuxt/kit": "4.4.6",
+    "@nuxt/kit": "4.4.8",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
     "@shopware/api-client": "workspace:*",
@@ -42,12 +51,11 @@
     "js-cookie": "3.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.4.8",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "nuxt": "4.4.8",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.8"
+    "vitest": "4.1.9"
   }
 }

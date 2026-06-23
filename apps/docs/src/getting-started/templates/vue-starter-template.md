@@ -141,17 +141,20 @@ The template extends three Nuxt layers:
 The design-tokens layer provides the shared UnoCSS setup and token palette. Your local `uno.config.ts` should only add template-specific customizations on top of the generated config:
 
 ```ts
-import { mergeConfigs } from '@unocss/core'
-import baseConfig from './.nuxt/uno.config.mjs'
+import { mergeConfigs } from "@unocss/core";
+import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default mergeConfigs([baseConfig, {
-  theme: {
-    colors: {
-      'brand-primary': '#your-brand-color',
-      'brand-secondary': '#your-secondary-color',
+export default mergeConfigs([
+  baseConfig,
+  {
+    theme: {
+      colors: {
+        "brand-primary": "#your-brand-color",
+        "brand-secondary": "#your-secondary-color",
+      },
     },
   },
-}])
+]);
 ```
 
 ## Extending with Layers

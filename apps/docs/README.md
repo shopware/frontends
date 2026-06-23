@@ -41,7 +41,7 @@ _Just some thoughts and guides about how the documentation should work._
 
 ## Workflow
 
-*This repository is embedded into [developer-portal](https://github.com/shopware/developer-portal) under the [/frontends/](https://developer.shopware.com/frontends/). This repository is also connected to the Shopware Dev Docs connector GitHub app which manages commit status checks in PRs and triggers production deployments.
+\*This repository is embedded into [developer-portal](https://github.com/shopware/developer-portal) under the [/frontends/](https://developer.shopware.com/frontends/). This repository is also connected to the Shopware Dev Docs connector GitHub app which manages commit status checks in PRs and triggers production deployments.
 
 ## Development
 

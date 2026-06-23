@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { encodeForQuery } from "./encodeForQuery";
 
 describe("encodeForQuery", () => {
@@ -181,7 +182,7 @@ describe("encodeForQuery", () => {
     const result = encodeForQuery(obj);
 
     // Base64url should not contain +, /, or = characters
-    expect(result).not.toMatch(/[\+\/=]/);
+    expect(result).not.toMatch(/[+/=]/);
     // Should only contain URL-safe characters
     expect(result).toMatch(/^[A-Za-z0-9_-]*$/);
   });

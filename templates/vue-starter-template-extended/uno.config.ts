@@ -1,4 +1,5 @@
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 const lumoraConfig: ConfigBase = {

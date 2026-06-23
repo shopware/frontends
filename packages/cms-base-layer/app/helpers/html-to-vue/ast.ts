@@ -3,6 +3,7 @@
  */
 // @ts-expect-error - html-to-ast has type definition issues with package.json exports
 import { parse } from "html-to-ast";
+
 import type { NodeObject } from "./getOptionsFromNode";
 
 type ASTNode = NodeObject | NodeObject[];

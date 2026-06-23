@@ -189,9 +189,7 @@ async function copyAiPrompt() {
         <strong>{{ env.title }}</strong>
       </div>
 
-      <p v-if="env.tip" class="try-it-out-launch-tip">
-        💡 {{ env.tip }}
-      </p>
+      <p v-if="env.tip" class="try-it-out-launch-tip">💡 {{ env.tip }}</p>
 
       <a
         v-if="openUrl"
@@ -199,7 +197,8 @@ async function copyAiPrompt() {
         :href="openUrl"
         target="_blank"
         rel="noopener"
-      >Open in {{ env.title }} ↗</a>
+        >Open in {{ env.title }} ↗</a
+      >
 
       <div v-else-if="command" class="try-it-out-command-block">
         <pre class="try-it-out-command"><code>{{ command }}</code></pre>
@@ -219,10 +218,13 @@ async function copyAiPrompt() {
         <h3 class="try-it-out-section-title">Or: delegate to an AI agent</h3>
         <p class="try-it-out-ai-hint">
           Paste this prompt into Claude, Cursor, Copilot, or any code assistant.
-          The prompt is tailored to <strong>{{ template.title }}</strong>.
+          The prompt is tailored to <strong>{{ template.title }}</strong
+          >.
         </p>
       </div>
-      <pre class="try-it-out-command try-it-out-ai-prompt"><code>{{ aiPrompt }}</code></pre>
+      <pre
+        class="try-it-out-command try-it-out-ai-prompt"
+      ><code>{{ aiPrompt }}</code></pre>
       <button
         class="try-it-out-launch-btn secondary"
         type="button"
@@ -268,7 +270,10 @@ async function copyAiPrompt() {
   border-radius: 10px;
   background: var(--vp-c-bg);
   cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
   font: inherit;
   color: inherit;
 }

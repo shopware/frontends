@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+
 import json5 from "json5";
 import ts from "typescript";
 

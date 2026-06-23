@@ -10,6 +10,7 @@ import type { App } from "h3";
 import { listen } from "listhen";
 import type { Listener } from "listhen";
 import { afterAll, describe, expect, it, vi } from "vitest";
+
 import { createAdminAPIClient } from ".";
 import type { components, operations } from "../api-types/adminApiTypes";
 

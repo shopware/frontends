@@ -2,6 +2,7 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 

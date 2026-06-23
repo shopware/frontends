@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { mergeJsonOverrides } from "./jsonOverrideUtils";
 import type { OverridesSchema } from "./patchJsonSchema";
 

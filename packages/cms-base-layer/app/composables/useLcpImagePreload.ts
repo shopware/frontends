@@ -1,6 +1,8 @@
 import { computed } from "vue";
+
 import { useHead } from "#imports";
 import type { Schemas } from "#shopware";
+
 import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
 import { useTypedAppConfig } from "./useTypedAppConfig";
 

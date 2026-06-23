@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { findFirstCmsImageUrl } from "../helpers/cms/findFirstCmsImageUrl";
 
 type Sections = Parameters<typeof findFirstCmsImageUrl>[0];

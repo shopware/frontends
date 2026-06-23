@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getCategoryUrl } from "./getCategoryUrl";
 
 describe("getCategoryUrl", () => {

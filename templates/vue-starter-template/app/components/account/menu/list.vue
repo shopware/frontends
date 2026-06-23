@@ -40,7 +40,7 @@ function handleLogout() {
       <FormLinkButton
         class="text-other-sale text-normal hover:border-b hover:border-other-sale"
         @click="handleLogout"
-       :label="$t('account.menu.logout')"
+        :label="$t('account.menu.logout')"
       />
     </li>
   </menu>

@@ -3,6 +3,7 @@ import { isMaintenanceMode } from "@shopware/helpers";
 import { getCookie } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
+
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -12,6 +13,7 @@ import {
   useState,
 } from "#imports";
 import type { ApiClient } from "#shopware";
+
 import type { ShopwareNuxtOptions } from "./src";
 
 declare module "#app" {
@@ -120,7 +122,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.vueApp.provide("apiClient", apiClient);
   // Shopware context
   // TODO fix type App<Element>
-  // biome-ignore lint: ignore type error
+  // TODO: Improve this typing.
   const shopwareContext = createShopwareContext(NuxtApp.vueApp as any, {
     enableDevtools: true,
     devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,

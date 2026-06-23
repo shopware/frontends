@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { ref } from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import { useCategory } from "./useCategory";
 

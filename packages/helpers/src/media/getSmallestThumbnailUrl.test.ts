@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getSmallestThumbnailUrl } from "./getSmallestThumbnailUrl";
 
 describe("getSmallestThumbnailUrl", () => {

@@ -93,7 +93,9 @@ provide("swNavigation-footer-navigation", footerData);
                       :to="formatLink(`/account/order`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-primary hover:bg-secondary-100"
                     >
-                      <div class="i-carbon-order-details text-xl inline-block" />
+                      <div
+                        class="i-carbon-order-details text-xl inline-block"
+                      />
                       <span class="ml-3">{{
                         $t("account.orderHistoryHeader")
                       }}</span>

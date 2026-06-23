@@ -49,7 +49,7 @@ To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package
 
 ## Styling and Shopping Experiences integration
 
-This tempalte uses [UnoCSS](https://unocss.dev/) for styling, which is a utility-first CSS framework. It is configured to use the [Tailwind CSS](https://tailwindcss.com/) classes. 
+This tempalte uses [UnoCSS](https://unocss.dev/) for styling, which is a utility-first CSS framework. It is configured to use the [Tailwind CSS](https://tailwindcss.com/) classes.
 
 The template also includes a [CMS Base nuxt layer](https://www.npmjs.com/package/@shopware/cms-base-layer) to provide the CMS components for Shopping Experiences integration. The layer is registered in the `nuxt.config.ts` file. In order to override the default Tailwind CSS configuration, you can create your own `uno.config.ts` file in the root of your project and extend the default configuration.
 
@@ -91,9 +91,10 @@ Our recommendation is to use `.env` file for changing platform presets
 
 #### Vercel serverless functions and ISR
 
-There is an [issue](https://github.com/nitrojs/nitro/issues/1880) with Vercel serverless functions and ISR for catch-all route and dynamic data that depends on GET query parameters. 
+There is an [issue](https://github.com/nitrojs/nitro/issues/1880) with Vercel serverless functions and ISR for catch-all route and dynamic data that depends on GET query parameters.
 
 To fix it, you need to do one of the following:
+
 - disable `isr` for the catch-all route:
 
   ```js
@@ -104,6 +105,7 @@ To fix it, you need to do one of the following:
       },
     }
   ```
+
 - switch to `vercel-edge` platform by setting the corresponding preset:
 
   ```bash

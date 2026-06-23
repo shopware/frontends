@@ -30,7 +30,7 @@ const generateBackLink = () => {
       >
     </p>
     <main>
-      <AccountOrderDetailView :order-id="(route.params.id as string)" />
+      <AccountOrderDetailView :order-id="route.params.id as string" />
     </main>
   </div>
 </template>

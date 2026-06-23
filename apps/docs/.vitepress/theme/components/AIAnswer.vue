@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+
 import { useAi } from "../composables/useAi";
 
 const props = defineProps({

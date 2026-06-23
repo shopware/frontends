@@ -9,7 +9,9 @@ const { formatLink } = useInternationalization(localePath);
 <template>
   <footer class="bg-brand-primary">
     <div class="container mx-auto py-10 px-6 sm:px-0">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
+      >
         <NuxtLink class="mb-4 md:mb-0" :to="formatLink(`/`)">
           <NuxtImg
             class="h-16 sm:h-20"
@@ -47,7 +49,9 @@ const { formatLink } = useInternationalization(localePath);
             </ul>
           </template>
         </div>
-        <LayoutFooterNewsletterBox class="col-span-1 sm:col-span-2 md:col-span-1" />
+        <LayoutFooterNewsletterBox
+          class="col-span-1 sm:col-span-2 md:col-span-1"
+        />
       </div>
     </div>
   </footer>

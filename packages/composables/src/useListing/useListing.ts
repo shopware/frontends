@@ -2,6 +2,7 @@ import { getListingFilters } from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import { useCategory, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
@@ -37,8 +38,8 @@ function merge<T extends { [key in keyof T]: unknown }>(
 export type ListingType = "productSearchListing" | "categoryListing";
 
 export type ShortcutFilterParam<
-  T extends
-    keyof Schemas["ProductListingCriteria"] = keyof Schemas["ProductListingCriteria"],
+  T extends keyof Schemas["ProductListingCriteria"] =
+    keyof Schemas["ProductListingCriteria"],
 > = {
   code: T;
   value: Schemas["ProductListingCriteria"][T];

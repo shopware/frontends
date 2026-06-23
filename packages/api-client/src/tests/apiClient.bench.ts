@@ -1,4 +1,5 @@
 import { bench, describe } from "vitest";
+
 import { createAPIClient, createAdminAPIClient } from "..";
 
 describe("apiClient benchmarks", () => {

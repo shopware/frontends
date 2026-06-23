@@ -15,7 +15,9 @@ import {
 } from "@shopware/helpers";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+
 import type { Schemas } from "#shopware";
+
 import { apiClient } from "./apiClient";
 
 const route = useRoute();

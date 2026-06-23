@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { CmsElementHtml } from "@shopware/composables";
-
 import { getCmsLayoutConfiguration } from "@shopware/helpers";
 import { h } from "vue";
 

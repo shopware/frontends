@@ -1,5 +1,6 @@
 import type { ImageCTX } from "@nuxt/image";
 import { describe, expect, it } from "vitest";
+
 import shopwareProvider from "./shopware";
 
 describe("Shopware Image Provider", () => {

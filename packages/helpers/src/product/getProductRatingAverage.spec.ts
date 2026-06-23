@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getProductRatingAverage } from "./getProductRatingAverage";
 describe("Shopware helpers - getProductRatingAverage", () => {
   it("should return undefined when no product object", () => {

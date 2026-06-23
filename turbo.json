@@ -3,13 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".output/**",
-        ".vercel/**",
-        ".vitepress/dist/**",
-        ".nuxt/**"
-      ]
+      "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
       "dependsOn": ["^build"],

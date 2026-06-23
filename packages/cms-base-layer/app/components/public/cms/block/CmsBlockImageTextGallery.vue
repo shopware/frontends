@@ -4,6 +4,7 @@ import type {
   CmsElementImage,
   CmsElementText,
 } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
@@ -55,10 +56,7 @@ function onImageClick(
         :style="{ cursor: leftImageContent.data?.url && 'pointer' }"
         @click="onImageClick(leftImageContent)"
       />
-      <CmsElementText
-        :content="leftTextContent"
-        class="self-stretch"
-      />
+      <CmsElementText :content="leftTextContent" class="self-stretch" />
     </div>
     <div class="w-full sm:flex-1">
       <CmsElementImage
@@ -68,10 +66,7 @@ function onImageClick(
         }"
         @click="onImageClick(centerImageContent)"
       />
-      <CmsElementText
-        :content="centerTextContent"
-        class="self-stretch"
-      />
+      <CmsElementText :content="centerTextContent" class="self-stretch" />
     </div>
     <div class="w-full sm:flex-1">
       <CmsElementImage
@@ -79,10 +74,7 @@ function onImageClick(
         :style="{ cursor: rightImageContent.data?.url && 'pointer' }"
         @click="onImageClick(rightImageContent)"
       />
-      <CmsElementText
-        :content="rightTextContent"
-        class="self-stretch"
-      />
+      <CmsElementText :content="rightTextContent" class="self-stretch" />
     </div>
   </article>
 </template>

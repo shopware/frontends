@@ -1,6 +1,7 @@
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { useSetup } from "../_test";
 import Salutations from "../mocks/Salutations";
 import { useSalutations } from "./useSalutations";

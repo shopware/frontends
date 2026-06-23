@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementManufacturerLogo } from "@shopware/composables";
+
 import CmsElementImage from "./CmsElementImage.vue";
 
 defineProps<{

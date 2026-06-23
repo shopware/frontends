@@ -3,6 +3,7 @@ import {
   getShippingMethodDeliveryTime,
   getShippingMethodIcon,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { shippingMethods } = defineProps<{
@@ -54,7 +55,11 @@ function handleChange(id: string) {
           </div>
         </div>
         <div class="ml-auto">
-          <NuxtImg :src="getShippingMethodIcon(shippingMethod)" height="32" :alt="shippingMethod.translated.name" />
+          <NuxtImg
+            :src="getShippingMethodIcon(shippingMethod)"
+            height="32"
+            :alt="shippingMethod.translated.name"
+          />
         </div>
       </label>
     </div>

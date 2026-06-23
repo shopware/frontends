@@ -26,7 +26,9 @@ const route = useRoute();
       >
         <NuxtLink
           role="menuitem"
-          :aria-haspopup="navigationElement.children?.length ? 'true' : undefined"
+          :aria-haspopup="
+            navigationElement.children?.length ? 'true' : undefined
+          "
           :aria-expanded="
             navigationElement.children?.length
               ? currentMenuPosition === navigationElement.id

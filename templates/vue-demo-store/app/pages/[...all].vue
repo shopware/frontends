@@ -2,6 +2,7 @@
 import { pascalCase } from "scule";
 import { computed, resolveComponent } from "vue";
 import type { Ref } from "vue";
+
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 

@@ -6,7 +6,9 @@ import type {
 import { buildUrlPrefix } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
+
 import { useCmsElementImage, useUrlResolver } from "#imports";
+
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 const props = defineProps<{

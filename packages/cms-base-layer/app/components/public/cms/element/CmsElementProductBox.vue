@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementProductBox } from "@shopware/composables";
 import { computed } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{

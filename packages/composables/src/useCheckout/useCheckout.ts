@@ -1,6 +1,7 @@
 import { defu } from "defu";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
+
 import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

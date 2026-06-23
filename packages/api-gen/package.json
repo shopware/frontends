@@ -9,7 +9,12 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": ["shopware", "api", "client", "cli"],
+  "keywords": [
+    "shopware",
+    "api",
+    "client",
+    "cli"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -20,7 +25,11 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": ["bin", "dist", "api-gen.schema.json"],
+  "files": [
+    "bin",
+    "dist",
+    "api-gen.schema.json"
+  ],
   "bin": {
     "api-gen": "bin/api-gen.mjs",
     "shopware-api-gen": "bin/api-gen.mjs"
@@ -29,24 +38,23 @@
     "build": "unbuild",
     "cli": "esno ./src/cli.ts",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write . && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "tsgo --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
     "test:watch": "vitest --typecheck"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.35",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.8",
+    "@vitest/coverage-v8": "4.1.9",
     "json5": "2.2.3",
     "picocolors": "1.1.1",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.8"
+    "vitest": "4.1.9"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",

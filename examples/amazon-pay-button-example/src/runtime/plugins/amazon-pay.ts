@@ -1,4 +1,5 @@
 import { useServerHead } from "@unhead/vue";
+
 import { defineNuxtPlugin } from "#imports";
 
 export default defineNuxtPlugin({

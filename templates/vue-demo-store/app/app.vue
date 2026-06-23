@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
+
 import { getPrefix } from "../i18n/src/helpers/prefix";
 const config = useRuntimeConfig();
 /**

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import type { CmsElementImage, CmsElementManufacturerLogo } from "../types";
 import { useCmsElementImage } from "./useCmsElementImage";
 

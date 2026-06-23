@@ -37,7 +37,7 @@ defineProps<{
             :value="shippingCosts"
             class="text-surface-on-surface font-normal"
             data-testid="order-shipping"
-          /></span>
+        /></span>
       </div>
 
       <div
@@ -51,7 +51,7 @@ defineProps<{
             :value="total"
             class="text-surface-on-surface font-normal"
             data-testid="order-total"
-          /></span>
+        /></span>
       </div>
     </div>
   </div>

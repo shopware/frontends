@@ -1,9 +1,8 @@
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
 import { createShopwareContext } from "@shopware/composables/dist";
 import Cookies from "js-cookie";
 import type { App } from "vue";
-
-import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "@shopware/api-client/store-api-types";
 
 export default (app: App) => {
   const shopwareEndpoint =

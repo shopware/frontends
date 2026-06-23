@@ -1,4 +1,5 @@
 import ts from "typescript";
+
 import type { OverridesMap, TransformedElements } from "./generateFile";
 import { getDeepPropertyCode, getTypePropertyNames } from "./utils";
 import { createVirtualFiles } from "./virtualFileCreator";

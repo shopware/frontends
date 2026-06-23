@@ -1,6 +1,8 @@
 import { useRegle } from "@regle/core";
 import type { Regle } from "@regle/core";
+
 import type { Schemas } from "#shopware";
+
 import { customValidators } from "../../i18n/utils/i18n-validators";
 
 interface UseTemplateCheckoutReturn {

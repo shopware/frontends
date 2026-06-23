@@ -23,7 +23,7 @@
     "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
-    "format": "biome format --write .",
+    "format": "oxfmt --write .",
     "version": "changeset version",
     "postversion": "pnpm i && pnpm format && pnpm run versionReadme",
     "versionReadme": "esno scripts/addChangelogBodyToReadmeFile.ts",
@@ -37,17 +37,19 @@
     "docs:cli": "../developer-portal/docs-cli.cjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@changesets/changelog-github": "0.7.0",
     "@changesets/cli": "2.31.0",
+    "@oxc-parser/binding-wasm32-wasi": "0.131.0",
     "@types/changelog-parser": "2.8.4",
     "automd": "0.4.3",
-    "changelog-parser": "3.0.1",
+    "changelog-parser": "4.1.0",
     "dotenv-cli": "11.0.0",
     "esno": "4.8.0",
     "husky": "9.1.7",
     "prettier": "3.8.3",
-    "turbo": "2.9.16"
+    "turbo": "2.9.18",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"

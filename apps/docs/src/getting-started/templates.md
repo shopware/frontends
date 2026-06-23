@@ -27,6 +27,7 @@ Integrate Shopware Frontends as an **npm package** into your existing [custom Vu
 The Vue Starter Template is a production-ready foundation for building custom Shopware storefronts. Unlike the Demo Store Template, it contains no demo UI or boilerplate - just the essential packages and configuration you need to start building.
 
 **What's included:**
+
 - Nuxt 4.x with full SSR
 - All Shopware Frontends core packages
 - UnoCSS (Tailwind-compatible) styling
@@ -44,6 +45,7 @@ The Vue Starter Template is a production-ready foundation for building custom Sh
 An example implementation showing how to extend the Vue Starter Template using Nuxt layers. This "Lumora" branded demo demonstrates how to create brand-specific storefronts while inheriting all base functionality.
 
 **Layer benefits:**
+
 - Minimal code duplication
 - Override only what you need
 - Automatic base template updates

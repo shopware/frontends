@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { transformPathToQuery } from "./transformPathToQuery";
 
 describe("transform path to query request", () => {

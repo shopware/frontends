@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
 import { computed } from "vue";
 import type { Component } from "vue";
+
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
@@ -58,7 +59,10 @@ const filterComponent = computed<Component | undefined>(() => {
 const handleSelectValue = ({
   code,
   value,
-}: { code: string; value: string | number | boolean }) => {
+}: {
+  code: string;
+  value: string | number | boolean;
+}) => {
   emit("filter-change", { code, value });
 };
 </script>

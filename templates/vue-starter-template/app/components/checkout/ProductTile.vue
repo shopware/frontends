@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { item } = defineProps<{

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getImageSizes } from "./getImageSizes";
 
 describe("getImageSizes", () => {

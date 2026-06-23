@@ -1,4 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
+
 // @ts-ignore - #shopware is resolved by the Nuxt module at build time
 import type { operations } from "#shopware";
 

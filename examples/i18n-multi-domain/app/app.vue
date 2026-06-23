@@ -37,11 +37,15 @@ const { t, locales } = useI18n();
 
     <h2>Generated config</h2>
     <p>For more info please check nuxt.config.ts file</p>
-    <div class="bg-gray-100 border border-gray-300 text-gray-800 px-4 py-3 rounded relative">
+    <div
+      class="bg-gray-100 border border-gray-300 text-gray-800 px-4 py-3 rounded relative"
+    >
       <pre class="whitespace-pre-wrap break-words">{{ locales }}</pre>
     </div>
     <div class="text-center mt-8 mb-20">
-      <span class="text-2xl text-blue-600 font-semibold"> {{ t("hello") }}</span>
+      <span class="text-2xl text-blue-600 font-semibold">
+        {{ t("hello") }}</span
+      >
     </div>
   </div>
 </template>

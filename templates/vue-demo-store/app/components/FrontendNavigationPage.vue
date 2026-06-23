@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
+
 import { useCategorySearch } from "#imports";
 import type { Schemas } from "#shopware";
 

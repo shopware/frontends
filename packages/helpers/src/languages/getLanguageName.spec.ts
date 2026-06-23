@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getLanguageName } from "./getLanguageName";
 import language from "./mocks/language";
 

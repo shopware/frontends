@@ -338,7 +338,8 @@ In this case, there are few options to display:
 - Tier prices
 
 ```ts
-const { totalPrice, price, tierPrices, hasListPrice } = useProductPrice(product);
+const { totalPrice, price, tierPrices, hasListPrice } =
+  useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 ```
 

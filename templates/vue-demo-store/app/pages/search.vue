@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
 import { useTemplateRef } from "vue";
+
 import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
