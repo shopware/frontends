@@ -315,6 +315,10 @@ export const sidebar = [
                 text: "Strapi",
                 link: "/resources/integrations/cms/strapi.html",
               },
+              {
+                text: "Sanity",
+                link: "/resources/integrations/cms/sanity.html",
+              },
             ],
           },
           {
