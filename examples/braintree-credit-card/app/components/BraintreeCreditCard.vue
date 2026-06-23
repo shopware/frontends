@@ -181,13 +181,22 @@ onUnmounted(() => {
 
       <!-- Debug info for troubleshooting -->
       <details class="p-3 bg-gray-100 rounded text-sm">
-        <summary class="cursor-pointer font-medium">Troubleshooting Info</summary>
+        <summary class="cursor-pointer font-medium">
+          Troubleshooting Info
+        </summary>
         <div class="mt-2 space-y-2">
-          <p><strong>Currency ID:</strong> {{ sessionContext?.currency?.id }}</p>
-          <p><strong>Sales Channel ID:</strong> {{ sessionContext?.salesChannel?.id }}</p>
+          <p>
+            <strong>Currency ID:</strong> {{ sessionContext?.currency?.id }}
+          </p>
+          <p>
+            <strong>Sales Channel ID:</strong>
+            {{ sessionContext?.salesChannel?.id }}
+          </p>
           <div v-if="tokenResponse">
             <p><strong>Token Response:</strong></p>
-            <pre class="text-xs overflow-auto">{{ JSON.stringify(tokenResponse, null, 2) }}</pre>
+            <pre class="text-xs overflow-auto">{{
+              JSON.stringify(tokenResponse, null, 2)
+            }}</pre>
           </div>
         </div>
       </details>
@@ -195,8 +204,15 @@ onUnmounted(() => {
       <div class="p-4 bg-blue-50 text-blue-800 rounded text-sm">
         <p class="font-medium">Integration via Store-API:</p>
         <p class="mt-1">
-          Using <code>/store-api/app-system/SwagBraintreeApp/generate-token</code> endpoint.
-          See <a href="https://github.com/shopware/braintree-app/wiki/3.-Headless-integration" target="_blank" class="underline">wiki docs</a>.
+          Using
+          <code>/store-api/app-system/SwagBraintreeApp/generate-token</code>
+          endpoint. See
+          <a
+            href="https://github.com/shopware/braintree-app/wiki/3.-Headless-integration"
+            target="_blank"
+            class="underline"
+            >wiki docs</a
+          >.
         </p>
       </div>
 

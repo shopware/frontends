@@ -77,9 +77,7 @@ const {
               </svg>
             </div>
 
-            <h5 class="ml-3 text-xl font-semibold text-slate-900">
-              Employees
-            </h5>
+            <h5 class="ml-3 text-xl font-semibold text-slate-900">Employees</h5>
           </div>
           <p class="mb-6 text-sm leading-6 text-slate-600">
             The Employees section allows you to manage individual employees
@@ -177,7 +175,9 @@ const {
           class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between"
         >
           <div>
-            <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <p
+              class="text-sm font-semibold uppercase tracking-wide text-slate-500"
+            >
               Current session
             </p>
             <h3 class="mt-1 text-2xl font-semibold text-slate-900">
@@ -205,24 +205,22 @@ const {
 
         <div class="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <p
+              class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+            >
               Login type
             </p>
             <p
               class="mt-2 text-sm font-semibold"
-              :class="
-                isB2bEmployeeSession ? 'text-blue-700' : 'text-slate-800'
-              "
+              :class="isB2bEmployeeSession ? 'text-blue-700' : 'text-slate-800'"
             >
-              {{
-                isB2bEmployeeSession
-                  ? "B2B employee"
-                  : "Regular customer"
-              }}
+              {{ isB2bEmployeeSession ? "B2B employee" : "Regular customer" }}
             </p>
           </div>
           <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <p
+              class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+            >
               Email
             </p>
             <p class="mt-2 break-words text-sm font-semibold text-slate-800">
@@ -230,7 +228,9 @@ const {
             </p>
           </div>
           <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <p
+              class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+            >
               Role
             </p>
             <p class="mt-2 text-sm font-semibold text-slate-800">
@@ -238,7 +238,9 @@ const {
             </p>
           </div>
           <div class="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <p
+              class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+            >
               Status
             </p>
             <p class="mt-2 text-sm font-semibold text-slate-800">
@@ -257,10 +259,14 @@ const {
       </section>
     </div>
 
-    <section class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <section
+      class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+    >
       <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <p
+            class="text-sm font-semibold uppercase tracking-wide text-slate-500"
+          >
             Developer experience
           </p>
           <h3 class="mt-1 text-2xl font-semibold text-slate-900">
@@ -269,10 +275,10 @@ const {
           <p class="mt-3 text-sm leading-6 text-slate-600">
             From the storefront perspective, B2B employee login intentionally
             uses the same customer session mechanics as a standard Shopware
-            login. The difference is visible after the context is refreshed:
-            the Store API enriches the session with the B2B employee extension,
-            so the frontend can switch from generic account UI to
-            company-scoped employee UI.
+            login. The difference is visible after the context is refreshed: the
+            Store API enriches the session with the B2B employee extension, so
+            the frontend can switch from generic account UI to company-scoped
+            employee UI.
           </p>
         </div>
         <div class="space-y-4">

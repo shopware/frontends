@@ -10,7 +10,9 @@ import type {
   ComputedRef,
   ImgHTMLAttributes,
 } from "vue";
+
 import { useCmsElementConfig } from "#imports";
+
 import type {
   CmsElementImage,
   CmsElementManufacturerLogo,

@@ -29,14 +29,18 @@ Extend the generated base Uno config in your project:
 import { mergeConfigs } from "@unocss/core";
 import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default mergeConfigs([baseConfig, {
-  theme: {
-    colors: {
-      "brand-primary": "#123456",
+export default mergeConfigs([
+  baseConfig,
+  {
+    theme: {
+      colors: {
+        "brand-primary": "#123456",
+      },
     },
   },
-}]);
+]);
 ```
+
 <!-- AUTO GENERATED CHANGELOG -->
 
 ## Changelog

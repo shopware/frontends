@@ -1,9 +1,5 @@
 import fs from "node:fs";
 import * as path from "node:path";
-import { defineEventHandler, readValidatedBody } from "h3";
-import { z } from "zod";
-import { createError, useRuntimeConfig } from "#imports";
-import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 // import {
 //   defineEventHandler,
@@ -11,6 +7,12 @@ import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 // } from "#imports";
 import { createAdminAPIClient } from "@shopware/api-client";
 import type { operations } from "@shopware/api-client/admin-api-types";
+import { defineEventHandler, readValidatedBody } from "h3";
+import { z } from "zod";
+
+import { createError, useRuntimeConfig } from "#imports";
+
+import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 const paySchema = z.object({
   orderId: z.string(),

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, provide, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
+
 import type { operations } from "#shopware";
+
 import ListingFilter from "./ListingFilter.vue";
 
 const {

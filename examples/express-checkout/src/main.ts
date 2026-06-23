@@ -1,8 +1,8 @@
 import { createShopwareContext } from "@shopware/composables";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { apiClient } from "./apiClient";
 
+import { apiClient } from "./apiClient";
 import App from "./App.vue";
 
 const router = createRouter({

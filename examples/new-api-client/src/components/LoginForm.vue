@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import { apiClient } from "../apiClient";
 
 const username = ref("");

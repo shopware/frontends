@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getMedia, getSmallestThumbnailUrl } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({
@@ -76,23 +77,17 @@ const emit = defineEmits<{
                 </div>
               </div>
             </td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-            >
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               {{ item.quantity }}
             </td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-            >
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <SharedPrice
                 :value="item.unitPrice"
                 class="text-secondary-600 font-normal"
                 data-testid="order-item-unitprice"
               />
             </td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-            >
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <SharedPrice
                 :value="item.totalPrice"
                 class="text-secondary-600 font-normal"
@@ -102,10 +97,7 @@ const emit = defineEmits<{
           </tr>
           <tr v-if="item.downloads?.length">
             <td colspan="4" class="py-3">
-              <template
-                v-for="media in getMedia(item)"
-                :key="media.id"
-              >
+              <template v-for="media in getMedia(item)" :key="media.id">
                 <div
                   v-if="media.accessGranted"
                   class="flex gap-2 cursor-pointer pl-5 pb-3 hover:text-primary-500"

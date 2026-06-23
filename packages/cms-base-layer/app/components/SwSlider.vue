@@ -11,6 +11,7 @@ import {
   watch,
 } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
+
 import { useCmsElementConfig, useHead, useId } from "#imports";
 import type { Schemas } from "#shopware";
 

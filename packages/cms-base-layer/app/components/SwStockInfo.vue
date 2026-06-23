@@ -31,14 +31,20 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 </script>
 <template>
   <div class="inline-flex justify-start items-center gap-2">
-    <div class="w-2 h-2 bg-states-success rounded-full" v-if="availableStock > 0"></div>
+    <div
+      class="w-2 h-2 bg-states-success rounded-full"
+      v-if="availableStock > 0"
+    ></div>
     <div class="w-2 h-2 bg-states-error rounded-full" v-else></div>
-    <span v-if="availableStock >= minPurchase && deliveryTime">{{ translations.product.deliveryTime }} {{
-      deliveryTime?.name }}
+    <span v-if="availableStock >= minPurchase && deliveryTime"
+      >{{ translations.product.deliveryTime }} {{ deliveryTime?.name }}
     </span>
-    <span v-else-if="availableStock < minPurchase && deliveryTime && restockTime">
+    <span
+      v-else-if="availableStock < minPurchase && deliveryTime && restockTime"
+    >
       {{ translations.product.deliveryTime }} {{ restockTime }}
-      {{ translations.product.days }} {{ deliveryTime?.name }}</span>
+      {{ translations.product.days }} {{ deliveryTime?.name }}</span
+    >
     <span v-else>{{ translations.product.noAvailable }}</span>
   </div>
 </template>

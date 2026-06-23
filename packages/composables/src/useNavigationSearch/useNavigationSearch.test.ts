@@ -1,7 +1,9 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { useNavigationSearch, useSessionContext } from "#imports";
+
 import { useSetup } from "../_test";
 
 vi.mock("../useSessionContext/useSessionContext.ts");

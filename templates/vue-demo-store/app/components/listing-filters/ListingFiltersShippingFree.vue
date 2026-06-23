@@ -11,6 +11,7 @@
   "
 >
 import { computed } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

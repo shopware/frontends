@@ -1,7 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+
 // @ts-nocheck
 import type { Plugin } from "vite";
+
 import { prepareGithubPermalink } from "./utils";
 
 /**

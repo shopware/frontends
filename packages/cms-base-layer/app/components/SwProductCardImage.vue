@@ -6,6 +6,7 @@ import {
   isProductTopSeller,
 } from "@shopware/helpers";
 import { computed, inject } from "vue";
+
 import { useUser } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -57,30 +58,48 @@ function handleWishlistClick() {
 </script>
 
 <template>
-  <div class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square">
-    <RouterLink :to="productLink" class="self-stretch h-full relative overflow-hidden">
-      <NuxtImg preset="productCard"
+  <div
+    class="self-stretch min-h-[350px] relative flex flex-col justify-start items-start overflow-hidden aspect-square"
+  >
+    <RouterLink
+      :to="productLink"
+      class="self-stretch h-full relative overflow-hidden"
+    >
+      <NuxtImg
+        preset="productCard"
         class="w-full h-full absolute top-0 left-0 object-cover"
-        :src="coverSrcPath" :alt="coverAlt"
-        width="400" height="400"
+        :src="coverSrcPath"
+        :alt="coverAlt"
+        width="400"
+        height="400"
         densities="1x"
         loading="lazy"
-        data-testid="product-box-img" />
+        data-testid="product-box-img"
+      />
     </RouterLink>
 
-    <div v-if="isTopseller || isOnSale"
-      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center">
+    <div
+      v-if="isTopseller || isOnSale"
+      class="px-1.5 py-1 left-2 bottom-2 absolute bg-other-sale rounded inline-flex justify-center items-center"
+    >
       <div class="text-states-on-error text-xs font-bold leading-none">
         {{ translations.product.badges.topseller }}
       </div>
     </div>
 
     <client-only>
-      <SwIconButton type="secondary"
-        :aria-label="isInWishlist ? translations.product.removeFromWishlist : translations.product.addToWishlist"
+      <SwIconButton
+        type="secondary"
+        :aria-label="
+          isInWishlist
+            ? translations.product.removeFromWishlist
+            : translations.product.addToWishlist
+        "
         :disabled="isLoading"
         class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
-        data-testid="product-box-toggle-wishlist-button" @click="handleWishlistClick">
+        data-testid="product-box-toggle-wishlist-button"
+        @click="handleWishlistClick"
+      >
         <SwWishlistIcon :filled="isInWishlist" />
       </SwIconButton>
     </client-only>

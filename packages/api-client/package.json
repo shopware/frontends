@@ -9,7 +9,11 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": ["shopware", "api", "client"],
+  "keywords": [
+    "shopware",
+    "api",
+    "client"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -17,7 +21,11 @@
   "module": "./dist/index.mjs",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "api-types", "admin-api-types"],
+  "files": [
+    "dist",
+    "api-types",
+    "admin-api-types"
+  ],
   "exports": {
     ".": {
       "require": {
@@ -47,8 +55,8 @@
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "tsgo --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm typecheck",
     "typecheck": "tsgo --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
@@ -57,7 +65,6 @@
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "4.1.9",

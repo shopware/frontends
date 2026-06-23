@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { relativeUrlSlash } from "./relativeUrlSlash";
 
 const relativeWithSlash = "/test";

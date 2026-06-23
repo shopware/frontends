@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { canUseQuoteActions } from "./canUseQuoteActions";
 
 describe("canUseQuoteActions", () => {

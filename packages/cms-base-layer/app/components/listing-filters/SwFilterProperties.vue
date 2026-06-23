@@ -13,6 +13,7 @@
 >
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const {
@@ -75,15 +76,17 @@ const selectValue = (id: string) => {
           @keydown.space.prevent="toggle"
         >
           <div class="flex-1 flex items-center gap-2.5">
-            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            <div
+              class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left"
+            >
               {{ filter.label }}
             </div>
           </div>
-          <span
-            class="flex items-center justify-center"
-            aria-hidden="true"
-          >
-            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          <span class="flex items-center justify-center" aria-hidden="true">
+            <SwChevronIcon
+              :direction="isFilterVisible ? 'up' : 'down'"
+              :size="24"
+            />
           </span>
         </div>
       </div>
@@ -91,28 +94,40 @@ const selectValue = (id: string) => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || displayMode === 'dropdown'" :id="filter.code" class="self-stretch flex flex-col justify-start items-start gap-4">
-        <fieldset class="self-stretch flex flex-col justify-start items-start gap-4">
-        <legend class="sr-only">{{ filter.name }}</legend>
-        <label
-          v-for="option in filter.options || filter.entities"
-          :key="`${option.id}-${isChecked(option.id)}`"
-          class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
+      <div
+        v-if="isFilterVisible || displayMode === 'dropdown'"
+        :id="filter.code"
+        class="self-stretch flex flex-col justify-start items-start gap-4"
+      >
+        <fieldset
+          class="self-stretch flex flex-col justify-start items-start gap-4"
         >
-          <div class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5">
-            <SwCheckbox
-              :model-value="isChecked(option.id)"
-              @update:model-value="() => selectValue(option.id)"
-            />
-          </div>
-          <div class="flex-1 inline-flex flex-col justify-start items-start gap-0.5">
-            <div class="inline-flex justify-start items-center gap-1">
-              <div class="flex-1 text-surface-on-surface text-base font-normal leading-normal">
-                {{ getTranslatedProperty(option, 'name') }}
+          <legend class="sr-only">{{ filter.name }}</legend>
+          <label
+            v-for="option in filter.options || filter.entities"
+            :key="`${option.id}-${isChecked(option.id)}`"
+            class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
+          >
+            <div
+              class="w-4 self-stretch pt-[3px] flex justify-start items-start gap-2.5"
+            >
+              <SwCheckbox
+                :model-value="isChecked(option.id)"
+                @update:model-value="() => selectValue(option.id)"
+              />
+            </div>
+            <div
+              class="flex-1 inline-flex flex-col justify-start items-start gap-0.5"
+            >
+              <div class="inline-flex justify-start items-center gap-1">
+                <div
+                  class="flex-1 text-surface-on-surface text-base font-normal leading-normal"
+                >
+                  {{ getTranslatedProperty(option, "name") }}
+                </div>
               </div>
             </div>
-          </div>
-        </label>
+          </label>
         </fieldset>
       </div>
     </transition>

@@ -1,17 +1,19 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
+
+import json5 from "json5";
+import { ofetch } from "ofetch";
 import openapiTS, {
   astToString,
   transformSchemaObjectWithComposition,
 } from "openapi-typescript";
-import type { OpenAPI3, SchemaObject } from "openapi-typescript";
-import ts from "typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
-import json5 from "json5";
-import { ofetch } from "ofetch";
+import type { OpenAPI3, SchemaObject } from "openapi-typescript";
 import c from "picocolors";
 import { format } from "prettier";
+import ts from "typescript";
+
 import type { TransformedElements } from "../generateFile";
 import {
   displayPatchingSummary,

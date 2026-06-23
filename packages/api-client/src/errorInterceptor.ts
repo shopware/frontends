@@ -1,4 +1,5 @@
 import type { FetchResponse } from "ofetch";
+
 import type { ApiError } from "./ApiError";
 import { ApiClientError } from "./ApiError";
 

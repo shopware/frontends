@@ -65,9 +65,9 @@ This template extends the Vue Starter Template using Nuxt's layer system:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  extends: ["../vue-starter-template"],  // Extend base template
+  extends: ["../vue-starter-template"], // Extend base template
   // ... Lumora-specific configuration
-})
+});
 ```
 
 ### What You Inherit
@@ -105,7 +105,7 @@ The template demonstrates how to customize the image placeholder color using `ap
 // app/app.config.ts
 export default defineAppConfig({
   imagePlaceholder: {
-    color: "#B38A65",  // Lumora brand-primary color
+    color: "#B38A65", // Lumora brand-primary color
   },
 });
 ```
@@ -121,14 +121,17 @@ Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on to
 import { mergeConfigs } from "@unocss/core";
 import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default mergeConfigs([baseConfig, {
-  theme: {
-    colors: {
-      'brand-primary': '#B38A65',
-      'brand-secondary': '#2C2C2C',
+export default mergeConfigs([
+  baseConfig,
+  {
+    theme: {
+      colors: {
+        "brand-primary": "#B38A65",
+        "brand-secondary": "#2C2C2C",
+      },
     },
   },
-}]);
+]);
 ```
 
 ## Overriding Components
@@ -192,7 +195,7 @@ Instead of a local path, you can extend from an npm package:
 export default defineNuxtConfig({
   extends: ["@your-company/store-base"],
   // ... your customizations
-})
+});
 ```
 
 ### Extend Multiple Layers
@@ -202,13 +205,9 @@ You can extend multiple layers:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  extends: [
-    "@your-company/store-base",
-    "@your-company/payment-layer",
-  ],
-})
+  extends: ["@your-company/store-base", "@your-company/payment-layer"],
+});
 ```
-
 
 ## Production Deployment
 

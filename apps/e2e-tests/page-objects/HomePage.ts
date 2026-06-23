@@ -1,4 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
+
 import { AbstractPage } from "./AbstractPage";
 
 export class HomePage extends AbstractPage {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getPaymentMethodIcon } from "./getPaymentMethodIcon";
 import mockedPaymentMethods from "./mocks/paymentMethods";
 

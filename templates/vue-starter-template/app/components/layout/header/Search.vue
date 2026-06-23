@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getProductRoute } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { apiClient } = useShopwareContext();

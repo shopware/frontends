@@ -1,5 +1,6 @@
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
+
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -36,9 +37,6 @@ export function useProductAssociations(
 ): UseProductAssociationsReturn {
   if (!product.value)
     throw new Error("[useProductAssociations]: Product is not provided.");
-
-  // @ts-ignore: temporary until fixed or removed
-  const association = options.associationContext;
 
   const { apiClient } = useShopwareContext();
   const isLoading = ref(false);

@@ -19,14 +19,14 @@ Shopware Frontends templates cache at several independent layers. Each one solve
 
 ## Caching at a glance
 
-| Layer | What it caches | Where it runs | How you configure it |
-| --- | --- | --- | --- |
-| Request layer (`cacheableReads`) | Anonymous Store API reads, routed through cacheable GET routes | Composables -> HTTP infrastructure | `shopware: { cacheableReads: true }` |
-| Render layer (`routeRules`) | Rendered HTML pages (ISR / SWR), per-route headers | Nuxt / Nitro server | `routeRules` in `nuxt.config.ts` |
-| Edge / CDN layer | GET responses and HTML with cacheable `Cache-Control` | CDN / reverse proxy | `Cache-Control` headers + your CDN |
-| Backend HTTP cache | Store API GET responses (Varnish / Fastly) | Shopware backend | Shopware reverse-proxy config (platform) |
-| Client state | Session, cart, user, listings, navigation | Browser memory (per session) | Shared composables, `provide`/`inject` |
-| Assets / images | Optimized images, SVGs, static files | CDN / browser | `@nuxt/image` presets, route headers |
+| Layer                            | What it caches                                                 | Where it runs                      | How you configure it                     |
+| -------------------------------- | -------------------------------------------------------------- | ---------------------------------- | ---------------------------------------- |
+| Request layer (`cacheableReads`) | Anonymous Store API reads, routed through cacheable GET routes | Composables -> HTTP infrastructure | `shopware: { cacheableReads: true }`     |
+| Render layer (`routeRules`)      | Rendered HTML pages (ISR / SWR), per-route headers             | Nuxt / Nitro server                | `routeRules` in `nuxt.config.ts`         |
+| Edge / CDN layer                 | GET responses and HTML with cacheable `Cache-Control`          | CDN / reverse proxy                | `Cache-Control` headers + your CDN       |
+| Backend HTTP cache               | Store API GET responses (Varnish / Fastly)                     | Shopware backend                   | Shopware reverse-proxy config (platform) |
+| Client state                     | Session, cart, user, listings, navigation                      | Browser memory (per session)       | Shared composables, `provide`/`inject`   |
+| Assets / images                  | Optimized images, SVGs, static files                           | CDN / browser                      | `@nuxt/image` presets, route headers     |
 
 The first three layers are about HTTP responses; the last two are about avoiding work the storefront already did. Most of them are not specific to Shopware Frontends: the render layer (`routeRules`, ISR / SWR / prerender), Nitro cache storage, asset caching, and client-side shared state are standard [Nuxt](https://nuxt.com) / Nitro / Vue capabilities that a Shopware Frontends project configures like any other Nuxt app - we are one use case of what the framework already provides. Only the request layer (`cacheableReads`) and the Shopware backend HTTP cache it unlocks are Shopware-specific. This page focuses on how a storefront wires these pieces together and links out to the Nuxt and Nitro docs for the underlying features.
 

@@ -1,6 +1,8 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
+
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
+
 import { cmsAssociations } from "../cms/cmsAssociations";
 
 export type UseCategorySearchReturn = {

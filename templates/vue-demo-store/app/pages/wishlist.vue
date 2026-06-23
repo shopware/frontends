@@ -2,6 +2,7 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
+
 import type { Schemas } from "#shopware";
 
 const defaultLimit = 15;

@@ -6,8 +6,10 @@ import {
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
 import { computed, h, resolveComponent, watchEffect } from "vue";
+
 import { createCategoryListingContext, useNavigationContext } from "#imports";
 import type { Schemas } from "#shopware";
+
 import { useLcpImagePreload } from "../../../composables/useLcpImagePreload";
 import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 

@@ -13,7 +13,7 @@ const { escape: escapeKey } = useMagicKeys();
 watch(
   () => escapeKey,
   () => {
-    isOpen.value && close();
+    if (isOpen.value) close();
   },
 );
 

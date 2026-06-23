@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getShippingMethodDeliveryTime } from "./getShippingMethodDeliveryTime";
 import mockedShippingMethods from "./mocks/shippingMethods";
 

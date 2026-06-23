@@ -142,7 +142,9 @@ const onPaymentSubmit = async (payload: {
 
 <template>
   <div class="p-4 max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Braintree Credit Card - Headless Test</h1>
+    <h1 class="text-2xl font-bold mb-4">
+      Braintree Credit Card - Headless Test
+    </h1>
 
     <!-- Progress indicator -->
     <div class="mb-6 flex gap-2">
@@ -170,7 +172,9 @@ const onPaymentSubmit = async (payload: {
     <!-- Debug info -->
     <details class="mb-4 p-3 bg-gray-100 rounded">
       <summary class="cursor-pointer font-medium">Debug Info</summary>
-      <pre class="mt-2 text-xs overflow-auto">{{ JSON.stringify(debugInfo, null, 2) }}</pre>
+      <pre class="mt-2 text-xs overflow-auto">{{
+        JSON.stringify(debugInfo, null, 2)
+      }}</pre>
     </details>
 
     <!-- Error display -->
@@ -189,31 +193,38 @@ const onPaymentSubmit = async (payload: {
       role="alert"
     >
       <span class="font-medium">Payment Result:</span>
-      <pre class="mt-2 text-xs overflow-auto">{{ JSON.stringify(paymentState, null, 2) }}</pre>
+      <pre class="mt-2 text-xs overflow-auto">{{
+        JSON.stringify(paymentState, null, 2)
+      }}</pre>
     </div>
 
     <!-- Login warning -->
-    <div v-if="!isLoggedIn" class="p-4 mb-4 bg-yellow-50 text-yellow-800 rounded">
+    <div
+      v-if="!isLoggedIn"
+      class="p-4 mb-4 bg-yellow-50 text-yellow-800 rounded"
+    >
       Not logged in. Update credentials in nuxt.config.ts
     </div>
 
     <!-- Payment method warning -->
     <div
-      v-if="debugInfo.paymentMethodId && !debugInfo.paymentMethodName?.toLowerCase().includes('braintree')"
+      v-if="
+        debugInfo.paymentMethodId &&
+        !debugInfo.paymentMethodName?.toLowerCase().includes('braintree')
+      "
       class="p-4 mb-4 bg-orange-50 text-orange-800 rounded"
     >
       <p class="font-medium">Warning: Braintree payment method not selected</p>
       <p class="text-sm mt-1">
-        Current: {{ debugInfo.paymentMethodName }} ({{ debugInfo.paymentMethodId }})
+        Current: {{ debugInfo.paymentMethodName }} ({{
+          debugInfo.paymentMethodId
+        }})
       </p>
     </div>
 
     <!-- Braintree component -->
     <ClientOnly v-if="!paymentState && isLoggedIn">
-      <BraintreeCreditCard
-        class="mt-4"
-        @payment-submit="onPaymentSubmit"
-      />
+      <BraintreeCreditCard class="mt-4" @payment-submit="onPaymentSubmit" />
     </ClientOnly>
   </div>
 </template>

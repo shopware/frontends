@@ -4,6 +4,7 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const { required, minLength, requiredIf } = customValidators();
@@ -133,7 +134,6 @@ const $v = useVuelidate(rules, formData);
                   {{ salutation.displayName }}
                 </option>
               </select>
-        
             </div>
             <div class="col-span-6 sm:col-span-3">
               <label

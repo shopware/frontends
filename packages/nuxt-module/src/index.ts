@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+
 import { addCustomTab } from "@nuxt/devtools-kit";
 /**
  * @module @shopware/nuxt3
@@ -12,6 +13,7 @@ import {
   useLogger,
 } from "@nuxt/kit";
 import { defu } from "defu";
+
 import { isConfigDeprecated } from "./utils";
 const MODULE_ID = "@shopware/nuxt3";
 

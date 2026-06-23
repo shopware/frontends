@@ -131,7 +131,10 @@ onBeforeMount(() => {
             @blur="$v.emailConfirmation.$touch()"
           />
           <span
-            v-if="$v.emailConfirmation.$error && $v.emailConfirmation.$errors[0]?.$message"
+            v-if="
+              $v.emailConfirmation.$error &&
+              $v.emailConfirmation.$errors[0]?.$message
+            "
             class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.emailConfirmation.$errors[0].$message }}

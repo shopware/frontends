@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRegle } from "@regle/core";
+
 import type { operations } from "#shopware";
 
 const { apiClient } = useShopwareContext();

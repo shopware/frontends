@@ -12,7 +12,7 @@ const { escape: escapeKey } = useMagicKeys();
 
 // @ts-expect-error - useMagicKeys may return undefined
 watch(escapeKey, () => {
-  isOpen.value && close();
+  if (isOpen.value) close();
 });
 
 const modalContentElement = useTemplateRef("modalContentElement");

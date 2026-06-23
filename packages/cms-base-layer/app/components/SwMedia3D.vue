@@ -29,10 +29,7 @@ function focusObject() {
 </script>
 <template>
   <TresCanvas v-bind="gl">
-    <TresPerspectiveCamera
-      :args="[75, 1, 0.1, 2000]"
-      :position="[0, 0, 500]"
-    />
+    <TresPerspectiveCamera :args="[75, 1, 0.1, 2000]" :position="[0, 0, 500]" />
     <OrbitControls make-default />
     <Bounds ref="boundsRef" clip use-mounted>
       <primitive v-if="model" :object="model" @click="focusObject" />

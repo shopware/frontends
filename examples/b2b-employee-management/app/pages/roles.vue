@@ -84,7 +84,9 @@ const updateRoles = async () => {
 
 <template>
   <div class="container mx-auto px-4 pb-12">
-    <div class="my-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div
+      class="my-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between"
+    >
       <div>
         <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
           B2B administration
@@ -103,9 +105,19 @@ const updateRoles = async () => {
       </NuxtLink>
     </div>
 
-    <div v-if="responseErrors.length" class="rounded-lg border border-red-200 bg-red-50 p-6">
-      <p class="text-sm font-semibold uppercase tracking-wide text-red-700" role="alert">
-        {{ responseErrors[0]?.status ? `Error ${responseErrors[0].status}` : "API error" }}
+    <div
+      v-if="responseErrors.length"
+      class="rounded-lg border border-red-200 bg-red-50 p-6"
+    >
+      <p
+        class="text-sm font-semibold uppercase tracking-wide text-red-700"
+        role="alert"
+      >
+        {{
+          responseErrors[0]?.status
+            ? `Error ${responseErrors[0].status}`
+            : "API error"
+        }}
       </p>
       <h3 class="mt-2 text-2xl font-semibold text-red-950">
         {{ errorTitle }}
@@ -119,13 +131,15 @@ const updateRoles = async () => {
       >
         <p class="font-semibold">Missing B2B permissions</p>
         <p class="mt-1">
-          The user is logged in as a B2B employee, but the assigned role does not
-          allow this action. Add the following permission in B2B Employee
+          The user is logged in as a B2B employee, but the assigned role does
+          not allow this action. Add the following permission in B2B Employee
           Management and log in again:
         </p>
         <ul class="mt-2 list-disc pl-5">
           <li v-for="permission in missingPermissions" :key="permission">
-            <code class="rounded bg-red-100 px-1.5 py-0.5 text-xs">{{ permission }}</code>
+            <code class="rounded bg-red-100 px-1.5 py-0.5 text-xs">{{
+              permission
+            }}</code>
           </li>
         </ul>
       </div>
@@ -200,8 +214,9 @@ const updateRoles = async () => {
                 <button
                   @click="handleDelete(role.id)"
                   class="ml-2 rounded bg-red-500 py-1 px-2 font-bold text-white hover:bg-red-700"
-                  >Delete</button
                 >
+                  Delete
+                </button>
               </div>
             </td>
           </tr>

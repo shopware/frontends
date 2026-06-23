@@ -108,10 +108,11 @@ In order to display a PayPal Button component, we need to mount it in the DOM.
 const divContainer = ref();
 
 // client only
-window
-  .paypal
-  .Buttons({/** configuration skipped */})
-  .render(divContainer)
+window.paypal
+  .Buttons({
+    /** configuration skipped */
+  })
+  .render(divContainer);
 // this script will mount the component in element `divContainer`
 ```
 
@@ -133,20 +134,16 @@ It is called when the user clicks on the PayPal checkout button.
 const divContainer = ref();
 
 // client only
-window
-  .paypal
+window.paypal
   .Buttons({
-      createOrder: async (
-        data: CreateOrderData,
-        actions: CreateOrderActions
-      ) => {
-        const response = await apiClient.invoke(
-          "createPayPalOrder post /store-api/paypal/create-order"
-        );
-        return response.data?.token;
-      },
+    createOrder: async (data: CreateOrderData, actions: CreateOrderActions) => {
+      const response = await apiClient.invoke(
+        "createPayPalOrder post /store-api/paypal/create-order",
+      );
+      return response.data?.token;
+    },
   })
-  .render(divContainer)
+  .render(divContainer);
 ```
 
 ### `createOrder` event (Express)
@@ -158,24 +155,20 @@ It is called when the user clicks on the PayPal express checkout button.
 const divContainer = ref();
 
 // client only
-window
-  .paypal
+window.paypal
   .Buttons({
-      createOrder: async (
-        data: CreateOrderData,
-        actions: CreateOrderActions
-      ) => {
-        await setPaymentMethod(paypalMethod.value);
+    createOrder: async (data: CreateOrderData, actions: CreateOrderActions) => {
+      await setPaymentMethod(paypalMethod.value);
 
-        await addToCart();
+      await addToCart();
 
-        const response = await apiClient.invoke(
-          "createPayPalExpressOrder post /store-api/paypal/express/create-order"
-        );
-        return response.data?.token;
-      },
+      const response = await apiClient.invoke(
+        "createPayPalExpressOrder post /store-api/paypal/express/create-order",
+      );
+      return response.data?.token;
+    },
   })
-  .render(divContainer)
+  .render(divContainer);
 ```
 
 The approach here is to set the payment method internally, then add a current product to the cart, and then prepare a PayPal token to be used later on.
@@ -338,8 +331,7 @@ loadScript({
 ```ts
 const divContainer = ref();
 
-window
-  .paypal
+window.paypal
   .Buttons({
     fundingSource: paypal.FUNDING.PAYLATER,
     createOrder: createOrder.bind(this, "paylater"),
@@ -347,7 +339,7 @@ window
 
     // ...
   })
-  .render(divContainer)
+  .render(divContainer);
 ```
 
 ### Venmo
@@ -355,8 +347,7 @@ window
 ```ts
 const divContainer = ref();
 
-window
-  .paypal
+window.paypal
   .Buttons({
     fundingSource: paypal.FUNDING.VENMO,
     createOrder: createOrder.bind(this, "venmo"),
@@ -364,7 +355,7 @@ window
 
     // ...
   })
-  .render(divContainer)
+  .render(divContainer);
 ```
 
 ### Credit card (ACDC)
@@ -373,8 +364,10 @@ window
 const cardFields = paypal.CardFields({
   createOrder: createOrder.bind(this, "acdc"),
   onApprove: onApprove.bind(this),
-  style: {/** some custom styling */},
-})
+  style: {
+    /** some custom styling */
+  },
+});
 
 const nameField = cardFields.NameField({
   placeholder: "Card holder name",
@@ -411,7 +404,9 @@ async function onFormSubmit() {
   }
 
   // Do some advanced error handling, e.g. focus the invalid field
-  const firstInvalidFieldKey = Object.keys(state.fields).find((key) => !state.fields[key].isValid);
+  const firstInvalidFieldKey = Object.keys(state.fields).find(
+    (key) => !state.fields[key].isValid,
+  );
   this.fields[firstInvalidFieldKey]?.focus();
 }
 ```
@@ -464,14 +459,21 @@ async function renderGooglePay() {
         } catch (e) {
           return {
             transactionState: "ERROR",
-            error: { intent: "PAYMENT_AUTHORIZATION", message: e.message || "TRANSACTION FAILED" },
-          }
+            error: {
+              intent: "PAYMENT_AUTHORIZATION",
+              message: e.message || "TRANSACTION FAILED",
+            },
+          };
         }
       },
     },
   });
 
-  const { result } = await gpClient.isReadyToPay({ apiVersion, apiVersionMinor, allowedPaymentMethods });
+  const { result } = await gpClient.isReadyToPay({
+    apiVersion,
+    apiVersionMinor,
+    allowedPaymentMethods,
+  });
   if (!result) {
     throw new Error("Browser does not support Google Pay");
   }
@@ -498,7 +500,7 @@ async function renderGooglePay() {
           label: "Tax",
           price: cart.price.calculatedTaxes.price,
           type: "TAX",
-        }
+        },
       ],
     },
   };
@@ -513,7 +515,7 @@ async function renderGooglePay() {
       gpClient.loadPaymentData(paymentDataRequest).catch();
     },
   });
-  
+
   divContainer.appendChild(button);
 }
 
@@ -521,7 +523,7 @@ async function onPaymentAuthorized(paymentData) {
   const orderId = await createOrder("googlepay");
 
   if (!orderId) {
-    throw new Error("PayPal order could not be created")
+    throw new Error("PayPal order could not be created");
   }
 
   const confirmOrderResponse = await window.paypal.Googlepay().confirmOrder({
@@ -529,12 +531,14 @@ async function onPaymentAuthorized(paymentData) {
     paymentMethodData: paymentData.paymentMethodData,
   });
 
-  if (!["APPROVED","PAYER_ACTION_REQUIRED"].includes(confirmOrderResponse.status)) {
+  if (
+    !["APPROVED", "PAYER_ACTION_REQUIRED"].includes(confirmOrderResponse.status)
+  ) {
     throw new Error("PayPal didn't approve the transaction.");
   }
 
   if ("PAYER_ACTION_REQUIRED" === confirmOrderResponse.status) {
-    await window.paypal.Googlepay().initiatePayerAction({orderId});
+    await window.paypal.Googlepay().initiatePayerAction({ orderId });
   }
 
   this.onApprove({ orderId });
@@ -560,7 +564,10 @@ const { activeBillingAddress } = useSessionContext();
 const divContainer = ref();
 
 async function renderApplePay() {
-  if (!window.ApplePaySession?.supportsVersion(4) || !window.ApplePaySession?.canMakePayments()) {
+  if (
+    !window.ApplePaySession?.supportsVersion(4) ||
+    !window.ApplePaySession?.canMakePayments()
+  ) {
     throw new Error("Browser does not support Apple Pay");
   }
 
@@ -585,7 +592,7 @@ async function renderApplePay() {
     givenName: activeBillingAddress.firstName,
     locality: activeBillingAddress.city,
     postalCode: activeBillingAddress.zipcode,
-  }
+  };
 
   const paymentDataRequest = {
     countryCode,
@@ -605,25 +612,31 @@ async function renderApplePay() {
   const button = document.createElement("apple-pay-button");
   button.setAttribute("buttonStyle", "black");
   button.setAttribute("type", "buy");
-  button.addEventListener("click",() => {
+  button.addEventListener("click", () => {
     // do some form validity checks before continue
 
     const session = new window.ApplePaySession(4, paymentRequest);
 
     session.onvalidatemerchant = this.onValidateMerchant.bind(this, session);
-    session.onpaymentauthorized = this.onPaymentAuthorized.bind(this, session, billingContact);
+    session.onpaymentauthorized = this.onPaymentAuthorized.bind(
+      this,
+      session,
+      billingContact,
+    );
 
     session.begin();
   });
-  
+
   divContainer.appendChild(button);
 }
 
 async function onValidateMerchant(session, event) {
   try {
-    const { merchantSession } = await window.paypal.Applepay().validateMerchant({
-      validationUrl: event.validationURL,
-    });
+    const { merchantSession } = await window.paypal
+      .Applepay()
+      .validateMerchant({
+        validationUrl: event.validationURL,
+      });
 
     session.completeMerchantValidation(merchantSession);
   } catch (e) {

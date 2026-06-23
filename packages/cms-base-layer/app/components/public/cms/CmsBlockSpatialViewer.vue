@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent } from "vue";
+
 import { useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 

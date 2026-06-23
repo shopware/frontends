@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { type ApiGenConfig, getApiTypeConfig } from "./jsonOverrideUtils";
 
 describe("getApiTypeConfig", () => {

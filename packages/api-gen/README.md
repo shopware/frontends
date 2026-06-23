@@ -338,7 +338,7 @@ Each command can also be used programmatically within your own scripts:
 ```ts
 import { generate } from "@shopware/api-gen";
 
-await generate({ 
+await generate({
   cwd: process.cwd(),
   filename: "storeApiTypes.ts",
   apiType: "store",

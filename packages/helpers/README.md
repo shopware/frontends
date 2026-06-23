@@ -49,11 +49,11 @@ const optimizedUrl = getBackgroundImageUrl(
 
 ### Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `url` | `string` | CSS `url()` string containing the background image URL |
-| `element` | `{ backgroundMedia?: { metaData?: { width?: number; height?: number } } }` | CMS section or block object with media metadata |
-| `options` | `BackgroundImageOptions` (optional) | Format and quality settings |
+| Parameter | Type                                                                       | Description                                            |
+| --------- | -------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `url`     | `string`                                                                   | CSS `url()` string containing the background image URL |
+| `element` | `{ backgroundMedia?: { metaData?: { width?: number; height?: number } } }` | CMS section or block object with media metadata        |
+| `options` | `BackgroundImageOptions` (optional)                                        | Format and quality settings                            |
 
 ### `BackgroundImageOptions`
 
@@ -85,11 +85,11 @@ const srcset = generateCdnSrcSet(
 
 ### Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `src` | `string \| undefined` | Base image URL |
-| `widths` | `number[]` (optional) | Array of widths to generate (default: `[400, 800, 1200, 1600]`) |
-| `options` | `{ format?: string; quality?: number }` (optional) | Format and quality settings |
+| Parameter | Type                                               | Description                                                     |
+| --------- | -------------------------------------------------- | --------------------------------------------------------------- |
+| `src`     | `string \| undefined`                              | Base image URL                                                  |
+| `widths`  | `number[]` (optional)                              | Array of widths to generate (default: `[400, 800, 1200, 1600]`) |
+| `options` | `{ format?: string; quality?: number }` (optional) | Format and quality settings                                     |
 
 Returns `undefined` if `src` is falsy or URL parsing fails.
 
@@ -102,20 +102,20 @@ Builds an optimized CDN image URL with size parameters based on rendered element
 ```ts
 import { buildCdnImageUrl } from "@shopware/helpers";
 
-const url = buildCdnImageUrl(
-  "https://cdn.shopware.store/.../image.jpg",
-  { width: 724, height: 760 },
-);
+const url = buildCdnImageUrl("https://cdn.shopware.store/.../image.jpg", {
+  width: 724,
+  height: 760,
+});
 // => "https://cdn.shopware.store/.../image.jpg?height=800&fit=crop,smart"
 ```
 
 ### Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `src` | `string \| undefined` | Base image URL |
-| `dimensions` | `{ width: number; height: number }` | Rendered element dimensions in pixels |
-| `options` | `{ format?: string; quality?: number }` (optional) | Format and quality settings |
+| Parameter    | Type                                               | Description                           |
+| ------------ | -------------------------------------------------- | ------------------------------------- |
+| `src`        | `string \| undefined`                              | Base image URL                        |
+| `dimensions` | `{ width: number; height: number }`                | Rendered element dimensions in pixels |
+| `options`    | `{ format?: string; quality?: number }` (optional) | Format and quality settings           |
 
 Returns an empty string if `src` is falsy. Returns the original `src` if URL parsing fails.
 

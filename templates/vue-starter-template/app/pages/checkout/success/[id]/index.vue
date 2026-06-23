@@ -153,7 +153,7 @@ const formatDate = (date: string) =>
             </template>
           </div>
         </div>
-        <div class="border-t  border-outline-outline flex">
+        <div class="border-t border-outline-outline flex">
           <div class="flex-1 flex-col ml-4">
             <div
               class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
@@ -193,7 +193,7 @@ const formatDate = (date: string) =>
               </div>
             </div>
             <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t  border-outline-outline md:flex py-6 md:py-10"
+              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-outline-outline md:flex py-6 md:py-10"
             >
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">
@@ -216,7 +216,9 @@ const formatDate = (date: string) =>
                 </div>
               </div>
             </div>
-            <div class="border-t  border-outline-outline py-6 md:py-10 space-y-4">
+            <div
+              class="border-t border-outline-outline py-6 md:py-10 space-y-4"
+            >
               <div class="md:w-1/2 ml-auto flex flex-col gap-2">
                 <div
                   v-if="subtotal"
@@ -291,9 +293,11 @@ const formatDate = (date: string) =>
                   />
                 </div>
                 <div
-                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t  border-outline-outline text-surface-on-surface items-center"
+                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-outline-outline text-surface-on-surface items-center"
                 >
-                  <div class="flex items-center col-span-2 text-surface-on-surface">
+                  <div
+                    class="flex items-center col-span-2 text-surface-on-surface"
+                  >
                     <div
                       class="i-carbon-image bg-secondary-200 h-18 w-18 mr-2"
                     />
@@ -321,7 +325,7 @@ const formatDate = (date: string) =>
               </div>
             </div>
           </div>
-          <div class="border-t  border-outline-outline flex">
+          <div class="border-t border-outline-outline flex">
             <div class="flex-1 flex-col ml-4">
               <div class="md:flex md:flex-wrap py-6 md:py-10">
                 <div class="w-auto md:w-1/2 w-1/2 pr-4">
@@ -354,7 +358,7 @@ const formatDate = (date: string) =>
                 </div>
               </div>
               <div
-                class="md:flex md:flex-wrap border-t  border-outline-outline md:flex py-6 md:py-10"
+                class="md:flex md:flex-wrap border-t border-outline-outline md:flex py-6 md:py-10"
               >
                 <div class="w-auto md:w-1/2">
                   <div
@@ -386,7 +390,7 @@ const formatDate = (date: string) =>
                 </div>
               </div>
               <div
-                class="border-t  border-outline-outline py-6 md:py-10 space-y-4"
+                class="border-t border-outline-outline py-6 md:py-10 space-y-4"
               >
                 <div class="flex justify-between text-base font-medium">
                   <div

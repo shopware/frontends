@@ -6,8 +6,8 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
     "typecheck": "nuxt prepare && vue-tsc --noEmit"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "nuxt": "4.4.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3"
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   }
 }

@@ -4,6 +4,7 @@ import {
   isTechnicalPath,
   normalizePath,
 } from "@shopware/helpers";
+
 import { useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 

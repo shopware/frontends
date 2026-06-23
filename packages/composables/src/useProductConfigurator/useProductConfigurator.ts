@@ -2,6 +2,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import { useProduct, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 

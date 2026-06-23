@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { downloadFile } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

@@ -2,6 +2,7 @@
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { toRefs } from "vue";
+
 import { usePrice, useProductPrice } from "#imports";
 import type { Schemas } from "#shopware";
 

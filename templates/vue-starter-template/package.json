@@ -16,8 +16,8 @@
     "build": "nuxt prepare && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write . && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "nuxt prepare && vue-tsc -b --noEmit",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
@@ -46,12 +46,13 @@
     "vue": "3.5.38"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@shopware/api-gen": "canary",
     "@vue/compiler-sfc": "3.5.38",
     "typescript": "5.9.3",
     "vite": "8.0.16",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.5",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   },
   "overrides": {
     "glob": "^13",
