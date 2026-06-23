@@ -1,5 +1,11 @@
 # vue-demo-store
 
+## 1.14.1
+
+### Patch Changes
+
+- [#2510](https://github.com/shopware/frontends/pull/2510) [`6f063bc`](https://github.com/shopware/frontends/commit/6f063bcf3dac1e9582a952b86eb588735f80d1e0) Thanks [@patzick](https://github.com/patzick)! - Migrate template linting and formatting from Biome to Oxlint and Oxfmt.
+
 ## 1.14.0
 
 ### Minor Changes

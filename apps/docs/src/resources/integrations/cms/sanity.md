@@ -34,11 +34,11 @@ standalone project you create separately - see [The Studio](#the-studio-the-edit
 The single rule that makes this work: **store a reference, never a copy.** Sanity
 keeps editorial content and a product's _id_; Shopware provides the live data.
 
-| Concern | Owner | Why |
-| --- | --- | --- |
-| Page layout, sections, copy, images, **which products to feature** | **Sanity** | editorial, versioned, editor-controlled |
-| Product **price, name, stock, availability, media** | **Shopware** | live commerce data - changes constantly |
-| **Cart**, totals, checkout, logged-in user | **Shopware** | transactional, per-user, real-time |
+| Concern                                                            | Owner        | Why                                     |
+| ------------------------------------------------------------------ | ------------ | --------------------------------------- |
+| Page layout, sections, copy, images, **which products to feature** | **Sanity**   | editorial, versioned, editor-controlled |
+| Product **price, name, stock, availability, media**                | **Shopware** | live commerce data - changes constantly |
+| **Cart**, totals, checkout, logged-in user                         | **Shopware** | transactional, per-user, real-time      |
 
 ```
 Sanity (page.pageBuilder[]) --GROQ--> Nuxt --productIds--> Shopware Store API --> live cards
@@ -184,7 +184,11 @@ const { data: products } = await useAsyncData(
   async () => {
     const ids = props.section.productIds ?? [];
     const resolved = await Promise.all(
-      ids.map((id) => search(id).then((r) => r.product).catch(() => null)),
+      ids.map((id) =>
+        search(id)
+          .then((r) => r.product)
+          .catch(() => null),
+      ),
     );
     return resolved.filter(Boolean);
   },
@@ -215,7 +219,8 @@ const add = async () => {
 
 ```ts
 // the cart is per-user session state - load it on the client, not in cached SSR
-const { cartItems, count, totalPrice, isEmpty, removeItem, refreshCart } = useCart();
+const { cartItems, count, totalPrice, isEmpty, removeItem, refreshCart } =
+  useCart();
 onMounted(() => refreshCart());
 ```
 
