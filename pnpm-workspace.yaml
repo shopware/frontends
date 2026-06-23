@@ -22,6 +22,7 @@ overrides:
   axios: ^1.18.0
   minimatch: ^10.2.5
   undici: ^6.27.0
+  dompurify: ^3.4.11 # GHSA-cmwh-pvxp-8882 (transitive via isomorphic-dompurify)
   "jsdom>undici": "^7"
   # Sanity's build stack needs Vite 8; the rest of the workspace stays on Vite 7.
   "@sanity/cli>vite": "^8.0.16"
