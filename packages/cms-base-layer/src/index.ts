@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+
 /**
  * @module @shopware/cms-base
  */

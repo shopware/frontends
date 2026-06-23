@@ -6,6 +6,7 @@ import {
   isProductTopSeller,
 } from "@shopware/helpers";
 import { computed, inject } from "vue";
+
 import { useUser } from "#imports";
 import type { Schemas } from "#shopware";
 

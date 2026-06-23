@@ -1,5 +1,7 @@
 import { createAPIClient } from "@shopware/api-client";
+
 import type { operations } from "#shopware";
+
 import { shopwareAccessToken, shopwareEndpoint } from "../../../apiBuilder";
 
 export default defineEventHandler(async (event) => {

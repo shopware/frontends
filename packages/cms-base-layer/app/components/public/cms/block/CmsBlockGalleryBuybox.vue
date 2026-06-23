@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockGalleryBuybox } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

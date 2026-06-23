@@ -8,6 +8,7 @@ import { defu } from "defu";
 import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import type { LocationQueryRaw } from "vue-router";
+
 import { useCategoryListing, useRoute, useRouter } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

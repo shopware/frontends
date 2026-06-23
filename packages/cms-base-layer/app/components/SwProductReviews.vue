@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defu } from "defu";
 import { computed, onMounted, ref, toRefs } from "vue";
+
 import {
   useCmsTranslations,
   useProductReviews,

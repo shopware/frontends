@@ -3,6 +3,7 @@ import {
   getShippingMethodDeliveryTime,
   getShippingMethodIcon,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { shippingMethods } = defineProps<{

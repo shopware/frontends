@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getMedia, getSmallestThumbnailUrl } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({

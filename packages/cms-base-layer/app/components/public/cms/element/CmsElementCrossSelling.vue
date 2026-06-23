@@ -5,6 +5,7 @@ import type {
 } from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
 import { computed, inject, ref, useTemplateRef } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{

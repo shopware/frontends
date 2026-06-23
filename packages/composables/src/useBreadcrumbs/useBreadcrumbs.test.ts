@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import { useBreadcrumbs } from "./useBreadcrumbs";
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRegle } from "@regle/core";
+
 import type { Schemas } from "#shopware";
+
 import { addressFormRules } from "../../../utils/validation/rules/addressFormRules";
 
 const { t } = useI18n();

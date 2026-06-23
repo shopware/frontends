@@ -14,6 +14,7 @@ import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside, useDebounceFn, useEventListener } from "@vueuse/core";
 import { defu } from "defu";
 import { onMounted, reactive, ref, watch } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const emits =

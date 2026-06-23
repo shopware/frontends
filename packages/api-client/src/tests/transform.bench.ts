@@ -1,4 +1,5 @@
 import { bench, describe } from "vitest";
+
 import { transformPathToQuery } from "../transformPathToQuery";
 
 describe("transforming requests", () => {

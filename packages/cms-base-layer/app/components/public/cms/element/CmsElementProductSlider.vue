@@ -6,6 +6,7 @@ import type {
 import { useElementSize } from "@vueuse/core";
 import { computed, inject, useTemplateRef } from "vue";
 import type { CSSProperties, ComputedRef } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{

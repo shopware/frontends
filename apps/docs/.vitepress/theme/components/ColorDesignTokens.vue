@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref } from "vue";
+
 import { colors } from "../../data/design-tokens-colors";
 
 const GROUP_ORDER = [

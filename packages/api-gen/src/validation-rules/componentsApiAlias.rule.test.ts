@@ -1,5 +1,6 @@
 import type { ObjectSubtype } from "openapi-typescript";
 import { describe, expect, it } from "vitest";
+
 import componentsApiAliasRule from "./componentsApiAlias.rule";
 
 function _uncolorize(str: string | null) {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { urlIsAbsolute } from "./urlIsAbsolute";
 
 const absoluteUrl = "http://www.test.test";

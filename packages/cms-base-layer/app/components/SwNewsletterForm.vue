@@ -8,6 +8,7 @@ import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 import { defu } from "defu";
 import { computed, reactive, ref } from "vue";
+
 import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";
 
 const props = defineProps<{

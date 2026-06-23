@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Regle } from "@regle/core";
+
 import type { Schemas } from "#shopware";
 
 const state = defineModel<

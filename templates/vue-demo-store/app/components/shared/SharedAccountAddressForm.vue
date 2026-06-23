@@ -4,6 +4,7 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const { required, minLength, requiredIf } = customValidators();

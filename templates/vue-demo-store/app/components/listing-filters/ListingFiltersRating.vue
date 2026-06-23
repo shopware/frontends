@@ -9,6 +9,7 @@
   "
 >
 import { computed, ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const emits =

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+
 import { usePrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();

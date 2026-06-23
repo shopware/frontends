@@ -1,5 +1,6 @@
 import { createAPIClient } from "@shopware/api-client";
 import Cookies from "js-cookie";
+
 import type { operations } from "#shopware";
 
 const shopwareEndpoint = import.meta.env.VITE_DEMO_API_URL;

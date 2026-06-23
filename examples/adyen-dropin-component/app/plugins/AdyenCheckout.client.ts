@@ -1,5 +1,6 @@
 import { AdyenCheckout, type CoreConfiguration } from "@adyen/adyen-web";
 import { defu } from "defu";
+
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 
 export default defineNuxtPlugin(async () => {

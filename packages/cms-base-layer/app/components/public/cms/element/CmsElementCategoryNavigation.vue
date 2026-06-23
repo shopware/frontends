@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
 import { onMounted, ref } from "vue";
+
 import { useCategory, useNavigation } from "#imports";
 import type { Schemas } from "#shopware";
 

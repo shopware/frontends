@@ -12,6 +12,7 @@ import {
 import { getCmsTranslate } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref, toRef } from "vue";
+
 import {
   useAddToCart,
   useCartErrorParamsResolver,

@@ -1,5 +1,7 @@
 import initUnocssRuntime from "@unocss/runtime";
+
 import { defineNuxtPlugin, useAppConfig } from "#imports";
+
 import config from "../../uno.config";
 
 // Resolves UnoCSS utility classes at runtime via DOM MutationObserver.

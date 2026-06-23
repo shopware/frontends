@@ -1,5 +1,6 @@
 import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
+
 import type { Schemas } from "#shopware";
 
 type JsonLDObject = { [key: string]: JsonLDValue };

@@ -5,6 +5,7 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { type Ref, computed, onMounted, ref } from "vue";
 import xss from "xss";
+
 import { useProduct, useShopwareContext, useUser } from "#imports";
 import type { Schemas } from "#shopware";
 

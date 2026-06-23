@@ -4,6 +4,7 @@ import {
   getMedia,
   getSmallestThumbnailUrl,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 const props = defineProps<{
   lineItem: Schemas["OrderLineItem"];

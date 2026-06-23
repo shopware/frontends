@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { useCart, useCartNotification } from "#imports";
+
 import { useSetup } from "../_test";
 
 const pushErrorSpy = vi.fn();

@@ -1,8 +1,10 @@
-import { createApp } from "vue";
-import "./style.css";
 import { createShopwareContext } from "@shopware/composables/dist";
-import App from "./App.vue";
+
+import "./style.css";
+import { createApp } from "vue";
+
 import { apiClient } from "./apiClient";
+import App from "./App.vue";
 
 const app = createApp(App);
 

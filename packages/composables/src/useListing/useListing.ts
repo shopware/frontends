@@ -2,6 +2,7 @@ import { getListingFilters } from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import { useCategory, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

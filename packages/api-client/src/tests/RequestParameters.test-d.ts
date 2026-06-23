@@ -1,7 +1,7 @@
 import { assertType, describe, it } from "vitest";
-import type { RequestParameters } from "../createAPIClient";
 
 import type { operations } from "../../api-types/adminApiTypes";
+import type { RequestParameters } from "../createAPIClient";
 
 describe("requestParameters type", () => {
   describe("/token request", () => {

@@ -1,5 +1,6 @@
 import type { FetchResponse } from "ofetch";
 import { describe, expect, it } from "vitest";
+
 import type { ApiError } from "./ApiError";
 import { ApiClientError } from "./ApiError";
 import { errorInterceptor } from "./errorInterceptor";

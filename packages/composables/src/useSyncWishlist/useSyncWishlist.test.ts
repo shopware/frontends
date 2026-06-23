@@ -1,6 +1,7 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { useSetup } from "../_test";
 import { useSyncWishlist } from "./useSyncWishlist";
 

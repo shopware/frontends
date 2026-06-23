@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createApp } from "vue";
+
 import { createShopwareContext } from "./createShopwareContext";
 
 describe("createShopwareContext", () => {

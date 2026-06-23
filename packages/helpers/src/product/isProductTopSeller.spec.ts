@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { isProductTopSeller } from "./isProductTopSeller";
 
 describe("isProductTopSeller", () => {

@@ -2,6 +2,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { syncRefs } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import {
   useCart,
   useContext,

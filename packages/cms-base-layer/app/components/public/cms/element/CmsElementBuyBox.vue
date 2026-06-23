@@ -3,6 +3,7 @@ import type { CmsElementBuyBox } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed } from "vue";
+
 import {
   useCmsElementConfig,
   usePrice,

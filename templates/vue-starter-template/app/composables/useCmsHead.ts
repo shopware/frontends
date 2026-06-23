@@ -5,6 +5,7 @@ import {
   isLandingPage,
   isProduct,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 export type UseCmsHeadReturn = ReturnType<typeof useCmsHead>;

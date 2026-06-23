@@ -4,6 +4,7 @@ import type {
   CmsElementImage,
   CmsElementText,
 } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

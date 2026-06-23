@@ -7,6 +7,7 @@ import {
 } from "@shopware/helpers";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+
 import { useUrlResolver } from "#imports";
 import type { Schemas } from "#shopware";
 

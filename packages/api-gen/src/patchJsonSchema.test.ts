@@ -1,5 +1,6 @@
 import json5 from "json5";
 import { describe, expect, it } from "vitest";
+
 import { patchJsonSchema } from "./patchJsonSchema";
 
 describe("patchJsonSchema", () => {

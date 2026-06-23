@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getProductListingFromCmsPage } from "./getProductListingFromCmsPage";
 
 describe("getProductListingFromCmsPage", () => {

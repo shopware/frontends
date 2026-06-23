@@ -7,6 +7,7 @@ import {
   type ResponseType,
   ofetch,
 } from "ofetch";
+
 import type { operations } from "../api-types/storeApiTypes";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";

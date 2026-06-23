@@ -4,6 +4,7 @@ import type {
   SliderElementConfig,
 } from "@shopware/composables";
 import { ref, watch } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const { product, config = {} } = defineProps<{

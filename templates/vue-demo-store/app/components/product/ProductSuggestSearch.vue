@@ -4,6 +4,7 @@ import {
   getTranslatedProperty,
 } from "@shopware/helpers";
 import { useTemplateRef } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{ product: Schemas["Product"] }>();

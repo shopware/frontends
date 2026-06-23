@@ -3,6 +3,7 @@ import type { CmsElementProductListing } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
+
 import {
   useCategoryListing,
   useCmsElementConfig,

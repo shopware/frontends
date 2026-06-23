@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getPaymentMethodIcon } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { paymentMethods } = defineProps<{

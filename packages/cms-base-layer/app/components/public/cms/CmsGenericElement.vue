@@ -2,6 +2,7 @@
 import { resolveCmsComponent } from "@shopware/composables";
 import { getCmsLayoutConfiguration } from "@shopware/helpers";
 import { h, resolveComponent } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

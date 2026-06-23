@@ -11,7 +11,7 @@
   "arrowParens": "always",
   "bracketSameLine": false,
   "bracketSpacing": true,
-  "sortImports": false,
+  "sortImports": true,
   "sortPackageJson": false,
   "ignorePatterns": [
     "dist",
@@ -29,7 +29,7 @@
     ".vitepress/cache/*",
     "packages/types/*",
     "playwright-report",
-    "api-gen/tests/*",
+    "packages/api-gen/tests/*",
     "apps/e2e-tests/playwright-report",
     "apps/e2e-tests/reports",
     "apps/e2e-tests/test-results",

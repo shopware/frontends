@@ -3,6 +3,7 @@ import { useCmsTranslations } from "@shopware/composables";
 import { getCmsTranslate } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, toRefs } from "vue";
+
 import {
   useAddToCart,
   useCartErrorParamsResolver,

@@ -1,6 +1,7 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { computed, inject, onMounted, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
+
 import { useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

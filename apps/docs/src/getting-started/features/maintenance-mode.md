@@ -96,6 +96,7 @@ This code should be added to the `server/middleware/maintenance.ts` file.
 ```ts [maintenance.ts]
 import { ApiClientError } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+
 import apiClient from "../apiBuilder";
 
 export default defineEventHandler(async (event) => {

@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import * as path from "node:path";
+
+import { defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
-import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 import { createError, useRuntimeConfig } from "#imports";
 
-import { defineEventHandler, readValidatedBody } from "h3";
+import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 const paySchema = z.object({
   sessionId: z.string().uuid(),

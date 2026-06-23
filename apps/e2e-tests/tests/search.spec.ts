@@ -1,4 +1,5 @@
 import { test } from "@playwright/test";
+
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 

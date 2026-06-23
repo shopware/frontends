@@ -7,6 +7,7 @@ import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { minLength, required } from "@vuelidate/validators";
 import { defu } from "defu";
 import { computed, reactive, ref } from "vue";
+
 import { useShopwareContext } from "#imports";
 
 const props = defineProps<{

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defu } from "defu";
 import { computed, useId } from "vue";
+
 import { useCmsTranslations } from "#imports";
 
 type Translations = {

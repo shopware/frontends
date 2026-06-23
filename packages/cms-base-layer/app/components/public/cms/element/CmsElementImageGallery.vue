@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware/composables";
 import { computed, defineAsyncComponent, ref } from "vue";
+
 import { useCmsElementConfig, useImagePlaceholder } from "#imports";
+
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
 // Load SwMedia3D only on client-side to avoid SSR issues with three.js packages

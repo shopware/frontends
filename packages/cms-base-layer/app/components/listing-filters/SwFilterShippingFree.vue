@@ -14,6 +14,7 @@ import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside } from "@vueuse/core";
 import { defu } from "defu";
 import { computed, ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const {

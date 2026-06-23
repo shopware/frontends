@@ -1,6 +1,7 @@
 import { createSharedComposable } from "@vueuse/core";
 import { computed, ref, watch } from "vue";
 import type { ComputedRef } from "vue";
+
 import { useSessionContext, useShopwareContext } from "#imports";
 
 export type UsePriceReturn = {

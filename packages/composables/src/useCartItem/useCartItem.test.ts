@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { Ref } from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import Cart from "../mocks/Cart";
 import { useCartItem } from "./useCartItem";

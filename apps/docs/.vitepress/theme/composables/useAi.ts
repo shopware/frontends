@@ -1,4 +1,5 @@
 import { useData } from "vitepress";
+
 import type { Answer, QueryResponse } from "../types";
 
 type UseAiReturn = {

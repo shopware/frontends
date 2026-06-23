@@ -1,7 +1,9 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { defu } from "defu";
+
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
+
 import { cmsAssociations } from "../cms/cmsAssociations";
 
 type UseProductSearchReturnOptions = {

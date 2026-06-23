@@ -2,6 +2,7 @@
 import type { BoxLayout } from "@shopware/composables";
 import type { UrlRouteOutput } from "@shopware/helpers";
 import { computed } from "vue";
+
 import type { Schemas } from "#shopware";
 
 type Translations = {

@@ -5,6 +5,7 @@ import {
   presetTypography,
   presetWind3,
 } from "unocss";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 const templateConfig: ConfigBase = {
