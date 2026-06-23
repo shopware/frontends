@@ -10,7 +10,6 @@ const IGNORE_CHECK_EXAMPLES = [
   "adyen-dropin-component",
   "commercial-quick-order",
   "strapi-cms",
-  "studio-composable-frontends",
   "README.md",
   // TODO: https://github.com/shopware/frontends/issues/678
 ];

@@ -27,6 +27,12 @@ ensuring a harmonious and efficient synergy between your Shopware store and dive
     </a>
   </div>
   <div>
+    <a href="cms/sanity.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 my-5 text-center">
+      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../.assets/cms-icons/sanity.svg" alt="Sanity Logo" class="my-8 h-14 inline" /></span>
+      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Sanity is a headless CMS where editors compose pages in a real-time Studio while Shopware owns live commerce. Here's how to integrate it into Composable Frontends.</p>
+    </a>
+  </div>
+  <div>
     <a href="cms/storyblok.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 my-5 text-center">
       <span class="hidden dark:block mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../.assets/cms-icons/storyblok.light.svg" alt="storyblok Logo" class="my-8 h-14 inline" /></span>
       <span class="block dark:hidden mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><img src="../../.assets/cms-icons/storyblok.dark.svg" alt="storyblok Logo" class="my-8 h-14 inline" /></span>

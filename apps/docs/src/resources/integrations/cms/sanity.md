@@ -23,11 +23,10 @@ Frontends, **Sanity owns the editorial layout** and **Shopware owns commerce** -
 the two never duplicate each other.
 
 ::: tip Runnable example
-A complete, working example lives in
-[`examples/sanity-cms`](https://github.com/shopware/frontends/tree/main/examples/sanity-cms),
-with its standalone Studio in
-[`examples/studio-composable-frontends`](https://github.com/shopware/frontends/tree/main/examples/studio-composable-frontends).
-This guide walks through how it is built.
+A complete, working Nuxt example lives in
+[`examples/sanity-cms`](https://github.com/shopware/frontends/tree/main/examples/sanity-cms).
+This guide walks through how it is built. The Sanity Studio it reads from is a
+standalone project you create separately - see [The Studio](#the-studio-the-editor).
 :::
 
 ## The pattern: content + commerce
@@ -222,19 +221,22 @@ onMounted(() => refreshCart());
 
 ## The Studio (the editor)
 
-The Studio is **standalone** (its own folder), not embedded in the Nuxt app. Run
-it locally, or deploy it to Sanity's hosting for a no-setup editor URL:
+The Studio - where editors model content and compose pages - is a **standalone**
+Sanity project, separate from the Nuxt app. Scaffold one with
+`npm create sanity@latest`, add the `page` document and the block schemas shown
+above, then run it locally or deploy it to Sanity's hosting:
 
 ```bash
-cd studio
-npm install
 npx sanity dev      # http://localhost:3333
 npx sanity deploy   # https://<name>.sanity.studio
 ```
 
+See [Sanity's Studio documentation](https://www.sanity.io/docs/studio) for
+creating, configuring and deploying a Studio.
+
 ## Resources
 
 - Example: [`examples/sanity-cms`](https://github.com/shopware/frontends/tree/main/examples/sanity-cms)
-- Studio: [`examples/studio-composable-frontends`](https://github.com/shopware/frontends/tree/main/examples/studio-composable-frontends)
 - [`@nuxtjs/sanity` docs](https://sanity.nuxtjs.org/)
+- [Create & deploy a Sanity Studio](https://www.sanity.io/docs/studio)
 - [Sanity documentation](https://www.sanity.io/docs)

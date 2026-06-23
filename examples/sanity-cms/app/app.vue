@@ -43,8 +43,8 @@ onMounted(() => {
     <PageBuilder :sections="sections" />
 
     <p v-if="usingSample" class="px-6 py-10 text-center text-sm text-slate-400">
-      Showing bundled demo content. Create a <code>page</code> in
-      <code>studio-composable-frontends</code> and it renders here instead.
+      Showing bundled demo content. Create a <code>page</code> document in your
+      Sanity Studio and it renders here instead.
     </p>
 
     <!-- Fixed mini cart pinned to the bottom -->

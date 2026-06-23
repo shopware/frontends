@@ -29,26 +29,25 @@ Sanity (page.pageBuilder[]) --GROQ--> Nuxt --productIds--> Shopware Store API --
 
 ## Project structure
 
-Two sibling folders under `examples/`:
+```
+sanity-cms/                       # the Nuxt 4 storefront (this folder)
+└── app/
+    ├── app.vue                   # fetch page -> <PageBuilder>, toasts, mini cart
+    ├── sample-home.ts            # bundled demo content (fallback before the Studio has data)
+    └── components/
+        ├── PageBuilder.vue       # maps each block _type -> section component
+        ├── ProductCard.vue       # price + add-to-cart + toast
+        ├── MiniCart.vue          # fixed bottom cart (count, total, remove)
+        └── sections/
+            ├── SectionHero.vue
+            ├── SectionFeaturedProducts.vue   # productIds -> live Shopware products (SSR)
+            ├── SectionRichText.vue           # Portable Text via <SanityContent>
+            ├── SectionBanner.vue
+            └── SectionGallery.vue
+```
 
-```
-examples/
-├── sanity-cms/                       # the Nuxt 4 storefront (this folder)
-│   └── app/
-│       ├── app.vue                   # fetch page -> <PageBuilder>, toasts, mini cart
-│       ├── sample-home.ts            # bundled demo content (fallback before the Studio has data)
-│       └── components/
-│           ├── PageBuilder.vue       # maps each block _type -> section component
-│           ├── ProductCard.vue       # price + add-to-cart + toast
-│           ├── MiniCart.vue          # fixed bottom cart (count, total, remove)
-│           └── sections/
-│               ├── SectionHero.vue
-│               ├── SectionFeaturedProducts.vue   # productIds -> live Shopware products (SSR)
-│               ├── SectionRichText.vue           # Portable Text via <SanityContent>
-│               ├── SectionBanner.vue
-│               └── SectionGallery.vue
-└── studio-composable-frontends/      # the Sanity Studio (CMS / content editor)
-```
+The Sanity Studio (the content editor) is a **standalone** project you create
+separately - it is not part of this repo. See [Run it](#run-it).
 
 ## Run it
 
@@ -61,15 +60,16 @@ pnpm dev          # http://localhost:3000
 
 **Studio (CMS)** - to edit content
 
+The Studio is a standalone Sanity project (created separately, not in this repo).
+Scaffold one with `npm create sanity@latest`, add the `page` + block schemas, then:
+
 ```bash
-cd ../studio-composable-frontends
-pnpm install
-pnpm dev          # http://localhost:3333
+npx sanity dev    # http://localhost:3333
 ```
 
-Or use the deployed Studio: **https://composable-frontends.sanity.studio**
+See [Sanity's Studio docs](https://www.sanity.io/docs/studio) for setup and deployment.
 
-It runs with no setup: defaults for a public Sanity dataset and the Shopware demo
+The storefront runs with no setup: defaults for a public Sanity dataset and the Shopware demo
 sales channel are baked into [nuxt.config.ts](./nuxt.config.ts). Before the Studio
 has content, the page renders bundled demo data from
 [app/sample-home.ts](./app/sample-home.ts); real Sanity content always wins.
@@ -101,9 +101,9 @@ Every block is a Sanity schema (defined in the Studio) plus a Vue component (her
 | `banner` | Gradient CTA band |
 | `gallery` | Responsive image grid via `<SanityImage>` |
 
-The Studio's schema and a ready-to-import sample page live in
-[../studio-composable-frontends](../studio-composable-frontends). Deploy the schema
-with `npx sanity schema deploy` and seed the sample with `npx sanity dataset import seed.ndjson production`.
+Define these block schemas in your standalone Sanity Studio (a `page` document
+with a `pageBuilder` array). Deploy them with `npx sanity schema deploy`. See the
+[Sanity schema docs](https://www.sanity.io/docs/schema-types) for details.
 
 ## How content drives commerce
 

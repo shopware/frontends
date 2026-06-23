@@ -24,13 +24,6 @@ overrides:
   undici: ^6.27.0
   dompurify: ^3.4.11 # GHSA-cmwh-pvxp-8882 (transitive via isomorphic-dompurify)
   "jsdom>undici": "^7"
-  # Sanity's build stack needs Vite 8; the rest of the workspace stays on Vite 7.
-  "@sanity/cli>vite": "^8.0.16"
-  "@sanity/cli-core>vite": "^8.0.16"
-  "@sanity/cli-build>vite": "^8.0.16"
-  "@sanity/runtime-cli>vite": "^8.0.16"
-  "@vitejs/plugin-react>vite": "^8.0.16"
-  "@rolldown/plugin-babel>vite": "^8.0.16"
   unbuild: ^3.6.1
   uuid: ^14.0.0
   shell-quote: ^1.8.4
