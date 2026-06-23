@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 // Fixed mini cart pinned to the bottom of the viewport. Reads the shared
@@ -41,7 +42,8 @@ const remove = async (item: Schemas["LineItem"]) => {
                 {{ item.label }}
               </p>
               <p class="text-xs text-slate-500">
-                {{ item.quantity }} × {{ getFormattedPrice(item.price?.unitPrice) }}
+                {{ item.quantity }} ×
+                {{ getFormattedPrice(item.price?.unitPrice) }}
               </p>
             </div>
             <span class="text-sm font-semibold text-slate-900">
@@ -76,7 +78,9 @@ const remove = async (item: Schemas["LineItem"]) => {
               </span>
             </span>
             <span class="text-left">
-              <span class="block text-sm font-semibold text-slate-900">Your cart</span>
+              <span class="block text-sm font-semibold text-slate-900"
+                >Your cart</span
+              >
               <span class="block text-xs text-slate-500">
                 {{ expanded ? "Hide items" : "View items" }}
               </span>

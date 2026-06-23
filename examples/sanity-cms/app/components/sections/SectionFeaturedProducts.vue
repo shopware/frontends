@@ -29,7 +29,9 @@ const { data: products, pending } = await useAsyncData(
 <template>
   <section class="mx-auto max-w-6xl scroll-mt-8 px-6 py-20">
     <div class="mb-12 text-center">
-      <span class="text-sm font-semibold uppercase tracking-widest text-fuchsia-600">
+      <span
+        class="text-sm font-semibold uppercase tracking-widest text-fuchsia-600"
+      >
         Shop
       </span>
       <h2

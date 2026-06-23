@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component } from "vue";
+
 import SectionBanner from "./sections/SectionBanner.vue";
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
 import SectionGallery from "./sections/SectionGallery.vue";

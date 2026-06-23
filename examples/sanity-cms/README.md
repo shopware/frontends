@@ -17,11 +17,11 @@ product ID and never duplicate each other's data.
 
 ## The idea
 
-| Concern | Owner | Why |
-| --- | --- | --- |
-| Page layout, sections, copy, images, **which products to feature** | **Sanity** | editorial, versioned, editor-controlled |
-| Product **price, name, stock, availability, media** | **Shopware** | live commerce data - changes constantly |
-| **Cart**, totals, checkout, logged-in user | **Shopware** | transactional, per-user, real-time |
+| Concern                                                            | Owner        | Why                                     |
+| ------------------------------------------------------------------ | ------------ | --------------------------------------- |
+| Page layout, sections, copy, images, **which products to feature** | **Sanity**   | editorial, versioned, editor-controlled |
+| Product **price, name, stock, availability, media**                | **Shopware** | live commerce data - changes constantly |
+| **Cart**, totals, checkout, logged-in user                         | **Shopware** | transactional, per-user, real-time      |
 
 ```
 Sanity (page.pageBuilder[]) --GROQ--> Nuxt --productIds--> Shopware Store API --> live cards
@@ -93,13 +93,13 @@ NUXT_SANITY_DATASET="production"
 
 Every block is a Sanity schema (defined in the Studio) plus a Vue component (here):
 
-| Block | Renders |
-| --- | --- |
-| `hero` | Animated-gradient hero - eyebrow, heading, subheading, CTA, optional image |
+| Block              | Renders                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `hero`             | Animated-gradient hero - eyebrow, heading, subheading, CTA, optional image              |
 | `featuredProducts` | Product grid - stores **only Shopware product IDs**; live data resolved at request time |
-| `richText` | Portable Text via `<SanityContent>` |
-| `banner` | Gradient CTA band |
-| `gallery` | Responsive image grid via `<SanityImage>` |
+| `richText`         | Portable Text via `<SanityContent>`                                                     |
+| `banner`           | Gradient CTA band                                                                       |
+| `gallery`          | Responsive image grid via `<SanityImage>`                                               |
 
 Define these block schemas in your standalone Sanity Studio (a `page` document
 with a `pageBuilder` array). Deploy them with `npx sanity schema deploy`. See the
@@ -112,12 +112,18 @@ resolves them to live products (SSR), so cards render in the initial HTML:
 
 ```ts
 const { search } = useProductSearch();
-const { data: products } = await useAsyncData(`featured-${section._key}`, async () =>
-  (await Promise.all(
-    (section.productIds ?? []).map((id) =>
-      search(id).then((r) => r.product).catch(() => null),
-    ),
-  )).filter(Boolean),
+const { data: products } = await useAsyncData(
+  `featured-${section._key}`,
+  async () =>
+    (
+      await Promise.all(
+        (section.productIds ?? []).map((id) =>
+          search(id)
+            .then((r) => r.product)
+            .catch(() => null),
+        ),
+      )
+    ).filter(Boolean),
 );
 ```
 
