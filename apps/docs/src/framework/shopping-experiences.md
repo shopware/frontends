@@ -69,11 +69,11 @@ CmsPage
 
 Each node has a `type` field. The `cms-base-layer` package resolves a Vue component for every node by converting the type to a PascalCase component name:
 
-| API node | type value | resolved component |
-|---|---|---|
-| `cms_section` | `default` | `CmsSectionDefault` |
-| `cms_block` | `image-text` | `CmsBlockImageText` |
-| `cms_slot` | `image` | `CmsElementImage` |
+| API node      | type value   | resolved component  |
+| ------------- | ------------ | ------------------- |
+| `cms_section` | `default`    | `CmsSectionDefault` |
+| `cms_block`   | `image-text` | `CmsBlockImageText` |
+| `cms_slot`    | `image`      | `CmsElementImage`   |
 
 This resolution is done by `resolveCmsComponent` from `@shopware/composables`.
 

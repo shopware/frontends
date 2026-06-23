@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockForm } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

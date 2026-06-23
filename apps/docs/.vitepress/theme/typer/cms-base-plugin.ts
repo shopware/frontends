@@ -1,8 +1,9 @@
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
+
 // @ts-nocheck
 import type { Plugin } from "vite";
 
-import { readFileSync, readdirSync } from "node:fs";
 import { prepareGithubPermalink, replacer } from "./utils";
 
 export async function CmsBaseReference({

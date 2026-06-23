@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { CartPage } from "../page-objects/CartPage";
+
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 
@@ -9,18 +9,16 @@ test.describe.parallel(
   () => {
     let homePage: HomePage;
     let productPage: ProductPage;
-    let cartPage: CartPage;
 
     // Before Hook
     test.beforeEach(async ({ page }) => {
       homePage = new HomePage(page);
       productPage = new ProductPage(page);
-      cartPage = new CartPage(page);
 
       await homePage.visitMainPage();
     });
 
-    test("Add product variants to cart", async ({ page }) => {
+    test("Add product variants to cart", async () => {
       await homePage.openVariantsCartPage();
       await productPage.addVariantToCart();
     });

@@ -2,6 +2,7 @@
 import { useCmsTranslations, useProductPrice } from "@shopware/composables";
 import { defu } from "defu";
 import { toRefs } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -53,13 +54,18 @@ const {
           </template>
         </SwSharedPrice>
       </div>
-      <div class="text-surface-on-surface-variant text-sm font-normal leading-tight line-through">
+      <div
+        class="text-surface-on-surface-variant text-sm font-normal leading-tight line-through"
+      >
         <SwSharedPrice :value="price?.listPrice?.price" />
       </div>
     </div>
 
     <!-- Regular price display -->
-    <div v-else class="text-surface-on-surface text-base font-bold leading-normal">
+    <div
+      v-else
+      class="text-surface-on-surface text-base font-bold leading-normal"
+    >
       <SwSharedPrice :value="unitPrice">
         <template #beforePrice>
           <span v-if="displayFrom || displayFromVariants" class="text-sm">{{
@@ -70,7 +76,10 @@ const {
     </div>
 
     <!-- Variants from price -->
-    <div v-if="displayFromVariants" class="text-surface-on-surface text-base font-bold leading-normal">
+    <div
+      v-if="displayFromVariants"
+      class="text-surface-on-surface text-base font-bold leading-normal"
+    >
       <SwSharedPrice :value="displayFromVariants">
         <template #beforePrice>
           <span v-if="displayFromVariants" class="text-sm">{{
@@ -81,7 +90,10 @@ const {
     </div>
 
     <!-- Regulation price -->
-    <div v-if="regulationPrice" class="flex gap-2 text-surface-on-surface-variant text-sm">
+    <div
+      v-if="regulationPrice"
+      class="flex gap-2 text-surface-on-surface-variant text-sm"
+    >
       {{ translations.listing.previously }}
       <SwSharedPrice :value="regulationPrice" />
     </div>

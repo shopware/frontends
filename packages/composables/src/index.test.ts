@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import * as vue from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { getDefaultApiParams, resolveCmsComponent } from "./index";
 import CmsPage from "./mocks/CmsPage";
 

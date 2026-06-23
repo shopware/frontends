@@ -10,7 +10,6 @@ You can use types generated from your custom API instance to have autocompletion
 
 To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
 
-
 ## Setup
 
 Install npm package:
@@ -164,7 +163,8 @@ declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
 
   export type operations = import("./api-types/storeApiTypes").operations;
-  export type Schemas = import("./api-types/storeApiTypes").components["schemas"];
+  export type Schemas =
+    import("./api-types/storeApiTypes").components["schemas"];
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
 ```
@@ -241,8 +241,10 @@ Then point `shopware.d.ts` to the overrides file instead of the generated one:
 declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
 
-  export type operations = import("./api-types/storeApiTypes.overrides").operations;
-  export type Schemas = import("./api-types/storeApiTypes.overrides").components["schemas"];
+  export type operations =
+    import("./api-types/storeApiTypes.overrides").operations;
+  export type Schemas =
+    import("./api-types/storeApiTypes.overrides").components["schemas"];
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
 ```
@@ -456,22 +458,22 @@ const criteria = {
     {
       type: "equals",
       field: "active",
-      value: true
+      value: true,
     },
     {
       type: "contains",
       field: "name",
-      value: "smartphone"
-    }
+      value: "smartphone",
+    },
   ],
   associations: {
     manufacturer: {},
     categories: {
       associations: {
-        media: {}
-      }
-    }
-  }
+        media: {},
+      },
+    },
+  },
 };
 
 // Use in URL
@@ -481,7 +483,6 @@ apiClient.invoke("getProducts get /product", {
   },
 });
 ```
-
 
 ## Links
 

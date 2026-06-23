@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getBackgroundImageUrl } from "./getBackgroundImageUrl";
 import {
   cmsSectionTestCaseFive,

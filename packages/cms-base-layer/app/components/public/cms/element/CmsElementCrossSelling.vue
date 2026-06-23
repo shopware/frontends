@@ -5,6 +5,7 @@ import type {
 } from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
 import { computed, inject, ref, useTemplateRef } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
@@ -80,7 +81,8 @@ const toggleTab = (index: number) => {
         :key="index"
         class="transition text-lg font-semibold text-surface-on-surface-variant cursor-pointer"
         :class="{
-          'border-b-3 border-brand-primary text-brand-primary': currentTabIndex === index,
+          'border-b-3 border-brand-primary text-brand-primary':
+            currentTabIndex === index,
         }"
         @click="toggleTab(index)"
       >

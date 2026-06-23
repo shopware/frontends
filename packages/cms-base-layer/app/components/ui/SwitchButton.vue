@@ -47,9 +47,11 @@ const activateByClick = (ev?: Event) => {
   <div class="w-full inline-flex flex-col justify-start items-start gap-2">
     <div class="self-stretch inline-flex justify-start items-center gap-3">
       <!-- left label that toggles the input via for="#inputId" -->
-      <label :for="inputId"
+      <label
+        :for="inputId"
         class="flex-1 flex justify-start items-center gap-1 text-surface-on-surface text-base font-normal leading-normal cursor-pointer"
-        :class="{ 'cursor-not-allowed': disabled }">
+        :class="{ 'cursor-not-allowed': disabled }"
+      >
         <span v-if="$slots.default">
           <slot />
         </span>
@@ -57,23 +59,55 @@ const activateByClick = (ev?: Event) => {
       </label>
 
       <div class="w-10 h-6 relative">
-        <label class="inline-block cursor-pointer" :class="{ 'cursor-not-allowed': disabled }">
-          <input ref="inputRef" :id="inputId" type="checkbox" :name="inputName" class="sr-only" :checked="localChecked"
+        <label
+          class="inline-block cursor-pointer"
+          :class="{ 'cursor-not-allowed': disabled }"
+        >
+          <input
+            ref="inputRef"
+            :id="inputId"
+            type="checkbox"
+            :name="inputName"
+            class="sr-only"
+            :checked="localChecked"
             @change="toggleState()"
-            :disabled="disabled" :aria-label="ariaLabel || undefined" v-bind="$attrs" />
-          <span role="switch" :aria-checked="localChecked" :tabindex="disabled ? -1 : 0"
+            :disabled="disabled"
+            :aria-label="ariaLabel || undefined"
+            v-bind="$attrs"
+          />
+          <span
+            role="switch"
+            :aria-checked="localChecked"
+            :tabindex="disabled ? -1 : 0"
             class="w-10 h-6 relative rounded-full flex-shrink-0 inline-block switch-track cursor-pointer"
-            :class="localChecked ? 'bg-brand-secondary switch-track--on' : 'bg-surface-surface-container-highest'"
-            @keydown.space.prevent="activateByKeyboard" @click.prevent="activateByClick">
-            <span class="w-4 h-4 rounded-full absolute switch-knob"
+            :class="
+              localChecked
+                ? 'bg-brand-secondary switch-track--on'
+                : 'bg-surface-surface-container-highest'
+            "
+            @keydown.space.prevent="activateByKeyboard"
+            @click.prevent="activateByClick"
+          >
+            <span
+              class="w-4 h-4 rounded-full absolute switch-knob"
               :style="{ left: localChecked ? '19px' : '4px', top: '4px' }"
-              :class="localChecked ? 'bg-brand-on-secondary' : 'bg-surface-on-surface-variant'"></span>
+              :class="
+                localChecked
+                  ? 'bg-brand-on-secondary'
+                  : 'bg-surface-on-surface-variant'
+              "
+            ></span>
           </span>
         </label>
       </div>
     </div>
-    <div v-if="description || $slots.description" class="self-stretch inline-flex justify-start items-center gap-2.5">
-      <div class="flex-1 justify-start text-surface-on-surface-variant text-sm font-normal leading-tight">
+    <div
+      v-if="description || $slots.description"
+      class="self-stretch inline-flex justify-start items-center gap-2.5"
+    >
+      <div
+        class="flex-1 justify-start text-surface-on-surface-variant text-sm font-normal leading-tight"
+      >
         <slot name="description">{{ description }}</slot>
       </div>
     </div>
@@ -82,7 +116,9 @@ const activateByClick = (ev?: Event) => {
 
 <style scoped>
 .switch-track {
-  transition: background-color 180ms ease-in-out, box-shadow 180ms ease-in-out;
+  transition:
+    background-color 180ms ease-in-out,
+    box-shadow 180ms ease-in-out;
 }
 
 .switch-track--on {
@@ -91,7 +127,10 @@ const activateByClick = (ev?: Event) => {
 }
 
 .switch-knob {
-  transition: left 180ms cubic-bezier(.2, .9, .2, 1), top 180ms cubic-bezier(.2, .9, .2, 1), background-color 120ms linear;
+  transition:
+    left 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    top 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    background-color 120ms linear;
 }
 
 .switch-track:focus {

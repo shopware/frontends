@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
+
 import { useProductSearchListing } from "#imports";
 import type { Schemas, operations } from "#shopware";
 

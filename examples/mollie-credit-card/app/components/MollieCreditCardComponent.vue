@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { MollieLocale } from "@/types";
 import { onMounted, useMollie, useMollieCreditCard } from "#imports";
+import type { MollieLocale } from "@/types";
 
 const props = defineProps<{
   locale?: MollieLocale;
@@ -47,8 +47,9 @@ onMounted(async () => {
 </template>
 <style>
 #mollie-credit-card-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: #f2f2f2;
   padding: 15px;
   border-radius: 3px;

@@ -7,6 +7,7 @@ import {
   presetTypography,
   presetWind3,
 } from "unocss";
+
 // jump to the base config to see the presets and rules already applied
 import baseConfig from "./.nuxt/uno.config.mjs";
 

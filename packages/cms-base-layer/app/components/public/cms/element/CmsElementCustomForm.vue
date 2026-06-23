@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementForm } from "@shopware/composables";
 import { computed, defineAsyncComponent } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getCategoryRoute } from "./getCategoryRoute";
 
 describe("getCategoryRoute", () => {

@@ -1,7 +1,9 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+
 import { bundle, lint, loadConfig } from "@redocly/openapi-core";
 import { format } from "prettier";
+
 import {
   createNewSchema,
   filterPathsByTag,

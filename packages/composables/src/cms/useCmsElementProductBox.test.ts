@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { useSetup } from "../_test";
 import CmsProductBox from "../mocks/CmsProductBox";
 import type { CmsElementProductBox } from "../types/cmsElementTypes";

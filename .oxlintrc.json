@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["vue"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "coverage",
+    ".turbo",
+    ".output",
+    ".astro",
+    "temp",
+    ".nuxt",
+    ".vercel",
+    "**/*apiSchema*.json",
+    "**/*apiTypes*.d.ts",
+    "**/*.d.ts",
+    ".vitepress/cache/*",
+    "packages/types/*",
+    "playwright-report",
+    "api-gen/tests/*",
+    "apps/e2e-tests/playwright-report",
+    "apps/e2e-tests/reports",
+    "apps/e2e-tests/test-results",
+    "examples/amazon-pay-button-example/src/runtime/server/vendor/amazon-pay-api-sdk-nodejs",
+    "src/runtime/server/vendor/amazon-pay-api-sdk-nodejs"
+  ]
+}

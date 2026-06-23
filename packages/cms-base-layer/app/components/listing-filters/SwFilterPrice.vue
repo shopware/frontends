@@ -1,15 +1,20 @@
-<script setup lang="ts" generic="
+<script
+  setup
+  lang="ts"
+  generic="
     ListingFilter extends {
       code: string;
       min?: number;
       max?: number;
       label: string;
     }
-  ">
+  "
+>
 import { useCmsTranslations } from "@shopware/composables";
 import { onClickOutside, useDebounceFn, useEventListener } from "@vueuse/core";
 import { defu } from "defu";
 import { onMounted, reactive, ref, watch } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const emits =
@@ -149,15 +154,17 @@ const startDrag = (type: "min" | "max", event: MouseEvent | TouchEvent) => {
           @keydown.space.prevent="toggle"
         >
           <div class="flex-1 flex items-center gap-2.5">
-            <div class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
+            <div
+              class="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left"
+            >
               {{ filter.label }}
             </div>
           </div>
-          <span
-            class="flex items-center justify-center"
-            aria-hidden="true"
-          >
-            <SwChevronIcon :direction="isFilterVisible ? 'up' : 'down'" :size="24" />
+          <span class="flex items-center justify-center" aria-hidden="true">
+            <SwChevronIcon
+              :direction="isFilterVisible ? 'up' : 'down'"
+              :size="24"
+            />
           </span>
         </div>
       </div>
@@ -165,52 +172,94 @@ const startDrag = (type: "min" | "max", event: MouseEvent | TouchEvent) => {
 
     <!-- Filter content -->
     <transition name="filter-collapse">
-      <div v-if="isFilterVisible || displayMode === 'dropdown'" :id="filter.code"
-        class="self-stretch flex flex-col justify-start items-start gap-2.5">
+      <div
+        v-if="isFilterVisible || displayMode === 'dropdown'"
+        :id="filter.code"
+        class="self-stretch flex flex-col justify-start items-start gap-2.5"
+      >
         <div class="self-stretch flex flex-col justify-start items-start gap-1">
-          <div class="self-stretch inline-flex justify-between items-center gap-2">
+          <div
+            class="self-stretch inline-flex justify-between items-center gap-2"
+          >
             <div
-              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-              <input type="number" :placeholder="translations.listing.min" v-model.number="prices.min"
+              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5"
+            >
+              <input
+                type="number"
+                :placeholder="translations.listing.min"
+                v-model.number="prices.min"
                 class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal leading-tight"
-                @change="emits('select-value', { code: filter.code, value: { min: prices.min, max: prices.max } })"
-                :min="filter.min" :max="prices.max" />
+                @change="
+                  emits('select-value', {
+                    code: filter.code,
+                    value: { min: prices.min, max: prices.max },
+                  })
+                "
+                :min="filter.min"
+                :max="prices.max"
+              />
             </div>
             <div
-              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-              <input type="number" :placeholder="translations.listing.max" v-model.number="prices.max"
+              class="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5"
+            >
+              <input
+                type="number"
+                :placeholder="translations.listing.max"
+                v-model.number="prices.max"
                 class="w-full bg-transparent border-none outline-none text-surface-on-surface text-sm font-normal leading-tight"
-                @change="emits('select-value', { code: filter.code, value: { min: prices.min, max: prices.max } })"
-                :min="prices.min" :max="filter.max" />
+                @change="
+                  emits('select-value', {
+                    code: filter.code,
+                    value: { min: prices.min, max: prices.max },
+                  })
+                "
+                :min="prices.min"
+                :max="filter.max"
+              />
             </div>
           </div>
           <!-- Custom slider UI -->
-          <div class="relative w-64 h-10 mt-2 mx-auto flex items-center select-none">
+          <div
+            class="relative w-64 h-10 mt-2 mx-auto flex items-center select-none"
+          >
             <!-- Track -->
             <div
-              class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full">
-            </div>
+              class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full"
+            ></div>
             <!-- Active range -->
-            <div class="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full" :style="{
-              left: ((prices.min - (filter.min ?? 0)) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100 + '%',
-              width: ((prices.max - prices.min) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100 + '%',
-            }"></div>
+            <div
+              class="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full"
+              :style="{
+                left:
+                  ((prices.min - (filter.min ?? 0)) /
+                    ((filter.max ?? 100) - (filter.min ?? 0))) *
+                    100 +
+                  '%',
+                width:
+                  ((prices.max - prices.min) /
+                    ((filter.max ?? 100) - (filter.min ?? 0))) *
+                    100 +
+                  '%',
+              }"
+            ></div>
             <!-- Min thumb -->
             <div
               class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
               :style="{
-                left: `calc(${((prices.min - (filter.min ?? 0)) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100}% - 10px)`
+                left: `calc(${((prices.min - (filter.min ?? 0)) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100}% - 10px)`,
               }"
               @mousedown.prevent="startDrag('min', $event)"
-              @touchstart.prevent="startDrag('min', $event)"></div>
+              @touchstart.prevent="startDrag('min', $event)"
+            ></div>
             <!-- Max thumb -->
             <div
               class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
               :style="{
-                left: `calc(${((prices.max - (filter.min ?? 0)) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100}% - 10px)`
+                left: `calc(${((prices.max - (filter.min ?? 0)) / ((filter.max ?? 100) - (filter.min ?? 0))) * 100}% - 10px)`,
               }"
               @mousedown.prevent="startDrag('max', $event)"
-              @touchstart.prevent="startDrag('max', $event)"></div>
+              @touchstart.prevent="startDrag('max', $event)"
+            ></div>
           </div>
         </div>
       </div>

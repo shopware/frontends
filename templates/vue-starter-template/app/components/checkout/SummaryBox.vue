@@ -29,10 +29,19 @@ function handleUpdateQuantity(id: string, quantity: number) {
     </div>
     <div class="p-6 pt-10">
       <div class="divide-y">
-        <CheckoutProductTile v-for="item in cart.lineItems" :item="item" :key="item.id" class="py-4" @remove="(id) => handleRemoveItem(id)" @updateQuantity="(id, quantity) => handleUpdateQuantity(id, quantity)" />
+        <CheckoutProductTile
+          v-for="item in cart.lineItems"
+          :item="item"
+          :key="item.id"
+          class="py-4"
+          @remove="(id) => handleRemoveItem(id)"
+          @updateQuantity="(id, quantity) => handleUpdateQuantity(id, quantity)"
+        />
       </div>
 
-      <div class="py-4 border-t border-outline-outline-variant flex flex-col gap-1">
+      <div
+        class="py-4 border-t border-outline-outline-variant flex flex-col gap-1"
+      >
         <div class="flex justify-between">
           <div
             class="self-stretch justify-start text-surface-on-surface-variant text-sm font-normal"
@@ -66,7 +75,9 @@ function handleUpdateQuantity(id: string, quantity: number) {
           </div>
         </div>
       </div>
-      <div class="pt-4 border-t border-outline-outline-variant flex justify-between">
+      <div
+        class="pt-4 border-t border-outline-outline-variant flex justify-between"
+      >
         <div
           class="self-stretch justify-start text-surface-on-surface text-base font-normal leading-normal"
         >

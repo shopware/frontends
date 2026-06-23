@@ -1,8 +1,10 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import json5 from "json5";
 import type { ObjectSubtype, OpenAPI3 } from "openapi-typescript";
 import c from "picocolors";
+
 import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 import {
   API_GEN_CONFIG_FILENAME,

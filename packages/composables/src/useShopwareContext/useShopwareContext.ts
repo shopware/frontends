@@ -1,5 +1,7 @@
 import { inject } from "vue";
+
 import type { ApiClient } from "#shopware";
+
 import ContextError from "../helpers/ContextError";
 
 export type ShopwareContext = {

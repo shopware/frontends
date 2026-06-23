@@ -24,4 +24,3 @@ To debug only a single test, run
 ```sh
 > pnpm test:e2e example-test -- --debug
 ```
-

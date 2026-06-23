@@ -35,7 +35,11 @@ const handleLimitChange = (event: Event) => {
   <div v-if="total > 0" class="flex flex-col gap-6 sm:gap-8 mt-6 sm:mt-8">
     <!-- Pagination Controls -->
     <div class="flex justify-center w-full">
-      <SwPagination :total="total" :current="current" @change-page="handlePageChange" />
+      <SwPagination
+        :total="total"
+        :current="current"
+        @change-page="handlePageChange"
+      />
     </div>
 
     <!-- Items per page selector -->
@@ -61,7 +65,9 @@ const handleLimitChange = (event: Event) => {
           <option :value="30">30 {{ translations.listing.products }}</option>
           <option :value="45">45 {{ translations.listing.products }}</option>
         </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+        >
           <SwChevronIcon direction="down" :size="16" />
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { usePrice, useSessionContext } from "#imports";
+
 import { useSetup } from "../_test";
 
 vi.mock("@vueuse/core", async (importOriginal) => {

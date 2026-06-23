@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { buildUrlPrefix } from "./buildUrlPrefix";
 
 describe("test with relativ url and string", () => {

@@ -84,7 +84,9 @@ function changeCurrency(event: Event) {
             class="h-full min-w-23 appearance-none bg-transparent pr-7 text-sm font-medium outline-none disabled:cursor-not-allowed"
             :aria-label="$t('layout.ariaLabels.currencySwitcher')"
             :value="currentCurrencyId"
-            :disabled="currencies.length < 2 || Boolean(props.changingCurrencyId)"
+            :disabled="
+              currencies.length < 2 || Boolean(props.changingCurrencyId)
+            "
             @change="changeCurrency"
           >
             <option

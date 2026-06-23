@@ -10,13 +10,13 @@ templates:
 # Reduciing the risk of installing fresh compromised packages before detected
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
-  - '@shopware/*'
-  - '@typescript/native-preview'
-  - 'happy-dom'
-  - '@vue/test-utils'
-  - '@adyen/adyen-web'
-  - 'axios' # remove after 18/06/2026
-  - 'astro' # remove after 17/06/2026
+  - "@shopware/*"
+  - "@typescript/native-preview"
+  - "happy-dom"
+  - "@vue/test-utils"
+  - "@adyen/adyen-web"
+  - "axios" # remove after 18/06/2026
+  - "astro" # remove after 17/06/2026
 
 overrides:
   axios: ^1.18.0
@@ -53,8 +53,8 @@ peerDependencyRules:
     - vite
     - react-dom
     - react
-    - '@types/react'
-    - '@algolia/client-search'
+    - "@types/react"
+    - "@algolia/client-search"
 shamefullyHoist: true
 autoInstallPeers: true
 strictPeerDependencies: false
@@ -65,8 +65,9 @@ preferOffline: true
 verifyDepsBeforeRun: false
 linkWorkspacePackages: deep
 allowBuilds:
-  '@biomejs/biome': true
-  '@parcel/watcher': true
+  "@parcel/watcher": true
   esbuild: true
+  oxfmt: true
+  oxlint: true
   sharp: true
   vue-demi: true

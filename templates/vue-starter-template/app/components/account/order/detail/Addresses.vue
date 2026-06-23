@@ -17,9 +17,7 @@ defineProps<{
       <h3 class="text-lg font-semibold text-surface-on-surface mb-2">
         {{ $t("account.orderDetails.shippingAddress") }}
       </h3>
-      <address
-        class="not-italic text-sm text-surface-on-surface-variant"
-      >
+      <address class="not-italic text-sm text-surface-on-surface-variant">
         {{ shippingAddress.street }}<br />
         {{ shippingAddress.city }}
         <span v-if="shippingAddress.countryState"
@@ -34,9 +32,7 @@ defineProps<{
       <h3 class="text-lg font-semibold text-surface-on-surface mb-2">
         {{ $t("account.orderDetails.billingAddress") }}
       </h3>
-      <address
-        class="not-italic text-sm text-surface-on-surface-variant"
-      >
+      <address class="not-italic text-sm text-surface-on-surface-variant">
         {{ billingAddress.street }}<br />
         {{ billingAddress.city }}
         <span v-if="billingAddress.countryState"

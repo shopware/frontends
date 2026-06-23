@@ -38,11 +38,7 @@ watch(
       </h2>
       <div class="space-y-4">
         <template v-if="loading">
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="flex items-center animate-pulse"
-          >
+          <div v-for="i in 3" :key="i" class="flex items-center animate-pulse">
             <div class="w-4 h-4 bg-gray-200 rounded-full mr-3"></div>
             <div class="flex-grow">
               <div class="h-5 bg-gray-200 rounded w-1/3 mb-2"></div>

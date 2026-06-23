@@ -92,7 +92,7 @@ const toggleTabs = (tabNumber: number) => {
         >
           <AccountChangePassword />
         </div>
-          <div
+        <div
           :class="[
             'cms-block-product-description-reviews__reviews',
             currentTab !== 3 ? 'hidden' : 'block',

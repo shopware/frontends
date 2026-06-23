@@ -3,6 +3,7 @@
  */
 
 import type { ComponentInternalInstance, h } from "vue";
+
 import { type RectifyConfig, generateAST, rectifyAST } from "./ast";
 import { type RendererConfig, renderer } from "./renderer";
 

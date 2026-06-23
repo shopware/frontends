@@ -4,6 +4,7 @@ import { defu } from "defu";
  */
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
+
 import { useLocalWishlist, useSyncWishlist, useUser } from "#imports";
 import type { Schemas } from "#shopware";
 

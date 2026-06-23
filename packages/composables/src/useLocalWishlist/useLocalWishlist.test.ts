@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+
 import { useSetup } from "../_test";
 import { useLocalWishlist } from "./useLocalWishlist";
 

@@ -57,7 +57,8 @@ updates:
         patterns:
           - "prettier"
           - "@types/prettier"
-          - "@biome/*"
+          - "oxfmt"
+          - "oxlint"
       vue:
         patterns:
           - "vue"

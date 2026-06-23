@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { useSetup } from "../_test";
 import { useCheckout } from "./useCheckout";
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { downloadFile } from "@shopware/helpers";
 import { computed, ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({

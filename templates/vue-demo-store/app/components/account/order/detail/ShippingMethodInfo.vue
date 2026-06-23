@@ -21,10 +21,7 @@ defineProps<{
           <p>
             {{ shippingMethod?.translated.name }}
           </p>
-          <p
-            v-if="shippingMethod?.deliveryTime"
-            class="text-sm text-gray-500"
-          >
+          <p v-if="shippingMethod?.deliveryTime" class="text-sm text-gray-500">
             {{ $t("checkout.takesUpTo") }}
             {{ shippingMethod.deliveryTime?.name }}
           </p>

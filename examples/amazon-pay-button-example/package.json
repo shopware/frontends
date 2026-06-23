@@ -15,14 +15,16 @@
   },
   "main": "./dist/module.cjs",
   "types": "./dist/types.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepack": "pnpm run prepare && nuxt-module-build build",
     "dev:playground": "pnpm run prepare && nuxi dev playground",
     "build:playground": "pnpm run prepare && nuxi build playground",
     "build": "pnpm run prepare && nuxt-module-build build --stub && nuxi prepare playground",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
     "typecheck": "pnpm run prepare && vue-tsc --noEmit",
     "prepare": "nuxt-module-build prepare"
   },
@@ -31,7 +33,6 @@
     "axios": "1.16.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@nuxt/devtools": "3.2.4",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/schema": "4.4.8",
@@ -42,6 +43,8 @@
     "nuxt": "4.4.8",
     "typescript": "5.9.3",
     "uuid": "^14.0.0",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.5",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   }
 }

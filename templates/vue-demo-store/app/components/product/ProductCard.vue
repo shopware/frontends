@@ -7,6 +7,7 @@ import {
   getProductRoute,
   getSmallestThumbnailUrl,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { pushSuccess, pushError } = useNotifications();

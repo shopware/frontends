@@ -76,7 +76,7 @@ function getComponentFiles(dir: string): string[] {
           files.push(fullPath);
         }
       }
-    } catch (error) {
+    } catch {
       // Directory might not exist, skip it
     }
   }
@@ -127,7 +127,7 @@ function isColorUsed(colorName: string, componentFiles: string[]): boolean {
           return true;
         }
       }
-    } catch (error) {
+    } catch {
       // Skip files that can't be read
     }
   }
@@ -153,8 +153,7 @@ function updateCmsBaseConfig(
     return;
   }
 
-  // @ts-ignore
-  const [fullMatch, openBrace, currentColorsSection, closeBrace] = colorsMatch;
+  const [fullMatch, openBrace, , closeBrace] = colorsMatch;
 
   // Build new colors section with only used template colors
   const usedTemplateColors = templateColors.filter((color) =>

@@ -132,8 +132,9 @@ declare module "#shopware" {
   // import("@shopware/api-client/store-api-types").components["schemas"];
 
   // Or use your locally generated types (placed in ./api-types folder):
-   export type operations = import("./api-types/storeApiTypes").operations;
-   export type Schemas = import("./api-types/storeApiTypes").components["schemas"];
+  export type operations = import("./api-types/storeApiTypes").operations;
+  export type Schemas =
+    import("./api-types/storeApiTypes").components["schemas"];
 
   // Export your own Api Client definition:
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
@@ -144,7 +145,7 @@ Import your custom types from local files and export them as shown above. This a
 
 ### Apply custom types for `@shopware/api-client`
 
- The API Client instance is aware of your custom API types thanks to declaring `#shopware` module from the step above. So now, whenever `apiClient` instance is used, the proper types are registered.
+The API Client instance is aware of your custom API types thanks to declaring `#shopware` module from the step above. So now, whenever `apiClient` instance is used, the proper types are registered.
 
 ## Links
 

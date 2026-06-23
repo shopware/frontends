@@ -24,7 +24,7 @@ const pageTitle = computed(
       </p>
       <AccountPageHeader class="mb-14" :title="pageTitle" />
 
-      <AccountOrderDetailView :order-id="(route.params.id as string)" />
+      <AccountOrderDetailView :order-id="route.params.id as string" />
     </div>
   </NuxtLayout>
 </template>

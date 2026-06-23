@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { ref } from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import mockedConfigurator from "../mocks/Configurator";
 import mockedProduct from "../mocks/Product";

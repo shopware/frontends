@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
 import { onMounted, ref } from "vue";
+
 import type { operations } from "#shopware";
+
 import { adminApiClient } from "./adminApiClient";
 import { apiClient } from "./apiClient";
 import AdminLoginForm from "./components/AdminLoginForm.vue";

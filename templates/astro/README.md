@@ -20,12 +20,11 @@ In order to have a different API connected to the app, change two lines of code 
 <!-- automd:file src="templates/astro/src/entrypoints/_shopware.ts" code -->
 
 ```ts [_shopware.ts]
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
 import { createShopwareContext } from "@shopware/composables/dist";
 import Cookies from "js-cookie";
 import type { App } from "vue";
-
-import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "@shopware/api-client/store-api-types";
 
 export default (app: App) => {
   const shopwareEndpoint =

@@ -9,11 +9,13 @@ This document provides guidance for AI assistants working with the `@shopware/cm
 **Tech**: Vue 3, Nuxt 4, @shopware/composables, @shopware/helpers
 
 **Key Concepts**:
+
 - CMS Page → Sections → Blocks → Elements (hierarchical structure)
 - Components auto-registered globally via Nuxt layer
 - Customizable via app.config.ts and component overriding
 
 **Quick Start**:
+
 ```bash
 pnpm run build  # Build the package
 pnpm run dev    # Stub mode for development
@@ -44,12 +46,12 @@ CmsPage
 
 Components follow a predictable naming pattern based on the CMS structure:
 
-| Level | Pattern | Example |
-|-------|---------|---------|
-| Page | `CmsPage` | `CmsPage.vue` |
+| Level   | Pattern            | Example                                          |
+| ------- | ------------------ | ------------------------------------------------ |
+| Page    | `CmsPage`          | `CmsPage.vue`                                    |
 | Section | `CmsSection{Type}` | `CmsSectionDefault.vue`, `CmsSectionSidebar.vue` |
-| Block | `CmsBlock{Type}` | `CmsBlockImage.vue`, `CmsBlockText.vue` |
-| Element | `CmsElement{Type}` | `CmsElementImage.vue`, `CmsElementText.vue` |
+| Block   | `CmsBlock{Type}`   | `CmsBlockImage.vue`, `CmsBlockText.vue`          |
+| Element | `CmsElement{Type}` | `CmsElementImage.vue`, `CmsElementText.vue`      |
 
 ## Directory Structure
 
@@ -98,57 +100,57 @@ cms-base-layer/
 
 ### Sections (Layout)
 
-| Component | Purpose |
-|-----------|---------|
-| `CmsSectionDefault` | Full-width section |
+| Component           | Purpose                     |
+| ------------------- | --------------------------- |
+| `CmsSectionDefault` | Full-width section          |
 | `CmsSectionSidebar` | Section with sidebar layout |
 
 ### Common Blocks
 
-| Component | Purpose |
-|-----------|---------|
-| `CmsBlockImage` | Single image display |
-| `CmsBlockText` | Text content |
-| `CmsBlockImageText` | Image with text side-by-side |
-| `CmsBlockProductListing` | Product grid/list |
-| `CmsBlockProductSlider` | Product carousel |
-| `CmsBlockImageSlider` | Image carousel |
-| `CmsBlockImageGallery` | Image gallery grid |
-| `CmsBlockForm` | Contact/newsletter forms |
-| `CmsBlockCategoryNavigation` | Category tree navigation |
-| `CmsBlockSpatialViewer` | 3D model viewer (GLB) — dynamically imports SwMedia3D |
+| Component                    | Purpose                                               |
+| ---------------------------- | ----------------------------------------------------- |
+| `CmsBlockImage`              | Single image display                                  |
+| `CmsBlockText`               | Text content                                          |
+| `CmsBlockImageText`          | Image with text side-by-side                          |
+| `CmsBlockProductListing`     | Product grid/list                                     |
+| `CmsBlockProductSlider`      | Product carousel                                      |
+| `CmsBlockImageSlider`        | Image carousel                                        |
+| `CmsBlockImageGallery`       | Image gallery grid                                    |
+| `CmsBlockForm`               | Contact/newsletter forms                              |
+| `CmsBlockCategoryNavigation` | Category tree navigation                              |
+| `CmsBlockSpatialViewer`      | 3D model viewer (GLB) — dynamically imports SwMedia3D |
 
 ### Common Elements
 
-| Component | Purpose |
-|-----------|---------|
-| `CmsElementImage` | Image with various display options |
-| `CmsElementText` | Rich text content |
-| `CmsElementProductListing` | Product listing with filters |
-| `CmsElementProductSlider` | Product carousel |
-| `CmsElementBuyBox` | Add to cart functionality |
-| `CmsElementImageGallery` | Product image gallery |
-| `CmsElementForm` | Form rendering |
+| Component                  | Purpose                            |
+| -------------------------- | ---------------------------------- |
+| `CmsElementImage`          | Image with various display options |
+| `CmsElementText`           | Rich text content                  |
+| `CmsElementProductListing` | Product listing with filters       |
+| `CmsElementProductSlider`  | Product carousel                   |
+| `CmsElementBuyBox`         | Add to cart functionality          |
+| `CmsElementImageGallery`   | Product image gallery              |
+| `CmsElementForm`           | Form rendering                     |
 
-### Shared Components (Sw* prefix)
+### Shared Components (Sw\* prefix)
 
 These are reusable components used across CMS and templates:
 
-| Component | Purpose |
-|-----------|---------|
-| `SwProductCard` | Product card for listings |
-| `SwProductGallery` | Product image gallery |
-| `SwProductAddToCart` | Add to cart button/quantity |
-| `SwVariantConfigurator` | Product variant selection |
-| `SwPagination` | Page navigation |
-| `SwSlider` | Generic slider/carousel |
-| `SwProductListingFilters` | Filter sidebar |
-| `SwProductListingFiltersHorizontal` | Horizontal filter bar |
+| Component                           | Purpose                     |
+| ----------------------------------- | --------------------------- |
+| `SwProductCard`                     | Product card for listings   |
+| `SwProductGallery`                  | Product image gallery       |
+| `SwProductAddToCart`                | Add to cart button/quantity |
+| `SwVariantConfigurator`             | Product variant selection   |
+| `SwPagination`                      | Page navigation             |
+| `SwSlider`                          | Generic slider/carousel     |
+| `SwProductListingFilters`           | Filter sidebar              |
+| `SwProductListingFiltersHorizontal` | Horizontal filter bar       |
 
 ### On-demand Components (not auto-imported)
 
-| Component | Purpose |
-|-----------|---------|
+| Component   | Purpose                                       |
+| ----------- | --------------------------------------------- |
 | `SwMedia3D` | Renders 3D models (GLB) using TresJS/Three.js |
 
 `SwMedia3D` is **excluded from Nuxt auto-import** to avoid bundling heavy 3D libraries in the initial bundle. It is dynamically imported via `defineAsyncComponent` by `CmsElementImage`, `CmsElementImageGallery`, and `CmsBlockSpatialViewer` when the media has a `.glb` extension. Apps that need 3D support must add `@tresjs/nuxt` to their `nuxt.config.ts` modules.
@@ -173,10 +175,7 @@ Register the layer in your Nuxt config:
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  extends: [
-    "@shopware/composables/nuxt-layer",
-    "@shopware/cms-base-layer"
-  ],
+  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
 });
 ```
 
@@ -206,6 +205,7 @@ export default defineNuxtConfig({
 ```
 
 Key features:
+
 - Uses cms-base-layer for all CMS rendering
 - Adds custom page components (checkout, account, etc.)
 - Configures app.config.ts for brand customization
@@ -218,12 +218,13 @@ The [vue-starter-template-extended](../../templates/vue-starter-template-extende
 ```typescript
 // templates/vue-starter-template-extended/nuxt.config.ts
 export default defineNuxtConfig({
-  extends: ["../vue-starter-template"],  // Inherits cms-base-layer
+  extends: ["../vue-starter-template"], // Inherits cms-base-layer
   // ...minimal customizations
 });
 ```
 
 Key features:
+
 - Extends vue-starter-template (layer inheritance)
 - Overrides `app.config.ts` for brand-specific settings
 - Demonstrates component overriding pattern
@@ -239,12 +240,13 @@ Override defaults via `app.config.ts`:
 export default defineAppConfig({
   // Customize image placeholder color
   imagePlaceholder: {
-    color: "#B38A65",  // Your brand color
+    color: "#B38A65", // Your brand color
   },
 });
 ```
 
 Available configuration:
+
 - `imagePlaceholder.color` - SVG placeholder background color
 - `backgroundImage.format` - Output format for CMS background images (default: `"webp"`). Appended as `&format=` to background image URLs. Accepts `"webp"`, `"avif"`, `"jpg"`, `"png"`.
 - `backgroundImage.quality` - Image quality for CMS background images (default: `90`). Appended as `&quality=` to background image URLs. Accepts `0`-`100`.
@@ -285,7 +287,7 @@ defineProps<{
     <CmsGenericElement
       v-for="slot in ['left', 'right']"
       :key="slot"
-      :content="content.slots?.find(s => s.slot === slot)"
+      :content="content.slots?.find((s) => s.slot === slot)"
     />
   </div>
 </template>
@@ -336,6 +338,7 @@ The layer includes a custom Shopware image provider for `@nuxt/image`:
 ```
 
 Available presets (defined in [nuxt.config.ts](nuxt.config.ts)):
+
 - `productCard` - Optimized for product cards
 - `productDetail` - High quality for detail pages
 - `thumbnail` - Small thumbnails (150x150)
@@ -349,13 +352,14 @@ CMS sections and blocks with `backgroundMedia` are automatically optimized. `Cms
 // app.config.ts defaults
 export default defineAppConfig({
   backgroundImage: {
-    format: "webp",  // appended as &format=webp
-    quality: 85,     // appended as &quality=85
+    format: "webp", // appended as &format=webp
+    quality: 85, // appended as &quality=85
   },
 });
 ```
 
 The helper generates URLs like:
+
 ```
 url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")
 ```
@@ -376,11 +380,14 @@ productCard: {
 ```
 
 ```vue
-<NuxtImg preset="productCard"
+<NuxtImg
+  preset="productCard"
   :src="coverSrcPath"
-  width="400" height="400"
+  width="400"
+  height="400"
   densities="1x"
-  loading="lazy" />
+  loading="lazy"
+/>
 ```
 
 - Fixed `width`/`height` (400) avoid hydration mismatches caused by dynamic DOM measurement
@@ -394,7 +401,12 @@ productCard: {
 CMS images use `useElementSize()` to measure the rendered container and pass the size to NuxtImg via `width`/`height` props:
 
 ```vue
-<NuxtImg :width="imageSize" :height="imageSize" :src="imageAttrs.src" loading="lazy" />
+<NuxtImg
+  :width="imageSize"
+  :height="imageSize"
+  :src="imageAttrs.src"
+  loading="lazy"
+/>
 ```
 
 - Returns `undefined` during SSR (no image fetched until client measurement)
@@ -461,7 +473,6 @@ const { elements, total } = getCurrentListing();
 1. Ensure layer is properly registered in `nuxt.config.ts`
 2. Check component naming matches Shopware CMS type
 3. Verify `@shopware/composables/nuxt-layer` is also extended
-
 
 ### Type Errors
 

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+
 import { useCmsTranslations } from "#imports";
+
 import { useSetup } from "../_test";
 
 describe("useCmsTranslations", () => {

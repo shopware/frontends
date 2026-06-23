@@ -4,6 +4,7 @@ import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;

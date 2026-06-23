@@ -8,7 +8,13 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/framework/shopping-experiences.html",
-  "keywords": ["Shopware", "Vue", "CMS", "Nuxt", "Layer"],
+  "keywords": [
+    "Shopware",
+    "Vue",
+    "CMS",
+    "Nuxt",
+    "Layer"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -28,8 +34,8 @@
   "scripts": {
     "build": "nuxt prepare && unbuild",
     "dev": "unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -55,7 +61,6 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.4.8",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
