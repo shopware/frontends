@@ -8,7 +8,10 @@
     "docs:env": "[ -d \"../../../developer-portal\" ] && ../../../developer-portal/docs-cli.cjs pull || (git clone git@github.com:shopware/developer-portal.git ../../../developer-portal && pnpm i -C ../../../developer-portal)",
     "docs:link": "../../../developer-portal/docs-cli.cjs link --src apps/docs/src --dst frontends --symlink --keep",
     "docs:preview": "../../../developer-portal/docs-cli.cjs preview",
-    "docs:cli": "../../../developer-portal/docs-cli.cjs"
+    "docs:cli": "../../../developer-portal/docs-cli.cjs",
+    "schema:update": "pnpm run schema:update:store && pnpm run schema:update:admin",
+    "schema:update:admin": "cp ../../packages/api-client/api-types/adminApiSchema.json .data/schema/adminApiSchema.json",
+    "schema:update:store": "cp ../../packages/api-client/api-types/storeApiSchema.json .data/schema/storeApiSchema.json"
   },
   "engines": {
     "node": ">=22"

@@ -57,11 +57,11 @@ You usually do not need to call `readContext get /context` manually after login,
 
 ## Request Flow
 
-| Step | Code | Store API | Type |
-|---|---|---|---|
-| Submit credentials | `login(credentials)` | `POST /account/login` | <SchemaTypeTooltip type-key="LoginBody" label='operations["loginCustomer post /account/login"]["body"]' /> |
-| Refresh session context | `refreshSessionContext()` | `GET /context` | <SchemaTypeTooltip type-key="SalesChannelContext" label='operations["readContext get /context"]["response"]' /> |
-| Logout customer | `logout()` | `POST /account/logout` | <SchemaTypeTooltip type-key="LogoutResponse" label='operations["logoutCustomer post /account/logout"]["response"]' /> |
+| Step                    | Code                      | Store API              | Type                                                                                           |
+| ----------------------- | ------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
+| Submit credentials      | `login(credentials)`      | `POST /account/login`  | <SchemaTypeTooltip type-key='operations["loginCustomer post /account/login"]["body"]' />       |
+| Refresh session context | `refreshSessionContext()` | `GET /context`         | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />            |
+| Logout customer         | `logout()`                | `POST /account/logout` | <SchemaTypeTooltip type-key='operations["logoutCustomer post /account/logout"]["response"]' /> |
 
 ## Composables
 
@@ -74,11 +74,11 @@ You usually do not need to call `readContext get /context` manually after login,
 Use generated Store API types when you need to type credentials, responses, or lower-level API client calls:
 
 <div style="display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 18px;">
-  <SchemaTypeTooltip type-key="LoginBody" />
-  <SchemaTypeTooltip type-key="ContextTokenResponse" />
-  <SchemaTypeTooltip type-key="SalesChannelContext" />
-  <SchemaTypeTooltip type-key="Customer" />
-  <SchemaTypeTooltip type-key="Cart" />
+  <SchemaTypeTooltip type-key='operations["loginCustomer post /account/login"]["body"]' />
+  <SchemaTypeTooltip type-key='operations["loginCustomer post /account/login"]["response"]' />
+  <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />
+  <SchemaTypeTooltip type-key='Schemas["Customer"]' />
+  <SchemaTypeTooltip type-key='Schemas["Cart"]' />
 </div>
 
 ```ts

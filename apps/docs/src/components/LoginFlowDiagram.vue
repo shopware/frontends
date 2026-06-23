@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
+
 import SchemaTypeTooltip from "./SchemaTypeTooltip.vue";
 
 const steps = [
@@ -10,7 +11,7 @@ const steps = [
       "The login form collects username and password, then calls the composable. The component owns loading and form error state only.",
     code: "submit() -> login(credentials)",
     state: "local form state",
-    typeKeys: ["LoginBody"],
+    typeKeys: ['operations["loginCustomer post /account/login"]["body"]'],
   },
   {
     title: "Composable",
@@ -19,7 +20,10 @@ const steps = [
       "useUser owns the Shopware-specific workflow. It sends credentials first, then refreshes context and cart data.",
     code: "useUser().login(credentials)",
     state: "customer workflow",
-    typeKeys: ["LoginBody", "ContextTokenResponse"],
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+    ],
   },
   {
     title: "Store API",
@@ -28,7 +32,11 @@ const steps = [
       "The API client invokes the generated operation for POST /account/login. This step validates credentials.",
     code: 'apiClient.invoke("loginCustomer post /account/login")',
     state: "sw-context-token",
-    typeKeys: ["LoginBody", "ContextTokenResponse", "ApiError"],
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+      'components["schemas"]["failure"]',
+    ],
   },
   {
     title: "Context",
@@ -37,7 +45,10 @@ const steps = [
       "The session context is fetched again so customer, customer group, currency, rules, and other context-dependent values are current.",
     code: 'apiClient.invoke("readContext get /context")',
     state: "user, isLoggedIn, sales channel context",
-    typeKeys: ["SalesChannelContext", "Customer"],
+    typeKeys: [
+      'operations["readContext get /context"]["response"]',
+      'Schemas["Customer"]',
+    ],
   },
   {
     title: "Cart",
@@ -46,7 +57,7 @@ const steps = [
       "The cart is refreshed because prices, promotions, and line items can depend on the authenticated customer context.",
     code: "refreshCart()",
     state: "cart, prices, promotions",
-    typeKeys: ["Cart"],
+    typeKeys: ['Schemas["Cart"]'],
   },
   {
     title: "UI",
@@ -55,7 +66,7 @@ const steps = [
       "The UI reads user, isLoggedIn, and cart data from composables instead of keeping its own copy.",
     code: "user + isLoggedIn + cart",
     state: "reactive UI",
-    typeKeys: ["Customer", "Cart"],
+    typeKeys: ['Schemas["Customer"]', 'Schemas["Cart"]'],
   },
 ];
 

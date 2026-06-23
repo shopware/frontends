@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { VueFlow } from "@vue-flow/core";
+
 import "@vue-flow/core/dist/style.css";
 import "@vue-flow/core/dist/theme-default.css";
 import { computed, ref } from "vue";
+
 import SchemaTypeTooltip from "./SchemaTypeTooltip.vue";
 
 const nodes = ref([
@@ -19,7 +21,7 @@ const nodes = ref([
         "The component collects username and password, then calls the composable. Loading and form errors stay local to the UI.",
       code: "submit() -> login(credentials)",
       state: "local form state",
-      typeKeys: ["LoginBody"],
+      typeKeys: ['operations["loginCustomer post /account/login"]["body"]'],
     },
   },
   {
@@ -35,7 +37,10 @@ const nodes = ref([
         "useUser sends credentials to the Store API and then coordinates the context and cart refreshes.",
       code: "useUser().login(credentials)",
       state: "customer workflow",
-      typeKeys: ["LoginBody", "ContextTokenResponse"],
+      typeKeys: [
+        'operations["loginCustomer post /account/login"]["body"]',
+        'operations["loginCustomer post /account/login"]["response"]',
+      ],
     },
   },
   {
@@ -51,7 +56,11 @@ const nodes = ref([
         "The generated operation validates credentials and can affect the active sales channel session.",
       code: "loginCustomer post /account/login",
       state: "sw-context-token",
-      typeKeys: ["LoginBody", "ContextTokenResponse", "ApiError"],
+      typeKeys: [
+        'operations["loginCustomer post /account/login"]["body"]',
+        'operations["loginCustomer post /account/login"]["response"]',
+        'components["schemas"]["failure"]',
+      ],
     },
   },
   {
@@ -67,7 +76,10 @@ const nodes = ref([
         "The refreshed context provides the current customer, customer group, currency, rules, and other context-dependent values.",
       code: "refreshSessionContext()",
       state: "user, isLoggedIn, sales channel context",
-      typeKeys: ["SalesChannelContext", "Customer"],
+      typeKeys: [
+        'operations["readContext get /context"]["response"]',
+        'Schemas["Customer"]',
+      ],
     },
   },
   {
@@ -83,7 +95,7 @@ const nodes = ref([
         "Cart data is loaded again because prices, promotions, and line items can depend on the authenticated customer context.",
       code: "refreshCart()",
       state: "cart, prices, promotions",
-      typeKeys: ["Cart"],
+      typeKeys: ['Schemas["Cart"]'],
     },
   },
   {
@@ -99,7 +111,7 @@ const nodes = ref([
         "The page reads user, isLoggedIn, and cart data from composables instead of keeping a separate copy.",
       code: "user + isLoggedIn + cart",
       state: "reactive UI",
-      typeKeys: ["Customer", "Cart"],
+      typeKeys: ['Schemas["Customer"]', 'Schemas["Cart"]'],
     },
   },
 ]);
@@ -298,8 +310,7 @@ function selectNode(event: { node: (typeof nodes.value)[number] }) {
   border-radius: 8px;
   overflow: visible;
   background:
-    linear-gradient(var(--vp-c-bg-soft), var(--vp-c-bg-soft)),
-    var(--vp-c-bg);
+    linear-gradient(var(--vp-c-bg-soft), var(--vp-c-bg-soft)), var(--vp-c-bg);
 }
 
 .login-vue-flow__panel {

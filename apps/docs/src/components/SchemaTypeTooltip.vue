@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { data as schemaData } from "../../.vitepress/data/login-flow-schema.data";
+
+import { data as schemaData } from "../.data/openapi-schema.data";
 
 const props = defineProps<{
   typeKey: string;
@@ -63,24 +64,24 @@ function hideTooltip() {
         role="tooltip"
         :style="tooltipStyle"
       >
-      <strong>{{ summary?.label ?? typeKey }}</strong>
-      <small>{{ summary?.source }}</small>
-      <span v-if="summary?.description" class="schema-type__description">
-        {{ summary.description }}
-      </span>
-      <span class="schema-type__fields">
-        <span
-          v-for="field in summary?.fields ?? []"
-          :key="field.name"
-          class="schema-type__field"
-        >
-          <code>{{ field.name }}{{ field.required ? "" : "?" }}</code>
-          <span>{{ field.type }}</span>
+        <strong>{{ summary?.label ?? typeKey }}</strong>
+        <small>{{ summary?.source }}</small>
+        <span v-if="summary?.description" class="schema-type__description">
+          {{ summary.description }}
         </span>
-        <span v-if="summary?.hiddenFields" class="schema-type__more">
-          +{{ summary.hiddenFields }} more fields
+        <span class="schema-type__fields">
+          <span
+            v-for="field in summary?.fields ?? []"
+            :key="field.name"
+            class="schema-type__field"
+          >
+            <code>{{ field.name }}{{ field.required ? "" : "?" }}</code>
+            <span>{{ field.type }}</span>
+          </span>
+          <span v-if="summary?.hiddenFields" class="schema-type__more">
+            +{{ summary.hiddenFields }} more fields
+          </span>
         </span>
-      </span>
       </span>
     </Teleport>
   </span>
