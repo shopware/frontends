@@ -2,7 +2,7 @@
  * Sidebar configuration is exported so DevHub can import it and prefix links with /frontends/.
  */
 
-import data from "./data/composables.data";
+import data from "../src/.data/composables.data";
 
 const composables = await data.load(null);
 
