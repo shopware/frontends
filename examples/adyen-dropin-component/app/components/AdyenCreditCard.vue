@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Dropin } from "@adyen/adyen-web";
+
 import "@adyen/adyen-web/styles/adyen.css";
 
 const emits = defineEmits<{

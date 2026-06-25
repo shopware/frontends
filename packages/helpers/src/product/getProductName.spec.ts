@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getProductName } from "./getProductName";
 
 describe("Shopware helpers - getProductName", () => {

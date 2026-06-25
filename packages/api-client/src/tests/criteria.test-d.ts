@@ -1,4 +1,5 @@
 import { assertType, describe, expectTypeOf, it } from "vitest";
+
 import type { Schemas } from "../../api-types/storeApiTypes";
 
 type Associations = Schemas["Association"];

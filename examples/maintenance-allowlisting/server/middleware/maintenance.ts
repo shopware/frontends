@@ -1,5 +1,6 @@
 import { ApiClientError } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+
 import apiClient from "../apiBuilder";
 
 export default defineEventHandler(async (event) => {

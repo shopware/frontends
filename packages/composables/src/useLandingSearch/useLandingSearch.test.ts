@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
 import LandingPageMock from "../mocks/LandingPage";

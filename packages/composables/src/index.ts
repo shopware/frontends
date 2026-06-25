@@ -1,5 +1,6 @@
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
+
 import type { Schemas } from "#shopware";
 
 /**

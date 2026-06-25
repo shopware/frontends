@@ -3,6 +3,7 @@ import type { CmsElementProductListing } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
+
 import {
   useCategoryListing,
   useCmsElementConfig,
@@ -155,10 +156,17 @@ compareRouteQueryWithInitialListing();
 
 <template>
   <div class="max-w-2xl mx-auto lg:max-w-full">
-    <div v-if="!loading && getElements.length < 1" class="text-center text-xl py-16 text-surface-on-surface-variant">
+    <div
+      v-if="!loading && getElements.length < 1"
+      class="text-center text-xl py-16 text-surface-on-surface-variant"
+    >
       {{ translations.listing.noProducts }}
     </div>
-    <div v-if="!loading" ref="productListElement" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
+    <div
+      v-if="!loading"
+      ref="productListElement"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16"
+    >
       <SwProductCard
         v-for="product in getElements"
         :key="product.id"
@@ -168,9 +176,12 @@ compareRouteQueryWithInitialListing();
         class="w-full"
       />
     </div>
-    <div v-if="loading" data-testid="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16">
-      <ProductCardSkeleton v-for="index in limit" :key="index"
-        class="w-full" />
+    <div
+      v-if="loading"
+      data-testid="loading"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16"
+    >
+      <ProductCardSkeleton v-for="index in limit" :key="index" class="w-full" />
     </div>
     <SwProductListingPagination
       v-if="!loading"

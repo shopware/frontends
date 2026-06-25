@@ -8,17 +8,28 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/",
-  "keywords": ["Shopware", "UnoCSS", "Nuxt", "Layer", "Design Tokens"],
+  "keywords": [
+    "Shopware",
+    "UnoCSS",
+    "Nuxt",
+    "Layer",
+    "Design Tokens"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
-  "files": ["app", "nuxt.config.ts", "index.d.ts", "uno.config.ts"],
+  "files": [
+    "app",
+    "nuxt.config.ts",
+    "index.d.ts",
+    "uno.config.ts"
+  ],
   "scripts": {
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit"
   },
   "dependencies": {
@@ -29,7 +40,6 @@
     "unocss": "66.7.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@nuxt/schema": "4.4.8",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "nuxt": "4.4.8",

@@ -32,19 +32,13 @@ watch(
     v-if="isOpen"
     class="fixed inset-0 bg-overlay-dark overflow-y-auto h-full w-full flex items-center justify-center"
   >
-    <div
-      class="bg-surface-surface p-8 rounded-lg shadow-xl max-w-md w-full"
-    >
+    <div class="bg-surface-surface p-8 rounded-lg shadow-xl max-w-md w-full">
       <h2 class="text-2xl font-bold mb-4 text-surface-on-surface">
         {{ $t("account.orderDetails.changePaymentMethod") }}
       </h2>
       <div class="space-y-4">
         <template v-if="loading">
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="flex items-center animate-pulse"
-          >
+          <div v-for="i in 3" :key="i" class="flex items-center animate-pulse">
             <div
               class="w-4 h-4 bg-surface-surface-container rounded-full mr-3"
             ></div>
@@ -52,9 +46,7 @@ watch(
               <div
                 class="h-5 bg-surface-surface-container rounded w-1/3 mb-2"
               ></div>
-              <div
-                class="h-4 bg-surface-surface-container rounded w-2/3"
-              ></div>
+              <div class="h-4 bg-surface-surface-container rounded w-2/3"></div>
             </div>
           </div>
         </template>

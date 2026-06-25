@@ -1,3 +1,3 @@
 <template>
-  <Icon name="shopware:layout-breadcrumbs-divider"  />
+  <Icon name="shopware:layout-breadcrumbs-divider" />
 </template>

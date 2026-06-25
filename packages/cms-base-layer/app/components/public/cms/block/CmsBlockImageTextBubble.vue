@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageTextBubble } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
@@ -16,7 +17,9 @@ const rightText = getSlotContent("right-text");
 const rightImage = getSlotContent("right-image");
 </script>
 <template>
-  <div class="cms-block-image-text-bubble flex flex-col sm:flex-row justify-start items-start gap-6 w-full">
+  <div
+    class="cms-block-image-text-bubble flex flex-col sm:flex-row justify-start items-start gap-6 w-full"
+  >
     <div class="w-full sm:flex-1">
       <div class="self-stretch flex justify-center">
         <CmsGenericElement

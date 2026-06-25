@@ -30,7 +30,7 @@ Every development instance / setup template is pre-configured with a public demo
 For an ideal development experience, we recommend using [VSCode](https://code.visualstudio.com/download) with the following extensions
 
 - Vue Language Features (`Vue.volar`)
-- Biome - Code Formatter and linter (`biomejs.biome`)
+- Oxc - Code Formatter and linter (`oxc.oxc-vscode`)
 - TS and JS Language Features (`vscode.typescript-language-features`)
 
 If you are using the `demo-store-template`, we also recommend the following extension

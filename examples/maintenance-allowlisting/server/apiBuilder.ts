@@ -1,4 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
+
 import type { operations } from "#shopware";
 
 const runtimeConfig = useRuntimeConfig();

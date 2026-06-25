@@ -2,6 +2,7 @@ import type { operations } from "@shopware/api-client/api-types";
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { useSetup } from "../_test";
 import { useUser } from "./useUser";
 

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getCmsBreadcrumbs } from "./getCmsBreadcrumbs";
 
 describe("getCmsBreadcrumbs", () => {

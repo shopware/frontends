@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { Schemas, operations } from "#shopware";
+
 import { useSetup } from "../_test";
 import Cart from "../mocks/Cart";
 import { useCart } from "./useCart";

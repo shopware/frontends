@@ -5,14 +5,13 @@
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
     "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@types/braintree-web-drop-in": "^1.39.4",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
@@ -21,6 +20,8 @@
     "@unocss/nuxt": "66.7.2",
     "braintree-web-drop-in": "^1.46.0",
     "nuxt": "4.4.8",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.5",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   }
 }

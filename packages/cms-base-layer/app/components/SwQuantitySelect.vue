@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defu } from "defu";
 import { computed, useId } from "vue";
+
 import { useCmsTranslations } from "#imports";
 
 type Translations = {
@@ -63,7 +64,9 @@ const sizeClasses = {
 };
 </script>
 <template>
-  <div class="rounded outline outline-1 outline-offset-[-1px] outline-outline-outline inline-flex">
+  <div
+    class="rounded outline outline-1 outline-offset-[-1px] outline-outline-outline inline-flex"
+  >
     <button
       type="button"
       :class="sizeClasses[size]"
@@ -73,9 +76,13 @@ const sizeClasses = {
     >
       -
     </button>
-    <div class="bg-white border-l border-r border-outline-outline inline-flex flex-col justify-center items-center">
+    <div
+      class="bg-white border-l border-r border-outline-outline inline-flex flex-col justify-center items-center"
+    >
       <!-- visually hidden label for screen readers -->
-      <label :for="inputId" class="sr-only">{{ translations.form.quantitySelect.label }}</label>
+      <label :for="inputId" class="sr-only">{{
+        translations.form.quantitySelect.label
+      }}</label>
 
       <input
         :id="inputId"

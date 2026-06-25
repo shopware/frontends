@@ -6,6 +6,7 @@ import type {
 import { useElementSize } from "@vueuse/core";
 import { computed, inject, useTemplateRef } from "vue";
 import type { CSSProperties, ComputedRef } from "vue";
+
 import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
@@ -70,11 +71,12 @@ const hasVerticalAlignment = computed(
 );
 </script>
 <template>
-  <div
-    :style="hasVerticalAlignment ? verticalAlignStyle : undefined"
-  >
+  <div :style="hasVerticalAlignment ? verticalAlignStyle : undefined">
     <div ref="productSlider" class="cms-element-product-slider">
-      <h3 v-if="title" class="pl-6 pb-6 text-center md:text-left text-surface-on-surface">
+      <h3
+        v-if="title"
+        class="pl-6 pb-6 text-center md:text-left text-surface-on-surface"
+      >
         {{ title }}
       </h3>
       <div :class="{ 'py-5 border border-outline-outline-variant': border }">

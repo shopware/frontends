@@ -7,6 +7,7 @@ import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { minLength, required } from "@vuelidate/validators";
 import { defu } from "defu";
 import { computed, reactive, ref } from "vue";
+
 import { useShopwareContext } from "#imports";
 
 const props = defineProps<{
@@ -154,7 +155,10 @@ const invokeRating = (value: number) => {
 </script>
 
 <template>
-  <form class="flex flex-col gap-4 md:gap-5 relative" @submit.prevent="invokeSend">
+  <form
+    class="flex flex-col gap-4 md:gap-5 relative"
+    @submit.prevent="invokeSend"
+  >
     <div
       v-if="isLoading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-surface-surface/80 rounded-md"
@@ -171,7 +175,11 @@ const invokeRating = (value: number) => {
         <span class="text-sm text-surface-on-surface-variant">{{
           translations.product.reviewsForm.rating
         }}</span>
-        <div class="flex flex-row gap-2" role="group" :aria-label="translations.product.reviewsForm.rating">
+        <div
+          class="flex flex-row gap-2"
+          role="group"
+          :aria-label="translations.product.reviewsForm.rating"
+        >
           <SwStarIcon
             v-for="index in state.rating || 0"
             :key="`filled-${index}`"
@@ -217,7 +225,11 @@ const invokeRating = (value: number) => {
         <SwExclamationIcon :size="20" />
       </div>
       <div class="flex-1">
-        <p v-for="(error, index) in errorMessages" :key="index" class="text-sm text-states-error">
+        <p
+          v-for="(error, index) in errorMessages"
+          :key="index"
+          class="text-sm text-states-error"
+        >
           {{ error.detail }}
         </p>
       </div>

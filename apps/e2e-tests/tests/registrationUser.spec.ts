@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { test } from "@playwright/test";
+
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 

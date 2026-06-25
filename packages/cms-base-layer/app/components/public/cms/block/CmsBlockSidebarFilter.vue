@@ -3,6 +3,7 @@ import type {
   CmsBlockSidebarFilter,
   CmsElementSidebarFilter,
 } from "@shopware/composables";
+
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

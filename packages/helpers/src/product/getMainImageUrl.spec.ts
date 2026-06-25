@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getMainImageUrl } from "./getMainImageUrl";
 
 describe("Helpers - getMainImageUrl", () => {

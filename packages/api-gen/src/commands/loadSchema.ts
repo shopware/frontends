@@ -1,10 +1,12 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 // read .env file and load it into process.env
 import "dotenv/config";
 import json5 from "json5";
 import c from "picocolors";
 import { format } from "prettier";
+
 import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 import { validateAdminEnvVars } from "../validateEnv";
 

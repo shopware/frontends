@@ -1,5 +1,6 @@
 import type { FetchResponse } from "ofetch";
 import { describe, expect, it } from "vitest";
+
 import type { ApiError } from "./ApiError";
 import { ApiClientError } from "./ApiError";
 import { errorInterceptor } from "./errorInterceptor";
@@ -81,9 +82,8 @@ describe("errorInterceptor", () => {
       errors: Array<ApiError>;
     }>;
 
-    await expect(() =>
-      errorInterceptor(resp),
-    ).toThrowErrorMatchingInlineSnapshot(`
+    await expect(() => errorInterceptor(resp))
+      .toThrowErrorMatchingInlineSnapshot(`
         [ApiClientError: Failed request
          - [Unknown error] API did not return errors, but request failed. Please check the network tab.]
       `);

@@ -10,13 +10,13 @@ export const shopwareSymbol = Symbol("shopware") as InjectionKey<string>;
 /* istanbul ignore next */
 export function registerShopwareDevtools(
   app: App,
-  // biome-ignore lint: not used plugin for now, ignoring type errors
+  // TODO: Improve devtools typing.
   shopwarePluginInstance: any,
 ) {
-  // biome-ignore lint: not used plugin for now, ignoring type errors
+  // TODO: Improve devtools typing.
   let devtoolsApi: any;
   let trackId = 0;
-  // biome-ignore lint: not used plugin for now, ignoring type errors
+  // TODO: Improve devtools typing.
   let currentSharedState: any = null;
 
   setupDevtoolsPlugin(
@@ -26,7 +26,7 @@ export function registerShopwareDevtools(
       logo: "https://shopware.com/media/unknown/2d/80/8c/shopware_signet_blue.svg",
       packageName: "shopware-frontends",
       homepage: "shopware.com",
-      // biome-ignore lint: not used plugin for now, ignoring type errors
+      // TODO: Improve devtools typing.
       app: app as any,
       enableEarlyProxy: true,
     },
@@ -68,12 +68,12 @@ export function registerShopwareDevtools(
         }
       });
 
-      // biome-ignore lint: not used plugin for now, ignoring type errors
+      // TODO: Improve devtools typing.
       function displayState(state: any) {
         if (!state) return null;
-        // biome-ignore lint: not used plugin for now, ignoring type errors
+        // TODO: Improve devtools typing.
         const res: any = {};
-        // biome-ignore lint/complexity/noForEach: ignore for now
+        // TODO: Keep iteration behavior while devtools typing is improved.
         Object.keys(state).forEach((refKey) => {
           res[refKey] = unref(currentSharedState[refKey]);
         });
@@ -116,12 +116,12 @@ export function registerShopwareDevtools(
   );
 
   const devtools = {
-    // biome-ignore lint: not used plugin for now, ignoring type errors
+    // TODO: Improve devtools typing.
     trackEvent: (label: string, params: any) => {
       const groupId = `track${trackId++}`;
 
       // Start
-      // biome-ignore lint: not used plugin for now, ignoring type errors
+      // TODO: Improve devtools typing.
       const log = (label: string, params: any) => {
         devtoolsApi.addTimelineEvent({
           layerId: TIMELINE_EVENT_LAYER_ID,
@@ -143,7 +143,7 @@ export function registerShopwareDevtools(
         log,
       };
     },
-    // biome-ignore lint: not used plugin for now, ignoring type errors
+    // TODO: Improve devtools typing.
     log: (label: string, params: any) => {
       devtoolsApi.addTimelineEvent({
         layerId: TIMELINE_EVENT_LAYER_ID,
@@ -157,7 +157,7 @@ export function registerShopwareDevtools(
         },
       });
     },
-    // biome-ignore lint: not used plugin for now, ignoring type errors
+    // TODO: Improve devtools typing.
     warning: (label: string, params: any) => {
       devtoolsApi.addTimelineEvent({
         layerId: TIMELINE_EVENT_LAYER_ID,
@@ -172,7 +172,7 @@ export function registerShopwareDevtools(
         },
       });
     },
-    // biome-ignore lint: not used plugin for now, ignoring type errors
+    // TODO: Improve devtools typing.
     error: (label: string, params: any) => {
       devtoolsApi.addTimelineEvent({
         layerId: TIMELINE_EVENT_LAYER_ID,
@@ -188,7 +188,7 @@ export function registerShopwareDevtools(
       });
     },
     _internal: {
-      // biome-ignore lint: not used plugin for now, ignoring type errors
+      // TODO: Improve devtools typing.
       updateSharedState: (state: any) => {
         currentSharedState = state;
         devtoolsApi.sendInspectorState(INSPECTOR_ID);

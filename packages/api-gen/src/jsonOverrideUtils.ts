@@ -1,9 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+
 import { createDefu } from "defu";
 import json5 from "json5";
 import { ofetch } from "ofetch";
 import c from "picocolors";
+
 import { type OverridesSchema, extendedDefu } from "./patchJsonSchema";
 import { loadLocalJSONFile } from "./utils";
 import type { validationRules } from "./validation-rules";

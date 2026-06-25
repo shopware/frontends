@@ -1,4 +1,5 @@
 import { type Ref, computed } from "vue";
+
 import { customValidators } from "#imports";
 
 export function registrationFormRules(

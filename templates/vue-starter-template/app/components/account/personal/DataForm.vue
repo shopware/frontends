@@ -23,7 +23,7 @@ const emit = defineEmits<{
 }>();
 
 const { validation: $v = undefined } = defineProps<{
-  // biome-ignore lint/suspicious/noExplicitAny: vuelidate validation object has complex dynamic types
+  // TODO: Replace this with the concrete Vuelidate validation type.
   validation?: any;
 }>();
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+
 import type { Schemas } from "#shopware";
 
 const { apiClient } = useShopwareContext();

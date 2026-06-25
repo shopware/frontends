@@ -1,6 +1,7 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
+
 import { useSetup } from "../_test";
 import CountryMock from "../mocks/Country";
 import { useCountries } from "./useCountries";

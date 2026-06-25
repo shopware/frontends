@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { ref, computed, useAttrs } from "vue";
 import { withBase, useData } from "vitepress";
+import { ref, computed, useAttrs } from "vue";
 
 export default {
   setup() {

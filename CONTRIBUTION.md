@@ -11,6 +11,7 @@ We're using git hook to run linting and formatting before each commit. You can r
 ### IDE support
 
 If your IDE is showing error on commit like `node: command not found`, you can fix it by running the project from the terminal.
+
 ```bash
 cd ./frontends
 code .

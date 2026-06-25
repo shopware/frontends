@@ -10,7 +10,8 @@ refreshSessionContext();
         No Maintenance Mode!
       </p>
       <p>
-        You should not see this page if the maintenance mode is enabled, and your IP is allowed.
+        You should not see this page if the maintenance mode is enabled, and
+        your IP is allowed.
       </p>
     </div>
   </div>

@@ -2,6 +2,7 @@
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
 import { computed } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const { product, showContent = true } = defineProps<{

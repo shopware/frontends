@@ -1,7 +1,9 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
 import { describe, expect, it, vi } from "vitest";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import { useAddress } from "./useAddress";
 

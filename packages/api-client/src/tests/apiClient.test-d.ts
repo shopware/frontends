@@ -1,4 +1,5 @@
 import { assertType, describe, it } from "vitest";
+
 import type { operations } from "../../api-types/storeApiTypes";
 import { createAPIClient } from "../createAPIClient";
 import type { RequestParameters, RequestReturnType } from "../createAPIClient";

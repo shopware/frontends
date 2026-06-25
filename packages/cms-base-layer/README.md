@@ -110,22 +110,24 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true, // enable Nuxt layers for UnoCSS
   },
-})
+});
 ```
 
 ```ts [uno.config.ts]
-import { mergeConfigs } from '@unocss/core'
-import baseConfig from './.nuxt/uno.config.mjs'
+import { mergeConfigs } from "@unocss/core";
+import baseConfig from "./.nuxt/uno.config.mjs";
 
-export default mergeConfigs([baseConfig, {
-  theme: {
-    colors: {
-      'brand-primary': '#ff3e00',
-      'brand-secondary': '#1c1c1c',
+export default mergeConfigs([
+  baseConfig,
+  {
+    theme: {
+      colors: {
+        "brand-primary": "#ff3e00",
+        "brand-secondary": "#1c1c1c",
+      },
     },
   },
-}])
-
+]);
 ```
 
 See the [UnoCSS reference](https://unocss.dev/integrations/nuxt#configuration) for more information on how to configure UnoCSS in Nuxt when work with layers.
@@ -150,12 +152,14 @@ This layer includes [Nuxt Image](https://image.nuxt.com/) configuration optimize
 The layer comes pre-configured with optimized settings. No additional setup is required! The configuration includes:
 
 **Available Presets:**
+
 - `productCard` - Product listing images (WebP, quality 90, cover fit)
 - `productDetail` - Product detail page images (WebP, quality 90, contain fit)
 - `thumbnail` - Small thumbnails (150x150, WebP, quality 90)
 - `hero` - Hero banners (WebP, quality 95, cover fit)
 
 **Responsive Breakpoints:**
+
 - `xs: 320px`, `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`, `xxl: 1536px`
 
 ### Usage in Components
@@ -196,21 +200,23 @@ Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
 
 Shopware supports the following URL parameters for image transformation:
 
-| Modifier | Description | Example | Support |
-|----------|-------------|---------|---------|
-| `width` | Image width in pixels | `400` | ✅ Always supported |
-| `height` | Image height in pixels | `600` | ✅ Always supported |
-| `quality` | Image quality (0-100) | `85` | ⚠️ Cloud/Plugin required* |
-| `format` | Output format | `webp`, `avif`, `jpg`, `png` | ⚠️ Cloud/Plugin required* |
-| `fit` | Resize behavior | `cover`, `contain`, `fill` | ⚠️ Cloud/Plugin required* |
+| Modifier  | Description            | Example                      | Support                    |
+| --------- | ---------------------- | ---------------------------- | -------------------------- |
+| `width`   | Image width in pixels  | `400`                        | ✅ Always supported        |
+| `height`  | Image height in pixels | `600`                        | ✅ Always supported        |
+| `quality` | Image quality (0-100)  | `85`                         | ⚠️ Cloud/Plugin required\* |
+| `format`  | Output format          | `webp`, `avif`, `jpg`, `png` | ⚠️ Cloud/Plugin required\* |
+| `fit`     | Resize behavior        | `cover`, `contain`, `fill`   | ⚠️ Cloud/Plugin required\* |
 
-*Advanced transformations (quality, format, fit) are available in:
+\*Advanced transformations (quality, format, fit) are available in:
+
 - **Shopware Cloud (SaaS)**: Built-in support via managed infrastructure. For a complete list of supported image transformation parameters, see [Fastly Image Optimizer Query Parameters](https://www.fastly.com/documentation/reference/io/#query-parameters).
 - **Self-hosted instances**: Require thumbnail processor plugins like [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessor) or third-party CDN integration
 
 ### How It Works
 
 This layer includes a custom Shopware provider for Nuxt Image that maps modifiers to Shopware's query parameters:
+
 - `width` modifier → `?width=400`
 - `height` modifier → `?height=300`
 - `quality` modifier → `?quality=85`
@@ -249,31 +255,31 @@ export default defineNuxtConfig({
     quality: 85,
 
     // Add/change formats
-    formats: ['avif', 'webp', 'jpg'],
+    formats: ["avif", "webp", "jpg"],
 
     // Override or add presets
     presets: {
       // Override existing preset
       productCard: {
         modifiers: {
-          format: 'avif',
+          format: "avif",
           quality: 80,
-          fit: 'cover',
-        }
+          fit: "cover",
+        },
       },
       // Add custom preset
       categoryBanner: {
         modifiers: {
-          format: 'webp',
+          format: "webp",
           quality: 90,
           width: 1200,
           height: 400,
-          fit: 'cover',
-        }
-      }
-    }
-  }
-})
+          fit: "cover",
+        },
+      },
+    },
+  },
+});
 ```
 
 ## 🖼️ Image Placeholder
@@ -335,6 +341,7 @@ When a CMS section or block has a `backgroundMedia` set, the components call `ge
 4. Appends `format` and `quality` from `app.config.ts` if provided
 
 **Example generated URL:**
+
 ```
 url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")
 ```
@@ -348,6 +355,7 @@ This layer includes a `useLcpImagePreload` composable that automatically preload
 ### How it works
 
 The composable scans CMS sections in document order, checking:
+
 1. Section background images (`section.backgroundMedia`)
 2. Block background images (`block.backgroundMedia`)
 3. Image element media (`slot.data.media`)
@@ -386,11 +394,14 @@ productCard: {
 ```
 
 ```vue
-<NuxtImg preset="productCard"
+<NuxtImg
+  preset="productCard"
   :src="coverSrcPath"
-  width="400" height="400"
+  width="400"
+  height="400"
   densities="1x"
-  loading="lazy" />
+  loading="lazy"
+/>
 ```
 
 - **Fixed `width`/`height`** (400px) — avoid hydration mismatches caused by dynamic DOM measurement

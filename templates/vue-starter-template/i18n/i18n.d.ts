@@ -2,7 +2,7 @@ import { ComponentCustomProperties } from "vue";
 
 declare module "@vue/runtime-core" {
   interface ComponentCustomProperties {
-    // biome-ignore lint: ignoring type errors
+    // TODO: Improve this typing.
     $t: (key: string, ...args: any[]) => string;
   }
 }

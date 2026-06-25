@@ -7,6 +7,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { email, minLength, required } from "@vuelidate/validators";
 import { defu } from "defu";
 import { computed, reactive, ref } from "vue";
+
 import {
   useCmsElementConfig,
   useNavigationContext,

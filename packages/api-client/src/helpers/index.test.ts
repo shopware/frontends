@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { encodeForQuery } from "./index";
 
 describe("helpers/index", () => {

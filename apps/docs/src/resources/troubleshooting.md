@@ -216,6 +216,7 @@ extends: [
   "@shopware/unocss-design-tokens-layer"
 ],
 ```
+
 :::
 
 ### Additional Information

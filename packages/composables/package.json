@@ -8,7 +8,11 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/composables.html",
-  "keywords": ["shopware", "vue", "composables"],
+  "keywords": [
+    "shopware",
+    "vue",
+    "composables"
+  ],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -51,8 +55,8 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsgo",
     "dev": "unbuild --stub",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write && pnpm run typecheck",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "tsgo --noEmit",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
@@ -66,7 +70,6 @@
     "scule": "1.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@nuxt/kit": "4.4.8",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "4.1.9",

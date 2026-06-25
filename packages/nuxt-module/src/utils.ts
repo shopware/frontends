@@ -1,7 +1,9 @@
 import { promises as fs, constants as FS_CONSTANTS } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
 import type { Nuxt } from "@nuxt/schema";
+
 import type { ShopwareNuxtOptions } from ".";
 
 type DEPENDENCY = "@shopware/composables";

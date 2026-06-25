@@ -1,5 +1,5 @@
-import ComposablesList from "./theme/components/ComposablesList.vue";
 import ColorDesignTokens from "./theme/components/ColorDesignTokens.vue";
+import ComposablesList from "./theme/components/ComposablesList.vue";
 import TryItOutPicker from "./theme/components/TryItOutPicker.vue";
 
 export default ({ app }) => {

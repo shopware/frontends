@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { BaseValidation } from "@vuelidate/core";
+
 import type { Schemas } from "#shopware";
 
 const emit = defineEmits<{

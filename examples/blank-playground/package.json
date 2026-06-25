@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
@@ -18,10 +18,11 @@
     "vue": "3.5.38"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
     "@types/node": "22.13.14",
     "@vitejs/plugin-vue": "6.0.7",
     "vite": "8.0.16",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.5",
+    "oxfmt": "0.55.0",
+    "oxlint": "1.70.0"
   }
 }

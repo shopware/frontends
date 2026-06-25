@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
+
 import type { Schemas, operations } from "#shopware";
 
 const route = useRoute();

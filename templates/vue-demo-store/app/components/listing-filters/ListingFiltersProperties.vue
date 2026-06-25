@@ -13,6 +13,7 @@
 >
 import { getTranslatedProperty } from "@shopware/helpers";
 import { inject, ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

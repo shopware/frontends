@@ -2,6 +2,7 @@
 import { refAutoReset } from "@vueuse/core";
 import { pascalCase } from "scule";
 import { computed } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

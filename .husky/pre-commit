@@ -1,4 +1,7 @@
 node --run lint
 node --run generateAutomd
-biome format --write --no-errors-on-unmatched $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+staged_files=$(git diff --cached --name-only --diff-filter=ACMR)
+if [ -n "$staged_files" ]; then
+  git diff --cached --name-only -z --diff-filter=ACMR | xargs -0 pnpm exec oxfmt --write --no-error-on-unmatched-pattern
+fi
 git update-index --again

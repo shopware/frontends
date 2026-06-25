@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getRouteFromPathInfo, isTechnicalPath } from "./getRouteFromPathInfo";
 
 describe("getRouteFromPathInfo", () => {

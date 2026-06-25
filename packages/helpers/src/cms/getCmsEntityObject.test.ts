@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { getCmsEntityObject } from "./index";
 
 type FunctionParams = Parameters<typeof getCmsEntityObject>;

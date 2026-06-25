@@ -8,6 +8,7 @@ import { defu } from "defu";
 import { computed, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import type { LocationQueryRaw } from "vue-router";
+
 import {
   useCategoryListing,
   useProductSearchListing,
@@ -99,7 +100,7 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
     order: getCurrentSortingOrder.value as string,
     "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
     rating: sidebarSelectedFilters.rating as number,
-    search: isProductSearch ? (route.query.search as string) ?? "" : "",
+    search: isProductSearch ? ((route.query.search as string) ?? "") : "",
     limit: route.query.limit ? Number(route.query.limit) : 15,
   }));
 
@@ -309,7 +310,9 @@ const hasActiveFilter = (filter: { code: string }) => {
         type="button"
       >
         {{ translations.listing.resetFilters }}
-        <span class="w-5 h-5 i-carbon-close inline-block align-middle ml-1"></span>
+        <span
+          class="w-5 h-5 i-carbon-close inline-block align-middle ml-1"
+        ></span>
       </SwBaseButton>
     </div>
   </div>

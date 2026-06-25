@@ -7,6 +7,7 @@ import {
 } from "@shopware/helpers";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+
 import { useUrlResolver } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -43,7 +44,9 @@ const hasChildren = computed(() => {
     v-if="props.level === 0"
     class="self-stretch flex flex-col justify-center items-center"
   >
-    <div class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1">
+    <div
+      class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1"
+    >
       <div class="flex-1 flex justify-start items-center gap-2.5">
         <RouterLink
           v-if="!urlIsAbsolute(url.path)"
@@ -76,17 +79,19 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <SwChevronIcon :direction="props.isExpanded ? 'up' : 'down'" :size="20" />
+        <SwChevronIcon
+          :direction="props.isExpanded ? 'up' : 'down'"
+          :size="20"
+        />
       </button>
     </div>
   </div>
 
   <!-- Level 2+ Categories (Nested with left padding) -->
-  <div
-    v-else
-    class="self-stretch flex flex-col justify-center items-center"
-  >
-    <div class="self-stretch pl-4 py-1.5 inline-flex justify-start items-center gap-2">
+  <div v-else class="self-stretch flex flex-col justify-center items-center">
+    <div
+      class="self-stretch pl-4 py-1.5 inline-flex justify-start items-center gap-2"
+    >
       <div class="py-0.5 flex-1 flex justify-start items-center gap-2.5">
         <RouterLink
           v-if="!urlIsAbsolute(url.path)"
@@ -121,7 +126,10 @@ const hasChildren = computed(() => {
         type="button"
         :aria-label="props.isExpanded ? 'Collapse' : 'Expand'"
       >
-        <SwChevronIcon :direction="props.isExpanded ? 'up' : 'down'" :size="20" />
+        <SwChevronIcon
+          :direction="props.isExpanded ? 'up' : 'down'"
+          :size="20"
+        />
       </button>
     </div>
   </div>

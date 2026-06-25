@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import Order from "../mocks/Order";
 import { useOrderPayment } from "./useOrderPayment";

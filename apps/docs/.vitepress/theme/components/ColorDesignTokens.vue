@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref } from "vue";
+
 import { colors } from "../../data/design-tokens-colors";
 
 const GROUP_ORDER = [
@@ -161,11 +162,19 @@ function contrastColor(value: string): string {
       Click a swatch to change its color. Copy or download includes your edits.
     </p>
     <div class="color-tokens-actions">
-      <button class="color-tokens-btn primary" type="button" @click="copySnippet">
+      <button
+        class="color-tokens-btn primary"
+        type="button"
+        @click="copySnippet"
+      >
         <span v-if="copied">Copied!</span>
         <span v-else>Copy Uno theme snippet</span>
       </button>
-      <button class="color-tokens-btn secondary" type="button" @click="downloadSnippet">
+      <button
+        class="color-tokens-btn secondary"
+        type="button"
+        @click="downloadSnippet"
+      >
         Download .ts snippet
       </button>
     </div>
@@ -200,7 +209,8 @@ function contrastColor(value: string): string {
                 :style="{
                   color: contrastColor(resolvedValue(token.name, token.value)),
                 }"
-              >Aa</span>
+                >Aa</span
+              >
             </div>
             <input
               v-if="!isRgba(resolvedValue(token.name, token.value))"
@@ -209,13 +219,18 @@ function contrastColor(value: string): string {
               :aria-label="`Pick color for ${token.name}`"
               :value="toColorInputHex(resolvedValue(token.name, token.value))"
               @input="onHexInput(token.name, $event)"
-            >
+            />
             <button
               v-else
               type="button"
               class="color-token-picker-hitbox color-token-picker-rgba"
               :aria-label="`Edit ${token.name}`"
-              @click="openRgbaEditor(token.name, resolvedValue(token.name, token.value))"
+              @click="
+                openRgbaEditor(
+                  token.name,
+                  resolvedValue(token.name, token.value),
+                )
+              "
             />
           </div>
           <div
@@ -223,7 +238,9 @@ function contrastColor(value: string): string {
             class="color-token-rgba-panel"
             @keydown.escape="cancelRgbaEdit"
           >
-            <label class="color-token-rgba-label" :for="`rgba-${token.name}`">CSS color</label>
+            <label class="color-token-rgba-label" :for="`rgba-${token.name}`"
+              >CSS color</label
+            >
             <input
               :id="`rgba-${token.name}`"
               ref="rgbaInputRef"
@@ -235,7 +252,7 @@ function contrastColor(value: string): string {
               @blur="applyRgbaEdit(token.name)"
               @keydown.enter="applyRgbaEdit(token.name)"
               @keydown.escape="cancelRgbaEdit"
-            >
+            />
           </div>
           <div class="color-token-info">
             <code class="color-token-name">{{ token.name }}</code>
@@ -343,7 +360,11 @@ function contrastColor(value: string): string {
     linear-gradient(45deg, transparent 75%, #ccc 75%),
     linear-gradient(-45deg, transparent 75%, #ccc 75%);
   background-size: 16px 16px;
-  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
 }
 
 .color-token-swatch:hover .color-token-swatch-fill {

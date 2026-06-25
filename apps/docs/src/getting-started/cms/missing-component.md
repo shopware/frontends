@@ -67,11 +67,11 @@ This page will take you from placeholder to working component in a few minutes.
 
 The Shopware API returns a CMS tree of sections, blocks, and slots. Each node has a `type` field. The `cms-base-layer` package resolves a Vue component for each type by converting the name to PascalCase:
 
-| API node | `type` value | expected component |
-|---|---|---|
-| `cms_section` | `sidebar` | `CmsSectionSidebar.vue` |
-| `cms_block` | `image-text` | `CmsBlockImageText.vue` |
-| `cms_slot` | `my-custom-slider` | `CmsElementMyCustomSlider.vue` |
+| API node      | `type` value       | expected component             |
+| ------------- | ------------------ | ------------------------------ |
+| `cms_section` | `sidebar`          | `CmsSectionSidebar.vue`        |
+| `cms_block`   | `image-text`       | `CmsBlockImageText.vue`        |
+| `cms_slot`    | `my-custom-slider` | `CmsElementMyCustomSlider.vue` |
 
 If no matching component exists, the placeholder appears. Your job is to create that component.
 

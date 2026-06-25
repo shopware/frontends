@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+
 import { CategoryPage } from "../page-objects/CategoryPage";
 import { HomePage } from "../page-objects/HomePage";
 

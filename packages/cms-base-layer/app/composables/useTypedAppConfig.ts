@@ -1,4 +1,5 @@
 import type { BackgroundImageOptions } from "@shopware/helpers";
+
 import { useAppConfig } from "#imports";
 
 type CmsBaseLayerAppConfig = ReturnType<typeof useAppConfig> & {

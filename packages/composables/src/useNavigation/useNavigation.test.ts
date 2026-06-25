@@ -1,5 +1,6 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
+
 import { useSetup } from "../_test";
 import Menu from "../mocks/Menu";
 import { useNavigation } from "./useNavigation";

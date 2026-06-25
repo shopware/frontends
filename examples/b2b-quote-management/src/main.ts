@@ -3,11 +3,13 @@ import { createShopwareContext } from "@shopware/composables";
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import App from "./App.vue";
+
 import { apiClient } from "./apiClient";
+import App from "./App.vue";
 import Quote from "./components/Quote.vue";
 import QuotesTable from "./components/QuotesTable.vue";
 import RequestQuote from "./components/RequestQuote.vue";
+
 import "virtual:uno.css";
 import "./assets/main.css";
 

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+
 import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import LandingPageMock from "../mocks/LandingPage";
 import { useCmsMeta } from "./useCmsMeta";

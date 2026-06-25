@@ -1,6 +1,8 @@
 import { Readable } from "node:stream";
+
 import getURL from "requrl";
 import { SitemapStream, streamToPromise } from "sitemap";
+
 import sitemapObject from "../sitemap";
 
 export default defineEventHandler(async (event) => {

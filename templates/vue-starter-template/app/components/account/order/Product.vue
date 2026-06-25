@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const ELEMENT_WIDTH = 100;

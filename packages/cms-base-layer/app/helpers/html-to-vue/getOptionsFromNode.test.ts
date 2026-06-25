@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { getOptionsFromNode } from "./getOptionsFromNode";
 import type { NodeObject } from "./getOptionsFromNode";
 

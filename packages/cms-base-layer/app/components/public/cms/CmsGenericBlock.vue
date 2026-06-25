@@ -5,7 +5,9 @@ import {
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
 import { h, provide, resolveComponent } from "vue";
+
 import type { Schemas } from "#shopware";
+
 import { useTypedAppConfig } from "../../../composables/useTypedAppConfig";
 import { getImageSizes } from "../../../helpers/cms/getImageSizes";
 

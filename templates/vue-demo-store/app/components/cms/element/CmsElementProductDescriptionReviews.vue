@@ -4,6 +4,7 @@ import { useCmsTranslations } from "@shopware/composables";
 import { getProductName, getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref } from "vue";
+
 import { useProduct, useShopwareContext, useUser } from "#imports";
 import type { Schemas } from "#shopware";
 

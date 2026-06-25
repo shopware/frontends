@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getCmsBreadcrumbs } from "@shopware/helpers";
+
 import { useLandingSearch } from "#imports";
 
 const props = defineProps<{
