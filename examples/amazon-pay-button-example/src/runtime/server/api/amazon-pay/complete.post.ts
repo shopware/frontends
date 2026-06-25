@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import * as path from "node:path";
-import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
 import { defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { createError, useRuntimeConfig } from "#imports";
+import Client from "../../vendor/amazon-pay-api-sdk-nodejs/src/client.js";
 
 // import {
 //   defineEventHandler,

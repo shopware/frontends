@@ -17,7 +17,7 @@
     "@shopware/api-client": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
-    "@unocss/nuxt": "66.6.8",
+    "@unocss/nuxt": "66.7.2",
     "js-cookie": "3.0.7",
     "nuxt": "4.4.8",
     "vue": "3.5.38"

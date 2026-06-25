@@ -21,14 +21,24 @@ minimumReleaseAgeExclude:
 overrides:
   axios: ^1.18.0
   minimatch: ^10.2.5
-  undici: ^6.24.0
+  undici: ^6.27.0
   unbuild: ^3.6.1
   uuid: ^14.0.0
   shell-quote: ^1.8.4
   esbuild: ^0.28.1
   ws: ^8.21.0
   form-data: ^4.0.6
-  vite: ^7.3.5
+  vite: ^8.0.16
+  vue: 3.5.38
+  "@vue/compiler-core": 3.5.38
+  "@vue/compiler-dom": 3.5.38
+  "@vue/compiler-sfc": 3.5.38
+  "@vue/compiler-ssr": 3.5.38
+  "@vue/reactivity": 3.5.38
+  "@vue/runtime-core": 3.5.38
+  "@vue/runtime-dom": 3.5.38
+  "@vue/server-renderer": 3.5.38
+  "@vue/shared": 3.5.38
   tar: ^7.5.16
   launch-editor: ^2.14.1
   js-yaml: ^4.2.0

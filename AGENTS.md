@@ -135,6 +135,15 @@ Modern packages use conditional exports:
 - **composables**: Source in `src/`, exports TypeScript directly
 - **helpers**: Source in `src/`, builds to `dist/`
 
+### 5. Caching
+
+Caching spans several independent layers. The full reference is [Best practices: Caching](apps/docs/src/best-practices/caching.md); the essentials for code changes:
+
+- **`cacheableReads` (request layer)**: an opt-in context flag (default `false`) that switches a defined set of anonymous read composables from POST to the cacheable GET variant of the Store API. It is wired `nuxt.config` (`shopware: { cacheableReads: true }`) -> `createShopwareContext` -> `useShopwareContext()`. GET-over-POST is a Shopware platform decision: POST bodies are not HTTP-cacheable, so reads compress the Criteria into a `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers` (JSON -> gzip -> base64url, matching the backend `RequestCriteriaBuilder`).
+  - When adding/editing a read composable, branch on `cacheableReads` and call the GET route with `query: { _criteria: encodeForQuery(criteria) }`; keep the POST variant as the `else`. A route can only move to GET once its GET variant declares `_criteria` in the generated Store API types (`useListing`, single-category `useCategorySearch.search`, and `useLandingSearch` stay POST until then). Mutations always stay POST/PATCH.
+- **`routeRules` (render layer)**: page-level caching lives in each template's `nuxt.config.ts` `routeRules` (`isr` for catalog/content, `ssr: false` for personalized routes like `/checkout` and `/account/**`, immutable `Cache-Control` for static assets). Do not bake personalized data into ISR-cached HTML.
+- **Client state**: shared composables (`createSharedComposable`) and `provide`/`inject` context dedupe work in-memory per session; they are not a durable response cache.
+
 ## Key Files to Know
 
 ### Root Configuration
