@@ -10,6 +10,8 @@ import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import type { LocationQueryRaw } from "vue-router";
 
 import {
+  firstQueryValue,
+  toNumber,
   useCategoryListing,
   useProductSearchListing,
   useRoute,
@@ -100,8 +102,8 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
     order: getCurrentSortingOrder.value as string,
     "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
     rating: sidebarSelectedFilters.rating as number,
-    search: isProductSearch ? ((route.query.search as string) ?? "") : "",
-    limit: route.query.limit ? Number(route.query.limit) : 15,
+    search: isProductSearch ? (firstQueryValue(route.query.search) ?? "") : "",
+    limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
   }));
 
 for (const param in route.query) {
@@ -195,6 +197,9 @@ const executeSearch = async () => {
     // Keep the search term in the URL so filtering on the search page does not reset the query
     if (isProductSearch && route.query.search)
       query.search = route.query.search;
+    // Preserve the page-size selection; rebuilding the query from scratch would
+    // otherwise drop `limit` and revert to the default on refresh/navigation.
+    if (route.query.limit) query.limit = route.query.limit;
 
     await router.push({
       query: query as LocationQueryRaw,
@@ -226,7 +231,7 @@ const currentSortingOrder = computed({
 
       await changeCurrentSortingOrder(order, {
         ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-        limit: route.query.limit ? Number(route.query.limit) : 15,
+        limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
       });
     } catch (error) {
       console.error("Sorting order change failed:", error);

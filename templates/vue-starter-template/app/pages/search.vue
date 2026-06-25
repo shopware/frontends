@@ -29,25 +29,47 @@ useBreadcrumbs([
   },
 ]);
 
-const limit = ref(route.query.limit ? Number(route.query.limit) : defaultLimit);
+// Derive `limit` from the URL so it stays a single source of truth and can
+// never drift from the listing request. The setter is the one place a
+// page-size change navigates (and resets to the first page).
+const limit = computed({
+  get: () => toNumber(firstQueryValue(route.query.limit)) ?? defaultLimit,
+  set: async (value) => {
+    await router.push({
+      query: { ...route.query, limit: value, p: defaultPage },
+    });
+    await changeCurrentPage(
+      defaultPage,
+      route.query as unknown as operations["searchPage post /search"]["body"],
+    );
+    productListElement.value?.scrollIntoView({ behavior: "smooth" });
+  },
+});
 
 const buildSearchCriteria =
   (): operations["searchPage post /search"]["body"] => {
     const query = route.query;
     const criteria: operations["searchPage post /search"]["body"] = {
-      search: (query.search as string) ?? "",
-      order: (query.order as string) ?? "name-asc",
-      limit: limit.value,
-      p: query.p ? Number(query.p) : defaultPage,
+      search: firstQueryValue(query.search) ?? "",
+      order: firstQueryValue(query.order) ?? "name-asc",
+      // Derive from the URL (not limit.value) so the request always matches the
+      // query that useAsyncData keys and watches on.
+      limit: toNumber(firstQueryValue(query.limit)) ?? defaultLimit,
+      p: toNumber(firstQueryValue(query.p)) ?? defaultPage,
     };
-    if (query.manufacturer)
-      criteria.manufacturer = query.manufacturer as string;
-    if (query.properties) criteria.properties = query.properties as string;
-    if (query["min-price"]) criteria["min-price"] = Number(query["min-price"]);
-    if (query["max-price"]) criteria["max-price"] = Number(query["max-price"]);
-    if (query.rating) criteria.rating = Number(query.rating);
+    const manufacturer = firstQueryValue(query.manufacturer);
+    if (manufacturer) criteria.manufacturer = manufacturer;
+    const properties = firstQueryValue(query.properties);
+    if (properties) criteria.properties = properties;
+    const minPrice = toNumber(firstQueryValue(query["min-price"]));
+    if (minPrice !== undefined) criteria["min-price"] = minPrice;
+    const maxPrice = toNumber(firstQueryValue(query["max-price"]));
+    if (maxPrice !== undefined) criteria["max-price"] = maxPrice;
+    const rating = toNumber(firstQueryValue(query.rating));
+    if (rating !== undefined) criteria.rating = rating;
     if (query["shipping-free"])
-      criteria["shipping-free"] = query["shipping-free"] === "true";
+      criteria["shipping-free"] =
+        firstQueryValue(query["shipping-free"]) === "true";
     return criteria;
   };
 
@@ -87,20 +109,6 @@ const changePage = async (page: number) => {
   });
   await changeCurrentPage(
     page,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
-  productListElement.value?.scrollIntoView({ behavior: "smooth" });
-};
-const changeLimit = async (newLimit: number) => {
-  await router.push({
-    query: {
-      ...route.query,
-      limit: newLimit,
-      p: defaultPage,
-    },
-  });
-  await changeCurrentPage(
-    defaultPage,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
@@ -165,7 +173,6 @@ const changeLimit = async (newLimit: number) => {
               },
             }"
             @change-page="changePage"
-            @change-limit="changeLimit"
           />
         </div>
       </div>
