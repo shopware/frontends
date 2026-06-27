@@ -123,6 +123,53 @@ describe("useCountries", () => {
     );
   });
 
+  it("uses criteria passed to useCountries", async () => {
+    const criteria = { limit: 1 };
+    const { vm, injections } = await useSetup(() => useCountries(criteria), {
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
+      },
+      swCountries: ref([]),
+    } as Parameters<typeof useSetup>[1]);
+
+    await vm.fetchCountries();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCountry post"),
+      expect.objectContaining({
+        body: {
+          associations: { states: {} },
+          limit: 1,
+        },
+      }),
+    );
+  });
+
+  it("uses criteria passed to useCountries for cacheable fetchCountries", async () => {
+    const criteria = { limit: 1 };
+    const { vm, injections } = await useSetup(() => useCountries(criteria), {
+      shopware: { cacheableReads: true },
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
+      },
+      swCountries: ref([]),
+    } as Parameters<typeof useSetup>[1]);
+
+    await vm.fetchCountries();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCountryGet get"),
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({
+            associations: { states: {} },
+            limit: 1,
+          }),
+        },
+      }),
+    );
+  });
+
   it("should not fetch when swCountries already populated", async () => {
     const preloadedCountries = ref(CountryMock.elements);
     const { vm, injections } = await useSetup(useCountries, {
