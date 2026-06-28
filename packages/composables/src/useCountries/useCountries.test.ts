@@ -2,6 +2,8 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 
+import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import CountryMock from "../mocks/Country";
 import { useCountries } from "./useCountries";
@@ -124,7 +126,7 @@ describe("useCountries", () => {
   });
 
   it("uses criteria passed to useCountries", async () => {
-    const criteria = { limit: 1 };
+    const criteria: Schemas["Criteria"] = { limit: 1 };
     const { vm, injections } = await useSetup(() => useCountries(criteria), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
@@ -146,7 +148,7 @@ describe("useCountries", () => {
   });
 
   it("uses criteria passed to useCountries for cacheable fetchCountries", async () => {
-    const criteria = { limit: 1 };
+    const criteria: Schemas["Criteria"] = { limit: 1 };
     const { vm, injections } = await useSetup(() => useCountries(criteria), {
       shopware: { cacheableReads: true },
       apiClient: {
@@ -165,6 +167,28 @@ describe("useCountries", () => {
             associations: { states: {} },
             limit: 1,
           }),
+        },
+      }),
+    );
+  });
+
+  it("uses criteria passed to useCountries on mountedCallback", async () => {
+    const criteria: Schemas["Criteria"] = { limit: 1 };
+    const { vm, injections } = await useSetup(() => useCountries(criteria), {
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
+      },
+      swCountries: ref(),
+    } as Parameters<typeof useSetup>[1]);
+
+    await vm.mountedCallback();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCountry post"),
+      expect.objectContaining({
+        body: {
+          associations: { states: {} },
+          limit: 1,
         },
       }),
     );
