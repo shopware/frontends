@@ -10,7 +10,7 @@ import { useCountries } from "./useCountries";
 
 describe("useCountries", () => {
   it("useCountries flow", async () => {
-    const { vm, injections } = await useSetup(useCountries, {
+    const { vm, injections } = await useSetup(() => useCountries(), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
           data: CountryMock,
@@ -32,7 +32,7 @@ describe("useCountries", () => {
   });
 
   it("useCountries flow - no states", async () => {
-    const { vm } = await useSetup(useCountries, {
+    const { vm } = await useSetup(() => useCountries(), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
           data: {
@@ -53,7 +53,7 @@ describe("useCountries", () => {
   });
 
   it("useCountries flow - empty", async () => {
-    const { vm } = await useSetup(useCountries, {
+    const { vm } = await useSetup(() => useCountries(), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
           data: {
@@ -68,7 +68,7 @@ describe("useCountries", () => {
   });
 
   it("useCountries flow - getCountriesOptions", async () => {
-    const { vm } = await useSetup(useCountries, {
+    const { vm } = await useSetup(() => useCountries(), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
           data: CountryMock,
@@ -95,7 +95,7 @@ describe("useCountries", () => {
   });
 
   it("useCountries flow - getCountriesOptions - empty array", async () => {
-    const { vm } = await useSetup(useCountries, {
+    const { vm } = await useSetup(() => useCountries(), {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
           data: {
@@ -109,7 +109,7 @@ describe("useCountries", () => {
   });
 
   it("uses the cacheable GET variant when cacheableReads is enabled", async () => {
-    const { vm, injections } = await useSetup(useCountries, {
+    const { vm, injections } = await useSetup(() => useCountries(), {
       shopware: { cacheableReads: true },
       apiClient: {
         invoke: vi.fn().mockResolvedValue({ data: CountryMock }),
@@ -196,7 +196,7 @@ describe("useCountries", () => {
 
   it("should not fetch when swCountries already populated", async () => {
     const preloadedCountries = ref(CountryMock.elements);
-    const { vm, injections } = await useSetup(useCountries, {
+    const { vm, injections } = await useSetup(() => useCountries(), {
       apiClient: { invoke: vi.fn() },
       swCountries: preloadedCountries,
     } as Parameters<typeof useSetup>[1]);
