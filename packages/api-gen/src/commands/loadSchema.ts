@@ -3,11 +3,10 @@ import { join } from "node:path";
 
 // read .env file and load it into process.env
 import "dotenv/config";
-import json5 from "json5";
 import c from "picocolors";
-import { format } from "prettier";
 
 import { getAdminApiClient, getStoreApiClient } from "../apiClient";
+import { formatSource } from "../formatSource";
 import { validateAdminEnvVars } from "../validateEnv";
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
@@ -107,10 +106,10 @@ export async function loadSchema(args: {
       apiJSON = result.data;
     }
 
-    const formatted = await format(json5.stringify(apiJSON), {
-      semi: false,
-      parser: "json",
-    });
+    const formatted = await formatSource(
+      outputFilename,
+      JSON.stringify(apiJSON, null, 2),
+    );
     const content = formatted.trim();
 
     // const version = apiJSON?.info?.version;
