@@ -7,7 +7,6 @@ const route = useRoute();
 const router = useRouter();
 
 const {
-  changeCurrentPage,
   getCurrentListing,
   getCurrentPage,
   getElements: products,
@@ -38,10 +37,6 @@ const limit = computed({
     await router.push({
       query: { ...route.query, limit: value, p: defaultPage },
     });
-    await changeCurrentPage(
-      defaultPage,
-      route.query as unknown as operations["searchPage post /search"]["body"],
-    );
     productListElement.value?.scrollIntoView({ behavior: "smooth" });
   },
 });
@@ -107,10 +102,6 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  await changeCurrentPage(
-    page,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 </script>

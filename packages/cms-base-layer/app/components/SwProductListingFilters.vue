@@ -181,7 +181,12 @@ const handleFilterChange = async (event: {
 
 const executeSearch = async () => {
   try {
-    await search(searchCriteriaForRequest.value);
+    // Search context refetches from the URL (the page's useAsyncData watches
+    // route.query), so navigating below is enough; calling search() here too
+    // would double-fetch and flicker. Category listings have no URL watcher.
+    if (!isProductSearch) {
+      await search(searchCriteriaForRequest.value);
+    }
 
     // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
     const criteria = searchCriteriaForRequest.value;
@@ -230,10 +235,13 @@ const currentSortingOrder = computed({
         },
       });
 
-      await changeCurrentSortingOrder(order, {
-        ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-        limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
-      });
+      // Search context refetches from the URL; category fetches directly.
+      if (!isProductSearch) {
+        await changeCurrentSortingOrder(order, {
+          ...(route.query as unknown as operations["searchPage post /search"]["body"]),
+          limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
+        });
+      }
     } catch (error) {
       console.error("Sorting order change failed:", error);
     }
