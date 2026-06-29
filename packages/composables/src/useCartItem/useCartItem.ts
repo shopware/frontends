@@ -5,6 +5,11 @@ import type { ComputedRef, Ref } from "vue";
 import { useCart } from "#imports";
 import type { Schemas } from "#shopware";
 
+type LineItemOptions = Schemas["PropertyGroupOption"][];
+type LineItemPayloadWithOptions = {
+  options?: LineItemOptions;
+};
+
 export type UseCartItemReturn = {
   /**
    * Calculated price {number} for the current item
@@ -25,7 +30,7 @@ export type UseCartItemReturn = {
   /**
    * Options (of variation) for the current item
    */
-  itemOptions: ComputedRef<Schemas["LineItem"]["payload"]["options"]>;
+  itemOptions: ComputedRef<LineItemOptions>;
   /**
    * Type of the current item: "product" or "promotion"
    */
@@ -99,14 +104,16 @@ export function useCartItem(
 
   const itemTotalPrice = computed(() => cartItem.value.price?.totalPrice);
 
-  const itemOptions = computed(
-    () =>
-      (cartItem.value.type === "product" && cartItem.value.payload?.options) ||
-      [],
-  );
+  const itemOptions = computed(() => {
+    const payload = cartItem.value.payload as
+      | LineItemPayloadWithOptions
+      | undefined;
+
+    return cartItem.value.type === "product" ? (payload?.options ?? []) : [];
+  });
 
   const itemStock = computed<number | undefined>(
-    () => cartItem.value.deliveryInformation.stock,
+    () => cartItem.value.deliveryInformation?.stock,
   );
 
   const isDigital = computed(
