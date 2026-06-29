@@ -6,6 +6,16 @@ type GenericRecord =
   | number
   | { [key: string]: GenericRecord };
 
+type CustomFields = { [key: string]: CustomFieldValue };
+type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | { [key: string]: CustomFieldValue };
+
 export type paths = {
   "/account/address": {
     /**
@@ -59,7 +69,7 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -91,7 +101,7 @@ export type components = {
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       id?: string;
       name: string;
       /** Format: int64 */
@@ -117,7 +127,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       department?: string;
       firstName: string;
       id?: string;
@@ -135,7 +145,7 @@ export type components = {
     Salutation: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       displayName: string;
       id?: string;
       letterName: string;

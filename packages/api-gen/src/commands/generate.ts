@@ -27,6 +27,9 @@ import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
 import { transformOpenApiTypes } from "../transformOpenApiTypes";
 import { transformSchemaTypes } from "../transformSchemaTypes";
 
+const customFieldsTypes = `type CustomFields = { [key: string]: CustomFieldValue };
+type CustomFieldValue = null | string | string[] | number | boolean | CustomFieldValue[] | { [key: string]: CustomFieldValue };`;
+
 /**
  * Generate schema from your API instance
  */
@@ -165,6 +168,7 @@ export async function generate(args: {
          */
         inject: `
             type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
+            ${customFieldsTypes}
             `,
         transform(schemaObject, metadata) {
           if (!schemaObject) {
@@ -235,11 +239,12 @@ export async function generate(args: {
           }
 
           // run standard transform
-          return runTransformations(schemaObject);
+          return runTransformations(schemaObject, metadata);
         },
       });
 
       schema = astToString(astSchema);
+      schema = normalizeCustomFieldsTypes(schema);
 
       // clean up
       // remove `@description ` tags
@@ -282,6 +287,7 @@ export async function generate(args: {
           `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${args.apiType}ApiTypes.d.ts`,
         );
       }
+      schema = normalizeCustomFieldsTypes(schema);
 
       processedSchemaAst = transformSchemaTypes(schema);
     }
@@ -349,7 +355,10 @@ export async function generate(args: {
   }
 }
 
-function runTransformations(schemaObject: SchemaObject) {
+export function runTransformations(
+  schemaObject: SchemaObject,
+  metadata?: { path?: string | string[] },
+) {
   /**
    * Blob type is used for binary data
    */
@@ -357,6 +366,15 @@ function runTransformations(schemaObject: SchemaObject) {
     return ts.factory.createTypeReferenceNode(
       ts.factory.createIdentifier("Blob"),
     );
+  }
+
+  if (isCustomFieldsSchema(metadata)) {
+    return ts.factory.createUnionTypeNode([
+      ts.factory.createTypeReferenceNode(
+        ts.factory.createIdentifier("CustomFields"),
+      ),
+      ts.factory.createLiteralTypeNode(ts.factory.createNull()),
+    ]);
   }
 
   /**
@@ -379,4 +397,38 @@ function runTransformations(schemaObject: SchemaObject) {
   }
 
   return undefined;
+}
+
+function isCustomFieldsSchema(metadata?: { path?: string | string[] }) {
+  const path = Array.isArray(metadata?.path)
+    ? metadata.path.join("/")
+    : metadata?.path;
+
+  return (
+    typeof path === "string" &&
+    (path.endsWith("/customFields") ||
+      path.endsWith(".customFields") ||
+      path.includes("/properties/customFields"))
+  );
+}
+
+export function normalizeCustomFieldsTypes(schema: string) {
+  const normalizedSchema = schema
+    .replace(
+      /\bcustomFields\?: GenericRecord;/g,
+      "customFields?: CustomFields | null;",
+    )
+    .replace(
+      /\bcustomFields\?: string;/g,
+      "customFields?: CustomFields | null;",
+    );
+
+  if (normalizedSchema.includes("type CustomFields =")) {
+    return normalizedSchema;
+  }
+
+  return normalizedSchema.replace(
+    /(type GenericRecord =[\s\S]*?\{ \[key: string\]: GenericRecord \};)/,
+    `$1\n${customFieldsTypes}`,
+  );
 }

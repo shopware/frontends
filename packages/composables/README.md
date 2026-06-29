@@ -166,20 +166,20 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.11.1
+### Latest changes: 1.12.0
+
+### Minor Changes
+
+- [#2486](https://github.com/shopware/frontends/pull/2486) [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec) Thanks [@mkucmus](https://github.com/mkucmus)! - `useSessionContext`: expose `currentLocaleCode` — the active language's locale code (e.g. `"en-GB"`), read directly from the context's `languageInfo`. The current locale can now be derived from the session context alone, without loading the full language list via `useInternationalization().getAvailableLanguages()` just to map the current `languageId` to a locale.
+
+- [#2473](https://github.com/shopware/frontends/pull/2473) [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b) Thanks [@mkucmus](https://github.com/mkucmus)! - Add an opt-in `cacheableReads` flag that routes anonymous Store API reads through their cacheable GET variants instead of POST. Criteria is compressed into the `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`, which lets CDNs / reverse proxies / the browser cache the responses.
+
+  Disabled by default — fully backwards compatible. Enable it in `nuxt.config` (`shopware: { cacheableReads: true }`) or via `createShopwareContext(app, { cacheableReads: true })` for non-Nuxt setups. It is surfaced on the Shopware context and read by the affected composables; public composable signatures are unchanged.
+
+  Affected composables: `useNavigation`, `useNavigationSearch`, `useCountries`, `useUser` (country + salutation lookups), `useSalutations`, `useInternationalization`, `useProductConfigurator`, `useProductSearch`, and `useCategorySearch.advancedSearch`.
+
+  `useListing` (product-listing), single-category `useCategorySearch.search`, and `useLandingSearch` remain POST for now: the generated Store API schema does not type `_criteria` on those GET routes (a Shopware OpenAPI gap). The backend does honor `_criteria` on product-listing GET at runtime, so that one can be migrated later once the types are augmented.
 
 ### Patch Changes
 
-- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
-
-  This adds helpers to detect and normalize technical Shopware paths and updates
-  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
-  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
-  mapping row is returned.
-
-- [#2407](https://github.com/shopware/frontends/pull/2407) [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Correct `useNewsletter` `subscribeToNewsletter` return type: it now resolves to the Store API response type for `POST /newsletter/subscribe` instead of `void`.
-
-- [#2435](https://github.com/shopware/frontends/pull/2435) [`b8c0091`](https://github.com/shopware/frontends/commit/b8c00913c3afb5e1e63de9565105f8f8e3bf299f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update `useNewsletter` so `newsletterStatus` is set from the subscribe API response, keeping `isNewsletterSubscriber` in sync without an extra status request.
-
-- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00)]:
-  - @shopware/helpers@1.7.1
+- [#2462](https://github.com/shopware/frontends/pull/2462) [`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2) Thanks [@mkucmus](https://github.com/mkucmus)! - `useProductAssociations`: add optional `includeSeoUrls` option. When `true`, the cross-selling request sends `sw-include-seo-urls: true` so returned products include the `seoUrls` association. Defaults to `false` to avoid extra backend overhead.

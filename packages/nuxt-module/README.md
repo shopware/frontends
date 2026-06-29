@@ -162,16 +162,21 @@ The API Client instance is aware of your custom API types thanks to declaring `#
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt-module/CHANGELOG.md)
 
-### Latest changes: 1.4.4
+### Latest changes: 1.5.0
+
+### Minor Changes
+
+- [#2473](https://github.com/shopware/frontends/pull/2473) [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b) Thanks [@mkucmus](https://github.com/mkucmus)! - Add an opt-in `cacheableReads` flag that routes anonymous Store API reads through their cacheable GET variants instead of POST. Criteria is compressed into the `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`, which lets CDNs / reverse proxies / the browser cache the responses.
+
+  Disabled by default — fully backwards compatible. Enable it in `nuxt.config` (`shopware: { cacheableReads: true }`) or via `createShopwareContext(app, { cacheableReads: true })` for non-Nuxt setups. It is surfaced on the Shopware context and read by the affected composables; public composable signatures are unchanged.
+
+  Affected composables: `useNavigation`, `useNavigationSearch`, `useCountries`, `useUser` (country + salutation lookups), `useSalutations`, `useInternationalization`, `useProductConfigurator`, `useProductSearch`, and `useCategorySearch.advancedSearch`.
+
+  `useListing` (product-listing), single-category `useCategorySearch.search`, and `useLandingSearch` remain POST for now: the generated Store API schema does not type `_criteria` on those GET routes (a Shopware OpenAPI gap). The backend does honor `_criteria` on product-listing GET at runtime, so that one can be migrated later once the types are augmented.
 
 ### Patch Changes
 
-- [#2370](https://github.com/shopware/frontends/pull/2370) [`9661432`](https://github.com/shopware/frontends/commit/96614324dfed3d9d83fbf85710145dd529a23f46) Thanks [@patzick](https://github.com/patzick)! - Fix SSR and CSR Shopware endpoint handling in the Nuxt module.
+- [#2488](https://github.com/shopware/frontends/pull/2488) [`c56b89e`](https://github.com/shopware/frontends/commit/c56b89e16a9fbd9283e40a4e2c0f7cc6034226a1) Thanks [@mkucmus](https://github.com/mkucmus)! - Register the `#shopware` types in every TypeScript context (app, server/nitro, node, shared) instead of only the app one. This fixes `Cannot find module '#shopware'` in server-side code (e.g. `server/` routes and API builders) when a project uses the Nuxt 4 project-references `tsconfig.json` layout. Projects that ship their own `shopware.d.ts` are referenced in place so their relative imports keep resolving.
 
-  The module now persists the resolved SSR endpoint into private runtime config,
-  avoids reading private runtime config on the client, and correctly honors both
-  `endpoint` and deprecated `shopwareEndpoint` values during server rendering.
-
-- Updated dependencies [[`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00), [`bea7f58`](https://github.com/shopware/frontends/commit/bea7f5882cb58c6d47c84a82db5c8ecaf9bcf8ef), [`b8c0091`](https://github.com/shopware/frontends/commit/b8c00913c3afb5e1e63de9565105f8f8e3bf299f)]:
-  - @shopware/helpers@1.7.1
-  - @shopware/composables@1.11.1
+- Updated dependencies [[`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2), [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec), [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b)]:
+  - @shopware/composables@1.12.0

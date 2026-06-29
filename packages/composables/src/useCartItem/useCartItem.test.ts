@@ -88,6 +88,19 @@ describe("useCartItem", () => {
     expect(vm.itemOptions).toStrictEqual([]);
   });
 
+  it("should show default empty options and stock for non-product items", async () => {
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref({
+          type: "promotion",
+        } as Schemas["LineItem"]),
+      ),
+    );
+
+    expect(vm.itemOptions).toStrictEqual([]);
+    expect(vm.itemStock).toBeUndefined();
+  });
+
   it("should remove item from the cart", async () => {
     const { vm } = useSetup(() =>
       useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),

@@ -280,6 +280,23 @@ describe("useCart", () => {
     expect(vm.isVirtualCart).toBe(true);
   });
 
+  it("handles cart items with optional quantity and states", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        lineItems: [
+          {
+            type: "product",
+            good: true,
+          },
+        ],
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.count).toBe(0);
+    expect(vm.isVirtualCart).toBe(false);
+  });
+
   it("consumeCartErrors returns null when no errors", async () => {
     await vm.refreshCart();
     expect(vm.consumeCartErrors()).toEqual(null);
