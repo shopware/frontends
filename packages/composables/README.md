@@ -166,20 +166,11 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.12.0
-
-### Minor Changes
-
-- [#2486](https://github.com/shopware/frontends/pull/2486) [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec) Thanks [@mkucmus](https://github.com/mkucmus)! - `useSessionContext`: expose `currentLocaleCode` — the active language's locale code (e.g. `"en-GB"`), read directly from the context's `languageInfo`. The current locale can now be derived from the session context alone, without loading the full language list via `useInternationalization().getAvailableLanguages()` just to map the current `languageId` to a locale.
-
-- [#2473](https://github.com/shopware/frontends/pull/2473) [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b) Thanks [@mkucmus](https://github.com/mkucmus)! - Add an opt-in `cacheableReads` flag that routes anonymous Store API reads through their cacheable GET variants instead of POST. Criteria is compressed into the `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`, which lets CDNs / reverse proxies / the browser cache the responses.
-
-  Disabled by default — fully backwards compatible. Enable it in `nuxt.config` (`shopware: { cacheableReads: true }`) or via `createShopwareContext(app, { cacheableReads: true })` for non-Nuxt setups. It is surfaced on the Shopware context and read by the affected composables; public composable signatures are unchanged.
-
-  Affected composables: `useNavigation`, `useNavigationSearch`, `useCountries`, `useUser` (country + salutation lookups), `useSalutations`, `useInternationalization`, `useProductConfigurator`, `useProductSearch`, and `useCategorySearch.advancedSearch`.
-
-  `useListing` (product-listing), single-category `useCategorySearch.search`, and `useLandingSearch` remain POST for now: the generated Store API schema does not type `_criteria` on those GET routes (a Shopware OpenAPI gap). The backend does honor `_criteria` on product-listing GET at runtime, so that one can be migrated later once the types are augmented.
+### Latest changes: 1.12.1
 
 ### Patch Changes
 
-- [#2462](https://github.com/shopware/frontends/pull/2462) [`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2) Thanks [@mkucmus](https://github.com/mkucmus)! - `useProductAssociations`: add optional `includeSeoUrls` option. When `true`, the cross-selling request sends `sw-include-seo-urls: true` so returned products include the `seoUrls` association. Defaults to `false` to avoid extra backend overhead.
+- [#2514](https://github.com/shopware/frontends/pull/2514) [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Allow passing custom criteria to `useCountries`.
+
+- Updated dependencies [[`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173)]:
+  - @shopware/api-client@1.5.1
