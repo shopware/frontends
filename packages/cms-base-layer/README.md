@@ -485,9 +485,10 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 3.0.1
+### Latest changes: 3.0.2
 
 ### Patch Changes
 
-- Updated dependencies [[`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2), [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec), [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b)]:
-  - @shopware/composables@1.12.0
+- Updated dependencies [[`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f)]:
+  - @shopware/api-client@1.5.1
+  - @shopware/composables@1.12.1

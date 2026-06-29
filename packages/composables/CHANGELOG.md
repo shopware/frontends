@@ -1,5 +1,14 @@
 # @shopware/composables
 
+## 1.12.1
+
+### Patch Changes
+
+- [#2514](https://github.com/shopware/frontends/pull/2514) [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Allow passing custom criteria to `useCountries`.
+
+- Updated dependencies [[`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173)]:
+  - @shopware/api-client@1.5.1
+
 ## 1.12.0
 
 ### Minor Changes
@@ -74,6 +83,7 @@
   ```
 
 - [#2176](https://github.com/shopware/frontends/pull/2176) [`c647baf`](https://github.com/shopware/frontends/commit/c647baf93e7174b849f5961ee5803add99d78602) Thanks [@mkucmus](https://github.com/mkucmus)! - - Add `initialListing` parameter to `useListing` composable for SSR data hydration
+
   - Update `createCategoryListingContext` to accept initial listing data
   - Maintain backward compatibility with existing implementations
 
@@ -312,6 +322,7 @@
 - [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
 
 - [#1056](https://github.com/shopware/frontends/pull/1056) [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04) Thanks [@patzick](https://github.com/patzick)! - Removed deprecations from the composables:
+
   - `createShopwareContext` is no longer accpting `apiInstance` option. Use `apiClient` instead.
   - `useCart` - `getProductItemsSeoUrlsData` is removed. Use product related methods to fetch an item's URL instead.
   - `useCartItem` - `getProductItemSeoUrlData` is removed
@@ -351,6 +362,7 @@
 ### Minor Changes
 
 - [#991](https://github.com/shopware/frontends/pull/991) [`38a3853`](https://github.com/shopware/frontends/commit/38a385374a99d114c4ed3477f14c9e06dedb0dcd) Thanks [@patzick](https://github.com/patzick)! - Few changes in composables API to access data returned from the backend:
+
   - `useAddress` - `loadCustomerAddresses` returns addresses now
   - `useCart` - `removeItem` returns updated cart
   - `useCartItem` - `removeItem` returns updated cart, similar to `useCart`
@@ -372,6 +384,7 @@
 - [#986](https://github.com/shopware/frontends/pull/986) [`013a1d6`](https://github.com/shopware/frontends/commit/013a1d6f88377686cfc1a85903a0c48d8fda67f5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added tests to achieve coverage > 80%
 
 - [#933](https://github.com/shopware/frontends/pull/933) [`04ac2ad`](https://github.com/shopware/frontends/commit/04ac2ada522c881bb06565c332baf5f2cf08643d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `checkPromotion` attribute to the `orderAssociations`
+
   - Added `statusTechnicalName` property to the `useOrderDetails` composable
   - Added `getPaymentMethods` method that allows change payment for existed order
   - Added `stateMachineState` association for loading orders
@@ -405,9 +418,11 @@
 ### Patch Changes
 
 - [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _@vueuse/core_ from **^10.5.0** to **^10.6.1**
 
 - [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _scule_ from **^1.0.0** to **^1.1.0**
 
 - Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
@@ -431,6 +446,7 @@
 ### Patch Changes
 
 - [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _@vueuse/core_ from **^10.4.1** to **^10.5.0**
 
 - [#409](https://github.com/shopware/frontends/pull/409) [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct active addresses location for current context
@@ -452,6 +468,7 @@
 - [#390](https://github.com/shopware/frontends/pull/390) [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Catch 404 api error - `getWishlistProducts``
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _@vueuse/core_ from **^10.3.0** to **^10.4.1**
 
 - Updated dependencies []:
@@ -487,6 +504,7 @@
 ### Patch Changes
 
 - [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _@vueuse/core_ from **^10.2.1** to **^10.3.0**
 
 - Updated dependencies []:
