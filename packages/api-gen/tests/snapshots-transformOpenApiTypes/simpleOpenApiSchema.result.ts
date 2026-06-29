@@ -12,6 +12,15 @@ type GenericRecord =
   | string[]
   | number
   | { [key: string]: GenericRecord };
+type CustomFields = { [key: string]: CustomFieldValue };
+type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | { [key: string]: CustomFieldValue };
 export type components = {
   schemas: Schemas;
   parameters: {
@@ -41,7 +50,7 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultPostalCodePattern?: string;
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
@@ -72,7 +81,7 @@ export type Schemas = {
     countryId: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     name: string;
     /** Format: int64 */
@@ -98,7 +107,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     id?: string;
@@ -115,7 +124,7 @@ export type Schemas = {
   Salutation: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     displayName: string;
     id?: string;
     letterName: string;

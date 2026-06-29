@@ -7,7 +7,7 @@ const { item } = defineProps<{
   item: Schemas["LineItem"];
 }>();
 
-const quantity = ref(item.quantity);
+const quantity = ref(item.quantity ?? 0);
 
 const emit = defineEmits<{
   remove: [id: string];
@@ -23,7 +23,7 @@ const cover = computed(() =>
     <div class="w-37.5 h-37.5">
       <NuxtImg
         :src="cover"
-        :alt="`${item.label || item.payload.name || ''} cart item`"
+        :alt="`${item.label || item.payload?.name || ''} cart item`"
         class="object-cover object-center"
       />
     </div>

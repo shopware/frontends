@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.5.1
+ * Shopware API version: 6.7.10.1
  *
  */
 type GenericRecord =
@@ -13,6 +13,19 @@ type GenericRecord =
   | number
   | {
       [key: string]: GenericRecord;
+    };
+type CustomFields = {
+  [key: string]: CustomFieldValue;
+};
+type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | {
+      [key: string]: CustomFieldValue;
     };
 export type components = {
   schemas: Schemas;
@@ -28,11 +41,16 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time and date when the ACL role was deleted.
+     */
     deletedAt?: string;
+    /** A short description of the ACL role. */
     description?: string;
     id: string;
     integrations?: components["schemas"]["Integration"][];
+    /** Name of the ACL role defined. */
     name: string;
     privileges?: string[];
     /** Format: date-time */
@@ -42,10 +60,15 @@ export type Schemas = {
   AclRoleJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time and date when the ACL role was deleted.
+     */
     deletedAt?: string;
+    /** A short description of the ACL role. */
     description?: string;
     id: string;
+    /** Name of the ACL role defined. */
     name: string;
     privileges?: string[];
     relationships?: {
@@ -328,6 +351,7 @@ export type Schemas = {
     validTo?: string;
   };
   AdvancedSearchConfig: {
+    /** @deprecated */
     andLogic?: boolean;
     boostings?: components["schemas"]["AdvancedSearchBoosting"][];
     /** Format: date-time */
@@ -359,6 +383,9 @@ export type Schemas = {
     minSearchLength?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
+    searchActions?: components["schemas"]["AdvancedSearchAction"][];
+    /** Format: float */
+    strictness?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -427,6 +454,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AdvancedSearchConfigJsonApi: components["schemas"]["resource"] & {
+    /** @deprecated */
     andLogic?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
@@ -500,8 +528,25 @@ export type Schemas = {
           related?: string;
         };
       };
+      searchActions?: {
+        data?: {
+          /** @example f7e07cbefd6755762faa802c35e48929 */
+          id?: string;
+          /** @example advanced_search_action */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /advanced-search-config/63246bc46dc5b3716c6f5f92044238e4/searchActions
+           */
+          related?: string;
+        };
+      };
     };
     salesChannelId: string;
+    /** Format: float */
+    strictness?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -520,6 +565,7 @@ export type Schemas = {
   AdvancedSearchEntityStreamFilter: {
     /** Format: date-time */
     readonly createdAt?: string;
+    customFields?: CustomFields | null;
     entityStream?: components["schemas"]["AdvancedSearchEntityStream"];
     entityStreamId: string;
     field?: string;
@@ -539,6 +585,7 @@ export type Schemas = {
   AdvancedSearchEntityStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    customFields?: CustomFields | null;
     entityStreamId: string;
     field?: string;
     id: string;
@@ -795,23 +842,30 @@ export type Schemas = {
   )[];
   App: {
     aclRole?: components["schemas"]["AclRole"];
+    /** Unique identity of ACL Role. */
     aclRoleId: string;
     actionButtons?: components["schemas"]["AppActionButton"][];
+    /** When boolean value is `true`, the app is enabled for selection. */
     active?: boolean;
+    /** When boolean value is `true`, then the users have the option to deactivate specific aspects of the app. */
     allowDisable?: boolean;
     allowedHosts?: string[];
     appShippingMethods?: components["schemas"]["AppShippingMethod"][];
+    /** Creator of the App. */
     author?: string;
+    /** Root URL for an app. */
     baseAppUrl?: string;
     checkoutGatewayUrl?: string;
     cmsBlocks?: components["schemas"]["AppCmsBlock"][];
+    /** When boolean value is `true`, the app is configurable for further customizations. */
     configurable?: boolean;
     contextGatewayUrl?: string;
     cookies?: GenericRecord[];
+    /** Legal rights on the created app. */
     copyright?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     customFieldSets?: components["schemas"]["CustomFieldSet"][];
     description?: string;
     extensions?: {
@@ -833,19 +887,27 @@ export type Schemas = {
     };
     flowActions?: components["schemas"]["AppFlowAction"][];
     flowEvents?: components["schemas"]["AppFlowEvent"][];
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Icon for the app. Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     id: string;
     inAppPurchasesGatewayUrl?: string;
     integration?: components["schemas"]["Integration"];
+    /** Unique identity of integration. */
     integrationId: string;
     label: string;
+    /** Software license's like MIT, etc. */
     license?: string;
     mainModule?: GenericRecord;
+    mcpPrompts?: components["schemas"]["AppMcpPrompt"][];
+    mcpResources?: components["schemas"]["AppMcpResource"][];
+    mcpTools?: components["schemas"]["AppMcpTool"][];
     modules?: GenericRecord[];
+    /** Name of the app. */
     name: string;
+    /** A relative URL to the app. */
     path: string;
     paymentMethods?: components["schemas"]["AppPaymentMethod"][];
+    /** Privacy-related configuration properties like user data protection, consent mechanisms, or data privacy compliance for an app. */
     privacy?: string;
     privacyPolicyExtensions?: string;
     requestedPrivileges?: string[];
@@ -853,7 +915,10 @@ export type Schemas = {
     sourceConfig?: GenericRecord;
     sourceType?: string;
     taxProviders?: components["schemas"]["TaxProvider"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the templates from the list.
+     */
     templateLoadPriority?: number;
     templates?: components["schemas"]["AppTemplate"][];
     translated: {
@@ -878,15 +943,19 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Version of the plugin. */
     version: string;
     webhooks?: components["schemas"]["Webhook"][];
   };
   AppActionButton: {
+    /** Indicates the action or functionality that the button performs when clicked or interacted with. */
     action: string;
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Indicates in which particular entity. */
     entity: string;
     id: string;
     label: string;
@@ -900,14 +969,19 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** An url associated with the AppActionButton. */
     url: string;
+    /** Indicates whether it is detail page view or listing page view. */
     view: string;
   };
   AppActionButtonJsonApi: components["schemas"]["resource"] & {
+    /** Indicates the action or functionality that the button performs when clicked or interacted with. */
     action: string;
+    /** Unique identity of app. */
     appId: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Indicates in which particular entity. */
     entity: string;
     id: string;
     label: string;
@@ -938,7 +1012,9 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** An url associated with the AppActionButton. */
     url: string;
+    /** Indicates whether it is detail page view or listing page view. */
     view: string;
   };
   AppAdministrationSnippet: {
@@ -963,14 +1039,18 @@ export type Schemas = {
   };
   AppCmsBlock: {
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     label: string;
+    /** Name of app's CMS block. */
     name: string;
+    /** Parameter that relates to the styles or formatting within CMS block. */
     styles: string;
+    /** Template that defines app CMS block. */
     template: string;
     translated: {
       appId: string;
@@ -983,12 +1063,14 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AppCmsBlockJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of app. */
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     label: string;
+    /** Name of app's CMS block. */
     name: string;
     relationships?: {
       app?: {
@@ -1007,7 +1089,9 @@ export type Schemas = {
         };
       };
     };
+    /** Parameter that relates to the styles or formatting within CMS block. */
     styles: string;
+    /** Template that defines app CMS block. */
     template: string;
     translated: {
       appId: string;
@@ -1021,22 +1105,24 @@ export type Schemas = {
   };
   AppFlowAction: {
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     delayable?: boolean;
     description?: string;
     flowSequences?: components["schemas"]["FlowSequence"][];
     headers?: GenericRecord;
     headline?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Icon to identify app flow action. Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     iconRaw?: string;
     id: string;
     label: string;
+    /** Name of app flow action. */
     name: string;
     parameters?: GenericRecord;
     requirements?: string[];
@@ -1055,24 +1141,27 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** An URL to app flow action. */
     url: string;
   };
   AppFlowActionJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of app. */
     appId: string;
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     delayable?: boolean;
     description?: string;
     headers?: GenericRecord;
     headline?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Icon to identify app flow action. Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     iconRaw?: string;
     id: string;
     label: string;
+    /** Name of app flow action. */
     name: string;
     parameters?: GenericRecord;
     relationships?: {
@@ -1123,28 +1212,33 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** An URL to app flow action. */
     url: string;
   };
   AppFlowEvent: {
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     aware: string[];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     flows?: components["schemas"]["Flow"][];
     id: string;
+    /** Unique name of the AppFlowEvent. */
     name: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   AppFlowEventJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of app. */
     appId: string;
     aware: string[];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique name of the AppFlowEvent. */
     name: string;
     relationships?: {
       app?: {
@@ -1182,20 +1276,27 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AppJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of ACL Role. */
     aclRoleId: string;
+    /** When boolean value is `true`, the app is enabled for selection. */
     active?: boolean;
+    /** When boolean value is `true`, then the users have the option to deactivate specific aspects of the app. */
     allowDisable?: boolean;
     allowedHosts?: string[];
+    /** Creator of the App. */
     author?: string;
+    /** Root URL for an app. */
     baseAppUrl?: string;
     checkoutGatewayUrl?: string;
+    /** When boolean value is `true`, the app is configurable for further customizations. */
     configurable?: boolean;
     contextGatewayUrl?: string;
     cookies?: GenericRecord[];
+    /** Legal rights on the created app. */
     copyright?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
       storefrontConfig?: {
@@ -1214,17 +1315,22 @@ export type Schemas = {
         };
       };
     };
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Icon for the app. Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     id: string;
     inAppPurchasesGatewayUrl?: string;
+    /** Unique identity of integration. */
     integrationId: string;
     label: string;
+    /** Software license's like MIT, etc. */
     license?: string;
     mainModule?: GenericRecord;
     modules?: GenericRecord[];
+    /** Name of the app. */
     name: string;
+    /** A relative URL to the app. */
     path: string;
+    /** Privacy-related configuration properties like user data protection, consent mechanisms, or data privacy compliance for an app. */
     privacy?: string;
     privacyPolicyExtensions?: string;
     relationships?: {
@@ -1348,6 +1454,51 @@ export type Schemas = {
           related?: string;
         };
       };
+      mcpPrompts?: {
+        data?: {
+          /** @example dc6c2e9bc841c62a89cf5b3aa42f83d3 */
+          id?: string;
+          /** @example app_mcp_prompt */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app/ac863f346e618f9a959b5c95d5d28941/mcpPrompts
+           */
+          related?: string;
+        };
+      };
+      mcpResources?: {
+        data?: {
+          /** @example 8357adcc66e1f74c8b7f688333874068 */
+          id?: string;
+          /** @example app_mcp_resource */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app/ac863f346e618f9a959b5c95d5d28941/mcpResources
+           */
+          related?: string;
+        };
+      };
+      mcpTools?: {
+        data?: {
+          /** @example 6fd6afdbb8880347183b3fd75e779316 */
+          id?: string;
+          /** @example app_mcp_tool */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app/ac863f346e618f9a959b5c95d5d28941/mcpTools
+           */
+          related?: string;
+        };
+      };
       paymentMethods?: {
         data?: {
           /** @example b631b1ab565525e892f9cdc1242cca14 */
@@ -1413,7 +1564,10 @@ export type Schemas = {
     selfManaged?: boolean;
     sourceConfig?: GenericRecord;
     sourceType?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the templates from the list.
+     */
     templateLoadPriority?: number;
     translated: {
       aclRoleId: string;
@@ -1437,42 +1591,244 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Version of the plugin. */
     version: string;
+  };
+  AppMcpPrompt: {
+    app?: components["schemas"]["App"];
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    label: string;
+    name: string;
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      name: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    url: string;
+  };
+  AppMcpPromptJsonApi: components["schemas"]["resource"] & {
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    label: string;
+    name: string;
+    relationships?: {
+      app?: {
+        data?: {
+          /** @example d2a57dc1d883fd21fb9951699df71cc7 */
+          id?: string;
+          /** @example app */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app-mcp-prompt/0f7619363286401a53877794cfb6ebbb/app
+           */
+          related?: string;
+        };
+      };
+    };
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      name: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    url: string;
+  };
+  AppMcpResource: {
+    app?: components["schemas"]["App"];
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    label: string;
+    mimeType?: string;
+    name: string;
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      mimeType: string;
+      name: string;
+      uri: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    uri: string;
+    url: string;
+  };
+  AppMcpResourceJsonApi: components["schemas"]["resource"] & {
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    label: string;
+    mimeType?: string;
+    name: string;
+    relationships?: {
+      app?: {
+        data?: {
+          /** @example d2a57dc1d883fd21fb9951699df71cc7 */
+          id?: string;
+          /** @example app */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app-mcp-resource/30e270c9edfb6e58051d304c6e69e7bf/app
+           */
+          related?: string;
+        };
+      };
+    };
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      mimeType: string;
+      name: string;
+      uri: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    uri: string;
+    url: string;
+  };
+  AppMcpTool: {
+    app?: components["schemas"]["App"];
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    inputSchema?: GenericRecord;
+    label: string;
+    name: string;
+    requiredPrivileges?: GenericRecord;
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      name: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    url: string;
+  };
+  AppMcpToolJsonApi: components["schemas"]["resource"] & {
+    appId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    description?: string;
+    id: string;
+    inputSchema?: GenericRecord;
+    label: string;
+    name: string;
+    relationships?: {
+      app?: {
+        data?: {
+          /** @example d2a57dc1d883fd21fb9951699df71cc7 */
+          id?: string;
+          /** @example app */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /app-mcp-tool/0d217ec15d0377a62d13caf5899f0212/app
+           */
+          related?: string;
+        };
+      };
+    };
+    requiredPrivileges?: GenericRecord;
+    translated: {
+      appId: string;
+      description: string;
+      label: string;
+      name: string;
+      url: string;
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    url: string;
   };
   AppPaymentMethod: {
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId?: string;
+    /** Name of the app. */
     appName: string;
+    /** A capture URL allows the payments to be processed and completed once validated. */
     captureUrl?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** A URL that redirects the user back to the shop. */
     finalizeUrl?: string;
     id: string;
+    /** It is a unique identity of an AppPaymentMethod. */
     identifier: string;
     originalMedia?: components["schemas"]["Media"];
+    /** Unique identity of original media. */
     originalMediaId?: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
+    /** Unique identity of payment method. */
     paymentMethodId: string;
+    /** A URL sending the pay request. */
     payUrl?: string;
+    /** A URL to payment to handle recurring orders like subscriptions. */
     recurringUrl?: string;
+    /** A refund URL is used to initiate the refund process for a purchase. */
     refundUrl?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A validate URL confirms the authenticity of a payment reference when accessed. */
     validateUrl?: string;
   };
   AppPaymentMethodJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of app. */
     appId?: string;
+    /** Name of the app. */
     appName: string;
+    /** A capture URL allows the payments to be processed and completed once validated. */
     captureUrl?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** A URL that redirects the user back to the shop. */
     finalizeUrl?: string;
     id: string;
+    /** It is a unique identity of an AppPaymentMethod. */
     identifier: string;
+    /** Unique identity of original media. */
     originalMediaId?: string;
+    /** Unique identity of payment method. */
     paymentMethodId: string;
+    /** A URL sending the pay request. */
     payUrl?: string;
+    /** A URL to payment to handle recurring orders like subscriptions. */
     recurringUrl?: string;
+    /** A refund URL is used to initiate the refund process for a purchase. */
     refundUrl?: string;
     relationships?: {
       app?: {
@@ -1523,20 +1879,26 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A validate URL confirms the authenticity of a payment reference when accessed. */
     validateUrl?: string;
   };
   AppScriptCondition: {
+    /** When boolean value is `true`, defined app script conditions are available for selection. */
     active: boolean;
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Categorizes script conditions within a specific group. */
     group?: string;
     id: string;
+    /** It is a unique identity of an AppScriptCondition. */
     identifier: string;
     name: string;
     ruleConditions?: components["schemas"]["RuleCondition"][];
+    /** Internal field. */
     script?: string;
     translated: {
       appId: string;
@@ -1549,13 +1911,17 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AppScriptConditionJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, defined app script conditions are available for selection. */
     active: boolean;
+    /** Unique identity of app. */
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Categorizes script conditions within a specific group. */
     group?: string;
     id: string;
+    /** It is a unique identity of an AppScriptCondition. */
     identifier: string;
     name: string;
     relationships?: {
@@ -1590,6 +1956,7 @@ export type Schemas = {
         };
       };
     };
+    /** Internal field. */
     script?: string;
     translated: {
       appId: string;
@@ -1676,25 +2043,32 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AppTemplate: {
+    /** When boolean value is `true`, defined app templates are available for selection. */
     active: boolean;
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId: string;
     /** Format: date-time */
     readonly createdAt?: string;
     hash?: string;
     id: string;
+    /** A relative URL to the app template. */
     path: string;
+    /** Template for an app. */
     template: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   AppTemplateJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, defined app templates are available for selection. */
     active: boolean;
+    /** Unique identity of app. */
     appId: string;
     /** Format: date-time */
     readonly createdAt?: string;
     hash?: string;
     id: string;
+    /** A relative URL to the app template. */
     path: string;
     relationships?: {
       app?: {
@@ -1713,6 +2087,7 @@ export type Schemas = {
         };
       };
     };
+    /** Template for an app. */
     template: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -1736,7 +2111,7 @@ export type Schemas = {
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultRole?: components["schemas"]["B2bComponentsRole"];
     defaultRoleId?: string;
     id: string;
@@ -1747,7 +2122,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultRoleId?: string;
     id: string;
     relationships?: {
@@ -1795,7 +2170,9 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerGroup?: components["schemas"]["CustomerGroup"];
+    customerGroupId?: string;
     customerId: string;
+    customFields?: CustomFields | null;
     id: string;
     organization?: components["schemas"]["B2bComponentsOrganization"];
     organizationId: string;
@@ -1805,6 +2182,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
+    updatedById?: string;
   };
   B2bComponentsAdvancedProductCatalogsCategory: {
     advancedProductCatalog?: components["schemas"]["B2bComponentsAdvancedProductCatalogs"];
@@ -1819,7 +2197,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById?: string;
+    customerGroupId?: string;
     customerId: string;
+    customFields?: CustomFields | null;
     id: string;
     organizationId: string;
     relationships?: {
@@ -1962,6 +2342,7 @@ export type Schemas = {
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    updatedById?: string;
   };
   B2bComponentsApprovalRule: {
     active: boolean;
@@ -1972,7 +2353,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     name: string;
@@ -1994,7 +2375,7 @@ export type Schemas = {
     group?: string;
     id: string;
     identifier: string;
-    name: string;
+    name?: string;
     script?: string;
     translated: {
       appId: string;
@@ -2015,7 +2396,7 @@ export type Schemas = {
     group?: string;
     id: string;
     identifier: string;
-    name: string;
+    name?: string;
     relationships?: {
       app?: {
         data?: {
@@ -2051,7 +2432,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     name: string;
@@ -2135,11 +2516,12 @@ export type Schemas = {
     createdById?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
+    customer?: components["schemas"]["Customer"];
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     endDate?: string;
     id: string;
-    readonly lastRenews?: string;
+    lastRenews?: string;
     name: string;
     readonly nextRenews?: string;
     notificationConfig?: {
@@ -2172,10 +2554,10 @@ export type Schemas = {
     createdById?: string;
     currencyId: string;
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     endDate?: string;
     id: string;
-    readonly lastRenews?: string;
+    lastRenews?: string;
     name: string;
     readonly nextRenews?: string;
     notificationConfig?: {
@@ -2210,6 +2592,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/currency
+           */
+          related?: string;
+        };
+      };
+      customer?: {
+        data?: {
+          /** @example 91ec1f9324753048c0096d036a694f86 */
+          id?: string;
+          /** @example customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/customer
            */
           related?: string;
         };
@@ -2288,7 +2685,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlist: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     id: string;
@@ -2301,7 +2698,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlistJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeId: string;
     id: string;
     relationships?: {
@@ -2358,7 +2755,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlistProduct: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeWishlist?: components["schemas"]["B2bComponentsEmployeeWishlist"];
     employeeWishlistId: string;
     id: string;
@@ -2371,7 +2768,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlistProductJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeWishlistId: string;
     id: string;
     productId: string;
@@ -2411,6 +2808,366 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  B2bComponentsIndividualPricing: {
+    /** Format: float */
+    actionAmount?: number;
+    actionType: string;
+    active: boolean;
+    applyToAllProducts: boolean;
+    companyAssignments?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdBy?: components["schemas"]["User"];
+    createdById?: string;
+    customFields?: CustomFields | null;
+    description?: string;
+    id: string;
+    name: string;
+    /** Format: int64 */
+    priority: number;
+    products?: components["schemas"]["Product"][];
+    productStream?: components["schemas"]["ProductStream"];
+    productStreamId?: string;
+    showStrikeThrough: boolean;
+    readonly tagIds?: string[];
+    tags?: components["schemas"]["Tag"][];
+    target: string;
+    tiers: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    updatedBy?: components["schemas"]["User"];
+    updatedById?: string;
+    useValidityRange: boolean;
+    validFrom?: string;
+    validUntil?: string;
+  };
+  B2bComponentsIndividualPricingCompanyAssignment: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    id: string;
+    individualPricing?: components["schemas"]["B2bComponentsIndividualPricing"];
+    individualPricingId: string;
+    readonly organizationUnitIds?: string[];
+    scope: string;
+    units?: components["schemas"]["B2bComponentsOrganization"][];
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsIndividualPricingCompanyAssignmentJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customerId: string;
+    id: string;
+    individualPricingId: string;
+    readonly organizationUnitIds?: string[];
+    relationships?: {
+      customer?: {
+        data?: {
+          /** @example 91ec1f9324753048c0096d036a694f86 */
+          id?: string;
+          /** @example customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing-company-assignment/b73c0318c6308826d7501ab4df0db333/customer
+           */
+          related?: string;
+        };
+      };
+      individualPricing?: {
+        data?: {
+          /** @example 5fe7ef4389efb412d4e35056093e10ab */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing-company-assignment/b73c0318c6308826d7501ab4df0db333/individualPricing
+           */
+          related?: string;
+        };
+      };
+      units?: {
+        data?: {
+          /** @example b98b3dfbd27e710e6c3ceeae58770b52 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing-company-assignment/b73c0318c6308826d7501ab4df0db333/units
+           */
+          related?: string;
+        };
+      };
+    };
+    scope: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsIndividualPricingCompanyAssignmentUnit: {
+    assignment?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+    assignmentId: string;
+    id?: string;
+    orgUnit?: components["schemas"]["B2bComponentsOrganization"];
+    orgUnitId: string;
+  };
+  B2bComponentsIndividualPricingComputedCache: {
+    /** Format: float */
+    actionAmount?: number;
+    actionType: string;
+    /** Format: date-time */
+    activatedAt: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    individualPricingId: string;
+    price?: GenericRecord;
+    /** Format: int64 */
+    priority: number;
+    product?: components["schemas"]["Product"];
+    productId?: string;
+    productVersionId?: string;
+    showStrikeThrough?: boolean;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Format: date-time */
+    validFrom?: string;
+    /** Format: date-time */
+    validUntil?: string;
+  };
+  B2bComponentsIndividualPricingComputedCacheJsonApi: components["schemas"]["resource"] & {
+    /** Format: float */
+    actionAmount?: number;
+    actionType: string;
+    /** Format: date-time */
+    activatedAt: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    individualPricingId: string;
+    price?: GenericRecord;
+    /** Format: int64 */
+    priority: number;
+    productId?: string;
+    productVersionId?: string;
+    relationships?: {
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing-computed-cache/844b7f47ba74cc63454301f0b4ca1c82/product
+           */
+          related?: string;
+        };
+      };
+    };
+    showStrikeThrough?: boolean;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Format: date-time */
+    validFrom?: string;
+    /** Format: date-time */
+    validUntil?: string;
+  };
+  B2bComponentsIndividualPricingJsonApi: components["schemas"]["resource"] & {
+    /** Format: float */
+    actionAmount?: number;
+    actionType: string;
+    active: boolean;
+    applyToAllProducts: boolean;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    createdById?: string;
+    customFields?: CustomFields | null;
+    description?: string;
+    id: string;
+    name: string;
+    /** Format: int64 */
+    priority: number;
+    productStreamId?: string;
+    relationships?: {
+      companyAssignments?: {
+        data?: {
+          /** @example e02294f7c7e9c5f3829bfcc5fc9aadd6 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/companyAssignments
+           */
+          related?: string;
+        };
+      };
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/createdBy
+           */
+          related?: string;
+        };
+      };
+      products?: {
+        data?: {
+          /** @example 86024cad1e83101d97359d7351051156 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/products
+           */
+          related?: string;
+        };
+      };
+      productStream?: {
+        data?: {
+          /** @example 49561f6faa0badfce831a183d2ec7c2f */
+          id?: string;
+          /** @example product_stream */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/productStream
+           */
+          related?: string;
+        };
+      };
+      tags?: {
+        data?: {
+          /** @example d57ac45256849d9b13e2422d91580fb9 */
+          id?: string;
+          /** @example tag */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/tags
+           */
+          related?: string;
+        };
+      };
+      tiers?: {
+        data?: {
+          /** @example 49f466e28285d1d4989b49139c4b265e */
+          id?: string;
+          /** @example b2b_components_individual_pricing_tier */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/tiers
+           */
+          related?: string;
+        };
+      };
+      updatedBy?: {
+        data?: {
+          /** @example 7ced3d0067ad61702af7db8ae260aa76 */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing/4398cd1810a050caffbc7dc121434fb5/updatedBy
+           */
+          related?: string;
+        };
+      };
+    };
+    showStrikeThrough: boolean;
+    readonly tagIds?: string[];
+    target: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    updatedById?: string;
+    useValidityRange: boolean;
+    validFrom?: string;
+    validUntil?: string;
+  };
+  B2bComponentsIndividualPricingTag: {
+    id?: string;
+    individualPricing?: components["schemas"]["B2bComponentsIndividualPricing"];
+    individualPricingId: string;
+    tag?: components["schemas"]["Tag"];
+    tagId: string;
+  };
+  B2bComponentsIndividualPricingTier: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    individualPricing?: components["schemas"]["B2bComponentsIndividualPricing"];
+    individualPricingId: string;
+    price: components["schemas"]["Price"][];
+    /** Format: int64 */
+    qtyFrom: number;
+    /** Format: int64 */
+    qtyTo?: number;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsIndividualPricingTierJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    individualPricingId: string;
+    price: components["schemas"]["Price"][];
+    /** Format: int64 */
+    qtyFrom: number;
+    /** Format: int64 */
+    qtyTo?: number;
+    relationships?: {
+      individualPricing?: {
+        data?: {
+          /** @example 5fe7ef4389efb412d4e35056093e10ab */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-individual-pricing-tier/8430b2435525569963232095b1a5a6dd/individualPricing
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   B2bComponentsOrganization: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -2418,7 +3175,7 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     defaultBillingAddressId: string;
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
@@ -2436,6 +3193,51 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/advancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/budgets
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignments?: {
+        data?: {
+          /** @example 78fc5e012f88233a08401f2351a299a9 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/individualPricingCompanyAssignments
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignmentUnits?: {
+        data?: {
+          /** @example 2de375eb5502ab387a10c69ea5789649 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment_unit */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/individualPricingCompanyAssignmentUnits
            */
           related?: string;
         };
@@ -2494,7 +3296,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdById?: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultBillingAddressId: string;
     defaultShippingAddressId: string;
     extensions?: {
@@ -2509,6 +3311,51 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/advancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/budgets
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignments?: {
+        data?: {
+          /** @example 78fc5e012f88233a08401f2351a299a9 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/individualPricingCompanyAssignments
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignmentUnits?: {
+        data?: {
+          /** @example 2de375eb5502ab387a10c69ea5789649 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment_unit */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-organization/59ca973b4d3a8dc22a45847c980f1152/individualPricingCompanyAssignmentUnits
            */
           related?: string;
         };
@@ -2692,7 +3539,7 @@ export type Schemas = {
     currencyId: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     decidedBy?: components["schemas"]["B2bEmployee"];
     decidedById?: string;
     designatedPayerIds?: string[];
@@ -2778,7 +3625,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     id: string;
@@ -2804,7 +3651,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     id: string;
@@ -2911,7 +3758,7 @@ export type Schemas = {
     readonly createdAt?: string;
     currencyId: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     decidedById?: string;
     designatedPayerIds?: string[];
     employeeId: string;
@@ -3194,7 +4041,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     default?: boolean;
     employees?: components["schemas"]["B2bEmployee"][];
@@ -3244,6 +4091,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      reviewerBudgets?: {
+        data?: {
+          /** @example cc0b9649925b8bf844adbf00bc3b3346 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-role/a2f4fa227c09d6222701f670a01bb0b0/reviewerBudgets
+           */
+          related?: string;
+        };
+      };
     };
     id: string;
     name: string;
@@ -3255,7 +4117,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     default?: boolean;
     extensions?: {
@@ -3300,6 +4162,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-components-role/a2f4fa227c09d6222701f670a01bb0b0/b2bReviewerApprovalRules
+           */
+          related?: string;
+        };
+      };
+      reviewerBudgets?: {
+        data?: {
+          /** @example cc0b9649925b8bf844adbf00bc3b3346 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-role/a2f4fa227c09d6222701f670a01bb0b0/reviewerBudgets
            */
           related?: string;
         };
@@ -3351,7 +4228,7 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId?: string;
     extensions?: {
@@ -3388,7 +4265,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdById?: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeId?: string;
     extensions?: {
       organization?: {
@@ -3510,7 +4387,7 @@ export type Schemas = {
   B2bComponentsShoppingListLineItem: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price?: components["schemas"]["Price"][];
     product?: components["schemas"]["Product"];
@@ -3526,7 +4403,7 @@ export type Schemas = {
   B2bComponentsShoppingListLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price?: components["schemas"]["Price"][];
     productId?: string;
@@ -3569,6 +4446,58 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  B2bComponentsSubscriptionEmployee: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id: string;
+    subscription?: components["schemas"]["Subscription"];
+    subscriptionId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bComponentsSubscriptionEmployeeJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    employeeId: string;
+    id: string;
+    relationships?: {
+      employee?: {
+        data?: {
+          /** @example fa5473530e4d1a5a1e1eb53d2fedb10c */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-subscription-employee/b233445cd710dfeed718800dc0818c4d/employee
+           */
+          related?: string;
+        };
+      };
+      subscription?: {
+        data?: {
+          /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
+          id?: string;
+          /** @example subscription */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-subscription-employee/b233445cd710dfeed718800dc0818c4d/subscription
+           */
+          related?: string;
+        };
+      };
+    };
+    subscriptionId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   B2bEmployee: {
     /** Format: int64 */
     readonly autoIncrement?: number;
@@ -3576,7 +4505,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     extensions?: {
       b2bDecidedPendingOrders?: {
@@ -3624,6 +4553,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budgetNotifications?: {
+        data?: {
+          /** @example a6b1894d8fb4962df1b416d3a3241bbb */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/budgetNotifications
+           */
+          related?: string;
+        };
+      };
       organization?: {
         data?: {
           /** @example b4c1948c087fafc89a88450fcbb64c77 */
@@ -3635,6 +4579,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/organization
+           */
+          related?: string;
+        };
+      };
+      quoteComments?: {
+        data?: {
+          /** @example 98dec49a83119c512f84645e81ea52d8 */
+          id?: string;
+          /** @example quote_comment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/quoteComments
            */
           related?: string;
         };
@@ -3665,6 +4624,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/shoppingLists
+           */
+          related?: string;
+        };
+      };
+      subscriptionEmployees?: {
+        data?: {
+          /** @example b4ee45a6e3ed163cb60859b89a0c7ce6 */
+          id?: string;
+          /** @example b2b_components_subscription_employee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/subscriptionEmployees
            */
           related?: string;
         };
@@ -3689,7 +4663,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     extensions?: {
       b2bDecidedPendingOrders?: {
@@ -3737,6 +4711,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budgetNotifications?: {
+        data?: {
+          /** @example a6b1894d8fb4962df1b416d3a3241bbb */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/budgetNotifications
+           */
+          related?: string;
+        };
+      };
       organization?: {
         data?: {
           /** @example b4c1948c087fafc89a88450fcbb64c77 */
@@ -3748,6 +4737,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/organization
+           */
+          related?: string;
+        };
+      };
+      quoteComments?: {
+        data?: {
+          /** @example 98dec49a83119c512f84645e81ea52d8 */
+          id?: string;
+          /** @example quote_comment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/quoteComments
            */
           related?: string;
         };
@@ -3778,6 +4782,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/shoppingLists
+           */
+          related?: string;
+        };
+      };
+      subscriptionEmployees?: {
+        data?: {
+          /** @example b4ee45a6e3ed163cb60859b89a0c7ce6 */
+          id?: string;
+          /** @example b2b_components_subscription_employee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee/1131eb0b1859b37129289fe3bcc9e70b/subscriptionEmployees
            */
           related?: string;
         };
@@ -3926,6 +4945,307 @@ export type Schemas = {
     extensions?: {
       cmsPageRelation?: components["schemas"]["PresentationCmsPage"];
     };
+  };
+  BundleDiscount: {
+    /** Indicates if the discount is currently active. */
+    active: boolean;
+    readonly apiAlias?: string;
+    /** Bundle product that owns this discount configuration. */
+    bundleId?: string;
+    /** Version identifier of the owning bundle product. */
+    bundleVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    /** Currency entity linked to the discount. */
+    currency?: components["schemas"]["Currency"];
+    /** Currency that an absolute discount value refers to. */
+    currencyId?: string;
+    exclusionIds?: string[];
+    id?: string;
+    /**
+     * Format: float
+     * Optional absolute ceiling for discount application.
+     */
+    maxValue?: number;
+    /** Whether this discount blocks other promotion combinations. */
+    preventCombination: boolean;
+    /** Business rules that must match for the discount to apply. */
+    rules?: components["schemas"]["Rule"][];
+    /**
+     * Discount calculation type (absolute or percentage).
+     * @enum {string}
+     */
+    type: "absolute" | "percentage";
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /**
+     * Format: float
+     * Discount amount or percentage value applied to the bundle.
+     */
+    value: number;
+    /** Version identifier of the bundle discount entity. */
+    versionId?: string;
+  };
+  BundleDiscountJsonApi: components["schemas"]["resource"] & {
+    /** Indicates if the discount is currently active. */
+    active?: boolean;
+    /** Bundle product that owns this discount configuration. */
+    bundleId: string;
+    /** Version identifier of the owning bundle product. */
+    bundleVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    /** Currency that an absolute discount value refers to. */
+    currencyId?: string;
+    exclusionIds?: string[];
+    id: string;
+    /**
+     * Format: float
+     * Optional absolute ceiling for discount application.
+     */
+    maxValue?: number;
+    /** Whether this discount blocks other promotion combinations. */
+    preventCombination?: boolean;
+    relationships?: {
+      /** Currency entity linked to the discount. */
+      currency?: {
+        data?: {
+          /** @example 1af0389838508d7016a9841eb6273962 */
+          id?: string;
+          /** @example currency */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /bundle-discount/4c760d31c64d2481f1cd5ad19ff22543/currency
+           */
+          related?: string;
+        };
+      };
+      /** Business rules that must match for the discount to apply. */
+      rules?: {
+        data?: {
+          /** @example a4f86f7bfc24194b276c22e0ef158197 */
+          id?: string;
+          /** @example rule */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /bundle-discount/4c760d31c64d2481f1cd5ad19ff22543/rules
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Discount calculation type (absolute or percentage). */
+    type: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /**
+     * Format: float
+     * Discount amount or percentage value applied to the bundle.
+     */
+    value: number;
+    /** Version identifier of the bundle discount entity. */
+    versionId?: string;
+  };
+  BundleDiscountRule: {
+    /** Associated bundle discount entity. */
+    bundleDiscount?: components["schemas"]["BundleDiscount"];
+    /** Identifier of the bundle discount that references the rule. */
+    bundleDiscountId: string;
+    /** Version of the bundle discount for this mapping. */
+    bundleDiscountVersionId?: string;
+    id?: string;
+    /** Associated rule entity defining eligibility. */
+    rule?: components["schemas"]["Rule"];
+    /** Sales rule that controls the discount visibility. */
+    ruleId: string;
+  };
+  BundleItem: {
+    readonly apiAlias?: string;
+    /** Association to the parent bundle product. */
+    bundle?: components["schemas"]["Product"];
+    /** Bundle product that owns this item entry. */
+    bundleId?: string;
+    /** Version identifier of the owning bundle product. */
+    bundleVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /**
+     * Format: int64
+     * Maximum selectable quantity of the bundle item.
+     */
+    max?: number;
+    /**
+     * Format: int64
+     * Minimum selectable quantity of the item within the bundle.
+     */
+    min: number;
+    /**
+     * Format: int64
+     * Display order for the item inside the bundle.
+     */
+    position?: number;
+    /** Association to the product entity for this bundle item. */
+    product?: components["schemas"]["BundleItemProduct"];
+    /** Product that is included as an item in the bundle. */
+    productId: string;
+    /** Version identifier of the referenced product. */
+    productVersionId?: string;
+    /**
+     * Format: int64
+     * Default quantity that will be added to the cart for this item.
+     */
+    quantity: number;
+    /** Indicates whether the item must always be part of the bundle. */
+    required: boolean;
+    /** Show bundle on the product detail page of this bundle item. */
+    showBundleOnItemPdp?: boolean;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Version identifier of the bundle item entity. */
+    versionId?: string;
+  };
+  BundleItemJsonApi: components["schemas"]["resource"] & {
+    /** Bundle product that owns this item entry. */
+    bundleId: string;
+    /** Version identifier of the owning bundle product. */
+    bundleVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    /**
+     * Format: int64
+     * Maximum selectable quantity of the bundle item.
+     */
+    max?: number;
+    /**
+     * Format: int64
+     * Minimum selectable quantity of the item within the bundle.
+     */
+    min?: number;
+    /**
+     * Format: int64
+     * Display order for the item inside the bundle.
+     */
+    position?: number;
+    /** Product that is included as an item in the bundle. */
+    productId: string;
+    /** Version identifier of the referenced product. */
+    productVersionId?: string;
+    /**
+     * Format: int64
+     * Default quantity that will be added to the cart for this item.
+     */
+    quantity?: number;
+    relationships?: {
+      /** Association to the parent bundle product. */
+      bundle?: {
+        data?: {
+          /** @example 94377c156735b39dfa4ac607234cb87c */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /bundle-item/be65b30307aaf5570c9d71916c1c650b/bundle
+           */
+          related?: string;
+        };
+      };
+      /** Association to the product entity for this bundle item. */
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /bundle-item/be65b30307aaf5570c9d71916c1c650b/product
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Indicates whether the item must always be part of the bundle. */
+    required?: boolean;
+    showBundleOnItemPdp?: boolean;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Version identifier of the bundle item entity. */
+    versionId?: string;
+  };
+  BundleItemProduct: {
+    active?: boolean;
+    readonly apiAlias?: string;
+    available?: boolean;
+    id: string;
+    name?: string;
+    productNumber: string;
+  };
+  BundleProduct: components["schemas"]["BundleProductWrite"] & {
+    active?: boolean;
+    readonly apiAlias?: string;
+    available?: boolean;
+    cover?: GenericRecord;
+    customSearchKeywords?: string[];
+    description?: string;
+    id: string;
+    media?: GenericRecord[];
+    price?: {
+      currencyId?: string;
+      gross?: number;
+      linked?: boolean;
+      net?: number;
+    }[];
+    sales?: number;
+    stock?: number;
+  };
+  BundleProductWrite: {
+    bundleDiscounts?: components["schemas"]["BundleDiscount"][];
+    bundleItems: [
+      components["schemas"]["BundleItem"],
+      components["schemas"]["BundleItem"],
+      ...components["schemas"]["BundleItem"][],
+    ];
+    coverId?: string;
+    customFields?: CustomFields | null;
+    description?: string;
+    name: string;
+    /** Optional. Omit to let the server reserve a number. */
+    productNumber?: string;
+    visibilities?: {
+      salesChannelId: string;
+      /** @enum {integer} */
+      visibility?: 1 | 2 | 3;
+    }[];
+  };
+  BundleVisibility: {
+    /** Association back to the bundle product. */
+    bundle?: components["schemas"]["Product"];
+    /** Bundle product whose visibility is configured. */
+    bundleId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Version identifier of the bundle product. */
+    productVersionId?: string;
+    /** Association to the sales channel entity. */
+    salesChannel?: components["schemas"]["SalesChannel"];
+    /** Sales channel in which the bundle should be visible. */
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
   };
   CalculatedPrice: {
     /** @enum {string} */
@@ -4092,7 +5412,9 @@ export type Schemas = {
     variantId?: string | null;
   };
   Category: {
+    /** When boolean value is `true`, the category is listed for selection. */
     active?: boolean;
+    /** Unique identity of the category under which the new category is to be created. */
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
     /** Format: int64 */
@@ -4104,15 +5426,20 @@ export type Schemas = {
     children?: components["schemas"]["Category"][];
     /** CMS page layout for the category */
     cmsPage?: components["schemas"]["CmsPage"];
+    /** Unique identity of CMS page. */
     cmsPageId?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /**
+     * @deprecated
+     * Runtime field, cannot be used as part of the criteria.
+     */
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** Shows nested categories on a product category page. */
     displayNestedProducts?: boolean;
     extensions?: {
       advancedProductCatalogs?: {
@@ -4167,26 +5494,35 @@ export type Schemas = {
     id: string;
     internalLink?: string;
     keywords?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * An integer value that denotes the level of nesting of a particular category located in an hierarchical category tree.
+     */
     readonly level?: number;
     linkNewTab?: boolean;
-    linkType?: string;
+    /** @enum {string} */
+    linkType?: "category" | "product" | "external" | "landing_page";
     mainCategories?: components["schemas"]["MainCategory"][];
     /** Category image or banner */
     media?: components["schemas"]["Media"];
+    /** Unique identity of media added to identify category. */
     mediaId?: string;
     metaDescription?: string;
     metaTitle?: string;
     name: string;
     navigationSalesChannels?: components["schemas"]["SalesChannel"][];
     nestedProducts?: components["schemas"]["Product"][];
+    /** Unique identity of category. */
     parent?: components["schemas"]["Category"];
     parentId?: string;
     parentVersionId?: string;
+    /** A relative URL to the category. */
     readonly path?: string;
+    /** Type of product assignment: Dynamic product group as or `product_stream` or Manual assignment as `product`. */
     productAssignmentType?: string;
     products?: components["schemas"]["Product"][];
     productStream?: components["schemas"]["ProductStream"];
+    /** Unique identity of product stream. */
     productStreamId?: string;
     /** SEO-friendly URLs for the category across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
@@ -4217,10 +5553,15 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
-    type?: string;
+    /**
+     * Type of categories like `page`, `folder`, `link`.
+     * @enum {string}
+     */
+    type?: "page" | "link" | "folder";
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
+    /** Displays categories on category page when true. */
     visible?: boolean;
     /**
      * Format: int64
@@ -4229,7 +5570,9 @@ export type Schemas = {
     visibleChildCount?: number;
   };
   CategoryJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the category is listed for selection. */
     active?: boolean;
+    /** Unique identity of the category under which the new category is to be created. */
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
     /** Format: int64 */
@@ -4237,15 +5580,20 @@ export type Schemas = {
     readonly breadcrumb?: GenericRecord[];
     /** Format: int64 */
     readonly childCount?: number;
+    /** Unique identity of CMS page. */
     cmsPageId?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /**
+     * @deprecated
+     * Runtime field, cannot be used as part of the criteria.
+     */
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** Shows nested categories on a product category page. */
     displayNestedProducts?: boolean;
     extensions?: {
       advancedProductCatalogs?: {
@@ -4299,18 +5647,26 @@ export type Schemas = {
     id: string;
     internalLink?: string;
     keywords?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * An integer value that denotes the level of nesting of a particular category located in an hierarchical category tree.
+     */
     readonly level?: number;
     linkNewTab?: boolean;
-    linkType?: string;
+    /** @enum {string} */
+    linkType?: "category" | "product" | "external" | "landing_page";
+    /** Unique identity of media added to identify category. */
     mediaId?: string;
     metaDescription?: string;
     metaTitle?: string;
     name: string;
     parentId?: string;
     parentVersionId?: string;
+    /** A relative URL to the category. */
     readonly path?: string;
+    /** Type of product assignment: Dynamic product group as or `product_stream` or Manual assignment as `product`. */
     productAssignmentType?: string;
+    /** Unique identity of product stream. */
     productStreamId?: string;
     relationships?: {
       /** Child categories within this category for hierarchical navigation */
@@ -4421,6 +5777,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of category. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -4538,10 +5895,15 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
-    type?: string;
+    /**
+     * Type of categories like `page`, `folder`, `link`.
+     * @enum {string}
+     */
+    type?: "page" | "link" | "folder";
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
+    /** Displays categories on category page when true. */
     visible?: boolean;
     /**
      * Format: int64
@@ -4610,15 +5972,19 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CmsBlock: {
+    /** Defines the background color of an element. */
     backgroundColor?: string;
     backgroundMedia?: components["schemas"]["Media"];
+    /** Unique identity of background media. */
     backgroundMediaId?: string;
+    /** Background media mode accept values `cover`, `auto`, `contain`. */
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagCmsExtensionsBlockRule?: {
         data?: {
@@ -4653,17 +6019,28 @@ export type Schemas = {
     };
     id: string;
     locked?: boolean;
+    /** Defines for the margin area on the bottom of an element. */
     marginBottom?: string;
+    /** Defines for the margin area on the left of an element. */
     marginLeft?: string;
+    /** Defines the margin area on the right of an element. */
     marginRight?: string;
+    /** Defines the margin area on the top of an element. */
     marginTop?: string;
+    /** Unique name of the CMS Block. */
     name?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Order of the block indicated by number like 0, 1, 2,...
+     */
     position: number;
     section?: components["schemas"]["CmsSection"];
+    /** Unique identity of section. */
     sectionId: string;
+    /** Position of the section. It can either be `main` or `sidebar`. */
     sectionPosition?: string;
     slots?: components["schemas"]["CmsSlot"][];
+    /** Type of block can be 'image`, `text`, 'product-listing`, `image-two-column`, etc. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -4675,14 +6052,18 @@ export type Schemas = {
     };
   };
   CmsBlockJsonApi: components["schemas"]["resource"] & {
+    /** Defines the background color of an element. */
     backgroundColor?: string;
+    /** Unique identity of background media. */
     backgroundMediaId?: string;
+    /** Background media mode accept values `cover`, `auto`, `contain`. */
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagCmsExtensionsBlockRule?: {
         data?: {
@@ -4717,12 +6098,20 @@ export type Schemas = {
     };
     id: string;
     locked?: boolean;
+    /** Defines for the margin area on the bottom of an element. */
     marginBottom?: string;
+    /** Defines for the margin area on the left of an element. */
     marginLeft?: string;
+    /** Defines the margin area on the right of an element. */
     marginRight?: string;
+    /** Defines the margin area on the top of an element. */
     marginTop?: string;
+    /** Unique name of the CMS Block. */
     name?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Order of the block indicated by number like 0, 1, 2,...
+     */
     position: number;
     relationships?: {
       backgroundMedia?: {
@@ -4771,8 +6160,11 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of section. */
     sectionId: string;
+    /** Position of the section. It can either be `main` or `sidebar`. */
     sectionPosition?: string;
+    /** Type of block can be 'image`, `text`, 'product-listing`, `image-two-column`, etc. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -4790,8 +6182,10 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** This field will be implemented in the future. */
     entity?: string;
     extensions?: {
       activities?: {
@@ -4863,6 +6257,7 @@ export type Schemas = {
     name?: string;
     /** Preview image for the CMS page in admin panel and page selection */
     previewMedia?: components["schemas"]["Media"];
+    /** Unique identity of media to be previewed. */
     previewMediaId?: string;
     products?: components["schemas"]["Product"][];
     /** Content sections within the CMS page (layout blocks containing slots) */
@@ -4875,6 +6270,7 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
+    /** CMS page types can be `landingpage`, `page`, `product_list`, `product_detail`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -5030,8 +6426,10 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** This field will be implemented in the future. */
     entity?: string;
     extensions?: {
       activities?: {
@@ -5098,6 +6496,7 @@ export type Schemas = {
     id: string;
     locked?: boolean;
     name?: string;
+    /** Unique identity of media to be previewed. */
     previewMediaId?: string;
     relationships?: {
       categories?: {
@@ -5202,22 +6601,27 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
+    /** CMS page types can be `landingpage`, `page`, `product_list`, `product_detail`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
   CmsSection: {
+    /** Background color of CMS page. */
     backgroundColor?: string;
     backgroundMedia?: components["schemas"]["Media"];
+    /** Unique identity of CMS section's background media. */
     backgroundMediaId?: string;
+    /** Background media mode can be `cover`, `auto` or `contain`. */
     backgroundMediaMode?: string;
     blocks?: components["schemas"]["CmsBlock"][];
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       dsrSlideExtension?: {
         data?: {
@@ -5252,14 +6656,25 @@ export type Schemas = {
     };
     id: string;
     locked?: boolean;
+    /** Hides the sidebar on mobile viewports. It can hold values such as 'mobile', 'wrap', any other string or be unset. */
     mobileBehavior?: string;
+    /** Name of the CMS section defined. */
     name?: string;
     page?: components["schemas"]["CmsPage"];
+    /** Unique identity of page where CMS section is defined. */
     pageId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Position of occurrence of each section denoted by numerical values 0, 1, 2...
+     */
     position: number;
+    /** Sizing mode can be `boxed` or `full_width`. */
     sizingMode?: string;
-    type: string;
+    /**
+     * Types of sections can be `default` or `sidebar`.
+     * @enum {string}
+     */
+    type: "default" | "sidebar";
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
@@ -5270,14 +6685,18 @@ export type Schemas = {
     };
   };
   CmsSectionJsonApi: components["schemas"]["resource"] & {
+    /** Background color of CMS page. */
     backgroundColor?: string;
+    /** Unique identity of CMS section's background media. */
     backgroundMediaId?: string;
+    /** Background media mode can be `cover`, `auto` or `contain`. */
     backgroundMediaMode?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       dsrSlideExtension?: {
         data?: {
@@ -5312,10 +6731,16 @@ export type Schemas = {
     };
     id: string;
     locked?: boolean;
+    /** Hides the sidebar on mobile viewports. It can hold values such as 'mobile', 'wrap', any other string or be unset. */
     mobileBehavior?: string;
+    /** Name of the CMS section defined. */
     name?: string;
+    /** Unique identity of page where CMS section is defined. */
     pageId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Position of occurrence of each section denoted by numerical values 0, 1, 2...
+     */
     position: number;
     relationships?: {
       backgroundMedia?: {
@@ -5364,8 +6789,13 @@ export type Schemas = {
         };
       };
     };
+    /** Sizing mode can be `boxed` or `full_width`. */
     sizingMode?: string;
-    type: string;
+    /**
+     * Types of sections can be `default` or `sidebar`.
+     * @enum {string}
+     */
+    type: "default" | "sidebar";
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
@@ -5377,12 +6807,13 @@ export type Schemas = {
   };
   CmsSlot: {
     block?: components["schemas"]["CmsBlock"];
+    /** Unique identity of CMS block where slot is defined. */
     blockId: string;
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
@@ -5404,6 +6835,7 @@ export type Schemas = {
     fieldConfig?: GenericRecord;
     id: string;
     locked?: boolean;
+    /** Key-value pair to configure which element to be shown in which slot. */
     slot: string;
     translated: {
       blockId: string;
@@ -5412,18 +6844,20 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
+    /** It indicates the types of content that can be defined within the slot which includes `image`, `text`, `form`, `product-listing`, `category-navigation`, `product-box`, `buy-box`, `sidebar-filter`, etc. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
   CmsSlotJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of CMS block where slot is defined. */
     blockId: string;
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
@@ -5462,6 +6896,7 @@ export type Schemas = {
         };
       };
     };
+    /** Key-value pair to configure which element to be shown in which slot. */
     slot: string;
     translated: {
       blockId: string;
@@ -5470,17 +6905,52 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
+    /** It indicates the types of content that can be defined within the slot which includes `image`, `text`, `form`, `product-listing`, `category-navigation`, `product-box`, `buy-box`, `sidebar-filter`, etc. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
+  ConsentState: {
+    /** The accepted consent revision. null unless the consent is currently accepted for a revision-aware consent. */
+    acceptedRevision?: string | null;
+    /**
+     * Format: date-time
+     * The timestamp until when the consent is accepted. null if never accepted
+     */
+    acceptedUntil: string | null;
+    /** The user name of the user who made the consent decision. null if never updated */
+    actor: string | null;
+    /** The resolved identifier of the consent */
+    identifier: string;
+    /** The current latest revision defined for the consent. null when the consent does not use revisions. */
+    latestRevision?: string | null;
+    /** The name of the consent */
+    name: string;
+    /** The scope of the consent that defines how the identifier is resolved */
+    scopeName: string;
+    /**
+     * The current status of the consent (requested, accepted, revoked)
+     * @enum {string}
+     */
+    status: "unset" | "accepted" | "revoked";
+    /**
+     * Format: date-time
+     * The timestamp of when the consent status was last updated. null if never updated
+     */
+    updatedAt: string | null;
+  };
   Country: {
+    /** When boolean value is `true`, the country is available for selection in the storefront. */
     active?: boolean;
     addressFormat: GenericRecord;
+    /** Wildcard formatted zip codes to allow easy searching in the frontend based on initial constants, for example - 24****, 1856**. */
     advancedPostalCodePattern?: string;
+    /** Verify for advanced postal code pattern. */
     checkAdvancedPostalCodePattern?: boolean;
+    /** Verify for valid postal code pattern. */
     checkPostalCodePattern?: boolean;
+    /** Verify if VAT ID is valid or not. */
     checkVatIdPattern?: boolean;
     companyTax?: {
       /** Format: float */
@@ -5498,8 +6968,10 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Default pattern of postal or zip code. */
     defaultPostalCodePattern?: string;
+    /** The country's state is displayed in the address when boolean value is `true`. */
     displayStateInRegistration?: boolean;
     extensions?: {
       b2bPendingOrderAddresses?: {
@@ -5548,18 +7020,26 @@ export type Schemas = {
         };
       };
     };
+    /** State details in the address are force included when boolean value is `true`. */
     forceStateInRegistration?: boolean;
     id: string;
     isEu?: boolean;
+    /** Internationally recognized two-letter country codes. For example, DE, IN, NO, etc. */
     iso?: string;
+    /** Internationally recognized three-letter country codes. For example, DEU, IND, NOR, etc. */
     iso3?: string;
     name: string;
     orderAddresses?: components["schemas"]["OrderAddress"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined countries must be displayed in the frontend.
+     */
     position?: number;
+    /** The postal code is made mandatory specification in the address, when boolean value is `true`. */
     postalCodeRequired?: boolean;
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
+    /** The shipping availability for a country is enabled when boolean value is `true`. */
     shippingAvailable?: boolean;
     /** States/provinces/regions within the country */
     states?: components["schemas"]["CountryState"][];
@@ -5574,15 +7054,22 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique VAT ID with country code and numbers, for example - GB999 9999 */
     vatIdPattern?: string;
+    /** Set to true, if VAT ID is to be made mandatory. */
     vatIdRequired?: boolean;
   };
   CountryJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the country is available for selection in the storefront. */
     active?: boolean;
     addressFormat: GenericRecord;
+    /** Wildcard formatted zip codes to allow easy searching in the frontend based on initial constants, for example - 24****, 1856**. */
     advancedPostalCodePattern?: string;
+    /** Verify for advanced postal code pattern. */
     checkAdvancedPostalCodePattern?: boolean;
+    /** Verify for valid postal code pattern. */
     checkPostalCodePattern?: boolean;
+    /** Verify if VAT ID is valid or not. */
     checkVatIdPattern?: boolean;
     companyTax?: {
       /** Format: float */
@@ -5598,8 +7085,10 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Default pattern of postal or zip code. */
     defaultPostalCodePattern?: string;
+    /** The country's state is displayed in the address when boolean value is `true`. */
     displayStateInRegistration?: boolean;
     extensions?: {
       b2bPendingOrderAddresses?: {
@@ -5648,14 +7137,21 @@ export type Schemas = {
         };
       };
     };
+    /** State details in the address are force included when boolean value is `true`. */
     forceStateInRegistration?: boolean;
     id: string;
     isEu?: boolean;
+    /** Internationally recognized two-letter country codes. For example, DE, IN, NO, etc. */
     iso?: string;
+    /** Internationally recognized three-letter country codes. For example, DEU, IND, NOR, etc. */
     iso3?: string;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined countries must be displayed in the frontend.
+     */
     position?: number;
+    /** The postal code is made mandatory specification in the address, when boolean value is `true`. */
     postalCodeRequired?: boolean;
     relationships?: {
       currencyCountryRoundings?: {
@@ -5765,6 +7261,7 @@ export type Schemas = {
         };
       };
     };
+    /** The shipping availability for a country is enabled when boolean value is `true`. */
     shippingAvailable?: boolean;
     translated: {
       advancedPostalCodePattern: string;
@@ -5776,17 +7273,21 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique VAT ID with country code and numbers, for example - GB999 9999 */
     vatIdPattern?: string;
+    /** Set to true, if VAT ID is to be made mandatory. */
     vatIdRequired?: boolean;
   };
   CountryState: {
+    /** When boolean value is `true`, the country's state is available for selection in the storefront. */
     active?: boolean;
     country?: components["schemas"]["Country"];
+    /** Unique identity of the country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrderAddresses?: {
         data?: {
@@ -5822,8 +7323,12 @@ export type Schemas = {
     id: string;
     name: string;
     orderAddresses?: components["schemas"]["OrderAddress"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined states must be displayed in the frontend.
+     */
     position?: number;
+    /** An abbreviation for the country's state. */
     shortCode: string;
     translated: {
       countryId: string;
@@ -5834,11 +7339,13 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CountryStateJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the country's state is available for selection in the storefront. */
     active?: boolean;
+    /** Unique identity of the country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrderAddresses?: {
         data?: {
@@ -5873,7 +7380,10 @@ export type Schemas = {
     };
     id: string;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined states must be displayed in the frontend.
+     */
     position?: number;
     relationships?: {
       country?: {
@@ -5922,6 +7432,7 @@ export type Schemas = {
         };
       };
     };
+    /** An abbreviation for the country's state. */
     shortCode: string;
     translated: {
       countryId: string;
@@ -5987,7 +7498,7 @@ export type Schemas = {
     countryRoundings?: components["schemas"]["CurrencyCountryRounding"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrders?: {
         data?: {
@@ -6000,6 +7511,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /currency/386c339d37e737a436499d423a77df0c/b2bPendingOrders
+           */
+          related?: string;
+        };
+      };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /currency/386c339d37e737a436499d423a77df0c/budgets
+           */
+          related?: string;
+        };
+      };
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /currency/386c339d37e737a436499d423a77df0c/bundleDiscounts
            */
           related?: string;
         };
@@ -6050,9 +7591,13 @@ export type Schemas = {
         };
       };
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Currency exchange rate.
+     */
     factor: number;
     id: string;
+    /** Standard international three digit code to represent currency. For example, USD. */
     isoCode: string;
     /** Runtime field, cannot be used as part of the criteria. */
     isSystemDefault?: boolean;
@@ -6065,7 +7610,10 @@ export type Schemas = {
     };
     name: string;
     orders?: components["schemas"]["Order"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs for multiple currencies defined.
+     */
     position?: number;
     productExports?: components["schemas"]["ProductExport"][];
     promotionDiscountPrices?: components["schemas"]["PromotionDiscountPrices"][];
@@ -6073,8 +7621,12 @@ export type Schemas = {
     salesChannelDomains?: components["schemas"]["SalesChannelDomain"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
     shortName: string;
+    /** A currency symbol is a graphical representation used as shorthand for a currency's name, for example US Dollar - $ */
     symbol: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The value from which the tax must be exempted.
+     */
     taxFreeFrom?: number;
     totalRounding: {
       /** Format: int64 */
@@ -6175,7 +7727,7 @@ export type Schemas = {
   CurrencyJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrders?: {
         data?: {
@@ -6188,6 +7740,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /currency/386c339d37e737a436499d423a77df0c/b2bPendingOrders
+           */
+          related?: string;
+        };
+      };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /currency/386c339d37e737a436499d423a77df0c/budgets
+           */
+          related?: string;
+        };
+      };
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /currency/386c339d37e737a436499d423a77df0c/bundleDiscounts
            */
           related?: string;
         };
@@ -6238,9 +7820,13 @@ export type Schemas = {
         };
       };
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Currency exchange rate.
+     */
     factor: number;
     id: string;
+    /** Standard international three digit code to represent currency. For example, USD. */
     isoCode: string;
     /** Runtime field, cannot be used as part of the criteria. */
     isSystemDefault?: boolean;
@@ -6252,7 +7838,10 @@ export type Schemas = {
       roundForNet: boolean;
     };
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs for multiple currencies defined.
+     */
     position?: number;
     relationships?: {
       countryRoundings?: {
@@ -6362,8 +7951,12 @@ export type Schemas = {
       };
     };
     shortName: string;
+    /** A currency symbol is a graphical representation used as shorthand for a currency's name, for example US Dollar - $ */
     symbol: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The value from which the tax must be exempted.
+     */
     taxFreeFrom?: number;
     totalRounding: {
       /** Format: int64 */
@@ -6382,19 +7975,24 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CustomEntity: {
+    /** Unique identity of app. */
     appId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Parameter that indicates the areas in which the custom field is supported. */
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
     fields: GenericRecord;
     flags?: GenericRecord;
     id: string;
+    /** Specifies which property or attribute of the custom entity is used. */
     labelProperty?: string;
+    /** Unique name of the entity. */
     name: string;
+    /** Unique identity of plugin. */
     pluginId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     storeApiAware?: boolean;
@@ -6402,19 +8000,24 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CustomEntityJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of app. */
     appId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Parameter that indicates the areas in which the custom field is supported. */
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
     fields: GenericRecord;
     flags?: GenericRecord;
     id: string;
+    /** Specifies which property or attribute of the custom entity is used. */
     labelProperty?: string;
+    /** Unique name of the entity. */
     name: string;
+    /** Unique identity of plugin. */
     pluginId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     storeApiAware?: boolean;
@@ -6422,31 +8025,78 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CustomField: {
+    /** When boolean value is `true`, the custom field is enabled for use. */
     active?: boolean;
+    /** When boolean value is `true`, then the custom field's data can be exposed within the shopping cart or order process. */
     allowCartExpose?: boolean;
+    /** When boolean value is `true`, then customers have permission to write data in the custom field. */
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
+    /** Unique identity of customFieldSet. */
     customFieldSetId?: string;
+    extensions?: {
+      advancedSearchConfigFields?: {
+        data?: {
+          /** @example bdf4d1c41d2b0aa72620e925951c2b0d */
+          id?: string;
+          /** @example advanced_search_config_field */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /custom-field/8c9d2c73a2f564420ef091ee69b564b9/advancedSearchConfigFields
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
+    includeInSearch?: boolean;
+    /** Unique name of a custom field. */
     name: string;
     productSearchConfigFields?: components["schemas"]["ProductSearchConfigField"][];
     storeApiAware?: boolean;
+    /** Custom field type can be selection, media , etc */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   CustomFieldJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the custom field is enabled for use. */
     active?: boolean;
+    /** When boolean value is `true`, then the custom field's data can be exposed within the shopping cart or order process. */
     allowCartExpose?: boolean;
+    /** When boolean value is `true`, then customers have permission to write data in the custom field. */
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of customFieldSet. */
     customFieldSetId?: string;
+    extensions?: {
+      advancedSearchConfigFields?: {
+        data?: {
+          /** @example bdf4d1c41d2b0aa72620e925951c2b0d */
+          id?: string;
+          /** @example advanced_search_config_field */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /custom-field/8c9d2c73a2f564420ef091ee69b564b9/advancedSearchConfigFields
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
+    includeInSearch?: boolean;
+    /** Unique name of a custom field. */
     name: string;
     relationships?: {
       customFieldSet?: {
@@ -6481,22 +8131,30 @@ export type Schemas = {
       };
     };
     storeApiAware?: boolean;
+    /** Custom field type can be selection, media , etc */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   CustomFieldSet: {
+    /** When boolean value is `true`, the custom field set is enabled for use. */
     active?: boolean;
     app?: components["schemas"]["App"];
+    /** Unique identity of an app. */
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: components["schemas"]["CustomField"][];
+    customFields?: CustomFields | null;
+    /** When set to `true`, the custom field set can be used across all sales channels. */
     global?: boolean;
     id: string;
+    /** Unique name of a custom field set. */
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined custom field set to be displayed.
+     */
     position?: number;
     products?: components["schemas"]["Product"][];
     relations?: components["schemas"]["CustomFieldSetRelation"][];
@@ -6504,15 +8162,22 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   CustomFieldSetJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the custom field set is enabled for use. */
     active?: boolean;
+    /** Unique identity of an app. */
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** When set to `true`, the custom field set can be used across all sales channels. */
     global?: boolean;
     id: string;
+    /** Unique name of a custom field set. */
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined custom field set to be displayed.
+     */
     position?: number;
     relationships?: {
       app?: {
@@ -6530,21 +8195,7 @@ export type Schemas = {
           related?: string;
         };
       };
-      customFields?: {
-        data?: {
-          /** @example 4e252ff73243c27b4df9002e452fc6a7 */
-          id?: string;
-          /** @example custom_field */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /custom-field-set/9f7fdf62a1b51e5a8e6f99cb5e5e86b1/customFields
-           */
-          related?: string;
-        };
-      };
+      customFields?: CustomFields | null;
       products?: {
         data?: {
           /** @example 86024cad1e83101d97359d7351051156 */
@@ -6583,7 +8234,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
+    /** Unique identity of a custom field set. */
     customFieldSetId: string;
+    /** Name of the entity. */
     entityName: string;
     id: string;
     /** Format: date-time */
@@ -6592,7 +8245,9 @@ export type Schemas = {
   CustomFieldSetRelationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of a custom field set. */
     customFieldSetId: string;
+    /** Name of the entity. */
     entityName: string;
     id: string;
     relationships?: {
@@ -6752,6 +8407,7 @@ export type Schemas = {
     }[];
   };
   Customer: {
+    /** To keep the status of the customer active, the boolean value is set to `true`. */
     active?: boolean;
     /** Currently active billing address in the session */
     activeBillingAddress?: components["schemas"]["CustomerAddress"];
@@ -6759,30 +8415,45 @@ export type Schemas = {
     activeShippingAddress?: components["schemas"]["CustomerAddress"];
     /** All addresses saved for the customer */
     addresses?: components["schemas"]["CustomerAddress"][];
+    /** An affiliate code is an identification option with which website operators can mark outgoing links. */
     affiliateCode?: string;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** To capture customer's birthday details. */
     birthday?: string;
     boundSalesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of bonus sales channel. */
     boundSalesChannelId?: string;
+    /** A campaign code is the globally unique identifier for a campaign. */
     campaignCode?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
+    /** Unique  number assigned to identity a customer. */
     customerNumber: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Default billing address for the customer */
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
+    /** Unique identity of default billing address. */
     defaultBillingAddressId: string;
     /** Default shipping address for the customer */
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
+    /** Unique identity of default shipping address. */
     defaultShippingAddressId: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the double opt-in email was confirmed.
+     */
     doubleOptInConfirmDate?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the double opt-in email was sent.
+     */
     doubleOptInEmailSentDate?: string;
+    /** Set to `true` to allow user subscriptions to an email marketing list. */
     doubleOptInRegistration?: boolean;
+    /** Email ID of the customer. */
     email: string;
     extensions?: {
       attendee?: {
@@ -6796,6 +8467,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer/ce26601dac0dea138b7295f02b7620a7/attendee
+           */
+          related?: string;
+        };
+      };
+      b2bAdvancedProductCatalogs?: {
+        data?: {
+          /** @example 912596af64fb66beeb84defb9535e16d */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/b2bAdvancedProductCatalogs
            */
           related?: string;
         };
@@ -6845,6 +8531,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/budgets
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -6886,6 +8587,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer/ce26601dac0dea138b7295f02b7620a7/employees
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignments?: {
+        data?: {
+          /** @example 78fc5e012f88233a08401f2351a299a9 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/individualPricingCompanyAssignments
            */
           related?: string;
         };
@@ -6980,6 +8696,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      salesChannelTracking?: {
+        data?: {
+          /** @example 0be2acfa806308827a1893fe389a7c8b */
+          id?: string;
+          /** @example sales_channel_tracking_customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/salesChannelTracking
+           */
+          related?: string;
+        };
+      };
       shoppingLists?: {
         data?: {
           /** @example efa2c2d016771a1e072e6b05091fb584 */
@@ -7056,47 +8787,77 @@ export type Schemas = {
         };
       };
     };
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * To capture date and time of customer's first login.
+     */
     firstLogin?: string;
+    /** First name of the customer. */
     firstName: string;
     /** Customer group determining pricing and permissions */
     group?: components["schemas"]["CustomerGroup"];
+    /** Unique identity of customer group. */
     groupId: string;
+    /** Boolean value is `true` if it is to be a guest account. */
     guest?: boolean;
+    /** Customer registration double opt-in hash for confirming the customer account. */
     hash?: string;
     id: string;
     /** Preferred language for customer communication */
     language?: components["schemas"]["Language"];
+    /** Unique identity of language. */
     languageId: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * To capture date and time of customer's last login.
+     */
     lastLogin?: string;
+    /** Last name of the customer. */
     lastName: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Captures last order date.
+     */
     readonly lastOrderDate?: string;
     /** Last used payment method by the customer */
     lastPaymentMethod?: components["schemas"]["PaymentMethod"];
+    /** Unique identity of previous payment method. */
     lastPaymentMethodId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Captures the number of orders placed.
+     */
     readonly orderCount?: number;
     orderCustomers?: components["schemas"]["OrderCustomer"][];
-    /** Format: float */
+    /**
+     * Format: float
+     * Sum of total amount to be paid.
+     */
     readonly orderTotalAmount?: number;
     productReviews?: components["schemas"]["ProductReview"][];
     promotions?: components["schemas"]["Promotion"][];
     recoveryCustomer?: components["schemas"]["CustomerRecovery"];
+    /** Anonymous IP address of the customer for last session. */
     remoteAddress?: string;
     requestedGroup?: components["schemas"]["CustomerGroup"];
+    /** Unique identity of requested group. */
     requestedGroupId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of reviews the customer has given.
+     */
     readonly reviewCount?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId: string;
     /** Customer salutation (e.g., Mr., Mrs., Ms.) */
     salutation?: components["schemas"]["Salutation"];
+    /** Unique identity of salutation. */
     salutationId?: string;
     readonly tagIds?: string[];
     /** Tags assigned to the customer for organization and segmentation */
     tags?: components["schemas"]["Tag"][];
+    /** Titles or honorifics like Mr, Mrs, etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -7105,19 +8866,27 @@ export type Schemas = {
     wishlists?: components["schemas"]["CustomerWishlist"][];
   };
   CustomerAddress: {
+    /** Additional customer's address information. */
     additionalAddressLine1?: string;
+    /** Additional customer's address information. */
     additionalAddressLine2?: string;
+    /** Name of customer's city. */
     city: string;
+    /** Name of customer's company. */
     company?: string;
     country?: components["schemas"]["Country"];
+    /** Unique identity of country. */
     countryId: string;
     countryState?: components["schemas"]["CountryState"];
+    /** Unique identity of country's state. */
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
+    /** Unique identity of customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of customer's department. */
     department?: string;
     extensions?: {
       organizationCustomerAddresses?: {
@@ -7166,31 +8935,46 @@ export type Schemas = {
         };
       };
     };
+    /** First name of the customer. */
     firstName: string;
     /** Runtime field, cannot be used as part of the criteria. */
     hash?: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
+    /** Customer's phone number. */
     phoneNumber?: string;
     salutation?: components["schemas"]["Salutation"];
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Name of customer's street. */
     street: string;
+    /** Titles given to customer like Dr. , Prof., etc */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Postal or zip code of customer's address. */
     zipcode?: string;
   };
   CustomerAddressJsonApi: components["schemas"]["resource"] & {
+    /** Additional customer's address information. */
     additionalAddressLine1?: string;
+    /** Additional customer's address information. */
     additionalAddressLine2?: string;
+    /** Name of customer's city. */
     city: string;
+    /** Name of customer's company. */
     company?: string;
+    /** Unique identity of country. */
     countryId: string;
+    /** Unique identity of country's state. */
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of customer's department. */
     department?: string;
     extensions?: {
       organizationCustomerAddresses?: {
@@ -7239,11 +9023,14 @@ export type Schemas = {
         };
       };
     };
+    /** First name of the customer. */
     firstName: string;
     /** Runtime field, cannot be used as part of the criteria. */
     hash?: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
+    /** Customer's phone number. */
     phoneNumber?: string;
     relationships?: {
       country?: {
@@ -7307,20 +9094,40 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Name of customer's street. */
     street: string;
+    /** Titles given to customer like Dr. , Prof., etc */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Postal or zip code of customer's address. */
     zipcode?: string;
   };
   CustomerGroup: {
     /** Format: date-time */
     readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** If boolean value is `true` gross value is displayed else, net value will be displayed to the customer. */
     displayGross?: boolean;
     extensions?: {
+      advancedProductCatalog?: {
+        data?: {
+          /** @example ff9540fcefd24264341c5a70314b71be */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-group/2c5176146d938e15c9f0e3d5203c19bf/advancedProductCatalog
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -7339,6 +9146,7 @@ export type Schemas = {
     };
     id: string;
     name: string;
+    /** To enable the registration of partner customer group. */
     registrationActive?: boolean;
     registrationIntroduction?: string;
     registrationOnlyCompanyRegistration?: boolean;
@@ -7358,9 +9166,25 @@ export type Schemas = {
   CustomerGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** If boolean value is `true` gross value is displayed else, net value will be displayed to the customer. */
     displayGross?: boolean;
     extensions?: {
+      advancedProductCatalog?: {
+        data?: {
+          /** @example ff9540fcefd24264341c5a70314b71be */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-group/2c5176146d938e15c9f0e3d5203c19bf/advancedProductCatalog
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -7379,6 +9203,7 @@ export type Schemas = {
     };
     id: string;
     name: string;
+    /** To enable the registration of partner customer group. */
     registrationActive?: boolean;
     registrationIntroduction?: string;
     registrationOnlyCompanyRegistration?: boolean;
@@ -7450,25 +9275,41 @@ export type Schemas = {
     salesChannelId: string;
   };
   CustomerJsonApi: components["schemas"]["resource"] & {
+    /** To keep the status of the customer active, the boolean value is set to `true`. */
     active?: boolean;
+    /** An affiliate code is an identification option with which website operators can mark outgoing links. */
     affiliateCode?: string;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** To capture customer's birthday details. */
     birthday?: string;
+    /** Unique identity of bonus sales channel. */
     boundSalesChannelId?: string;
+    /** A campaign code is the globally unique identifier for a campaign. */
     campaignCode?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     createdById?: string;
+    /** Unique  number assigned to identity a customer. */
     customerNumber: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of default billing address. */
     defaultBillingAddressId: string;
+    /** Unique identity of default shipping address. */
     defaultShippingAddressId: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the double opt-in email was confirmed.
+     */
     doubleOptInConfirmDate?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the double opt-in email was sent.
+     */
     doubleOptInEmailSentDate?: string;
+    /** Set to `true` to allow user subscriptions to an email marketing list. */
     doubleOptInRegistration?: boolean;
+    /** Email ID of the customer. */
     email: string;
     extensions?: {
       attendee?: {
@@ -7482,6 +9323,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer/ce26601dac0dea138b7295f02b7620a7/attendee
+           */
+          related?: string;
+        };
+      };
+      b2bAdvancedProductCatalogs?: {
+        data?: {
+          /** @example 912596af64fb66beeb84defb9535e16d */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/b2bAdvancedProductCatalogs
            */
           related?: string;
         };
@@ -7531,6 +9387,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      budgets?: {
+        data?: {
+          /** @example b7d9e68ed31698bcfe971f824ab5fd23 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/budgets
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -7572,6 +9443,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer/ce26601dac0dea138b7295f02b7620a7/employees
+           */
+          related?: string;
+        };
+      };
+      individualPricingCompanyAssignments?: {
+        data?: {
+          /** @example 78fc5e012f88233a08401f2351a299a9 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_company_assignment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/individualPricingCompanyAssignments
            */
           related?: string;
         };
@@ -7666,6 +9552,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      salesChannelTracking?: {
+        data?: {
+          /** @example 0be2acfa806308827a1893fe389a7c8b */
+          id?: string;
+          /** @example sales_channel_tracking_customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/salesChannelTracking
+           */
+          related?: string;
+        };
+      };
       shoppingLists?: {
         data?: {
           /** @example efa2c2d016771a1e072e6b05091fb584 */
@@ -7742,23 +9643,45 @@ export type Schemas = {
         };
       };
     };
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * To capture date and time of customer's first login.
+     */
     firstLogin?: string;
+    /** First name of the customer. */
     firstName: string;
+    /** Unique identity of customer group. */
     groupId: string;
+    /** Boolean value is `true` if it is to be a guest account. */
     guest?: boolean;
+    /** Customer registration double opt-in hash for confirming the customer account. */
     hash?: string;
     id: string;
+    /** Unique identity of language. */
     languageId: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * To capture date and time of customer's last login.
+     */
     lastLogin?: string;
+    /** Last name of the customer. */
     lastName: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Captures last order date.
+     */
     readonly lastOrderDate?: string;
+    /** Unique identity of previous payment method. */
     lastPaymentMethodId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Captures the number of orders placed.
+     */
     readonly orderCount?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Sum of total amount to be paid.
+     */
     readonly orderTotalAmount?: number;
     relationships?: {
       /** Currently active billing address in the session */
@@ -8072,13 +9995,21 @@ export type Schemas = {
         };
       };
     };
+    /** Anonymous IP address of the customer for last session. */
     remoteAddress?: string;
+    /** Unique identity of requested group. */
     requestedGroupId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of reviews the customer has given.
+     */
     readonly reviewCount?: number;
+    /** Unique identity of sales channel. */
     salesChannelId: string;
+    /** Unique identity of salutation. */
     salutationId?: string;
     readonly tagIds?: string[];
+    /** Titles or honorifics like Mr, Mrs, etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8088,7 +10019,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
+    /** Unique identity of the customer. */
     customerId: string;
+    /** Password hash for customer's account recovery. */
     hash: string;
     id: string;
     /** Format: date-time */
@@ -8097,7 +10030,9 @@ export type Schemas = {
   CustomerRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of the customer. */
     customerId: string;
+    /** Password hash for customer's account recovery. */
     hash: string;
     id: string;
     relationships?: {
@@ -8167,11 +10102,13 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
+    /** Unique identity of the customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     products?: components["schemas"]["CustomerWishlistProduct"][];
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8179,8 +10116,9 @@ export type Schemas = {
   CustomerWishlistJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of the customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     relationships?: {
       customer?: {
@@ -8229,6 +10167,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8238,17 +10177,20 @@ export type Schemas = {
     readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     wishlist?: components["schemas"]["CustomerWishlist"];
+    /** Unique identity of the wishlist. */
     wishlistId: string;
   };
   CustomerWishlistProductJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -8285,16 +10227,23 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of the wishlist. */
     wishlistId: string;
   };
   DeliveryTime: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Maximum delivery time taken.
+     */
     max: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum delivery time taken.
+     */
     min: number;
     name: string;
     products?: components["schemas"]["Product"][];
@@ -8303,6 +10252,7 @@ export type Schemas = {
       name: string;
       unit: string;
     };
+    /** Unit in which the delivery time is defined. For example, days or hours. */
     unit: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8310,11 +10260,17 @@ export type Schemas = {
   DeliveryTimeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Maximum delivery time taken.
+     */
     max: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum delivery time taken.
+     */
     min: number;
     name: string;
     relationships?: {
@@ -8353,6 +10309,7 @@ export type Schemas = {
       name: string;
       unit: string;
     };
+    /** Unit in which the delivery time is defined. For example, days or hours. */
     unit: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8370,11 +10327,12 @@ export type Schemas = {
     config: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     dependentDocuments?: components["schemas"]["Document"][];
     documentA11yMediaFile?: components["schemas"]["Media"];
     documentA11yMediaFileId?: string;
+    documentFiles?: components["schemas"]["DocumentFile"][];
     documentMediaFile?: components["schemas"]["Media"];
     documentMediaFileId?: string;
     documentNumber?: string;
@@ -8392,37 +10350,96 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   DocumentBaseConfig: {
+    /** @deprecated */
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Whether to display the company address. */
+    displayCompanyAddress?: boolean;
+    /** Whether to display the customer VAT ID. */
+    displayCustomerVatId?: boolean;
+    /** Whether to display the footer. */
+    displayFooter?: boolean;
+    /** Whether to display the header. */
+    displayHeader?: boolean;
+    /** Whether to display the page count. */
+    displayPageCount?: boolean;
+    /** Whether to display the return address. */
+    displayReturnAddress?: boolean;
+    /** Unique number associated with every document. */
     documentNumber?: string;
     documentType?: components["schemas"]["DocumentType"];
+    /** Unique identity of the document type. */
     documentTypeId: string;
+    /** A prefix name added to the file name separated by an underscore. */
     filenamePrefix?: string;
+    /** A suffix name added to the file name separated by an underscore. */
     filenameSuffix?: string;
+    /** When set to `true`, the document can be used across all sales channels. */
     global?: boolean;
     id: string;
+    /**
+     * Format: int64
+     * The number of items per page.
+     */
+    itemsPerPage?: number;
+    /** Logo in the document at the top-right corner. */
     logo?: components["schemas"]["Media"];
+    /** Unique identity of the company logo. */
     logoId?: string;
+    /** Name of the document. */
     name: string;
+    /** The page orientation of the document. */
+    pageOrientation?: string;
+    /** The page size of the document. */
+    pageSize?: string;
     salesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   DocumentBaseConfigJsonApi: components["schemas"]["resource"] & {
+    /** @deprecated */
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Whether to display the company address. */
+    displayCompanyAddress?: boolean;
+    /** Whether to display the customer VAT ID. */
+    displayCustomerVatId?: boolean;
+    /** Whether to display the footer. */
+    displayFooter?: boolean;
+    /** Whether to display the header. */
+    displayHeader?: boolean;
+    /** Whether to display the page count. */
+    displayPageCount?: boolean;
+    /** Whether to display the return address. */
+    displayReturnAddress?: boolean;
+    /** Unique number associated with every document. */
     documentNumber?: string;
+    /** Unique identity of the document type. */
     documentTypeId: string;
+    /** A prefix name added to the file name separated by an underscore. */
     filenamePrefix?: string;
+    /** A suffix name added to the file name separated by an underscore. */
     filenameSuffix?: string;
+    /** When set to `true`, the document can be used across all sales channels. */
     global?: boolean;
     id: string;
+    /**
+     * Format: int64
+     * The number of items per page.
+     */
+    itemsPerPage?: number;
+    /** Unique identity of the company logo. */
     logoId?: string;
+    /** Name of the document. */
     name: string;
+    /** The page orientation of the document. */
+    pageOrientation?: string;
+    /** The page size of the document. */
+    pageSize?: string;
     relationships?: {
       documentType?: {
         data?: {
@@ -8439,6 +10456,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Logo in the document at the top-right corner. */
       logo?: {
         data?: {
           /** @example 96d6f2e7e1f705ab5e59c84a6dc009b2 */
@@ -8477,11 +10495,14 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     documentBaseConfig?: components["schemas"]["DocumentBaseConfig"];
+    /** Unique identity of document's base config. */
     documentBaseConfigId: string;
     documentType?: components["schemas"]["DocumentType"];
+    /** Unique identity of document type. */
     documentTypeId?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -8489,7 +10510,9 @@ export type Schemas = {
   DocumentBaseConfigSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of document's base config. */
     documentBaseConfigId: string;
+    /** Unique identity of document type. */
     documentTypeId?: string;
     id: string;
     relationships?: {
@@ -8539,7 +10562,62 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  DocumentFile: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    document?: components["schemas"]["Document"];
+    documentFormat: string;
+    documentId: string;
+    id: string;
+    media?: components["schemas"]["Media"];
+    mediaId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  DocumentFileJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    documentFormat: string;
+    documentId: string;
+    id: string;
+    mediaId: string;
+    relationships?: {
+      document?: {
+        data?: {
+          /** @example fdc3bdefb79cec8eb8211d2499e04704 */
+          id?: string;
+          /** @example document */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /document-file/5580291c9799ddf9960e32b951f5e86b/document
+           */
+          related?: string;
+        };
+      };
+      media?: {
+        data?: {
+          /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
+          id?: string;
+          /** @example media */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /document-file/5580291c9799ddf9960e32b951f5e86b/media
+           */
+          related?: string;
+        };
+      };
+    };
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -8547,7 +10625,7 @@ export type Schemas = {
     config: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     documentA11yMediaFileId?: string;
     documentMediaFileId?: string;
@@ -8584,6 +10662,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /document/0945359809dad1fbf3dea1c95a0da951/documentA11yMediaFile
+           */
+          related?: string;
+        };
+      };
+      documentFiles?: {
+        data?: {
+          /** @example aad3bfae9fe3322b72a0bfbdda842b11 */
+          id?: string;
+          /** @example document_file */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /document/0945359809dad1fbf3dea1c95a0da951/documentFiles
            */
           related?: string;
         };
@@ -8657,7 +10750,7 @@ export type Schemas = {
   DocumentType: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
     documentBaseConfigSalesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
     documents?: components["schemas"]["Document"][];
@@ -8680,6 +10773,7 @@ export type Schemas = {
     };
     id: string;
     name: string;
+    /** Technical name of document type. */
     technicalName: string;
     translated: {
       name: string;
@@ -8691,7 +10785,7 @@ export type Schemas = {
   DocumentTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       quoteDocuments?: {
         data?: {
@@ -8758,6 +10852,7 @@ export type Schemas = {
         };
       };
     };
+    /** Technical name of document type. */
     technicalName: string;
     translated: {
       name: string;
@@ -8782,7 +10877,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     default?: boolean;
     dsrPresentationVersionId?: string;
     /** Format: date-time */
@@ -8965,7 +11060,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     default?: boolean;
     dsrPresentationVersionId?: string;
     /** Format: date-time */
@@ -9219,7 +11314,7 @@ export type Schemas = {
     appointmentId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name?: string;
     ownerToken?: string;
@@ -9232,7 +11327,7 @@ export type Schemas = {
     appointmentId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name?: string;
     ownerToken?: string;
@@ -9420,7 +11515,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     parent?: components["schemas"]["DsrPresentation"];
@@ -9446,7 +11541,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dsrPresentationVersionId?: string;
     id: string;
     isInstantListing?: boolean;
@@ -9480,7 +11575,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dsrPresentationVersionId?: string;
     id: string;
     isInstantListing?: boolean;
@@ -9573,7 +11668,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     parentId?: string;
@@ -9682,6 +11777,23 @@ export type Schemas = {
   Excludes: {
     [key: string]: string[];
   };
+  ExternalThumbnail: {
+    /**
+     * Height of the thumbnail in pixels
+     * @example 200
+     */
+    height: number;
+    /**
+     * Absolute HTTP/HTTPS URL of the thumbnail
+     * @example https://cdn.example.com/image-200x200.jpg
+     */
+    url: string;
+    /**
+     * Width of the thumbnail in pixels
+     * @example 200
+     */
+    width: number;
+  };
   Filters: (
     | components["schemas"]["SimpleFilter"]
     | components["schemas"]["EqualsFilter"]
@@ -9693,13 +11805,17 @@ export type Schemas = {
     | components["schemas"]["RangeFilter"]
   )[];
   Flow: {
+    /** When boolean value is `true`, the flow is available for selection. */
     active?: boolean;
     appFlowEvent?: components["schemas"]["AppFlowEvent"];
+    /** Unique identity of app flow event. */
     appFlowEventId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** A short description of the defined flow. */
     description?: string;
+    /** Name of the event. */
     eventName: string;
     extensions?: {
       delayActions?: {
@@ -9719,21 +11835,30 @@ export type Schemas = {
       };
     };
     id: string;
+    /** When the boolean value is `true`, the flow is no more available for usage. */
     readonly invalid?: boolean;
+    /** Name of the flow. */
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the flows from the list.
+     */
     priority?: number;
     sequences?: components["schemas"]["FlowSequence"][];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   FlowJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the flow is available for selection. */
     active?: boolean;
+    /** Unique identity of app flow event. */
     appFlowEventId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** A short description of the defined flow. */
     description?: string;
+    /** Name of the event. */
     eventName: string;
     extensions?: {
       delayActions?: {
@@ -9753,9 +11878,14 @@ export type Schemas = {
       };
     };
     id: string;
+    /** When the boolean value is `true`, the flow is no more available for usage. */
     readonly invalid?: boolean;
+    /** Name of the flow. */
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the flows from the list.
+     */
     priority?: number;
     relationships?: {
       appFlowEvent?: {
@@ -9793,6 +11923,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   FlowSequence: {
+    /** Unique name of the action in the flow sequence. */
     actionName?: string;
     appFlowAction?: components["schemas"]["AppFlowAction"];
     appFlowActionId?: string;
@@ -9800,8 +11931,11 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * The group to which the flow sequence is visible.
+     */
     displayGroup?: number;
     extensions?: {
       delayActions?: {
@@ -9836,26 +11970,36 @@ export type Schemas = {
       };
     };
     flow?: components["schemas"]["Flow"];
+    /** Unique identity of flow. */
     flowId: string;
     id: string;
+    /** Unique identity of flow sequence. */
     parent?: components["schemas"]["FlowSequence"];
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined flow sequence is to be displayed.
+     */
     position?: number;
     rule?: components["schemas"]["Rule"];
+    /** Unique identity of rule. */
     ruleId?: string;
     trueCase?: boolean;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   FlowSequenceJsonApi: components["schemas"]["resource"] & {
+    /** Unique name of the action in the flow sequence. */
     actionName?: string;
     appFlowActionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * The group to which the flow sequence is visible.
+     */
     displayGroup?: number;
     extensions?: {
       delayActions?: {
@@ -9889,10 +12033,14 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of flow. */
     flowId: string;
     id: string;
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined flow sequence is to be displayed.
+     */
     position?: number;
     relationships?: {
       appFlowAction?: {
@@ -9940,6 +12088,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of flow sequence. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -9971,6 +12120,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of rule. */
     ruleId?: string;
     trueCase?: boolean;
     /** Format: date-time */
@@ -9981,6 +12131,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Name of the flow template. */
     name: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -9990,6 +12141,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Name of the flow template. */
     name: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -10036,28 +12188,43 @@ export type Schemas = {
     stateForClients?: components["schemas"]["StateForGuides"];
   };
   ImportExportFile: {
+    /** Secret key to access import-export file. */
     accessToken?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of import-export file expiry.
+     */
     expireDate: string;
     id: string;
     log?: components["schemas"]["ImportExportLog"];
+    /** Original name of the import-export file. */
     originalName: string;
+    /** A relative URL to the import-export file. */
     path: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Size of the import-export file.
+     */
     size?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ImportExportFileJsonApi: components["schemas"]["resource"] & {
+    /** Secret key to access import-export file. */
     accessToken?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of import-export file expiry.
+     */
     expireDate: string;
     id: string;
+    /** Original name of the import-export file. */
     originalName: string;
+    /** A relative URL to the import-export file. */
     path: string;
     relationships?: {
       log?: {
@@ -10076,7 +12243,10 @@ export type Schemas = {
         };
       };
     };
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Size of the import-export file.
+     */
     size?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -10205,14 +12375,18 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Characters used as the delimiter for the specific profile, aiding in proper data parsing during import-export operations. */
     delimiter: string;
+    /** Specifies the enclosure character used to wrap or enclose data fields, especially when those fields contain special characters or delimiters. */
     enclosure: string;
+    /** Type of file like PDF. */
     fileType: string;
     id: string;
     importExportLogs?: components["schemas"]["ImportExportLog"][];
     label: string;
     mapping?: GenericRecord;
     sourceEntity: string;
+    /** When boolean value is true `true`, then its a system default profile. */
     systemDefault?: boolean;
     technicalName: string;
     translated: {
@@ -10224,6 +12398,7 @@ export type Schemas = {
       technicalName: string;
       type: string;
     };
+    /** Import-export type can be orders, customers, categories. */
     type?: string;
     updateBy?: GenericRecord;
     /** Format: date-time */
@@ -10233,8 +12408,11 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Characters used as the delimiter for the specific profile, aiding in proper data parsing during import-export operations. */
     delimiter: string;
+    /** Specifies the enclosure character used to wrap or enclose data fields, especially when those fields contain special characters or delimiters. */
     enclosure: string;
+    /** Type of file like PDF. */
     fileType: string;
     id: string;
     label: string;
@@ -10257,6 +12435,7 @@ export type Schemas = {
       };
     };
     sourceEntity: string;
+    /** When boolean value is true `true`, then its a system default profile. */
     systemDefault?: boolean;
     technicalName: string;
     translated: {
@@ -10268,6 +12447,7 @@ export type Schemas = {
       technicalName: string;
       type: string;
     };
+    /** Import-export type can be orders, customers, categories. */
     type?: string;
     updateBy?: GenericRecord;
     /** Format: date-time */
@@ -10280,14 +12460,19 @@ export type Schemas = {
     [key: string]: string[];
   };
   Integration: {
+    /** Access key to store api. */
     accessKey: string;
     aclRoles?: components["schemas"]["AclRole"][];
-    admin?: boolean;
+    /** When boolean value is `true`, it indicates this is a administrative integration that requires elevated permissions. */
+    readonly admin?: boolean;
     app?: components["schemas"]["App"];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: date-time */
+    customFields?: CustomFields | null;
+    /**
+     * Format: date-time
+     * Date and time when the integration was deleted.
+     */
     deletedAt?: string;
     extensions?: {
       createdNotifications?: {
@@ -10307,21 +12492,32 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Label given to Integration. */
     label: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when teh integration was last used.
+     */
     lastUsageAt?: string;
+    mcpAllowlist?: GenericRecord;
+    /** Secret key required for secure communication. */
     secretAccessKey: string;
     stateMachineHistoryEntries?: components["schemas"]["StateMachineHistory"][];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   IntegrationJsonApi: components["schemas"]["resource"] & {
+    /** Access key to store api. */
     accessKey: string;
-    admin?: boolean;
+    /** When boolean value is `true`, it indicates this is a administrative integration that requires elevated permissions. */
+    readonly admin?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: date-time */
+    customFields?: CustomFields | null;
+    /**
+     * Format: date-time
+     * Date and time when the integration was deleted.
+     */
     deletedAt?: string;
     extensions?: {
       createdNotifications?: {
@@ -10341,9 +12537,14 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Label given to Integration. */
     label: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when teh integration was last used.
+     */
     lastUsageAt?: string;
+    mcpAllowlist?: GenericRecord;
     relationships?: {
       aclRoles?: {
         data?: {
@@ -10391,6 +12592,7 @@ export type Schemas = {
         };
       };
     };
+    /** Secret key required for secure communication. */
     secretAccessKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -10450,7 +12652,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagDynamicAccessRules?: {
         data?: {
@@ -10499,7 +12701,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagDynamicAccessRules?: {
         data?: {
@@ -10625,8 +12827,23 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
+      advancedSearchSynonyms?: {
+        data?: {
+          /** @example a139d0125b356216337e8386fca65e22 */
+          id?: string;
+          /** @example advanced_search_synonym */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /language/4994a8ffeba4ac3140beb89e8d41f174/advancedSearchSynonyms
+           */
+          related?: string;
+        };
+      };
       b2bAppScriptConditions?: {
         data?: {
           /** @example 880f55611c0f2ac1026271d799698c6e */
@@ -10751,10 +12968,13 @@ export type Schemas = {
     id: string;
     /** Locale defining regional settings (date, time, number formats) */
     locale?: components["schemas"]["Locale"];
+    /** Unique identity of locale. */
     localeId: string;
+    /** Name of the language. */
     name: string;
     newsletterRecipients?: components["schemas"]["NewsletterRecipient"][];
     orders?: components["schemas"]["Order"][];
+    /** Unique identity of language. */
     parent?: components["schemas"]["Language"];
     parentId?: string;
     productKeywordDictionaries?: components["schemas"]["ProductKeywordDictionary"][];
@@ -10766,6 +12986,7 @@ export type Schemas = {
     salesChannels?: components["schemas"]["SalesChannel"][];
     /** Locale used for translating content */
     translationCode?: components["schemas"]["Locale"];
+    /** Unique identity of translation code. */
     translationCodeId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -10774,8 +12995,23 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
+      advancedSearchSynonyms?: {
+        data?: {
+          /** @example a139d0125b356216337e8386fca65e22 */
+          id?: string;
+          /** @example advanced_search_synonym */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /language/4994a8ffeba4ac3140beb89e8d41f174/advancedSearchSynonyms
+           */
+          related?: string;
+        };
+      };
       b2bAppScriptConditions?: {
         data?: {
           /** @example 880f55611c0f2ac1026271d799698c6e */
@@ -10898,7 +13134,9 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Unique identity of locale. */
     localeId: string;
+    /** Name of the language. */
     name: string;
     parentId?: string;
     relationships?: {
@@ -10979,6 +13217,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of language. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -11116,6 +13355,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of translation code. */
     translationCodeId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -11200,10 +13440,11 @@ export type Schemas = {
     | "dsr-line-item-discount"
     | "dsr-cart-discount";
   Locale: {
+    /** Code given to the locale. For example: en-CA. */
     code: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     languages?: components["schemas"]["Language"][];
     name: string;
@@ -11218,10 +13459,11 @@ export type Schemas = {
     users?: components["schemas"]["User"][];
   };
   LocaleJsonApi: components["schemas"]["resource"] & {
+    /** Code given to the locale. For example: en-CA. */
     code: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     relationships?: {
@@ -11272,8 +13514,12 @@ export type Schemas = {
     readonly createdAt?: string;
     extra?: GenericRecord;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * It indicates the level or severity of the log entry. For example: BUG, ERROR, etc.
+     */
     level?: number;
+    /** Indicates text or content of a log entry. */
     message?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -11285,8 +13531,12 @@ export type Schemas = {
     readonly createdAt?: string;
     extra?: GenericRecord;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * It indicates the level or severity of the log entry. For example: BUG, ERROR, etc.
+     */
     level?: number;
+    /** Indicates text or content of a log entry. */
     message?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -11358,7 +13608,7 @@ export type Schemas = {
     contentPlain: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
       swagCmsExtensionsForms?: {
@@ -11394,13 +13644,14 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    wasModifiedByUser?: boolean;
   };
   MailTemplateJsonApi: components["schemas"]["resource"] & {
     contentHtml: string;
     contentPlain: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
       swagCmsExtensionsForms?: {
@@ -11466,6 +13717,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    wasModifiedByUser?: boolean;
   };
   MailTemplateMedia: {
     id: string;
@@ -11481,10 +13733,11 @@ export type Schemas = {
     availableEntities?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     mailTemplates?: components["schemas"]["MailTemplate"][];
     name: string;
+    /** Technical name of mail template. */
     technicalName: string;
     templateData?: GenericRecord;
     translated: {
@@ -11498,7 +13751,7 @@ export type Schemas = {
     availableEntities?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     relationships?: {
@@ -11518,6 +13771,7 @@ export type Schemas = {
         };
       };
     };
+    /** Technical name of mail template. */
     technicalName: string;
     templateData?: GenericRecord;
     translated: {
@@ -11529,25 +13783,30 @@ export type Schemas = {
   };
   MainCategory: {
     category?: components["schemas"]["Category"];
+    /** Unique identity of the category. */
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   MainCategoryJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of the category. */
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -11597,6 +13856,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -11604,7 +13864,7 @@ export type Schemas = {
   MeasurementDisplayUnit: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     default: boolean;
     /** Format: float */
     factor: number;
@@ -11628,7 +13888,7 @@ export type Schemas = {
   MeasurementDisplayUnitJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     default: boolean;
     /** Format: float */
     factor: number;
@@ -11668,7 +13928,7 @@ export type Schemas = {
   MeasurementSystem: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name?: string;
     technicalName: string;
@@ -11683,7 +13943,7 @@ export type Schemas = {
   MeasurementSystemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name?: string;
     relationships?: {
@@ -11747,8 +14007,9 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
+    documentFile?: components["schemas"]["DocumentFile"];
     documents?: components["schemas"]["Document"][];
     extensions?: {
       ceSpatialPreviewMedia?: {
@@ -11917,29 +14178,38 @@ export type Schemas = {
         };
       };
     };
+    /** Type of file indication. For example: jpeg, png. */
     fileExtension?: string;
     fileHash?: string;
+    /** Name of the media file uploaded. */
     fileName?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Size of the file media file uploaded.
+     */
     readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile?: boolean;
     id: string;
     mailTemplateMedia?: components["schemas"]["MailTemplateMedia"][];
     mediaFolder?: components["schemas"]["MediaFolder"];
+    /** Unique identity of the media folder. */
     mediaFolderId?: string;
     readonly mediaType?: GenericRecord;
     readonly metaData?: GenericRecord;
+    /** A string sent along with a file indicating the type of the file. For example: image/jpeg. */
     mimeType?: string;
     orderLineItemDownloads?: components["schemas"]["OrderLineItemDownload"][];
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     path?: string;
     paymentMethods?: components["schemas"]["PaymentMethod"][];
+    /** When `true`, the media display is kept private. */
     private?: boolean;
     productConfiguratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
     productDownloads?: components["schemas"]["ProductDownload"][];
     productManufacturers?: components["schemas"]["ProductManufacturer"][];
     productMedia?: components["schemas"]["ProductMedia"][];
+    productOpenGraphImages?: components["schemas"]["Product"][];
     propertyGroupOptions?: components["schemas"]["PropertyGroupOption"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
     tags?: components["schemas"]["Tag"][];
@@ -11961,11 +14231,15 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time at which media was added.
+     */
     readonly uploadedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
     user?: components["schemas"]["User"];
+    /** Unique identity of the user */
     userId?: string;
   };
   MediaAiTag: {
@@ -12019,7 +14293,8 @@ export type Schemas = {
   MediaDefaultFolder: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Indicates in which particular entity. */
     entity: string;
     folder?: components["schemas"]["MediaFolder"];
     id: string;
@@ -12029,7 +14304,8 @@ export type Schemas = {
   MediaDefaultFolderJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Indicates in which particular entity. */
     entity: string;
     id: string;
     relationships?: {
@@ -12057,34 +14333,46 @@ export type Schemas = {
     readonly childCount?: number;
     children?: components["schemas"]["MediaFolder"][];
     configuration?: components["schemas"]["MediaFolderConfiguration"];
+    /** Unique identity of configuration. */
     configurationId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultFolder?: components["schemas"]["MediaDefaultFolder"];
+    /** Unique identity of default folder. */
     defaultFolderId?: string;
     id: string;
     media?: components["schemas"]["Media"][];
+    /** Name of media folder. */
     name: string;
+    /** Unique identity of media folder. */
     parent?: components["schemas"]["MediaFolder"];
     parentId?: string;
+    /** A relative URL to the media folder. */
     readonly path?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** When boolean value is `true`, the folder inherits the configuration settings of its parent folder. */
     useParentConfiguration?: boolean;
   };
   MediaFolderConfiguration: {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** When boolean value is `true`, it enables thumbnail creation automatically. */
     createThumbnails?: boolean;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** When boolean value is `true`, the system maintains the aspect ratio of media files when generating. */
     keepAspectRatio?: boolean;
     mediaFolders?: components["schemas"]["MediaFolder"][];
     mediaThumbnailSizes?: components["schemas"]["MediaThumbnailSize"][];
     noAssociation?: boolean;
+    /** When boolean value is `true`, the folder contents are restricted from public access. */
     private?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Parameter that controls the balance between image quality and size when creating thumbnail images.
+     */
     thumbnailQuality?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -12092,11 +14380,14 @@ export type Schemas = {
   MediaFolderConfigurationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** When boolean value is `true`, it enables thumbnail creation automatically. */
     createThumbnails?: boolean;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** When boolean value is `true`, the system maintains the aspect ratio of media files when generating. */
     keepAspectRatio?: boolean;
     noAssociation?: boolean;
+    /** When boolean value is `true`, the folder contents are restricted from public access. */
     private?: boolean;
     relationships?: {
       mediaFolders?: {
@@ -12130,7 +14421,10 @@ export type Schemas = {
         };
       };
     };
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Parameter that controls the balance between image quality and size when creating thumbnail images.
+     */
     thumbnailQuality?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -12145,14 +14439,18 @@ export type Schemas = {
   MediaFolderJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
     readonly childCount?: number;
+    /** Unique identity of configuration. */
     configurationId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of default folder. */
     defaultFolderId?: string;
     id: string;
+    /** Name of media folder. */
     name: string;
     parentId?: string;
+    /** A relative URL to the media folder. */
     readonly path?: string;
     relationships?: {
       children?: {
@@ -12215,6 +14513,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of media folder. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -12233,14 +14532,16 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** When boolean value is `true`, the folder inherits the configuration settings of its parent folder. */
     useParentConfiguration?: boolean;
   };
+  MediaId: string;
   MediaJsonApi: components["schemas"]["resource"] & {
     alt?: string;
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       ceSpatialPreviewMedia?: {
         data?: {
@@ -12408,19 +14709,27 @@ export type Schemas = {
         };
       };
     };
+    /** Type of file indication. For example: jpeg, png. */
     fileExtension?: string;
     fileHash?: string;
+    /** Name of the media file uploaded. */
     fileName?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Size of the file media file uploaded.
+     */
     readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile?: boolean;
     id: string;
+    /** Unique identity of the media folder. */
     mediaFolderId?: string;
     readonly mediaType?: GenericRecord;
     readonly metaData?: GenericRecord;
+    /** A string sent along with a file indicating the type of the file. For example: image/jpeg. */
     mimeType?: string;
     path?: string;
+    /** When `true`, the media display is kept private. */
     private?: boolean;
     relationships?: {
       a11yDocuments?: {
@@ -12554,6 +14863,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /media/3b563524fdb17b4a86590470d40bef74/documentBaseConfigs
+           */
+          related?: string;
+        };
+      };
+      documentFile?: {
+        data?: {
+          /** @example e6fc751fcb387f6f87970b7fed0b489f */
+          id?: string;
+          /** @example document_file */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/documentFile
            */
           related?: string;
         };
@@ -12708,6 +15032,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      productOpenGraphImages?: {
+        data?: {
+          /** @example a067685a73a5308efd6117308e659025 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/productOpenGraphImages
+           */
+          related?: string;
+        };
+      };
       propertyGroupOptions?: {
         data?: {
           /** @example 789104e3568fde835b6239b251d4aa07 */
@@ -12801,10 +15140,14 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time at which media was added.
+     */
     readonly uploadedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
+    /** Unique identity of the user */
     userId?: string;
   };
   MediaTag: {
@@ -12817,29 +15160,40 @@ export type Schemas = {
   MediaThumbnail: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * Height of the thumbnail.
+     */
     readonly height: number;
     id?: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId: string;
     mediaThumbnailSize?: components["schemas"]["MediaThumbnailSize"];
     mediaThumbnailSizeId?: string;
     path?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Public url of media thumbnail. Runtime field, cannot be used as part of the criteria. */
     url: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Width of the thumbnail.
+     */
     readonly width: number;
   };
   MediaThumbnailJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * Height of the thumbnail.
+     */
     readonly height: number;
     id: string;
+    /** Unique identity of media. */
     mediaId: string;
     mediaThumbnailSizeId?: string;
     path?: string;
@@ -12877,30 +15231,42 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
+    /** Public url of media thumbnail. Runtime field, cannot be used as part of the criteria. */
     url?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Width of the thumbnail.
+     */
     readonly width: number;
   };
   MediaThumbnailSize: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * Height of the thumbnail.
+     */
     height: number;
     id: string;
     mediaFolderConfigurations?: components["schemas"]["MediaFolderConfiguration"][];
     mediaThumbnails?: components["schemas"]["MediaThumbnail"][];
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Width of the thumbnail.
+     */
     width: number;
   };
   MediaThumbnailSizeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
+    customFields?: CustomFields | null;
+    /**
+     * Format: int64
+     * Height of the thumbnail.
+     */
     height: number;
     id: string;
     relationships?: {
@@ -12937,7 +15303,10 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Width of the thumbnail.
+     */
     width: number;
   };
   MultiNotFilter: {
@@ -12948,43 +15317,70 @@ export type Schemas = {
     type: "multi" | "not";
   };
   NewsletterRecipient: {
+    /** City of the recipient. */
     city?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the Newsletter was received.
+     */
     confirmedAt?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email of the recipient. */
     email: string;
+    /** First name of the recipient. */
     firstName?: string;
+    /** Password hash for account recovery. */
     hash: string;
     id: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of language. */
     languageId: string;
+    /** Last name of the recipient. */
     lastName?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     salutation?: components["schemas"]["Salutation"];
+    /** Unique identity of salutation. */
     salutationId?: string;
-    status: string;
+    /**
+     * When status is set, the NewsletterRecipient is made visible.
+     * @enum {string}
+     */
+    status: "notSet" | "optIn" | "optOut" | "direct";
+    /** Street of the recipient. */
     street?: string;
     tags?: components["schemas"]["Tag"][];
+    /** Title of the recipient's newsletter. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Zipcode of the recipient's address. */
     zipCode?: string;
   };
   NewsletterRecipientJsonApi: components["schemas"]["resource"] & {
+    /** City of the recipient. */
     city?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the Newsletter was received.
+     */
     confirmedAt?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email of the recipient. */
     email: string;
+    /** First name of the recipient. */
     firstName?: string;
+    /** Password hash for account recovery. */
     hash: string;
     id: string;
+    /** Unique identity of language. */
     languageId: string;
+    /** Last name of the recipient. */
     lastName?: string;
     relationships?: {
       language?: {
@@ -13048,13 +15444,22 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
+    /** Unique identity of salutation. */
     salutationId?: string;
-    status: string;
+    /**
+     * When status is set, the NewsletterRecipient is made visible.
+     * @enum {string}
+     */
+    status: "notSet" | "optIn" | "optOut" | "direct";
+    /** Street of the recipient. */
     street?: string;
+    /** Title of the recipient's newsletter. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Zipcode of the recipient's address. */
     zipCode?: string;
   };
   NewsletterRecipientTag: {
@@ -13065,27 +15470,36 @@ export type Schemas = {
     tagId: string;
   };
   Notification: {
+    /** Parameter within a notification configuration that determines whether a notification is intended for administrators only. */
     adminOnly?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     createdByIntegration?: components["schemas"]["Integration"];
+    /** Unique identity of createdByIntegration. */
     createdByIntegrationId?: string;
     createdByUser?: components["schemas"]["User"];
+    /** Unique identity of createdByUser. */
     createdByUserId?: string;
     id: string;
+    /** Indicates text or content of a notification message. */
     message: string;
     requiredPrivileges?: GenericRecord[];
+    /** When status is set, the Notification is made visible. */
     status: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   NotificationJsonApi: components["schemas"]["resource"] & {
+    /** Parameter within a notification configuration that determines whether a notification is intended for administrators only. */
     adminOnly?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of createdByIntegration. */
     createdByIntegrationId?: string;
+    /** Unique identity of createdByUser. */
     createdByUserId?: string;
     id: string;
+    /** Indicates text or content of a notification message. */
     message: string;
     relationships?: {
       createdByIntegration?: {
@@ -13120,6 +15534,7 @@ export type Schemas = {
       };
     };
     requiredPrivileges?: GenericRecord[];
+    /** When status is set, the Notification is made visible. */
     status: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13127,14 +15542,19 @@ export type Schemas = {
   NumberRange: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** When set to `true`, the defined number range is used across all sales channels. */
     global: boolean;
     id: string;
     name: string;
     numberRangeSalesChannels?: components["schemas"]["NumberRangeSalesChannel"][];
+    /** Custom formatting in order to include for example, the date in the number range. */
     pattern: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * If the start number were 12345, the following patterns would give the following numbers: Order{n}-{date}: Order12345-2019-05-23, Order{n}-{date_d.m.Y}: Order12345-23.05.2019
+     */
     start: number;
     state?: components["schemas"]["NumberRangeState"];
     translated: {
@@ -13144,6 +15564,7 @@ export type Schemas = {
       typeId: string;
     };
     type?: components["schemas"]["NumberRangeType"];
+    /** Unique identity of type. */
     typeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13151,11 +15572,13 @@ export type Schemas = {
   NumberRangeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** When set to `true`, the defined number range is used across all sales channels. */
     global: boolean;
     id: string;
     name: string;
+    /** Custom formatting in order to include for example, the date in the number range. */
     pattern: string;
     relationships?: {
       numberRangeSalesChannels?: {
@@ -13204,7 +15627,10 @@ export type Schemas = {
         };
       };
     };
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * If the start number were 12345, the following patterns would give the following numbers: Order{n}-{date}: Order12345-2019-05-23, Order{n}-{date_d.m.Y}: Order12345-23.05.2019
+     */
     start: number;
     translated: {
       description: string;
@@ -13212,6 +15638,7 @@ export type Schemas = {
       pattern: string;
       typeId: string;
     };
+    /** Unique identity of type. */
     typeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13221,10 +15648,13 @@ export type Schemas = {
     readonly createdAt?: string;
     id: string;
     numberRange?: components["schemas"]["NumberRange"];
+    /** Unique identity of number rage. */
     numberRangeId: string;
     numberRangeType?: components["schemas"]["NumberRangeType"];
+    /** Unique identity of number rage type. */
     numberRangeTypeId?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of Sales channels. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13233,7 +15663,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique identity of number rage. */
     numberRangeId: string;
+    /** Unique identity of number rage type. */
     numberRangeTypeId?: string;
     relationships?: {
       numberRange?: {
@@ -13282,6 +15714,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of Sales channels. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13293,6 +15726,7 @@ export type Schemas = {
     /** Format: int64 */
     lastValue: number;
     numberRange?: components["schemas"]["NumberRange"];
+    /** Unique identity of number range. */
     numberRangeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13303,6 +15737,7 @@ export type Schemas = {
     id: string;
     /** Format: int64 */
     lastValue: number;
+    /** Unique identity of number range. */
     numberRangeId: string;
     relationships?: {
       numberRange?: {
@@ -13327,11 +15762,13 @@ export type Schemas = {
   NumberRangeType: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** When set to `true`, the defined number range type is used across all sales channels. */
     global: boolean;
     id: string;
     numberRanges?: components["schemas"]["NumberRange"][];
     numberRangeSalesChannels?: components["schemas"]["NumberRangeSalesChannel"][];
+    /** Name of the number range type. */
     technicalName?: string;
     translated: {
       technicalName: string;
@@ -13344,7 +15781,8 @@ export type Schemas = {
   NumberRangeTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** When set to `true`, the defined number range type is used across all sales channels. */
     global: boolean;
     id: string;
     relationships?: {
@@ -13379,6 +15817,7 @@ export type Schemas = {
         };
       };
     };
+    /** Name of the number range type. */
     technicalName?: string;
     translated: {
       technicalName: string;
@@ -13485,29 +15924,45 @@ export type Schemas = {
   Order: {
     /** All addresses associated with the order (billing and shipping) */
     addresses?: components["schemas"]["OrderAddress"][];
+    /** An affiliate code is an identification option with which website operators can mark outgoing links. */
     affiliateCode?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Net price of the order.
+     */
     readonly amountNet?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Gross price of the order.
+     */
     readonly amountTotal?: number;
     /** Format: int64 */
     readonly autoIncrement?: number;
     /** Billing address for the order */
     billingAddress?: components["schemas"]["OrderAddress"];
+    /** Unique identity of the billing address. */
     billingAddressId: string;
     billingAddressVersionId?: string;
+    /** A campaign code is the globally unique identifier for a campaign. */
     campaignCode?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
+    /** Unique identity of createdBy. */
     createdById?: string;
     /** Currency used for the order */
     currency?: components["schemas"]["Currency"];
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate at which currency is exchanged.
+     */
     currencyFactor: number;
+    /** Unique identity of the currency. */
     currencyId: string;
+    /** Comments given by comments. */
     customerComment?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** It is a generated special code linked to email. It is used to access orders placed by guest customers. */
     deepLinkCode?: string;
     /** Delivery information including shipping address and tracking */
     deliveries?: components["schemas"]["OrderDelivery"][];
@@ -13634,6 +16089,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      salesChannelTracking?: {
+        data?: {
+          /** @example 0be2acfa806308827a1893fe389a7c8b */
+          id?: string;
+          /** @example sales_channel_tracking_order */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/salesChannelTracking
+           */
+          related?: string;
+        };
+      };
       subscription?: {
         data?: {
           /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
@@ -13706,16 +16176,25 @@ export type Schemas = {
     };
     /** Language used when placing the order */
     language?: components["schemas"]["Language"];
+    /** Unique identity of the language. */
     languageId: string;
     /** Order line items (products, discounts, fees) */
     lineItems?: components["schemas"]["OrderLineItem"][];
     /** Customer information associated with the order */
     orderCustomer?: components["schemas"]["OrderCustomer"];
+    /** Date when the order was placed. */
     readonly orderDate?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Timestamp when the order was placed.
+     */
     orderDateTime: string;
+    /** Unique number associated with every order. */
     orderNumber?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of each line item in the cart multiplied by its quantity excluding charges like shipping cost, rules, taxes etc.
+     */
     readonly positionPrice?: number;
     price?: {
       calculatedTaxes?: GenericRecord;
@@ -13740,6 +16219,7 @@ export type Schemas = {
     primaryOrderTransactionVersionId?: string;
     ruleIds?: string[];
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: GenericRecord;
@@ -13764,15 +16244,21 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Total shipping cost of the ordered product.
+     */
     readonly shippingTotal?: number;
+    /** Source of orders either via normal order placement or subscriptions. */
     source?: string;
+    /** Unique identity of state. */
     stateId: string;
     /** Current order state (e.g., open, in_progress, completed, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Tags assigned to the order for organization and filtering */
     tags?: components["schemas"]["Tag"][];
     taxCalculationType?: string;
+    /** TaxStatus takes `Free`, `Net` or `Gross` as values. */
     readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
@@ -13786,60 +16272,91 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
+    /** Unique identity of updatedBy. */
     updatedById?: string;
     versionId?: string;
   };
   OrderAddress: {
+    /** Additional address input if necessary. */
     additionalAddressLine1?: string;
+    /** Additional address input if necessary. */
     additionalAddressLine2?: string;
+    /** Name of the city. */
     city: string;
+    /** Name of the company. */
     company?: string;
     country?: components["schemas"]["Country"];
+    /** Unique identity of country. */
     countryId: string;
     countryState?: components["schemas"]["CountryState"];
+    /** Unique identity of state. */
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of the department. */
     department?: string;
+    /** First name of the customer. */
     firstName: string;
     /** Runtime field, cannot be used as part of the criteria. */
     hash?: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
     order?: components["schemas"]["Order"];
     orderDeliveries?: components["schemas"]["OrderDelivery"][];
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
+    /** Phone number of the customer. */
     phoneNumber?: string;
     salutation?: components["schemas"]["Salutation"];
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Street address */
     street: string;
+    /** Title name given to customer like DR. , Prof., etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /**
+     * @deprecated
+     * Unique identity of VAT.
+     */
     vatId?: string;
     versionId?: string;
+    /** Zip code of the country. */
     zipcode?: string;
   };
   OrderAddressJsonApi: components["schemas"]["resource"] & {
+    /** Additional address input if necessary. */
     additionalAddressLine1?: string;
+    /** Additional address input if necessary. */
     additionalAddressLine2?: string;
+    /** Name of the city. */
     city: string;
+    /** Name of the company. */
     company?: string;
+    /** Unique identity of country. */
     countryId: string;
+    /** Unique identity of state. */
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of the department. */
     department?: string;
+    /** First name of the customer. */
     firstName: string;
     /** Runtime field, cannot be used as part of the criteria. */
     hash?: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
+    /** Phone number of the customer. */
     phoneNumber?: string;
     relationships?: {
       country?: {
@@ -13918,33 +16435,51 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Street address */
     street: string;
+    /** Title name given to customer like DR. , Prof., etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /**
+     * @deprecated
+     * Unique identity of VAT.
+     */
     vatId?: string;
     versionId?: string;
+    /** Zip code of the country. */
     zipcode?: string;
   };
   OrderCustomer: {
+    /** Name of the company. */
     company?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
+    /** Unique identity of customer. */
     customerId?: string;
+    /** Unique number assigned to the customer. */
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email address of the customer. */
     email: string;
+    /** First name of the customer. */
     firstName: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
     order?: components["schemas"]["Order"];
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
+    /** Anonymous IP address of the customer for last session. */
     remoteAddress?: string;
     salutation?: components["schemas"]["Salutation"];
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Title name given to the customer like Dr, prof. etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -13952,16 +16487,23 @@ export type Schemas = {
     versionId?: string;
   };
   OrderCustomerJsonApi: components["schemas"]["resource"] & {
+    /** Name of the company. */
     company?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of customer. */
     customerId?: string;
+    /** Unique number assigned to the customer. */
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email address of the customer. */
     email: string;
+    /** First name of the customer. */
     firstName: string;
     id: string;
+    /** Last name of the customer. */
     lastName: string;
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
     relationships?: {
@@ -14011,8 +16553,11 @@ export type Schemas = {
         };
       };
     };
+    /** Anonymous IP address of the customer for last session. */
     remoteAddress?: string;
+    /** Unique identity of salutation. */
     salutationId?: string;
+    /** Title name given to the customer like Dr, prof. etc. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -14022,9 +16567,10 @@ export type Schemas = {
   OrderDelivery: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     order?: components["schemas"]["Order"];
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
     /** Line items included in this delivery */
@@ -14053,17 +16599,26 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of earliest delivery of products.
+     */
     shippingDateEarliest: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of latest delivery of products.
+     */
     shippingDateLatest: string;
     /** Shipping method used for this delivery */
     shippingMethod?: components["schemas"]["ShippingMethod"];
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
     /** Shipping address for this delivery */
     shippingOrderAddress?: components["schemas"]["OrderAddress"];
+    /** Unique identity of order's shipping address. */
     shippingOrderAddressId: string;
     shippingOrderAddressVersionId?: string;
+    /** Unique identity of state. */
     stateId: string;
     /** Current delivery state (e.g., open, shipped, delivered, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
@@ -14075,8 +16630,9 @@ export type Schemas = {
   OrderDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
     relationships?: {
@@ -14198,13 +16754,22 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of earliest delivery of products.
+     */
     shippingDateEarliest: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time of latest delivery of products.
+     */
     shippingDateLatest: string;
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
+    /** Unique identity of order's shipping address. */
     shippingOrderAddressId: string;
     shippingOrderAddressVersionId?: string;
+    /** Unique identity of state. */
     stateId: string;
     trackingCodes?: string[];
     /** Format: date-time */
@@ -14214,12 +16779,14 @@ export type Schemas = {
   OrderDeliveryPosition: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     orderDelivery?: components["schemas"]["OrderDelivery"];
+    /** Unique identity of order delivery. */
     orderDeliveryId: string;
     orderDeliveryVersionId?: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
+    /** Unique identity of line items in an order. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     price?: {
@@ -14245,11 +16812,20 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of items of each product.
+     */
     quantity?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Cost of product based on quantity.
+     */
     totalPrice?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of product per item (where, quantity=1).
+     */
     unitPrice?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -14258,10 +16834,12 @@ export type Schemas = {
   OrderDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of order delivery. */
     orderDeliveryId: string;
     orderDeliveryVersionId?: string;
+    /** Unique identity of line items in an order. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     price?: {
@@ -14287,7 +16865,10 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of items of each product.
+     */
     quantity?: number;
     relationships?: {
       orderDelivery?: {
@@ -14321,33 +16902,55 @@ export type Schemas = {
         };
       };
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Cost of product based on quantity.
+     */
     totalPrice?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of product per item (where, quantity=1).
+     */
     unitPrice?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
   OrderJsonApi: components["schemas"]["resource"] & {
+    /** An affiliate code is an identification option with which website operators can mark outgoing links. */
     affiliateCode?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Net price of the order.
+     */
     readonly amountNet?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Gross price of the order.
+     */
     readonly amountTotal?: number;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** Unique identity of the billing address. */
     billingAddressId: string;
     billingAddressVersionId?: string;
+    /** A campaign code is the globally unique identifier for a campaign. */
     campaignCode?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of createdBy. */
     createdById?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate at which currency is exchanged.
+     */
     currencyFactor: number;
+    /** Unique identity of the currency. */
     currencyId: string;
+    /** Comments given by comments. */
     customerComment?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** It is a generated special code linked to email. It is used to access orders placed by guest customers. */
     deepLinkCode?: string;
     extensions?: {
       b2bPendingOrder?: {
@@ -14470,6 +17073,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      salesChannelTracking?: {
+        data?: {
+          /** @example 0be2acfa806308827a1893fe389a7c8b */
+          id?: string;
+          /** @example sales_channel_tracking_order */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/salesChannelTracking
+           */
+          related?: string;
+        };
+      };
       subscription?: {
         data?: {
           /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
@@ -14540,12 +17158,21 @@ export type Schemas = {
       interval: number;
       roundForNet: boolean;
     };
+    /** Unique identity of the language. */
     languageId: string;
+    /** Date when the order was placed. */
     readonly orderDate?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Timestamp when the order was placed.
+     */
     orderDateTime: string;
+    /** Unique number associated with every order. */
     orderNumber?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of each line item in the cart multiplied by its quantity excluding charges like shipping cost, rules, taxes etc.
+     */
     readonly positionPrice?: number;
     price?: {
       calculatedTaxes?: GenericRecord;
@@ -14820,6 +17447,7 @@ export type Schemas = {
       };
     };
     ruleIds?: string[];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: GenericRecord;
@@ -14844,11 +17472,17 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Total shipping cost of the ordered product.
+     */
     readonly shippingTotal?: number;
+    /** Source of orders either via normal order placement or subscriptions. */
     source?: string;
+    /** Unique identity of state. */
     stateId: string;
     taxCalculationType?: string;
+    /** TaxStatus takes `Free`, `Net` or `Gross` as values. */
     readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
@@ -14859,6 +17493,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of updatedBy. */
     updatedById?: string;
     versionId?: string;
   };
@@ -14866,10 +17501,12 @@ export type Schemas = {
     children: components["schemas"]["OrderLineItem"][];
     /** Line item image or thumbnail */
     cover?: components["schemas"]["Media"];
+    /** Unique identity of cover image. */
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Description of line items in an order. */
     description?: string;
     /** Digital downloads associated with this line item */
     downloads?: components["schemas"]["OrderLineItemDownload"][];
@@ -14905,13 +17542,17 @@ export type Schemas = {
         };
       };
     };
+    /** When set to true, it indicates the line item is physical else it is virtual. */
     good?: boolean;
     id: string;
+    /** It is a unique identity of an item in cart before its converted to an order. */
     identifier: string;
+    /** It is a typical product name given to the line item. */
     label: string;
     order?: components["schemas"]["Order"];
     /** Delivery positions for this line item */
     orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
+    /** Unique identity of order. */
     orderId: string;
     orderTransactionCaptureRefundPositions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
     orderVersionId?: string;
@@ -14919,7 +17560,10 @@ export type Schemas = {
     parentId?: string;
     parentVersionId?: string;
     payload?: GenericRecord;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Position of line items placed in an order.
+     */
     position?: number;
     price: {
       calculatedTaxes?: GenericRecord;
@@ -14947,52 +17591,90 @@ export type Schemas = {
     priceDefinition?: GenericRecord;
     /** Referenced product if this is a product line item */
     product?: components["schemas"]["Product"];
+    /** Unique identity of product. */
     productId?: string;
     productVersionId?: string;
     promotion?: components["schemas"]["Promotion"];
+    /** Unique identity of product. */
     promotionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of items of product.
+     */
     quantity: number;
+    /** Unique identity of type of entity. */
     referencedId?: string;
+    /** Allows the line item to be removable from the cart when set to true. */
     removable?: boolean;
+    /** Allows to change the quantity of the line item when set to true. */
     stackable?: boolean;
+    /** @deprecated */
     states: string[];
-    /** Format: float */
+    /**
+     * Format: float
+     * Cost of product based on quantity.
+     */
     totalPrice?: number;
-    type?: string;
-    /** Format: float */
+    /**
+     * Type refers to the entity type of an item whether it is product or promotion for instance.
+     * @enum {string}
+     */
+    type?:
+      | "product"
+      | "credit"
+      | "custom"
+      | "promotion"
+      | "container"
+      | "discount"
+      | "quantity";
+    /**
+     * Format: float
+     * Price of product per item (where, quantity=1).
+     */
     unitPrice?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
   OrderLineItemDownload: {
+    /** When boolean value is `true`, the digital product is allowed to download. */
     accessGranted: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
+    /** Unique identity of Order line item. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of downloaded digital products displayed in the storefront by mentioning numerical values like 1,2,3, etc.
+     */
     position: number;
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
   };
   OrderLineItemDownloadJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the digital product is allowed to download. */
     accessGranted: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of media. */
     mediaId: string;
+    /** Unique identity of Order line item. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of downloaded digital products displayed in the storefront by mentioning numerical values like 1,2,3, etc.
+     */
     position: number;
     relationships?: {
       media?: {
@@ -15031,10 +17713,12 @@ export type Schemas = {
     versionId?: string;
   };
   OrderLineItemJsonApi: components["schemas"]["resource"] & {
+    /** Unique identity of cover image. */
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Description of line items in an order. */
     description?: string;
     extensions?: {
       returns?: {
@@ -15068,16 +17752,23 @@ export type Schemas = {
         };
       };
     };
+    /** When set to true, it indicates the line item is physical else it is virtual. */
     good?: boolean;
     id: string;
+    /** It is a unique identity of an item in cart before its converted to an order. */
     identifier: string;
+    /** It is a typical product name given to the line item. */
     label: string;
+    /** Unique identity of order. */
     orderId: string;
     orderVersionId?: string;
     parentId?: string;
     parentVersionId?: string;
     payload?: GenericRecord;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Position of line items placed in an order.
+     */
     position?: number;
     price: {
       calculatedTaxes?: GenericRecord;
@@ -15103,11 +17794,17 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: GenericRecord;
+    /** Unique identity of product. */
     productId?: string;
     productVersionId?: string;
+    /** Unique identity of product. */
     promotionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Number of items of product.
+     */
     quantity: number;
+    /** Unique identity of type of entity. */
     referencedId?: string;
     relationships?: {
       children?: {
@@ -15250,13 +17947,33 @@ export type Schemas = {
         };
       };
     };
+    /** Allows the line item to be removable from the cart when set to true. */
     removable?: boolean;
+    /** Allows to change the quantity of the line item when set to true. */
     stackable?: boolean;
+    /** @deprecated */
     states: string[];
-    /** Format: float */
+    /**
+     * Format: float
+     * Cost of product based on quantity.
+     */
     totalPrice?: number;
-    type?: string;
-    /** Format: float */
+    /**
+     * Type refers to the entity type of an item whether it is product or promotion for instance.
+     * @enum {string}
+     */
+    type?:
+      | "product"
+      | "credit"
+      | "custom"
+      | "promotion"
+      | "container"
+      | "discount"
+      | "quantity";
+    /**
+     * Format: float
+     * Price of product per item (where, quantity=1).
+     */
     unitPrice?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -15277,8 +17994,8 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
+    warehouse?: components["schemas"]["Warehouse"];
     warehouseId: string;
-    warehouses?: components["schemas"]["Warehouse"][];
   };
   OrderProductWarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
@@ -15321,17 +18038,17 @@ export type Schemas = {
           related?: string;
         };
       };
-      warehouses?: {
+      warehouse?: {
         data?: {
-          /** @example 544959798565126142ca2820b4f56271 */
+          /** @example 372d30dd2849813ef674855253900679 */
           id?: string;
           /** @example warehouse */
           type?: string;
-        }[];
+        };
         links?: {
           /**
            * Format: uri-reference
-           * @example /order-product-warehouse/ef794dc5239b6857296e8e4ee4605a36/warehouses
+           * @example /order-product-warehouse/ef794dc5239b6857296e8e4ee4605a36/warehouse
            */
           related?: string;
         };
@@ -15541,7 +18258,7 @@ export type Schemas = {
   OrderReturnLineItem: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     internalComment?: string;
     lineItem?: components["schemas"]["OrderLineItem"];
@@ -15590,7 +18307,7 @@ export type Schemas = {
   OrderReturnLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     internalComment?: string;
     orderLineItemId: string;
@@ -15695,7 +18412,7 @@ export type Schemas = {
     versionId?: string;
   };
   OrderReturnLineItemReason: {
-    content: string;
+    content?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
@@ -15709,7 +18426,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   OrderReturnLineItemReasonJsonApi: components["schemas"]["resource"] & {
-    content: string;
+    content?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
@@ -15774,15 +18491,18 @@ export type Schemas = {
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     order?: components["schemas"]["Order"];
+    /** Unique identity of an order. */
     orderId: string;
     orderVersionId?: string;
     /** Payment method used for this transaction */
     paymentMethod?: components["schemas"]["PaymentMethod"];
+    /** Unique identity of payment method. */
     paymentMethodId: string;
     primaryOrder?: components["schemas"]["Order"];
+    /** Unique identity of state. */
     stateId: string;
     /** Current payment transaction state (e.g., open, paid, cancelled) */
     stateMachineState?: components["schemas"]["StateMachineState"];
@@ -15817,12 +18537,15 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
+    /** Unique identity of order transaction. */
     orderTransactionId: string;
     orderTransactionVersionId?: string;
     refunds?: components["schemas"]["OrderTransactionCaptureRefund"][];
+    /** Unique identity of order state. */
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     transaction?: components["schemas"]["OrderTransaction"];
@@ -15856,9 +18579,11 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
+    /** Unique identity of order transaction. */
     orderTransactionId: string;
     orderTransactionVersionId?: string;
     relationships?: {
@@ -15908,6 +18633,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of order state. */
     stateId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -15937,15 +18663,19 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
+    /** Unique identity of order transaction capture. */
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
     positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
+    /** Reason for refunding the amount for an order. */
     reason?: string;
+    /** Unique identity of order state. */
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     transactionCapture?: components["schemas"]["OrderTransactionCapture"];
@@ -15977,13 +18707,16 @@ export type Schemas = {
       /** Format: float */
       unitPrice: number;
     };
+    /** Unique identity of order transaction capture. */
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
+    /** Reason for refunding the amount for an order. */
     reason?: string;
     relationships?: {
       positions?: {
@@ -16032,6 +18765,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of order state. */
     stateId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -16063,16 +18797,23 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
+    /** Unique identity of order line item. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     orderTransactionCaptureRefund?: components["schemas"]["OrderTransactionCaptureRefund"];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Quantity of line item to be refunded.
+     */
     quantity?: number;
+    /** Reason for refunding the amount for an order. */
     reason?: string;
+    /** Unique identity of order transaction capture refund. */
     refundId: string;
     refundVersionId?: string;
     /** Format: date-time */
@@ -16105,14 +18846,21 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External payment provider token. */
     externalReference?: string;
     id: string;
+    /** Unique identity of order line item. */
     orderLineItemId: string;
     orderLineItemVersionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Quantity of line item to be refunded.
+     */
     quantity?: number;
+    /** Reason for refunding the amount for an order. */
     reason?: string;
+    /** Unique identity of order transaction capture refund. */
     refundId: string;
     refundVersionId?: string;
     relationships?: {
@@ -16177,10 +18925,12 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of an order. */
     orderId: string;
     orderVersionId?: string;
+    /** Unique identity of payment method. */
     paymentMethodId: string;
     relationships?: {
       /** Payment captures for this transaction */
@@ -16262,6 +19012,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of state. */
     stateId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -16325,15 +19076,18 @@ export type Schemas = {
     warehouseGroupId: string;
   };
   PaymentMethod: {
+    /** When boolean value is `true`, the payment methods are available for selection in the storefront. */
     active?: boolean;
+    /** When set to true, customers are redirected to the payment options page to choose a new payment method on order failure. */
     afterOrderEnabled?: boolean;
     appPaymentMethod?: components["schemas"]["AppPaymentMethod"];
     availabilityRule?: components["schemas"]["Rule"];
+    /** Unique identity of rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     readonly distinguishableName?: string;
     extensions?: {
@@ -16430,16 +19184,22 @@ export type Schemas = {
     };
     /** Runtime field, cannot be used as part of the criteria. */
     readonly formattedHandlerIdentifier?: string;
+    /** Internal field that contains system identifier details for payment methods like Paypal. */
     handlerIdentifier?: string;
     id: string;
     /** Payment method logo or icon image */
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
     orderTransactions?: components["schemas"]["OrderTransaction"][];
     plugin?: components["schemas"]["Plugin"];
+    /** Unique identity of plugin. */
     pluginId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined payment methods in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
@@ -16462,12 +19222,15 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   PaymentMethodJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the payment methods are available for selection in the storefront. */
     active?: boolean;
+    /** When set to true, customers are redirected to the payment options page to choose a new payment method on order failure. */
     afterOrderEnabled?: boolean;
+    /** Unique identity of rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     readonly distinguishableName?: string;
     extensions?: {
@@ -16564,12 +19327,18 @@ export type Schemas = {
     };
     /** Runtime field, cannot be used as part of the criteria. */
     readonly formattedHandlerIdentifier?: string;
+    /** Internal field that contains system identifier details for payment methods like Paypal. */
     handlerIdentifier?: string;
     id: string;
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
+    /** Unique identity of plugin. */
     pluginId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined payment methods in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     relationships?: {
       appPaymentMethod?: {
@@ -16713,26 +19482,38 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   Plugin: {
+    /** When boolean value is `true`, the plugin is available. */
     active?: boolean;
+    /** Creator of the plugin. */
     author?: string;
     autoload: GenericRecord;
+    /** Name of the new class that extends from Shopware's abstract Plugin class. */
     baseClass: string;
+    /** Name of the composer package name. */
     composerName?: string;
+    /** Legal rights on the created plugin. */
     copyright?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the plugin was installed.
+     */
     installedAt?: string;
     label: string;
+    /** Software license's like MIT, etc. */
     license?: string;
+    /** A property to check whether it is installed via composer or not. */
     managedByComposer?: boolean;
     manufacturerLink?: string;
+    /** Unique name of the plugin. */
     name: string;
+    /** A relative URL to the plugin. */
     path?: string;
     paymentMethods?: components["schemas"]["PaymentMethod"][];
     supportLink?: string;
@@ -16756,32 +19537,49 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the plugin was upgraded.
+     */
     upgradedAt?: string;
+    /** Update version available for upgrading plugins. */
     upgradeVersion?: string;
+    /** Version of the plugin. */
     version: string;
   };
   PluginJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the plugin is available. */
     active?: boolean;
+    /** Creator of the plugin. */
     author?: string;
     autoload: GenericRecord;
+    /** Name of the new class that extends from Shopware's abstract Plugin class. */
     baseClass: string;
+    /** Name of the composer package name. */
     composerName?: string;
+    /** Legal rights on the created plugin. */
     copyright?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     readonly icon?: string;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the plugin was installed.
+     */
     installedAt?: string;
     label: string;
+    /** Software license's like MIT, etc. */
     license?: string;
+    /** A property to check whether it is installed via composer or not. */
     managedByComposer?: boolean;
     manufacturerLink?: string;
+    /** Unique name of the plugin. */
     name: string;
+    /** A relative URL to the plugin. */
     path?: string;
     relationships?: {
       paymentMethods?: {
@@ -16821,9 +19619,14 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the plugin was upgraded.
+     */
     upgradedAt?: string;
+    /** Update version available for upgrading plugins. */
     upgradeVersion?: string;
+    /** Version of the plugin. */
     version: string;
   };
   PresentationCmsPage: components["schemas"]["DsrPresentationCmsPage"] & {
@@ -16840,32 +19643,59 @@ export type Schemas = {
     product?: components["schemas"]["Product"];
   };
   Price: {
+    /** Unique identity of the associated currency. */
     currencyId: string;
+    /** Gross price for the associated currency. */
     gross: number;
+    /** Whether gross and net prices are linked through the tax configuration. */
     linked: boolean;
+    /** Reference list price for displaying discounts. */
     listPrice?: {
+      /** Unique identity of the associated currency. */
       currencyId?: string;
+      /** Gross list price for the associated currency. */
       gross: number;
+      /** Whether gross and net list prices are linked through the tax configuration. */
       linked: boolean;
+      /** Net list price for the associated currency. */
       net: number;
     };
+    /** Net price for the associated currency. */
     net: number;
-    regulationPrice?: {
-      currencyId?: string;
+    /** Discount percentage relative to the list price for the gross and net amounts. `null` when no list price is set. */
+    percentage?: {
+      /** Discount percentage relative to the gross list price. */
       gross: number;
+      /** Discount percentage relative to the net list price. */
+      net: number;
+    } | null;
+    /** Reference price used for legal price disclosures. */
+    regulationPrice?: {
+      /** Unique identity of the associated currency. */
+      currencyId?: string;
+      /** Gross regulation price for the associated currency. */
+      gross: number;
+      /** Whether gross and net regulation prices are linked through the tax configuration. */
       linked: boolean;
+      /** Net regulation price for the associated currency. */
       net: number;
     };
   };
   Product: {
+    /** When boolean value is `true`, the products are available for selection in the storefront for purchase. */
     active?: boolean;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** Indicates weather the product is available or not. */
     readonly available?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Indicates the number of products still available. This value results from the stock minus the open orders.
+     */
     readonly availableStock?: number;
     /** Canonical product reference for variant consolidation and SEO purposes */
     canonicalProduct?: components["schemas"]["Product"];
+    /** Unique identity of canonical product. */
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
     /** Categories this product is assigned to */
@@ -16880,29 +19710,35 @@ export type Schemas = {
     children?: components["schemas"]["Product"][];
     /** Custom CMS page layout for the product detail page */
     cmsPage?: components["schemas"]["CmsPage"];
+    /** Unique identity of CMS page. */
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Variant configurator settings defining available options for product variants */
     configuratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
     /** Main product image displayed in listings and detail pages */
     cover?: components["schemas"]["ProductMedia"];
+    /** Unique identity of a ProductMedia item used as product cover. */
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     crossSellingAssignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     /** Cross-selling configurations (related products, accessories, similar items) */
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     customFieldSets?: components["schemas"]["CustomFieldSet"][];
+    /** When boolean value is `true`, the customFieldSetSelection for products gets enabled. */
     customFieldSetSelectionActive?: boolean;
     customSearchKeywords?: GenericRecord[];
     /** Estimated delivery time for the product */
     deliveryTime?: components["schemas"]["DeliveryTime"];
+    /** Unique identity of delivery time. */
     deliveryTimeId?: string;
     description?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
     readonly displayGroup?: string;
     /** Downloadable files associated with the product (e.g., manuals, digital content) */
     downloads?: components["schemas"]["ProductDownload"][];
+    /** Indicates EAN of the product. */
     ean?: string;
     extensions?: {
       attendeeProductCollections?: {
@@ -16916,6 +19752,86 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
+      /** Reference to the bundle item definition when this product acts as a bundle item. */
+      belongToBundleItems?: {
+        data?: {
+          /** @example db4ef6a91ceb3a70935c07a3617ea4cd */
+          id?: string;
+          /** @example bundle_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/belongToBundleItems
+           */
+          related?: string;
+        };
+      };
+      /** Discount configurations that belong to this bundle. */
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleDiscounts
+           */
+          related?: string;
+        };
+      };
+      /** Bundle items assigned to this grouped bundle product. */
+      bundleItems?: {
+        data?: {
+          /** @example d7706d2e11bc4878ffb242403ea5b274 */
+          id?: string;
+          /** @example bundle_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleItems
+           */
+          related?: string;
+        };
+      };
+      /** Bundles that include this product as an item. */
+      bundles?: {
+        data?: {
+          /** @example 9e21e19f42862a3b26cd7aae135a3f74 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundles
+           */
+          related?: string;
+        };
+      };
+      /** Sales channels in which this bundle is available. */
+      readonly bundleSalesChannels?: {
+        data?: {
+          /** @example d4aa52cb00cd89c5e047c6a5c72a0384 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleSalesChannels
            */
           related?: string;
         };
@@ -16946,6 +19862,52 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/employeeWishlists
+           */
+          related?: string;
+        };
+      };
+      individualPricingComputedCaches?: {
+        data?: {
+          /** @example 0208611f8e65e3ceffe9b336ea836127 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_computed_cache */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/individualPricingComputedCaches
+           */
+          related?: string;
+        };
+      };
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/individualPricings
+           */
+          related?: string;
+        };
+      };
+      /** Products referenced as bundle items of this bundle. */
+      items?: {
+        data?: {
+          /** @example 691d502cfd0e0626cd3b058e5682ad1c */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/items
            */
           related?: string;
         };
@@ -17148,36 +20110,60 @@ export type Schemas = {
       };
     };
     featureSet?: components["schemas"]["ProductFeatureSet"];
+    /** Unique identity of feature set. */
     featureSetId?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The height of the product.
+     */
     height?: number;
     id: string;
+    /** When the value is set to true, the product is hidden when sold out. */
     isCloseout?: boolean;
     keywords?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The length of the product.
+     */
     length?: number;
     /** Primary category assignments per sales channel for SEO and navigation */
     mainCategories?: components["schemas"]["MainCategory"][];
     /** Product manufacturer or brand information */
     manufacturer?: components["schemas"]["ProductManufacturer"];
+    /** Unique identity of the manufacturer. */
     manufacturerId?: string;
+    /** Unique number that describes the manufacturer. */
     manufacturerNumber?: string;
+    /** Indicates weather the product is top seller or not. */
     markAsTopseller?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Maximum number of items that can be purchased.
+     */
     maxPurchase?: number;
     /** Product images and media gallery */
     media?: components["schemas"]["ProductMedia"][];
     metaDescription?: string;
     metaTitle?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum number of items that can be purchased.
+     */
     minPurchase?: number;
     name: string;
+    ogDescription?: string;
+    ogTitle?: string;
+    /** Open Graph image for social media sharing */
+    openGraphMedia?: components["schemas"]["Media"];
+    /** Media used as Open Graph image for social media sharing. */
+    openGraphMediaId?: string;
     readonly optionIds?: string[];
     /** Product variant options (e.g., size, color) that define different variants */
     options?: components["schemas"]["PropertyGroupOption"][];
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     packUnit?: string;
     packUnitPlural?: string;
+    /** Unique identity of the product. */
     parent?: components["schemas"]["Product"];
     parentId?: string;
     parentVersionId?: string;
@@ -17185,6 +20171,7 @@ export type Schemas = {
     prices?: components["schemas"]["ProductPrice"][];
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
+    /** Unique number assigned to individual products. Define rules for automatic assignment of every product creation as per your number range. */
     productNumber: string;
     /** Customer reviews and ratings for the product */
     productReviews?: components["schemas"]["ProductReview"][];
@@ -17192,27 +20179,53 @@ export type Schemas = {
     properties?: components["schemas"]["PropertyGroupOption"][];
     readonly propertyIds?: string[];
     purchasePrices?: components["schemas"]["Price"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Specifies the scales in which the item is to be offered. For example, a scale of 2 means that your customers can purchase 2, 4, 6 products, etc., but not 1, 3 or 5.
+     */
     purchaseSteps?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Quantity of the item purchased. For example, 500ml, 2kg, etc.
+     */
     purchaseUnit?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Average of all the ratings.
+     */
     readonly ratingAverage?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of purchased item calculated as per the reference unit. Say, you bought 500ml of milk and the price is calculated in reference to 1000ml.
+     */
     referenceUnit?: number;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * The release date of a product or product model. This can be used to distinguish the exact variant of a product.
+     */
     releaseDate?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The restock time in days indicates how long it will take until a sold out item is back in stock.
+     */
     restockTime?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Frequency of the product sales.
+     */
     readonly sales?: number;
     searchKeywords?: components["schemas"]["ProductSearchKeyword"][];
     /** SEO-friendly URLs for the product across different sales channels */
     seoUrls?: components["schemas"]["SeoUrl"][];
+    /** Indicates weather the shipping price is free or not. */
     shippingFree?: boolean;
     slotConfig?: GenericRecord;
+    /** @deprecated */
     readonly states?: string[];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Indicates the number of products available.
+     */
     stock: number;
     readonly streamIds?: string[];
     /** Dynamic product streams this product belongs to based on defined filters */
@@ -17222,6 +20235,7 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     /** Tax configuration (rate and calculation rules) */
     tax?: components["schemas"]["Tax"];
+    /** Unique identity of tax. */
     taxId: string;
     translated: {
       canonicalProductId: string;
@@ -17240,6 +20254,9 @@ export type Schemas = {
       metaDescription: string;
       metaTitle: string;
       name: string;
+      ogDescription: string;
+      ogTitle: string;
+      openGraphMediaId: string;
       packUnit: string;
       packUnitPlural: string;
       parentId: string;
@@ -17249,11 +20266,18 @@ export type Schemas = {
       productNumber: string;
       releaseDate: string;
       taxId: string;
+      type: string;
       unitId: string;
       versionId: string;
     };
+    /**
+     * The type of the product, e.g., physical or digital.
+     * @enum {string}
+     */
+    type?: "physical" | "digital" | "grouped_bundle";
     /** Product unit of measure (e.g., piece, liter, kg) */
     unit?: components["schemas"]["Unit"];
+    /** Unique identity of the unit. */
     unitId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -17262,9 +20286,15 @@ export type Schemas = {
     variation?: string[];
     versionId?: string;
     visibilities?: components["schemas"]["ProductVisibility"][];
-    /** Format: float */
+    /**
+     * Format: float
+     * The weight of the product.
+     */
     weight?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * The width of the product.
+     */
     width?: number;
     wishlists?: components["schemas"]["CustomerWishlistProduct"][];
   };
@@ -17289,16 +20319,22 @@ export type Schemas = {
   ProductConfiguratorSetting: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId?: string;
     option?: components["schemas"]["PropertyGroupOption"];
+    /** Unique identity of option. */
     optionId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product configuration settings in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     price?: GenericRecord;
     product?: components["schemas"]["Product"];
+    /** Unique identity of product. */
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
@@ -17308,13 +20344,19 @@ export type Schemas = {
   ProductConfiguratorSettingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of media. */
     mediaId?: string;
+    /** Unique identity of option. */
     optionId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product configuration settings in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     price?: GenericRecord;
+    /** Unique identity of product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -17369,22 +20411,33 @@ export type Schemas = {
     versionId?: string;
   };
   ProductCrossSelling: {
+    /** When set to active, the cross-selling feature is enabled. */
     active?: boolean;
     assignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The maximum number of products to be displayed in cross-selling on the item detail page of your item.
+     */
     limit?: number;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined cross-selling actions in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     product?: components["schemas"]["Product"];
+    /** Unique identity of product. */
     productId: string;
     productStream?: components["schemas"]["ProductStream"];
+    /** Unique identity of product stream. */
     productStreamId?: string;
     productVersionId?: string;
+    /** To sort the display of products by name, price or publication (descending, ascending) date. */
     sortBy?: string;
+    /** To sort the display of products by ascending or descending order. */
     sortDirection?: string;
     translated: {
       name: string;
@@ -17395,6 +20448,7 @@ export type Schemas = {
       sortDirection: string;
       type: string;
     };
+    /** Type of product assignment for cross-selling. It can either be Dynamic product group or Manual assignment. */
     type?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -17403,11 +20457,16 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     crossSelling?: components["schemas"]["ProductCrossSelling"];
+    /** Unique identity of Product CrossSelling. */
     crossSellingId: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product cross-selling in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     product?: components["schemas"]["Product"];
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
@@ -17416,10 +20475,15 @@ export type Schemas = {
   ProductCrossSellingAssignedProductsJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of Product CrossSelling. */
     crossSellingId: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product cross-selling in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -17458,16 +20522,25 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   ProductCrossSellingJsonApi: components["schemas"]["resource"] & {
+    /** When set to active, the cross-selling feature is enabled. */
     active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The maximum number of products to be displayed in cross-selling on the item detail page of your item.
+     */
     limit?: number;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined cross-selling actions in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
+    /** Unique identity of product. */
     productId: string;
+    /** Unique identity of product stream. */
     productStreamId?: string;
     productVersionId?: string;
     relationships?: {
@@ -17517,7 +20590,9 @@ export type Schemas = {
         };
       };
     };
+    /** To sort the display of products by name, price or publication (descending, ascending) date. */
     sortBy?: string;
+    /** To sort the display of products by ascending or descending order. */
     sortDirection?: string;
     translated: {
       name: string;
@@ -17528,6 +20603,7 @@ export type Schemas = {
       sortDirection: string;
       type: string;
     };
+    /** Type of product assignment for cross-selling. It can either be Dynamic product group or Manual assignment. */
     type?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -17543,13 +20619,18 @@ export type Schemas = {
   ProductDownload: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order in which the digital products are downloaded, like 1,2,3, etc.to adjust their order of display.
+     */
     position?: number;
     product?: components["schemas"]["Product"];
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
@@ -17559,11 +20640,16 @@ export type Schemas = {
   ProductDownloadJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of media. */
     mediaId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order in which the digital products are downloaded, like 1,2,3, etc.to adjust their order of display.
+     */
     position?: number;
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -17603,58 +20689,103 @@ export type Schemas = {
     versionId?: string;
   };
   ProductExport: {
+    /** Access key to admin api. */
     accessKey: string;
+    /** Property to specify the custom content displayed for the body section. */
     bodyTemplate?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
+    /** Unique identity of currency. */
     currencyId: string;
+    /** Type of encoding like UTF-8 or ASCII. */
     encoding: string;
+    /** Type of file formats or extensions like CSV or JSON. */
     fileFormat: string;
+    /** Name of the file. */
     fileName: string;
+    /** Property to specify the custom content displayed for the footer section. */
     footerTemplate?: string;
+    /** To determine whether the product exports are generated by cron jobs or live. */
     generateByCronjob: boolean;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the product exports was last generated.
+     */
     generatedAt?: string;
+    /** Property to specify the custom content displayed for the header section. */
     headerTemplate?: string;
     id: string;
+    /** Toggling the product export settings to determine whether or not to include the variants. */
     includeVariants?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency interval when the product exports are generated like every 5 min, 1 hour, etc.
+     */
     interval: number;
+    /** ProductExport is right now generating or not. */
     isRunning?: boolean;
+    /** ProductExport generation is paused. */
     pausedSchedule?: boolean;
     productStream?: components["schemas"]["ProductStream"];
+    /** Unique identity of product stream . */
     productStreamId: string;
+    /** Selected export provider identifier, for example open-ai or google. */
+    provider?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelDomain?: components["schemas"]["SalesChannelDomain"];
+    /** Unique identity of sales Channel Domain. */
     salesChannelDomainId: string;
+    /** Unique identity of salesChannel. */
     salesChannelId: string;
     storefrontSalesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of storefront's Sales Channel. */
     storefrontSalesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ProductExportJsonApi: components["schemas"]["resource"] & {
+    /** Access key to admin api. */
     accessKey: string;
+    /** Property to specify the custom content displayed for the body section. */
     bodyTemplate?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of currency. */
     currencyId: string;
+    /** Type of encoding like UTF-8 or ASCII. */
     encoding: string;
+    /** Type of file formats or extensions like CSV or JSON. */
     fileFormat: string;
+    /** Name of the file. */
     fileName: string;
+    /** Property to specify the custom content displayed for the footer section. */
     footerTemplate?: string;
+    /** To determine whether the product exports are generated by cron jobs or live. */
     generateByCronjob: boolean;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the product exports was last generated.
+     */
     generatedAt?: string;
+    /** Property to specify the custom content displayed for the header section. */
     headerTemplate?: string;
     id: string;
+    /** Toggling the product export settings to determine whether or not to include the variants. */
     includeVariants?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency interval when the product exports are generated like every 5 min, 1 hour, etc.
+     */
     interval: number;
+    /** ProductExport is right now generating or not. */
     isRunning?: boolean;
+    /** ProductExport generation is paused. */
     pausedSchedule?: boolean;
+    /** Unique identity of product stream . */
     productStreamId: string;
+    /** Selected export provider identifier, for example open-ai or google. */
+    provider?: string;
     relationships?: {
       currency?: {
         data?: {
@@ -17732,8 +20863,11 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of sales Channel Domain. */
     salesChannelDomainId: string;
+    /** Unique identity of salesChannel. */
     salesChannelId: string;
+    /** Unique identity of storefront's Sales Channel. */
     storefrontSalesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -17785,29 +20919,41 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   ProductJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the products are available for selection in the storefront for purchase. */
     active?: boolean;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    /** Indicates weather the product is available or not. */
     readonly available?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Indicates the number of products still available. This value results from the stock minus the open orders.
+     */
     readonly availableStock?: number;
+    /** Unique identity of canonical product. */
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
     readonly categoryIds?: string[];
     readonly categoryTree?: string[];
     /** Format: int64 */
     readonly childCount?: number;
+    /** Unique identity of CMS page. */
     cmsPageId?: string;
     cmsPageVersionId?: string;
+    /** Unique identity of a ProductMedia item used as product cover. */
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** When boolean value is `true`, the customFieldSetSelection for products gets enabled. */
     customFieldSetSelectionActive?: boolean;
     customSearchKeywords?: GenericRecord[];
+    /** Unique identity of delivery time. */
     deliveryTimeId?: string;
     description?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
     readonly displayGroup?: string;
+    /** Indicates EAN of the product. */
     ean?: string;
     extensions?: {
       attendeeProductCollections?: {
@@ -17821,6 +20967,86 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
+      /** Reference to the bundle item definition when this product acts as a bundle item. */
+      belongToBundleItems?: {
+        data?: {
+          /** @example db4ef6a91ceb3a70935c07a3617ea4cd */
+          id?: string;
+          /** @example bundle_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/belongToBundleItems
+           */
+          related?: string;
+        };
+      };
+      /** Discount configurations that belong to this bundle. */
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleDiscounts
+           */
+          related?: string;
+        };
+      };
+      /** Bundle items assigned to this grouped bundle product. */
+      bundleItems?: {
+        data?: {
+          /** @example d7706d2e11bc4878ffb242403ea5b274 */
+          id?: string;
+          /** @example bundle_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleItems
+           */
+          related?: string;
+        };
+      };
+      /** Bundles that include this product as an item. */
+      bundles?: {
+        data?: {
+          /** @example 9e21e19f42862a3b26cd7aae135a3f74 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundles
+           */
+          related?: string;
+        };
+      };
+      /** Sales channels in which this bundle is available. */
+      readonly bundleSalesChannels?: {
+        data?: {
+          /** @example d4aa52cb00cd89c5e047c6a5c72a0384 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/bundleSalesChannels
            */
           related?: string;
         };
@@ -17851,6 +21077,52 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/employeeWishlists
+           */
+          related?: string;
+        };
+      };
+      individualPricingComputedCaches?: {
+        data?: {
+          /** @example 0208611f8e65e3ceffe9b336ea836127 */
+          id?: string;
+          /** @example b2b_components_individual_pricing_computed_cache */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/individualPricingComputedCaches
+           */
+          related?: string;
+        };
+      };
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/individualPricings
+           */
+          related?: string;
+        };
+      };
+      /** Products referenced as bundle items of this bundle. */
+      items?: {
+        data?: {
+          /** @example 691d502cfd0e0626cd3b058e5682ad1c */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/items
            */
           related?: string;
         };
@@ -18052,24 +21324,45 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of feature set. */
     featureSetId?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The height of the product.
+     */
     height?: number;
     id: string;
+    /** When the value is set to true, the product is hidden when sold out. */
     isCloseout?: boolean;
     keywords?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The length of the product.
+     */
     length?: number;
+    /** Unique identity of the manufacturer. */
     manufacturerId?: string;
+    /** Unique number that describes the manufacturer. */
     manufacturerNumber?: string;
+    /** Indicates weather the product is top seller or not. */
     markAsTopseller?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Maximum number of items that can be purchased.
+     */
     maxPurchase?: number;
     metaDescription?: string;
     metaTitle?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum number of items that can be purchased.
+     */
     minPurchase?: number;
     name: string;
+    ogDescription?: string;
+    ogTitle?: string;
+    /** Media used as Open Graph image for social media sharing. */
+    openGraphMediaId?: string;
     readonly optionIds?: string[];
     packUnit?: string;
     packUnitPlural?: string;
@@ -18078,16 +21371,29 @@ export type Schemas = {
     price: components["schemas"]["Price"][];
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
+    /** Unique number assigned to individual products. Define rules for automatic assignment of every product creation as per your number range. */
     productNumber: string;
     readonly propertyIds?: string[];
     purchasePrices?: components["schemas"]["Price"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Specifies the scales in which the item is to be offered. For example, a scale of 2 means that your customers can purchase 2, 4, 6 products, etc., but not 1, 3 or 5.
+     */
     purchaseSteps?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Quantity of the item purchased. For example, 500ml, 2kg, etc.
+     */
     purchaseUnit?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Average of all the ratings.
+     */
     readonly ratingAverage?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of purchased item calculated as per the reference unit. Say, you bought 500ml of milk and the price is calculated in reference to 1000ml.
+     */
     referenceUnit?: number;
     relationships?: {
       /** Canonical product reference for variant consolidation and SEO purposes */
@@ -18343,6 +21649,22 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Open Graph image for social media sharing */
+      openGraphMedia?: {
+        data?: {
+          /** @example bbda52d941a3452369a00f2880f4f358 */
+          id?: string;
+          /** @example media */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/openGraphMedia
+           */
+          related?: string;
+        };
+      };
       /** Product variant options (e.g., size, color) that define different variants */
       options?: {
         data?: {
@@ -18374,6 +21696,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of the product. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -18562,19 +21885,34 @@ export type Schemas = {
         };
       };
     };
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * The release date of a product or product model. This can be used to distinguish the exact variant of a product.
+     */
     releaseDate?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The restock time in days indicates how long it will take until a sold out item is back in stock.
+     */
     restockTime?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Frequency of the product sales.
+     */
     readonly sales?: number;
+    /** Indicates weather the shipping price is free or not. */
     shippingFree?: boolean;
     slotConfig?: GenericRecord;
+    /** @deprecated */
     readonly states?: string[];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Indicates the number of products available.
+     */
     stock: number;
     readonly streamIds?: string[];
     readonly tagIds?: string[];
+    /** Unique identity of tax. */
     taxId: string;
     translated: {
       canonicalProductId: string;
@@ -18593,6 +21931,9 @@ export type Schemas = {
       metaDescription: string;
       metaTitle: string;
       name: string;
+      ogDescription: string;
+      ogTitle: string;
+      openGraphMediaId: string;
       packUnit: string;
       packUnitPlural: string;
       parentId: string;
@@ -18602,9 +21943,16 @@ export type Schemas = {
       productNumber: string;
       releaseDate: string;
       taxId: string;
+      type: string;
       unitId: string;
       versionId: string;
     };
+    /**
+     * The type of the product, e.g., physical or digital.
+     * @enum {string}
+     */
+    type?: "physical" | "digital" | "grouped_bundle";
+    /** Unique identity of the unit. */
     unitId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -18612,21 +21960,32 @@ export type Schemas = {
     variantRestrictions?: GenericRecord;
     variation?: string[];
     versionId?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * The weight of the product.
+     */
     weight?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * The width of the product.
+     */
     width?: number;
   } & components["schemas"]["DiscountLineItemPayload"];
   ProductKeywordDictionary: {
     id: string;
+    /** The keywords that help to search the product. */
     keyword: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of the language. */
     languageId: string;
+    /** The keywords are revered for the search. */
     reversed?: string;
   };
   ProductKeywordDictionaryJsonApi: components["schemas"]["resource"] & {
     id: string;
+    /** The keywords that help to search the product. */
     keyword: string;
+    /** Unique identity of the language. */
     languageId: string;
     relationships?: {
       language?: {
@@ -18645,12 +22004,13 @@ export type Schemas = {
         };
       };
     };
+    /** The keywords are revered for the search. */
     reversed?: string;
   };
   ProductManufacturer: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
       search?: GenericRecord;
@@ -18658,6 +22018,7 @@ export type Schemas = {
     id: string;
     link?: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of the media. */
     mediaId?: string;
     name: string;
     products?: components["schemas"]["Product"][];
@@ -18675,13 +22036,14 @@ export type Schemas = {
   ProductManufacturerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
       search?: GenericRecord;
     };
     id: string;
     link?: string;
+    /** Unique identity of the media. */
     mediaId?: string;
     name: string;
     relationships?: {
@@ -18731,13 +22093,18 @@ export type Schemas = {
     coverProducts?: components["schemas"]["Product"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of the media. */
     mediaId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the images to be displayed for a product.
+     */
     position?: number;
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     thumbnails?: components["schemas"]["MediaThumbnail"];
@@ -18748,11 +22115,16 @@ export type Schemas = {
   ProductMediaJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of the media. */
     mediaId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the images to be displayed for a product.
+     */
     position?: number;
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -18817,17 +22189,25 @@ export type Schemas = {
   ProductPrice: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price: components["schemas"]["Price"][];
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Ending range of quantity of an item.
+     */
     quantityEnd?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Starting range of quantity of an item.
+     */
     quantityStart: number;
     rule?: components["schemas"]["Rule"];
+    /** Unique identity of the rule. */
     ruleId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -18836,14 +22216,21 @@ export type Schemas = {
   ProductPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price: components["schemas"]["Price"][];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Ending range of quantity of an item.
+     */
     quantityEnd?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Starting range of quantity of an item.
+     */
     quantityStart: number;
     relationships?: {
       product?: {
@@ -18877,6 +22264,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the rule. */
     ruleId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -18891,43 +22279,66 @@ export type Schemas = {
     productVersionId?: string;
   };
   ProductReview: {
+    /** Detailed review about the product. */
     comment?: string;
+    /** Short description or subject of the project review. */
     content: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
+    /** Unique identity of the customer. */
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External user email address. */
     externalEmail?: string;
+    /** External user name. */
     externalUser?: string;
     id: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of the language. */
     languageId: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * A floating point number given to rate a product.
+     */
     points?: number;
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
+    /** When status is set, the rating is made visible. */
     status?: boolean;
+    /** Title of product review. */
     title: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ProductReviewJsonApi: components["schemas"]["resource"] & {
+    /** Detailed review about the product. */
     comment?: string;
+    /** Short description or subject of the project review. */
     content: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of the customer. */
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** External user email address. */
     externalEmail?: string;
+    /** External user name. */
     externalUser?: string;
     id: string;
+    /** Unique identity of the language. */
     languageId: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * A floating point number given to rate a product.
+     */
     points?: number;
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -18992,8 +22403,11 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
+    /** When status is set, the rating is made visible. */
     status?: boolean;
+    /** Title of product review. */
     title: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -19069,6 +22483,7 @@ export type Schemas = {
     visible?: boolean;
   };
   ProductSearchConfig: {
+    /** Product search configuration with add logic. */
     andLogic?: boolean;
     configFields?: components["schemas"]["ProductSearchConfigField"][];
     /** Format: date-time */
@@ -19076,8 +22491,12 @@ export type Schemas = {
     excludedTerms?: string[];
     id: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of language. */
     languageId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum number of characters used for product search.
+     */
     minSearchLength?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -19086,14 +22505,22 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customField?: components["schemas"]["CustomField"];
+    /** Unique identity of custom field. */
     customFieldId?: string;
+    /** Configuration of search field. */
     field: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Search ranking.
+     */
     ranking?: number;
+    /** To configure whether the field can be used for searching. */
     searchable?: boolean;
     searchConfig?: components["schemas"]["ProductSearchConfig"];
+    /** Unique identity of Search Configuration. */
     searchConfigId: string;
+    /** To decide whether the text within the field should undergo tokenization, which involves splitting it into smaller chunks. */
     tokenize?: boolean;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -19101,10 +22528,15 @@ export type Schemas = {
   ProductSearchConfigFieldJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of custom field. */
     customFieldId?: string;
+    /** Configuration of search field. */
     field: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Search ranking.
+     */
     ranking?: number;
     relationships?: {
       customField?: {
@@ -19138,20 +22570,28 @@ export type Schemas = {
         };
       };
     };
+    /** To configure whether the field can be used for searching. */
     searchable?: boolean;
+    /** Unique identity of Search Configuration. */
     searchConfigId: string;
+    /** To decide whether the text within the field should undergo tokenization, which involves splitting it into smaller chunks. */
     tokenize?: boolean;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ProductSearchConfigJsonApi: components["schemas"]["resource"] & {
+    /** Product search configuration with add logic. */
     andLogic?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     excludedTerms?: string[];
     id: string;
+    /** Unique identity of language. */
     languageId: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Minimum number of characters used for product search.
+     */
     minSearchLength?: number;
     relationships?: {
       configFields?: {
@@ -19192,13 +22632,19 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** The keywords that help to search the product. */
     keyword: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of language. */
     languageId: string;
     product?: components["schemas"]["Product"];
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Search ranking.
+     */
     ranking: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -19208,11 +22654,17 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** The keywords that help to search the product. */
     keyword: string;
+    /** Unique identity of language. */
     languageId: string;
+    /** Unique identity of Product. */
     productId: string;
     productVersionId?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Search ranking.
+     */
     ranking: number;
     relationships?: {
       language?: {
@@ -19291,9 +22743,54 @@ export type Schemas = {
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
+      advancedSearchBoostings?: {
+        data?: {
+          /** @example 8efe572a8c2f5ac25f8d2b1160493acb */
+          id?: string;
+          /** @example advanced_search_boosting */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/advancedSearchBoostings
+           */
+          related?: string;
+        };
+      };
+      individualPricingRule?: {
+        data?: {
+          /** @example 7b20f572b5ee1c3d5e1b41c2de255a04 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/individualPricingRule
+           */
+          related?: string;
+        };
+      };
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/individualPricings
+           */
+          related?: string;
+        };
+      };
       paypalPosSalesChannels?: {
         data?: {
           /** @example 80dd7867f3205b7f1600d6c76438fb42 */
@@ -19342,10 +22839,15 @@ export type Schemas = {
     };
     filters?: components["schemas"]["ProductStreamFilter"][];
     id: string;
+    /** When the boolean value is `true` indicating that it is for internal use only and will not appear in product stream listings. */
+    internal?: boolean;
+    /** When the boolean value is `true`, the ProductStream is no more available for usage. */
     readonly invalid?: boolean;
     name: string;
     productCrossSellings?: components["schemas"]["ProductCrossSelling"][];
     productExports?: components["schemas"]["ProductExport"][];
+    /** Products this product stream includes */
+    products?: components["schemas"]["Product"][];
     translated: {
       description: string;
       name: string;
@@ -19356,36 +22858,52 @@ export type Schemas = {
   ProductStreamFilter: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Filter by field. */
     field?: string;
     id: string;
+    /** Filter by operator like >, ==, < , >=, etc. */
     operator?: string;
     parameters?: GenericRecord;
+    /** Unique identity of product stream filter. */
     parent?: components["schemas"]["ProductStreamFilter"];
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product stream filter to be displayed.
+     */
     position?: number;
     productStream?: components["schemas"]["ProductStream"];
+    /** Unique identity of product stream. */
     productStreamId: string;
     queries?: components["schemas"]["ProductStreamFilter"][];
+    /** Type is either `static` or `stream`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Filter by ProductStreamFilter value. */
     value?: string;
   };
   ProductStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Filter by field. */
     field?: string;
     id: string;
+    /** Filter by operator like >, ==, < , >=, etc. */
     operator?: string;
     parameters?: GenericRecord;
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined product stream filter to be displayed.
+     */
     position?: number;
+    /** Unique identity of product stream. */
     productStreamId: string;
     relationships?: {
+      /** Unique identity of product stream filter. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -19432,18 +22950,65 @@ export type Schemas = {
         };
       };
     };
+    /** Type is either `static` or `stream`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Filter by ProductStreamFilter value. */
     value?: string;
   };
   ProductStreamJsonApi: components["schemas"]["resource"] & {
     readonly apiFilter?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     extensions?: {
+      advancedSearchBoostings?: {
+        data?: {
+          /** @example 8efe572a8c2f5ac25f8d2b1160493acb */
+          id?: string;
+          /** @example advanced_search_boosting */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/advancedSearchBoostings
+           */
+          related?: string;
+        };
+      };
+      individualPricingRule?: {
+        data?: {
+          /** @example 7b20f572b5ee1c3d5e1b41c2de255a04 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/individualPricingRule
+           */
+          related?: string;
+        };
+      };
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/individualPricings
+           */
+          related?: string;
+        };
+      };
       paypalPosSalesChannels?: {
         data?: {
           /** @example 80dd7867f3205b7f1600d6c76438fb42 */
@@ -19491,6 +23056,9 @@ export type Schemas = {
       };
     };
     id: string;
+    /** When the boolean value is `true` indicating that it is for internal use only and will not appear in product stream listings. */
+    internal?: boolean;
+    /** When the boolean value is `true`, the ProductStream is no more available for usage. */
     readonly invalid?: boolean;
     name: string;
     relationships?: {
@@ -19554,6 +23122,22 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Products this product stream includes */
+      products?: {
+        data?: {
+          /** @example 86024cad1e83101d97359d7351051156 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/products
+           */
+          related?: string;
+        };
+      };
     };
     translated: {
       description: string;
@@ -19583,19 +23167,26 @@ export type Schemas = {
     readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: int64 */
-    visibility: number;
+    /**
+     * Format: int64
+     * An integer value to signify the product's visibility in any sales channel. `10` indicates `Hide in listings and search`, `20` indicates `Hide in listings` and `30` indicates `Visible` everywhere.
+     * @enum {integer}
+     */
+    visibility: 10 | 20 | 30;
   };
   ProductVisibilityJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique identity of the product. */
     productId: string;
     productVersionId?: string;
     relationships?: {
@@ -19630,11 +23221,16 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of the sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: int64 */
-    visibility: number;
+    /**
+     * Format: int64
+     * An integer value to signify the product's visibility in any sales channel. `10` indicates `Hide in listings and search`, `20` indicates `Hide in listings` and `30` indicates `Visible` everywhere.
+     * @enum {integer}
+     */
+    visibility: 10 | 20 | 30;
   };
   ProductWarehouse: {
     /** Format: date-time */
@@ -19705,15 +23301,19 @@ export type Schemas = {
     warehouseId: string;
   };
   Promotion: {
+    /** When boolean value is `true`, the promotions are available for selection in the storefront for purchase. */
     active?: boolean;
     cartRules?: components["schemas"]["Rule"][];
+    /** Promotion code. */
     code?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Indicates who cannot a use the code. */
     customerRestriction?: boolean;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     discounts?: components["schemas"]["PromotionDiscount"][];
     exclusionIds?: string[];
+    /** Parameter to exclude the promotion codes on certain products */
     exclusive?: boolean;
     extensions?: {
       quoteLineItems?: {
@@ -19733,22 +23333,36 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Promotion code pattern. */
     individualCodePattern?: string;
     individualCodes?: components["schemas"]["PromotionIndividualCode"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency at which the voucher can be redeemed worldwide.
+     */
     maxRedemptionsGlobal?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency at which the voucher can be redeemed worldwide per customer.
+     */
     maxRedemptionsPerCustomer?: number;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The number of times the promotion was used.
+     */
     readonly orderCount?: number;
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     orderRules?: components["schemas"]["Rule"][];
     readonly ordersPerCustomerCount?: GenericRecord;
     personaCustomers?: components["schemas"]["Customer"][];
     personaRules?: components["schemas"]["Rule"][];
+    /** Indicates which combination of codes are allowed. */
     preventCombination?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the promotions from the list.
+     */
     priority?: number;
     salesChannels?: components["schemas"]["PromotionSalesChannel"][];
     setgroups?: components["schemas"]["PromotionSetgroup"][];
@@ -19761,12 +23375,21 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A boolean value that indicates whether the promotion uses code or not. */
     useCodes?: boolean;
+    /** Indicates either an individual code or generic code for all users. */
     useIndividualCodes?: boolean;
+    /** Combine promotions. Promotions that are to be used only on certain products and rest not considered. */
     useSetGroups?: boolean;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time from when the promotion code gets valid.
+     */
     validFrom?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time until when the promotion code is valid.
+     */
     validUntil?: string;
   };
   PromotionCartRule: {
@@ -19777,36 +23400,57 @@ export type Schemas = {
     ruleId: string;
   };
   PromotionDiscount: {
+    /** Internal field. */
     applierKey?: string;
+    /** When boolean value is `true`, the promotion discount is applied along with advanced rules. */
     considerAdvancedRules?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     discountRules?: components["schemas"]["Rule"][];
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Discount in terms of absolute value.
+     */
     maxValue?: number;
+    /** Internal field. */
     pickerKey?: string;
     promotion?: components["schemas"]["Promotion"];
     promotionDiscountPrices?: components["schemas"]["PromotionDiscountPrices"][];
+    /** Unique identity of promotion. */
     promotionId: string;
+    /** Cart or shipping cost. */
     scope: string;
+    /** Price from `low to high` or `high to low` to sort the product accordingly. */
     sorterKey?: string;
+    /** Discount is either `absolute` or `percentage`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Internal field. */
     usageKey?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * To filter by PromotionDiscount value.
+     */
     value: number;
   };
   PromotionDiscountJsonApi: components["schemas"]["resource"] & {
+    /** Internal field. */
     applierKey?: string;
+    /** When boolean value is `true`, the promotion discount is applied along with advanced rules. */
     considerAdvancedRules?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Discount in terms of absolute value.
+     */
     maxValue?: number;
+    /** Internal field. */
     pickerKey?: string;
+    /** Unique identity of promotion. */
     promotionId: string;
     relationships?: {
       discountRules?: {
@@ -19855,23 +23499,35 @@ export type Schemas = {
         };
       };
     };
+    /** Cart or shipping cost. */
     scope: string;
+    /** Price from `low to high` or `high to low` to sort the product accordingly. */
     sorterKey?: string;
+    /** Discount is either `absolute` or `percentage`. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Internal field. */
     usageKey?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * To filter by PromotionDiscount value.
+     */
     value: number;
   };
   PromotionDiscountPrices: {
     /** Format: date-time */
     readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
+    /** Unique identity of currency. */
     currencyId: string;
+    /** Unique identity of discount. */
     discountId: string;
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of the discount.
+     */
     price: number;
     promotionDiscount?: components["schemas"]["PromotionDiscount"];
     /** Format: date-time */
@@ -19880,10 +23536,15 @@ export type Schemas = {
   PromotionDiscountPricesJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of currency. */
     currencyId: string;
+    /** Unique identity of discount. */
     discountId: string;
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Price of the discount.
+     */
     price: number;
     relationships?: {
       currency?: {
@@ -19928,22 +23589,26 @@ export type Schemas = {
     ruleId: string;
   };
   PromotionIndividualCode: {
+    /** Promotion code. */
     code: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     payload?: GenericRecord;
     promotion?: components["schemas"]["Promotion"];
+    /** Unique identity of promotion. */
     promotionId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   PromotionIndividualCodeJsonApi: components["schemas"]["resource"] & {
+    /** Promotion code. */
     code: string;
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     payload?: GenericRecord;
+    /** Unique identity of promotion. */
     promotionId: string;
     relationships?: {
       promotion?: {
@@ -19966,13 +23631,17 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   PromotionJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the promotions are available for selection in the storefront for purchase. */
     active?: boolean;
+    /** Promotion code. */
     code?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Indicates who cannot a use the code. */
     customerRestriction?: boolean;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     exclusionIds?: string[];
+    /** Parameter to exclude the promotion codes on certain products */
     exclusive?: boolean;
     extensions?: {
       quoteLineItems?: {
@@ -19992,17 +23661,31 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Promotion code pattern. */
     individualCodePattern?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency at which the voucher can be redeemed worldwide.
+     */
     maxRedemptionsGlobal?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency at which the voucher can be redeemed worldwide per customer.
+     */
     maxRedemptionsPerCustomer?: number;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The number of times the promotion was used.
+     */
     readonly orderCount?: number;
     readonly ordersPerCustomerCount?: GenericRecord;
+    /** Indicates which combination of codes are allowed. */
     preventCombination?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the promotions from the list.
+     */
     priority?: number;
     relationships?: {
       cartRules?: {
@@ -20150,12 +23833,21 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A boolean value that indicates whether the promotion uses code or not. */
     useCodes?: boolean;
+    /** Indicates either an individual code or generic code for all users. */
     useIndividualCodes?: boolean;
+    /** Combine promotions. Promotions that are to be used only on certain products and rest not considered. */
     useSetGroups?: boolean;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time from when the promotion code gets valid.
+     */
     validFrom?: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time until when the promotion code is valid.
+     */
     validUntil?: string;
   };
   PromotionOrderRule: {
@@ -20183,11 +23875,16 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the promotion saleschannels from the list.
+     */
     priority: number;
     promotion?: components["schemas"]["Promotion"];
+    /** Unique identity of promotion. */
     promotionId: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -20196,8 +23893,12 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the promotion saleschannels from the list.
+     */
     priority: number;
+    /** Unique identity of promotion. */
     promotionId: string;
     relationships?: {
       promotion?: {
@@ -20231,6 +23932,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of sales channel. */
     salesChannelId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -20239,21 +23941,29 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Internal field. */
     packagerKey: string;
     promotion?: components["schemas"]["Promotion"];
+    /** Unique identity of promotion. */
     promotionId: string;
     setGroupRules?: components["schemas"]["Rule"][];
+    /** Internal field. */
     sorterKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * To filter by PromotionSetgroup value.
+     */
     value: number;
   };
   PromotionSetgroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Internal field. */
     packagerKey: string;
+    /** Unique identity of promotion. */
     promotionId: string;
     relationships?: {
       promotion?: {
@@ -20287,10 +23997,14 @@ export type Schemas = {
         };
       };
     };
+    /** Internal field. */
     sorterKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * To filter by PromotionSetgroup value.
+     */
     value: number;
   };
   PromotionSetgroupRule: {
@@ -20303,15 +24017,18 @@ export type Schemas = {
   PropertyGroup: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** Property groups can be displayed in the form of text, image, dropdown or color. */
     displayType?: string;
+    /** When set to true, the property will be displayed in the product filter of product lists. */
     filterable?: boolean;
     id: string;
     name: string;
     options?: components["schemas"]["PropertyGroupOption"][];
     /** Format: int64 */
     position?: number;
+    /** Sorting the property group by name or position. */
     sortingType?: string;
     translated: {
       description: string;
@@ -20321,14 +24038,17 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** When set to true, the property groups are displayed on product detail page. */
     visibleOnProductDetailPage?: boolean;
   };
   PropertyGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
+    /** Property groups can be displayed in the form of text, image, dropdown or color. */
     displayType?: string;
+    /** When set to true, the property will be displayed in the product filter of product lists. */
     filterable?: boolean;
     id: string;
     name: string;
@@ -20351,6 +24071,7 @@ export type Schemas = {
         };
       };
     };
+    /** Sorting the property group by name or position. */
     sortingType?: string;
     translated: {
       description: string;
@@ -20360,19 +24081,23 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** When set to true, the property groups are displayed on product detail page. */
     visibleOnProductDetailPage?: boolean;
   };
   PropertyGroupOption: {
+    /** Property group options can be displayed in the form of color. For example: #98e3f5ff. */
     colorHexCode?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     combinable?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     group?: components["schemas"]["PropertyGroup"];
+    /** Unique identity of property group. */
     groupId: string;
     id: string;
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
     /** Format: int64 */
@@ -20390,14 +24115,17 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   PropertyGroupOptionJsonApi: components["schemas"]["resource"] & {
+    /** Property group options can be displayed in the form of color. For example: #98e3f5ff. */
     colorHexCode?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     combinable?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of property group. */
     groupId: string;
     id: string;
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
     /** Format: int64 */
@@ -20495,6 +24223,7 @@ export type Schemas = {
     readonly amountTotal?: number;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    cartPayload?: string;
     comments?: components["schemas"]["QuoteComment"][];
     /** Format: date-time */
     readonly createdAt?: string;
@@ -20504,7 +24233,7 @@ export type Schemas = {
     currencyId: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deliveries?: components["schemas"]["QuoteDelivery"][];
     discount?: {
       type?: string;
@@ -20729,7 +24458,7 @@ export type Schemas = {
   QuoteDelivery: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
     quote?: components["schemas"]["Quote"];
@@ -20771,7 +24500,7 @@ export type Schemas = {
   QuoteDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     quoteId: string;
     quoteVersionId?: string;
@@ -20857,7 +24586,7 @@ export type Schemas = {
   QuoteDeliveryPosition: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price?: {
       calculatedTaxes?: GenericRecord;
@@ -20901,7 +24630,7 @@ export type Schemas = {
   QuoteDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price?: {
       calculatedTaxes?: GenericRecord;
@@ -20977,7 +24706,7 @@ export type Schemas = {
     config: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     documentA11yMediaFile?: components["schemas"]["Media"];
     documentA11yMediaFileId?: string;
@@ -21002,7 +24731,7 @@ export type Schemas = {
     config: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     documentA11yMediaFileId?: string;
     documentMediaFileId?: string;
@@ -21147,12 +24876,13 @@ export type Schemas = {
     readonly amountTotal?: number;
     /** Format: int64 */
     readonly autoIncrement?: number;
+    cartPayload?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     createdById?: string;
     currencyId: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     discount?: {
       type?: string;
       /** Format: float */
@@ -21480,7 +25210,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deliveryPositions?: components["schemas"]["QuoteDeliveryPosition"][];
     description?: string;
     discount?: {
@@ -21537,6 +25267,7 @@ export type Schemas = {
     referencedId?: string;
     removable?: boolean;
     stackable?: boolean;
+    /** @deprecated */
     states: string[];
     /** Format: float */
     totalPrice?: number;
@@ -21551,7 +25282,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     discount?: {
       type?: string;
@@ -21710,6 +25441,7 @@ export type Schemas = {
     };
     removable?: boolean;
     stackable?: boolean;
+    /** @deprecated */
     states: string[];
     /** Format: float */
     totalPrice?: number;
@@ -21746,7 +25478,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
@@ -21783,7 +25515,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     paymentMethodId: string;
     quoteId: string;
@@ -21850,9 +25582,25 @@ export type Schemas = {
     conditions?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Description of the rule. */
     description?: string;
     extensions?: {
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /rule/ab7a485ebe75b6dd7243ad719f23c7de/bundleDiscounts
+           */
+          related?: string;
+        };
+      };
       customizedProductsTemplateOptionPrices?: {
         data?: {
           /** @example 00ece6d939b90beadc47a301e8b87a9e */
@@ -21991,13 +25739,18 @@ export type Schemas = {
     };
     flowSequences?: components["schemas"]["FlowSequence"][];
     id: string;
+    /** When the boolean value is `true`, the rule is no more available for usage. */
     readonly invalid?: boolean;
     moduleTypes?: GenericRecord;
+    /** Name of the rule defined. */
     name: string;
     orderPromotions?: components["schemas"]["Promotion"][];
     paymentMethods?: components["schemas"]["PaymentMethod"][];
     personaPromotions?: components["schemas"]["Promotion"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the rules from the list.
+     */
     priority: number;
     productPrices?: components["schemas"]["ProductPrice"][];
     promotionDiscounts?: components["schemas"]["PromotionDiscount"][];
@@ -22015,15 +25768,22 @@ export type Schemas = {
     children?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of rule condition. */
     parent?: components["schemas"]["RuleCondition"];
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined rule setting configurations in the Administration by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     rule?: components["schemas"]["Rule"];
+    /** Unique identity of rule. */
     ruleId: string;
+    /** Unique identity of script. */
     scriptId?: string;
+    /** Different rule types. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -22032,10 +25792,13 @@ export type Schemas = {
   RuleConditionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     parentId?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined rule setting configurations in the Administration by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     relationships?: {
       appScriptCondition?: {
@@ -22068,6 +25831,7 @@ export type Schemas = {
           related?: string;
         };
       };
+      /** Unique identity of rule condition. */
       parent?: {
         data?: {
           /** @example d0e45878043844ffc41aac437e86b602 */
@@ -22099,8 +25863,11 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of rule. */
     ruleId: string;
+    /** Unique identity of script. */
     scriptId?: string;
+    /** Different rule types. */
     type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -22110,9 +25877,25 @@ export type Schemas = {
     readonly areas?: GenericRecord[];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Description of the rule. */
     description?: string;
     extensions?: {
+      bundleDiscounts?: {
+        data?: {
+          /** @example a79712cce6d0182645b519f6add10f77 */
+          id?: string;
+          /** @example bundle_discount */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /rule/ab7a485ebe75b6dd7243ad719f23c7de/bundleDiscounts
+           */
+          related?: string;
+        };
+      };
       customizedProductsTemplateOptionPrices?: {
         data?: {
           /** @example 00ece6d939b90beadc47a301e8b87a9e */
@@ -22250,10 +26033,15 @@ export type Schemas = {
       };
     };
     id: string;
+    /** When the boolean value is `true`, the rule is no more available for usage. */
     readonly invalid?: boolean;
     moduleTypes?: GenericRecord;
+    /** Name of the rule defined. */
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the rules from the list.
+     */
     priority: number;
     relationships?: {
       cartPromotions?: {
@@ -22578,27 +26366,33 @@ export type Schemas = {
     userId: string;
   };
   SalesChannel: {
+    /** Access key to store api. */
     accessKey: string;
+    /** When boolean value is `true`, the sales channel is enabled. */
     active?: boolean;
     analytics?: components["schemas"]["SalesChannelAnalytics"];
+    /** Unique identity of country. */
     analyticsId?: string;
     boundCustomers?: components["schemas"]["Customer"][];
     configuration?: GenericRecord;
     countries?: components["schemas"]["Country"][];
     /** Default country for the sales channel */
     country?: components["schemas"]["Country"];
+    /** Unique identity of country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
     currencies?: components["schemas"]["Currency"][];
     /** Default currency for the sales channel */
     currency?: components["schemas"]["Currency"];
+    /** Unique identity of currency used. */
     currencyId: string;
     customerGroup?: components["schemas"]["CustomerGroup"];
+    /** Unique identity of customer group. */
     customerGroupId: string;
     customerGroupsRegistrations?: components["schemas"]["CustomerGroup"][];
     customers?: components["schemas"]["Customer"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     documentBaseConfigSalesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
     /** Domain URLs configured for the sales channel */
     domains?: components["schemas"]["SalesChannelDomain"][];
@@ -22614,6 +26408,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
+      advancedSearchActionSearchTerms?: {
+        data?: {
+          /** @example 27dd218be73cea6876e97b6a7f5c8957 */
+          id?: string;
+          /** @example advanced_search_action_search_term */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedSearchActionSearchTerms
+           */
+          related?: string;
+        };
+      };
+      advancedSearchConfigs?: {
+        data?: {
+          /** @example 82323999923ad7cb77d84c92d1832e8c */
+          id?: string;
+          /** @example advanced_search_config */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedSearchConfigs
            */
           related?: string;
         };
@@ -22648,6 +26472,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      productReviewSummaries?: {
+        data?: {
+          /** @example 71dea071bf87f22aaa4a5b09a93568f0 */
+          id?: string;
+          /** @example product_review_summary */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/productReviewSummaries
+           */
+          related?: string;
+        };
+      };
       quotes?: {
         data?: {
           /** @example 2150fd65034a9bcdb357943b3900a918 */
@@ -22659,6 +26498,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/quotes
+           */
+          related?: string;
+        };
+      };
+      salesChannelTrackingCustomers?: {
+        data?: {
+          /** @example cb8f22914de8c702eb773a34957f4124 */
+          id?: string;
+          /** @example sales_channel_tracking_customer */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/salesChannelTrackingCustomers
+           */
+          related?: string;
+        };
+      };
+      salesChannelTrackingOrders?: {
+        data?: {
+          /** @example ac53756ec89dc96c6b7c724a748b1a90 */
+          id?: string;
+          /** @example sales_channel_tracking_order */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/salesChannelTrackingOrders
            */
           related?: string;
         };
@@ -22771,9 +26640,11 @@ export type Schemas = {
     };
     /** Root category for footer navigation */
     footerCategory?: components["schemas"]["Category"];
+    /** Unique identity of footer category. */
     footerCategoryId?: string;
     footerCategoryVersionId?: string;
     homeCmsPage?: components["schemas"]["CmsPage"];
+    /** Unique identity of home CMS page. */
     homeCmsPageId?: string;
     homeCmsPageVersionId?: string;
     homeEnabled: boolean;
@@ -22782,26 +26653,35 @@ export type Schemas = {
     homeMetaTitle?: string;
     homeName?: string;
     homeSlotConfig?: GenericRecord;
+    /** When set to true, the sales channel pages are available in different languages. */
     hreflangActive?: boolean;
     hreflangDefaultDomain?: components["schemas"]["SalesChannelDomain"];
+    /** Unique identity of hreflangDefaultDomain. */
     hreflangDefaultDomainId?: string;
     id: string;
     landingPages?: components["schemas"]["LandingPage"][];
     /** Default language for the sales channel */
     language?: components["schemas"]["Language"];
+    /** Unique identity of language used. */
     languageId: string;
     languages?: components["schemas"]["Language"][];
     mailHeaderFooter?: components["schemas"]["MailHeaderFooter"];
+    /** Unique identity of mail header and footer. */
     mailHeaderFooterId?: string;
     mainCategories?: components["schemas"]["MainCategory"][];
+    /** When `true`, it indicates that the sales channel is undergoing maintenance, and shopping is temporarily unavailable during this period. */
     maintenance?: boolean;
     maintenanceIpWhitelist?: GenericRecord[];
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     name: string;
     /** Root category for navigation menu */
     navigationCategory?: components["schemas"]["Category"];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * It determines the number of levels of subcategories in the storefront category menu.
+     */
     navigationCategoryDepth?: number;
+    /** Unique identity of navigation category. */
     navigationCategoryId: string;
     navigationCategoryVersionId?: string;
     newsletterRecipients?: components["schemas"]["NewsletterRecipient"][];
@@ -22809,6 +26689,7 @@ export type Schemas = {
     orders?: components["schemas"]["Order"][];
     /** Default payment method for the sales channel */
     paymentMethod?: components["schemas"]["PaymentMethod"];
+    /** Unique identity of payment method used. */
     paymentMethodId: string;
     readonly paymentMethodIds?: string[];
     paymentMethods?: components["schemas"]["PaymentMethod"][];
@@ -22820,14 +26701,18 @@ export type Schemas = {
     seoUrlTemplates?: components["schemas"]["SeoUrlTemplate"][];
     /** Root category for service pages */
     serviceCategory?: components["schemas"]["Category"];
+    /** Unique identity of service category. */
     serviceCategoryId?: string;
     serviceCategoryVersionId?: string;
     /** Default shipping method for the sales channel */
     shippingMethod?: components["schemas"]["ShippingMethod"];
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
     shippingMethods?: components["schemas"]["ShippingMethod"][];
+    /** A short name for sales channel. */
     shortName?: string;
     systemConfigs?: components["schemas"]["SystemConfig"][];
+    /** Tax calculation types are `horizontal` and `vertical`. */
     taxCalculationType?: string;
     translated: {
       accessKey: string;
@@ -22858,25 +26743,34 @@ export type Schemas = {
       typeId: string;
     };
     type?: components["schemas"]["SalesChannelType"];
+    /** Unique identity of type. */
     typeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     wishlists?: components["schemas"]["CustomerWishlist"][];
   };
   SalesChannelAnalytics: {
-    active?: boolean;
-    anonymizeIp?: boolean;
+    /** Whether Google Analytics tracking is enabled */
+    active: boolean;
+    /** Anonymize visitor IP addresses for GDPR compliance */
+    anonymizeIp: boolean;
     /** Format: date-time */
-    readonly createdAt?: string;
+    readonly createdAt: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Google Analytics tracking ID (e.g., UA-XXXXX-Y or G-XXXXXXXX) */
     trackingId?: string;
-    trackOrders?: boolean;
+    /** Track off-canvas cart interactions in Google Analytics */
+    trackOffcanvasCart: boolean;
+    /** Track order completions in Google Analytics */
+    trackOrders: boolean;
     /** Format: date-time */
-    readonly updatedAt?: string;
+    readonly updatedAt?: string | null;
   };
   SalesChannelAnalyticsJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the sales channel analytics are enabled. */
     active?: boolean;
+    /** Unique identity of anonymize. */
     anonymizeIp?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
@@ -22898,7 +26792,11 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity for tracking. */
     trackingId?: string;
+    /** When boolean value is `true`, it enables Google Analytics to track offcanvas cart. */
+    trackOffcanvasCart?: boolean;
+    /** When boolean value is `true`, it enables Google Analytics to track orders. */
     trackOrders?: boolean;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -22921,8 +26819,9 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
+    /** Unique identity of currency. */
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       dsrAppointmentGuideSalesChannelDomain?: {
         data?: {
@@ -22955,26 +26854,32 @@ export type Schemas = {
         };
       };
     };
+    /** This is used to toggle the language configurations, say between DE and DE-DE for instance. */
     hreflangUseOnlyLocale?: boolean;
     id: string;
     language?: components["schemas"]["Language"];
+    /** Unique identity of language used. */
     languageId: string;
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     productExports?: components["schemas"]["ProductExport"][];
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelDefaultHreflang?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId: string;
     snippetSet?: components["schemas"]["SnippetSet"];
+    /** Unique identity of snippet set. */
     snippetSetId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** URL of the sales channel domain. */
     url: string;
   };
   SalesChannelDomainJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of currency. */
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       dsrAppointmentGuideSalesChannelDomain?: {
         data?: {
@@ -23007,8 +26912,10 @@ export type Schemas = {
         };
       };
     };
+    /** This is used to toggle the language configurations, say between DE and DE-DE for instance. */
     hreflangUseOnlyLocale?: boolean;
     id: string;
+    /** Unique identity of language used. */
     languageId: string;
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     relationships?: {
@@ -23103,23 +27010,32 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of sales channel. */
     salesChannelId: string;
+    /** Unique identity of snippet set. */
     snippetSetId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** URL of the sales channel domain. */
     url: string;
   };
   SalesChannelJsonApi: components["schemas"]["resource"] & {
+    /** Access key to store api. */
     accessKey: string;
+    /** When boolean value is `true`, the sales channel is enabled. */
     active?: boolean;
+    /** Unique identity of country. */
     analyticsId?: string;
     configuration?: GenericRecord;
+    /** Unique identity of country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Unique identity of currency used. */
     currencyId: string;
+    /** Unique identity of customer group. */
     customerGroupId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       advancedProductCatalogs?: {
         data?: {
@@ -23132,6 +27048,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
+      advancedSearchActionSearchTerms?: {
+        data?: {
+          /** @example 27dd218be73cea6876e97b6a7f5c8957 */
+          id?: string;
+          /** @example advanced_search_action_search_term */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedSearchActionSearchTerms
+           */
+          related?: string;
+        };
+      };
+      advancedSearchConfigs?: {
+        data?: {
+          /** @example 82323999923ad7cb77d84c92d1832e8c */
+          id?: string;
+          /** @example advanced_search_config */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/advancedSearchConfigs
            */
           related?: string;
         };
@@ -23166,6 +27112,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      productReviewSummaries?: {
+        data?: {
+          /** @example 71dea071bf87f22aaa4a5b09a93568f0 */
+          id?: string;
+          /** @example product_review_summary */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/productReviewSummaries
+           */
+          related?: string;
+        };
+      };
       quotes?: {
         data?: {
           /** @example 2150fd65034a9bcdb357943b3900a918 */
@@ -23177,6 +27138,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/quotes
+           */
+          related?: string;
+        };
+      };
+      salesChannelTrackingCustomers?: {
+        data?: {
+          /** @example cb8f22914de8c702eb773a34957f4124 */
+          id?: string;
+          /** @example sales_channel_tracking_customer */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/salesChannelTrackingCustomers
+           */
+          related?: string;
+        };
+      };
+      salesChannelTrackingOrders?: {
+        data?: {
+          /** @example ac53756ec89dc96c6b7c724a748b1a90 */
+          id?: string;
+          /** @example sales_channel_tracking_order */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel/e497ee380a9e2a5e9812e9e0bf504045/salesChannelTrackingOrders
            */
           related?: string;
         };
@@ -23287,8 +27278,10 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of footer category. */
     footerCategoryId?: string;
     footerCategoryVersionId?: string;
+    /** Unique identity of home CMS page. */
     homeCmsPageId?: string;
     homeCmsPageVersionId?: string;
     homeEnabled: boolean;
@@ -23297,19 +27290,29 @@ export type Schemas = {
     homeMetaTitle?: string;
     homeName?: string;
     homeSlotConfig?: GenericRecord;
+    /** When set to true, the sales channel pages are available in different languages. */
     hreflangActive?: boolean;
+    /** Unique identity of hreflangDefaultDomain. */
     hreflangDefaultDomainId?: string;
     id: string;
+    /** Unique identity of language used. */
     languageId: string;
+    /** Unique identity of mail header and footer. */
     mailHeaderFooterId?: string;
+    /** When `true`, it indicates that the sales channel is undergoing maintenance, and shopping is temporarily unavailable during this period. */
     maintenance?: boolean;
     maintenanceIpWhitelist?: GenericRecord[];
     measurementUnits?: components["schemas"]["MeasurementUnits"];
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * It determines the number of levels of subcategories in the storefront category menu.
+     */
     navigationCategoryDepth?: number;
+    /** Unique identity of navigation category. */
     navigationCategoryId: string;
     navigationCategoryVersionId?: string;
+    /** Unique identity of payment method used. */
     paymentMethodId: string;
     readonly paymentMethodIds?: string[];
     relationships?: {
@@ -23878,10 +27881,14 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of service category. */
     serviceCategoryId?: string;
     serviceCategoryVersionId?: string;
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
+    /** A short name for sales channel. */
     shortName?: string;
+    /** Tax calculation types are `horizontal` and `vertical`. */
     taxCalculationType?: string;
     translated: {
       accessKey: string;
@@ -23911,6 +27918,7 @@ export type Schemas = {
       taxCalculationType: string;
       typeId: string;
     };
+    /** Unique identity of type. */
     typeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -23936,13 +27944,121 @@ export type Schemas = {
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
   };
+  SalesChannelTrackingCustomer: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    id: string;
+    salesChannel?: components["schemas"]["SalesChannel"];
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  SalesChannelTrackingCustomerJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customerId: string;
+    id: string;
+    relationships?: {
+      customer?: {
+        data?: {
+          /** @example 91ec1f9324753048c0096d036a694f86 */
+          id?: string;
+          /** @example customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-tracking-customer/ea2de1d5c97c761634c2ebf3a18ad1ae/customer
+           */
+          related?: string;
+        };
+      };
+      salesChannel?: {
+        data?: {
+          /** @example ec3712a84143b57e0db620eaac6e55b8 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-tracking-customer/ea2de1d5c97c761634c2ebf3a18ad1ae/salesChannel
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  SalesChannelTrackingOrder: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    order?: components["schemas"]["Order"];
+    orderId: string;
+    orderVersionId?: string;
+    salesChannel?: components["schemas"]["SalesChannel"];
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  SalesChannelTrackingOrderJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    orderId: string;
+    orderVersionId?: string;
+    relationships?: {
+      order?: {
+        data?: {
+          /** @example 70a17ffa722a3985b86d30b034ad06d7 */
+          id?: string;
+          /** @example order */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-tracking-order/a540f7ebb29a289fffaca652fef993f4/order
+           */
+          related?: string;
+        };
+      };
+      salesChannel?: {
+        data?: {
+          /** @example ec3712a84143b57e0db620eaac6e55b8 */
+          id?: string;
+          /** @example sales_channel */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-tracking-order/a540f7ebb29a289fffaca652fef993f4/salesChannel
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelId: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   SalesChannelType: {
+    /** A url for the sales channel type. */
     coverUrl?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     descriptionLong?: string;
+    /** An icon for sales channel type. */
     iconName?: string;
     id: string;
     manufacturer?: string;
@@ -23961,12 +28077,14 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SalesChannelTypeJsonApi: components["schemas"]["resource"] & {
+    /** A url for the sales channel type. */
     coverUrl?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     descriptionLong?: string;
+    /** An icon for sales channel type. */
     iconName?: string;
     id: string;
     manufacturer?: string;
@@ -24005,7 +28123,7 @@ export type Schemas = {
     readonly createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customers?: components["schemas"]["Customer"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     displayName: string;
     extensions?: {
       b2bPendingOrderAddresses?: {
@@ -24059,6 +28177,12 @@ export type Schemas = {
     newsletterRecipients?: components["schemas"]["NewsletterRecipient"][];
     orderAddresses?: components["schemas"]["OrderAddress"][];
     orderCustomers?: components["schemas"]["OrderCustomer"][];
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined salutations must be displayed in the frontend.
+     */
+    position?: number;
+    /** Technical name given to salutation. For example: mr */
     salutationKey: string;
     translated: {
       displayName: string;
@@ -24071,7 +28195,7 @@ export type Schemas = {
   SalutationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     displayName: string;
     extensions?: {
       b2bPendingOrderAddresses?: {
@@ -24122,6 +28246,11 @@ export type Schemas = {
     };
     id: string;
     letterName: string;
+    /**
+     * Format: int64
+     * Numerical value that indicates the order in which the defined salutations must be displayed in the frontend.
+     */
+    position?: number;
     relationships?: {
       customerAddresses?: {
         data?: {
@@ -24199,6 +28328,7 @@ export type Schemas = {
         };
       };
     };
+    /** Technical name given to salutation. For example: mr */
     salutationKey: string;
     translated: {
       displayName: string;
@@ -24211,17 +28341,32 @@ export type Schemas = {
   ScheduledTask: {
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Default run interval setting.
+     */
     defaultRunInterval: number;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time when the scheduled task was last executed.
+     */
     lastExecutionTime?: string;
+    /** Name of the scheduled task. */
     name: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time when the scheduled task will execute next.
+     */
     nextExecutionTime?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency interval at which the scheduled task must run like 5 min, 1 hours , etc
+     */
     runInterval: number;
+    /** Unique identity of scheduled task. */
     scheduledTaskClass: string;
+    /** When status is set, the ScheduledTask is made visible. */
     status: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24229,41 +28374,63 @@ export type Schemas = {
   ScheduledTaskJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Default run interval setting.
+     */
     defaultRunInterval: number;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time when the scheduled task was last executed.
+     */
     lastExecutionTime?: string;
+    /** Name of the scheduled task. */
     name: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Time when the scheduled task will execute next.
+     */
     nextExecutionTime?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The frequency interval at which the scheduled task must run like 5 min, 1 hours , etc
+     */
     runInterval: number;
+    /** Unique identity of scheduled task. */
     scheduledTaskClass: string;
+    /** When status is set, the ScheduledTask is made visible. */
     status: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   Script: {
+    /** Internal field. */
     active: boolean;
     app?: components["schemas"]["App"];
     appId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Internal field. */
     hook: string;
     id: string;
+    /** Internal field. */
     name: string;
+    /** Internal field. */
     script: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ScriptJsonApi: components["schemas"]["resource"] & {
+    /** Internal field. */
     active: boolean;
     appId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Internal field. */
     hook: string;
     id: string;
+    /** Internal field. */
     name: string;
     relationships?: {
       app?: {
@@ -24282,6 +28449,7 @@ export type Schemas = {
         };
       };
     };
+    /** Internal field. */
     script: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24289,20 +28457,36 @@ export type Schemas = {
   SeoUrl: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
+    /** The key that references to product or category entity ID. */
     foreignKey: string;
     id: string;
+    /** When set to true, search redirects to the main URL. */
     isCanonical?: boolean;
+    /** When set to true, the URL is deleted and cannot be used any more but it is still available on table and can be restored later. */
     isDeleted?: boolean;
+    /** When boolean value is `true`, the seo url is changed. */
     isModified?: boolean;
     language?: components["schemas"]["Language"];
+    /** Unique identity of language. */
     languageId: string;
+    /** Path to product URL. For example: \\"/detail/bbf36734504741c79a3bbe3795b91564\\" */
     pathInfo: string;
-    routeName: string;
+    /**
+     * A destination routeName that has been registered somewhere in the app's router. For example: \\"frontend.detail.page\\"
+     * @enum {string}
+     */
+    routeName:
+      | "frontend.navigation.page"
+      | "frontend.landing.page"
+      | "frontend.bundle.detail.page"
+      | "frontend.detail.page";
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
+    /** Seo path to product. For example: \\"Pepper-white-ground-pearl/SW10098\\" */
     seoPathInfo: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24312,15 +28496,21 @@ export type Schemas = {
   SeoUrlJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
+    /** The key that references to product or category entity ID. */
     foreignKey: string;
     id: string;
+    /** When set to true, search redirects to the main URL. */
     isCanonical?: boolean;
+    /** When set to true, the URL is deleted and cannot be used any more but it is still available on table and can be restored later. */
     isDeleted?: boolean;
+    /** When boolean value is `true`, the seo url is changed. */
     isModified?: boolean;
+    /** Unique identity of language. */
     languageId: string;
+    /** Path to product URL. For example: \\"/detail/bbf36734504741c79a3bbe3795b91564\\" */
     pathInfo: string;
     relationships?: {
       language?: {
@@ -24354,8 +28544,18 @@ export type Schemas = {
         };
       };
     };
-    routeName: string;
+    /**
+     * A destination routeName that has been registered somewhere in the app's router. For example: \\"frontend.detail.page\\"
+     * @enum {string}
+     */
+    routeName:
+      | "frontend.navigation.page"
+      | "frontend.landing.page"
+      | "frontend.bundle.detail.page"
+      | "frontend.detail.page";
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
+    /** Seo path to product. For example: \\"Pepper-white-ground-pearl/SW10098\\" */
     seoPathInfo: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24365,13 +28565,18 @@ export type Schemas = {
   SeoUrlTemplate: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of the entity. */
     entityName: string;
     id: string;
+    /** Created SEO URL template can be made usable by setting `isValid` to true. */
     isValid?: boolean;
+    /** Name of the route. */
     routeName: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
+    /** Template to generate an URL. */
     template?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24379,9 +28584,11 @@ export type Schemas = {
   SeoUrlTemplateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Name of the entity. */
     entityName: string;
     id: string;
+    /** Created SEO URL template can be made usable by setting `isValid` to true. */
     isValid?: boolean;
     relationships?: {
       salesChannel?: {
@@ -24400,23 +28607,29 @@ export type Schemas = {
         };
       };
     };
+    /** Name of the route. */
     routeName: string;
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
+    /** Template to generate an URL. */
     template?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ShippingMethod: {
+    /** When boolean value is `true`, the shipping methods are available for selection in the storefront. */
     active?: boolean;
     appShippingMethod?: components["schemas"]["AppShippingMethod"];
     /** Rule defining when this shipping method is available */
     availabilityRule?: components["schemas"]["Rule"];
+    /** Unique identity of availability rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Estimated delivery time information */
     deliveryTime?: components["schemas"]["DeliveryTime"];
+    /** Unique identity of deliveryTime. */
     deliveryTimeId: string;
     description?: string;
     extensions?: {
@@ -24484,10 +28697,14 @@ export type Schemas = {
     id: string;
     /** Shipping method logo or carrier image */
     media?: components["schemas"]["Media"];
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
     orderDeliveries?: components["schemas"]["OrderDelivery"][];
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined shipping methods in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     /** Shipping prices based on weight, volume, or cart value */
     prices?: components["schemas"]["ShippingMethodPrice"][];
@@ -24497,7 +28714,9 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     /** Tax configuration for shipping costs */
     tax?: components["schemas"]["Tax"];
+    /** Unique identity of tax. */
     taxId?: string;
+    /** Refers `Free`, `Net` or `Gross` type of taxes. */
     taxType?: string;
     technicalName: string;
     trackingUrl?: string;
@@ -24516,11 +28735,14 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   ShippingMethodJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the shipping methods are available for selection in the storefront. */
     active?: boolean;
+    /** Unique identity of availability rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of deliveryTime. */
     deliveryTimeId: string;
     description?: string;
     extensions?: {
@@ -24586,9 +28808,13 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Unique identity of media. */
     mediaId?: string;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined shipping methods in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position?: number;
     relationships?: {
       appShippingMethod?: {
@@ -24748,7 +28974,9 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of tax. */
     taxId?: string;
+    /** Refers `Free`, `Net` or `Gross` type of taxes. */
     taxType?: string;
     technicalName: string;
     trackingUrl?: string;
@@ -24767,38 +28995,60 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   ShippingMethodPrice: {
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Shipping price calculated based on quantity, price, weight or volume of items.
+     */
     calculation?: number;
     calculationRule?: components["schemas"]["Rule"];
+    /** Unique identity of rule calculation. */
     calculationRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     currencyPrice?: components["schemas"]["Price"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Ending range of quantity of an item.
+     */
     quantityEnd?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Starting range of quantity of an item.
+     */
     quantityStart?: number;
     rule?: components["schemas"]["Rule"];
+    /** Unique identity of rule. */
     ruleId?: string;
     shippingMethod?: components["schemas"]["ShippingMethod"];
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   ShippingMethodPriceJsonApi: components["schemas"]["resource"] & {
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Shipping price calculated based on quantity, price, weight or volume of items.
+     */
     calculation?: number;
+    /** Unique identity of rule calculation. */
     calculationRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     currencyPrice?: components["schemas"]["Price"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Ending range of quantity of an item.
+     */
     quantityEnd?: number;
-    /** Format: float */
+    /**
+     * Format: float
+     * Starting range of quantity of an item.
+     */
     quantityStart?: number;
     relationships?: {
       calculationRule?: {
@@ -24847,7 +29097,9 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of rule. */
     ruleId?: string;
+    /** Unique identity of shipping method. */
     shippingMethodId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -24866,23 +29118,28 @@ export type Schemas = {
     value: string;
   };
   Snippet: {
+    /** Creator of the Snippet */
     author: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     set?: components["schemas"]["SnippetSet"];
+    /** Unique identity od snippet set. */
     setId: string;
+    /** Reference to the snippet in the template. */
     translationKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Value of the key. */
     value: string;
   };
   SnippetJsonApi: components["schemas"]["resource"] & {
+    /** Creator of the Snippet */
     author: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     relationships?: {
       set?: {
@@ -24901,19 +29158,24 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity od snippet set. */
     setId: string;
+    /** Reference to the snippet in the template. */
     translationKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Value of the key. */
     value: string;
   };
   SnippetSet: {
     baseFile: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** ISO nomenclature used to classify languages. */
     iso: string;
+    /** Name of snippet set. */
     name: string;
     salesChannelDomains?: components["schemas"]["SalesChannelDomain"][];
     snippets?: components["schemas"]["Snippet"][];
@@ -24924,9 +29186,11 @@ export type Schemas = {
     baseFile: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** ISO nomenclature used to classify languages. */
     iso: string;
+    /** Name of snippet set. */
     name: string;
     relationships?: {
       salesChannelDomains?: {
@@ -25030,6 +29294,7 @@ export type Schemas = {
     scene?: components["schemas"]["SpatialScene"];
     sceneId: string;
     target?: GenericRecord;
+    type?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     visible?: boolean;
@@ -25082,6 +29347,7 @@ export type Schemas = {
     };
     sceneId: string;
     target?: GenericRecord;
+    type?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     visible?: boolean;
@@ -25861,12 +30127,13 @@ export type Schemas = {
   StateMachine: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     historyEntries?: components["schemas"]["StateMachineHistory"][];
     id: string;
     initialStateId?: string;
     name: string;
     states?: components["schemas"]["StateMachineState"][];
+    /** Technical name of state machine. */
     technicalName: string;
     transitions?: components["schemas"]["StateMachineTransition"][];
     translated: {
@@ -25880,32 +30147,46 @@ export type Schemas = {
   StateMachineHistory: {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Name of the entity. */
     entityName: string;
+    /** Unique identity of fromState. */
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
     id: string;
     integration?: components["schemas"]["Integration"];
     integrationId?: string;
+    internalComment?: string;
+    /** Unique identity of reference. */
     referencedId: string;
+    /** Unique identity of reference's version. */
     referencedVersionId: string;
     stateMachine?: components["schemas"]["StateMachine"];
+    /** Unique identity of state machine. */
     stateMachineId: string;
+    /** Unique identity of toState. */
     toStateId: string;
     toStateMachineState?: components["schemas"]["StateMachineState"];
+    /** Unique name of transition action. */
     transitionActionName?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     user?: components["schemas"]["User"];
+    /** Unique identity of user. */
     userId?: string;
   };
   StateMachineHistoryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
+    /** Name of the entity. */
     entityName: string;
+    /** Unique identity of fromState. */
     fromStateId: string;
     id: string;
     integrationId?: string;
+    internalComment?: string;
+    /** Unique identity of reference. */
     referencedId: string;
+    /** Unique identity of reference's version. */
     referencedVersionId: string;
     relationships?: {
       fromStateMachineState?: {
@@ -25984,17 +30265,21 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of state machine. */
     stateMachineId: string;
+    /** Unique identity of toState. */
     toStateId: string;
+    /** Unique name of transition action. */
     transitionActionName?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of user. */
     userId?: string;
   };
   StateMachineJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     initialStateId?: string;
     name: string;
@@ -26045,6 +30330,7 @@ export type Schemas = {
         };
       };
     };
+    /** Technical name of state machine. */
     technicalName: string;
     translated: {
       initialStateId: string;
@@ -26057,7 +30343,7 @@ export type Schemas = {
   StateMachineState: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrders?: {
         data?: {
@@ -26175,7 +30461,9 @@ export type Schemas = {
     orderTransactionCaptures?: components["schemas"]["OrderTransactionCapture"][];
     orderTransactions?: components["schemas"]["OrderTransaction"][];
     stateMachine?: components["schemas"]["StateMachine"];
+    /** Unique identity of StateMachine. */
     stateMachineId: string;
+    /** Technical name of StateMachineState. */
     technicalName: string;
     toStateMachineHistoryEntries?: components["schemas"]["StateMachineHistory"][];
     toStateMachineTransitions?: components["schemas"]["StateMachineTransition"][];
@@ -26190,7 +30478,7 @@ export type Schemas = {
   StateMachineStateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       b2bPendingOrders?: {
         data?: {
@@ -26452,7 +30740,9 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of StateMachine. */
     stateMachineId: string;
+    /** Technical name of StateMachineState. */
     technicalName: string;
     translated: {
       name: string;
@@ -26463,25 +30753,31 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   StateMachineTransition: {
+    /** Unique name of the action. */
     actionName: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of from state. */
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
     id: string;
     stateMachine?: components["schemas"]["StateMachine"];
+    /** Unique identity of state machine. */
     stateMachineId: string;
+    /** Unique identity of to state. */
     toStateId: string;
     toStateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   StateMachineTransitionJsonApi: components["schemas"]["resource"] & {
+    /** Unique name of the action. */
     actionName: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Unique identity of from state. */
     fromStateId: string;
     id: string;
     relationships?: {
@@ -26531,7 +30827,9 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of state machine. */
     stateMachineId: string;
+    /** Unique identity of to state. */
     toStateId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -26563,8 +30861,25 @@ export type Schemas = {
     cronInterval: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dateInterval: string;
+    extensions?: {
+      subscriptionEmployee?: {
+        data?: {
+          /** @example a4844d7989267e34103e44248b16cf6c */
+          id?: string;
+          /** @example b2b_components_subscription_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /subscription/787ad0b7a17de4ad6b1711bbf8d79fcb/subscriptionEmployee
+           */
+          related?: string;
+        };
+      };
+    };
     /**
      * Format: date-time
      * Runtime field, cannot be used as part of the criteria.
@@ -26631,9 +30946,11 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    hash?: string;
     id: string;
     lastName: string;
     phoneNumber?: string;
@@ -26658,9 +30975,11 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    hash?: string;
     id: string;
     lastName: string;
     phoneNumber?: string;
@@ -26772,7 +31091,7 @@ export type Schemas = {
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     firstName: string;
     id: string;
@@ -26793,7 +31112,7 @@ export type Schemas = {
     readonly createdAt?: string;
     customerId?: string;
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     firstName: string;
     id: string;
@@ -26952,8 +31271,25 @@ export type Schemas = {
     readonly createdAt?: string;
     cronInterval: string;
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dateInterval: string;
+    extensions?: {
+      subscriptionEmployee?: {
+        data?: {
+          /** @example a4844d7989267e34103e44248b16cf6c */
+          id?: string;
+          /** @example b2b_components_subscription_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /subscription/787ad0b7a17de4ad6b1711bbf8d79fcb/subscriptionEmployee
+           */
+          related?: string;
+        };
+      };
+    };
     /**
      * Format: date-time
      * Runtime field, cannot be used as part of the criteria.
@@ -28818,6 +33154,7 @@ export type Schemas = {
     profileName: string;
     runs?: components["schemas"]["SwagMigrationRun"][];
     settings?: components["schemas"]["SwagMigrationGeneralSetting"][];
+    sourceSystemFingerprint?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -28877,6 +33214,7 @@ export type Schemas = {
         };
       };
     };
+    sourceSystemFingerprint?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -28934,11 +33272,36 @@ export type Schemas = {
     writeFailure?: boolean;
     written?: boolean;
   };
+  SwagMigrationFix: {
+    connectionId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    entityId?: string;
+    entityName?: string;
+    id: string;
+    path: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    value: string;
+  };
+  SwagMigrationFixJsonApi: components["schemas"]["resource"] & {
+    connectionId: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    entityId?: string;
+    entityName?: string;
+    id: string;
+    path: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    value: string;
+  };
   SwagMigrationGeneralSetting: {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
     isReset?: boolean;
+    isResettingChecksums?: boolean;
     selectedConnection?: components["schemas"]["SwagMigrationConnection"];
     selectedConnectionId?: string;
     /** Format: date-time */
@@ -28949,6 +33312,7 @@ export type Schemas = {
     readonly createdAt?: string;
     id: string;
     isReset?: boolean;
+    isResettingChecksums?: boolean;
     relationships?: {
       selectedConnection?: {
         data?: {
@@ -28974,34 +33338,43 @@ export type Schemas = {
     /** Format: int64 */
     readonly autoIncrement?: number;
     code: string;
+    convertedData?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    description: string;
-    descriptionSnippet: string;
-    entity?: string;
+    entityId?: string;
+    entityName?: string;
+    exceptionMessage?: string;
+    exceptionTrace?: GenericRecord;
+    fieldName?: string;
+    fieldSourcePath?: string;
+    gatewayName: string;
     id: string;
     level: string;
-    parameters: GenericRecord;
+    profileName: string;
     run?: components["schemas"]["SwagMigrationRun"];
-    runId?: string;
-    sourceId?: string;
-    title: string;
-    titleSnippet: string;
+    runId: string;
+    sourceData?: GenericRecord;
     /** Format: date-time */
     readonly updatedAt?: string;
+    userFixable: boolean;
   };
   SwagMigrationLoggingJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
     readonly autoIncrement?: number;
     code: string;
+    convertedData?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    description: string;
-    descriptionSnippet: string;
-    entity?: string;
+    entityId?: string;
+    entityName?: string;
+    exceptionMessage?: string;
+    exceptionTrace?: GenericRecord;
+    fieldName?: string;
+    fieldSourcePath?: string;
+    gatewayName: string;
     id: string;
     level: string;
-    parameters: GenericRecord;
+    profileName: string;
     relationships?: {
       run?: {
         data?: {
@@ -29019,12 +33392,11 @@ export type Schemas = {
         };
       };
     };
-    runId?: string;
-    sourceId?: string;
-    title: string;
-    titleSnippet: string;
+    runId: string;
+    sourceData?: GenericRecord;
     /** Format: date-time */
     readonly updatedAt?: string;
+    userFixable: boolean;
   };
   SwagMigrationMapping: {
     additionalData?: GenericRecord;
@@ -29034,7 +33406,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     entity: string;
-    entityUuid?: string;
+    entityId?: string;
     entityValue?: string;
     id: string;
     oldIdentifier?: string;
@@ -29048,7 +33420,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     entity: string;
-    entityUuid?: string;
+    entityId?: string;
     entityValue?: string;
     id: string;
     oldIdentifier?: string;
@@ -29881,6 +34253,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   SystemConfig: {
+    /** Config key for shop configurations. */
     configurationKey: string;
     configurationValue: {
       _value?: GenericRecord;
@@ -29889,11 +34262,13 @@ export type Schemas = {
     readonly createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   SystemConfigJsonApi: components["schemas"]["resource"] & {
+    /** Config key for shop configurations. */
     configurationKey: string;
     configurationValue: {
       _value?: GenericRecord;
@@ -29918,6 +34293,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of sales channel. */
     salesChannelId?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -29928,6 +34304,21 @@ export type Schemas = {
     readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     extensions?: {
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /tag/c101058e7ea21bbbf2a5ac893088e90b/individualPricings
+           */
+          related?: string;
+        };
+      };
       subscriptions?: {
         data?: {
           /** @example 2d5d14f95af035cbd8437948de61f94c */
@@ -29960,6 +34351,21 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     extensions?: {
+      individualPricings?: {
+        data?: {
+          /** @example 5246e417af07e49dc4961c49d4ad6c75 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /tag/c101058e7ea21bbbf2a5ac893088e90b/individualPricings
+           */
+          related?: string;
+        };
+      };
       subscriptions?: {
         data?: {
           /** @example 2d5d14f95af035cbd8437948de61f94c */
@@ -30121,7 +34527,7 @@ export type Schemas = {
   Tax: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       customizedProductsOptions?: {
         data?: {
@@ -30155,16 +34561,20 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Name defined for a Tax. */
     name: string;
     /**
      * Format: int64
-     * Added since version: 6.4.0.0.
+     * The order of the tabs of your defined taxes in the storefront by entering numerical values like 1,2,3, etc. Added since version: 6.4.0.0.
      */
     position?: number;
     products?: components["schemas"]["Product"][];
     rules?: components["schemas"]["TaxRule"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate of tax.
+     */
     taxRate: number;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -30172,7 +34582,7 @@ export type Schemas = {
   TaxJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       customizedProductsOptions?: {
         data?: {
@@ -30206,10 +34616,11 @@ export type Schemas = {
       };
     };
     id: string;
+    /** Name defined for a Tax. */
     name: string;
     /**
      * Format: int64
-     * Added since version: 6.4.0.0.
+     * The order of the tabs of your defined taxes in the storefront by entering numerical values like 1,2,3, etc. Added since version: 6.4.0.0.
      */
     position?: number;
     relationships?: {
@@ -30259,25 +34670,36 @@ export type Schemas = {
         };
       };
     };
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate of tax.
+     */
     taxRate: number;
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   TaxProvider: {
+    /** When boolean value is `true`, the tax providers are available for selection in the storefront. */
     active?: boolean;
     app?: components["schemas"]["App"];
+    /** Unique identity of app. */
     appId?: string;
     availabilityRule?: components["schemas"]["Rule"];
+    /** Unique identity of availability Rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of tax provider. */
     identifier: string;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the tax providers from the list.
+     */
     priority: number;
+    /** External URL makes request to get tax info. */
     processUrl?: string;
     translated: {
       appId: string;
@@ -30290,17 +34712,25 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   TaxProviderJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the tax providers are available for selection in the storefront. */
     active?: boolean;
+    /** Unique identity of app. */
     appId?: string;
+    /** Unique identity of availability Rule. */
     availabilityRuleId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
+    /** Unique identity of tax provider. */
     identifier: string;
     name: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * A numerical value to prioritize one of the tax providers from the list.
+     */
     priority: number;
+    /** External URL makes request to get tax info. */
     processUrl?: string;
     relationships?: {
       app?: {
@@ -30345,9 +34775,13 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   TaxRule: {
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the tax rule is enabled.
+     */
     activeFrom?: string;
     country?: components["schemas"]["Country"];
+    /** Unique identity of country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
@@ -30359,17 +34793,26 @@ export type Schemas = {
     };
     id: string;
     tax?: components["schemas"]["Tax"];
+    /** Unique identity of tax. */
     taxId: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate of tax defined for a tax rule.
+     */
     taxRate: number;
+    /** Unique identity of tax rule type. */
     taxRuleTypeId: string;
     type?: components["schemas"]["TaxRuleType"];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   TaxRuleJsonApi: components["schemas"]["resource"] & {
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Date and time when the tax rule is enabled.
+     */
     activeFrom?: string;
+    /** Unique identity of country. */
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
@@ -30427,9 +34870,14 @@ export type Schemas = {
         };
       };
     };
+    /** Unique identity of tax. */
     taxId: string;
-    /** Format: float */
+    /**
+     * Format: float
+     * Rate of tax defined for a tax rule.
+     */
     taxRate: number;
+    /** Unique identity of tax rule type. */
     taxRuleTypeId: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -30438,9 +34886,13 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined tax rules to be displayed in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position: number;
     rules?: components["schemas"]["TaxRule"][];
+    /** Unique name of tax rule type. */
     readonly technicalName: string;
     translated: {
       technicalName: string;
@@ -30454,7 +34906,10 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * The order of the tabs of your defined tax rules to be displayed in the storefront by entering numerical values like 1,2,3, etc.
+     */
     position: number;
     relationships?: {
       rules?: {
@@ -30473,6 +34928,7 @@ export type Schemas = {
         };
       };
     };
+    /** Unique name of tax rule type. */
     readonly technicalName: string;
     translated: {
       technicalName: string;
@@ -30489,7 +34945,7 @@ export type Schemas = {
     configValues?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dependentThemes?: components["schemas"]["Theme"][];
     description?: string;
     helpTexts?: GenericRecord;
@@ -30528,7 +34984,7 @@ export type Schemas = {
     configValues?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     helpTexts?: GenericRecord;
     id: string;
@@ -30628,7 +35084,7 @@ export type Schemas = {
   Unit: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     products?: components["schemas"]["Product"][];
@@ -30643,7 +35099,7 @@ export type Schemas = {
   UnitJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     relationships?: {
@@ -30674,8 +35130,11 @@ export type Schemas = {
   User: {
     accessKeys?: components["schemas"]["UserAccessKey"][];
     aclRoles?: components["schemas"]["AclRole"][];
+    /** When boolean value is `true`, the user is enabled. */
     active?: boolean;
+    /** Parameter that indicates if the user is an admin. */
     admin?: boolean;
+    /** Unique identity of the avatar. */
     avatarId?: string;
     avatarMedia?: components["schemas"]["Media"];
     configs?: components["schemas"]["UserConfig"][];
@@ -30683,7 +35142,8 @@ export type Schemas = {
     readonly createdAt?: string;
     createdCustomers?: components["schemas"]["Customer"][];
     createdOrders?: components["schemas"]["Order"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email of the user. */
     email: string;
     extensions?: {
       cmsPageActivities?: {
@@ -30716,6 +35176,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      createdAdvancedProductCatalogs?: {
+        data?: {
+          /** @example e0d6784016e56c0ac2ed620abadda119 */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAdvancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
       createdAppointments?: {
         data?: {
           /** @example 888e350c3c9a465bc4d7c8a80840b2aa */
@@ -30727,6 +35202,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAppointments
+           */
+          related?: string;
+        };
+      };
+      createdBudgets?: {
+        data?: {
+          /** @example 62528618b0cda8a734a729c2dd9407a2 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdBudgets
+           */
+          related?: string;
+        };
+      };
+      createdIndividualPricings?: {
+        data?: {
+          /** @example e383c28adc8be26b4561702835291d05 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdIndividualPricings
            */
           related?: string;
         };
@@ -30911,6 +35416,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      updatedAdvancedProductCatalogs?: {
+        data?: {
+          /** @example a26e117c9f4ed119b46afbc3e3cae7f0 */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAdvancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
       updatedAppointments?: {
         data?: {
           /** @example b64277a1e650794e2c57924c07825014 */
@@ -30922,6 +35442,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAppointments
+           */
+          related?: string;
+        };
+      };
+      updatedIndividualPricings?: {
+        data?: {
+          /** @example c04472254d6a0e3655d277ec6ee53c29 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedIndividualPricings
            */
           related?: string;
         };
@@ -30942,46 +35477,66 @@ export type Schemas = {
         };
       };
     };
+    /** First name of the user. */
     firstName: string;
     id: string;
     importExportLogEntries?: components["schemas"]["ImportExportLog"][];
+    /** Last name of the user. */
     lastName: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Parameter that indicates when the password was last updated by the user.
+     */
     lastUpdatedPasswordAt?: string;
     locale?: components["schemas"]["Locale"];
+    /** Unique identity of locale. */
     localeId: string;
+    mcpAllowlist?: GenericRecord;
     media?: components["schemas"]["Media"][];
     recoveryUser?: components["schemas"]["UserRecovery"];
     stateMachineHistoryEntries?: components["schemas"]["StateMachineHistory"][];
+    /** Time configuration in the user's profile. */
     timeZone?: string;
+    /** Title of the user. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedCustomers?: components["schemas"]["Customer"][];
     updatedOrders?: components["schemas"]["Order"][];
+    /** Username of the user. */
     username: string;
   };
   UserAccessKey: {
+    /** Access key to admin api. */
     accessKey: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Parameter that indicates when the access key was last accessed.
+     */
     lastUsageAt?: string;
+    /** Secret key to admin api. */
     secretAccessKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     user?: components["schemas"]["User"];
+    /** Unique identity of user. */
     userId: string;
   };
   UserAccessKeyJsonApi: components["schemas"]["resource"] & {
+    /** Access key to admin api. */
     accessKey: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Parameter that indicates when the access key was last accessed.
+     */
     lastUsageAt?: string;
     relationships?: {
       user?: {
@@ -31000,19 +35555,23 @@ export type Schemas = {
         };
       };
     };
+    /** Secret key to admin api. */
     secretAccessKey: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of user. */
     userId: string;
   };
   UserConfig: {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique key for every userconfig. */
     key: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     user?: components["schemas"]["User"];
+    /** Unique identity of user. */
     userId: string;
     value?: GenericRecord;
   };
@@ -31020,6 +35579,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id: string;
+    /** Unique key for every userconfig. */
     key: string;
     relationships?: {
       user?: {
@@ -31040,16 +35600,21 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of user. */
     userId: string;
     value?: GenericRecord;
   };
   UserJsonApi: components["schemas"]["resource"] & {
+    /** When boolean value is `true`, the user is enabled. */
     active?: boolean;
+    /** Parameter that indicates if the user is an admin. */
     admin?: boolean;
+    /** Unique identity of the avatar. */
     avatarId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Email of the user. */
     email: string;
     extensions?: {
       cmsPageActivities?: {
@@ -31082,6 +35647,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      createdAdvancedProductCatalogs?: {
+        data?: {
+          /** @example e0d6784016e56c0ac2ed620abadda119 */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAdvancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
       createdAppointments?: {
         data?: {
           /** @example 888e350c3c9a465bc4d7c8a80840b2aa */
@@ -31093,6 +35673,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAppointments
+           */
+          related?: string;
+        };
+      };
+      createdBudgets?: {
+        data?: {
+          /** @example 62528618b0cda8a734a729c2dd9407a2 */
+          id?: string;
+          /** @example b2b_components_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdBudgets
+           */
+          related?: string;
+        };
+      };
+      createdIndividualPricings?: {
+        data?: {
+          /** @example e383c28adc8be26b4561702835291d05 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdIndividualPricings
            */
           related?: string;
         };
@@ -31277,6 +35887,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      updatedAdvancedProductCatalogs?: {
+        data?: {
+          /** @example a26e117c9f4ed119b46afbc3e3cae7f0 */
+          id?: string;
+          /** @example b2b_components_advanced_product_catalogs */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAdvancedProductCatalogs
+           */
+          related?: string;
+        };
+      };
       updatedAppointments?: {
         data?: {
           /** @example b64277a1e650794e2c57924c07825014 */
@@ -31288,6 +35913,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAppointments
+           */
+          related?: string;
+        };
+      };
+      updatedIndividualPricings?: {
+        data?: {
+          /** @example c04472254d6a0e3655d277ec6ee53c29 */
+          id?: string;
+          /** @example b2b_components_individual_pricing */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedIndividualPricings
            */
           related?: string;
         };
@@ -31308,12 +35948,19 @@ export type Schemas = {
         };
       };
     };
+    /** First name of the user. */
     firstName: string;
     id: string;
+    /** Last name of the user. */
     lastName: string;
-    /** Format: date-time */
+    /**
+     * Format: date-time
+     * Parameter that indicates when the password was last updated by the user.
+     */
     lastUpdatedPasswordAt?: string;
+    /** Unique identity of locale. */
     localeId: string;
+    mcpAllowlist?: GenericRecord;
     relationships?: {
       accessKeys?: {
         data?: {
@@ -31511,26 +36158,28 @@ export type Schemas = {
         };
       };
     };
+    /** Time configuration in the user's profile. */
     timeZone?: string;
+    /** Title of the user. */
     title?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Username of the user. */
     username: string;
   };
   UserRecovery: {
     /** Format: date-time */
     readonly createdAt?: string;
-    hash: string;
     id: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     user?: components["schemas"]["User"];
+    /** Unique identity of user. */
     userId: string;
   };
   UserRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    hash: string;
     id: string;
     relationships?: {
       user?: {
@@ -31551,6 +36200,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Unique identity of user. */
     userId: string;
   };
   VideoChatCreateStruct: {
@@ -31581,6 +36231,7 @@ export type Schemas = {
     description?: string;
     id: string;
     name: string;
+    orderWarehouseGroups?: components["schemas"]["OrderWarehouseGroup"][];
     /** Format: int64 */
     priority?: number;
     products?: components["schemas"]["Product"][];
@@ -31599,6 +36250,21 @@ export type Schemas = {
     /** Format: int64 */
     priority?: number;
     relationships?: {
+      orderWarehouseGroups?: {
+        data?: {
+          /** @example a578b672a12a5598c96babdfd01f0de2 */
+          id?: string;
+          /** @example order_warehouse_group */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /warehouse-group/de0cc3be51d97f8063ce4c0cb7ba2515/orderWarehouseGroups
+           */
+          related?: string;
+        };
+      };
       products?: {
         data?: {
           /** @example 86024cad1e83101d97359d7351051156 */
@@ -31731,12 +36397,16 @@ export type Schemas = {
     url: string;
   };
   WebhookEventLog: {
+    /** Unique name of app. */
     appName?: string;
+    /** Version of teh app. */
     appVersion?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Parameter that records \\"success or failed\\" status of the event. */
     deliveryStatus: string;
+    /** Unique name of event. */
     eventName: string;
     extensions?: {
       flowSequences?: {
@@ -31757,27 +36427,43 @@ export type Schemas = {
     };
     id: string;
     onlyLiveVersion?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Time the event took to process.
+     */
     processingTime?: number;
     requestContent?: GenericRecord;
     responseContent?: GenericRecord;
+    /** Parameter that stores the reason phrase or message associated with the response received from a webhook event. */
     responseReasonPhrase?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * HTTP status codes that are typically generated to provide informational (1xx), successful (2xx), redirection (3xx), client error (4xx), or server error (5xx) responses.
+     */
     responseStatusCode?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Time at which the event occurred.
+     */
     timestamp?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A URL for the webhook event log. */
     url: string;
+    /** Unique name of webhook. */
     webhookName: string;
   };
   WebhookEventLogJsonApi: components["schemas"]["resource"] & {
+    /** Unique name of app. */
     appName?: string;
+    /** Version of teh app. */
     appVersion?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
+    /** Parameter that records \\"success or failed\\" status of the event. */
     deliveryStatus: string;
+    /** Unique name of event. */
     eventName: string;
     extensions?: {
       flowSequences?: {
@@ -31798,18 +36484,30 @@ export type Schemas = {
     };
     id: string;
     onlyLiveVersion?: boolean;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Time the event took to process.
+     */
     processingTime?: number;
     requestContent?: GenericRecord;
     responseContent?: GenericRecord;
+    /** Parameter that stores the reason phrase or message associated with the response received from a webhook event. */
     responseReasonPhrase?: string;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * HTTP status codes that are typically generated to provide informational (1xx), successful (2xx), redirection (3xx), client error (4xx), or server error (5xx) responses.
+     */
     responseStatusCode?: number;
-    /** Format: int64 */
+    /**
+     * Format: int64
+     * Time at which the event occurred.
+     */
     timestamp?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** A URL for the webhook event log. */
     url: string;
+    /** Unique name of webhook. */
     webhookName: string;
   };
   WebhookJsonApi: components["schemas"]["resource"] & {
@@ -31856,9 +36554,7 @@ export type Schemas = {
     page?: number;
     /** List of last seen products */
     products?: (components["schemas"]["Product"] & {
-      customFields?: {
-        wishlistAttendeeIds?: string[];
-      };
+      customFields?: CustomFields | null;
     })[];
     /** The total number of products */
     total?: number;
@@ -31926,7 +36622,10 @@ export type Schemas = {
       enableAdminWorker?: boolean;
       /** Whether the notification worker is enabled. */
       enableNotificationWorker?: boolean;
-      /** Whether the queue statistics worker is enabled. */
+      /**
+       * @deprecated
+       * Whether the queue statistics worker is enabled. Deprecated: This property will be removed in v6.8.0. The increment-based message queue statistics are deprecated.
+       */
       enableQueueStatsWorker?: boolean;
       /** Configured Symfony Messenger transports used by the admin workers. */
       transports?: string[];
@@ -31979,6 +36678,10 @@ export type Schemas = {
       enableStagingMode?: boolean;
       /** State of the URL upload feature. */
       enableUrlFeature?: boolean;
+      /** Timestamp of the first executed migration in ISO-8601 UTC format, used for Product Analytics consent eligibility. */
+      firstMigrationDate: string | null;
+      /** Whether presigned S3 upload is available. True when presigned upload is enabled and an S3 filesystem is configured. */
+      presignedUploadSupported?: boolean;
       /** Whitelisted file extensions for private filesystem uploads. */
       private_allowed_extensions?: string[];
     };
@@ -32520,7 +37223,10 @@ export type Schemas = {
   paypal_v1_payment_transaction_item_list_shipping_address: components["schemas"]["paypal_v1_common_address"] & {
     recipient_name: string;
   };
-  paypal_v1_payment_transaction_item_list_shipping_option: unknown;
+  paypal_v1_payment_transaction_item_list_shipping_option: Record<
+    string,
+    never
+  >;
   paypal_v1_payment_transaction_payee: {
     email: string;
     merchant_id: string;
@@ -32869,6 +37575,90 @@ export type Schemas = {
     code: string;
     type: string;
   };
+  paypal_v2_eligible_methods_data: {
+    eligible_methods: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods"];
+    supplementary_data: components["schemas"]["paypal_v2_eligible_methods_data_supplementary_data"];
+  };
+  paypal_v2_eligible_methods_data_eligible_methods: {
+    advanced_cards: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_advanced_cards"];
+    apple_pay: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_apple_pay"];
+    bancontact: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_bancontact"];
+    bizum: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_bizum"];
+    blik: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_blik"];
+    eps: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_eps"];
+    google_pay: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_google_pay"];
+    ideal: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_ideal"];
+    klarna: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_klarna"];
+    p_2_4: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_p24"];
+    paypal: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal"];
+    paypal_pay_later: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal_pay_later"];
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_advanced_cards: {
+    cobranded_enabled: boolean;
+    supports_installements: boolean;
+    vendors: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_advanced_cards_vendor"][];
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_advanced_cards_vendor: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal"] & {
+    branded: boolean;
+    eligible: boolean;
+    network: string;
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_apple_pay: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal"] & {
+    config: Record<string, never>[];
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_bancontact: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_bizum: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_blik: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_eps: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_google_pay: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal"] & {
+    config: Record<string, never>[];
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_ideal: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_klarna: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_p24: GenericRecord;
+  paypal_v2_eligible_methods_data_eligible_methods_paypal: {
+    can_be_vaulted: boolean;
+  };
+  paypal_v2_eligible_methods_data_eligible_methods_paypal_pay_later: components["schemas"]["paypal_v2_eligible_methods_data_eligible_methods_paypal"] & {
+    /** ISO 3166-1 alpha-2 country code */
+    country_code: string;
+    product_code: string;
+  };
+  paypal_v2_eligible_methods_data_supplementary_data: {
+    /** ISO 3166-1 alpha-2 country code */
+    buyer_country_code: string;
+  };
+  paypal_v2_find_eligible_methods: {
+    customer: components["schemas"]["paypal_v2_find_eligible_methods_customer"];
+    preferences: components["schemas"]["paypal_v2_find_eligible_methods_preferences"];
+    /** Does not have to be a full purchase unit.
+     *     `[{"amount":{"currency_code":"<iso-4217-code>"},"payee":{"merchant_id":"<merchant-id>"}}]` is enough. */
+    purchase_units: components["schemas"]["paypal_v2_order_purchase_unit"][];
+  };
+  paypal_v2_find_eligible_methods_customer: {
+    channel: components["schemas"]["paypal_v2_find_eligible_methods_customer_channel"];
+    /** ISO 3166-1 alpha-2 country code */
+    country_code: string;
+  };
+  paypal_v2_find_eligible_methods_customer_channel: {
+    browser_type: string | null;
+    client_os: string | null;
+    device_type: string | null;
+  };
+  paypal_v2_find_eligible_methods_preferences: {
+    commit: boolean;
+    /** @enum {string} */
+    intent: "CAPTURE" | "AUTHORIZE";
+    /** @enum {string} */
+    payment_flow: "ONE_TIME_PAYMENT";
+    payment_source_constraint: components["schemas"]["paypal_v2_find_eligible_methods_preferences_payment_source_constraint"];
+    vault: boolean;
+  };
+  paypal_v2_find_eligible_methods_preferences_payment_source_constraint: {
+    /** @enum {string} */
+    constraint_type: "INCLUDE";
+    payment_sources: string[];
+  };
   paypal_v2_order: {
     application_context: components["schemas"]["paypal_v2_order_application_context"];
     create_time: string;
@@ -32920,6 +37710,9 @@ export type Schemas = {
       | null;
   };
   paypal_v2_order_payment_source: {
+    afterpay:
+      | components["schemas"]["paypal_v2_order_payment_source_afterpay"]
+      | null;
     apple_pay: components["schemas"]["paypal_v2_order_payment_source_apple_pay"];
     bancontact:
       | components["schemas"]["paypal_v2_order_payment_source_bancontact"]
@@ -32934,6 +37727,9 @@ export type Schemas = {
       | components["schemas"]["paypal_v2_order_payment_source_google_pay"]
       | null;
     ideal: components["schemas"]["paypal_v2_order_payment_source_ideal"] | null;
+    klarna:
+      | components["schemas"]["paypal_v2_order_payment_source_klarna"]
+      | null;
     multibanco:
       | components["schemas"]["paypal_v2_order_payment_source_multibanco"]
       | null;
@@ -32948,11 +37744,21 @@ export type Schemas = {
     paypal:
       | components["schemas"]["paypal_v2_order_payment_source_paypal"]
       | null;
+    swish: components["schemas"]["paypal_v2_order_payment_source_swish"] | null;
     token: components["schemas"]["paypal_v2_order_payment_source_token"] | null;
     trustly:
       | components["schemas"]["paypal_v2_order_payment_source_trustly"]
       | null;
     venmo: components["schemas"]["paypal_v2_order_payment_source_venmo"] | null;
+  };
+  paypal_v2_order_payment_source_afterpay: {
+    /** Format: date */
+    birth_date: string;
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+    phone: string;
   };
   paypal_v2_order_payment_source_apple_pay: {
     attributes:
@@ -33106,6 +37912,13 @@ export type Schemas = {
     experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
     name: string;
   };
+  paypal_v2_order_payment_source_klarna: {
+    country_code: string;
+    email: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+    phone: string;
+  };
   paypal_v2_order_payment_source_multibanco: {
     country_code: string;
     experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
@@ -33158,6 +37971,12 @@ export type Schemas = {
     phone_number: components["schemas"]["paypal_v2_common_phone_number"] | null;
     phone_type: string;
     vault_id: string;
+  };
+  paypal_v2_order_payment_source_swish: {
+    country_code: string;
+    experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
+    name: string;
+    phone: string;
   };
   paypal_v2_order_payment_source_token: {
     experience_context: components["schemas"]["paypal_v2_order_payment_source_common_experience_context"];
@@ -33417,6 +38236,7 @@ export type Schemas = {
     business_entity: components["schemas"]["paypal_v2_referral_business_entity"];
     capabilities: string[];
     legal_consents: components["schemas"]["paypal_v2_referral_legal_consent"][];
+    legal_country_code: string;
     links: components["schemas"]["paypal_v2_common_link"][];
     operations: components["schemas"]["paypal_v2_referral_operation"][];
     partner_config_override: components["schemas"]["paypal_v2_referral_partner_config_override"];
@@ -33453,7 +38273,10 @@ export type Schemas = {
     third_party_details: components["schemas"]["paypal_v2_referral_operation_api_integration_preference_rest_api_integration_third_party_details"];
   };
   paypal_v2_referral_operation_api_integration_preference_rest_api_integration_third_party_details: {
+    /** @deprecated */
     features: string[];
+    organization: string;
+    signup_mode: string;
   };
   paypal_v2_referral_partner_config_override: {
     partner_logo_url: string;
@@ -33548,6 +38371,12 @@ export type Schemas = {
   };
 };
 export type operations = {
+  "appSecretRotation post /_action/app-system/secret/rotate": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 202;
+  };
   "clearCache delete /_action/cache": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -33570,6 +38399,10 @@ export type operations = {
   "clearCacheDelayed delete /_action/cache-delayed": {
     contentType?: "application/json";
     accept?: "application/json";
+    query?: {
+      /** This parameter indicates that in addition to invalidating the delayed caches, the opensearch indices will also be refreshed, which should lead to a clean state on the next read requests. When OpenSearch is not used this parameter will be ignored. */
+      refreshOpenSearch?: boolean;
+    };
     response: never;
     responseCode: 204;
   };
@@ -34113,6 +38946,23 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "saveMcpAllowlist post /_action/integration/{integrationId}/mcp-allowlist": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The integration UUID. */
+      integrationId: string;
+    };
+    body: {
+      allowlist: {
+        prompts?: string[] | null;
+        resources?: string[] | null;
+        tools?: string[] | null;
+      } | null;
+    };
+    response: never;
+    responseCode: 204;
+  };
   "inviteEmployee post /_action/invite-employee": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -34125,6 +38975,35 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
+  "mailTemplateAvailableVariables post /_action/mail-template/available-variables": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /**
+       * The business event name that provides the available variables.
+       * @example checkout.order.placed
+       */
+      eventName: string;
+      /**
+       * The path to the parent field of which the available variables should be returned. If omitted or empty, the top-level variables of the business event are returned.
+       * @example order.transactions
+       */
+      parentVariablePath?: string;
+    };
+    response: {
+      /**
+       * The name of the variable.
+       * @example salesChannel
+       */
+      fieldName: string;
+      /**
+       * Shows if behind the variable are more nested variables which can be accessed by another request to this endpoint with the updated parent variable path: `<parentVariablePath>.<fieldName>`
+       * @example true
+       */
+      hasChildren: boolean;
+    }[];
+    responseCode: 200;
+  };
   "build post /_action/mail-template/build": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -34132,7 +39011,7 @@ export type operations = {
       /** The content of the mail as plain text. */
       mailTemplate: {
         /**
-         * The content of mail mail template in html format.
+         * The content of the mail template in html format.
          * @example Hello {{ order.customerName }}, this is example mail content, the current date is {{ 'now'|date('d/m/Y') }}
          */
         contentHtml?: string;
@@ -34157,6 +39036,215 @@ export type operations = {
     response: string;
     responseCode: 200;
   };
+  "generateAndSendMail post /_action/mail-template/get-data-and-send": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** A list of binary attachments which should be added to the mail. */
+      binAttachments?: {
+        /** Binary content of the attachment. */
+        content: string;
+        /** File name of the attachment. */
+        fileName: string;
+        /** Mime type of the attachment. */
+        mimeType: string;
+      }[];
+      /** The content of the mail in HTML format. If passed, this content will be used instead of the content from the mail template. */
+      contentHtml?: string;
+      /** The content of the mail as plain text. If passed, this content will be used instead of the content from the mail template. */
+      contentPlain?: string;
+      /** List of document identifiers which should be attached to the mail. */
+      documentIds?: string[];
+      /**
+       * A map of entity names and corresponding identifiers that define entities which should be used additionally during rendering.
+       * @example {
+       *       "order": "b3c4d5e6f7a8b90a1b2c3d4e5f67890a",
+       *       "customer": "a1b2c3d4e5f67890b3c4d5e6f7a8b90a"
+       *     }
+       */
+      entities?: {
+        [key: string]: string;
+      };
+      /**
+       * Identifier of the mail template which should be rendered.
+       * @example b3c4d5e6f7a8b90a1b2c3d4e5f67890a
+       */
+      mailTemplateId: string;
+      /** List of media identifiers which should be attached to the mail. */
+      mediaIds?: string[];
+      /**
+       * A map of recipients with name and mail address.
+       * @example {
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
+       */
+      recipients: {
+        [key: string]: string | null;
+      };
+      /** A mail address or a map of recipients with name and mail address to be set in BCC. */
+      recipientsBcc?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of recipients with name and mail address to be set in CC. */
+      recipientsCc?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of mail addresses with name to be set in reply-to. */
+      replyTo?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of mail addresses with name to be set in return-path. */
+      returnPath?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** Identifier of the sales channel from which the mail should be send. */
+      salesChannelId: string;
+      /**
+       * Format: email
+       * Mail address of the sender. If not set, `core.basicInformation.email` or `core.mailerSettings.senderAddress` will be used from the shop configuration.
+       */
+      senderEmail?: string;
+      /** Name of the sender. If passed, this sender name will be used instead of the sender name from the mail template. */
+      senderName?: string;
+      /** Subject of the mail. If passed, this subject will be used instead of the subject from the mail template. */
+      subject?: string;
+      /**
+       * A map of template data that should be used additionally during rendering. Values in this map override generated or entity-derived template data with the same top-level keys.
+       * @example {
+       *       "salesChannel": {
+       *         "name": "Storefront"
+       *       },
+       *       "order": {
+       *         "orderNumber": "SW10042"
+       *       }
+       *     }
+       */
+      templateData?: {
+        [key: string]: unknown;
+      };
+      /** Enables mail test mode. The mail is still sent, but template rendering runs with the renderer's test mode enabled, a fallback `order.deepLinkCode` of `home` is injected when missing, and debug headers such as `X-Shopware-Language-Id` plus available event or sales-channel headers are added to the message. */
+      testMode?: boolean;
+    };
+    response: {
+      /** Length of the email message */
+      size: number;
+    };
+    responseCode: 200;
+  };
+  "mailTemplatePreview post /_action/mail-template/preview": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /**
+       * A map of entity names and corresponding identifiers that define entities which should be used additionally during rendering.
+       * @example {
+       *       "order": "b3c4d5e6f7a8b90a1b2c3d4e5f67890a",
+       *       "customer": "a1b2c3d4e5f67890b3c4d5e6f7a8b90a"
+       *     }
+       */
+      entities?: {
+        [key: string]: string;
+      };
+      /**
+       * Includes the sales channel mail header and footer in `contentHtml` and `contentPlain`. Defaults to `false`.
+       * @default false
+       */
+      includeHeaderFooter?: boolean;
+      /**
+       * Identifier of the mail template which should be rendered.
+       * @example b3c4d5e6f7a8b90a1b2c3d4e5f678906
+       */
+      mailTemplateId: string;
+      /**
+       * Identifier of the sales channel that should be used for the preview request.
+       * @example b3c4d5e6f7a8b90a1b2c3d4e5f67890a
+       */
+      salesChannelId?: string;
+      /**
+       * Enables strict variable rendering and enables errors on e.g. unknown variables. Defaults to `false`.
+       * @default false
+       */
+      strictRendering?: boolean;
+      /**
+       * A map of template data that should be used additionally during rendering. Values in this map override generated or entity-derived template data with the same top-level keys.
+       * @example {
+       *       "salesChannel": {
+       *         "name": "Storefront"
+       *       },
+       *       "order": {
+       *         "orderNumber": "SW10042"
+       *       }
+       *     }
+       */
+      templateData?: {
+        [key: string]: unknown;
+      };
+    };
+    response: {
+      contentHtml: {
+        /**
+         * The rendered content of the mail template in html format. Also contains the error when rendering this field wasn't possible.
+         * @example <div>Hello Mr. Mustermann,<br/>this is example mail content, the current date is 16.03.2026.</div>
+         */
+        content: string;
+        /**
+         * The type of the render result (either `success` or `error`)
+         * @example success
+         * @enum {string}
+         */
+        type: "success" | "error";
+      };
+      contentPlain: {
+        /**
+         * The rendered content of the mail template in plain text format. Also contains the error when rendering this field wasn't possible.
+         * @example Hello Mr. Mustermann, this is example mail content, the current date is 16.03.2026.
+         */
+        content: string;
+        /**
+         * The type of the render result (either `success` or `error`)
+         * @example success
+         * @enum {string}
+         */
+        type: "success" | "error";
+      };
+      senderName: {
+        /**
+         * The rendered content of the mail template's sender name. Also contains the error when rendering this field wasn't possible.
+         * @example Storefront
+         */
+        content: string;
+        /**
+         * The type of the render result (either `success` or `error`)
+         * @example success
+         * @enum {string}
+         */
+        type: "success" | "error";
+      };
+      subject: {
+        /**
+         * The rendered content of the mail template's subject. Also contains the error when rendering this field wasn't possible.
+         * @example Example mail
+         */
+        content: string;
+        /**
+         * The type of the render result (either `success` or `error`)
+         * @example success
+         * @enum {string}
+         */
+        type: "success" | "error";
+      };
+    };
+    responseCode: 200;
+  };
   "send post /_action/mail-template/send": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -34164,80 +39252,133 @@ export type operations = {
       /** A list of binary attachments which should be added to the mail. */
       binAttachments?: {
         /** Binary content of the attachment. */
-        content?: string;
+        content: string;
         /** File name of the attachment. */
-        fileName?: string;
+        fileName: string;
         /** Mime type of the attachment. */
-        mimeType?: string;
+        mimeType: string;
       }[];
       /** The content of the mail in HTML format. */
       contentHtml: string;
       /** The content of the mail as plain text. */
       contentPlain: string;
+      /** List of document identifiers which should be attached to the mail. */
+      documentIds?: string[];
+      /**
+       * A map of available data that is used to fill the mail template. Values in this map override generated or entity-derived template data with the same top-level keys.
+       * @example {
+       *       "salesChannel": {
+       *         "name": "Storefront"
+       *       }
+       *     }
+       */
+      mailTemplateData?: {
+        [key: string]: unknown;
+      };
+      /** Identifier of the mail template that should be used for attachments and sender defaults. */
+      mailTemplateId?: string;
       /** List of media identifiers which should be attached to the mail. */
       mediaIds?: string[];
       /**
-       * A list of recipients with name and mail address.
+       * A map of recipients with name and mail address.
        * @example {
        *       "test1@example.com": "Test user 1",
        *       "test2@example.com": "Test user 2"
        *     }
        */
       recipients: {
-        [key: string]: string;
+        [key: string]: string | null;
       };
-      /**
-       * A list of recipients with name and mail address to be set in BCC.
-       * @example {
-       *       "test1@example.com": "Test user 1",
-       *       "test2@example.com": "Test user 2"
-       *     }
-       */
-      recipientsBcc?: {
-        [key: string]: string;
-      };
-      /**
-       * A list of recipients with name and mail address to be set in CC.
-       * @example {
-       *       "test1@example.com": "Test user 1",
-       *       "test2@example.com": "Test user 2"
-       *     }
-       */
-      recipientsCc?: {
-        [key: string]: string;
-      };
-      /**
-       * A list of mail addresses with name and mail address to be set in reply to.
-       * @example {
-       *       "test1@example.com": "Test user 1",
-       *       "test2@example.com": "Test user 2"
-       *     }
-       */
-      replyTo?: {
-        [key: string]: string;
-      };
-      /**
-       * A list of mail addresses with name and mail address to be set in return path.
-       * @example {
-       *       "test1@example.com": "Test user 1",
-       *       "test2@example.com": "Test user 2"
-       *     }
-       */
-      returnPath?: {
-        [key: string]: string;
-      };
+      /** A mail address or a map of recipients with name and mail address to be set in BCC. */
+      recipientsBcc?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of recipients with name and mail address to be set in CC. */
+      recipientsCc?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of mail addresses with name to be set in reply-to. */
+      replyTo?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
+      /** A mail address or a map of mail addresses with name to be set in return-path. */
+      returnPath?:
+        | string
+        | {
+            [key: string]: string | null;
+          };
       /** Identifier of the sales channel from which the mail should be send. */
       salesChannelId: string;
-      /** Mail address of the sender. If not set, `core.basicInformation.email` or `core.mailerSettings.senderAddress` will be used from the shop configuration. */
+      /**
+       * Format: email
+       * Mail address of the sender. If not set, `core.basicInformation.email` or `core.mailerSettings.senderAddress` will be used from the shop configuration.
+       */
       senderEmail?: string;
       /** Name of the sender. */
-      senderName: string;
+      senderName?: string;
       /** Subject of the mail. */
       subject: string;
+      /** Enables mail test mode. The mail is still sent, but template rendering runs with the renderer's test mode enabled, a fallback `order.deepLinkCode` of `home` is injected when missing, and debug headers such as `X-Shopware-Language-Id` plus available event or sales-channel headers are added to the message. */
+      testMode?: boolean;
     };
     response: {
       /** Length of the email message */
-      size?: number;
+      size: number;
+    };
+    responseCode: 200;
+  };
+  "simulateMailTemplate post /_action/mail-template/simulate": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /**
+       * The business event name used to generate simulated mail template data.
+       * @example checkout.order.placed
+       */
+      eventName: string;
+      /**
+       * Identifier of the sales channel that should be used for the simulate request.
+       * @example b3c4d5e6f7a8b90a1b2c3d4e5f67890a
+       */
+      salesChannelId?: string;
+      /**
+       * Enables strict variable rendering and surfaces errors for unknown variables. Defaults to `true`.
+       * @default true
+       */
+      strictRendering?: boolean;
+      /**
+       * A map of mail template fields and their template content to render.
+       * @example {
+       *       "subject": "Order {{ order.orderNumber }} confirmation",
+       *       "senderName": "{{ salesChannel.name }}",
+       *       "contentHtml": "<div>Hello {{ order.orderCustomer.firstName }}</div>",
+       *       "contentPlain": "Hello {{ order.orderCustomer.firstName }}"
+       *     }
+       */
+      templateParts: {
+        [key: string]: string;
+      };
+    };
+    response: {
+      [key: string]: {
+        /**
+         * The rendered content of the mail template field. Also contains the error when rendering this field wasn't possible.
+         * @example Example mail
+         */
+        content: string;
+        /**
+         * The type of the render result (either `success` or `error`)
+         * @example success
+         * @enum {string}
+         */
+        type: "success" | "error";
+      };
     };
     responseCode: 200;
   };
@@ -34253,6 +39394,120 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
+  "mcpCapabilitiesList get /_action/mcp/capabilities": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      prompts: {
+        description?: string | null;
+        /** @example shopware-context */
+        name: string;
+      }[];
+      resources: {
+        description?: string | null;
+        mimeType?: string | null;
+        /** @example shopware-entity-list */
+        name: string;
+        /** @example shopware://entity-list */
+        uri: string;
+      }[];
+      tools: {
+        dependencies?: string[];
+        description?: string | null;
+        /** @example shopware-entity-search */
+        name: string;
+        requiredPrivileges?: {
+          entityParam?: string | null;
+          operations?: string[];
+          static?: string[];
+        } | null;
+      }[];
+    };
+    responseCode: 200;
+  };
+  "mcpToolsList get /_action/mcp/tools": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** Tool names that are automatically included when this tool is selected. */
+      dependencies?: string[];
+      /**
+       * Human-readable description of what the tool does.
+       * @example Search Shopware entities and return matching records.
+       */
+      description?: string | null;
+      /**
+       * Unique tool identifier used in `tools/call` requests.
+       * @example shopware-entity-search
+       */
+      name: string;
+      /** ACL privileges required by this tool. */
+      requiredPrivileges?: {
+        entityParam?: string | null;
+        operations?: string[];
+        static?: string[];
+      } | null;
+    }[];
+    responseCode: 200;
+  };
+  "addExternalThumbnails post /_action/media/{mediaId}/external-thumbnails": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** ID of the external media entity the thumbnails will be attached to. */
+      mediaId: components["schemas"]["MediaId"];
+    };
+    body: {
+      /** List of external thumbnails to attach */
+      thumbnails?: components["schemas"]["ExternalThumbnail"][];
+    };
+    response: {
+      /** ID of the media entity the thumbnails were attached to. */
+      mediaId?: components["schemas"]["MediaId"];
+      thumbnailsCreated?: number;
+    };
+    responseCode: 201;
+  };
+  "deleteExternalThumbnails delete /_action/media/{mediaId}/external-thumbnails": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** ID of the external media entity the thumbnails will be deleted from.. */
+      mediaId: components["schemas"]["MediaId"];
+    };
+    response: {
+      /** ID of the media entity the thumbnails were deleted from. */
+      mediaId?: components["schemas"]["MediaId"];
+    };
+    responseCode: 200;
+  };
+  "finalizeUpload post /_action/media/{mediaId}/finalize-upload": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** ID of the media entity to finalize */
+      mediaId: components["schemas"]["MediaId"];
+    };
+    body: {
+      /** File extension, e.g. `jpg`, `png`, `pdf` */
+      extension: string;
+      /** Name of the file without extension */
+      fileName: string;
+      /** Image height in pixels (optional, for images only) */
+      height?: number;
+      /** MIME type of the file */
+      mimeType: string;
+      /** Storage path returned by the presign-upload endpoint */
+      path: string;
+      /** Image width in pixels (optional, for images only) */
+      width?: number;
+    };
+    response: {
+      /** ID of the finalized media entity */
+      mediaId: string;
+    };
+    responseCode: 200;
+  };
   "upload post /_action/media/{mediaId}/upload":
     | {
         contentType?: "application/json";
@@ -34265,7 +39520,7 @@ export type operations = {
         };
         pathParams: {
           /** Identifier of the media entity. */
-          mediaId: string;
+          mediaId: components["schemas"]["MediaId"];
         };
         body: {
           /** The url of the media file that will be downloaded. */
@@ -34285,7 +39540,7 @@ export type operations = {
         };
         pathParams: {
           /** Identifier of the media entity. */
-          mediaId: string;
+          mediaId: components["schemas"]["MediaId"];
         };
         body: Blob;
         response: never;
@@ -34296,7 +39551,7 @@ export type operations = {
     accept?: "application/json";
     pathParams: {
       /** ID of the video media entity */
-      mediaId: string;
+      mediaId: components["schemas"]["MediaId"];
     };
     body: {
       /** ID of the image media entity to use as cover. Set to null to remove the cover. */
@@ -34321,12 +39576,52 @@ export type operations = {
       mimeType: string;
       /** Whether the media should be private */
       private?: boolean;
+      /** Optional list of external thumbnail URLs for the media entity. Used for CDNs that pre-generated thumbnails alongside the main media file.
+       *     Not to be confused with [remote thumbnails](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html#remote-thumbnail-generation), which are generated based on a pattern. */
+      thumbnails?: components["schemas"]["ExternalThumbnail"][];
       /** URL of the external media file */
       url: string;
     };
     response: {
       /** ID of the created media entity */
       id?: string;
+    };
+    responseCode: 200;
+  };
+  "presignUpload post /_action/media/presign-upload": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** File extension, e.g. `jpg`, `png`, `pdf` */
+      extension: string;
+      /** Name of the file without extension */
+      fileName: string;
+      /** ID of the media folder to place the new media in */
+      mediaFolderId?: string;
+      /** ID of an existing media entity to replace. If omitted, a new entity is created. */
+      mediaId?: string;
+      /** MIME type of the file, e.g. `image/jpeg` */
+      mimeType: string;
+      /**
+       * Whether the media should be private
+       * @default false
+       */
+      private?: boolean;
+    };
+    response: {
+      /**
+       * Format: date-time
+       * Expiration time of the presigned URL
+       */
+      expiresAt: string;
+      /** Whether a file with the same name already exists */
+      isDuplicate: boolean;
+      /** ID of the media entity */
+      mediaId: string;
+      /** Storage path of the media file, required for the finalize call */
+      path: string;
+      /** Presigned URL to upload the file to via HTTP PUT */
+      url: string;
     };
     responseCode: 200;
   };
@@ -34430,6 +39725,8 @@ export type operations = {
     body?: {
       /** A list of document identifiers that should be attached */
       documentIds?: string[];
+      /** An optional internal comment that will be saved with the state transition. */
+      internalComment?: string;
       /** A list of media identifiers that should be attached */
       mediaIds?: string[];
       /** Controls if a mail should be send to the customer. */
@@ -34467,6 +39764,8 @@ export type operations = {
     body?: {
       /** A list of document identifiers that should be attached */
       documentIds?: string[];
+      /** An optional internal comment that will be saved with the state transition. */
+      internalComment?: string;
       /** A list of media identifiers that should be attached */
       mediaIds?: string[];
       /** Controls if a mail should be sent to the customer. */
@@ -34515,6 +39814,8 @@ export type operations = {
     body?: {
       /** A list of document identifiers that should be attached */
       documentIds?: string[];
+      /** An optional internal comment that will be saved with the state transition. */
+      internalComment?: string;
       /** A list of media identifiers that should be attached */
       mediaIds?: string[];
       /** Controls if a mail should be sent to the customer. */
@@ -34999,6 +40300,59 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
+  "getEntityState get /_action/state-machine/{entityName}/{entityId}/state": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** This is the state column within the order delivery database table. There should be no need to change it from the default. */
+      stateFieldName?: string;
+    };
+    pathParams: {
+      /** Identifier of the entity. */
+      entityId: string;
+      /** Name of the entity. */
+      entityName: string;
+    };
+    response: {
+      transitions: {
+        /** The action name of the transition. */
+        actionName: string;
+        /** The technical name of the state the transition starts from. */
+        fromStateName: string;
+        /** The name of the transition. */
+        name: string;
+        /** The technical name of the transition. */
+        technicalName: string;
+        /** The technical name of the state the transition goes to. */
+        toStateName: string;
+        /** The URL to trigger the transition. */
+        url: string;
+      }[];
+    };
+    responseCode: 200;
+  };
+  "transitionEntityState post /_action/state-machine/{entityName}/{entityId}/state/{transition}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** This is the state column within the order delivery database table. There should be no need to change it from the default. */
+      stateFieldName?: string;
+    };
+    pathParams: {
+      /** Identifier of the entity. */
+      entityId: string;
+      /** Name of the entity. */
+      entityName: string;
+      /** The `action_name` of the `state_machine_transition`. */
+      transition: string;
+    };
+    body: {
+      /** An optional internal comment that will be saved with the state transition. */
+      internalComment?: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
   "sync post /_action/sync": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -35019,18 +40373,18 @@ export type operations = {
        * @enum {string}
        */
       action: "upsert" | "delete";
-      /**
-       * The entity that should be processed with the payload.
-       * @example product
-       */
-      entity: string;
       /** Only for delete operations: Instead of providing IDs in the payload, the filter by which should be deleted can be provided directly. */
-      filter?: (
+      criteria?: (
         | components["schemas"]["SimpleFilter"]
         | components["schemas"]["EqualsFilter"]
         | components["schemas"]["MultiNotFilter"]
         | components["schemas"]["RangeFilter"]
       )[];
+      /**
+       * The entity that should be processed with the payload.
+       * @example product
+       */
+      entity: string;
       /** Contains a list of changesets for an entity. If the action type is `delete`,
        *         a list of identifiers can be provided. */
       payload: GenericRecord[];
@@ -35043,6 +40397,70 @@ export type operations = {
       /** Object with information about not found entities */
       notFound?: GenericRecord;
     };
+    responseCode: 200;
+  };
+  "getConfigurationValues get /_action/system-config": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** The configuration domain. */
+      domain: string;
+      /** Whether to include inherited (global) values. */
+      inherit?: boolean;
+      /** The sales channel ID to scope the configuration to. */
+      salesChannelId?: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "saveConfiguration post /_action/system-config": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** The sales channel ID to scope the configuration to. */
+      salesChannelId?: string;
+      /** If true, the HTTP cache will not be invalidated. Use this for internal configuration values that do not affect the storefront. */
+      silent?: boolean;
+    };
+    body: {
+      [key: string]: unknown;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "batchSaveConfiguration post /_action/system-config/batch": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** If true, the HTTP cache will not be invalidated. Use this for internal configuration values that do not affect the storefront. */
+      silent?: boolean;
+    };
+    body: {
+      [key: string]: {
+        [key: string]: unknown;
+      };
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "checkConfiguration get /_action/system-config/check": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** The configuration domain to check. */
+      domain: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "getConfiguration get /_action/system-config/schema": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** The configuration domain. */
+      domain: string;
+    };
+    response: never;
     responseCode: 200;
   };
   "textToImageGenerate post /_action/text-to-image/generate": {
@@ -35241,6 +40659,39 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
+  "saveMcpAllowlistUser post /_action/user/{userId}/mcp-allowlist": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The user UUID. */
+      userId: string;
+    };
+    body: {
+      allowlist: {
+        prompts?: string[] | null;
+        resources?: string[] | null;
+        tools?: string[] | null;
+      } | null;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "userLogout post /_action/user/logout": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 204;
+  };
+  "supportsEmail post /_action/validation/email": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** The email to be verified. */
+      email: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
   "config get /_info/config": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -35357,6 +40808,17 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "queue get /_info/queue.json": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      /** Fully qualified class name of the message. */
+      name: string;
+      /** Number of pending messages of this type. */
+      size: number;
+    }[];
+    responseCode: 200;
+  };
   "getRoutes get /_info/routes": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -35396,6 +40858,90 @@ export type operations = {
       version?: string;
     };
     responseCode: 200;
+  };
+  "mcpGet get /_mcp": {
+    contentType?: "application/json";
+    accept: "text/event-stream";
+    headers?: {
+      "mcp-session-id"?: string;
+    };
+    response: string;
+    responseCode: 200;
+  };
+  "mcpPost post /_mcp":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Session ID returned by the server after `initialize`. Required for all requests except `initialize`. */
+          "mcp-session-id"?: string;
+          /** Integration access key for direct credential authentication (alternative to bearer token). */
+          "sw-access-key"?: string;
+          /** Integration secret access key. Required when `sw-access-key` is provided. */
+          "sw-secret-access-key"?: string;
+        };
+        body: {
+          id?: string | number | null;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+          /** @example tools/call */
+          method: string;
+          params?: {
+            [key: string]: unknown;
+          };
+        };
+        response: {
+          error?: {
+            code?: number;
+            message?: string;
+          };
+          id?: string | number | null;
+          /** @enum {string} */
+          jsonrpc?: "2.0";
+          result?: {
+            [key: string]: unknown;
+          };
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "text/event-stream";
+        headers?: {
+          /** Session ID returned by the server after `initialize`. Required for all requests except `initialize`. */
+          "mcp-session-id"?: string;
+          /** Integration access key for direct credential authentication (alternative to bearer token). */
+          "sw-access-key"?: string;
+          /** Integration secret access key. Required when `sw-access-key` is provided. */
+          "sw-secret-access-key"?: string;
+        };
+        body: {
+          id?: string | number | null;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+          /** @example tools/call */
+          method: string;
+          params?: {
+            [key: string]: unknown;
+          };
+        };
+        response: string;
+        responseCode: 200;
+      };
+  "mcpDelete delete /_mcp": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers: {
+      "mcp-session-id": string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "mcpOptions options /_mcp": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 204;
   };
   "createQuoteFromAdmin post /_proxy-quote/{salesChannelId}": {
     contentType?: "application/json";
@@ -37099,6 +42645,78 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "aggregateAppMcpPrompt post /aggregate/app-mcp-prompt":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["AppMcpPrompt"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpPrompt"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateAppMcpResource post /aggregate/app-mcp-resource":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["AppMcpResource"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpResource"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateAppMcpTool post /aggregate/app-mcp-tool":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["AppMcpTool"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpTool"][];
+        };
+        responseCode: 200;
+      };
   "aggregateAppPaymentMethod post /aggregate/app-payment-method":
     | {
         contentType?: "application/json";
@@ -37363,6 +42981,102 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "aggregateB2bComponentsIndividualPricing post /aggregate/b2b-components-individual-pricing":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsIndividualPricingCompanyAssignment post /aggregate/b2b-components-individual-pricing-company-assignment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsIndividualPricingComputedCache post /aggregate/b2b-components-individual-pricing-computed-cache":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateB2bComponentsIndividualPricingTier post /aggregate/b2b-components-individual-pricing-tier":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+        };
+        responseCode: 200;
+      };
   "aggregateB2bComponentsOrganization post /aggregate/b2b-components-organization":
     | {
         contentType?: "application/json";
@@ -37531,6 +43245,30 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "aggregateB2bComponentsSubscriptionEmployee post /aggregate/b2b-components-subscription-employee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+        };
+        responseCode: 200;
+      };
   "aggregateB2bEmployee post /aggregate/b2b-employee":
     | {
         contentType?: "application/json";
@@ -37600,6 +43338,54 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bPermission"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateBundleDiscount post /aggregate/bundle-discount":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["BundleDiscount"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleDiscount"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateBundleItem post /aggregate/bundle-item":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["BundleItem"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleItem"][];
         };
         responseCode: 200;
       };
@@ -38272,6 +44058,30 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateDocumentFile post /aggregate/document-file":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["DocumentFile"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DocumentFile"][];
         };
         responseCode: 200;
       };
@@ -40723,6 +46533,54 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "aggregateSalesChannelTrackingCustomer post /aggregate/sales-channel-tracking-customer":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateSalesChannelTrackingOrder post /aggregate/sales-channel-tracking-order":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingOrder"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingOrder"][];
+        };
+        responseCode: 200;
+      };
   "aggregateSalesChannelType post /aggregate/sales-channel-type":
     | {
         contentType?: "application/json";
@@ -41920,6 +47778,30 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationData"][];
+        };
+        responseCode: 200;
+      };
+  "aggregateSwagMigrationFix post /aggregate/swag-migration-fix":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: {
+          data?: components["schemas"]["SwagMigrationFix"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: {
+          aggregations: components["schemas"]["Aggregation"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SwagMigrationFix"][];
         };
         responseCode: 200;
       };
@@ -43500,6 +49382,444 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "getAppMcpPromptList get /app-mcp-prompt":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["AppMcpPrompt"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["AppMcpPrompt"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /app-mcp-prompt?limit=25 */
+            first?: unknown;
+            /** @example /app-mcp-prompt?limit=25&page=11 */
+            last?: unknown;
+            /** @example /app-mcp-prompt?limit=25&page=4 */
+            next?: unknown;
+            /** @example /app-mcp-prompt?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createAppMcpPrompt post /app-mcp-prompt":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpPrompt"];
+        response: {
+          data: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpPrompt"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      };
+  "getAppMcpPrompt get /app-mcp-prompt/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the app_mcp_prompt */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the app_mcp_prompt */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      };
+  "deleteAppMcpPrompt delete /app-mcp-prompt/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the app_mcp_prompt */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateAppMcpPrompt patch /app-mcp-prompt/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_prompt */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpPrompt"];
+        response: {
+          data: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_prompt */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpPrompt"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpPrompt"];
+        };
+        responseCode: 200;
+      };
+  "getAppMcpResourceList get /app-mcp-resource":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["AppMcpResource"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["AppMcpResource"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /app-mcp-resource?limit=25 */
+            first?: unknown;
+            /** @example /app-mcp-resource?limit=25&page=11 */
+            last?: unknown;
+            /** @example /app-mcp-resource?limit=25&page=4 */
+            next?: unknown;
+            /** @example /app-mcp-resource?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createAppMcpResource post /app-mcp-resource":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpResource"];
+        response: {
+          data: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpResource"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      };
+  "getAppMcpResource get /app-mcp-resource/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the app_mcp_resource */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the app_mcp_resource */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      };
+  "deleteAppMcpResource delete /app-mcp-resource/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the app_mcp_resource */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateAppMcpResource patch /app-mcp-resource/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_resource */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpResource"];
+        response: {
+          data: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_resource */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpResource"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpResource"];
+        };
+        responseCode: 200;
+      };
+  "getAppMcpToolList get /app-mcp-tool":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["AppMcpTool"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["AppMcpTool"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /app-mcp-tool?limit=25 */
+            first?: unknown;
+            /** @example /app-mcp-tool?limit=25&page=11 */
+            last?: unknown;
+            /** @example /app-mcp-tool?limit=25&page=4 */
+            next?: unknown;
+            /** @example /app-mcp-tool?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createAppMcpTool post /app-mcp-tool":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpTool"];
+        response: {
+          data: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["AppMcpTool"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      };
+  "getAppMcpTool get /app-mcp-tool/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the app_mcp_tool */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the app_mcp_tool */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      };
+  "deleteAppMcpTool delete /app-mcp-tool/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the app_mcp_tool */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateAppMcpTool patch /app-mcp-tool/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_tool */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpTool"];
+        response: {
+          data: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the app_mcp_tool */
+          id: string;
+        };
+        body: components["schemas"]["AppMcpTool"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpTool"];
+        };
+        responseCode: 200;
+      };
   "getAppPaymentMethodList get /app-payment-method":
     | {
         contentType?: "application/json";
@@ -43973,6 +50293,18 @@ export type operations = {
       };
     };
     responseCode: 200;
+  };
+  "verifyAppUrl get /app-system/shop/verify": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** A unique identifier used to look up the token */
+      runId: string;
+      /** A unique identifier */
+      token: string;
+    };
+    response: never;
+    responseCode: 204;
   };
   "getAppTemplateList get /app-template":
     | {
@@ -45216,6 +51548,590 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "getB2bComponentsIndividualPricingList get /b2b-components-individual-pricing":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsIndividualPricing"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-individual-pricing?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-individual-pricing?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-individual-pricing?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-individual-pricing?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsIndividualPricing post /b2b-components-individual-pricing":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricing"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricing"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingCompanyAssignmentList get /b2b-components-individual-pricing-company-assignment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-individual-pricing-company-assignment?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-individual-pricing-company-assignment?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-individual-pricing-company-assignment?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-individual-pricing-company-assignment?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsIndividualPricingCompanyAssignment post /b2b-components-individual-pricing-company-assignment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingCompanyAssignment get /b2b-components-individual-pricing-company-assignment/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_company_assignment */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_company_assignment */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsIndividualPricingCompanyAssignment delete /b2b-components-individual-pricing-company-assignment/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_individual_pricing_company_assignment */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsIndividualPricingCompanyAssignment patch /b2b-components-individual-pricing-company-assignment/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_company_assignment */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_company_assignment */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingComputedCacheList get /b2b-components-individual-pricing-computed-cache":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-individual-pricing-computed-cache?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-individual-pricing-computed-cache?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-individual-pricing-computed-cache?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-individual-pricing-computed-cache?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsIndividualPricingComputedCache post /b2b-components-individual-pricing-computed-cache":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingComputedCache get /b2b-components-individual-pricing-computed-cache/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_computed_cache */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_computed_cache */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsIndividualPricingComputedCache delete /b2b-components-individual-pricing-computed-cache/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_individual_pricing_computed_cache */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsIndividualPricingComputedCache patch /b2b-components-individual-pricing-computed-cache/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_computed_cache */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_computed_cache */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingTierList get /b2b-components-individual-pricing-tier":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsIndividualPricingTier"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-individual-pricing-tier?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-individual-pricing-tier?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-individual-pricing-tier?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-individual-pricing-tier?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsIndividualPricingTier post /b2b-components-individual-pricing-tier":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricingTier get /b2b-components-individual-pricing-tier/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_tier */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_tier */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsIndividualPricingTier delete /b2b-components-individual-pricing-tier/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_individual_pricing_tier */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsIndividualPricingTier patch /b2b-components-individual-pricing-tier/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_tier */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing_tier */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsIndividualPricing get /b2b-components-individual-pricing/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsIndividualPricing delete /b2b-components-individual-pricing/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_individual_pricing */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsIndividualPricing patch /b2b-components-individual-pricing/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricing"];
+        response: {
+          data: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_individual_pricing */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsIndividualPricing"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"];
+        };
+        responseCode: 200;
+      };
   "getB2bComponentsOrganizationList get /b2b-components-organization":
     | {
         contentType?: "application/json";
@@ -46238,6 +53154,152 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "getB2bComponentsSubscriptionEmployeeList get /b2b-components-subscription-employee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-subscription-employee?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-subscription-employee?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-subscription-employee?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-subscription-employee?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsSubscriptionEmployee post /b2b-components-subscription-employee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        response: {
+          data: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsSubscriptionEmployee get /b2b-components-subscription-employee/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_subscription_employee */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_subscription_employee */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsSubscriptionEmployee delete /b2b-components-subscription-employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_subscription_employee */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsSubscriptionEmployee patch /b2b-components-subscription-employee/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_subscription_employee */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        response: {
+          data: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_subscription_employee */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"];
+        };
+        responseCode: 200;
+      };
   "getB2bEmployeeList get /b2b-employee":
     | {
         contentType?: "application/json";
@@ -46673,6 +53735,298 @@ export type operations = {
         body: components["schemas"]["B2bPermission"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bPermission"];
+        };
+        responseCode: 200;
+      };
+  "getBundleDiscountList get /bundle-discount":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["BundleDiscount"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["BundleDiscount"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /bundle-discount?limit=25 */
+            first?: unknown;
+            /** @example /bundle-discount?limit=25&page=11 */
+            last?: unknown;
+            /** @example /bundle-discount?limit=25&page=4 */
+            next?: unknown;
+            /** @example /bundle-discount?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createBundleDiscount post /bundle-discount":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["BundleDiscount"];
+        response: {
+          data: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["BundleDiscount"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      };
+  "getBundleDiscount get /bundle-discount/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the bundle_discount */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the bundle_discount */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      };
+  "deleteBundleDiscount delete /bundle-discount/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the bundle_discount */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateBundleDiscount patch /bundle-discount/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the bundle_discount */
+          id: string;
+        };
+        body: components["schemas"]["BundleDiscount"];
+        response: {
+          data: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the bundle_discount */
+          id: string;
+        };
+        body: components["schemas"]["BundleDiscount"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleDiscount"];
+        };
+        responseCode: 200;
+      };
+  "getBundleItemList get /bundle-item":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["BundleItem"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["BundleItem"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /bundle-item?limit=25 */
+            first?: unknown;
+            /** @example /bundle-item?limit=25&page=11 */
+            last?: unknown;
+            /** @example /bundle-item?limit=25&page=4 */
+            next?: unknown;
+            /** @example /bundle-item?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createBundleItem post /bundle-item":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["BundleItem"];
+        response: {
+          data: components["schemas"]["BundleItem"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["BundleItem"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleItem"];
+        };
+        responseCode: 200;
+      };
+  "getBundleItem get /bundle-item/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the bundle_item */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["BundleItem"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the bundle_item */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleItem"];
+        };
+        responseCode: 200;
+      };
+  "deleteBundleItem delete /bundle-item/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the bundle_item */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateBundleItem patch /bundle-item/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the bundle_item */
+          id: string;
+        };
+        body: components["schemas"]["BundleItem"];
+        response: {
+          data: components["schemas"]["BundleItem"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the bundle_item */
+          id: string;
+        };
+        body: components["schemas"]["BundleItem"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleItem"];
         };
         responseCode: 200;
       };
@@ -47844,6 +55198,36 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "fetchConsents get /consents": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      [key: string]: components["schemas"]["ConsentState"];
+    };
+    responseCode: 200;
+  };
+  "acceptConsent post /consents/accept": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** The name of the consent to accept */
+      consent: string;
+      /** Optional accepted revision. Only the consent definition's latest revision is accepted. When omitted, the latest revision is used automatically. */
+      revision?: string | null;
+    };
+    response: components["schemas"]["ConsentState"];
+    responseCode: 200;
+  };
+  "revokeConsent post /consents/revoke": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** The name of the consent to accept */
+      consent: string;
+    };
+    response: components["schemas"]["ConsentState"];
+    responseCode: 200;
+  };
   "getCountryList get /country":
     | {
         contentType?: "application/json";
@@ -50687,6 +58071,152 @@ export type operations = {
         body: components["schemas"]["DocumentBaseConfig"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentBaseConfig"];
+        };
+        responseCode: 200;
+      };
+  "getDocumentFileList get /document-file":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DocumentFile"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DocumentFile"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /document-file?limit=25 */
+            first?: unknown;
+            /** @example /document-file?limit=25&page=11 */
+            last?: unknown;
+            /** @example /document-file?limit=25&page=4 */
+            next?: unknown;
+            /** @example /document-file?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDocumentFile post /document-file":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DocumentFile"];
+        response: {
+          data: components["schemas"]["DocumentFile"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DocumentFile"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DocumentFile"];
+        };
+        responseCode: 200;
+      };
+  "getDocumentFile get /document-file/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the document_file */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DocumentFile"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the document_file */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DocumentFile"];
+        };
+        responseCode: 200;
+      };
+  "deleteDocumentFile delete /document-file/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the document_file */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDocumentFile patch /document-file/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the document_file */
+          id: string;
+        };
+        body: components["schemas"]["DocumentFile"];
+        response: {
+          data: components["schemas"]["DocumentFile"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the document_file */
+          id: string;
+        };
+        body: components["schemas"]["DocumentFile"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DocumentFile"];
         };
         responseCode: 200;
       };
@@ -59476,6 +67006,149 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "getProductBundles get /product-bundle": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      limit?: number;
+      page?: number;
+      /** SwagQL query */
+      query?: string;
+    };
+    response: {
+      data?: components["schemas"]["BundleProduct"][];
+      limit?: number;
+      page?: number;
+      total?: number;
+    };
+    responseCode: 200;
+  };
+  "createProductBundles post /product-bundle":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Set any value to return the created bundle payload(s) instead of 204. */
+          _response?: string;
+        };
+        body:
+          | components["schemas"]["BundleProductWrite"]
+          | components["schemas"]["BundleProductWrite"][];
+        response: {
+          data?: components["schemas"]["BundleProduct"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Set any value to return the created bundle payload(s) instead of 204. */
+          _response?: string;
+        };
+        body:
+          | components["schemas"]["BundleProductWrite"]
+          | components["schemas"]["BundleProductWrite"][];
+        response: never;
+        responseCode: 204;
+      };
+  "updateProductBundles patch /product-bundle":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Set any value to return the updated bundle payload(s). */
+          _response?: string;
+        };
+        body:
+          | components["schemas"]["BundleProductWrite"]
+          | components["schemas"]["BundleProductWrite"][];
+        response: {
+          data?: components["schemas"]["BundleProduct"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Set any value to return the updated bundle payload(s). */
+          _response?: string;
+        };
+        body:
+          | components["schemas"]["BundleProductWrite"]
+          | components["schemas"]["BundleProductWrite"][];
+        response: never;
+        responseCode: 204;
+      };
+  "getProductBundle get /product-bundle/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      id: string;
+    };
+    response: {
+      data?: components["schemas"]["BundleProduct"];
+    };
+    responseCode: 200;
+  };
+  "deleteProductBundle delete /product-bundle/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "cloneProductBundle post /product-bundle/{id}/clone": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Set any value to return the cloned bundle payload instead of just the identifier. */
+      _response?: string;
+    };
+    pathParams: {
+      id: string;
+    };
+    body?: components["schemas"]["BundleProductWrite"];
+    response:
+      | {
+          id: string;
+        }
+      | {
+          data?: components["schemas"]["BundleProduct"];
+        };
+    responseCode: 200;
+  };
+  "searchProductBundles post /product-bundle/search": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Set to 0 to suppress aggregations and search metadata. */
+      "sw-include-search-info"?: "0" | "1";
+    };
+    body: components["schemas"]["Criteria"];
+    response: {
+      aggregations?: GenericRecord;
+      data?: components["schemas"]["BundleProduct"][];
+      limit?: number;
+      page?: number;
+      total?: number;
+    };
+    responseCode: 200;
+  };
+  "searchProductBundleIds post /product-bundle/search-ids": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Criteria"];
+    response: {
+      data?: string[];
+      states?: string[];
+      total?: number;
+    };
+    responseCode: 200;
+  };
   "getProductConfiguratorSettingList get /product-configurator-setting":
     | {
         contentType?: "application/json";
@@ -65754,6 +73427,298 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "getSalesChannelTrackingCustomerList get /sales-channel-tracking-customer":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SalesChannelTrackingCustomer"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /sales-channel-tracking-customer?limit=25 */
+            first?: unknown;
+            /** @example /sales-channel-tracking-customer?limit=25&page=11 */
+            last?: unknown;
+            /** @example /sales-channel-tracking-customer?limit=25&page=4 */
+            next?: unknown;
+            /** @example /sales-channel-tracking-customer?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSalesChannelTrackingCustomer post /sales-channel-tracking-customer":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SalesChannelTrackingCustomer"];
+        response: {
+          data: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SalesChannelTrackingCustomer"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      };
+  "getSalesChannelTrackingCustomer get /sales-channel-tracking-customer/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_customer */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_customer */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      };
+  "deleteSalesChannelTrackingCustomer delete /sales-channel-tracking-customer/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the sales_channel_tracking_customer */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSalesChannelTrackingCustomer patch /sales-channel-tracking-customer/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_customer */
+          id: string;
+        };
+        body: components["schemas"]["SalesChannelTrackingCustomer"];
+        response: {
+          data: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_customer */
+          id: string;
+        };
+        body: components["schemas"]["SalesChannelTrackingCustomer"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"];
+        };
+        responseCode: 200;
+      };
+  "getSalesChannelTrackingOrderList get /sales-channel-tracking-order":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingOrder"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SalesChannelTrackingOrder"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /sales-channel-tracking-order?limit=25 */
+            first?: unknown;
+            /** @example /sales-channel-tracking-order?limit=25&page=11 */
+            last?: unknown;
+            /** @example /sales-channel-tracking-order?limit=25&page=4 */
+            next?: unknown;
+            /** @example /sales-channel-tracking-order?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSalesChannelTrackingOrder post /sales-channel-tracking-order":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SalesChannelTrackingOrder"];
+        response: {
+          data: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SalesChannelTrackingOrder"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      };
+  "getSalesChannelTrackingOrder get /sales-channel-tracking-order/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_order */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_order */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      };
+  "deleteSalesChannelTrackingOrder delete /sales-channel-tracking-order/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the sales_channel_tracking_order */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSalesChannelTrackingOrder patch /sales-channel-tracking-order/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_order */
+          id: string;
+        };
+        body: components["schemas"]["SalesChannelTrackingOrder"];
+        response: {
+          data: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the sales_channel_tracking_order */
+          id: string;
+        };
+        body: components["schemas"]["SalesChannelTrackingOrder"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingOrder"];
+        };
+        responseCode: 200;
+      };
   "getSalesChannelTypeList get /sales-channel-type":
     | {
         contentType?: "application/json";
@@ -66832,6 +74797,90 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchAppMcpPrompt post /search/app-mcp-prompt":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["AppMcpPrompt"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpPrompt"][];
+        };
+        responseCode: 200;
+      };
+  "searchAppMcpResource post /search/app-mcp-resource":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["AppMcpResource"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpResource"][];
+        };
+        responseCode: 200;
+      };
+  "searchAppMcpTool post /search/app-mcp-tool":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["AppMcpTool"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["AppMcpTool"][];
+        };
+        responseCode: 200;
+      };
   "searchAppPaymentMethod post /search/app-payment-method":
     | {
         contentType?: "application/json";
@@ -67140,6 +75189,118 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchB2bComponentsIndividualPricing post /search/b2b-components-individual-pricing":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricing"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsIndividualPricingCompanyAssignment post /search/b2b-components-individual-pricing-company-assignment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingCompanyAssignment"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsIndividualPricingComputedCache post /search/b2b-components-individual-pricing-computed-cache":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingComputedCache"][];
+        };
+        responseCode: 200;
+      };
+  "searchB2bComponentsIndividualPricingTier post /search/b2b-components-individual-pricing-tier":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsIndividualPricingTier"][];
+        };
+        responseCode: 200;
+      };
   "searchB2bComponentsOrganization post /search/b2b-components-organization":
     | {
         contentType?: "application/json";
@@ -67336,6 +75497,34 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchB2bComponentsSubscriptionEmployee post /search/b2b-components-subscription-employee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsSubscriptionEmployee"][];
+        };
+        responseCode: 200;
+      };
   "searchB2bEmployee post /search/b2b-employee":
     | {
         contentType?: "application/json";
@@ -67417,6 +75606,62 @@ export type operations = {
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bPermission"][];
+        };
+        responseCode: 200;
+      };
+  "searchBundleDiscount post /search/bundle-discount":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["BundleDiscount"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleDiscount"][];
+        };
+        responseCode: 200;
+      };
+  "searchBundleItem post /search/bundle-item":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["BundleItem"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["BundleItem"][];
         };
         responseCode: 200;
       };
@@ -68201,6 +76446,34 @@ export type operations = {
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
+        };
+        responseCode: 200;
+      };
+  "searchDocumentFile post /search/document-file":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DocumentFile"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DocumentFile"][];
         };
         responseCode: 200;
       };
@@ -71060,6 +79333,62 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchSalesChannelTrackingCustomer post /search/sales-channel-tracking-customer":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingCustomer"][];
+        };
+        responseCode: 200;
+      };
+  "searchSalesChannelTrackingOrder post /search/sales-channel-tracking-order":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SalesChannelTrackingOrder"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SalesChannelTrackingOrder"][];
+        };
+        responseCode: 200;
+      };
   "searchSalesChannelType post /search/sales-channel-type":
     | {
         contentType?: "application/json";
@@ -72457,6 +80786,34 @@ export type operations = {
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationData"][];
+        };
+        responseCode: 200;
+      };
+  "searchSwagMigrationFix post /search/swag-migration-fix":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SwagMigrationFix"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        headers?: {
+          /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
+          "sw-include-search-info"?: "0" | "1";
+        };
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SwagMigrationFix"][];
         };
         responseCode: 200;
       };
@@ -80041,6 +88398,152 @@ export type operations = {
         body: components["schemas"]["SwagMigrationData"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["SwagMigrationData"];
+        };
+        responseCode: 200;
+      };
+  "getSwagMigrationFixList get /swag-migration-fix":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SwagMigrationFix"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SwagMigrationFix"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /swag-migration-fix?limit=25 */
+            first?: unknown;
+            /** @example /swag-migration-fix?limit=25&page=11 */
+            last?: unknown;
+            /** @example /swag-migration-fix?limit=25&page=4 */
+            next?: unknown;
+            /** @example /swag-migration-fix?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSwagMigrationFix post /swag-migration-fix":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SwagMigrationFix"];
+        response: {
+          data: components["schemas"]["SwagMigrationFix"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SwagMigrationFix"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SwagMigrationFix"];
+        };
+        responseCode: 200;
+      };
+  "getSwagMigrationFix get /swag-migration-fix/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the swag_migration_fix */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SwagMigrationFix"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the swag_migration_fix */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SwagMigrationFix"];
+        };
+        responseCode: 200;
+      };
+  "deleteSwagMigrationFix delete /swag-migration-fix/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the swag_migration_fix */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSwagMigrationFix patch /swag-migration-fix/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the swag_migration_fix */
+          id: string;
+        };
+        body: components["schemas"]["SwagMigrationFix"];
+        response: {
+          data: components["schemas"]["SwagMigrationFix"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the swag_migration_fix */
+          id: string;
+        };
+        body: components["schemas"]["SwagMigrationFix"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SwagMigrationFix"];
         };
         responseCode: 200;
       };
