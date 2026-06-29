@@ -20,7 +20,7 @@
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -51,7 +51,7 @@
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       id?: string;
       name: string;
       /** Format: int64 */
@@ -77,7 +77,7 @@
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       department?: string;
       firstName: string;
       id?: string;
@@ -94,7 +94,7 @@
   "Salutation": " {
       /** Format: date-time */
       createdAt: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       displayName: string;
       id?: string;
       letterName: string;

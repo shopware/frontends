@@ -9,4 +9,19 @@
   | number
   | { [key: string]: GenericRecord };",
   ],
+  [
+    "CustomFields",
+    "type CustomFields = { [key: string]: CustomFieldValue };",
+  ],
+  [
+    "CustomFieldValue",
+    "type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | { [key: string]: CustomFieldValue };",
+  ],
 ]

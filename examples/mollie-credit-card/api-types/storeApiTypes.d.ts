@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.10.0
+ * Shopware API version: 6.7.10.1
  *
  */
 type GenericRecord =
@@ -13,6 +13,19 @@ type GenericRecord =
   | number
   | {
       [key: string]: GenericRecord;
+    };
+type CustomFields = {
+  [key: string]: CustomFieldValue;
+};
+type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | {
+      [key: string]: CustomFieldValue;
     };
 export type components = {
   schemas: Schemas;
@@ -64,8 +77,7 @@ export type Schemas = {
   AccountNewsletterRecipient: {
     /** @enum {string} */
     apiAlias: "account_newsletter_recipient";
-    /** @enum {string} */
-    status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
+    status: components["schemas"]["NewsletterStatus"];
   };
   AclRole: {
     /** Format: date-time */
@@ -296,6 +308,27 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  AppMcpPrompt: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AppMcpResource: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AppMcpTool: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   AppPaymentMethod: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -423,7 +456,7 @@ export type Schemas = {
   B2bBusinessPartner: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -433,7 +466,7 @@ export type Schemas = {
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     organizationId: string;
     salesChannelId: string;
@@ -447,7 +480,7 @@ export type Schemas = {
     conditions: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     name: string;
@@ -477,7 +510,7 @@ export type Schemas = {
     currency?: components["schemas"]["Currency"];
     customer?: components["schemas"]["Customer"];
     customerId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     endDate?: string;
     id: string;
     name: string;
@@ -516,7 +549,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlist: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     id: string;
@@ -529,7 +562,7 @@ export type Schemas = {
   B2bComponentsEmployeeWishlistProduct: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeWishlist?: components["schemas"]["B2bComponentsEmployeeWishlist"];
     employeeWishlistId: string;
     id: string;
@@ -550,7 +583,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     name: string;
@@ -627,7 +660,7 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     defaultBillingAddressId: string;
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
@@ -673,7 +706,7 @@ export type Schemas = {
     currencyId: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     decidedBy?: components["schemas"]["B2bEmployee"];
     decidedById?: string;
     employee?: components["schemas"]["B2bEmployee"];
@@ -738,7 +771,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     id: string;
@@ -756,7 +789,7 @@ export type Schemas = {
   B2bComponentsRole: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     default?: boolean;
     id: string;
@@ -772,7 +805,7 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId?: string;
     extensions?: {
@@ -807,7 +840,7 @@ export type Schemas = {
     readonly createdAt?: string;
     createdById?: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     employeeId?: string;
     extensions?: {
       organization?: {
@@ -936,7 +969,7 @@ export type Schemas = {
   B2bEmployee: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     extensions?: {
       organization?: {
@@ -1011,7 +1044,7 @@ export type Schemas = {
     seoUrls?: components["schemas"]["SeoUrl"][];
     translated: {
       categoryId: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       description?: string;
       externalLink?: string;
       internalLink?: string;
@@ -1209,6 +1242,32 @@ export type Schemas = {
   CartItems: {
     items: components["schemas"]["LineItem"][];
   };
+  CartItemsUpdate: {
+    items: components["schemas"]["CartLineItemUpdate"][];
+  };
+  CartLineItemUpdate: {
+    coverId?: string;
+    id: string;
+    label?: string;
+    payload?: GenericRecord;
+    priceDefinition?: {
+      isCalculated?: boolean;
+      listPrice?: number;
+      percentage?: number;
+      price?: number;
+      quantity?: number;
+      taxRules?: {
+        percentage?: number;
+        taxRate?: number;
+      }[];
+      type?: string;
+    };
+    quantity?: number;
+    referencedId?: string;
+    removable?: boolean;
+    stackable?: boolean;
+    type?: components["schemas"]["OrderLineItem"]["type"];
+  };
   CartListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
@@ -1276,7 +1335,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     /** Shows nested categories on a product category page. */
     displayNestedProducts?: boolean;
@@ -1373,7 +1432,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     /** Shows nested categories on a product category page. */
     displayNestedProducts?: boolean;
@@ -1558,7 +1617,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagCmsExtensionsBlockRule?: {
         data?: {
@@ -1633,7 +1692,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** This field will be implemented in the future. */
     entity?: string;
     extensions?: {
@@ -1707,7 +1766,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** One or more CSS classes added and separated by spaces. */
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagCmsExtensionsScrollNavigation?: {
         data?: {
@@ -1763,9 +1822,7 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: {
-      _uniqueIdentifier?: string;
-    };
+    customFields?: CustomFields | null;
     readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
@@ -1896,7 +1953,7 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Default pattern of postal or zip code. */
     defaultPostalCodePattern?: string;
     /** The country's state is displayed in the address when boolean value is `true`. */
@@ -1962,7 +2019,7 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Default pattern of postal or zip code. */
     defaultPostalCodePattern?: string;
     /** The country's state is displayed in the address when boolean value is `true`. */
@@ -2025,7 +2082,7 @@ export type Schemas = {
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     /**
@@ -2050,7 +2107,7 @@ export type Schemas = {
     countryId: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     /**
@@ -2141,7 +2198,7 @@ export type Schemas = {
   Currency: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /**
      * Format: float
      * Currency exchange rate.
@@ -2199,7 +2256,7 @@ export type Schemas = {
   CurrencyJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /**
      * Format: float
      * Currency exchange rate.
@@ -2312,7 +2369,7 @@ export type Schemas = {
     createdById?: string;
     /** Unique  number assigned to identity a customer. */
     customerNumber: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Default billing address for the customer */
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
     /** Unique identity of default billing address. */
@@ -2450,7 +2507,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** Unique identity of customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Name of customer's department. */
     department?: string;
     extensions?: {
@@ -2504,7 +2561,7 @@ export type Schemas = {
     countryId: string;
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     lastName: string;
@@ -2532,7 +2589,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** Unique identity of customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Name of customer's department. */
     department?: string;
     extensions?: {
@@ -2636,7 +2693,7 @@ export type Schemas = {
   CustomerGroup: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** If boolean value is `true` gross value is displayed else, net value will be displayed to the customer. */
     displayGross?: boolean;
     id: string;
@@ -2685,7 +2742,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** Unique identity of the customer. */
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     products?: components["schemas"]["CustomerWishlistProduct"][];
     /** Format: date-time */
@@ -2704,7 +2761,7 @@ export type Schemas = {
   DeliveryTime: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /**
      * Format: int64
@@ -2741,7 +2798,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     dependentDocuments?: components["schemas"]["Document"][];
     documentA11yMediaFile?: components["schemas"]["Media"];
@@ -2764,10 +2821,11 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   DocumentBaseConfig: {
+    /** @deprecated */
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Unique number associated with every document. */
     documentNumber?: string;
     /** Unique identity of the document type. */
@@ -2804,7 +2862,7 @@ export type Schemas = {
   DocumentType: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     /** Technical name of document type. */
@@ -2826,7 +2884,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     default?: boolean;
     dsrPresentationVersionId?: string;
     /** Format: date-time */
@@ -2881,7 +2939,7 @@ export type Schemas = {
   DsrAppointmentVideoChat: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     name?: string;
     /** Format: date-time */
@@ -2929,7 +2987,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     createdById: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     parent?: components["schemas"]["DsrPresentation"];
@@ -2954,7 +3012,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dsrPresentationVersionId?: string;
     id: string;
     isInstantListing?: boolean;
@@ -3202,7 +3260,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     keywords?: string;
     metaDescription?: string;
@@ -3232,7 +3290,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     keywords?: string;
     metaDescription?: string;
@@ -3294,7 +3352,7 @@ export type Schemas = {
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Locale defining regional settings (date, time, number formats) */
     locale?: components["schemas"]["Locale"];
@@ -3316,7 +3374,7 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Unique identity of locale. */
     localeId: string;
@@ -3399,7 +3457,7 @@ export type Schemas = {
     cover: components["schemas"]["Media"] | null;
     dataContextHash?: string;
     dataTimestamp?: string;
-    deliveryInformation: components["schemas"]["CartDeliveryInformation"];
+    deliveryInformation?: components["schemas"]["CartDeliveryInformation"];
     description?: string;
     extensions?: {
       meta?: {
@@ -3414,7 +3472,7 @@ export type Schemas = {
     label?: string;
     modified?: boolean;
     modifiedByApp?: boolean;
-    payload: components["schemas"]["ProductJsonApi"];
+    payload?: components["schemas"]["ProductJsonApi"];
     price?: {
       /** @enum {string} */
       apiAlias: "calculated_price";
@@ -3443,7 +3501,7 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: components["schemas"]["CartPriceQuantity"];
-    quantity: number;
+    quantity?: number;
     quantityInformation?: {
       maxPurchase?: number;
       minPurchase?: number;
@@ -3453,7 +3511,7 @@ export type Schemas = {
     removable?: boolean;
     stackable?: boolean;
     /** @deprecated */
-    states: ("is-physical" | "is-download")[];
+    states?: ("is-physical" | "is-download")[];
     type: components["schemas"]["OrderLineItem"]["type"];
     uniqueIdentifier?: string;
   };
@@ -3482,7 +3540,7 @@ export type Schemas = {
     code: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     territory: string;
@@ -3528,7 +3586,7 @@ export type Schemas = {
     contentPlain: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       swagCmsExtensionsForms?: {
         data?: {
@@ -3571,7 +3629,7 @@ export type Schemas = {
   MailTemplateType: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     /** Technical name of mail template. */
@@ -3676,7 +3734,7 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     extensions?: {
       mediaAiTag?: {
         data?: {
@@ -3780,7 +3838,7 @@ export type Schemas = {
   MediaThumbnail: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /**
      * Format: int64
      * Height of the thumbnail.
@@ -3804,7 +3862,7 @@ export type Schemas = {
   MediaThumbnailSize: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /**
      * Format: int64
      * Height of the thumbnail.
@@ -3854,6 +3912,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  NewsletterStatus: "notSet" | "optIn" | "optOut" | "direct" | "undefined";
   NoneFieldsCriteria: {
     aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Associations"];
@@ -3961,7 +4020,7 @@ export type Schemas = {
     currencyId: string;
     /** Comments given by comments. */
     customerComment?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** It is a generated special code linked to email. It is used to access orders placed by guest customers. */
     deepLinkCode?: string;
     /** Delivery information including shipping address and tracking */
@@ -4171,7 +4230,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Name of the department. */
     department?: string;
     /** First name of the customer. */
@@ -4206,7 +4265,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** Unique number assigned to the customer. */
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Email address of the customer. */
     email: string;
     /** First name of the customer. */
@@ -4227,7 +4286,7 @@ export type Schemas = {
   OrderDelivery: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Unique identity of order. */
     orderId: string;
@@ -4288,7 +4347,7 @@ export type Schemas = {
   OrderDeliveryPosition: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Unique identity of order delivery. */
     orderDeliveryId: string;
@@ -4348,7 +4407,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Description of line items in an order. */
     description?: string;
     /** Digital downloads associated with this line item */
@@ -4404,7 +4463,7 @@ export type Schemas = {
       readonly categoryIds?: string[];
       /** Format: date-time */
       readonly createdAt?: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       features?: unknown[];
       isCloseout?: boolean;
       isNew?: boolean;
@@ -4498,7 +4557,7 @@ export type Schemas = {
     accessGranted: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media: components["schemas"]["Media"];
     /** Unique identity of media. */
@@ -4584,7 +4643,7 @@ export type Schemas = {
   OrderReturnLineItem: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     orderLineItemId: string;
     orderLineItemVersionId?: string;
@@ -4662,7 +4721,7 @@ export type Schemas = {
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Unique identity of an order. */
     orderId: string;
@@ -4706,7 +4765,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** External payment provider token. */
     externalReference?: string;
     id: string;
@@ -4751,7 +4810,7 @@ export type Schemas = {
     captureVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** External payment provider token. */
     externalReference?: string;
     id: string;
@@ -4792,7 +4851,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** External payment provider token. */
     externalReference?: string;
     id: string;
@@ -4848,7 +4907,7 @@ export type Schemas = {
     afterOrderEnabled?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     readonly distinguishableName?: string;
     id: string;
@@ -4883,7 +4942,7 @@ export type Schemas = {
     afterOrderEnabled?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     readonly distinguishableName?: string;
     id: string;
@@ -5073,7 +5132,6 @@ export type Schemas = {
     readonly available?: boolean;
     /**
      * Format: int64
-     * @deprecated
      * Indicates the number of products still available. This value results from the stock minus the open orders.
      */
     readonly availableStock?: number;
@@ -5128,7 +5186,7 @@ export type Schemas = {
     readonly createdAt?: string;
     /** Cross-selling configurations (related products, accessories, similar items) */
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Estimated delivery time for the product */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     /** Unique identity of delivery time. */
@@ -5469,7 +5527,7 @@ export type Schemas = {
   ProductConfiguratorSetting: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
     /** Unique identity of media. */
@@ -5536,7 +5594,7 @@ export type Schemas = {
   ProductDownload: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media?: components["schemas"]["Media"];
     /** Unique identity of media. */
@@ -5590,7 +5648,6 @@ export type Schemas = {
       readonly available?: boolean;
       /**
        * Format: int64
-       * @deprecated
        * Indicates the number of products still available. This value results from the stock minus the open orders.
        */
       readonly availableStock?: number;
@@ -5616,7 +5673,7 @@ export type Schemas = {
       coverId?: string;
       /** Format: date-time */
       readonly createdAt?: string;
-      customFields?: GenericRecord;
+      customFields?: CustomFields | null;
       /** Unique identity of delivery time. */
       deliveryTimeId?: string;
       description?: string;
@@ -6427,7 +6484,7 @@ export type Schemas = {
   ProductManufacturer: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     link?: string;
@@ -6483,7 +6540,7 @@ export type Schemas = {
   ProductMedia: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     media: components["schemas"]["Media"];
     /** Unique identity of the media. */
@@ -6538,7 +6595,7 @@ export type Schemas = {
     content: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** External user name. */
     externalUser?: string;
     id: string;
@@ -6618,7 +6675,7 @@ export type Schemas = {
   ProductStream: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     id: string;
     /** When the boolean value is `true` indicating that it is for internal use only and will not appear in product stream listings. */
@@ -6655,7 +6712,7 @@ export type Schemas = {
   Promotion: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -6698,7 +6755,7 @@ export type Schemas = {
   PropertyGroup: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     /** Property groups can be displayed in the form of text, image, dropdown or color. */
     displayType?: string;
@@ -6729,7 +6786,7 @@ export type Schemas = {
     combinable?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     group: components["schemas"]["PropertyGroup"];
     /** Unique identity of property group. */
     groupId: string;
@@ -6773,7 +6830,7 @@ export type Schemas = {
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deliveries?: components["schemas"]["QuoteDelivery"][];
     discount?: {
       type?: string;
@@ -6883,7 +6940,7 @@ export type Schemas = {
   QuoteDelivery: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
     quoteId: string;
@@ -6924,7 +6981,7 @@ export type Schemas = {
   QuoteDeliveryPosition: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     price?: {
       calculatedTaxes?: GenericRecord;
@@ -6968,7 +7025,7 @@ export type Schemas = {
     config: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deepLinkCode: string;
     documentA11yMediaFile?: components["schemas"]["Media"];
     documentA11yMediaFileId?: string;
@@ -7007,7 +7064,7 @@ export type Schemas = {
     createdById?: string;
     currencyId: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     discount?: {
       type?: string;
       /** Format: float */
@@ -7216,7 +7273,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     deliveryPositions?: components["schemas"]["QuoteDeliveryPosition"][];
     description?: string;
     discount?: {
@@ -7283,7 +7340,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
@@ -7323,7 +7380,7 @@ export type Schemas = {
   Rule: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Description of the rule. */
     description?: string;
     extensions?: {
@@ -7401,7 +7458,7 @@ export type Schemas = {
     currencyId: string;
     /** Unique identity of customer group. */
     customerGroupId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Domain URLs configured for the sales channel */
     domains?: components["schemas"]["SalesChannelDomain"][];
     /** Root category for footer navigation */
@@ -7560,7 +7617,7 @@ export type Schemas = {
     currency?: components["schemas"]["Currency"];
     /** Unique identity of currency. */
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** This is used to toggle the language configurations, say between DE and DE-DE for instance. */
     hreflangUseOnlyLocale?: boolean;
     id: string;
@@ -7602,7 +7659,7 @@ export type Schemas = {
   Salutation: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     displayName: string;
     id: string;
     letterName: string;
@@ -7624,7 +7681,7 @@ export type Schemas = {
   SalutationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     displayName: string;
     id: string;
     letterName: string;
@@ -7680,7 +7737,7 @@ export type Schemas = {
   SeoUrl: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
     /** The key that references to product or category entity ID. */
@@ -7717,7 +7774,7 @@ export type Schemas = {
   SeoUrlJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
     /** The key that references to product or category entity ID. */
@@ -7754,7 +7811,7 @@ export type Schemas = {
   SeoUrlTemplate: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     /** Created SEO URL template can be made usable by setting `isValid` to true. */
     isValid?: boolean;
@@ -7770,7 +7827,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Estimated delivery time information */
     deliveryTime?: components["schemas"]["DeliveryTime"];
     /** Unique identity of deliveryTime. */
@@ -7814,7 +7871,7 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     /** Unique identity of deliveryTime. */
     deliveryTimeId: string;
     description?: string;
@@ -8071,7 +8128,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     currencyPrice?: components["schemas"]["Price"][];
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /**
      * Format: float
@@ -8104,7 +8161,7 @@ export type Schemas = {
   Snippet: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     /** Unique identity od snippet set. */
     setId: string;
@@ -8118,7 +8175,7 @@ export type Schemas = {
   SnippetSet: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     /** ISO nomenclature used to classify languages. */
     iso: string;
@@ -8279,7 +8336,7 @@ export type Schemas = {
   StateMachineState: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id?: string;
     name: string;
     /** Technical name of StateMachineState. */
@@ -8317,7 +8374,7 @@ export type Schemas = {
     cronInterval: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     dateInterval: string;
     extensions?: {
       subscriptionEmployee?: {
@@ -8386,7 +8443,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     department?: string;
     firstName: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -8412,7 +8469,7 @@ export type Schemas = {
     readonly createdAt?: string;
     customerId?: string;
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     email: string;
     firstName: string;
     id: string;
@@ -9416,7 +9473,7 @@ export type Schemas = {
   Tax: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     /** Name defined for a Tax. */
     name: string;
@@ -9440,7 +9497,7 @@ export type Schemas = {
     appId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     /**
@@ -9479,7 +9536,7 @@ export type Schemas = {
     configValues?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     description?: string;
     helpTexts?: GenericRecord;
     id: string;
@@ -9518,7 +9575,7 @@ export type Schemas = {
   Unit: {
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: GenericRecord;
+    customFields?: CustomFields | null;
     id: string;
     name: string;
     shortCode: string;
@@ -13789,7 +13846,7 @@ export type operations = {
       /** City */
       city?: string;
       /** Custom field data that should be added to the subscription. */
-      customFields?: string;
+      customFields?: CustomFields | null;
       /** Email address that will receive the confirmation and the newsletter. */
       email: string;
       /** First name */
@@ -13810,11 +13867,7 @@ export type operations = {
       zipCode?: string;
     };
     response: {
-      /**
-       * The subscription status.
-       * @enum {string}
-       */
-      status: "notSet" | "optIn" | "optOut" | "direct";
+      status: components["schemas"]["NewsletterStatus"];
       /** Indicates whether the subscribe request was successful. */
       success: boolean;
     };
@@ -15280,6 +15333,79 @@ export type operations = {
     response: {
       elements: components["schemas"]["SeoUrl"][];
     } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readShippingCostsByCart get /shipping-cost/cart": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    response: {
+      deliveryDate: {
+        /** Format: date-time */
+        earliest?: string;
+        /** Format: date-time */
+        latest?: string;
+      };
+      shippingCost: components["schemas"]["CalculatedPrice"];
+      shippingMethod: components["schemas"]["ShippingMethod"];
+    }[];
+    responseCode: 200;
+  };
+  "readShippingCostByProduct get /shipping-cost/product/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** The product identifier. */
+      productId: string;
+    };
+    response: {
+      deliveryDate: {
+        /** Format: date-time */
+        earliest?: string;
+        /** Format: date-time */
+        latest?: string;
+      };
+      shippingCost: components["schemas"]["CalculatedPrice"];
+      shippingMethod: components["schemas"]["ShippingMethod"];
+    }[];
     responseCode: 200;
   };
   "readShippingMethodGet get /shipping-method": {
