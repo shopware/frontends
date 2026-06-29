@@ -1,5 +1,12 @@
 # @shopware/cms-base-layer
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2), [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec), [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b)]:
+  - @shopware/composables@1.12.0
+
 ## 3.0.0
 
 ### Major Changes

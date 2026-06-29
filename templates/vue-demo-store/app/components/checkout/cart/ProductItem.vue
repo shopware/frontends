@@ -83,7 +83,7 @@ const removeCartItem = async () => {
     <img
       v-if="cartItem.cover"
       :src="getSmallestThumbnailUrl(cartItem.cover)"
-      :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
+      :alt="`${cartItem.label || cartItem.payload?.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"
     />
@@ -129,7 +129,7 @@ const removeCartItem = async () => {
         class="mt-1 text-sm text-secondary-500"
         data-testid="cart-product-options"
       >
-        <span v-for="option in itemOptions" :key="option.group" class="mr-2">
+        <span v-for="option in itemOptions" :key="option.id" class="mr-2">
           {{ option.group }}: {{ option.option }}
         </span>
       </p>

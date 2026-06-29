@@ -61,6 +61,8 @@
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
     "test:watch": "vitest --typecheck",
+    "load-schema": "esno ../api-gen/src/cli.ts loadSchema --apiType=store",
+    "load-admin-schema": "esno ../api-gen/src/cli.ts loadSchema --apiType=admin",
     "generate-types": "esno ../api-gen/src/cli.ts generate --apiType=store",
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },

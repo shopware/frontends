@@ -1,5 +1,13 @@
 # vue-starter-template
 
+## 0.1.2
+
+### Patch Changes
+
+- [#2470](https://github.com/shopware/frontends/pull/2470) [`bc8a57a`](https://github.com/shopware/frontends/commit/bc8a57ac7cada68234267e9b17e00b71569a0cb2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add a currency switcher to the starter template meta navigation. The switcher loads available Store API currencies, updates the Shopware session context, refreshes the cart, and reloads the storefront data so prices use the selected currency.
+
+- [#2510](https://github.com/shopware/frontends/pull/2510) [`6f063bc`](https://github.com/shopware/frontends/commit/6f063bcf3dac1e9582a952b86eb588735f80d1e0) Thanks [@patzick](https://github.com/patzick)! - Migrate template linting and formatting from Biome to Oxlint and Oxfmt.
+
 ## 0.1.1
 
 ### Patch Changes

@@ -244,7 +244,9 @@ export function useCartFunction(): UseCartReturn {
   const count = computed(() => {
     return cartItems.value.reduce(
       (accumulator: number, lineItem: Schemas["LineItem"]) =>
-        lineItem.good === true ? lineItem.quantity + accumulator : accumulator,
+        lineItem.good === true
+          ? (lineItem.quantity ?? 0) + accumulator
+          : accumulator,
       0,
     );
   });
@@ -276,7 +278,7 @@ export function useCartFunction(): UseCartReturn {
       cartItems.value.length > 0 &&
       cartItems.value
         .filter((element) => element.type !== "promotion")
-        .every((item) => item.states.includes("is-download"))
+        .every((item) => item.states?.includes("is-download") ?? false)
     );
   });
 

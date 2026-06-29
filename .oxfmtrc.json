@@ -24,6 +24,7 @@
     ".nuxt",
     ".vercel",
     "**/*apiSchema*.json",
+    "**/*ApiSchema*.json",
     "**/*apiTypes*.d.ts",
     "**/*.d.ts",
     ".vitepress/cache/*",
