@@ -43,13 +43,13 @@
     "@vueuse/nuxt": "14.3.0",
     "nuxt": "4.4.8",
     "unocss": "66.7.2",
-    "vue": "3.5.38"
+    "vue": "3.5.39"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@vue/compiler-sfc": "3.5.38",
+    "@vue/compiler-sfc": "3.5.39",
     "typescript": "5.9.3",
-    "vite": "8.0.16",
+    "vite": "8.1.0",
     "vue-tsc": "3.3.5",
     "oxfmt": "0.55.0",
     "oxlint": "1.70.0"

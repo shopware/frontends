@@ -15,7 +15,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "nuxt": "4.4.8",
-    "vue": "3.5.38"
+    "vue": "3.5.39"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",

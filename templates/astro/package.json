@@ -16,11 +16,11 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "6.0.7",
-    "@vitejs/plugin-vue-jsx": "5.1.5",
+    "@vitejs/plugin-vue-jsx": "5.1.6",
     "astro": "6.4.7",
     "js-cookie": "3.0.8",
     "sharp": "0.35.1",
-    "vue": "3.5.38"
+    "vue": "3.5.39"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
