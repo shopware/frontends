@@ -2,8 +2,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { bundle, lint, loadConfig } from "@redocly/openapi-core";
-import { format } from "prettier";
 
+import { formatSource } from "../formatSource";
 import {
   createNewSchema,
   filterPathsByTag,
@@ -110,11 +110,9 @@ export async function split(options: SplitOptions): Promise<void> {
       const outputPath = resolve(outputDir || "output", fileName);
 
       mkdirSync(outputDir || "output", { recursive: true });
-      const formattedSchema = await format(
+      const formattedSchema = await formatSource(
+        outputPath,
         JSON.stringify(finalSchema, null, 2),
-        {
-          parser: "json",
-        },
       );
       writeFileSync(outputPath, formattedSchema);
       console.log(`Generated ${outputPath}`);
@@ -146,11 +144,9 @@ export async function split(options: SplitOptions): Promise<void> {
       const outputPath = resolve(outputDir || "output", fileName);
 
       mkdirSync(outputDir || "output", { recursive: true });
-      const formattedSchema = await format(
+      const formattedSchema = await formatSource(
+        outputPath,
         JSON.stringify(finalSchema, null, 2),
-        {
-          parser: "json",
-        },
       );
       writeFileSync(outputPath, formattedSchema);
       console.log(`Generated ${outputPath}`);

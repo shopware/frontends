@@ -11,9 +11,9 @@ import openapiTS, {
 import "dotenv/config";
 import type { OpenAPI3, SchemaObject } from "openapi-typescript";
 import c from "picocolors";
-import { format } from "prettier";
 import ts from "typescript";
 
+import { formatSource } from "../formatSource";
 import type { TransformedElements } from "../generateFile";
 import {
   displayPatchingSummary,
@@ -256,11 +256,7 @@ export async function generate(args: {
         });
         console.log(`[DEBUG]: Debug Schema saved to ${fullOutputFilePath}`);
 
-        schema = await format(schema, {
-          // semi: false,
-          parser: "typescript",
-          // plugins: [tsParser],
-        });
+        schema = await formatSource(fullOutputFilePath, schema);
         schema = schema.trim();
       }
 
