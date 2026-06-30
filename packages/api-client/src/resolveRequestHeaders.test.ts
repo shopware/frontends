@@ -26,6 +26,19 @@ describe("resolveRequestHeaders", () => {
     expect(contentTypeOf(headers)).toBe("application/json");
   });
 
+  it("returns the merged headers when no Content-Type is present at all", () => {
+    const headers = resolveRequestHeaders(
+      { "sw-access-key": "key" },
+      { accept: "application/json" },
+      new FormData(),
+    );
+    expect(contentTypeOf(headers)).toBeUndefined();
+    expect(headers).toEqual({
+      "sw-access-key": "key",
+      accept: "application/json",
+    });
+  });
+
   it("drops the default Content-Type for a FormData body", () => {
     const body = new FormData();
     body.append("file", new Blob(["x"]), "f.txt");
