@@ -53,15 +53,19 @@ function isRuntimeManagedBody(body: unknown): boolean {
 
 /**
  * Merge request headers with the client defaults, then drop a `Content-Type`
- * that the runtime must set itself.
+ * the runtime must set itself.
  *
  * The default `Content-Type: application/json` seeded for every client is wrong
- * for binary, form, and streaming bodies, and a manually set
- * `multipart/form-data` has no boundary. In both cases the header is removed so
- * the runtime can generate the correct one. A `Content-Type` the caller set
- * explicitly is preserved (e.g. a typeless `Blob` or a raw stream that relies
- * on it), unless it is a boundary-less `multipart/form-data`, which is never
- * usable as-is.
+ * for bodies the runtime types on its own. The header is removed when:
+ * - the body is runtime-managed (`FormData`, `Blob`/`File`, `URLSearchParams`,
+ *   binary, stream) - the runtime sets the right type, and a `FormData` always
+ *   needs a freshly generated boundary, so any manual one is replaced
+ * - the `Content-Type` is a `multipart/form-data` without a `boundary`, which
+ *   is incomplete and unusable as-is
+ *
+ * A `Content-Type` the caller set explicitly is preserved otherwise - e.g. a
+ * typeless `Blob`'s MIME type, or a pre-encoded multipart body that already
+ * carries its own `boundary`.
  */
 export function resolveRequestHeaders(
   callerHeaders: ClientHeaders | undefined,
@@ -76,9 +80,17 @@ export function resolveRequestHeaders(
   const contentType = callerContentType || findContentType(mergedHeaders);
   if (!contentType) return mergedHeaders;
 
+  const normalized = contentType.toLowerCase();
+  const isMultipart = normalized.includes("multipart/form-data");
+  const runtimeManaged = isRuntimeManagedBody(body);
+
   const shouldDrop =
-    contentType.includes("multipart/form-data") ||
-    (isRuntimeManagedBody(body) && !callerContentType);
+    // boundary-less multipart is incomplete and must be regenerated
+    (isMultipart && !normalized.includes("boundary=")) ||
+    // a runtime-managed body types itself; the default and any manual
+    // multipart (its boundary is stale) are dropped, but an explicit
+    // non-multipart type (e.g. a Blob's image/png) is kept
+    (runtimeManaged && (isMultipart || !callerContentType));
 
   if (shouldDrop) return withoutContentType(mergedHeaders);
 

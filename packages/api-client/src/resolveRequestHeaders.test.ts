@@ -57,6 +57,24 @@ describe("resolveRequestHeaders", () => {
     expect(contentTypeOf(headers)).toBeUndefined();
   });
 
+  it("preserves a caller multipart/form-data that already carries a boundary (pre-encoded body)", () => {
+    const headers = resolveRequestHeaders(
+      { "Content-Type": "multipart/form-data; boundary=abc123" },
+      DEFAULTS,
+      "--abc123\r\nContent-Disposition: form-data; name=a\r\n\r\n1\r\n--abc123--",
+    );
+    expect(contentTypeOf(headers)).toBe("multipart/form-data; boundary=abc123");
+  });
+
+  it("still drops a manual boundary for a FormData body (the runtime regenerates it)", () => {
+    const headers = resolveRequestHeaders(
+      { "Content-Type": "multipart/form-data; boundary=stale" },
+      DEFAULTS,
+      new FormData(),
+    );
+    expect(contentTypeOf(headers)).toBeUndefined();
+  });
+
   it("drops the default Content-Type for a URLSearchParams body", () => {
     const headers = resolveRequestHeaders(
       undefined,
