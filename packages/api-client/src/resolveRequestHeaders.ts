@@ -58,14 +58,16 @@ function isRuntimeManagedBody(body: unknown): boolean {
  * The default `Content-Type: application/json` seeded for every client is wrong
  * for bodies the runtime types on its own. The header is removed when:
  * - the body is runtime-managed (`FormData`, `Blob`/`File`, `URLSearchParams`,
- *   binary, stream) - the runtime sets the right type, and a `FormData` always
- *   needs a freshly generated boundary, so any manual one is replaced
- * - the `Content-Type` is a `multipart/form-data` without a `boundary`, which
- *   is incomplete and unusable as-is
+ *   binary, stream) and the `Content-Type` is the seeded `application/json`, or
+ *   a manual `multipart/form-data` (a `FormData` always needs a freshly
+ *   generated boundary, so any manual one is replaced)
+ * - the `Content-Type` is a `multipart/form-data` without a usable `boundary`,
+ *   which is incomplete and unusable as-is
  *
- * A `Content-Type` the caller set explicitly is preserved otherwise - e.g. a
- * typeless `Blob`'s MIME type, or a pre-encoded multipart body that already
- * carries its own `boundary`.
+ * Any other `Content-Type` is preserved: a per-request header, a non-JSON
+ * client-level default (e.g. `application/octet-stream` applied via
+ * `defaultHeaders`), a typeless `Blob`'s MIME type, or a pre-encoded multipart
+ * body that already carries its own `boundary`.
  */
 export function resolveRequestHeaders(
   callerHeaders: ClientHeaders | undefined,
@@ -82,15 +84,21 @@ export function resolveRequestHeaders(
 
   const normalized = contentType.toLowerCase();
   const isMultipart = normalized.includes("multipart/form-data");
+  // A boundary needs a non-empty value; `boundary=` (or `boundary=;`) is malformed.
+  const hasBoundary = /boundary=[^\s;]/.test(normalized);
   const runtimeManaged = isRuntimeManagedBody(body);
+  // The only Content-Type the client injects on its own is `application/json`.
+  // Anything else - per-request or a client-level default - was set on purpose.
+  const isSeededDefault =
+    !callerContentType && normalized === "application/json";
 
   const shouldDrop =
-    // boundary-less multipart is incomplete and must be regenerated
-    (isMultipart && !normalized.includes("boundary=")) ||
-    // a runtime-managed body types itself; the default and any manual
-    // multipart (its boundary is stale) are dropped, but an explicit
-    // non-multipart type (e.g. a Blob's image/png) is kept
-    (runtimeManaged && (isMultipart || !callerContentType));
+    // a multipart/form-data without a usable boundary is incomplete
+    (isMultipart && !hasBoundary) ||
+    // a runtime-managed body types itself: drop the seeded application/json and
+    // any manual multipart (its boundary is stale), but keep an explicit
+    // non-JSON type (e.g. a Blob's image/png or an octet-stream default)
+    (runtimeManaged && (isMultipart || isSeededDefault));
 
   if (shouldDrop) return withoutContentType(mergedHeaders);
 

@@ -75,6 +75,42 @@ describe("resolveRequestHeaders", () => {
     expect(contentTypeOf(headers)).toBeUndefined();
   });
 
+  it("drops a multipart/form-data with an empty/malformed boundary", () => {
+    for (const value of [
+      "multipart/form-data; boundary=",
+      "multipart/form-data; boundary=;x",
+    ]) {
+      const headers = resolveRequestHeaders(
+        { "Content-Type": value },
+        DEFAULTS,
+        "raw-body",
+      );
+      expect(contentTypeOf(headers)).toBeUndefined();
+    }
+  });
+
+  it("preserves a non-JSON client-level default for a runtime-managed body", () => {
+    // e.g. client.defaultHeaders.apply({ "Content-Type": "application/octet-stream" })
+    const clientDefaults: ClientHeaders = {
+      "Content-Type": "application/octet-stream",
+      accept: "application/json",
+    };
+    expect(
+      contentTypeOf(
+        resolveRequestHeaders(
+          undefined,
+          clientDefaults,
+          new Uint8Array([1, 2]),
+        ),
+      ),
+    ).toBe("application/octet-stream");
+    expect(
+      contentTypeOf(
+        resolveRequestHeaders(undefined, clientDefaults, { pipe() {} }),
+      ),
+    ).toBe("application/octet-stream");
+  });
+
   it("drops the default Content-Type for a URLSearchParams body", () => {
     const headers = resolveRequestHeaders(
       undefined,

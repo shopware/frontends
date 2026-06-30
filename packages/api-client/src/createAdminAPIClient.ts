@@ -154,7 +154,10 @@ export function createAdminAPIClient<
                 refresh_token: sessionData.refreshToken,
               };
 
-        // Access session expired, first we need to refresh it with refresh token
+        // Access session expired, first we need to refresh it with refresh token.
+        // The token body is always a plain JSON object, so this request
+        // intentionally uses defaultHeaders directly and skips
+        // resolveRequestHeaders (which only matters for non-JSON bodies).
         await ofetch("/oauth/token", {
           baseURL: params.baseURL,
           method: "POST",
