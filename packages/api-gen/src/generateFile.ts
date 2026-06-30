@@ -1,5 +1,6 @@
-import { format } from "prettier";
 import { Project } from "ts-morph";
+
+import { formatSource } from "./formatSource";
 
 export type MethodDefinition = {
   operationId: string;
@@ -292,9 +293,7 @@ export async function prepareFileContent({
 
   x += sourceFile.getFullText();
 
-  const formatted = await format(x, {
-    parser: "typescript",
-  });
+  const formatted = await formatSource(filepath, x);
   sourceFile.replaceWithText(formatted);
 
   return project;

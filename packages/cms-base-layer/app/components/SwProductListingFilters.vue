@@ -5,11 +5,19 @@ import type {
 } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { defu } from "defu";
-import { computed, reactive } from "vue";
-import type { ComputedRef, UnwrapNestedRefs } from "vue";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import type { LocationQueryRaw } from "vue-router";
 
-import { useCategoryListing, useRoute, useRouter } from "#imports";
+import {
+  firstQueryValue,
+  toNumber,
+  useCategoryListing,
+  useProductSearchListing,
+  useRoute,
+  useRouter,
+  useSelectedListingFilters,
+} from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
@@ -17,21 +25,14 @@ const props = defineProps<{
   listingType?: string;
 }>();
 
+const isProductSearch = props.listingType === "productSearchListing";
+
 type Translations = {
   listing: {
     filters: string;
     sort: string;
     resetFilters: string;
   };
-};
-
-type FilterState = {
-  manufacturer: Set<string>;
-  properties: Set<string>;
-  "min-price": number | undefined;
-  "max-price": number | undefined;
-  rating: number | undefined;
-  "shipping-free": boolean | undefined;
 };
 
 let translations: Translations = {
@@ -54,17 +55,9 @@ const {
   getInitialFilters,
   getSortingOrders,
   search,
-} = useCategoryListing();
+} = isProductSearch ? useProductSearchListing() : useCategoryListing();
 
-const sidebarSelectedFilters: UnwrapNestedRefs<FilterState> =
-  reactive<FilterState>({
-    manufacturer: new Set(),
-    properties: new Set(),
-    "min-price": undefined,
-    "max-price": undefined,
-    rating: undefined,
-    "shipping-free": undefined,
-  });
+const sidebarSelectedFilters = useSelectedListingFilters();
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
@@ -94,50 +87,9 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
     order: getCurrentSortingOrder.value as string,
     "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
     rating: sidebarSelectedFilters.rating as number,
-    search: "",
-    limit: route.query.limit ? Number(route.query.limit) : 15,
+    search: isProductSearch ? (firstQueryValue(route.query.search) ?? "") : "",
+    limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
   }));
-
-for (const param in route.query) {
-  if (param in sidebarSelectedFilters) {
-    const queryValue = route.query[param];
-
-    // Skip arrays
-    if (Array.isArray(queryValue)) continue;
-
-    if (["manufacturer", "properties"].includes(param)) {
-      if (typeof queryValue === "string") {
-        const elements = queryValue.split("|");
-        const targetSet = sidebarSelectedFilters[
-          param as keyof FilterState
-        ] as Set<string>;
-        for (const element of elements) {
-          targetSet.add(element);
-        }
-      }
-    } else if (queryValue && typeof queryValue === "string") {
-      // Fix: Use specific property assignments instead of generic keyof
-      if (param === "min-price") {
-        const numValue = Number(queryValue);
-        if (!Number.isNaN(numValue)) {
-          sidebarSelectedFilters["min-price"] = numValue;
-        }
-      } else if (param === "max-price") {
-        const numValue = Number(queryValue);
-        if (!Number.isNaN(numValue)) {
-          sidebarSelectedFilters["max-price"] = numValue;
-        }
-      } else if (param === "rating") {
-        const numValue = Number(queryValue);
-        if (!Number.isNaN(numValue)) {
-          sidebarSelectedFilters.rating = numValue;
-        }
-      } else if (param === "shipping-free") {
-        sidebarSelectedFilters["shipping-free"] = queryValue === "true";
-      }
-    }
-  }
-}
 
 const handleFilterChange = async (event: {
   code: string;
@@ -172,7 +124,12 @@ const handleFilterChange = async (event: {
 
 const executeSearch = async () => {
   try {
-    await search(searchCriteriaForRequest.value);
+    // Search context refetches from the URL (the page's useAsyncData watches
+    // route.query), so navigating below is enough; calling search() here too
+    // would double-fetch and flicker. Category listings have no URL watcher.
+    if (!isProductSearch) {
+      await search(searchCriteriaForRequest.value);
+    }
 
     // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
     const criteria = searchCriteriaForRequest.value;
@@ -186,6 +143,12 @@ const executeSearch = async () => {
     if (criteria["shipping-free"])
       query["shipping-free"] = criteria["shipping-free"];
     if (criteria.order) query.order = criteria.order;
+    // Keep the search term in the URL so filtering on the search page does not reset the query
+    if (isProductSearch && route.query.search)
+      query.search = route.query.search;
+    // Preserve the page-size selection; rebuilding the query from scratch would
+    // otherwise drop `limit` and revert to the default on refresh/navigation.
+    if (route.query.limit) query.limit = route.query.limit;
 
     await router.push({
       query: query as LocationQueryRaw,
@@ -215,10 +178,13 @@ const currentSortingOrder = computed({
         },
       });
 
-      await changeCurrentSortingOrder(order, {
-        ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-        limit: route.query.limit ? Number(route.query.limit) : 15,
-      });
+      // Search context refetches from the URL; category fetches directly.
+      if (!isProductSearch) {
+        await changeCurrentSortingOrder(order, {
+          ...(route.query as unknown as operations["searchPage post /search"]["body"]),
+          limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
+        });
+      }
     } catch (error) {
       console.error("Sorting order change failed:", error);
     }

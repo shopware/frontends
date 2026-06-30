@@ -6,5 +6,5 @@ export default defineBuildConfig({
     cjsBridge: true,
   },
   declaration: true,
-  externals: ["prettier"],
+  externals: ["oxfmt"],
 });
