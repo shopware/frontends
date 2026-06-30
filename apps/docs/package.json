@@ -15,5 +15,10 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "ts-dox": "^0.1.0",
+    "vitepress": "^1.4.0",
+    "vinyl": "^3.0.0"
   }
 }
