@@ -1,4 +1,3 @@
-import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchOptions,
@@ -12,6 +11,7 @@ import type { InvokeParameters } from "./createAPIClient";
 import type { GlobalFetchOptions } from "./createAPIClient";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -239,13 +239,19 @@ export function createAdminAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
+    const mergedHeaders = resolveRequestHeaders(
+      currentParams.headers,
+      defaultHeaders,
+      currentParams.body,
+    );
+
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
     >(requestPathWithParams, {
       ...fetchOptions,
       method,
       body: currentParams.body,
-      headers: defu(currentParams.headers, defaultHeaders) as HeadersInit,
+      headers: mergedHeaders as HeadersInit,
       query: currentParams.query,
     });
 

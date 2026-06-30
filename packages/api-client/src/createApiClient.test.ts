@@ -315,9 +315,7 @@ describe("createAPIClient", () => {
     );
   });
 
-  it("should remove multipart/form-data headers in case of browser", async () => {
-    // @vitest-environment happy-dom
-
+  it("should let the runtime set multipart/form-data with a boundary for FormData bodies", async () => {
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/core/upload",
@@ -336,11 +334,16 @@ describe("createAPIClient", () => {
       baseURL,
     });
 
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
     // @ts-expect-error this endpoint does not exist
     await client.invoke("fileUpload post /core/upload", {
+      // a manually set multipart/form-data has no boundary and must be replaced
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      body: formData,
     });
 
     expect(contentTypeSpy).toHaveBeenCalledTimes(1);
@@ -351,13 +354,11 @@ describe("createAPIClient", () => {
       "sw-access-key": "123",
       "sw-context-token": "456",
     });
-    // Content-Type header should be removed when multipart/form-data in browser
-    expect(headers?.["content-type"]).toBeUndefined();
-    // Verify multipart/form-data is not present in any header value
-    const headerValues = Object.values(headers || {}).join(" ");
-    expect(headerValues).not.toContain("multipart/form-data");
-    // User-agent should exist (platform-specific, so just check presence)
-    expect(headers?.["user-agent"]).toBeTruthy();
+    // The default application/json (and the boundary-less multipart) must be
+    // gone, replaced by a runtime-generated multipart/form-data + boundary.
+    expect(headers?.["content-type"]).toMatch(
+      /^multipart\/form-data; boundary=/,
+    );
   });
 
   it("should trigger success callback", async () => {
@@ -443,8 +444,11 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
+    // The exact abort reason ("signal is aborted without reason" vs "This
+    // operation was aborted") depends on the runtime and on the abort race, so
+    // assert the stable parts: a FetchError for the aborted GET /context.
+    await expect(request).rejects.toThrow(
+      new RegExp(`\\[GET\\] "${baseURL}context": <no response>.*aborted`, "i"),
     );
   });
 

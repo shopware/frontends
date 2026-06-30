@@ -1,4 +1,3 @@
-import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchContext,
@@ -11,6 +10,7 @@ import {
 import type { operations } from "../api-types/storeApiTypes";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -187,16 +187,11 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
-
-    if (
-      mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
-      typeof window !== "undefined"
-    ) {
-      // multipart/form-data must not be set manually when it's used by the browser
-      const { "Content-Type": _, ...headersWithoutContentType } = mergedHeaders;
-      mergedHeaders = headersWithoutContentType;
-    }
+    const mergedHeaders = resolveRequestHeaders(
+      currentParams.headers,
+      defaultHeaders,
+      currentParams.body,
+    );
 
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
