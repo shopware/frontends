@@ -56,7 +56,7 @@ export default defineNuxtConfig({
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
-    vueI18n: resolve("./config"),
+    vueI18n: "config.ts",
     locales: [
       {
         code: "en-GB",
