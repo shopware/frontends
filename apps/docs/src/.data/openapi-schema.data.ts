@@ -1,10 +1,10 @@
 import { defineLoader } from "vitepress";
 
-import { createOpenApiResolver } from "../../.data/schema/openapi-resolver";
+import { createOpenApiResolver } from "./schema/openapi-resolver";
 import {
   summarizeOpenApiSchema,
   type SchemaSummary,
-} from "../../.data/schema/schema-summary";
+} from "./schema/schema-summary";
 
 export interface Data {
   summaries: Record<string, SchemaSummary>;
