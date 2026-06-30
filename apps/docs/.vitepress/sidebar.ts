@@ -359,6 +359,10 @@ export const sidebar = [
     link: "/packages/",
     items: [
       {
+        text: "Distribution Channels",
+        link: "/packages/distribution-channels.html",
+      },
+      {
         text: "API Client",
         link: "/packages/api-client.html",
       },
