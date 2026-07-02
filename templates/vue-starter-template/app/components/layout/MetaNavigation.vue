@@ -22,17 +22,19 @@ const emit = defineEmits<{
   onCurrencyChangeHandler: [string];
 }>();
 
+const selectedCurrencyId = computed({
+  get: () => props.changingCurrencyId ?? props.currentCurrencyId,
+  set: (currencyId: string) => {
+    if (currencyId && currencyId !== props.currentCurrencyId) {
+      emit("onCurrencyChangeHandler", currencyId);
+    }
+  },
+});
+
 function changeLanguage(event: Event) {
   const languageId = (event.target as HTMLSelectElement).value;
   if (languageId && languageId !== props.currentLanguageId) {
     emit("onLanguageChangeHandler", languageId);
-  }
-}
-
-function changeCurrency(event: Event) {
-  const currencyId = (event.target as HTMLSelectElement).value;
-  if (currencyId && currencyId !== props.currentCurrencyId) {
-    emit("onCurrencyChangeHandler", currencyId);
   }
 }
 </script>
@@ -83,11 +85,10 @@ function changeCurrency(event: Event) {
           <select
             class="h-full min-w-23 appearance-none bg-transparent pr-7 text-sm font-medium outline-none disabled:cursor-not-allowed"
             :aria-label="$t('layout.ariaLabels.currencySwitcher')"
-            :value="currentCurrencyId"
+            v-model="selectedCurrencyId"
             :disabled="
               currencies.length < 2 || Boolean(props.changingCurrencyId)
             "
-            @change="changeCurrency"
           >
             <option
               v-for="currency in currencies"
