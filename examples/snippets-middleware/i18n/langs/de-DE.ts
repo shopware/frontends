@@ -1,3 +1,3 @@
-export default defineI18nLocale(async (locale) => {
+export default async (locale: string) => {
   return $fetch(`/api/translations?locale=${locale}`);
-});
+};
