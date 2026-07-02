@@ -18,7 +18,7 @@
     "preview": "nuxt preview",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
-    "typecheck": "nuxt prepare && nuxi typecheck",
+    "typecheck": "nuxt prepare && vue-tsc -b --noEmit",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
