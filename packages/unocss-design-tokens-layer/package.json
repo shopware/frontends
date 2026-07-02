@@ -33,11 +33,11 @@
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit"
   },
   "dependencies": {
-    "@unocss/nuxt": "66.7.2",
-    "@unocss/core": "66.7.2",
-    "@unocss/preset-wind3": "66.7.2",
-    "@unocss/runtime": "66.7.2",
-    "unocss": "66.7.2"
+    "@unocss/nuxt": "66.7.4",
+    "@unocss/core": "66.7.4",
+    "@unocss/preset-wind3": "66.7.4",
+    "@unocss/runtime": "66.7.4",
+    "unocss": "66.7.4"
   },
   "devDependencies": {
     "@nuxt/schema": "4.4.8",

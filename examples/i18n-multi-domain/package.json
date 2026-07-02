@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "nuxt": "4.4.8",
-    "vue": "3.5.38"
+    "vue": "3.5.39"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.4.0",
-    "@unocss/nuxt": "66.7.2"
+    "@unocss/nuxt": "66.7.4"
   }
 }
