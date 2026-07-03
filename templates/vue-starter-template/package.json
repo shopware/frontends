@@ -50,7 +50,7 @@
     "@vue/compiler-sfc": "3.5.39",
     "typescript": "5.9.3",
     "vite": "8.0.16",
-    "vue-tsc": "3.3.5",
+    "vue-tsc": "3.3.6",
     "oxfmt": "0.55.0",
     "oxlint": "1.70.0"
   },

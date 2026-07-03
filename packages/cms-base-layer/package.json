@@ -71,6 +71,6 @@
     "unbuild": "3.6.1",
     "vitest": "4.1.9",
     "vue-router": "5.1.0",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.6"
   }
 }
