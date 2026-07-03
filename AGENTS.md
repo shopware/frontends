@@ -38,8 +38,7 @@ frontends/
 │   ├── helpers/              # Utility functions
 │   ├── cms-base-layer/       # CMS components
 │   ├── nuxt-module/          # Nuxt 3 integration
-│   ├── api-gen/              # Type generation tool
-│   └── eslint-config-shopware/
+│   └── api-gen/              # Type generation tool
 ├── templates/         # Starter templates
 │   ├── vue-demo-store/                # Full demo with UnoCSS, i18n, CMS
 │   ├── vue-starter-template/          # Production-ready starter
