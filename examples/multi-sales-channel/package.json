@@ -27,8 +27,8 @@
     "@types/node": "22.13.14",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.5",
-    "oxfmt": "0.55.0",
-    "oxlint": "1.70.0"
+    "oxfmt": "0.57.0",
+    "oxlint": "1.72.0"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
