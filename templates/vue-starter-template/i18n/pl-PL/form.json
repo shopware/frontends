@@ -44,6 +44,9 @@
     "chooseState": "Wybierz stan",
     "state": "Stan",
     "loading": "Ładowanie...",
+    "loadingMoreCountries": "Ładowanie kolejnych krajów...",
+    "noCountryResults": "Nie znaleziono krajów",
+    "countrySearchError": "Nie udało się załadować krajów",
     "requiredFieldsNote": "Pola z gwiazdką (*) są wymagane."
   }
 }

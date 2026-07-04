@@ -44,6 +44,9 @@
     "chooseState": "Choose state",
     "state": "State",
     "loading": "Loading...",
+    "loadingMoreCountries": "Loading more countries...",
+    "noCountryResults": "No countries found",
+    "countrySearchError": "Countries could not be loaded",
     "requiredFieldsNote": "Fields marked with asterisks (*) are required."
   }
 }

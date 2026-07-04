@@ -29,9 +29,14 @@ const state = ref({
   countryId: "",
   countryStateId: "",
 });
+const countryHasStates = ref(false);
 
 function populateStateFromAddress(address: Schemas["CustomerAddress"]) {
   Object.assign(state.value, address);
+}
+
+function handleCountryStatesChange(states: Schemas["CountryState"][]) {
+  countryHasStates.value = states.length > 0;
 }
 
 watch(
@@ -44,7 +49,7 @@ watch(
   { immediate: true },
 );
 
-const { r$ } = useRegle(state, addressFormRules(state));
+const { r$ } = useRegle(state, addressFormRules(countryHasStates));
 
 async function handleSubmit() {
   const { valid } = await r$.$validate();
@@ -114,6 +119,7 @@ async function handleSubmit() {
       v-model:state-id="state.countryStateId"
       :country-id-validation="r$.countryId"
       :state-id-validation="r$.countryStateId"
+      @states-change="handleCountryStatesChange"
     />
 
     <p class="text-sm text-surface-on-surface-variant">
