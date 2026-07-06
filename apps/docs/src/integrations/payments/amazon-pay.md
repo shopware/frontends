@@ -15,4 +15,4 @@ nav:
 
 [<img src="../../.assets/payment-icons/amazon-pay.png" alt="Adyen Logo" class="mb-8 h-20" />](https://developer.amazon.com/docs/amazon-pay/intro.html)
 
-<!-- load: ../../../../examples/amazon-pay-button-example/README.md -->
+<!-- load: ../../../../../examples/amazon-pay-button-example/README.md -->
