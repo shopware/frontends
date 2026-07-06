@@ -1,18 +1,14 @@
 ---
+nav:
+  hidden: true
 head:
   - - meta
-    - name: og:title
-      content: Amazon Pay (Payments)
-  - - meta
-    - name: og:description
-      content: "In this chapter you will learn how to integrate Amazon Pay Button (Payments)."
-  - - meta
-    - name: og:image
-      content: "https://frontends-og-image.vercel.app/**Amazon%20Pay**%20Integration.png?fontSize=120px"
-nav:
-  position: 10
+    - http-equiv: refresh
+      content: "0; url=/integrations/payments/amazon-pay.html"
 ---
 
-[<img src="../../../.assets/payment-icons/amazon-pay.png" alt="Adyen Logo" class="mb-8 h-20" />](https://developer.amazon.com/docs/amazon-pay/intro.html)
+# This page has moved
 
-<!-- load: ../../../../../examples/amazon-pay-button-example/README.md -->
+This content is now part of **[Amazon Pay](/integrations/payments/amazon-pay.html)**.
+
+If you are not redirected automatically, [click here](/integrations/payments/amazon-pay.html).

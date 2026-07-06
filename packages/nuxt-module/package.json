@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt-module",
+  "homepage": "https://frontends.shopware.com/concepts/internal-structure.html#nuxt-module",
   "keywords": [
     "Nuxt",
     "Shopware",

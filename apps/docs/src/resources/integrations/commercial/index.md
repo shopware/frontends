@@ -1,23 +1,14 @@
 ---
+nav:
+  hidden: true
 head:
   - - meta
-    - name: og:title
-      content: Commercial - Integrations
-  - - meta
-    - name: og:description
-      content: "Overview about all Commercial Integrations for Composable Frontends."
-  - - meta
-    - name: og:image
-      content: "https://frontends-og-image.vercel.app/Commercial%20Integrations.png?fontSize=120px"
-nav:
-  position: 20
+    - http-equiv: refresh
+      content: "0; url=/integrations/commercial/"
 ---
 
-# Commercial Integrations
+# This page has moved
 
-Here you will find all integration documents for the commercial features of Rise, Evolve and Beyond Plans for Shopware.
+This content is now part of **[Commercial Integrations](/integrations/commercial/)**.
 
-- [B2B Quick-Order](b2b-quick-order.html)
-- [B2B Quote-Management](b2b-quote-management.html)
-- [Custom Products](custom-products.html)
-- [Digital Sales Rooms](digital-sales-rooms.html)
+If you are not redirected automatically, [click here](/integrations/commercial/).

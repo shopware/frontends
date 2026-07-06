@@ -500,7 +500,7 @@ pnpm run typecheck
 ## References
 
 - [Shopware Frontends Documentation](https://frontends.shopware.com/)
-- [Shopping Experiences Guide](https://frontends.shopware.com/framework/shopping-experiences.html)
+- [Shopping Experiences Guide](https://frontends.shopware.com/concepts/shopping-experiences.html)
 - [Nuxt Layers](https://nuxt.com/docs/getting-started/layers)
 
 ---

@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html).
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/concepts/styling.html).
 
 It is useful for projects that want to use the CMS components while keeping CMS functionality separate from the styling system and design tokens.
 
@@ -90,7 +90,7 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 > `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
+See a [short guide](https://frontends.shopware.com/guides/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
 
 ## Styling and Design Tokens
 

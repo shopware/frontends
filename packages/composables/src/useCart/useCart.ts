@@ -100,7 +100,7 @@ export type UseCartReturn = {
 /**
  * Cart management logic.
  *
- * Used as [Shared](https://frontends.shopware.com/framework/composables/shared-composables.html) Composable `useCart`
+ * Used as [Shared](https://frontends.shopware.com/concepts/composables/shared-composables.html) Composable `useCart`
  *
  * @category Cart & Checkout
  */

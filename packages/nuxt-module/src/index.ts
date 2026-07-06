@@ -126,7 +126,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       icon: "carbon:assembly-cluster",
       view: {
         type: "iframe",
-        src: "https://frontends.shopware.com/getting-started/cms/",
+        src: "https://frontends.shopware.com/guides/cms/",
       },
     });
   },
