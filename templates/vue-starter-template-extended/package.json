@@ -30,7 +30,7 @@
     "@shopware/api-gen": "canary",
     "@unocss/core": "66.7.4",
     "typescript": "5.9.3",
-    "vue-tsc": "3.3.5",
+    "vue-tsc": "3.3.6",
     "oxfmt": "0.55.0",
     "oxlint": "1.70.0"
   },
