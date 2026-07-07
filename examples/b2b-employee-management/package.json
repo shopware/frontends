@@ -15,10 +15,10 @@
     "@shopware/nuxt-module": "canary",
     "nuxt": "4.4.8",
     "nuxt-toast": "1.4.0",
-    "vue": "3.5.38"
+    "vue": "3.5.39"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.7.2"
+    "@unocss/nuxt": "66.7.4"
   }
 }

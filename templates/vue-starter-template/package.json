@@ -18,7 +18,7 @@
     "preview": "nuxt preview",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
-    "typecheck": "nuxt prepare && vue-tsc -b --noEmit",
+    "typecheck": "nuxt prepare && nuxi typecheck",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
@@ -37,17 +37,17 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/unocss-design-tokens-layer": "canary",
-    "@unocss/nuxt": "66.7.2",
-    "@unocss/core": "66.7.2",
+    "@unocss/nuxt": "66.7.4",
+    "@unocss/core": "66.7.4",
     "@vueuse/core": "14.3.0",
     "@vueuse/nuxt": "14.3.0",
     "nuxt": "4.4.8",
-    "unocss": "66.7.2",
-    "vue": "3.5.38"
+    "unocss": "66.7.4",
+    "vue": "3.5.39"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@vue/compiler-sfc": "3.5.38",
+    "@vue/compiler-sfc": "3.5.39",
     "typescript": "5.9.3",
     "vite": "8.0.16",
     "vue-tsc": "3.3.5",
