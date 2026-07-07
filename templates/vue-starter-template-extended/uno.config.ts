@@ -1,6 +1,5 @@
+import baseConfig from "@shopware/unocss-design-tokens-layer/uno.config.ts";
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
-
-import baseConfig from "./.nuxt/uno.config.mjs";
 
 const lumoraConfig: ConfigBase = {
   theme: {
