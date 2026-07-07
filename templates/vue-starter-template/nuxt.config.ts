@@ -53,7 +53,6 @@ export default defineNuxtConfig({
         "fflate",
         "html-to-ast",
         "js-cookie",
-        "unocss",
         "xss",
       ],
     },
