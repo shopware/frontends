@@ -11,8 +11,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "10.1.4",
-    "@astrojs/vue": "6.0.1",
+    "@astrojs/node": "11.0.2",
+    "@astrojs/vue": "7.0.1",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "6.0.7",
@@ -23,6 +23,6 @@
     "vue": "3.5.39"
   },
   "engines": {
-    "node": "^20.x || ^22.x || ^24.x"
+    "node": ">=22.12.0"
   }
 }
