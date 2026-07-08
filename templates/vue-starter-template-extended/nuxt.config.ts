@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
 
 export default defineNuxtConfig({

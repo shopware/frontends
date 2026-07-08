@@ -1,8 +1,4 @@
-import initUnocssRuntime from "@unocss/runtime";
-
 import { defineNuxtPlugin, useAppConfig } from "#imports";
-
-import config from "../../uno.config";
 
 // Resolves UnoCSS utility classes at runtime via DOM MutationObserver.
 // Needed when CMS content contains dynamic classes not known at build time,
@@ -11,9 +7,16 @@ import config from "../../uno.config";
 // Can be disabled via app.config.ts: { unocssRuntime: false }
 // When disabled, CMS classes unknown at build time won't be resolved —
 // add them to the UnoCSS safelist in uno.config.ts to ensure they are generated.
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin(async () => {
   const appConfig = useAppConfig();
   if (!appConfig.unocssRuntime) return;
 
-  initUnocssRuntime({ defaults: config });
+  const [runtime, config] = await Promise.allSettled([
+    import("@unocss/runtime"),
+    import("@shopware/unocss-design-tokens-layer/uno.config"),
+  ]);
+
+  if (runtime.status === "rejected" || config.status === "rejected") return;
+
+  runtime.value.default({ defaults: config.value.default });
 });

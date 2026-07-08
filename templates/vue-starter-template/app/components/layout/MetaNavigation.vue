@@ -48,7 +48,7 @@ function changeLanguage(event: Event) {
           v-if="languages.length > 1"
           class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
         >
-          <Icon size="1.125rem" name="material-symbols:language" />
+          <Icon size="1.125rem" name="carbon:language" />
           <span class="sr-only">
             {{ $t("layout.ariaLabels.languageSwitcher") }}
           </span>
@@ -68,7 +68,7 @@ function changeLanguage(event: Event) {
           </select>
           <Icon
             size="1rem"
-            name="material-symbols:keyboard-arrow-down"
+            name="carbon:chevron-down"
             class="pointer-events-none absolute right-2"
           />
         </label>
@@ -78,7 +78,7 @@ function changeLanguage(event: Event) {
           class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
           :class="{ 'opacity-60': Boolean(props.changingCurrencyId) }"
         >
-          <Icon size="1.125rem" name="material-symbols:payments" />
+          <Icon size="1.125rem" name="carbon:currency" />
           <span class="sr-only">
             {{ $t("layout.ariaLabels.currencySwitcher") }}
           </span>
@@ -100,7 +100,7 @@ function changeLanguage(event: Event) {
           </select>
           <Icon
             size="1rem"
-            name="material-symbols:keyboard-arrow-down"
+            name="carbon:chevron-down"
             class="pointer-events-none absolute right-2"
           />
         </label>

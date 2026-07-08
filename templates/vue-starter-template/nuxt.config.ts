@@ -44,6 +44,13 @@ export default defineNuxtConfig({
     inlineStyles: true,
   },
   vite: {
+    $server: {
+      server: {
+        // Work around Nuxt 4.4.x + Vite 8.1 duplicate websocket upgrade handling.
+        // Remove once Nuxt ships https://github.com/nuxt/nuxt/pull/35458.
+        ws: false,
+      },
+    },
     optimizeDeps: {
       include: [
         "@regle/core",
