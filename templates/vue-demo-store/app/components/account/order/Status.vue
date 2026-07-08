@@ -1,16 +1,12 @@
 <script lang="ts" setup>
 import type { Schemas } from "#shopware";
 
-const { state } = defineProps<{
+const props = defineProps<{
   state: Schemas["StateMachineState"];
 }>();
 
-const stateName = computed(() => {
-  return state.translated?.name ?? state.name ?? state.technicalName;
-});
-
 const statusClass = computed(() => {
-  switch (state.technicalName) {
+  switch (props.state.technicalName) {
     case "completed":
       return "bg-states-success-container text-states-on-success-container";
     case "open":
@@ -27,6 +23,6 @@ const statusClass = computed(() => {
   <span
     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
     :class="statusClass"
-    >{{ stateName }}</span
+    >{{ state.name }}</span
   >
 </template>
