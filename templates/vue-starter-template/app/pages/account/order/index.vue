@@ -1,34 +1,34 @@
 <script setup lang="ts">
-const route = useRoute();
-const router = useRouter();
-
-const {
-  orders,
-  loadOrders,
-  changeCurrentPage,
-  totalPages,
-  currentPage,
-  limit,
-} = useCustomerOrders();
-
-const defaultLimit = 15;
-const defaultPage = 1;
+const { apiClient } = useShopwareContext();
 const orderAssociations = useDefaultOrderAssociations();
 
-await useAsyncData("getOrders", () => {
-  return loadOrders({
-    limit: limit.value,
-    page: route.query.p ? Number(route.query.p) : defaultPage,
-    checkPromotion: true,
-    associations: orderAssociations,
-    sort: [
-      {
-        field: "createdAt",
-        order: "DESC",
-      },
-    ],
+// Reads page/limit from the wrapper (which keeps them in the URL) and returns
+// the normalized { elements, total } shape SharedPaginatedList expects.
+// "total-count-mode": "exact" is required so the total is accurate for the
+// page count.
+const fetchOrders = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  const { data } = await apiClient.invoke("readOrder post /order", {
+    body: {
+      page,
+      limit,
+      checkPromotion: true,
+      associations: orderAssociations,
+      "total-count-mode": "exact",
+      sort: [{ field: "createdAt", order: "DESC" }],
+    },
   });
-});
+
+  return {
+    elements: data.orders.elements ?? [],
+    total: data.orders.total ?? 0,
+  };
+};
 </script>
 <template>
   <NuxtLayout name="account">
@@ -39,12 +39,16 @@ await useAsyncData("getOrders", () => {
         :subtitle="$t('account.order.subHeader')"
       />
 
-      <AccountOrderLine
-        class="mb-4"
-        v-for="order in orders"
-        :key="order.id"
-        :order="order"
-      />
+      <SharedPaginatedList :fetcher="fetchOrders" data-key="account-orders">
+        <template #default="{ items }">
+          <AccountOrderLine
+            v-for="order in items"
+            :key="order.id"
+            class="mb-4"
+            :order="order"
+          />
+        </template>
+      </SharedPaginatedList>
     </div>
   </NuxtLayout>
 </template>
