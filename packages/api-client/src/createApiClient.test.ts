@@ -315,9 +315,7 @@ describe("createAPIClient", () => {
     );
   });
 
-  it("should remove multipart/form-data headers in case of browser", async () => {
-    // @vitest-environment happy-dom
-
+  it("should keep multipart/form-data Content-Type header in node environment", async () => {
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/core/upload",
@@ -351,13 +349,10 @@ describe("createAPIClient", () => {
       "sw-access-key": "123",
       "sw-context-token": "456",
     });
-    // Content-Type header should be removed when multipart/form-data in browser
-    expect(headers?.["content-type"]).toBeUndefined();
-    // Verify multipart/form-data is not present in any header value
-    const headerValues = Object.values(headers || {}).join(" ");
-    expect(headerValues).not.toContain("multipart/form-data");
-    // User-agent should exist (platform-specific, so just check presence)
-    expect(headers?.["user-agent"]).toBeTruthy();
+    // Outside the browser there is no `window`, so the manually set
+    // Content-Type header is forwarded as-is (see createApiClient.browser.test.ts
+    // for the browser-specific removal behaviour).
+    expect(headers?.["content-type"]).toContain("multipart/form-data");
   });
 
   it("should trigger success callback", async () => {
@@ -444,7 +439,7 @@ describe("createAPIClient", () => {
     controller.abort();
 
     await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> signal is aborted without reason]`,
+      `[FetchError: [GET] "${baseURL}context": <no response> This operation was aborted]`,
     );
   });
 

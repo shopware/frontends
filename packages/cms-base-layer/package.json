@@ -42,7 +42,7 @@
     "check-colors": "tsx scripts/check-unused-colors.ts"
   },
   "dependencies": {
-    "@iconify-json/carbon": "1.2.23",
+    "@iconify-json/carbon": "1.2.24",
     "@nuxt/image": "2.0.0",
     "@nuxt/kit": "4.4.8",
     "@shopware/api-client": "workspace:*",
@@ -71,6 +71,6 @@
     "unbuild": "3.6.1",
     "vitest": "4.1.9",
     "vue-router": "5.1.0",
-    "vue-tsc": "3.3.5"
+    "vue-tsc": "3.3.6"
   }
 }
