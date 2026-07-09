@@ -9,10 +9,7 @@ const templateRoot = fileURLToPath(new URL(".", import.meta.url));
 const templateConfig: ConfigBase = {
   // here you can add template-specific configurations
   content: {
-    filesystem: [
-      `${templateRoot}/app/**/*.{ts,vue}`,
-      `${templateRoot}/i18n/**/*.{ts,vue}`,
-    ],
+    filesystem: [`${templateRoot}/app/**/*.{ts,vue}`],
   },
   safelist: [
     // commonly CMS-provided classes not present in source — safelisted to reduce layout shift
@@ -44,21 +41,6 @@ const templateConfig: ConfigBase = {
             font-family: 'Inter', sans-serif;
             -moz-osx-font-smoothing: grayscale;
             -webkit-font-smoothing: antialiased; 
-        }
-        h1 {
-          font-size: 2.25rem;
-          line-height: 2.5rem;
-          font-weight: 700;
-        }
-        h2 {
-          font-size: 1.875rem;
-          line-height: 2.25rem;
-          font-weight: 600;
-        }
-        h3 {
-          font-size: 1.5rem;
-          line-height: 2rem;
-          font-weight: 600;
         }
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
