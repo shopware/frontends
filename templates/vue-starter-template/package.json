@@ -11,6 +11,10 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "main": "./nuxt.config.ts",
+  "exports": {
+    ".": "./nuxt.config.ts",
+    "./uno.config": "./uno.config.ts"
+  },
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",

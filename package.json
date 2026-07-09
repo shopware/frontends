@@ -15,7 +15,7 @@
     "changeset": "changeset",
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
