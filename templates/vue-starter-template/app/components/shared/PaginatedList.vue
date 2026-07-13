@@ -83,7 +83,9 @@ const navProps = computed(() =>
 <template>
   <div ref="listEl">
     <slot v-if="loading" name="loading" :limit="limit">
-      <div class="py-8 text-center text-sm opacity-70">Loading…</div>
+      <div class="py-8 text-center text-sm opacity-70">
+        {{ $t("listing.loading") }}
+      </div>
     </slot>
 
     <template v-else-if="!isEmpty">
@@ -108,7 +110,9 @@ const navProps = computed(() =>
     </template>
 
     <slot v-else name="empty">
-      <div class="py-8 text-center text-sm opacity-70">No results.</div>
+      <div class="py-8 text-center text-sm opacity-70">
+        {{ $t("listing.empty") }}
+      </div>
     </slot>
   </div>
 </template>
