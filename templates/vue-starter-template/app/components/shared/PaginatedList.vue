@@ -45,8 +45,8 @@ defineSlots<{
     currentPage: number;
     totalPages: number;
   }) => unknown;
-  /** Shown while a page is loading. */
-  loading: () => unknown;
+  /** Shown while a page is loading. `limit` is the current page size. */
+  loading: (props: { limit: number }) => unknown;
   /** Shown when the list is empty. */
   empty: () => unknown;
 }>();
@@ -102,7 +102,7 @@ const navProps = computed(() =>
 
 <template>
   <div ref="listEl">
-    <slot v-if="loading" name="loading">
+    <slot v-if="loading" name="loading" :limit="limit">
       <div class="py-8 text-center text-sm opacity-70">Loading…</div>
     </slot>
 
@@ -117,7 +117,7 @@ const navProps = computed(() =>
 
       <div
         v-if="totalPages > 1 || showPageSizeSelector"
-        class="mt-8 flex justify-center"
+        class="mt-8 mb-12 flex justify-center"
       >
         <SharedElementsNavigation
           v-bind="navProps"

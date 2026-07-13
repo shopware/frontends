@@ -32,6 +32,7 @@ watch(
     id="page-size"
     v-model="state"
     :options
+    rounded="rounded-md"
     @change="handleChange"
   />
 </template>

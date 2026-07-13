@@ -48,6 +48,10 @@ const fetchOrders = async ({
             :order="order"
           />
         </template>
+
+        <template #loading="{ limit }">
+          <AccountOrderLineSkeleton v-for="n in limit" :key="n" class="mb-4" />
+        </template>
       </SharedPaginatedList>
     </div>
   </NuxtLayout>

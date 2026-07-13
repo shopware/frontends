@@ -12,6 +12,7 @@ const { errorMessage } = defineProps<{
   errorMessage?: MaybeRef<string>;
   loading?: boolean;
   autocomplete?: string;
+  rounded?: string;
 }>();
 
 const model = defineModel<string>({
@@ -39,6 +40,7 @@ const errorText = computed(() => unref(errorMessage));
       :invalid="!!errorText"
       :loading
       :autocomplete
+      :rounded="rounded"
     />
     <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText
