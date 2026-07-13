@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T">
 import type { MaybeRefOrGetter } from "vue";
 
-import type { OffsetPaginationFetcher } from "~/composables/useOffsetPaginatedList";
+import type { OffsetPaginationFetcher } from "../../composables/useOffsetPaginatedList";
 
 const props = withDefaults(
   defineProps<{
