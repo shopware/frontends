@@ -97,16 +97,13 @@ const navProps = computed(() =>
         :total-pages="totalPages"
       />
 
-      <div
+      <SharedElementsNavigation
         v-if="totalPages > 1 || showPageSizeSelector"
-        class="mt-8 mb-12 flex justify-center"
-      >
-        <SharedElementsNavigation
-          v-bind="navProps"
-          @change-page="changePage"
-          @change-size="(size: number) => (limit = size)"
-        />
-      </div>
+        v-bind="navProps"
+        class="mt-8 mb-12"
+        @change-page="changePage"
+        @change-size="(size: number) => (limit = size)"
+      />
     </template>
 
     <slot v-else name="empty">
