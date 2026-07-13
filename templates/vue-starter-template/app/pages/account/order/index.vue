@@ -2,10 +2,6 @@
 const { apiClient } = useShopwareContext();
 const orderAssociations = useDefaultOrderAssociations();
 
-// Reads page/limit from the wrapper (which keeps them in the URL) and returns
-// the normalized { elements, total } shape SharedPaginatedList expects.
-// "total-count-mode": "exact" is required so the total is accurate for the
-// page count.
 const fetchOrders = async ({
   page,
   limit,
