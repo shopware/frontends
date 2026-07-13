@@ -22,8 +22,7 @@ import {
 } from "@regle/rules";
 
 export const customValidators = () => {
-  const { $i18n } = useNuxtApp();
-  const t = $i18n.t.bind($i18n);
+  const { t } = useI18n();
 
   const getMessage = (key: string, params?: Record<string, unknown>) => {
     return () => t(`validations.${key}`, params || {});
