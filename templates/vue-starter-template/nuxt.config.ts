@@ -104,6 +104,9 @@ export default defineNuxtConfig({
     ],
   },
   icon: {
+    clientBundle: {
+      includeCustomCollections: true,
+    },
     customCollections: [
       {
         prefix: "shopware",
