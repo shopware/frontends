@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { OffsetPaginationFetcher } from "#imports";
+import type { Schemas } from "#shopware";
+
 const { apiClient } = useShopwareContext();
 const orderAssociations = useDefaultOrderAssociations();
 
-const fetchOrders = async ({
+const fetchOrders: OffsetPaginationFetcher<Schemas["Order"]> = async ({
   page,
   limit,
-}: {
-  page: number;
-  limit: number;
 }) => {
   const { data } = await apiClient.invoke("readOrder post /order", {
     body: {
@@ -36,7 +36,7 @@ const fetchOrders = async ({
       />
 
       <SharedPaginatedList :fetcher="fetchOrders" data-key="account-orders">
-        <template #default="{ items }">
+        <template #default="{ items }: { items: Schemas['Order'][] }">
           <AccountOrderLine
             v-for="order in items"
             :key="order.id"
