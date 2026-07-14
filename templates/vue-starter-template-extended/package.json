@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/core": "66.7.4",
+    "@unocss/core": "66.7.5",
     "typescript": "5.9.3",
-    "vue-tsc": "3.3.6",
+    "vue-tsc": "3.3.7",
     "oxfmt": "0.57.0",
     "oxlint": "1.72.0"
   },
