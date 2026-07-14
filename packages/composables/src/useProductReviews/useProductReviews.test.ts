@@ -1,3 +1,4 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
 import { ref } from "vue";
 
@@ -15,8 +16,46 @@ describe("useProductReviews", () => {
     });
     await vm.loadProductReviews();
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readProductReviews"),
-      expect.objectContaining({}),
+      expect.stringContaining("readProductReviews post"),
+      expect.objectContaining({
+        body: {},
+        pathParams: {
+          productId: ProductMock.id,
+        },
+      }),
+    );
+    expect(vm.productReviews).toEqual([{ id: "1", content: "Great!" }]);
+  });
+
+  it("load product reviews uses GET when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(
+      () => useProductReviews(ref(ProductMock)),
+      {
+        shopware: { cacheableReads: true },
+      },
+    );
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [{ id: "1", content: "Great!" }] },
+    });
+
+    await vm.loadProductReviews({
+      limit: 5,
+      sort: [{ field: "createdAt", order: "DESC" }],
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readProductReviewsGet get"),
+      expect.objectContaining({
+        pathParams: {
+          productId: ProductMock.id,
+        },
+        query: {
+          _criteria: encodeForQuery({
+            limit: 5,
+            sort: [{ field: "createdAt", order: "DESC" }],
+          }),
+        },
+      }),
     );
     expect(vm.productReviews).toEqual([{ id: "1", content: "Great!" }]);
   });

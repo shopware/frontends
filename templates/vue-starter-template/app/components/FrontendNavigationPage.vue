@@ -12,49 +12,61 @@ const props = defineProps<{
 
 const { search } = useCategorySearch();
 const route = useRoute();
-const { buildDynamicBreadcrumbs } = useBreadcrumbs();
+const { buildDynamicBreadcrumbs, clearBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
-const errors = ref<string[]>([]);
+const router = useRouter();
+const breadcrumbRequestController = import.meta.client
+  ? new AbortController()
+  : undefined;
+
+if (import.meta.client) {
+  const removeBreadcrumbRequestGuard = router.beforeEach((to, from) => {
+    if (to.fullPath === from.fullPath) return;
+    breadcrumbRequestController?.abort();
+  });
+
+  onBeforeUnmount(() => {
+    breadcrumbRequestController?.abort();
+    removeBreadcrumbRequestGuard();
+  });
+}
 
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
-  async () => {
-    const responses = await Promise.allSettled([
-      search(props.navigationId, {
-        withCmsAssociations: true,
-        query: {
-          ...route.query,
-        },
-      }),
-      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
+  async () =>
+    await search(props.navigationId, {
+      withCmsAssociations: true,
+      query: {
+        ...route.query,
+      },
+    }),
+);
+const categoryResponse = ref(data.value);
+
+clearBreadcrumbs();
+
+onMounted(async () => {
+  try {
+    const breadcrumbsResponse = await apiClient.invoke(
+      "readBreadcrumb get /breadcrumb/{id}",
+      {
         pathParams: {
           id: props.navigationId,
         },
-      }),
-    ]);
-
-    for (const response of responses) {
-      if (response.status === "rejected") {
-        console.error("[FrontendNavigationPage.vue]", response.reason.message);
-        errors.value.push(response.reason.message);
-      }
-    }
-
-    return {
-      category: responses[0].status === "fulfilled" ? responses[0].value : null,
-      breadcrumbs:
-        responses[1].status === "fulfilled" ? responses[1].value : null,
-    };
-  },
-);
-const categoryResponse = ref(data.value?.category);
-
-if (data.value?.breadcrumbs) {
-  buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
-}
+        fetchOptions: {
+          signal: breadcrumbRequestController?.signal,
+        },
+      },
+    );
+    await buildDynamicBreadcrumbs(breadcrumbsResponse.data);
+  } catch (error) {
+    if (breadcrumbRequestController?.signal.aborted) return;
+    console.error("[FrontendNavigationPage.vue]", error);
+  }
+});
 
 if (!categoryResponse.value) {
-  const statusMessage = error.value?.message || errors.value.join(", ");
+  const statusMessage = error.value?.message || "Failed to load category";
   console.error("[FrontendNavigationPage.vue]", statusMessage);
   throw createError({
     statusCode: 500,
