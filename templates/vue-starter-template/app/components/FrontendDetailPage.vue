@@ -6,55 +6,45 @@ const props = defineProps<{
 }>();
 
 const { search } = useProductSearch();
-const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
+const { buildDynamicBreadcrumbs, clearBreadcrumbs, pushBreadcrumb } =
+  useBreadcrumbs();
 const { apiClient } = useShopwareContext();
-const errors = ref<string[]>([]);
+const router = useRouter();
+const breadcrumbRequestController = import.meta.client
+  ? new AbortController()
+  : undefined;
+
+if (import.meta.client) {
+  const removeBreadcrumbRequestGuard = router.beforeEach((to, from) => {
+    if (to.fullPath === from.fullPath) return;
+    breadcrumbRequestController?.abort();
+  });
+
+  onBeforeUnmount(() => {
+    breadcrumbRequestController?.abort();
+    removeBreadcrumbRequestGuard();
+  });
+}
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
-  async () => {
-    const responses = await Promise.allSettled([
-      search(props.navigationId, {
-        withCmsAssociations: true,
-        associations: {
-          openGraphMedia: {
-            associations: {
-              thumbnails: {},
-            },
+  async () =>
+    await search(props.navigationId, {
+      withCmsAssociations: true,
+      associations: {
+        openGraphMedia: {
+          associations: {
+            thumbnails: {},
           },
-          seoUrls: {},
         },
-      }),
-      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
-        pathParams: {
-          id: props.navigationId,
-        },
-      }),
-    ]);
-
-    for (const response of responses) {
-      if (response.status === "rejected") {
-        console.error("[FrontendDetailPage.vue]", response.reason.message);
-        errors.value.push(response.reason.message);
-      }
-    }
-
-    return {
-      productResponse:
-        responses[0].status === "fulfilled" ? responses[0].value : null,
-      breadcrumbs:
-        responses[1].status === "fulfilled" ? responses[1].value : null,
-    };
-  },
+        seoUrls: {},
+      },
+    }),
 );
-const productResponse = data.value?.productResponse;
-
-if (data.value?.breadcrumbs) {
-  buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
-}
+const productResponse = data.value;
 
 if (!productResponse) {
-  const statusMessage = error.value?.message || errors.value.join(", ");
+  const statusMessage = error.value?.message || "Failed to load product";
   console.error("[FrontendDetailPage.vue]", statusMessage);
   throw createError({
     statusCode: 500,
@@ -64,9 +54,32 @@ if (!productResponse) {
 
 useProductJsonLD(productResponse.product);
 
-pushBreadcrumb({
+const productBreadcrumb = {
   name: getProductName({ product: productResponse.product }) ?? "",
   path: `/${productResponse.product.seoUrls?.[0]?.seoPathInfo}`,
+};
+
+clearBreadcrumbs();
+
+onMounted(async () => {
+  try {
+    const breadcrumbsResponse = await apiClient.invoke(
+      "readBreadcrumb get /breadcrumb/{id}",
+      {
+        pathParams: {
+          id: props.navigationId,
+        },
+        fetchOptions: {
+          signal: breadcrumbRequestController?.signal,
+        },
+      },
+    );
+    await buildDynamicBreadcrumbs(breadcrumbsResponse.data);
+    pushBreadcrumb(productBreadcrumb);
+  } catch (error) {
+    if (breadcrumbRequestController?.signal.aborted) return;
+    console.error("[FrontendDetailPage.vue]", error);
+  }
 });
 
 const { product } = useProduct(
