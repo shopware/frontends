@@ -4,7 +4,7 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/guides/page-elements/"
+      content: "0; url=/frontends/guides/page-elements/"
 ---
 
 :::warning

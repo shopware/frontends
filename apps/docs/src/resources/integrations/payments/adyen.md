@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/integrations/payments/adyen.html"
+      content: "0; url=/frontends/integrations/payments/adyen.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Adyen](/integrations/payments/adyen.html)**.
+This content is now part of **[Adyen](/frontends/integrations/payments/adyen.html)**.
 
-If you are not redirected automatically, [click here](/integrations/payments/adyen.html).
+If you are not redirected automatically, [click here](/frontends/integrations/payments/adyen.html).

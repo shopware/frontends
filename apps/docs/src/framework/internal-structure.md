@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/concepts/internal-structure.html"
+      content: "0; url=/frontends/concepts/internal-structure.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Internal Structure](/concepts/internal-structure.html)**.
+This content is now part of **[Internal Structure](/frontends/concepts/internal-structure.html)**.
 
-If you are not redirected automatically, [click here](/concepts/internal-structure.html).
+If you are not redirected automatically, [click here](/frontends/concepts/internal-structure.html).

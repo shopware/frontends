@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/integrations/"
+      content: "0; url=/frontends/integrations/"
 ---
 
 # This page has moved
 
-This content is now part of **[🛠️ Integrations](/integrations/)**.
+This content is now part of **[🛠️ Integrations](/frontends/integrations/)**.
 
-If you are not redirected automatically, [click here](/integrations/).
+If you are not redirected automatically, [click here](/frontends/integrations/).

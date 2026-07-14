@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/guides/cms/create-elements.html"
+      content: "0; url=/frontends/guides/cms/create-elements.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Create Elements (CMS)](/guides/cms/create-elements.html)**.
+This content is now part of **[Create Elements (CMS)](/frontends/guides/cms/create-elements.html)**.
 
-If you are not redirected automatically, [click here](/guides/cms/create-elements.html).
+If you are not redirected automatically, [click here](/frontends/guides/cms/create-elements.html).

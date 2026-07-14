@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/guides/cms/create-blocks.html"
+      content: "0; url=/frontends/guides/cms/create-blocks.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Create Blocks (CMS)](/guides/cms/create-blocks.html)**.
+This content is now part of **[Create Blocks (CMS)](/frontends/guides/cms/create-blocks.html)**.
 
-If you are not redirected automatically, [click here](/guides/cms/create-blocks.html).
+If you are not redirected automatically, [click here](/frontends/guides/cms/create-blocks.html).
