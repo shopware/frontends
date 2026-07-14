@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/framework/shopping-experiences.html",
+  "homepage": "https://developer.shopware.com/frontends/concepts/shopping-experiences.html",
   "keywords": [
     "Shopware",
     "Vue",
