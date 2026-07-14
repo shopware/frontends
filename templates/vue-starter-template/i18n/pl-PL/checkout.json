@@ -6,6 +6,7 @@
     "shippingCosts": "Wysyłka",
     "total": "Suma",
     "placeOrderButton": "Złóż zamówienie",
+    "placingOrder": "Składanie zamówienia…",
     "customerAddress": {
       "firstNamePlaceholder": "Wprowadź imię",
       "firstNameLabel": "Imię",

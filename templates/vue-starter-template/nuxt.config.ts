@@ -3,6 +3,15 @@ import { createResolver } from "@nuxt/kit";
 
 const { resolve } = createResolver(import.meta.url);
 const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
+const viteServerWebSocketWorkaround = {
+  $server: {
+    server: {
+      // Work around Nuxt 4.4.x + Vite 8.1 duplicate websocket upgrade handling.
+      // Remove once Nuxt ships https://github.com/nuxt/nuxt/pull/35458.
+      ws: false,
+    },
+  },
+} as Record<string, unknown>;
 
 export default defineNuxtConfig({
   extends: [
@@ -19,6 +28,10 @@ export default defineNuxtConfig({
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
         devStorefrontUrl: "https://frontends-demo.vercel.app",
+        cacheableReads: true,
+        // Uses the Shopware context cookie during SSR, so the first render matches
+        // the user's currency. Disable shared HTML cache/ISR for these pages.
+        // useUserContextInSSR: true,
       },
     },
   },
@@ -39,6 +52,21 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: true,
   },
+  vite: {
+    ...viteServerWebSocketWorkaround,
+    optimizeDeps: {
+      include: [
+        "@regle/core",
+        "@regle/rules",
+        "@unocss/runtime",
+        "entities",
+        "fflate",
+        "html-to-ast",
+        "js-cookie",
+        "xss",
+      ],
+    },
+  },
   css: ["@unocss/reset/tailwind-compat.css"],
   unocss: {
     nuxtLayers: true,
@@ -56,7 +84,7 @@ export default defineNuxtConfig({
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
-    vueI18n: resolve("./config"),
+    vueI18n: "config.ts",
     locales: [
       {
         code: "en-GB",
@@ -76,6 +104,9 @@ export default defineNuxtConfig({
     ],
   },
   icon: {
+    clientBundle: {
+      includeCustomCollections: true,
+    },
     customCollections: [
       {
         prefix: "shopware",
@@ -85,9 +116,13 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/**": {
-      // 24-hour ISR — reduce for frequently updated catalogs or CMS-heavy storefronts
+      // 24-hour ISR — reduce for frequently updated catalogs or CMS-heavy storefronts.
+      // If SSR uses the user's Shopware context for currency, disable this shared
+      // HTML cache and use the no-store headers below to avoid currency flicker.
       isr: 60 * 60 * 24,
       headers: {
+        // "Cache-Control": "private, no-store, max-age=0",
+        // "Surrogate-Control": "no-store",
         "Surrogate-Control": "max-age=86400, stale-while-revalidate=86400",
       },
     },

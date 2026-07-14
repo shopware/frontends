@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/packages/helpers.html",
+  "homepage": "https://developer.shopware.com/frontends/packages/helpers.html",
   "keywords": [
     "shopware",
     "api",

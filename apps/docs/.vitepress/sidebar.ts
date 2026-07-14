@@ -10,231 +10,227 @@ export const sidebar = [
   {
     text: "SHOPWARE FRONTENDS",
     link: "/",
+    items: [{ text: "Overview", link: "/", chevron: false }],
+  },
+  {
+    text: "INTRODUCTION",
+    link: "/introduction/",
     items: [
-      { text: "Overview", link: "/", chevron: false },
-      { text: "Why Shopware Frontends", link: "/why-shopware-frontends.html" },
+      {
+        text: "Why Shopware Frontends",
+        link: "/introduction/why-shopware-frontends.html",
+      },
+      { text: "Requirements", link: "/introduction/requirements.html" },
+      { text: "Quick Start", link: "/introduction/quick-start.html" },
+      { text: "Try it out", link: "/introduction/try-it-out.html" },
+      {
+        text: "Setup Templates",
+        link: "/introduction/templates.html",
+        collapsed: true,
+        items: [
+          {
+            text: "Vue Starter Template",
+            link: "/introduction/templates/vue-starter-template.html",
+          },
+          {
+            text: "Vue Starter Template Extended",
+            link: "/introduction/templates/vue-starter-template-extended.html",
+          },
+          {
+            text: "Blank Template",
+            link: "/introduction/templates/blank-template.html",
+          },
+          {
+            text: "Demo Store",
+            link: "/introduction/templates/demo-store-template.html",
+          },
+          {
+            text: "Custom Vue Project",
+            link: "/introduction/templates/custom-vue-project.html",
+          },
+          {
+            text: "Custom React Project",
+            link: "/introduction/templates/custom-react-project.html",
+          },
+          {
+            text: "Astro Template",
+            link: "/introduction/templates/astro-template.html",
+          },
+        ],
+      },
     ],
   },
   {
-    text: "FRAMEWORK",
-    link: "/framework/",
+    text: "CONCEPTS",
+    link: "/concepts/",
     items: [
-      { text: "Requirements", link: "/framework/requirements.html" },
       {
         text: "Internal Structure",
-        link: "/framework/internal-structure.html",
+        link: "/concepts/internal-structure.html",
       },
       {
         text: "Composables",
-        link: "/framework/composables.html",
+        link: "/concepts/composables.html",
         collapsed: true,
         items: [
           {
             text: "Context Composables",
-            link: "/framework/composables/context-composables.html",
+            link: "/concepts/composables/context-composables.html",
           },
           {
             text: "Shared Composables",
-            link: "/framework/composables/shared-composables.html",
+            link: "/concepts/composables/shared-composables.html",
           },
           {
             text: "Overwriting Composables",
-            link: "/framework/composables/overwriting-composables.html",
+            link: "/concepts/composables/overwriting-composables.html",
           },
         ],
       },
       {
         text: "Shopping Experiences",
-        link: "/framework/shopping-experiences.html",
+        link: "/concepts/shopping-experiences.html",
       },
-      { text: "Styling", link: "/framework/styling.html" },
-      { text: "Design Tokens", link: "/framework/design-tokens.html" },
+      { text: "Styling", link: "/concepts/styling.html" },
+      { text: "Design Tokens", link: "/concepts/design-tokens.html" },
     ],
   },
   {
-    text: "BUILDING",
-    link: "/getting-started/",
+    text: "GUIDES",
+    link: "/guides/",
     items: [
-      { text: "Try it out", link: "/getting-started/try-it-out.html" },
-      {
-        text: "Setup Templates",
-        link: "/getting-started/templates.html",
-        collapsed: true,
-        items: [
-          {
-            text: "Vue Starter Template",
-            link: "/getting-started/templates/vue-starter-template.html",
-          },
-          {
-            text: "Vue Starter Template Extended",
-            link: "/getting-started/templates/vue-starter-template-extended.html",
-          },
-          {
-            text: "Blank Template",
-            link: "/getting-started/templates/blank-template.html",
-          },
-          {
-            text: "Demo Store",
-            link: "/getting-started/templates/demo-store-template.html",
-          },
-          {
-            text: "Custom Vue Project",
-            link: "/getting-started/templates/custom-vue-project.html",
-          },
-          {
-            text: "Custom React Project",
-            link: "/getting-started/templates/custom-react-project.html",
-          },
-          {
-            text: "Astro Template",
-            link: "/getting-started/templates/astro-template.html",
-          },
-        ],
-      },
-      { text: "Routing", link: "/getting-started/routing.html" },
-      { text: "Languages", link: "/getting-started/languages.html" },
+      { text: "Routing", link: "/guides/routing.html" },
+      { text: "Languages", link: "/guides/languages.html" },
       {
         text: "CMS",
-        link: "/getting-started/cms/",
+        link: "/guides/cms/",
         collapsed: true,
         items: [
           {
             text: "Custom Elements",
-            link: "/getting-started/cms/custom-elements.html",
+            link: "/guides/cms/custom-elements.html",
           },
           {
             text: "Content Pages",
-            link: "/getting-started/cms/content-pages.html",
+            link: "/guides/cms/content-pages.html",
           },
           {
             text: "Customize Components",
-            link: "/getting-started/cms/customize-components.html",
+            link: "/guides/cms/customize-components.html",
           },
           {
             text: "Implement Missing Component",
-            link: "/getting-started/cms/missing-component.html",
+            link: "/guides/cms/missing-component.html",
           },
           {
             text: "Create Blocks",
-            link: "/getting-started/cms/create-blocks.html",
+            link: "/guides/cms/create-blocks.html",
           },
           {
             text: "Create Elements",
-            link: "/getting-started/cms/create-elements.html",
+            link: "/guides/cms/create-elements.html",
           },
           {
             text: "Overwriting CMS",
-            link: "/getting-started/cms/overwriting-cms.html",
+            link: "/guides/cms/overwriting-cms.html",
           },
           {
             text: "Multiple CMS",
-            link: "/getting-started/cms/multiple-cms.html",
+            link: "/guides/cms/multiple-cms.html",
           },
         ],
       },
       {
         text: "E-Commerce",
-        link: "/getting-started/e-commerce/",
+        link: "/guides/e-commerce/",
         collapsed: true,
         items: [
           {
             text: "Product Listing",
-            link: "/getting-started/e-commerce/product-listing.html",
+            link: "/guides/e-commerce/product-listing.html",
           },
           {
             text: "Product Detail Page",
-            link: "/getting-started/e-commerce/product-detail-page.html",
+            link: "/guides/e-commerce/product-detail-page.html",
           },
-          { text: "Prices", link: "/getting-started/e-commerce/prices.html" },
-          { text: "Cart", link: "/getting-started/e-commerce/cart.html" },
+          { text: "Prices", link: "/guides/e-commerce/prices.html" },
+          { text: "Cart", link: "/guides/e-commerce/cart.html" },
           {
             text: "Checkout",
-            link: "/getting-started/e-commerce/checkout.html",
+            link: "/guides/e-commerce/checkout.html",
           },
           {
             text: "Payments",
-            link: "/getting-started/e-commerce/payments.html",
+            link: "/guides/e-commerce/payments.html",
           },
           {
             text: "JSON-LD",
-            link: "/getting-started/e-commerce/json-ld.html",
+            link: "/guides/e-commerce/json-ld.html",
+          },
+        ],
+      },
+      {
+        text: "B2B",
+        link: "/guides/b2b/",
+        collapsed: true,
+        items: [
+          {
+            text: "Quote Management",
+            link: "/guides/b2b/quote-management.html",
           },
         ],
       },
       {
         text: "Features",
-        link: "/getting-started/features/",
+        link: "/guides/features/",
         collapsed: true,
         items: [
           {
             text: "Sitemap",
-            link: "/getting-started/features/sitemap.html",
+            link: "/guides/features/sitemap.html",
           },
           {
             text: "Wishlist",
-            link: "/getting-started/features/wishlist.html",
+            link: "/guides/features/wishlist.html",
           },
           {
             text: "Custom Products extension",
-            link: "/getting-started/features/custom-products.html",
+            link: "/guides/features/custom-products.html",
           },
           {
             text: "Broadcasting",
-            link: "/getting-started/features/broadcasting.html",
+            link: "/guides/features/broadcasting.html",
           },
           {
             text: "Maintenance mode",
-            link: "/getting-started/features/maintenance-mode.html",
+            link: "/guides/features/maintenance-mode.html",
           },
         ],
       },
       {
         text: "Page elements",
-        link: "/getting-started/page-elements/",
+        link: "/guides/page-elements/",
         collapsed: true,
         items: [
           {
             text: "Breadcrumbs",
-            link: "/getting-started/page-elements/breadcrumbs.html",
+            link: "/guides/page-elements/breadcrumbs.html",
           },
           {
             text: "Images",
-            link: "/getting-started/page-elements/images.html",
+            link: "/guides/page-elements/images.html",
           },
           {
             text: "Login Form",
-            link: "/getting-started/page-elements/login-form.html",
+            link: "/guides/page-elements/login-form.html",
           },
           {
             text: "Navigation",
-            link: "/getting-started/page-elements/navigation.html",
+            link: "/guides/page-elements/navigation.html",
           },
           {
-            text: "Examples",
-            link: "/getting-started/page-elements/examples/",
-            collapsed: true,
-            items: [
-              {
-                text: "Cart",
-                link: "/getting-started/page-elements/examples/cart/",
-              },
-              {
-                text: "Product listing",
-                link: "/getting-started/page-elements/examples/listing/",
-              },
-              {
-                text: "Product Detail Page",
-                link: "/getting-started/page-elements/examples/product-detail-page/",
-              },
-              {
-                text: "Footer Navigation",
-                link: "/getting-started/page-elements/examples/footer-navigation/",
-              },
-              {
-                text: "Navigation",
-                link: "/getting-started/page-elements/examples/navigation/",
-              },
-            ],
+            text: "Footer Navigation",
+            link: "/guides/page-elements/footer-navigation.html",
           },
         ],
       },
@@ -291,90 +287,98 @@ export const sidebar = [
     ],
   },
   {
-    text: "RESOURCES",
-    link: "/resources/",
+    text: "INTEGRATIONS",
+    link: "/integrations/",
     items: [
-      { text: "🚀 Links", link: "/resources/links.html" },
-      { text: "🤗 Community Modules", link: "/resources/community-modules/" },
-      { text: "😱 Troubleshooting", link: "/resources/troubleshooting.html" },
       {
-        text: "🛠️ Integrations",
-        link: "/resources/integrations/",
+        text: "CMS",
+        link: "/integrations/cms/",
         collapsed: true,
         items: [
           {
-            text: "CMS",
-            link: "/resources/integrations/cms/",
-            collapsed: true,
-            items: [
-              {
-                text: "Storyblok",
-                link: "/resources/integrations/cms/storyblok.html",
-              },
-              {
-                text: "Strapi",
-                link: "/resources/integrations/cms/strapi.html",
-              },
-              {
-                text: "Sanity",
-                link: "/resources/integrations/cms/sanity.html",
-              },
-            ],
+            text: "Storyblok",
+            link: "/integrations/cms/storyblok.html",
           },
           {
-            text: "Commercial",
-            link: "/resources/integrations/commercial/",
-            collapsed: true,
-            items: [
-              {
-                text: "B2B Quick Order",
-                link: "/resources/integrations/commercial/b2b-quick-order.html",
-              },
-              {
-                text: "B2B Quote Management",
-                link: "/resources/integrations/commercial/b2b-quote-management.html",
-              },
-              {
-                text: "Custom Products",
-                link: "/resources/integrations/commercial/custom-products.html",
-              },
-            ],
+            text: "Strapi",
+            link: "/integrations/cms/strapi.html",
           },
           {
-            text: "Payments",
-            link: "/resources/integrations/payments/",
-            collapsed: true,
-            items: [
-              {
-                text: "Amazon Pay",
-                link: "/resources/integrations/payments/amazon-pay.html",
-              },
-              {
-                text: "Adyen",
-                link: "/resources/integrations/payments/adyen.html",
-              },
-              {
-                text: "Braintree",
-                link: "/resources/integrations/payments/braintree.html",
-              },
-              {
-                text: "mollie",
-                link: "https://github.com/mollie/Shopware6Composables",
-              },
-              {
-                text: "Paypal",
-                link: "/resources/integrations/payments/paypal.html",
-              },
-            ],
+            text: "Sanity",
+            link: "/integrations/cms/sanity.html",
+          },
+        ],
+      },
+      {
+        text: "Payments",
+        link: "/integrations/payments/",
+        collapsed: true,
+        items: [
+          {
+            text: "Amazon Pay",
+            link: "/integrations/payments/amazon-pay.html",
+          },
+          {
+            text: "Adyen",
+            link: "/integrations/payments/adyen.html",
+          },
+          {
+            text: "Braintree",
+            link: "/integrations/payments/braintree.html",
+          },
+          {
+            text: "mollie",
+            link: "https://github.com/mollie/Shopware6Composables",
+          },
+          {
+            text: "Paypal",
+            link: "/integrations/payments/paypal.html",
+          },
+        ],
+      },
+      {
+        text: "Commercial",
+        link: "/integrations/commercial/",
+        collapsed: true,
+        items: [
+          {
+            text: "B2B Quick Order",
+            link: "/integrations/commercial/b2b-quick-order.html",
+          },
+          {
+            text: "B2B Quote Management",
+            link: "/integrations/commercial/b2b-quote-management.html",
+          },
+          {
+            text: "Custom Products",
+            link: "/integrations/commercial/custom-products.html",
+          },
+          {
+            text: "Digital Sales Rooms",
+            link: "/integrations/commercial/digital-sales-rooms.html",
           },
         ],
       },
     ],
   },
   {
+    text: "RESOURCES",
+    link: "/resources/",
+    items: [
+      { text: "🚀 Links", link: "/resources/links.html" },
+      { text: "🤗 Community Modules", link: "/resources/community-modules/" },
+      { text: "😱 Troubleshooting", link: "/resources/troubleshooting.html" },
+      { text: "🤖 AI Assistant", link: "/ai/search.html" },
+    ],
+  },
+  {
     text: "PACKAGE REFERENCE",
     link: "/packages/",
     items: [
+      {
+        text: "Distribution Channels",
+        link: "/packages/distribution-channels.html",
+      },
       {
         text: "API Client",
         link: "/packages/api-client.html",
