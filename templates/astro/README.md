@@ -13,7 +13,7 @@ This repository shows an example of application built using Shopware Frontends F
 
 Astro 7 requires Node.js `>=22.12.0`.
 
-Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 

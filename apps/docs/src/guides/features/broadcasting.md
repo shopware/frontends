@@ -34,7 +34,7 @@ export default defineNuxtConfig({
 });
 ```
 
-For more information, please visit the [troubleshooting page](https://frontends.shopware.com/resources/troubleshooting.html#broadcasting-and-bfcache-compatibility)
+For more information, please visit the [troubleshooting page](https://developer.shopware.com/frontends/resources/troubleshooting.html#broadcasting-and-bfcache-compatibility)
 
 ## Synchronizing changes between tabs
 
