@@ -15,7 +15,7 @@
     "changeset": "changeset",
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
@@ -46,9 +46,9 @@
     "dotenv-cli": "11.0.0",
     "esno": "4.8.0",
     "husky": "9.1.7",
-    "oxfmt": "0.55.0",
-    "oxlint": "1.70.0",
-    "turbo": "2.10.0"
+    "oxfmt": "0.57.0",
+    "oxlint": "1.72.0",
+    "turbo": "2.10.3"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"

@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
+Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://developer.shopware.com/frontends/guides/page-elements/navigation.html).
 
 ## Features
 
@@ -156,7 +156,7 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 ## Links
 
-- [📘 Documentation](https://frontends.shopware.com)
+- [📘 Documentation](https://developer.shopware.com/frontends)
 
 - [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
 

@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/packages/composables.html",
+  "homepage": "https://developer.shopware.com/frontends/packages/composables.html",
   "keywords": [
     "shopware",
     "vue",

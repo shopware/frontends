@@ -103,6 +103,13 @@ pnpm run test:watch    # Watch mode
 
 Tests exercise `invoke()` calls, hook firing, error parsing, and auth flows. When adding features, add matching tests.
 
+The client behaves differently in Node and in the browser (e.g. the `typeof window` guard that strips a manual `multipart/form-data` Content-Type, and abort/rejection messages that differ between runtimes). Keep these split by environment:
+
+- `*.test.ts` runs in the default Node environment.
+- `*.browser.test.ts` runs in `happy-dom` via a `// @vitest-environment happy-dom` docblock on the **first line** of the file.
+
+Vitest applies that docblock to the whole file regardless of where it appears, so never place it inside a single `it()` block — doing so silently flips every test in the file to the browser environment.
+
 ## Relationship with @shopware/api-gen
 
 `@shopware/api-gen` is the CLI companion that produces the `operations` and `components` types consumed here. The two packages are decoupled — `api-client` ships default types for convenience, but end users are encouraged to generate their own.
@@ -125,4 +132,4 @@ Keep this file in sync when the bundled types are regenerated.
 
 - [README.md](README.md) — User-facing docs including setup, type customization, usage examples
 - [@shopware/api-gen](../api-gen/README.md) — Type generation CLI
-- [frontends.shopware.com](https://frontends.shopware.com/) — Full documentation
+- [developer.shopware.com/frontends](https://developer.shopware.com/frontends/) — Full documentation

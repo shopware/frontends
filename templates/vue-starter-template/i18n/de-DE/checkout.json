@@ -6,6 +6,7 @@
     "shippingCosts": "Versand",
     "total": "Gesamt",
     "placeOrderButton": "Bestellen",
+    "placingOrder": "Bestellung wird aufgegeben…",
     "customerAddress": {
       "firstNamePlaceholder": "Vorname eingeben",
       "firstNameLabel": "Vorname",
