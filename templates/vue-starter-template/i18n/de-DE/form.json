@@ -18,6 +18,7 @@
     "lastNamePlaceholder": "Nachname eingeben...",
     "country": "Land",
     "chooseCountry": "Land auswählen...",
+    "clearCountry": "Länderauswahl löschen",
     "company": "Firma",
     "vatIds": "USt-IdNr.",
     "companyPlaceholder": "Firma eingeben...",
@@ -44,6 +45,9 @@
     "chooseState": "Wählen Sie den Staat",
     "state": "Zustand",
     "loading": "Lädt...",
+    "loadingMoreCountries": "Weitere Länder werden geladen...",
+    "noCountryResults": "Keine Länder gefunden",
+    "countrySearchError": "Länder konnten nicht geladen werden",
     "requiredFieldsNote": "Felder mit einem Sternchen (*) sind erforderlich."
   }
 }
