@@ -20,7 +20,7 @@ More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts
 
 ## Example how to overwrite the cms block product listing
 
-We have this cms element **component** from **cms-base package**:  
+We have this cms element **component** from **cms-base package**:
 `packages/cms-base-layer/app/components/public/cms/block/CmsBlockProductListing.vue`
 
 If we want to create our own product listing **component** in **vue-starter-template** the correct place would be:
@@ -33,12 +33,12 @@ If we want to create our own product listing **component** in **vue-starter-temp
 
 ### Resolving folder structure
 
-**Nuxt** is resolving names by folder structure, so if you have:  
-`/components/public/some/name.vue`  
+**Nuxt** is resolving names by folder structure, so if you have:
+`/components/public/some/name.vue`
 then component name is **PublicSomeName**.
 
-You can repeat folder structure in name like:  
-`/components/cms/Name.vue`  
+You can repeat folder structure in name like:
+`/components/cms/Name.vue`
 `/components/cms/CmsName.vue`
 
 These are the same components resolving as **CmsName**. 💡
