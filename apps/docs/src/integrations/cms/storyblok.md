@@ -23,15 +23,15 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
 
 ## Step by step guide
 
-1. Checkout the vue-blank template  
+1. Checkout the vue-blank template
    `pnpx tiged shopware/frontends/templates/vue-blank vue-blank-storyblok && cd vue-blank-storyblok`
-2. Install the dependencies and run the dev server  
+2. Install the dependencies and run the dev server
    `pnpm i && pnpm run dev`
-3. Install the [storyblok nuxt module](https://nuxt.com/modules/storyblok)  
+3. Install the [storyblok nuxt module](https://nuxt.com/modules/storyblok)
    `pnpx nuxi@latest module add storyblok`
-4. Install the [storyblok vue](https://github.com/storyblok/storyblok-vue) dependency  
+4. Install the [storyblok vue](https://github.com/storyblok/storyblok-vue) dependency
    `pnpm add @storyblok/vue -D`
-5. Now add the storyblok access token to you `nuxt.config.ts` file  
+5. Now add the storyblok access token to you `nuxt.config.ts` file
    _(you need a storyblok account to get that token)_
    ```ts
    modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
@@ -178,17 +178,17 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
    </template>
    ```
 
-10. Log into your storyblok account and create a page called **home** inside the content.  
+10. Log into your storyblok account and create a page called **home** inside the content.
     We already linked the slug "home" inside our `[...all].vue` file.
     <img src="../../.assets/integrations/storyblok/storyblok-content-overview.png" alt="Storyblok content overview screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
     <img src="../../.assets/integrations/storyblok/storyblok-content-edit-home-page.png" alt="Storyblok content edit home page screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
-11. Now start you local dev server and open `http://localhost:3000/storyblok/home`.  
+11. Now start you local dev server and open `http://localhost:3000/storyblok/home`.
     You should see a page looking like the screen below.
     <img src="../../.assets/integrations/storyblok/storyblok-home-page-in-nuxt.png" alt="Storyblok  home page in nuxt screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
-12. Optional: [Add UnoCSS](https://unocss.dev/integrations/nuxt) for Tailwind CSS support.  
+12. Optional: [Add UnoCSS](https://unocss.dev/integrations/nuxt) for Tailwind CSS support.
     We already used some Tailwind Classes in the templates.
 
 ### Further topics
