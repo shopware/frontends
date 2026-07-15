@@ -62,7 +62,7 @@ const syncFiltersFromQuery = () => {
     if (Object.prototype.hasOwnProperty.call(searchSelectedFilters, param)) {
       const target = searchSelectedFilters[param];
       if (target instanceof Set) {
-        const elements = (route.query[param] as unknown as string).split("|");
+        const elements = firstQueryValue(route.query[param])?.split("|") ?? [];
         for (const element of elements) {
           if (element) target.add(element);
         }

@@ -145,9 +145,7 @@ const { data: productSearch } = await useAsyncData(
   async () => {
     const filters = createFiltersFromRoute();
     const categoryIds =
-      (route.query.categories as string | undefined)
-        ?.split("|")
-        .filter(Boolean) ?? [];
+      firstQueryValue(route.query.categories)?.split("|").filter(Boolean) ?? [];
     await search({
       search: route.query.search as string,
       filter: filters,
