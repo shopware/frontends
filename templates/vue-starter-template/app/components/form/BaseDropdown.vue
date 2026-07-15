@@ -23,10 +23,10 @@ const model = defineModel<string>({
       :class="{
         'outline-states-error': invalid,
       }"
-      class="flex items-center rounded-lg px-4 py-2 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
+      class="flex items-center rounded-lg px-4 pt-2 pb-2.5 outline outline-1 outline-offset-[-1px] outline-outline-outline-variant text-surface-on-surface-variant"
     >
       <select
-        class="w-full outline-none bg-transparent"
+        class="text-sm leading-5 w-full appearance-none outline-none bg-transparent"
         v-model="model"
         :id="id"
         :disabled="loading"
@@ -44,6 +44,10 @@ const model = defineModel<string>({
           {{ option.label }}
         </option>
       </select>
+      <span
+        class="i-carbon-chevron-down h-4 w-4 flex-none text-surface-on-surface-variant"
+        aria-hidden="true"
+      />
     </div>
   </div>
 </template>

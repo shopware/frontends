@@ -454,7 +454,7 @@ onClickOutside(rootElement, closeList);
             ref="searchInput"
             v-model="inputValue"
             role="combobox"
-            class="text-sm w-full outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
+            class="text-sm w-full min-w-0 text-ellipsis outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
             :aria-activedescendant="activeDescendant"
             :aria-controls="`${id}-listbox`"
             :aria-expanded="shouldShowList"
@@ -475,7 +475,7 @@ onClickOutside(rootElement, closeList);
           <button
             v-if="model && !disabled"
             type="button"
-            class="ml-2 h-8 w-8 flex flex-none items-center justify-center rounded text-surface-on-surface-variant outline-none transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
+            class="ml-2 -my-0.5 h-6 w-6 flex flex-none items-center justify-center rounded text-surface-on-surface-variant outline-none transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
             :aria-label="$t('form.clearCountry')"
             data-testid="country-select-clear"
             @mousedown.prevent
