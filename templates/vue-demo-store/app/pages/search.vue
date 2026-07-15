@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import {
+  getCategoryFilterAggregations,
+  getCategoryFilterPostFilter,
+} from "@shopware/helpers";
 import { watchDebounced } from "@vueuse/core";
 import { useTemplateRef } from "vue";
 
-import type { Schemas, operations } from "#shopware";
+import type { Schemas } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -11,7 +15,6 @@ defineOptions({
 });
 
 const {
-  changeCurrentPage,
   getCurrentListing,
   getCurrentPage,
   getCurrentSortingOrder,
@@ -141,12 +144,23 @@ const { data: productSearch } = await useAsyncData(
   () => `productSearch-${JSON.stringify(route.query)}`,
   async () => {
     const filters = createFiltersFromRoute();
+    const categoryIds =
+      (route.query.categories as string | undefined)
+        ?.split("|")
+        .filter(Boolean) ?? [];
     await search({
       search: route.query.search as string,
       filter: filters,
+      // Category selection is a post-filter so the category aggregation
+      // itself is not reduced (faceted behavior).
+      ...(categoryIds.length > 0
+        ? { "post-filter": [getCategoryFilterPostFilter(categoryIds)] }
+        : {}),
       limit: limit.value,
+      p: route.query.p ? Number(route.query.p) : 1,
       order: route.query.order ? (route.query.order as string) : "name-asc",
       aggregations: [
+        ...getCategoryFilterAggregations(),
         {
           name: "manufacturer_ids_counter",
           type: "terms",
@@ -200,6 +214,9 @@ watchDebounced(
   { debounce: 300, immediate: true },
 );
 
+// The useAsyncData watcher on route.query performs the refetch with the
+// full criteria (filters, post-filter, aggregations); a second explicit
+// request here would race it with a body that lacks them.
 const changePage = async (page: number) => {
   await router.push({
     query: {
@@ -208,10 +225,6 @@ const changePage = async (page: number) => {
       p: page,
     },
   });
-  await changeCurrentPage(
-    page,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 const changeLimit = async (limit: Event) => {
@@ -224,10 +237,6 @@ const changeLimit = async (limit: Event) => {
       p: 1,
     },
   });
-  await changeCurrentPage(
-    1,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
@@ -329,6 +338,11 @@ function addCountsToFilter() {
   if (getInitialFilters.value) {
     for (const initialFilter of getInitialFilters.value) {
       const filter = initialFilter as unknown as FilterAndAggregations;
+
+      // Category counts are already merged in by getListingFilters.
+      if (filter.code === "categories") {
+        continue;
+      }
 
       if (filter.options) {
         for (const option of filter.options) {

@@ -365,6 +365,59 @@ const ColorFilter: ListingFiler = {
 };
 ```
 
+### Category filter for search results
+
+The Store API does not add a category aggregation on its own. You can request one through the search criteria. The `@shopware/helpers` package ships two small helpers for this.
+
+Request the category aggregations together with your search:
+
+```ts
+import { getCategoryFilterAggregations } from "@shopware/helpers";
+
+const { search } = useListing({ listingType: "productSearchListing" });
+
+search({
+  search: "running",
+  aggregations: getCategoryFilterAggregations(),
+});
+```
+
+The response then contains two extra aggregations: `categories` (the category entities) and `categories-counts` (a product count per category id). `getListingFilters` - and with it `getAvailableFilters` / `getInitialFilters` - merges them into a single filter with the code `categories`:
+
+```ts
+{
+  code: "categories",
+  label: "categories",
+  entities: [
+    { id: "...", name: "Shoes", count: 248, /* other category props */ },
+    { id: "...", name: "Clothing", count: 97 },
+  ],
+}
+```
+
+Every matching variant counts as one product. The helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` named `categories-parents` to the counts aggregation. The filter merge then counts all variants of one product as one.
+
+To filter the listing by selected categories, send a `post-filter` with the next search:
+
+```ts
+import {
+  getCategoryFilterAggregations,
+  getCategoryFilterPostFilter,
+} from "@shopware/helpers";
+
+search({
+  search: "running",
+  aggregations: getCategoryFilterAggregations(),
+  "post-filter": [getCategoryFilterPostFilter([selectedCategoryId])],
+});
+```
+
+A post-filter narrows the result set but does not reduce the aggregations. All category options stay visible while the products are filtered. This is the same mechanism the Store API uses internally for the manufacturer and properties filters.
+
+:::info
+The `SwProductListingFilters` component from `@shopware/cms-base-layer` renders the category filter out of the box when the aggregations are present in the listing. See the search page of `vue-starter-template` for a full example.
+:::
+
 ### Apply filter value
 
 In order to apply a specific filter you need to be aware of:

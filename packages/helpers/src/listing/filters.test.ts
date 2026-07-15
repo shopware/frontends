@@ -90,6 +90,118 @@ describe("getListingFilters", () => {
     ]);
   });
 
+  it("should merge categories and categories-counts aggregations into one filter", () => {
+    const aggregations = {
+      categories: {
+        name: "categories",
+        apiAlias: "categories_aggregation",
+        entities: [
+          {
+            id: "cat-accessories",
+            name: "Accessories",
+            translated: { name: "Accessories" },
+          },
+          {
+            id: "cat-shoes",
+            name: "Shoes",
+            translated: { name: "Shoes" },
+          },
+        ],
+      },
+      "categories-counts": {
+        name: "categories-counts",
+        apiAlias: "categories-counts_aggregation",
+        buckets: [
+          { key: "cat-shoes", count: 248 },
+          {
+            key: "cat-accessories",
+            count: 40,
+            "categories-parents": {
+              buckets: [
+                { key: "parent-1", count: 6 },
+                { key: "", count: 28 },
+              ],
+            },
+          },
+        ],
+      },
+    };
+
+    const result = getListingFilters(aggregations);
+
+    expect(result).toEqual([
+      {
+        code: "categories",
+        label: "categories",
+        id: "categories",
+        name: "categories",
+        entities: [
+          {
+            id: "cat-shoes",
+            name: "Shoes",
+            translated: { name: "Shoes" },
+            count: 248,
+          },
+          {
+            id: "cat-accessories",
+            name: "Accessories",
+            translated: { name: "Accessories" },
+            count: 29,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("should build the categories filter without counts when the counts aggregation is missing", () => {
+    const aggregations = {
+      categories: {
+        name: "categories",
+        entities: [
+          { id: "cat-b", name: "B", translated: { name: "B" } },
+          { id: "cat-a", name: "A", translated: { name: "A" } },
+        ],
+      },
+    };
+
+    const result = getListingFilters(aggregations);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]?.entities).toEqual([
+      { id: "cat-a", name: "A", translated: { name: "A" }, count: undefined },
+      { id: "cat-b", name: "B", translated: { name: "B" }, count: undefined },
+    ]);
+  });
+
+  it("should skip a categories-counts aggregation without a categories aggregation", () => {
+    const aggregations = {
+      "categories-counts": {
+        name: "categories-counts",
+        buckets: [{ key: "cat-shoes", count: 248 }],
+      },
+    };
+
+    expect(getListingFilters(aggregations)).toEqual([]);
+  });
+
+  it("should pass through a categories aggregation without entities", () => {
+    const aggregations = {
+      categories: {
+        name: "categories",
+        buckets: [{ key: "cat-shoes", count: 248 }],
+      },
+    };
+
+    expect(getListingFilters(aggregations)).toEqual([
+      {
+        code: "categories",
+        label: "categories",
+        name: "categories",
+        buckets: [{ key: "cat-shoes", count: 248 }],
+      },
+    ]);
+  });
+
   it("should skip options aggregation", () => {
     const aggregations = {
       options: {

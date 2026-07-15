@@ -4,6 +4,7 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
+import { getCategoryFilterPostFilter } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
@@ -62,6 +63,7 @@ const showResetFiltersButton = computed<boolean>(() => {
   if (
     sidebarSelectedFilters.manufacturer.size !== 0 ||
     sidebarSelectedFilters.properties.size !== 0 ||
+    (isProductSearch && sidebarSelectedFilters.categories.size !== 0) ||
     sidebarSelectedFilters["max-price"] ||
     sidebarSelectedFilters["min-price"] ||
     sidebarSelectedFilters.rating ||
@@ -81,6 +83,19 @@ const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
     properties: [...(sidebarSelectedFilters.properties as Set<string>)]?.join(
       "|",
     ),
+    // Category selection travels as a post-filter so the category
+    // aggregation itself is not reduced (faceted behavior). Search pages
+    // only: category pages never offer this filter, so a stale
+    // ?categories= param must not silently narrow them.
+    ...(isProductSearch && sidebarSelectedFilters.categories.size > 0
+      ? {
+          "post-filter": [
+            getCategoryFilterPostFilter([
+              ...(sidebarSelectedFilters.categories as Set<string>),
+            ]),
+          ],
+        }
+      : {}),
     "min-price": sidebarSelectedFilters["min-price"] as number,
     "max-price": sidebarSelectedFilters["max-price"] as number,
     order: getCurrentSortingOrder.value as string,
@@ -97,7 +112,11 @@ const handleFilterChange = async (event: {
   try {
     const { code, value } = event;
 
-    if (code === "manufacturer" || code === "properties") {
+    if (
+      code === "manufacturer" ||
+      code === "properties" ||
+      code === "categories"
+    ) {
       const filterSet = sidebarSelectedFilters[code];
       const stringValue = String(value);
 
@@ -136,6 +155,10 @@ const executeSearch = async () => {
 
     if (criteria.manufacturer) query.manufacturer = criteria.manufacturer;
     if (criteria.properties) query.properties = criteria.properties;
+    if (isProductSearch && sidebarSelectedFilters.categories.size > 0)
+      query.categories = [
+        ...(sidebarSelectedFilters.categories as Set<string>),
+      ].join("|");
     if (criteria["min-price"]) query["min-price"] = criteria["min-price"];
     if (criteria["max-price"]) query["max-price"] = criteria["max-price"];
     if (criteria.rating) query.rating = criteria.rating;
@@ -160,6 +183,7 @@ const executeSearch = async () => {
 const clearFilters = () => {
   (sidebarSelectedFilters.manufacturer as Set<string>).clear();
   (sidebarSelectedFilters.properties as Set<string>).clear();
+  (sidebarSelectedFilters.categories as Set<string>).clear();
   sidebarSelectedFilters["min-price"] = undefined;
   sidebarSelectedFilters["max-price"] = undefined;
   sidebarSelectedFilters.rating = undefined;
@@ -208,6 +232,9 @@ const hasActiveFilter = (filter: { code: string }) => {
   if (filter.code === "manufacturer") {
     return sidebarSelectedFilters.manufacturer.size > 0;
   }
+  if (filter.code === "categories") {
+    return sidebarSelectedFilters.categories.size > 0;
+  }
   if (filter.code === "price") {
     return (
       sidebarSelectedFilters["min-price"] !== undefined ||
@@ -241,6 +268,7 @@ const hasActiveFilter = (filter: { code: string }) => {
           display-mode="dropdown"
           :selected-manufacturer="sidebarSelectedFilters.manufacturer"
           :selected-properties="sidebarSelectedFilters.properties"
+          :selected-categories="sidebarSelectedFilters.categories"
           :selected-min-price="sidebarSelectedFilters['min-price']"
           :selected-max-price="sidebarSelectedFilters['max-price']"
           :selected-rating="sidebarSelectedFilters.rating"

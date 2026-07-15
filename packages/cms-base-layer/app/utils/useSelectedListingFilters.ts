@@ -8,6 +8,7 @@ import { firstQueryValue, toNumber } from "./routeQuery";
 export type FilterState = {
   manufacturer: Set<string>;
   properties: Set<string>;
+  categories: Set<string>;
   "min-price": number | undefined;
   "max-price": number | undefined;
   rating: number | undefined;
@@ -18,6 +19,7 @@ export type FilterState = {
 export const createEmptyFilterState = (): FilterState => ({
   manufacturer: new Set<string>(),
   properties: new Set<string>(),
+  categories: new Set<string>(),
   "min-price": undefined,
   "max-price": undefined,
   rating: undefined,
@@ -46,13 +48,14 @@ export const applyQueryToFilters = (
   //    (props bound to them stay reactive); replace scalars with undefined.
   state.manufacturer.clear();
   state.properties.clear();
+  state.categories.clear();
   state["min-price"] = undefined;
   state["max-price"] = undefined;
   state.rating = undefined;
   state["shipping-free"] = undefined;
 
   // 2) Repopulate from the current query.
-  for (const code of ["manufacturer", "properties"] as const) {
+  for (const code of ["manufacturer", "properties", "categories"] as const) {
     const value = firstQueryValue(query[code]);
     if (!value) continue;
     for (const element of value.split("|")) {

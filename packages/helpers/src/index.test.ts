@@ -15,6 +15,8 @@ describe("helpers - test global API", () => {
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
         "getCategoryBreadcrumbs": [Function],
+        "getCategoryFilterAggregations": [Function],
+        "getCategoryFilterPostFilter": [Function],
         "getCategoryImageUrl": [Function],
         "getCategoryRoute": [Function],
         "getCategoryUrl": [Function],

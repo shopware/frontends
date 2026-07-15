@@ -22,6 +22,8 @@
     "@types/node": "22.13.14",
     "fflate": "^0.8.3",
     "nuxt": "4.4.8",
+    "oxfmt": "0.57.0",
+    "oxlint": "1.72.0",
     "typescript": "5.9.3",
     "vue": "3.5.39",
     "vue-tsc": "3.3.6"

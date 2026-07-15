@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, reactive } from "vue";
+import { computed, provide, reactive, watch } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 
 import type { operations } from "#shopware";
@@ -11,7 +11,6 @@ const {
   getCurrentFilters,
   getCurrentSortingOrder,
   getInitialFilters,
-  search,
 } = useProductSearchListing();
 
 const route = useRoute();
@@ -21,6 +20,7 @@ const router = useRouter();
 const searchSelectedFilters = reactive<{
   manufacturer: Set<string>;
   properties: Set<string>;
+  categories: Set<string>;
   "min-price": string | number | undefined;
   "max-price": string | number | undefined;
   rating: string | number | undefined;
@@ -29,6 +29,7 @@ const searchSelectedFilters = reactive<{
 }>({
   manufacturer: new Set<string>(),
   properties: new Set<string>(),
+  categories: new Set<string>(),
   "min-price": undefined,
   "max-price": undefined,
   rating: undefined,
@@ -48,24 +49,36 @@ const searchCriteriaForRequest: ComputedRef<
   search: "",
 }));
 
-for (const param in route.query) {
-  if (Object.prototype.hasOwnProperty.call(searchSelectedFilters, param)) {
-    if (
-      searchSelectedFilters[param] &&
-      typeof searchSelectedFilters[param] === "object"
-    ) {
-      const elements = (route.query[param] as unknown as string).split("|");
-      for (const element of elements) {
-        searchSelectedFilters[param].add(element);
-      }
-    } else {
-      const queryValue = route.query[param];
-      if (queryValue && !Array.isArray(queryValue)) {
-        searchSelectedFilters[param] = queryValue;
+const syncFiltersFromQuery = () => {
+  searchSelectedFilters.manufacturer.clear();
+  searchSelectedFilters.properties.clear();
+  searchSelectedFilters.categories.clear();
+  searchSelectedFilters["min-price"] = undefined;
+  searchSelectedFilters["max-price"] = undefined;
+  searchSelectedFilters.rating = undefined;
+  searchSelectedFilters["shipping-free"] = undefined;
+
+  for (const param in route.query) {
+    if (Object.prototype.hasOwnProperty.call(searchSelectedFilters, param)) {
+      const target = searchSelectedFilters[param];
+      if (target instanceof Set) {
+        const elements = (route.query[param] as unknown as string).split("|");
+        for (const element of elements) {
+          if (element) target.add(element);
+        }
+      } else {
+        const queryValue = route.query[param];
+        if (queryValue && !Array.isArray(queryValue)) {
+          searchSelectedFilters[param] = queryValue;
+        }
       }
     }
   }
-}
+};
+
+syncFiltersFromQuery();
+// Resync on Back/Forward so removed query params also clear the checkboxes.
+watch(() => route.query, syncFiltersFromQuery);
 
 const onOptionSelectToggle = async ({
   code,
@@ -74,7 +87,7 @@ const onOptionSelectToggle = async ({
   code: string;
   value: string;
 }) => {
-  if (!["properties", "manufacturer"].includes(code)) {
+  if (!["properties", "manufacturer", "categories"].includes(code)) {
     searchSelectedFilters[code] = value;
   } else {
     const filterSet = searchSelectedFilters[code];
@@ -86,21 +99,24 @@ const onOptionSelectToggle = async ({
       }
     }
   }
+  // The search page's useAsyncData watches route.query and refetches with
+  // the full criteria (filters, categories post-filter, aggregations); an
+  // extra explicit search() here would race it with an incomplete body.
   await router.push({
     query: {
       search: route.query.search,
       ...filtersToQuery(searchCriteriaForRequest.value),
+      ...(searchSelectedFilters.categories.size > 0
+        ? { categories: [...searchSelectedFilters.categories].join("|") }
+        : {}),
     },
-  });
-  await search({
-    ...searchCriteriaForRequest.value,
-    ...route.query,
   });
 };
 
 const clearFilters = async () => {
   searchSelectedFilters.manufacturer.clear();
   searchSelectedFilters.properties.clear();
+  searchSelectedFilters.categories.clear();
   searchSelectedFilters["min-price"] = undefined;
   searchSelectedFilters["max-price"] = undefined;
   searchSelectedFilters.rating = undefined;
@@ -115,15 +131,12 @@ const clearFilters = async () => {
 
 async function invokeCleanFilters() {
   await clearFilters();
-  await search({
-    ...route.query,
-    ...filtersToQuery(searchCriteriaForRequest.value),
-  });
 }
 
 const selectedOptionIds = computed(() => [
   ...searchSelectedFilters.properties,
   ...searchSelectedFilters.manufacturer,
+  ...searchSelectedFilters.categories,
 ]);
 const showResetFiltersButton = computed<boolean>(() => {
   if (

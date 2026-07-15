@@ -6,6 +6,7 @@ import type { Schemas } from "#shopware";
 type FilterState = {
   manufacturer: Set<string>;
   properties: Set<string>;
+  categories: Set<string>;
   "min-price": number | undefined;
   "max-price": number | undefined;
   rating: number | undefined;
@@ -83,6 +84,23 @@ const activeChips = computed(() => {
           label: name,
           code: "manufacturer",
           value: manufacturerId,
+        });
+      }
+    }
+  }
+
+  // Add category filters
+  const categories = Array.from(props.filters.categories);
+  for (const categoryId of categories) {
+    const filter = props.availableFilters.find((f) => f.code === "categories");
+    if (filter && "entities" in filter && filter.entities) {
+      const entity = filter.entities.find((e) => e.id === categoryId);
+      const name = getTranslatedName(entity);
+      if (name) {
+        chips.push({
+          label: name,
+          code: "categories",
+          value: categoryId,
         });
       }
     }
