@@ -1,16 +1,14 @@
 ---
+nav:
+  hidden: true
 head:
   - - meta
-    - name: og:title
-      content: Custom Products Integration
-  - - meta
-    - name: og:description
-      content: "In this chapter you will learn how to integrate Custom Products."
-  - - meta
-    - name: og:image
-      content: "https://frontends-og-image.vercel.app/Custom%20Products.png?fontSize=120px"
-nav:
-  position: 30
+    - http-equiv: refresh
+      content: "0; url=/frontends/integrations/commercial/custom-products.html"
 ---
 
-<!-- load: ../../../../../examples/commercial-customized-products/README.md -->
+# This page has moved
+
+This content is now part of **[Custom Products](/frontends/integrations/commercial/custom-products.html)**.
+
+If you are not redirected automatically, [click here](/frontends/integrations/commercial/custom-products.html).

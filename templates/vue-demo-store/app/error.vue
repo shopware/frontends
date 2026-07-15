@@ -50,7 +50,7 @@ try {
         "Looks like your API connection is not working. Check your _nuxt.config.ts_ configuration (shopware.endpoint and shopware.accessToken). 🤞",
       );
       console.error(
-        "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
+        "For more help ➡️  https://developer.shopware.com/frontends/resources/troubleshooting.html",
       );
     }, 2.0 * 1000);
   }
@@ -97,7 +97,7 @@ const errorMessage = isFormattedError ? errMessage : props.error.message;
               {{ $t("setup.support_start") }}
               <a
                 class="text-primary"
-                href="https://frontends.shopware.com/resources/troubleshooting.html"
+                href="https://developer.shopware.com/frontends/resources/troubleshooting.html"
                 target="_blank"
                 >{{ $t("setup.support_page") }}</a
               >. {{ $t("setup.support_end") }}

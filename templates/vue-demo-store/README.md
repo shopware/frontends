@@ -22,7 +22,7 @@ This repository is an example demo application built with Shopware Frontends Fra
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 
@@ -55,7 +55,7 @@ The template also includes a [CMS Base nuxt layer](https://www.npmjs.com/package
 
 ## Production
 
-Refer to to the Shopware documentation for best practices on deploying a production JavaScript application with Shopware: [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html)
+Refer to to the Shopware documentation for best practices on deploying a production JavaScript application with Shopware: [Best Practices > Deployment](https://developer.shopware.com/frontends/best-practices/deployment.html)
 
 ### Running the application with Node.js
 
@@ -82,7 +82,7 @@ pnpm start
 Have a look at the [docker-composable-frontends repository](https://github.com/shopwareLabs/docker-composable-frontends).
 
 > [!NOTE]
-> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://frontends.shopware.com/getting-started/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
+> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://developer.shopware.com/frontends/getting-started/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
 
 ### Nitro presets
 

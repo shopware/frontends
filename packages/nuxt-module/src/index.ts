@@ -116,7 +116,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       icon: "fa6-brands:shopware",
       view: {
         type: "iframe",
-        src: "https://frontends.shopware.com/",
+        src: "https://developer.shopware.com/frontends/",
       },
     });
 
@@ -126,7 +126,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       icon: "carbon:assembly-cluster",
       view: {
         type: "iframe",
-        src: "https://frontends.shopware.com/getting-started/cms/",
+        src: "https://developer.shopware.com/frontends/guides/cms/",
       },
     });
   },

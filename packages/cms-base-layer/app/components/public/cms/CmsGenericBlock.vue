@@ -71,7 +71,7 @@ const DynamicRender = () => {
   }
   if (import.meta.dev) {
     console.warn(
-      `[CMS] Block type "${componentName}" is not implemented.\n  → Create a component named "${componentNameToResolve}.vue" to render it.\n  📖 Docs: https://frontends.shopware.com/getting-started/cms/create-blocks`,
+      `[CMS] Block type "${componentName}" is not implemented.\n  → Create a component named "${componentNameToResolve}.vue" to render it.\n  📖 Docs: https://developer.shopware.com/frontends/guides/cms/create-blocks`,
     );
     return h(resolveComponent("CmsNoComponent"), { content: props.content });
   }
