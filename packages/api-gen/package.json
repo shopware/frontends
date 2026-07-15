@@ -59,7 +59,7 @@
     "@shopware/api-client": "workspace:*",
     "ofetch": "1.5.1",
     "openapi-typescript": "7.8.0",
-    "oxfmt": "0.57.0",
+    "oxfmt": "0.58.0",
     "ts-morph": "27.0.2",
     "typescript": "5.9.3",
     "yargs": "18.0.0"
