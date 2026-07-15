@@ -18,6 +18,7 @@
     "lastNamePlaceholder": "Nachname eingeben...",
     "country": "Land",
     "chooseCountry": "Land auswählen...",
+    "clearCountry": "Länderauswahl löschen",
     "company": "Firma",
     "vatIds": "USt-IdNr.",
     "companyPlaceholder": "Firma eingeben...",

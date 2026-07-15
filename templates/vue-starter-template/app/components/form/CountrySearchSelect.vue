@@ -116,11 +116,14 @@ function buildCriteria(options: {
 }): Schemas["Criteria"] {
   return {
     associations: {
-      states: {},
+      states: {
+        sort: [{ field: "position", order: "ASC" }],
+      },
     },
     ids: options.ids,
     limit,
     page: options.page,
+    sort: [{ field: "position", order: "ASC" }],
     term: options.term || undefined,
     "total-count-mode": "exact",
   };
@@ -224,6 +227,22 @@ function selectCountry(country: Schemas["Country"] | null) {
   emitCountry(country);
 }
 
+function handleCountrySelect(country: Schemas["Country"]) {
+  if (isSelectedCountry(country)) {
+    selectCountry(null);
+    return;
+  }
+
+  selectCountry(country);
+}
+
+async function clearSelection() {
+  selectCountry(null);
+  await fetchCountries({
+    page: 1,
+  });
+}
+
 async function loadInitialCountries() {
   const response = await fetchCountries({
     page: 1,
@@ -250,9 +269,26 @@ const searchCountries = useDebounceFn(async () => {
   });
 }, 300);
 
+async function scrollToSelectedCountry() {
+  if (!model.value) return;
+
+  const selectedIndex = countries.value.findIndex(
+    (country) => country.id === model.value,
+  );
+  if (selectedIndex < 0) return;
+
+  highlightedIndex.value = selectedIndex;
+  await nextTick();
+
+  listElement.value
+    ?.querySelector<HTMLElement>('[aria-selected="true"]')
+    ?.scrollIntoView({ block: "nearest" });
+}
+
 async function openList() {
   if (disabled || singleCountryMode.value) return;
 
+  const wasOpen = isOpen.value;
   isOpen.value = true;
 
   if (!countries.value.length && !isInitialLoading.value) {
@@ -261,12 +297,24 @@ async function openList() {
       term: searchTerm.value,
     });
   }
+
+  if (!wasOpen) {
+    await scrollToSelectedCountry();
+  }
 }
 
-function closeList() {
+async function closeList() {
+  if (!isOpen.value) return;
+
   isOpen.value = false;
-  searchTerm.value = "";
   highlightedIndex.value = -1;
+
+  if (selectedCountry.value) return;
+
+  searchTerm.value = "";
+  await fetchCountries({
+    page: 1,
+  });
 }
 
 function handleInput() {
@@ -424,7 +472,20 @@ onClickOutside(rootElement, closeList);
             @keydown.esc.prevent="handleEscape"
           />
 
+          <button
+            v-if="model && !disabled"
+            type="button"
+            class="ml-2 h-8 w-8 flex flex-none items-center justify-center rounded text-surface-on-surface-variant outline-none transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
+            :aria-label="$t('form.clearCountry')"
+            data-testid="country-select-clear"
+            @mousedown.prevent
+            @click="clearSelection"
+          >
+            <span class="i-carbon-close block h-5 w-5" aria-hidden="true" />
+          </button>
+
           <span
+            v-else
             class="i-carbon-chevron-down h-4 w-4 flex-none text-surface-on-surface-variant"
             aria-hidden="true"
           />
@@ -468,7 +529,7 @@ onClickOutside(rootElement, closeList);
             :country="country"
             :selected="isSelectedCountry(country)"
             @highlight="highlightedIndex = index"
-            @select="selectCountry"
+            @select="handleCountrySelect"
           />
 
           <div

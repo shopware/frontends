@@ -18,6 +18,7 @@
     "lastNamePlaceholder": "Enter last name...",
     "country": "Country",
     "chooseCountry": "Choose country...",
+    "clearCountry": "Clear country selection",
     "company": "Company",
     "vatIds": "VAT Registration Number",
     "companyPlaceholder": "Enter company...",
