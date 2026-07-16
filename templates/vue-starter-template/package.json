@@ -53,8 +53,8 @@
   "devDependencies": {
     "@shopware/api-gen": "canary",
     "@vue/compiler-sfc": "3.5.39",
-    "oxfmt": "0.57.0",
-    "oxlint": "1.72.0",
+    "oxfmt": "0.58.0",
+    "oxlint": "1.73.0",
     "typescript": "5.9.3",
     "vite": "8.1.4",
     "vue-tsc": "3.3.7"
