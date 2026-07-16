@@ -28,7 +28,7 @@ const docsUrl = computed(() => {
     component: expectedComponentName.value,
     type: elementType.value.toLowerCase(),
   });
-  return `https://frontends.shopware.com/getting-started/cms/missing-component?${params}`;
+  return `https://developer.shopware.com/frontends/guides/cms/missing-component?${params}`;
 });
 
 const aiPrompt = computed(() => {

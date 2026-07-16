@@ -20,7 +20,7 @@
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build", "^build"],
       "outputs": [],
       "inputs": [
         "src/**/*.ts",

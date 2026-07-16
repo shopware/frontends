@@ -47,10 +47,19 @@ function handleUpdateQuantity(id: string, quantity: number) {
   changeProductQuantity({ id, quantity });
 }
 
+const isPlacingOrder = ref(false);
+
 async function handlePlaceOrder() {
-  const order = await createOrder();
-  await push(formatLink(`/checkout/success/${order.id}`));
-  refreshCart();
+  if (isPlacingOrder.value) return;
+
+  isPlacingOrder.value = true;
+  try {
+    const order = await createOrder();
+    await push(formatLink(`/checkout/success/${order.id}`));
+    refreshCart();
+  } finally {
+    isPlacingOrder.value = false;
+  }
 }
 
 function handleChangeShippingMethod(id: string) {
@@ -128,7 +137,23 @@ onMounted(() => {
     </div>
 
     <div v-else class="flex gap-20 justify-between">
-      <div class="w-1/2">
+      <div class="w-1/2 relative">
+        <div
+          v-if="isPlacingOrder"
+          class="absolute inset-0 z-10 flex items-center justify-center bg-surface-surface/70 backdrop-blur-[1px] cursor-wait"
+          role="status"
+          :aria-label="$t('checkout.placingOrder')"
+        >
+          <div class="flex flex-col items-center gap-3">
+            <span
+              class="w-8 h-8 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"
+              aria-hidden="true"
+            />
+            <span class="text-sm font-bold text-surface-on-surface">
+              {{ $t("checkout.placingOrder") }}
+            </span>
+          </div>
+        </div>
         <CheckoutStepHeader :step="1" label="Shipping address">
           <CheckoutCustomerBaseInfo
             class="mb-4"
@@ -163,12 +188,22 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
-          :label="$t('checkout.placeOrderButton')"
-          @click="handlePlaceOrder"
+          :label="
+            isPlacingOrder
+              ? $t('checkout.placingOrder')
+              : $t('checkout.placeOrderButton')
+          "
+          :loading="isPlacingOrder"
           :disabled="!canPlaceOrder"
+          @click="handlePlaceOrder"
         />
       </div>
-      <div class="w-1/2">
+      <div class="w-1/2 relative">
+        <div
+          v-if="isPlacingOrder"
+          class="absolute inset-0 z-10 bg-surface-surface/70 backdrop-blur-[1px] cursor-wait"
+          aria-hidden="true"
+        />
         <CheckoutSummaryBox
           v-if="cart"
           :cart="cart"

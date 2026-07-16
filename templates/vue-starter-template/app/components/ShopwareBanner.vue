@@ -16,7 +16,7 @@ const links = [
   },
   {
     label: "Docs",
-    href: "https://frontends.shopware.com/",
+    href: "https://developer.shopware.com/frontends/",
     variant: "secondary",
     type: "link",
   },

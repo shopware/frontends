@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import type { CmsElementProductDescriptionReviews } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
 import { getTranslatedProperty } from "@shopware/helpers";
@@ -56,18 +57,26 @@ const isSectionOpen = (sectionNumber: number) => {
 };
 
 const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
-const { apiClient } = useShopwareContext();
+const { apiClient, cacheableReads } = useShopwareContext();
 const { isLoggedIn } = useUser();
 const reviewAdded = ref(false);
 
 const fetchReviews = async () => {
   try {
-    const reviewsResponse = await apiClient.invoke(
-      "readProductReviews post /product/{productId}/reviews",
-      {
-        pathParams: { productId: product.value.id },
-      },
-    );
+    const reviewsResponse = cacheableReads
+      ? await apiClient.invoke(
+          "readProductReviewsGet get /product/{productId}/reviews",
+          {
+            pathParams: { productId: product.value.id },
+            query: { _criteria: encodeForQuery({}) },
+          },
+        )
+      : await apiClient.invoke(
+          "readProductReviews post /product/{productId}/reviews",
+          {
+            pathParams: { productId: product.value.id },
+          },
+        );
     reviews.value = reviewsResponse.data.elements || [];
   } catch (error) {
     console.error("Failed to fetch reviews:", error);

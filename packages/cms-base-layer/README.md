@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html).
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://developer.shopware.com/frontends/concepts/styling.html).
 
 It is useful for projects that want to use the CMS components while keeping CMS functionality separate from the styling system and design tokens.
 
@@ -90,7 +90,7 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 > `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
+See a [short guide](https://developer.shopware.com/frontends/guides/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
 
 ## Styling and Design Tokens
 
@@ -442,13 +442,13 @@ export default defineAppConfig({
 
 ## 📘 Available components
 
-The list of available blocks and elements is [here](https://frontends.shopware.com/packages/cms-base-layer.html#available-components).
+The list of available blocks and elements is [here](https://developer.shopware.com/frontends/packages/cms-base-layer.html#available-components).
 
 ## 🔄 Overwriting components
 
 The procedure is:
 
-- find a component in component's [list](https://frontends.shopware.com/packages/cms-base.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
+- find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
 - take its name
 - create a file with the same name and place it into `~/components` dir in your nuxt project (or wherever according your nuxt config)
 
@@ -475,7 +475,7 @@ No additional packages needed to be installed.
 
 ## Links
 
-- [📘 Documentation](https://frontends.shopware.com)
+- [📘 Documentation](https://developer.shopware.com/frontends)
 
 - [👥 Community](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
 
