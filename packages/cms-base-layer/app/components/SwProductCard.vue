@@ -17,6 +17,7 @@ import {
   useAddToCart,
   useCartErrorParamsResolver,
   useCartNotification,
+  useNavigationContext,
   useNotifications,
   useProductWishlist,
   useUrlResolver,
@@ -144,10 +145,25 @@ const productManufacturer = computed(() =>
   getProductManufacturerName(product.value),
 );
 
-const { getUrlPrefix } = useUrlResolver();
-const productLink = computed(() =>
-  buildUrlPrefix(getProductRoute(product.value), getUrlPrefix()),
+const { foreignKey: currentNavigationId, routeName } = useNavigationContext();
+const referrerCategoryId = computed(() =>
+  isProductListing && routeName.value === "frontend.navigation.page"
+    ? currentNavigationId.value
+    : undefined,
 );
+const { getUrlPrefix } = useUrlResolver();
+const productLink = computed(() => {
+  const productRoute = getProductRoute(product.value);
+  const productRouteWithReferrer = {
+    ...productRoute,
+    state: {
+      ...productRoute.state,
+      referrerCategoryId: referrerCategoryId.value,
+    },
+  };
+
+  return buildUrlPrefix(productRouteWithReferrer, getUrlPrefix());
+});
 </script>
 
 <template>
