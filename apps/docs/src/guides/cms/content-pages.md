@@ -26,7 +26,7 @@ Using the cms-base package, you don't have to implement any CMS components by yo
 
 ### Install the package
 
-Depending on which template you are using you need to install the package first.  
+Depending on which template you are using you need to install the package first.
 See [install the package](../../concepts/shopping-experiences#install-the-package).
 
 ### Render the page
