@@ -52,6 +52,11 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: true,
   },
+  nitro: {
+    externals: {
+      inline: ["@iconify/utils"],
+    },
+  },
   vite: {
     ...viteServerWebSocketWorkaround,
     optimizeDeps: {

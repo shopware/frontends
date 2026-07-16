@@ -5,9 +5,9 @@ import { customValidators } from "#imports";
 export function registrationFormRules(
   accountType: Ref<string>,
   countryId: Ref<string>,
+  countryHasStates: Ref<boolean>,
 ) {
   const { required, minLength, email, requiredIf } = customValidators();
-  const { getStatesForCountry } = useCountries();
 
   return computed(() => ({
     accountType: {
@@ -48,7 +48,7 @@ export function registrationFormRules(
       },
       countryStateId: {
         required: requiredIf(() => {
-          return !!getStatesForCountry(unref(countryId))?.length;
+          return !!unref(countryId) && countryHasStates.value;
         }),
       },
     },
