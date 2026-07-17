@@ -69,6 +69,19 @@ export function useExperienceSignals() {
     }
   };
 
+  /**
+   * Forgets everything observed about this shopper.
+   *
+   * The plan is a projection of these signals, so resetting the plan on its own
+   * is meaningless: the rules rebuild it from the untouched source on the very
+   * next pass. Restoring the standard view has to clear the source.
+   */
+  const reset = () => {
+    comparisonProductIds.value = [];
+    productsViewed.value = new Set();
+    priceSortCount.value = 0;
+  };
+
   const signals = computed<ExperienceSignals>(() => ({
     comparisonProductIds: comparisonProductIds.value,
     productsViewed: productsViewed.value.size,
@@ -83,5 +96,5 @@ export function useExperienceSignals() {
     () => comparisonProductIds.value.length < MAX_COMPARISON_ITEMS,
   );
 
-  return { signals, track, isCompared, canCompareMore };
+  return { signals, track, reset, isCompared, canCompareMore };
 }

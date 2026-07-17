@@ -6,8 +6,9 @@ against the real starter template.
 
 Short version: the core idea holds. A versioned plan, a closed registry and a
 validating merger work, and they work on a real Shopware storefront with SSR.
-The blueprint is under-specified in three places, and one of them breaks a stated
-MVP goal.
+The blueprint is under-specified in a few places. One of those broke a stated MVP
+goal, and fixing it turned out to be ten lines rather than the contract change we
+first proposed.
 
 ## What held up
 
@@ -80,29 +81,54 @@ objects, with the AI getting a reduced projection with no product ids in it. One
 function, `toAiContext`, is the only place data can leave the browser, which is a
 single point to audit.
 
-### 3. "User can restore standard view" does not hold
+### 3. "User can restore standard view" failed, and our first diagnosis was wrong
 
-This is an MVP acceptance item in the gist and it fails.
+This is an MVP acceptance item in the gist. It failed, and it is now fixed. The
+way it was wrong is the useful part.
 
-Reset works. The next signal change undoes it. Verified in a browser: reset to
-`explore`, click one more Compare, and the rule sees two staged products and
-switches straight back to `compare`.
+The symptom was real. Reset worked and the next signal change undid it: reset to
+`explore`, click one more Compare, and the rule saw two products still staged and
+switched straight back to `compare`.
 
-The contract has no way to express this. `source` lives on a module, so it
-protects module props. It cannot protect `mode`, `shell` or `workspace`, which
-have no source at all, and it disappears entirely when a module is removed, so a
-dismissal leaves no trace for a rule to respect.
+We read that as a contract gap. `source` lives on a module, so it cannot protect
+`mode`, `shell` or `workspace`, which carry no source at all. The proposed fix
+was to give plan-level fields a source and keep a dismissal set, and we estimated
+half a day for it.
 
-The same gap makes modules flap: a user hides a rule-added module, the rule sees
-the same signals and puts it straight back.
+That was wrong. The plan is a projection of the signals. Reset cleared the
+projection and left the source untouched, so the rules rebuilt the adapted view
+on the next pass. No rule was overruling the shopper. Nothing had told the rules
+that anything had changed.
 
-Fixing this needs a contract change. Options:
+The real fix is ten lines and no contract change:
 
-- Give plan-level fields a source, so a user-set mode outranks a rule.
-- Keep a dismissal set, so a rule cannot re-add what the user removed.
-- Suppress rules for a period after a user action.
+```ts
+const reset = () => {
+  resetSignals(); // the source
+  resetPlan(); // the projection
+};
+```
 
-The first two are honest and belong in the contract. The third hides it.
+Reset now holds, verified in a browser. Restoring the standard view drops the
+staged selection and the price-sort count, so the rules have nothing left to
+re-adapt from, and the Compare buttons stop claiming products are staged when
+nothing renders them. The shopper opts back in by staging products again.
+
+The general lesson is worth more than the fix: **where the plan is a projection,
+any undo that touches only the plan is cosmetic.** The source has to move. That
+applies to every future user control, not just this button.
+
+The salvageable half of the first diagnosis, still true and still unfixed:
+
+- A shopper who dismisses a module leaves no trace, so a rule puts it back. No UI
+  reaches this today, but it becomes real the moment the planner goes live in
+  phase 7: it proposes a panel, the shopper closes it, it proposes it again.
+- A shopper who picks a mode explicitly cannot outrank a rule, because mode has
+  no source. This needs solving before any manual mode control ships.
+
+Both are worth adding alongside the first UI that exercises them. Building them
+now would be contract surface with no caller, which is how the estimate above got
+inflated in the first place.
 
 ### 4. A layer needs its own `uno.config.ts`, and fails silently without one
 
@@ -190,21 +216,28 @@ types, and any A/B measurement.
 
 ## Recommendation
 
-Worth continuing, with the contract fixed first.
+Worth continuing.
 
-The safety story is genuinely good and the retrofit onto a real storefront was
-cheaper than expected. The gaps are all in the same place: the blueprint models
-where a change came from, but not what the shopper has already decided. Until the
-contract can express "the user chose this", every rule can overrule them, and
-adaptation on a real storefront will feel like it is fighting the shopper.
+The safety story is genuinely good, the retrofit onto a real storefront was
+cheaper than expected, and the MVP acceptance list now passes without AI. The
+remaining gap is narrower than it first looked: the blueprint models where a
+change came from, but not what the shopper has already decided. That only starts
+to bite once the shopper has controls beyond reset, or once a model is live.
 
 Suggested order:
 
-1. Give plan-level fields a source, and add dismissal memory. Without this the
-   MVP acceptance list cannot be met.
-2. Move signals into real storage.
-3. Add the E2E scenarios. Two of the bugs found today were invisible to unit
-   tests and SSR checks, and the missing design tokens were invisible to both
-   plus typecheck and lint.
+1. Move the signals into real storage. Everything behavioural is fiction until
+   they survive a reload, and it is the cheapest work left.
+2. Add the E2E scenarios. Two of the bugs found today were invisible to unit
+   tests and SSR checks, the missing design tokens were invisible to those plus
+   typecheck and lint, and the reset fix is only provable by driving the app.
+3. Add dismissal memory and a mode source, together with the first UI that needs
+   them. Both are required before the planner goes live.
 4. Only then wire a model in, in shadow mode, and read the rejection reasons
    before trusting any of it.
+
+One process note. Three of the four real bugs today were found by driving the
+browser, and the fourth by a test that asserted the rules settle. None were found
+by reading the code, and the one time we reasoned from the code alone we
+misdiagnosed it and would have shipped an unnecessary contract change. That is
+the argument for item 2.

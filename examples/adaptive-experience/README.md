@@ -44,7 +44,9 @@ Then compare the two listings side by side:
 1. Click "Compare" on one product. Nothing changes.
 2. Click "Compare" on a second product. The page switches to `compare` mode and
    a comparison tray appears above the grid.
-3. Click "Restore standard view". The page goes back to normal.
+3. Click "Restore standard view". The page goes back to normal and stays there.
+   The reset clears what the rules learned about you, not just the layout, so
+   nothing snaps back. Stage two products again and it re-adapts.
 4. Sort by price twice. The header goes compact and the grid widens to four
    columns.
 

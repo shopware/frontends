@@ -12,8 +12,8 @@ import type {
  * lock and stale-version check cannot be skipped by adding a new caller.
  */
 export function useExperienceEngine() {
-  const { plan, dispatch, reset } = useExperiencePlan();
-  const { signals, track } = useExperienceSignals();
+  const { plan, dispatch, reset: resetPlan } = useExperiencePlan();
+  const { signals, track, reset: resetSignals } = useExperienceSignals();
 
   const rejections = useState<string[]>("experience-rejections", () => []);
 
@@ -55,6 +55,19 @@ export function useExperienceEngine() {
       const patch = rule.evaluate(signals.value, plan.value);
       if (patch) propose(patch, "rule");
     }
+  };
+
+  /**
+   * Restores the standard view, for real.
+   *
+   * Order matters only for clarity, not correctness: the rule pass that watches
+   * the signals runs after both have settled. What matters is that the signals
+   * go first conceptually - clearing the plan alone would leave the rules with
+   * the same inputs and they would rebuild the adapted view immediately.
+   */
+  const reset = () => {
+    resetSignals();
+    resetPlan();
   };
 
   return { plan, signals, track, propose, evaluateRules, reset, rejections };

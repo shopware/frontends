@@ -353,6 +353,12 @@ describe("applyPatch", () => {
     // These pin down behaviour the gist does not specify. They are not
     // aspirational - they record what the contract does today so the writeup
     // can argue for a change.
+    //
+    // Neither is reachable from the UI yet, and neither is what broke "restore
+    // standard view": that was the engine resetting the plan without resetting
+    // the signals it is projected from, and it is fixed in useExperienceEngine.
+    // These two become real when the planner goes live, or when a shopper gets
+    // a control that sets the mode directly. See FINDINGS.md.
 
     it("lets a rule re-add a module the user hid, which is the flapping risk", () => {
       const plan = compareModePlan();

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { plan, reset } = useExperiencePlan();
+// The engine's reset, not the plan's: restoring the standard view has to clear
+// the signals the rules read, or they rebuild the adapted view on the next pass.
+const { plan, reset } = useExperienceEngine();
 
 // Static lookups: UnoCSS scans source text, so a class built by interpolation
 // would never be generated. The schemas bound every value, which makes these
