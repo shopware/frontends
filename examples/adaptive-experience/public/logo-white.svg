@@ -1,0 +1,12 @@
+<svg width="104" height="40" viewBox="0 0 104 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Adaptive Storefront">
+  <!-- Footer variant: sits on the dark brand surface, so the mark is knocked out
+       to white and the tiles are tinted instead. -->
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="#FFFFFF" fill-opacity="0.14" stroke="#FFFFFF" stroke-opacity="0.35" />
+
+  <rect x="8" y="9" width="10" height="22" rx="2.5" fill="#FFFFFF" fill-opacity="0.95" />
+  <rect x="21" y="9" width="11" height="9" rx="2.5" fill="#FFFFFF" fill-opacity="0.7" />
+  <rect x="21" y="21" width="11" height="10" rx="2.5" fill="#FFFFFF" fill-opacity="0.44" />
+
+  <text x="45" y="19.5" font-family="system-ui,-apple-system,'Segoe UI',Inter,sans-serif" font-size="12.5" font-weight="700" letter-spacing="-0.4" fill="#FFFFFF">adaptive</text>
+  <text x="45.5" y="31" font-family="system-ui,-apple-system,'Segoe UI',Inter,sans-serif" font-size="6.4" font-weight="600" letter-spacing="1.15" fill="#FFFFFF" fill-opacity="0.72">STOREFRONT</text>
+</svg>

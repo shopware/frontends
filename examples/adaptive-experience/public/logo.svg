@@ -1,0 +1,19 @@
+<svg width="104" height="40" viewBox="0 0 104 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Adaptive Storefront">
+  <defs>
+    <linearGradient id="adaptiveMark" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E7C7B" />
+      <stop offset="1" stop-color="#45C4B0" />
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="url(#adaptiveMark)" />
+
+  <!-- Modules laid out in a region: one tall main, two stacked beside it.
+       The same shape the plan describes. -->
+  <rect x="8" y="9" width="10" height="22" rx="2.5" fill="#FFFFFF" fill-opacity="0.95" />
+  <rect x="21" y="9" width="11" height="9" rx="2.5" fill="#FFFFFF" fill-opacity="0.72" />
+  <rect x="21" y="21" width="11" height="10" rx="2.5" fill="#FFFFFF" fill-opacity="0.46" />
+
+  <text x="45" y="19.5" font-family="system-ui,-apple-system,'Segoe UI',Inter,sans-serif" font-size="12.5" font-weight="700" letter-spacing="-0.4" fill="#17211F">adaptive</text>
+  <text x="45.5" y="31" font-family="system-ui,-apple-system,'Segoe UI',Inter,sans-serif" font-size="6.4" font-weight="600" letter-spacing="1.15" fill="#55625F">STOREFRONT</text>
+</svg>
