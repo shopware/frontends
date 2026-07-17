@@ -1,106 +1,109 @@
 # Findings: adaptive storefront spike
 
-One day, building the blueprint from
-[the gist](https://gist.github.com/mkucmus/70d059b96122d577f60cdeef3e048517)
-against the real starter template.
+One day building the adaptive storefront blueprint against the real starter
+template, followed by a multi-agent audit of the result.
 
-Short version: the core idea holds. A versioned plan, a closed registry and a
-validating merger work, and they work on a real Shopware storefront with SSR.
-The blueprint is under-specified in a few places. One of those broke a stated MVP
-goal, and fixing it turned out to be ten lines rather than the contract change we
-first proposed.
+## Read this first
 
-## What held up
+**The spike was built against a summary of the blueprint, not the blueprint.**
 
-**The closed contract does what it promises.** AI cannot name a component,
-because there is nowhere in the operation set to put a component name. A patch is
-a list from a fixed enum, and every module type resolves through a registry the
-model has no access to. A deliberately hostile mock planner that returns
-`{ type: "render-component", component: "<script>alert(1)</script>" }` is
-rejected by the schema before it leaves the server, and would be rejected again
-by the merger if validation were skipped. This is the strongest part of the
-design.
+The blueprint is a 74 KB document with 53 numbered sections. The tool used to
+read it returned a two-page summary instead, and nobody noticed. Everything below
+was implemented from that summary. Section 0 of the real document opens with
+"Read this entire document." That did not happen.
 
-**Server rendering works.** The plan renders on the server with `useState`, and
-15 real Shopware products came back through the plan-driven registry on the first
-request. No hydration mismatch.
+The result is not an implementation of the blueprint. It is a different system
+that shares its vocabulary. The idea was validated. The contract was not.
 
-**Shopware stays the data owner.** The plan holds product ids, never product
-data. The comparison tray gets `{ productIds: [...] }` and resolves them through
-the shared listing composable. This boundary was easy to hold and never fought us.
+Judge the spike on that basis. The parts that are still worth something are the
+implementation lessons, which are independent of the contract, and the fact that
+the general shape works at all on a real storefront.
 
-**The merger keeps the plan valid.** Every operation is checked against the
-registry, so a plan that leaves the merger always satisfies it. Rejecting bad
-operations one at a time, rather than failing the whole patch, means a partly
-useful proposal is still worth applying.
+## What the divergence looks like
 
-**Guardrails are cheap.** Checkout lock and stale-version rejection are about 30
-lines together and both work.
+Every line of this table is the specified contract against what was built:
 
-## What broke
+| Blueprint                                                                                                                  | Built here                                                  |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| 6 modes: `explore, inspire, compare, decide, configure, support`                                                           | 3                                                           |
+| Regions `top, main, aside, bottom`                                                                                         | `header, main, sidebar, footer`                             |
+| 10 module types, e.g. `product-comparison`, `contextual-filters`, `assistant-message`, `product-finder`, `recently-viewed` | 4, renamed                                                  |
+| Header `default / compact / search-first`                                                                                  | `standard / compact`                                        |
+| Navigation `mega-menu / contextual / hidden`                                                                               | `standard / minimal`                                        |
+| Footer `full / compact / hidden`                                                                                           | `standard / minimal`                                        |
+| Module carries `enabled`, `createdAt`, `updatedAt`, `minimumLifetimeMs`                                                    | none of them                                                |
+| Plan carries `schemaVersion`, `routeKey`, `metadata { reason, source, generatedAt }`                                       | none of them                                                |
+| `overlays` is an object of three booleans                                                                                  | an array                                                    |
+| Workspace has `maxWidth`, `density`, `columns`, `sidebar`, `stickyAside`                                                   | `width`, `density`                                          |
+| Registry entry has `commerceRisk`, `canBeAddedByAI`, `canBeMovedByAI`, `canBeHiddenByAI`, `maxInstances`                   | none of them                                                |
+| Shell registry of async components (§11)                                                                                   | none, and the spike argued against having one               |
+| Patch: max 3-5 operations, max 1 shell change, max 2 module moves                                                          | max 8 operations, no other limits                           |
+| Merger takes `(plan, patch, context, policy)` and validates the complete next plan before accepting it (§18 step 7)        | takes `(plan, patch, {source})`, never validates the result |
+| `AdaptationPolicy` and `useAdaptationLock` (§19)                                                                           | absent                                                      |
+| Module count limit, e.g. 20                                                                                                | absent                                                      |
 
-### 1. Two real bugs passed every unit test
+The operation shapes differ too: the blueprint's `set-shell` is
+`{ target, value }`, its `ensure-module` nests the module object, its
+`move-module` requires `priority`, and its patch supports `quickActions`.
 
-Both were found only by clicking through a browser.
+## Findings that did not survive contact with the real document
+
+These were written up as blueprint critiques. They were not.
+
+**"Dropped `workspace.columns` as redundant."** This was the worst one. The
+blueprint's `ProductGridPropsSchema` has no `columns` field. It has `limit`. The
+`columns` prop on the grid module was invented here, which manufactured the
+duplication with `workspace.columns`, which was then "discovered" and resolved by
+deleting the specified field. A self-inflicted problem, documented as a flaw in
+someone else's design.
+
+**"The shell does not need a registry, it would be ceremony."** Section 11
+specifies a shell registry with async header, navigation and footer components.
+This was a confident architectural opinion about a section that was never read.
+
+**"The closed contract does what it promises, this is the strongest part of the
+design."** It promises more than was built. Section 10 requires
+`canBeHiddenByAI: false` on the product grid. It is not implemented, so a
+validated AI patch can hide the grid and the filter panel and leave an empty page
+that still passes schema validation. The blueprint prevents this. The spike does
+not. The commerce half of the claim does hold: no operation in the enum writes
+Shopware state.
+
+**"The MVP acceptance list now passes without AI."** That was measured against
+the summary's 8 items. The real list (§46) has 13. Three do not pass: guardrails
+must protect checkout _and active forms_ (no form protection exists), a decision
+log must be available (rejections are collected but never surfaced), and E2E must
+demonstrate `explore -> compare` (it is demonstrated by throwaway scripts, not
+tests in the repo).
+
+**"Restore standard view needs a contract change."** Half wrong twice over. The
+real fix was ten lines (see below), and §19 already specifies the durable answer:
+"when the user explicitly reverts an adaptation, remember that preference for the
+session."
+
+## Findings that still stand
+
+These are implementation lessons. They are independent of the contract and would
+have happened against any version of it.
 
 **`structuredClone` throws on a Vue reactive proxy.** The merger clones its input
-to stay pure. `useState` hands back a reactive proxy. `structuredClone(proxy)`
-throws `DataCloneError`. Every unit test passed, because tests pass plain
-objects. Server rendering passed too, because no rule fires on the server, so the
-default plan renders without ever going through the merger. The bug only appears
-on the first patch in a browser, which is the one path neither check covered.
-
-The fix is `toRaw` at the composable boundary, which keeps `shared/` free of Vue.
-The wider lesson: a framework-free core needs an explicit unwrap step at the
-edge, and something has to test that edge.
+to stay pure. `useState` returns a reactive proxy. Every unit test passed, because
+tests pass plain objects. SSR passed, because no rule fires on the server so the
+merger is never reached. The bug only appears on the first patch in a browser. Fix
+is `toRaw` at the composable boundary. The lesson: a framework-free core needs an
+explicit unwrap at the edge, and something has to test that edge.
 
 **Idempotent rules churned the plan version.** `update-module-props` marked the
-plan as changed even when the props were identical. Rules re-run on every signal
-change and re-propose the same props, so the version advanced on every pass. Any
-AI response in flight would then fail the stale check and be thrown away. The
-planner would have looked broken while working correctly.
+plan changed even when the props were identical, so the version advanced on every
+rule pass and any in-flight AI response would fail the stale check. Found by a
+test that ran the rule set twice and asserted the plan was unchanged. The
+blueprint agrees: §18 step 8 says increment only when something changed. That test
+is worth keeping.
 
-A test that ran the rule set twice and asserted the plan was unchanged caught it.
-That test is worth keeping in any real implementation.
-
-### 2. The comparison selection cannot live in the plan
-
-The registry says `comparison-tray` may only exist in `compare` mode. But the
-shopper stages their first product while still in `explore`. If the selection
-lives in the tray's props, that first action has nowhere to go and gets rejected.
-
-So events have to be the source of truth, and the plan is a projection of them:
-
-```
-events -> signals -> rules -> guardrails -> merger -> plan -> render
-```
-
-This is a change to the blueprint's data flow, not a detail. It also turned out
-well: the signals the rules see and the context the AI sees became two different
-objects, with the AI getting a reduced projection with no product ids in it. One
-function, `toAiContext`, is the only place data can leave the browser, which is a
-single point to audit.
-
-### 3. "User can restore standard view" failed, and our first diagnosis was wrong
-
-This is an MVP acceptance item in the gist. It failed, and it is now fixed. The
-way it was wrong is the useful part.
-
-The symptom was real. Reset worked and the next signal change undid it: reset to
-`explore`, click one more Compare, and the rule saw two products still staged and
-switched straight back to `compare`.
-
-We read that as a contract gap. `source` lives on a module, so it cannot protect
-`mode`, `shell` or `workspace`, which carry no source at all. The proposed fix
-was to give plan-level fields a source and keep a dismissal set, and we estimated
-half a day for it.
-
-That was wrong. The plan is a projection of the signals. Reset cleared the
-projection and left the source untouched, so the rules rebuilt the adapted view
-on the next pass. No rule was overruling the shopper. Nothing had told the rules
-that anything had changed.
-
-The real fix is ten lines and no contract change:
+**Restoring the standard view has to clear the signals, not just the plan.** The
+plan is a projection of the signals. Resetting the projection while the source is
+untouched means the rules rebuild it on the next pass. Where the plan is a
+projection, any undo that touches only the plan is cosmetic. Ten lines:
 
 ```ts
 const reset = () => {
@@ -109,135 +112,84 @@ const reset = () => {
 };
 ```
 
-Reset now holds, verified in a browser. Restoring the standard view drops the
-staged selection and the price-sort count, so the rules have nothing left to
-re-adapt from, and the Compare buttons stop claiming products are staged when
-nothing renders them. The shopper opts back in by staging products again.
+**A Nuxt layer needs its own `uno.config.ts`, and fails silently without one.**
+`unocss.nuxtLayers` generates `.nuxt/uno.config.mjs` from the layer chain, but
+UnoCSS resolves its config separately: with no root `uno.config.ts` the module
+falls back to its default preset. Generic utilities keep working so the page looks
+almost right, while the entire design token layer vanishes, including every icon,
+because `presetIcons` is configured there. Two related traps: `presetAttributify`
+reads zod's generics as markup and emits invalid CSS that kills the whole
+stylesheet, so scope it with `content.pipeline.exclude`; and the image placeholder
+colour is an `app.config` value baked into a data URI, so retheming UnoCSS does
+not reach it.
 
-The general lesson is worth more than the fix: **where the plan is a projection,
-any undo that touches only the plan is cosmetic.** The source has to move. That
-applies to every future user control, not just this button.
+**An adaptive shell means owning the layout.** The header and footer live outside
+the page, so the plan can only reach them from the layout. In a layer that means
+copying `default.vue`, and that copy will drift.
 
-The salvageable half of the first diagnosis, still true and still unfixed:
+**The layer pattern itself held up well.** The starter is not modified. Commerce
+is inherited. Retheming is a colour block. The whole spike is one deletable
+directory.
 
-- A shopper who dismisses a module leaves no trace, so a rule puts it back. No UI
-  reaches this today, but it becomes real the moment the planner goes live in
-  phase 7: it proposes a panel, the shopper closes it, it proposes it again.
-- A shopper who picks a mode explicitly cannot outrank a rule, because mode has
-  no source. This needs solving before any manual mode control ships.
+## Live bugs in the spike
 
-Both are worth adding alongside the first UI that exercises them. Building them
-now would be contract surface with no caller, which is how the estimate above got
-inflated in the first place.
+Confirmed by a multi-agent audit and reproduced by hand. 92 findings were raised,
+46 survived a hostile refutation pass, 11 died unverified when the run hit a rate
+limit.
 
-### 4. A layer needs its own `uno.config.ts`, and fails silently without one
-
-Not about the blueprint, but the most expensive hour of the day, and anyone
-building this on top of the starter will hit it.
-
-`unocss.nuxtLayers` does generate `.nuxt/uno.config.mjs` merging every layer's
-config, and the Nuxt layer chain was correct the whole time. But UnoCSS resolves
-its config separately from that chain: without a root `uno.config.ts` the module
-falls back to its default preset. Generic utilities keep working, so the page
-looks almost right, while the entire Shopware design token layer is gone - brand
-colours, surfaces, and every icon, since `presetIcons` is configured there. We
-only noticed because the icons were visibly missing. The brand colours were
-missing too and looked plausible enough to miss.
-
-The fix is to import the starter's config, which already merges the design
-tokens, so extending both layers explicitly is not needed:
-
-```ts
-export default mergeConfigs([starterConfig, adaptiveConfig]);
-```
-
-Two things to know once you do:
-
-- **`presetAttributify` reads zod and emits broken CSS.** The starter's config
-  brings `presetAttributify`, whose extractor treats anything shaped like an
-  element as markup. Zod's generics parse as exactly that, producing rules like
-  `[object~="$ZodCheckGreaterThan"]{...}` that are not valid CSS and take the
-  whole stylesheet down. The starter never hits this because it has no zod. Scope
-  the scan with `content.pipeline.exclude`. Any layer adding a schema library to
-  a template with attributify will meet this.
-- **Not everything is a token.** The image placeholder colour is an `app.config`
-  value baked into a data URI, so retheming `uno.config.ts` does not reach it. It
-  has to be set again in `app/app.config.ts` or images flash the old brand colour
-  while loading.
-
-### 5. Signals do not survive a reload
-
-`useState` is per page load. Sorting by price twice compacts the shell; pressing
-F5 puts it back to standard, because the counter is gone. "Price sensitivity" is
-only real inside one client-side session. Anything derived from behaviour over
-time needs real storage. This is not hard, but the blueprint does not mention it
-and it quietly makes several of the interesting rules useless.
-
-## Contract changes we made
-
-**Dropped `workspace.columns`.** The gist puts `columns` on the workspace, and a
-grid module carries its own `columns` prop. Two fields, same meaning, no rule for
-who wins. The renderer never read the workspace one. Column count belongs to the
-module that draws a grid. The workspace owns only the space it hands out.
-
-**Split signals from context.** `ExperienceSignals` is what the rules see and
-holds ids. `ExperienceContext` is what the endpoint sees and holds scalars.
-
-**The shell does not need a registry.** Modules need one, because a patch names a
-module type and something has to stop that being arbitrary. The shell is a small
-set of layout flags the layout itself reads. Building a component registry for it
-would have been ceremony.
-
-## Practical notes
-
-- **UnoCSS scans source text.** A class built by interpolation, like
-  `grid-cols-${n}`, generates nothing. Plan-driven layout needs static lookup
-  maps. This works out well: the schemas bound every value, so the maps are
-  exhaustive by contract rather than by hope.
-- **An adaptive shell means owning the layout.** The header and footer live
-  outside the page, so the plan can only reach them from the layout. In a layer,
-  that means copying `default.vue`, and that copy will drift from the base.
-- **The layer pattern otherwise held up well.** The starter is not modified at
-  all. Everything commerce related is inherited, retheming is a colour block in
-  `uno.config.ts`, and the whole spike is one directory that can be deleted. The
-  only copied file is the layout above.
-- **`#shared` is a Nuxt alias.** A plain vitest run has to be told about it.
-  Type-only imports are erased and hide the problem until the first value import.
-- **The cooldown is in memory**, so it is per instance. On more than one instance
-  it does not limit anything.
-- **No Pinia needed.** `useState` carried the plan, survived hydration and cost
-  nothing. Pinia would earn its place only if stores needed to watch each other.
-- **Zod was already in the lockfile** at 4.4.3, so it added no new resolution.
-
-## What we did not do
-
-Real AI provider, sales channel switching, E2E tests in CI, more than four module
-types, and any A/B measurement.
+1. **Phase 6 never runs.** `useExperiencePlanner` has zero call sites. The
+   endpoint, cooldown, stale check and shadow recorder are unreached code. Every
+   AI-path behaviour this spike claims to have proven is proven only by unit tests
+   calling the pieces directly.
+2. **The tray lies at exactly one staged product.** `compareOnComparisonIntent`
+   bails below 2, `leaveCompareWhenTrayEmpty` bails above 0, so length 1 is
+   uncovered. Remove one of two staged products and the plan comes back by
+   identity: the tray still renders the removed product while the grid button for
+   it flips back to "Compare". Two components contradicting each other on the
+   flagship demo path, reachable in ten seconds of clicking.
+3. **Price sorting strips the language and currency switchers site-wide.** The
+   densify rule sets `navigation: "minimal"`, the layout gates
+   `LayoutMetaNavigation` on it, the plan is global `useState`, and the reset
+   button only renders inside `/adaptive`. Sort twice, navigate away, and the
+   shopper has lost currency selection everywhere until they reload.
+4. **AI can blank the storefront** (see above).
+5. **The planner cooldown is keyed on an attacker-supplied cookie** and its `Map`
+   never evicts. It is not merely per-instance, it is bypassable on one instance,
+   and it leaks memory.
+6. **The tray resolves ids against the current listing page**, so staged products
+   vanish on sort or pagination.
+7. **`plan.overlays` is inert.** Nothing renders it, yet the merger maintains it
+   and the mock planner proposes it.
 
 ## Recommendation
 
-Worth continuing.
+Keep the layer. Rewrite the contract against the real document.
 
-The safety story is genuinely good, the retrofit onto a real storefront was
-cheaper than expected, and the MVP acceptance list now passes without AI. The
-remaining gap is narrower than it first looked: the blueprint models where a
-change came from, but not what the shopper has already decided. That only starts
-to bite once the shopper has controls beyond reset, or once a model is live.
+The layer structure, the Shopware boundary, the SSR behaviour, the merger's
+shape and the four implementation lessons above are all worth keeping. The
+contract, the registry, the operation shapes and the guardrails should be rebuilt
+from sections 7 to 19 rather than patched, because they were not derived from
+them.
 
 Suggested order:
 
-1. Move the signals into real storage. Everything behavioural is fiction until
-   they survive a reload, and it is the cheapest work left.
-2. Add the E2E scenarios. Two of the bugs found today were invisible to unit
-   tests and SSR checks, the missing design tokens were invisible to those plus
-   typecheck and lint, and the reset fix is only provable by driving the app.
-3. Add dismissal memory and a mode source, together with the first UI that needs
-   them. Both are required before the planner goes live.
-4. Only then wire a model in, in shadow mode, and read the rejection reasons
-   before trusting any of it.
+1. Re-implement the contract from §7 to §19. This subsumes most of the live bug
+   list: `canBeHiddenByAI` fixes bug 4, `AdaptationPolicy` and the module-count
+   limit close the unbounded-growth holes, `routeKey` fixes bug 3, and the §18
+   step 7 "validate the complete next plan" step is a backstop for the whole
+   class.
+2. Fix bug 2 while doing it. It is a rule-coverage hole, not a contract problem.
+3. Add the E2E tests. The Playwright harness already exists in `apps/e2e-tests`
+   and the components already carry testids. The verification that found most of
+   these bugs currently lives in throwaway scripts.
+4. Wire phase 6 to something, or delete it and stop claiming it.
+5. Only then a real model.
 
-One process note. Three of the four real bugs today were found by driving the
-browser, and the fourth by a test that asserted the rules settle. None were found
-by reading the code, and the one time we reasoned from the code alone we
-misdiagnosed it and would have shipped an unnecessary contract change. That is
-the argument for item 2.
+## The process lesson
+
+Four real bugs were found by driving a browser, one by a test asserting the rules
+settle, and seven more by an adversarial audit. None were found by reading the
+code. The two times something was reasoned about without being checked against
+the source, it was wrong: the reset misdiagnosis, and the entire contract.
+
+Read the source. Then check the code against it. Neither alone was enough.

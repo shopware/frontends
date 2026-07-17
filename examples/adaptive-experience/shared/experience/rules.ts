@@ -48,6 +48,37 @@ const compareOnComparisonIntent: ExperienceRule = {
 };
 
 /**
+ * Keeps the tray's contents honest.
+ *
+ * Without this, exactly one staged product falls between the two rules either
+ * side of it: `compareOnComparisonIntent` bails below two and
+ * `leaveCompareWhenTrayEmpty` bails above zero, so nothing updated the props and
+ * the tray went on rendering a product the shopper had just removed while the
+ * grid button for it already said "Compare".
+ *
+ * Ordered before the two mode rules and idempotent, so re-proposing the same
+ * ids does not touch the plan version.
+ */
+const syncComparisonTray: ExperienceRule = {
+  id: "sync-comparison-tray",
+  evaluate: (signals, plan) => {
+    const tray = plan.regions.main.find(
+      (module) => module.id === COMPARISON_MODULE_ID,
+    );
+    if (!tray) return null;
+    return {
+      operations: [
+        {
+          type: "update-module-props",
+          moduleId: COMPARISON_MODULE_ID,
+          props: { productIds: signals.comparisonProductIds },
+        },
+      ],
+    };
+  },
+};
+
+/**
  * Back out of compare mode once the shopper has emptied the tray, so the UI does
  * not get stuck in a mode the selection no longer justifies.
  */
@@ -84,6 +115,7 @@ const densifyOnPriceSensitivity: ExperienceRule = {
 
 export const localRules: readonly ExperienceRule[] = [
   compareOnComparisonIntent,
+  syncComparisonTray,
   leaveCompareWhenTrayEmpty,
   densifyOnPriceSensitivity,
 ];

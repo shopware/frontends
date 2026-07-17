@@ -1,10 +1,27 @@
 <script setup lang="ts">
 import { getLanguageName } from "@shopware/helpers";
 
+import { createDefaultPlan } from "#shared/experience/defaults";
+
 // Overrides the starter template's default layout. It is a copy of that layout
 // with the shell driven by the plan: the adaptive shell has to own the layout,
 // because the header and footer live outside the page.
-const { plan } = useExperiencePlan();
+const { plan: rawPlan } = useExperiencePlan();
+const route = useRoute();
+
+// STOPGAP. The plan has no route dimension, so a shell change made on the
+// adaptive route followed the shopper everywhere: two price sorts hid the
+// language and currency switchers across the whole storefront, and the only
+// control that restores them lives on /adaptive. Scoping the shell to the route
+// that adapts keeps that contained.
+//
+// The real fix is `routeKey` on the plan, per blueprint section 7. Remove this
+// when the contract is rebuilt.
+const plan = computed(() =>
+  route.path.startsWith("/adaptive")
+    ? rawPlan.value
+    : { ...rawPlan.value, shell: createDefaultPlan().shell },
+);
 
 const { loadNavigationElements } = useNavigation();
 const { data } = useAsyncData("mainNavigation", () => {

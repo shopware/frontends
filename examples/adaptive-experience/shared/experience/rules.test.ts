@@ -69,6 +69,30 @@ describe("local rules", () => {
     });
   });
 
+  describe("removing one of two staged products", () => {
+    const compared = runRules(signals({ comparisonProductIds: ["a", "b"] }));
+    const afterRemove = runRules(
+      signals({ comparisonProductIds: ["a"] }),
+      compared,
+    );
+
+    it("drops the removed product from the tray", () => {
+      const tray = afterRemove.regions.main.find(
+        (module) => module.id === "comparison",
+      );
+
+      expect(tray?.props).toEqual({ productIds: ["a"] });
+    });
+
+    it("stays in compare mode with one product left", () => {
+      expect(afterRemove.mode).toBe("compare");
+    });
+
+    it("advances the version, since the tray really changed", () => {
+      expect(afterRemove.version).toBeGreaterThan(compared.version);
+    });
+  });
+
   it("returns to explore once the shopper empties the tray", () => {
     const compared = runRules(signals({ comparisonProductIds: ["a", "b"] }));
     const emptied = runRules(signals({ comparisonProductIds: [] }), compared);

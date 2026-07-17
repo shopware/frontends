@@ -78,8 +78,26 @@ spike passed every unit test and only showed up in the browser. See
 
 ## State of the spike
 
-AI runs in shadow mode: the endpoint is called, the proposal is recorded, and
-nothing is applied. The provider is a deterministic mock. No model is wired in.
+**Read [FINDINGS.md](./FINDINGS.md) before trusting anything here.** This spike was
+built against a summary of the blueprint rather than the blueprint itself, and its
+contract diverges from the specified one in most details.
+
+AI does not run. The Nitro endpoint, the mock provider, the cooldown and the
+shadow recorder are all built and unit tested, but `useExperiencePlanner` has no
+caller anywhere in the app, so `/api/experience/plan` is never hit at runtime.
+Phase 6 is written, not exercised. An earlier version of this file claimed the
+loop runs. It does not.
 
 Sales channel switching is not implemented. The operation exists in the contract
 and the merger reports it as `not-implemented`.
+
+Known live bugs in the demo, all confirmed:
+
+- Remove one of two staged products and the tray keeps showing the removed one.
+  No rule covers exactly one staged product.
+- Sort by price twice and the language and currency switchers disappear from the
+  whole storefront, with no way back except a reload. The plan is global, the
+  reset button only exists on `/adaptive`.
+- A validated AI patch can hide the product grid and blank the page. The
+  blueprint specifies `canBeHiddenByAI: false` to prevent exactly this. It is not
+  implemented here.
