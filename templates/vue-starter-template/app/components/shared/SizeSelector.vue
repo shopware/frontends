@@ -9,12 +9,10 @@ const emit = defineEmits<{
 
 const state = ref(props.value.toString());
 
-const options = [
-  { value: "1", label: "1" },
-  { value: "15", label: "15" },
-  { value: "30", label: "30" },
-  { value: "45", label: "45" },
-];
+const options = PAGE_SIZE_OPTIONS.map((size) => ({
+  value: size.toString(),
+  label: size.toString(),
+}));
 
 function handleChange() {
   emit("change", Number(state.value));

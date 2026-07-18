@@ -34,6 +34,7 @@ defineSlots<{
   }) => unknown;
   loading: (props: { limit: number }) => unknown;
   empty: () => unknown;
+  error: (props: { error: unknown; retry: () => Promise<void> }) => unknown;
 }>();
 
 const listEl = ref<HTMLElement | null>(null);
@@ -49,15 +50,19 @@ const {
   limit,
   loading,
   isEmpty,
+  error,
   changePage,
   refresh,
-} = await useOffsetPaginatedList<T>({
+} = useOffsetPaginatedList<T>({
   fetcher: props.fetcher,
   key: props.dataKey,
   defaultLimit: props.defaultLimit,
   defaultPage: props.defaultPage,
   pageQueryKey: props.pageQueryKey,
   limitQueryKey: props.limitQueryKey,
+  allowedLimits: props.showPageSizeSelector
+    ? [...PAGE_SIZE_OPTIONS]
+    : undefined,
   watchSources: props.watchSources,
   scrollTarget: listEl,
 });
@@ -85,6 +90,15 @@ const navProps = computed(() =>
     <slot v-if="loading" name="loading" :limit="limit">
       <div class="py-8 text-center text-sm opacity-70">
         {{ $t("listing.loading") }}
+      </div>
+    </slot>
+
+    <slot v-else-if="error" name="error" :error="error" :retry="refresh">
+      <div class="py-8 text-center text-sm" role="alert">
+        <p class="opacity-70">{{ $t("listing.error") }}</p>
+        <button type="button" class="mt-3 underline" @click="() => refresh()">
+          {{ $t("listing.retry") }}
+        </button>
       </div>
     </slot>
 
