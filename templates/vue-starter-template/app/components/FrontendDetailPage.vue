@@ -13,6 +13,10 @@ const router = useRouter();
 const breadcrumbRequestController = import.meta.client
   ? new AbortController()
   : undefined;
+const referrerCategoryId =
+  import.meta.client && typeof history.state?.referrerCategoryId === "string"
+    ? history.state.referrerCategoryId
+    : undefined;
 
 if (import.meta.client) {
   const removeBreadcrumbRequestGuard = router.beforeEach((to, from) => {
@@ -69,6 +73,11 @@ onMounted(async () => {
         pathParams: {
           id: props.navigationId,
         },
+        query: referrerCategoryId
+          ? {
+              referrerCategoryId,
+            }
+          : undefined,
         fetchOptions: {
           signal: breadcrumbRequestController?.signal,
         },

@@ -156,6 +156,7 @@ The API Client instance is aware of your custom API types thanks to declaring `#
 - [📦 API Client - REST API Client for Shopware 6](https://npmjs.com/@shopware/api-client)
 
 - [👥 Community](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
+
 <!-- AUTO GENERATED CHANGELOG -->
 
 ## Changelog
