@@ -1,5 +1,20 @@
 # @shopware/api-client
 
+## 1.5.1
+
+### Patch Changes
+
+- [#2515](https://github.com/shopware/frontends/pull/2515) [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173) Thanks [@patzick](https://github.com/patzick)! - Generate `customFields` properties with a dedicated `CustomFields` type instead of the broader `GenericRecord` type.
+
+- [#2554](https://github.com/shopware/frontends/pull/2554) [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa) Thanks [@patzick](https://github.com/patzick)! - Make `_criteria` query encoding deterministic by pinning the gzip timestamp.
+
+- [#2526](https://github.com/shopware/frontends/pull/2526) [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0) Thanks [@mkucmus](https://github.com/mkucmus)! - Split the `createAPIClient` tests so Node and browser behavior are each tested in the right environment:
+
+  - Node (`createApiClient.test.ts`): keeps the multipart `Content-Type`, aborts with `This operation was aborted`.
+  - Browser (`createApiClient.browser.test.ts`, runs in `happy-dom`): drops the multipart `Content-Type`, aborts with `signal is aborted without reason`.
+
+  Previously a stray `@vitest-environment` comment ran the whole suite in browser mode, so the Node paths were never actually checked.
+
 ## 1.5.0
 
 ### Minor Changes
@@ -46,6 +61,7 @@
 ### Minor Changes
 
 - [#1865](https://github.com/shopware/frontends/pull/1865) [`d016d6b`](https://github.com/shopware/frontends/commit/d016d6b845bff9a148405a74dae88d7fc81ec99c) Thanks [@patzick](https://github.com/patzick)! - Added new methods to manage API client base configuration:
+
   - `updateBaseConfig`: Allows updating baseURL and accessToken in a single call
   - `getBaseConfig`: Returns current baseURL and accessToken values
 
@@ -98,6 +114,7 @@
 - [#1316](https://github.com/shopware/frontends/pull/1316) [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7) Thanks [@mkucmus](https://github.com/mkucmus)! - Extend Criteria type in exported admin API schema
 
 - [#1323](https://github.com/shopware/frontends/pull/1323) [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f) Thanks [@mkucmus](https://github.com/mkucmus)! - Don't send Content-Type in case of [multipart/form-data](https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html).
+
   - Ignore `Content-Type` header in browser context when `multipart/form-data` is set.
   - _boundary_ is set by a browser automatically.
 
@@ -235,9 +252,11 @@
 ### Patch Changes
 
 - [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _ofetch_ from **^1.2.1** to **^1.3.3**
 
 - [#375](https://github.com/shopware/frontends/pull/375) [`bd88d6fa`](https://github.com/shopware/frontends/commit/bd88d6fa95de2b90f8a1e08e34159b46c5932b3b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
   - Changed dependency _ofetch_ from **^1.1.1** to **^1.2.1**
 
 - [`15d6e696`](https://github.com/shopware/frontends/commit/15d6e69616bd9bc5ad32f2a5f697e00c45a94784) Thanks [@patzick](https://github.com/patzick)! - Emit cjs bundle
