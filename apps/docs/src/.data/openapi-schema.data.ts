@@ -1,6 +1,6 @@
 import { defineLoader } from "vitepress";
 
-import { createOpenApiResolver } from "./schema/openapi-resolver";
+import { createOpenApiReader } from "./schema/openapi-reader";
 import {
   summarizeOpenApiSchema,
   type SchemaSummary,
@@ -15,7 +15,7 @@ export { data };
 
 export default defineLoader({
   load(): Data {
-    const api = createOpenApiResolver({ apiType: "store" });
+    const api = createOpenApiReader({ apiType: "store" });
 
     return {
       summaries: summarizeOpenApiSchema(api),

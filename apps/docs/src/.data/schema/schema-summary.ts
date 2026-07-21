@@ -1,10 +1,10 @@
 import type {
-  OpenApiResolver,
+  OpenApiReader,
   Operation,
   ReferenceNode,
   ResponseNode,
   SchemaNode,
-} from "./openapi-resolver";
+} from "./openapi-reader";
 
 export type SchemaFieldSummary = {
   name: string;
@@ -21,7 +21,7 @@ export type SchemaSummary = {
   hiddenFields: number;
 };
 
-export function summarizeOpenApiSchema(api: OpenApiResolver) {
+export function summarizeOpenApiSchema(api: OpenApiReader) {
   const summaries: Record<string, SchemaSummary> = {};
 
   for (const [operationKey, operation] of api.operationEntries()) {
@@ -54,7 +54,7 @@ export function summarizeResponse({
 }: {
   label: string;
   source: string;
-  api: OpenApiResolver;
+  api: OpenApiReader;
   response?: ResponseNode | ReferenceNode;
 }): SchemaSummary {
   const resolvedResponse = api.resolveResponse(response);
@@ -82,7 +82,7 @@ export function summarizeResponse({
 }
 
 function summarizeOperation(
-  api: OpenApiResolver,
+  api: OpenApiReader,
   operationKey: string,
   operation: Operation,
 ) {
@@ -148,7 +148,7 @@ export function summarizeSchema({
 }: {
   label: string;
   source: string;
-  api: OpenApiResolver;
+  api: OpenApiReader;
   node?: SchemaNode;
 }): SchemaSummary {
   const resolvedNode = api.resolveSchema(node);

@@ -56,9 +56,9 @@ export type SchemaNode = {
   anyOf?: SchemaNode[];
 };
 
-export type OpenApiResolver = ReturnType<typeof createOpenApiResolver>;
+export type OpenApiReader = ReturnType<typeof createOpenApiReader>;
 
-type CreateOpenApiResolverOptions = {
+type CreateOpenApiReaderOptions = {
   apiType?: ApiType;
   schemaPath?: string;
 };
@@ -74,10 +74,10 @@ const httpMethods: HttpMethod[] = [
   "trace",
 ];
 
-export function createOpenApiResolver({
+export function createOpenApiReader({
   apiType = "store",
   schemaPath,
-}: CreateOpenApiResolverOptions = {}) {
+}: CreateOpenApiReaderOptions = {}) {
   const schema = loadDocsOpenApiSchema({
     apiType,
     schemaPath,
@@ -141,8 +141,8 @@ export function createOpenApiResolver({
 function loadDocsOpenApiSchema({
   apiType,
   schemaPath,
-}: Required<Pick<CreateOpenApiResolverOptions, "apiType">> &
-  Pick<CreateOpenApiResolverOptions, "schemaPath">): OpenApiSchema {
+}: Required<Pick<CreateOpenApiReaderOptions, "apiType">> &
+  Pick<CreateOpenApiReaderOptions, "schemaPath">): OpenApiSchema {
   const filename =
     apiType === "store" ? "storeApiSchema.json" : "adminApiSchema.json";
   const resolvedSchemaPath = schemaPath ?? join(getSchemaDir(), filename);
