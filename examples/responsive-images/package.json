@@ -15,12 +15,12 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.7",
-    "vue": "3.5.39"
+    "vue": "3.5.40"
   },
   "devDependencies": {
     "@types/node": "22.13.14",
-    "@vitejs/plugin-vue": "6.0.7",
-    "vite": "8.1.4",
+    "@vitejs/plugin-vue": "6.0.8",
+    "vite": "8.1.5",
     "vue-tsc": "3.3.7",
     "oxfmt": "0.58.0",
     "oxlint": "1.73.0"

@@ -19,16 +19,16 @@
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.7",
     "primevue": "4.4.1",
-    "vue": "3.5.39",
-    "vue-router": "5.1.0"
+    "vue": "3.5.40",
+    "vue-router": "5.2.0"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
     "@types/node": "22.13.14",
-    "@vitejs/plugin-vue": "6.0.7",
+    "@vitejs/plugin-vue": "6.0.8",
     "@vueuse/core": "14.3.0",
     "unocss": "66.7.5",
-    "vite": "8.1.4",
+    "vite": "8.1.5",
     "vue-tsc": "3.3.7",
     "oxfmt": "0.58.0",
     "oxlint": "1.73.0"
