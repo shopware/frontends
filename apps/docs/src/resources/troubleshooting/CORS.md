@@ -68,6 +68,6 @@ Eliminate the browser's CORS restrictions by using a server-side proxy or a cust
 | Solution                     | CORS-Free? | Performance | Setup Effort | When to Use?                         |
 | ---------------------------- | ---------- | ----------- | ------------ | ------------------------------------ |
 | **Reverse Proxy (NGINX)**    | ✅ Yes     | 🚀 Fast     | 🔧 Medium    | Self-hosted, best performance        |
-| **Nuxt SSR Mode**            | ✅ Yes     | ⚡ Fast     | 🛠 Easy      | Works for APIs without CORS settings |
-| **Modify Shopware API CORS** | ❌ No      | 🚀 Fast     | 🛠 Easy      | When you control the API             |
-| **Custom API Middleware**    | ✅ Yes     | 🐢 Slower   | 🛠 Hard      | When API CORS cannot be changed      |
+| **Nuxt SSR Mode**            | ✅ Yes     | ⚡ Fast     | 🛠 Easy       | Works for APIs without CORS settings |
+| **Modify Shopware API CORS** | ❌ No      | 🚀 Fast     | 🛠 Easy       | When you control the API             |
+| **Custom API Middleware**    | ✅ Yes     | 🐢 Slower   | 🛠 Hard       | When API CORS cannot be changed      |

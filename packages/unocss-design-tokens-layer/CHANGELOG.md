@@ -1,5 +1,11 @@
 # @shopware/unocss-design-tokens-layer
 
+## 1.0.1
+
+### Patch Changes
+
+- [#2543](https://github.com/shopware/frontends/pull/2543) [`7cdb81f`](https://github.com/shopware/frontends/commit/7cdb81f40dc5194432560752718048c730857ddf) Thanks [@patzick](https://github.com/patzick)! - Export the shared UnoCSS config and lazy-load the optional runtime so layered templates can merge the package config directly while keeping runtime generation disabled unless requested.
+
 ## 1.0.0
 
 ### Major Changes

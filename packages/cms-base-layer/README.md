@@ -485,9 +485,24 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 3.0.1
+### Latest changes: 3.1.0
+
+### Minor Changes
+
+- [#2503](https://github.com/shopware/frontends/pull/2503) [`1b0ccc9`](https://github.com/shopware/frontends/commit/1b0ccc95fcef89de42931155fb40119b9075d21b) Thanks [@mkucmus](https://github.com/mkucmus)! - `SwProductListingFilters` and `SwProductListingFiltersHorizontal`: honor the `listingType` prop. When set to `productSearchListing` the components drive `useProductSearchListing` instead of `useCategoryListing` and keep the active search term in the request criteria and resulting URL, so the shared filter sidebar can be reused on the product search page without resetting the query. Category listing behavior is unchanged.
 
 ### Patch Changes
 
-- Updated dependencies [[`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2), [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec), [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b)]:
-  - @shopware/composables@1.12.0
+- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Add cacheable GET support for category details and product reviews while preserving the existing POST behavior when `cacheableReads` is disabled.
+
+  - `useCategorySearch.search` now calls `GET /category/{navigationId}` and sends the complete encoded Criteria in the `_criteria` query parameter when cacheable reads are enabled.
+  - `useProductReviews.loadProductReviews` now calls `GET /product/{productId}/reviews` and sends its encoded Criteria in `_criteria` when cacheable reads are enabled.
+  - The CMS product description reviews element follows the same flag and endpoint behavior when it needs to fetch reviews directly.
+
+- [#2571](https://github.com/shopware/frontends/pull/2571) [`c64ae1c`](https://github.com/shopware/frontends/commit/c64ae1c6e2d11e33bd52df4b55177cc26b646433) Thanks [@patzick](https://github.com/patzick)! - Show the category a shopper came from in product breadcrumbs, while direct product links continue to use the default category.
+
+- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Preserve CMS image aspect ratios when responsive dimensions are calculated after hydration, preventing visible image scaling as optimized sources load.
+
+- Updated dependencies [[`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003), [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f), [`e03c91b`](https://github.com/shopware/frontends/commit/e03c91be172374894d90b7a0111855b76719fee1), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0)]:
+  - @shopware/composables@1.12.1
+  - @shopware/api-client@1.5.1

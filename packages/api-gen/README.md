@@ -401,13 +401,15 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.5.0
-
-### Minor Changes
-
-- [#2262](https://github.com/shopware/frontends/pull/2262) [`7a20ea0`](https://github.com/shopware/frontends/commit/7a20ea0454ee237c772e532a03408477e968a958) Thanks [@mkucmus](https://github.com/mkucmus)! - Added support for `client_credentials` grant type authentication when loading Admin API schema. Set `SHOPWARE_ADMIN_CLIENT_SECRET` and `SHOPWARE_ADMIN_CLIENT_ID`environment variables to use integration credentials instead of username/password.
+### Latest changes: 1.5.1
 
 ### Patch Changes
 
-- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf)]:
-  - @shopware/api-client@1.5.0
+- [#2575](https://github.com/shopware/frontends/pull/2575) [`1e8a64c`](https://github.com/shopware/frontends/commit/1e8a64c71197484e2c8d2a2f148f3f29ab63bccd) Thanks [@patzick](https://github.com/patzick)! - Support OpenAPI `const` schema values during type generation.
+
+- [#2515](https://github.com/shopware/frontends/pull/2515) [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173) Thanks [@patzick](https://github.com/patzick)! - Generate `customFields` properties with a dedicated `CustomFields` type instead of the broader `GenericRecord` type.
+
+- [#2516](https://github.com/shopware/frontends/pull/2516) [`13a3766`](https://github.com/shopware/frontends/commit/13a37660fbbf63054b9e7d02f39d161bb7f2b065) Thanks [@patzick](https://github.com/patzick)! - Use `oxfmt` instead of Prettier for generated API files.
+
+- Updated dependencies [[`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0)]:
+  - @shopware/api-client@1.5.1
