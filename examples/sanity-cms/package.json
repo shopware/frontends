@@ -21,9 +21,9 @@
     "@tailwindcss/typography": "0.5.16",
     "@types/node": "22.13.14",
     "fflate": "^0.8.3",
-    "nuxt": "4.4.8",
+    "nuxt": "4.5.0",
     "typescript": "5.9.3",
-    "vue": "3.5.39",
+    "vue": "3.5.40",
     "vue-tsc": "3.3.7"
   },
   "engines": {
