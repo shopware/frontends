@@ -9,8 +9,8 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "nuxt": "4.4.8",
-    "vue": "3.5.39"
+    "nuxt": "4.5.0",
+    "vue": "3.5.40"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.4.0",
