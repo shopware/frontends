@@ -2,4 +2,4 @@
 "@shopware/cms-base-layer": patch
 ---
 
-Process CMS layer `@apply` styles through UnoCSS directives during Nuxt builds.
+Replace CMS layer `@apply` styles with plain CSS declarations to avoid Nuxt build warnings.

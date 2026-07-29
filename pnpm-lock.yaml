@@ -1065,9 +1065,6 @@ importers:
       '@tresjs/nuxt':
         specifier: ^5.6.3
         version: 5.6.3(a4db15dca6c272bca201b83cd5b6e98b)
-      '@unocss/transformer-directives':
-        specifier: 66.7.5
-        version: 66.7.5
       '@vuelidate/core':
         specifier: 2.0.3
         version: 2.0.3(vue@3.5.38(typescript@5.9.3))
