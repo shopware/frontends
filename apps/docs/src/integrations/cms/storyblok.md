@@ -119,8 +119,8 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
    <script setup lang="ts">
    const { refreshSessionContext } = useSessionContext();
 
-   onMounted(() => {
-     refreshSessionContext();
+   onMounted(async () => {
+     await refreshSessionContext();
    });
    </script>
 

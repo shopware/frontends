@@ -3,7 +3,9 @@ const { refreshSessionContext } = useSessionContext();
 const CreditCardError = ref();
 const CreditCardToken = ref();
 onMounted(() => {
-  refreshSessionContext();
+  refreshSessionContext().catch((error) => {
+    console.error("[App][refreshSessionContext]", error);
+  });
 });
 </script>
 
