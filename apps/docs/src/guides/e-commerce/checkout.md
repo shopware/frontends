@@ -311,3 +311,34 @@ const {
 
 await loadOrderDetails();
 ```
+
+## Guest checkout boundaries
+
+Guest checkout uses the active Shopware customer from the current session
+context. After a guest order is placed, do not let a later buyer continue with
+the same guest context. A changed email, first name, or last name should start a
+new guest registration instead of updating the existing guest address.
+
+For simple synchronous flows, rotate the context with `logout()` after the order
+is placed and before starting a new checkout. `logout()` refreshes the session
+context and throws if the new context cannot be verified, so block checkout
+progression when it fails.
+
+```ts
+const { logout } = useUser();
+
+try {
+  await logout();
+} catch (error) {
+  // Keep the user on a recoverable state instead of reusing the old guest.
+  console.error("[Checkout][logout]", error);
+}
+```
+
+For asynchronous payment or order-processing flows, the application backend
+should own the boundary. Keep the old context token only while payment handlers
+or recovery jobs still need it, expose the current boundary state to checkout
+bootstrap, and block a second checkout until the first order is terminal or the
+guest context has been safely rotated. Do not rely on success-page lifecycle
+hooks such as route leave or unmount handlers as the authority for guest
+rotation; the user can reload, close the tab, or open checkout in another tab.

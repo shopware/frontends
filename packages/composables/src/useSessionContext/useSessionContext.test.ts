@@ -1,15 +1,18 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
 
 import { useSetup } from "../_test";
 import { useSessionContext } from "./useSessionContext";
 
-const consoleErrorSpy = vi.spyOn(console, "error");
-consoleErrorSpy.mockImplementation(() => {});
-
 describe("useSessionContext", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");
+  consoleErrorSpy.mockImplementation(() => {});
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("setLanguage", () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -57,15 +60,16 @@ describe("useSessionContext", () => {
   });
 
   it("refreshSessionContext - error", async () => {
+    const error = new Error("error test");
     const { vm } = useSetup(() => useSessionContext(), {
       apiClient: {
         invoke: vi.fn().mockImplementation(() => {
-          throw new Error("error test");
+          throw error;
         }),
       },
     });
     consoleErrorSpy.mockImplementation(() => {});
-    await vm.refreshSessionContext();
+    await expect(vm.refreshSessionContext()).rejects.toThrow(error);
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -115,6 +119,62 @@ describe("useSessionContext", () => {
     ).rejects.toThrowError(
       "You need to provide shipping method id in order to set shipping method.",
     );
+  });
+
+  it("setActiveShippingAddress waits for refreshed context", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    const calls: string[] = [];
+    injections.apiClient.invoke.mockImplementation(async (route) => {
+      calls.push(route);
+      return { data: {} };
+    });
+
+    await vm.setActiveShippingAddress({ id: "shipping-address-id" });
+
+    expect(calls).toEqual([
+      expect.stringContaining("updateContext"),
+      expect.stringContaining("readContext"),
+    ]);
+  });
+
+  it("setActiveShippingAddress rejects when refreshed context fails", async () => {
+    const error = new Error("refresh failed");
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke
+      .mockResolvedValueOnce({ data: {} })
+      .mockRejectedValueOnce(error);
+
+    await expect(
+      vm.setActiveShippingAddress({ id: "shipping-address-id" }),
+    ).rejects.toThrow(error);
+  });
+
+  it("setActiveBillingAddress waits for refreshed context", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    const calls: string[] = [];
+    injections.apiClient.invoke.mockImplementation(async (route) => {
+      calls.push(route);
+      return { data: {} };
+    });
+
+    await vm.setActiveBillingAddress({ id: "billing-address-id" });
+
+    expect(calls).toEqual([
+      expect.stringContaining("updateContext"),
+      expect.stringContaining("readContext"),
+    ]);
+  });
+
+  it("setActiveBillingAddress rejects when refreshed context fails", async () => {
+    const error = new Error("refresh failed");
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke
+      .mockResolvedValueOnce({ data: {} })
+      .mockRejectedValueOnce(error);
+
+    await expect(
+      vm.setActiveBillingAddress({ id: "billing-address-id" }),
+    ).rejects.toThrow(error);
   });
 
   it("setPaymentMethod", async () => {

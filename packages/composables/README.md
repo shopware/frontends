@@ -88,7 +88,7 @@ Now you can use any composable function in your setup function:
 
     const { login } = useUser();
     const { refreshSessionContext, sessionContext } = useSessionContext();
-    refreshSessionContext();
+    await refreshSessionContext();
 </script>
 <template>
     <pre>{{ sessionContext }}</pre>
