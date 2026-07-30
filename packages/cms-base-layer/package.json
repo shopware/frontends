@@ -28,8 +28,7 @@
     "index.cjs",
     "index.d.ts",
     "app.config.ts",
-    "nuxt.config.ts",
-    "uno.config.ts"
+    "nuxt.config.ts"
   ],
   "scripts": {
     "build": "nuxt prepare && unbuild",
