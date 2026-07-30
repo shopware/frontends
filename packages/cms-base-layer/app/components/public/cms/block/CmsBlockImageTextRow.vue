@@ -43,14 +43,20 @@ const rightTextContent = getSlotContent("right-text");
 
 <style scoped>
 .cms-block-image-text-row :deep(.cms-element-image) {
-  @apply relative h-full w-full;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .cms-block-image-text-row :deep(.cms-element-image img) {
-  @apply w-full h-full object-cover rounded-lg;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
 }
 
 .cms-block-image-text-row :deep(.cms-element-text) {
-  @apply self-stretch min-h-12;
+  align-self: stretch;
+  min-height: 3rem;
 }
 </style>

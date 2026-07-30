@@ -31,10 +31,15 @@ const centerContent = getSlotContent("center");
 
 <style scoped>
 .cms-block-image-highlight-row :deep(.cms-element-image) {
-  @apply relative h-full w-full border-[12px] border-surface-surface;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border: 12px solid #ffffff;
 }
 
 .cms-block-image-highlight-row :deep(.cms-element-image img) {
-  @apply w-full h-full object-cover;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 </style>
