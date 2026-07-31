@@ -4,6 +4,7 @@ import {
   getCanonicalPathForTechnicalPath,
   getRouteFromPathInfo,
   isTechnicalPath,
+  isTechnicalUrl,
 } from "./getRouteFromPathInfo";
 
 describe("getRouteFromPathInfo", () => {
@@ -51,6 +52,24 @@ describe("getRouteFromPathInfo", () => {
 
   it("returns null for invalid technical path with extra segments", () => {
     expect(getRouteFromPathInfo("/navigation/123/extra")).toBeNull();
+  });
+});
+
+describe("isTechnicalUrl", () => {
+  it.each([
+    "/detail/product-id?campaign=summer",
+    "https://example.com/navigation/category-id#products",
+    "landingPage/landing-id",
+  ])("detects technical URL %s", (url) => {
+    expect(isTechnicalUrl(url, "https://example.com")).toBe(true);
+  });
+
+  it.each([
+    "/Product/Example",
+    "https://example.com/Category/Outdoor",
+    "https://[invalid",
+  ])("returns false for non-technical URL %s", (url) => {
+    expect(isTechnicalUrl(url, "https://example.com")).toBe(false);
   });
 });
 

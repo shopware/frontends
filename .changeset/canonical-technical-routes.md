@@ -2,4 +2,4 @@
 "@shopware/helpers": patch
 ---
 
-Add a helper for resolving the canonical SEO path of mapped technical Shopware URLs.
+Add helpers for resolving canonical SEO paths and detecting technical Shopware URLs.

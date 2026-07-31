@@ -23,6 +23,21 @@ export function isTechnicalPath(path: string): boolean {
   );
 }
 
+/**
+ * Check whether an absolute or relative URL points to a technical Shopware
+ * route. Query parameters and fragments are ignored.
+ */
+export function isTechnicalUrl(
+  url: string,
+  baseUrl = "http://localhost",
+): boolean {
+  try {
+    return isTechnicalPath(new URL(url, baseUrl).pathname);
+  } catch {
+    return false;
+  }
+}
+
 export function getRouteFromPathInfo(
   path: string,
 ): RouteInfoFromPathInfo | null {

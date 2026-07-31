@@ -58,6 +58,7 @@ describe("helpers - test global API", () => {
         "isProductOnSale": [Function],
         "isProductTopSeller": [Function],
         "isTechnicalPath": [Function],
+        "isTechnicalUrl": [Function],
         "normalizePath": [Function],
         "relativeUrlSlash": [Function],
         "urlIsAbsolute": [Function],
