@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
 import { getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
 
@@ -33,13 +34,24 @@ if (import.meta.client) {
 
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
-  async () =>
-    await search(props.navigationId, {
-      withCmsAssociations: true,
-      query: {
-        ...route.query,
-      },
-    }),
+  async () => {
+    try {
+      return await search(props.navigationId, {
+        withCmsAssociations: true,
+        query: {
+          ...route.query,
+        },
+      });
+    } catch (searchError) {
+      if (searchError instanceof ApiClientError && searchError.status === 404) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Category not found",
+        });
+      }
+      throw searchError;
+    }
+  },
 );
 const categoryResponse = ref(data.value);
 
@@ -65,12 +77,15 @@ onMounted(async () => {
   }
 });
 
+if (error.value) {
+  throw error.value;
+}
+
 if (!categoryResponse.value) {
-  const statusMessage = error.value?.message || "Failed to load category";
-  console.error("[FrontendNavigationPage.vue]", statusMessage);
+  console.error("[FrontendNavigationPage.vue]", "Category not found");
   throw createError({
-    statusCode: 500,
-    message: statusMessage,
+    statusCode: 404,
+    statusMessage: "Category not found",
   });
 }
 
