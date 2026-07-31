@@ -42,3 +42,29 @@ export function getRouteFromPathInfo(
 
   return null;
 }
+
+/**
+ * Get the canonical path for a mapped technical Shopware URL.
+ *
+ * Returns `null` for SEO URLs, synthetic technical fallbacks without an SEO
+ * mapping, and invalid mappings that would redirect to another technical URL.
+ */
+export function getCanonicalPathForTechnicalPath(
+  path: string,
+  seoUrl?: object | null,
+): string | null {
+  if (
+    !isTechnicalPath(path) ||
+    !seoUrl ||
+    !("seoPathInfo" in seoUrl) ||
+    typeof seoUrl.seoPathInfo !== "string"
+  ) {
+    return null;
+  }
+
+  const seoPathInfo = seoUrl.seoPathInfo.replace(/^\/+/, "");
+  const canonicalPath = seoPathInfo ? normalizePath(`/${seoPathInfo}`) : "/";
+  if (isTechnicalPath(canonicalPath)) return null;
+
+  return canonicalPath;
+}

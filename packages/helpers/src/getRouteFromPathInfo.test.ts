@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { getRouteFromPathInfo, isTechnicalPath } from "./getRouteFromPathInfo";
+import {
+  getCanonicalPathForTechnicalPath,
+  getRouteFromPathInfo,
+  isTechnicalPath,
+} from "./getRouteFromPathInfo";
 
 describe("getRouteFromPathInfo", () => {
   it("detects technical paths", () => {
@@ -47,5 +51,61 @@ describe("getRouteFromPathInfo", () => {
 
   it("returns null for invalid technical path with extra segments", () => {
     expect(getRouteFromPathInfo("/navigation/123/extra")).toBeNull();
+  });
+});
+
+describe("getCanonicalPathForTechnicalPath", () => {
+  it.each([
+    ["/navigation/category-id", "Category/Outdoor", "/Category/Outdoor"],
+    ["/detail/product-id", "Product/Example", "/Product/Example"],
+    ["/landingPage/landing-id", "Campaign/Summer", "/Campaign/Summer"],
+  ])(
+    "resolves mapped technical path %s",
+    (technicalPath, seoPathInfo, expectedPath) => {
+      expect(
+        getCanonicalPathForTechnicalPath(technicalPath, { seoPathInfo }),
+      ).toBe(expectedPath);
+    },
+  );
+
+  it("normalizes leading and trailing slashes in the SEO path", () => {
+    expect(
+      getCanonicalPathForTechnicalPath("/detail/product-id/", {
+        seoPathInfo: "/Product/Example/",
+      }),
+    ).toBe("/Product/Example");
+  });
+
+  it.each([undefined, {}, { seoPathInfo: undefined }, { seoPathInfo: null }])(
+    "returns null without a usable SEO mapping",
+    (seoUrl) => {
+      expect(
+        getCanonicalPathForTechnicalPath("/detail/product-id", seoUrl),
+      ).toBeNull();
+    },
+  );
+
+  it("resolves an empty SEO path to the storefront root", () => {
+    expect(
+      getCanonicalPathForTechnicalPath("/navigation/root-category-id", {
+        seoPathInfo: "",
+      }),
+    ).toBe("/");
+  });
+
+  it("returns null for a non-technical request", () => {
+    expect(
+      getCanonicalPathForTechnicalPath("/Product/Example", {
+        seoPathInfo: "Product/Example",
+      }),
+    ).toBeNull();
+  });
+
+  it("does not redirect to another technical path", () => {
+    expect(
+      getCanonicalPathForTechnicalPath("/detail/product-id", {
+        seoPathInfo: "detail/other-product-id",
+      }),
+    ).toBeNull();
   });
 });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
 import { getProductName } from "@shopware/helpers";
 
 const props = defineProps<{
@@ -32,27 +33,41 @@ if (import.meta.client) {
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
-  async () =>
-    await search(props.navigationId, {
-      withCmsAssociations: true,
-      associations: {
-        openGraphMedia: {
-          associations: {
-            thumbnails: {},
+  async () => {
+    try {
+      return await search(props.navigationId, {
+        withCmsAssociations: true,
+        associations: {
+          openGraphMedia: {
+            associations: {
+              thumbnails: {},
+            },
           },
+          seoUrls: {},
         },
-        seoUrls: {},
-      },
-    }),
+      });
+    } catch (searchError) {
+      if (searchError instanceof ApiClientError && searchError.status === 404) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Product not found",
+        });
+      }
+      throw searchError;
+    }
+  },
 );
 const productResponse = data.value;
 
+if (error.value) {
+  throw error.value;
+}
+
 if (!productResponse) {
-  const statusMessage = error.value?.message || "Failed to load product";
-  console.error("[FrontendDetailPage.vue]", statusMessage);
+  console.error("[FrontendDetailPage.vue]", "Product not found");
   throw createError({
-    statusCode: 500,
-    message: statusMessage,
+    statusCode: 404,
+    statusMessage: "Product not found",
   });
 }
 

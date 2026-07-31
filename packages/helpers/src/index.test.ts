@@ -14,6 +14,7 @@ describe("helpers - test global API", () => {
         "generateCdnSrcSet": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
+        "getCanonicalPathForTechnicalPath": [Function],
         "getCategoryBreadcrumbs": [Function],
         "getCategoryImageUrl": [Function],
         "getCategoryRoute": [Function],
