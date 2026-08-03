@@ -108,15 +108,23 @@ export default defineNuxtConfig({
   components: {
     dirs: [
       {
+        // SEO page resolver targets: FrontendDetailPage, FrontendLandingPage, ...
         path: "~/components/global",
         pathPrefix: false,
         global: true,
         priority: 2,
       },
       {
-        path: "~/components/errors",
         // Keep Errors* names used by resolveComponent / error.vue.
+        path: "~/components/errors",
         prefix: "Errors",
+        pathPrefix: false,
+        global: true,
+        priority: 2,
+      },
+      {
+        // Custom / override CMS blocks & elements (CmsBlock*, CmsElement*, ...).
+        path: "~/components/cms",
         pathPrefix: false,
         global: true,
         priority: 2,

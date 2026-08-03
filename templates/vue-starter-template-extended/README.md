@@ -74,12 +74,11 @@ export default defineNuxtConfig({
 
 All components from vue-starter-template are automatically available in Lumora thanks to the layer's component registration using `createResolver`. This includes:
 
-- Page components for CMS rendering (`FrontendNavigationPage`, `FrontendDetailPage`, `FrontendLandingPage`)
-- All layout components (headers, footers, navigation)
-- Form components (login, checkout, account)
-- Shared components (modals, notifications, etc.)
+- SEO page resolvers in `app/components/global/` (`FrontendNavigationPage`, `FrontendDetailPage`, `FrontendLandingPage`) — Nuxt global for `resolveComponent`
+- Custom/override CMS blocks & elements in `app/components/cms/` — also global for CMS `resolveComponent`
+- Layout, form, and shared components under `app/components/` — normal auto-import
 
-The vue-starter-template exposes its components to child layers using absolute path resolution, ensuring they're available for both static imports and dynamic component resolution (used by Shopware CMS).
+When overriding base components, put files in the same subdirectory so names and dynamic resolution keep working (e.g. override `FrontendDetailPage` under `components/global/`, not the components root).
 
 ## CMS Integration
 
@@ -107,13 +106,15 @@ These can be applied directly in the Shopware CMS admin panel.
 
 ### Override Components
 
-Create components in `./app/components/` to override base template components:
+Create components in `./app/components/` to override base template components (match `global/` / `cms/` when overriding resolveComponent targets):
 
 ```
 lumora-demo-store/
   app/
     components/
-      YourCustomComponent.vue  # Overrides base component
+      global/
+        FrontendDetailPage.vue  # Overrides SEO PDP resolver
+      YourCustomComponent.vue   # Overrides base auto-imported component
 ```
 
 ### Add Lumora-Specific Pages

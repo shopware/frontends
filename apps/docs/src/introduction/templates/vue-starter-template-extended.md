@@ -136,18 +136,23 @@ export default mergeConfigs([
 
 ## Overriding Components
 
-To override a component from the base template, create a file with the same name in your `app/components/` directory:
+To override a component from the base template, create a file with the same name in the matching directory under `app/components/`:
 
 ```
 lumora-store/
   app/
     components/
-      SwProductCard.vue  # Overrides base SwProductCard
+      global/
+        FrontendDetailPage.vue  # Overrides SEO PDP (must stay in global/)
+      cms/
+        element/
+          CmsElementImage.vue   # Overrides CMS element (must stay in cms/)
+      SwProductCard.vue         # Overrides base SwProductCard
       layout/
-        LayoutHeader.vue # Overrides base header
+        Header.vue              # Overrides base LayoutHeader
 ```
 
-Nuxt automatically prioritizes your local components over the base template components.
+Nuxt prioritizes your local components over the base template. Keep `Frontend*` pages in `components/global/` and CMS blocks/elements in `components/cms/` so `resolveComponent` still finds them.
 
 ## Benefits of the Layer Approach
 
