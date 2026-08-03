@@ -22,6 +22,7 @@ const slotCenterContent = getSlotContent("center");
 
 <style scoped>
 .cms-block-center-text .cms-element-image {
-  @apply self-stretch min-h-12;
+  align-self: stretch;
+  min-height: 3rem;
 }
 </style>

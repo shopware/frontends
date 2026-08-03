@@ -67,7 +67,7 @@ Now you can use any composable function you need without extra import:
 <script setup>
   const { login } = useUser();
   const { refreshSessionContext } = useSessionContext();
-  refreshSessionContext();
+  await refreshSessionContext();
 </script>
 ```
 

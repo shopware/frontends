@@ -42,7 +42,7 @@ const canBeDeleted = computed(
 const setDefaultShippingAddress = async () => {
   try {
     await setDefaultCustomerShippingAddress(address.id);
-    refreshSessionContext();
+    await refreshSessionContext();
     pushSuccess(t("account.messages.defaultShippingAddressSuccess"));
   } catch (error) {
     pushError(t("account.messages.defaultShippingAddressError"));
@@ -52,7 +52,7 @@ const setDefaultShippingAddress = async () => {
 const setDefaultBillingAddress = async () => {
   try {
     await setDefaultCustomerBillingAddress(address.id);
-    refreshSessionContext();
+    await refreshSessionContext();
     pushSuccess(t("account.messages.defaultBillingAddressSuccess"));
   } catch (error) {
     pushError(t("account.messages.defaultBillingAddressError"));

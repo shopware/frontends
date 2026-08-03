@@ -56,6 +56,8 @@ const REGISTRATION_DATA: Omit<
 
 describe("useUser", () => {
   afterEach(() => {
+    vi.clearAllMocks();
+    refreshSessionContextSpy.mockReset();
     userFromContextRef.value = undefined;
   });
 
@@ -151,7 +153,25 @@ describe("useUser", () => {
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("logoutCustomer"),
     );
+    expect(refreshSessionContextSpy).toHaveBeenCalled();
+    expect(refreshCartSpy).toHaveBeenCalled();
     expect(result).toEqual(logoutResponse.data);
+  });
+
+  it("logout rejects when the session context cannot be verified", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    const error = new Error("context refresh failed");
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { redirectUrl: "/" },
+    });
+    refreshSessionContextSpy.mockRejectedValue(error);
+
+    await expect(vm.logout()).rejects.toThrow(error);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("logoutCustomer"),
+    );
+    expect(refreshCartSpy).not.toHaveBeenCalled();
   });
 
   it("refreshUser", async () => {

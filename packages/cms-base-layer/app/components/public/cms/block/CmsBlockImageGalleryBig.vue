@@ -20,24 +20,28 @@ const cmsContent = getSlotContent("imageGallery");
 
 <style scoped>
 .cms-block-image-gallery-big {
-  @apply w-full;
+  width: 100%;
 }
 
 .cms-block-image-gallery-big :deep(.cms-element-image-gallery) {
-  @apply max-w-screen-xl mx-auto;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Enhanced styling for the big gallery version */
 .cms-block-image-gallery-big :deep(.gallery-slider) {
-  @apply max-h-[800px];
+  max-height: 800px;
 }
 
 .cms-block-image-gallery-big :deep(img) {
-  @apply object-contain mx-auto;
+  margin-left: auto;
+  margin-right: auto;
+  object-fit: contain;
 }
 
 /* Larger navigation controls */
 .cms-block-image-gallery-big :deep(.gallery-slider-controls) {
-  @apply scale-125;
+  transform: scale(1.25);
 }
 </style>

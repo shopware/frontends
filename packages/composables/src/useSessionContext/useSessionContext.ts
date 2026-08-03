@@ -21,6 +21,10 @@ export type UseSessionContextReturn = {
   sessionContext: ComputedRef<Schemas["SalesChannelContext"] | undefined>;
   /**
    * Fetches the session context and assigns the result to the `sessionContext` property
+   *
+   * Throws when the context cannot be loaded. Callers that depend on a verified
+   * context switch, such as logout or checkout flows, should block progression
+   * when this fails.
    */
   refreshSessionContext(): Promise<void>;
   /**
@@ -137,6 +141,7 @@ export function useSessionContext(
       _sessionContext.value = data;
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
+      throw e;
     }
   };
 
@@ -227,7 +232,7 @@ export function useSessionContext(
         shippingAddressId: address.id,
       },
     });
-    refreshSessionContext();
+    await refreshSessionContext();
   };
 
   // TODO: replace the source from defaultBillingAddress by new value once NEXT-28627 is solved
@@ -247,7 +252,7 @@ export function useSessionContext(
         billingAddressId: address.id,
       },
     });
-    refreshSessionContext();
+    await refreshSessionContext();
   };
 
   const setContext = (context: Schemas["SalesChannelContext"]) => {

@@ -30,6 +30,10 @@ const centerContent = getSlotContent("center");
 </template>
 <style scoped>
 .cms-block-image-bubble-row :deep(.cms-element-image) {
-  @apply object-cover max-w-xs overflow-hidden rounded-full aspect-square;
+  aspect-ratio: 1 / 1;
+  max-width: 20rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  object-fit: cover;
 }
 </style>

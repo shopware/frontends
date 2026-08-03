@@ -3,7 +3,9 @@ import Frontends from "./components/Frontends.vue";
 const { refreshSessionContext } = useSessionContext();
 
 onMounted(() => {
-  refreshSessionContext();
+  refreshSessionContext().catch((error) => {
+    console.error("[App][refreshSessionContext]", error);
+  });
 });
 </script>
 
