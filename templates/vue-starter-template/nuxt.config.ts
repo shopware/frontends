@@ -76,20 +76,21 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
-  // Only register resolveComponent targets globally (as async chunks).
-  // Keeping every component global:true also registers Lazy* async wrappers, which
-  // conflicts with template auto-imports and triggers INEFFECTIVE_DYNAMIC_IMPORT.
+  // resolveComponent targets must be global. Put them in components/global so Nuxt
+  // can also scan the rest of components/ — scanning the same path twice skips
+  // remaining files (see nuxt scanComponents scannedPaths).
+  // Avoid global:true on every component: that registers Lazy* async wrappers and
+  // triggers INEFFECTIVE_DYNAMIC_IMPORT against template auto-imports.
   components: [
     {
-      path: resolve("./app/components"),
-      pattern: "Frontend*.vue",
+      path: resolve("./app/components/global"),
+      pathPrefix: false,
       priority: 2,
       global: true,
       extensions: [".vue"],
     },
     {
       path: resolve("./app/components"),
-      ignore: ["Frontend*.vue"],
       priority: 2,
       extensions: [".vue"],
     },
