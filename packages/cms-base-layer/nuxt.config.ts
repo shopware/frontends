@@ -9,7 +9,11 @@ export default defineNuxtConfig({
   // to prevent bundling heavy 3D libraries in the initial bundle.
   // If you need 3D support, add "@tresjs/nuxt" to your app's nuxt.config.ts modules array
   // and dynamically import SwMedia3D using defineAsyncComponent.
-  modules: ["@unocss/nuxt", "@nuxt/image"],
+  //
+  // @unocss/nuxt is not included here either. This layer only ships CMS components,
+  // the UnoCSS setup lives in @shopware/unocss-design-tokens-layer (or your own config),
+  // so apps that don't use UnoCSS can still extend this layer.
+  modules: ["@nuxt/image"],
 
   hooks: {
     "components:extend"(components) {

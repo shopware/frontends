@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { data } from "../../data/composables.data";
+import { data } from "../../../src/.data/composables.data";
 import { normalizeAnchorText } from "../typer/utils";
 
 const categoryTreeData = computed(() => {

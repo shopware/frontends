@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt-module",
+  "homepage": "https://developer.shopware.com/frontends/concepts/internal-structure.html#nuxt-module",
   "keywords": [
     "Nuxt",
     "Shopware",
@@ -56,6 +56,6 @@
     "nuxt": "4.4.8",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.9"
+    "vitest": "4.1.10"
   }
 }

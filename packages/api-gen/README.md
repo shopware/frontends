@@ -391,7 +391,7 @@ await split({
 
 ## Links
 
-- [📘 Documentation](https://frontends.shopware.com)
+- [📘 Documentation](https://developer.shopware.com/frontends)
 
 - [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 

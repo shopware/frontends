@@ -629,7 +629,7 @@ pnpm run build
 
 ## API and Documentation
 
-- **Documentation**: [frontends.shopware.com](https://frontends.shopware.com/)
+- **Documentation**: [developer.shopware.com/frontends](https://developer.shopware.com/frontends/)
 - **Demo**: [frontends-demo.vercel.app](https://frontends-demo.vercel.app/)
 - **Repository**: [github.com/shopware/frontends](https://github.com/shopware/frontends)
 - **Discussions**: [GitHub Discussions](https://github.com/shopware/frontends/discussions)

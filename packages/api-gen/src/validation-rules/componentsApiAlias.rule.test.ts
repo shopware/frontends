@@ -45,6 +45,24 @@ describe("componentsApiAlias.rule", async () => {
     expect(result).toBe(null);
   });
 
+  it("accepts const alias definitions", async () => {
+    const componentName = "CmsBlock";
+    const body = {
+      type: "object",
+      required: ["apiAlias"],
+      properties: {
+        apiAlias: {
+          type: "string",
+          const: "cms_block",
+        },
+      },
+    } as ObjectSubtype;
+
+    const result = componentsApiAliasRule(componentName, body);
+
+    expect(result).toBe(null);
+  });
+
   it("should fail if alias is not in snake_case", async () => {
     const componentName = "CmsBlock";
     const body = {
@@ -71,6 +89,36 @@ describe("componentsApiAlias.rule", async () => {
       -     "cms_block",
       +     "cmsBlock",
           ],
+          "type": "string",
+        }
+      It's also possible, that the schema component name is not correct and apiApias is proper. In that case schema component name should be CmsBlock. Confirm proper solution with the source code."
+    `);
+  });
+
+  it("should fail if const alias is not in snake_case", async () => {
+    const componentName = "CmsBlock";
+    const body = {
+      type: "object",
+      required: ["apiAlias"],
+      properties: {
+        apiAlias: {
+          type: "string",
+          const: "cmsBlock",
+        },
+      },
+    } as ObjectSubtype;
+
+    const result = componentsApiAliasRule(componentName, body);
+
+    expect(result).not.toBe(null);
+    expect(_uncolorize(result)).toMatchInlineSnapshot(`
+      "Component CmsBlock has invalid apiAlias definition. Diff:
+       - Expected
+      + Received
+
+        {
+      -   "const": "cms_block",
+      +   "const": "cmsBlock",
           "type": "string",
         }
       It's also possible, that the schema component name is not correct and apiApias is proper. In that case schema component name should be CmsBlock. Confirm proper solution with the source code."

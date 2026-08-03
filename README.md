@@ -5,7 +5,7 @@
 </div>
 
 <p align="center">
-<a href="https://frontends-starter-template.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends-extended-starter-template.vercel.app/" target="_blank">🚀 Extended Demo</a> | <a href="https://frontends.shopware.com/" target="_blank">📚 Docu</a> | <a href="https://frontends.shopware.com/getting-started/try-it-out.html" target="_blank">☁️ Try it out</a> |
+<a href="https://frontends-starter-template.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends-extended-starter-template.vercel.app/" target="_blank">🚀 Extended Demo</a> | <a href="https://developer.shopware.com/frontends/" target="_blank">📚 Docu</a> | <a href="https://developer.shopware.com/frontends/getting-started/try-it-out.html" target="_blank">☁️ Try it out</a> |
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-starter-template" target="_blank"><img src="./.readme/vercel.svg" alt="Join our Discord Channel" width="20" height="16"/> Deploy on Vercel</a>
  | <a href="https://github.com/shopware/frontends/discussions">💬 Discuss</a> | <a href="https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ" target="_blank"><img src="./.readme/discord.svg" alt="Join our Discord Channel" width="20" height="16"/> Discord Channel</a>
 </p>
@@ -68,7 +68,7 @@ Our Vue Starter Template is a production-ready foundation for building custom Sh
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 
-See the [templates](https://frontends.shopware.com/getting-started/templates.html) section for other project templates and how to use them.
+See the [templates](https://developer.shopware.com/frontends/getting-started/templates.html) section for other project templates and how to use them.
 
 ## Key Features
 

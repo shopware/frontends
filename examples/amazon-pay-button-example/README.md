@@ -181,6 +181,6 @@ In this case, the app still does not support fully integration for headless appr
 
 ## Resources
 
-- [📖 &nbsp;Composable Frontends Documentation](https://frontends.shopware.com)
+- [📖 &nbsp;Composable Frontends Documentation](https://developer.shopware.com/frontends)
 - [Amazon Pay docs](https://developer.amazon.com/docs/amazon-pay-checkout/introduction.html)
 - [Setting up the Shopware 6 Admin API client](https://www.npmjs.com/package/@shopware/api-client#admin-api-client-setup)

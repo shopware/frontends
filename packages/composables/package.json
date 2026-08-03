@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/packages/composables.html",
+  "homepage": "https://developer.shopware.com/frontends/packages/composables.html",
   "keywords": [
     "shopware",
     "vue",
@@ -72,13 +72,13 @@
   "devDependencies": {
     "@nuxt/kit": "4.4.8",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "@vue/test-utils": "2.4.11",
     "happy-dom": "20.10.6",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "unbuild": "3.6.1",
-    "vitest": "4.1.9",
+    "vitest": "4.1.10",
     "vue": "3.5.39"
   }
 }

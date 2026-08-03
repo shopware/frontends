@@ -8,9 +8,13 @@ export default (componentName: string, body: ObjectSubtype) => {
   // aliast needs to be in snake case. Examples:
   // - "Category" is "category"
   // - "CmsBlock" is "cms_block"
-  const properAliasDefinition = {
+  const properEnumAliasDefinition = {
     type: "string",
     enum: [snakeCase(componentName)],
+  };
+  const properConstAliasDefinition = {
+    type: "string",
+    const: snakeCase(componentName),
   };
 
   const bodyValue = body?.properties?.apiAlias as ObjectSubtype;
@@ -20,16 +24,25 @@ export default (componentName: string, body: ObjectSubtype) => {
     return null;
   }
 
-  const result = equals(properAliasDefinition, bodyValue);
+  const result =
+    equals(properEnumAliasDefinition, bodyValue) ||
+    equals(properConstAliasDefinition, bodyValue);
   if (!result) {
     let additionalMessage = "";
-    const bodyEnumValue = bodyValue?.enum?.[0] as string | undefined;
-    if (bodyEnumValue && properAliasDefinition.enum[0] !== bodyEnumValue) {
-      additionalMessage = `It's also possible, that the schema component name is not correct and apiApias is proper. In that case schema component name should be ${c.bold(pascalCase(bodyEnumValue))}. Confirm proper solution with the source code.`;
+    const bodyLiteralValue = getStringLiteralValue(bodyValue);
+    if (
+      bodyLiteralValue &&
+      properEnumAliasDefinition.enum[0] !== bodyLiteralValue
+    ) {
+      additionalMessage = `It's also possible, that the schema component name is not correct and apiApias is proper. In that case schema component name should be ${c.bold(pascalCase(bodyLiteralValue))}. Confirm proper solution with the source code.`;
     }
+    const expectedAliasDefinition =
+      "const" in bodyValue
+        ? properConstAliasDefinition
+        : properEnumAliasDefinition;
 
     return `Component ${c.bold(componentName)} has invalid ${c.bold("apiAlias")} definition. Diff:\n ${diff(
-      properAliasDefinition,
+      expectedAliasDefinition,
       bodyValue,
       {
         aColor: c.green,
@@ -45,3 +58,17 @@ export default (componentName: string, body: ObjectSubtype) => {
 
   return null;
 };
+
+function getStringLiteralValue(bodyValue: ObjectSubtype) {
+  const enumValue = bodyValue?.enum?.[0];
+  if (typeof enumValue === "string") {
+    return enumValue;
+  }
+
+  const constValue = (bodyValue as { const?: unknown })?.const;
+  if (typeof constValue === "string") {
+    return constValue;
+  }
+
+  return undefined;
+}

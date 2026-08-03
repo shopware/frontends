@@ -1,13 +1,8 @@
 import { type Ref, computed } from "vue";
 
 import { customValidators } from "#imports";
-import type { Schemas } from "#shopware";
-
-export function addressFormRules(
-  state: Ref<Omit<Schemas["CustomerAddress"], "id" | "customerId">>,
-) {
+export function addressFormRules(countryHasStates: Ref<boolean>) {
   const { required, minLength, requiredIf } = customValidators();
-  const { getStatesForCountry } = useCountries();
 
   return computed(() => ({
     salutationId: {
@@ -36,7 +31,7 @@ export function addressFormRules(
     },
     countryStateId: {
       required: requiredIf(() => {
-        return !!getStatesForCountry(state.value.countryId)?.length;
+        return countryHasStates.value;
       }),
     },
   }));

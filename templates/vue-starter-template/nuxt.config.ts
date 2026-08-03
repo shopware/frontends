@@ -52,6 +52,11 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: true,
   },
+  nitro: {
+    externals: {
+      inline: ["@iconify/utils"],
+    },
+  },
   vite: {
     ...viteServerWebSocketWorkaround,
     optimizeDeps: {
@@ -104,6 +109,9 @@ export default defineNuxtConfig({
     ],
   },
   icon: {
+    clientBundle: {
+      includeCustomCollections: true,
+    },
     customCollections: [
       {
         prefix: "shopware",

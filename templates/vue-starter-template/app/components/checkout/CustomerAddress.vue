@@ -14,8 +14,6 @@ const { errorMessages } = defineProps<{
     Regle<Omit<Schemas["CustomerAddress"], "id" | "customerId">>["r$"]
   >;
 }>();
-
-const { getCountriesOptions } = useCountries();
 </script>
 
 <template>
@@ -67,12 +65,11 @@ const { getCountriesOptions } = useCountries();
       />
     </div>
     <div>
-      <FormDropdownField
+      <FormCountrySearchSelect
         id="country"
         v-model="state.countryId"
         :label="$t('checkout.customerAddress.countryLabel')"
         :placeholder="$t('checkout.customerAddress.countryPlaceholder')"
-        :options="getCountriesOptions"
         :errorMessage="errorMessages?.value?.countryId?.$errors?.[0] ?? ''"
       />
     </div>

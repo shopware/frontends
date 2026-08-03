@@ -44,7 +44,7 @@ export type UseBreadcrumbsReturn = {
 
 /**
  * Composable for breadcrumbs management.
- * Read the [guide](https://frontends.shopware.com/getting-started/page-elements/breadcrumbs.html#building-breadcrumbs-for-cms-pages).
+ * Read the [guide](https://developer.shopware.com/frontends/guides/page-elements/breadcrumbs.html#building-breadcrumbs-for-cms-pages).
  *
  * @public
  * @category CMS (Shopping Experiences)

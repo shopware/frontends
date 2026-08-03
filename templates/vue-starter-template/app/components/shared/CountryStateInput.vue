@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { RegleFieldStatus } from "@regle/core";
 
+import type { Schemas } from "#shopware";
+
 const countryId = defineModel<string>("countryId", {
   required: true,
 });
@@ -14,9 +16,11 @@ const { countryIdValidation = undefined, stateIdValidation = undefined } =
     stateIdValidation?: RegleFieldStatus;
   }>();
 
-const { getStatesForCountry, getCountriesOptions } = useCountries();
+const emit = defineEmits<{
+  "states-change": [states: Schemas["CountryState"][]];
+}>();
 
-const states = computed(() => getStatesForCountry(countryId.value || ""));
+const states = ref<Schemas["CountryState"][]>([]);
 
 const stateOptions = computed(() =>
   (states.value ?? []).map((state) => ({
@@ -24,6 +28,11 @@ const stateOptions = computed(() =>
     value: state.id,
   })),
 );
+
+function handleStatesChange(countryStates: Schemas["CountryState"][]) {
+  states.value = countryStates;
+  emit("states-change", countryStates);
+}
 
 watch(countryId, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -34,15 +43,15 @@ watch(countryId, (newValue, oldValue) => {
 
 <template>
   <div class="flex gap-6">
-    <FormDropdownField
-      autocomplete="country-name"
+    <FormCountrySearchSelect
       class="w-full"
       id="country"
       v-model="countryId"
       :label="$t('form.country')"
-      :options="getCountriesOptions"
+      :placeholder="$t('form.chooseCountry')"
       data-testid="country-select"
       :errorMessage="countryIdValidation?.$errors[0]"
+      @states-change="handleStatesChange"
     />
 
     <FormDropdownField

@@ -30,14 +30,18 @@ function handleChangeSize(size: number) {
 }
 </script>
 <template>
-  <div class="flex items-center gap-2 justify-between">
+  <div
+    class="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-2"
+  >
     <SharedPagination
+      class="sm:col-start-2"
       @change-page="handleChangePage"
       :total="pages"
       :current="currentPage"
     />
     <SharedSizeSelector
       v-if="showPageSizeSelector"
+      class="sm:col-start-3 sm:justify-self-end"
       @change="handleChangeSize"
       :value="pageSize ?? 15"
     />

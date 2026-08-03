@@ -114,4 +114,4 @@ Previews are opt-in: a maintainer adds the `publish-pkg-preview` label to the PR
 To try the exact code from a specific open pull request before it is merged - for review, reproducing a bug fix, or validating against your app. Previews are ephemeral and tied to that PR.
 :::
 
-See the [installation guide](../installation.html) for setting up a project and [Best practices: Deployment](../best-practices/deployment.html) for production guidance.
+See the [quick start guide](../introduction/quick-start.html) for setting up a project and [Best practices: Deployment](../best-practices/deployment.html) for production guidance.

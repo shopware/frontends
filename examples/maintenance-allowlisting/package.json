@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.7.4"
+    "@unocss/nuxt": "66.7.5"
   }
 }

@@ -1,9 +1,13 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 import { cmsAssociations } from "../cms/cmsAssociations";
+
+type ReadCategoryGetQuery = NonNullable<
+  operations["readCategoryGet get /category/{navigationId}"]["query"]
+> & { _criteria?: string };
 
 export type UseCategorySearchReturn = {
   /**
@@ -43,21 +47,31 @@ export function useCategorySearch(): UseCategorySearchReturn {
     },
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
-    const result = await apiClient.invoke(
-      "readCategory post /category/{navigationId}",
-      {
-        pathParams: {
-          navigationId: categoryId,
-        },
-        headers: {
-          "sw-include-seo-urls": true,
-        },
-        body: {
-          associations,
-          ...options?.query,
-        },
-      },
-    );
+    const criteria = {
+      associations,
+      ...options?.query,
+    };
+    const result = cacheableReads
+      ? await apiClient.invoke("readCategoryGet get /category/{navigationId}", {
+          pathParams: {
+            navigationId: categoryId,
+          },
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          query: {
+            _criteria: encodeForQuery(criteria),
+          } as ReadCategoryGetQuery,
+        })
+      : await apiClient.invoke("readCategory post /category/{navigationId}", {
+          pathParams: {
+            navigationId: categoryId,
+          },
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          body: criteria,
+        });
     return result.data;
   }
 

@@ -132,4 +132,4 @@ Keep this file in sync when the bundled types are regenerated.
 
 - [README.md](README.md) — User-facing docs including setup, type customization, usage examples
 - [@shopware/api-gen](../api-gen/README.md) — Type generation CLI
-- [frontends.shopware.com](https://frontends.shopware.com/) — Full documentation
+- [developer.shopware.com/frontends](https://developer.shopware.com/frontends/) — Full documentation

@@ -2,7 +2,7 @@
 
 This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends).
 
-📖 Visit [Integrations > Payments > Paypal](https://frontends.shopware.com/resources/integrations/payments/paypal.html) docs for further information.
+📖 Visit [Integrations > Payments > Paypal](https://developer.shopware.com/frontends/resources/integrations/payments/paypal.html) docs for further information.
 
 ## Customization
 

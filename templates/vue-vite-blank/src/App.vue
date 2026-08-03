@@ -6,7 +6,9 @@ import { useSessionContext } from "@shopware/composables/dist";
 import Frontends from "./components/Frontends.vue";
 
 const { refreshSessionContext } = useSessionContext();
-refreshSessionContext();
+refreshSessionContext().catch((error) => {
+  console.error("[App][refreshSessionContext]", error);
+});
 </script>
 
 <template>

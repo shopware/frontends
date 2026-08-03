@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
 import { getCmsBreadcrumbs } from "@shopware/helpers";
 
 import { useLandingSearch } from "#imports";
@@ -11,15 +12,30 @@ const { search } = useLandingSearch();
 
 const { data: landingResponse, error } = await useAsyncData(
   `cmsLanding${props.navigationId}`,
-  () => search(props.navigationId, { withCmsAssociations: true }),
+  async () => {
+    try {
+      return await search(props.navigationId, { withCmsAssociations: true });
+    } catch (searchError) {
+      if (searchError instanceof ApiClientError && searchError.status === 404) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Landing page not found",
+        });
+      }
+      throw searchError;
+    }
+  },
 );
 
+if (error.value) {
+  throw error.value;
+}
+
 if (!landingResponse.value) {
-  const statusMessage = error.value?.message || "No landing page found";
-  console.error("[FrontendLandingPage.vue]", statusMessage);
+  console.error("[FrontendLandingPage.vue]", "Landing page not found");
   throw createError({
-    statusCode: 500,
-    message: statusMessage,
+    statusCode: 404,
+    statusMessage: "Landing page not found",
   });
 }
 
