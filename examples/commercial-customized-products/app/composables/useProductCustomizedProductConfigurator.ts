@@ -109,9 +109,8 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     const addedMediaResponse = await apiClient.invoke(
       "uploadCustomizedProductImage post /customized-products/upload",
       {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        // no Content-Type here: the runtime derives multipart/form-data
+        // and its boundary from the FormData body
         accept: "application/json",
         body: formData,
       },

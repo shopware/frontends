@@ -108,11 +108,7 @@ In order to display a PayPal Button component, we need to mount it in the DOM.
 const divContainer = ref();
 
 // client only
-window.paypal
-  .Buttons({
-    /** configuration skipped */
-  })
-  .render(divContainer);
+window.paypal.Buttons({/** configuration skipped */}).render(divContainer);
 // this script will mount the component in element `divContainer`
 ```
 
@@ -364,9 +360,7 @@ window.paypal
 const cardFields = paypal.CardFields({
   createOrder: createOrder.bind(this, "acdc"),
   onApprove: onApprove.bind(this),
-  style: {
-    /** some custom styling */
-  },
+  style: {/** some custom styling */},
 });
 
 const nameField = cardFields.NameField({
