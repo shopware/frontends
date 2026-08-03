@@ -37,19 +37,37 @@ const cmsMap = () => {
 };
 
 const { sessionContext } = useSessionContext();
+const { t, te } = useI18n();
 
-// The sales channel entry point is an ancestor of every product's category
-// tree, so it would always show up with the full result count - hide it.
 const preparedFilter = computed(() => {
-  if (props.filter.code !== "categories") {
-    return props.filter;
+  const filter = props.filter as {
+    code: string;
+    label?: string;
+    entities?: Array<{ id: string }>;
+  };
+
+  // getListingFilters labels most filters with the raw aggregation name, so
+  // translate the codes we know. Property groups carry their own translated
+  // name and have no entry here, which leaves them untouched.
+  const labelKey = `listing.filterLabels.${filter.code}`;
+  const label = te(labelKey) ? t(labelKey) : filter.label;
+
+  if (filter.code !== "categories") {
+    return { ...props.filter, label };
   }
+
   const rootCategoryId =
     sessionContext.value?.salesChannel?.navigationCategoryId;
-  const entities = (
-    (props.filter as { entities?: Array<{ id: string }> }).entities ?? []
-  ).filter((entity) => entity.id !== rootCategoryId);
-  return { ...props.filter, entities };
+  const entities = (filter.entities ?? [])
+    // The sales channel entry point is an ancestor of every product's category
+    // tree, so it would always show up with the full result count - hide it.
+    .filter((entity) => entity.id !== rootCategoryId)
+    // Drop the count: on the search route it counts every variant, while the
+    // sibling filters collapse variants via their parent_childs aggregation.
+    // Showing an inflated number next to correct ones reads as a bug.
+    .map((entity) => ({ ...entity, count: undefined }));
+
+  return { ...props.filter, label, entities };
 });
 </script>
 <template>

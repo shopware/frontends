@@ -395,7 +395,11 @@ The response then contains two extra aggregations: `categories` (the category en
 }
 ```
 
-Every matching variant counts as one product. The helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` named `categories-parents` to the counts aggregation. The filter merge then counts all variants of one product as one.
+The entities are sorted by `count`, highest first. Note that `label` is the raw aggregation name, so give the filter your own translated heading when you render it.
+
+On the `/store-api/search` route the `count` counts every matching **variant**, not every product. The filter UIs in this repo sort by it but do not display it. The `cms-base-layer` filters show no counts at all, and the demo store hides this one because its manufacturer and property filters do collapse variants, so an uncollapsed category count next to them would read as a bug.
+
+The reason is that the helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` named `categories-parents` to the counts aggregation. The filter merge then counts all variants of one product as one, and the count is safe to display.
 
 To filter the listing by selected categories, send a `post-filter` with the next search:
 

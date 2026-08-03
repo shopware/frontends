@@ -69,8 +69,9 @@ function getCategoryFilter(
   const entities = aggregation.entities
     .map((entity) => ({
       ...entity,
-      // Count per category: kept on the entity and used to sort, but not
-      // rendered yet - it overcounts variants on the search route.
+      // Count per category. Used to sort here and exposed to consumers, but on
+      // the ES search route it counts every variant, so the filter UIs shipped
+      // in this repo do not render it.
       count: countByCategoryId.get(entity.id),
     }))
     .sort(
