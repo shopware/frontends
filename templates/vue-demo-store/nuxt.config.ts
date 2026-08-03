@@ -102,15 +102,29 @@ export default defineNuxtConfig({
     "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
-  // components: true,
+  // Only register resolveComponent targets globally (as async chunks).
+  // Keeping every component global:true also registers Lazy* async wrappers, which
+  // conflicts with template auto-imports and triggers INEFFECTIVE_DYNAMIC_IMPORT.
   components: {
     dirs: [
       {
         path: "~/components",
+        pattern: "Frontend*.vue",
+        global: true,
+        priority: 2,
+      },
+      {
+        path: "~/components",
+        pattern: "errors/RoutingNotFound.vue",
+        global: true,
+        priority: 2,
+      },
+      {
+        path: "~/components",
+        ignore: ["Frontend*.vue", "errors/RoutingNotFound.vue"],
         priority: 2,
       },
     ],
-    global: true,
   },
   vueuse: {
     ssrHandlers: true,

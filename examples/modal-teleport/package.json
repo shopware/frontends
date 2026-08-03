@@ -13,7 +13,7 @@
   "devDependencies": {
     "@unocss/nuxt": "66.7.5",
     "@unocss/reset": "66.7.5",
-    "@vueuse/core": "14.3.0",
+    "@vueuse/core": "14.4.0",
     "nuxt": "4.4.8",
     "unocss": "66.7.5",
     "vue-tsc": "3.3.7",

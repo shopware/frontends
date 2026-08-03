@@ -23,13 +23,16 @@
   "main": "./nuxt.config.ts",
   "exports": {
     ".": "./nuxt.config.ts",
-    "./uno.config": "./uno.config.ts"
+    "./uno.config": "./uno.config.ts",
+    "./uno.runtime.config": "./uno.runtime.config.ts"
   },
   "files": [
     "app",
     "nuxt.config.ts",
     "index.d.ts",
-    "uno.config.ts"
+    "theme.ts",
+    "uno.config.ts",
+    "uno.runtime.config.ts"
   ],
   "scripts": {
     "lint": "oxlint . && oxfmt --check .",

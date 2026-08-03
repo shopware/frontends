@@ -76,11 +76,21 @@ export default defineNuxtConfig({
   unocss: {
     nuxtLayers: true,
   },
+  // Only register resolveComponent targets globally (as async chunks).
+  // Keeping every component global:true also registers Lazy* async wrappers, which
+  // conflicts with template auto-imports and triggers INEFFECTIVE_DYNAMIC_IMPORT.
   components: [
     {
       path: resolve("./app/components"),
+      pattern: "Frontend*.vue",
       priority: 2,
       global: true,
+      extensions: [".vue"],
+    },
+    {
+      path: resolve("./app/components"),
+      ignore: ["Frontend*.vue"],
+      priority: 2,
       extensions: [".vue"],
     },
   ],
@@ -109,8 +119,14 @@ export default defineNuxtConfig({
     ],
   },
   icon: {
+    // Avoid bundling the full @iconify-json/carbon collection into Nitro (~1.1 MB).
+    // Carbon icons in templates use UnoCSS (`i-carbon-*`); <Icon> uses shopware custom.
+    serverBundle: {
+      collections: [],
+    },
     clientBundle: {
       includeCustomCollections: true,
+      scan: true,
     },
     customCollections: [
       {
