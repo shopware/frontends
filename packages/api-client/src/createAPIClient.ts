@@ -73,6 +73,21 @@ export type ApiClientHooks = {
   onRequest: (context: FetchContext) => void;
 };
 
+/**
+ * Shared-cache responses (`Cache-Control: public`) must not drive session
+ * updates. A CDN hit can replay a guest `sw-context-token` from when the entry
+ * was stored, which would overwrite the caller's logged-in session.
+ */
+function isPubliclyCacheableResponse(
+  response: Pick<FetchResponse<ResponseType>, "headers">,
+): boolean {
+  const cacheControl = response.headers.get("cache-control");
+  if (!cacheControl) {
+    return false;
+  }
+  return /(?:^|,)\s*public\s*(?:,|$)/i.test(cacheControl);
+}
+
 export function createAPIClient<
   // TODO: Keep this broad until generated operation types are narrowed.
   OPERATIONS extends Record<string, any> = operations,
@@ -114,6 +129,14 @@ export function createAPIClient<
       },
       async onResponse(context) {
         apiClientHooks.callHook("onSuccessResponse", context.response);
+        // Publicly cacheable Store API responses (cacheableReads / CDN) may
+        // carry a stale guest sw-context-token from when the entry was stored.
+        // Adopting that token would replace a logged-in session and log the user
+        // out. Session-changing routes (login/logout/register/context) respond
+        // with Cache-Control: private and still update the token as before.
+        if (isPubliclyCacheableResponse(context.response)) {
+          return;
+        }
         if (
           context.response.headers.has("sw-context-token") &&
           defaultHeaders["sw-context-token"] !==
