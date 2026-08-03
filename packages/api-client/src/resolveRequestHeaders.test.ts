@@ -90,10 +90,26 @@ describe("resolveRequestHeaders", () => {
     expect(contentTypeOf(headers)).toBeUndefined();
   });
 
+  it("preserves a quoted boundary, including one containing a semicolon", () => {
+    for (const value of [
+      'multipart/form-data; boundary="abc123"',
+      'multipart/form-data; boundary="a;b"',
+    ]) {
+      const headers = resolveRequestHeaders(
+        { "Content-Type": value },
+        DEFAULTS,
+        "raw-body",
+      );
+      expect(contentTypeOf(headers)).toBe(value);
+    }
+  });
+
   it("drops a multipart/form-data with an empty/malformed boundary", () => {
     for (const value of [
       "multipart/form-data; boundary=",
       "multipart/form-data; boundary=;x",
+      // the quotes are not the value: an empty quoted boundary is still empty
+      'multipart/form-data; boundary=""',
     ]) {
       const headers = resolveRequestHeaders(
         { "Content-Type": value },

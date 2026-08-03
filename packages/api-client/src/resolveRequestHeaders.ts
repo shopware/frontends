@@ -28,6 +28,20 @@ function withoutContentType(headers: ClientHeaders): ClientHeaders {
 }
 
 /**
+ * A `multipart/form-data` is only usable with a non-empty `boundary`, and the
+ * value may be quoted (`boundary="a;b"`). Read the value out rather than
+ * matching a single character after `boundary=`, so that an empty one - bare
+ * `boundary=`, `boundary=;`, or `boundary=""` - is reported as missing.
+ */
+function hasUsableBoundary(contentType: string): boolean {
+  const match = /boundary=\s*(?:"([^"]*)"|([^\s;]*))/.exec(contentType);
+  if (!match) return false;
+  // exactly one of the two alternatives captured; an empty capture means the
+  // header carries `boundary=` with nothing usable behind it
+  return !!(match[1] ?? match[2]);
+}
+
+/**
  * A `FormData` body is always serialized as multipart with a boundary the
  * runtime generates, and that boundary only ever reaches the server through the
  * `Content-Type` header. A header without one therefore cannot describe the
@@ -96,8 +110,7 @@ export function resolveRequestHeaders(
 
   const normalized = contentType.toLowerCase();
   const isMultipart = normalized.includes("multipart/form-data");
-  // A boundary needs a non-empty value; `boundary=` (or `boundary=;`) is malformed.
-  const hasBoundary = /boundary=[^\s;]/.test(normalized);
+  const hasBoundary = hasUsableBoundary(normalized);
   const runtimeManaged = isRuntimeManagedBody(body);
   // The only Content-Type the client injects on its own is `application/json`.
   // Anything else - per-request or a client-level default - was set on purpose.
