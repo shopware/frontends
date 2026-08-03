@@ -45,8 +45,12 @@ The directory structure follows [Nuxt conventions](https://nuxt.com/docs/guide/d
 ```
 vue-starter-template/
 ├─ app/
-│  ├─ components/      /* Your custom components */
-│  ├─ pages/           /* Page components */
+│  ├─ components/
+│  │  ├─ global/       /* Frontend* SEO page resolvers (Nuxt global) */
+│  │  ├─ cms/          /* Custom/override CMS blocks & elements (Nuxt global) */
+│  │  ├─ layout/       /* Header, footer, navigation (auto-import) */
+│  │  └─ ...           /* Other auto-imported UI */
+│  ├─ pages/           /* Route pages, including [...all].vue resolver */
 │  ├─ layouts/         /* Layout components */
 │  └─ ...
 ├─ public/             /* Static assets */
@@ -55,6 +59,8 @@ vue-starter-template/
 ├─ package.json
 ├─ tsconfig.json
 ```
+
+`components/global` and `components/cms` are registered as Nuxt global component dirs so Vue `resolveComponent` can load SEO page types and CMS blocks/elements. Other components under `app/components/` stay auto-imported only (not global), which avoids Rolldown `INEFFECTIVE_DYNAMIC_IMPORT` warnings from Lazy wrappers.
 
 ## Configure
 
@@ -117,7 +123,11 @@ Create components in the `app/components/` directory. They will be auto-imported
 
 ### Override CMS Components
 
-The template uses `@shopware/cms-base-layer` for CMS integration. You can override any CMS component by creating a file with the same name in your `app/components/` directory.
+The template uses `@shopware/cms-base-layer` for CMS integration.
+
+- Override shared `Sw*` UI in `app/components/` (auto-imported).
+- Override CMS blocks/elements under `app/components/cms/` (registered global for `resolveComponent`).
+- Override SEO page shells (`FrontendDetailPage`, …) under `app/components/global/`.
 
 For example, to override the product card:
 
@@ -125,6 +135,13 @@ For example, to override the product card:
 <!-- app/components/SwProductCard.vue -->
 <template>
   <!-- Your custom product card implementation -->
+</template>
+```
+
+```vue
+<!-- app/components/cms/element/CmsElementImage.vue -->
+<template>
+  <!-- Your custom CMS image element -->
 </template>
 ```
 

@@ -309,6 +309,14 @@ pnpm dev
 - Clean structure ready to build upon
 - Type generation setup
 
+**Component dirs** (see `nuxt.config.ts` `components`):
+
+- `app/components/global/` — SEO page resolver targets (`FrontendDetailPage`, `FrontendLandingPage`, `FrontendNavigationPage`). Registered `global: true` for `resolveComponent` in `pages/[...all].vue`. Use `pathPrefix: false` so names stay `Frontend*`.
+- `app/components/cms/` — custom / override CMS blocks & elements (`CmsBlock*`, `CmsElement*`). Also `global: true` for CMS `resolveComponent`.
+- `app/components/**` — layout, checkout, account, forms, etc. Normal auto-import (not global), to avoid `INEFFECTIVE_DYNAMIC_IMPORT` from Lazy wrappers.
+
+Do **not** register `global: true` twice on the same `components/` path with different `pattern`/`ignore` — Nuxt skips the second scan under that path.
+
 **Use Case**: Starting a new production project from scratch
 
 ### vue-blank
@@ -391,18 +399,25 @@ export default defineNuxtConfig({
 
 **Component Inheritance** - All components from the base layer are automatically available:
 
-- Pages (FrontendNavigationPage, FrontendDetailPage, etc.)
+- Pages (`FrontendNavigationPage`, `FrontendDetailPage`, …) from base `app/components/global/`
 - Layouts (headers, footers, navigation)
 - Forms (login, checkout, account)
 - Shared components (modals, notifications)
 
-**Component Overriding** - Create components in your `app/components/` to override base components:
+**Component Overriding** - Match the base directory so names and `resolveComponent` keep working:
 
 ```
 your-project/
   app/
     components/
-      SwProductCard.vue  # Overrides base SwProductCard
+      global/
+        FrontendDetailPage.vue  # Overrides SEO PDP resolver (must stay global)
+      cms/
+        element/
+          CmsElementImage.vue   # Overrides CMS element (must stay global)
+      SwProductCard.vue         # Normal auto-import override
+      layout/
+        Header.vue              # Overrides LayoutHeader
 ```
 
 **App Config Customization** - Use `app.config.ts` to customize layer settings:

@@ -52,7 +52,7 @@ function handleChange(id: string) {
             {{ paymentMethod.description }}
           </div>
         </div>
-        <div class="ml-auto">
+        <div v-if="getPaymentMethodIcon(paymentMethod)" class="ml-auto">
           <NuxtImg
             :src="getPaymentMethodIcon(paymentMethod)"
             height="32"

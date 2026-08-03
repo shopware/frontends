@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [
     {
       path: "/:pathMatch(.*)",
-      component: () => import("./App.vue"),
+      component: App,
     },
   ],
 });
