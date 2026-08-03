@@ -2,7 +2,7 @@
  * Sidebar configuration is exported so DevHub can import it and prefix links with /frontends/.
  */
 
-import data from "./data/composables.data";
+import data from "../src/.data/composables.data";
 
 const composables = await data.load(null);
 
@@ -231,6 +231,23 @@ export const sidebar = [
           {
             text: "Footer Navigation",
             link: "/guides/page-elements/footer-navigation.html",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    text: "FRONTENDS RECIPES",
+    link: "/frontends-recipes/",
+    items: [
+      {
+        text: "Account",
+        link: "/frontends-recipes/account/",
+        collapsed: true,
+        items: [
+          {
+            text: "Login",
+            link: "/frontends-recipes/account/login.html",
           },
         ],
       },
