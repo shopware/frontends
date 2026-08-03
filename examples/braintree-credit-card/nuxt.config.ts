@@ -19,4 +19,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   telemetry: false,
   compatibilityDate: "2024-08-06",
+  vite: {
+    build: {
+      // braintree-web-drop-in alone is ~685 kB minified.
+      chunkSizeWarningLimit: 700,
+    },
+  },
 });

@@ -207,7 +207,9 @@ export default defineNuxtConfig({
 Key features:
 
 - Uses cms-base-layer for all CMS rendering
-- Adds custom page components (checkout, account, etc.)
+- SEO page resolvers live in `app/components/global/` (`Frontend*`, Nuxt global for `resolveComponent`)
+- Template CMS overrides go in `app/components/cms/` (also global)
+- Adds custom page components (checkout, account, etc.) under normal auto-import dirs
 - Configures app.config.ts for brand customization
 - Adds i18n support
 

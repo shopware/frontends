@@ -48,7 +48,7 @@ function changeLanguage(event: Event) {
           v-if="languages.length > 1"
           class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
         >
-          <Icon size="1.125rem" name="carbon:language" />
+          <div class="size-[1.125rem] i-carbon-language" aria-hidden="true" />
           <span class="sr-only">
             {{ $t("layout.ariaLabels.languageSwitcher") }}
           </span>
@@ -66,10 +66,9 @@ function changeLanguage(event: Event) {
               {{ language.label }}
             </option>
           </select>
-          <Icon
-            size="1rem"
-            name="carbon:chevron-down"
-            class="pointer-events-none absolute right-2"
+          <div
+            class="pointer-events-none absolute right-2 size-4 i-carbon-chevron-down"
+            aria-hidden="true"
           />
         </label>
 
@@ -78,7 +77,7 @@ function changeLanguage(event: Event) {
           class="relative inline-flex h-9 items-center gap-2 rounded border border-white/15 bg-white/10 pl-3 pr-2 text-sm transition hover:bg-white/15 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-white/70"
           :class="{ 'opacity-60': Boolean(props.changingCurrencyId) }"
         >
-          <Icon size="1.125rem" name="carbon:currency" />
+          <div class="size-[1.125rem] i-carbon-currency" aria-hidden="true" />
           <span class="sr-only">
             {{ $t("layout.ariaLabels.currencySwitcher") }}
           </span>
@@ -98,10 +97,9 @@ function changeLanguage(event: Event) {
               {{ currency.label }}
             </option>
           </select>
-          <Icon
-            size="1rem"
-            name="carbon:chevron-down"
-            class="pointer-events-none absolute right-2"
+          <div
+            class="pointer-events-none absolute right-2 size-4 i-carbon-chevron-down"
+            aria-hidden="true"
           />
         </label>
       </div>
