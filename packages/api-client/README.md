@@ -379,6 +379,39 @@ async function loadMainNavigation() {
 }
 ```
 
+### Uploading files (`multipart/form-data`) and other binary bodies
+
+Some endpoints accept binary uploads sent as `multipart/form-data` - for example the Admin API `uploadV2 post /_action/media/upload`. For these requests, build a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) instance and pass it as `body`:
+
+```typescript
+const formData = new FormData();
+formData.append("file", file); // a `File` or `Blob`, e.g. from an <input type="file">
+formData.append("fileName", "my-image");
+
+await adminApiClient.invoke("uploadV2 post /_action/media/upload", {
+  // `contentType` / `accept` are type-level metadata on this operation and are
+  // ignored at runtime - the request Content-Type is derived from the body
+  contentType: "multipart/form-data",
+  accept: "application/json",
+  // pass the FormData directly; the typed object shape is only for guidance
+  body: formData as unknown as { file: Blob },
+});
+```
+
+> [!IMPORTANT]
+> Do not set the `Content-Type` header yourself, and pass a real body object, not a plain JSON object.
+>
+> A `multipart/form-data` request must carry a unique `boundary` parameter (`Content-Type: multipart/form-data; boundary=...`). Only the runtime - the browser's `fetch` or `undici` on the server - can generate it, and only when no `Content-Type` is present. A hard-coded `Content-Type: multipart/form-data` has no boundary, so the server cannot parse the payload.
+
+How the client handles this for you:
+
+- The client seeds a default `Content-Type: application/json` on every request. When the `body` is one the runtime must type itself - `FormData`, `Blob`/`File`, `URLSearchParams`, `ArrayBuffer`/typed arrays, or a stream - the client removes that default, so the body is never mislabelled as JSON. This applies to both the Store and Admin clients, in the browser and on the server.
+- What ends up on the wire then depends on the body. `fetch`/`undici` add a `Content-Type` only for `FormData` (`multipart/form-data` with a generated boundary), `URLSearchParams` (`application/x-www-form-urlencoded`), and a `Blob`/`File` that has a `type`. For `ArrayBuffer`/typed arrays, streams, and a typeless `Blob` the request is sent with **no** `Content-Type` at all. If the endpoint needs one, set it yourself.
+- A `Content-Type` you set explicitly is preserved - per request via `headers`, or client-wide via `defaultHeaders.apply({ "Content-Type": "application/octet-stream" })`.
+- Two cases override that, because keeping the header would break the request: a boundary-less `multipart/form-data`, and **any** boundary-less `Content-Type` on a `FormData` body. The runtime generates the boundary and passes it to the server only through the `Content-Type`, so a header without one leaves the server with bytes it cannot split - the upload then fails silently rather than erroring.
+- Always pass a real `FormData` / `Blob` / stream. A plain object is serialized to JSON (`{ file: Blob }` becomes `{"file":{}}`), which is not a valid upload.
+- The generated operation types describe the body as a plain object (e.g. `{ file: Blob }`) for discoverability. At runtime you must provide the real body, so a cast like `body: formData as unknown as <BodyType>` may be required depending on your setup.
+
 ### Error handling
 
 Client is throwing `ApiClientError` with detailed information returned from the API. It will display clear message in the console or you can access `details` property to get raw information from the response.

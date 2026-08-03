@@ -3,6 +3,7 @@ import {
   createError,
   eventHandler,
   getHeaders,
+  readMultipartFormData,
   setHeader,
   toNodeListener,
 } from "h3";
@@ -315,7 +316,7 @@ describe("createAPIClient", () => {
     );
   });
 
-  it("should keep multipart/form-data Content-Type header in node environment", async () => {
+  it("should let the runtime set multipart/form-data with a boundary for FormData bodies", async () => {
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/core/upload",
@@ -334,11 +335,16 @@ describe("createAPIClient", () => {
       baseURL,
     });
 
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
     // @ts-expect-error this endpoint does not exist
     await client.invoke("fileUpload post /core/upload", {
+      // a manually set multipart/form-data has no boundary and must be replaced
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      body: formData,
     });
 
     expect(contentTypeSpy).toHaveBeenCalledTimes(1);
@@ -349,10 +355,56 @@ describe("createAPIClient", () => {
       "sw-access-key": "123",
       "sw-context-token": "456",
     });
-    // Outside the browser there is no `window`, so the manually set
-    // Content-Type header is forwarded as-is (see createApiClient.browser.test.ts
-    // for the browser-specific removal behaviour).
-    expect(headers?.["content-type"]).toContain("multipart/form-data");
+    // The default application/json (and the boundary-less multipart) must be
+    // gone, replaced by a runtime-generated multipart/form-data + boundary.
+    expect(headers?.["content-type"]).toMatch(
+      /^multipart\/form-data; boundary=/,
+    );
+  });
+
+  it("should deliver a parseable upload even when the caller mislabels it as JSON", async () => {
+    // The runtime serializes FormData as multipart and generates the boundary,
+    // but that boundary only reaches the server through the Content-Type. An
+    // explicit application/json would strand it and the upload would fail
+    // silently, so it has to be dropped too.
+    const uploadSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/core/upload",
+      eventHandler(async (event) => {
+        uploadSpy({
+          contentType: getHeaders(event)["content-type"],
+          parts: await readMultipartFormData(event),
+        });
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
+    // @ts-expect-error this endpoint does not exist
+    await client.invoke("fileUpload post /core/upload", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formData,
+    });
+
+    expect(uploadSpy).toHaveBeenCalledTimes(1);
+    const upload = uploadSpy.mock.calls[0]?.[0];
+    expect(upload?.contentType).toMatch(/^multipart\/form-data; boundary=/);
+    // the server can actually read the file back out
+    expect(upload?.parts).toHaveLength(1);
+    expect(upload?.parts?.[0]?.filename).toBe("file.txt");
+    expect(upload?.parts?.[0]?.data.toString()).toBe("file-content");
   });
 
   it("should trigger success callback", async () => {
