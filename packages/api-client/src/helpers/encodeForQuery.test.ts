@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { encodeForQuery } from "./encodeForQuery";
 
@@ -116,6 +116,23 @@ describe("encodeForQuery", () => {
     const result2 = encodeForQuery(obj);
 
     expect(result1).toBe(result2);
+  });
+
+  it("should produce consistent results when time changes", () => {
+    vi.useFakeTimers();
+    try {
+      const obj = { test: "value", number: 42 };
+
+      vi.setSystemTime(new Date("2026-01-01T00:00:00Z"));
+      const result1 = encodeForQuery(obj);
+
+      vi.setSystemTime(new Date("2026-01-01T00:10:00Z"));
+      const result2 = encodeForQuery(obj);
+
+      expect(result1).toBe(result2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("should produce different results for different inputs", () => {

@@ -27,14 +27,18 @@ const rightContent = getSlotContent("right");
 
 <style scoped>
 .cms-block-image-two-column :deep(.cms-element-image) {
-  @apply relative h-full w-full;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .cms-block-image-two-column :deep(.cms-element-image img) {
-  @apply w-full h-full object-cover;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .cms-block-image-two-column :deep(.cms-element-image-slider) {
-  @apply w-full;
+  width: 100%;
 }
 </style>

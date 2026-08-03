@@ -444,11 +444,8 @@ describe("createAPIClient", () => {
 
     controller.abort();
 
-    // The exact abort reason ("signal is aborted without reason" vs "This
-    // operation was aborted") depends on the runtime and on the abort race, so
-    // assert the stable parts: a FetchError for the aborted GET /context.
-    await expect(request).rejects.toThrow(
-      new RegExp(`\\[GET\\] "${baseURL}context": <no response>.*aborted`, "i"),
+    await expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}context": <no response> This operation was aborted]`,
     );
   });
 

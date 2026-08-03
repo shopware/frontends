@@ -1,0 +1,8 @@
+{
+  "listing": {
+    "loading": "Ładowanie…",
+    "empty": "Brak wyników.",
+    "error": "Podczas ładowania wyników wystąpił błąd.",
+    "retry": "Spróbuj ponownie"
+  }
+}

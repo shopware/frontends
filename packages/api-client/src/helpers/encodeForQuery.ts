@@ -8,7 +8,7 @@ import { gzipSync, strToU8 } from "fflate";
  */
 export function encodeForQuery(obj: unknown): string {
   const json = JSON.stringify(obj);
-  const compressed = gzipSync(strToU8(json));
+  const compressed = gzipSync(strToU8(json), { mtime: 0 });
 
   // Convert to base64url
   let base64 = btoa(String.fromCharCode.apply(null, Array.from(compressed)));

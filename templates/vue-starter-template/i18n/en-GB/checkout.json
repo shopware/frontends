@@ -6,6 +6,7 @@
     "shippingCosts": "Shipping",
     "total": "Total",
     "placeOrderButton": "Confirm and place order",
+    "placingOrder": "Placing order…",
     "customerAddress": {
       "firstNamePlaceholder": "Enter first name",
       "firstNameLabel": "First name",

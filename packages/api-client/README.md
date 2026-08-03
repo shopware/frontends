@@ -405,8 +405,9 @@ await adminApiClient.invoke("uploadV2 post /_action/media/upload", {
 
 How the client handles this for you:
 
-- The client seeds a default `Content-Type: application/json` on every request. When the `body` is one the runtime must type itself - `FormData`, `Blob`/`File`, `URLSearchParams`, `ArrayBuffer`/typed arrays, or a stream - the client removes that default `Content-Type` so the runtime can set the correct one (a `multipart/form-data` boundary, the blob's MIME type, `application/x-www-form-urlencoded`, and so on). This applies to both the Store and Admin clients, in the browser and on the server.
-- A `Content-Type` you set explicitly is preserved (for example an `image/png` for a typeless `Blob`, or a content type for a raw stream) - except a boundary-less `multipart/form-data`, which is always replaced.
+- The client seeds a default `Content-Type: application/json` on every request. When the `body` is one the runtime must type itself - `FormData`, `Blob`/`File`, `URLSearchParams`, `ArrayBuffer`/typed arrays, or a stream - the client removes that default, so the body is never mislabelled as JSON. This applies to both the Store and Admin clients, in the browser and on the server.
+- What ends up on the wire then depends on the body. `fetch`/`undici` add a `Content-Type` only for `FormData` (`multipart/form-data` with a generated boundary), `URLSearchParams` (`application/x-www-form-urlencoded`), and a `Blob`/`File` that has a `type`. For `ArrayBuffer`/typed arrays, streams, and a typeless `Blob` the request is sent with **no** `Content-Type` at all. If the endpoint needs one, set it yourself.
+- A `Content-Type` you set explicitly is preserved - per request via `headers`, or client-wide via `defaultHeaders.apply({ "Content-Type": "application/octet-stream" })`. The one exception is a boundary-less `multipart/form-data`, which is always replaced.
 - Always pass a real `FormData` / `Blob` / stream. A plain object is serialized to JSON (`{ file: Blob }` becomes `{"file":{}}`), which is not a valid upload.
 - The generated operation types describe the body as a plain object (e.g. `{ file: Blob }`) for discoverability. At runtime you must provide the real body, so a cast like `body: formData as unknown as <BodyType>` may be required depending on your setup.
 
@@ -517,7 +518,7 @@ apiClient.invoke("getProducts get /product", {
 
 ## Links
 
-- [📘 Documentation](https://frontends.shopware.com)
+- [📘 Documentation](https://developer.shopware.com/frontends)
 
 - [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend` channel)
 

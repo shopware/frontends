@@ -8,6 +8,16 @@ export default defineNuxtConfig({
   build: {
     transpile: ["@shopware/composables"],
   },
+  vite: {
+    build: {
+      rolldownOptions: {
+        checks: {
+          invalidAnnotation: false,
+          pluginTimings: false,
+        },
+      },
+    },
+  },
   telemetry: {
     enabled: false,
   },

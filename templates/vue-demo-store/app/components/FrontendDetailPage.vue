@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
 import { getProductName } from "@shopware/helpers";
 
 const props = defineProps<{
@@ -8,7 +9,6 @@ const props = defineProps<{
 const { search } = useProductSearch();
 const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
-const errors = ref<string[]>([]);
 
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
@@ -32,33 +32,52 @@ const { data, error } = await useAsyncData(
       }),
     ]);
 
-    for (const response of responses) {
-      if (response.status === "rejected") {
-        console.error("[FrontendDetailPage.vue]", response.reason.message);
-        errors.value.push(response.reason.message);
+    const [productResult, breadcrumbsResult] = responses;
+    if (productResult.status === "rejected") {
+      console.error("[FrontendDetailPage.vue]", productResult.reason.message);
+      if (
+        productResult.reason instanceof ApiClientError &&
+        productResult.reason.status === 404
+      ) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Product not found",
+        });
       }
+      throw productResult.reason;
+    }
+
+    if (breadcrumbsResult.status === "rejected") {
+      console.error(
+        "[FrontendDetailPage.vue]",
+        breadcrumbsResult.reason.message,
+      );
     }
 
     return {
-      productResponse:
-        responses[0].status === "fulfilled" ? responses[0].value : null,
+      productResponse: productResult.value,
       breadcrumbs:
-        responses[1].status === "fulfilled" ? responses[1].value : null,
+        breadcrumbsResult.status === "fulfilled"
+          ? breadcrumbsResult.value
+          : null,
     };
   },
 );
 const productResponse = data.value?.productResponse;
+
+if (error.value) {
+  throw error.value;
+}
 
 if (data.value?.breadcrumbs) {
   buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
 }
 
 if (!productResponse) {
-  const statusMessage = error.value?.message || errors.value.join(", ");
-  console.error("[FrontendDetailPage.vue]", statusMessage);
+  console.error("[FrontendDetailPage.vue]", "Product not found");
   throw createError({
-    statusCode: 500,
-    message: statusMessage,
+    statusCode: 404,
+    statusMessage: "Product not found",
   });
 }
 

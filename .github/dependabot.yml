@@ -9,8 +9,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 2
     versioning-strategy: "increase"
+    cooldown:
+      default-days: 4
+      exclude:
+        - "@shopware/*"
     ignore:
       # not upgrading until we move to new docs
       - dependency-name: "vitepress-shopware-docs"

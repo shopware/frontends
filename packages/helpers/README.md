@@ -2,9 +2,9 @@
 
 Welcome to `@shopware/helpers` package.
 
-For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
+For getting started documentation visit [https://developer.shopware.com/frontends/](https://developer.shopware.com/frontends/)
 
-Documentation specific for this package: [helpers](https://frontends.shopware.com/packages/helpers.html)
+Documentation specific for this package: [helpers](https://developer.shopware.com/frontends/packages/helpers.html)
 
 ## Reusable classes
 

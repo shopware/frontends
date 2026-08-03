@@ -2,7 +2,7 @@
 import { useRegle } from "@regle/core";
 import { useTemplateRef } from "vue";
 
-import type { operations } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 const {
   redirectUrl,
@@ -109,12 +109,18 @@ const countryStateIdModel = computed({
     state.billingAddress.countryStateId = value;
   },
 });
+const countryHasStates = ref(false);
+
+function handleCountryStatesChange(states: Schemas["CountryState"][]) {
+  countryHasStates.value = states.length > 0;
+}
 
 const { r$ } = useRegle(
   state,
   registrationFormRules(
     computed(() => state.accountType ?? "private"),
     computed(() => state.billingAddress.countryId),
+    countryHasStates,
   ),
 );
 const invokeSubmit = async () => {
@@ -290,6 +296,7 @@ const invokeSubmit = async () => {
           :country-id-validation="r$.billingAddress.countryId"
           :state-id-validation="r$.billingAddress.countryStateId"
           class="col-span-12 md:col-span-8"
+          @states-change="handleCountryStatesChange"
         />
       </div>
       <div class="mb-5 text-right">

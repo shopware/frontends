@@ -1,18 +1,14 @@
 ---
+nav:
+  hidden: true
 head:
   - - meta
-    - name: og:title
-      content: Digital Sales Rooms
-  - - meta
-    - name: og:description
-      content: "Get insights into the Digital Sales Rooms template created with Composable Frontends."
-  - - meta
-    - name: og:image
-      content: "https://frontends-og-image.vercel.app/Digital%20Sales%20Rooms.png?fontSize=120px"
-nav:
-  position: 40
+    - http-equiv: refresh
+      content: "0; url=/frontends/integrations/commercial/digital-sales-rooms.html"
 ---
 
-# Digital Sales Rooms
+# This page has moved
 
-The Customer Documentation about the Admin Extension for Digital Sales Rooms can be found [here](https://docs.shopware.com/en/shopware-6-en/extensions/digital-sales-rooms).
+This content is now part of **[Digital Sales Rooms](/frontends/integrations/commercial/digital-sales-rooms.html)**.
+
+If you are not redirected automatically, [click here](/frontends/integrations/commercial/digital-sales-rooms.html).

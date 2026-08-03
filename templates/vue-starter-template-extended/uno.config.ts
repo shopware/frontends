@@ -1,6 +1,5 @@
 import { type ConfigBase, mergeConfigs } from "@unocss/core";
-
-import baseConfig from "./.nuxt/uno.config.mjs";
+import starterConfig from "vue-starter-template/uno.config";
 
 const lumoraConfig: ConfigBase = {
   theme: {
@@ -60,34 +59,6 @@ const lumoraConfig: ConfigBase = {
   ],
 
   safelist: ["text-shadow-md"],
-
-  preflights: [
-    {
-      getCSS: () => `
-        body {
-          font-family: 'Inter', sans-serif;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-
-        h1 {
-          font-size: 2.25rem;
-          line-height: 2.5rem;
-          font-weight: 700;
-        }
-        h2 {
-          font-size: 1.875rem;
-          line-height: 2.25rem;
-          font-weight: 600;
-        }
-        h3 {
-          font-size: 1.5rem;
-          line-height: 2rem;
-          font-weight: 600;
-        }
-      `,
-    },
-  ],
 };
 
-export default mergeConfigs([baseConfig, lumoraConfig]);
+export default mergeConfigs([starterConfig, lumoraConfig]);

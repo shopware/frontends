@@ -22,8 +22,7 @@ const contextErrors: ContextErrors = {
 };
 
 export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
-  const { $i18n } = useNuxtApp();
-  const { t, te } = $i18n;
+  const { t, te } = useI18n();
   const { pushError } = useNotifications();
 
   const resolveApiErrors = (errors: ApiError[]) => {

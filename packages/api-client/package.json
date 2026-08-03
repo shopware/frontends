@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://frontends.shopware.com/packages/api-client.html",
+  "homepage": "https://developer.shopware.com/frontends/packages/api-client.html",
   "keywords": [
     "shopware",
     "api",
@@ -68,12 +68,12 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "fflate": "0.8.3",
     "happy-dom": "20.10.6",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.9"
+    "vitest": "4.1.10"
   },
   "dependencies": {
     "defu": "6.1.7",

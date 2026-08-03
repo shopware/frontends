@@ -31,6 +31,13 @@ export function useCmsHead(
   },
 ): void {
   const unrefEntity = unref(entity);
+  const route = useRoute();
+  const requestUrl = useRequestURL();
+  const canonicalUrl = computed(() => {
+    const url = new URL(route.fullPath, requestUrl.origin);
+    url.hash = "";
+    return url.href;
+  });
   // get title and meta tags available in the Shopware instance
   const { title: metaTitle, meta } = useCmsMeta(unrefEntity);
 
@@ -91,4 +98,13 @@ export function useCmsHead(
   useHead({
     meta: additionalMeta,
   });
+
+  useHead(() => ({
+    link: [
+      {
+        rel: "canonical",
+        href: canonicalUrl.value,
+      },
+    ],
+  }));
 }

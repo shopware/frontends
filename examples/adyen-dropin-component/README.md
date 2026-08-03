@@ -1,6 +1,6 @@
 # Vue component for Adyen drop-in checkout
 
-- [📖 &nbsp;Documentation](https://frontends.shopware.com)
+- [📖 &nbsp;Documentation](https://developer.shopware.com/frontends)
 
 ## Features
 

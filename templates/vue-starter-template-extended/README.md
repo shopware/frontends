@@ -144,5 +144,5 @@ Optional enhancements:
 ## Learn More
 
 - [Nuxt Documentation](https://nuxt.com/docs)
-- [Shopware Frontends Documentation](https://frontends.shopware.com)
+- [Shopware Frontends Documentation](https://developer.shopware.com/frontends)
 - [UnoCSS Documentation](https://unocss.dev/)

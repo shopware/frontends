@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 const isStackBlitz = process.env.SHOPWARE_STACKBLITZ === "true";
 
 export default defineNuxtConfig({
@@ -11,6 +10,7 @@ export default defineNuxtConfig({
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCT0RWATU1RG9RT200M29XNA",
         devStorefrontUrl: "https://frontends-demo.vercel.app",
+        cacheableReads: true,
       },
     },
   },

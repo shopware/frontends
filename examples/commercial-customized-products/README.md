@@ -15,7 +15,7 @@ The example shows how to integrate a Vue.js project with the logic provided by C
 
 ## Setup
 
-1. [Setup](https://frontends.shopware.com/getting-started/templates.html) your Vue template
+1. [Setup](https://developer.shopware.com/frontends/getting-started/templates.html) your Vue template
 
 2. Prepare some customized products following the [documentation](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts#add-template)
 
@@ -74,4 +74,4 @@ or...
 ## Resources
 
 - [Custom Products](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts) docs
-- [📖 &nbsp;Composable Frontends Documentation](https://frontends.shopware.com)
+- [📖 &nbsp;Composable Frontends Documentation](https://developer.shopware.com/frontends)

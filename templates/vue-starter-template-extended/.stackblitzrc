@@ -1,8 +1,9 @@
 {
   "env": {
     "NODE_OPTIONS": "--no-warnings",
+    "NODE_NO_WARNINGS": "1",
     "NUXT_TELEMETRY_DISABLED": "1",
     "SHOPWARE_STACKBLITZ": "true"
   },
-  "startCommand": "pnpm exec nuxt prepare && pnpm exec nuxt dev --no-qr NODE_NO_WARNINGS=1"
+  "startCommand": "pnpm exec nuxt prepare && pnpm exec nuxt dev --no-qr"
 }

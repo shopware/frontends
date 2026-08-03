@@ -6,6 +6,7 @@ nav:
 
 # PACKAGE REFERENCE
 
+<PageRef title="Distribution Channels" sub="How the @shopware/* packages are published (stable, canary, PR preview) and when to use each." page="distribution-channels.html" />
 <PageRef title="API Client" sub="Documentation related to the API Client package." page="api-client.html" />
 <PageRef title="CMS Base" sub="Documentation about nuxt module that help you with generating elements from Shopping Experiences." page="cms-base.html" />
 <PageRef title="Nuxt module" sub="Documentation related to the Nuxt module that configures a nuxt project for Composable Frontends toolset." page="nuxt-module.html" />

@@ -1,15 +1,16 @@
-import { type ConfigBase, mergeConfigs } from "@unocss/core";
-import {
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetWind3,
-} from "unocss";
+import { fileURLToPath } from "node:url";
 
-import baseConfig from "./.nuxt/uno.config.mjs";
+import baseConfig from "@shopware/unocss-design-tokens-layer/uno.config";
+import { type ConfigBase, mergeConfigs } from "@unocss/core";
+import { presetAttributify, presetTypography } from "unocss";
+
+const templateRoot = fileURLToPath(new URL(".", import.meta.url));
 
 const templateConfig: ConfigBase = {
   // here you can add template-specific configurations
+  content: {
+    filesystem: [`${templateRoot}/app/**/*.{ts,vue}`],
+  },
   safelist: [
     // commonly CMS-provided classes not present in source — safelisted to reduce layout shift
     "bg-overlay-dark-high",
@@ -31,19 +32,8 @@ const templateConfig: ConfigBase = {
       Noto_Serif: "Noto Serif",
     },
   },
-  presets: [
-    presetWind3(),
-    presetIcons({
-      collections: {
-        carbon: () =>
-          import("@iconify-json/carbon/icons.json", {
-            with: { type: "json" },
-          }).then((i) => i.default),
-      },
-    }),
-    presetAttributify(),
-    presetTypography(),
-  ],
+  // The base design-token layer provides presetWind3 and presetIcons.
+  presets: [presetAttributify(), presetTypography()],
   preflights: [
     {
       getCSS: () => `

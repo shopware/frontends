@@ -38,8 +38,7 @@ frontends/
 │   ├── helpers/              # Utility functions
 │   ├── cms-base-layer/       # CMS components
 │   ├── nuxt-module/          # Nuxt 3 integration
-│   ├── api-gen/              # Type generation tool
-│   └── eslint-config-shopware/
+│   └── api-gen/              # Type generation tool
 ├── templates/         # Starter templates
 │   ├── vue-demo-store/                # Full demo with UnoCSS, i18n, CMS
 │   ├── vue-starter-template/          # Production-ready starter
@@ -630,7 +629,7 @@ pnpm run build
 
 ## API and Documentation
 
-- **Documentation**: [frontends.shopware.com](https://frontends.shopware.com/)
+- **Documentation**: [developer.shopware.com/frontends](https://developer.shopware.com/frontends/)
 - **Demo**: [frontends-demo.vercel.app](https://frontends-demo.vercel.app/)
 - **Repository**: [github.com/shopware/frontends](https://github.com/shopware/frontends)
 - **Discussions**: [GitHub Discussions](https://github.com/shopware/frontends/discussions)

@@ -355,6 +355,11 @@ export function runTransformations(
   schemaObject: SchemaObject,
   metadata?: { path?: string | string[] },
 ) {
+  const constLiteralType = createConstLiteralType(schemaObject);
+  if (constLiteralType) {
+    return constLiteralType;
+  }
+
   /**
    * Blob type is used for binary data
    */
@@ -393,6 +398,59 @@ export function runTransformations(
   }
 
   return undefined;
+}
+
+function createConstLiteralType(schemaObject: SchemaObject) {
+  if (!("const" in schemaObject)) {
+    return undefined;
+  }
+
+  const constValue = schemaObject.const;
+
+  if (hasSchemaType(schemaObject, "string")) {
+    return ts.factory.createLiteralTypeNode(
+      ts.factory.createStringLiteral(String(constValue)),
+    );
+  }
+
+  if (constValue === null) {
+    return ts.factory.createLiteralTypeNode(ts.factory.createNull());
+  }
+
+  if (typeof constValue === "string") {
+    return ts.factory.createLiteralTypeNode(
+      ts.factory.createStringLiteral(constValue),
+    );
+  }
+
+  if (typeof constValue === "number" && Number.isFinite(constValue)) {
+    const numericLiteral = ts.factory.createNumericLiteral(
+      Math.abs(constValue),
+    );
+
+    return ts.factory.createLiteralTypeNode(
+      constValue < 0
+        ? ts.factory.createPrefixUnaryExpression(
+            ts.SyntaxKind.MinusToken,
+            numericLiteral,
+          )
+        : numericLiteral,
+    );
+  }
+
+  if (typeof constValue === "boolean") {
+    return ts.factory.createLiteralTypeNode(
+      constValue ? ts.factory.createTrue() : ts.factory.createFalse(),
+    );
+  }
+
+  return undefined;
+}
+
+function hasSchemaType(schemaObject: SchemaObject, type: string) {
+  return Array.isArray(schemaObject.type)
+    ? (schemaObject.type as readonly string[]).includes(type)
+    : schemaObject.type === type;
 }
 
 function isCustomFieldsSchema(metadata?: { path?: string | string[] }) {

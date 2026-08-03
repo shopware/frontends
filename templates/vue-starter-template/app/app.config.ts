@@ -1,4 +1,7 @@
 export default defineAppConfig({
+  // Prefer build-time UnoCSS; enable only when CMS classes must be generated in the browser.
+  unocssRuntime: false,
+
   // Default cache lifetime (in milliseconds) for CSR (Client-Side Rendering) data (24 hours)
   defaultCSRCacheLifetime: 86400000,
 

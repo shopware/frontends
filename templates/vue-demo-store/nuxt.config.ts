@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     shopware: {
       /**
        * SSR Shopware Endpoint
-       * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
+       * More here: https://developer.shopware.com/frontends/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
       // endpoint: "",
     },
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
     // },
     public: {
       /**
-       * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
+       * More about this feature you can find here: https://developer.shopware.com/frontends/getting-started/features/broadcasting.html
        */
       broadcasting: false,
     },
