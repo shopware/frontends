@@ -23,6 +23,21 @@ export function isTechnicalPath(path: string): boolean {
   );
 }
 
+/**
+ * Check whether an absolute or relative URL points to a technical Shopware
+ * route. Query parameters and fragments are ignored.
+ */
+export function isTechnicalUrl(
+  url: string,
+  baseUrl = "http://localhost",
+): boolean {
+  try {
+    return isTechnicalPath(new URL(url, baseUrl).pathname);
+  } catch {
+    return false;
+  }
+}
+
 export function getRouteFromPathInfo(
   path: string,
 ): RouteInfoFromPathInfo | null {
@@ -41,4 +56,30 @@ export function getRouteFromPathInfo(
   }
 
   return null;
+}
+
+/**
+ * Get the canonical path for a mapped technical Shopware URL.
+ *
+ * Returns `null` for SEO URLs, synthetic technical fallbacks without an SEO
+ * mapping, and invalid mappings that would redirect to another technical URL.
+ */
+export function getCanonicalPathForTechnicalPath(
+  path: string,
+  seoUrl?: object | null,
+): string | null {
+  if (
+    !isTechnicalPath(path) ||
+    !seoUrl ||
+    !("seoPathInfo" in seoUrl) ||
+    typeof seoUrl.seoPathInfo !== "string"
+  ) {
+    return null;
+  }
+
+  const seoPathInfo = seoUrl.seoPathInfo.replace(/^\/+/, "");
+  const canonicalPath = seoPathInfo ? normalizePath(`/${seoPathInfo}`) : "/";
+  if (isTechnicalPath(canonicalPath)) return null;
+
+  return canonicalPath;
 }
