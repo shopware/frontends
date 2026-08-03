@@ -1,6 +1,7 @@
 import { createResolver } from "@nuxt/kit";
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
+import type { LoggingFunction, RollupLog } from "rollup";
 
 const { resolve: resolveLayer } = createResolver(import.meta.url);
 
@@ -128,7 +129,7 @@ export default defineNuxtConfig({
     rollupConfig: {
       // @vueuse/shared still embeds @__NO_SIDE_EFFECTS__ inside JSDoc (injectLocal).
       // Nitro/Rollup treats that as a misplaced annotation. Track upstream vueuse.
-      onwarn(warning, warn) {
+      onwarn(warning: RollupLog, warn: LoggingFunction) {
         if (
           warning.message?.includes("annotation that Rollup cannot interpret")
         ) {
