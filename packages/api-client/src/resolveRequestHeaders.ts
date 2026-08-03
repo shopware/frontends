@@ -28,6 +28,16 @@ function withoutContentType(headers: ClientHeaders): ClientHeaders {
 }
 
 /**
+ * A `FormData` body is always serialized as multipart with a boundary the
+ * runtime generates, and that boundary only ever reaches the server through the
+ * `Content-Type` header. A header without one therefore cannot describe the
+ * body, whatever it says.
+ */
+function isFormDataBody(body: unknown): boolean {
+  return typeof FormData !== "undefined" && body instanceof FormData;
+}
+
+/**
  * Bodies whose `Content-Type` must be set by the runtime (browser `fetch` /
  * `undici`), not by the client. `ofetch` does not serialize these and does not
  * add a `Content-Type`, so the client's default `application/json` would be
@@ -40,7 +50,7 @@ function withoutContentType(headers: ClientHeaders): ClientHeaders {
 function isRuntimeManagedBody(body: unknown): boolean {
   if (!body || typeof body !== "object") return false;
   return (
-    (typeof FormData !== "undefined" && body instanceof FormData) ||
+    isFormDataBody(body) ||
     (typeof URLSearchParams !== "undefined" &&
       body instanceof URLSearchParams) ||
     (typeof Blob !== "undefined" && body instanceof Blob) ||
@@ -57,10 +67,12 @@ function isRuntimeManagedBody(body: unknown): boolean {
  *
  * The default `Content-Type: application/json` seeded for every client is wrong
  * for bodies the runtime types on its own. The header is removed when:
- * - the body is runtime-managed (`FormData`, `Blob`/`File`, `URLSearchParams`,
- *   binary, stream) and the `Content-Type` is the seeded `application/json`, or
- *   a manual `multipart/form-data` (a `FormData` always needs a freshly
- *   generated boundary, so any manual one is replaced)
+ * - the body is a `FormData` and the `Content-Type` carries no `boundary`. Such
+ *   a header can never describe the payload, so it is dropped even when the
+ *   caller set it explicitly - otherwise the request reaches the server as
+ *   unparseable bytes and the upload fails silently
+ * - the body is runtime-managed (`Blob`/`File`, `URLSearchParams`, binary,
+ *   stream) and the `Content-Type` is the seeded `application/json`
  * - the `Content-Type` is a `multipart/form-data` without a usable `boundary`,
  *   which is incomplete and unusable as-is
  *
@@ -95,6 +107,9 @@ export function resolveRequestHeaders(
   const shouldDrop =
     // a multipart/form-data without a usable boundary is incomplete
     (isMultipart && !hasBoundary) ||
+    // nothing without a boundary can describe a FormData, so an explicit
+    // Content-Type loses here - keeping it would fail silently on the server
+    (isFormDataBody(body) && !hasBoundary) ||
     // a runtime-managed body types itself: drop the seeded application/json and
     // any manual multipart (its boundary is stale), but keep an explicit
     // non-JSON type (e.g. a Blob's image/png or an octet-stream default)

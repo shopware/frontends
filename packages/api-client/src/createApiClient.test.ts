@@ -3,6 +3,7 @@ import {
   createError,
   eventHandler,
   getHeaders,
+  readMultipartFormData,
   setHeader,
   toNodeListener,
 } from "h3";
@@ -359,6 +360,51 @@ describe("createAPIClient", () => {
     expect(headers?.["content-type"]).toMatch(
       /^multipart\/form-data; boundary=/,
     );
+  });
+
+  it("should deliver a parseable upload even when the caller mislabels it as JSON", async () => {
+    // The runtime serializes FormData as multipart and generates the boundary,
+    // but that boundary only reaches the server through the Content-Type. An
+    // explicit application/json would strand it and the upload would fail
+    // silently, so it has to be dropped too.
+    const uploadSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/core/upload",
+      eventHandler(async (event) => {
+        uploadSpy({
+          contentType: getHeaders(event)["content-type"],
+          parts: await readMultipartFormData(event),
+        });
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
+    // @ts-expect-error this endpoint does not exist
+    await client.invoke("fileUpload post /core/upload", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formData,
+    });
+
+    expect(uploadSpy).toHaveBeenCalledTimes(1);
+    const upload = uploadSpy.mock.calls[0]?.[0];
+    expect(upload?.contentType).toMatch(/^multipart\/form-data; boundary=/);
+    // the server can actually read the file back out
+    expect(upload?.parts).toHaveLength(1);
+    expect(upload?.parts?.[0]?.filename).toBe("file.txt");
+    expect(upload?.parts?.[0]?.data.toString()).toBe("file-content");
   });
 
   it("should trigger success callback", async () => {

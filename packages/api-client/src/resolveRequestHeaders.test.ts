@@ -66,6 +66,21 @@ describe("resolveRequestHeaders", () => {
     expect(contentTypeOf(headers)).toBe("multipart/form-data; boundary=abc123");
   });
 
+  it("drops an explicit Content-Type that carries no boundary for a FormData body", () => {
+    // Without a boundary the server cannot split the multipart payload, so the
+    // upload would fail silently. Explicit or not, such a header has to go.
+    for (const value of ["application/json", "text/plain", "image/png"]) {
+      const body = new FormData();
+      body.append("file", new Blob(["x"]), "f.txt");
+      const headers = resolveRequestHeaders(
+        { "Content-Type": value },
+        DEFAULTS,
+        body,
+      );
+      expect(contentTypeOf(headers)).toBeUndefined();
+    }
+  });
+
   it("still drops a manual boundary for a FormData body (the runtime regenerates it)", () => {
     const headers = resolveRequestHeaders(
       { "Content-Type": "multipart/form-data; boundary=stale" },
