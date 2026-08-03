@@ -1,79 +1,123 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-import type {
-  ExperienceMode,
-  ExperienceModuleType,
-  ExperienceRegion,
-} from "./types";
+import {
+  assistantMessagePropsSchema,
+  contextualFiltersPropsSchema,
+  intentSummaryPropsSchema,
+  productComparisonPropsSchema,
+  productGridPropsSchema,
+} from "./schemas";
+import type { ExperienceMode, ExperienceModuleType, RegionName } from "./types";
 
 /**
- * The closed module registry.
+ * §10. The registry is the security boundary between the plan and Vue.
  *
- * Metadata only - the Vue component for each type is resolved separately in
- * `app/components/experience/moduleComponents.ts`. Keeping the two apart is what
- * lets the merger validate a patch on the server, where no component exists.
- *
- * Props schemas hold identifiers and display options only. Product data is never
- * carried in the plan; modules fetch it from Shopware when they render.
+ * Metadata only. The component for each type is resolved separately in
+ * `app/components/experience/moduleComponents.ts`, because the merger must be
+ * able to validate a patch on the server where no component exists. §10's entry
+ * shape keeps `component` here; splitting it is a deliberate deviation, and the
+ * two halves are kept in step by a type-level check on the component map.
  */
-export type ModuleDefinition = {
-  allowedRegions: readonly ExperienceRegion[];
-  allowedModes: readonly ExperienceMode[];
+export type ModuleRegistryEntry = {
   propsSchema: z.ZodType;
-  defaultProps: Record<string, unknown>;
-  defaultPriority: number;
+  allowedRegions: readonly RegionName[];
+  allowedModes: readonly ExperienceMode[];
+  commerceRisk: "none" | "read" | "cart" | "checkout";
+  canBeAddedByAI: boolean;
+  canBeMovedByAI: boolean;
+  canBeHiddenByAI: boolean;
+  maxInstances: number;
 };
 
-export type ModuleRegistry = Readonly<
-  Record<ExperienceModuleType, ModuleDefinition>
+/**
+ * Partial by design. §48's first vertical prototype names five modules; the
+ * other five types exist in the contract but have no implementation yet, and an
+ * operation naming one is rejected as `unknown-module-type`. That is the closed
+ * registry working, not a gap: a type becomes renderable only once registered.
+ */
+export type ModuleRegistry = Partial<
+  Record<ExperienceModuleType, ModuleRegistryEntry>
 >;
 
 export const moduleRegistry: ModuleRegistry = {
+  "intent-summary": {
+    propsSchema: intentSummaryPropsSchema,
+    allowedRegions: ["top", "main"],
+    allowedModes: ["explore", "inspire", "compare", "decide"],
+    commerceRisk: "none",
+    canBeAddedByAI: true,
+    canBeMovedByAI: true,
+    canBeHiddenByAI: true,
+    maxInstances: 1,
+  },
+
   "product-grid": {
-    allowedRegions: ["main"],
-    allowedModes: ["explore", "compare", "decide"],
-    propsSchema: z.strictObject({
-      columns: z.number().int().min(1).max(4),
-    }),
-    defaultProps: { columns: 3 },
-    defaultPriority: 10,
+    propsSchema: productGridPropsSchema,
+    allowedRegions: ["main", "bottom"],
+    allowedModes: ["explore", "inspire", "compare", "decide"],
+    commerceRisk: "read",
+    canBeAddedByAI: true,
+    canBeMovedByAI: true,
+    // §10, verbatim. Without this an AI patch can hide the page's only commerce
+    // content and leave an empty storefront that still validates.
+    canBeHiddenByAI: false,
+    maxInstances: 2,
   },
-  "comparison-tray": {
-    allowedRegions: ["main", "sidebar"],
+
+  "product-comparison": {
+    propsSchema: productComparisonPropsSchema,
+    // Placed above the listing (region "top") so a comparison is seen without
+    // scrolling; "main" stays allowed so a patch may still stage it inline.
+    allowedRegions: ["top", "main"],
     allowedModes: ["compare", "decide"],
-    propsSchema: z.strictObject({
-      productIds: z.array(z.string().min(1)).max(4),
-    }),
-    defaultProps: { productIds: [] },
-    defaultPriority: 5,
+    commerceRisk: "read",
+    canBeAddedByAI: true,
+    canBeMovedByAI: true,
+    canBeHiddenByAI: true,
+    maxInstances: 1,
   },
-  "filter-panel": {
-    allowedRegions: ["sidebar"],
-    allowedModes: ["explore", "compare"],
-    propsSchema: z.strictObject({
-      collapsed: z.boolean(),
-    }),
-    defaultProps: { collapsed: false },
-    defaultPriority: 10,
+
+  "contextual-filters": {
+    propsSchema: contextualFiltersPropsSchema,
+    allowedRegions: ["aside", "top"],
+    allowedModes: ["explore", "inspire", "compare", "decide"],
+    commerceRisk: "read",
+    canBeAddedByAI: true,
+    canBeMovedByAI: true,
+    canBeHiddenByAI: true,
+    maxInstances: 1,
   },
-  "assistant-panel": {
-    allowedRegions: ["main", "sidebar"],
-    allowedModes: ["explore", "compare", "decide"],
-    propsSchema: z.strictObject({
-      message: z.string().max(280),
-    }),
-    defaultProps: { message: "" },
-    defaultPriority: 20,
+
+  "assistant-message": {
+    propsSchema: assistantMessagePropsSchema,
+    allowedRegions: ["top", "aside", "main"],
+    allowedModes: [
+      "explore",
+      "inspire",
+      "compare",
+      "decide",
+      "configure",
+      "support",
+    ],
+    commerceRisk: "none",
+    canBeAddedByAI: true,
+    canBeMovedByAI: true,
+    canBeHiddenByAI: true,
+    maxInstances: 1,
   },
 };
 
 /**
- * Source precedence. An explicit user action outranks a rule or an AI proposal,
- * so a lower-ranked source may never overwrite a module the user placed.
+ * §16 conflict resolution:
+ *   security > route policy > explicit user action > commerce state > local rule > AI > default
+ *
+ * Only the sources the plan's `source` field can hold are ranked. A lower rank
+ * may never overwrite what a higher one placed.
  */
 export const SOURCE_RANK = {
   default: 0,
-  rule: 1,
   ai: 1,
-  user: 2,
+  rule: 2,
+  route: 3,
+  user: 4,
 } as const;

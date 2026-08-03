@@ -1,47 +1,61 @@
 import type { ExperiencePlan } from "./types";
 
 /**
- * The plan that reproduces the standard storefront listing view.
+ * §9. The application must always have a working plan without AI and without
+ * localStorage. This is what a shopper sees with adaptation switched off, and
+ * exactly what an explicit reset returns to.
  *
- * This is the baseline every adaptation starts from and the exact state a user
- * reset returns to, so it must always render the same page the template shows
- * with adaptation switched off.
+ * `now` is injected rather than read from the clock so the function stays pure
+ * and its output is comparable in tests.
  */
-export function createDefaultPlan(): ExperiencePlan {
+export function createDefaultExperiencePlan(
+  routeKey = "home",
+  now = 0,
+): ExperiencePlan {
   return {
-    version: 0,
+    schemaVersion: 1,
+    planVersion: 1,
     mode: "explore",
+    theme: "classic",
+    routeKey,
     shell: {
-      header: "standard",
-      navigation: "standard",
-      footer: "standard",
+      header: "default",
+      navigation: "mega-menu",
+      footer: "full",
     },
     workspace: {
-      width: "standard",
+      maxWidth: "standard",
       density: "comfortable",
+      columns: 1,
+      sidebar: "none",
+      stickyAside: false,
     },
     regions: {
-      header: [],
+      top: [],
       main: [
         {
-          id: "product-grid",
+          id: "primary-product-grid",
           type: "product-grid",
-          priority: 10,
-          props: { columns: 3 },
+          priority: 100,
+          enabled: true,
+          props: { limit: 12, sort: "relevance" },
           source: "default",
+          createdAt: now,
+          updatedAt: now,
         },
       ],
-      sidebar: [
-        {
-          id: "filter-panel",
-          type: "filter-panel",
-          priority: 10,
-          props: { collapsed: false },
-          source: "default",
-        },
-      ],
-      footer: [],
+      aside: [],
+      bottom: [],
     },
-    overlays: [],
+    overlays: {
+      assistant: false,
+      comparisonTray: false,
+      cartPreview: false,
+    },
+    metadata: {
+      reason: "default-plan",
+      source: "default",
+      generatedAt: now,
+    },
   };
 }

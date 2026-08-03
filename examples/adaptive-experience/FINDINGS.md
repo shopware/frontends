@@ -1,9 +1,47 @@
-# Findings: adaptive storefront spike
+# Findings: adaptive storefront
 
-One day building the adaptive storefront blueprint against the real starter
-template, followed by a multi-agent audit of the result.
+The arc of this example, in order: one day building it against the real starter
+template, a multi-agent audit, the discovery that it was built from a _summary_
+of the blueprint rather than the blueprint, and finally a faithful rebuild onto
+the real contract. Read top to bottom for the whole story.
 
-## Read this first
+## Update — the faithful rebuild is done and runnable
+
+The contract was rebuilt against blueprint §7-24 and the whole app + server was
+migrated onto it. Current state:
+
+- **Contract library** (`shared/experience`): faithful to the spec - 6 modes,
+  `top/main/aside/bottom` regions, 10 module types, the §18 merger with all its
+  steps, §19 `AdaptationPolicy`, §10 AI capability flags. Type-sound, and covered
+  by **64 unit tests**.
+- **App + server migrated**: five module components, the §12 renderer, the §20
+  engine, the §21-23 AI client and the §4 endpoint all run on the new contract.
+  Full typecheck passes; the whole flow is verified in a browser
+  (add-two→compare, remove-one→tray-closes→explore, re-add rebuilds, price-sort
+  densifies, reset restores).
+- **The keystone holds in code and test**: a validated AI patch cannot hide the
+  product grid (`canBeHiddenByAI: false`).
+- **Phase 6 now actually runs**: the earlier version defined the planner loop but
+  never called it. `requestPlan` is wired to the settled-context watcher, throttled
+  by a client cooldown, recording shadow proposals.
+
+Two things the rebuild itself surfaced:
+
+- **The §19 minimum-lifetime guardrail can fight the user.** It exists to stop
+  _adaptation_ from flickering a module, but every plan change here is
+  rule-sourced, so a change reflecting the shopper's _own_ action (removing a
+  compared product) was blocked for 5 s and the tray showed a product that was
+  already gone. Fix: a module may declare its own `minimumLifetimeMs` at ensure
+  time, and the comparison tray sets 0. A fuller answer would distinguish
+  user-driven syncs from autonomous adaptation.
+- **Vue's SFC macro cannot resolve a zod `z.infer` type in `defineProps`.** It
+  typechecks and unit-tests fine, then fails to compile in the browser. Module
+  props must be inlined as concrete shapes. Another bug only a browser catches.
+
+Everything below is the record of how it got here. It is still accurate about the
+_first_ attempt; the contract it critiques has since been replaced.
+
+## Read this first (about the first attempt)
 
 **The spike was built against a summary of the blueprint, not the blueprint.**
 
@@ -161,29 +199,33 @@ limit.
 7. **`plan.overlays` is inert.** Nothing renders it, yet the merger maintains it
    and the mock planner proposes it.
 
-## Recommendation
+## Recommendation (from the first attempt — now carried out)
 
-Keep the layer. Rewrite the contract against the real document.
+The recommendation at the time was: keep the layer, rewrite the contract against
+the real document. That has since been done - see the update at the top. For the
+record, the plan was:
 
-The layer structure, the Shopware boundary, the SSR behaviour, the merger's
-shape and the four implementation lessons above are all worth keeping. The
-contract, the registry, the operation shapes and the guardrails should be rebuilt
-from sections 7 to 19 rather than patched, because they were not derived from
-them.
+1. Re-implement the contract from §7 to §19. **Done.** This subsumed most of the
+   live bug list: `canBeHiddenByAI` closes the page-blanking hole, `AdaptationPolicy`
+   and the module-count limit close unbounded growth, `routeKey` scopes the shell,
+   and the §18 whole-plan revalidation backstops the class.
+2. Fix the tray-at-one-product hole. **Done** - and the rebuild found it was
+   deeper than a rule-coverage gap (the minimum-lifetime guardrail; see the top).
+3. Add browser verification. **Partly** - the flow is driven by a Playwright
+   script, but it still lives outside the repo; promoting it into `apps/e2e-tests`
+   is the remaining testing work.
+4. Wire phase 6 to something, or delete it. **Done** - the planner loop now runs
+   in shadow mode.
+5. Only then a real model. **Not done, by design** - the blueprint itself gates
+   this behind telemetry and an A/B comparison, which do not exist here.
 
-Suggested order:
+### What is left
 
-1. Re-implement the contract from §7 to §19. This subsumes most of the live bug
-   list: `canBeHiddenByAI` fixes bug 4, `AdaptationPolicy` and the module-count
-   limit close the unbounded-growth holes, `routeKey` fixes bug 3, and the §18
-   step 7 "validate the complete next plan" step is a backstop for the whole
-   class.
-2. Fix bug 2 while doing it. It is a rule-coverage hole, not a contract problem.
-3. Add the E2E tests. The Playwright harness already exists in `apps/e2e-tests`
-   and the components already carry testids. The verification that found most of
-   these bugs currently lives in throwaway scripts.
-4. Wire phase 6 to something, or delete it and stop claiming it.
-5. Only then a real model.
+- Promote the browser flow into `apps/e2e-tests` so it runs in CI.
+- The §11 async shell-component registry (the layout drives shell values instead).
+- Real storage for the context (still `useState`, so it resets on reload) and the
+  §22 sales-channel work (phases 8-10).
+- A real provider, only after telemetry exists to judge proposals.
 
 ## The process lesson
 

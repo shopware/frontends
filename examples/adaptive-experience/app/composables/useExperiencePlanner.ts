@@ -1,26 +1,28 @@
-import { applyPatch } from "#shared/experience/applyPatch";
-import { toAiContext } from "#shared/experience/rules";
-import { experiencePlanResponseSchema } from "#shared/experience/schemas";
+import { applyExperiencePatch } from "#shared/experience/applyPatch";
+import { defaultAdaptationPolicy } from "#shared/experience/policy";
+import { experiencePlanningResponseSchema } from "#shared/experience/schemas";
 import type { ExperiencePatch } from "#shared/experience/types";
 
 export type ShadowProposal = {
-  requestedVersion: number;
-  patch: ExperiencePatch;
-  /** What the merger would have done, without touching the live plan. */
-  wouldApply: number;
+  basedOnPlanVersion: number;
+  reasonCode: string;
+  confidence: number;
+  wouldAccept: number;
   wouldReject: string[];
 };
 
 /**
- * Client half of the AI planner loop.
+ * §21-23 client half of the AI planner loop.
  *
  * Nothing here trusts the network: the response is re-validated even though the
- * endpoint already validated it, because the schema is cheap and this composable
- * is the last gate before a patch reaches the plan.
+ * endpoint validated it, and the patch is only applied if `basedOnPlanVersion`
+ * still matches the live plan (§22 stale-response rejection). In shadow mode
+ * (§6) it records what the merger *would* have done and applies nothing.
  */
 export function useExperiencePlanner() {
   const appConfig = useAppConfig();
-  const { plan, signals, propose } = useExperienceEngine();
+  const timeoutMs = useRuntimeConfig().public.plannerTimeoutMs ?? 2000;
+  const { plan, context, propose } = useExperienceEngine();
 
   const proposals = useState<ShadowProposal[]>(
     "experience-ai-proposals",
@@ -28,39 +30,84 @@ export function useExperiencePlanner() {
   );
   const pending = ref(false);
 
+  // §12/§21 trigger policy: a client cooldown so a burst of signal changes does
+  // not spam the endpoint. Kept just above the server's 3s window so a throttled
+  // client never re-fires while the server is still cooling down (no 429s).
+  const CLIENT_COOLDOWN_MS = 3500;
+  const lastRequestAt = useState<number>("experience-ai-lastcall", () => 0);
+
+  const dryRun = (patch: ExperiencePatch) =>
+    applyExperiencePatch(
+      structuredClone(toRaw(plan.value)),
+      patch,
+      context.value,
+      defaultAdaptationPolicy,
+      { source: "ai", now: Date.now() },
+    );
+
   const requestPlan = async () => {
-    if (pending.value) return;
+    if (pending.value || !import.meta.client) return;
+    const startedAt = Date.now();
+    if (startedAt - lastRequestAt.value < CLIENT_COOLDOWN_MS) return;
+    lastRequestAt.value = startedAt;
     pending.value = true;
 
     // Captured before the await: the plan may move while the request is in
-    // flight, and that is exactly what the stale check needs to notice.
-    const requestedVersion = plan.value.version;
+    // flight, which is exactly what the stale check needs to notice.
+    const requestedVersion = plan.value.planVersion;
+    const moduleIds = (["top", "main", "aside", "bottom"] as const).flatMap(
+      (region) => plan.value.regions[region].map((m) => m.id),
+    );
 
     try {
       const raw = await $fetch("/api/experience/plan", {
         method: "POST",
+        timeout: timeoutMs,
         body: {
+          requestId: crypto.randomUUID(),
+          sessionId: context.value.sessionId,
           planVersion: requestedVersion,
-          mode: plan.value.mode,
-          context: toAiContext(signals.value),
+          currentPlan: {
+            mode: plan.value.mode,
+            routeKey: plan.value.routeKey,
+            moduleIds,
+          },
+          context: {
+            route: { kind: context.value.route.kind },
+            signals: context.value.signals,
+            comparedProductCount: context.value.comparedProductIds.length,
+            viewedProductCount: context.value.viewedProducts.length,
+            searchCount: context.value.searches.length,
+          },
+          allowed: context.value.capabilities,
         },
-        timeout: 2000,
       });
 
-      const response = experiencePlanResponseSchema.safeParse(raw);
+      const response = experiencePlanningResponseSchema.safeParse(raw);
       if (!response.success || !response.data.patch) return;
 
-      const patch = response.data.patch;
+      const { patch, basedOnPlanVersion, reasonCode, confidence } =
+        response.data;
 
       if (appConfig.experience.aiShadowMode) {
+        const result = dryRun(patch);
         proposals.value = [
           ...proposals.value,
-          buildShadowProposal(response.data.planVersion, patch),
+          {
+            basedOnPlanVersion,
+            reasonCode,
+            confidence,
+            wouldAccept: result.accepted.length,
+            wouldReject: result.rejected.map((entry) => entry.reason),
+          },
         ];
         return;
       }
 
-      propose(patch, "ai", response.data.planVersion);
+      // §22: only apply if the plan has not moved on since the request.
+      if (basedOnPlanVersion === plan.value.planVersion) {
+        propose(patch, "ai");
+      }
     } catch {
       // A planner that is slow, rate-limited or down must never break the page.
       // The plan simply stays where the local rules left it.
@@ -68,27 +115,6 @@ export function useExperiencePlanner() {
       pending.value = false;
     }
   };
-
-  /**
-   * Runs the patch against a throwaway copy so shadow mode reports what would
-   * have happened, not just what was proposed. A proposal the merger would have
-   * rejected is not evidence the model is doing well.
-   */
-  const buildShadowProposal = (
-    requestedVersion: number,
-    patch: ExperiencePatch,
-  ): ShadowProposal => {
-    const dryRun = applyPatchDryRun(patch);
-    return {
-      requestedVersion,
-      patch,
-      wouldApply: dryRun.applied.length,
-      wouldReject: dryRun.rejected.map((entry) => entry.reason),
-    };
-  };
-
-  const applyPatchDryRun = (patch: ExperiencePatch) =>
-    applyPatch(structuredClone(toRaw(plan.value)), patch, { source: "ai" });
 
   return { proposals, requestPlan, pending };
 }

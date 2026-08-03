@@ -2,21 +2,26 @@ import type { Component } from "vue";
 
 import type { ExperienceModuleType } from "#shared/experience/types";
 
-import ExperienceAssistantPanel from "./AssistantPanel.vue";
-import ExperienceComparisonTray from "./ComparisonTray.vue";
-import ExperienceFilterPanel from "./FilterPanel.vue";
-import ExperienceProductGrid from "./ProductGrid.vue";
+import ExperienceAssistantMessage from "./AssistantMessageModule.vue";
+import ExperienceContextualFilters from "./ContextualFiltersModule.vue";
+import ExperienceIntentSummary from "./IntentSummaryModule.vue";
+import ExperienceProductComparison from "./ProductComparisonModule.vue";
+import ExperienceProductGrid from "./ProductGridModule.vue";
 
 /**
- * The only place a module type becomes a component.
+ * §10/§12: the only place a module type becomes a Vue component.
  *
- * `Record` over the module type union means adding a type to the registry in
- * `#shared/experience/registry` without adding a component here is a type error,
- * so the two registries cannot drift.
+ * Partial by design - it mirrors the module registry, which currently registers
+ * five of the ten contract types (§48's first vertical prototype). A type absent
+ * here is also absent from the registry, so the merger rejects any patch naming
+ * it before it could ever reach `<component :is>`.
  */
-export const moduleComponents: Record<ExperienceModuleType, Component> = {
+export const moduleComponents: Partial<
+  Record<ExperienceModuleType, Component>
+> = {
+  "intent-summary": ExperienceIntentSummary,
   "product-grid": ExperienceProductGrid,
-  "comparison-tray": ExperienceComparisonTray,
-  "filter-panel": ExperienceFilterPanel,
-  "assistant-panel": ExperienceAssistantPanel,
+  "product-comparison": ExperienceProductComparison,
+  "contextual-filters": ExperienceContextualFilters,
+  "assistant-message": ExperienceAssistantMessage,
 };

@@ -12,9 +12,8 @@ export default defineConfig({
     },
   },
   test: {
-    // The experience contracts and the planner provider are deliberately free of
-    // Vue/Nuxt, so they run in a plain node environment without the Nuxt test
-    // harness. The composables and components are not covered here; they need
+    // The contract library and the planner provider are free of Vue/Nuxt, so
+    // they run in a plain node environment. The composables and components need
     // the Nuxt harness and are exercised through the running app instead.
     include: ["shared/**/*.test.ts", "server/**/*.test.ts"],
     environment: "node",

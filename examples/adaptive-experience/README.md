@@ -1,40 +1,47 @@
-# Adaptive experience (R&D spike)
+# Adaptive experience (R&D)
 
 A storefront that changes its own layout based on what the shopper does.
 
-The app keeps one versioned `ExperiencePlan` that describes the whole page:
-shell, workspace, and which modules sit in which region. Local rules watch the
-shopper's actions and propose small patches. Guardrails decide what may be
-applied. The renderer builds the page only from registered components.
+The app holds one versioned `ExperiencePlan` that describes the whole page -
+mode, shell, workspace, and which modules sit in which region. Semantic events
+feed an anonymous `ExperienceContext`; local rules read it and propose small
+patches; a merger validates every patch against a closed registry and applies
+what is safe; the renderer builds the page only from registered components. AI,
+when enabled, may only return the same validated patch shape - it can never name
+a component or reach commerce data.
 
-This is a spike for the blueprint in
-[this gist](https://gist.github.com/mkucmus/70d059b96122d577f60cdeef3e048517).
-Read [FINDINGS.md](./FINDINGS.md) for what held up and what did not.
+This implements the blueprint at
+[this gist](https://gist.github.com/mkucmus/70d059b96122d577f60cdeef3e048517),
+faithfully to its sections 7-24. Read [FINDINGS.md](./FINDINGS.md) for the full
+story, including a first attempt that diverged from the spec and what the
+faithful rebuild changed.
 
 ## How it is built
 
-This is a Nuxt layer on top of `vue-starter-template`. The template is not
-modified. Everything commerce related (Shopware wiring, product cards, listing
-filters, cart) comes from it unchanged, so the diff here is only what the
-adaptive part costs.
+A Nuxt layer on top of `vue-starter-template`, which is not modified. Everything
+commerce-related (Shopware wiring, product cards, listing filters, cart) is
+inherited unchanged, so the diff here is only what the adaptive part costs.
 
-It is rethemed (teal, own logo) so it is never mistaken for the starter in a
-screenshot. The theme lives in [uno.config.ts](./uno.config.ts), except the image
-placeholder colour, which is an app config value and is set in
-[app/app.config.ts](./app/app.config.ts).
-
-That `uno.config.ts` is required, not decorative. Without it the design tokens
-silently vanish while the page still looks roughly right. See
-[FINDINGS.md](./FINDINGS.md).
+```
+shared/experience/    Contracts, registry, defaults, merger, rules, policy, context.
+                      Pure data - no Vue, no Pinia, no Shopware, no AI (blueprint E1).
+app/components/experience/  The five module components + the region/workspace renderer.
+app/composables/      Plan, context, engine, AI planner client.
+app/layouts/          Layout override, so the plan can drive the shell.
+app/pages/adaptive.vue      The adaptive listing route.
+server/api/experience/      The one place AI may touch the experience.
+server/services/ai/         The planner provider, behind an interface.
+```
 
 ## Run it
 
 ```bash
 pnpm i
-pnpm run dev --filter=example-adaptive-experience
+pnpm --filter=example-adaptive-experience dev
 ```
 
-Then compare the two listings side by side:
+Compare the two listings side by side (the demo store has no shirts - try
+`chair`, `sofa`, `table`):
 
 - `http://localhost:3000/search?search=chair` - the standard listing
 - `http://localhost:3000/adaptive?search=chair` - the adaptive one
@@ -42,62 +49,79 @@ Then compare the two listings side by side:
 ## Try it
 
 1. Click "Compare" on one product. Nothing changes.
-2. Click "Compare" on a second product. The page switches to `compare` mode and
-   a comparison tray appears above the grid.
-3. Click "Restore standard view". The page goes back to normal and stays there.
-   The reset clears what the rules learned about you, not just the layout, so
-   nothing snaps back. Stage two products again and it re-adapts.
-4. Sort by price twice. The header goes compact and the grid widens to four
-   columns.
+2. Click "Compare" on a second. The page enters `compare` mode and a comparison
+   tray appears above the grid.
+3. Remove one product from the tray. You cannot compare one, so the tray closes
+   and the page returns to `explore`. Add another and it rebuilds.
+4. Sort by price twice. Repeated price sorting reads as price sensitivity, so the
+   workspace goes compact and the grid widens.
+5. Click "Restore standard view" - it clears what the rules learned about you,
+   not just the layout, so nothing snaps back.
 
-## Layout
+## The contract, in one place
 
+- **Modes** (§7): `explore, inspire, compare, decide, configure, support`.
+- **Regions** (§7): `top, main, aside, bottom`.
+- **Module types** (§7): ten in the contract; five are registered and renderable
+  today (`product-grid`, `product-comparison`, `contextual-filters`,
+  `assistant-message`, `intent-summary`). A patch naming an unregistered type is
+  rejected - that is the closed registry working, not a gap.
+- **Merger** (§18): pure `(plan, patch, context, policy)`. It clones, validates
+  every operation against the registry, enforces AI capability flags, the
+  checkout route-lock, patch limits, source precedence and minimum lifetimes,
+  applies the survivors, re-validates the whole plan, and advances the version
+  only if something changed.
+- **The keystone** (§10): the product grid is `canBeHiddenByAI: false`, so a
+  validated AI patch can never empty the page.
+
+## AI (shadow mode)
+
+The planner loop runs. On each settled context change the client asks
+`/api/experience/plan`; in shadow mode (the default, `app.config.ts`) it records
+what the merger _would_ have done and applies nothing. The provider is a
+deterministic mock. The endpoint validates the request, rate-limits per session,
+validates the provider's patch, and re-validates the whole response before it
+leaves. To let AI actually move the UI, set `experience.aiShadowMode` to `false`.
+
+## Testing with a local model (Ollama)
+
+The planner is a swappable `PlannerProvider`
+([server/services/ai](server/services/ai)). A local model can drive it, and it
+stays safe: whatever the model returns is untrusted, so the endpoint re-validates
+it against the patch schema and the merger enforces the capability flags - a bad
+model only ever produces a _rejected_ proposal.
+
+```bash
+# 1. install Ollama (https://ollama.com), then:
+ollama pull llama3.2:3b
+
+# 2. point the example at it (see .env.example):
+cp .env.example .env      # then uncomment EXPERIENCE_PLANNER=ollama etc.
+pnpm --filter=example-adaptive-experience dev
 ```
-shared/experience/     Contracts, registry, rules, guardrails, merger. No Vue.
-app/components/experience/  Module components and the renderer.
-app/composables/       Plan, signals, engine, AI planner client.
-app/layouts/           Layout override, so the plan can drive the shell.
-app/pages/adaptive.vue The adaptive listing route.
-server/api/experience/ The only place AI may touch the experience.
-server/services/ai/    Planner provider behind an interface.
-```
+
+Open `/adaptive?search=chair`, stage products or sort by price, and watch the
+**"AI planner - shadow proposals"** panel: it shows each proposal's reason,
+confidence, and how many operations the merger _would_ accept - the quality
+signal for a model before you trust it. The output is constrained to the patch
+schema via Ollama's structured-output `format` (built from the Zod schema with
+`z.toJSONSchema`), and re-validated regardless. A local model on CPU is slower
+than 2s, so `EXPERIENCE_PLANNER_TIMEOUT_MS` raises the client's wait.
 
 ## Tests
 
 ```bash
-pnpm run test --filter=example-adaptive-experience
+pnpm --filter=example-adaptive-experience test
 ```
 
-56 unit tests cover the schemas, the merger, the rules and the guardrails. They
-run in plain node because `shared/` has no Vue in it.
+64 unit tests cover the schemas, the merger, the rules, the context signals and
+the planner provider. They run in plain node because `shared/` and the provider
+have no Vue in them. The composables and components are exercised by driving the
+running app; two real bugs in the first attempt passed every unit test and only
+surfaced in the browser, so that split is deliberate. See [FINDINGS.md](./FINDINGS.md).
 
-The tests do not cover the composables or components. Those were checked by
-driving the running app in a browser. That split matters: two real bugs in this
-spike passed every unit test and only showed up in the browser. See
-[FINDINGS.md](./FINDINGS.md).
+## Not built
 
-## State of the spike
-
-**Read [FINDINGS.md](./FINDINGS.md) before trusting anything here.** This spike was
-built against a summary of the blueprint rather than the blueprint itself, and its
-contract diverges from the specified one in most details.
-
-AI does not run. The Nitro endpoint, the mock provider, the cooldown and the
-shadow recorder are all built and unit tested, but `useExperiencePlanner` has no
-caller anywhere in the app, so `/api/experience/plan` is never hit at runtime.
-Phase 6 is written, not exercised. An earlier version of this file claimed the
-loop runs. It does not.
-
-Sales channel switching is not implemented. The operation exists in the contract
-and the merger reports it as `not-implemented`.
-
-Known live bugs in the demo, all confirmed:
-
-- Remove one of two staged products and the tray keeps showing the removed one.
-  No rule covers exactly one staged product.
-- Sort by price twice and the language and currency switchers disappear from the
-  whole storefront, with no way back except a reload. The plan is global, the
-  reset button only exists on `/adaptive`.
-- A validated AI patch can hide the product grid and blank the page. The
-  blueprint specifies `canBeHiddenByAI: false` to prevent exactly this. It is not
-  implemented here.
+Sales-channel switching (blueprint phases 8-10; the merger reports the operation
+as `not-implemented`), the §11 async shell-component registry (the existing
+layout is driven by the shell values instead), and any real AI provider.

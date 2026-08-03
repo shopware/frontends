@@ -1,0 +1,310 @@
+/*
+ * The "genz" skin (§7 visual identity).
+ *
+ * One scoped stylesheet, switched on by `[data-vibe="genz"]` high in the layout
+ * tree. Everything is nested under that attribute, so it is inert on the default
+ * look and on every route but /adaptive, and it can reskin the shared shell and
+ * card components without editing them.
+ *
+ * Restrained-bold: the character comes from the dark ground, the display type and
+ * the chunky rounded shapes. Boldness is spent in one place - a single violet
+ * accent (lime only for price) - so the page reads confident, not noisy.
+ */
+[data-vibe="genz"] {
+  --gz-bg: #100e1c;
+  --gz-bg-2: #191530;
+  --gz-surface: #1d1938;
+  --gz-ink: #f3f1fb;
+  --gz-muted: #a29bc0;
+  --gz-line: #2c2749;
+  --gz-accent: #b47bff;
+  --gz-accent-2: #8b5cf6;
+  --gz-accent-ink: #150b28;
+  --gz-lime: #c7f24a;
+  --gz-display: "Syne", "Arial Black", system-ui, sans-serif;
+
+  background:
+    radial-gradient(
+      1200px 680px at 84% -12%,
+      rgba(139, 92, 246, 0.14),
+      transparent 62%
+    ),
+    var(--gz-bg) !important;
+  color: var(--gz-ink) !important;
+}
+
+/*
+ * Shared-component token flips. The starter's cards, filters and shell paint text
+ * and surfaces with a fixed set of light-theme tokens; on the dark ground they
+ * vanish, so remap those exact utility classes. Broad by design - it is how one
+ * skin can cover components it never edits.
+ */
+[data-vibe="genz"] .text-surface-on-surface,
+[data-vibe="genz"] .text-surface-on-background,
+[data-vibe="genz"] .color-surface-on-surface-primary,
+[data-vibe="genz"] .text-surface-on-surface-primary,
+[data-vibe="genz"] .text-brand-on-secondary,
+[data-vibe="genz"] .text-brand-on-tertiary,
+[data-vibe="genz"] .text-black {
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] .text-surface-on-surface-variant,
+[data-vibe="genz"] .text-outline-outline,
+[data-vibe="genz"] .text-gray-400,
+[data-vibe="genz"] .text-gray-500,
+[data-vibe="genz"] .text-gray-600 {
+  color: var(--gz-muted) !important;
+}
+[data-vibe="genz"] .bg-surface-surface-primary,
+[data-vibe="genz"] .bg-surface-surface,
+[data-vibe="genz"] .bg-surface-surface-variant,
+[data-vibe="genz"] .bg-surface-background,
+[data-vibe="genz"] .bg-surface-surface-container,
+[data-vibe="genz"] .bg-surface-surface-container-low,
+[data-vibe="genz"] .bg-surface-surface-container-lowest,
+[data-vibe="genz"] .bg-brand-tertiary,
+[data-vibe="genz"] .bg-white,
+[data-vibe="genz"] .bg-gray-50,
+[data-vibe="genz"] .bg-gray-100 {
+  background-color: var(--gz-bg-2) !important;
+}
+[data-vibe="genz"] .border,
+[data-vibe="genz"] .border-b,
+[data-vibe="genz"] .border-t,
+[data-vibe="genz"] .border-outline-outline-variant,
+[data-vibe="genz"] .border-outline-outline,
+[data-vibe="genz"] .divide-y > * {
+  border-color: var(--gz-line) !important;
+}
+[data-vibe="genz"] input[type="checkbox"],
+[data-vibe="genz"] input[type="radio"],
+[data-vibe="genz"] input[type="range"] {
+  accent-color: var(--gz-accent);
+}
+
+/* Type: the display face gives character; weight and a little tightening, not caps. */
+[data-vibe="genz"] h1,
+[data-vibe="genz"] h2,
+[data-vibe="genz"] h3 {
+  font-family: var(--gz-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--gz-ink);
+}
+
+/* --- shell: header, meta nav, footer --- */
+[data-vibe="genz"] > header {
+  background: rgba(16, 14, 28, 0.8) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gz-line);
+}
+[data-vibe="genz"] > header a,
+[data-vibe="genz"] > header button,
+[data-vibe="genz"] > header span {
+  color: var(--gz-ink);
+}
+[data-vibe="genz"] input,
+[data-vibe="genz"] select {
+  background: var(--gz-bg-2) !important;
+  color: var(--gz-ink) !important;
+  border-color: var(--gz-line) !important;
+  border-radius: 12px !important;
+}
+[data-vibe="genz"] input::placeholder {
+  color: var(--gz-muted) !important;
+}
+[data-vibe="genz"] footer {
+  background: var(--gz-bg-2) !important;
+  color: var(--gz-ink) !important;
+  border-top: 1px solid var(--gz-line);
+}
+[data-vibe="genz"] footer a {
+  color: var(--gz-muted) !important;
+}
+[data-vibe="genz"] footer a:hover {
+  color: var(--gz-ink) !important;
+}
+
+/* --- product cards --- */
+[data-vibe="genz"] [data-testid="experience-product-grid"] > div {
+  background: var(--gz-surface);
+  border: 1px solid var(--gz-line);
+  border-radius: 18px;
+  padding: 10px 10px 16px;
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease;
+}
+[data-vibe="genz"] [data-testid="experience-product-grid"] > div:hover {
+  transform: translateY(-4px);
+  border-color: var(--gz-accent);
+}
+[data-vibe="genz"] [data-testid="product-box-img"] {
+  border-radius: 14px;
+  overflow: hidden;
+}
+[data-vibe="genz"] [data-testid="product-box-product-name-link"],
+[data-vibe="genz"] [data-testid="experience-product-grid"] .font-serif {
+  font-family: var(--gz-display) !important;
+  font-weight: 600 !important;
+  color: var(--gz-ink) !important;
+  min-height: 0 !important;
+}
+[data-vibe="genz"] [data-testid="product-box-product-price"],
+[data-vibe="genz"] [data-testid="product-box-product-price"] * {
+  color: var(--gz-lime) !important;
+}
+
+/* One solid accent CTA - no rainbow, no shout. */
+[data-vibe="genz"] [data-testid="add-to-cart-button"] {
+  background: var(--gz-accent) !important;
+  color: var(--gz-accent-ink) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  transition: background 0.15s ease;
+}
+[data-vibe="genz"] [data-testid="add-to-cart-button"]:hover {
+  background: var(--gz-accent-2) !important;
+}
+
+/* Wishlist heart: quiet dark glass, accent on hover. */
+[data-vibe="genz"] [data-testid="product-box-toggle-wishlist-button"] {
+  background: rgba(16, 14, 28, 0.66) !important;
+  border: 1px solid var(--gz-line) !important;
+  color: var(--gz-accent) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* --- the compare pill on the image --- */
+[data-vibe="genz"] [data-testid^="experience-compare-"] {
+  border: none !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  background: rgba(16, 14, 28, 0.66) !important;
+  color: var(--gz-ink) !important;
+  box-shadow: inset 0 0 0 1px var(--gz-line);
+  backdrop-filter: blur(6px);
+}
+[data-vibe="genz"] [data-testid^="experience-compare-"][aria-pressed="true"] {
+  background: var(--gz-accent) !important;
+  color: var(--gz-accent-ink) !important;
+  box-shadow: none;
+}
+
+/* --- comparison tray --- */
+[data-vibe="genz"] [data-testid="experience-comparison-tray"] {
+  background: var(--gz-bg-2) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-radius: 18px !important;
+}
+[data-vibe="genz"] [data-testid="experience-comparison-tray"] h2 {
+  font-family: var(--gz-display);
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] [data-testid="experience-comparison-tray"] li {
+  background: var(--gz-surface) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-radius: 14px !important;
+}
+[data-vibe="genz"] [data-testid="experience-comparison-tray"] li span {
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] [data-testid="experience-comparison-clear"] {
+  color: var(--gz-accent) !important;
+}
+
+/* --- assistant panel --- */
+[data-vibe="genz"] [data-testid="experience-assistant-panel"] {
+  background: var(--gz-bg-2) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-left: 3px solid var(--gz-accent) !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+}
+[data-vibe="genz"] [data-testid="experience-assistant-panel"] p {
+  font-family: var(--gz-display);
+  font-weight: 600;
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] [data-testid="experience-assistant-action"] {
+  border: 1px solid var(--gz-accent) !important;
+  background: transparent !important;
+  color: var(--gz-accent) !important;
+  font-weight: 600 !important;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+[data-vibe="genz"] [data-testid="experience-assistant-action"]:hover {
+  background: var(--gz-accent) !important;
+  color: var(--gz-accent-ink) !important;
+}
+
+/* --- the vibe header (intent-summary), shown when the feed is switched on --- */
+[data-vibe="genz"] [data-testid="experience-intent-summary"] {
+  background: var(--gz-bg-2) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-left: 3px solid var(--gz-accent) !important;
+  border-radius: 16px !important;
+}
+[data-vibe="genz"] [data-testid="experience-intent-summary"] h2 {
+  font-family: var(--gz-display);
+  font-size: 1.15rem;
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] [data-testid="experience-intent-summary"] p {
+  color: var(--gz-muted) !important;
+}
+
+/* --- shadow proposals panel --- */
+[data-vibe="genz"] [data-testid="experience-shadow-panel"] {
+  background: var(--gz-bg-2) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-radius: 16px !important;
+  color: var(--gz-ink) !important;
+}
+[data-vibe="genz"] [data-testid="experience-shadow-panel"] li {
+  background: var(--gz-surface) !important;
+  border: 1px solid var(--gz-line) !important;
+  border-radius: 12px !important;
+}
+[data-vibe="genz"]
+  [data-testid="experience-shadow-panel"]
+  li
+  > span:first-child {
+  background: var(--gz-accent) !important;
+  color: var(--gz-accent-ink) !important;
+}
+
+/* --- workspace chrome: reset, sort, vibe toggle --- */
+[data-vibe="genz"] [data-testid="experience-reset"] {
+  color: var(--gz-accent) !important;
+}
+[data-vibe="genz"] [data-testid="vibe-toggle"] {
+  border-color: var(--gz-line) !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+}
+[data-vibe="genz"] [data-testid="vibe-genz"] {
+  background: var(--gz-accent) !important;
+  color: var(--gz-accent-ink) !important;
+  font-weight: 700 !important;
+}
+[data-vibe="genz"] [data-testid="vibe-classic"] {
+  background: transparent !important;
+  color: var(--gz-muted) !important;
+}
+[data-vibe="genz"] [data-testid="adaptive-sort"] {
+  color: var(--gz-ink) !important;
+}
+
+[data-vibe="genz"] a {
+  color: var(--gz-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-vibe="genz"] * {
+    transition: none !important;
+  }
+}

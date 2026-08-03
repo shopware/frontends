@@ -1,415 +1,506 @@
 import { describe, expect, it } from "vitest";
 
-import { applyPatch } from "./applyPatch";
-import { createDefaultPlan } from "./defaults";
-import type { ExperiencePatch, ExperiencePlan } from "./types";
+import { applyExperiencePatch } from "./applyPatch";
+import { createDefaultContext } from "./context";
+import { createDefaultExperiencePlan } from "./defaults";
+import { defaultAdaptationPolicy } from "./policy";
+import type {
+  ExperienceContext,
+  ExperiencePatch,
+  ExperiencePlan,
+  ExperienceSource,
+} from "./types";
+
+// Far past the default plan's module lifetimes (createdAt 0), so minimum-lifetime
+// never interferes unless a test opts in with its own `now`.
+const NOW = 1_000_000;
+
+const ctx = (over: Partial<ExperienceContext> = {}): ExperienceContext => ({
+  ...createDefaultContext("s", 0),
+  ...over,
+});
 
 const patch = (
   ...operations: ExperiencePatch["operations"]
-): ExperiencePatch => ({
-  operations,
-});
+): ExperiencePatch => ({ operations });
 
-const compareModePlan = (): ExperiencePlan => {
-  const { plan } = applyPatch(
-    createDefaultPlan(),
-    patch({ type: "set-mode", mode: "compare" }),
-    { source: "rule" },
+const apply = (
+  plan: ExperiencePlan,
+  p: ExperiencePatch,
+  opts: {
+    source?: ExperienceSource;
+    now?: number;
+    context?: ExperienceContext;
+  } = {},
+) =>
+  applyExperiencePatch(
+    plan,
+    p,
+    opts.context ?? ctx(),
+    defaultAdaptationPolicy,
+    {
+      source: opts.source ?? "rule",
+      now: opts.now ?? NOW,
+    },
   );
-  return plan;
-};
 
-describe("applyPatch", () => {
-  it("does not mutate the input plan", () => {
-    const plan = createDefaultPlan();
+const comparePlanWith = (moduleId = "cmp") =>
+  apply(
+    createDefaultExperiencePlan("search", 0),
+    patch(
+      { type: "set-mode", mode: "compare" },
+      {
+        type: "ensure-module",
+        module: {
+          id: moduleId,
+          type: "product-comparison",
+          region: "main",
+          priority: 10,
+          props: { productIds: ["a", "b"] },
+        },
+      },
+    ),
+    { source: "rule" },
+  ).plan;
+
+describe("applyExperiencePatch (§18 merger)", () => {
+  it("never mutates the input plan (§18: clone first)", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
     const snapshot = structuredClone(plan);
-
-    applyPatch(plan, patch({ type: "set-mode", mode: "compare" }), {
-      source: "rule",
-    });
-
+    apply(plan, patch({ type: "set-mode", mode: "compare" }));
     expect(plan).toEqual(snapshot);
   });
 
-  it("advances the version when the plan changes", () => {
-    const plan = createDefaultPlan();
+  it("advances planVersion only when the plan changed (step 8)", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
+    const changed = apply(plan, patch({ type: "set-mode", mode: "compare" }));
+    expect(changed.plan.planVersion).toBe(plan.planVersion + 1);
 
-    const { plan: next } = applyPatch(
-      plan,
-      patch({ type: "set-mode", mode: "compare" }),
-      { source: "rule" },
-    );
-
-    expect(next.version).toBe(plan.version + 1);
-    expect(next.mode).toBe("compare");
+    const noop = apply(plan, patch({ type: "set-mode", mode: "explore" }));
+    expect(noop.plan).toBe(plan);
+    expect(noop.accepted).toHaveLength(1);
+    expect(noop.rejected).toHaveLength(0);
   });
 
-  it("keeps the version and plan identity when nothing actually changed", () => {
-    const plan = createDefaultPlan();
-
-    const result = applyPatch(
-      plan,
-      patch({ type: "set-mode", mode: "explore" }),
-      { source: "rule" },
+  it("normalizes priorities within a region (step 6)", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
+    const result = apply(plan, patch({ type: "set-mode", mode: "compare" }));
+    const grid = result.plan.regions.main.find(
+      (m) => m.id === "primary-product-grid",
     );
-
-    expect(result.plan).toBe(plan);
-    expect(result.applied).toHaveLength(1);
-    expect(result.rejected).toHaveLength(0);
+    expect(grid?.priority).toBe(10);
   });
 
-  it("applies operations in order against the state left by the previous one", () => {
-    // ensure-module would be rejected in explore mode, so the preceding
-    // set-mode is what makes it legal.
-    const { plan } = applyPatch(
-      createDefaultPlan(),
-      patch(
-        { type: "set-mode", mode: "compare" },
-        {
-          type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
-        },
-      ),
-      { source: "rule" },
-    );
+  describe("shell and workspace values are validated", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
 
-    expect(plan.regions.main.map((module) => module.id)).toContain(
-      "comparison",
-    );
-  });
-
-  describe("registry validation", () => {
-    it("rejects a module in a region its type does not allow", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "ensure-module",
-          moduleId: "grid-2",
-          moduleType: "product-grid",
-          region: "sidebar",
-        }),
-        { source: "ai" },
-      );
-
-      expect(result.rejected).toEqual([
-        {
-          operation: expect.objectContaining({ moduleId: "grid-2" }),
-          reason: "region-not-allowed",
-        },
-      ]);
-      expect(result.plan.regions.sidebar).toHaveLength(1);
-    });
-
-    it("rejects a module whose type is not allowed in the current mode", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
-        }),
-        { source: "rule" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("mode-not-allowed");
-    });
-
-    it("rejects props that do not match the module schema", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "update-module-props",
-          moduleId: "product-grid",
-          props: { columns: 99 },
-        }),
-        { source: "ai" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("invalid-props");
-      expect(result.plan.regions.main[0]?.props).toEqual({ columns: 3 });
-    });
-
-    it("rejects unknown props rather than letting them reach the renderer", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "update-module-props",
-          moduleId: "product-grid",
-          props: { onClick: "alert(1)" },
-        }),
-        { source: "ai" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("invalid-props");
-    });
-
-    it("rejects an operation targeting a module that does not exist", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({ type: "hide-module", moduleId: "nope" }),
-        { source: "user" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("unknown-module-id");
-    });
-
-    it("rejects reusing an existing module id for a different type", () => {
-      const result = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "ensure-module",
-          moduleId: "product-grid",
-          moduleType: "assistant-panel",
-          region: "main",
-        }),
-        { source: "ai" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("duplicate-module-id");
-    });
-
-    it("drops modules that the new mode does not allow, keeping the plan valid", () => {
-      const plan = compareModePlan();
-      const { plan: withTray } = applyPatch(
+    it("applies a valid shell change", () => {
+      const r = apply(
         plan,
-        patch({
-          type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
-        }),
-        { source: "rule" },
+        patch({ type: "set-shell", target: "header", value: "compact" }),
       );
+      expect(r.plan.shell.header).toBe("compact");
+    });
 
-      // filter-panel is not allowed in decide mode, comparison-tray is.
-      const { plan: decided } = applyPatch(
-        withTray,
-        patch({ type: "set-mode", mode: "decide" }),
-        { source: "rule" },
+    it("rejects an out-of-enum shell value", () => {
+      const r = apply(
+        plan,
+        patch({ type: "set-shell", target: "header", value: "bogus" }),
       );
+      expect(r.rejected[0]?.reason).toBe("invalid-value");
+      expect(r.plan).toBe(plan);
+    });
 
-      expect(decided.regions.sidebar).toHaveLength(0);
-      expect(decided.regions.main.map((module) => module.id)).toContain(
-        "comparison",
-      );
+    it("applies a valid workspace change and rejects an invalid one", () => {
+      expect(
+        apply(
+          plan,
+          patch({ type: "set-workspace", target: "columns", value: 3 }),
+        ).plan.workspace.columns,
+      ).toBe(3);
+      expect(
+        apply(
+          plan,
+          patch({ type: "set-workspace", target: "columns", value: 9 }),
+        ).rejected[0]?.reason,
+      ).toBe("invalid-value");
     });
   });
 
-  describe("idempotency", () => {
-    it("treats re-ensuring the same module as an applied no-op", () => {
-      const plan = compareModePlan();
-      const ensure = patch({
+  describe("ensure-module registry validation (§10)", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
+    const comparison = (region: string, id = "cmp") =>
+      patch({
         type: "ensure-module",
-        moduleId: "comparison",
-        moduleType: "comparison-tray",
-        region: "main",
+        module: {
+          id,
+          type: "product-comparison",
+          region: region as never,
+          priority: 10,
+          props: { productIds: ["a", "b"] },
+        },
       });
 
-      const first = applyPatch(plan, ensure, { source: "rule" });
-      const second = applyPatch(first.plan, ensure, { source: "rule" });
-
-      expect(second.plan).toBe(first.plan);
-      expect(second.plan.version).toBe(first.plan.version);
-      expect(second.rejected).toHaveLength(0);
-      expect(second.plan.regions.main).toHaveLength(2);
-    });
-  });
-
-  describe("source precedence", () => {
-    it("refuses to let a rule overwrite a module the user placed", () => {
-      const { plan: userPlan } = applyPatch(
-        createDefaultPlan(),
-        patch({
-          type: "update-module-props",
-          moduleId: "product-grid",
-          props: { columns: 1 },
-        }),
-        { source: "user" },
+    it("adds a module allowed in the current mode", () => {
+      const r = apply(
+        plan,
+        patch(
+          { type: "set-mode", mode: "compare" },
+          comparison("main").operations[0]!,
+        ),
       );
-
-      const result = applyPatch(
-        userPlan,
-        patch({
-          type: "update-module-props",
-          moduleId: "product-grid",
-          props: { columns: 4 },
-        }),
-        { source: "rule" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("source-precedence");
-      expect(result.plan.regions.main[0]?.props).toEqual({ columns: 1 });
+      expect(r.plan.regions.main.map((m) => m.id)).toContain("cmp");
     });
 
-    it("refuses to let AI overwrite a module the user placed", () => {
-      const { plan: userPlan } = applyPatch(
-        createDefaultPlan(),
-        patch({ type: "hide-module", moduleId: "filter-panel" }),
-        { source: "user" },
+    it("rejects a module not allowed in the current mode", () => {
+      expect(apply(plan, comparison("main")).rejected[0]?.reason).toBe(
+        "mode-not-allowed",
       );
-      const { plan: restored } = applyPatch(
-        userPlan,
-        patch({
-          type: "ensure-module",
-          moduleId: "filter-panel",
-          moduleType: "filter-panel",
-          region: "sidebar",
-        }),
-        { source: "user" },
-      );
-
-      const result = applyPatch(
-        restored,
-        patch({
-          type: "update-module-props",
-          moduleId: "filter-panel",
-          props: { collapsed: true },
-        }),
-        { source: "ai" },
-      );
-
-      expect(result.rejected[0]?.reason).toBe("source-precedence");
     });
 
-    it("lets the user overwrite what a rule placed", () => {
-      const plan = compareModePlan();
-      const { plan: rulePlan } = applyPatch(
+    it("rejects a module in a region its type does not allow", () => {
+      // product-comparison allows top and main; "aside" is neither.
+      expect(apply(plan, comparison("aside")).rejected[0]?.reason).toBe(
+        "region-not-allowed",
+      );
+    });
+
+    it("rejects a module type absent from the registry", () => {
+      const r = apply(
         plan,
         patch({
           type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
+          module: {
+            id: "x",
+            type: "recommendations",
+            region: "main",
+            priority: 10,
+            props: {},
+          },
+        }),
+      );
+      expect(r.rejected[0]?.reason).toBe("unknown-module-type");
+    });
+
+    it("rejects props that violate the type's schema", () => {
+      const r = apply(
+        plan,
+        patch({
+          type: "ensure-module",
+          module: {
+            id: "g2",
+            type: "product-grid",
+            region: "main",
+            priority: 20,
+            props: { limit: 99 },
+          },
+        }),
+      );
+      expect(r.rejected[0]?.reason).toBe("invalid-props");
+    });
+
+    it("enforces maxInstances", () => {
+      const r = apply(
+        plan,
+        patch(
+          { type: "set-mode", mode: "compare" },
+          {
+            type: "ensure-module",
+            module: {
+              id: "c1",
+              type: "product-comparison",
+              region: "main",
+              priority: 10,
+              props: { productIds: ["a", "b"] },
+            },
+          },
+          {
+            type: "ensure-module",
+            module: {
+              id: "c2",
+              type: "product-comparison",
+              region: "main",
+              priority: 20,
+              props: { productIds: ["c", "d"] },
+            },
+          },
+        ),
+      );
+      expect(r.plan.regions.main.map((m) => m.id)).toContain("c1");
+      expect(r.rejected.map((e) => e.reason)).toContain("max-instances");
+    });
+  });
+
+  describe("AI safety — the keystone the spike originally missed", () => {
+    it("refuses to let AI hide the product grid (canBeHiddenByAI:false)", () => {
+      const withSecondGrid = apply(
+        createDefaultExperiencePlan("search", 0),
+        patch({
+          type: "ensure-module",
+          module: {
+            id: "grid-2",
+            type: "product-grid",
+            region: "main",
+            priority: 20,
+            props: { limit: 6 },
+          },
+        }),
+        { source: "rule" },
+      ).plan;
+
+      const r = apply(
+        withSecondGrid,
+        patch({ type: "hide-module", moduleId: "grid-2" }),
+        {
+          source: "ai",
+        },
+      );
+      expect(r.rejected[0]?.reason).toBe("ai-not-allowed");
+      expect(r.plan.regions.main.map((m) => m.id)).toContain("grid-2");
+    });
+
+    it("refuses to let AI hide a protected module id (§19)", () => {
+      const r = apply(
+        createDefaultExperiencePlan("search", 0),
+        patch({ type: "hide-module", moduleId: "primary-product-grid" }),
+        { source: "ai" },
+      );
+      expect(r.rejected[0]?.reason).toBe("protected-module");
+    });
+
+    it("still lets the shopper hide their own view", () => {
+      const withSecondGrid = apply(
+        createDefaultExperiencePlan("search", 0),
+        patch({
+          type: "ensure-module",
+          module: {
+            id: "grid-2",
+            type: "product-grid",
+            region: "bottom",
+            priority: 20,
+            props: { limit: 6 },
+          },
+        }),
+        { source: "rule" },
+      ).plan;
+
+      const r = apply(
+        withSecondGrid,
+        patch({ type: "hide-module", moduleId: "grid-2" }),
+        {
+          source: "user",
+        },
+      );
+      expect(r.plan.regions.bottom.map((m) => m.id)).not.toContain("grid-2");
+    });
+
+    it("reports sales channel switching as not implemented (§9 phase)", () => {
+      const plan = createDefaultExperiencePlan("search", 0);
+      const r = apply(
+        plan,
+        patch({
+          type: "suggest-sales-channel",
+          channelId: "outlet",
+          reasonCode: "x",
+        }),
+      );
+      expect(r.rejected[0]?.reason).toBe("not-implemented");
+      expect(r.accepted).toHaveLength(0);
+      expect(r.plan).toBe(plan);
+    });
+  });
+
+  describe("route lock (§19: do not adapt checkout)", () => {
+    const checkout = ctx({ route: { path: "/checkout", kind: "checkout" } });
+
+    it("freezes out rule and AI patches on a protected route", () => {
+      const r = apply(
+        createDefaultExperiencePlan("checkout", 0),
+        patch({ type: "set-mode", mode: "compare" }),
+        { source: "rule", context: checkout },
+      );
+      expect(r.rejected[0]?.reason).toBe("protected-module");
+      expect(r.plan.mode).toBe("explore");
+    });
+
+    it("still lets the shopper change their own view mid-checkout", () => {
+      const r = apply(
+        createDefaultExperiencePlan("checkout", 0),
+        patch({ type: "set-mode", mode: "compare" }),
+        { source: "user", context: checkout },
+      );
+      expect(r.plan.mode).toBe("compare");
+    });
+  });
+
+  describe("patch limits (§17)", () => {
+    const plan = createDefaultExperiencePlan("search", 0);
+
+    it("rejects a patch over the operation limit", () => {
+      const ops = Array.from({ length: 6 }, () => ({
+        type: "set-mode" as const,
+        mode: "compare" as const,
+      }));
+      expect(apply(plan, patch(...ops)).rejected[0]?.reason).toBe(
+        "patch-limit-exceeded",
+      );
+    });
+
+    it("rejects more than one shell change per patch", () => {
+      const r = apply(
+        plan,
+        patch(
+          { type: "set-shell", target: "header", value: "compact" },
+          { type: "set-shell", target: "footer", value: "compact" },
+        ),
+      );
+      expect(r.rejected[0]?.reason).toBe("patch-limit-exceeded");
+    });
+
+    it("rejects more than two module moves per patch", () => {
+      const r = apply(
+        plan,
+        patch(
+          { type: "move-module", moduleId: "a", region: "main", priority: 10 },
+          { type: "move-module", moduleId: "b", region: "main", priority: 10 },
+          { type: "move-module", moduleId: "c", region: "main", priority: 10 },
+        ),
+      );
+      expect(r.rejected[0]?.reason).toBe("patch-limit-exceeded");
+    });
+  });
+
+  describe("source precedence (§16)", () => {
+    it("refuses to let a rule overwrite what the user placed", () => {
+      const userPlaced = apply(
+        createDefaultExperiencePlan("search", 0),
+        patch({
+          type: "ensure-module",
+          module: {
+            id: "cf",
+            type: "contextual-filters",
+            region: "aside",
+            priority: 10,
+            props: { collapsed: false },
+          },
+        }),
+        { source: "user" },
+      ).plan;
+
+      const r = apply(
+        userPlaced,
+        patch({
+          type: "update-module-props",
+          moduleId: "cf",
+          props: { collapsed: true },
         }),
         { source: "rule" },
       );
-
-      const result = applyPatch(
-        rulePlan,
-        patch({ type: "hide-module", moduleId: "comparison" }),
-        { source: "user" },
-      );
-
-      expect(result.rejected).toHaveLength(0);
-      expect(result.plan.regions.main.map((module) => module.id)).not.toContain(
-        "comparison",
-      );
+      expect(r.rejected[0]?.reason).toBe("source-precedence");
+      const cf = r.plan.regions.aside.find((m) => m.id === "cf");
+      expect(cf?.props.collapsed).toBe(false);
     });
   });
 
-  describe("overlays", () => {
-    it("does not add the same overlay twice", () => {
-      const { plan: shown } = applyPatch(
-        createDefaultPlan(),
-        patch({ type: "show-overlay", overlay: "assistant" }),
-        { source: "rule" },
-      );
-      const again = applyPatch(
-        shown,
-        patch({ type: "show-overlay", overlay: "assistant" }),
-        { source: "rule" },
-      );
+  describe("minimum lifetime (§19)", () => {
+    const placed = apply(
+      createDefaultExperiencePlan("search", 0),
+      patch({
+        type: "ensure-module",
+        module: {
+          id: "cf",
+          type: "contextual-filters",
+          region: "aside",
+          priority: 10,
+          props: { collapsed: false },
+        },
+      }),
+      { source: "rule", now: 1000 },
+    ).plan;
 
-      expect(again.plan).toBe(shown);
-      expect(again.plan.overlays).toEqual(["assistant"]);
+    it("refuses to move a rule-placed module still inside its lifetime", () => {
+      const r = apply(
+        placed,
+        patch({
+          type: "move-module",
+          moduleId: "cf",
+          region: "top",
+          priority: 10,
+        }),
+        {
+          source: "rule",
+          now: 2000,
+        },
+      );
+      expect(r.rejected[0]?.reason).toBe("minimum-lifetime");
+    });
+
+    it("allows the move once the lifetime has elapsed", () => {
+      const r = apply(
+        placed,
+        patch({
+          type: "move-module",
+          moduleId: "cf",
+          region: "top",
+          priority: 10,
+        }),
+        {
+          source: "rule",
+          now: 8000,
+        },
+      );
+      expect(r.plan.regions.top.map((m) => m.id)).toContain("cf");
     });
   });
 
-  it("reports sales channel switching as not implemented", () => {
-    const result = applyPatch(
-      createDefaultPlan(),
-      patch({ type: "suggest-sales-channel", salesChannelId: "abc" }),
-      { source: "ai" },
+  it("disables rather than deletes a module the new mode disallows", () => {
+    const compare = comparePlanWith("cmp");
+    const r = apply(compare, patch({ type: "set-mode", mode: "explore" }), {
+      source: "rule",
+    });
+    const cmp = r.plan.regions.main.find((m) => m.id === "cmp");
+    expect(cmp).toBeDefined();
+    expect(cmp?.enabled).toBe(false);
+    const grid = r.plan.regions.main.find(
+      (m) => m.id === "primary-product-grid",
     );
+    expect(grid?.enabled).toBe(true);
+  });
 
-    expect(result.rejected[0]?.reason).toBe("not-implemented");
-    expect(result.applied).toHaveLength(0);
+  it("does not toggle an overlay that is already in the target state", () => {
+    const shown = apply(
+      createDefaultExperiencePlan("search", 0),
+      patch({ type: "show-overlay", overlay: "assistant" }),
+    );
+    expect(shown.plan.overlays.assistant).toBe(true);
+    const again = apply(
+      shown.plan,
+      patch({ type: "show-overlay", overlay: "assistant" }),
+    );
+    expect(again.plan).toBe(shown.plan);
   });
 
   it("applies the good operations from a partially invalid patch", () => {
-    const result = applyPatch(
-      createDefaultPlan(),
+    const r = apply(
+      createDefaultExperiencePlan("search", 0),
       patch(
         { type: "set-mode", mode: "compare" },
         {
           type: "ensure-module",
-          moduleId: "grid-2",
-          moduleType: "product-grid",
-          region: "footer",
+          module: {
+            id: "cmp",
+            type: "product-comparison",
+            // "aside" is not in product-comparison's allowedRegions (top, main),
+            // so this half of the patch is rejected while set-mode still applies.
+            region: "aside",
+            priority: 10,
+            props: { productIds: ["a", "b"] },
+          },
         },
       ),
-      { source: "ai" },
     );
-
-    expect(result.plan.mode).toBe("compare");
-    expect(result.applied).toHaveLength(1);
-    expect(result.rejected[0]?.reason).toBe("region-not-allowed");
-  });
-
-  describe("known gaps in the blueprint", () => {
-    // These pin down behaviour the gist does not specify. They are not
-    // aspirational - they record what the contract does today so the writeup
-    // can argue for a change.
-    //
-    // Neither is reachable from the UI yet, and neither is what broke "restore
-    // standard view": that was the engine resetting the plan without resetting
-    // the signals it is projected from, and it is fixed in useExperienceEngine.
-    // These two become real when the planner goes live, or when a shopper gets
-    // a control that sets the mode directly. See FINDINGS.md.
-
-    it("lets a rule re-add a module the user hid, which is the flapping risk", () => {
-      const plan = compareModePlan();
-      const { plan: withTray } = applyPatch(
-        plan,
-        patch({
-          type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
-        }),
-        { source: "rule" },
-      );
-      const { plan: hidden } = applyPatch(
-        withTray,
-        patch({ type: "hide-module", moduleId: "comparison" }),
-        { source: "user" },
-      );
-
-      // The user's dismissal leaves no trace once the module is gone, so the
-      // same rule immediately puts it back.
-      const { plan: reAdded } = applyPatch(
-        hidden,
-        patch({
-          type: "ensure-module",
-          moduleId: "comparison",
-          moduleType: "comparison-tray",
-          region: "main",
-        }),
-        { source: "rule" },
-      );
-
-      expect(reAdded.regions.main.map((module) => module.id)).toContain(
-        "comparison",
-      );
-    });
-
-    it("lets a rule override a mode the user chose, because mode carries no source", () => {
-      const { plan: userPlan } = applyPatch(
-        compareModePlan(),
-        patch({ type: "set-mode", mode: "explore" }),
-        { source: "user" },
-      );
-
-      const { plan: ruled } = applyPatch(
-        userPlan,
-        patch({ type: "set-mode", mode: "compare" }),
-        { source: "rule" },
-      );
-
-      expect(ruled.mode).toBe("compare");
-    });
+    expect(r.plan.mode).toBe("compare");
+    expect(r.accepted).toHaveLength(1);
+    expect(r.rejected[0]?.reason).toBe("region-not-allowed");
   });
 });

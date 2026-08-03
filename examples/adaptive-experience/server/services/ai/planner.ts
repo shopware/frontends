@@ -1,52 +1,71 @@
-import type { ExperiencePlanRequest } from "#shared/experience/types";
+import type {
+  ExperiencePlanningRequest,
+  PlannerReasonCode,
+} from "#shared/experience/types";
 
 /**
- * A planner provider proposes a patch from the anonymous context.
- *
- * The return type is deliberately `unknown`: whatever a model produces is
- * untrusted text until the endpoint has validated it against
- * `experiencePatchSchema`. Typing this as `ExperiencePatch` would be a lie that
- * lets an unvalidated object reach the client.
+ * §24 planner provider. `patch` is deliberately `unknown`: whatever a model
+ * produces is untrusted until the endpoint validates it against
+ * `experiencePatchSchema`. Typing it as `ExperiencePatch` would be a lie that
+ * lets unvalidated output reach the client.
  */
+export type PlannerProposal = {
+  patch: unknown;
+  confidence: number;
+  reasonCode: PlannerReasonCode;
+} | null;
+
 export type PlannerProvider = {
   name: string;
-  propose: (request: ExperiencePlanRequest) => Promise<unknown>;
+  propose: (request: ExperiencePlanningRequest) => Promise<PlannerProposal>;
 };
 
 /**
- * Stand-in for a real model, driven by the same context an LLM would see.
- *
- * Keeping a deterministic provider behind the same interface means the endpoint,
+ * A deterministic stand-in for a model, driven by the same anonymous context an
+ * LLM would see. Keeping it behind the provider interface means the endpoint,
  * the validation and the client loop can all be exercised before any model is
- * wired in, and it stays useful afterwards as the fallback when the provider is
- * slow or unavailable.
+ * wired in, and it stays useful afterwards as the fallback.
  */
 export const mockPlanner: PlannerProvider = {
   name: "mock",
   propose: async (request) => {
-    const { context } = request;
+    const { signals, route, comparedProductCount } = request.context;
 
-    if (context.comparisonIntent >= 1 && context.routeKind === "listing") {
+    if (signals.comparisonIntent >= 0.5 && route.kind === "search") {
       return {
-        operations: [
-          { type: "show-overlay", overlay: "assistant" },
-          {
-            type: "ensure-module",
-            moduleId: "assistant",
-            moduleType: "assistant-panel",
-            region: "sidebar",
-            props: {
-              message: `Comparing ${context.comparisonCount} products. Ask me what sets them apart.`,
+        confidence: 0.7,
+        reasonCode: "comparison-intent",
+        patch: {
+          operations: [
+            { type: "show-overlay", overlay: "assistant" },
+            {
+              type: "ensure-module",
+              module: {
+                id: "assistant",
+                type: "assistant-message",
+                region: "aside",
+                priority: 5,
+                props: {
+                  message: `Comparing ${comparedProductCount} products - ask me what sets them apart.`,
+                  quickActions: ["Sort by price", "Clear comparison"],
+                },
+              },
             },
-          },
-        ],
-        assistantMessage: "Let's compare these options",
+          ],
+          assistantMessage: "Let's compare these options",
+        },
       };
     }
 
-    if (context.priceSensitivity >= 1) {
+    if (signals.priceSensitivity >= 0.6) {
       return {
-        operations: [{ type: "set-workspace", density: "compact" }],
+        confidence: 0.6,
+        reasonCode: "price-sensitivity",
+        patch: {
+          operations: [
+            { type: "set-workspace", target: "density", value: "compact" },
+          ],
+        },
       };
     }
 
@@ -55,16 +74,20 @@ export const mockPlanner: PlannerProvider = {
 };
 
 /**
- * A provider that returns exactly the kind of output the guardrails exist for:
- * a plausible-looking patch that names a component and smuggles in markup.
- * Used by the endpoint's tests to prove validation rejects it.
+ * Returns exactly what the guardrails exist for: a plausible-looking patch that
+ * names a component and smuggles in markup. The tests use it to prove validation
+ * rejects it. Never wired into the endpoint.
  */
 export const rogueMockPlanner: PlannerProvider = {
   name: "rogue-mock",
   propose: async () => ({
-    operations: [
-      { type: "set-mode", mode: "compare", script: "alert(1)" },
-      { type: "render-component", component: "<script>alert(1)</script>" },
-    ],
+    confidence: 0.9,
+    reasonCode: "comparison-intent",
+    patch: {
+      operations: [
+        { type: "set-mode", mode: "compare", script: "alert(1)" },
+        { type: "render-component", component: "<script>alert(1)</script>" },
+      ],
+    },
   }),
 };

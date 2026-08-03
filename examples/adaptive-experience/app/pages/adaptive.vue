@@ -4,19 +4,20 @@ import type { Schemas, operations } from "#shopware";
 /**
  * The adaptive listing.
  *
- * A separate route rather than an override of the template's `/search`, so the
- * standard listing stays untouched and the two can be compared side by side:
- *   /search?search=shirt    - standard
- *   /adaptive?search=shirt  - adaptive
+ * A separate route from the template's `/search`, so the two can be compared:
+ *   /search?search=chair    - standard
+ *   /adaptive?search=chair  - adaptive
  *
- * The page owns data loading only. What gets rendered is entirely the plan's
- * decision, which is why there is no markup here beyond the workspace.
+ * The page owns data loading and a route-level layout baseline. What renders is
+ * otherwise the plan's decision, so there is no markup here beyond the workspace.
  */
 const route = useRoute();
 const router = useRouter();
 const { getCurrentListing, search, setInitialListing } =
   useProductSearchListing();
-const { track, evaluateRules, signals } = useExperienceEngine();
+const { context, track, propose, evaluateRules, theme, setVibe } =
+  useExperienceEngine();
+const { requestPlan, proposals } = useExperiencePlanner();
 
 const SORT_OPTIONS = [
   { value: "name-asc", label: "Name" },
@@ -24,9 +25,6 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Price: high to low" },
 ];
 
-// Page chrome rather than a module: sorting drives the listing query, which is
-// the page's job. It navigates client-side, which is what lets the order watcher
-// below see the change.
 const currentOrder = computed(
   () => firstQueryValue(route.query.order) ?? "name-asc",
 );
@@ -57,9 +55,6 @@ const { data: listing } = await useAsyncData(
   { watch: [() => route.query] },
 );
 
-// Mirror the payload into the shared listing on both server and client. The
-// composable's refs are request-scoped and don't transfer, so without this the
-// client hydrates an empty listing.
 watch(
   listing,
   (value) => {
@@ -68,8 +63,34 @@ watch(
   { immediate: true },
 );
 
-// Sorting by price is the semantic signal, not the click that caused it, so it
-// is derived from the URL that already drives the listing.
+/**
+ * The route baseline: a listing wants its filters in the aside. Applied as the
+ * `route` source (§7/§16), which outranks a local rule but yields to the user.
+ * Idempotent, so it is safe to re-apply after client-side navigation.
+ */
+function applyRouteLayout() {
+  propose(
+    {
+      operations: [
+        { type: "set-workspace", target: "sidebar", value: "left" },
+        {
+          type: "ensure-module",
+          module: {
+            id: "listing-filters",
+            type: "contextual-filters",
+            region: "aside",
+            priority: 10,
+            props: { collapsed: false },
+          },
+        },
+      ],
+    },
+    "route",
+  );
+}
+
+// Sorting by price is the semantic signal, not the click, so it is derived from
+// the URL that already drives the listing.
 watch(
   () => firstQueryValue(route.query.order),
   (order, previous) => {
@@ -79,15 +100,67 @@ watch(
   },
 );
 
-// Rules re-run whenever the signals move. They are pure and the merger is
-// idempotent, so a redundant pass is a no-op rather than version churn.
-watch(signals, () => evaluateRules(), { deep: true });
+// The rules run to a fixed point whenever the context moves (pure and
+// idempotent, so a redundant pass is a no-op). The planner is asked on a trailing
+// debounce, so it sees the *settled* state after a burst of actions rather than
+// every intermediate one - and shadow mode records what a model would propose.
+const askPlanner = useDebounceFn(() => void requestPlan(), 700);
+watch(
+  context,
+  () => {
+    evaluateRules();
+    void askPlanner();
+  },
+  { deep: true },
+);
+
+onMounted(applyRouteLayout);
 </script>
 
 <template>
   <LayoutBreadcrumbs />
   <div class="mb-8 mx-4 md:mx-auto" data-testid="adaptive-listing">
-    <div class="flex justify-end">
+    <div class="flex items-center justify-end gap-3">
+      <span
+        class="text-xs font-semibold uppercase tracking-wide text-surface-on-surface-variant"
+      >
+        Vibe
+      </span>
+      <div
+        class="inline-flex rounded-full border border-brand-primary overflow-hidden text-sm"
+        data-testid="vibe-toggle"
+        role="group"
+        aria-label="Storefront vibe"
+      >
+        <button
+          type="button"
+          class="px-4 py-1.5 font-medium transition-colors"
+          :class="
+            theme === 'classic'
+              ? 'bg-brand-primary text-brand-on-primary'
+              : 'bg-surface-surface text-surface-on-surface-variant hover:bg-brand-tertiary'
+          "
+          :aria-pressed="theme === 'classic'"
+          data-testid="vibe-classic"
+          @click="setVibe('classic')"
+        >
+          Classic
+        </button>
+        <button
+          type="button"
+          class="px-4 py-1.5 font-semibold transition-colors"
+          :class="
+            theme === 'genz'
+              ? 'bg-brand-primary text-brand-on-primary'
+              : 'bg-surface-surface text-brand-primary hover:bg-brand-secondary'
+          "
+          :aria-pressed="theme === 'genz'"
+          data-testid="vibe-genz"
+          @click="setVibe('genz')"
+        >
+          Gen Z ✨
+        </button>
+      </div>
       <select
         class="border rounded px-2 py-1 text-sm"
         data-testid="adaptive-sort"
@@ -105,5 +178,6 @@ watch(signals, () => evaluateRules(), { deep: true });
       </select>
     </div>
     <ExperienceWorkspace />
+    <ExperienceShadowProposals :proposals="proposals" />
   </div>
 </template>

@@ -1,80 +1,100 @@
 import { describe, expect, it } from "vitest";
 
-import { applyPatch } from "#shared/experience/applyPatch";
-import { createDefaultPlan } from "#shared/experience/defaults";
+import { applyExperiencePatch } from "#shared/experience/applyPatch";
+import { createDefaultContext } from "#shared/experience/context";
+import { createDefaultExperiencePlan } from "#shared/experience/defaults";
+import { defaultAdaptationPolicy } from "#shared/experience/policy";
 import { experiencePatchSchema } from "#shared/experience/schemas";
-import type { ExperiencePlanRequest } from "#shared/experience/types";
+import type {
+  ExperiencePlanningRequest,
+  ExperienceSignals,
+} from "#shared/experience/types";
 
 import { mockPlanner, rogueMockPlanner } from "./planner";
 
 const request = (
-  context: Partial<ExperiencePlanRequest["context"]> = {},
-): ExperiencePlanRequest => ({
+  signals: Partial<ExperienceSignals> = {},
+): ExperiencePlanningRequest => ({
+  requestId: "r1",
+  sessionId: "s1",
   planVersion: 1,
-  mode: "explore",
+  currentPlan: { mode: "explore", routeKey: "search", moduleIds: ["grid"] },
   context: {
-    comparisonIntent: 0,
-    priceSensitivity: 0,
-    productsViewed: 0,
-    comparisonCount: 0,
-    routeKind: "listing",
-    ...context,
+    route: { kind: "search" },
+    signals: {
+      visualInterest: 0,
+      technicalInterest: 0,
+      priceSensitivity: 0,
+      uncertainty: 0,
+      decisionReadiness: 0,
+      comparisonIntent: 0,
+      supportNeed: 0,
+      ...signals,
+    },
+    comparedProductCount: 0,
+    viewedProductCount: 0,
+    searchCount: 0,
+  },
+  allowed: {
+    canSwitchSalesChannelAutomatically: false,
+    canChangeShell: true,
+    canMoveModules: true,
+    canShowAssistant: true,
   },
 });
 
 describe("mockPlanner", () => {
-  it("proposes nothing when there is no signal worth acting on", async () => {
+  it("proposes nothing without a signal worth acting on", async () => {
     expect(await mockPlanner.propose(request())).toBeNull();
   });
 
-  it("proposes a patch that satisfies the contract", async () => {
+  it("proposes a contract-valid patch on high comparison intent", async () => {
     const proposal = await mockPlanner.propose(
-      request({ comparisonIntent: 1, comparisonCount: 2 }),
+      request({ comparisonIntent: 0.5 }),
     );
-
-    expect(experiencePatchSchema.safeParse(proposal).success).toBe(true);
+    expect(proposal?.reasonCode).toBe("comparison-intent");
+    expect(experiencePatchSchema.safeParse(proposal?.patch).success).toBe(true);
   });
 });
 
 describe("planner output is untrusted", () => {
-  // The point of the schema is that safety does not depend on the provider
-  // behaving. A model that returns component names and script tags must be
-  // stopped by validation, not by hoping it does not.
-  it("rejects a proposal that names a component and smuggles in a script", async () => {
+  // Safety must not depend on the provider behaving. A model that returns
+  // component names and script tags is stopped by validation, not by hope.
+  it("rejects a rogue proposal at the schema", async () => {
     const proposal = await rogueMockPlanner.propose(request());
-
-    expect(experiencePatchSchema.safeParse(proposal).success).toBe(false);
-  });
-
-  it("never lets a rogue proposal reach the plan", async () => {
-    const proposal = await rogueMockPlanner.propose(request());
-    const parsed = experiencePatchSchema.safeParse(proposal);
-    const plan = createDefaultPlan();
-
-    // The endpoint returns 502 here rather than applying anything; this asserts
-    // the plan is untouched on that path.
-    expect(parsed.success).toBe(false);
-    expect(plan.version).toBe(0);
+    expect(experiencePatchSchema.safeParse(proposal?.patch).success).toBe(
+      false,
+    );
   });
 
   it("would still refuse the rogue operations if validation were bypassed", async () => {
-    // Defence in depth: even handed straight to the merger with the schema out
-    // of the way, the closed operation set has nowhere to put these.
+    // Defence in depth: handed straight to the merger with the schema out of the
+    // way, the closed operation set has nowhere to put these.
     const rogue = {
       operations: [
         {
           type: "ensure-module",
-          moduleId: "x",
-          moduleType: "product-grid",
-          region: "footer",
+          module: {
+            id: "x",
+            type: "product-grid",
+            region: "top",
+            priority: 10,
+            props: {},
+          },
         },
-        { type: "suggest-sales-channel", salesChannelId: "other" },
+        { type: "suggest-sales-channel", channelId: "other", reasonCode: "x" },
       ],
     } as never;
 
-    const result = applyPatch(createDefaultPlan(), rogue, { source: "ai" });
+    const result = applyExperiencePatch(
+      createDefaultExperiencePlan("search", 0),
+      rogue,
+      createDefaultContext("s", 0),
+      defaultAdaptationPolicy,
+      { source: "ai", now: 1_000 },
+    );
 
-    expect(result.applied).toHaveLength(0);
+    expect(result.accepted).toHaveLength(0);
     expect(result.rejected.map((entry) => entry.reason)).toEqual([
       "region-not-allowed",
       "not-implemented",

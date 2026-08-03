@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  collapsed: boolean;
-}>();
+// Inline concrete shape (mirrors `contextualFiltersPropsSchema`): the Vue macro
+// cannot resolve a zod `z.infer` alias at compile time.
+defineProps<{ listingKey?: string; collapsed?: boolean }>();
 </script>
 
 <template>

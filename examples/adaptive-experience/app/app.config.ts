@@ -12,6 +12,6 @@ export default defineAppConfig({
      * nothing. This is phase 6 of the rollout and the only honest way to judge
      * proposal quality before letting a model move the UI under real shoppers.
      */
-    aiShadowMode: true,
+    aiShadowMode: false,
   },
 });
