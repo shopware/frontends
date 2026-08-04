@@ -178,6 +178,75 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).toHaveBeenCalledWith("789");
   });
 
+  it("should NOT adopt sw-context-token from publicly cacheable responses", async () => {
+    // CacheableReads / CDN hits replay Cache-Control: public responses that may
+    // still carry a guest sw-context-token from when the entry was stored.
+    // Adopting that token would log the user out.
+    const app = createApp().use(
+      "/language",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "cached-guest-token");
+        setHeader(
+          event,
+          "cache-control",
+          "max-age=0, Public, s-maxage=1800, stale-while-revalidate=86400",
+        );
+        return { elements: [] };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "logged-in-token",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("readLanguagesGet get /language");
+
+    expect(contextChangedMock).not.toHaveBeenCalled();
+    expect(client.defaultHeaders["sw-context-token"]).toEqual(
+      "logged-in-token",
+    );
+  });
+
+  it("should still adopt sw-context-token from private session responses", async () => {
+    const app = createApp().use(
+      "/account/login",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "post-login-token");
+        setHeader(
+          event,
+          "cache-control",
+          "max-age=0, no-cache, private, s-maxage=0",
+        );
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "pre-login-token",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("loginCustomer post /account/login", {
+      body: { username: "user", password: "pass" },
+    });
+
+    expect(contextChangedMock).toHaveBeenCalledWith("post-login-token");
+    expect(client.defaultHeaders["sw-context-token"]).toEqual(
+      "post-login-token",
+    );
+  });
+
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",
