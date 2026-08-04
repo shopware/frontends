@@ -1,5 +1,11 @@
 # @shopware/helpers
 
+## 1.7.2
+
+### Patch Changes
+
+- [#2594](https://github.com/shopware/frontends/pull/2594) [`f16c5a0`](https://github.com/shopware/frontends/commit/f16c5a0785d6187b73c3edcf37feab7c90bd7988) Thanks [@patzick](https://github.com/patzick)! - Add helpers for resolving canonical SEO paths and detecting technical Shopware URLs.
+
 ## 1.7.1
 
 ### Patch Changes
@@ -26,6 +32,7 @@
 ### Minor Changes
 
 - [#1985](https://github.com/shopware/frontends/pull/1985) [`2cbda25`](https://github.com/shopware/frontends/commit/2cbda257a1056454e12f2fba9052f83eecb6d986) Thanks [@mkucmus](https://github.com/mkucmus)! - Added methods to extract product info:
+
   - `isProductOnSale`
   - `isProductTopSeller`
   - `getProductManufacturerName`
@@ -36,6 +43,7 @@
 ### Patch Changes
 
 - [#2030](https://github.com/shopware/frontends/pull/2030) [`22ff62e`](https://github.com/shopware/frontends/commit/22ff62e354f024599d64ea8096af57695248851c) Thanks [@mkucmus](https://github.com/mkucmus)! - Extended `ListingFilter` type to support property options and manufacturer entities:
+
   - Added optional `options` property for property group options
   - Added optional `entities` property for manufacturer entities
   - Improved type safety by explicitly typing empty array return in `getListingFilters()`

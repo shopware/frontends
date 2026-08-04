@@ -1,5 +1,13 @@
 # @shopware/unocss-design-tokens-layer
 
+## 1.0.1
+
+### Patch Changes
+
+- [#2596](https://github.com/shopware/frontends/pull/2596) [`6572aa8`](https://github.com/shopware/frontends/commit/6572aa84431e1f4a34d6cf04e549037692d638a6) Thanks [@patzick](https://github.com/patzick)! - Reduce Rolldown/Vite build noise: scope Nuxt global components, keep the three.js async chunk warning intentional, avoid shipping full carbon icon JSON via UnoCSS runtime, and bump @vueuse to 14.4.0.
+
+- [#2543](https://github.com/shopware/frontends/pull/2543) [`7cdb81f`](https://github.com/shopware/frontends/commit/7cdb81f40dc5194432560752718048c730857ddf) Thanks [@patzick](https://github.com/patzick)! - Export the shared UnoCSS config and lazy-load the optional runtime so layered templates can merge the package config directly while keeping runtime generation disabled unless requested.
+
 ## 1.0.0
 
 ### Major Changes
