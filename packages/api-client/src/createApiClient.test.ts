@@ -189,7 +189,7 @@ describe("createAPIClient", () => {
         setHeader(
           event,
           "cache-control",
-          "max-age=0, public, s-maxage=1800, stale-while-revalidate=86400",
+          "max-age=0, Public, s-maxage=1800, stale-while-revalidate=86400",
         );
         return { elements: [] };
       }),
