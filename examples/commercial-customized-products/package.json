@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "generate-types": "shopware-api-gen generate --apiType=store",
     "lint": "oxlint . && oxfmt --check .",
-    "lint:fix": "oxlint --fix . && oxfmt --write ."
+    "lint:fix": "oxlint --fix . && oxfmt --write .",
+    "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "devDependencies": {
     "@shopware/api-client": "canary",

@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
-    "typecheck": "nuxt prepare && vue-tsc --noEmit"
+    "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "devDependencies": {
     "@nuxtjs/sanity": "2.3.0",

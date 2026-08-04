@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "generate-types": "shopware-api-gen generate --apiType=store"
+    "generate-types": "shopware-api-gen generate --apiType=store",
+    "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "dependencies": {
     "@shopware/api-client": "canary",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "66.7.5"
+    "@unocss/nuxt": "66.7.5",
+    "typescript": "5.9.3"
   }
 }

@@ -228,6 +228,9 @@ importers:
       '@unocss/nuxt':
         specifier: 66.7.5
         version: 66.7.5(esbuild@0.28.1)(magicast@0.5.3)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1))
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   examples/b2b-quote-management:
     dependencies:
@@ -494,6 +497,9 @@ importers:
       '@unocss/nuxt':
         specifier: 66.7.5
         version: 66.7.5(esbuild@0.28.1)(magicast@0.5.3)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1))
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   examples/login-form:
     dependencies:
@@ -556,6 +562,9 @@ importers:
       '@unocss/nuxt':
         specifier: 66.7.5
         version: 66.7.5(esbuild@0.28.1)(magicast@0.5.3)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1))
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   examples/modal-teleport:
     dependencies:
@@ -1500,7 +1509,7 @@ importers:
         version: 14.4.0(vue@3.5.38(typescript@5.9.3))
       '@vueuse/nuxt':
         specifier: 14.4.0
-        version: 14.4.0(fa5a6409644f62769749629407096b22)
+        version: 14.4.0(daa8226e9ecfac18e72dde47bd6f8bf2)
       nuxt:
         specifier: 4.4.8
         version: 4.4.8(@babel/plugin-proposal-decorators@7.25.9(@babel/core@7.29.7))(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.6)(@types/node@26.1.1)(@vercel/blob@1.0.2)(@vue/compiler-sfc@3.5.38)(cac@6.7.14)(db0@0.3.4)(encoding@0.1.13)(esbuild@0.28.1)(eslint@10.3.0(jiti@2.7.0))(ioredis@5.10.1)(less@4.2.0)(magicast@0.5.3)(optionator@0.9.4)(oxlint@1.73.0)(rolldown@1.1.4)(rollup-plugin-visualizer@7.0.1(rolldown@1.1.4)(rollup@4.60.4))(rollup@4.60.4)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(typescript@5.9.3)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(vue-tsc@3.3.7(typescript@5.9.3))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22))(yaml@2.9.0)
@@ -15319,7 +15328,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/kit@4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.131.0)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))':
+  '@nuxt/kit@4.5.1(magic-string@0.30.21)(magicast@0.5.3)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))':
     dependencies:
       c12: 3.3.4(magicast@0.5.3)
       consola: 3.4.2
@@ -15339,7 +15348,7 @@ snapshots:
       scule: 1.3.0
       tinyglobby: 0.2.17
       ufo: 1.6.4
-      unctx: 3.0.0(magic-string@0.30.21)(oxc-parser@0.131.0)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))
+      unctx: 3.0.0(magic-string@0.30.21)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))
       untyped: 2.0.0
       verkit: 0.2.0
     transitivePeerDependencies:
@@ -20476,9 +20485,9 @@ snapshots:
       - rolldown
       - unplugin
 
-  '@vueuse/nuxt@14.4.0(fa5a6409644f62769749629407096b22)':
+  '@vueuse/nuxt@14.4.0(daa8226e9ecfac18e72dde47bd6f8bf2)':
     dependencies:
-      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(oxc-parser@0.131.0)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))
+      '@nuxt/kit': 4.5.1(magic-string@0.30.21)(magicast@0.5.3)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22)))
       '@vueuse/core': 14.4.0(vue@3.5.38(typescript@5.9.3))
       '@vueuse/metadata': 14.4.0
       local-pkg: 1.2.1
@@ -27929,10 +27938,9 @@ snapshots:
       magic-string: 0.30.21
       unplugin: 2.3.11
 
-  unctx@3.0.0(magic-string@0.30.21)(oxc-parser@0.131.0)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22))):
+  unctx@3.0.0(magic-string@0.30.21)(rolldown@1.1.4)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22))):
     optionalDependencies:
       magic-string: 0.30.21
-      oxc-parser: 0.131.0
       rolldown: 1.1.4
       unplugin: 3.3.0(esbuild@0.28.1)(rolldown@1.1.4)(rollup@4.60.4)(vite@8.1.3(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(less@4.2.0)(sass@1.89.2)(terser@5.49.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.105.4(esbuild@0.28.1)(postcss@8.5.22))
 

@@ -7,7 +7,7 @@
     "build": "nuxt prepare && nuxt build",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
-    "typecheck": "nuxt prepare && vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && nuxi typecheck",
     "generate": "nuxt generate",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
