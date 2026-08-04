@@ -125,13 +125,8 @@ Returns an empty string if `src` is falsy. Returns the original `src` if URL par
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.7.1
+### Latest changes: 1.7.2
 
 ### Patch Changes
 
-- [#2372](https://github.com/shopware/frontends/pull/2372) [`22fc8a7`](https://github.com/shopware/frontends/commit/22fc8a7301f6a7d2612d907ab73555978b651c00) Thanks [@patzick](https://github.com/patzick)! - Improve technical URL resolution for SSR and CSR page rendering.
-
-  This adds helpers to detect and normalize technical Shopware paths and updates
-  `useNavigationSearch` to resolve `/navigation/*`, `/detail/*`, and
-  `/landingPage/*` routes more reliably, including fallback behavior when no SEO
-  mapping row is returned.
+- [#2594](https://github.com/shopware/frontends/pull/2594) [`f16c5a0`](https://github.com/shopware/frontends/commit/f16c5a0785d6187b73c3edcf37feab7c90bd7988) Thanks [@patzick](https://github.com/patzick)! - Add helpers for resolving canonical SEO paths and detecting technical Shopware URLs.
