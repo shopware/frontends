@@ -1,9 +1,11 @@
 import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
 import { getCookie } from "h3";
+import type { H3Event } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 
+import type { Plugin } from "#app";
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -16,19 +18,46 @@ import type { ApiClient } from "#shopware";
 
 import type { ShopwareNuxtOptions } from "./src";
 
-declare module "#app" {
-  interface NuxtApp {
-    $shopwareApiClient: ApiClient;
+type ShopwarePluginInjections = {
+  shopwareApiClient: ApiClient;
+};
+
+type ShopwarePluginNuxtApp = {
+  ssrContext?: {
+    event: H3Event;
+  };
+  vueApp: {
+    provide: (name: string, value: unknown) => void;
+  };
+};
+
+type ApiError = {
+  code?: string;
+};
+
+function isApiError(error: unknown): error is ApiError {
+  if (!error || typeof error !== "object") {
+    return false;
   }
+
+  const { code } = error as { code?: unknown };
+
+  return code === undefined || typeof code === "string";
 }
 
-declare module "vue" {
-  interface ComponentCustomProperties {
-    $shopwareApiClient: ApiClient;
+function getApiErrors(data: unknown): ApiError[] {
+  if (!data || typeof data !== "object" || !("errors" in data)) {
+    return [];
   }
+
+  const { errors } = data as { errors?: unknown };
+
+  return Array.isArray(errors) ? errors.filter(isApiError) : [];
 }
 
-export default defineNuxtPlugin((NuxtApp) => {
+function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
+  provide: ShopwarePluginInjections;
+} {
   const runtimeConfig = useRuntimeConfig();
 
   const shopwareRuntimeConfigPublic = runtimeConfig.public
@@ -99,8 +128,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   });
 
   apiClient.hook("onResponseError", (response) => {
-    // @ts-expect-error TODO: check maintenance mode and fix typongs here
-    const error = isMaintenanceMode(response._data?.errors ?? []);
+    const error = isMaintenanceMode(getApiErrors(response._data));
     if (error) {
       throw showError({
         statusCode: 503,
@@ -142,4 +170,9 @@ export default defineNuxtPlugin((NuxtApp) => {
       shopwareApiClient: apiClient as ApiClient,
     },
   };
-});
+}
+
+const shopwarePlugin: Plugin<ShopwarePluginInjections> =
+  defineNuxtPlugin<ShopwarePluginInjections>(setupShopwarePlugin);
+
+export default shopwarePlugin;
