@@ -54,7 +54,7 @@ function handleChange(id: string) {
             {{ getShippingMethodDeliveryTime(shippingMethod) }}
           </div>
         </div>
-        <div class="ml-auto">
+        <div v-if="getShippingMethodIcon(shippingMethod)" class="ml-auto">
           <NuxtImg
             :src="getShippingMethodIcon(shippingMethod)"
             height="32"

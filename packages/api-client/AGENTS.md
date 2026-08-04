@@ -103,12 +103,14 @@ pnpm run test:watch    # Watch mode
 
 Tests exercise `invoke()` calls, hook firing, error parsing, and auth flows. When adding features, add matching tests.
 
-The client behaves differently in Node and in the browser (e.g. the `typeof window` guard that strips a manual `multipart/form-data` Content-Type, and abort/rejection messages that differ between runtimes). Keep these split by environment:
+Some behaviour still depends on the runtime — for example abort/rejection messages differ between Node and `happy-dom`. Keep those split by environment:
 
 - `*.test.ts` runs in the default Node environment.
 - `*.browser.test.ts` runs in `happy-dom` via a `// @vitest-environment happy-dom` docblock on the **first line** of the file.
 
 Vitest applies that docblock to the whole file regardless of where it appears, so never place it inside a single `it()` block — doing so silently flips every test in the file to the browser environment.
+
+Request `Content-Type` handling is **not** environment-dependent: `resolveRequestHeaders` decides it from the body alone, so Node and the browser produce the same headers. The browser test file only guards that they stay in sync.
 
 ## Relationship with @shopware/api-gen
 

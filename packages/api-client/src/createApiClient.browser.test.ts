@@ -10,10 +10,14 @@ import type { operations } from "../api-types/storeApiTypes";
 import { createAPIClient } from "./createAPIClient";
 
 /**
- * Browser-specific behaviour of the API client. The whole file runs in the
- * `happy-dom` environment (see the docblock above), so `window` is defined and
- * the client takes its browser code paths. Node behaviour is covered in
- * createApiClient.test.ts.
+ * The API client running in a browser. The whole file uses the `happy-dom`
+ * environment (see the docblock above), so `window`, `FormData` and
+ * `AbortController` are the browser implementations. Node behaviour is covered
+ * in createApiClient.test.ts.
+ *
+ * Header handling itself is no longer environment-dependent - see
+ * resolveRequestHeaders.ts - so the upload test here is a regression guard that
+ * the browser gets the same result as the server.
  */
 describe("createAPIClient (browser environment)", () => {
   const listeners: Listener[] = [];
@@ -73,8 +77,9 @@ describe("createAPIClient (browser environment)", () => {
       "sw-access-key": "123",
       "sw-context-token": "456",
     });
-    // In the browser the Content-Type header must be removed so the browser can
-    // set it together with the multipart boundary.
+    // A boundary-less multipart/form-data is dropped, so the browser can set the
+    // header together with a generated boundary. With no body there is nothing
+    // for it to type, so the request goes out without a Content-Type.
     expect(headers?.["content-type"]).toBeUndefined();
     // Verify multipart/form-data is not present in any header value.
     const headerValues = Object.values(headers || {}).join(" ");

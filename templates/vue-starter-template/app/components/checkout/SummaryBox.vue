@@ -34,8 +34,8 @@ function handleUpdateQuantity(id: string, quantity: number) {
           :item="item"
           :key="item.id"
           class="py-4"
-          @remove="(id) => handleRemoveItem(id)"
-          @updateQuantity="(id, quantity) => handleUpdateQuantity(id, quantity)"
+          @remove="handleRemoveItem"
+          @update-quantity="handleUpdateQuantity"
         />
       </div>
 

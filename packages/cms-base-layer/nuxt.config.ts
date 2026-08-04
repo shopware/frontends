@@ -1,6 +1,7 @@
 import { createResolver } from "@nuxt/kit";
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
+import type { LoggingFunction, RollupLog } from "rollup";
 
 const { resolve: resolveLayer } = createResolver(import.meta.url);
 
@@ -119,6 +120,24 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ["xss"],
+    },
+    build: {
+      // Async SwMedia3D/three chunk is ~977 kB after minify; that split is intentional.
+      chunkSizeWarningLimit: 1000,
+    },
+  },
+  nitro: {
+    rollupConfig: {
+      // @vueuse/shared still embeds @__NO_SIDE_EFFECTS__ inside JSDoc (injectLocal).
+      // Nitro/Rollup treats that as a misplaced annotation. Track upstream vueuse.
+      onwarn(warning: RollupLog, warn: LoggingFunction) {
+        if (
+          warning.message?.includes("annotation that Rollup cannot interpret")
+        ) {
+          return;
+        }
+        warn(warning);
+      },
     },
   },
   telemetry: {

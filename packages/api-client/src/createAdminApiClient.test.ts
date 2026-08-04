@@ -725,4 +725,98 @@ describe("createAdminAPIClient", () => {
       );
     });
   });
+
+  it("should let the runtime set multipart/form-data with a boundary for FormData uploads", async () => {
+    const contentTypeSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/_action/media/upload",
+      eventHandler(async (event) => {
+        contentTypeSpy(getHeaders(event));
+        return { id: "media-id" };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
+    await client.invoke("uploadV2 post /_action/media/upload", {
+      // contentType/accept are type-level metadata for this operation and are
+      // ignored at runtime; the request Content-Type is derived from the body
+      contentType: "multipart/form-data",
+      accept: "application/json",
+      // the typed body is a plain object; at runtime a FormData is required
+      body: formData as unknown as { file: Blob },
+    });
+
+    expect(contentTypeSpy).toHaveBeenCalledTimes(1);
+    const headers = contentTypeSpy.mock.calls[0]?.[0];
+    // The default application/json must be removed so the runtime can set
+    // multipart/form-data with a boundary.
+    expect(headers?.["content-type"]).toMatch(
+      /^multipart\/form-data; boundary=/,
+    );
+  });
+
+  it("should keep sending the token refresh as JSON when the original request is an upload", async () => {
+    // The /oauth/token request uses defaultHeaders directly and skips
+    // resolveRequestHeaders. Its body is always a plain object, so it must stay
+    // application/json even when the request that triggered the refresh is a
+    // FormData upload.
+    const tokenContentTypeSpy = vi.fn().mockImplementation(() => {});
+    const uploadContentTypeSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp()
+      .use(
+        "/_action/media/upload",
+        eventHandler(async (event) => {
+          uploadContentTypeSpy(getHeaders(event)["content-type"]);
+          return { id: "media-id" };
+        }),
+      )
+      .use(
+        "/oauth/token",
+        eventHandler(async (event) => {
+          tokenContentTypeSpy(getHeaders(event)["content-type"]);
+          return {
+            access_token: "refreshed-access-token",
+            expires_in: 3600,
+          };
+        }),
+      );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer expired-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: 0,
+      },
+    });
+
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
+    await client.invoke("uploadV2 post /_action/media/upload", {
+      contentType: "multipart/form-data",
+      accept: "application/json",
+      body: formData as unknown as { file: Blob },
+    });
+
+    expect(tokenContentTypeSpy).toHaveBeenCalledWith("application/json");
+    expect(uploadContentTypeSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/^multipart\/form-data; boundary=/),
+    );
+  });
 });

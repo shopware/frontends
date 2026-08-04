@@ -6,12 +6,17 @@ The components are grouped in specific directories depending on an usage within 
 
 ```text
 ├─ components/
+|  ├─ global/       /* Frontend* SEO page resolvers (Nuxt global, pathPrefix: false) */
+|  ├─ errors/       /* ErrorsMaintainMode, ErrorsRoutingNotFound (Nuxt global) */
+|  ├─ cms/          /* CMS block/element overrides (Nuxt global for resolveComponent) */
 |  ├─ layout/       /* header, footer, account menu etc. */
 |  ├─ checkout/     /* cart items, cart overview */
 |  ├─ account/      /* order history, account settings */
 |  ├─ shared/       /* modals, ... */
 |  ├─ ...
 ```
+
+`global/`, `errors/`, and `cms/` are separate component dirs with `global: true` in `nuxt.config.ts`. Everything else under `components/` is auto-imported only. Do not try to scope globals with `pattern`/`ignore` on the same path twice — Nuxt skips the second scan.
 
 ## Component name
 
