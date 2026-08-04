@@ -25,7 +25,11 @@ export function renderHtml(
   context: ComponentInternalInstance | null,
   resolveUrl: (url: string) => string,
 ) {
-  const mergedConfig = Object.assign(defaultConfig, config);
+  const mergedConfig: DefaultConfig = {
+    ...defaultConfig,
+    ...config,
+    container: { ...defaultConfig.container, ...config.container },
+  };
   const _ast = generateAST(html);
   const rectifyConfig: RectifyConfig = {
     extraComponentsMap: config.extraComponentsMap,

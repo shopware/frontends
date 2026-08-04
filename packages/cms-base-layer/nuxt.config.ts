@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   // the UnoCSS setup lives in @shopware/unocss-design-tokens-layer (or your own config),
   // so apps that don't use UnoCSS can still extend this layer.
   modules: ["@nuxt/image"],
+  css: [resolveLayer("./app/assets/css/rich-text.css")],
 
   hooks: {
     "components:extend"(components) {
