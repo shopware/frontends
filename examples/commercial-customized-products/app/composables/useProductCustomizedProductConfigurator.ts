@@ -49,13 +49,13 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   const { product } = useProduct();
   const { refreshCart } = useCart();
   const ensureState = (productId: string) => {
-    let productState = productsState.value[productId];
-    if (!productState) {
-      productState = {};
-      productsState.value[productId] = productState;
+    if (!productsState.value[productId]) {
+      productsState.value[productId] = {};
     }
-    return productState;
   };
+
+  ensureState(product.value.id);
+  watch(() => product.value.id, ensureState);
 
   const customizedProduct = computed(
     () =>
@@ -64,7 +64,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   );
 
   const isActive = computed<boolean>(() => !!customizedProduct.value?.active);
-  const state = computed(() => ensureState(product.value.id));
+  const state = computed(() => productsState.value[product.value.id] ?? {});
 
   const addToCart = async () => {
     /**
@@ -108,7 +108,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   };
 
   const handleFileUpload = async (event: Event, optionId: string) => {
-    const file = (event.target as EventTarget & { files: FileList }).files[0];
+    const file = (event.target as HTMLInputElement | null)?.files?.[0];
     if (!file) {
       return;
     }
