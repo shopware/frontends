@@ -21,18 +21,16 @@
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
+  "exports": {
+    ".": "./nuxt.config.ts",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist",
     "app",
-    "helpers",
-    "index.cjs",
     "index.d.ts",
-    "app.config.ts",
     "nuxt.config.ts"
   ],
   "scripts": {
-    "build": "nuxt prepare && unbuild",
-    "dev": "unbuild --stub",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit",
@@ -67,7 +65,6 @@
     "nuxt": "4.5.1",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "unbuild": "3.6.1",
     "vitest": "4.1.10",
     "vue-router": "5.2.0",
     "vue-tsc": "3.3.9"
