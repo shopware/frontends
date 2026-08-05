@@ -17,10 +17,12 @@ This document provides guidance for AI assistants working with the `@shopware/cm
 **Quick Start**:
 
 ```bash
-pnpm run build  # Build the package
-pnpm run dev    # Stub mode for development
-pnpm run test   # Run tests
+pnpm run test       # Run tests
+pnpm run typecheck  # Type check
+pnpm run lint       # Lint and format check
 ```
+
+This package is a Nuxt layer. It ships its sources as-is and has no build step.
 
 ## Package Overview
 
@@ -77,8 +79,10 @@ cms-base-layer/
 │   │   └── useLcpImagePreload.ts # LCP image preload via <link rel="preload">
 │   ├── helpers/                  # Utility functions
 │   │   └── cms/getImageSizes.ts  # Slot count → responsive sizes mapping
-│   ├── plugins/                  # Nuxt plugins
-│   └── providers/                # Image providers (Shopware)
+│   ├── providers/                # Image providers (Shopware)
+│   └── utils/                    # Listing filter and route query helpers
+├── types/                        # Local #imports / #shopware shims (not published)
+├── index.d.ts                    # App config type augmentation
 ├── nuxt.config.ts                # Layer configuration
 └── package.json
 ```
@@ -297,15 +301,9 @@ defineProps<{
 
 ## Development
 
-### Building
-
-```bash
-# From package directory
-pnpm run build
-
-# Stub mode for development (hot reload)
-pnpm run dev
-```
+There is no build step. The layer is consumed with `extends`, which resolves
+`nuxt.config.ts`, and the sources are published as-is. To see changes, run one of the
+templates that extends the layer.
 
 ### Testing
 
