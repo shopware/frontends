@@ -35,8 +35,7 @@
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "pnpm nuxt prepare && tsgo --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "check-colors": "tsx scripts/check-unused-colors.ts"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@iconify-json/carbon": "1.2.24",

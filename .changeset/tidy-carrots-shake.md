@@ -32,3 +32,6 @@ Other changes:
   its `src`, so type-checking this layer no longer pulls that package's sources into
   the program.
 - Removed two vitest aliases that pointed at files which do not exist.
+- Removed the `check-colors` script. It read `uno.config.ts` from this package, which
+  moved to `@shopware/unocss-design-tokens-layer`, so it always found zero colors. It
+  also relied on `tsx` without declaring it.
