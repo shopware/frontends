@@ -1,6 +1,6 @@
 Display a text. Html to Vue mechanism is used to render buttons, links, images accordingly as Vue elements
 
-## Styling CMS-authored HTML
+#### Styling CMS-authored HTML
 
 The rendered container always carries the `cms-element-text` class. Because the
 content comes from the Shopware admin editor, its tags (`h1`–`h6`, `ul`, `table`,
@@ -13,7 +13,7 @@ This layer ships that typography for you in
 registered through `css: []` in the layer's `nuxt.config.ts`. It is plain CSS, so
 it also works for apps that don't use UnoCSS. Nothing to wire up in your app.
 
-### Retheming
+##### Retheming
 
 Every value reads from a `--rte-*` custom property with a built-in fallback, so
 you only set the properties you want to change — no need to redeclare the rules:
@@ -48,7 +48,7 @@ instead of overriding selectors:
 }
 ```
 
-### Scope
+##### Scope
 
 The class is set everywhere admin-authored HTML is injected, so one rule set
 covers all of them:
@@ -63,7 +63,7 @@ covers all of them:
 Add `cms-element-text` to your own wrappers if you render admin HTML elsewhere,
 for example custom fields using the HTML editor.
 
-### Notes
+##### Notes
 
 The stylesheet uses `:where()` throughout, which keeps the specificity at
 `(0,1,0)`. Two consequences worth knowing:
