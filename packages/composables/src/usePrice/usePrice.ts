@@ -28,7 +28,16 @@ export type UsePriceReturn = {
 
 /**
  * Composable for getting formatted price
- * Set the default currency code and locale in order to format a price correctly
+ *
+ * Prices are formatted in the shop's display language, taken from the session
+ * context (`languageInfo.localeCode`). That keeps numbers consistent with the
+ * page copy, keeps server and client output identical, and lets `Intl` pick the
+ * currency representation - a native symbol where the locale has one, an
+ * unambiguous ISO code or a disambiguated prefix (`CA$`, `US$`) where it does not.
+ *
+ * Pass `localeCode` to format in a different locale instead. Because this is a
+ * shared composable, only the first call's params take effect; use `update()`
+ * afterwards.
  *
  * @public
  * @category Product
@@ -37,15 +46,20 @@ function _usePrice(params?: {
   localeCode?: string | undefined;
   currencyCode: string;
 }): UsePriceReturn {
-  const { sessionContext } = useSessionContext();
+  const { sessionContext, currentLocaleCode } = useSessionContext();
   const { browserLocale } = useShopwareContext();
   const currencyCode = ref<string>(params?.currencyCode ?? "");
   const currencyLocale = ref<string>(params?.localeCode || browserLocale);
+  // A locale given by the consumer outranks the shop locale from the session context.
+  let localeCodeIsExplicit = Boolean(params?.localeCode);
 
   function update(params: {
     localeCode?: string | undefined;
     currencyCode: string;
   }) {
+    if (params.localeCode) {
+      localeCodeIsExplicit = true;
+    }
     _setCurrencyCode(params.currencyCode);
     _setLocaleCode(params.localeCode);
   }
@@ -59,6 +73,29 @@ function _usePrice(params?: {
   }
 
   /**
+   * Building a formatter costs ~60x more than using one, so it is cached until
+   * the locale or the currency changes. A locale that `Intl` rejects falls back
+   * to the browser locale rather than dropping the currency from the output.
+   */
+  const formatter = computed<Intl.NumberFormat | null>(() => {
+    if (!currencyCode.value) {
+      return null;
+    }
+    for (const locale of [currencyLocale.value, browserLocale]) {
+      if (!locale) continue;
+      try {
+        return new Intl.NumberFormat(locale, {
+          style: "currency",
+          currency: currencyCode.value,
+        });
+      } catch {
+        // invalid locale or currency code, try the next candidate
+      }
+    }
+    return null;
+  });
+
+  /**
    * Format price (2) -> $ 2.00
    */
   function getFormattedPrice(value: number | string | undefined): string {
@@ -66,23 +103,21 @@ function _usePrice(params?: {
       return "";
     }
 
-    if (!currencyLocale.value || !currencyCode.value) {
+    if (!formatter.value) {
       return value.toString();
     }
-    return new Intl.NumberFormat(currencyLocale.value, {
-      style: "currency",
-      currency: currencyCode.value,
-    }).format(+value);
+    return formatter.value.format(+value);
   }
 
   watch(
-    () => sessionContext.value?.currency,
-    (newCurrency) => {
-      if (newCurrency)
-        update({
-          // locale code is read only once on SSR because it's unavailable in the context
-          currencyCode: newCurrency?.isoCode,
-        });
+    [() => sessionContext.value?.currency, () => currentLocaleCode?.value],
+    ([newCurrency, newLocaleCode]) => {
+      if (newCurrency) {
+        _setCurrencyCode(newCurrency.isoCode);
+      }
+      if (newLocaleCode && !localeCodeIsExplicit) {
+        _setLocaleCode(newLocaleCode);
+      }
     },
     {
       immediate: true,
