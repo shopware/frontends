@@ -7,7 +7,7 @@
     "build": "nuxt prepare && nuxt build",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
-    "typecheck": "nuxt prepare && vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && nuxi typecheck",
     "generate": "nuxt generate",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
@@ -19,8 +19,8 @@
     "@shopware/nuxt-module": "canary",
     "@unocss/nuxt": "66.7.5",
     "braintree-web-drop-in": "^1.46.0",
-    "nuxt": "4.4.8",
-    "vue-tsc": "3.3.7",
+    "nuxt": "4.5.1",
+    "vue-tsc": "3.3.9",
     "oxfmt": "0.58.0",
     "oxlint": "1.73.0"
   }
