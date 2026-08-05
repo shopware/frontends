@@ -133,7 +133,7 @@ onMounted(async () => {
           class="self-stretch text-surface-on-surface text-base font-normal leading-normal"
         >
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div v-html="description"></div>
+          <div class="cms-element-text" v-html="description"></div>
         </div>
       </div>
     </Transition>

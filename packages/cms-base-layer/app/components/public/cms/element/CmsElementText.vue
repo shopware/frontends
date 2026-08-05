@@ -32,6 +32,10 @@ const CmsTextRender = defineComponent({
     const { resolveUrl } = useUrlResolver();
 
     const config = {
+      container: {
+        type: "div",
+        class: "cms-element-text",
+      },
       textTransformer: (text: string) => decodeHTML(text),
       extraComponentsMap: {
         link: {
@@ -148,7 +152,7 @@ const CmsTextRender = defineComponent({
     const rawHtml =
       mappedContent.value?.length > 0
         ? mappedContent.value
-        : "<div class='cms-element-text missing-content-element'></div>";
+        : "<div class='missing-content-element'></div>";
 
     return () => renderHtml(rawHtml, config, h, context, resolveUrl);
   },
@@ -160,34 +164,3 @@ const CmsTextRender = defineComponent({
   </div>
   <CmsTextRender v-else />
 </template>
-<style scoped>
-/** Global CSS styles for text elements */
-h1,
-h2,
-h3,
-h4,
-h5 {
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-h1 {
-  line-height: 2.5rem;
-  font-size: 2.25rem;
-}
-h2 {
-  line-height: 2rem;
-  font-size: 1.75rem;
-}
-h3 {
-  line-height: 1.5rem;
-  font-size: 1.25rem;
-}
-ol,
-ul,
-dl {
-  list-style-type: disc;
-  padding-left: 40px;
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-</style>
