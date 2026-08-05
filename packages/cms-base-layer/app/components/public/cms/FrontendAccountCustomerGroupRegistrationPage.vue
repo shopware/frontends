@@ -38,7 +38,7 @@ useSeoMeta({
     >
       <div
         v-if="registrationResponse?.translated.registrationIntroduction"
-        class="px-6 sm:px-4 mb-6"
+        class="cms-element-text px-6 sm:px-4 mb-6"
         v-html="registrationResponse.translated.registrationIntroduction"
       />
       <AccountRegistrationForm

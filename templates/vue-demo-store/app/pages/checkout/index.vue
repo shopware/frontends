@@ -410,7 +410,7 @@ const handleChangeBaseInfo = async (data: {
                 role="alert"
               >
                 <p class="font-bold">Error!!!</p>
-                <ul>
+                <ul class="list-disc pl-10 mt-2">
                   <li v-for="error in registerErrors" :key="error.detail">
                     {{ error.detail }}
                   </li>

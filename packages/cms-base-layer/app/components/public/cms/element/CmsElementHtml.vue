@@ -11,7 +11,7 @@ const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
 
 const HtmlComponent = () => {
   return h("div", {
-    class: cssClasses,
+    class: ["cms-element-html", "cms-element-text", cssClasses],
     style: layoutStyles,
     innerHTML: props.content.data.content || "",
   });
