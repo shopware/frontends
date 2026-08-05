@@ -64,13 +64,12 @@ const groupedPermissions = computed<PermissionGroup[]>(() => {
       permissionName: permission.permissionName,
     };
 
-    groups[permission.permissionGroupName] ??= {
-      name: permission.permissionGroupName,
-      permissions: [],
-    };
-    groups[permission.permissionGroupName].permissions.push(
-      normalizedPermission,
-    );
+    let group = groups[permission.permissionGroupName];
+    if (!group) {
+      group = { name: permission.permissionGroupName, permissions: [] };
+      groups[permission.permissionGroupName] = group;
+    }
+    group.permissions.push(normalizedPermission);
   }
 
   return Object.values(groups);

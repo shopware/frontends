@@ -48,9 +48,15 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   const { apiClient } = useShopwareContext();
   const { product } = useProduct();
   const { refreshCart } = useCart();
-  if (!productsState.value[product.value.id]) {
-    productsState.value[product.value.id] = {};
-  }
+  const ensureState = (productId: string) => {
+    if (!productsState.value[productId]) {
+      productsState.value[productId] = {};
+    }
+  };
+
+  ensureState(product.value.id);
+  watch(() => product.value.id, ensureState);
+
   const customizedProduct = computed(
     () =>
       product.value?.extensions
@@ -58,7 +64,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   );
 
   const isActive = computed<boolean>(() => !!customizedProduct.value?.active);
-  const state = computed(() => productsState.value[product.value.id]);
+  const state = computed(() => productsState.value[product.value.id] ?? {});
 
   const addToCart = async () => {
     /**
@@ -102,7 +108,10 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   };
 
   const handleFileUpload = async (event: Event, optionId: string) => {
-    const file = (event.target as EventTarget & { files: FileList }).files[0];
+    const file = (event.target as HTMLInputElement | null)?.files?.[0];
+    if (!file) {
+      return;
+    }
     const formData = new FormData();
     formData.append("file", file);
     formData.append("optionId", `"${optionId}"`);

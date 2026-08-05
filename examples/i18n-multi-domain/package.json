@@ -6,7 +6,8 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "dependencies": {
     "nuxt": "4.5.1",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.4.0",
-    "@unocss/nuxt": "66.7.5"
+    "@unocss/nuxt": "66.7.5",
+    "typescript": "5.9.3"
   }
 }

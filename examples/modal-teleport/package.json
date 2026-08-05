@@ -7,7 +7,7 @@
     "generate": "nuxt generate",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
-    "typecheck": "nuxt prepare && vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && nuxi typecheck",
     "preview": "nuxt preview"
   },
   "devDependencies": {
