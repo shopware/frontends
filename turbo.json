@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
+    "vue-starter-template#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".nuxt/**", "dist/**", ".output/**", ".vercel/**"]
+    },
     "generate": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".output/**", ".vercel/**"]
