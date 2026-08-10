@@ -8,7 +8,7 @@ overrides:
   editorconfig>minimatch: ^9.0.9
   '@vercel/blob>undici': ^6.28.0
   less: ^4.8.1
-  nanoid@<3.3.17: '>=3.3.17'
+  nanoid@<3.3.17: ^3.3.17
   esbuild: ^0.28.1
   vite: ^8.0.16
   '@vueuse/core': 14.4.0
