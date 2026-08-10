@@ -70,7 +70,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "4.1.10",
     "fflate": "0.8.3",
-    "happy-dom": "20.10.6",
+    "happy-dom": "20.11.1",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
     "vitest": "4.1.10"
