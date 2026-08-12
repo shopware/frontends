@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  excludeRootCategory,
   getCategoryFilterAggregations,
   getCategoryFilterPostFilter,
   resolveCategoryBucketCount,
@@ -42,6 +43,39 @@ describe("getCategoryFilterPostFilter", () => {
 
   it("should handle a single id", () => {
     expect(getCategoryFilterPostFilter(["id-1"]).value).toBe("id-1");
+  });
+});
+
+describe("excludeRootCategory", () => {
+  const entities = [
+    { id: "root", name: "Catalogue" },
+    { id: "shoes", name: "Shoes" },
+  ];
+
+  it("should drop the entity matching the root category id", () => {
+    expect(excludeRootCategory(entities, "root")).toEqual([
+      { id: "shoes", name: "Shoes" },
+    ]);
+  });
+
+  it("should keep every entity when no root category id is given", () => {
+    expect(excludeRootCategory(entities, undefined)).toEqual(entities);
+    expect(excludeRootCategory(entities, null)).toEqual(entities);
+  });
+
+  it("should keep every entity when the root category is not among them", () => {
+    expect(excludeRootCategory(entities, "other")).toEqual(entities);
+  });
+
+  it("should return an empty array for missing entities", () => {
+    expect(excludeRootCategory(undefined, "root")).toEqual([]);
+    expect(excludeRootCategory(null, "root")).toEqual([]);
+  });
+
+  it("should not mutate the given entities", () => {
+    const input = [...entities];
+    excludeRootCategory(input, "root");
+    expect(input).toEqual(entities);
   });
 });
 

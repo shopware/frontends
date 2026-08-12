@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
+import { excludeRootCategory } from "@shopware/helpers";
 import { computed } from "vue";
 
 import type { Schemas } from "#shopware";
@@ -56,12 +57,10 @@ const preparedFilter = computed(() => {
     return { ...props.filter, label };
   }
 
-  const rootCategoryId =
-    sessionContext.value?.salesChannel?.navigationCategoryId;
-  const entities = (filter.entities ?? [])
-    // The sales channel entry point is an ancestor of every product's category
-    // tree, so it would always show up with the full result count - hide it.
-    .filter((entity) => entity.id !== rootCategoryId)
+  const entities = excludeRootCategory(
+    filter.entities,
+    sessionContext.value?.salesChannel?.navigationCategoryId,
+  )
     // Drop the count: on the search route it counts every variant, while the
     // sibling filters collapse variants via their parent_childs aggregation.
     // Showing an inflated number next to correct ones reads as a bug.

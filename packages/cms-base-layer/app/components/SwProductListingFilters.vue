@@ -12,6 +12,7 @@ import type { LocationQueryRaw } from "vue-router";
 
 import {
   firstQueryValue,
+  getVisibleListingFilters,
   toNumber,
   useCategoryListing,
   useProductSearchListing,
@@ -59,6 +60,12 @@ const {
 } = isProductSearch ? useProductSearchListing() : useCategoryListing();
 
 const sidebarSelectedFilters = useSelectedListingFilters();
+
+// Only the filters this listing can actually apply - the category filter is
+// search-only, matching the post-filter and URL gates below.
+const visibleFilters = computed(() =>
+  getVisibleListingFilters(getInitialFilters.value, { isProductSearch }),
+);
 
 const showResetFiltersButton = computed<boolean>(() => {
   if (
@@ -256,7 +263,7 @@ const handleRemoveFilterChip = async (chip: {
     <!-- Active Filter Chips -->
     <SwFilterChips
       :filters="sidebarSelectedFilters"
-      :available-filters="getInitialFilters"
+      :available-filters="visibleFilters"
       @remove="handleRemoveFilterChip"
     />
 
@@ -282,7 +289,7 @@ const handleRemoveFilterChip = async (chip: {
     <!-- Filters List -->
     <div class="self-stretch flex flex-col justify-start items-start gap-4">
       <SwProductListingFilter
-        v-for="filter in getInitialFilters"
+        v-for="filter in visibleFilters"
         :key="filter.id"
         :filter="filter"
         :selected-manufacturer="sidebarSelectedFilters.manufacturer"

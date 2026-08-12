@@ -15,7 +15,7 @@
   "
 >
 import { useCmsTranslations } from "@shopware/composables";
-import { getTranslatedProperty } from "@shopware/helpers";
+import { excludeRootCategory, getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref } from "vue";
 
@@ -55,15 +55,12 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { sessionContext } = useSessionContext();
 
-// The sales channel entry point is an ancestor of every product's category
-// tree, so it would always show up with the full result count - hide it.
-const categoryOptions = computed(() => {
-  const rootCategoryId =
-    sessionContext.value?.salesChannel?.navigationCategoryId;
-  return (filter.entities ?? []).filter(
-    (entity) => entity.id !== rootCategoryId,
-  );
-});
+const categoryOptions = computed(() =>
+  excludeRootCategory(
+    filter.entities,
+    sessionContext.value?.salesChannel?.navigationCategoryId,
+  ),
+);
 
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {
@@ -131,7 +128,7 @@ const selectValue = (id: string) => {
           <legend class="sr-only">{{ translations.listing.categories }}</legend>
           <label
             v-for="option in categoryOptions"
-            :key="`${option.id}-${isChecked(option.id)}`"
+            :key="option.id"
             class="self-stretch inline-flex justify-start items-start gap-2 cursor-pointer"
           >
             <div

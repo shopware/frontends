@@ -147,7 +147,7 @@ const { data: productSearch } = await useAsyncData(
     const categoryIds =
       firstQueryValue(route.query.categories)?.split("|").filter(Boolean) ?? [];
     await search({
-      search: route.query.search as string,
+      search: firstQueryValue(route.query.search) ?? "",
       filter: filters,
       // Category selection is a post-filter so the category aggregation
       // itself is not reduced (faceted behavior).
@@ -155,8 +155,8 @@ const { data: productSearch } = await useAsyncData(
         ? { "post-filter": [getCategoryFilterPostFilter(categoryIds)] }
         : {}),
       limit: limit.value,
-      p: route.query.p ? Number(route.query.p) : 1,
-      order: route.query.order ? (route.query.order as string) : "name-asc",
+      p: toNumber(firstQueryValue(route.query.p)) ?? 1,
+      order: firstQueryValue(route.query.order) ?? "name-asc",
       aggregations: [
         ...getCategoryFilterAggregations(),
         {

@@ -50,6 +50,24 @@ export function getCategoryFilterAggregations(): Array<
 }
 
 /**
+ * Category filter entities without the sales channel entry point.
+ *
+ * That root category is an ancestor of every product's category tree, so it
+ * matches the whole result set and filtering by it changes nothing. Opt in per
+ * listing by passing `sessionContext.salesChannel.navigationCategoryId`;
+ * without an id the entities are returned unchanged.
+ *
+ * @beta
+ */
+export function excludeRootCategory<T extends { id: string }>(
+  entities: T[] | undefined | null,
+  rootCategoryId: string | undefined | null,
+): T[] {
+  if (!entities) return [];
+  return entities.filter((entity) => entity.id !== rootCategoryId);
+}
+
+/**
  * Criteria `post-filter` entry narrowing a product listing to the given
  * category ids. Sent as a post-filter, it does not reduce the category
  * aggregations from `getCategoryFilterAggregations`, so all category options

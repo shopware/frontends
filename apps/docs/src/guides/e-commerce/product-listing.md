@@ -367,7 +367,7 @@ const ColorFilter: ListingFiler = {
 
 ### Category filter for search results
 
-The Store API does not add a category aggregation on its own. You can request one through the search criteria. The `@shopware/helpers` package ships two small helpers for this.
+The Store API does not add a category aggregation on its own. You can request one through the search criteria. The `@shopware/helpers` package ships a few small helpers for this.
 
 Request the category aggregations together with your search:
 
@@ -399,7 +399,34 @@ The entities are sorted by `count`, highest first. Note that `label` is the raw 
 
 On the `/store-api/search` route the `count` counts every matching **variant**, not every product. The filter UIs in this repo sort by it but do not display it. The `cms-base-layer` filters show no counts at all, and the demo store hides this one because its manufacturer and property filters do collapse variants, so an uncollapsed category count next to them would read as a bug.
 
-The reason is that the helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` named `categories-parents` to the counts aggregation. The filter merge then counts all variants of one product as one, and the count is safe to display.
+The reason is that the helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` to the counts aggregation, named after the exported `CATEGORY_PARENTS_AGGREGATION_NAME` constant. The filter merge then counts all variants of one product as one, and the count is safe to display.
+
+```ts
+import {
+  CATEGORY_AGGREGATION_NAME,
+  CATEGORY_COUNTS_AGGREGATION_NAME,
+  CATEGORY_PARENTS_AGGREGATION_NAME,
+} from "@shopware/helpers";
+
+const aggregations = [
+  {
+    name: CATEGORY_AGGREGATION_NAME,
+    type: "entity",
+    definition: "category",
+    field: "categoriesRo.id",
+  },
+  {
+    name: CATEGORY_COUNTS_AGGREGATION_NAME,
+    type: "terms",
+    field: "categoriesRo.id",
+    aggregation: {
+      name: CATEGORY_PARENTS_AGGREGATION_NAME,
+      type: "terms",
+      field: "parentId",
+    },
+  },
+];
+```
 
 To filter the listing by selected categories, send a `post-filter` with the next search:
 
@@ -418,8 +445,23 @@ search({
 
 A post-filter narrows the result set but does not reduce the aggregations. All category options stay visible while the products are filtered. This is the same mechanism the Store API uses internally for the manufacturer and properties filters.
 
+The `categories` entities include the sales channel entry point, which is an ancestor of every product's category tree. It matches the whole result set, so filtering by it changes nothing. Use `excludeRootCategory` to drop it before you render the options:
+
+```ts
+import { excludeRootCategory } from "@shopware/helpers";
+
+const { sessionContext } = useSessionContext();
+
+const options = computed(() =>
+  excludeRootCategory(
+    filter.entities,
+    sessionContext.value?.salesChannel?.navigationCategoryId,
+  ),
+);
+```
+
 :::info
-The `SwProductListingFilters` component from `@shopware/cms-base-layer` renders the category filter out of the box when the aggregations are present in the listing. See the search page of `vue-starter-template` for a full example.
+The `SwProductListingFilters` component from `@shopware/cms-base-layer` renders the category filter out of the box when the aggregations are present in the listing and the component runs with `listing-type="productSearchListing"`. See the search page of `vue-starter-template` for a full example.
 :::
 
 ### Apply filter value

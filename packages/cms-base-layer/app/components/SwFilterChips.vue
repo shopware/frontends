@@ -6,7 +6,9 @@ import type { Schemas } from "#shopware";
 type FilterState = {
   manufacturer: Set<string>;
   properties: Set<string>;
-  categories: Set<string>;
+  // Optional: consumers building their own filter-state object predate this
+  // field, so a missing one must render no category chips, not throw.
+  categories?: Set<string>;
   "min-price": number | undefined;
   "max-price": number | undefined;
   rating: number | undefined;
@@ -71,13 +73,14 @@ const activeChips = computed(() => {
   }
 
   // Add manufacturer filters
-  const manufacturers = Array.from(props.filters.manufacturer);
-  for (const manufacturerId of manufacturers) {
-    const filter = props.availableFilters.find(
-      (f) => f.code === "manufacturer",
-    );
-    if (filter && "entities" in filter && filter.entities) {
-      const entity = filter.entities.find((e) => e.id === manufacturerId);
+  const manufacturerFilter = props.availableFilters.find(
+    (f) => f.code === "manufacturer",
+  );
+  if (manufacturerFilter?.entities) {
+    for (const manufacturerId of props.filters.manufacturer) {
+      const entity = manufacturerFilter.entities.find(
+        (e) => e.id === manufacturerId,
+      );
       const name = getTranslatedName(entity);
       if (name) {
         chips.push({
@@ -90,11 +93,12 @@ const activeChips = computed(() => {
   }
 
   // Add category filters
-  const categories = Array.from(props.filters.categories);
-  for (const categoryId of categories) {
-    const filter = props.availableFilters.find((f) => f.code === "categories");
-    if (filter && "entities" in filter && filter.entities) {
-      const entity = filter.entities.find((e) => e.id === categoryId);
+  const categoryFilter = props.availableFilters.find(
+    (f) => f.code === "categories",
+  );
+  if (categoryFilter?.entities) {
+    for (const categoryId of props.filters.categories ?? []) {
+      const entity = categoryFilter.entities.find((e) => e.id === categoryId);
       const name = getTranslatedName(entity);
       if (name) {
         chips.push({
