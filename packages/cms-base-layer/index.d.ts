@@ -1,7 +1,5 @@
 /// <reference types="@nuxt/schema" />
 
-export * from "@shopware/composables";
-export * from "./.nuxt/imports";
 
 type CmsBaseLayerAppConfig = {
   /** Placeholder shown while CMS images are loading */
@@ -42,3 +40,5 @@ declare module "@nuxt/schema" {
   interface AppConfig extends CmsBaseLayerAppConfig {}
   interface AppConfigInput extends CmsBaseLayerAppConfig {}
 }
+
+export {};

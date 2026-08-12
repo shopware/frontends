@@ -4,12 +4,8 @@ import type { operations } from "#shopware";
 
 const runtimeConfig = useRuntimeConfig();
 
-const shopwareEndpoint =
-  runtimeConfig.public?.shopware?.endpoint ??
-  runtimeConfig.public?.shopware?.shopwareEndpoint;
-const shopwareAccessToken =
-  runtimeConfig.public?.shopware?.accessToken ??
-  runtimeConfig.public?.shopware?.shopwareAccessToken;
+const shopwareEndpoint = runtimeConfig.public?.shopware?.endpoint;
+const shopwareAccessToken = runtimeConfig.public?.shopware?.accessToken;
 
 const apiClient = createAPIClient<operations>({
   accessToken: shopwareAccessToken,

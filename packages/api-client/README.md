@@ -529,14 +529,23 @@ apiClient.invoke("getProducts get /product", {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.5.0
-
-### Minor Changes
-
-- [#2263](https://github.com/shopware/frontends/pull/2263) [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a) Thanks [@mkucmus](https://github.com/mkucmus)! - Regenerated Store API schemas from the latest backend. Removed obsolete schema patches that were fixed upstream.
-
-- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - update admin API types to be aligned with the backend.
+### Latest changes: 1.5.1
 
 ### Patch Changes
 
-- [#2261](https://github.com/shopware/frontends/pull/2261) [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf) Thanks [@mkucmus](https://github.com/mkucmus)! - Changed `scopes` to `scope` in OAuth token request types to align with RFC 6749 and League OAuth2 server implementation.
+- [#2600](https://github.com/shopware/frontends/pull/2600) [`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0) Thanks [@patzick](https://github.com/patzick)! - Stop adopting `sw-context-token` from publicly cacheable Store API responses. CDN hits for `cacheableReads` GETs can replay a guest token from when the entry was stored, which overwrote the logged-in session and logged users out when navigating to account pages (e.g. before `account/newsletter-recipient`).
+
+- [#2515](https://github.com/shopware/frontends/pull/2515) [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173) Thanks [@patzick](https://github.com/patzick)! - Generate `customFields` properties with a dedicated `CustomFields` type instead of the broader `GenericRecord` type.
+
+- [#2522](https://github.com/shopware/frontends/pull/2522) [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix file uploads and other binary requests. The client no longer forces the default `Content-Type: application/json` onto `FormData`, `Blob`/`File`, `URLSearchParams`, or binary/stream bodies, so the runtime can set the right content type itself (e.g. `multipart/form-data` with a boundary). Just pass the body and leave `Content-Type` alone.
+
+  On a `FormData` body the client now also drops a `Content-Type` you set yourself when it carries no `boundary`. Only the runtime knows the boundary, and it reaches the server through that header, so keeping the header made the upload arrive as unparseable bytes with no error.
+
+- [#2554](https://github.com/shopware/frontends/pull/2554) [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa) Thanks [@patzick](https://github.com/patzick)! - Make `_criteria` query encoding deterministic by pinning the gzip timestamp.
+
+- [#2526](https://github.com/shopware/frontends/pull/2526) [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0) Thanks [@mkucmus](https://github.com/mkucmus)! - Split the `createAPIClient` tests so Node and browser behavior are each tested in the right environment:
+
+  - Node (`createApiClient.test.ts`): keeps the multipart `Content-Type`, aborts with `This operation was aborted`.
+  - Browser (`createApiClient.browser.test.ts`, runs in `happy-dom`): drops the multipart `Content-Type`, aborts with `signal is aborted without reason`.
+
+  Previously a stray `@vitest-environment` comment ran the whole suite in browser mode, so the Node paths were never actually checked.

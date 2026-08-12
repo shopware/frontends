@@ -166,20 +166,24 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.12.0
-
-### Minor Changes
-
-- [#2486](https://github.com/shopware/frontends/pull/2486) [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec) Thanks [@mkucmus](https://github.com/mkucmus)! - `useSessionContext`: expose `currentLocaleCode` — the active language's locale code (e.g. `"en-GB"`), read directly from the context's `languageInfo`. The current locale can now be derived from the session context alone, without loading the full language list via `useInternationalization().getAvailableLanguages()` just to map the current `languageId` to a locale.
-
-- [#2473](https://github.com/shopware/frontends/pull/2473) [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b) Thanks [@mkucmus](https://github.com/mkucmus)! - Add an opt-in `cacheableReads` flag that routes anonymous Store API reads through their cacheable GET variants instead of POST. Criteria is compressed into the `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`, which lets CDNs / reverse proxies / the browser cache the responses.
-
-  Disabled by default — fully backwards compatible. Enable it in `nuxt.config` (`shopware: { cacheableReads: true }`) or via `createShopwareContext(app, { cacheableReads: true })` for non-Nuxt setups. It is surfaced on the Shopware context and read by the affected composables; public composable signatures are unchanged.
-
-  Affected composables: `useNavigation`, `useNavigationSearch`, `useCountries`, `useUser` (country + salutation lookups), `useSalutations`, `useInternationalization`, `useProductConfigurator`, `useProductSearch`, and `useCategorySearch.advancedSearch`.
-
-  `useListing` (product-listing), single-category `useCategorySearch.search`, and `useLandingSearch` remain POST for now: the generated Store API schema does not type `_criteria` on those GET routes (a Shopware OpenAPI gap). The backend does honor `_criteria` on product-listing GET at runtime, so that one can be migrated later once the types are augmented.
+### Latest changes: 1.12.1
 
 ### Patch Changes
 
-- [#2462](https://github.com/shopware/frontends/pull/2462) [`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2) Thanks [@mkucmus](https://github.com/mkucmus)! - `useProductAssociations`: add optional `includeSeoUrls` option. When `true`, the cross-selling request sends `sw-include-seo-urls: true` so returned products include the `seoUrls` association. Defaults to `false` to avoid extra backend overhead.
+- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Add cacheable GET support for category details and product reviews while preserving the existing POST behavior when `cacheableReads` is disabled.
+
+  - `useCategorySearch.search` now calls `GET /category/{navigationId}` and sends the complete encoded Criteria in the `_criteria` query parameter when cacheable reads are enabled.
+  - `useProductReviews.loadProductReviews` now calls `GET /product/{productId}/reviews` and sends its encoded Criteria in `_criteria` when cacheable reads are enabled.
+  - The CMS product description reviews element follows the same flag and endpoint behavior when it needs to fetch reviews directly.
+
+- [#2596](https://github.com/shopware/frontends/pull/2596) [`6572aa8`](https://github.com/shopware/frontends/commit/6572aa84431e1f4a34d6cf04e549037692d638a6) Thanks [@patzick](https://github.com/patzick)! - Reduce Rolldown/Vite build noise: scope Nuxt global components, keep the three.js async chunk warning intentional, avoid shipping full carbon icon JSON via UnoCSS runtime, and bump @vueuse to 14.4.0.
+
+- [#2514](https://github.com/shopware/frontends/pull/2514) [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Allow passing custom criteria to `useCountries`.
+
+- [#2552](https://github.com/shopware/frontends/pull/2552) [`e03c91b`](https://github.com/shopware/frontends/commit/e03c91be172374894d90b7a0111855b76719fee1) Thanks [@patzick](https://github.com/patzick)! - Suppress Rolldown diagnostic warnings for invalid third-party pure annotations and plugin timings in the Nuxt layer build config.
+
+- [#2591](https://github.com/shopware/frontends/pull/2591) [`38379a5`](https://github.com/shopware/frontends/commit/38379a5d52ab09008774533ef417ebe2cde3f7fd) Thanks [@patzick](https://github.com/patzick)! - Propagate session context refresh failures so login, registration, logout, and context setters cannot complete after an unverifiable context switch.
+
+- Updated dependencies [[`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0), [`f16c5a0`](https://github.com/shopware/frontends/commit/f16c5a0785d6187b73c3edcf37feab7c90bd7988), [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0)]:
+  - @shopware/api-client@1.5.1
+  - @shopware/helpers@1.7.2

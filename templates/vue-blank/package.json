@@ -6,7 +6,8 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "devDependencies": {
     "@shopware/cms-base-layer": "canary",
@@ -14,10 +15,10 @@
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.4.8",
+    "nuxt": "4.5.1",
     "typescript": "5.9.3",
-    "vue": "3.5.39",
-    "vue-tsc": "3.3.7"
+    "vue": "3.5.40",
+    "vue-tsc": "3.3.9"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"
