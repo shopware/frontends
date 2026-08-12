@@ -6,16 +6,22 @@ describe("helpers - test global API", () => {
   it("global API should match snapshot", () => {
     expect(helpers).toMatchInlineSnapshot(`
       {
+        "CATEGORY_AGGREGATION_NAME": "categories",
+        "CATEGORY_COUNTS_AGGREGATION_NAME": "categories-counts",
+        "CATEGORY_PARENTS_AGGREGATION_NAME": "categories-parents",
         "buildCdnImageUrl": [Function],
         "buildUrlPrefix": [Function],
         "canUseQuoteActions": [Function],
         "downloadFile": [Function],
         "encodeUrlPath": [Function],
+        "excludeRootCategory": [Function],
         "generateCdnSrcSet": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],
         "getCanonicalPathForTechnicalPath": [Function],
         "getCategoryBreadcrumbs": [Function],
+        "getCategoryFilterAggregations": [Function],
+        "getCategoryFilterPostFilter": [Function],
         "getCategoryImageUrl": [Function],
         "getCategoryRoute": [Function],
         "getCategoryUrl": [Function],

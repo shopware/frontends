@@ -6,6 +6,9 @@ import type { Schemas } from "#shopware";
 type FilterState = {
   manufacturer: Set<string>;
   properties: Set<string>;
+  // Optional: consumers building their own filter-state object predate this
+  // field, so a missing one must render no category chips, not throw.
+  categories?: Set<string>;
   "min-price": number | undefined;
   "max-price": number | undefined;
   rating: number | undefined;
@@ -70,19 +73,38 @@ const activeChips = computed(() => {
   }
 
   // Add manufacturer filters
-  const manufacturers = Array.from(props.filters.manufacturer);
-  for (const manufacturerId of manufacturers) {
-    const filter = props.availableFilters.find(
-      (f) => f.code === "manufacturer",
-    );
-    if (filter && "entities" in filter && filter.entities) {
-      const entity = filter.entities.find((e) => e.id === manufacturerId);
+  const manufacturerFilter = props.availableFilters.find(
+    (f) => f.code === "manufacturer",
+  );
+  if (manufacturerFilter?.entities) {
+    for (const manufacturerId of props.filters.manufacturer) {
+      const entity = manufacturerFilter.entities.find(
+        (e) => e.id === manufacturerId,
+      );
       const name = getTranslatedName(entity);
       if (name) {
         chips.push({
           label: name,
           code: "manufacturer",
           value: manufacturerId,
+        });
+      }
+    }
+  }
+
+  // Add category filters
+  const categoryFilter = props.availableFilters.find(
+    (f) => f.code === "categories",
+  );
+  if (categoryFilter?.entities) {
+    for (const categoryId of props.filters.categories ?? []) {
+      const entity = categoryFilter.entities.find((e) => e.id === categoryId);
+      const name = getTranslatedName(entity);
+      if (name) {
+        chips.push({
+          label: name,
+          code: "categories",
+          value: categoryId,
         });
       }
     }
