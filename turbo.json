@@ -2,12 +2,16 @@
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "nuxt-prepare", "^nuxt-prepare"],
       "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "nuxt-prepare", "^nuxt-prepare"],
       "outputs": ["dist/**", ".output/**", ".vercel/**"]
+    },
+    "nuxt-prepare": {
+      "cache": false,
+      "outputs": []
     },
     "lint": {
       "cache": false,
@@ -20,7 +24,7 @@
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "typecheck": {
-      "dependsOn": ["build", "^build"],
+      "dependsOn": ["build", "^build", "^nuxt-prepare"],
       "outputs": [],
       "inputs": [
         "src/**/*.ts",
