@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
+    "nuxt-prepare": "nuxt prepare",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "oxlint . && oxfmt --check .",
