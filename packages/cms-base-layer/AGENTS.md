@@ -151,6 +151,23 @@ These are reusable components used across CMS and templates:
 | `SwProductListingFilters`           | Filter sidebar              |
 | `SwProductListingFiltersHorizontal` | Horizontal filter bar       |
 
+### Listing Filters
+
+`SwProductListingFilter` picks a filter component from the filter `code`. The components live in
+`app/components/listing-filters/`:
+
+| Filter `code`   | Component              | Purpose              |
+| --------------- | ---------------------- | -------------------- |
+| `categories`    | `SwFilterCategories`   | Category tree facet  |
+| `price`         | `SwFilterPrice`        | Min/max price range  |
+| `rating`        | `SwFilterRating`       | Minimum star rating  |
+| `shipping-free` | `SwFilterShippingFree` | Free shipping toggle |
+| `manufacturer`  | `SwFilterProperties`   | Manufacturer list    |
+
+Any other filter that exposes `options` falls back to `SwFilterProperties`. State is shared through
+`app/utils/useSelectedListingFilters.ts`, and `app/utils/routeQuery.ts` maps the selection to and
+from the URL query.
+
 ### On-demand Components (not auto-imported)
 
 | Component   | Purpose                                       |
@@ -253,10 +270,12 @@ export default defineAppConfig({
 
 Available configuration:
 
-- `imagePlaceholder.color` - SVG placeholder background color
+- `imagePlaceholder.color` - SVG placeholder background color (default: `"#543B95"`)
 - `backgroundImage.format` - Output format for CMS background images (default: `"webp"`). Appended as `&format=` to background image URLs. Accepts `"webp"`, `"avif"`, `"jpg"`, `"png"`.
 - `backgroundImage.quality` - Image quality for CMS background images (default: `90`). Appended as `&quality=` to background image URLs. Accepts `0`-`100`.
+- `lcpImagePreload` - Preload the first CMS image during SSR via `<link rel="preload">` (default: `false`). See `useLcpImagePreload`.
 - `imageSizes` - Maps CMS block slot count to responsive `sizes` attribute values. Used by `CmsGenericBlock` via provide/inject to give `CmsElementImage` sizing hints. See [Responsive CMS Images](#responsive-cms-images) in README.
+- `unocssRuntime` - Enable the UnoCSS runtime in the browser (default: `true`)
 
 ### Component Overriding
 
@@ -353,7 +372,7 @@ CMS sections and blocks with `backgroundMedia` are automatically optimized. `Cms
 export default defineAppConfig({
   backgroundImage: {
     format: "webp", // appended as &format=webp
-    quality: 85, // appended as &quality=85
+    quality: 90, // appended as &quality=90
   },
 });
 ```
@@ -505,5 +524,5 @@ pnpm run typecheck
 
 ---
 
-**Last Updated**: 2026-01-14
-**Package Version**: 2.0.0
+**Last Updated**: 2026-08-17
+**Package Version**: 3.1.0
