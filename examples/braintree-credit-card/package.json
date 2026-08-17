@@ -19,7 +19,7 @@
     "@shopware/nuxt-module": "canary",
     "@unocss/nuxt": "66.7.5",
     "braintree-web-drop-in": "^1.46.0",
-    "nuxt": "4.5.1",
+    "nuxt": "4.5.2",
     "vue-tsc": "3.3.9",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0"
