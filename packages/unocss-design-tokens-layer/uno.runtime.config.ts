@@ -1,5 +1,9 @@
 import type { ConfigBase } from "@unocss/core";
-import { presetWind3 } from "unocss";
+// Import the preset from its own package, not the `unocss` barrel. This config is
+// loaded by a client plugin, and the barrel statically re-exports
+// `@unocss/transformer-attributify-jsx`, which pulls `oxc-parser` and its wasm
+// binding into the client bundle.
+import { presetWind3 } from "@unocss/preset-wind3";
 
 import { designTokenTheme } from "./theme";
 
