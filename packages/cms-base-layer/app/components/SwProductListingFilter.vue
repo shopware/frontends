@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import type { Component } from "vue";
 
+import SwFilterCategoriesVue from "./listing-filters/SwFilterCategories.vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
@@ -11,6 +12,7 @@ const {
   filter,
   selectedManufacturer,
   selectedProperties,
+  selectedCategories = new Set<string>(),
   selectedMinPrice,
   selectedMaxPrice,
   selectedRating,
@@ -20,6 +22,7 @@ const {
   filter: ListingFilter;
   selectedManufacturer: Set<string>;
   selectedProperties: Set<string>;
+  selectedCategories?: Set<string>;
   selectedMinPrice: number | undefined;
   selectedMaxPrice: number | undefined;
   selectedRating: number | undefined;
@@ -40,11 +43,13 @@ const transformedFilters = computed(() => ({
   "shipping-free": selectedShippingFree,
   manufacturer: [...selectedManufacturer],
   properties: [...selectedProperties],
+  categories: [...selectedCategories],
 }));
 
 const filterComponent = computed<Component | undefined>(() => {
   const componentMap: Record<string, Component> = {
     manufacturer: SwFilterPropertiesVue,
+    categories: SwFilterCategoriesVue,
     price: SwFilterPriceVue,
     rating: SwFilterRatingVue,
     "shipping-free": SwFilterShippingFreeVue,
