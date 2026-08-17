@@ -602,6 +602,9 @@ cd packages/[package-name]
 pnpm run dev  # Runs unbuild --stub for hot reload
 ```
 
+The Nuxt layers (`cms-base-layer`, `unocss-design-tokens-layer`) have no build step. They
+ship their sources as-is, so template changes show up straight away.
+
 ### Issue: Dependency conflicts
 
 ```bash

@@ -364,12 +364,10 @@ The first image found is injected as a `<link rel="preload" as="image" fetchprio
 
 ### Usage
 
-The composable is already called in `CmsPage.vue`. If you override `CmsPage`, you can use it in your custom component:
+The composable is already called in `CmsPage.vue`. If you override `CmsPage`, you can use it in your custom component. It is auto-imported once your app extends this layer, so it needs no import statement:
 
 ```vue
 <script setup>
-import { useLcpImagePreload } from "@shopware/cms-base-layer/composables/useLcpImagePreload";
-
 const props = defineProps<{ content: Schemas["CmsPage"] }>();
 
 useLcpImagePreload(props.content?.sections || []);
