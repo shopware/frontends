@@ -29,18 +29,18 @@
     "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
-    "@nuxt/kit": "4.5.1",
+    "@nuxt/kit": "4.5.2",
     "axios": "1.19.0"
   },
   "devDependencies": {
-    "@nuxt/devtools": "3.4.0",
+    "@nuxt/devtools": "3.4.1",
     "@nuxt/module-builder": "1.0.3",
-    "@nuxt/schema": "4.5.1",
+    "@nuxt/schema": "4.5.2",
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "@shopware/nuxt-module": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.5.1",
+    "nuxt": "4.5.2",
     "typescript": "5.9.3",
     "uuid": "^14.0.0",
     "vue-tsc": "3.3.9",
