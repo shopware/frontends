@@ -2,7 +2,7 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.7.10.1
+ * Shopware API version: 6.7.12.1
  *
  */
 type GenericRecord =
@@ -61,6 +61,7 @@ export type components = {
     criteriaTotalCountMode: components["schemas"]["TotalCountMode"];
     noAggregations: string | null;
     onlyAggregations: string | null;
+    swLanguageId: string;
   };
 };
 export type Schemas = {
@@ -107,6 +108,18 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  AdvancedSearchCompoundDictionary: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id: string;
+    languageId: string;
+    /** Format: int64 */
+    minSubwordSize?: number;
+    onlyLongestMatch?: boolean;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    wordList?: string[];
+  };
   AdvancedSearchConfig: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -152,6 +165,16 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AdvancedSearchStopwordDictionary: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    extendsBuiltin?: boolean;
+    id: string;
+    languageId: string;
+    stopwords?: string[];
     /** Format: date-time */
     readonly updatedAt?: string;
   };
@@ -512,6 +535,23 @@ export type Schemas = {
     customerId?: string;
     customFields?: CustomFields | null;
     endDate?: string;
+    extensions?: {
+      subscriptionBudgets?: {
+        data?: {
+          /** @example db9b610a5feba7efda832033f6be0bbf */
+          id?: string;
+          /** @example b2b_components_subscription_budget */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-budget/1e4002da52224f484ff690aa9b0bfb2a/subscriptionBudgets
+           */
+          related?: string;
+        };
+      };
+    };
     id: string;
     name: string;
     notificationConfig?: {
@@ -654,6 +694,10 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   B2bComponentsOrganization: {
+    billingAddresses?: components["schemas"]["CustomerAddress"][];
+    /** Format: int64 */
+    readonly childCount?: number;
+    children?: components["schemas"]["B2bComponentsOrganization"][];
     /** Format: date-time */
     readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
@@ -662,15 +706,27 @@ export type Schemas = {
     customerId: string;
     customFields?: CustomFields | null;
     defaultBillingAddress?: components["schemas"]["CustomerAddress"];
-    defaultBillingAddressId: string;
+    defaultBillingAddressId?: string;
     defaultShippingAddress?: components["schemas"]["CustomerAddress"];
-    defaultShippingAddressId: string;
+    defaultShippingAddressId?: string;
+    description?: string;
     employees?: components["schemas"]["B2bEmployee"][];
+    extensions?: {
+      organizationBreadcrumb?: GenericRecord;
+      organizationInheritance?: GenericRecord;
+    };
     id: string;
+    /** Format: int64 */
+    readonly level?: number;
     name: string;
     organizationCustomerAddresses?: components["schemas"]["B2bComponentsOrganizationCustomerAddress"][];
+    parent?: components["schemas"]["B2bComponentsOrganization"];
+    parentId?: string;
+    readonly path?: string;
     paymentMethods?: components["schemas"]["PaymentMethod"][];
+    shippingAddresses?: components["schemas"]["CustomerAddress"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
+    readonly treeSortPath?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
@@ -956,6 +1012,11 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  B2bComponentsSubscriptionBudget: {
+    budget?: components["schemas"]["B2bComponentsBudget"];
+    id?: string;
+    subscription?: components["schemas"]["Subscription"];
+  };
   B2bComponentsSubscriptionEmployee: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -967,9 +1028,13 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   B2bEmployee: {
+    account?: components["schemas"]["B2bEmployeeAccount"];
+    accountId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: CustomFields | null;
+    /** Format: date-time */
+    detachedAt?: string;
     email: string;
     extensions?: {
       organization?: {
@@ -990,10 +1055,43 @@ export type Schemas = {
     };
     firstName: string;
     id: string;
+    isPrimaryMembership?: boolean;
     language?: components["schemas"]["Language"];
     languageId: string;
     lastName: string;
     role?: components["schemas"]["B2bComponentsRole"];
+    status?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  B2bEmployeeAccount: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    customFields?: CustomFields | null;
+    email: string;
+    employees?: components["schemas"]["B2bEmployee"][];
+    extensions?: {
+      defaultEmployee?: {
+        data?: {
+          /** @example dcc27abeb81b4e3a5d24d9a66132c3bf */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-employee-account/d44c56f59f71fa5dfc80938683b96e81/defaultEmployee
+           */
+          related?: string;
+        };
+      };
+    };
+    firstName: string;
+    id: string;
+    language?: components["schemas"]["Language"];
+    languageId: string;
+    lastName: string;
     status?: string;
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -1064,27 +1162,19 @@ export type Schemas = {
     active?: boolean;
     /** @example bundle_discount */
     apiAlias?: string;
-    /** Format: date-time */
-    readonly createdAt?: string;
     currencyId?: string;
     id: string;
     maxValue?: number;
     preventCombination?: boolean;
     /** @enum {string} */
     type: "absolute" | "percentage";
-    /** Format: date-time */
-    readonly updatedAt?: string;
     value: number;
-    /** Version identifier of the bundle discount entity. */
-    versionId?: string;
   };
   BundleItem: {
     /** @example bundle_item */
     apiAlias?: string;
     bundleId?: string;
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id: string;
+    id?: string;
     max?: number;
     min: number;
     position?: number;
@@ -1093,10 +1183,6 @@ export type Schemas = {
     quantity: number;
     required: boolean;
     showBundleOnItemPdp?: boolean;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    /** Version identifier of the bundle item entity. */
-    versionId?: string;
   };
   BundleProduct: {
     active?: boolean;
@@ -2511,6 +2597,21 @@ export type Schemas = {
     /** Name of customer's department. */
     department?: string;
     extensions?: {
+      billingOrganizations?: {
+        data?: {
+          /** @example aff42a9b805cb256b5fa77d84c3fa8a9 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/billingOrganizations
+           */
+          related?: string;
+        };
+      };
       organizationCustomerAddresses?: {
         data?: {
           /** @example ada6a19a929bea8dbec29edb3d68df58 */
@@ -2522,6 +2623,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/organizationCustomerAddresses
+           */
+          related?: string;
+        };
+      };
+      shippingOrganizations?: {
+        data?: {
+          /** @example 91f4ddd1dd77c56814febc8cdb355696 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/shippingOrganizations
            */
           related?: string;
         };
@@ -2593,6 +2709,21 @@ export type Schemas = {
     /** Name of customer's department. */
     department?: string;
     extensions?: {
+      billingOrganizations?: {
+        data?: {
+          /** @example aff42a9b805cb256b5fa77d84c3fa8a9 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/billingOrganizations
+           */
+          related?: string;
+        };
+      };
       organizationCustomerAddresses?: {
         data?: {
           /** @example ada6a19a929bea8dbec29edb3d68df58 */
@@ -2604,6 +2735,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/organizationCustomerAddresses
+           */
+          related?: string;
+        };
+      };
+      shippingOrganizations?: {
+        data?: {
+          /** @example 91f4ddd1dd77c56814febc8cdb355696 */
+          id?: string;
+          /** @example b2b_components_organization */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer-address/1b4b031005f93d02d887e7d66efb653b/shippingOrganizations
            */
           related?: string;
         };
@@ -3096,6 +3242,28 @@ export type Schemas = {
     /** the id from the product which is shown on the dynamic page */
     productId: string;
   } & components["schemas"]["AbstractDynamicPageOpenedPayload"];
+  EmployeeAvailableContextsResponse: {
+    /** Every active membership the logged-in account can act as. */
+    contexts: components["schemas"]["EmployeeContext"][];
+    /** True when the account has more than one context and none is active yet, so the storefront must prompt the user to pick one before continuing. */
+    contextSelectionRequired: boolean;
+    /** The account's default context, auto-activated on the next login. Null when no default is set. */
+    defaultEmployeeId?: string | null;
+  };
+  EmployeeContext: {
+    /** Whether this context is the one currently active for the session. */
+    active: boolean;
+    /** Identifier of the business partner customer (company). Null when the context is not bound to a specific customer record. */
+    companyId?: string | null;
+    /** Display name of the company this context belongs to. */
+    companyName: string;
+    /** Identifier of the employee identity that represents this membership. */
+    employeeId: string;
+    /** Identifier of the B2B role granted in this context. Null when no role is assigned. */
+    roleId?: string | null;
+    /** Name of the B2B role granted in this context. Null when no role is assigned. */
+    roleName?: string | null;
+  };
   EmptyInteraction: components["schemas"]["BaseInteraction"] & {
     name: string;
     payload: GenericRecord;
@@ -4475,7 +4643,6 @@ export type Schemas = {
       productNumber?: string;
       productType?: components["schemas"]["Product"]["type"];
       readonly propertyIds?: string[];
-      purchasePrices?: string;
       /** Format: date-time */
       releaseDate?: string;
       /** Format: int64 */
@@ -5192,6 +5359,8 @@ export type Schemas = {
     /** Unique identity of delivery time. */
     deliveryTimeId?: string;
     description?: string;
+    /** Read-only, HTML-stripped excerpt of the description, derived on write. */
+    readonly descriptionTeaser?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     readonly displayGroup?: string;
     /** Downloadable files associated with the product (e.g., manuals, digital content) */
@@ -5474,6 +5643,7 @@ export type Schemas = {
       coverId: string;
       deliveryTimeId: string;
       description: string;
+      descriptionTeaser: string;
       displayGroup: string;
       ean: string;
       keywords: string;
@@ -5502,7 +5672,7 @@ export type Schemas = {
      * The type of the product, e.g., physical or digital.
      * @enum {string}
      */
-    type: "physical" | "digital" | "grouped_bundle";
+    type: "physical" | "digital";
     /** Product unit of measure (e.g., piece, liter, kg) */
     unit?: components["schemas"]["Unit"];
     /** Unique identity of the unit. */
@@ -5641,6 +5811,7 @@ export type Schemas = {
       | "attendee.product.collection.removed";
   };
   ProductJsonApi: unknown &
+    unknown &
     components["schemas"]["resource"] & {
       /** When boolean value is `true`, the products are available for selection in the storefront for purchase. */
       active?: boolean;
@@ -5677,153 +5848,12 @@ export type Schemas = {
       /** Unique identity of delivery time. */
       deliveryTimeId?: string;
       description?: string;
+      /** Read-only, HTML-stripped excerpt of the description, derived on write. */
+      readonly descriptionTeaser?: string;
       /** Runtime field, cannot be used as part of the criteria. */
       readonly displayGroup?: string;
       /** Indicates EAN of the product. */
       ean?: string;
-      extensions?: {
-        attendeeProductCollections?: {
-          data?: {
-            /** @example 0a7b3b2f4b81f36910a74f22826f35df */
-            id?: string;
-            /** @example dsr_attendee_product_collection */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
-             */
-            related?: string;
-          };
-        };
-        /** Reference to the bundle item definition when this product acts as a bundle item. */
-        belongToBundleItems?: {
-          data?: {
-            /** @example db4ef6a91ceb3a70935c07a3617ea4cd */
-            id?: string;
-            /** @example bundle_item */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/belongToBundleItems
-             */
-            related?: string;
-          };
-        };
-        /** Discount configurations that belong to this bundle. */
-        bundleDiscounts?: {
-          data?: {
-            /** @example a79712cce6d0182645b519f6add10f77 */
-            id?: string;
-            /** @example bundle_discount */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/bundleDiscounts
-             */
-            related?: string;
-          };
-        };
-        /** Bundle items assigned to this grouped bundle product. */
-        bundleItems?: {
-          data?: {
-            /** @example d7706d2e11bc4878ffb242403ea5b274 */
-            id?: string;
-            /** @example bundle_item */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/bundleItems
-             */
-            related?: string;
-          };
-        };
-        /** Bundles that include this product as an item. */
-        bundles?: {
-          data?: {
-            /** @example 9e21e19f42862a3b26cd7aae135a3f74 */
-            id?: string;
-            /** @example product */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/bundles
-             */
-            related?: string;
-          };
-        };
-        /** Sales channels in which this bundle is available. */
-        readonly bundleSalesChannels?: {
-          data?: {
-            /** @example d4aa52cb00cd89c5e047c6a5c72a0384 */
-            id?: string;
-            /** @example sales_channel */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/bundleSalesChannels
-             */
-            related?: string;
-          };
-        };
-        /** Products referenced as bundle items of this bundle. */
-        items?: {
-          data?: {
-            /** @example 691d502cfd0e0626cd3b058e5682ad1c */
-            id?: string;
-            /** @example product */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/items
-             */
-            related?: string;
-          };
-        };
-        reviewSummaries?: {
-          data?: {
-            /** @example c9c718522e64ffa5effb26cef94f4849 */
-            id?: string;
-            /** @example product_review_summary */
-            type?: string;
-          }[];
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
-             */
-            related?: string;
-          };
-        };
-        swagCustomizedProductsTemplate?: {
-          data?: {
-            /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
-            id?: string;
-            /** @example swag_customized_products_template */
-            type?: string;
-          };
-          links?: {
-            /**
-             * Format: uri-reference
-             * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
-             */
-            related?: string;
-          };
-        };
-      };
       /**
        * Format: float
        * The height of the product.
@@ -6317,6 +6347,7 @@ export type Schemas = {
         coverId: string;
         deliveryTimeId: string;
         description: string;
+        descriptionTeaser: string;
         displayGroup: string;
         ean: string;
         keywords: string;
@@ -6345,7 +6376,7 @@ export type Schemas = {
        * The type of the product, e.g., physical or digital.
        * @enum {string}
        */
-      type?: "physical" | "digital" | "grouped_bundle";
+      type?: "physical" | "digital";
       /** Unique identity of the unit. */
       unitId?: string;
       /** Format: date-time */
@@ -6677,6 +6708,8 @@ export type Schemas = {
     readonly createdAt?: string;
     customFields?: CustomFields | null;
     description?: string;
+    /** When enabled, matching variants are grouped according to the product presentation setting. Disable to show them individually. */
+    displayAsGroup?: boolean;
     id: string;
     /** When the boolean value is `true` indicating that it is for internal use only and will not appear in product stream listings. */
     internal?: boolean;
@@ -6837,6 +6870,10 @@ export type Schemas = {
       /** Format: float */
       value?: number;
     };
+    displayState?: {
+      adminState?: string;
+      storefrontState?: string;
+    };
     documents?: components["schemas"]["QuoteDocument"][];
     /** Format: date-time */
     expirationDate?: string;
@@ -6857,10 +6894,13 @@ export type Schemas = {
         };
       };
     };
+    histories?: components["schemas"]["QuoteHistory"][];
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     lineItems?: components["schemas"]["QuoteLineItem"][];
+    notificationEmployees?: components["schemas"]["B2bEmployee"][];
+    notificationRecipients?: components["schemas"]["User"][];
     orderId?: string;
     orderVersionId?: string;
     price?: {
@@ -6876,8 +6916,13 @@ export type Schemas = {
       /** Format: float */
       totalPrice: number;
     };
+    /** Format: date-time */
+    quoteCreatedAt?: string;
     quoteNumber?: string;
+    /** Format: date-time */
+    requestedAt?: string;
     salesChannelId: string;
+    sendNotification?: boolean;
     /** Format: date-time */
     sentAt?: string;
     shippingCosts?: {
@@ -6910,6 +6955,8 @@ export type Schemas = {
     readonly taxStatus?: string;
     /** Format: float */
     totalDiscount?: number;
+    /** Format: float */
+    totalLineItemDiscount?: number;
     transactions?: components["schemas"]["QuoteTransaction"][];
     /** Format: date-time */
     readonly updatedAt?: string;
@@ -6927,10 +6974,14 @@ export type Schemas = {
     employee?: components["schemas"]["B2bEmployee"];
     employeeId?: string;
     id: string;
+    lineItem?: components["schemas"]["QuoteLineItem"];
     quoteId: string;
+    quoteLineItemId?: string;
+    quoteLineItemVersionId?: string;
     quoteVersionId?: string;
     /** Format: date-time */
     seenAt?: string;
+    /** @deprecated */
     stateId?: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
@@ -7054,6 +7105,62 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  QuoteEmployeeNotificationRecipient: {
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId: string;
+    id?: string;
+    quote?: components["schemas"]["Quote"];
+    quoteId: string;
+    quoteVersionId?: string;
+  };
+  QuoteHistory: {
+    /** Action represented by this quote history entry. */
+    action: string;
+    changes?: GenericRecord;
+    /** Comment linked to this quote history entry. */
+    comment?: components["schemas"]["QuoteComment"];
+    /** Unique identity of the related quote comment. */
+    commentId?: string;
+    /** Version identifier of the related quote comment. */
+    commentVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    /** User who created this quote history entry. */
+    createdBy?: components["schemas"]["User"];
+    /** Unique identity of the user who created the history entry. */
+    createdById?: string;
+    /** Customer who created this quote history entry. */
+    customer?: components["schemas"]["Customer"];
+    /** Unique identity of the customer who created the history entry. */
+    customerId?: string;
+    /** Employee who created this quote history entry. */
+    employee?: components["schemas"]["B2bEmployee"];
+    /** Unique identity of the employee who created the history entry. */
+    employeeId?: string;
+    id: string;
+    /** Marks whether this quote history entry has been resolved. */
+    isResolved?: boolean;
+    /** Quote associated with this history entry. */
+    quote?: components["schemas"]["Quote"];
+    /** Unique identity of the related quote. */
+    quoteId: string;
+    /** Version identifier of the related quote. */
+    quoteVersionId?: string;
+    /**
+     * Format: date-time
+     * Timestamp when this quote history entry was seen.
+     */
+    seenAt?: string;
+    /**
+     * Format: date-time
+     * Timestamp when this quote history entry was sent.
+     */
+    sentAt?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Version identifier of the quote history entity. */
+    versionId?: string;
+  };
   QuoteJsonApi: components["schemas"]["resource"] & {
     /** Format: float */
     readonly amountNet?: number;
@@ -7069,6 +7176,10 @@ export type Schemas = {
       type?: string;
       /** Format: float */
       value?: number;
+    };
+    displayState?: {
+      adminState?: string;
+      storefrontState?: string;
     };
     /** Format: date-time */
     expirationDate?: string;
@@ -7106,6 +7217,8 @@ export type Schemas = {
       /** Format: float */
       totalPrice: number;
     };
+    /** Format: date-time */
+    quoteCreatedAt?: string;
     quoteNumber?: string;
     relationships?: {
       comments?: {
@@ -7168,6 +7281,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      histories?: {
+        data?: {
+          /** @example d7e502230e221c8b2f25a93cb2b9dad0 */
+          id?: string;
+          /** @example quote_history */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/histories
+           */
+          related?: string;
+        };
+      };
       language?: {
         data?: {
           /** @example 8512ae7d57b1396273f76fe6ed341a23 */
@@ -7194,6 +7322,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /quote/c48e929b2b1eabba2ba036884433345e/lineItems
+           */
+          related?: string;
+        };
+      };
+      notificationEmployees?: {
+        data?: {
+          /** @example 7dd22b6dd4eb80f03ef9e485e6981b63 */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/notificationEmployees
+           */
+          related?: string;
+        };
+      };
+      notificationRecipients?: {
+        data?: {
+          /** @example bd4a2b3045182246fac51c0abc10c4d7 */
+          id?: string;
+          /** @example user */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /quote/c48e929b2b1eabba2ba036884433345e/notificationRecipients
            */
           related?: string;
         };
@@ -7229,7 +7387,10 @@ export type Schemas = {
         };
       };
     };
+    /** Format: date-time */
+    requestedAt?: string;
     salesChannelId: string;
+    sendNotification?: boolean;
     /** Format: date-time */
     sentAt?: string;
     shippingCosts?: {
@@ -7261,6 +7422,8 @@ export type Schemas = {
     readonly taxStatus?: string;
     /** Format: float */
     totalDiscount?: number;
+    /** Format: float */
+    totalLineItemDiscount?: number;
     /** Format: date-time */
     readonly updatedAt?: string;
     updatedById?: string;
@@ -7269,11 +7432,14 @@ export type Schemas = {
   };
   QuoteLineItem: {
     children: components["schemas"]["QuoteLineItem"][];
+    comments?: components["schemas"]["QuoteComment"][];
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: CustomFields | null;
+    /** Format: date-time */
+    deletedAt?: string;
     deliveryPositions?: components["schemas"]["QuoteDeliveryPosition"][];
     description?: string;
     discount?: {
@@ -7282,6 +7448,7 @@ export type Schemas = {
       value?: number;
     };
     good?: boolean;
+    histories?: components["schemas"]["QuoteLineItemHistory"][];
     id: string;
     identifier: string;
     label: string;
@@ -7302,6 +7469,8 @@ export type Schemas = {
     quoteVersionId?: string;
     referencedId?: string;
     removable?: boolean;
+    /** Format: float */
+    requestedPrice?: number;
     stackable?: boolean;
     /** @deprecated */
     states: string[];
@@ -7313,6 +7482,66 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
     versionId?: string;
+  };
+  QuoteLineItemHistory: {
+    /** Action represented by this quote line item history entry. */
+    action: string;
+    changes?: GenericRecord;
+    /** Child quote line item history entries replying to this entry. */
+    children?: components["schemas"]["QuoteLineItemHistory"][];
+    /** Comment linked to this quote line item history entry. */
+    comment?: components["schemas"]["QuoteComment"];
+    /** Unique identity of the related quote comment. */
+    commentId?: string;
+    /** Version identifier of the related quote comment. */
+    commentVersionId?: string;
+    /** Format: date-time */
+    readonly createdAt?: string;
+    /** Unique identity of the user who created the history entry. */
+    createdById?: string;
+    /** Unique identity of the customer who created the history entry. */
+    customerId?: string;
+    /** Unique identity of the employee who created the history entry. */
+    employeeId?: string;
+    id: string;
+    /** Marks whether this is the current history state for the quote line item. */
+    isCurrent?: boolean;
+    /** Marks whether this quote line item history entry has been resolved. */
+    isResolved?: boolean;
+    /** Parent quote line item history entry this reply belongs to. */
+    parent?: components["schemas"]["QuoteLineItemHistory"];
+    /** Unique identity of the parent quote line item history entry. */
+    parentId?: string;
+    /** Version identifier of the parent quote line item history entry. */
+    parentVersionId?: string;
+    /** Quote line item associated with this history entry. */
+    quoteLineItem?: components["schemas"]["QuoteLineItem"];
+    /** Unique identity of the related quote line item. */
+    quoteLineItemId: string;
+    /** Version identifier of the related quote line item. */
+    quoteLineItemVersionId?: string;
+    /**
+     * Format: date-time
+     * Timestamp when this quote line item history entry was seen.
+     */
+    seenAt?: string;
+    /**
+     * Format: date-time
+     * Timestamp when this quote line item history entry was sent.
+     */
+    sentAt?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+    /** Version identifier of the quote line item history entity. */
+    versionId?: string;
+  };
+  QuoteNotificationRecipient: {
+    id?: string;
+    quote?: components["schemas"]["Quote"];
+    quoteId: string;
+    quoteVersionId?: string;
+    user?: components["schemas"]["User"];
+    userId: string;
   };
   QuoteTransaction: {
     amount: {
@@ -7435,16 +7664,11 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  SaasStorefrontDemoToken: {
-    /** Format: date-time */
-    readonly createdAt?: string;
-    id?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-  };
   SalesChannel: {
     /** When boolean value is `true`, the sales channel is enabled. */
     active?: boolean;
+    /** Business timezone used for sales-channel-specific rendering. Added since version: 6.7.13.0. */
+    businessTimeZone?: string;
     configuration?: GenericRecord;
     /** Default country for the sales channel */
     country?: components["schemas"]["Country"];
@@ -7510,6 +7734,7 @@ export type Schemas = {
     /** Tax calculation types are `horizontal` and `vertical`. */
     taxCalculationType?: string;
     translated: {
+      businessTimeZone: string;
       countryId: string;
       currencyId: string;
       customerGroupId: string;
@@ -7634,6 +7859,13 @@ export type Schemas = {
     readonly updatedAt?: string;
     /** URL of the sales channel domain. */
     url: string;
+  };
+  SalesChannelFile: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
   };
   SalesChannelTrackingCustomer: {
     /** Format: date-time */
@@ -7760,7 +7992,6 @@ export type Schemas = {
     routeName:
       | "frontend.navigation.page"
       | "frontend.landing.page"
-      | "frontend.bundle.detail.page"
       | "frontend.detail.page";
     /** Unique identity of sales channel. */
     salesChannelId?: string;
@@ -7797,8 +8028,8 @@ export type Schemas = {
     routeName:
       | "frontend.navigation.page"
       | "frontend.landing.page"
-      | "frontend.bundle.detail.page"
-      | "frontend.detail.page";
+      | "frontend.detail.page"
+      | "frontend.bundle.detail.page";
     /** Unique identity of sales channel. */
     salesChannelId?: string;
     /** Seo path to product. For example: \\"Pepper-white-ground-pearl/SW10098\\" */
@@ -8074,6 +8305,8 @@ export type Schemas = {
       languageId?: string;
       mailHeaderFooterId?: string;
       maintenance?: boolean;
+      maintenanceIpAllowlist?: string;
+      /** @deprecated */
       maintenanceIpWhitelist?: string;
       name?: string;
       /** Format: int32 */
@@ -8097,6 +8330,8 @@ export type Schemas = {
       languageId?: string;
       mailHeaderFooterId?: string;
       maintenance?: boolean;
+      maintenanceIpAllowlist?: string;
+      /** @deprecated */
       maintenanceIpWhitelist?: string;
       name?: string;
       /** Format: int32 */
@@ -8377,6 +8612,21 @@ export type Schemas = {
     customFields?: CustomFields | null;
     dateInterval: string;
     extensions?: {
+      subscriptionBudget?: {
+        data?: {
+          /** @example 6b2732717e6360e8eccfd947596f4e64 */
+          id?: string;
+          /** @example b2b_components_subscription_budget */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /subscription/787ad0b7a17de4ad6b1711bbf8d79fcb/subscriptionBudget
+           */
+          related?: string;
+        };
+      };
       subscriptionEmployee?: {
         data?: {
           /** @example a4844d7989267e34103e44248b16cf6c */
@@ -8725,6 +8975,38 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  SwagCustomizedProductsAddToCartRequest: {
+    "customized-products-template": components["schemas"]["SwagCustomizedProductsTemplateConfiguration"];
+    lineItems: {
+      [key: string]: components["schemas"]["SwagCustomizedProductsLineItem"];
+    };
+  };
+  SwagCustomizedProductsConfigurationShareResponse: {
+    /** Format: uri */
+    shareUrl: string;
+  };
+  SwagCustomizedProductsCreateConfigurationShareRequest: components["schemas"]["SwagCustomizedProductsAddToCartRequest"] & {
+    /** Format: uri */
+    absoluteBaseUrl?: string;
+    baseUrl?: string;
+    "swag-customized-products-one-time-share"?: boolean;
+  };
+  SwagCustomizedProductsEntitySearchResult: {
+    /** Aggregation result. */
+    aggregations?: {
+      [key: string]: unknown;
+    };
+    elements?: {
+      [key: string]: unknown;
+    }[];
+    /** Total amount. */
+    total?: number;
+  };
+  SwagCustomizedProductsLineItem: {
+    /** Format: uuid */
+    id: string;
+    quantity: number;
+  };
   SwagCustomizedProductsTemplate: {
     active?: boolean;
     configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
@@ -8757,18 +9039,17 @@ export type Schemas = {
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfiguration: {
-    configuration: GenericRecord;
-    /** Format: date-time */
-    readonly createdAt?: string;
-    hash: string;
+    /**
+     * Format: uuid
+     * The template id this configuration is for.
+     */
     id: string;
-    template?: components["schemas"]["SwagCustomizedProductsTemplate"];
-    templateConfigurationShares?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
-    templateId: string;
-    templateVersionId?: string;
-    /** Format: date-time */
-    readonly updatedAt?: string;
-    versionId?: string;
+    /** Existing configuration hash to replace in the cart. */
+    oldHash?: string;
+    /** An object keyed by option id with submitted option values. */
+    options?: {
+      [key: string]: unknown;
+    };
   };
   SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
     configuration: GenericRecord;
@@ -9286,6 +9567,23 @@ export type Schemas = {
     readonly updatedAt?: string;
     versionId?: string;
   };
+  SwagCustomizedProductsUploadRequest: {
+    /**
+     * Format: binary
+     * The file to upload.
+     */
+    file: Blob;
+    /**
+     * Format: uuid
+     * Id of the template option.
+     */
+    optionId: string;
+  };
+  SwagCustomizedProductsUploadResponse: {
+    filename: string;
+    /** Format: uuid */
+    mediaId: string;
+  };
   SwagDelayAction: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -9755,6 +10053,740 @@ export type Schemas = {
      * The previous page of data
      */
     prev?: string;
+  };
+  paypal_agentic_commerce_v1_address: {
+    /** The first line of the address, such as number and street, for example, 173 Drury Lane.
+     *     Needed for data entry, and Compliance and Risk checks. This field needs to pass the full address. */
+    address_line_1?: string;
+    address_line_2?: string;
+    /** The highest-level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision.
+     *     This data is formatted for postal delivery, for example, CA and not California. Value, by country, is UK.
+     *     A county. US. A state. Canada. A province. Japan. A prefecture. Switzerland. A kanton. */
+    admin_area_1?: string;
+    /** A city, town, or village. Smaller than admin_area_level_1. */
+    admin_area_2?: string;
+    /** The 2-character ISO 3166-1 alpha-2 country code */
+    country_code?: string;
+    /** The postal code, which is the ZIP code or equivalent.
+     *     Typically required for countries with a postal code or an equivalent. See postal code. */
+    postal_code?: string;
+  };
+  paypal_agentic_commerce_v1_agent_error_detail: {
+    description: string;
+    field: string;
+    issue: string;
+  };
+  paypal_agentic_commerce_v1_applied_coupon: {
+    code: string;
+    description: string;
+    discount_amount: components["schemas"]["paypal_agentic_commerce_v1_money"];
+  };
+  paypal_agentic_commerce_v1_billing_address: components["schemas"]["paypal_agentic_commerce_v1_address"];
+  paypal_agentic_commerce_v1_cart_item: {
+    custom_options?: components["schemas"]["paypal_agentic_commerce_v1_referral_custom_option"][];
+    /** Product description */
+    description?: string;
+    gift_options?: components["schemas"]["paypal_agentic_commerce_v1_gift_options"];
+    /** Unique product identifier (optional in v1 for backwards compatibility) */
+    item_id?: string;
+    /** URL for product details page */
+    item_url?: string;
+    /** Product display name */
+    name?: string;
+    /** Item grouping identifier - passed when item is part of a group in honey catalog */
+    parent_id?: string;
+    price: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    /** Number of items */
+    quantity: number;
+    selected_attributes?: components["schemas"]["paypal_agentic_commerce_v1_referral_selected_attribute"][];
+    /** Product variant identifier (color, size, etc.) - unique id of the product */
+    variant_id?: string;
+  };
+  paypal_agentic_commerce_v1_cart_totals: {
+    custom_charges?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    discount?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    handling?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    insurance?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    shipping?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    shipping_discount?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    subtotal?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    tax?: components["schemas"]["paypal_agentic_commerce_v1_money"];
+    total: components["schemas"]["paypal_agentic_commerce_v1_money"];
+  };
+  paypal_agentic_commerce_v1_checkout_field: {
+    /** Additional context and metadata for the checkout field.
+     *     This is a flexible object that can contain any field-specific information needed for validation, display, or processing.
+     *     The structure varies based on the field type. */
+    context?: Record<string, never>;
+    /**
+     * Field completion and validation status:
+     *
+     *     PENDING: Field needs customer input
+     *
+     *     Initial state when field is required
+     *     AI agent should collect this information
+     *     value field is null or empty
+     *
+     *     COMPLETED: Valid value provided and accepted
+     *
+     *     Customer provided acceptable input
+     *     Value passes all validation rules
+     *     Cart can proceed with this field resolved
+     *
+     *     REJECTED: Invalid or unacceptable value provided
+     *
+     *     Customer provided input that doesn't meet requirements
+     *     validation_issue explains the specific problem
+     *     AI agent should request corrected input
+     *
+     *     ERROR: System error during processing
+     *
+     *     Technical failure in field processing
+     *     Should retry or escalate to support
+     *     Not caused by customer input
+     * @enum {string}
+     */
+    status: "PENDING" | "COMPLETED" | "REJECTED" | "ERROR";
+    /**
+     * PayPal-approved checkout field type
+     * @enum {string}
+     */
+    type:
+      | "AGE_VERIFICATION_18_PLUS"
+      | "AGE_VERIFICATION_21_PLUS"
+      | "GIFT_RECIPIENT_EMAIL"
+      | "GIFT_RECIPIENT_NAME"
+      | "GIFT_MESSAGE"
+      | "DELIVERY_INSTRUCTIONS"
+      | "DELIVERY_DATE_PREFERENCE"
+      | "ALLERGY_INFORMATION"
+      | "CUSTOM_ENGRAVING_TEXT"
+      | "CUSTOM_SIZING_INFO"
+      | "TERMS_ACCEPTANCE"
+      | "PRIVACY_CONSENT";
+    validation_issue?: components["schemas"]["paypal_agentic_commerce_v1_validation_issue"];
+    /** Structured value based on field type. Each checkout field type has a specific value schema.
+     *     Use oneOf to validate against the appropriate structure for the field type. */
+    value?:
+      | components["schemas"]["paypal_agentic_commerce_v1_value_age_verification_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_gift_recipient_email_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_gift_recipient_name_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_gift_message_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_delivery_instructions_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_delivery_date_preference_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_allergy_information_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_custom_engraving_text_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_custom_sizing_info_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_terms_acceptance_value"]
+      | components["schemas"]["paypal_agentic_commerce_v1_value_privacy_consent_value"];
+  };
+  paypal_agentic_commerce_v1_context_business_rule_error_context: {
+    /** Customer account status */
+    account_status: string;
+    /** Required minimum age */
+    age_requirement: number;
+    /** Quantity requiring approval */
+    approval_threshold: number;
+    /** Store business hours */
+    business_hours: components["schemas"]["paypal_agentic_commerce_v1_referral_business_hour"][];
+    /** Support contact information */
+    contact_info: string;
+    /** Current order amount */
+    current_amount: string;
+    /** Current month purchase total */
+    current_month_total: string;
+    /** Amount by which limit is exceeded */
+    exceeds_by: string;
+    /** When maintenance ends */
+    maintenance_end_time: string;
+    /** Maximum allowed amount */
+    maximum_amount: string;
+    /** Monthly purchase limit */
+    monthly_limit: string;
+    /** Amount needed to meet minimum */
+    remaining_amount: string;
+    /** Required minimum amount */
+    required_amount: string;
+    /** When limits reset */
+    reset_date: string;
+    /** Items with restrictions */
+    restricted_items: string[];
+    /** Seconds before retry recommended */
+    retry_after: number;
+    /** Current service status */
+    service_status: string;
+    /** Amount needed to meet minimum requirements */
+    shortage_amount: string;
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** Date of account suspension */
+    suspension_date: string;
+    /** Reason for account suspension */
+    suspension_reason: string;
+    /** Total quantity in bulk order */
+    total_quantity: number;
+  };
+  paypal_agentic_commerce_v1_context_data_error_context: {
+    /** List of allowed values for enum fields */
+    allowed_values: string[];
+    /** Current value length */
+    current_length: number;
+    /** Expected format description */
+    expected_format: string;
+    /** Descriptions for required fields */
+    field_descriptions: string[];
+    /** Name of the field with validation error */
+    field_name: string;
+    /** Maximum allowed length */
+    max_length: number;
+    /** Minimum required length */
+    min_length: number;
+    /** Value that failed validation */
+    provided_value: string;
+    /** Required regex pattern */
+    regex_pattern: string;
+    /** List of required field names */
+    required_fields: string[];
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** Suggested corrected value */
+    suggested_value: string;
+  };
+  paypal_agentic_commerce_v1_context_inventory_issue_context: {
+    /** Currently available quantity */
+    available_quantity: number;
+    /** Maximum allowed back-order quantity */
+    back_order_limit: number;
+    current_back_orders: number;
+    discontinuation_date: string;
+    /** Estimated shipping date for back-orders */
+    estimated_ship_date: string;
+    /** Product item identifier */
+    item_id: string;
+    /** When item was last sold */
+    last_sold: string;
+    requested_quantity: number;
+    /** Quantity reserved for other transactions */
+    reserved_quantity: number;
+    /** Expected restock date */
+    restock_date: string;
+    /** When seasonal product becomes available */
+    seasonal_start_date: string;
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** Alternative product IDs */
+    suggested_alternatives: string[];
+    /** Whether newer version is available */
+    upgrade_available: boolean;
+    /** Product variant identifier if applicable */
+    variant_id: string;
+  };
+  paypal_agentic_commerce_v1_context_payment_error_context: {
+    /** Currency conversion service status */
+    conversion_service: string;
+    /** Transaction currency */
+    currency_code: string;
+    /** Reason for payment decline */
+    decline_reason: string;
+    /** Amount exceeding limit */
+    excess_amount: string;
+    /** Source currency for conversion */
+    from_currency: string;
+    /** Minimum payment amount */
+    minimum_amount: string;
+    /** Total order amount */
+    order_total: string;
+    /** Maximum payment limit */
+    payment_limit: string;
+    /** Payment method being used */
+    payment_method: string;
+    /** Payment token that was declined */
+    payment_token: string;
+    /** Payment processor specific error code */
+    processor_error_code: string;
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** List of supported payment methods */
+    supported_payment_methods: string[];
+    /** Target currency for conversion */
+    to_currency: string;
+  };
+  paypal_agentic_commerce_v1_context_pricing_error_context: {
+    /** Coupon code with issues */
+    coupon_code: string;
+    /** Currency code */
+    currency_code: string;
+    /** Current system date for comparisons */
+    current_date: string;
+    /** Current price value */
+    current_price: string;
+    /** Current coupon usage count */
+    current_usage: number;
+    /** Discount amount that was applied */
+    discount_amount: string;
+    /** Discount expiration date */
+    expiration_date: string;
+    /** Multiple currencies found in cart */
+    found_currencies: string[];
+    /** Item with pricing issue */
+    item_id: string;
+    /** Minimum order for discount */
+    minimum_order_amount: string;
+    /** Items with different currencies */
+    mixed_items: components["schemas"]["paypal_agentic_commerce_v1_referral_mixed_item"][];
+    /** Original price value */
+    original_price: string;
+    /**
+     * Reason for price change
+     * @enum {string}
+     */
+    price_change_reason:
+      | "promotional_ended"
+      | "promotional_started"
+      | "market_adjustment"
+      | "cost_increase"
+      | "seasonal_pricing"
+      | "component_cost_increase"
+      | "terms_updated";
+    /** Amount of price decrease */
+    price_decrease: string;
+    /** Amount of price increase */
+    price_increase: string;
+    /** Whether all items must use same currency */
+    required_currency_consistency: boolean;
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** List of supported currencies */
+    supported_currencies: string[];
+    /** Tax calculation service error */
+    tax_service_error: string;
+    /** Coupon usage limit */
+    usage_limit: number;
+  };
+  paypal_agentic_commerce_v1_context_shipping_error_context: {
+    /**
+     * Format: float
+     * Address validation quality score
+     */
+    address_quality_score: number;
+    /** Destination country code */
+    destination_country: string;
+    /** Whether PO Box was detected */
+    po_box_detected: boolean;
+    /** Address string that failed validation */
+    provided_address: string;
+    /** Items with shipping restrictions */
+    restricted_items: string[];
+    /** Restricted region identifier */
+    restricted_region: string;
+    /**
+     * Reason for shipping restriction
+     * @enum {string}
+     */
+    restriction_reason:
+      | "signature_required"
+      | "age_verification_required"
+      | "export_controlled"
+      | "hazardous_material"
+      | "oversized_item"
+      | "po_box_restriction";
+    /** Specific business rule issue type */
+    specific_issue: string;
+    /** Suggested address corrections */
+    suggested_corrections: components["schemas"]["paypal_agentic_commerce_v1_referral_suggested_correction"][];
+    /** List of supported countries */
+    supported_countries: string[];
+    /** Specific address validation failures */
+    validation_failures: string[];
+  };
+  paypal_agentic_commerce_v1_coupon: {
+    /**
+     * Action to perform on this specific coupon
+     * @enum {string}
+     */
+    action: "APPLY" | "REMOVE";
+    /** Coupon code identifier */
+    code: string;
+  };
+  paypal_agentic_commerce_v1_customer: {
+    /** The internationalized email address.
+     *     Note: Up to 64 characters are allowed before and 255 characters are allowed after the @ sign.
+     *     However, the generally accepted maximum length for an email address is 254 characters.
+     *     The pattern verifies that an unquoted @ sign exists. */
+    email_address: string;
+    name: components["schemas"]["paypal_agentic_commerce_v1_referral_customer_name"];
+    phone: components["schemas"]["paypal_agentic_commerce_v1_phone"];
+  };
+  paypal_agentic_commerce_v1_error: {
+    /** Unique error identifier for support */
+    debug_id?: string;
+    /** Detailed error information */
+    details?: components["schemas"]["paypal_agentic_commerce_v1_agent_error_detail"][];
+    /** Error description */
+    message: string;
+    /** Error name/type */
+    name: string;
+  };
+  paypal_agentic_commerce_v1_geo_coordinates: {
+    /** ISO 3166-1 alpha-2 country code for the coordinate location. */
+    country_code: string;
+    /** Latitude coordinate in decimal degrees (-90 to 90). WGS84 datum. */
+    latitude: string;
+    /** Longitude coordinate in decimal degrees (-180 to 180). WGS84 datum. */
+    longitude: string;
+    /** Administrative subdivision code (state, province, region).
+     *     ISO 3166-2 format without country prefix (e.g., 'CA' for California, 'ON' for Ontario). */
+    subdivision: string;
+  };
+  paypal_agentic_commerce_v1_gift_options: {
+    /** Scheduled delivery date in RFC3339 format. Seconds are required while fractional seconds are optional.
+     *
+     *     example: 2024-12-25T09:00:00Z */
+    delivery_date: string;
+    /** Personal message (max 500 characters) */
+    gift_message: string;
+    /** Whether to include gift wrapping */
+    gift_wrap: boolean;
+    /** Whether this is a gift */
+    is_gift: boolean;
+    recipient: components["schemas"]["paypal_agentic_commerce_v1_referral_recipient"];
+    /** Name of gift sender */
+    sender_name: string;
+  };
+  paypal_agentic_commerce_v1_link: {
+    /** Target URL for the link
+     *
+     *     example: https://your-domain.com/api/paypal/v1/merchant-cart/CART-123 */
+    href: string;
+    /**
+     * HTTP method for the link
+     * @enum {string}
+     */
+    method?: "GET" | "POST" | "PUT";
+    /**
+     * Link relationship type
+     * @enum {string}
+     */
+    rel: "rel" | "update" | "checkout";
+    /** Human-readable description of the link */
+    title?: string;
+    /** Expected content type */
+    type?: string;
+  };
+  paypal_agentic_commerce_v1_money: {
+    /** The 3-character ISO-4217 currency code that identifies the currency. */
+    currency_code?: string;
+    /** The value, which might be: An integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes. */
+    value: string;
+  };
+  paypal_agentic_commerce_v1_pay_pal_cart: {
+    /** Successfully applied coupons (server-calculated) */
+    applied_coupons?: components["schemas"]["paypal_agentic_commerce_v1_applied_coupon"][];
+    /** Available shipping methods with selection state */
+    available_shipping_options?: components["schemas"]["paypal_agentic_commerce_v1_shipping_option"][];
+    billing_address?: components["schemas"]["paypal_agentic_commerce_v1_billing_address"];
+    /** Custom checkout fields (age verification, etc.) */
+    checkout_fields?: components["schemas"]["paypal_agentic_commerce_v1_checkout_field"][];
+    /** Discount coupons to apply or remove from cart */
+    coupons?: components["schemas"]["paypal_agentic_commerce_v1_coupon"][];
+    customer?: components["schemas"]["paypal_agentic_commerce_v1_customer"];
+    geo_coordinates?: components["schemas"]["paypal_agentic_commerce_v1_geo_coordinates"];
+    readonly id?: string;
+    /** Products in the cart */
+    items: components["schemas"]["paypal_agentic_commerce_v1_cart_item"][];
+    /** HATEOAS navigation links for cart operations */
+    links?: components["schemas"]["paypal_agentic_commerce_v1_link"][];
+    payment_method?: components["schemas"]["paypal_agentic_commerce_v1_payment_method"];
+    shipping_address?: components["schemas"]["paypal_agentic_commerce_v1_shipping_address"];
+    /** @enum {string} */
+    readonly status?: "CREATED" | "COMPLETE" | "READY" | "INCOMPLETE";
+    totals?: components["schemas"]["paypal_agentic_commerce_v1_cart_totals"];
+    /** List of issues preventing checkout (empty = ready) */
+    validation_issues?: components["schemas"]["paypal_agentic_commerce_v1_validation_issue"][];
+    /** @enum {string} */
+    readonly validation_status?:
+      | "VALID"
+      | "INVALID"
+      | "REQUIRES_ADDITIONAL_INFORMATION";
+  };
+  paypal_agentic_commerce_v1_payment_method: {
+    /** URL used to inform merchant that the PayPal buyer approved the order */
+    approval_url?: string;
+    /** PayPal payer identifier provided after customer approval */
+    payer_id?: string;
+    /** PayPal payment token from cart creation or customer approval */
+    token?: string;
+    /**
+     * Payment method type - only PayPal is supported by this API
+     * @enum {string}
+     */
+    type: "paypal";
+  };
+  paypal_agentic_commerce_v1_phone: {
+    /** The country calling code (CC), in its canonical international E.164 numbering plan format.
+     *     The combined length of the CC and the national number must not be greater than 15 digits.
+     *     The national number consists of a national destination code (NDC) and subscriber number (SN) */
+    country_code?: string;
+    /** The extension number */
+    extension_number?: string;
+    /** The national number, in its canonical international E.164 numbering plan format.
+     *     The combined length of the country calling code (CC) and the national number must not be greater than 15 digits.
+     *     The national number consists of a national destination code (NDC) and subscriber number (SN). */
+    national_number?: string;
+  };
+  paypal_agentic_commerce_v1_referral_business_hour: {
+    close_time: string;
+    open_time: string;
+    timezone: string;
+  };
+  paypal_agentic_commerce_v1_referral_custom_option: {
+    name: string;
+    price_modifier: string;
+    value: string;
+  };
+  paypal_agentic_commerce_v1_referral_customer_name: {
+    given_name: string;
+    surname: string;
+  };
+  paypal_agentic_commerce_v1_referral_measurements: {
+    chest: string;
+    height: string;
+    waist: string;
+    weight: string;
+  };
+  paypal_agentic_commerce_v1_referral_meta_data: {
+    auto_applicable: boolean;
+    cost_impact: string;
+    estimated_time: string;
+    priority: string;
+    redirect_required: boolean;
+    waist: string;
+  };
+  paypal_agentic_commerce_v1_referral_mixed_item: {
+    currency: string;
+    item_id: string;
+  };
+  paypal_agentic_commerce_v1_referral_recipient: {
+    email: string;
+    name: string;
+    phone: string;
+  };
+  paypal_agentic_commerce_v1_referral_selected_attribute: {
+    name: string;
+    value: string;
+  };
+  paypal_agentic_commerce_v1_referral_suggested_correction: {
+    address_line_1: string;
+    admin_area_2: string;
+    postal_code: string;
+  };
+  paypal_agentic_commerce_v1_resolution_option: {
+    /**
+     * Machine-readable action identifier
+     * @enum {string}
+     */
+    action:
+      | "REDIRECT_TO_MERCHANT"
+      | "MODIFY_CART"
+      | "ACCEPT_NEW_PRICE"
+      | "ACCEPT_BACK_ORDER"
+      | "SUGGEST_ALTERNATIVE"
+      | "REMOVE_ITEM"
+      | "UPDATE_ADDRESS"
+      | "PROVIDE_MISSING_FIELD"
+      | "USE_DIFFERENT_PAYMENT"
+      | "SPLIT_ORDER"
+      | "CONTACT_SUPPORT"
+      | "RETRY_LATER"
+      | "REQUEST_APPROVAL"
+      | "WAIT_FOR_RESTOCK"
+      | "USE_DIFFERENT_CURRENCY"
+      | "ACCEPT_PRE_ORDER"
+      | "UPDATE_SHIPPING_METHOD"
+      | "ACCEPT_TERMS"
+      | "VERIFY_ACCOUNT"
+      | "APPLY_DIFFERENT_COUPON"
+      | "REMOVE_COUPON"
+      | "CHOOSE_DIFFERENT_VARIANT";
+    /** Human-readable action label */
+    label: string;
+    metadata?: components["schemas"]["paypal_agentic_commerce_v1_referral_meta_data"];
+    /** URL to redirect to for resolution */
+    url?: string;
+  };
+  paypal_agentic_commerce_v1_shipping_address: components["schemas"]["paypal_agentic_commerce_v1_address"];
+  paypal_agentic_commerce_v1_shipping_option: {
+    /** Detailed description */
+    description?: string;
+    /** Estimated delivery date in YYYY-MM-DD format */
+    estimated_delivery?: string;
+    /** Unique shipping option identifier */
+    id?: string;
+    /** Whether this shipping option is currently selected */
+    is_selected?: boolean;
+    /** Display name */
+    name?: string;
+    price: components["schemas"]["paypal_agentic_commerce_v1_money"];
+  };
+  paypal_agentic_commerce_v1_validation_issue: {
+    /**
+     * Consolidated error category
+     * @enum {string}
+     */
+    code:
+      | "INVENTORY_ISSUE"
+      | "PRICING_ERROR"
+      | "SHIPPING_ERROR"
+      | "PAYMENT_ERROR"
+      | "DATA_ERROR"
+      | "BUSINESS_RULE_ERROR";
+    /** Category-specific context information */
+    context?:
+      | (
+          | components["schemas"]["paypal_agentic_commerce_v1_context_inventory_issue_context"]
+          | components["schemas"]["paypal_agentic_commerce_v1_context_pricing_error_context"]
+          | components["schemas"]["paypal_agentic_commerce_v1_context_shipping_error_context"]
+          | components["schemas"]["paypal_agentic_commerce_v1_context_payment_error_context"]
+          | components["schemas"]["paypal_agentic_commerce_v1_context_data_error_context"]
+          | components["schemas"]["paypal_agentic_commerce_v1_context_business_rule_error_context"]
+        )
+      | null;
+    /** Specific field name if the issue is field-specific */
+    field?: string;
+    /** Specific item ID if the issue is item-specific */
+    item_id?: string;
+    /** Technical message for developers and logging */
+    message: string;
+    /** Available actions to resolve this issue */
+    resolution_options?: components["schemas"]["paypal_agentic_commerce_v1_resolution_option"][];
+    /**
+     * Type classification for error handling
+     * @enum {string}
+     */
+    type: "MISSING_FIELD" | "INVALID_DATA" | "BUSINESS_RULE";
+    /** Customer-friendly message for end users */
+    user_message?: string;
+  };
+  paypal_agentic_commerce_v1_value_age_verification_value: {
+    /** Whether age verification was confirmed */
+    confirmed: boolean;
+    /** When verification was completed */
+    verificationDate?: string;
+    /**
+     * Method used for age verification
+     * @enum {string}
+     */
+    verificationMethod?: "self_declaration" | "id_verification" | "third_party";
+  };
+  paypal_agentic_commerce_v1_value_allergy_information_value: {
+    /** List of known allergies */
+    allergies: string[];
+    /** Emergency contact information
+     *
+     *     example: +1-555-999-8888 */
+    emergency_contact: string;
+    /** Medications to avoid */
+    medications: string[];
+    /**
+     * Allergy severity level
+     * @enum {string}
+     */
+    severity: "life_threatening" | "mild" | "moderate" | "severe";
+  };
+  paypal_agentic_commerce_v1_value_custom_engraving_text_value: {
+    /**
+     * Preferred font style
+     * @enum {string}
+     */
+    font?: "arial" | "times" | "script" | "block";
+    /**
+     * Engraving position
+     * @enum {string}
+     */
+    position?: "front" | "back" | "side" | "bottom";
+    /**
+     * Text size preference
+     * @enum {string}
+     */
+    size?: "small" | "medium" | "large";
+    /** Text to be engraved */
+    text: string;
+  };
+  paypal_agentic_commerce_v1_value_custom_sizing_info_value: {
+    measurements: components["schemas"]["paypal_agentic_commerce_v1_referral_measurements"];
+    /**
+     * Fit preference
+     * @enum {string}
+     */
+    size_preference: "tight" | "regular" | "loose";
+    /** Special sizing requirements */
+    special_requirements: string;
+  };
+  paypal_agentic_commerce_v1_value_delivery_date_preference_value: {
+    /** Preferred delivery date */
+    preferred_date: string;
+    /** Specific preferred time (HH:MM format) */
+    specific_time: string;
+    /**
+     * Preferred time window
+     * @enum {string}
+     */
+    time_window: "morning" | "afternoon" | "evening" | "anytime";
+  };
+  paypal_agentic_commerce_v1_value_delivery_instructions_value: {
+    /** Building or gate access code */
+    access_code?: string;
+    /** Contact phone for delivery */
+    contact_phone?: string;
+    /** Special delivery instructions */
+    instructions: string;
+  };
+  paypal_agentic_commerce_v1_value_gift_message_value: {
+    /** Personal message for the recipient */
+    message: string;
+    /** Name of the person sending the gift */
+    sender_name?: string;
+  };
+  paypal_agentic_commerce_v1_value_gift_recipient_email_value: {
+    /** Recipient's email address */
+    email: string;
+    /** Whether email was verified */
+    verified?: boolean;
+  };
+  paypal_agentic_commerce_v1_value_gift_recipient_name_value: {
+    /** Recipient's first name */
+    first_name?: string;
+    /** Recipient's last name */
+    last_name?: string;
+    /** Recipient's full name */
+    name: string;
+  };
+  paypal_agentic_commerce_v1_value_privacy_consent_value: {
+    /** When consent was given */
+    consent_date?: string;
+    /**
+     * Types of consent given
+     * @enum {array}
+     */
+    consent_types?:
+      | "analytics"
+      | "third_party_sharing"
+      | "data_processing"
+      | "marketing";
+    /** Whether privacy policy was consented to */
+    consented: boolean;
+    /** Privacy policy version */
+    policy_version?: string;
+  };
+  paypal_agentic_commerce_v1_value_terms_acceptance_value: {
+    /** When terms were accepted */
+    acceptance_date?: string;
+    /** Whether terms were accepted */
+    accepted: boolean;
+    /** IP address of acceptance */
+    ip_address?: string;
+    /** Version of terms accepted */
+    terms_versions?: string;
   };
   paypal_error: {
     debug_id: string | null;
@@ -10848,6 +11880,27 @@ export type Schemas = {
     /** @enum {string} */
     usage: "DERIVED" | "FIRST" | "SUBSEQUENT";
   };
+  paypal_v2_order_payment_source_common_app_switch_context: {
+    mobile_web:
+      | components["schemas"]["paypal_v2_order_payment_source_common_app_switch_context_mobile_web_context"]
+      | null;
+    native_app:
+      | components["schemas"]["paypal_v2_order_payment_source_common_app_switch_context_native_app_context"]
+      | null;
+  };
+  paypal_v2_order_payment_source_common_app_switch_context_mobile_web_context: {
+    buyer_user_agent: string;
+    /**
+     * @default AUTO
+     * @enum {string}
+     */
+    return_flow?: "AUTO" | "MANUAL";
+  };
+  paypal_v2_order_payment_source_common_app_switch_context_native_app_context: {
+    /** @enum {string} */
+    os_type: "ANDROID" | "IOS" | "OTHER";
+    os_version: string;
+  };
   paypal_v2_order_payment_source_common_attributes: {
     customer: components["schemas"]["paypal_v2_order_payment_source_common_attributes_customer"];
     vault: components["schemas"]["paypal_v2_order_payment_source_common_attributes_vault"];
@@ -10876,6 +11929,9 @@ export type Schemas = {
     method: string;
   };
   paypal_v2_order_payment_source_common_experience_context: {
+    app_switch_context:
+      | components["schemas"]["paypal_v2_order_payment_source_common_app_switch_context"]
+      | null;
     brand_name: string;
     cancel_url: string;
     /** Only: PUI */
@@ -11425,9 +12481,467 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "storeApiMcpPost post /_mcp":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Session ID returned by the server in the `mcp-session-id` response header after a successful `initialize` request. Required for all subsequent requests within the same session. */
+          "mcp-session-id"?: string;
+          /** Standard Store API context token identifying the customer session. When provided, MCP tools operate in the context of that customer. Same semantics as all other Store API endpoints. */
+          "sw-context-token"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
+        body: {
+          /** Request identifier. Omit for notifications (fire-and-forget). Present for requests that expect a response. */
+          id?: string | number;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+          /** MCP method name. */
+          method: string;
+          /** Method-specific parameters, see the request variants. */
+          params?: GenericRecord;
+        } & (
+          | {
+              /** @constant */
+              method?: "initialize";
+              params: {
+                /** Capabilities the client supports. */
+                capabilities: {
+                  [key: string]: unknown;
+                };
+                clientInfo: {
+                  name: string;
+                  version: string;
+                };
+                /** MCP protocol version the client supports, e.g. `2025-03-26`. */
+                protocolVersion: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `tools/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/call";
+              params: {
+                /** Tool arguments matching the tool's `inputSchema`. */
+                arguments?: {
+                  [key: string]: unknown;
+                };
+                /** Name of the tool to invoke, as returned by `tools/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `resources/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/read";
+              params: {
+                /** URI of the resource to read, as returned by `resources/list`. */
+                uri: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `prompts/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/get";
+              params: {
+                /** Prompt arguments as string values. */
+                arguments?: {
+                  [key: string]: string;
+                };
+                /** Name of the prompt, as returned by `prompts/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "ping";
+            }
+        );
+        response: {
+          id: string | number | null;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+        } & (
+          | {
+              /** Method-specific result payload, one of the variants below depending on the requested method. */
+              result:
+                | ({
+                    /** Capabilities the server supports (tools, resources, prompts, logging, ...). */
+                    capabilities: {
+                      [key: string]: unknown;
+                    };
+                    /** Usage instructions for the client / model. */
+                    instructions?: string;
+                    protocolVersion: string;
+                    serverInfo: {
+                      name: string;
+                      version: string;
+                    };
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    /** Pagination cursor for the next page, absent on the last page. */
+                    nextCursor?: string;
+                    tools: ({
+                      description?: string;
+                      /** JSON Schema describing the tool arguments. */
+                      inputSchema: {
+                        [key: string]: unknown;
+                      };
+                      name: string;
+                      title?: string;
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    content: ({
+                      data?: string;
+                      mimeType?: string;
+                      resource?: {
+                        [key: string]: unknown;
+                      };
+                      text?: string;
+                      /** @enum {string} */
+                      type: "text" | "image" | "audio" | "resource";
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                    /** True when the tool execution failed; error details are in `content`. */
+                    isError?: boolean;
+                    /** Structured tool output matching the tool's declared output schema. */
+                    structuredContent?: {
+                      [key: string]: unknown;
+                    };
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    /** Pagination cursor for the next page, absent on the last page. */
+                    nextCursor?: string;
+                    resources: ({
+                      description?: string;
+                      mimeType?: string;
+                      name: string;
+                      uri: string;
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    contents: ({
+                      blob?: string;
+                      mimeType?: string;
+                      text?: string;
+                      uri: string;
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    /** Pagination cursor for the next page, absent on the last page. */
+                    nextCursor?: string;
+                    prompts: ({
+                      arguments?: ({
+                        description?: string;
+                        name: string;
+                        required?: boolean;
+                      } & {
+                        [key: string]: unknown;
+                      })[];
+                      description?: string;
+                      name: string;
+                      title?: string;
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | ({
+                    description?: string;
+                    messages: ({
+                      /** Content block, same shape as in `tools/call` results. */
+                      content: {
+                        [key: string]: unknown;
+                      };
+                      /** @enum {string} */
+                      role: "user" | "assistant";
+                    } & {
+                      [key: string]: unknown;
+                    })[];
+                  } & {
+                    [key: string]: unknown;
+                  })
+                | GenericRecord;
+            }
+          | {
+              error: {
+                /** JSON-RPC error code, e.g. -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error. */
+                code: number;
+                /** Optional additional error information. */
+                data?: unknown;
+                message: string;
+              };
+            }
+        );
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "text/event-stream";
+        headers?: {
+          /** Session ID returned by the server in the `mcp-session-id` response header after a successful `initialize` request. Required for all subsequent requests within the same session. */
+          "mcp-session-id"?: string;
+          /** Standard Store API context token identifying the customer session. When provided, MCP tools operate in the context of that customer. Same semantics as all other Store API endpoints. */
+          "sw-context-token"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
+        body: {
+          /** Request identifier. Omit for notifications (fire-and-forget). Present for requests that expect a response. */
+          id?: string | number;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+          /** MCP method name. */
+          method: string;
+          /** Method-specific parameters, see the request variants. */
+          params?: GenericRecord;
+        } & (
+          | {
+              /** @constant */
+              method?: "initialize";
+              params: {
+                /** Capabilities the client supports. */
+                capabilities: {
+                  [key: string]: unknown;
+                };
+                clientInfo: {
+                  name: string;
+                  version: string;
+                };
+                /** MCP protocol version the client supports, e.g. `2025-03-26`. */
+                protocolVersion: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `tools/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/call";
+              params: {
+                /** Tool arguments matching the tool's `inputSchema`. */
+                arguments?: {
+                  [key: string]: unknown;
+                };
+                /** Name of the tool to invoke, as returned by `tools/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `resources/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/read";
+              params: {
+                /** URI of the resource to read, as returned by `resources/list`. */
+                uri: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `prompts/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/get";
+              params: {
+                /** Prompt arguments as string values. */
+                arguments?: {
+                  [key: string]: string;
+                };
+                /** Name of the prompt, as returned by `prompts/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "ping";
+            }
+        );
+        response: string;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        headers?: {
+          /** Session ID returned by the server in the `mcp-session-id` response header after a successful `initialize` request. Required for all subsequent requests within the same session. */
+          "mcp-session-id"?: string;
+          /** Standard Store API context token identifying the customer session. When provided, MCP tools operate in the context of that customer. Same semantics as all other Store API endpoints. */
+          "sw-context-token"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
+        body: {
+          /** Request identifier. Omit for notifications (fire-and-forget). Present for requests that expect a response. */
+          id?: string | number;
+          /** @enum {string} */
+          jsonrpc: "2.0";
+          /** MCP method name. */
+          method: string;
+          /** Method-specific parameters, see the request variants. */
+          params?: GenericRecord;
+        } & (
+          | {
+              /** @constant */
+              method?: "initialize";
+              params: {
+                /** Capabilities the client supports. */
+                capabilities: {
+                  [key: string]: unknown;
+                };
+                clientInfo: {
+                  name: string;
+                  version: string;
+                };
+                /** MCP protocol version the client supports, e.g. `2025-03-26`. */
+                protocolVersion: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `tools/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "tools/call";
+              params: {
+                /** Tool arguments matching the tool's `inputSchema`. */
+                arguments?: {
+                  [key: string]: unknown;
+                };
+                /** Name of the tool to invoke, as returned by `tools/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `resources/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "resources/read";
+              params: {
+                /** URI of the resource to read, as returned by `resources/list`. */
+                uri: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/list";
+              params?: {
+                /** Opaque pagination cursor from a previous `prompts/list` result. */
+                cursor?: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "prompts/get";
+              params: {
+                /** Prompt arguments as string values. */
+                arguments?: {
+                  [key: string]: string;
+                };
+                /** Name of the prompt, as returned by `prompts/list`. */
+                name: string;
+              };
+            }
+          | {
+              /** @constant */
+              method?: "ping";
+            }
+        );
+        response: never;
+        responseCode: 202;
+      };
+  "storeApiMcpDelete delete /_mcp": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers: {
+      /** Session ID of the session to close. Obtained from the `mcp-session-id` response header of the `initialize` request. */
+      "mcp-session-id": string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "storeApiMcpOptions options /_mcp": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: never;
+    responseCode: 200;
+  };
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: components["schemas"]["CustomerAddressBody"];
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
@@ -11446,6 +12960,10 @@ export type operations = {
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Address ID */
       addressId: string;
@@ -11458,6 +12976,10 @@ export type operations = {
   "defaultBillingAddress patch /account/address/default-billing/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Address ID */
       addressId: string;
@@ -11468,6 +12990,10 @@ export type operations = {
   "defaultShippingAddress patch /account/address/default-shipping/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Address ID */
       addressId: string;
@@ -11478,6 +13004,10 @@ export type operations = {
   "changeEmail post /account/change-email": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** New email address. Has to be unique amongst all customers */
       email: string;
@@ -11492,6 +13022,10 @@ export type operations = {
   "changeLanguage post /account/change-language": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** New languageId */
       language?: string;
@@ -11502,6 +13036,10 @@ export type operations = {
   "changePassword post /account/change-password": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** New Password for the customer */
       newPassword: string;
@@ -11516,6 +13054,10 @@ export type operations = {
   "changeProfile post /account/change-profile": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Birthday day */
       birthdayDay?: number;
@@ -11560,6 +13102,10 @@ export type operations = {
   "convertGuest post /account/convert-guest": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** New Password for the customer */
       password: string;
@@ -11573,6 +13119,8 @@ export type operations = {
     headers?: {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["Customer"];
@@ -11587,6 +13135,10 @@ export type operations = {
   "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Parameter from the link in the confirmation mail sent in Step 1 */
       hash: string;
@@ -11606,6 +13158,8 @@ export type operations = {
     headers?: {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -11616,6 +13170,10 @@ export type operations = {
   "loginCustomer post /account/login": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Password */
       password: string;
@@ -11631,6 +13189,10 @@ export type operations = {
   "imitateCustomerLogin post /account/login/imitate-customer": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** ID of the customer */
       customerId: string;
@@ -11648,6 +13210,10 @@ export type operations = {
   "logoutCustomer post /account/logout": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       /** Define the URL which browser will be redirected to */
       redirectUrl?: string;
@@ -11660,6 +13226,8 @@ export type operations = {
     headers?: {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: components["schemas"]["AccountNewsletterRecipient"];
@@ -11668,6 +13236,10 @@ export type operations = {
   "sendRecoveryMail post /account/recovery-password": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** E-Mail address to identify the customer */
       email: string;
@@ -11680,6 +13252,10 @@ export type operations = {
   "recoveryPassword post /account/recovery-password-confirm": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Parameter from the link in the confirmation mail sent in Step 1 */
       hash: string;
@@ -11694,6 +13270,10 @@ export type operations = {
   "register post /account/register": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Flag indicating accepted data protection */
       acceptedDataProtection: boolean;
@@ -11759,6 +13339,10 @@ export type operations = {
   "registerConfirm post /account/register-confirm": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Email hash from the email received */
       em: string;
@@ -11866,6 +13450,10 @@ export type operations = {
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Name of the app */
       name: string;
@@ -11882,6 +13470,10 @@ export type operations = {
   "readApprovalRules get /approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query?: {
       /** Number of items per page */
       limit?: number;
@@ -11896,6 +13488,10 @@ export type operations = {
   "listApprovalRules post /approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query?: {
       /** Number of items per page */
       limit?: number;
@@ -11911,6 +13507,10 @@ export type operations = {
   "readApprovalRule get /approval-rule/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the approval rule to be fetched */
       id: string;
@@ -11921,6 +13521,10 @@ export type operations = {
   "updateApprovalRule patch /approval-rule/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the approval rule to be updated */
       id: string;
@@ -11952,6 +13556,10 @@ export type operations = {
   "createApprovalRule post /approval-rule/create": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Active status of the approval rule */
       active?: boolean;
@@ -11979,6 +13587,10 @@ export type operations = {
   "readBreadcrumb get /breadcrumb/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query?: {
       /** UUID for referrer category only used for product breadcrumb */
       referrerCategoryId?: string;
@@ -11995,6 +13607,10 @@ export type operations = {
   "createBudget post /budget": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Whether the budget is active */
       active?: boolean;
@@ -12059,6 +13675,10 @@ export type operations = {
   "readBudgetGet get /budget/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the budget to be fetched */
       id: string;
@@ -12069,6 +13689,10 @@ export type operations = {
   "readBudget post /budget/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the budget to be fetched */
       id: string;
@@ -12080,6 +13704,10 @@ export type operations = {
   "updateBudget patch /budget/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the budget to be updated */
       id: string;
@@ -12148,6 +13776,10 @@ export type operations = {
   "storeBudgetRecipients post /budget/{id}/recipients": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the budget to add recipients to */
       id: string;
@@ -12176,6 +13808,10 @@ export type operations = {
   "readBudgetsGet get /budgets": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query?: {
       /** Number of items to return */
       limit?: number;
@@ -12190,6 +13826,10 @@ export type operations = {
   "readBudgets post /budgets": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsBudget"][];
@@ -12211,7 +13851,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -12256,7 +13896,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -12271,7 +13911,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
@@ -12338,7 +13978,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
@@ -12355,6 +13995,10 @@ export type operations = {
   "getCheckoutBudgetStatistic get /checkout/budget/{budgetId}/statistic": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query?: {
       /** Quote ID to calculate statistics for (optional) */
       quoteId?: string;
@@ -12391,6 +14035,10 @@ export type operations = {
   "getCheckoutBudgetStatisticPost post /checkout/budget/{budgetId}/statistic": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Budget ID to get statistics for */
       budgetId: string;
@@ -12427,6 +14075,10 @@ export type operations = {
   "getCheckoutAvailableBudgets get /checkout/budgets": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       budgets?: components["schemas"]["B2bComponentsBudget"][];
     };
@@ -12435,6 +14087,10 @@ export type operations = {
   "getCheckoutAvailableBudgetsPost post /checkout/budgets": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: GenericRecord;
     response: {
       budgets?: components["schemas"]["B2bComponentsBudget"][];
@@ -12446,7 +14102,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     response: components["schemas"]["Cart"];
     responseCode: 200;
@@ -12462,7 +14118,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       items: (
@@ -12488,10 +14144,6 @@ export type operations = {
   "removeLineItemDeprecated delete /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
-    headers?: {
-      /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
-    };
     query: {
       /** A list of product identifiers. */
       ids: string[];
@@ -12504,7 +14156,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       items: [
@@ -12526,7 +14178,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** A list of product identifiers. */
@@ -12538,6 +14190,10 @@ export type operations = {
   "checkoutGateway get /checkout/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       errors?: {
         /** If the error is blocking */
@@ -12569,7 +14225,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** The affiliate code can be used to track which referrer the customer came through. An example could be `Price-comparison-company-XY`. */
@@ -12587,7 +14243,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
@@ -12652,7 +14308,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Identifier of the CMS page to be resolved */
@@ -12670,7 +14326,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** Type of the content management page */
@@ -12703,12 +14359,20 @@ export type operations = {
   "readContext get /context": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["SalesChannelContext"];
     responseCode: 200;
   };
   "updateContext patch /context": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Billing Address */
       billingAddressId?: string;
@@ -12736,6 +14400,10 @@ export type operations = {
   "contextGatewayGet get /context/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query: {
       appName: string;
       data?: GenericRecord;
@@ -12749,6 +14417,10 @@ export type operations = {
   "contextGateway post /context/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       appName: string;
       data?: GenericRecord;
@@ -12762,6 +14434,10 @@ export type operations = {
   "readCookieGroups get /cookie-groups": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["CookieRouteResponse"];
     responseCode: 200;
   };
@@ -12770,7 +14446,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -12815,7 +14491,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -12828,7 +14504,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -12876,7 +14552,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       countryId: string;
@@ -12892,7 +14568,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
@@ -12933,7 +14609,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["NoneFieldsCriteria"];
     response: components["schemas"]["Currency"][];
@@ -12944,7 +14620,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Customer group id */
@@ -12960,7 +14636,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: components["schemas"]["WishlistLoadRouteResponse"];
@@ -12969,6 +14645,10 @@ export type operations = {
   "addProductOnWishlist post /customer/wishlist/add/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the product to be added. */
       productId: string;
@@ -12989,6 +14669,10 @@ export type operations = {
   "mergeProductOnWishlist post /customer/wishlist/merge": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** List product id */
       productIds?: string[];
@@ -12996,13 +14680,60 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
+  "addCustomizedProductToCart post /customized-products/add-to-cart": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    body: components["schemas"]["SwagCustomizedProductsAddToCartRequest"];
+    response: never;
+    responseCode: 204;
+  };
+  "customizedProductConfigurationShare post /customized-products/configuration/create-share": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    body: components["schemas"]["SwagCustomizedProductsCreateConfigurationShareRequest"];
+    response: components["schemas"]["SwagCustomizedProductsConfigurationShareResponse"];
+    responseCode: 200;
+  };
+  "reorderCustomizedProduct post /customized-products/reorder/{orderId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Id of the order to repeat. */
+      orderId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "uploadCustomizedProductCustomerFile post /customized-products/upload": {
+    contentType: "multipart/form-data";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    body: components["schemas"]["SwagCustomizedProductsUploadRequest"];
+    response: components["schemas"]["SwagCustomizedProductsUploadResponse"];
+    responseCode: 200;
+  };
   "downloadGet get /document/download/{documentId}/{deepLinkCode}":
     | {
         contentType?: "application/json";
         accept: "application/pdf";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         query?: {
           /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
@@ -13021,8 +14752,8 @@ export type operations = {
         contentType?: "application/json";
         accept: "application/xml";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         query?: {
           /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
@@ -13041,8 +14772,8 @@ export type operations = {
         contentType?: "application/json";
         accept: "text/html";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         query?: {
           /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
@@ -13061,8 +14792,8 @@ export type operations = {
         contentType?: "application/json";
         accept?: "application/json";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         query?: {
           /** Required for guest orders to verify the user; ignored for orders with logged-in user. */
@@ -13082,8 +14813,8 @@ export type operations = {
         contentType?: "application/json";
         accept: "application/pdf";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           deepLinkCode: string;
@@ -13100,8 +14831,8 @@ export type operations = {
         contentType?: "application/json";
         accept: "application/xml";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           deepLinkCode: string;
@@ -13118,8 +14849,8 @@ export type operations = {
         contentType?: "application/json";
         accept: "text/html";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           deepLinkCode: string;
@@ -13136,8 +14867,8 @@ export type operations = {
         contentType?: "application/json";
         accept?: "application/json";
         headers?: {
-          /** If a document is rendered on the fly the provided language id is added to fallback languages while the order language has priority. It does not change already generated documents. */
-          "sw-language-id"?: string;
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           deepLinkCode: string;
@@ -13153,12 +14884,20 @@ export type operations = {
   "dsrAccountUpdateDefaultInfo post /dsr/account/update-default-info": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
   "attendeeRespondInvitation patch /dsr/appointment/{appointmentId}/attendee/respond-invitation": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The appointment id you respond to */
       appointmentId: string;
@@ -13178,6 +14917,10 @@ export type operations = {
   "getCalendarFile post /dsr/appointment/{appointmentId}/download-ics": {
     contentType?: "application/json";
     accept: "text/calendar";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The appointment id you want to get the calendar file */
       appointmentId: string;
@@ -13192,6 +14935,10 @@ export type operations = {
   "getSharingShoppingList get /dsr/appointment/{appointmentId}/shopping-lists": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The appointment id you are joining */
       appointmentId: string;
@@ -13223,6 +14970,10 @@ export type operations = {
   "dsrReadAppointmentSettings get /dsr/appointment/{presentationPath}/basic-setting": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Presentation path */
       presentationPath: string;
@@ -13233,6 +14984,10 @@ export type operations = {
   "joinAppointmentAsClient post /dsr/appointment/{presentationPath}/join-as-client": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Presentation path */
       presentationPath: string;
@@ -13249,6 +15004,10 @@ export type operations = {
   "updateAttendee patch /dsr/appointment/attendee": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: components["schemas"]["UpdateAttendeeRequestBody"];
     response: {
       /**
@@ -13264,6 +15023,10 @@ export type operations = {
   "getAttendeeProductCollection get /dsr/appointment/collection/{alias}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The alias of collection you want to get */
       alias: "liked" | "disliked";
@@ -13274,6 +15037,10 @@ export type operations = {
   "attendeeProductCollectionAddProduct post /dsr/appointment/collection/{alias}/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The alias of collection you want to add */
       alias: "liked" | "disliked";
@@ -13298,18 +15065,30 @@ export type operations = {
   "getLastSeenProducts get /dsr/appointment/collection/last-seen": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["AttendeeProductCollectionLastSeenResponse"];
     responseCode: 200;
   };
   "getPresentationStructure get /dsr/appointment/presentation": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["PresentationStructure"];
     responseCode: 200;
   };
   "getSlideData get /dsr/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Presentation CMS page id for which the data is requested */
       presentationCmsPageId: string;
@@ -13322,6 +15101,10 @@ export type operations = {
   "getSlideProducts post /dsr/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}/products": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Presentation CMS page id for which the data is requested */
       presentationCmsPageId: string;
@@ -13337,12 +15120,20 @@ export type operations = {
   "getClientPresentationState get /dsr/appointment/presentation/state": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: components["schemas"]["ClientPresentationStateResponse"];
     responseCode: 200;
   };
   "createAppointmentRequest post /dsr/appointment/request": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: components["schemas"]["CreateAppointmentRequestBody"];
     response: {
       /**
@@ -13358,6 +15149,10 @@ export type operations = {
   "dsrAutomaticLogin post /dsr/customer/automatic-login": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       /** Define the URL which browser will be redirected to */
       redirectUrl?: string;
@@ -13367,6 +15162,10 @@ export type operations = {
   "dsrGenerateLoginToken post /dsr/customer/generate-login-token": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       /** @default dsr.storefront-login.response */
       apiAlias?: string;
@@ -13377,12 +15176,20 @@ export type operations = {
   "dsrMigrateVisitorSession post /dsr/customer/migrate-visitor-session": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: never;
     responseCode: 204;
   };
   "dsrLoadCustomerWishlistProductIds post /dsr/customer/wishlist-product-ids": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       /** @default array_struct */
       apiAlias?: string;
@@ -13393,6 +15200,10 @@ export type operations = {
   "addInteraction post /dsr/interaction": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: components["schemas"]["CreateInteractionRequestBody"];
     response: never;
     responseCode: 200;
@@ -13400,6 +15211,10 @@ export type operations = {
   "dsrProductListing post /dsr/product-listing": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?:
       | components["schemas"]["Criteria"]
       | {
@@ -13432,6 +15247,10 @@ export type operations = {
   "dsrReadProductDetailPage get /dsr/product/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       productId: string;
     };
@@ -13441,6 +15260,10 @@ export type operations = {
   "resolveQuickviewPage get /dsr/quickview/{productId}/{cmsPageLayoutId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** The cms page id using as product quick view */
       cmsPageLayoutId: string;
@@ -13457,6 +15280,10 @@ export type operations = {
   "dsrReadShopPage get /dsr/shop-pages/{layoutName}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       layoutName: string;
     };
@@ -13466,6 +15293,10 @@ export type operations = {
   "readEmployees get /employee": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bEmployee"][];
@@ -13475,6 +15306,10 @@ export type operations = {
   "readEmployeesPOST post /employee": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bEmployee"][];
@@ -13484,6 +15319,10 @@ export type operations = {
   "readB2bEmployee get /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the employee to be read */
       id: string;
@@ -13504,6 +15343,10 @@ export type operations = {
   "updateEmployee patch /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the employee to be updated */
       id: string;
@@ -13521,9 +15364,62 @@ export type operations = {
     response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
   };
+  "getEmployeeContextsGet get /employee/context": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["EmployeeAvailableContextsResponse"];
+    responseCode: 200;
+  };
+  "getEmployeeContexts post /employee/context": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["EmployeeAvailableContextsResponse"];
+    responseCode: 200;
+  };
+  "cancelEmployeeContext post /employee/context/cancel": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "switchEmployeeContext post /employee/context/switch": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    body: {
+      /** Identifier of the employee identity (membership) to activate. */
+      employeeId: string;
+      /** When present, sets (true) or clears (false) this context as the account default. */
+      setDefault?: boolean;
+    };
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
   "createEmployee post /employee/create": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Email of the new employee */
       email: string;
@@ -13542,6 +15438,10 @@ export type operations = {
   "reinviteEmployee post /employee/reinvite/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the employee to be reinvited */
       id: string;
@@ -13556,6 +15456,10 @@ export type operations = {
   "handlePaymentMethodGet get /handle-payment": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query: {
       /** URL to which the client should be redirected after erroneous payment */
       errorUrl?: string;
@@ -13572,6 +15476,10 @@ export type operations = {
   "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** URL to which the client should be redirected after erroneous payment */
       errorUrl?: string;
@@ -13592,7 +15500,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
@@ -13655,7 +15563,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Identifier of the landing page. */
@@ -13674,7 +15582,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -13719,7 +15627,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -13730,6 +15638,10 @@ export type operations = {
   "readMediaGet get /media": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query: {
       /** Identifier (UUID) of the media entity to be fetched. */
       "ids[]": string[];
@@ -13740,6 +15652,10 @@ export type operations = {
   "readMedia post /media": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Identifier (UUID) of the media entity to be fetched. */
       ids: string[];
@@ -13754,7 +15670,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
@@ -13807,7 +15723,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
@@ -13830,6 +15746,10 @@ export type operations = {
   "confirmNewsletter post /newsletter/confirm": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Email hash parameter from the link in the confirmation mail */
       em: string;
@@ -13842,6 +15762,10 @@ export type operations = {
   "subscribeToNewsletter post /newsletter/subscribe": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** City */
       city?: string;
@@ -13876,6 +15800,10 @@ export type operations = {
   "unsubscribeToNewsletter post /newsletter/unsubscribe": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Email address that should be removed from the mailing lists. */
       email: string;
@@ -13890,7 +15818,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: components["schemas"]["NoneFieldsCriteria"] & {
       /** Check if the payment method of the order is still changeable. */
@@ -13921,7 +15849,7 @@ export type operations = {
     accept: "application/octet-stream";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       downloadId: string;
@@ -13935,7 +15863,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** The identifier of the order. */
@@ -13951,7 +15879,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** The identifier of the order to be canceled. */
@@ -13963,6 +15891,10 @@ export type operations = {
   "createOrganizationUnit post /organization-unit": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Identifier (UUID) of the addresses for billing. */
       billingAddressIds: string[];
@@ -13974,6 +15906,8 @@ export type operations = {
       employeeIds?: string[];
       /** Organization unit name */
       name: string;
+      /** Identifier (UUID) of the parent organization unit, to create this unit as a sub-organization. Optional; can only be set on creation and is immutable afterwards. */
+      parentId?: string;
       /** Identifier (UUID) of the payment methods. */
       paymentMethodIds: string[];
       /** Identifier (UUID) of the addresses for shipping. */
@@ -13997,6 +15931,10 @@ export type operations = {
   "readOrganizationUnit post /organization-unit/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the Organization Unit to be fetched */
       id: string;
@@ -14007,6 +15945,10 @@ export type operations = {
   "updateOrganizationUnit patch /organization-unit/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the Organization Unit to be fetched */
       id: string;
@@ -14035,6 +15977,10 @@ export type operations = {
   "readOrganizationUnits post /organization-units": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsOrganization"][];
@@ -14046,7 +15992,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -14095,7 +16041,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: components["schemas"]["Criteria"] & {
       /** List only available */
@@ -14113,7 +16059,13 @@ export type operations = {
   "createPayPalOrder post /paypal/create-order": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
+      /** Cancel URL for the order experience context */
+      cancelUrl?: string;
       /** Use an existing order id to create PayPal order */
       orderId?: string;
       /**
@@ -14121,6 +16073,8 @@ export type operations = {
        * @default ppcp
        */
       product?: string;
+      /** Return URL for the order experience context */
+      returnUrl?: string;
     };
     response: {
       token?: string;
@@ -14130,12 +16084,20 @@ export type operations = {
   "createPayPalExpressOrder post /paypal/express/create-order": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: never;
     responseCode: 200;
   };
   "preparePayPalExpressCheckout post /paypal/express/prepare-checkout": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** ID of the paypal order */
       token?: string;
@@ -14148,6 +16110,10 @@ export type operations = {
   "handlePayPalExpressShippingCallback post /paypal/express/shipping-callback/{salesChannelId}/{token}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: components["schemas"]["paypal_v2_order_shipping_callback"];
     response: components["schemas"]["paypal_v2_order"];
     responseCode: 200;
@@ -14155,6 +16121,10 @@ export type operations = {
   "setPaymentMethodEligibility post /paypal/payment-method-eligibility": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** List of PayPal payment method identifiers according to constant REMOVABLE_PAYMENT_HANDLERS */
       paymentMethods?: string[];
@@ -14165,6 +16135,10 @@ export type operations = {
   "getPUIPaymentInstructions get /paypal/pui/payment-instructions/{transactionId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the order transaction to be fetched */
       transactionId: string;
@@ -14175,6 +16149,10 @@ export type operations = {
   "getPayPalCustomerVaultToken get /paypal/vault-token": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       token?: string;
     };
@@ -14183,6 +16161,10 @@ export type operations = {
   "paypalVaultClear post /paypal/vault/clear": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** @enum {string} */
       type?: "cancel" | "browser" | "error";
@@ -14193,6 +16175,10 @@ export type operations = {
   "fetchPendingOrder post /pending-order/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the pending order to be fetched */
       id: string;
@@ -14204,6 +16190,10 @@ export type operations = {
   "approvePendingOrder post /pending-order/{id}/approve": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the pending order to be approved */
       id: string;
@@ -14218,6 +16208,10 @@ export type operations = {
   "createOrderFromPendingOrder post /pending-order/{id}/checkout/order": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the pending order to be used to create a order */
       id: string;
@@ -14232,6 +16226,10 @@ export type operations = {
   "declinePendingOrder post /pending-order/{id}/decline": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the pending order to be declined */
       id: string;
@@ -14246,6 +16244,10 @@ export type operations = {
   "fetchPendingOrderPaymentMethods post /pending-order/{id}/payment-method": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the pending order to be fetched */
       id: string;
@@ -14262,6 +16264,10 @@ export type operations = {
   "requestOrderApproval post /pending-orders/request": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: {
       /** Message content */
       comment?: string;
@@ -14272,6 +16278,10 @@ export type operations = {
   "readPermissions get /permission": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       elements?: {
         permissionDependencies?: string[];
@@ -14284,6 +16294,10 @@ export type operations = {
   "addPermission post /permission": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Optional dependencies for the new permission */
       dependencies?: string[];
@@ -14306,7 +16320,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -14351,7 +16365,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -14362,6 +16376,10 @@ export type operations = {
   "readProductExport get /product-export/{accessKey}/{fileName}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Access Key */
       accessKey: string;
@@ -14378,9 +16396,11 @@ export type operations = {
       /** Determines if the response must contain a SeoUrl entity for a product entity */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
       associations?: components["parameters"]["criteriaAssociations"];
       /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
@@ -14447,7 +16467,7 @@ export type operations = {
       /** Determines if the response must contain a SeoUrl entity for a product entity */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** The page number to fetch. */
@@ -14469,7 +16489,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the NoneFieldsCriteria schema (see #/components/schemas/NoneFieldsCriteria). */
@@ -14520,7 +16540,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Instructs Shopware to skip loading the CMS page data */
@@ -14543,7 +16563,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Product ID */
@@ -14559,7 +16579,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Product ID */
@@ -14573,7 +16593,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query: {
       /** The options parameter for the variant to find. Array of option IDs. */
@@ -14593,7 +16613,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Product ID */
@@ -14616,7 +16636,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Identifier of the product which is reviewed. */
@@ -14645,7 +16665,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -14694,7 +16714,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     pathParams: {
       /** Identifier of the product. */
@@ -14709,6 +16729,10 @@ export type operations = {
   "searchByImageSearchTerm post /product/image-upload-search/search-term": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /**
        * Format: binary
@@ -14722,6 +16746,10 @@ export type operations = {
   "naturalLanguageSearchTerm post /product/natural-language/search-term": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /**
        * Natural language query
@@ -14735,6 +16763,10 @@ export type operations = {
   "readProductsPurchaseLimit get /product/purchase-limit": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     query: {
       /** List of product IDs to fetch quantity limits for. */
       "ids[]": string[];
@@ -14742,9 +16774,85 @@ export type operations = {
     response: components["schemas"]["ProductPurchaseLimit"][];
     responseCode: 200;
   };
+  "deleteDraftQuote delete /quote/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the draft quote to be deleted */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeMessageInQuote delete /quote/{id}/comment/{commentId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the comment to delete */
+      commentId: string;
+      /** Identifier of the quote */
+      id: string;
+    };
+    body: {
+      /** Draft version identifier of the quote currently shown in storefront */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "editMessageInQuote patch /quote/{id}/comment/{commentId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the comment to edit */
+      commentId: string;
+      /** Identifier of the quote */
+      id: string;
+    };
+    body: {
+      /** Updated comment content */
+      comment: string;
+      /** Identifier of the related line item history entry */
+      lineItemHistoryId: string;
+      /** Draft version identifier of the quote currently shown in storefront */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "replyMessageInQuote post /quote/{id}/comment/reply": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote */
+      id: string;
+    };
+    body: {
+      /** Reply content */
+      comment: string;
+      /** Identifier of the line item history entry being replied to */
+      lineItemHistoryId: string;
+      /** Draft version identifier of the quote currently shown in storefront */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
   "switchPaymentOrShippingMethod post /quote/{id}/configure": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to be reinvited */
       id: string;
@@ -14761,31 +16869,212 @@ export type operations = {
   "declineQuote post /quote/{id}/decline": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to be reinvited */
       id: string;
     };
-    body?: {
+    body: {
       /** Message content */
-      comment?: string;
+      comment: string;
+      /** Identifier of the quote line item that owns the new comment */
+      lineItemId: string;
+      /** Draft version identifier of the quote currently shown in storefront */
+      versionId: string;
     };
+    response: never;
+    responseCode: 204;
+  };
+  "createDraftQuoteVersion post /quote/{id}/draft-version": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote to create a draft version for */
+      id: string;
+    };
+    response: {
+      versionId?: string;
+    };
+    responseCode: 200;
+  };
+  "deleteDraftQuoteVersion delete /quote/{id}/draft-version": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote whose current draft version should be deleted */
+      id: string;
+    };
+    body: {
+      /** Draft version identifier to delete. This must be set to the versionId returned by POST /quote/{id}/draft-version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "saveDraftQuoteVersion post /quote/{id}/draft-version/save": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote whose current draft version should be merged into live */
+      id: string;
+    };
+    body: {
+      /** Draft version identifier to merge. This must be set to the versionId returned by POST /quote/{id}/draft-version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "markQuoteHistoryAsSeen post /quote/{id}/history/read": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote whose history entries will be marked as seen */
+      id: string;
+    };
+    body?: {
+      /** Optional quote comment identifiers to mark as seen for the quoteLineItemId. When omitted or empty, all unread comments for the quoteLineItemId are marked as seen. */
+      commentIds?: string[];
+      /** Optional quote history identifiers to mark as seen. When omitted or empty, all unread quote history entries are marked as seen. */
+      historyIds?: string[];
+      /** Optional quote line item history identifiers to mark as seen. When omitted or empty, all unread history entries for the quoteLineItemId are marked as seen. */
+      lineItemHistoryIds?: string[];
+      /** Optional quote line item identifier whose line item history entries should be marked as seen */
+      quoteLineItemId?: string;
+    };
+    response: {
+      /** Number of unread quote comments remaining after the update when quoteLineItemId is provided */
+      countUnReadComment?: number;
+      /** Number of unread history entries remaining after the update */
+      countUnReadHistory: number;
+    };
+    responseCode: 200;
+  };
+  "readQuoteLineItemHistory post /quote/{id}/line-item-history-listing": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote whose line item history should be fetched */
+      id: string;
+    };
+    body?: components["schemas"]["Criteria"] & {
+      /** Optional draft version identifier used to load quote line item history */
+      versionId?: string;
+    };
+    response: {
+      elements?: components["schemas"]["QuoteLineItemHistory"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readQuoteLineItems post /quote/{id}/line-item-listing": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote whose line items should be fetched */
+      id: string;
+    };
+    body?: components["schemas"]["Criteria"] & {
+      /** Optional draft version identifier used to load quote line items */
+      versionId?: string;
+    };
+    response: {
+      elements?: components["schemas"]["QuoteLineItem"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "addQuoteLineItem post /quote/{id}/line-item/add": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote to be updated */
+      id: string;
+    };
+    body: {
+      /** Identifier of the product to add */
+      productId: string;
+      /** Quantity to add */
+      quantity?: number;
+      /** Identifier of the quote version to modify. Must not be the live or snapshot version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "replaceQuoteNotificationEmployees post /quote/{id}/notification-employees": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote whose employee notification recipients should be updated */
+      id: string;
+    };
+    body:
+      | {
+          /** Employee identifiers to remove from quote notification recipients. */
+          deletedEmployeeIds?: string[];
+          /** Employee identifiers to add as quote notification recipients. */
+          selectedEmployeeIds?: string[];
+        }
+      | unknown
+      | unknown;
     response: never;
     responseCode: 204;
   };
   "markMessagesAsReadInQuote post /quote/{id}/read-message": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote whose messages will be marked as read */
       id: string;
     };
-    body?: GenericRecord;
+    body: {
+      /** Draft version identifier of the quote currently shown in storefront */
+      versionId: string;
+    };
     response: never;
     responseCode: 204;
   };
   "requestChangeQuote post /quote/{id}/request-change": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to be reinvited */
       id: string;
@@ -14800,6 +17089,10 @@ export type operations = {
   "sendMessageInQuote post /quote/{id}/send-message": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to send message */
       id: string;
@@ -14811,9 +17104,186 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
+  "sendDraftQuoteRequest post /quote/{id}/send-request": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the draft quote to be sent */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readQuoteDocuments post /quote/{quoteId}/documents": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote to fetch documents for */
+      quoteId: string;
+    };
+    body?: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["QuoteDocument"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "editQuoteLineItem post /quote/{quoteId}/line-item/{lineItemId}/edit": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote line item to be updated */
+      lineItemId: string;
+      /** Identifier of the quote to be updated */
+      quoteId: string;
+    };
+    body: {
+      /** New quantity of the line item */
+      quantity?: number;
+      /** Requested price of the line item. Send 0 to reset it. */
+      requestedPrice?: number;
+      /** Identifier of the quote version to modify. Must not be the live or snapshot version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "patchEditQuoteLineItem patch /quote/{quoteId}/line-item/{lineItemId}/edit": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote line item to be updated */
+      lineItemId: string;
+      /** Identifier of the quote to be updated */
+      quoteId: string;
+    };
+    body: {
+      /** New quantity of the line item */
+      quantity?: number;
+      /** Requested price of the line item. Send 0 to reset it. */
+      requestedPrice?: number;
+      /** Identifier of the quote version to modify. Must not be the live or snapshot version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeQuoteLineItem post /quote/{quoteId}/line-item/{lineItemId}/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote line item to remove */
+      lineItemId: string;
+      /** Identifier of the quote to be updated */
+      quoteId: string;
+    };
+    body: {
+      /** Identifier of the quote version to modify. Must not be the live or snapshot version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "deleteQuoteLineItem delete /quote/{quoteId}/line-item/{lineItemId}/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote line item to remove */
+      lineItemId: string;
+      /** Identifier of the quote to be updated */
+      quoteId: string;
+    };
+    body: {
+      /** Identifier of the quote version to modify. Must not be the live or snapshot version. */
+      versionId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "searchQuoteProductsGet get /quote/{quoteId}/product-search": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    query?: {
+      /** Search term used by the core product search route */
+      search?: string;
+      /** Optional draft version identifier used to check quote line items in the current storefront edit draft */
+      versionId?: string;
+    };
+    pathParams: {
+      /** Identifier of the quote used to annotate the product search result */
+      quoteId: string;
+    };
+    response: {
+      elements?: (components["schemas"]["Product"] & {
+        extensions?: {
+          quoteLineItem?: {
+            /** @example cart_order_id */
+            apiAlias?: string;
+            id?: string;
+          };
+        };
+      })[];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "searchQuoteProducts post /quote/{quoteId}/product-search": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    pathParams: {
+      /** Identifier of the quote used to annotate the product search result */
+      quoteId: string;
+    };
+    body?: components["schemas"]["Criteria"] & {
+      /** Optional draft version identifier used to check quote line items in the current storefront edit draft */
+      draftVersionId?: string;
+    };
+    response: {
+      elements?: (components["schemas"]["Product"] & {
+        extensions?: {
+          quoteLineItem?: {
+            /** @example cart_order_id */
+            apiAlias?: string;
+            id?: string;
+          };
+        };
+      })[];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readQuote post /quote/detail/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to be fetched */
       id: string;
@@ -14825,6 +17295,10 @@ export type operations = {
   "downloadQuoteDocument post /quote/document/download/{documentId}/{deepLinkCode}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Deep link code of the quote document */
       deepLinkCode: string;
@@ -14837,6 +17311,10 @@ export type operations = {
   "createOrderFromQuote post /quote/order/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the quote to be reinvited */
       id: string;
@@ -14851,7 +17329,11 @@ export type operations = {
   "requestQuote post /quote/request": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: {
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    body: {
       /** Message content */
       comment?: string;
     };
@@ -14861,6 +17343,10 @@ export type operations = {
   "readQuotes post /quotes": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Quote"][];
@@ -14872,7 +17358,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body: {
       /** Type of the content management page. */
@@ -14901,6 +17387,10 @@ export type operations = {
   "readRoles get /role": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -14909,6 +17399,10 @@ export type operations = {
   "readRolesPOST post /role": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
@@ -14918,6 +17412,10 @@ export type operations = {
   "readRole get /role/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the role to be fetched */
       id: string;
@@ -14938,6 +17436,10 @@ export type operations = {
   "updateRole patch /role/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the role to be updated */
       id: string;
@@ -14956,6 +17458,10 @@ export type operations = {
   "createRole post /role/create": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Ability to set the new role as default */
       isDefaultRole?: boolean;
@@ -14970,6 +17476,10 @@ export type operations = {
   "updateDefaultRoleId post /role/default": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Id of the roleId to be set as default */
       id?: string;
@@ -14982,7 +17492,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -15027,7 +17537,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -15039,6 +17549,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15051,6 +17565,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15063,6 +17581,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15074,6 +17596,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15086,6 +17612,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept: "application/vnd.api+json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15098,6 +17628,10 @@ export type operations = {
     | {
         contentType?: "application/json";
         accept?: "application/json";
+        headers?: {
+          /** Instructs Shopware to return the response in the given language. */
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
+        };
         pathParams: {
           /** Dynamic hook which used to build the hook name */
           hook: string;
@@ -15112,7 +17646,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
@@ -15179,7 +17713,7 @@ export type operations = {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean;
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** The page number to fetch. */
@@ -15198,7 +17732,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query: {
       "aggregations[]"?: components["parameters"]["criteriaAggregations"];
@@ -15263,7 +17797,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** The page number to fetch. */
@@ -15282,7 +17816,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -15327,7 +17861,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     body?: components["schemas"]["Criteria"];
     response: {
@@ -15413,7 +17947,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
@@ -15462,7 +17996,7 @@ export type operations = {
       /** Controls whether API search information is included in the response. Default is 1 (enabled), will be 0 (disabled) in the next major version. */
       "sw-include-search-info"?: "0" | "1";
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     query?: {
       /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
@@ -15481,6 +18015,10 @@ export type operations = {
   "createShoppingList post /shopping-list": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       lineItems?: {
         [key: string]: {
@@ -15509,6 +18047,10 @@ export type operations = {
   "readShoppingList post /shopping-list/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list to be fetched */
       id: string;
@@ -15520,6 +18062,10 @@ export type operations = {
   "addLineItems post /shopping-list/{id}/add": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list to be fetched */
       id: string;
@@ -15540,6 +18086,10 @@ export type operations = {
   "updateShoppingList patch /shopping-list/{id}/change-name": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list to be fetched */
       id: string;
@@ -15554,6 +18104,10 @@ export type operations = {
   "duplicateShoppingList post /shopping-list/{id}/duplicate": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list to be fetched */
       id: string;
@@ -15571,6 +18125,10 @@ export type operations = {
   "summaryShoppingList get /shopping-list/{id}/summary": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list to be fetched */
       id: string;
@@ -15601,6 +18159,10 @@ export type operations = {
   "updateLineItems post /shopping-list/line-item/{id}/change-quantity": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the shopping list line item to be fetched */
       id: string;
@@ -15615,6 +18177,10 @@ export type operations = {
   "removeLineItems post /shopping-list/line-item/remove": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Line items ids */
       ids?: string[];
@@ -15629,6 +18195,10 @@ export type operations = {
   "readShoppingLists post /shopping-lists": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsShoppingList"][];
@@ -15638,6 +18208,10 @@ export type operations = {
   "addShoppingListsToCart post /shopping-lists/add-to-cart": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     body: {
       /** Shopping list ids */
       ids: string[];
@@ -15650,7 +18224,7 @@ export type operations = {
     accept?: "application/json";
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
     };
     response: components["schemas"]["Sitemap"][];
     responseCode: 200;
@@ -15661,7 +18235,7 @@ export type operations = {
         accept: "application/gzip";
         headers?: {
           /** Instructs Shopware to return the response in the given language. */
-          "sw-language-id"?: string;
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           /** The path to the sitemap file */
@@ -15675,7 +18249,7 @@ export type operations = {
         accept: "application/xml";
         headers?: {
           /** Instructs Shopware to return the response in the given language. */
-          "sw-language-id"?: string;
+          "sw-language-id"?: components["parameters"]["swLanguageId"];
         };
         pathParams: {
           /** The path to the sitemap file */
@@ -15687,6 +18261,10 @@ export type operations = {
   "auth post /sso/auth/{providerId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the SSO provider used to authenticate */
       providerId: string;
@@ -15697,6 +18275,10 @@ export type operations = {
   "redirect post /sso/redirect/{providerId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       /** Identifier of the SSO provider used to authenticate */
       providerId: string;
@@ -15707,6 +18289,10 @@ export type operations = {
   "getRecommendedBundles post /store-api/product/{productId}/recommended-bundles": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
     pathParams: {
       productId: string;
     };
@@ -15714,6 +18300,46 @@ export type operations = {
     response: {
       data?: components["schemas"]["BundleProduct"][];
     };
+    responseCode: 200;
+  };
+  "readCustomProductsTemplates post /swag_customized_products_template": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["SwagCustomizedProductsEntitySearchResult"];
+    responseCode: 200;
+  };
+  "readCustomProductsTemplateConfigurations post /swag_customized_products_template_configuration": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["SwagCustomizedProductsEntitySearchResult"];
+    responseCode: 200;
+  };
+  "readCustomProductsTemplateOptions post /swag_customized_products_template_option": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["SwagCustomizedProductsEntitySearchResult"];
+    responseCode: 200;
+  };
+  "readCustomProductsTemplateOptionValues post /swag_customized_products_template_option_value": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: components["parameters"]["swLanguageId"];
+    };
+    response: components["schemas"]["SwagCustomizedProductsEntitySearchResult"];
     responseCode: 200;
   };
   "mollieSubmitCreditCart post script/mollie/creditcard/store-token/{userId/{token}": {

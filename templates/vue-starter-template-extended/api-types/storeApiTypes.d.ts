@@ -14,6 +14,19 @@ type GenericRecord =
   | {
       [key: string]: GenericRecord;
     };
+type CustomFields = {
+  [key: string]: CustomFieldValue;
+};
+type CustomFieldValue =
+  | null
+  | string
+  | string[]
+  | number
+  | boolean
+  | CustomFieldValue[]
+  | {
+      [key: string]: CustomFieldValue;
+    };
 export type components = {
   schemas: Schemas;
 };
@@ -31,8 +44,7 @@ export type Schemas = {
   AccountNewsletterRecipient: {
     /** @enum {string} */
     apiAlias: "account_newsletter_recipient";
-    /** @enum {string} */
-    status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
+    status: components["schemas"]["NewsletterStatus"];
   };
   AclRole: {
     /** Format: date-time */
@@ -257,6 +269,27 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   AppFlowEvent: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AppMcpPrompt: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AppMcpResource: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  AppMcpTool: {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
@@ -1176,6 +1209,32 @@ export type Schemas = {
   CartItems: {
     items: components["schemas"]["LineItem"][];
   };
+  CartItemsUpdate: {
+    items: components["schemas"]["CartLineItemUpdate"][];
+  };
+  CartLineItemUpdate: {
+    coverId?: string;
+    id: string;
+    label?: string;
+    payload?: GenericRecord;
+    priceDefinition?: {
+      isCalculated?: boolean;
+      listPrice?: number;
+      percentage?: number;
+      price?: number;
+      quantity?: number;
+      taxRules?: {
+        percentage?: number;
+        taxRate?: number;
+      }[];
+      type?: string;
+    };
+    quantity?: number;
+    referencedId?: string;
+    removable?: boolean;
+    stackable?: boolean;
+    type?: components["schemas"]["OrderLineItem"]["type"];
+  };
   CartListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
@@ -1730,9 +1789,7 @@ export type Schemas = {
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    customFields?: {
-      _uniqueIdentifier?: string;
-    };
+    customFields?: CustomFields | null;
     readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
@@ -2731,6 +2788,7 @@ export type Schemas = {
     readonly updatedAt?: string;
   };
   DocumentBaseConfig: {
+    /** @deprecated */
     config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
@@ -3366,7 +3424,7 @@ export type Schemas = {
     cover: components["schemas"]["Media"] | null;
     dataContextHash?: string;
     dataTimestamp?: string;
-    deliveryInformation: components["schemas"]["CartDeliveryInformation"];
+    deliveryInformation?: components["schemas"]["CartDeliveryInformation"];
     description?: string;
     extensions?: {
       meta?: {
@@ -3381,7 +3439,7 @@ export type Schemas = {
     label?: string;
     modified?: boolean;
     modifiedByApp?: boolean;
-    payload: components["schemas"]["ProductJsonApi"];
+    payload?: components["schemas"]["ProductJsonApi"];
     price?: {
       /** @enum {string} */
       apiAlias: "calculated_price";
@@ -3410,7 +3468,7 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: components["schemas"]["CartPriceQuantity"];
-    quantity: number;
+    quantity?: number;
     quantityInformation?: {
       maxPurchase?: number;
       minPurchase?: number;
@@ -3420,7 +3478,7 @@ export type Schemas = {
     removable?: boolean;
     stackable?: boolean;
     /** @deprecated */
-    states: ("is-physical" | "is-download")[];
+    states?: ("is-physical" | "is-download")[];
     type: components["schemas"]["OrderLineItem"]["type"];
     uniqueIdentifier?: string;
   };
@@ -3818,6 +3876,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  NewsletterStatus: "notSet" | "optIn" | "optOut" | "direct" | "undefined";
   NoneFieldsCriteria: {
     aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Associations"];
@@ -5037,7 +5096,6 @@ export type Schemas = {
     readonly available?: boolean;
     /**
      * Format: int64
-     * @deprecated
      * Indicates the number of products still available. This value results from the stock minus the open orders.
      */
     readonly availableStock?: number;
@@ -5554,7 +5612,6 @@ export type Schemas = {
       readonly available?: boolean;
       /**
        * Format: int64
-       * @deprecated
        * Indicates the number of products still available. This value results from the stock minus the open orders.
        */
       readonly availableStock?: number;
@@ -13774,11 +13831,7 @@ export type operations = {
       zipCode?: string;
     };
     response: {
-      /**
-       * The subscription status.
-       * @enum {string}
-       */
-      status: "notSet" | "optIn" | "optOut" | "direct";
+      status: components["schemas"]["NewsletterStatus"];
       /** Indicates whether the subscribe request was successful. */
       success: boolean;
     };
@@ -15244,6 +15297,79 @@ export type operations = {
     response: {
       elements: components["schemas"]["SeoUrl"][];
     } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readShippingCostsByCart get /shipping-cost/cart": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    response: {
+      deliveryDate: {
+        /** Format: date-time */
+        earliest?: string;
+        /** Format: date-time */
+        latest?: string;
+      };
+      shippingCost: components["schemas"]["CalculatedPrice"];
+      shippingMethod: components["schemas"]["ShippingMethod"];
+    }[];
+    responseCode: 200;
+  };
+  "readShippingCostByProduct get /shipping-cost/product/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
+    query?: {
+      /** Compressed and encoded criteria object. Format: base64url(gzip(json_encode(criteria))). This parameter allows passing complex criteria as a single encoded string instead of multiple query parameters. The criteria object should be JSON-encoded, then gzipped, and finally base64url-encoded. The criteria object structure is defined in the Criteria schema (see #/components/schemas/Criteria). */
+      _criteria?: components["parameters"]["CompressedCriteria"];
+      "aggregations[]"?: components["parameters"]["criteriaAggregations"];
+      associations?: components["parameters"]["criteriaAssociations"];
+      /** Specify the fields that should be excluded from the response for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Note that the exclude fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      excludes?: components["parameters"]["criteriaExcludes"];
+      /** Fields which should be returned in the search result. */
+      "fields[]"?: components["parameters"]["criteriaFields"];
+      /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
+      "filter[]"?: components["parameters"]["criteriaFilter"];
+      /** Perform groupings over certain fields */
+      "grouping[]"?: components["parameters"]["criteriaGrouping"];
+      /** List of ids to search for */
+      "ids[]"?: components["parameters"]["criteriaIds"];
+      /** Specify the fields that should be returned for the given entities. Object key needs to be the entity name, and the list of fields needs to be the value. Fields will not be included, if they are also specified in the excludes. Note that the include fields will only be stripped on the API-Level, consider using the `fields` parameter for performance reasons. */
+      includes?: components["parameters"]["criteriaIncludes"];
+      /** Number of items per result page */
+      limit?: components["parameters"]["criteriaLimit"];
+      /** Search result page */
+      page?: components["parameters"]["criteriaPage"];
+      /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
+      "post-filter[]"?: components["parameters"]["criteriaPostFilter"];
+      /** The query string to search for */
+      query?: components["parameters"]["criteriaQuery"];
+      /** Sorting in the search result. */
+      "sort[]"?: components["parameters"]["criteriaSort"];
+      /** Search term */
+      term?: components["parameters"]["criteriaTerm"];
+      "total-count-mode"?: components["parameters"]["criteriaTotalCountMode"];
+    };
+    pathParams: {
+      /** The product identifier. */
+      productId: string;
+    };
+    response: {
+      deliveryDate: {
+        /** Format: date-time */
+        earliest?: string;
+        /** Format: date-time */
+        latest?: string;
+      };
+      shippingCost: components["schemas"]["CalculatedPrice"];
+      shippingMethod: components["schemas"]["ShippingMethod"];
+    }[];
     responseCode: 200;
   };
   "readShippingMethodGet get /shipping-method": {
