@@ -29,6 +29,8 @@
       "mainContent": "Main content",
       "checkout": "Checkout",
       "pagination": "Pagination",
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Sidebar",
       "closeNotification": "Close notification",

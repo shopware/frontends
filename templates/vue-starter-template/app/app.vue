@@ -129,7 +129,7 @@ if (languages && router.currentRoute.value.name) {
 
 onMounted(() => {
   refreshCart();
-  const isWishlistPage = route.name?.toString().endsWith("wishlist") ?? false;
+  const isWishlistPage = route.name?.toString().startsWith("wishlist") ?? false;
   if (!isWishlistPage) {
     getWishlistProducts();
   }

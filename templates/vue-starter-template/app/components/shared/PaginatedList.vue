@@ -49,6 +49,7 @@ const {
   currentPage,
   limit,
   loading,
+  isInitialLoading,
   isEmpty,
   error,
   changePage,
@@ -87,7 +88,7 @@ const navProps = computed(() =>
 
 <template>
   <div ref="listEl">
-    <slot v-if="loading" name="loading" :limit="limit">
+    <slot v-if="isInitialLoading" name="loading" :limit="limit">
       <div class="py-8 text-center text-sm opacity-70">
         {{ $t("listing.loading") }}
       </div>
@@ -103,13 +104,19 @@ const navProps = computed(() =>
     </slot>
 
     <template v-else-if="!isEmpty">
-      <slot
-        :items="elements"
-        :loading="loading"
-        :total="total"
-        :current-page="currentPage"
-        :total-pages="totalPages"
-      />
+      <div
+        class="transition-opacity"
+        :class="{ 'opacity-60 pointer-events-none': loading }"
+        :aria-busy="loading"
+      >
+        <slot
+          :items="elements"
+          :loading="loading"
+          :total="total"
+          :current-page="currentPage"
+          :total-pages="totalPages"
+        />
+      </div>
 
       <SharedElementsNavigation
         v-if="totalPages > 1 || showPageSizeSelector"

@@ -95,7 +95,9 @@ watch(
               </ClientOnly>
             </div>
             <ClientOnly>
-              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              <NuxtLink :to="formatLink('/wishlist')">
+                <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              </NuxtLink>
               <template #fallback>
                 <LayoutHeaderWishlistIcon :counter="0" />
               </template>
