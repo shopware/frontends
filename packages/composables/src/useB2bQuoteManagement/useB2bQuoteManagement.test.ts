@@ -52,13 +52,21 @@ describe("useB2bQuoteManagement", () => {
   it("declineQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
     injections.apiClient.invoke.mockResolvedValue({ data: null });
-    await vm.declineQuote("test-12", "test-comment");
+    await vm.declineQuote("test-12", {
+      comment: "test-comment",
+      lineItemId: "test-line-item-id",
+      versionId: "test-version-id",
+    });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("declineQuote"),
       expect.objectContaining({
         pathParams: { id: "test-12" },
-        body: { comment: "test-comment" },
+        body: {
+          comment: "test-comment",
+          lineItemId: "test-line-item-id",
+          versionId: "test-version-id",
+        },
       }),
     );
   });

@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 type UseB2bQuoteManagement = {
   getQuoteList: () => Promise<Schemas["Quote"][]>;
   getQuote: (quoteId: string) => Promise<Schemas["Quote"]>;
-  declineQuote: (quoteId: string, comment: string) => Promise<void>;
+  declineQuote: (quoteId: string, params: DeclineQuoteParams) => Promise<void>;
   requestChangeQuote: (quoteId: string, comment: string) => Promise<void>;
   requestQuote: (comment: string) => Promise<Schemas["Quote"]>;
   createOrderFromQuote: (
@@ -22,6 +22,15 @@ type UseB2bQuoteManagement = {
     quoteId: string,
     paymentMethodId: string,
   ) => Promise<void>;
+};
+
+export type DeclineQuoteParams = {
+  /** Message content */
+  comment: string;
+  /** Identifier of the quote line item that owns the new comment */
+  lineItemId: string;
+  /** Draft version identifier of the quote currently shown in storefront */
+  versionId: string;
 };
 
 export type ChangePaymentShippingMethodParams = {
@@ -88,16 +97,18 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * Decline quote
    *
    * @param {string} quoteId
-   * @param {string} comment
+   * @param {DeclineQuoteParams} params
    * @returns {Promise<void>}
    */
-  async function declineQuote(quoteId: string, comment: string) {
+  async function declineQuote(quoteId: string, params: DeclineQuoteParams) {
     await apiClient.invoke("declineQuote post /quote/{id}/decline", {
       pathParams: {
         id: quoteId,
       },
       body: {
-        comment,
+        comment: params.comment,
+        lineItemId: params.lineItemId,
+        versionId: params.versionId,
       },
     });
   }

@@ -25,7 +25,11 @@ const handleChangeRequest = async () => {
 };
 
 const handleDecline = async () => {
-  declineQuote(quote.value.id, declineComment.value);
+  declineQuote(quote.value.id, {
+    comment: declineComment.value,
+    lineItemId: quote.value.lineItems?.[0]?.id,
+    versionId: quote.value.versionId,
+  });
   declineComment.value = "";
 };
 
