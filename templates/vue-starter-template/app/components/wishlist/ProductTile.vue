@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSmallestThumbnailUrl } from "@shopware/helpers";
+import { getProductRoute, getSmallestThumbnailUrl } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
 
@@ -13,6 +13,9 @@ const { product } = defineProps<{
 const emit = defineEmits<{
   removed: [];
 }>();
+
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const { addProduct } = useCart();
 const { removeFromWishlist } = useProductWishlist(product.id);
@@ -65,19 +68,22 @@ async function handleRemoveFromWishlist() {
       class="!absolute top-4 right-4"
     />
 
-    <NuxtImg
-      :src="getSmallestThumbnailUrl(product.cover?.media)"
-      :alt="`${product.name} item`"
-      fit="inside"
-      class="object-cover"
-      :style="`height: ${ELEMENT_HEIGHT}px; width: ${ELEMENT_WIDTH}px;`"
-    />
+    <NuxtLink :to="formatLink(getProductRoute(product))">
+      <NuxtImg
+        :src="getSmallestThumbnailUrl(product.cover?.media)"
+        :alt="`${product.name} item`"
+        fit="inside"
+        class="object-cover"
+        :style="`height: ${ELEMENT_HEIGHT}px; width: ${ELEMENT_WIDTH}px;`"
+      />
+    </NuxtLink>
 
-    <div
+    <NuxtLink
+      :to="formatLink(getProductRoute(product))"
       class="text-surface-on-surface text-2xl font-normal font-['Noto_Serif'] leading-9"
     >
-      {{ product.name }}
-    </div>
+      {{ product.translated.name }}
+    </NuxtLink>
     <div class="mt-auto flex flex-col gap-4">
       <SharedPrice
         class="justify-start text-surface-on-surface text-base font-bold leading-6"

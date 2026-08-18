@@ -30,7 +30,9 @@ function toggleMobileSearch() {
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
     push(
-      `${formatLink("/account/login")}?redirect=${encodeURIComponent(route.fullPath)}`,
+      `${formatLink("/account/login")}?redirect=${encodeURIComponent(
+        route.fullPath,
+      )}`,
     );
   } else {
     toggleAccountMenu();
@@ -95,7 +97,10 @@ watch(
               </ClientOnly>
             </div>
             <ClientOnly>
-              <NuxtLink :to="formatLink('/wishlist')">
+              <NuxtLink
+                :to="formatLink('/wishlist')"
+                :aria-label="$t('wishlist.header')"
+              >
                 <LayoutHeaderWishlistIcon :counter="wishlistCount" />
               </NuxtLink>
               <template #fallback>
