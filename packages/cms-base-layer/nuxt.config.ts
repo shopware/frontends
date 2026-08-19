@@ -3,6 +3,8 @@ import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
 import type { LoggingFunction, RollupLog } from "rollup";
 
+import componentDirs from "./component-dirs.json";
+
 const { resolve: resolveLayer } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
@@ -21,14 +23,9 @@ export default defineNuxtConfig({
     "components:extend"(components) {
       // Exclude SwMedia3D from auto-import to prevent bundling heavy 3D libraries
       // It should be dynamically imported when needed using defineAsyncComponent.
-      const index = components.findIndex(
-        (c) =>
-          c.pascalName === "SwMedia3D" ||
-          c.kebabName === "sw-media3-d" ||
-          c.filePath?.includes("SwMedia3D.vue"),
-      );
-      if (index > -1) {
-        components.splice(index, 1);
+      for (const name of componentDirs.excluded) {
+        const index = components.findIndex((c) => c.pascalName === name);
+        if (index > -1) components.splice(index, 1);
       }
     },
   },
@@ -91,26 +88,13 @@ export default defineNuxtConfig({
     },
   },
 
-  components: [
-    {
-      path: resolveLayer("./app/components"),
-      pattern: "Sw*",
+  components: componentDirs.dirs.map(
+    ({ path, docsLabel: _docsLabel, ...dir }) => ({
+      ...dir,
+      path: resolveLayer(path),
       extensions: [".vue"],
-      global: true,
-    },
-    {
-      path: resolveLayer("./app/components/ui"),
-      extensions: [".vue"],
-      prefix: "Sw",
-      global: true,
-    },
-    {
-      path: resolveLayer("./app/components/public"),
-      pathPrefix: false,
-      global: true,
-      extensions: [".vue"],
-    },
-  ],
+    }),
+  ),
   alias: {
     "@cms-assets": resolveLayer("./app/assets"),
   },

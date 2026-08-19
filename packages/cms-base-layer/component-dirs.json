@@ -1,0 +1,23 @@
+{
+  "dirs": [
+    {
+      "path": "./app/components",
+      "pattern": "Sw*",
+      "global": true,
+      "docsLabel": "Store components"
+    },
+    {
+      "path": "./app/components/public",
+      "pathPrefix": false,
+      "global": true,
+      "docsLabel": "CMS components"
+    },
+    {
+      "path": "./app/components/ui",
+      "prefix": "Sw",
+      "global": true,
+      "docsLabel": "UI components"
+    }
+  ],
+  "excluded": ["SwMedia3D"]
+}
