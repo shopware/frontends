@@ -27,6 +27,7 @@
   },
   "files": [
     "app",
+    "component-dirs.json",
     "index.d.ts",
     "nuxt.config.ts"
   ],

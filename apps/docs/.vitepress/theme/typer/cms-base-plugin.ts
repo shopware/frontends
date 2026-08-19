@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 
 // @ts-nocheck
 import type { Plugin } from "vite";
@@ -44,13 +44,19 @@ export async function CmsBaseReference({
           component.path ||
           resolve(`${projectRootDir}/${relativeDir}`);
 
-        // Remove both /vercel/path0/ and extract path after frontends/
-        let normalizedPath = componentPath.replace(/\/vercel\/path0\//g, "");
-        const pathParts = normalizedPath.split("frontends/");
-        normalizedPath =
-          pathParts.length > 1
-            ? pathParts.pop() || ""
-            : normalizedPath.replace(projectRootDir, "").replace(/^\//, "");
+        // DevHub mounts the repo at <cwd>/src/frontends/_source, so splitting on
+        // "frontends/" leaves a "_source/" segment in the permalink. Derive the path
+        // from projectRootDir instead, and keep the old heuristic as a fallback.
+        const fromRoot = relative(projectRootDir, componentPath);
+        const normalizedPath =
+          fromRoot && !fromRoot.startsWith("..")
+            ? fromRoot
+            : (
+                componentPath
+                  .replace(/\/vercel\/path0\//g, "")
+                  .split("frontends/")
+                  .pop() || ""
+              ).replace(/^_source\//, "");
 
         API += prepareGithubPermalink({
           label: "source code",
