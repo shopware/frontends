@@ -654,8 +654,8 @@ pnpm run build
 
 ## Environment
 
-- **Node.js**: 20.x or 22.x required
-- **pnpm**: 10.17.0 (managed by packageManager field)
+- **Node.js**: 22.11+, 24.x or 26+ required
+- **pnpm**: 11.5.2 (managed by packageManager field)
 - **Corepack**: Recommended for Node.js version management
 
 ## References for Deep Work

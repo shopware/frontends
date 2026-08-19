@@ -51,7 +51,7 @@
     "turbo": "2.10.9"
   },
   "engines": {
-    "node": "^20.x || ^22.x || ^24.x"
+    "node": "^22.11 || ^24 || >=26"
   },
   "packageManager": "pnpm@11.5.2"
 }
