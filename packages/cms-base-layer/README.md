@@ -196,6 +196,14 @@ Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
 />
 ```
 
+The media `alt` text is a translatable field, so read it through `getTranslatedProperty` rather than
+`media.alt` — the latter always holds the system language value, no matter which language the current
+request asks for. The helper is not auto-imported, so add it to the component's script block:
+
+```ts
+import { getTranslatedProperty } from "@shopware/helpers";
+```
+
 ### Supported Modifiers
 
 Shopware supports the following URL parameters for image transformation:
