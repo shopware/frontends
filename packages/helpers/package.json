@@ -44,7 +44,7 @@
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "4.1.10",
-    "happy-dom": "20.11.1",
+    "happy-dom": "20.11.2",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
     "vitest": "4.1.10"
