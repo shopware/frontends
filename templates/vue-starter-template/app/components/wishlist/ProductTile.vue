@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { getSmallestThumbnailUrl } from "@shopware/helpers";
+import {
+  getSmallestThumbnailUrl,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
 
@@ -45,7 +48,7 @@ async function handleAddToCart() {
 
     <NuxtImg
       :src="getSmallestThumbnailUrl(product.cover?.media)"
-      :alt="`${product.name} item`"
+      :alt="`${getTranslatedProperty(product, 'name')} item`"
       fit="inside"
       class="object-cover"
       :style="`height: ${ELEMENT_HEIGHT}px; width: ${ELEMENT_WIDTH}px;`"
@@ -54,7 +57,7 @@ async function handleAddToCart() {
     <div
       class="text-surface-on-surface text-2xl font-normal font-['Noto_Serif'] leading-9"
     >
-      {{ product.name }}
+      {{ getTranslatedProperty(product, "name") }}
     </div>
     <div class="mt-auto flex flex-col gap-4">
       <SharedPrice

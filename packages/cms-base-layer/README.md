@@ -192,7 +192,7 @@ Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
   :src="product.cover.media.url"
   preset="productDetail"
   :width="800"
-  :alt="product.cover.media.alt"
+  :alt="getTranslatedProperty(product.cover.media, 'alt')"
 />
 ```
 

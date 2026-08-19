@@ -50,7 +50,7 @@ const hasProducts = computed(() => products.value.length > 0);
       <AccountOrderLineData
         class="flex-1"
         :label="t('account.order.shippingStatus')"
-        :value="order.stateMachineState.name"
+        :value="order.stateMachineState.translated.name"
       />
       <AccountOrderLineData
         v-if="order.transactions?.[0]"

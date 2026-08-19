@@ -3,6 +3,7 @@ import type {
   CmsElementCrossSelling,
   SliderElementConfig,
 } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
 import { computed, inject, ref, useTemplateRef } from "vue";
 
@@ -86,7 +87,7 @@ const toggleTab = (index: number) => {
         }"
         @click="toggleTab(index)"
       >
-        {{ collection.crossSelling.name }}
+        {{ getTranslatedProperty(collection.crossSelling, "name") }}
       </a>
     </div>
     <transition name="fade" mode="out-in">

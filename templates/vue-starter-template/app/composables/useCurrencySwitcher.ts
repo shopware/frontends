@@ -1,3 +1,5 @@
+import { getTranslatedProperty } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 type CurrencyListItem = {
@@ -6,9 +8,9 @@ type CurrencyListItem = {
 };
 
 function getCurrencyLabel(currency: Schemas["Currency"]): string {
-  return currency.symbol
-    ? `${currency.isoCode} (${currency.symbol})`
-    : currency.isoCode;
+  const symbol = getTranslatedProperty(currency, "symbol");
+
+  return symbol ? `${currency.isoCode} (${symbol})` : currency.isoCode;
 }
 
 export function useCurrencySwitcher() {
