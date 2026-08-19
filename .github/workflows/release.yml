@@ -29,25 +29,43 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v7
 
+      # `changeset version` exits 1 when there is nothing to release (changesets v3),
+      # so skip the canary release entirely when no changesets are pending.
+      - name: Check for pending changesets
+        id: pending
+        run: |
+          if [ -n "$(find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' -print -quit)" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "No pending changesets - skipping canary release." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        if: steps.pending.outputs.found == 'true'
       - uses: actions/setup-node@v7
+        if: steps.pending.outputs.found == 'true'
         with:
           node-version: "24"
           cache: "pnpm"
       - name: install
+        if: steps.pending.outputs.found == 'true'
         run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Build packages
+        if: steps.pending.outputs.found == 'true'
         run: pnpm run build --filter='./packages/*'
 
       - name: Generate shapshot
+        if: steps.pending.outputs.found == 'true'
         run: |
-          pnpm up -r --workspace templates 
+          pnpm up -r --workspace templates
           pnpm run version --snapshot canary
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
 
       - name: Publish canary packages
+        if: steps.pending.outputs.found == 'true'
         run: pnpm changeset publish --no-git-tag --tag canary
 
   release:
@@ -78,13 +96,14 @@ jobs:
       - name: Build packages
         run: pnpm run build --filter='./packages/*'
 
+      # v2 is the release line built for the changesets v3 CLI; it also renamed
+      # every input and dropped the GITHUB_TOKEN env var in favour of `github-token`.
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
         with:
-          version: pnpm run version
-          publish: pnpm run changeset publish
-          commit: "chore: release"
-          title: "chore: next version release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm run version
+          publish-script: pnpm run changeset publish
+          commit-message: "chore: release"
+          pr-title: "chore: next version release"
