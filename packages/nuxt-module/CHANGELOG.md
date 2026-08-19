@@ -1,5 +1,15 @@
 # @shopware/nuxt-module
 
+## 1.5.2
+
+### Patch Changes
+
+- [#2598](https://github.com/shopware/frontends/pull/2598) [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4) Thanks [@dependabot](https://github.com/apps/dependabot)! - Fix Nuxt plugin injection typing for Nuxt 4.5 and maintenance mode error handling.
+
+- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4)]:
+  - @shopware/helpers@1.8.0
+  - @shopware/composables@1.12.2
+
 ## 1.5.1
 
 ### Patch Changes

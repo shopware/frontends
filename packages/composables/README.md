@@ -166,24 +166,9 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.12.1
+### Latest changes: 1.12.2
 
 ### Patch Changes
 
-- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Add cacheable GET support for category details and product reviews while preserving the existing POST behavior when `cacheableReads` is disabled.
-
-  - `useCategorySearch.search` now calls `GET /category/{navigationId}` and sends the complete encoded Criteria in the `_criteria` query parameter when cacheable reads are enabled.
-  - `useProductReviews.loadProductReviews` now calls `GET /product/{productId}/reviews` and sends its encoded Criteria in `_criteria` when cacheable reads are enabled.
-  - The CMS product description reviews element follows the same flag and endpoint behavior when it needs to fetch reviews directly.
-
-- [#2596](https://github.com/shopware/frontends/pull/2596) [`6572aa8`](https://github.com/shopware/frontends/commit/6572aa84431e1f4a34d6cf04e549037692d638a6) Thanks [@patzick](https://github.com/patzick)! - Reduce Rolldown/Vite build noise: scope Nuxt global components, keep the three.js async chunk warning intentional, avoid shipping full carbon icon JSON via UnoCSS runtime, and bump @vueuse to 14.4.0.
-
-- [#2514](https://github.com/shopware/frontends/pull/2514) [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Allow passing custom criteria to `useCountries`.
-
-- [#2552](https://github.com/shopware/frontends/pull/2552) [`e03c91b`](https://github.com/shopware/frontends/commit/e03c91be172374894d90b7a0111855b76719fee1) Thanks [@patzick](https://github.com/patzick)! - Suppress Rolldown diagnostic warnings for invalid third-party pure annotations and plugin timings in the Nuxt layer build config.
-
-- [#2591](https://github.com/shopware/frontends/pull/2591) [`38379a5`](https://github.com/shopware/frontends/commit/38379a5d52ab09008774533ef417ebe2cde3f7fd) Thanks [@patzick](https://github.com/patzick)! - Propagate session context refresh failures so login, registration, logout, and context setters cannot complete after an unverifiable context switch.
-
-- Updated dependencies [[`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0), [`f16c5a0`](https://github.com/shopware/frontends/commit/f16c5a0785d6187b73c3edcf37feab7c90bd7988), [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0)]:
-  - @shopware/api-client@1.5.1
-  - @shopware/helpers@1.7.2
+- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4)]:
+  - @shopware/helpers@1.8.0
