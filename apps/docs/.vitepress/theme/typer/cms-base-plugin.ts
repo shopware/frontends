@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { relative, resolve, sep } from "node:path";
 
 // @ts-nocheck
 import type { Plugin } from "vite";
@@ -48,15 +48,16 @@ export async function CmsBaseReference({
         // "frontends/" leaves a "_source/" segment in the permalink. Derive the path
         // from projectRootDir instead, and keep the old heuristic as a fallback.
         const fromRoot = relative(projectRootDir, componentPath);
-        const normalizedPath =
+        const normalizedPath = (
           fromRoot && !fromRoot.startsWith("..")
             ? fromRoot
-            : (
-                componentPath
-                  .replace(/\/vercel\/path0\//g, "")
-                  .split("frontends/")
-                  .pop() || ""
-              ).replace(/^_source\//, "");
+            : componentPath
+                .replace(/\/vercel\/path0\//g, "")
+                .split("frontends/")
+                .pop() || ""
+        )
+          .replaceAll(sep, "/")
+          .replace(/^_source\//, "");
 
         API += prepareGithubPermalink({
           label: "source code",
