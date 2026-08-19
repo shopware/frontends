@@ -3,20 +3,17 @@
     {
       "path": "./app/components",
       "pattern": "Sw*",
-      "global": true,
-      "docsLabel": "Store components"
+      "global": true
     },
     {
       "path": "./app/components/public",
       "pathPrefix": false,
-      "global": true,
-      "docsLabel": "CMS components"
+      "global": true
     },
     {
       "path": "./app/components/ui",
       "prefix": "Sw",
-      "global": true,
-      "docsLabel": "UI components"
+      "global": true
     }
   ],
   "excluded": ["SwMedia3D"]

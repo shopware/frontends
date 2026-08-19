@@ -88,13 +88,11 @@ export default defineNuxtConfig({
     },
   },
 
-  components: componentDirs.dirs.map(
-    ({ path, docsLabel: _docsLabel, ...dir }) => ({
-      ...dir,
-      path: resolveLayer(path),
-      extensions: [".vue"],
-    }),
-  ),
+  components: componentDirs.dirs.map(({ path, ...dir }) => ({
+    ...dir,
+    path: resolveLayer(path),
+    extensions: [".vue"],
+  })),
   alias: {
     "@cms-assets": resolveLayer("./app/assets"),
   },
