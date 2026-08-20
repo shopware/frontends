@@ -2,18 +2,17 @@
 "@shopware/composables": minor
 ---
 
-**[BREAKING]** `declineQuote` from `useB2bQuoteManagement` now takes a params object instead of a plain comment string, following the Store API `POST /quote/{id}/decline` schema, which requires `comment`, `lineItemId` and `versionId`.
+Add `declineQuoteWithComment` to `useB2bQuoteManagement`, following the Store API `POST /quote/{id}/decline` schema, which as of `6.7.12` also carries `lineItemId` and `versionId` next to `comment`.
 
-Before:
-
-```ts
-declineQuote(quoteId, "Too expensive");
-```
-
-After:
+`declineQuote` keeps its `(quoteId, comment)` signature and is deprecated. It will be removed in the next major.
 
 ```ts
-declineQuote(quoteId, {
+const { declineQuoteWithComment, createDraftQuoteVersion } =
+  useB2bQuoteManagement();
+
+const versionId = await createDraftQuoteVersion(quoteId);
+
+await declineQuoteWithComment(quoteId, {
   comment: "Too expensive",
   lineItemId,
   versionId,

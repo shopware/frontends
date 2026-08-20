@@ -49,10 +49,62 @@ describe("useB2bQuoteManagement", () => {
     );
   });
 
-  it("declineQuote", async () => {
+  it("createDraftQuoteVersion", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { versionId: "test-version-id" },
+    });
+
+    expect(await vm.createDraftQuoteVersion("test-12")).toBe("test-version-id");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("createDraftQuoteVersion"),
+      expect.objectContaining({
+        pathParams: { id: "test-12" },
+      }),
+    );
+  });
+
+  it("createDraftQuoteVersion - no versionId in response", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    await expect(vm.createDraftQuoteVersion("test-12")).rejects.toThrow(
+      /no versionId/,
+    );
+  });
+
+  it("deleteDraftQuoteVersion", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
     injections.apiClient.invoke.mockResolvedValue({ data: null });
-    await vm.declineQuote("test-12", {
+    await vm.deleteDraftQuoteVersion("test-12", "test-version-id");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("deleteDraftQuoteVersion"),
+      expect.objectContaining({
+        pathParams: { id: "test-12" },
+        body: { versionId: "test-version-id" },
+      }),
+    );
+  });
+
+  it("declineQuote - deprecated, comment only", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
+    await vm.declineQuote("test-12", "test-comment");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("declineQuote"),
+      expect.objectContaining({
+        pathParams: { id: "test-12" },
+        body: { comment: "test-comment" },
+      }),
+    );
+  });
+
+  it("declineQuoteWithComment", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
+    await vm.declineQuoteWithComment("test-12", {
       comment: "test-comment",
       lineItemId: "test-line-item-id",
       versionId: "test-version-id",
