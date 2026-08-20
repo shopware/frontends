@@ -6,8 +6,8 @@
 
 <p align="center">
 <a href="https://frontends-starter-template.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends-extended-starter-template.vercel.app/" target="_blank">🚀 Extended Demo</a> | <a href="https://developer.shopware.com/frontends/" target="_blank">📚 Docu</a> | <a href="https://developer.shopware.com/frontends/getting-started/try-it-out.html" target="_blank">☁️ Try it out</a> |
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-starter-template" target="_blank"><img src="./.readme/vercel.svg" alt="Join our Discord Channel" width="20" height="16"/> Deploy on Vercel</a>
- | <a href="https://github.com/shopware/frontends/discussions">💬 Discuss</a> | <a href="https://discord.com/channels/1308047705309708348/1405501315160739951/archives/C050L6NCMGQ" target="_blank"><img src="./.readme/discord.svg" alt="Join our Discord Channel" width="20" height="16"/> Discord Channel</a>
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-starter-template" target="_blank"><img src="./.readme/vercel.svg" alt="Deploy on Vercel" width="20" height="16"/> Deploy on Vercel</a>
+ | <a href="https://github.com/shopware/frontends/discussions">💬 Discuss</a> | <a href="https://discord.com/channels/1308047705309708348/1405501315160739951" target="_blank"><img src="./.readme/discord.svg" alt="Join our Discord Channel" width="20" height="16"/> Discord Channel</a>
 </p>
 
 <p align="center">
@@ -35,7 +35,9 @@ pnpm run dev --filter=vue-starter-template
 ### Run and develop docs
 
 ```sh
-pnpm run dev --filter='docs'
+pnpm run docs:env
+pnpm run docs:link
+pnpm run docs:preview
 ```
 
 ## Architecture
@@ -95,7 +97,7 @@ Especially for big frontend projects this drastically reduces the complexity of 
 ### Efficient
 
 There is no lock-in on technologies or frontend tooling. Shopware Frontends comes prepared with a smart default of tooling.
-Vue3, Vite, Nuxt3 and unocss (Tailwind.css) — each by themselves coming with a rich ecosystem of tooling, extensions
+Vue3, Vite, Nuxt 4 and unocss (Tailwind.css) — each by themselves coming with a rich ecosystem of tooling, extensions
 and integrations can be replaced and extended to meet any projects needs. This tech-stack is the definition of superior Developer Experience and rapid prototyping.
 
 ### Flexible
