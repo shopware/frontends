@@ -40,6 +40,13 @@ pnpm run docs:link
 pnpm run docs:preview
 ```
 
+`docs:env` clones [developer-portal](https://github.com/shopware/developer-portal) next to this repo over SSH, so it needs a [GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). Without one, clone it yourself over HTTPS first and rerun the command:
+
+```sh
+git clone https://github.com/shopware/developer-portal.git ../developer-portal
+pnpm i -C ../developer-portal
+```
+
 ## Architecture
 
 Shopware Frontends is a framework which is divided into separate modules of which some can be used independently.
