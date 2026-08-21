@@ -1,43 +1,108 @@
 <script setup lang="ts">
 import { useB2bQuoteManagement, useUser } from "@shopware/composables";
 import Button from "primevue/button";
+import Message from "primevue/message";
+import Select from "primevue/select";
 import Textarea from "primevue/textarea";
 import Timeline from "primevue/timeline";
 import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
+import type { Schemas } from "#shopware";
+
+import Login from "./Login.vue";
+
 const { isLoggedIn } = useUser();
-const quote = ref();
+const quote = ref<Schemas["Quote"]>();
 const changeRequest = ref("");
 const declineComment = ref("");
-const { getQuote, requestChangeQuote, declineQuote, requestQuote } =
-  useB2bQuoteManagement();
+// The API ties a decline comment to a single quote line item, so the customer
+// has to pick the one their objection is about.
+const declineLineItemId = ref<string>();
+const declineError = ref("");
+const {
+  getQuote,
+  requestChangeQuote,
+  declineQuoteWithComment,
+  requestQuote,
+  createDraftQuoteVersion,
+} = useB2bQuoteManagement();
 const route = useRoute();
 
-onBeforeMount(async () => {
-  quote.value = await getQuote(route.params.id as string);
-});
+const quoteId = computed(() => route.params.id as string);
+
+const refreshQuote = async () => {
+  quote.value = await getQuote(quoteId.value);
+};
+
+onBeforeMount(refreshQuote);
+
+const lineItemOptions = computed(() =>
+  (quote.value?.lineItems ?? []).map((lineItem) => ({
+    label: `${lineItem.label} (${lineItem.quantity}x)`,
+    value: lineItem.id,
+  })),
+);
+
+// `Quote.price.calculatedTaxes` is described as a bare `object` in the Store API
+// schema, so it arrives untyped. At runtime it has the same shape as
+// `CalculatedPrice.calculatedTaxes`.
+const calculatedTaxes = computed(
+  () =>
+    (quote.value?.price?.calculatedTaxes ?? []) as unknown as NonNullable<
+      Schemas["CalculatedPrice"]["calculatedTaxes"]
+    >,
+);
+
+const activeQuote = computed(
+  () => quote.value?.stateMachineState?.technicalName === "replied",
+);
+
+const canDecline = computed(
+  () =>
+    activeQuote.value &&
+    !!declineLineItemId.value &&
+    declineComment.value.trim().length > 0,
+);
 
 const handleChangeRequest = async () => {
+  if (!quote.value) return;
+
   await requestChangeQuote(quote.value.id, changeRequest.value);
   changeRequest.value = "";
-  quote.value = await getQuote(route.params.id as string);
+  await refreshQuote();
 };
 
 const handleDecline = async () => {
-  declineQuote(quote.value.id, declineComment.value);
-  declineComment.value = "";
+  const lineItemId = declineLineItemId.value;
+  if (!quote.value || !lineItemId) return;
+
+  declineError.value = "";
+
+  try {
+    // `versionId` is the draft version created for this edit, not the
+    // `versionId` property of the quote entity.
+    const versionId = await createDraftQuoteVersion(quote.value.id);
+
+    await declineQuoteWithComment(quote.value.id, {
+      comment: declineComment.value,
+      lineItemId,
+      versionId,
+    });
+
+    declineComment.value = "";
+    declineLineItemId.value = undefined;
+    await refreshQuote();
+  } catch (error) {
+    declineError.value =
+      error instanceof Error ? error.message : "Could not decline the quote.";
+  }
 };
 
 const handleRequestQuote = async () => {
-  requestQuote(quote.value.id);
-};
+  if (!quote.value) return;
 
-const activeQuote = computed(() => {
-  return quote?.value.stateMachineState?.technicalName === "replied";
-});
-const refreshQuote = async () => {
-  quote.value = await getQuote(route.params.id as string);
+  await requestQuote(quote.value.id);
 };
 </script>
 <template>
@@ -101,12 +166,9 @@ const refreshQuote = async () => {
                 {{ quote?.amountTotal }}
               </td>
             </tr>
-            <tr
-              v-for="taxRule in quote?.price.calculatedTaxes"
-              :key="taxRule.tax"
-            >
+            <tr v-for="taxRule in calculatedTaxes" :key="taxRule.taxRate">
               <td class="py-3 px-4 text-left font-medium text-gray-600">
-                VAT ({{ taxRule.tax }}%)
+                VAT ({{ taxRule.taxRate }}%)
               </td>
               <td class="py-3 px-4 text-left">{{ taxRule.price }}</td>
             </tr>
@@ -136,15 +198,26 @@ const refreshQuote = async () => {
       <div class="w-50%">
         <h2>Decline quote</h2>
         <div class="flex flex-col gap-2">
+          <Select
+            v-model="declineLineItemId"
+            :options="lineItemOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="Select the line item this comment is about"
+            :disabled="!activeQuote || !lineItemOptions.length"
+          />
           <Textarea
             v-model="declineComment"
             rows="5"
             cols="30"
             :disabled="!activeQuote"
           />
+          <Message v-if="declineError" severity="error" :closable="false">
+            {{ declineError }}
+          </Message>
           <Button
             label="Decline quote"
-            :disabled="!activeQuote"
+            :disabled="!canDecline"
             @click="handleDecline"
           />
         </div>
@@ -153,7 +226,7 @@ const refreshQuote = async () => {
     <hr class="my-10" />
     <div>
       <h2>Message history</h2>
-      <Timeline :value="quote.comments">
+      <Timeline :value="quote?.comments ?? []">
         <template #opposite="slotProps">
           <small class="p-text-secondary">{{ slotProps.item.createdAt }}</small>
         </template>
