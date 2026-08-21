@@ -29,6 +29,8 @@
       "mainContent": "Hauptinhalt",
       "checkout": "Kasse",
       "pagination": "Seitennummerierung",
+      "previousPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Seitenleiste",
       "closeNotification": "Benachrichtigung schließen",

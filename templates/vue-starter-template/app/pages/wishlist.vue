@@ -1,78 +1,36 @@
 <script setup lang="ts">
+import type { OffsetPaginationFetcher } from "#imports";
+import type { Schemas } from "#shopware";
+
 const route = useRoute();
-const router = useRouter();
-const { handleApiError } = useApiErrorsResolver("wishlist");
 
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
-const defaultLimit = 15;
-const defaultPage = 1;
-
-const loading = ref(false);
 const { isLoggedIn } = useUser();
+const { apiClient } = useShopwareContext();
 
-const {
-  getWishlistProducts,
-  currentPage,
-  totalPagesCount,
-  products,
-  limit,
-  items,
-} = useWishlist();
+const list = ref<{ refresh: () => unknown } | null>(null);
 
-const initialPage = route.query.p ? Number(route.query.p) : defaultPage;
-const initialLimit = route.query.limit
-  ? Number(route.query.limit)
-  : defaultLimit;
-
-async function handleChangePage(page: number): Promise<void> {
-  await router.push({
-    query: {
-      ...route.query,
-      p: page,
-      limit: limit.value,
+const fetchWishlistProducts: OffsetPaginationFetcher<
+  Schemas["Product"]
+> = async ({ page, limit }) => {
+  const { data } = await apiClient.invoke(
+    "readCustomerWishlist post /customer/wishlist",
+    {
+      body: {
+        page,
+        limit,
+        "total-count-mode": "exact",
+      },
     },
-  });
-  getWishlistProductsProxy({ page });
-}
+  );
 
-async function handleChangeSize(size: number): Promise<void> {
-  await router.push({
-    query: {
-      ...route.query,
-      p: defaultPage,
-      limit: size,
-    },
-  });
-  await getWishlistProductsProxy({ limit: size });
-}
-
-async function getWishlistProductsProxy(options?: {
-  page?: number;
-  limit?: number;
-}) {
-  loading.value = true;
-  try {
-    await getWishlistProducts({
-      page: options?.page ?? initialPage,
-      limit: options?.limit ?? initialLimit,
-    });
-
-    if (items.value.length === 0 && currentPage.value > 1) {
-      await router.push(route.path);
-      await window.location.reload();
-    }
-  } catch (error) {
-    handleApiError(error);
-  } finally {
-    loading.value = false;
-  }
-}
-
-loading.value = true;
-await getWishlistProductsProxy({ page: initialPage, limit: initialLimit });
-loading.value = false;
+  return {
+    elements: data.products.elements ?? [],
+    total: data.products.total ?? 0,
+  };
+};
 </script>
 
 <template>
@@ -84,30 +42,50 @@ loading.value = false;
         :subtitle="$t('wishlist.subHeader')"
       />
 
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10"
+      <SharedPaginatedList
+        ref="list"
+        :fetcher="fetchWishlistProducts"
+        data-key="wishlist-products"
       >
-        <template v-if="loading">
-          <WishlistProductTileSkeleton v-for="n in limit || 15" :key="n" />
+        <template #default="{ items }: { items: Schemas['Product'][] }">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+          >
+            <WishlistProductTile
+              v-for="product in items"
+              :key="product.id"
+              :product
+              @removed="list?.refresh()"
+            />
+          </div>
         </template>
-        <template v-else>
-          <WishlistProductTile
-            v-for="product in products"
-            :key="product.id"
-            :product
-          />
-        </template>
-      </div>
 
-      <SharedElementsNavigation
-        class="block"
-        :show-page-size-selector="true"
-        :pages="totalPagesCount"
-        :current-page="currentPage"
-        :page-size="limit"
-        @change-page="handleChangePage"
-        @change-size="handleChangeSize"
-      />
+        <template #loading="{ limit }">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+          >
+            <WishlistProductTileSkeleton v-for="n in limit" :key="n" />
+          </div>
+        </template>
+
+        <template #empty>
+          <div
+            class="flex flex-col items-center justify-center py-20 px-6 text-center"
+          >
+            <AccountPageHeader
+              class="mb-6"
+              :title="$t('wishlist.empty.title')"
+              :subtitle="$t('wishlist.empty.description')"
+            />
+            <NuxtLink
+              :to="formatLink('/')"
+              class="px-4 py-3 rounded bg-brand-primary text-brand-on-primary text-base font-bold leading-normal inline-flex justify-center items-center gap-1 hover:bg-brand-primary-hover transition-colors"
+            >
+              {{ $t("wishlist.empty.continueShopping") }}
+            </NuxtLink>
+          </div>
+        </template>
+      </SharedPaginatedList>
     </template>
     <template v-else>
       <div

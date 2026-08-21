@@ -29,6 +29,8 @@
       "mainContent": "Główna zawartość",
       "checkout": "Kasa",
       "pagination": "Paginacja",
+      "previousPage": "Poprzednia strona",
+      "nextPage": "Następna strona",
       "breadcrumb": "Breadcrumb",
       "sidebar": "Panel boczny",
       "closeNotification": "Zamknij powiadomienie",

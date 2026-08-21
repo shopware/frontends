@@ -30,7 +30,12 @@ export interface UseOffsetPaginatedListOptions<T> {
   allowedLimits?: number[];
   watchSources?: MaybeRefOrGetter<unknown>[];
   scrollTarget?: MaybeRefOrGetter<
-    { scrollIntoView: Element["scrollIntoView"] } | null | undefined
+    | {
+        scrollIntoView: Element["scrollIntoView"];
+        getBoundingClientRect?: Element["getBoundingClientRect"];
+      }
+    | null
+    | undefined
   >;
 }
 
@@ -80,7 +85,7 @@ export function useOffsetPaginatedList<T>(
   );
 
   const { data, status, error, refresh } = useAsyncData(
-    () => stateKey.value,
+    key,
     () => fetcher({ page: requestedPage.value, limit: limit.value }),
     { lazy: true, watch: [stateKey] },
   );
@@ -93,12 +98,26 @@ export function useOffsetPaginatedList<T>(
   const currentPage = computed(() =>
     Math.min(requestedPage.value, totalPages.value),
   );
-  const loading = computed(() => status.value === "pending");
-  const isEmpty = computed(() => !loading.value && elements.value.length === 0);
+  const loading = computed(
+    () => status.value === "pending" || status.value === "idle",
+  );
+  const isInitialLoading = computed(
+    () => loading.value && data.value === undefined,
+  );
+  const isEmpty = computed(
+    () => status.value === "success" && elements.value.length === 0,
+  );
 
   function scrollToTarget() {
     if (!scrollTarget) return;
-    toValue(scrollTarget)?.scrollIntoView({ behavior: "smooth" });
+
+    const target = toValue(scrollTarget);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect?.().top;
+    if (top !== undefined && top >= 0) return;
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function navigate(
@@ -137,6 +156,7 @@ export function useOffsetPaginatedList<T>(
     currentPage,
     limit,
     loading,
+    isInitialLoading,
     isEmpty,
     error,
     // actions
