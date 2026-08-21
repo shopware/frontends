@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const { order } = defineProps<{
@@ -24,6 +26,13 @@ const displayedProducts = computed(() => {
 });
 
 const hasProducts = computed(() => products.value.length > 0);
+
+const shippingStatusLabel = computed(
+  () =>
+    getTranslatedProperty(order.stateMachineState, "name") ||
+    order.stateMachineState?.technicalName ||
+    t("account.order.statusUnknown"),
+);
 </script>
 <template>
   <div class="border border-outline-outline p4">
@@ -50,19 +59,23 @@ const hasProducts = computed(() => products.value.length > 0);
       <AccountOrderLineData
         class="flex-1"
         :label="t('account.order.shippingStatus')"
-        :value="order.stateMachineState.translated.name"
+        :value="shippingStatusLabel"
       />
       <AccountOrderLineData
         v-if="order.transactions?.[0]"
         class="flex-1"
         :label="t('account.order.paymentMethod')"
-        :value="order.transactions[0].paymentMethod?.translated.name ?? ''"
+        :value="
+          getTranslatedProperty(order.transactions[0].paymentMethod, 'name')
+        "
       />
       <AccountOrderLineData
         v-if="order.deliveries?.[0]"
         class="flex-1"
         :label="t('account.order.shippingMethod')"
-        :value="order.deliveries[0].shippingMethod?.translated.name ?? ''"
+        :value="
+          getTranslatedProperty(order.deliveries[0].shippingMethod, 'name')
+        "
       />
     </div>
     <div v-if="hasProducts" class="mt-4 mb-2">
