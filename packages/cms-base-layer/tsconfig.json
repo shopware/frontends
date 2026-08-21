@@ -3,6 +3,7 @@
   "include": ["."],
   "compilerOptions": {
     "jsx": "preserve",
+    "resolveJsonModule": true,
     "lib": ["dom"],
     "paths": {
       "#imports": ["./types/imports.d.ts"],

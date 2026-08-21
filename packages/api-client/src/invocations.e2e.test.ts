@@ -6,7 +6,8 @@ import { createAPIClient } from "./createAPIClient";
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-describe("Test real API invocations", () => {
+// hits the live demo instance, so the 5s default timeout flakes in CI
+describe("Test real API invocations", { retry: 2, timeout: 30_000 }, () => {
   it("should fail on unprovided access token", async () => {
     const apiInstance = createAPIClient<operations>({
       baseURL,
