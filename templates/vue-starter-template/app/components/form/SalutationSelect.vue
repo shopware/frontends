@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getTranslatedProperty } from "@shopware/helpers";
 import type { MaybeRef } from "vue";
 
 const model = defineModel<string>({
@@ -37,7 +38,7 @@ const {
     transform: (apiData) => {
       const options =
         apiData.data.elements?.map((element) => ({
-          label: element.displayName,
+          label: getTranslatedProperty(element, "displayName"),
           value: element.id,
         })) || [];
       return { options, cachedDate: new Date() };
