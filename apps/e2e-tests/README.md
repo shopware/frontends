@@ -35,6 +35,24 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 That is the same command as the `Accessibility Check` workflow, which is manual dispatch only. See [.github/workflows/accessibility-check.yml](../../.github/workflows/accessibility-check.yml).
 
+### Check a pull request
+
+Every pull request gets a Vercel preview of the starter. Find its URL:
+
+```sh
+gh api repos/shopware/frontends/issues/<pr-number>/comments \
+  --jq '.[] | select(.user.login | test("vercel")) | .body' \
+  | grep -oE 'https://frontends-vue-starter-template[^ )]*'
+```
+
+Then dispatch the workflow against it:
+
+```sh
+gh workflow run accessibility-check.yml --ref <branch> -f base_url=<preview-url>
+```
+
+Without `-f base_url` the workflow checks the deployed starter, so a plain dispatch tells you nothing about the branch. The same URL works locally through `BASE_E2E_URL`.
+
 To check a local build instead, build and serve the template first:
 
 ```sh
