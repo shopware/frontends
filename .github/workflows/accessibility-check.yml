@@ -3,6 +3,9 @@ name: Accessibiliy Check
 run-name: Playwright accessibility tests 🚀
 on:
   workflow_dispatch:
+  # Kept on manual dispatch for now. This job has never run green in CI, so a
+  # nightly schedule would only produce a red run every morning. Re-enable the
+  # cron once a manual dispatch passes against the starter template.
   # schedule:
   #   - cron: "30 09 * * *"
 jobs:
@@ -31,4 +34,4 @@ jobs:
       - name: Run tests
         run: |
           cd apps/e2e-tests
-          BASE_E2E_URL=https://frontends-demo.vercel.app/ npx playwright test --grep @accessibility --project=chromium
+          BASE_E2E_URL=https://frontends-starter-template.vercel.app/ npx playwright test --grep @accessibility --project=chromium
