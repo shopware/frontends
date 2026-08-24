@@ -14,6 +14,7 @@ const {
   type?: "text" | "password" | "email";
   errorMessage?: MaybeRef<string>;
   autocomplete?: string;
+  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -40,6 +41,7 @@ const errorText = computed(() => unref(errorMessage));
       :id="id"
       :invalid="!!errorText"
       :autocomplete="autocomplete"
+      :dataTestId="dataTestId"
     />
     <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText

@@ -190,7 +190,7 @@ const invokeSubmit = async () => {
           :label="$t('form.firstName')"
           :errorMessage="r$.firstName.$errors[0]"
           @blur="r$.firstName.$touch()"
-          data-testid="registration-first-name-input"
+          dataTestId="registration-first-name-input"
         />
 
         <FormInputField
@@ -201,7 +201,7 @@ const invokeSubmit = async () => {
           :label="$t('form.lastName')"
           :errorMessage="r$.lastName.$errors[0]"
           @blur="r$.lastName.$touch()"
-          data-testid="registration-last-name-input"
+          dataTestId="registration-last-name-input"
         />
 
         <FormInputField
@@ -212,7 +212,7 @@ const invokeSubmit = async () => {
           :label="$t('form.email')"
           :errorMessage="r$.email.$errors[0]"
           @blur="r$.email.$touch()"
-          data-testid="registration-email-input"
+          dataTestId="registration-email-input"
         />
 
         <FormInputField
@@ -224,7 +224,7 @@ const invokeSubmit = async () => {
           :label="$t('form.password')"
           :errorMessage="r$.password.$errors[0]"
           @blur="r$.password.$touch()"
-          data-testid="registration-password-input"
+          dataTestId="registration-password-input"
         />
 
         <FormInputField
@@ -234,7 +234,7 @@ const invokeSubmit = async () => {
           v-model="vatIdModel"
           :label="$t('form.vatId')"
           @blur="r$.vatIds?.$touch()"
-          data-testid="registration-vatid-input"
+          dataTestId="registration-vatid-input"
         />
       </div>
 
@@ -252,7 +252,7 @@ const invokeSubmit = async () => {
           v-model="companyModel"
           autocomplete="company"
           :label="$t('form.company')"
-          data-testid="registration-company-input"
+          dataTestId="registration-company-input"
           @blur="r$.billingAddress.company.$touch()"
           :errorMessage="r$.billingAddress.company.$errors[0]"
         />
@@ -263,7 +263,7 @@ const invokeSubmit = async () => {
           v-model="state.billingAddress.street"
           autocomplete="street-address"
           :label="$t('form.streetAddress')"
-          data-testid="registration-street-input"
+          dataTestId="registration-street-input"
           @blur="r$.billingAddress.street.$touch()"
           :errorMessage="r$.billingAddress.street.$errors[0]"
         />
@@ -274,7 +274,7 @@ const invokeSubmit = async () => {
           id="zipcode"
           v-model="zipcodeModel"
           autocomplete="postal-code"
-          data-testid="registration-zipcode-input"
+          dataTestId="registration-zipcode-input"
           @blur="r$.billingAddress.zipcode.$touch()"
           :errorMessage="r$.billingAddress.zipcode.$errors[0]"
         />
@@ -285,7 +285,7 @@ const invokeSubmit = async () => {
           id="city"
           v-model="state.billingAddress.city"
           autocomplete="address-level2"
-          data-testid="registration-city-input"
+          dataTestId="registration-city-input"
           @blur="r$.billingAddress.city.$touch()"
           :errorMessage="r$.billingAddress.city.$errors[0]"
         />

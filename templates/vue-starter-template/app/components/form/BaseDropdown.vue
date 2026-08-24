@@ -10,6 +10,8 @@ const { variant = "default" } = defineProps<{
   loading?: boolean;
   autocomplete?: string;
   variant?: "default" | "control";
+  /** Lands on the <select>. A plain data-testid attribute would fall through to the root element. */
+  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -42,6 +44,7 @@ const fieldClass = computed(() =>
         :id="id"
         :disabled="loading"
         :autocomplete
+        :data-testid="dataTestId"
       >
         <option v-if="loading" value="" selected disabled>
           {{ $t("form.loading") }}

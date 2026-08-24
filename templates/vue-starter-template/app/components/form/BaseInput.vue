@@ -18,6 +18,8 @@ const {
   invalid?: boolean;
   autocomplete?: string;
   id?: string;
+  /** Lands on the <input>. A plain data-testid attribute would fall through to the root element. */
+  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -51,6 +53,7 @@ const emit = defineEmits<{
         :placeholder="placeholder"
         :type="type"
         :autocomplete="autocomplete"
+        :data-testid="dataTestId"
         @focus="emit('focus')"
       />
       <slot name="rightIcon" />

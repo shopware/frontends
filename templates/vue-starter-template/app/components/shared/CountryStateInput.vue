@@ -49,7 +49,7 @@ watch(countryId, (newValue, oldValue) => {
       v-model="countryId"
       :label="$t('form.country')"
       :placeholder="$t('form.chooseCountry')"
-      data-testid="country-select"
+      dataTestId="country-select"
       :errorMessage="countryIdValidation?.$errors[0]"
       @states-change="handleStatesChange"
     />
@@ -63,7 +63,7 @@ watch(countryId, (newValue, oldValue) => {
       :placeholder="$t('form.chooseState')"
       :label="$t('form.state')"
       :options="stateOptions"
-      data-testid="checkout-pi-state-input"
+      dataTestId="checkout-pi-state-input"
       :errorMessage="stateIdValidation?.$errors[0]"
     />
   </div>

@@ -13,6 +13,7 @@ const { errorMessage } = defineProps<{
   loading?: boolean;
   autocomplete?: string;
   variant?: "default" | "control";
+  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -41,6 +42,7 @@ const errorText = computed(() => unref(errorMessage));
       :loading
       :autocomplete
       :variant="variant"
+      :dataTestId="dataTestId"
     />
     <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText
