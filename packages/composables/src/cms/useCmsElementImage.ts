@@ -31,6 +31,8 @@ export type UseCmsElementImage = {
   imageAttrs: ComputedRef<ImgHTMLAttributes>;
   imageContainerAttrs: ComputedRef<ImageContainerAttrs>;
   imageLink: ComputedRef<{ newTab: boolean; url: string }>;
+  ariaLabel: ComputedRef<string>;
+  isDecorative: ComputedRef<boolean>;
   displayMode: ComputedRef<DisplayMode>;
   isVideoElement: ComputedRef<boolean>;
   mimeType: ComputedRef<string | undefined>;
@@ -74,9 +76,25 @@ export function useCmsElementImage(
     return attr;
   });
 
+  /**
+   * Text the CMS author entered for screen readers, from the element's own
+   * `ariaLabel` field. Shopware exposes it on both `data` and `config`.
+   */
+  const ariaLabel = computed(
+    () => element.data?.ariaLabel || getConfigValue("ariaLabel") || "",
+  );
+
+  /**
+   * The CMS author marked the image as purely decorative, so it must not
+   * expose any alternative text.
+   */
+  const isDecorative = computed(() => !!getConfigValue("isDecorative"));
+
   const imageAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
     src: element.data?.media?.url,
-    alt: element.data?.media?.alt || "",
+    alt: isDecorative.value
+      ? ""
+      : element.data?.media?.alt || ariaLabel.value || "",
     srcset: getSrcSetForMedia(element.data?.media),
   }));
 
@@ -98,6 +116,8 @@ export function useCmsElementImage(
     imageAttrs,
     imageContainerAttrs,
     imageLink,
+    ariaLabel,
+    isDecorative,
     displayMode,
     isVideoElement,
     mimeType,

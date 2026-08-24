@@ -155,6 +155,82 @@ describe("useCmsElementImage", () => {
         });
       });
 
+      it("should use media alt for imageAttrs alt", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Shopware logo",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(imageAttrs.value.alt).toBe("Shopware logo");
+      });
+
+      it("should fall back to the element aria label when media has no alt", () => {
+        const { imageAttrs, ariaLabel } = useCmsElementImage({
+          data: {
+            ariaLabel: "Go to the summer collection",
+            media: {
+              url: "https://shopware.com/banner.png",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("Go to the summer collection");
+        expect(imageAttrs.value.alt).toBe("Go to the summer collection");
+      });
+
+      it("should read the aria label from config when data has none", () => {
+        const { ariaLabel } = useCmsElementImage({
+          config: {
+            ariaLabel: {
+              value: "Go to the sale",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("Go to the sale");
+      });
+
+      it("should return an empty aria label when neither data nor config has one", () => {
+        const { ariaLabel } = useCmsElementImage({
+          data: {},
+          config: {},
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("");
+      });
+
+      it("should drop alternative text when the image is decorative", () => {
+        const { imageAttrs, isDecorative } = useCmsElementImage({
+          data: {
+            ariaLabel: "ignored",
+            media: {
+              url: "https://shopware.com/pattern.png",
+              alt: "ignored too",
+            },
+          },
+          config: {
+            isDecorative: {
+              value: true,
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(isDecorative.value).toBe(true);
+        expect(imageAttrs.value.alt).toBe("");
+      });
+
+      it("should not be decorative by default", () => {
+        const { isDecorative } = useCmsElementImage({
+          config: {},
+        } as unknown as CmsElementImage);
+
+        expect(isDecorative.value).toBe(false);
+      });
+
       it("should return displayMode", () => {
         const { displayMode } = useCmsElementImage({
           config: {

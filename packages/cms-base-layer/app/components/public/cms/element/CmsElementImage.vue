@@ -5,9 +5,14 @@ import type {
 } from "@shopware/composables";
 import { buildUrlPrefix } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
+import { defu } from "defu";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 
-import { useCmsElementImage, useUrlResolver } from "#imports";
+import {
+  useCmsElementImage,
+  useCmsTranslations,
+  useUrlResolver,
+} from "#imports";
 
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
@@ -15,6 +20,24 @@ const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
   imageGallery?: boolean;
 }>();
+
+type Translations = {
+  cms: {
+    image: {
+      linkWithoutLabel: string;
+    };
+  };
+};
+
+let translations: Translations = {
+  cms: {
+    image: {
+      linkWithoutLabel: "Open linked page",
+    },
+  },
+};
+
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { getUrlPrefix } = useUrlResolver();
 const {
@@ -26,6 +49,21 @@ const {
   isVideoElement,
   mimeType,
 } = useCmsElementImage(props.content);
+
+/**
+ * A link whose only content is an image takes its accessible name from that
+ * image's alt text. When the CMS gives neither alt text nor an aria label the
+ * link ends up nameless, which axe reports as a serious `link-name` violation.
+ * Fall back to a generic label so the link is always announced.
+ *
+ * Set alt text or the element's aria label in the Administration to get
+ * something more useful than the fallback.
+ */
+const linkAriaLabel = computed(() => {
+  if (!imageLink.value.url) return undefined;
+  if (imageAttrs.value.alt) return undefined;
+  return translations.cms.image.linkWithoutLabel;
+});
 
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
@@ -69,6 +107,7 @@ const SwMedia3D = computed(() => {
     }"
     :style="containerStyle"
     v-bind="imageComputedContainerAttrs"
+    :aria-label="linkAriaLabel"
   >
     <video
       v-if="isVideoElement"
