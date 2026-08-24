@@ -33,7 +33,7 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
   pnpm exec playwright test --grep @accessibility --project=chromium
 ```
 
-That is the same command as the `Accessibiliy Check` workflow, which is manual dispatch only. See [.github/workflows/accessibility-check.yml](../../.github/workflows/accessibility-check.yml).
+That is the same command as the `Accessibility Check` workflow, which is manual dispatch only. See [.github/workflows/accessibility-check.yml](../../.github/workflows/accessibility-check.yml).
 
 To check a local build instead, build and serve the template first:
 

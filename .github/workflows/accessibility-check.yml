@@ -1,4 +1,4 @@
-name: Accessibiliy Check
+name: Accessibility Check
 
 run-name: Playwright accessibility tests 🚀
 on:
