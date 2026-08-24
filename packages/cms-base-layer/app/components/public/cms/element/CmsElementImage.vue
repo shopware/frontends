@@ -41,6 +41,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { getUrlPrefix } = useUrlResolver();
 const {
+  ariaLabel,
   containerStyle,
   displayMode,
   imageContainerAttrs,
@@ -52,17 +53,20 @@ const {
 
 /**
  * A link whose only content is an image takes its accessible name from that
- * image's alt text. When the CMS gives neither alt text nor an aria label the
- * link ends up nameless, which axe reports as a serious `link-name` violation.
- * Fall back to a generic label so the link is always announced.
+ * image's alt text. When the alt text is empty the link ends up nameless,
+ * which axe reports as a serious `link-name` violation.
  *
- * Set alt text or the element's aria label in the Administration to get
- * something more useful than the fallback.
+ * A decorative image has no alt text by definition, so a decorative image
+ * inside a link still needs the link named. The element's own aria label
+ * survives that, so prefer it over the generic fallback.
+ *
+ * Set alt text or the aria label in the Administration to get something more
+ * useful than the fallback.
  */
 const linkAriaLabel = computed(() => {
   if (!imageLink.value.url) return undefined;
   if (imageAttrs.value.alt) return undefined;
-  return translations.cms.image.linkWithoutLabel;
+  return ariaLabel.value || translations.cms.image.linkWithoutLabel;
 });
 
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");

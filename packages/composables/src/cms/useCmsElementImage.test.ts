@@ -203,13 +203,13 @@ describe("useCmsElementImage", () => {
         expect(ariaLabel.value).toBe("");
       });
 
-      it("should drop alternative text when the image is decorative", () => {
-        const { imageAttrs, isDecorative } = useCmsElementImage({
+      it("should drop alternative text when the image is decorative but keep the aria label", () => {
+        const { imageAttrs, isDecorative, ariaLabel } = useCmsElementImage({
           data: {
-            ariaLabel: "ignored",
+            ariaLabel: "Go to the sale",
             media: {
               url: "https://shopware.com/pattern.png",
-              alt: "ignored too",
+              alt: "ignored",
             },
           },
           config: {
@@ -221,6 +221,8 @@ describe("useCmsElementImage", () => {
 
         expect(isDecorative.value).toBe(true);
         expect(imageAttrs.value.alt).toBe("");
+        // a decorative image inside a link still needs the link named
+        expect(ariaLabel.value).toBe("Go to the sale");
       });
 
       it("should not be decorative by default", () => {
