@@ -65,6 +65,34 @@ export class HomePage extends AbstractPage {
       .click();
   }
 
+  /**
+   * Template agnostic navigation, used by the @accessibility run.
+   * openCategoryPage and openCartPage above select on vue-demo-store content
+   * ("Products", "YORK 3") that does not exist in vue-starter-template.
+   */
+  async openFirstCategoryPage() {
+    const firstCategory = this.page
+      .getByRole("menubar")
+      .getByRole("menuitem")
+      .first();
+    await firstCategory.waitFor({ state: "visible" });
+    await firstCategory.click();
+    await this.page
+      .getByTestId("product-box-product-name-link")
+      .first()
+      .waitFor({ state: "visible" });
+  }
+
+  async openFirstProductPage() {
+    await this.page
+      .getByTestId("product-box-product-name-link")
+      .first()
+      .click();
+    await this.page.waitForSelector("[data-testid='product-quantity']", {
+      state: "visible",
+    });
+  }
+
   async openRegistrationPage() {
     await this.linkToRegistrationPage.click();
     await this.page.waitForURL("**/register");

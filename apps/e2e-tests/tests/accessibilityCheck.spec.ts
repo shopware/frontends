@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 import { HomePage } from "../page-objects/HomePage";
 
-test.describe.only(
+test.describe(
   "Should not have any automatically detectable accessibility issues",
   { tag: "@accessibility" },
   () => {
@@ -26,7 +26,7 @@ test.describe.only(
 
     test("Check Category accessibility issues", async ({ page }) => {
       await homePage.visitMainPage();
-      await homePage.openCategoryPage();
+      await homePage.openFirstCategoryPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
         .disableRules(["heading-order", "page-has-heading-one"])
         .analyze();
@@ -35,7 +35,8 @@ test.describe.only(
 
     test("Check Product Page accessibility issues", async ({ page }) => {
       await homePage.visitMainPage();
-      await homePage.openCartPage();
+      await homePage.openFirstCategoryPage();
+      await homePage.openFirstProductPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
         .disableRules(["heading-order", "page-has-heading-one"])
         .analyze();
