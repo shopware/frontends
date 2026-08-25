@@ -70,7 +70,9 @@ The blank template has all "non-UI" packages pre-installed, but you have to brin
 ## Demo Store Template
 
 :::warning DEPRECATED
-This standalone template is deprecated. We recommend using the **Vue Starter Template** approach, which leverages Nuxt layers to extend a base template. This pattern provides better maintainability, automatic updates, and allows you to build multiple brand storefronts from a single foundation.
+**Do not use this template to start a new project.** It is deprecated and will be removed.
+
+Use the **Vue Starter Template** approach instead, which leverages Nuxt layers to extend a base template. This pattern provides better maintainability, automatic updates, and allows you to build multiple brand storefronts from a single foundation.
 :::
 <a href="./templates/demo-store-template.html"><img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 

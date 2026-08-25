@@ -4,15 +4,9 @@
 
 This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
 
-> **⚠️ Important:** The Demo Store Template is a **reference implementation** that demonstrates features and patterns you can use as inspiration for your own storefront. For production projects, we recommend using the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) which leverages Nuxt layers for better maintainability and automatic updates.
-
-**Interactive preview:**
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
-
-**Deploy with Vercel:**
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store)
+> **⚠️ Do not use this template to start a new project.** Use the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) instead. It builds on Nuxt layers, so it stays maintainable and picks up updates automatically.
+>
+> This template is deprecated and will be removed. What is left here is a reference implementation. Read it for patterns, do not build on it.
 
 ## What's inside
 
