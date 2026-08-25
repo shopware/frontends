@@ -2,8 +2,9 @@
 
 ## Run tests
 
-Prepare a `.env` file with the `BASE_E2E_URL` of your local environment (see `playwright.config.ts`).
-Before running tests, create an account on storefront and put the login `USER_EMAIL` and password `PASSWORD` in the `.env` file. Login and password will be used in the login tests.
+Copy `.env.template` to `.env` and fill in the values.
+
+`BASE_E2E_URL` points at your local environment. `USER_EMAIL` and `PASSWORD` are the storefront account the login tests sign in with, so create that account first.
 
 And run the following command
 
