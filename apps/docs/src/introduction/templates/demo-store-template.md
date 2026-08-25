@@ -7,7 +7,7 @@ The demo store template is a reference implementation of an online store UI.
 :::warning DEPRECATED
 **Do not use this template to start a new project.** Use the [Vue Starter Template](./vue-starter-template.html) instead.
 
-This template is deprecated and will be removed.
+This template is deprecated. It stays as a reference implementation.
 :::
 
 :::info

@@ -6,7 +6,7 @@ This repository is an example demo application built with Shopware Frontends Fra
 
 > **⚠️ Do not use this template to start a new project.** Use the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) instead. It builds on Nuxt layers, so it stays maintainable and picks up updates automatically.
 >
-> This template is deprecated and will be removed. What is left here is a reference implementation. Read it for patterns, do not build on it.
+> This template is deprecated. It stays in the repository as a reference implementation. Read it for patterns, do not build on it.
 
 ## What's inside
 
