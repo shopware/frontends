@@ -118,7 +118,7 @@ const formatDate = (date: string) =>
                   v-if="order?.amountTotal"
                   :value="order.amountTotal"
                   class="text-surface-on-surface font-normal"
-                  data-testid="order-subtotal"
+                  data-testid="order-summary-total"
                 />
               </div>
               <div v-if="order?.orderDate" class="text-surface-on-surface">

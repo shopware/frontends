@@ -6,13 +6,8 @@ const model = defineModel<string>({
   required: true,
 });
 
-const {
-  id = "",
-  dataTestId = "",
-  errorMessage = undefined,
-} = defineProps<{
+const { id = "", errorMessage = undefined } = defineProps<{
   id?: string;
-  dataTestId?: string;
   errorMessage?: MaybeRef<string>;
 }>();
 
@@ -68,7 +63,6 @@ const errorMessageText = computed(() => (error ? error : errorMessage));
     v-model="model"
     :label="$t('form.salutation')"
     :options="salutationData?.options ?? []"
-    :data-testid="dataTestId"
     :loading="isLoading"
   />
   <small v-if="errorMessageText" class="text-states-error">{{
