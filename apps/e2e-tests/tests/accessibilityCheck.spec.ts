@@ -17,7 +17,6 @@ test.describe(
     });
 
     test("Check Homepage accessibility issues", async ({ page }) => {
-      await homePage.visitMainPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
         .disableRules(["heading-order", "page-has-heading-one"])
         .analyze();
@@ -25,7 +24,6 @@ test.describe(
     });
 
     test("Check Category accessibility issues", async ({ page }) => {
-      await homePage.visitMainPage();
       await homePage.openFirstCategoryPage();
       const accessibilityScanResults = await new AxeBuilder({ page })
         .disableRules(["heading-order", "page-has-heading-one"])
@@ -34,7 +32,6 @@ test.describe(
     });
 
     test("Check Product Page accessibility issues", async ({ page }) => {
-      await homePage.visitMainPage();
       await homePage.openFirstCategoryPage();
       await homePage.openFirstProductPage();
       const accessibilityScanResults = await new AxeBuilder({ page })

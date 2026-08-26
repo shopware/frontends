@@ -72,8 +72,10 @@ export class HomePage extends AbstractPage {
    *
    * Nav entries are sales channel content, so the first one is not guaranteed
    * to list products. New-tab entries are skipped and the rest tried in order.
-   * The URL is checked before the product card because the home page carries
-   * cards of its own, so the card alone would pass without ever leaving home.
+   *
+   * Entries are opened by their href rather than clicked. A click hands over to
+   * the client router, which swaps the URL long before the listing renders, and
+   * axe would scan the page mid-transition.
    */
   async openFirstCategoryPage() {
     const sameTabEntries = this.page.locator(
@@ -81,23 +83,28 @@ export class HomePage extends AbstractPage {
     );
     await sameTabEntries.first().waitFor({ state: "visible" });
 
+    // Bounded, so a storefront where nothing lists products reports the error
+    // below instead of running past the 30s test timeout.
+    const candidates = (await sameTabEntries.all()).slice(0, 3);
+
     const tried: string[] = [];
-    for (const entry of await sameTabEntries.all()) {
+    for (const entry of candidates) {
+      const label = (await entry.textContent())?.trim() || "(unnamed)";
       const href = await entry.getAttribute("href");
-      if (!href) continue;
-      tried.push((await entry.textContent())?.trim() || "(unnamed)");
-      await entry.click();
+      if (!href) {
+        tried.push(`${label} (no href)`);
+        continue;
+      }
+      tried.push(label);
+      await this.page.goto(href);
       try {
-        await this.page.waitForURL((url) => url.pathname.startsWith(href), {
-          timeout: 4000,
-        });
         await this.page
           .getByTestId("product-box-product-name-link")
           .first()
-          .waitFor({ state: "visible", timeout: 4000 });
+          .waitFor({ state: "visible", timeout: 3000 });
         return;
       } catch {
-        await this.visitMainPage();
+        continue;
       }
     }
 
