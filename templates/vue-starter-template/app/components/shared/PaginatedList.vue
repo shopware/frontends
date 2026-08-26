@@ -1,7 +1,10 @@
 <script setup lang="ts" generic="T">
 import type { MaybeRefOrGetter } from "vue";
 
-import type { OffsetPaginationFetcher } from "../../composables/useOffsetPaginatedList";
+import type {
+  OffsetPaginationFetcher,
+  PaginatedListInstance,
+} from "../../composables/useOffsetPaginatedList";
 
 const props = withDefaults(
   defineProps<{
@@ -40,7 +43,9 @@ defineSlots<{
 const listEl = ref<HTMLElement | null>(null);
 
 let refreshList: (() => Promise<void>) | undefined;
-defineExpose({ refresh: () => refreshList?.() });
+defineExpose<PaginatedListInstance>({
+  refresh: () => refreshList?.() ?? Promise.resolve(),
+});
 
 const {
   elements,

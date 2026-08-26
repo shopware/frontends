@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OffsetPaginationFetcher } from "#imports";
+import type { OffsetPaginationFetcher, PaginatedListInstance } from "#imports";
 import type { Schemas } from "#shopware";
 
 const route = useRoute();
@@ -10,7 +10,7 @@ const { formatLink } = useInternationalization(localePath);
 const { isLoggedIn } = useUser();
 const { apiClient } = useShopwareContext();
 
-const list = ref<{ refresh: () => unknown } | null>(null);
+const list = ref<PaginatedListInstance | null>(null);
 
 const fetchWishlistProducts: OffsetPaginationFetcher<
   Schemas["Product"]

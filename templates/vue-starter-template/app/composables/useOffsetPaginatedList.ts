@@ -15,6 +15,13 @@ export type OffsetPaginationFetcher<T> = (
   ctx: OffsetPaginationContext,
 ) => Promise<OffsetPaginationResult<T>>;
 
+export interface PaginatedListInstance {
+  /**
+   * Refetch the currently displayed page.
+   */
+  refresh: () => Promise<void>;
+}
+
 export interface UseOffsetPaginatedListOptions<T> {
   fetcher: OffsetPaginationFetcher<T>;
   key: string;
@@ -114,10 +121,23 @@ export function useOffsetPaginatedList<T>(
     const target = toValue(scrollTarget);
     if (!target) return;
 
+    // Skip the scroll when the top of the list is already on screen. Both
+    // bounds are needed: today the pagination controls render inside the list
+    // container, so the top can never sit below the fold when this runs - but
+    // that is a layout coincidence, not a guarantee. Do not drop the upper
+    // bound as dead code.
     const top = target.getBoundingClientRect?.().top;
-    if (top !== undefined && top >= 0) return;
+    const viewportHeight = document.documentElement.clientHeight;
+    if (top !== undefined && top >= 0 && top <= viewportHeight) return;
 
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
   }
 
   async function navigate(

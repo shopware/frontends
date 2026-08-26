@@ -30,9 +30,7 @@ function toggleMobileSearch() {
 function handleMyAccountClick() {
   if (!isLoggedIn.value) {
     push(
-      `${formatLink("/account/login")}?redirect=${encodeURIComponent(
-        route.fullPath,
-      )}`,
+      `${formatLink("/account/login")}?redirect=${encodeURIComponent(route.fullPath)}`,
     );
   } else {
     toggleAccountMenu();

@@ -29,6 +29,7 @@
       "mainContent": "Hauptinhalt",
       "checkout": "Kasse",
       "pagination": "Seitennummerierung",
+      "page": "Seite {page}",
       "previousPage": "Vorherige Seite",
       "nextPage": "Nächste Seite",
       "breadcrumb": "Breadcrumb",

@@ -4,9 +4,15 @@ const { total, current } = defineProps<{
   current: number;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   changePage: [page: number];
 }>();
+
+function handleChangePage(page: number) {
+  if (page === current) return;
+
+  emit("changePage", page);
+}
 
 const VISIBLE_PAGES = 7;
 
@@ -71,12 +77,12 @@ const cells = computed<PaginationCell[]>(() => {
         class="relative inline-flex items-center justify-center min-w-[3rem] px-4 py-2 border text-sm"
         :class="
           cell === current
-            ? 'bg-brand-primary text-brand-on-primary'
+            ? 'bg-brand-primary text-brand-on-primary cursor-default'
             : 'bg-white border-outline-outline-variant outline outline-1 outline-offset-[-1px] outline-outline-outline-variant'
         "
         :aria-current="cell === current ? 'page' : undefined"
-        :disabled="cell === current"
-        @click="$emit('changePage', cell)"
+        :aria-label="$t('layout.ariaLabels.page', { page: cell })"
+        @click="handleChangePage(cell)"
       >
         {{ cell }}
       </button>

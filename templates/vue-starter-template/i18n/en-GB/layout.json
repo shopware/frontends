@@ -29,6 +29,7 @@
       "mainContent": "Main content",
       "checkout": "Checkout",
       "pagination": "Pagination",
+      "page": "Page {page}",
       "previousPage": "Previous page",
       "nextPage": "Next page",
       "breadcrumb": "Breadcrumb",

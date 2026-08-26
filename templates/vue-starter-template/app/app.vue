@@ -73,7 +73,6 @@ const {
   messages,
 } = useI18n();
 const router = useRouter();
-const route = useRoute();
 
 const { languageIdChain, currentLocaleCode, refreshSessionContext } =
   useSessionContext();
@@ -129,10 +128,12 @@ if (languages && router.currentRoute.value.name) {
 
 onMounted(() => {
   refreshCart();
-  const isWishlistPage = route.name?.toString().startsWith("wishlist") ?? false;
-  if (!isWishlistPage) {
-    getWishlistProducts();
-  }
+  // hydrate the wishlist store with the product ids only
+  getWishlistProducts({
+    includes: {
+      product: ["id"],
+    },
+  });
 });
 </script>
 

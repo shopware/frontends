@@ -65,6 +65,8 @@ async function handleRemoveFromWishlist() {
     <ProductWishlistIcon
       @click="handleRemoveFromWishlist"
       :isSelected="true"
+      :disabled="removing"
+      :aria-label="$t('product.removeFromWishlist')"
       class="!absolute top-4 right-4"
     />
 
@@ -93,6 +95,7 @@ async function handleRemoveFromWishlist() {
       <FormBaseButton
         class="mt-auto"
         :label="$t('product.addToCart')"
+        :loading="addingProducts"
         @click="handleAddToCart"
       />
     </div>
