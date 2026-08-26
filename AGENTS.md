@@ -91,7 +91,7 @@ pnpm run lint:fix                         # Fix linting issues
 pnpm run typecheck                        # TypeScript checking
 pnpm run test                             # Run tests
 pnpm run test:watch                       # Watch mode
-pnpm run test:e2e                         # E2E tests
+pnpm run test:e2e                         # E2E tests (demo store tag only)
 pnpm format                               # Format with Oxfmt
 ```
 
@@ -564,8 +564,6 @@ This creates a file in `.changeset/` - commit it with your changes.
 
 **Main Branch**: `main`
 
-**Current Status**: Clean working directory (as of 73d6426b)
-
 **Recent Activity**: Dependency updates, documentation improvements, feature additions
 
 ## Testing Strategy
@@ -579,7 +577,17 @@ This creates a file in `.changeset/` - commit it with your changes.
 ### E2E Tests (Playwright)
 
 - Located in `apps/e2e-tests/`
-- Run with `pnpm run test:e2e`
+- Install the browsers once with `pnpm exec playwright install chromium`
+- Run with `pnpm run test:e2e`. That script is `playwright test --grep @vue-demo-store`, so it only covers the deprecated demo store template
+- The `@accessibility` specs are template agnostic. Run them against any storefront:
+
+```bash
+cd apps/e2e-tests
+BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
+  pnpm exec playwright test --grep @accessibility --project=chromium
+```
+
+- Target host comes from `BASE_E2E_URL`, read from a `.env` file found by walking up from the working directory. See `.env.template` and `apps/e2e-tests/README.md`
 
 ### Type Tests
 
@@ -651,7 +659,7 @@ pnpm run build
 ## API and Documentation
 
 - **Documentation**: [developer.shopware.com/frontends](https://developer.shopware.com/frontends/)
-- **Demo**: [frontends-demo.vercel.app](https://frontends-demo.vercel.app/)
+- **Demo**: [frontends-starter-template.vercel.app](https://frontends-starter-template.vercel.app/)
 - **Repository**: [github.com/shopware/frontends](https://github.com/shopware/frontends)
 - **Discussions**: [GitHub Discussions](https://github.com/shopware/frontends/discussions)
 
