@@ -2,6 +2,7 @@
 import {
   type UrlRouteOutput,
   getSmallestThumbnailUrl,
+  getTranslatedProperty,
   isProductOnSale,
   isProductTopSeller,
 } from "@shopware/helpers";
@@ -37,7 +38,10 @@ const coverSrcPath = computed(() => {
 });
 
 const coverAlt = computed(() => {
-  return props.product?.cover?.media?.alt || props.product?.translated?.name;
+  return (
+    getTranslatedProperty(props.product?.cover?.media, "alt") ||
+    props.product?.translated?.name
+  );
 });
 
 const isOnSale = computed(() => isProductOnSale(props.product));
