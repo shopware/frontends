@@ -75,7 +75,7 @@ pnpm exec playwright show-report
 
 ## Lighthouse
 
-Lighthouse is not part of this suite. It runs in the `Lighthouse CI` workflow on manual dispatch, against the URLs listed in [lighthouserc.js](../../lighthouserc.js) at the repository root. That file and the workflow both carry the URL list, so change them together.
+Lighthouse is not part of this suite. It runs in the `Lighthouse CI` workflow on manual dispatch, against the URLs listed in [lighthouserc.js](../../lighthouserc.js) at the repository root. That file is the only place the list lives.
 
 ## Debug tests
 

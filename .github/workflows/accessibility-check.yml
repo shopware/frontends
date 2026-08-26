@@ -39,8 +39,12 @@ jobs:
       - name: Run tests
         # Passed as an env var, not interpolated into the script, so a crafted
         # input cannot inject shell.
+        #
+        # The fallback is not redundant with the input default: `inputs` is empty
+        # on a schedule and on a dispatch with a cleared field, and an empty
+        # BASE_E2E_URL points playwright.config.ts at localhost.
         env:
-          BASE_E2E_URL: ${{ inputs.base_url }}
+          BASE_E2E_URL: ${{ inputs.base_url || 'https://frontends-starter-template.vercel.app/' }}
         run: |
           cd apps/e2e-tests
           npx playwright test --grep @accessibility --project=chromium

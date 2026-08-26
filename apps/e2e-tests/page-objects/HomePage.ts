@@ -69,18 +69,41 @@ export class HomePage extends AbstractPage {
    * Template agnostic navigation, used by the @accessibility run.
    * openCategoryPage and openCartPage above select on vue-demo-store content
    * ("Products", "YORK 3") that does not exist in vue-starter-template.
+   *
+   * Nav entries are sales channel content, so the first one is not guaranteed
+   * to list products. New-tab entries are skipped and the rest tried in order.
+   * The URL is checked before the product card because the home page carries
+   * cards of its own, so the card alone would pass without ever leaving home.
    */
   async openFirstCategoryPage() {
-    const firstCategory = this.page
-      .getByRole("menubar")
-      .getByRole("menuitem")
-      .first();
-    await firstCategory.waitFor({ state: "visible" });
-    await firstCategory.click();
-    await this.page
-      .getByTestId("product-box-product-name-link")
-      .first()
-      .waitFor({ state: "visible" });
+    const sameTabEntries = this.page.locator(
+      '[role="menubar"] [role="menuitem"]:not([target="_blank"])',
+    );
+    await sameTabEntries.first().waitFor({ state: "visible" });
+
+    const tried: string[] = [];
+    for (const entry of await sameTabEntries.all()) {
+      const href = await entry.getAttribute("href");
+      if (!href) continue;
+      tried.push((await entry.textContent())?.trim() || "(unnamed)");
+      await entry.click();
+      try {
+        await this.page.waitForURL((url) => url.pathname.startsWith(href), {
+          timeout: 4000,
+        });
+        await this.page
+          .getByTestId("product-box-product-name-link")
+          .first()
+          .waitFor({ state: "visible", timeout: 4000 });
+        return;
+      } catch {
+        await this.visitMainPage();
+      }
+    }
+
+    throw new Error(
+      `No top navigation entry opened a product listing. Tried: ${tried.join(", ")}.`,
+    );
   }
 
   async openFirstProductPage() {
