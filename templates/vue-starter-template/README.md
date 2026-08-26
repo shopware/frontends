@@ -35,7 +35,6 @@ Inside this monorepo:
 
 ```bash
 pnpm i
-pnpm run build --filter='./packages/*'
 pnpm run dev --filter=vue-starter-template
 ```
 
@@ -49,7 +48,7 @@ Out of the box the template talks to a public demo shop. To use your own, copy t
 cp .env.template .env
 ```
 
-Two values are required. The app throws on startup without them:
+Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, so a fresh checkout runs. Point them at your own instance, and never leave either one empty - the app throws on startup if one is missing:
 
 - `NUXT_PUBLIC_SHOPWARE_ENDPOINT` - your Store API endpoint, including the `/store-api/` suffix
 - `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN` - the sales channel access token, found in the Shopware admin under Settings > Sales Channel > API access

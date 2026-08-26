@@ -76,7 +76,7 @@ pnpm start
 Have a look at the [docker-composable-frontends repository](https://github.com/shopwareLabs/docker-composable-frontends).
 
 > [!NOTE]
-> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://developer.shopware.com/frontends/getting-started/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
+> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://developer.shopware.com/frontends/introduction/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
 
 ### Nitro presets
 
