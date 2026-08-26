@@ -168,7 +168,7 @@ describe("useCmsElementImage", () => {
         expect(imageAttrs.value.alt).toBe("Shopware logo");
       });
 
-      it("should fall back to the element aria label when media has no alt", () => {
+      it("should keep the alt empty when media has none, the aria label names the link", () => {
         const { imageAttrs, ariaLabel } = useCmsElementImage({
           data: {
             ariaLabel: "Go to the summer collection",
@@ -179,7 +179,7 @@ describe("useCmsElementImage", () => {
         } as unknown as CmsElementImage);
 
         expect(ariaLabel.value).toBe("Go to the summer collection");
-        expect(imageAttrs.value.alt).toBe("Go to the summer collection");
+        expect(imageAttrs.value.alt).toBe("");
       });
 
       it("should read the aria label from config when data has none", () => {
@@ -223,6 +223,20 @@ describe("useCmsElementImage", () => {
         expect(imageAttrs.value.alt).toBe("");
         // a decorative image inside a link still needs the link named
         expect(ariaLabel.value).toBe("Go to the sale");
+      });
+
+      it("should keep the media alt when an aria label is also set", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            ariaLabel: "Go to the sale",
+            media: {
+              url: "https://shopware.com/banner.png",
+              alt: "Two mugs on a table",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(imageAttrs.value.alt).toBe("Two mugs on a table");
       });
 
       it("should not be decorative by default", () => {

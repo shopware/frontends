@@ -77,24 +77,19 @@ export function useCmsElementImage(
   });
 
   /**
-   * Text the CMS author entered for screen readers, from the element's own
-   * `ariaLabel` field. Shopware exposes it on both `data` and `config`.
+   * Names the link the image sits in, not the image itself. Shopware exposes
+   * it on both `data` and `config`.
    */
   const ariaLabel = computed(
     () => element.data?.ariaLabel || getConfigValue("ariaLabel") || "",
   );
 
-  /**
-   * The CMS author marked the image as purely decorative, so it must not
-   * expose any alternative text.
-   */
+  // Config only, the element data carries no such field.
   const isDecorative = computed(() => !!getConfigValue("isDecorative"));
 
   const imageAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
     src: element.data?.media?.url,
-    alt: isDecorative.value
-      ? ""
-      : element.data?.media?.alt || ariaLabel.value || "",
+    alt: isDecorative.value ? "" : element.data?.media?.alt || "",
     srcset: getSrcSetForMedia(element.data?.media),
   }));
 

@@ -47,6 +47,7 @@ const {
   imageContainerAttrs,
   imageAttrs,
   imageLink,
+  isDecorative,
   isVideoElement,
   mimeType,
 } = useCmsElementImage(props.content);
@@ -54,11 +55,15 @@ const {
 // A link wrapping only an image is nameless without alt text, which axe
 // reports as a `link-name` violation.
 const linkAriaLabel = computed(() => {
-  if (imageLink.value.url && !imageAttrs.value.alt) {
-    return ariaLabel.value || translations.cms.image.linkWithoutLabel;
+  if (!imageLink.value.url || imageAttrs.value.alt) {
+    return undefined;
   }
 
-  return undefined;
+  const mediaTitle = isDecorative.value ? "" : props.content.data?.media?.title;
+
+  return (
+    ariaLabel.value || mediaTitle || translations.cms.image.linkWithoutLabel
+  );
 });
 
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");

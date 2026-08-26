@@ -62,11 +62,11 @@ type ImageElementConfig = {
   media: ElementConfig<string>;
   newTab: ElementConfig<boolean>;
   product: ElementConfig<string>;
-  ariaLabel: ElementConfig<string | null>;
+  ariaLabel?: ElementConfig<string | null>;
   boxLayout: ElementConfig<BoxLayout>;
   displayMode: ElementConfig<DisplayMode>;
   minHeight: ElementConfig<string | number>;
-  isDecorative: ElementConfig<boolean>;
+  isDecorative?: ElementConfig<boolean>;
   verticalAlign: ElementConfig<VerticalAlign>;
   horizontalAlign: ElementConfig<VerticalAlign>;
 };
@@ -90,8 +90,8 @@ export type SliderElementConfig = {
   minHeight: ElementConfig<string | number>;
   verticalAlign?: ElementConfig<VerticalAlign>;
   displayMode?: ElementConfig<"standard" | "cover" | "contain">;
-  navigationDots?: ElementConfig<"outside" | "inside" | "">;
-  navigationArrows?: ElementConfig<"outside" | "inside" | "">;
+  navigationDots?: ElementConfig<"outside" | "inside" | "none" | "">;
+  navigationArrows?: ElementConfig<"outside" | "inside" | "none" | "">;
 };
 
 type ImageSliderElementConfig = ImageElementConfig &
