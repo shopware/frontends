@@ -16,8 +16,6 @@ jobs:
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: |
-            "https://frontends-demo.vercel.app/"
-            "https://frontends-demo.vercel.app/Products/"
-            "https://frontends-demo.vercel.app/Summer-BBQ/"
+          # No `urls:` here on purpose: the action overrides the config file's
+          # `collect.url` with it, and two copies of the list only drift apart.
           configPath: "./lighthouserc.js"
