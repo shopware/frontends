@@ -8,6 +8,8 @@ type InputTypeAttribute =
   | "time"
   | "url";
 
+defineOptions({ inheritAttrs: false });
+
 const {
   placeholder,
   type = "text",
@@ -32,9 +34,12 @@ const slots = defineSlots<{
 const emit = defineEmits<{
   focus: [];
 }>();
+
+const { wrapperAttrs, controlAttrs } = useControlAttrs();
 </script>
 <template>
   <div
+    v-bind="wrapperAttrs"
     class="focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
   >
     <div
@@ -51,6 +56,7 @@ const emit = defineEmits<{
         :placeholder="placeholder"
         :type="type"
         :autocomplete="autocomplete"
+        v-bind="controlAttrs"
         @focus="emit('focus')"
       />
       <slot name="rightIcon" />

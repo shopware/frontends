@@ -2,6 +2,7 @@
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
 
@@ -131,7 +132,7 @@ const $v = useVuelidate(rules, formData);
                   :value="salutation.id"
                   data-testid="account-address-form-salutation-select-option"
                 >
-                  {{ salutation.displayName }}
+                  {{ getTranslatedProperty(salutation, "displayName") }}
                 </option>
               </select>
             </div>

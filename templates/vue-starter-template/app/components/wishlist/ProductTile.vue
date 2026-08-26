@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { getProductRoute, getSmallestThumbnailUrl } from "@shopware/helpers";
+import {
+  getProductRoute,
+  getSmallestThumbnailUrl,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
 
@@ -73,7 +77,7 @@ async function handleRemoveFromWishlist() {
     <NuxtLink :to="formatLink(getProductRoute(product))">
       <NuxtImg
         :src="getSmallestThumbnailUrl(product.cover?.media)"
-        :alt="`${product.name} item`"
+        :alt="`${getTranslatedProperty(product, 'name')} item`"
         fit="inside"
         class="object-cover"
         :style="`height: ${ELEMENT_HEIGHT}px; width: ${ELEMENT_WIDTH}px;`"
@@ -84,7 +88,7 @@ async function handleRemoveFromWishlist() {
       :to="formatLink(getProductRoute(product))"
       class="text-surface-on-surface text-2xl font-normal font-['Noto_Serif'] leading-9"
     >
-      {{ product.translated.name }}
+      {{ getTranslatedProperty(product, "name") }}
     </NuxtLink>
     <div class="mt-auto flex flex-col gap-4">
       <SharedPrice
