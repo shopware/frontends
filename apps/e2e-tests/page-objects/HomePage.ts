@@ -65,6 +65,64 @@ export class HomePage extends AbstractPage {
       .click();
   }
 
+  /**
+   * Template agnostic navigation, used by the @accessibility run.
+   * openCategoryPage and openCartPage above select on vue-demo-store content
+   * ("Products", "YORK 3") that does not exist in vue-starter-template.
+   *
+   * Nav entries are sales channel content, so the first one is not guaranteed
+   * to list products. New-tab entries are skipped and the rest tried in order.
+   *
+   * Entries are opened by their href rather than clicked. A click hands over to
+   * the client router, which swaps the URL long before the listing renders, and
+   * axe would scan the page mid-transition.
+   */
+  async openFirstCategoryPage() {
+    const sameTabEntries = this.page.locator(
+      '[role="menubar"] [role="menuitem"]:not([target="_blank"])',
+    );
+    await sameTabEntries.first().waitFor({ state: "visible" });
+
+    // Bounded, so a storefront where nothing lists products reports the error
+    // below instead of running past the 30s test timeout.
+    const candidates = (await sameTabEntries.all()).slice(0, 3);
+
+    const tried: string[] = [];
+    for (const entry of candidates) {
+      const label = (await entry.textContent())?.trim() || "(unnamed)";
+      const href = await entry.getAttribute("href");
+      if (!href) {
+        tried.push(`${label} (no href)`);
+        continue;
+      }
+      tried.push(label);
+      await this.page.goto(href);
+      try {
+        await this.page
+          .getByTestId("product-box-product-name-link")
+          .first()
+          .waitFor({ state: "visible", timeout: 3000 });
+        return;
+      } catch {
+        continue;
+      }
+    }
+
+    throw new Error(
+      `No top navigation entry opened a product listing. Tried: ${tried.join(", ")}.`,
+    );
+  }
+
+  async openFirstProductPage() {
+    await this.page
+      .getByTestId("product-box-product-name-link")
+      .first()
+      .click();
+    await this.page.waitForSelector("[data-testid='product-quantity']", {
+      state: "visible",
+    });
+  }
+
   async openRegistrationPage() {
     await this.linkToRegistrationPage.click();
     await this.page.waitForURL("**/register");
