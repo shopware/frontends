@@ -63,7 +63,7 @@ watch(countryId, (newValue, oldValue) => {
       :placeholder="$t('form.chooseState')"
       :label="$t('form.state')"
       :options="stateOptions"
-      dataTestId="checkout-pi-state-input"
+      data-testid="checkout-pi-state-input"
       :errorMessage="stateIdValidation?.$errors[0]"
     />
   </div>

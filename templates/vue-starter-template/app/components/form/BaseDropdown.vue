@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+defineOptions({ inheritAttrs: false });
+
 const { variant = "default" } = defineProps<{
   placeholder?: string;
   options: {
@@ -10,8 +12,6 @@ const { variant = "default" } = defineProps<{
   loading?: boolean;
   autocomplete?: string;
   variant?: "default" | "control";
-  /** Lands on the <select>. A plain data-testid attribute would fall through to the root element. */
-  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -27,9 +27,12 @@ const fieldClass = computed(() =>
     ? "border border-outline-outline-variant bg-white text-surface-on-surface"
     : "text-surface-on-surface-variant",
 );
+
+const { wrapperAttrs, controlAttrs } = useControlAttrs();
 </script>
 <template>
   <div
+    v-bind="wrapperAttrs"
     :class="rounded"
     class="focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px]"
   >
@@ -44,7 +47,7 @@ const fieldClass = computed(() =>
         :id="id"
         :disabled="loading"
         :autocomplete
-        :data-testid="dataTestId"
+        v-bind="controlAttrs"
       >
         <option v-if="loading" value="" selected disabled>
           {{ $t("form.loading") }}

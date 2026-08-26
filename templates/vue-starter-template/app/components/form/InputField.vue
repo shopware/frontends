@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { MaybeRef } from "vue";
 
+defineOptions({ inheritAttrs: false });
+
 const {
   placeholder,
   label = "",
@@ -14,7 +16,6 @@ const {
   type?: "text" | "password" | "email";
   errorMessage?: MaybeRef<string>;
   autocomplete?: string;
-  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -22,9 +23,11 @@ const model = defineModel<string>({
 });
 
 const errorText = computed(() => unref(errorMessage));
+
+const { wrapperAttrs, controlAttrs } = useControlAttrs();
 </script>
 <template>
-  <div class="relative">
+  <div v-bind="wrapperAttrs" class="relative">
     <label
       class="text-surface-on-surface text-sm mb-1 block"
       v-if="label"
@@ -41,7 +44,7 @@ const errorText = computed(() => unref(errorMessage));
       :id="id"
       :invalid="!!errorText"
       :autocomplete="autocomplete"
-      :dataTestId="dataTestId"
+      v-bind="controlAttrs"
     />
     <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText

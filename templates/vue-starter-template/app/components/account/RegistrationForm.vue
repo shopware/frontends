@@ -178,7 +178,7 @@ const invokeSubmit = async () => {
           v-if="!companyOnly"
           class="col-span-12"
           v-model="accountTypeModel"
-          dataTestId="registration-account-type-select"
+          data-testid="registration-account-type-select"
           id="accountType"
         />
 
@@ -190,7 +190,7 @@ const invokeSubmit = async () => {
           :label="$t('form.firstName')"
           :errorMessage="r$.firstName.$errors[0]"
           @blur="r$.firstName.$touch()"
-          dataTestId="registration-first-name-input"
+          data-testid="registration-first-name-input"
         />
 
         <FormInputField
@@ -201,7 +201,7 @@ const invokeSubmit = async () => {
           :label="$t('form.lastName')"
           :errorMessage="r$.lastName.$errors[0]"
           @blur="r$.lastName.$touch()"
-          dataTestId="registration-last-name-input"
+          data-testid="registration-last-name-input"
         />
 
         <FormInputField
@@ -212,7 +212,7 @@ const invokeSubmit = async () => {
           :label="$t('form.email')"
           :errorMessage="r$.email.$errors[0]"
           @blur="r$.email.$touch()"
-          dataTestId="registration-email-input"
+          data-testid="registration-email-input"
         />
 
         <FormInputField
@@ -224,7 +224,7 @@ const invokeSubmit = async () => {
           :label="$t('form.password')"
           :errorMessage="r$.password.$errors[0]"
           @blur="r$.password.$touch()"
-          dataTestId="registration-password-input"
+          data-testid="registration-password-input"
         />
 
         <FormInputField
@@ -234,7 +234,7 @@ const invokeSubmit = async () => {
           v-model="vatIdModel"
           :label="$t('form.vatId')"
           @blur="r$.vatIds?.$touch()"
-          dataTestId="registration-vatid-input"
+          data-testid="registration-vatid-input"
         />
       </div>
 
@@ -252,7 +252,7 @@ const invokeSubmit = async () => {
           v-model="companyModel"
           autocomplete="company"
           :label="$t('form.company')"
-          dataTestId="registration-company-input"
+          data-testid="registration-company-input"
           @blur="r$.billingAddress.company.$touch()"
           :errorMessage="r$.billingAddress.company.$errors[0]"
         />
@@ -263,7 +263,7 @@ const invokeSubmit = async () => {
           v-model="state.billingAddress.street"
           autocomplete="street-address"
           :label="$t('form.streetAddress')"
-          dataTestId="registration-street-input"
+          data-testid="registration-street-input"
           @blur="r$.billingAddress.street.$touch()"
           :errorMessage="r$.billingAddress.street.$errors[0]"
         />
@@ -274,7 +274,7 @@ const invokeSubmit = async () => {
           id="zipcode"
           v-model="zipcodeModel"
           autocomplete="postal-code"
-          dataTestId="registration-zipcode-input"
+          data-testid="registration-zipcode-input"
           @blur="r$.billingAddress.zipcode.$touch()"
           :errorMessage="r$.billingAddress.zipcode.$errors[0]"
         />
@@ -285,7 +285,7 @@ const invokeSubmit = async () => {
           id="city"
           v-model="state.billingAddress.city"
           autocomplete="address-level2"
-          dataTestId="registration-city-input"
+          data-testid="registration-city-input"
           @blur="r$.billingAddress.city.$touch()"
           :errorMessage="r$.billingAddress.city.$errors[0]"
         />

@@ -8,6 +8,8 @@ type InputTypeAttribute =
   | "time"
   | "url";
 
+defineOptions({ inheritAttrs: false });
+
 const {
   placeholder,
   type = "text",
@@ -18,8 +20,6 @@ const {
   invalid?: boolean;
   autocomplete?: string;
   id?: string;
-  /** Lands on the <input>. A plain data-testid attribute would fall through to the root element. */
-  dataTestId?: string;
 }>();
 
 const model = defineModel<string>({
@@ -34,9 +34,12 @@ const slots = defineSlots<{
 const emit = defineEmits<{
   focus: [];
 }>();
+
+const { wrapperAttrs, controlAttrs } = useControlAttrs();
 </script>
 <template>
   <div
+    v-bind="wrapperAttrs"
     class="focus-within:outline-2 focus-within:outline-outline-outline-focus focus-within:outline focus-within:outline-offset-[2px] rounded-lg"
   >
     <div
@@ -53,7 +56,7 @@ const emit = defineEmits<{
         :placeholder="placeholder"
         :type="type"
         :autocomplete="autocomplete"
-        :data-testid="dataTestId"
+        v-bind="controlAttrs"
         @focus="emit('focus')"
       />
       <slot name="rightIcon" />
