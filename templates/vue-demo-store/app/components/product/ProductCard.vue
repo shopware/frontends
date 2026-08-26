@@ -6,6 +6,7 @@ import {
   getProductName,
   getProductRoute,
   getSmallestThumbnailUrl,
+  getTranslatedProperty,
 } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
@@ -165,8 +166,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="inline-flex items-center rounded-md bg-secondary-50 px-2 py-1 text-xs font-medium text-secondary-600 ring-1 ring-inset ring-secondary-500/10"
       >
-        {{ option.group.name }}:
-        {{ option.name }}
+        {{ getTranslatedProperty(option.group, "name") }}:
+        {{ getTranslatedProperty(option, "name") }}
       </span>
     </div>
     <div class="px-4 pb-4">
