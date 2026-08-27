@@ -3,6 +3,9 @@
 # docs page must still fail here, not on the next unrelated PR.
 name: Templates manifest
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: ["main"]
