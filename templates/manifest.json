@@ -23,7 +23,12 @@
       "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "devCommand": "nuxt prepare && nuxt dev"
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      }
     },
     {
       "id": "vue-starter-template-extended",
@@ -46,6 +51,11 @@
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
       "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
     },
     {
@@ -65,7 +75,8 @@
       "node": ">=22.12.0",
       "devPort": 4321,
       "buildCommand": "astro build",
-      "devCommand": "astro dev"
+      "devCommand": "astro dev",
+      "typeGeneration": null
     },
     {
       "id": "vue-blank",
@@ -87,7 +98,8 @@
       "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "devCommand": "nuxt prepare && nuxt dev"
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": null
     },
     {
       "id": "vue-vite-blank",
@@ -106,7 +118,8 @@
       "node": "^20.x || ^22.x || ^24.x",
       "devPort": 5173,
       "buildCommand": "vue-tsc --noEmit && vite build",
-      "devCommand": "vite"
+      "devCommand": "vite",
+      "typeGeneration": null
     },
     {
       "id": "vue-demo-store",
@@ -129,6 +142,11 @@
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
       "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation. Copying it out of the monorepo works mechanically, but per #2667 new projects must not start from it, so it is not offered as a scaffold."
     }
   ]

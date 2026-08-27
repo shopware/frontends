@@ -28,6 +28,11 @@ type Template = {
   scaffoldable: boolean;
   scaffoldCommand: string | null;
   devcontainer: boolean;
+  typeGeneration: {
+    env: string[];
+    loadSchemaCommand: string;
+    script: string;
+  } | null;
 };
 
 const rootDir = path.resolve(__dirname, "..");
@@ -166,6 +171,20 @@ for (const template of manifest.templates) {
   if (engines !== template.node) {
     problems.push(
       `"${template.id}" has node "${template.node}", but ${where} has engines.node ${engines ? `"${engines}"` : "(missing)"}`,
+    );
+  }
+
+  // typeGeneration points at a package.json script, so it drifts the same way
+  // the mirrored commands do, in both directions.
+  if (template.typeGeneration) {
+    if (!scripts[template.typeGeneration.script]) {
+      problems.push(
+        `"${template.id}" has typeGeneration.script "${template.typeGeneration.script}", but ${where} has no such script`,
+      );
+    }
+  } else if (scripts["generate-types"]) {
+    problems.push(
+      `"${template.id}" has typeGeneration null, but ${where} has a "generate-types" script`,
     );
   }
 }

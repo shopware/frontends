@@ -304,6 +304,7 @@ Per template:
 | `node`                      | The `engines.node` range from its `package.json`                    |
 | `devPort`                   | Port the dev server listens on                                      |
 | `buildCommand`/`devCommand` | What the `build` and `dev` scripts in its `package.json` do         |
+| `typeGeneration`            | How to regenerate Store API types for your instance, or `null`      |
 | `notes`                     | Optional, anything the fields above cannot express                  |
 
 Two ids do not match their package name: `astro` is `shopware-astro` and
@@ -316,7 +317,7 @@ it with ajv, so the schema is the definition rather than a copy of one.
 
 The check also fails when `templates/` on disk and the manifest disagree in
 either direction, when an id is duplicated, when `packageName`, `buildCommand`,
-`devCommand` or `node` disagree with the template's `package.json`, when a `docsUrl`
+`devCommand`, `node` or `typeGeneration` disagree with the template's `package.json`, when a `docsUrl`
 does not resolve to a file under `apps/docs/src/`, when an `issueUrl` title is
 not prefixed with its own template id, when `scaffoldable` and `scaffoldCommand`
 disagree, or when the `devcontainer` flag and `.devcontainer/<id>/` disagree in
@@ -533,12 +534,16 @@ NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 The astro template reads `API_URL`/`API_ACCESS_TOKEN` and vue-vite-blank reads
 `VITE_DEMO_API_URL`/`VITE_DEMO_API_ACCESS_TOKEN`.
 
-**Type Generation** (all Nuxt templates):
+**Type Generation** (templates whose manifest `typeGeneration` is not `null`):
 
 ```bash
-pnpm run generate-types
-# Uses @shopware/api-gen to generate types from your Shopware instance
+# Set OPENAPI_JSON_URL and OPENAPI_ACCESS_KEY first, then:
+npx shopware-api-gen loadSchema --apiType=store   # fetch your instance's schema
+pnpm run generate-types                           # regenerate the types from it
 ```
+
+Skipping the fetch makes `generate-types` fall back to the published default
+types, which do not include your instance's extensions.
 
 ### Choosing a Template
 

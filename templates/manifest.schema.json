@@ -45,7 +45,8 @@
         "node",
         "devPort",
         "buildCommand",
-        "devCommand"
+        "devCommand",
+        "typeGeneration"
       ],
       "additionalProperties": false,
       "properties": {
@@ -125,6 +126,31 @@
         "devCommand": {
           "type": "string",
           "description": "Contents of the dev script in the template's package.json. Starts a dev server, not a production one. Run the script through a package manager (npm run dev), not this string directly."
+        },
+        "typeGeneration": {
+          "type": ["object", "null"],
+          "description": "How to regenerate the Store API types against your own instance, so they include its extensions. Set the env vars, run loadSchemaCommand to fetch the instance schema into api-types/, then run the script. Skipping the fetch makes the script fall back to the published default types. Null when the template does not wire @shopware/api-gen.",
+          "additionalProperties": false,
+          "required": ["env", "loadSchemaCommand", "script"],
+          "properties": {
+            "env": {
+              "type": "array",
+              "description": "Env vars the schema fetch needs.",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            },
+            "loadSchemaCommand": {
+              "type": "string",
+              "description": "Fetches the instance's OpenAPI schema. Run through the package manager (npx)."
+            },
+            "script": {
+              "type": "string",
+              "description": "The package.json script that regenerates the types from the fetched schema."
+            }
+          }
         },
         "notes": {
           "type": "string",
