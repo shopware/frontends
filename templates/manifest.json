@@ -1,0 +1,103 @@
+{
+  "$schema": "./manifest.schema.json",
+  "templates": [
+    {
+      "id": "vue-starter-template",
+      "packageName": "vue-starter-template",
+      "framework": "nuxt",
+      "purpose": "Supported starting point for a new storefront.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/vue-starter-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template%5D+",
+      "supportLevel": "supported",
+      "scaffoldable": true,
+      "deployable": true,
+      "requiredEnv": [
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
+      ],
+      "buildCommand": "nuxt prepare && nuxt build",
+      "startCommand": "nuxt prepare && nuxt dev"
+    },
+    {
+      "id": "vue-starter-template-extended",
+      "packageName": "lumora-demo-store",
+      "framework": "nuxt",
+      "purpose": "Complete themed storefront that extends vue-starter-template as a Nuxt layer.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/vue-starter-template-extended.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template-extended%5D+",
+      "supportLevel": "supported",
+      "scaffoldable": false,
+      "deployable": true,
+      "requiredEnv": [
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
+      ],
+      "buildCommand": "nuxt prepare && nuxt build",
+      "startCommand": "nuxt prepare && nuxt dev",
+      "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path, so copying this directory out of the monorepo produces a broken install."
+    },
+    {
+      "id": "astro",
+      "packageName": "shopware-astro",
+      "framework": "astro",
+      "purpose": "Example of using the API client from Astro.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/astro-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bastro%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "deployable": false,
+      "requiredEnv": ["API_URL", "API_ACCESS_TOKEN"],
+      "buildCommand": "astro build",
+      "startCommand": "astro dev"
+    },
+    {
+      "id": "vue-blank",
+      "packageName": "vue-blank",
+      "framework": "nuxt",
+      "purpose": "Minimal Nuxt app with the Shopware packages wired up and nothing else.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/blank-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-blank%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "deployable": false,
+      "requiredEnv": [
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
+      ],
+      "buildCommand": "nuxt prepare && nuxt build",
+      "startCommand": "nuxt prepare && nuxt dev"
+    },
+    {
+      "id": "vue-vite-blank",
+      "packageName": "vue-vite-blank",
+      "framework": "vite",
+      "purpose": "Minimal Vue app on plain Vite, without Nuxt.",
+      "docsUrl": null,
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-vite-blank%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "deployable": false,
+      "requiredEnv": ["VITE_DEMO_API_URL", "VITE_DEMO_API_ACCESS_TOKEN"],
+      "buildCommand": "vue-tsc --noEmit && vite build",
+      "startCommand": "vite"
+    },
+    {
+      "id": "vue-demo-store",
+      "packageName": "vue-demo-store",
+      "framework": "nuxt",
+      "purpose": "Reference implementation. Kept for reading, not for starting a project.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/demo-store-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-demo-store%5D+",
+      "supportLevel": "deprecated",
+      "scaffoldable": false,
+      "deployable": true,
+      "requiredEnv": [
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
+      ],
+      "buildCommand": "nuxt prepare && nuxt build",
+      "startCommand": "nuxt prepare && nuxt dev",
+      "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation."
+    }
+  ]
+}

@@ -50,6 +50,29 @@ jobs:
           DO_NOT_TRACK: 1
         run: pnpm typecheck
 
+  templates:
+    name: Templates manifest
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: "pnpm"
+      - name: install
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Check templates/manifest.json
+        run: pnpm run check:templates
+
   test:
     name: Test
     timeout-minutes: 15

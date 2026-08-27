@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Shopware Frontends template manifest",
+  "description": "The single source of truth for which templates exist and what each one needs. Consumers read this instead of keeping their own list.",
+  "type": "object",
+  "required": ["templates"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "templates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/template"
+      }
+    }
+  },
+  "definitions": {
+    "template": {
+      "type": "object",
+      "required": [
+        "id",
+        "packageName",
+        "framework",
+        "purpose",
+        "docsUrl",
+        "issueUrl",
+        "supportLevel",
+        "scaffoldable",
+        "deployable",
+        "requiredEnv",
+        "buildCommand",
+        "startCommand"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Directory name under templates/. This is the identity used everywhere.",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "packageName": {
+          "type": "string",
+          "description": "The name field in the template's package.json. It does not always match the id, so consumers that filter workspaces need both."
+        },
+        "framework": {
+          "type": "string",
+          "enum": ["nuxt", "astro", "vite"]
+        },
+        "purpose": {
+          "type": "string",
+          "description": "One sentence on what this template is for."
+        },
+        "docsUrl": {
+          "type": ["string", "null"],
+          "description": "Documentation page for this template. Null when no page exists, which is a gap worth closing rather than a valid state. Must resolve to a file under apps/docs/src/.",
+          "pattern": "^https://developer\\.shopware\\.com/frontends/.+\\.html$"
+        },
+        "issueUrl": {
+          "type": "string",
+          "description": "Prefilled link for reporting a problem with this template. The title is prefixed with the template id so issues arrive already triaged.",
+          "pattern": "^https://github\\.com/shopware/frontends/issues/new\\?.+$"
+        },
+        "supportLevel": {
+          "type": "string",
+          "description": "supported: receives feature work. example: builds in CI, no feature work, no support promise. deprecated: do not start new projects on it.",
+          "enum": ["supported", "example", "deprecated"]
+        },
+        "scaffoldable": {
+          "type": "boolean",
+          "description": "Whether copying this directory out of the monorepo produces a working project. False means consumers must not offer it as a plain scaffold."
+        },
+        "deployable": {
+          "type": "boolean",
+          "description": "Whether this template is deployed to a hosting environment."
+        },
+        "requiredEnv": {
+          "type": "array",
+          "description": "Environment variables a user must set to run the template against their own Shopware instance.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          }
+        },
+        "buildCommand": {
+          "type": "string"
+        },
+        "startCommand": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Anything a consumer needs to know that the flags above do not express."
+        }
+      }
+    }
+  }
+}

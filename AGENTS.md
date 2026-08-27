@@ -40,6 +40,8 @@ frontends/
 │   ├── nuxt-module/          # Nuxt 3 integration
 │   └── api-gen/              # Type generation tool
 ├── templates/         # Starter templates
+│   ├── manifest.json                  # Source of truth: which templates exist
+│   ├── manifest.schema.json           # Schema for the manifest
 │   ├── vue-demo-store/                # Full demo with UnoCSS, i18n, CMS
 │   ├── vue-starter-template/          # Production-ready starter
 │   ├── vue-starter-template-extended/ # Layer extension example
@@ -91,6 +93,7 @@ pnpm run test                             # Run tests
 pnpm run test:watch                       # Watch mode
 pnpm run test:e2e                         # E2E tests (demo store tag only)
 pnpm format                               # Format with Oxfmt
+pnpm run check:templates                  # templates/manifest.json matches disk
 ```
 
 ### Type Generation
@@ -257,6 +260,54 @@ Generates optimized CSS `url()` values for CMS background images. Accepts an opt
 ## Working with Templates
 
 Templates are starter projects demonstrating different use cases and setups.
+
+### templates/manifest.json
+
+**Read this before the prose below.** It is the single source of truth for which
+templates exist and what each one needs. The list used to live in five places
+that had already drifted apart, so anything that needs to know about templates
+should read the manifest instead of hardcoding a list or globbing `templates/`.
+
+```js
+const manifest = require("./templates/manifest.json");
+
+manifest.templates.filter((t) => t.scaffoldable); // safe to copy out of the monorepo
+manifest.templates.filter((t) => t.supportLevel === "supported");
+manifest.templates.find((t) => t.id === "vue-blank").requiredEnv;
+```
+
+Per template:
+
+| Field                         | Meaning                                                                |
+| ----------------------------- | ---------------------------------------------------------------------- |
+| `id`                          | Directory name under `templates/`. The identity used everywhere        |
+| `packageName`                 | The `name` in its `package.json`. Does **not** always match `id`       |
+| `framework`                   | `nuxt`, `astro` or `vite`                                              |
+| `purpose`                     | One sentence on what it is for                                         |
+| `supportLevel`                | `supported`, `example` or `deprecated`                                 |
+| `scaffoldable`                | Whether copying it out of the monorepo produces a working project      |
+| `deployable`                  | Whether it is deployed anywhere                                        |
+| `docsUrl`                     | Documentation page, or `null` when none exists yet                     |
+| `issueUrl`                    | Prefilled report link, title prefixed with the template id             |
+| `requiredEnv`                 | Env vars a user must set to run it against their own Shopware instance |
+| `buildCommand`/`startCommand` | Taken from its `package.json` scripts                                  |
+| `notes`                       | Optional, anything the flags above cannot express                      |
+
+Two ids do not match their package name: `astro` is `shopware-astro` and
+`vue-starter-template-extended` is `lumora-demo-store`. Filter pnpm workspaces on
+`packageName`, identify directories on `id`.
+
+`templates/manifest.schema.json` is the schema. Editors pick it up through the
+`$schema` key in the manifest, and `pnpm run check:templates` validates against
+it with ajv, so the schema is the definition rather than a copy of one.
+
+The check also fails when `templates/` on disk and the manifest disagree in
+either direction, when an id is duplicated, when `packageName`, `buildCommand`
+or `startCommand` disagree with the template's `package.json`, when a `docsUrl`
+does not resolve to a file under `apps/docs/src/`, or when an `issueUrl` does not
+mention its own template id. It runs in CI as
+its own `Templates manifest` job. **When you add or remove a template, or change
+its build or dev script, update the manifest in the same change.**
 
 ### vue-demo-store
 
@@ -491,6 +542,8 @@ SHOPWARE_ACCESS_TOKEN=your-access-token
 | Minimal Nuxt setup       | vue-blank                     |
 | No SSR/No Nuxt           | vue-vite-blank                |
 | Use Astro                | astro                         |
+
+This table is for humans. Code should read `templates/manifest.json`.
 
 ## Making Changes
 
