@@ -1,5 +1,6 @@
 import {
   getSrcSetForMedia,
+  getTranslatedProperty,
   relativeUrlSlash,
   urlIsAbsolute,
 } from "@shopware/helpers";
@@ -89,7 +90,9 @@ export function useCmsElementImage(
 
   const imageAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
     src: element.data?.media?.url,
-    alt: isDecorative.value ? "" : element.data?.media?.alt || "",
+    alt: isDecorative.value
+      ? ""
+      : getTranslatedProperty(element.data?.media, "alt"),
     srcset: getSrcSetForMedia(element.data?.media),
   }));
 

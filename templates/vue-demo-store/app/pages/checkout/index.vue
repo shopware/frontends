@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
-import { getShippingMethodDeliveryTime } from "@shopware/helpers";
+import {
+  getShippingMethodDeliveryTime,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 
 import type { operations } from "#shopware";
@@ -454,7 +457,7 @@ const handleChangeBaseInfo = async (data: {
                       :key="salutation.id"
                       :value="salutation.id"
                     >
-                      {{ salutation.displayName }}
+                      {{ getTranslatedProperty(salutation, "displayName") }}
                     </option>
                   </select>
                 </div>
@@ -844,7 +847,7 @@ const handleChangeBaseInfo = async (data: {
                     <img
                       loading="lazy"
                       :src="singlePaymentMethod.media.url"
-                      :alt="`Logo of ${singlePaymentMethod.shortName}`"
+                      :alt="`Logo of ${getTranslatedProperty(singlePaymentMethod, 'shortName')}`"
                     />
                   </div>
                 </div>

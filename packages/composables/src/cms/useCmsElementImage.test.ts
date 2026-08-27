@@ -155,17 +155,61 @@ describe("useCmsElementImage", () => {
         });
       });
 
-      it("should use media alt for imageAttrs alt", () => {
+      it("should prefer the translated media alt over the root alt", () => {
         const { imageAttrs } = useCmsElementImage({
           data: {
             media: {
               url: "https://shopware.com/logo.png",
-              alt: "Shopware logo",
+              alt: "Company logo",
+              translated: {
+                alt: "Firmenlogo",
+              },
             },
           },
-        } as unknown as CmsElementImage);
+        } as unknown as CmsElementManufacturerLogo);
 
-        expect(imageAttrs.value.alt).toBe("Shopware logo");
+        expect(imageAttrs.value.alt).toBe("Firmenlogo");
+      });
+
+      it("should fall back to the root media alt when translated is missing", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Company logo",
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("Company logo");
+      });
+
+      it("should fall back to the root media alt when the translated alt is empty", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Company logo",
+              translated: {
+                alt: "",
+              },
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("Company logo");
+      });
+
+      it("should return an empty alt when the media has no alt at all", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("");
       });
 
       it("should keep the alt empty when media has none, the aria label names the link", () => {
@@ -210,6 +254,9 @@ describe("useCmsElementImage", () => {
             media: {
               url: "https://shopware.com/pattern.png",
               alt: "ignored",
+              translated: {
+                alt: "ignoriert",
+              },
             },
           },
           config: {

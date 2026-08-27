@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({
@@ -65,14 +67,14 @@ watch(
             />
             <label :for="method.id" class="flex-grow">
               <span class="font-medium text-surface-on-surface">{{
-                method.name
+                getTranslatedProperty(method, "name")
               }}</span>
 
               <span
-                v-if="method.description"
+                v-if="getTranslatedProperty(method, 'description')"
                 class="block text-sm text-surface-on-surface-variant"
               >
-                {{ method.description }}</span
+                {{ getTranslatedProperty(method, "description") }}</span
               >
             </label>
           </div>

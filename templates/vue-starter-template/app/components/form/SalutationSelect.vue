@@ -1,17 +1,13 @@
 <script lang="ts" setup>
+import { getTranslatedProperty } from "@shopware/helpers";
 import type { MaybeRef } from "vue";
 
 const model = defineModel<string>({
   required: true,
 });
 
-const {
-  id = "",
-  dataTestId = "",
-  errorMessage = undefined,
-} = defineProps<{
+const { id = "", errorMessage = undefined } = defineProps<{
   id?: string;
-  dataTestId?: string;
   errorMessage?: MaybeRef<string>;
 }>();
 
@@ -37,7 +33,7 @@ const {
     transform: (apiData) => {
       const options =
         apiData.data.elements?.map((element) => ({
-          label: element.displayName,
+          label: getTranslatedProperty(element, "displayName"),
           value: element.id,
         })) || [];
       return { options, cachedDate: new Date() };
@@ -67,7 +63,6 @@ const errorMessageText = computed(() => (error ? error : errorMessage));
     v-model="model"
     :label="$t('form.salutation')"
     :options="salutationData?.options ?? []"
-    :data-testid="dataTestId"
     :loading="isLoading"
   />
   <small v-if="errorMessageText" class="text-states-error">{{

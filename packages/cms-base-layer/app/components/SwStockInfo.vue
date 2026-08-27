@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 
 import { useCmsTranslations } from "#imports";
@@ -37,13 +38,15 @@ translations = defu(useCmsTranslations(), translations) as Translations;
     ></div>
     <div class="w-2 h-2 bg-states-error rounded-full" v-else></div>
     <span v-if="availableStock >= minPurchase && deliveryTime"
-      >{{ translations.product.deliveryTime }} {{ deliveryTime?.name }}
+      >{{ translations.product.deliveryTime }}
+      {{ getTranslatedProperty(deliveryTime, "name") }}
     </span>
     <span
       v-else-if="availableStock < minPurchase && deliveryTime && restockTime"
     >
       {{ translations.product.deliveryTime }} {{ restockTime }}
-      {{ translations.product.days }} {{ deliveryTime?.name }}</span
+      {{ translations.product.days }}
+      {{ getTranslatedProperty(deliveryTime, "name") }}</span
     >
     <span v-else>{{ translations.product.noAvailable }}</span>
   </div>

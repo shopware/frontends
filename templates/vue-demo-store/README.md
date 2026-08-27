@@ -4,15 +4,9 @@
 
 This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
 
-> **⚠️ Important:** The Demo Store Template is a **reference implementation** that demonstrates features and patterns you can use as inspiration for your own storefront. For production projects, we recommend using the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) which leverages Nuxt layers for better maintainability and automatic updates.
-
-**Interactive preview:**
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
-
-**Deploy with Vercel:**
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store)
+> **⚠️ Do not use this template to start a new project.** Use the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) instead. It builds on Nuxt layers, so it stays maintainable and picks up updates automatically.
+>
+> This template is deprecated. It stays in the repository as a reference implementation. Read it for patterns, do not build on it.
 
 ## What's inside
 
@@ -82,7 +76,7 @@ pnpm start
 Have a look at the [docker-composable-frontends repository](https://github.com/shopwareLabs/docker-composable-frontends).
 
 > [!NOTE]
-> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://developer.shopware.com/frontends/getting-started/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
+> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://developer.shopware.com/frontends/introduction/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
 
 ### Nitro presets
 
