@@ -154,7 +154,7 @@
             },
             "loadSchemaCommand": {
               "type": "string",
-              "description": "Fetches the instance's OpenAPI schema. Run through the package manager (npx)."
+              "description": "Fetches the instance's OpenAPI schema into api-types/. Executable as-is after dependencies are installed."
             },
             "script": {
               "type": "string",

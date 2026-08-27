@@ -33,7 +33,7 @@
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
           }
         },
-        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       }
     },
@@ -67,7 +67,7 @@
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
           }
         },
-        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
       "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
@@ -165,7 +165,7 @@
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
           }
         },
-        "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
       "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation. Copying it out of the monorepo works mechanically, but per #2667 new projects must not start from it, so it is not offered as a scaffold."
