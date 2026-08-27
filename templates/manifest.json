@@ -1,8 +1,10 @@
 {
   "$schema": "./manifest.schema.json",
+  "notes": "Every template runs against a public demo backend out of the box. The env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager, then run the dev script (devCommand) and open http://localhost:<devPort>.",
   "templates": [
     {
       "id": "vue-starter-template",
+      "displayName": "Vue Starter Template",
       "packageName": "vue-starter-template",
       "framework": "nuxt",
       "purpose": "Supported starting point for a new storefront.",
@@ -10,16 +12,20 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template%5D+",
       "supportLevel": "supported",
       "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-starter-template my-project",
       "deployable": true,
-      "requiredEnv": [
+      "devcontainer": true,
+      "env": [
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "startCommand": "nuxt prepare && nuxt dev"
+      "devCommand": "nuxt prepare && nuxt dev"
     },
     {
       "id": "vue-starter-template-extended",
+      "displayName": "Vue Starter Template Extended (Lumora)",
       "packageName": "lumora-demo-store",
       "framework": "nuxt",
       "purpose": "Complete themed storefront that extends vue-starter-template as a Nuxt layer.",
@@ -27,17 +33,21 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template-extended%5D+",
       "supportLevel": "supported",
       "scaffoldable": false,
+      "scaffoldCommand": null,
       "deployable": true,
-      "requiredEnv": [
+      "devcontainer": true,
+      "env": [
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "startCommand": "nuxt prepare && nuxt dev",
-      "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path, so copying this directory out of the monorepo produces a broken install."
+      "devCommand": "nuxt prepare && nuxt dev",
+      "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
     },
     {
       "id": "astro",
+      "displayName": "Astro Template",
       "packageName": "shopware-astro",
       "framework": "astro",
       "purpose": "Example of using the API client from Astro.",
@@ -45,13 +55,17 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bastro%5D+",
       "supportLevel": "example",
       "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/astro my-project",
       "deployable": false,
-      "requiredEnv": ["API_URL", "API_ACCESS_TOKEN"],
+      "devcontainer": false,
+      "env": ["API_URL", "API_ACCESS_TOKEN"],
+      "devPort": 4321,
       "buildCommand": "astro build",
-      "startCommand": "astro dev"
+      "devCommand": "astro dev"
     },
     {
       "id": "vue-blank",
+      "displayName": "Blank Template",
       "packageName": "vue-blank",
       "framework": "nuxt",
       "purpose": "Minimal Nuxt app with the Shopware packages wired up and nothing else.",
@@ -59,16 +73,20 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-blank%5D+",
       "supportLevel": "example",
       "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-blank my-project",
       "deployable": false,
-      "requiredEnv": [
+      "devcontainer": false,
+      "env": [
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "startCommand": "nuxt prepare && nuxt dev"
+      "devCommand": "nuxt prepare && nuxt dev"
     },
     {
       "id": "vue-vite-blank",
+      "displayName": "Vite Blank Template",
       "packageName": "vue-vite-blank",
       "framework": "vite",
       "purpose": "Minimal Vue app on plain Vite, without Nuxt.",
@@ -76,13 +94,17 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-vite-blank%5D+",
       "supportLevel": "example",
       "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-vite-blank my-project",
       "deployable": false,
-      "requiredEnv": ["VITE_DEMO_API_URL", "VITE_DEMO_API_ACCESS_TOKEN"],
+      "devcontainer": false,
+      "env": ["VITE_DEMO_API_URL", "VITE_DEMO_API_ACCESS_TOKEN"],
+      "devPort": 5173,
       "buildCommand": "vue-tsc --noEmit && vite build",
-      "startCommand": "vite"
+      "devCommand": "vite"
     },
     {
       "id": "vue-demo-store",
+      "displayName": "Demo Store",
       "packageName": "vue-demo-store",
       "framework": "nuxt",
       "purpose": "Reference implementation. Kept for reading, not for starting a project.",
@@ -90,14 +112,17 @@
       "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-demo-store%5D+",
       "supportLevel": "deprecated",
       "scaffoldable": false,
+      "scaffoldCommand": null,
       "deployable": true,
-      "requiredEnv": [
+      "devcontainer": false,
+      "env": [
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
-      "startCommand": "nuxt prepare && nuxt dev",
-      "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation."
+      "devCommand": "nuxt prepare && nuxt dev",
+      "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation. Copying it out of the monorepo works mechanically, but per #2667 new projects must not start from it, so it is not offered as a scaffold."
     }
   ]
 }

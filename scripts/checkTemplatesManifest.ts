@@ -10,18 +10,27 @@ import { Ajv } from "ajv";
  * The template list used to live in five places that had already drifted apart.
  * The manifest is now the single source of truth, so this check exists to stop
  * it silently going stale the next time a template is added or removed.
+ *
+ * Not verified here: supportLevel, deployable, devPort and the env contents are
+ * human judgements with no authority on disk. The schema confirms they are well
+ * formed, never that they are right. The docsUrl check proves the page exists,
+ * not that it is the right page for this template.
  */
 
 type Template = {
   id: string;
   packageName: string;
   buildCommand: string;
-  startCommand: string;
+  devCommand: string;
   docsUrl: string | null;
   issueUrl: string;
+  scaffoldable: boolean;
+  scaffoldCommand: string | null;
+  devcontainer: boolean;
 };
 
-const templatesDir = path.join(__dirname, "..", "templates");
+const rootDir = path.resolve(__dirname, "..");
+const templatesDir = path.join(rootDir, "templates");
 const manifestPath = path.join(templatesDir, "manifest.json");
 const schemaPath = path.join(templatesDir, "manifest.schema.json");
 
@@ -41,14 +50,26 @@ function report(): void {
   }
 }
 
-const manifest: { templates: Template[] } = JSON.parse(
-  fs.readFileSync(manifestPath, "utf8"),
-);
-const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+/** A JSON syntax error should name the file in the report, not crash as a stack trace. */
+function readJson(filePath: string): unknown {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch (error) {
+    problems.push(
+      `${path.relative(rootDir, filePath)} is not valid JSON: ${(error as Error).message}`,
+    );
+    return undefined;
+  }
+}
+
+const manifest = readJson(manifestPath) as { templates: Template[] };
+const schema = readJson(schemaPath);
+if (!manifest || !schema) report();
 
 // The schema is the definition. Validate against it rather than restating the
-// rules here, so the two cannot drift apart.
-const ajv = new Ajv({ allErrors: true, strict: false });
+// rules here, so the two cannot drift apart. Ajv's default strict mode also
+// rejects a typo'd keyword in the schema itself.
+const ajv = new Ajv({ allErrors: true });
 if (!ajv.validate(schema, manifest)) {
   for (const error of ajv.errors ?? []) {
     const where = error.instancePath || "/";
@@ -97,10 +118,24 @@ for (const id of inManifest) {
 // silently the moment someone edits that file. A generator reading a stale
 // buildCommand emits a command that does not work.
 for (const template of manifest.templates) {
-  const packageJsonPath = path.join(templatesDir, template.id, "package.json");
-  if (!fs.existsSync(packageJsonPath)) continue;
+  const templateDir = path.join(templatesDir, template.id);
+  const packageJsonPath = path.join(templateDir, "package.json");
+  if (!fs.existsSync(packageJsonPath)) {
+    // A missing directory is already reported above. A directory that exists
+    // without a package.json is its own kind of drift, and skipping it silently
+    // would let every mirrored field below go stale.
+    if (fs.existsSync(templateDir)) {
+      problems.push(`templates/${template.id}/ has no package.json`);
+    }
+    continue;
+  }
 
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+  const packageJson = readJson(packageJsonPath) as {
+    name?: string;
+    scripts?: Record<string, string>;
+  };
+  if (!packageJson) continue;
+
   const where = `templates/${template.id}/package.json`;
 
   // packageName is what workspace filters match on, and it does not always
@@ -114,7 +149,7 @@ for (const template of manifest.templates) {
   const scripts: Record<string, string> = packageJson.scripts ?? {};
   const mirrored: Array<[keyof Template & string, string]> = [
     ["buildCommand", "build"],
-    ["startCommand", "dev"],
+    ["devCommand", "dev"],
   ];
 
   for (const [field, script] of mirrored) {
@@ -129,7 +164,7 @@ for (const template of manifest.templates) {
 // A docsUrl that 404s is worse than no docsUrl, so resolve each one back to the
 // markdown file the docs site builds it from.
 const DOCS_BASE = "https://developer.shopware.com/frontends/";
-const docsRoot = path.resolve(__dirname, "..", "apps", "docs", "src");
+const docsRoot = path.resolve(rootDir, "apps", "docs", "src");
 
 for (const template of manifest.templates) {
   if (template.docsUrl === null) continue;
@@ -155,12 +190,67 @@ for (const template of manifest.templates) {
 }
 
 // Six near-identical URLs are easy to copy and forget to edit, and a wrong one
-// files the report against the wrong template.
+// files the report against the wrong template. Match the full bracketed title
+// prefix: a bare substring match would let an id that is a prefix of another id
+// (vue-starter-template inside vue-starter-template-extended) slip through.
 for (const template of manifest.templates) {
-  if (!template.issueUrl.includes(encodeURIComponent(template.id))) {
+  const titlePrefix = `%5B${encodeURIComponent(template.id)}%5D`;
+  if (!template.issueUrl.includes(titlePrefix)) {
     problems.push(
-      `"${template.id}" has an issueUrl that does not mention its own id: ${template.issueUrl}`,
+      `"${template.id}" has an issueUrl whose title is not prefixed with [${template.id}]: ${template.issueUrl}`,
     );
+  }
+}
+
+// scaffoldCommand and scaffoldable must agree, and the command must copy this
+// template's own directory. The lookahead stops templates/vue-starter-template
+// from matching inside templates/vue-starter-template-extended.
+for (const template of manifest.templates) {
+  if (template.scaffoldable) {
+    if (template.scaffoldCommand === null) {
+      problems.push(
+        `"${template.id}" is scaffoldable but has no scaffoldCommand`,
+      );
+    } else if (
+      !new RegExp(`templates/${template.id}(?![a-z0-9-])`).test(
+        template.scaffoldCommand,
+      )
+    ) {
+      problems.push(
+        `"${template.id}" has a scaffoldCommand that does not copy templates/${template.id}: ${template.scaffoldCommand}`,
+      );
+    }
+  } else if (template.scaffoldCommand !== null) {
+    problems.push(
+      `"${template.id}" is not scaffoldable, so its scaffoldCommand must be null, not "${template.scaffoldCommand}"`,
+    );
+  }
+}
+
+// The devcontainer flag mirrors .devcontainer/<id>/ on disk, in both directions,
+// so a Codespaces link built from it cannot point at a container that is not there.
+const devcontainersDir = path.join(rootDir, ".devcontainer");
+for (const template of manifest.templates) {
+  const exists = fs.existsSync(
+    path.join(devcontainersDir, template.id, "devcontainer.json"),
+  );
+  if (exists !== template.devcontainer) {
+    problems.push(
+      `"${template.id}" has devcontainer ${template.devcontainer}, but .devcontainer/${template.id}/devcontainer.json ${exists ? "exists" : "does not exist"}`,
+    );
+  }
+}
+
+if (fs.existsSync(devcontainersDir)) {
+  for (const entry of fs.readdirSync(devcontainersDir, {
+    withFileTypes: true,
+  })) {
+    if (!entry.isDirectory()) continue;
+    if (!inManifest.includes(entry.name)) {
+      problems.push(
+        `.devcontainer/${entry.name}/ exists but "${entry.name}" is not a template in manifest.json`,
+      );
+    }
   }
 }
 

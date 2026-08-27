@@ -271,27 +271,36 @@ should read the manifest instead of hardcoding a list or globbing `templates/`.
 ```js
 const manifest = require("./templates/manifest.json");
 
-manifest.templates.filter((t) => t.scaffoldable); // safe to copy out of the monorepo
+manifest.templates.filter((t) => t.scaffoldable); // may be offered as a project starting point
 manifest.templates.filter((t) => t.supportLevel === "supported");
-manifest.templates.find((t) => t.id === "vue-blank").requiredEnv;
+manifest.templates.find((t) => t.id === "vue-blank").env;
 ```
+
+To start a new project from a template: run its `scaffoldCommand`, install
+dependencies with any package manager, run the dev script (`devCommand`), open
+`http://localhost:<devPort>`. Every template runs against a public demo backend
+out of the box; the `env` vars only re-point it at your own Shopware instance.
 
 Per template:
 
-| Field                         | Meaning                                                                |
-| ----------------------------- | ---------------------------------------------------------------------- |
-| `id`                          | Directory name under `templates/`. The identity used everywhere        |
-| `packageName`                 | The `name` in its `package.json`. Does **not** always match `id`       |
-| `framework`                   | `nuxt`, `astro` or `vite`                                              |
-| `purpose`                     | One sentence on what it is for                                         |
-| `supportLevel`                | `supported`, `example` or `deprecated`                                 |
-| `scaffoldable`                | Whether copying it out of the monorepo produces a working project      |
-| `deployable`                  | Whether it is deployed anywhere                                        |
-| `docsUrl`                     | Documentation page, or `null` when none exists yet                     |
-| `issueUrl`                    | Prefilled report link, title prefixed with the template id             |
-| `requiredEnv`                 | Env vars a user must set to run it against their own Shopware instance |
-| `buildCommand`/`startCommand` | Taken from its `package.json` scripts                                  |
-| `notes`                       | Optional, anything the flags above cannot express                      |
+| Field                       | Meaning                                                             |
+| --------------------------- | ------------------------------------------------------------------- |
+| `id`                        | Directory name under `templates/`. The identity used everywhere     |
+| `displayName`               | Human-readable name for navigation, pickers and labels              |
+| `packageName`               | The `name` in its `package.json`. Does **not** always match `id`    |
+| `framework`                 | `nuxt`, `astro` or `vite`                                           |
+| `purpose`                   | One sentence on what it is for                                      |
+| `supportLevel`              | `supported`, `example` or `deprecated`                              |
+| `scaffoldable`              | Whether it may be offered as a starting point for a new project     |
+| `scaffoldCommand`           | Copies it out of the monorepo. `null` exactly when not scaffoldable |
+| `deployable`                | Whether it is deployed anywhere                                     |
+| `devcontainer`              | Whether `.devcontainer/<id>/` exists, for Codespaces links          |
+| `docsUrl`                   | Documentation page, or `null` when none exists yet                  |
+| `issueUrl`                  | Prefilled report link, title prefixed with the template id          |
+| `env`                       | Env vars that point it at your own instance. Demo defaults built in |
+| `devPort`                   | Port the dev server listens on                                      |
+| `buildCommand`/`devCommand` | The `build` and `dev` scripts from its `package.json`               |
+| `notes`                     | Optional, anything the fields above cannot express                  |
 
 Two ids do not match their package name: `astro` is `shopware-astro` and
 `vue-starter-template-extended` is `lumora-demo-store`. Filter pnpm workspaces on
@@ -303,11 +312,14 @@ it with ajv, so the schema is the definition rather than a copy of one.
 
 The check also fails when `templates/` on disk and the manifest disagree in
 either direction, when an id is duplicated, when `packageName`, `buildCommand`
-or `startCommand` disagree with the template's `package.json`, when a `docsUrl`
-does not resolve to a file under `apps/docs/src/`, or when an `issueUrl` does not
-mention its own template id. It runs in CI as
-its own `Templates manifest` job. **When you add or remove a template, or change
-its build or dev script, update the manifest in the same change.**
+or `devCommand` disagree with the template's `package.json`, when a `docsUrl`
+does not resolve to a file under `apps/docs/src/`, when an `issueUrl` title is
+not prefixed with its own template id, when `scaffoldable` and `scaffoldCommand`
+disagree, or when the `devcontainer` flag and `.devcontainer/<id>/` disagree in
+either direction. It runs in CI as its own `Templates manifest` workflow,
+triggered by changes to `templates/`, `apps/docs/src/`, `.devcontainer/` or the
+check itself. **When you add or remove a template, or change its build or dev
+script, update the manifest in the same change.**
 
 ### vue-demo-store
 
@@ -503,33 +515,25 @@ export default defineAppConfig({
 
 ### Template Configuration
 
-All templates support:
+Every template ships with working demo-backend defaults, so it runs with no
+configuration at all. To point one at your own Shopware instance, set the env
+vars its manifest entry lists under `env`. The names differ per framework, so
+read them from the manifest instead of memorizing them. For the Nuxt templates:
 
-**API Configuration** (`nuxt.config.ts` or equivalent):
-
-```typescript
-export default defineNuxtConfig({
-  modules: ["@shopware/nuxt-module"],
-  shopware: {
-    endpoint: "https://your-shop.com/store-api",
-    accessToken: "your-access-token",
-  },
-});
+```bash
+# .env (vue-starter-template and vue-demo-store ship a .env.template to copy)
+NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.com/store-api
+NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
+
+The astro template reads `API_URL`/`API_ACCESS_TOKEN` and vue-vite-blank reads
+`VITE_DEMO_API_URL`/`VITE_DEMO_API_ACCESS_TOKEN`.
 
 **Type Generation** (all Nuxt templates):
 
 ```bash
 pnpm run generate-types
 # Uses @shopware/api-gen to generate types from your Shopware instance
-```
-
-**Environment Variables**:
-Create `.env` file (use `.env.template` as reference):
-
-```bash
-SHOPWARE_ENDPOINT=https://your-shop.com/store-api
-SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
 
 ### Choosing a Template
@@ -717,8 +721,8 @@ pnpm run build
 
 ## Environment
 
-- **Node.js**: 20.x or 22.x required
-- **pnpm**: 10.17.0 (managed by packageManager field)
+- **Node.js**: 20.x, 22.x or 24.x required
+- **pnpm**: 11.5.2 (managed by packageManager field)
 - **Corepack**: Recommended for Node.js version management
 
 ## References for Deep Work

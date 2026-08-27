@@ -9,6 +9,10 @@
     "$schema": {
       "type": "string"
     },
+    "notes": {
+      "type": "string",
+      "description": "Anything that applies to every template."
+    },
     "templates": {
       "type": "array",
       "minItems": 1,
@@ -22,6 +26,7 @@
       "type": "object",
       "required": [
         "id",
+        "displayName",
         "packageName",
         "framework",
         "purpose",
@@ -29,10 +34,13 @@
         "issueUrl",
         "supportLevel",
         "scaffoldable",
+        "scaffoldCommand",
         "deployable",
-        "requiredEnv",
+        "devcontainer",
+        "env",
+        "devPort",
         "buildCommand",
-        "startCommand"
+        "devCommand"
       ],
       "additionalProperties": false,
       "properties": {
@@ -40,6 +48,10 @@
           "type": "string",
           "description": "Directory name under templates/. This is the identity used everywhere.",
           "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name, for docs navigation, pickers and devcontainer labels."
         },
         "packageName": {
           "type": "string",
@@ -70,29 +82,44 @@
         },
         "scaffoldable": {
           "type": "boolean",
-          "description": "Whether copying this directory out of the monorepo produces a working project. False means consumers must not offer it as a plain scaffold."
+          "description": "Whether consumers may offer this template as a starting point for a new project. False when copying it out of the monorepo breaks (see notes), or when new projects must not start on it."
+        },
+        "scaffoldCommand": {
+          "type": ["string", "null"],
+          "description": "Copies the template out of the monorepo into ./my-project. After running it: install dependencies with any package manager, then run the dev script. Null exactly when scaffoldable is false."
         },
         "deployable": {
           "type": "boolean",
           "description": "Whether this template is deployed to a hosting environment."
         },
-        "requiredEnv": {
+        "devcontainer": {
+          "type": "boolean",
+          "description": "Whether .devcontainer/<id>/devcontainer.json exists, so it can be opened in GitHub Codespaces."
+        },
+        "env": {
           "type": "array",
-          "description": "Environment variables a user must set to run the template against their own Shopware instance.",
+          "description": "Env vars that point the template at your own Shopware instance. Every template ships with working demo-backend defaults, so none are needed for a first run.",
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "pattern": "^[A-Z][A-Z0-9_]*$"
           }
         },
-        "buildCommand": {
-          "type": "string"
+        "devPort": {
+          "type": "integer",
+          "description": "Port the dev server listens on."
         },
-        "startCommand": {
-          "type": "string"
+        "buildCommand": {
+          "type": "string",
+          "description": "The build script from the template's package.json. Produces a production build."
+        },
+        "devCommand": {
+          "type": "string",
+          "description": "The dev script from the template's package.json. Starts a dev server, not a production one."
         },
         "notes": {
           "type": "string",
-          "description": "Anything a consumer needs to know that the flags above do not express."
+          "description": "Anything a consumer needs to know that the fields above do not express."
         }
       }
     }
