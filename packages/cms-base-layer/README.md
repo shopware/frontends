@@ -192,8 +192,16 @@ Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
   :src="product.cover.media.url"
   preset="productDetail"
   :width="800"
-  :alt="product.cover.media.alt"
+  :alt="getTranslatedProperty(product.cover.media, 'alt')"
 />
+```
+
+The media `alt` text is a translatable field, so read it through `getTranslatedProperty` rather than
+`media.alt` — the latter always holds the system language value, no matter which language the current
+request asks for. The helper is not auto-imported, so add it to the component's script block:
+
+```ts
+import { getTranslatedProperty } from "@shopware/helpers";
 ```
 
 ### Supported Modifiers

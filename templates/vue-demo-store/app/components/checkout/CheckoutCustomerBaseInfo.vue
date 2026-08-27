@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 
 type BaseInfo = {
@@ -78,7 +79,7 @@ const handleUpdateData = async () => {
             :key="salutation.id"
             :value="salutation.id"
           >
-            {{ salutation.displayName }}
+            {{ getTranslatedProperty(salutation, "displayName") }}
           </option>
         </select>
       </div>
