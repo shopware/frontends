@@ -25,7 +25,14 @@
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
       "typeGeneration": {
-        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
         "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       }
@@ -52,7 +59,14 @@
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
       "typeGeneration": {
-        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
         "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
@@ -143,7 +157,14 @@
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
       "typeGeneration": {
-        "env": ["OPENAPI_JSON_URL", "OPENAPI_ACCESS_KEY"],
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
         "loadSchemaCommand": "shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },

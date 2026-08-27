@@ -134,12 +134,21 @@
           "required": ["env", "loadSchemaCommand", "script"],
           "properties": {
             "env": {
-              "type": "array",
-              "description": "Env vars the schema fetch needs.",
-              "uniqueItems": true,
-              "items": {
-                "type": "string",
+              "type": "object",
+              "description": "Env vars the schema fetch needs. Each description says how to derive the value from the storefront configuration, so a consumer does not have to ask for values it already has.",
+              "minProperties": 1,
+              "propertyNames": {
                 "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["description"],
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  }
+                }
               }
             },
             "loadSchemaCommand": {

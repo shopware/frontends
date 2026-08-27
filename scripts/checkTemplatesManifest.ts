@@ -29,7 +29,7 @@ type Template = {
   scaffoldCommand: string | null;
   devcontainer: boolean;
   typeGeneration: {
-    env: string[];
+    env: Record<string, { description: string }>;
     loadSchemaCommand: string;
     script: string;
   } | null;

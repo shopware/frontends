@@ -542,6 +542,11 @@ npx shopware-api-gen loadSchema --apiType=store   # fetch your instance's schema
 pnpm run generate-types                           # regenerate the types from it
 ```
 
+Both values derive from the storefront configuration: `OPENAPI_JSON_URL` is
+`NUXT_PUBLIC_SHOPWARE_ENDPOINT` without its `/store-api/` suffix, and
+`OPENAPI_ACCESS_KEY` is the same value as `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN`.
+The manifest's `typeGeneration.env` carries these derivations per template.
+
 Skipping the fetch makes `generate-types` fall back to the published default
 types, which do not include your instance's extensions.
 
