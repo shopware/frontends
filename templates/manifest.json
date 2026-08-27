@@ -1,7 +1,7 @@
 {
   "$schema": "./manifest.schema.json",
   "manifestVersion": 1,
-  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager (Node per the node field), then run the package.json dev script (e.g. npm run dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings.",
+  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager (Node per the node field), then run the package.json dev script (e.g. npm run dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings. typeGeneration regenerates the API types from your own instance, which is what brings in installed extensions' types; run its loadSchemaCommand first, the script alone falls back to the published default types.",
   "templates": [
     {
       "id": "vue-starter-template",
@@ -27,7 +27,7 @@
       "typeGeneration": {
         "env": {
           "OPENAPI_JSON_URL": {
-            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
           },
           "OPENAPI_ACCESS_KEY": {
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
@@ -61,7 +61,7 @@
       "typeGeneration": {
         "env": {
           "OPENAPI_JSON_URL": {
-            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
           },
           "OPENAPI_ACCESS_KEY": {
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
@@ -159,7 +159,7 @@
       "typeGeneration": {
         "env": {
           "OPENAPI_JSON_URL": {
-            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api/ suffix."
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
           },
           "OPENAPI_ACCESS_KEY": {
             "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."

@@ -543,7 +543,7 @@ pnpm run generate-types                           # regenerate the types from it
 ```
 
 Both values derive from the storefront configuration: `OPENAPI_JSON_URL` is
-`NUXT_PUBLIC_SHOPWARE_ENDPOINT` without its `/store-api/` suffix, and
+`NUXT_PUBLIC_SHOPWARE_ENDPOINT` without its `/store-api` suffix, and
 `OPENAPI_ACCESS_KEY` is the same value as `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN`.
 The manifest's `typeGeneration.env` carries these derivations per template.
 
