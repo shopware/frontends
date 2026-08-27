@@ -206,6 +206,11 @@ for (const template of manifest.templates) {
         `"${template.id}" has node "${template.node}", which admits versions ${template.framework} rejects (its engines.node is "${frameworkRange}")`,
       );
     }
+  } else {
+    // A green result must mean the check ran, so a skip is a problem too.
+    problems.push(
+      `"${template.id}" node range could not be checked against ${template.framework}: run pnpm install first`,
+    );
   }
 }
 
