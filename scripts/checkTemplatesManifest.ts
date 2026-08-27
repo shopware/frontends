@@ -22,6 +22,7 @@ type Template = {
   packageName: string;
   buildCommand: string;
   devCommand: string;
+  node: string;
   docsUrl: string | null;
   issueUrl: string;
   scaffoldable: boolean;
@@ -133,6 +134,7 @@ for (const template of manifest.templates) {
   const packageJson = readJson(packageJsonPath) as {
     name?: string;
     scripts?: Record<string, string>;
+    engines?: { node?: string };
   };
   if (!packageJson) continue;
 
@@ -158,6 +160,13 @@ for (const template of manifest.templates) {
         `"${template.id}" has ${field} "${template[field]}", but ${where} has "${script}": "${scripts[script] ?? "(missing)"}"`,
       );
     }
+  }
+
+  const engines = packageJson.engines?.node;
+  if (engines !== template.node) {
+    problems.push(
+      `"${template.id}" has node "${template.node}", but ${where} has engines.node ${engines ? `"${engines}"` : "(missing)"}`,
+    );
   }
 }
 

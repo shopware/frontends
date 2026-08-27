@@ -3,11 +3,15 @@
   "title": "Shopware Frontends template manifest",
   "description": "The single source of truth for which templates exist and what each one needs. Consumers read this instead of keeping their own list.",
   "type": "object",
-  "required": ["templates"],
+  "required": ["manifestVersion", "templates"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string"
+    },
+    "manifestVersion": {
+      "const": 1,
+      "description": "Version of this contract. Bumped when field semantics change, so out-of-repo consumers can detect a manifest they do not understand."
     },
     "notes": {
       "type": "string",
@@ -38,6 +42,7 @@
         "deployable",
         "devcontainer",
         "env",
+        "node",
         "devPort",
         "buildCommand",
         "devCommand"
@@ -105,17 +110,21 @@
             "pattern": "^[A-Z][A-Z0-9_]*$"
           }
         },
+        "node": {
+          "type": "string",
+          "description": "The engines.node range from the template's package.json. Check it before installing."
+        },
         "devPort": {
           "type": "integer",
           "description": "Port the dev server listens on."
         },
         "buildCommand": {
           "type": "string",
-          "description": "The build script from the template's package.json. Produces a production build."
+          "description": "Contents of the build script in the template's package.json. Run the script through a package manager (npm run build), not this string directly."
         },
         "devCommand": {
           "type": "string",
-          "description": "The dev script from the template's package.json. Starts a dev server, not a production one."
+          "description": "Contents of the dev script in the template's package.json. Starts a dev server, not a production one. Run the script through a package manager (npm run dev), not this string directly."
         },
         "notes": {
           "type": "string",

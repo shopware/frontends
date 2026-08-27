@@ -277,9 +277,12 @@ manifest.templates.find((t) => t.id === "vue-blank").env;
 ```
 
 To start a new project from a template: run its `scaffoldCommand`, install
-dependencies with any package manager, run the dev script (`devCommand`), open
-`http://localhost:<devPort>`. Every template runs against a public demo backend
-out of the box; the `env` vars only re-point it at your own Shopware instance.
+dependencies with any package manager (Node per its `node` range), run the
+package.json `dev` script, open `http://localhost:<devPort>`. Every template
+runs against a public demo backend out of the box; the `env` vars only re-point
+it at your own Shopware instance. `devCommand`/`buildCommand` show what the
+scripts do - run the scripts, not these strings. The root `manifestVersion`
+bumps when field semantics change.
 
 Per template:
 
@@ -298,8 +301,9 @@ Per template:
 | `docsUrl`                   | Documentation page, or `null` when none exists yet                  |
 | `issueUrl`                  | Prefilled report link, title prefixed with the template id          |
 | `env`                       | Env vars that point it at your own instance. Demo defaults built in |
+| `node`                      | The `engines.node` range from its `package.json`                    |
 | `devPort`                   | Port the dev server listens on                                      |
-| `buildCommand`/`devCommand` | The `build` and `dev` scripts from its `package.json`               |
+| `buildCommand`/`devCommand` | What the `build` and `dev` scripts in its `package.json` do         |
 | `notes`                     | Optional, anything the fields above cannot express                  |
 
 Two ids do not match their package name: `astro` is `shopware-astro` and
@@ -311,8 +315,8 @@ Two ids do not match their package name: `astro` is `shopware-astro` and
 it with ajv, so the schema is the definition rather than a copy of one.
 
 The check also fails when `templates/` on disk and the manifest disagree in
-either direction, when an id is duplicated, when `packageName`, `buildCommand`
-or `devCommand` disagree with the template's `package.json`, when a `docsUrl`
+either direction, when an id is duplicated, when `packageName`, `buildCommand`,
+`devCommand` or `node` disagree with the template's `package.json`, when a `docsUrl`
 does not resolve to a file under `apps/docs/src/`, when an `issueUrl` title is
 not prefixed with its own template id, when `scaffoldable` and `scaffoldCommand`
 disagree, or when the `devcontainer` flag and `.devcontainer/<id>/` disagree in

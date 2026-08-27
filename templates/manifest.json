@@ -1,6 +1,7 @@
 {
   "$schema": "./manifest.schema.json",
-  "notes": "Every template runs against a public demo backend out of the box. The env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager, then run the dev script (devCommand) and open http://localhost:<devPort>.",
+  "manifestVersion": 1,
+  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager (Node per the node field), then run the package.json dev script (e.g. npm run dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings.",
   "templates": [
     {
       "id": "vue-starter-template",
@@ -19,6 +20,7 @@
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev"
@@ -40,6 +42,7 @@
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -59,6 +62,7 @@
       "deployable": false,
       "devcontainer": false,
       "env": ["API_URL", "API_ACCESS_TOKEN"],
+      "node": ">=22.12.0",
       "devPort": 4321,
       "buildCommand": "astro build",
       "devCommand": "astro dev"
@@ -80,6 +84,7 @@
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev"
@@ -98,6 +103,7 @@
       "deployable": false,
       "devcontainer": false,
       "env": ["VITE_DEMO_API_URL", "VITE_DEMO_API_ACCESS_TOKEN"],
+      "node": "^20.x || ^22.x || ^24.x",
       "devPort": 5173,
       "buildCommand": "vue-tsc --noEmit && vite build",
       "devCommand": "vite"
@@ -119,6 +125,7 @@
         "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
         "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
       ],
+      "node": "^20.x || ^22.x || ^24.x",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
