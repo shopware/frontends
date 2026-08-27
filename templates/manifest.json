@@ -1,7 +1,7 @@
 {
   "$schema": "./manifest.schema.json",
   "manifestVersion": 1,
-  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance. To start a project: run scaffoldCommand, install dependencies with any package manager (Node per the node field), then run the package.json dev script (e.g. npm run dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings. typeGeneration regenerates the API types from your own instance, which is what brings in installed extensions' types; run its loadSchemaCommand first, the script alone falls back to the published default types.",
+  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance and belong in a .env file in the project root (vue-starter-template ships a .env.template to copy). To start a project: run scaffoldCommand, install dependencies with pnpm (Node per the node field), then run the package.json dev script (pnpm dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings. typeGeneration regenerates the API types from your own instance, which is what brings in installed extensions' types; run its loadSchemaCommand first, the script alone falls back to the published default types.",
   "templates": [
     {
       "id": "vue-starter-template",
@@ -16,11 +16,21 @@
       "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-starter-template my-project",
       "deployable": true,
       "devcontainer": true,
-      "env": [
-        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
-        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
-      ],
-      "node": "^20.x || ^22.x || ^24.x",
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        },
+        "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "NUXT_SHOPWARE_ENDPOINT": {
+          "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -50,11 +60,21 @@
       "scaffoldCommand": null,
       "deployable": true,
       "devcontainer": true,
-      "env": [
-        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
-        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
-      ],
-      "node": "^20.x || ^22.x || ^24.x",
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        },
+        "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "NUXT_SHOPWARE_ENDPOINT": {
+          "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -85,7 +105,14 @@
       "scaffoldCommand": "npx tiged shopware/frontends/templates/astro my-project",
       "deployable": false,
       "devcontainer": false,
-      "env": ["API_URL", "API_ACCESS_TOKEN"],
+      "env": {
+        "API_URL": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "API_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
       "node": ">=22.12.0",
       "devPort": 4321,
       "buildCommand": "astro build",
@@ -105,11 +132,15 @@
       "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-blank my-project",
       "deployable": false,
       "devcontainer": false,
-      "env": [
-        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
-        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
-      ],
-      "node": "^20.x || ^22.x || ^24.x",
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -128,8 +159,15 @@
       "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-vite-blank my-project",
       "deployable": false,
       "devcontainer": false,
-      "env": ["VITE_DEMO_API_URL", "VITE_DEMO_API_ACCESS_TOKEN"],
-      "node": "^20.x || ^22.x || ^24.x",
+      "env": {
+        "VITE_DEMO_API_URL": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "VITE_DEMO_API_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": ">=22.12.0",
       "devPort": 5173,
       "buildCommand": "vue-tsc --noEmit && vite build",
       "devCommand": "vite",
@@ -148,11 +186,15 @@
       "scaffoldCommand": null,
       "deployable": true,
       "devcontainer": false,
-      "env": [
-        "NUXT_PUBLIC_SHOPWARE_ENDPOINT",
-        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN"
-      ],
-      "node": "^20.x || ^22.x || ^24.x",
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",

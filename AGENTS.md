@@ -277,8 +277,8 @@ manifest.templates.find((t) => t.id === "vue-blank").env;
 ```
 
 To start a new project from a template: run its `scaffoldCommand`, install
-dependencies with any package manager (Node per its `node` range), run the
-package.json `dev` script, open `http://localhost:<devPort>`. Every template
+dependencies with pnpm (Node per its `node` range), run the package.json `dev`
+script, open `http://localhost:<devPort>`. Every template
 runs against a public demo backend out of the box; the `env` vars only re-point
 it at your own Shopware instance. `devCommand`/`buildCommand` show what the
 scripts do - run the scripts, not these strings. The root `manifestVersion`
@@ -317,7 +317,8 @@ it with ajv, so the schema is the definition rather than a copy of one.
 
 The check also fails when `templates/` on disk and the manifest disagree in
 either direction, when an id is duplicated, when `packageName`, `buildCommand`,
-`devCommand`, `node` or `typeGeneration` disagree with the template's `package.json`, when a `docsUrl`
+`devCommand`, `node` or `typeGeneration` disagree with the template's `package.json`,
+when the `node` range admits versions the template's framework rejects, when a `docsUrl`
 does not resolve to a file under `apps/docs/src/`, when an `issueUrl` title is
 not prefixed with its own template id, when `scaffoldable` and `scaffoldCommand`
 disagree, or when the `devcontainer` flag and `.devcontainer/<id>/` disagree in
@@ -735,7 +736,7 @@ pnpm run build
 
 ## Environment
 
-- **Node.js**: 20.x, 22.x or 24.x required
+- **Node.js**: 22.19+, 24.11+ or 26+ required (the floor comes from Nuxt 4.5)
 - **pnpm**: 11.5.2 (managed by packageManager field)
 - **Corepack**: Recommended for Node.js version management
 

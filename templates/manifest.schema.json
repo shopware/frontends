@@ -103,12 +103,22 @@
           "description": "Whether .devcontainer/<id>/devcontainer.json exists, so it can be opened in GitHub Codespaces."
         },
         "env": {
-          "type": "array",
-          "description": "Env vars that point the template at your own Shopware instance. Every template ships with working demo-backend defaults, so none are needed for a first run.",
-          "uniqueItems": true,
-          "items": {
-            "type": "string",
+          "type": "object",
+          "description": "Env vars that point the template at your own Shopware instance, with what each one is for. Every template ships with working demo-backend defaults, so none are needed for a first run. They belong in a .env file in the project root.",
+          "minProperties": 1,
+          "propertyNames": {
             "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["description"],
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
           }
         },
         "node": {

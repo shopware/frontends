@@ -2,6 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 import { Ajv } from "ajv";
+import semver from "semver";
 
 /**
  * Fails when templates/manifest.json drifts from templates/ on disk, or from
@@ -11,15 +12,14 @@ import { Ajv } from "ajv";
  * The manifest is now the single source of truth, so this check exists to stop
  * it silently going stale the next time a template is added or removed.
  *
- * Not verified here: supportLevel, deployable, devPort and the env contents are
- * human judgements with no authority on disk. The schema confirms they are well
- * formed, never that they are right. The docsUrl check proves the page exists,
- * not that it is the right page for this template.
+ * Not verified: supportLevel, deployable, devPort and env contents are human
+ * judgements with no authority on disk.
  */
 
 type Template = {
   id: string;
   packageName: string;
+  framework: "nuxt" | "astro" | "vite";
   buildCommand: string;
   devCommand: string;
   node: string;
@@ -127,9 +127,7 @@ for (const template of manifest.templates) {
   const templateDir = path.join(templatesDir, template.id);
   const packageJsonPath = path.join(templateDir, "package.json");
   if (!fs.existsSync(packageJsonPath)) {
-    // A missing directory is already reported above. A directory that exists
-    // without a package.json is its own kind of drift, and skipping it silently
-    // would let every mirrored field below go stale.
+    // A missing directory is already reported above.
     if (fs.existsSync(templateDir)) {
       problems.push(`templates/${template.id}/ has no package.json`);
     }
@@ -174,8 +172,6 @@ for (const template of manifest.templates) {
     );
   }
 
-  // typeGeneration points at a package.json script, so it drifts the same way
-  // the mirrored commands do, in both directions.
   if (template.typeGeneration) {
     if (!scripts[template.typeGeneration.script]) {
       problems.push(
@@ -186,6 +182,30 @@ for (const template of manifest.templates) {
     problems.push(
       `"${template.id}" has typeGeneration null, but ${where} has a "generate-types" script`,
     );
+  }
+
+  // engines.node itself can lie: it must not admit versions the framework
+  // rejects. Stricter than the framework is fine (dropping an EOL major).
+  const frameworkPkgPath = path.join(
+    templateDir,
+    "node_modules",
+    template.framework,
+    "package.json",
+  );
+  if (!semver.validRange(template.node)) {
+    problems.push(
+      `"${template.id}" has node "${template.node}", which is not a valid semver range`,
+    );
+  } else if (fs.existsSync(frameworkPkgPath)) {
+    const frameworkPkg = readJson(frameworkPkgPath) as {
+      engines?: { node?: string };
+    };
+    const frameworkRange = frameworkPkg?.engines?.node;
+    if (frameworkRange && !semver.subset(template.node, frameworkRange)) {
+      problems.push(
+        `"${template.id}" has node "${template.node}", which admits versions ${template.framework} rejects (its engines.node is "${frameworkRange}")`,
+      );
+    }
   }
 }
 
@@ -217,22 +237,19 @@ for (const template of manifest.templates) {
   }
 }
 
-// Six near-identical URLs are easy to copy and forget to edit, and a wrong one
-// files the report against the wrong template. Match the full bracketed title
-// prefix: a bare substring match would let an id that is a prefix of another id
-// (vue-starter-template inside vue-starter-template-extended) slip through.
+// Prefix-not-substring on the decoded title, or an id that is a prefix of
+// another id (vue-starter-template-extended) slips through.
 for (const template of manifest.templates) {
-  const titlePrefix = `%5B${encodeURIComponent(template.id)}%5D`;
-  if (!template.issueUrl.includes(titlePrefix)) {
+  const title = new URL(template.issueUrl).searchParams.get("title") ?? "";
+  if (!title.startsWith(`[${template.id}]`)) {
     problems.push(
       `"${template.id}" has an issueUrl whose title is not prefixed with [${template.id}]: ${template.issueUrl}`,
     );
   }
 }
 
-// scaffoldCommand and scaffoldable must agree, and the command must copy this
-// template's own directory. The lookahead stops templates/vue-starter-template
-// from matching inside templates/vue-starter-template-extended.
+// The lookahead stops templates/vue-starter-template from matching inside
+// templates/vue-starter-template-extended.
 for (const template of manifest.templates) {
   if (template.scaffoldable) {
     if (template.scaffoldCommand === null) {
@@ -255,8 +272,6 @@ for (const template of manifest.templates) {
   }
 }
 
-// The devcontainer flag mirrors .devcontainer/<id>/ on disk, in both directions,
-// so a Codespaces link built from it cannot point at a container that is not there.
 const devcontainersDir = path.join(rootDir, ".devcontainer");
 for (const template of manifest.templates) {
   const exists = fs.existsSync(
@@ -274,7 +289,11 @@ if (fs.existsSync(devcontainersDir)) {
     withFileTypes: true,
   })) {
     if (!entry.isDirectory()) continue;
-    if (!inManifest.includes(entry.name)) {
+    // Shared config folders without a devcontainer.json are not containers.
+    const isContainer = fs.existsSync(
+      path.join(devcontainersDir, entry.name, "devcontainer.json"),
+    );
+    if (isContainer && !inManifest.includes(entry.name)) {
       problems.push(
         `.devcontainer/${entry.name}/ exists but "${entry.name}" is not a template in manifest.json`,
       );

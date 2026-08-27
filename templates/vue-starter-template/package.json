@@ -65,6 +65,16 @@
     "eslint-visitor-keys": "^4"
   },
   "engines": {
-    "node": "^20.x || ^22.x || ^24.x"
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "oxfmt",
+      "oxlint",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }
