@@ -27,6 +27,20 @@ const schemaPath = path.join(templatesDir, "manifest.schema.json");
 
 const problems: string[] = [];
 
+/** Print whatever has been collected and exit. Never returns when there is a problem. */
+function report(): void {
+  if (problems.length) {
+    console.error("templates/manifest.json is out of sync:\n");
+    for (const problem of problems) {
+      console.error(`  - ${problem}`);
+    }
+    console.error(
+      `\nUpdate templates/manifest.json so it matches templates/ on disk and templates/manifest.schema.json.`,
+    );
+    process.exit(1);
+  }
+}
+
 const manifest: { templates: Template[] } = JSON.parse(
   fs.readFileSync(manifestPath, "utf8"),
 );
@@ -40,6 +54,10 @@ if (!ajv.validate(schema, manifest)) {
     const where = error.instancePath || "/";
     problems.push(`${where} ${error.message}`);
   }
+  // Everything below reads manifest.templates. If the schema rejected the file
+  // there is no point guessing at a shape we already know is wrong, and doing so
+  // would throw before these errors ever reach the reader.
+  report();
 }
 
 const onDisk = fs
@@ -111,13 +129,24 @@ for (const template of manifest.templates) {
 // A docsUrl that 404s is worse than no docsUrl, so resolve each one back to the
 // markdown file the docs site builds it from.
 const DOCS_BASE = "https://developer.shopware.com/frontends/";
-const docsRoot = path.join(__dirname, "..", "apps", "docs", "src");
+const docsRoot = path.resolve(__dirname, "..", "apps", "docs", "src");
 
 for (const template of manifest.templates) {
   if (template.docsUrl === null) continue;
 
   const page = template.docsUrl.slice(DOCS_BASE.length).replace(/\.html$/, "");
-  const source = path.join(docsRoot, `${page}.md`);
+  const source = path.resolve(docsRoot, `${page}.md`);
+
+  // `page` comes from a URL, so `..` segments would otherwise let the lookup
+  // wander outside the docs tree and find an unrelated file that happens to
+  // exist, which would make this check pass on a broken link.
+  if (!source.startsWith(docsRoot + path.sep)) {
+    problems.push(
+      `"${template.id}" has a docsUrl that resolves outside apps/docs/src/: ${template.docsUrl}`,
+    );
+    continue;
+  }
+
   if (!fs.existsSync(source)) {
     problems.push(
       `"${template.id}" has docsUrl ${template.docsUrl}, but apps/docs/src/${page}.md does not exist`,
@@ -135,16 +164,7 @@ for (const template of manifest.templates) {
   }
 }
 
-if (problems.length) {
-  console.error("templates/manifest.json is out of sync:\n");
-  for (const problem of problems) {
-    console.error(`  - ${problem}`);
-  }
-  console.error(
-    `\nUpdate templates/manifest.json so it matches templates/ on disk and templates/manifest.schema.json.`,
-  );
-  process.exit(1);
-}
+report();
 
 console.log(
   `templates/manifest.json matches templates/ and its schema (${onDisk.length} templates).`,
