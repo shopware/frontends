@@ -14,12 +14,17 @@ declare global {
   }
 }
 
-const directoryPath = path.join(__dirname, "../../../templates/");
+// Only scaffoldable templates can boot outside the monorepo, so only they can
+// pass on StackBlitz.
+const manifestPath = path.join(__dirname, "../../../templates/manifest.json");
+const { templates } = JSON.parse(fs.readFileSync(manifestPath, "utf8")) as {
+  templates: Array<{ id: string; scaffoldable: boolean }>;
+};
 
-for (const template of fs.readdirSync(directoryPath)) {
-  test(`Open, { tag: "@stackblitz" },  ${template}`, async ({ page }) => {
+for (const template of templates.filter((t) => t.scaffoldable)) {
+  test(`Open, { tag: "@stackblitz" },  ${template.id}`, async ({ page }) => {
     test.setTimeout(200000);
-    const templateName = `shopware/frontends/tree/main/templates/${template}`;
+    const templateName = `shopware/frontends/tree/main/templates/${template.id}`;
     await page.goto(`file://${__dirname}/pages/blank.html`, {
       waitUntil: "domcontentloaded",
       timeout: 0,
@@ -39,7 +44,7 @@ for (const template of fs.readdirSync(directoryPath)) {
       "https://demo-frontends.shopware.store/store-api/context",
     );
     await expect(page).toHaveURL(
-      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${template}?file=README.md`,
+      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${template.id}?file=README.md`,
     );
 
     const consoleLogs: string[] = [];

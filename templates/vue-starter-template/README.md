@@ -18,7 +18,7 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 
 Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
 
-Node 20, 22 or 24. This repository uses pnpm.
+Node 22 or 24. This repository uses pnpm.
 
 ## Install & Run
 
