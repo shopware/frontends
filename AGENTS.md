@@ -530,10 +530,14 @@ vars its manifest entry lists under `env`. The names differ per framework, so
 read them from the manifest instead of memorizing them. For the Nuxt templates:
 
 ```bash
-# .env (vue-starter-template and vue-demo-store ship a .env.template to copy)
+# .env (vue-starter-template ships a .env.template with these two)
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.com/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
+
+The demo defaults these override live in each template's `nuxt.config.ts`, under
+the `shopware` module key or `runtimeConfig.public.shopware`. See
+[packages/nuxt-module/README.md](packages/nuxt-module/README.md) for both forms.
 
 The astro template reads `API_URL`/`API_ACCESS_TOKEN` and vue-vite-blank reads
 `VITE_DEMO_API_URL`/`VITE_DEMO_API_ACCESS_TOKEN`.
