@@ -18,7 +18,7 @@ Alternatively, set up the astro-blank template manually by running the following
 
 ```bash
 npx tiged shopware/frontends/templates/astro astro-blank && cd astro-blank
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 ## Configure

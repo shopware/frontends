@@ -28,7 +28,7 @@ Alternatively, set up the vue-starter-template manually by running the following
 
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 ## Directory structure
