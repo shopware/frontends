@@ -24,5 +24,15 @@
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "oxfmt",
+      "oxlint",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }

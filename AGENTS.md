@@ -42,6 +42,8 @@ frontends/
 │   ├── unocss-design-tokens-layer/ # UnoCSS design tokens Nuxt layer
 │   └── api-gen/              # Type generation tool
 ├── templates/         # Starter templates
+│   ├── manifest.json                  # Source of truth: which templates exist
+│   ├── manifest.schema.json           # Schema for the manifest
 │   ├── vue-demo-store/                # Full demo with UnoCSS, i18n, CMS
 │   ├── vue-starter-template/          # Production-ready starter
 │   ├── vue-starter-template-extended/ # Layer extension example
@@ -93,6 +95,7 @@ pnpm run test                             # Run tests
 pnpm run test:watch                       # Watch mode
 pnpm run test:e2e                         # E2E tests (demo store tag only)
 pnpm format                               # Format with Oxfmt
+pnpm run check:templates                  # templates/manifest.json matches disk
 ```
 
 ### Type Generation
@@ -260,6 +263,72 @@ Generates optimized CSS `url()` values for CMS background images. Accepts an opt
 ## Working with Templates
 
 Templates are starter projects demonstrating different use cases and setups.
+
+### templates/manifest.json
+
+**Read this before the prose below.** It is the single source of truth for which
+templates exist and what each one needs. The list used to live in five places
+that had already drifted apart, so anything that needs to know about templates
+should read the manifest instead of hardcoding a list or globbing `templates/`.
+
+```js
+const manifest = require("./templates/manifest.json");
+
+manifest.templates.filter((t) => t.scaffoldable); // may be offered as a project starting point
+manifest.templates.filter((t) => t.supportLevel === "supported");
+manifest.templates.find((t) => t.id === "vue-blank").env;
+```
+
+To start a new project from a template: run its `scaffoldCommand`, install
+dependencies with pnpm (Node per its `node` range), run the package.json `dev`
+script, open `http://localhost:<devPort>`. Every template
+runs against a public demo backend out of the box; the `env` vars only re-point
+it at your own Shopware instance. `devCommand`/`buildCommand` show what the
+scripts do - run the scripts, not these strings. The root `manifestVersion`
+bumps when field semantics change.
+
+Per template:
+
+| Field                       | Meaning                                                             |
+| --------------------------- | ------------------------------------------------------------------- |
+| `id`                        | Directory name under `templates/`. The identity used everywhere     |
+| `displayName`               | Human-readable name for navigation, pickers and labels              |
+| `packageName`               | The `name` in its `package.json`. Does **not** always match `id`    |
+| `framework`                 | `nuxt`, `astro` or `vite`                                           |
+| `purpose`                   | One sentence on what it is for                                      |
+| `supportLevel`              | `supported`, `example` or `deprecated`                              |
+| `scaffoldable`              | Whether it may be offered as a starting point for a new project     |
+| `scaffoldCommand`           | Copies it out of the monorepo. `null` exactly when not scaffoldable |
+| `deployable`                | Whether it is deployed anywhere                                     |
+| `devcontainer`              | Whether `.devcontainer/<id>/` exists, for Codespaces links          |
+| `docsUrl`                   | Documentation page, or `null` when none exists yet                  |
+| `issueUrl`                  | Prefilled report link, title prefixed with the template id          |
+| `env`                       | Env vars that point it at your own instance. Demo defaults built in |
+| `node`                      | The `engines.node` range from its `package.json`                    |
+| `devPort`                   | Port the dev server listens on                                      |
+| `buildCommand`/`devCommand` | What the `build` and `dev` scripts in its `package.json` do         |
+| `typeGeneration`            | How to regenerate Store API types for your instance, or `null`      |
+| `notes`                     | Optional, anything the fields above cannot express                  |
+
+Two ids do not match their package name: `astro` is `shopware-astro` and
+`vue-starter-template-extended` is `lumora-demo-store`. Filter pnpm workspaces on
+`packageName`, identify directories on `id`.
+
+`templates/manifest.schema.json` is the schema. Editors pick it up through the
+`$schema` key in the manifest, and `pnpm run check:templates` validates against
+it with ajv, so the schema is the definition rather than a copy of one.
+
+The check also fails when `templates/` on disk and the manifest disagree in
+either direction, when an id is duplicated, when `packageName`, `buildCommand`,
+`devCommand`, `node` or `typeGeneration` disagree with the template's `package.json`,
+when the `node` range admits versions the template's framework rejects, when a `docsUrl`
+does not resolve to a file under `apps/docs/src/`, when an `issueUrl` title is
+not prefixed with its own template id, when `scaffoldable` and `scaffoldCommand`
+disagree, or when the `devcontainer` flag and `.devcontainer/<id>/` disagree in
+either direction. It runs in CI as its own `Templates manifest` workflow,
+triggered by changes to `templates/`, `apps/docs/src/`, `.devcontainer/` or the
+check itself. **When you add or remove a template, or change its build or dev
+script, update the manifest in the same change.**
 
 ### vue-demo-store
 
@@ -455,34 +524,35 @@ export default defineAppConfig({
 
 ### Template Configuration
 
-All templates support:
-
-**API Configuration** (`nuxt.config.ts` or equivalent):
-
-```typescript
-export default defineNuxtConfig({
-  modules: ["@shopware/nuxt-module"],
-  shopware: {
-    endpoint: "https://your-shop.com/store-api",
-    accessToken: "your-access-token",
-  },
-});
-```
-
-**Type Generation** (all Nuxt templates except vue-blank):
+Every template ships with working demo-backend defaults, so it runs with no
+configuration at all. To point one at your own Shopware instance, set the env
+vars its manifest entry lists under `env`. The names differ per framework, so
+read them from the manifest instead of memorizing them. For the Nuxt templates:
 
 ```bash
-pnpm run generate-types
-# Uses @shopware/api-gen to generate types from your Shopware instance
+# .env (vue-starter-template and vue-demo-store ship a .env.template to copy)
+NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.com/store-api
+NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
 
-**Environment Variables**:
-Create `.env` file (use `.env.template` as reference):
+The astro template reads `API_URL`/`API_ACCESS_TOKEN` and vue-vite-blank reads
+`VITE_DEMO_API_URL`/`VITE_DEMO_API_ACCESS_TOKEN`.
+
+**Type Generation** (templates whose manifest `typeGeneration` is not `null`):
 
 ```bash
-SHOPWARE_ENDPOINT=https://your-shop.com/store-api
-SHOPWARE_ACCESS_TOKEN=your-access-token
+# Set OPENAPI_JSON_URL and OPENAPI_ACCESS_KEY first, then:
+npx shopware-api-gen loadSchema --apiType=store   # fetch your instance's schema
+pnpm run generate-types                           # regenerate the types from it
 ```
+
+Both values derive from the storefront configuration: `OPENAPI_JSON_URL` is
+`NUXT_PUBLIC_SHOPWARE_ENDPOINT` without its `/store-api` suffix, and
+`OPENAPI_ACCESS_KEY` is the same value as `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN`.
+The manifest's `typeGeneration.env` carries these derivations per template.
+
+Skipping the fetch makes `generate-types` fall back to the published default
+types, which do not include your instance's extensions.
 
 ### Choosing a Template
 
@@ -494,6 +564,8 @@ SHOPWARE_ACCESS_TOKEN=your-access-token
 | Minimal Nuxt setup       | vue-blank                     |
 | No SSR/No Nuxt           | vue-vite-blank                |
 | Use Astro                | astro                         |
+
+This table is for humans. Code should read `templates/manifest.json`.
 
 ## Making Changes
 
@@ -665,7 +737,7 @@ pnpm run build
 
 ## Environment
 
-- **Node.js**: 20.x, 22.x, or 24.x required
+- **Node.js**: 22.19+, 24.11+ or 26+ required (the floor comes from Nuxt 4.5)
 - **pnpm**: 11.5.2 (managed by packageManager field)
 - **Corepack**: Recommended for Node.js version management
 
@@ -725,5 +797,5 @@ This is a frontend framework for eCommerce. Be mindful of:
 
 ---
 
-**Last Updated**: 2026-08-20
-**Repository Version**: Based on commit 73d6426b
+**Last Updated**: 2026-08-28
+**Repository Version**: Based on commit 469d6347
