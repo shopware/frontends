@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-type TemplateId = "vue-starter-template" | "vue-starter-template-extended";
-type EnvId = "stackblitz" | "codespaces" | "local";
+import type { Template } from "../../../src/.data/templates.data";
+import { data } from "../../../src/.data/templates.data";
 
-interface Template {
-  id: TemplateId;
-  title: string;
-  pitch: string;
-}
+type EnvId = "stackblitz" | "codespaces" | "local";
 
 interface Env {
   id: EnvId;
@@ -16,29 +12,21 @@ interface Env {
   pitch: string;
   expectedDuration: string;
   tip?: string;
-  buildOpenUrl: (template: TemplateId) => string | null;
-  buildCommand?: (template: TemplateId) => string;
+  /** Why this environment cannot run the template, or null when it can. */
+  unavailableFor: (template: Template) => string | null;
+  buildOpenUrl: (template: Template) => string | null;
+  buildCommand?: (template: Template) => string | null;
 }
 
-const templatesById: Record<TemplateId, Template> = {
-  "vue-starter-template": {
-    id: "vue-starter-template",
-    title: "Vue Starter Template",
-    pitch:
-      "Production-ready blank starter with all core packages pre-configured.",
-  },
-  "vue-starter-template-extended": {
-    id: "vue-starter-template-extended",
-    title: "Vue Starter Template Extended (Lumora)",
-    pitch:
-      "Branded demo store layered on top of the starter — shows the Nuxt layer pattern.",
-  },
-};
+// Only templates we support as a starting point are offered here. Everything
+// else about them - how to scaffold, where a devcontainer exists - comes from
+// templates/manifest.json rather than a second list kept in sync by hand.
+const templates = data.templates.filter(
+  (template) => template.supportLevel === "supported",
+);
 
-const templates: Template[] = [
-  templatesById["vue-starter-template"],
-  templatesById["vue-starter-template-extended"],
-];
+const NOT_SCAFFOLDABLE =
+  "This template cannot be copied out of the repository on its own. Use Codespaces, or the AI prompt below, which sets up the base template alongside it.";
 
 const environmentsById: Record<EnvId, Env> = {
   local: {
@@ -46,9 +34,12 @@ const environmentsById: Record<EnvId, Env> = {
     title: "Local clone",
     pitch: "Fastest after first install. Run on your machine.",
     expectedDuration: "~1 minute after first install",
+    unavailableFor: (t) => (t.scaffoldable ? null : NOT_SCAFFOLDABLE),
     buildOpenUrl: () => null,
     buildCommand: (t) =>
-      `npx tiged shopware/frontends/templates/${t} my-store && cd my-store && npm install && npm run dev`,
+      t.scaffoldCommand
+        ? `${t.scaffoldCommand} && cd my-project && pnpm install && pnpm dev`
+        : null,
   },
   stackblitz: {
     id: "stackblitz",
@@ -56,8 +47,11 @@ const environmentsById: Record<EnvId, Env> = {
     pitch: "Fastest to open in the browser. Some boot noise is expected.",
     expectedDuration: "~30 seconds to first preview",
     tip: "If the preview hangs on the loading state, refresh the page once — startup occasionally stalls in the sandbox.",
+    unavailableFor: (t) => (t.scaffoldable ? null : NOT_SCAFFOLDABLE),
     buildOpenUrl: (t) =>
-      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${t}`,
+      t.scaffoldable
+        ? `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${t.id}`
+        : null,
   },
   codespaces: {
     id: "codespaces",
@@ -66,8 +60,12 @@ const environmentsById: Record<EnvId, Env> = {
       "Clean cloud dev environment. Slower cold start, full VS Code experience.",
     expectedDuration: "~2-3 minutes on first boot",
     tip: "Pick a 4-core or larger machine type on the Codespaces creation page — the default 2-core makes installs and the dev server noticeably slower.",
+    unavailableFor: (t) =>
+      t.devcontainer ? null : "This template has no devcontainer yet.",
     buildOpenUrl: (t) =>
-      `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t}/devcontainer.json`,
+      t.devcontainer
+        ? `https://github.com/codespaces/new?repo=shopware/frontends&ref=main&devcontainer_path=.devcontainer/${t.id}/devcontainer.json`
+        : null,
   },
 };
 
@@ -77,17 +75,26 @@ const environments: Env[] = [
   environmentsById.codespaces,
 ];
 
-const selectedTemplate = ref<TemplateId>("vue-starter-template");
+const [firstTemplate] = templates;
+
+const selectedTemplate = ref<string>(firstTemplate?.id ?? "");
 const selectedEnv = ref<EnvId>("local");
 
 const env = computed(() => environmentsById[selectedEnv.value]);
-const template = computed(() => templatesById[selectedTemplate.value]);
+const template = computed(
+  () => templates.find((t) => t.id === selectedTemplate.value) ?? firstTemplate,
+);
 
-const openUrl = computed(() => env.value.buildOpenUrl(selectedTemplate.value));
+const unavailableReason = computed(() =>
+  env.value.unavailableFor(template.value),
+);
+const openUrl = computed(() =>
+  unavailableReason.value ? null : env.value.buildOpenUrl(template.value),
+);
 const command = computed(() =>
-  env.value.buildCommand
-    ? env.value.buildCommand(selectedTemplate.value)
-    : null,
+  unavailableReason.value || !env.value.buildCommand
+    ? null
+    : env.value.buildCommand(template.value),
 );
 
 const copied = ref(false);
@@ -100,15 +107,17 @@ async function copyCommand() {
   }, 2000);
 }
 
-const aiPrompts: Record<TemplateId, string> = {
+// Hand-written per template, keyed by manifest id. A template without a prompt
+// simply does not show the section.
+const aiPrompts: Record<string, string> = {
   "vue-starter-template": `I want to set up the Shopware Frontends Vue Starter Template for local development.
 
 In my current working directory, please:
 
 1. Run \`npx tiged shopware/frontends/templates/vue-starter-template my-store\`
 2. \`cd my-store\`
-3. Run \`npm install\`
-4. Start the dev server with \`npm run dev\` and tell me when it's ready on http://localhost:3000
+3. Run \`pnpm install\`
+4. Start the dev server with \`pnpm dev\` and tell me when it's ready on http://localhost:3000
 
 If anything fails, surface the error and stop — don't try to "fix" peer-dep warnings unless I ask.
 
@@ -123,17 +132,18 @@ This template is a Nuxt layer that extends \`vue-starter-template\`, so we need 
    - replace \`"vue-starter-template": "workspace:*"\` with \`"vue-starter-template": "file:../vue-starter-template"\`
    - replace any other \`workspace:*\` dep with \`"canary"\` (the published npm tag)
    - tell me exactly what you changed
-4. \`cd lumora-store\`, run \`npm install\`, then \`npm run dev\`. Confirm when the storefront is up on http://localhost:3000.
+4. \`cd lumora-store\`, run \`pnpm install\`, then \`pnpm dev\`. Confirm when the storefront is up on http://localhost:3000.
 
 Peer-dep warnings during install are safe to ignore. If any package fails to resolve, stop and report.
 
 After it's running, point me at \`lumora-store/app/app.config.ts\` (brand config) and \`lumora-store/uno.config.ts\` (theme overrides).`,
 };
 
-const aiPrompt = computed(() => aiPrompts[selectedTemplate.value]);
+const aiPrompt = computed(() => aiPrompts[selectedTemplate.value] ?? null);
 
 const promptCopied = ref(false);
 async function copyAiPrompt() {
+  if (!aiPrompt.value) return;
   await navigator.clipboard.writeText(aiPrompt.value);
   promptCopied.value = true;
   setTimeout(() => {
@@ -156,8 +166,8 @@ async function copyAiPrompt() {
           :aria-pressed="selectedTemplate === t.id"
           @click="selectedTemplate = t.id"
         >
-          <span class="try-it-out-card-title">{{ t.title }}</span>
-          <span class="try-it-out-card-pitch">{{ t.pitch }}</span>
+          <span class="try-it-out-card-title">{{ t.displayName }}</span>
+          <span class="try-it-out-card-pitch">{{ t.purpose }}</span>
         </button>
       </div>
     </section>
@@ -184,12 +194,16 @@ async function copyAiPrompt() {
     <section class="try-it-out-launch">
       <div class="try-it-out-launch-summary">
         <span class="try-it-out-launch-label">Launching</span>
-        <strong>{{ template.title }}</strong>
+        <strong>{{ template.displayName }}</strong>
         <span class="try-it-out-launch-divider">in</span>
         <strong>{{ env.title }}</strong>
       </div>
 
-      <p v-if="env.tip" class="try-it-out-launch-tip">💡 {{ env.tip }}</p>
+      <p v-if="unavailableReason" class="try-it-out-launch-unavailable">
+        {{ unavailableReason }}
+      </p>
+
+      <p v-else-if="env.tip" class="try-it-out-launch-tip">💡 {{ env.tip }}</p>
 
       <a
         v-if="openUrl"
@@ -213,12 +227,12 @@ async function copyAiPrompt() {
       </div>
     </section>
 
-    <section class="try-it-out-ai">
+    <section v-if="aiPrompt" class="try-it-out-ai">
       <div class="try-it-out-ai-header">
         <h3 class="try-it-out-section-title">Or: delegate to an AI agent</h3>
         <p class="try-it-out-ai-hint">
           Paste this prompt into Claude, Cursor, Copilot, or any code assistant.
-          The prompt is tailored to <strong>{{ template.title }}</strong
+          The prompt is tailored to <strong>{{ template.displayName }}</strong
           >.
         </p>
       </div>
@@ -330,6 +344,17 @@ async function copyAiPrompt() {
 .try-it-out-launch-label,
 .try-it-out-launch-divider {
   color: var(--vp-c-text-2);
+}
+
+.try-it-out-launch-unavailable {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--vp-c-warning-soft);
+  border: 1px solid var(--vp-c-warning-1);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--vp-c-text-1);
 }
 
 .try-it-out-launch-tip {

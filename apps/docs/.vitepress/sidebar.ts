@@ -3,8 +3,29 @@
  */
 
 import data from "../src/.data/composables.data";
+import templatesData from "../src/.data/templates.data";
 
 const composables = await data.load(null);
+const { templates } = await templatesData.load(null);
+
+// A template belongs in the nav when it has a docs page, whatever its support
+// level: vue-demo-store is deprecated but stays documented as a reference.
+const templatePages = templates
+  .filter((template) => template.link)
+  .map((template) => ({ text: template.displayName, link: template.link }));
+
+// Integration guides, not templates. They have a page but no templates/ entry,
+// so the manifest does not know about them.
+const integrationGuides = [
+  {
+    text: "Custom Vue Project",
+    link: "/introduction/templates/custom-vue-project.html",
+  },
+  {
+    text: "Custom React Project",
+    link: "/introduction/templates/custom-react-project.html",
+  },
+];
 
 export const sidebar = [
   {
@@ -27,36 +48,7 @@ export const sidebar = [
         text: "Setup Templates",
         link: "/introduction/templates.html",
         collapsed: true,
-        items: [
-          {
-            text: "Vue Starter Template",
-            link: "/introduction/templates/vue-starter-template.html",
-          },
-          {
-            text: "Vue Starter Template Extended",
-            link: "/introduction/templates/vue-starter-template-extended.html",
-          },
-          {
-            text: "Blank Template",
-            link: "/introduction/templates/blank-template.html",
-          },
-          {
-            text: "Demo Store",
-            link: "/introduction/templates/demo-store-template.html",
-          },
-          {
-            text: "Custom Vue Project",
-            link: "/introduction/templates/custom-vue-project.html",
-          },
-          {
-            text: "Custom React Project",
-            link: "/introduction/templates/custom-react-project.html",
-          },
-          {
-            text: "Astro Template",
-            link: "/introduction/templates/astro-template.html",
-          },
-        ],
+        items: [...templatePages, ...integrationGuides],
       },
     ],
   },
