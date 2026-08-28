@@ -84,11 +84,12 @@ export function useOffsetPaginatedList<T>(
     },
   });
 
-  const stateKey = computed(
-    () =>
-      `${key}:${JSON.stringify(route.query)}:${JSON.stringify(
-        watchSources.map((source) => toValue(source)),
-      )}`,
+  const stateKey = computed(() =>
+    JSON.stringify([
+      requestedPage.value,
+      limit.value,
+      watchSources.map((source) => toValue(source)),
+    ]),
   );
 
   const { data, status, error, refresh } = useAsyncData(

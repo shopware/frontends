@@ -58,7 +58,7 @@ const cells = computed<PaginationCell[]>(() => {
       class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-outline-outline-variant bg-white text-sm outline outline-1 outline-offset-[-1px] outline-outline-outline-variant disabled:opacity-40 disabled:cursor-not-allowed"
       :disabled="current <= 1"
       :aria-label="$t('layout.ariaLabels.previousPage')"
-      @click="$emit('changePage', current - 1)"
+      @click="handleChangePage(current - 1)"
     >
       <SwChevronIcon direction="left" :size="20" />
     </button>
@@ -93,7 +93,7 @@ const cells = computed<PaginationCell[]>(() => {
       class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-outline-outline-variant bg-white text-sm outline outline-1 outline-offset-[-1px] outline-outline-outline-variant disabled:opacity-40 disabled:cursor-not-allowed"
       :disabled="current >= total"
       :aria-label="$t('layout.ariaLabels.nextPage')"
-      @click="$emit('changePage', current + 1)"
+      @click="handleChangePage(current + 1)"
     >
       <SwChevronIcon direction="right" :size="20" />
     </button>

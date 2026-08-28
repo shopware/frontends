@@ -126,10 +126,15 @@ if (languages && router.currentRoute.value.name) {
   provide("urlPrefix", prefix);
 }
 
+const WISHLIST_ID_HYDRATION_LIMIT = 100;
+
 onMounted(() => {
   refreshCart();
-  // hydrate the wishlist store with the product ids only
+  // Hydrate the wishlist store with the product ids only. The header counter
+  // comes from `total-count-mode: exact` and stays correct regardless of the
+  // limit - this is purely about how many ids `isInWishlist` can see.
   getWishlistProducts({
+    limit: WISHLIST_ID_HYDRATION_LIMIT,
     includes: {
       product: ["id"],
     },
