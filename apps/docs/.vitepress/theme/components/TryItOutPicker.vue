@@ -28,6 +28,11 @@ const templates = data.templates.filter(
 const NOT_SCAFFOLDABLE =
   "This template cannot be copied out of the repository on its own. Use Codespaces, or the AI prompt below, which sets up the base template alongside it.";
 
+/** The destination directory is the last argument of the manifest's tiged command. */
+function targetDir(scaffoldCommand: string) {
+  return scaffoldCommand.trim().split(/\s+/).at(-1);
+}
+
 const environmentsById: Record<EnvId, Env> = {
   local: {
     id: "local",
@@ -38,7 +43,7 @@ const environmentsById: Record<EnvId, Env> = {
     buildOpenUrl: () => null,
     buildCommand: (t) =>
       t.scaffoldCommand
-        ? `${t.scaffoldCommand} && cd my-project && pnpm install && pnpm dev`
+        ? `${t.scaffoldCommand} && cd ${targetDir(t.scaffoldCommand)} && pnpm install && pnpm dev`
         : null,
   },
   stackblitz: {
