@@ -2,6 +2,11 @@
   "wishlist": {
     "header": "Lista życzeń",
     "subHeader": "Zobacz swoją aktualną listę życzeń.",
+    "empty": {
+      "title": "Twoja lista życzeń jest pusta",
+      "description": "Śledź produkty, które Ci się podobają, dodając je do swojej listy życzeń.",
+      "continueShopping": "Kontynuuj zakupy"
+    },
     "notLoggedIn": {
       "title": "Twoja lista życzeń jest pusta",
       "description": "Śledź produkty, które Ci się podobają, dodając je do swojej listy życzeń.",
