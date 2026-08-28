@@ -39,7 +39,8 @@ const environmentsById: Record<EnvId, Env> = {
     title: "Local clone",
     pitch: "Fastest after first install. Run on your machine.",
     expectedDuration: "~1 minute after first install",
-    unavailableFor: (t) => (t.scaffoldable ? null : NOT_SCAFFOLDABLE),
+    unavailableFor: (t) =>
+      t.scaffoldable && t.scaffoldCommand ? null : NOT_SCAFFOLDABLE,
     buildOpenUrl: () => null,
     buildCommand: (t) =>
       t.scaffoldCommand
@@ -196,7 +197,7 @@ async function copyAiPrompt() {
       </div>
     </section>
 
-    <section class="try-it-out-launch">
+    <section v-if="template" class="try-it-out-launch">
       <div class="try-it-out-launch-summary">
         <span class="try-it-out-launch-label">Launching</span>
         <strong>{{ template.displayName }}</strong>
@@ -355,8 +356,8 @@ async function copyAiPrompt() {
   margin: 0;
   padding: 10px 12px;
   border-radius: 8px;
-  background: var(--vp-c-warning-soft);
-  border: 1px solid var(--vp-c-warning-1);
+  background: var(--vp-c-warning-soft, var(--vp-c-bg-soft));
+  border: 1px solid var(--vp-c-warning-1, var(--vp-c-divider));
   font-size: 13px;
   line-height: 1.5;
   color: var(--vp-c-text-1);
