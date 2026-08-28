@@ -86,7 +86,7 @@ function handleUpdateQuantity(id: string, quantity: number) {
         <SharedPrice
           :value="totalPrice"
           class="text-right justify-start text-surface-on-surface text-base font-normal leading-normal"
-          data-testid="cart-subtotal"
+          data-testid="cart-total"
         />
       </div>
     </div>

@@ -46,10 +46,10 @@ function handleChange(id: string) {
           </div>
 
           <div
-            v-if="paymentMethod.description"
+            v-if="paymentMethod.translated.description"
             class="self-stretch text-surface-on-surface-variant text-sm leading-[21px]"
           >
-            {{ paymentMethod.description }}
+            {{ paymentMethod.translated.description }}
           </div>
         </div>
         <div v-if="getPaymentMethodIcon(paymentMethod)" class="ml-auto">

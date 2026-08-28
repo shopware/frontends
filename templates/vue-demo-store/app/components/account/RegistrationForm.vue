@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 const { required, minLength, email, requiredIf } = customValidators();
 
@@ -188,7 +189,7 @@ useBreadcrumbs([
               :key="salutation.id"
               :value="salutation.id"
             >
-              {{ salutation.displayName }}
+              {{ getTranslatedProperty(salutation, "displayName") }}
             </option>
           </select>
         </div>

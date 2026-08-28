@@ -1,0 +1,216 @@
+{
+  "$schema": "./manifest.schema.json",
+  "manifestVersion": 1,
+  "notes": "Every template runs against a public demo backend out of the box; the env vars only re-point it at your own Shopware instance and belong in a .env file in the project root (vue-starter-template ships a .env.template to copy). To start a project: run scaffoldCommand, install dependencies with pnpm (Node per the node field), then run the package.json dev script (pnpm dev) and open http://localhost:<devPort>. devCommand and buildCommand show what the dev and build scripts do - run the scripts, not these strings. typeGeneration regenerates the API types from your own instance, which is what brings in installed extensions' types; run its loadSchemaCommand first, the script alone falls back to the published default types.",
+  "templates": [
+    {
+      "id": "vue-starter-template",
+      "displayName": "Vue Starter Template",
+      "packageName": "vue-starter-template",
+      "framework": "nuxt",
+      "purpose": "Supported starting point for a new storefront.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/vue-starter-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template%5D+",
+      "supportLevel": "supported",
+      "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-starter-template my-project",
+      "deployable": true,
+      "devcontainer": true,
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        },
+        "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "NUXT_SHOPWARE_ENDPOINT": {
+          "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "nuxt prepare && nuxt build",
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      }
+    },
+    {
+      "id": "vue-starter-template-extended",
+      "displayName": "Vue Starter Template Extended (Lumora)",
+      "packageName": "lumora-demo-store",
+      "framework": "nuxt",
+      "purpose": "Complete themed storefront that extends vue-starter-template as a Nuxt layer.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/vue-starter-template-extended.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-starter-template-extended%5D+",
+      "supportLevel": "supported",
+      "scaffoldable": false,
+      "scaffoldCommand": null,
+      "deployable": true,
+      "devcontainer": true,
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        },
+        "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "NUXT_SHOPWARE_ENDPOINT": {
+          "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "nuxt prepare && nuxt build",
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
+      "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
+    },
+    {
+      "id": "astro",
+      "displayName": "Astro Template",
+      "packageName": "shopware-astro",
+      "framework": "astro",
+      "purpose": "Example of using the API client from Astro.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/astro-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bastro%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/astro my-project",
+      "deployable": false,
+      "devcontainer": false,
+      "env": {
+        "API_URL": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "API_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": ">=22.12.0",
+      "devPort": 4321,
+      "buildCommand": "astro build",
+      "devCommand": "astro dev",
+      "typeGeneration": null
+    },
+    {
+      "id": "vue-blank",
+      "displayName": "Blank Template",
+      "packageName": "vue-blank",
+      "framework": "nuxt",
+      "purpose": "Minimal Nuxt app with the Shopware packages wired up and nothing else.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/blank-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-blank%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-blank my-project",
+      "deployable": false,
+      "devcontainer": false,
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "nuxt prepare && nuxt build",
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": null
+    },
+    {
+      "id": "vue-vite-blank",
+      "displayName": "Vite Blank Template",
+      "packageName": "vue-vite-blank",
+      "framework": "vite",
+      "purpose": "Minimal Vue app on plain Vite, without Nuxt.",
+      "docsUrl": null,
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-vite-blank%5D+",
+      "supportLevel": "example",
+      "scaffoldable": true,
+      "scaffoldCommand": "npx tiged shopware/frontends/templates/vue-vite-blank my-project",
+      "deployable": false,
+      "devcontainer": false,
+      "env": {
+        "VITE_DEMO_API_URL": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "VITE_DEMO_API_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": ">=22.12.0",
+      "devPort": 5173,
+      "buildCommand": "vue-tsc --noEmit && vite build",
+      "devCommand": "vite",
+      "typeGeneration": null
+    },
+    {
+      "id": "vue-demo-store",
+      "displayName": "Demo Store",
+      "packageName": "vue-demo-store",
+      "framework": "nuxt",
+      "purpose": "Reference implementation. Kept for reading, not for starting a project.",
+      "docsUrl": "https://developer.shopware.com/frontends/introduction/templates/demo-store-template.html",
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-demo-store%5D+",
+      "supportLevel": "deprecated",
+      "scaffoldable": false,
+      "scaffoldCommand": null,
+      "deployable": true,
+      "devcontainer": false,
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "nuxt prepare && nuxt build",
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
+      "notes": "Deprecated. Use vue-starter-template instead. Not deleted, it stays as a reference implementation. Copying it out of the monorepo works mechanically, but per #2667 new projects must not start from it, so it is not offered as a scaffold."
+    }
+  ]
+}
