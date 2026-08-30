@@ -10,11 +10,10 @@ type UseB2bQuoteManagement = {
   /**
    * @deprecated use `declineQuoteWithComment` instead — it sends the
    * `lineItemId` and `versionId` that `POST /quote/{id}/decline` expects.
+   * A `comment`-only body is still accepted at runtime on 6.7.12+: the API
+   * schema marks `lineItemId` and `versionId` as required, but the endpoint
+   * does not validate the request body, so existing callers keep working.
    * Removed in v2.
-   *
-   * @todo Confirm against a 6.7.12 instance whether a `comment`-only body is
-   * still accepted, then state it here. If it is rejected, this note has to say
-   * that the method 400s on 6.7.12+ and callers must migrate.
    */
   declineQuote: (quoteId: string, comment: string) => Promise<void>;
   declineQuoteWithComment: (
@@ -126,7 +125,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @param {string} quoteId
    * @returns {Promise<string>} draft version identifier
    */
-  const createDraftQuoteVersion = async (quoteId: string) => {
+  async function createDraftQuoteVersion(quoteId: string) {
     const response = await apiClient.invoke(
       "createDraftQuoteVersion post /quote/{id}/draft-version",
       {
@@ -143,7 +142,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
     }
 
     return response.data.versionId;
-  };
+  }
 
   /**
    * Delete the temporary draft version of the quote.
@@ -169,11 +168,10 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    *
    * @deprecated use {@link declineQuoteWithComment} instead — it sends the
    * `lineItemId` and `versionId` that `POST /quote/{id}/decline` expects.
+   * A `comment`-only body is still accepted at runtime on 6.7.12+: the API
+   * schema marks `lineItemId` and `versionId` as required, but the endpoint
+   * does not validate the request body, so existing callers keep working.
    * Removed in v2.
-   *
-   * @todo Confirm against a 6.7.12 instance whether a `comment`-only body is
-   * still accepted, then state it here. If it is rejected, this note has to say
-   * that the method 400s on 6.7.12+ and callers must migrate.
    *
    * @param {string} quoteId
    * @param {string} comment

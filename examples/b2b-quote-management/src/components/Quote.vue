@@ -26,6 +26,7 @@ const {
   declineQuoteWithComment,
   requestQuote,
   createDraftQuoteVersion,
+  deleteDraftQuoteVersion,
 } = useB2bQuoteManagement();
 const route = useRoute();
 
@@ -84,11 +85,21 @@ const handleDecline = async () => {
     // `versionId` property of the quote entity.
     const versionId = await createDraftQuoteVersion(quote.value.id);
 
-    await declineQuoteWithComment(quote.value.id, {
-      comment: declineComment.value,
-      lineItemId,
-      versionId,
-    });
+    try {
+      await declineQuoteWithComment(quote.value.id, {
+        comment: declineComment.value,
+        lineItemId,
+        versionId,
+      });
+    } catch (error) {
+      // On a successful decline the backend deletes the quote's draft
+      // versions itself as part of the state change, so the success path
+      // needs no cleanup. On failure nothing on the server removes the
+      // draft, so delete it here — otherwise every failed attempt leaves
+      // an orphaned draft version behind.
+      await deleteDraftQuoteVersion(quote.value.id, versionId);
+      throw error;
+    }
 
     declineComment.value = "";
     declineLineItemId.value = undefined;
