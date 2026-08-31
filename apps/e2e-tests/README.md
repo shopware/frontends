@@ -12,7 +12,7 @@ Install the browsers once:
 pnpm exec playwright install chromium
 ```
 
-Prepare a `.env` file with the `BASE_E2E_URL` of the storefront you want to test. See `.env.template` for the keys. The file is looked up from the working directory upwards, so a root `.env` works too.
+Copy `.env.template` to `.env` and fill in the values. `BASE_E2E_URL` points at the storefront you want to test. The file is looked up from the working directory upwards, so a root `.env` works too.
 
 The login tests need an account on that storefront. Put its `USER_EMAIL` and `PASSWORD` in the same file.
 

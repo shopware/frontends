@@ -16,7 +16,7 @@ Alternatively, set up the vue-starter-template manually by running the following
 
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 The vue-starter-template is connected to a Shopware Cloud instance by default. However, you can change the [configuration](#configure) to use your own instance.

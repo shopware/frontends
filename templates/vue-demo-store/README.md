@@ -2,7 +2,7 @@
 
 ![Shopware Frontends](.assets/shopware-frontends-logo.png)
 
-This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
+This repository is an example demo application built with Shopware Frontends Framework and Nuxt 4.
 
 > **⚠️ Do not use this template to start a new project.** Use the [Vue Starter Template](https://github.com/shopware/frontends/tree/main/templates/vue-starter-template) instead. It builds on Nuxt layers, so it stays maintainable and picks up updates automatically.
 >
@@ -11,7 +11,7 @@ This repository is an example demo application built with Shopware Frontends Fra
 ## What's inside
 
 - Nuxt 4 application
-- Required libraries (API client, CMS components, composables, Nuxt 3 module)
+- Required libraries (API client, CMS components, composables, Nuxt module)
 - Pre-configured demo Shopware 6 API
 
 ## Requirements
@@ -36,10 +36,10 @@ To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package
 
 1. update `.env` file with your Shopware API information
 2. load JSON schema from your instance `pnpx @shopware/api-gen loadSchema --apiType=store --filename=storeApiSchema.json`
-3. generate types `pnpx @shopware/api-gen generateTypes --filename=storeApiSchema.json`
+3. generate types `pnpx @shopware/api-gen generate --apiType=store` (or run `pnpm generate-types`)
 
 > [!NOTE]
-> Do not edit your `storeApiSchema.d.ts` file. It will be overwritten on the next schema generation. Instead use your `shopware.d.ts` file to extend types.
+> Do not edit your `api-types/storeApiTypes.d.ts` file. It will be overwritten on the next schema generation. Instead use your `shopware.d.ts` file to extend types.
 
 ## Styling and Shopping Experiences integration
 
