@@ -53,8 +53,10 @@ import type { operations } from "./api-types/storeApiTypes";
 // you can pick cookies library of your choice
 import Cookies from "js-cookie";
 
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+
 export const apiClient = createAPIClient<operations>({
-  baseURL: "https://demo-frontends.shopware.store/store-api",
+  baseURL: shopwareEndpoint,
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
 });
@@ -75,7 +77,7 @@ apiClient.hook("onContextChanged", (newContextToken) => {
 import { createAdminAPIClient } from "@shopware/api-client";
 ```
 
-The setup works the same way as `creteAPIClient` function, with few differences
+The setup works the same way as `createAPIClient` function, with few differences
 
 ### credentials (optional) - Quick scripting or token-based authentication
 
@@ -122,8 +124,10 @@ import { createAdminAPIClient } from "@shopware/api-client";
 import type { operations, Schemas } from "@shopware/api-client/admin-api-types"; // we take default admin api types from different directory than store-api
 import Cookies from "js-cookie";
 
+const shopwareEndpoint = "https://demo-frontends.shopware.store/api";
+
 export const adminApiClient = createAdminAPIClient<operations>({
-  baseURL: "https://demo-frontends.shopware.store/api",
+  baseURL: shopwareEndpoint,
   sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
 });
 
@@ -155,7 +159,7 @@ pnpx @shopware/api-gen loadSchema --apiType=store
 pnpx @shopware/api-gen generate --apiType=store
 ```
 
-This creates `api-types/storeApiTypes.ts` (or `adminApiTypes.ts` for Admin API). Point `shopware.d.ts` to your generated types instead of the bundled defaults:
+This creates `api-types/storeApiTypes.d.ts` (or `adminApiTypes.d.ts` for Admin API). Point `shopware.d.ts` to your generated types instead of the bundled defaults:
 
 ```typescript
 // shopware.d.ts
@@ -255,7 +259,7 @@ Your `apiClient.ts` already imports from `#shopware`, so no change is needed the
 
 For fine-grained, field-level corrections to the JSON schema (e.g. marking a field as `required`, fixing a wrong type), use patch files. These are applied before TypeScript generation and support partial changes.
 
-Create a `storeApiTypes.overrides.json` patch file:
+Create a patch file, for example `./api-types/myCustomPatches.json`:
 
 ```json
 {
@@ -290,15 +294,14 @@ Take a look at [example project using API Client](https://stackblitz.com/github/
 ### Simple invocation
 
 ```typescript
-import { apiClient, RequestReturnType } from "./apiClient";
-
-// could be reactive value, you can use ApiReturnType to type it properly
-let productsResponse: RequestReturnType<"readProduct">;
+import { apiClient } from "./apiClient";
 
 async function loadProducts() {
-  productsResponse = await apiClient.invoke("readProduct post /product", {
-    limit: 2,
+  // the response type is inferred from the invoked operation
+  const productsResponse = await apiClient.invoke("readProduct post /product", {
+    body: { limit: 2 },
   });
+  return productsResponse;
 }
 ```
 
@@ -369,12 +372,13 @@ const readNavigation = ({
     },
   });
 
-// in another file you can use it, and depth property will be set to 2 by default
+// in another file you can use it
 import { readNavigation } from "./apiClient";
 
 async function loadMainNavigation() {
   const navigation = await readNavigation({
-    body: { activeId: "main-navigation", rootId: "main-navigation" },
+    depth: 2,
+    type: "main-navigation",
   });
 }
 ```
@@ -510,9 +514,9 @@ const criteria = {
 };
 
 // Use in URL
-apiClient.invoke("getProducts get /product", {
+apiClient.invoke("readProductGet get /product", {
   query: {
-    _criteria: encodeForQuery(encodedCriteria),
+    _criteria: encodeForQuery(criteria),
   },
 });
 ```
