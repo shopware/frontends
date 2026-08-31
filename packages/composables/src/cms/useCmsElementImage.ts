@@ -32,6 +32,8 @@ export type UseCmsElementImage = {
   imageAttrs: ComputedRef<ImgHTMLAttributes>;
   imageContainerAttrs: ComputedRef<ImageContainerAttrs>;
   imageLink: ComputedRef<{ newTab: boolean; url: string }>;
+  ariaLabel: ComputedRef<string>;
+  isDecorative: ComputedRef<boolean>;
   displayMode: ComputedRef<DisplayMode>;
   isVideoElement: ComputedRef<boolean>;
   mimeType: ComputedRef<string | undefined>;
@@ -75,9 +77,22 @@ export function useCmsElementImage(
     return attr;
   });
 
+  /**
+   * Names the link the image sits in, not the image itself. Shopware exposes
+   * it on both `data` and `config`.
+   */
+  const ariaLabel = computed(
+    () => element.data?.ariaLabel || getConfigValue("ariaLabel") || "",
+  );
+
+  // Config only, the element data carries no such field.
+  const isDecorative = computed(() => !!getConfigValue("isDecorative"));
+
   const imageAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
     src: element.data?.media?.url,
-    alt: getTranslatedProperty(element.data?.media, "alt"),
+    alt: isDecorative.value
+      ? ""
+      : getTranslatedProperty(element.data?.media, "alt"),
     srcset: getSrcSetForMedia(element.data?.media),
   }));
 
@@ -99,6 +114,8 @@ export function useCmsElementImage(
     imageAttrs,
     imageContainerAttrs,
     imageLink,
+    ariaLabel,
+    isDecorative,
     displayMode,
     isVideoElement,
     mimeType,
