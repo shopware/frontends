@@ -1,5 +1,13 @@
 # @shopware/api-client
 
+## 1.6.0
+
+### Minor Changes
+
+- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update the default Store API schema and types from `6.7.10.1` to `6.7.12.1`.
+
+- [#2676](https://github.com/shopware/frontends/pull/2676) [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update the default Store API schema and types from `6.7.12.1` to `6.7.13.0`.
+
 ## 1.5.1
 
 ### Patch Changes
