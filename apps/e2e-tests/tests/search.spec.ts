@@ -3,7 +3,7 @@ import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 
-test.describe("Search phrase", { tag: "@vue-demo-store" }, () => {
+test.describe("Search phrase", { tag: "@storefront" }, () => {
   let homePage: HomePage;
   let resultPage: SearchResultPage;
 

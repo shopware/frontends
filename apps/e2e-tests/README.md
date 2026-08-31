@@ -22,7 +22,28 @@ The login tests need an account on that storefront. Put its `USER_EMAIL` and `PA
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @vue-demo-store`, so it only runs the specs tagged for the deprecated demo store template. Retagging it for `vue-starter-template` is tracked in [#2649](https://github.com/shopware/frontends/issues/2649).
+`test:e2e` is `playwright test --grep @storefront` and takes its target from `BASE_E2E_URL`. The tag names the intent; the specs still hardcode demo store catalog content, so they only pass against that storefront today.
+
+CI runs them against `vue-starter-template`: on pull requests that touch `templates/vue-starter-template/**`, `apps/e2e-tests/**` or the workflow itself, nightly, and on manual dispatch. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
+
+That run is red today and does not block pull requests. Two causes are tracked: the missing `data-testid` attributes ([#2650](https://github.com/shopware/frontends/issues/2650)) and the login and register page objects ([#2651](https://github.com/shopware/frontends/issues/2651)). A third is not tracked yet: `HomePage` navigates by demo store catalog content (`YORK 3`, the `Products` menu entry), which the starter's sales channel does not have.
+
+To reproduce the CI run locally:
+
+```sh
+pnpm --filter vue-starter-template build
+
+# The starter's sales channel accepts only this storefront URL, and
+# nuxt.config.ts defaults to the wrong one. See #2585.
+NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://demo-frontends.shopware.store/figma \
+  pnpm --filter vue-starter-template preview &
+
+# preview does not listen straight away. Starting the suite before it does
+# fails every spec on ERR_CONNECTION_REFUSED.
+until curl -sf -o /dev/null http://localhost:3000/; do sleep 2; done
+
+BASE_E2E_URL=http://localhost:3000/ pnpm run test:e2e --project=chromium
+```
 
 ## Run the accessibility check
 
@@ -88,5 +109,5 @@ pnpm run test:e2e --debug
 To debug only a single test, run
 
 ```sh
-pnpm run test:e2e example-test -- --debug
+pnpm run test:e2e example-test --debug
 ```

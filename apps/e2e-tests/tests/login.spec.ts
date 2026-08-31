@@ -8,7 +8,7 @@ require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
 
-test.describe("Login user", { tag: "@vue-demo-store" }, () => {
+test.describe("Login user", { tag: "@storefront" }, () => {
   let homePage: HomePage;
   let loginForm: LoginForm;
 

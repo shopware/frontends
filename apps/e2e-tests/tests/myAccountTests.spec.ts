@@ -6,7 +6,7 @@ import { RegisterForm } from "../page-objects/RegisterPage";
 
 test.describe.parallel(
   "My account functionalities tests",
-  { tag: "@vue-demo-store" },
+  { tag: "@storefront" },
   () => {
     let homePage: HomePage;
     let myAccountPage: MyAccountPage;

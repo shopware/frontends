@@ -8,7 +8,7 @@ import { WishlistPage } from "../page-objects/WishlistPage";
 test.setTimeout(50000);
 test.describe.parallel(
   "Add product to cart / Remove from cart",
-  { tag: "@vue-demo-store" },
+  { tag: "@storefront" },
   () => {
     let homePage: HomePage;
     let productPage: ProductPage;

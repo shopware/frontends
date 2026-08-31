@@ -9,7 +9,7 @@ require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
 
-test.describe("Add review", { tag: "@vue-demo-store" }, () => {
+test.describe("Add review", { tag: "@storefront" }, () => {
   let homePage: HomePage;
   let productPage: ProductPage;
   let loginform: LoginForm;

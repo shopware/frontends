@@ -4,7 +4,7 @@ import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 
-test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
+test.describe("Registration new user", { tag: "@storefront" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
 

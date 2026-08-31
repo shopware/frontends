@@ -1,0 +1,111 @@
+name: E2E Starter Template
+
+run-name: Playwright e2e suite against vue-starter-template 🚀
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "templates/vue-starter-template/**"
+      - "apps/e2e-tests/**"
+      - ".github/workflows/e2e-starter-template.yml"
+  schedule:
+    - cron: "0 4 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-storefront-e2e:
+    name: E2E against vue-starter-template
+    runs-on: ubuntu-latest
+    # Above the step timeout below. A job that runs out of time fails outright,
+    # and `continue-on-error` on a step cannot absorb that.
+    timeout-minutes: 45
+    env:
+      BASE_E2E_URL: http://localhost:3000/
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: install
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install dependencies with Playwright
+        run: pnpm playwright install --with-deps chromium
+
+      # Leave NITRO_PRESET unset. The default node-server preset is the one that
+      # writes .output/server/index.mjs, which is what `nuxt preview` runs.
+      - name: Build the starter template
+        run: pnpm --filter vue-starter-template build
+
+      - name: Start the starter template
+        env:
+          # nuxt.config.ts defaults this to the demo store's domain, which the
+          # starter's sales channel rejects with NO_SUCH_CHOICE_ERROR. Template
+          # bug, tracked in #2585.
+          NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
+        run: |
+          pnpm --filter vue-starter-template preview > "$RUNNER_TEMP/storefront.log" 2>&1 &
+          for _ in $(seq 1 60); do
+            if curl -sf -o /dev/null "$BASE_E2E_URL"; then
+              echo "storefront is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "storefront did not answer on $BASE_E2E_URL within 120s"
+          cat "$RUNNER_TEMP/storefront.log"
+          exit 1
+
+      - name: Run tests
+        id: e2e
+        # Red on purpose, so this reports rather than gates. That is also why
+        # this workflow's name is absent from failed-job-check.yml. Missing
+        # data-testids are #2650 and the login/register page objects are #2651;
+        # the demo store catalog content HomePage navigates by is tracked
+        # nowhere yet.
+        continue-on-error: true
+        timeout-minutes: 25
+        run: |
+          cd apps/e2e-tests
+          # pnpm forwards these straight through; a `--` separator swallows them.
+          # --retries=0 while the suite is red: retrying a predetermined failure
+          # costs 3x for no information. Drop it once the suite is green.
+          pnpm run test:e2e --project=chromium --reporter=github,html --retries=0
+
+      - name: Report result
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
+
+          A failure here does not block the pull request. Red is expected for
+          now: #2650 and #2651 track part of the cause, and the demo store
+          catalog content the specs navigate by is tracked nowhere yet.
+          EOF
+
+          echo "::group::storefront log"
+          tail -n 50 "$RUNNER_TEMP/storefront.log"
+          echo "::endgroup::"
+
+      - name: Upload the Playwright report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          # Self-contained: the html reporter copies each trace into
+          # playwright-report/data/ and bundles its own viewer, so uploading
+          # playwright.config.ts's outputDir (reports/) would only duplicate it.
+          path: apps/e2e-tests/playwright-report
+          retention-days: 7
+          if-no-files-found: warn

@@ -5,7 +5,7 @@ import { WishlistPage } from "../page-objects/WishlistPage";
 
 test.describe.parallel(
   "Add product to wishlist / Remove from wishlist",
-  { tag: "@vue-demo-store" },
+  { tag: "@storefront" },
   () => {
     let homePage: HomePage;
     let wishlistPage: WishlistPage;
