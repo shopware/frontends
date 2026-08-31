@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/nuxt-module?label=nuxt-module%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Anuxt-module)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the composables and api-client packages.
+Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that allows you to set up a Nuxt project with Shopware Frontends. It provides the composables and api-client packages.
 
 If you want to use these packages with a different Vue.js framework, see [the guide](https://developer.shopware.com/frontends/introduction/templates/custom-vue-project.html) for using Shopware Frontends in a custom project.
 
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
   // set the module config
   shopware: {
     // connect to your Shopware 6 API instance
-    endpoint: "https://demo-frontends.shopware.store",
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   // or directly in the runtime config
@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       shopware: {
-        endpoint: "https://demo-frontends.shopware.store",
+        endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
     },

@@ -358,7 +358,7 @@ url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=w
 
 ## LCP Image Preload
 
-This layer includes a `useLcpImagePreload` composable that automatically preloads the first image found in CMS page content. This targets the [Largest Contentful Paint (LCP)](https://web.dev/lcp/) element, which is often a hero background image or the first visible image element.
+This layer includes a `useLcpImagePreload` composable that preloads the first image found in CMS page content when enabled via `lcpImagePreload: true` in your `app.config.ts` (disabled by default). This targets the [Largest Contentful Paint (LCP)](https://web.dev/lcp/) element, which is often a hero background image or the first visible image element.
 
 ### How it works
 
@@ -454,7 +454,7 @@ The list of available blocks and elements is [here](https://developer.shopware.c
 
 The procedure is:
 
-- find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
+- find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base-layer.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
 - take its name
 - create a file with the same name and place it into `~/components` dir in your nuxt project (or wherever according your nuxt config)
 

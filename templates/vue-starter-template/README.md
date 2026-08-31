@@ -18,7 +18,8 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 
 Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
 
-Node 22 or 24. This repository uses pnpm.
+Node `^22.19.0 || ^24.11.0 || >=26.0.0`, the range in `package.json`. This
+repository uses pnpm.
 
 ## Install & Run
 
@@ -70,10 +71,13 @@ Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, 
 After pointing the template at your own instance, regenerate the API types so they match your schema, including any extensions:
 
 ```bash
+npx shopware-api-gen loadSchema --apiType=store
 pnpm generate-types
 ```
 
-This reads `OPENAPI_JSON_URL` and `OPENAPI_ACCESS_KEY` from `.env`. `OPENAPI_JSON_URL` is the base URL of your instance, without the `/store-api/` suffix.
+Both read `OPENAPI_JSON_URL` and `OPENAPI_ACCESS_KEY` from `.env`. `OPENAPI_JSON_URL` is the base URL of your instance, without the `/store-api/` suffix.
+
+Run `loadSchema` first. On its own, `generate-types` falls back to the published default types, which do not include your instance's extensions.
 
 ## Styling and Shopping Experiences integration
 
