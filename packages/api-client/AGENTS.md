@@ -5,7 +5,7 @@ This document provides guidance for AI assistants working with the `@shopware/ap
 ## TL;DR
 
 **What**: Fully typed HTTP client for Shopware 6 Store API and Admin API
-**Tech**: TypeScript, ofetch, openapi-fetch-runtime
+**Tech**: TypeScript, ofetch, hookable, defu
 **Types**: Generated from OpenAPI spec via `@shopware/api-gen` CLI
 
 **Quick Start**:
@@ -16,7 +16,7 @@ pnpm run dev      # Stub mode for development (hot reload)
 pnpm run test     # Run tests
 ```
 
-**Before commits**: `pnpm run lint:fix && pnpm format && pnpm run typecheck`
+**Before commits**: `pnpm run lint:fix && pnpm run typecheck`
 
 ## Package Overview
 
@@ -29,23 +29,24 @@ api-client/
 ├── src/
 │   ├── createAPIClient.ts         # Store API client factory
 │   ├── createAdminAPIClient.ts    # Admin API client factory
-│   ├── errorInterceptor.ts        # ApiClientError + error parsing
-│   ├── helpers.ts                 # encodeForQuery helper
+│   ├── ApiError.ts                # ApiClientError + error parsing
+│   ├── errorInterceptor.ts        # Throws ApiClientError for error responses
+│   ├── helpers/                   # encodeForQuery helper
+│   ├── tests/                     # Extra Vitest suites (tests also sit next to sources)
 │   └── index.ts                   # Public exports
-├── api-types/
-│   ├── storeApiTypes.d.ts         # Bundled Store API types (generated)
-│   ├── adminApiTypes.d.ts         # Bundled Admin API types (generated)
-│   └── storeApiSchema.overrides.json  # Default JSON patches applied during generation
-├── src/fetch/                     # Low-level fetch wrappers
-└── _tests/                        # Vitest tests with mock server
+└── api-types/
+    ├── storeApiTypes.d.ts         # Bundled Store API types (generated)
+    ├── adminApiTypes.d.ts         # Bundled Admin API types (generated)
+    └── storeApiSchema.overrides.json  # Default JSON patches applied during generation
 ```
 
 ## Key Files
 
 - [src/createAPIClient.ts](src/createAPIClient.ts) — `createAPIClient<operations>()` factory; hooks, context token management, `invoke()`
 - [src/createAdminAPIClient.ts](src/createAdminAPIClient.ts) — `createAdminAPIClient<operations>()` factory; OAuth2 (password + client_credentials), session persistence
-- [src/errorInterceptor.ts](src/errorInterceptor.ts) — `ApiClientError` class with parsed API error details
-- [src/helpers.ts](src/helpers.ts) — `encodeForQuery()` for compressed GET criteria
+- [src/ApiError.ts](src/ApiError.ts) — `ApiClientError` class with parsed API error details
+- [src/errorInterceptor.ts](src/errorInterceptor.ts) — throws `ApiClientError` for error responses
+- [src/helpers/encodeForQuery.ts](src/helpers/encodeForQuery.ts) — `encodeForQuery()` for compressed GET criteria
 - [api-types/storeApiSchema.overrides.json](api-types/storeApiSchema.overrides.json) — default patches shipped with the package (referenced by `api-gen` users)
 
 ## Type System
@@ -71,11 +72,11 @@ When working on this package, never edit `api-types/*.d.ts` manually — they ar
 
 ### Adding a hook
 
-Hooks are registered in `createAPIClient.ts` / `createAdminAPIClient.ts`. Available hook names are typed via the `ClientHooks` interface. Add new hook types there first, then wire them into the fetch lifecycle.
+Hooks are registered in `createAPIClient.ts` / `createAdminAPIClient.ts`. Available hook names are typed via the `ApiClientHooks` / `AdminApiClientHooks` types. Add new hook types there first, then wire them into the fetch lifecycle.
 
 ### Fixing error handling
 
-Error parsing lives in `errorInterceptor.ts`. The `ApiClientError` class wraps raw API responses and exposes `details` for structured error data.
+The `ApiClientError` class lives in `ApiError.ts`; it wraps raw API responses and exposes `details` for structured error data. `errorInterceptor.ts` throws it for error responses.
 
 ### Updating bundled types
 
@@ -90,11 +91,11 @@ This runs `@shopware/api-gen` against the configured Shopware instance and regen
 
 ### Adding new `fetchOptions`
 
-The allowed subset of `ofetch` options is explicitly listed in the client types. If a new option needs to be exposed, add it to the `FetchOptions` type in `src/createAPIClient.ts` and document it in the README.
+The allowed subset of `ofetch` options is explicitly listed in the client types. If a new option needs to be exposed, add it to the `Pick` list in `InvokeParameters["fetchOptions"]` (and to `GlobalFetchOptions` if it should be settable client-wide) in `src/createAPIClient.ts` and document it in the README.
 
 ## Testing
 
-Tests live in `_tests/` and use Vitest with a mock HTTP server (no real Shopware instance needed).
+Tests live next to the sources (`src/*.test.ts`, plus `src/tests/`) and use Vitest with a mock HTTP server (no real Shopware instance needed).
 
 ```bash
 pnpm run test          # Run all tests

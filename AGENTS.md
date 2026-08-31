@@ -37,7 +37,9 @@ frontends/
 │   ├── composables/          # Vue composables
 │   ├── helpers/              # Utility functions
 │   ├── cms-base-layer/       # CMS components
-│   ├── nuxt-module/          # Nuxt 3 integration
+│   ├── nuxt-module/          # Nuxt integration
+│   ├── tsconfig/             # Shared TypeScript configs (private)
+│   ├── unocss-design-tokens-layer/ # UnoCSS design tokens Nuxt layer
 │   └── api-gen/              # Type generation tool
 ├── templates/         # Starter templates
 │   ├── manifest.json                  # Source of truth: which templates exist
@@ -56,8 +58,8 @@ frontends/
 
 ## Tech Stack
 
-- **Framework**: Vue 3, Nuxt 4.1
-- **Build**: Vite 7, Turbo, unbuild
+- **Framework**: Vue 3, Nuxt 4
+- **Build**: Vite 8, Turbo, unbuild
 - **Package Manager**: pnpm 11.5.2
 - **Language**: TypeScript
 - **Styling**: UnoCSS, Tailwind.css
@@ -73,14 +75,14 @@ frontends/
 pnpm i                                    # Install dependencies
 pnpm run build                            # Build all packages
 pnpm run build --filter='./packages/*'   # Build only packages
-pnpm run build --filter=api-client       # Build specific package
+pnpm run build --filter=@shopware/api-client  # Build specific package
 ```
 
 ### Development
 
 ```bash
 pnpm run dev --filter=vue-demo-store     # Run demo store
-pnpm run dev --filter=docs               # Run documentation
+pnpm docs:env && pnpm docs:link && pnpm docs:preview  # Run documentation (developer-portal CLI)
 ```
 
 ### Quality Assurance
@@ -121,7 +123,8 @@ Packages use workspace protocol for internal dependencies:
 
 Packages must be built in dependency order (handled by Turbo):
 
-- `api-client` → `helpers` → `composables` → `cms-base-layer` → `nuxt-module`
+- `api-client` + `helpers` (independent) → `composables` → `nuxt-module`; `api-gen` builds after `api-client`
+- `cms-base-layer` and `unocss-design-tokens-layer` are plain Nuxt layers with no build step
 
 ### 3. Package Exports
 
@@ -168,7 +171,7 @@ Caching spans several independent layers. The full reference is [Best practices:
 ### Package Configs
 
 - Each package has its own `package.json`, `tsconfig.json`
-- Build configs: `unbuild.config.ts` or `build.config.ts`
+- Build configs: `build.config.ts`
 - Test configs: `vitest.config.ts`
 
 ## Working with Specific Packages
@@ -246,9 +249,9 @@ Generates optimized CSS `url()` values for CMS background images. Accepts an opt
 
 ### @shopware/nuxt-module
 
-**Purpose**: Nuxt 3 module for Shopware integration
+**Purpose**: Nuxt module for Shopware integration
 
-**Available as Nuxt Layer**: Provides full Nuxt layer functionality for seamless integration
+**Note**: This is a Nuxt module (not a layer); layer functionality lives in `@shopware/composables/nuxt-layer` and `@shopware/cms-base-layer`
 
 **Key Features**:
 
@@ -335,7 +338,7 @@ script, update the manifest in the same change.**
 
 **What's Included**:
 
-- Nuxt 4.1 with full SSR
+- Nuxt 4 with full SSR
 - UnoCSS (Tailwind-compatible) styling
 - i18n (internationalization) support
 - @shopware/cms-base-layer for CMS integration
@@ -371,7 +374,7 @@ pnpm dev
 
 **What's Included**:
 
-- Nuxt 4.1 setup
+- Nuxt 4 setup
 - All core Shopware packages
 - UnoCSS styling
 - i18n support
@@ -396,7 +399,7 @@ Do **not** register `global: true` twice on the same `components/` path with dif
 
 **What's Included**:
 
-- Bare minimum Nuxt 4.1 configuration
+- Bare minimum Nuxt 4 configuration
 - Shopware core packages only
 - No styling framework
 - No i18n
@@ -427,7 +430,7 @@ Do **not** register `global: true` twice on the same `components/` path with dif
 
 **What's Included**:
 
-- Astro 5.x setup
+- Astro 7.x setup
 - Vue integration for Shopware composables
 - Shopware API client
 - Server-side rendering with Astro
@@ -517,7 +520,7 @@ export default defineAppConfig({
 **Dependencies**:
 
 - Lists `vue-starter-template` as workspace dependency
-- Includes `@shopware/cms-base-layer` for CMS components
+- Gets `@shopware/cms-base-layer` CMS components through the vue-starter-template base layer
 
 ### Template Configuration
 
@@ -527,10 +530,14 @@ vars its manifest entry lists under `env`. The names differ per framework, so
 read them from the manifest instead of memorizing them. For the Nuxt templates:
 
 ```bash
-# .env (vue-starter-template and vue-demo-store ship a .env.template to copy)
+# .env (vue-starter-template ships a .env.template with these two)
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.com/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
+
+The demo defaults these override live in each template's `nuxt.config.ts`, under
+the `shopware` module key or `runtimeConfig.public.shopware`. See
+[packages/nuxt-module/README.md](packages/nuxt-module/README.md) for both forms.
 
 The astro template reads `API_URL`/`API_ACCESS_TOKEN` and vue-vite-blank reads
 `VITE_DEMO_API_URL`/`VITE_DEMO_API_ACCESS_TOKEN`.
@@ -633,8 +640,6 @@ This creates a file in `.changeset/` - commit it with your changes.
 
 **Main Branch**: `main`
 
-**Current Status**: Clean working directory (as of e06b2f32)
-
 **Recent Activity**: Dependency updates, documentation improvements, feature additions
 
 ## Testing Strategy
@@ -643,7 +648,7 @@ This creates a file in `.changeset/` - commit it with your changes.
 
 - Located next to source files (`.test.ts`)
 - Run with `pnpm test`
-- Coverage with `pnpm run coverage` (in package directory)
+- Coverage with `pnpm run coverage` (only `packages/composables` has this script)
 
 ### E2E Tests (Playwright)
 
@@ -722,7 +727,7 @@ pnpm run build
 - `*.test.ts` - Test files (Vitest)
 - `*.spec.ts` - Alternative test files
 - `*.d.ts` - TypeScript declaration files
-- `unbuild.config.ts` - Build configuration
+- `build.config.ts` - Build configuration (unbuild)
 - `vitest.config.ts` - Test configuration
 - `nuxt.config.ts` - Nuxt configuration
 - `.changeset/*.md` - Changeset files
@@ -762,13 +767,13 @@ pnpm run build
 pnpm run build --filter='./packages/*'
 
 # Build specific package
-pnpm run build --filter=api-client
+pnpm run build --filter=@shopware/api-client
 
 # Run demo store
 pnpm run dev --filter=vue-demo-store
 
-# Run docs
-pnpm run dev --filter=docs
+# Run docs (developer-portal CLI)
+pnpm docs:env && pnpm docs:link && pnpm docs:preview
 
 # Lint and fix
 pnpm run lint:fix && pnpm format
@@ -796,5 +801,5 @@ This is a frontend framework for eCommerce. Be mindful of:
 
 ---
 
-**Last Updated**: 2025-09-30
-**Repository Version**: Based on commit e06b2f32
+**Last Updated**: 2026-08-28
+**Repository Version**: Based on commit 469d6347

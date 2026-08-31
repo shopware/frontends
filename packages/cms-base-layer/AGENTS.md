@@ -220,7 +220,11 @@ The [vue-starter-template](../../templates/vue-starter-template/) demonstrates f
 ```typescript
 // templates/vue-starter-template/nuxt.config.ts
 export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
   // ...configuration
 });
 ```
