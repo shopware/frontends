@@ -97,21 +97,18 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @returns {Promise<Schemas["Quote"]>}
    */
   const getQuote = async (quoteId: string) => {
-    const response = await apiClient.invoke(
-      "readQuote post /quote/detail/{id}",
-      {
-        pathParams: {
-          id: quoteId,
-        },
-        body: {
-          associations: {
-            lineItems: {},
-            comments: {},
-            stateMachineState: {},
-          },
+    const response = await apiClient.invoke("readQuote post /quote/{id}", {
+      pathParams: {
+        id: quoteId,
+      },
+      body: {
+        associations: {
+          lineItems: {},
+          comments: {},
+          stateMachineState: {},
         },
       },
-    );
+    });
     return response.data;
   };
 
@@ -309,7 +306,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    */
   const createOrderFromQuote = async (quoteId: string, comment: string) => {
     const response = await apiClient.invoke(
-      "createOrderFromQuote post /quote/order/{id}",
+      "createOrderFromQuote post /quote/{id}/order",
       {
         pathParams: { id: quoteId },
         body: { customerComment: comment },
