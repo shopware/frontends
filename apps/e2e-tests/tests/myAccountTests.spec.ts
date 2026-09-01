@@ -6,7 +6,7 @@ import { RegisterForm } from "../page-objects/RegisterPage";
 
 // Registers a customer before it can change anything, which the 60s default
 // does not leave room for.
-test.setTimeout(60000);
+test.setTimeout(90000);
 
 test.describe.parallel(
   "My account functionalities tests",

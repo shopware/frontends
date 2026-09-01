@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 /**
  * Which property groups exist is sales channel content ("Colour" vs "Finish"),
@@ -62,21 +62,24 @@ export async function sortBy(page: Page, label: string) {
     .click();
 }
 
-/** Listing updates are async: wait for the URL and a rendered result. */
+/**
+ * The URL is pushed before the request starts, so the old listing is still on
+ * screen once it matches. Both helpers below wait for the result to change
+ * rather than for the URL, which would let a test race ahead of the response.
+ */
 export async function applyLimit(page: Page, limitSelect: Locator) {
   await limitSelect.selectOption({ value: "1" });
   await page.waitForURL(/limit=1/);
-  await page
-    .getByTestId("product-box-img")
-    .first()
-    .waitFor({ state: "visible" });
+  await expect(page.getByTestId("product-box-img")).toHaveCount(1);
 }
 
 export async function goToPage(page: Page, number: number) {
+  const firstProduct = page
+    .getByTestId("product-box-product-name-link")
+    .first();
+  const before = await firstProduct.getAttribute("href");
+
   await page.getByRole("button", { name: `Page ${number}` }).click();
   await page.waitForURL(new RegExp(`p=${number}`));
-  await page
-    .getByTestId("product-box-img")
-    .first()
-    .waitFor({ state: "visible" });
+  await expect(firstProduct).not.toHaveAttribute("href", before ?? "");
 }

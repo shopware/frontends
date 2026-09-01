@@ -4,7 +4,6 @@ export class ProductPage {
   readonly page: Page;
   readonly addToCartButton: Locator;
   readonly variant: Locator;
-  readonly variantText: Locator;
   readonly miniCartLink: Locator;
   readonly productRemove: Locator;
   readonly ratingStar: Locator;
@@ -17,7 +16,6 @@ export class ProductPage {
     this.page = page;
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.variant = page.getByTestId("product-variant");
-    this.variantText = page.getByTestId("product-variant-text");
     this.miniCartLink = page.getByTestId("cart-button");
     this.productRemove = page.getByTestId("product-remove-button");
     this.ratingStar = page.getByTestId("review-empty-star");
@@ -43,13 +41,38 @@ export class ProductPage {
   }
 
   async addVariantToCart() {
-    // One option: each click navigates to that variant's own URL.
-    await this.variantText.first().click();
-    await expect(this.page.getByTestId("loading")).toHaveCount(0);
+    const urlBefore = this.page.url();
+    const isSelected = await this.variant.evaluateAll((options) =>
+      options.map((option) =>
+        option.className.includes("border-brand-primary"),
+      ),
+    );
 
-    const selectedVariant = (
-      await this.variantText.first().textContent()
-    )?.trim();
+    // Not every option combination resolves to a real variant, and one that
+    // does not leaves the page untouched, so try the unselected ones in turn.
+    // The handler sits on the label; clicking the inner text does nothing.
+    let switched = false;
+    for (const [index, selected] of isSelected.entries()) {
+      if (selected) continue;
+      await this.variant.nth(index).click();
+      try {
+        await this.page.waitForURL((url) => url.href !== urlBefore, {
+          timeout: 10000,
+        });
+        switched = true;
+        break;
+      } catch {
+        continue;
+      }
+    }
+
+    // Each variant has its own URL, so the navigation is the proof the switch
+    // happened. Without it this passes even when the click does nothing and
+    // the original variant is what reaches the cart.
+    if (!switched) {
+      throw new Error("No variant option switched the product.");
+    }
+    await expect(this.page.getByTestId("loading")).toHaveCount(0);
 
     // Only returns once the storefront confirms the line item.
     await this.addToCart();
@@ -57,9 +80,8 @@ export class ProductPage {
     await this.miniCartLink.click();
     await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
 
-    // The cart renders no variant options, so check a variant was chosen and
-    // that the configured product reached the cart.
-    expect(selectedVariant).toBeTruthy();
+    // The cart renders no variant options, so the variant identity is asserted
+    // on the detail page above rather than here.
     await expect(
       this.page.getByTestId("cart-product-image").first(),
     ).toBeVisible();

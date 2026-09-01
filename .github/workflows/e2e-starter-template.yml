@@ -4,7 +4,7 @@ run-name: Playwright e2e suite against vue-starter-template 🚀
 on:
   workflow_dispatch:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
     paths:
       - "templates/vue-starter-template/**"
       - "apps/e2e-tests/**"

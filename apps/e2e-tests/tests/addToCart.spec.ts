@@ -7,7 +7,7 @@ import { RegisterForm } from "../page-objects/RegisterPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
 // Registering a fresh customer in beforeEach costs ~15s of the budget.
-test.setTimeout(60000);
+test.setTimeout(90000);
 test.describe.parallel(
   "Add product to cart / Remove from cart",
   { tag: "@frontends" },
