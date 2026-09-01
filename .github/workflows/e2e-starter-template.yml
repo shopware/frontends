@@ -78,13 +78,12 @@ jobs:
 
       - name: Run tests
         id: e2e
-        # The suite passes against the starter now, but it still reports rather
-        # than gates. The demo backend rate limits customer registration to a
-        # short burst (3 requests, then 429, recovering in about a minute), and
-        # several specs have to register, so a run can still go red for reasons
-        # that are nothing to do with the change under test. Retries absorb it
-        # because they space attempts past that window. Kept out of
-        # failed-job-check.yml for the same reason.
+        # Reports rather than gates. The suite passes against the starter, but
+        # the shared demo backend intermittently stalls store-api calls
+        # (context, cart, breadcrumb, product-listing) with no response at all,
+        # which strands the page mid-hydration and fails whichever spec was
+        # running. Retries absorb it. Kept out of failed-job-check.yml for the
+        # same reason.
         continue-on-error: true
         timeout-minutes: 25
         run: |
@@ -104,9 +103,11 @@ jobs:
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
 
-          A failure here does not block the pull request. Red is expected for
-          now: #2650 and #2651 track part of the cause, and the demo store
-          catalog content the specs navigate by is tracked nowhere yet.
+          Reporting only, this does not block the pull request. The suite is
+          expected to pass. Runs share one demo backend that intermittently
+          stalls store-api requests, so a spec can still go red for reasons
+          unrelated to the change under test. Retries absorb those, and they
+          show up as flaky rather than failed.
           EOF
 
           echo "::group::storefront log"
