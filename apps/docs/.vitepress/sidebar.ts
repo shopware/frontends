@@ -245,6 +245,10 @@ export const sidebar = [
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
+          {
+            text: "Order History",
+            link: "/frontends-recipes/account/order-history.html",
+          },
         ],
       },
     ],
