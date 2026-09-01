@@ -33,7 +33,7 @@ deno install --dev npm:@shopware/api-gen
 
 ## Features
 
-Generator will create a new directory `api-types` with TypeScript schemas inside. Depending on the `apiType` parameter it will create `storeApiTypes.ts` or `adminApiTypes.ts` file.
+Generator will create a new directory `api-types` with TypeScript schemas inside. Depending on the `apiType` parameter it will create `storeApiTypes.d.ts` or `adminApiTypes.d.ts` file.
 
 ### Overriding
 
@@ -156,7 +156,7 @@ You could also use multiple patches and add your own overrides on top:
 }
 ```
 
-and then inside the `storeApiTypes.overrides.json` file you can add your patches:
+and then inside the `./api-types/myOwnPatches.overrides.json` file you can add your patches:
 
 ```json
 {
@@ -281,7 +281,7 @@ pnpx @shopware/api-gen validateJson --help
 pnpx @shopware/api-gen validateJson --apiType=store
 ```
 
-this searches for `api-types/storeApiTypes.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
+this searches for `api-types/storeApiSchema.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
 
 Prepare your config file named **api-gen.config.json**:
 
@@ -340,7 +340,7 @@ import { generate } from "@shopware/api-gen";
 
 await generate({
   cwd: process.cwd(),
-  filename: "storeApiTypes.ts",
+  filename: "storeApiSchema.json",
   apiType: "store",
   debug: true,
   logPatches: true,
@@ -354,7 +354,7 @@ import { loadSchema } from "@shopware/api-gen";
 
 await loadSchema({
   cwd: process.cwd(),
-  filename: "storeApiTypes.json",
+  filename: "storeApiSchema.json",
   apiType: "store",
 });
 ```
@@ -366,7 +366,7 @@ import { validateJson } from "@shopware/api-gen";
 
 await validateJson({
   cwd: process.cwd(),
-  filename: "storeApiTypes.json",
+  filename: "storeApiSchema.json",
   apiType: "store",
   logPatches: true,
   debug: true,
