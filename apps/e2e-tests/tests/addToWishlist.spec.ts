@@ -6,7 +6,7 @@ import { WishlistPage } from "../page-objects/WishlistPage";
 
 test.describe.parallel(
   "Add product to wishlist / Remove from wishlist",
-  { tag: "@storefront" },
+  { tag: "@frontends" },
   () => {
     let homePage: HomePage;
     let wishlistPage: WishlistPage;

@@ -3,7 +3,7 @@ import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 
-test.describe.parallel("Check product variants", { tag: "@storefront" }, () => {
+test.describe.parallel("Check product variants", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let productPage: ProductPage;
 

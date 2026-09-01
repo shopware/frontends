@@ -74,12 +74,15 @@ async function handleSaveAddress() {
   $vBaseInfo.$touch();
   $vBillingAddress.$touch();
 
-  const { valid: validBaseInfo } = await $vBaseInfo.$validate();
+  await $vBaseInfo.$validate();
   const { valid: validbillingAddress } = await $vBillingAddress.$validate();
 
   // Bail out when INVALID. This read `if (valid || valid)`, so register() never
   // ran for good data and /checkout/order answered 403 CUSTOMER_NOT_LOGGED_IN.
-  if (!validBaseInfo || !validbillingAddress) {
+  //
+  // Only the email is checked: checkout defaults to a guest order and hides the
+  // password field, so requiring it blocked every guest on an invisible field.
+  if ($vBaseInfo.email.$invalid || !validbillingAddress) {
     return;
   }
 

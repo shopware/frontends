@@ -22,11 +22,11 @@ The login tests need an account on that storefront. Put its `USER_EMAIL` and `PA
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @storefront` and takes its target from `BASE_E2E_URL`. The tag names the intent; the specs still hardcode demo store catalog content, so they only pass against that storefront today.
+`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs navigate generically, so they run against any storefront rather than one template.
 
 CI runs them against `vue-starter-template`: on pull requests that touch `templates/vue-starter-template/**`, `apps/e2e-tests/**` or the workflow itself, nightly, and on manual dispatch. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
-That run is red today and does not block pull requests. Two causes are tracked: the missing `data-testid` attributes ([#2650](https://github.com/shopware/frontends/issues/2650)) and the login and register page objects ([#2651](https://github.com/shopware/frontends/issues/2651)). A third is not tracked yet: `HomePage` navigates by demo store catalog content (`YORK 3`, the `Products` menu entry), which the starter's sales channel does not have.
+The run passes against the starter. It still reports rather than gates, because a few specs need a retry against the shared demo backend. Two scenarios stay skipped for features the starter does not have: a clear-wishlist action ([#2679](https://github.com/shopware/frontends/issues/2679)) and product reviews ([#2680](https://github.com/shopware/frontends/issues/2680)).
 
 To reproduce the CI run locally:
 

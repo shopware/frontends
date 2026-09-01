@@ -10,7 +10,7 @@ test.setTimeout(60000);
 
 test.describe.parallel(
   "My account functionalities tests",
-  { tag: "@storefront" },
+  { tag: "@frontends" },
   () => {
     let homePage: HomePage;
     let myAccountPage: MyAccountPage;

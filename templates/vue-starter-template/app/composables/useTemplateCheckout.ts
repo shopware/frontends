@@ -79,9 +79,8 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
       required,
       email,
     },
-    // Not required: checkout defaults to a guest order and the password field
-    // is hidden, so requiring it blocked every guest checkout.
     password: {
+      required,
       minLength: minLength(3),
     },
   }));

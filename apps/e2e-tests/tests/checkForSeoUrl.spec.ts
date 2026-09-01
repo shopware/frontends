@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { HomePage } from "../page-objects/HomePage";
 
-test.describe("Check for seo-url requests", { tag: "@storefront" }, () => {
+test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
   let homePage: HomePage;
 
   // Before Hook

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { CategoryPage } from "../page-objects/CategoryPage";
 import { HomePage } from "../page-objects/HomePage";
 
-test.describe("Check category page", { tag: "@storefront" }, () => {
+test.describe("Check category page", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let categoryPage: CategoryPage;
 

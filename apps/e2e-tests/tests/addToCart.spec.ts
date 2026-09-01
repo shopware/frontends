@@ -10,7 +10,7 @@ import { WishlistPage } from "../page-objects/WishlistPage";
 test.setTimeout(60000);
 test.describe.parallel(
   "Add product to cart / Remove from cart",
-  { tag: "@storefront" },
+  { tag: "@frontends" },
   () => {
     let homePage: HomePage;
     let productPage: ProductPage;

@@ -16,7 +16,7 @@ const password = process.env.PASSWORD || "shopware123";
 
 test.setTimeout(90000);
 
-test.describe("Create Order", { tag: "@storefront" }, () => {
+test.describe("Create Order", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
   let checkoutPage: CheckoutPage;

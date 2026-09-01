@@ -5,7 +5,7 @@ import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail } from "../utils/data-helpers";
 
-test.describe("Registration new user", { tag: "@storefront" }, () => {
+test.describe("Registration new user", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
 
