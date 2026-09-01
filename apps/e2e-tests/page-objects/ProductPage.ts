@@ -5,7 +5,6 @@ export class ProductPage {
   readonly addToCartButton: Locator;
   readonly variant: Locator;
   readonly variantText: Locator;
-  readonly productOption: Locator;
   readonly miniCartLink: Locator;
   readonly productRemove: Locator;
   readonly ratingStar: Locator;
@@ -19,7 +18,6 @@ export class ProductPage {
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.variant = page.getByTestId("product-variant");
     this.variantText = page.getByTestId("product-variant-text");
-    this.productOption = page.getByTestId("cart-product-options");
     this.miniCartLink = page.getByTestId("cart-button");
     this.productRemove = page.getByTestId("product-remove-button");
     this.ratingStar = page.getByTestId("review-empty-star");
@@ -45,17 +43,27 @@ export class ProductPage {
   }
 
   async addVariantToCart() {
-    for (const variant of await this.page
-      .getByTestId("product-variant-text")
-      .all())
-      await variant.click();
+    // One option: each click navigates to that variant's own URL.
+    await this.variantText.first().click();
     await expect(this.page.getByTestId("loading")).toHaveCount(0);
-    await this.addToCartButton.nth(0).click();
+
+    const selectedVariant = (
+      await this.variantText.first().textContent()
+    )?.trim();
+
+    // Only returns once the storefront confirms the line item.
+    await this.addToCart();
+
     await this.miniCartLink.click();
-    expect(this.variantText.textContent).toEqual(
-      this.productOption.textContent,
-    );
-    await this.page.waitForLoadState("networkidle");
+    await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
+
+    // The cart renders no variant options, so check a variant was chosen and
+    // that the configured product reached the cart.
+    expect(selectedVariant).toBeTruthy();
+    await expect(
+      this.page.getByTestId("cart-product-image").first(),
+    ).toBeVisible();
+
     await this.productRemove.click();
     await this.page.getByTestId("cart-close-button").click();
   }

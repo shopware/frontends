@@ -22,6 +22,7 @@ const cover = computed(() =>
   <div class="flex gap-4">
     <div class="w-37.5 h-37.5">
       <NuxtImg
+        data-testid="cart-product-image"
         :src="cover"
         :alt="`${item.label || item.payload?.name || ''} cart item`"
         class="object-cover object-center"
@@ -48,6 +49,7 @@ const cover = computed(() =>
         <FormLinkButton
           class="text-sm border-b-1 border-b-solid border-b-brand-primary hover:border-none"
           label="Remove"
+          data-testid="product-remove-button"
           @click="emit('remove', item.id)"
         />
       </div>

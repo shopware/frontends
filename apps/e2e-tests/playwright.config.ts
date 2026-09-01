@@ -23,13 +23,15 @@ const config: PlaywrightTestConfig = {
   testDir: "./tests",
   outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: process.env.CI ? 30000 : 5000,
+    // Well under the test timeout, so a failing assertion reports its own
+    // diff instead of the test dying first.
+    timeout: 10000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,

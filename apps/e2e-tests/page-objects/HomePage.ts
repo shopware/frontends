@@ -1,15 +1,13 @@
-import type { Locator, Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 import { AbstractPage } from "./AbstractPage";
+import { LoginForm } from "./LoginPage";
 
 export class HomePage extends AbstractPage {
   //readonly page: Page
   readonly signInButton: Locator;
-  readonly linkToCartPage: Locator;
-  readonly linkToVariantPage: Locator;
   readonly linkToRegistrationPage: Locator;
   readonly searchBar: Locator;
-  readonly addToWishlist: Locator;
   readonly wishlistButton: Locator;
   readonly accountMenuHelloButton: Locator;
   readonly myAccountLink: Locator;
@@ -18,15 +16,8 @@ export class HomePage extends AbstractPage {
   constructor(page: Page) {
     super(page);
     this.signInButton = page.getByTestId("header-sign-in-link");
-    this.linkToCartPage = page.locator("text='YORK 3'");
-    this.linkToVariantPage = page.locator(
-      "text='Pepper white, ground, Muntok pearl'",
-    );
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
-    this.addToWishlist = page
-      .getByTestId("product-box-wishlist-icon-not-in")
-      .last();
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
     this.suggestResultLink = page.getByTestId(
@@ -43,39 +34,56 @@ export class HomePage extends AbstractPage {
     await this.signInButton.click({ delay: 500 });
   }
 
-  async openCartPage() {
-    await this.page.waitForTimeout(500);
-    await this.linkToCartPage.waitFor();
-    await this.linkToCartPage.click();
-    await this.page.waitForSelector("[data-testid='product-quantity']", {
-      state: "visible",
-    });
+  /** The wishlist is server side, so a logged out toggle opens a login modal. */
+  async loginAs(email: string, password: string) {
+    await this.clickOnSignIn();
+    await new LoginForm(this.page).login(email, password);
+    await this.accountMenuHelloButton.waitFor({ state: "visible" });
   }
 
+  async openCartPage() {
+    await this.openFirstCategoryPage();
+    await this.openFirstProductPage();
+  }
+
+  /** Which products have variants is sales channel content, so walk until one does. */
   async openVariantsCartPage() {
-    await this.page.waitForLoadState("networkidle");
-    await this.linkToVariantPage.click();
-    await this.page.waitForSelector("[data-testid='product-quantity']");
+    await this.openFirstCategoryPage();
+
+    const productLinks = this.page.getByTestId("product-box-product-name-link");
+    await productLinks.first().waitFor({ state: "visible" });
+    const hrefs = (await productLinks.evaluateAll((links) =>
+      links.map((link) => link.getAttribute("href")),
+    )) as (string | null)[];
+
+    const tried: string[] = [];
+    for (const href of hrefs.filter((entry): entry is string => !!entry)) {
+      tried.push(href);
+      await this.page.goto(href);
+      await this.page.waitForSelector("[data-testid='product-quantity']", {
+        state: "visible",
+      });
+      const hasVariants = await this.page
+        .getByTestId("product-variant")
+        .first()
+        .isVisible()
+        .catch(() => false);
+      if (hasVariants) return;
+    }
+
+    throw new Error(
+      `No product on the first category listing has variants. Tried: ${tried.join(", ")}.`,
+    );
   }
 
   async openCategoryPage() {
-    await this.page.waitForLoadState("networkidle");
-    await this.page
-      .getByRole("menuitem", { name: "Products", exact: true })
-      .click();
+    await this.openFirstCategoryPage();
   }
 
   /**
-   * Template agnostic navigation, used by the @accessibility run.
-   * openCategoryPage and openCartPage above select on vue-demo-store content
-   * ("Products", "YORK 3") that does not exist in vue-starter-template.
-   *
-   * Nav entries are sales channel content, so the first one is not guaranteed
-   * to list products. New-tab entries are skipped and the rest tried in order.
-   *
-   * Entries are opened by their href rather than clicked. A click hands over to
-   * the client router, which swaps the URL long before the listing renders, and
-   * axe would scan the page mid-transition.
+   * Template agnostic navigation. The first nav entry is not guaranteed to list
+   * products, so entries are tried in order, by href rather than by click: a
+   * click swaps the URL long before the listing renders.
    */
   async openFirstCategoryPage() {
     const sameTabEntries = this.page.locator(
@@ -83,14 +91,19 @@ export class HomePage extends AbstractPage {
     );
     await sameTabEntries.first().waitFor({ state: "visible" });
 
-    // Bounded, so a storefront where nothing lists products reports the error
-    // below instead of running past the 30s test timeout.
-    const candidates = (await sameTabEntries.all()).slice(0, 3);
+    // Plain data, not Locators: those would point at the previous document
+    // after the goto below, and the next read would block until the timeout.
+    const candidates = (
+      await sameTabEntries.evaluateAll((entries) =>
+        entries.map((entry) => ({
+          label: entry.textContent?.trim() || "(unnamed)",
+          href: entry.getAttribute("href"),
+        })),
+      )
+    ).slice(0, 3);
 
     const tried: string[] = [];
-    for (const entry of candidates) {
-      const label = (await entry.textContent())?.trim() || "(unnamed)";
-      const href = await entry.getAttribute("href");
+    for (const { label, href } of candidates) {
       if (!href) {
         tried.push(`${label} (no href)`);
         continue;
@@ -101,7 +114,8 @@ export class HomePage extends AbstractPage {
         await this.page
           .getByTestId("product-box-product-name-link")
           .first()
-          .waitFor({ state: "visible", timeout: 3000 });
+          .waitFor({ state: "visible", timeout: 5000 });
+        await this.waitForHydration();
         return;
       } catch {
         continue;
@@ -123,9 +137,23 @@ export class HomePage extends AbstractPage {
     });
   }
 
+  /** Some templates link to a register page, the starter renders it inline. */
   async openRegistrationPage() {
-    await this.linkToRegistrationPage.click();
-    await this.page.waitForURL("**/register");
+    const signUpLink = this.linkToRegistrationPage;
+    if (await signUpLink.isVisible().catch(() => false)) {
+      await signUpLink.click();
+    }
+    await this.page
+      .getByTestId("registration-form")
+      .waitFor({ state: "visible" });
+  }
+
+  /** Taken from the catalogue: a hardcoded phrase ties the suite to one channel. */
+  async firstProductSearchTerm() {
+    const link = this.page.getByTestId("product-box-product-name-link").first();
+    await link.waitFor({ state: "attached" });
+    const name = (await link.textContent()) ?? "";
+    return name.trim().split(/\s+/)[0] as string;
   }
 
   async typeSearchPhrase(phrase: string) {
@@ -146,9 +174,41 @@ export class HomePage extends AbstractPage {
     await this.suggestResultLink.click();
   }
 
+  /** The toggle is <client-only>, so its presence means the listing is hydrated. */
+  async waitForHydration() {
+    await this.page
+      .getByTestId("product-box-toggle-wishlist-button")
+      .first()
+      .waitFor({ state: "visible" });
+  }
+
+  /** From a listing, not the landing page, where cards sit in sliders. */
   async addProductToWishlist() {
-    await this.page.waitForLoadState("networkidle");
-    await this.addToWishlist.dispatchEvent("click");
+    await this.openFirstCategoryPage();
+
+    // A toggle: clicking a product already wishlisted would remove it.
+    const toggles = this.page.getByTestId("product-box-toggle-wishlist-button");
+    const labels = await toggles.evaluateAll((controls) =>
+      controls.map((control) => control.getAttribute("aria-label")),
+    );
+    const index = labels.indexOf("Add to wishlist");
+    if (index === -1) {
+      throw new Error("Every product on this listing is already wishlisted.");
+    }
+
+    // The control only flips once the entry is stored.
+    const stored = this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/customer/wishlist/add") && response.ok(),
+      { timeout: 15000 },
+    );
+    await toggles.nth(index).click();
+    await stored;
+
+    await expect(toggles.nth(index)).toHaveAttribute(
+      "aria-label",
+      "Remove from wishlist",
+    );
   }
 
   async openMyAccount() {

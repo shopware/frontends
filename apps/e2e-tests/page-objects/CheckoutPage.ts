@@ -1,5 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 
+import { selectCountry, selectFirstOptionIfPresent } from "../utils/form";
+
 export class CheckoutPage {
   readonly page: Page;
   readonly goToCheckoutButton: Locator;
@@ -43,21 +45,24 @@ export class CheckoutPage {
 
   async goToCheckout() {
     await this.page.waitForSelector("[data-testid='sidebar-right']");
-    await this.page.getByTestId("sidebar-right").isVisible();
+    await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
     await this.goToCheckoutButton.click();
     await this.page.waitForURL("**/checkout");
   }
 
+  /** Not every template asks for terms acceptance. */
   async markTerms() {
-    await this.page.waitForLoadState();
-    await this.termsBox.isVisible();
-    await this.termCheckbox.isVisible();
-    await this.termCheckbox.dispatchEvent("click");
+    if ((await this.termCheckbox.count()) === 0) return;
+    await this.termCheckbox.waitFor({ state: "visible" });
+    await this.termCheckbox.check();
   }
 
   async placeOrder() {
-    await this.page.waitForLoadState();
     await this.placeOrderButton.click();
+    // Round-trips to the backend before redirecting to the confirmation page.
+    await this.page.waitForURL(/\/checkout\/(success|finish)/, {
+      timeout: 60000,
+    });
   }
 
   async loginOnCheckout() {
@@ -65,7 +70,9 @@ export class CheckoutPage {
     await this.loginOnCheckoutButton.click();
   }
 
+  /** The starter checks out as a guest by default, so there is nothing to untick. */
   async checkNotCreateAccount() {
+    if ((await this.notCreateAccountCheck.count()) === 0) return;
     await this.notCreateAccountCheck.check();
   }
 
@@ -77,16 +84,24 @@ export class CheckoutPage {
     zipcode: string,
     city: string,
   ) {
-    await this.page.waitForLoadState();
-    await this.salutation.selectOption({ label: "Mr." });
-    await this.firstName.type(firstName);
-    await this.lastName.type(lastName);
-    await this.emailAdrdress.type(email);
-    await this.street.type(street);
-    await this.zipcode.type(zipcode);
-    await this.city.type(city);
-    await this.country.selectOption({ label: "Germany" });
-    await this.countryState.selectOption({ label: "Bavaria" });
+    await selectFirstOptionIfPresent(this.salutation);
+    await this.firstName.fill(firstName);
+    await this.lastName.fill(lastName);
+    await this.emailAdrdress.fill(email);
+    await this.street.fill(street);
+    await this.zipcode.fill(zipcode);
+    await this.city.fill(city);
+    await selectCountry(this.page, this.country, "Germany");
+    await selectFirstOptionIfPresent(this.countryState);
+
+    // Saving the address registers the guest; without that session
+    // /checkout/order answers 403 CUSTOMER_NOT_LOGGED_IN.
+    const guestRegistered = this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/account/register") && response.ok(),
+      { timeout: 30000 },
+    );
     await this.submitButton.click();
+    await guestRegistered;
   }
 }

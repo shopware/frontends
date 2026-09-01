@@ -42,6 +42,7 @@ function handleUpdateBaseInfo() {
         class="mb-4"
         v-model="email"
         id="email"
+        data-testid="checkout-pi-email-input"
         :label="$t('checkout.customerBaseInfo.emailLabel')"
         :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
         :errorMessage="errorMessages?.value?.email?.$errors?.[0] ?? ''"

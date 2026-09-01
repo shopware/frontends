@@ -3,9 +3,11 @@ import { expect, test } from "@playwright/test";
 import { CartPage } from "../page-objects/CartPage";
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
+import { RegisterForm } from "../page-objects/RegisterPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
-test.setTimeout(50000);
+// Registering a fresh customer in beforeEach costs ~15s of the budget.
+test.setTimeout(60000);
 test.describe.parallel(
   "Add product to cart / Remove from cart",
   { tag: "@storefront" },
@@ -14,6 +16,7 @@ test.describe.parallel(
     let productPage: ProductPage;
     let cartPage: CartPage;
     let wishlistPage: WishlistPage;
+    let registrationPage: RegisterForm;
 
     // Before Hook
     test.beforeEach(async ({ page }) => {
@@ -21,6 +24,7 @@ test.describe.parallel(
       productPage = new ProductPage(page);
       cartPage = new CartPage(page);
       wishlistPage = new WishlistPage(page);
+      registrationPage = new RegisterForm(page);
 
       await homePage.visitMainPage();
     });
@@ -34,11 +38,14 @@ test.describe.parallel(
     });
 
     test("Add product to cart from wishlist", async ({ page }) => {
-      await page.waitForEvent("requestfinished");
+      // The wishlist is server side, and a fresh customer starts empty.
+      await homePage.clickOnSignIn();
+      await homePage.openRegistrationPage();
+      await registrationPage.createUser();
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
       await expect(page.getByTestId("product-box")).toHaveCount(1);
-      await productPage.addToCart();
+      await wishlistPage.addFirstProductToCart();
       await cartPage.openMiniCart();
       await expect(page.getByTestId("cart-product-image")).toBeVisible();
     });

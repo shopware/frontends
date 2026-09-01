@@ -30,7 +30,11 @@ onClickOutside(miniCartContainer, () => {
 });
 </script>
 <template>
-  <div ref="miniCartContainer" class="z-20 max-w-[500px] w-full">
+  <div
+    ref="miniCartContainer"
+    data-testid="sidebar-right"
+    class="z-20 max-w-[500px] w-full"
+  >
     <div
       class="px-6 pt-4 pb-3 border bg-surface-surface flex items-center justify-between"
     >
@@ -39,7 +43,11 @@ onClickOutside(miniCartContainer, () => {
       >
         {{ $t("cart.miniCart.title") }}
       </div>
-      <FormIconButton type="ghost" @click.stop="handleCloseMiniCart">
+      <FormIconButton
+        type="ghost"
+        data-testid="cart-close-button"
+        @click.stop="handleCloseMiniCart"
+      >
         <Icon name="shopware:times-s" class="w-3 h-3" />
       </FormIconButton>
     </div>
@@ -68,6 +76,7 @@ onClickOutside(miniCartContainer, () => {
         {{ $t("cart.miniCart.taxEstimation") }}
       </div>
       <NuxtLink
+        data-testid="cart-checkout-link"
         :to="formatLink('/checkout')"
         class="bg-brand-primary text-brand-on-primary block text-center font-bold leading-6 py-1.5 rounded-md mb-2"
         >{{ $t("cart.miniCart.proceedToCheckout") }}</NuxtLink

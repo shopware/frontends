@@ -18,7 +18,7 @@ export class CartPage {
   async openMiniCart() {
     await this.miniCartButton.waitFor();
     await this.miniCartButton.click();
-    await this.miniCartContainer.isVisible();
+    await this.miniCartContainer.waitFor({ state: "visible" });
   }
 
   async removeFromMiniCart() {

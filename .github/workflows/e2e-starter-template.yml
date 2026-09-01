@@ -70,19 +70,26 @@ jobs:
 
       - name: Run tests
         id: e2e
-        # Red on purpose, so this reports rather than gates. That is also why
-        # this workflow's name is absent from failed-job-check.yml. Missing
-        # data-testids are #2650 and the login/register page objects are #2651;
-        # the demo store catalog content HomePage navigates by is tracked
-        # nowhere yet.
+        # The suite passes against the starter now, but it still reports rather
+        # than gates. The demo backend rate limits customer registration to a
+        # short burst (3 requests, then 429, recovering in about a minute), and
+        # several specs have to register, so a run can still go red for reasons
+        # that are nothing to do with the change under test. Retries absorb it
+        # because they space attempts past that window. Kept out of
+        # failed-job-check.yml for the same reason.
         continue-on-error: true
         timeout-minutes: 25
         run: |
           cd apps/e2e-tests
           # pnpm forwards these straight through; a `--` separator swallows them.
-          # --retries=0 while the suite is red: retrying a predetermined failure
-          # costs 3x for no information. Drop it once the suite is green.
-          pnpm run test:e2e --project=chromium --reporter=github,html --retries=0
+          #
+          # One worker: the specs share a single customer account and one demo
+          # backend, so parallel workers clobber each other's cart, wishlist and
+          # session. Measured: 5 passing at 4 workers vs 8 at one, same commit.
+          #
+          # Retries are left at the config default now that the suite is meant
+          # to pass; they absorb the shared backend's transient slowness.
+          pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
 
       - name: Report result
         run: |

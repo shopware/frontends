@@ -48,12 +48,16 @@ const handleSubmit = () => {
     <div class="flex-col md:flex-row flex gap-2">
       <FormInputField
         class="w-full"
+        id="firstName"
+        data-testid="account-personal-data-firstname-input"
         v-model="state.firstName"
         :label="$t('account.profile.form.firstName')"
         :errorMessage="$v?.firstName?.$errors[0]"
       />
       <FormInputField
         class="w-full"
+        id="lastName"
+        data-testid="account-personal-data-lastname-input"
         v-model="state.lastName"
         :label="$t('account.profile.form.lastName')"
         :errorMessage="$v?.lastName?.$errors[0]"
@@ -77,7 +81,10 @@ const handleSubmit = () => {
         :errorMessage="$v?.vatIds?.$errors[0]"
       />
     </div>
-    <FormBaseButton type="submit">
+    <FormBaseButton
+      type="submit"
+      data-testid="account-personal-data-submit-button"
+    >
       {{ $t("account.profile.form.buttonSubmit") }}
     </FormBaseButton>
   </form>

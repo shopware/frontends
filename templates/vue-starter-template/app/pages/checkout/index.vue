@@ -77,7 +77,9 @@ async function handleSaveAddress() {
   const { valid: validBaseInfo } = await $vBaseInfo.$validate();
   const { valid: validbillingAddress } = await $vBillingAddress.$validate();
 
-  if (validBaseInfo || validbillingAddress) {
+  // Bail out when INVALID. This read `if (valid || valid)`, so register() never
+  // ran for good data and /checkout/order answered 403 CUSTOMER_NOT_LOGGED_IN.
+  if (!validBaseInfo || !validbillingAddress) {
     return;
   }
 
@@ -168,6 +170,7 @@ onMounted(() => {
           />
           <FormBaseButton
             :label="$t('checkout.saveAddressButton')"
+            data-testid="checkout-pi-submit-button"
             @click="handleSaveAddress"
           />
 
@@ -188,6 +191,7 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
+          data-testid="checkout-place-order-button"
           :label="
             isPlacingOrder
               ? $t('checkout.placingOrder')

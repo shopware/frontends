@@ -22,7 +22,10 @@ test.describe("Add review", { tag: "@storefront" }, () => {
 
     await homePage.visitMainPage();
   });
-  //https://github.com/shopware/frontends/issues/1679
+  // vue-starter-template does not render product reviews at all: cms-base-layer
+  // ships SwProductReviews.vue but FrontendDetailPage never uses it, so there is
+  // no reviews tab to open. Needs the feature, not a selector. Tracked in
+  // #2680 (#1679 covered an earlier version of this and is closed).
   test.skip("Add product review", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginform.login(userEmail, password);

@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
@@ -16,12 +16,12 @@ test.describe("Search phrase", { tag: "@storefront" }, () => {
   });
 
   test("Search phrase and verify result page", async () => {
-    await homePage.typeSearchPhrase("bag");
-    await resultPage.searchResultBox.isVisible();
+    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+    await expect(resultPage.searchResultBox).toBeVisible();
   });
 
   test("Search phrase by suggest and verify result page", async () => {
-    await homePage.searchBySuggest("bag");
-    await resultPage.searchResultBox.isVisible();
+    await homePage.searchBySuggest(await homePage.firstProductSearchTerm());
+    await expect(resultPage.searchResultBox).toBeVisible();
   });
 });

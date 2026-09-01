@@ -43,9 +43,17 @@ export class MyAccountPage {
     this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }
 
+  /**
+   * Some templates gate the profile form behind an edit button; others render
+   * it directly on the profile page. Go to the form either way.
+   */
   async changePersonalData() {
-    await this.accountChangeProfileButton.waitFor();
-    await this.accountChangeProfileButton.dispatchEvent("click");
+    if ((await this.accountChangeProfileButton.count()) > 0) {
+      await this.accountChangeProfileButton.click();
+      return;
+    }
+    await this.page.goto("/account/profile");
+    await this.personalFirstName.waitFor({ state: "visible" });
   }
 
   async changePersonalFirstName(firstname: string) {

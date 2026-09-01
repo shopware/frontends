@@ -19,6 +19,31 @@ export class WishlistPage {
 
   async openWishlist() {
     await this.wishlistButton.click();
+    // Client-side navigation: without this the next assertion sees the old page.
+    await this.page.waitForURL(/\/wishlist/);
+    await this.page
+      .locator('[data-testid="product-box"], [data-testid="wishlist-empty"]')
+      .first()
+      .waitFor({ state: "visible" });
+  }
+
+  /**
+   * Via the header link, not a goto: /wishlist is ssr:false and gated on the
+   * signed-in state, so a hard navigation renders neither list nor empty state.
+   */
+  async countEntries() {
+    await this.openWishlist();
+    return this.page.getByTestId("product-box").count();
+  }
+
+  /** The tile raises no notification, so the cart request is the signal. */
+  async addFirstProductToCart() {
+    const cartUpdated = this.page.waitForResponse(
+      (response) => response.url().includes("/checkout/cart") && response.ok(),
+      { timeout: 30000 },
+    );
+    await this.addToCartButton.first().click();
+    await cartUpdated;
   }
 
   async removeProductFromWishlist() {

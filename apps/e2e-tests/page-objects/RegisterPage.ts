@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
 import type { Locator, Page } from "@playwright/test";
 
+import { uniqueEmail } from "../utils/data-helpers";
+import { selectCountry, selectFirstOptionIfPresent } from "../utils/form";
+
 export class RegisterForm {
   // Define selectors
   readonly page: Page;
@@ -45,44 +48,47 @@ export class RegisterForm {
     email: string,
     password: string,
   ) {
-    await this.salutation.selectOption({ label: "Mr." });
-    await this.firstName.type(firstName);
-    await this.lastName.type(lastName);
-    await this.emailAdrdress.type(email);
-    await this.password.type(password);
+    await selectFirstOptionIfPresent(this.salutation);
+    await this.firstName.fill(firstName);
+    await this.lastName.fill(lastName);
+    await this.emailAdrdress.fill(email);
+    await this.password.fill(password);
   }
 
   async fillAddressData(street: string, zipcode: string, city: string) {
-    await this.street.type(street);
-    await this.zipcode.type(zipcode);
-    await this.city.type(city);
-    await this.country.selectOption({ label: "Germany" });
-    await this.countryState.selectOption({ label: "Bavaria" });
+    await this.street.fill(street);
+    await this.zipcode.fill(zipcode);
+    await this.city.fill(city);
+    await selectCountry(this.page, this.country, "Germany");
+    await selectFirstOptionIfPresent(this.countryState);
   }
 
   async fillCompanyData(companyName: string, vatId: string) {
     await this.accountType.selectOption({ label: "Company" });
-    await this.companyName.type(companyName);
-    await this.vatId.type(vatId);
+    await this.companyName.fill(companyName);
+    await this.vatId.fill(vatId);
   }
 
   async submitRegistraionForm() {
     await this.submitButton.click();
-    await this.page.waitForURL("/", { waitUntil: "networkidle" });
+    // Registration lands the customer somewhere logged in. Where exactly is
+    // template routing, so wait for the form to go rather than for a URL.
+    await this.page
+      .getByTestId("registration-form")
+      .waitFor({ state: "detached" });
   }
 
   async createUser() {
-    await this.salutation.selectOption({ label: "Mr." });
-    await this.firstName.type(`e2e ${faker.person.firstName()}`);
-    await this.lastName.type(`e2e ${faker.person.lastName()}`);
-    await this.emailAdrdress.type(faker.internet.exampleEmail());
-    await this.password.type(faker.internet.password());
-    await this.street.type(faker.location.street());
-    await this.zipcode.type(faker.location.zipCode());
-    await this.city.type(faker.location.city());
-    await this.country.selectOption({ label: "Germany" });
-    await this.countryState.selectOption({ label: "Bavaria" });
-    await this.submitButton.click();
-    await this.page.waitForURL("/");
+    await selectFirstOptionIfPresent(this.salutation);
+    await this.firstName.fill(`e2e ${faker.person.firstName()}`);
+    await this.lastName.fill(`e2e ${faker.person.lastName()}`);
+    await this.emailAdrdress.fill(uniqueEmail());
+    await this.password.fill(faker.internet.password());
+    await this.street.fill(faker.location.street());
+    await this.zipcode.fill(faker.location.zipCode());
+    await this.city.fill(faker.location.city());
+    await selectCountry(this.page, this.country, "Germany");
+    await selectFirstOptionIfPresent(this.countryState);
+    await this.submitRegistraionForm();
   }
 }
