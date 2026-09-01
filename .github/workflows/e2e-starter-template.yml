@@ -69,11 +69,18 @@ jobs:
           exit 1
 
       # First hit of a route pays full SSR plus backend cost and populates the
-      # caches. Doing it here keeps that cost out of the first test to touch it.
+      # ISR cache. Doing it here keeps that cost out of the first test to touch
+      # it. Only server-rendered routes are worth warming: /account, /checkout
+      # and /wishlist are ssr:false and answer with an empty shell in 2ms.
+      #
+      # /New-Arrivals/ is the first nav entry of the demo channel today. The
+      # status is echoed so that stopping being true shows up here rather than
+      # silently warming nothing.
       - name: Warm the storefront
         run: |
-          for path in / /New-Arrivals/ /account/login /checkout /wishlist; do
-            curl -sf -o /dev/null --max-time 30 "${BASE_E2E_URL%/}$path" || true
+          for path in / /New-Arrivals/; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "${BASE_E2E_URL%/}$path" || echo 000)
+            echo "warm $path -> $code"
           done
 
       - name: Run tests
