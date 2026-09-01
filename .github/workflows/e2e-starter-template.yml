@@ -68,6 +68,14 @@ jobs:
           cat "$RUNNER_TEMP/storefront.log"
           exit 1
 
+      # First hit of a route pays full SSR plus backend cost and populates the
+      # caches. Doing it here keeps that cost out of the first test to touch it.
+      - name: Warm the storefront
+        run: |
+          for path in / /New-Arrivals/ /account/login /checkout /wishlist; do
+            curl -sf -o /dev/null --max-time 30 "${BASE_E2E_URL%/}$path" || true
+          done
+
       - name: Run tests
         id: e2e
         # The suite passes against the starter now, but it still reports rather

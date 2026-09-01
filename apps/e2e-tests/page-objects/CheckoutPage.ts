@@ -59,10 +59,15 @@ export class CheckoutPage {
 
   async placeOrder() {
     await this.placeOrderButton.click();
-    // Round-trips to the backend before redirecting to the confirmation page.
+    // Round-trips to the backend before redirecting to the confirmation page,
+    // which is ssr:false and so renders after the URL changes. Waiting for the
+    // URL alone hands a half-rendered page to the assertion.
     await this.page.waitForURL(/\/checkout\/(success|finish)/, {
       timeout: 60000,
     });
+    await this.page
+      .getByTestId("order-total")
+      .waitFor({ state: "visible", timeout: 30000 });
   }
 
   async loginOnCheckout() {
