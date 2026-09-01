@@ -70,7 +70,11 @@ export async function sortBy(page: Page, label: string) {
 export async function applyLimit(page: Page, limitSelect: Locator) {
   await limitSelect.selectOption({ value: "1" });
   await page.waitForURL(/limit=1/);
-  await expect(page.getByTestId("product-box-img")).toHaveCount(1);
+  // Generous: the fetch only starts after the URL is pushed, and the shared
+  // backend is slow often enough that the 10s global deadline clips it.
+  await expect(page.getByTestId("product-box-img")).toHaveCount(1, {
+    timeout: 30000,
+  });
 }
 
 export async function goToPage(page: Page, number: number) {
@@ -81,5 +85,7 @@ export async function goToPage(page: Page, number: number) {
 
   await page.getByRole("button", { name: `Page ${number}` }).click();
   await page.waitForURL(new RegExp(`p=${number}`));
-  await expect(firstProduct).not.toHaveAttribute("href", before ?? "");
+  await expect(firstProduct).not.toHaveAttribute("href", before ?? "", {
+    timeout: 30000,
+  });
 }
