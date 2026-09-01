@@ -17,6 +17,7 @@ recipe:
     - readCustomerWishlist post /customer/wishlist
     - addProductOnWishlist post /customer/wishlist/add/{productId}
     - deleteProductOnWishlist delete /customer/wishlist/delete/{productId}
+    - mergeProductOnWishlist post /customer/wishlist/merge
   schemas:
     - Product
     - Criteria
@@ -126,12 +127,13 @@ You do not call `useSyncWishlist` directly. `useWishlist` drives the wishlist pa
 | Load a wishlist page  | `getWishlistProducts(criteria)` | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["body"]' />                             |
 | Read the loaded page  | `products`, `count`, `limit`    | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["response"]' />                         |
 | Empty the loaded page | `clearWishlist()`               | `DELETE /customer/wishlist/delete/{productId}` | <SchemaTypeTooltip type-key='operations["deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"]["response"]' /> |
+| Merge the guest wishlist at login | `mergeWishlistProducts()` | `POST /customer/wishlist/merge`                | <SchemaTypeTooltip type-key='operations["mergeProductOnWishlist post /customer/wishlist/merge"]["response"]' />                 |
 
 ## Composables
 
-- `useWishlist`: the wishlist page. Exposes `getWishlistProducts`, `clearWishlist`, `items`, `products`, `count`, `currentPage`, `totalPagesCount`, `limit`, and `canSyncWishlist`.
+- `useWishlist`: the wishlist page. Exposes `getWishlistProducts`, `clearWishlist`, `mergeWishlistProducts`, `items`, `products`, `count`, `currentPage`, `totalPagesCount`, `limit`, and `canSyncWishlist`. Call `mergeWishlistProducts` right after a successful login, as both starter templates do: it pushes the ids saved in localStorage during the guest session to the customer wishlist and reloads. Without that call the products saved before sign-in are lost.
 - `useProductWishlist`: the wishlist state of one product. Takes a product id and exposes `addToWishlist`, `removeFromWishlist`, and `isInWishlist`.
-- `useSyncWishlist`: the customer wishlist behind the Store API, and the shared state both composables above read from. Exposes `getWishlistProducts`, `addToWishlistSync`, `removeFromWishlistSync`, `items`, `products`, `count`, `currentPage`, and `limit`.
+- `useSyncWishlist`: the customer wishlist behind the Store API, and the shared state both composables above read from. Exposes `getWishlistProducts`, `addToWishlistSync`, `removeFromWishlistSync`, `mergeWishlistProducts`, `items`, `products`, `count`, `currentPage`, and `limit`.
 - `useUser`: provides `isLoggedIn` and `isGuestSession`, which decide whether the customer wishlist is used at all.
 
 ## Types
@@ -174,7 +176,9 @@ const {
   canSyncWishlist,
 } = useWishlist();
 
-const isLoading = ref(false);
+// Start as loading so the first render shows the loading state instead of
+// flashing "You have not saved any products yet." before the wishlist arrives.
+const isLoading = ref(true);
 const clearError = ref("");
 
 const loadWishlist = async (page = 1) => {
@@ -201,11 +205,17 @@ const clear = async () => {
   }
 };
 
-onMounted(() => {
-  if (canSyncWishlist.value) {
-    loadWishlist();
-  }
-});
+// Immediate watcher instead of onMounted: it loads on mount and again when
+// the customer signs in without a page change, e.g. through the login modal.
+watch(
+  canSyncWishlist,
+  (canSync) => {
+    if (canSync) {
+      loadWishlist();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -265,9 +275,9 @@ That shared state holds exactly one page. `items` contains the ids of the produc
 
 - `useSyncWishlist().getWishlistProducts()` catches its own errors, logs them, and resets `items`, `products`, and `count` to empty. A failed load is indistinguishable from an empty wishlist, and a `try/catch` around the call never fires.
 - `useProductWishlist().isInWishlist` checks `items`, which holds only the loaded page. On a product listing, a saved product that is not in that page reads as not saved until you load a page large enough to contain it.
-- `useProductWishlist` reloads with no criteria after every add and remove, which resets the wishlist to page 1 with the default limit of 15. Toggling a product while the customer is on page 3 of the wishlist moves them back to the first page.
+- `useProductWishlist` reloads with no criteria after every add and remove, which resets the wishlist to page 1 with the Store API's default limit, since no `limit` is sent. Toggling a product while the customer is on page 3 of the wishlist moves them back to the first page.
 - `clearWishlist()` sends one `deleteProductOnWishlist delete /customer/wishlist/delete/{productId}` request per id in `items`, so it empties the loaded page and not the whole wishlist.
-- `useWishlist().canSyncWishlist` requires `isLoggedIn` and `!isGuestSession`, while `useProductWishlist` branches on `isLoggedIn` alone. In a guest session the toggle writes to the customer wishlist while the wishlist page does not read from it.
+- `useWishlist().canSyncWishlist` checks `isLoggedIn && !isGuestSession`, while `useProductWishlist` branches on `isLoggedIn` alone. The two checks are equivalent, because `isLoggedIn` is already false for guest sessions, so both the toggle and the wishlist page use the localStorage wishlist for a guest.
 - `useSyncWishlist` returns an `isLoading` ref that the composable never updates. Track loading state in your component.
 - The add and remove operations resolve with no wishlist data. Until the reload finishes, `count` and `products` still describe the state before the write.
 
