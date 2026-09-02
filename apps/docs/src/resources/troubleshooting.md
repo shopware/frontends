@@ -94,7 +94,7 @@ export default defineNuxtConfig({
 });
 ```
 
-Or as an environment variable:
+The environment variable below overrides it, but **only if the `devStorefrontUrl` key is already present** in `nuxt.config.ts` (an empty string is enough) — Nuxt applies `NUXT_*` overrides only to keys that already exist, and the module does not seed a default:
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store

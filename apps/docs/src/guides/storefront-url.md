@@ -33,13 +33,13 @@ This page explains what the backend does with that value, how Shopware Frontends
 
 The list below is the complete set from the Store API schema (`6.7.13.0`) — `storefrontUrl` appears in exactly five request bodies:
 
-| Store API operation                                             | Required | How to send it                                                                                                                                                         |
-| --------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `register post /account/register`                               | yes      | [`useUser().register()`](../packages/composables/useUser.html) — injected                                                                                              |
-| `sendRecoveryMail post /account/recovery-password`              | yes      | [`useCustomerPassword().resetPassword()`](../packages/composables/useCustomerPassword.html) — pass it yourself                                                         |
-| `subscribeToNewsletter post /newsletter/subscribe`              | yes      | [`useNewsletter().newsletterSubscribe()`](../packages/composables/useNewsletter.html) — injected                                                                       |
-| `reinviteEmployee post /employee/reinvite/{id}`                 | no       | no composable, call `apiClient.invoke()` — see the [B2B employee management example](https://github.com/shopware/frontends/tree/main/examples/b2b-employee-management) |
-| `dsrGenerateLoginToken post /dsr/customer/generate-login-token` | no       | Digital Sales Rooms, see the note below                                                                                                                                |
+| Store API operation                                             | Required | How to send it                                                                                                 |
+| --------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `register post /account/register`                               | yes      | [`useUser().register()`](../packages/composables/useUser.html) — injected                                      |
+| `sendRecoveryMail post /account/recovery-password`              | yes      | [`useCustomerPassword().resetPassword()`](../packages/composables/useCustomerPassword.html) — pass it yourself |
+| `subscribeToNewsletter post /newsletter/subscribe`              | yes      | [`useNewsletter().newsletterSubscribe()`](../packages/composables/useNewsletter.html) — injected               |
+| `reinviteEmployee post /employee/reinvite/{id}`                 | no       | no composable — see [below](#endpoints-without-a-composable)                                                   |
+| `dsrGenerateLoginToken post /dsr/customer/generate-login-token` | no       | Digital Sales Rooms, see the note below                                                                        |
 
 The schema descriptions confirm the behaviour above, for example on `/account/register`:
 
@@ -73,19 +73,50 @@ register(
 );
 ```
 
-`useNewsletter().newsletterSubscribe()` works the same way. `useCustomerPassword().resetPassword()` does **not** — it forwards the payload as-is, so you have to pass `storefrontUrl` yourself:
+`useNewsletter().newsletterSubscribe()` works the same way. `useCustomerPassword().resetPassword()` does **not** — it forwards the payload as-is, so you have to pass `storefrontUrl` yourself.
+
+Resolve it inside the submit handler, not in the component body:
 
 ```vue
 <script setup lang="ts">
 const { resetPassword } = useCustomerPassword();
 const { getStorefrontUrl } = useInternationalization();
 
-const formData = ref({
-  email: "",
-  storefrontUrl: getStorefrontUrl(),
-});
+const formData = ref({ email: "" });
+
+async function onSubmit() {
+  await resetPassword({
+    ...formData.value,
+    // resolved on the client, where window.location.origin exists
+    storefrontUrl: getStorefrontUrl(),
+  });
+}
 </script>
 ```
+
+:::warning Do not call `getStorefrontUrl()` during setup
+`<script setup>` also runs on the server. With no `devStorefrontUrl` configured — the default, since the Nuxt plugin falls back to `null` — `getStorefrontUrl()` reaches for `window.location.origin` and the render fails with `window is not defined`. A submit handler only ever runs in the browser, so resolving the value there is safe whether or not `devStorefrontUrl` is set.
+:::
+
+### Endpoints without a composable
+
+The two optional endpoints have no composable wrapper, so you call the API client directly and add `storefrontUrl` to the body yourself:
+
+```ts
+const { apiClient } = useShopwareContext();
+const { getStorefrontUrl } = useInternationalization();
+
+await apiClient.invoke("reinviteEmployee post /employee/reinvite/{id}", {
+  pathParams: { id: employeeId },
+  body: { storefrontUrl: getStorefrontUrl() },
+});
+```
+
+:::info Omitting it fails silently
+On both endpoints the field is optional, so the call succeeds without it and there is nothing in the response to tell you it was missing. Send it when you need the link in the invitation mail to point at a specific domain.
+
+The [B2B employee management example](https://github.com/shopware/frontends/tree/main/examples/b2b-employee-management) shows the endpoint call, but without `storefrontUrl` — it passes an empty body, so treat it as a reference for the endpoint itself rather than for this parameter.
+:::
 
 ## `devStorefrontUrl`
 
@@ -97,7 +128,7 @@ The default works in production, where your frontend is served from a domain tha
 
 - **Local development** — the origin is `http://localhost:3000`, which matches no sales channel domain, so registration and newsletter subscription fail validation.
 - **Frontend on a separate domain** — a preview deployment, a staging URL, or any host you have not registered in the Admin.
-- **Server-side rendering** — `window` does not exist on the server, so there is no origin to fall back to. Either keep these calls client-side or configure `devStorefrontUrl`.
+- **Server-side rendering** — `window` does not exist on the server, so the fallback throws `window is not defined` instead of returning an origin. Either resolve the value in client-only code or configure `devStorefrontUrl`.
 
 ### Configuration
 
@@ -119,11 +150,22 @@ export default defineNuxtConfig({
 });
 ```
 
-Or via an environment variable, so it stays out of the committed config:
+To keep the actual value per-environment, declare the key in `nuxt.config.ts` anyway — with an empty default — and override it with an environment variable:
+
+```ts
+// nuxt.config.ts — the key has to be present for the env override to apply
+shopware: {
+  devStorefrontUrl: "",
+},
+```
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
+
+:::warning The env variable alone is not enough
+Nuxt applies `NUXT_*` overrides by walking the keys that already exist in the runtime config — `applyEnv()` iterates with `for (const key in obj)`, so a key that is absent is never visited and its environment variable is never read. The Nuxt module does not seed a default for `devStorefrontUrl`, it only merges what you pass in. Omit the key from `nuxt.config.ts` and `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is silently ignored — no warning, no error. This is why the templates commit the key: `vue-starter-template` ships `devStorefrontUrl: "https://frontends-demo.vercel.app"` and `vue-demo-store` ships `devStorefrontUrl: ""`.
+:::
 
 Outside of the Nuxt module — a plain Vue or Astro app — pass it to `createShopwareContext()`:
 
@@ -169,11 +211,26 @@ Note that this keeps you on the configured `devStorefrontUrl`, so it does not by
 
 **`[Constraint violation error][/storefrontUrl] This value should not be blank.`**
 
-An empty value was sent. Typically the form passes `config.public.shopware.devStorefrontUrl ?? ""` and `devStorefrontUrl` is not configured — use `getStorefrontUrl()` instead, and configure `devStorefrontUrl`.
+An empty value was sent. This happens when the form reads the runtime config directly instead of going through the composable:
+
+```ts
+// reads runtimeConfig, where the value really is "" — `??` does not catch an empty string
+storefrontUrl: config.public.shopware.devStorefrontUrl ?? "",
+```
+
+Use `getStorefrontUrl()` instead. The Nuxt plugin normalises the option with `devStorefrontUrl || null`, so an empty string becomes `null` in the context and the composable falls back to `window.location.origin`. Reading `runtimeConfig` yourself skips that normalisation and forwards the empty string.
+
+:::warning The deprecated demo store still uses the old pattern
+[`AccountRecoverPassword.vue`](https://github.com/shopware/frontends/blob/main/templates/vue-demo-store/app/components/account/AccountRecoverPassword.vue) in `vue-demo-store` reads the runtime config directly, and that template ships `devStorefrontUrl: ""`, so password recovery hits this error out of the box. Follow this guide rather than that component. The supported templates are unaffected — they do not implement a recovery flow.
+:::
 
 **`[Constraint violation error][/storefrontUrl] The value you selected is not a valid choice.`**
 
 A value was sent, but it is not a registered sales channel domain. This is the typical `http://localhost:3000` case. Set `devStorefrontUrl` to a domain from **Sales Channel → Domains**, and check it matches exactly — protocol and trailing slash included.
+
+**`window is not defined` / `ReferenceError` during SSR**
+
+`getStorefrontUrl()` was called on the server with no `devStorefrontUrl` configured. Move the call into an event handler or other client-only code, or configure `devStorefrontUrl` so the `window` fallback is never reached.
 
 **Registration works in production, fails locally.** Same cause as above; set `devStorefrontUrl` for your dev environment only.
 
