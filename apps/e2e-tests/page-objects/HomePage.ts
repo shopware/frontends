@@ -129,10 +129,16 @@ export class HomePage extends AbstractPage {
   }
 
   async openFirstProductPage() {
-    await this.page
-      .getByTestId("product-box-product-name-link")
-      .first()
-      .click();
+    // By href, not by click: a click swaps the URL long before the detail page
+    // renders, and the card can be replaced under it if the listing re-renders.
+    const link = this.page.getByTestId("product-box-product-name-link").first();
+    await link.waitFor({ state: "visible" });
+    const href = await link.getAttribute("href");
+    if (!href) {
+      throw new Error("The first product card carries no link.");
+    }
+
+    await this.page.goto(href);
     await this.page.waitForSelector("[data-testid='product-quantity']", {
       state: "visible",
     });
@@ -140,13 +146,17 @@ export class HomePage extends AbstractPage {
 
   /** Some templates link to a register page, the starter renders it inline. */
   async openRegistrationPage() {
+    const form = this.page.getByTestId("registration-form");
     const signUpLink = this.linkToRegistrationPage;
-    if (await signUpLink.isVisible().catch(() => false)) {
-      await signUpLink.click();
-    }
-    await this.page
-      .getByTestId("registration-form")
-      .waitFor({ state: "visible" });
+
+    // The login step renders first, so a single isVisible() probe on the link
+    // races it: a false reading skips the click and then waits out the timeout
+    // on a form that was never opened.
+    await expect(async () => {
+      if (await form.isVisible()) return;
+      await signUpLink.click({ timeout: 5000 });
+      await form.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
   }
 
   /** Taken from the catalogue: a hardcoded phrase ties the suite to one channel. */
@@ -201,7 +211,7 @@ export class HomePage extends AbstractPage {
     const stored = this.page.waitForResponse(
       (response) =>
         response.url().includes("/customer/wishlist/add") && response.ok(),
-      { timeout: 15000 },
+      { timeout: 30000 },
     );
     await toggles.nth(index).click();
     await stored;

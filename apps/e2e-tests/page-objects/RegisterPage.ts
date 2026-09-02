@@ -70,7 +70,20 @@ export class RegisterForm {
   }
 
   async submitRegistraionForm() {
+    // Without this the form simply stays put on a rejected registration, and
+    // the failure reads as a timeout rather than as the API error it is.
+    const registered = this.page.waitForResponse(
+      (response) => response.url().includes("/account/register"),
+      { timeout: 30000 },
+    );
     await this.submitButton.click();
+    const response = await registered;
+    if (!response.ok()) {
+      throw new Error(
+        `Registration failed with ${response.status()}: ${await response.text()}`,
+      );
+    }
+
     // Registration lands the customer somewhere logged in. Where exactly is
     // template routing, so wait for the form to go rather than for a URL.
     await this.page
