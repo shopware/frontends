@@ -23,11 +23,19 @@ export class CategoryPage {
   }
 
   async selectRandomManufacturerCheckbox() {
-    await checkFirstOptionIn(this.page, this.manufacturerFilter);
+    await checkFirstOptionIn(
+      this.page,
+      this.manufacturerFilter,
+      "manufacturer",
+    );
   }
 
   async selectRandomColorCheckbox() {
-    await checkFirstOptionIn(this.page, await firstPropertyFilter(this.page));
+    await checkFirstOptionIn(
+      this.page,
+      await firstPropertyFilter(this.page),
+      "properties",
+    );
   }
 
   async selectLimitOneProductPerPage() {

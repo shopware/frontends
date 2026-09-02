@@ -19,7 +19,11 @@ const cover = computed(() =>
 );
 </script>
 <template>
-  <div class="flex gap-4">
+  <div
+    class="flex gap-4"
+    data-testid="cart-line-item"
+    :data-product-id="item.referencedId"
+  >
     <div class="w-37.5 h-37.5">
       <NuxtImg
         data-testid="cart-product-image"

@@ -9,6 +9,17 @@ on:
       - "templates/vue-starter-template/**"
       - "apps/e2e-tests/**"
       - ".github/workflows/e2e-starter-template.yml"
+      # Linked from packages/, so a change here rebuilds the starter without
+      # touching the template. api-gen is codegen only, so it is left out.
+      - "packages/api-client/**"
+      - "packages/cms-base-layer/**"
+      - "packages/composables/**"
+      - "packages/helpers/**"
+      - "packages/nuxt-module/**"
+      - "packages/unocss-design-tokens-layer/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
   schedule:
     - cron: "0 4 * * *"
 
@@ -68,14 +79,8 @@ jobs:
           cat "$RUNNER_TEMP/storefront.log"
           exit 1
 
-      # First hit of a route pays full SSR plus backend cost and populates the
-      # ISR cache. Doing it here keeps that cost out of the first test to touch
-      # it. Only server-rendered routes are worth warming: /account, /checkout
-      # and /wishlist are ssr:false and answer with an empty shell in 2ms.
-      #
-      # /New-Arrivals/ is the first nav entry of the demo channel today. The
-      # status is echoed so that stopping being true shows up here rather than
-      # silently warming nothing.
+      # Only SSR routes are worth warming; /account, /checkout and /wishlist
+      # are ssr:false. Status is echoed so a miss is visible.
       - name: Warm the storefront
         run: |
           for path in / /New-Arrivals/; do

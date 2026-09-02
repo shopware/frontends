@@ -48,9 +48,8 @@ export class ProductPage {
       ),
     );
 
-    // Not every option combination resolves to a real variant, and one that
-    // does not leaves the page untouched, so try the unselected ones in turn.
-    // The handler sits on the label; clicking the inner text does nothing.
+    // Not every option combination is a real variant, and one that is not
+    // leaves the page untouched. The handler is on the label, not the text.
     let switched = false;
     for (const [index, selected] of isSelected.entries()) {
       if (selected) continue;
@@ -65,26 +64,30 @@ export class ProductPage {
         continue;
       }
     }
-
-    // Each variant has its own URL, so the navigation is the proof the switch
-    // happened. Without it this passes even when the click does nothing and
-    // the original variant is what reaches the cart.
     if (!switched) {
       throw new Error("No variant option switched the product.");
     }
+
     await expect(this.page.getByTestId("loading")).toHaveCount(0);
 
-    // Only returns once the storefront confirms the line item.
-    await this.addToCart();
+    // The id the add-to-cart button will actually submit.
+    const variantId =
+      await this.addToCartButton.getAttribute("data-product-id");
+    if (!variantId) {
+      throw new Error("The add-to-cart button carries no data-product-id.");
+    }
 
+    await this.addToCart();
     await this.miniCartLink.click();
     await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
 
-    // The cart renders no variant options, so the variant identity is asserted
-    // on the detail page above rather than here.
+    // Identity, not just presence: navigating to a variant URL while adding the
+    // original product would otherwise pass.
     await expect(
-      this.page.getByTestId("cart-product-image").first(),
-    ).toBeVisible();
+      this.page.locator(
+        `[data-testid="cart-line-item"][data-product-id="${variantId}"]`,
+      ),
+    ).toHaveCount(1);
 
     await this.productRemove.click();
     await this.page.getByTestId("cart-close-button").click();

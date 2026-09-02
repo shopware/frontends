@@ -74,6 +74,38 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
+  test("Create new order and an account", async ({ page, browser }) => {
+    const email = uniqueEmail();
+    const accountPassword = faker.internet.password();
+
+    await homePage.openCartPage();
+    await productPage.addToCart();
+    await cartPage.openMiniCart();
+    await checkoutPage.goToCheckout();
+    await checkoutPage.fillGuestUserData(
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
+      email,
+      faker.location.street(),
+      faker.location.zipCode(),
+      faker.location.city(),
+      accountPassword,
+    );
+    await checkoutPage.markTerms();
+    await checkoutPage.placeOrder();
+    await expect(page.getByTestId("order-total")).toHaveCount(1);
+
+    // A guest cannot sign in, so signing in from a clean session is what proves
+    // a real account was created with the password entered at checkout.
+    const freshContext = await browser.newContext();
+    try {
+      const freshPage = await freshContext.newPage();
+      await new HomePage(freshPage).loginAs(email, accountPassword);
+    } finally {
+      await freshContext.close();
+    }
+  });
+
   test("Create new order as a guest user", async ({ page }) => {
     await homePage.openCartPage();
     await productPage.addToCart();

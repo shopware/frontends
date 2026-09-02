@@ -36,6 +36,7 @@ export class HomePage extends AbstractPage {
 
   /** The wishlist is server side, so a logged out toggle opens a login modal. */
   async loginAs(email: string, password: string) {
+    if (!this.page.url().startsWith("http")) await this.visitMainPage();
     await this.clickOnSignIn();
     await new LoginForm(this.page).login(email, password);
     await this.accountMenuHelloButton.waitFor({ state: "visible" });

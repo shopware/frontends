@@ -25,11 +25,19 @@ export class SearchResultPage {
   }
 
   async selectRandomManufacturerCheckbox() {
-    await checkFirstOptionIn(this.page, this.manufacturerFilter);
+    await checkFirstOptionIn(
+      this.page,
+      this.manufacturerFilter,
+      "manufacturer",
+    );
   }
 
   async selectRandomSelectionCheckbox() {
-    await checkFirstOptionIn(this.page, await firstPropertyFilter(this.page));
+    await checkFirstOptionIn(
+      this.page,
+      await firstPropertyFilter(this.page),
+      "properties",
+    );
   }
 
   async selectLimitOneProductPerPage() {

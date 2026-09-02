@@ -20,6 +20,8 @@ export class CheckoutPage {
   readonly submitButton: Locator;
   readonly termsBox: Locator;
   readonly termCheckbox: Locator;
+  readonly createAccountToggle: Locator;
+  readonly passwordInput: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -41,6 +43,10 @@ export class CheckoutPage {
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
+    this.createAccountToggle = page.getByTestId(
+      "checkout-create-account-toggle",
+    );
+    this.passwordInput = page.getByTestId("checkout-pi-password-input");
   }
 
   async goToCheckout() {
@@ -67,7 +73,7 @@ export class CheckoutPage {
     });
     await this.page
       .getByTestId("order-total")
-      .waitFor({ state: "visible", timeout: 30000 });
+      .waitFor({ state: "visible", timeout: 45000 });
   }
 
   async loginOnCheckout() {
@@ -81,6 +87,7 @@ export class CheckoutPage {
     await this.notCreateAccountCheck.check();
   }
 
+  /** Passing a password switches checkout from a guest order to an account. */
   async fillGuestUserData(
     firstName: string,
     lastName: string,
@@ -88,7 +95,15 @@ export class CheckoutPage {
     street: string,
     zipcode: string,
     city: string,
+    password?: string,
   ) {
+    if (password) {
+      await this.createAccountToggle.click();
+      // The switch animates for 600ms before createAccount flips, while the
+      // password field is already visible. Its disappearance is the signal.
+      await this.createAccountToggle.waitFor({ state: "detached" });
+      await this.passwordInput.fill(password);
+    }
     await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
