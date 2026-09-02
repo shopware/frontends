@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../fixtures";
 
 // names of the directories that should not be tested in StackBlitz context in case of more complex setup
 // in that case an example should be tested manually

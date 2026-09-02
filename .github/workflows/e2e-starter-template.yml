@@ -110,6 +110,14 @@ jobs:
           # to pass; they absorb the shared backend's transient slowness.
           pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
 
+      # Nitro logs neither storefront 500s nor failed store-api calls, so without
+      # this a backend problem reaches us as an anonymous locator timeout.
+      - name: Report network failures
+        if: always()
+        run: |
+          cd apps/e2e-tests
+          node scripts/summarise-network.mjs >> "$GITHUB_STEP_SUMMARY"
+
       - name: Report result
         run: |
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
@@ -134,6 +142,8 @@ jobs:
           # Self-contained: the html reporter copies each trace into
           # playwright-report/data/ and bundles its own viewer, so uploading
           # playwright.config.ts's outputDir (reports/) would only duplicate it.
-          path: apps/e2e-tests/playwright-report
+          path: |
+            apps/e2e-tests/playwright-report
+            apps/e2e-tests/diagnostics
           retention-days: 7
           if-no-files-found: warn

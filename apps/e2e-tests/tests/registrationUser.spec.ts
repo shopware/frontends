@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { expect, test } from "@playwright/test";
 
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail } from "../utils/data-helpers";

@@ -1,5 +1,4 @@
-import { test } from "@playwright/test";
-
+import { test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 

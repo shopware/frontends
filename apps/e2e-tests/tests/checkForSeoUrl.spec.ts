@@ -1,5 +1,4 @@
-import { expect, test } from "@playwright/test";
-
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 
 test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
