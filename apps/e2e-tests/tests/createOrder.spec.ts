@@ -6,7 +6,7 @@ import { CheckoutPage } from "../page-objects/CheckoutPage";
 import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
-import { uniqueEmail } from "../utils/data-helpers";
+import { uniqueEmail, uniquePassword } from "../utils/data-helpers";
 import { findEnv } from "../utils/helpers";
 import { captureStoreApi } from "../utils/store-api";
 
@@ -77,7 +77,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
 
   test("Create new order and an account", async ({ page, request }) => {
     const email = uniqueEmail();
-    const accountPassword = faker.internet.password();
+    const accountPassword = uniquePassword();
     const storeApi = captureStoreApi(page);
 
     await homePage.openCartPage();

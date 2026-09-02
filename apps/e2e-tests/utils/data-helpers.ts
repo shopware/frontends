@@ -1,3 +1,5 @@
+import { randomBytes } from "node:crypto";
+
 export async function getRandomNumber() {
   return Math.floor(Math.random() * 10000 + 1);
 }
@@ -6,4 +8,9 @@ export async function getRandomNumber() {
 export function uniqueEmail() {
   const unique = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
   return `e2e-${unique}@example.com`;
+}
+
+/** From a CSPRNG: a Math.random() password reads as a weak secret to scanners. */
+export function uniquePassword() {
+  return `e2e-${randomBytes(12).toString("base64url")}`;
 }
