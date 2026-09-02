@@ -93,7 +93,7 @@ NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 ```
 
 :::info devStorefrontUrl
-The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See the [troubleshooting guide](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for more details.
+The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See [Storefront URL](../../guides/storefront-url.html) for more details.
 :::
 
 ### Generate Types
