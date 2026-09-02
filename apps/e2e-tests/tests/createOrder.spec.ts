@@ -8,6 +8,7 @@ import { ProductPage } from "../page-objects/ProductPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail } from "../utils/data-helpers";
 import { findEnv } from "../utils/helpers";
+import { captureStoreApi } from "../utils/store-api";
 
 // A full purchase, and ProductPage.addToCart alone budgets 60s for its retries.
 require("dotenv").config({ path: findEnv() });
@@ -74,9 +75,10 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
-  test("Create new order and an account", async ({ page, browser }) => {
+  test("Create new order and an account", async ({ page, request }) => {
     const email = uniqueEmail();
     const accountPassword = faker.internet.password();
+    const storeApi = captureStoreApi(page);
 
     await homePage.openCartPage();
     await productPage.addToCart();
@@ -95,15 +97,22 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
 
-    // A guest cannot sign in, so signing in from a clean session is what proves
-    // a real account was created with the password entered at checkout.
-    const freshContext = await browser.newContext();
-    try {
-      const freshPage = await freshContext.newPage();
-      await new HomePage(freshPage).loginAs(email, accountPassword);
-    } finally {
-      await freshContext.close();
-    }
+    // A guest cannot sign in, so a successful login is what proves a real
+    // account was created with the password entered at checkout. Done over the
+    // API: a second pass through the UI doubles the exposure to slow renders
+    // without testing anything the checkout did not already cover.
+    expect(storeApi.value, "no store-api traffic seen").toBeDefined();
+    const signIn = await request.post(
+      `${storeApi.value?.endpoint}/account/login`,
+      {
+        headers: {
+          "sw-access-key": storeApi.value?.accessKey ?? "",
+          "content-type": "application/json",
+        },
+        data: { username: email, password: accountPassword },
+      },
+    );
+    expect(signIn.status(), await signIn.text()).toBe(200);
   });
 
   test("Create new order as a guest user", async ({ page }) => {
