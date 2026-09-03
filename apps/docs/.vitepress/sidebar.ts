@@ -93,6 +93,7 @@ export const sidebar = [
     items: [
       { text: "Routing", link: "/guides/routing.html" },
       { text: "Languages", link: "/guides/languages.html" },
+      { text: "Storefront URL", link: "/guides/storefront-url.html" },
       {
         text: "CMS",
         link: "/guides/cms/",
