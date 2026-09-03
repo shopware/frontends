@@ -89,11 +89,12 @@ You can also use a `.env` file to override configuration:
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.shopware.store/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 # Optional: Required for local development when using customer registration
+# Only takes effect if `devStorefrontUrl` is also present in nuxt.config.ts
 # NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
 
 :::info devStorefrontUrl
-The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See the [troubleshooting guide](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for more details.
+The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See [Storefront URL](../../guides/storefront-url.html) for more details.
 :::
 
 ### Generate Types
