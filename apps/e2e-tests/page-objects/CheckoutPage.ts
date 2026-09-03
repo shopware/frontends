@@ -68,8 +68,12 @@ export class CheckoutPage {
     // Round-trips to the backend before redirecting to the confirmation page,
     // which is ssr:false and so renders after the URL changes. Waiting for the
     // URL alone hands a half-rendered page to the assertion.
+    // `commit` on purpose: the default waits for the load event, which a
+    // ssr:false page with a stalled request may never fire even though the
+    // navigation happened. The order total below is the real readiness signal.
     await this.page.waitForURL(/\/checkout\/(success|finish)/, {
       timeout: 60000,
+      waitUntil: "commit",
     });
     await this.page
       .getByTestId("order-total")

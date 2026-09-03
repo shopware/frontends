@@ -101,11 +101,31 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
 
   type ApiClientConfig = {
     headers?: Record<string, string>;
+    timeout?: number | string;
   };
 
   const privateApiClientConfig = import.meta.server
     ? (runtimeConfig.apiClientConfig as ApiClientConfig)
     : undefined;
+  const publicApiClientConfig = runtimeConfig.public
+    ?.apiClientConfig as ApiClientConfig;
+
+  // Module options land under `shopware`, so honour that too. Reading only the
+  // top level would leave the documented `shopware.apiClientConfig` option
+  // silently doing nothing.
+  const scopedApiClientConfig = (shopwareRuntimeConfig?.apiClientConfig ??
+    shopwareRuntimeConfigPublic?.apiClientConfig) as
+    | ApiClientConfig
+    | undefined;
+
+  // Without a timeout a stalled Store API call blocks the render until the
+  // platform kills it, and never reaches ofetch's retry path.
+  const timeout = Number(
+    privateApiClientConfig?.timeout ??
+      publicApiClientConfig?.timeout ??
+      scopedApiClientConfig?.timeout ??
+      0,
+  );
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -115,7 +135,11 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
       : "",
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
-      (runtimeConfig.public?.apiClientConfig as ApiClientConfig)?.headers,
+      publicApiClientConfig?.headers ||
+      scopedApiClientConfig?.headers,
+    ...(Number.isFinite(timeout) && timeout > 0
+      ? { fetchOptions: { timeout } }
+      : {}),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {

@@ -30,8 +30,16 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.signInButton.waitFor();
-    await this.signInButton.click({ delay: 500 });
+    const emailInput = this.page.getByTestId("login-email-input");
+
+    // The header is server rendered, so the button is clickable before Vue has
+    // hydrated it and an early click is dropped without a trace. Retry until
+    // the panel actually opens.
+    await expect(async () => {
+      if (await emailInput.isVisible()) return;
+      await this.signInButton.click({ timeout: 5000 });
+      await emailInput.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
   }
 
   /** The wishlist is server side, so a logged out toggle opens a login modal. */

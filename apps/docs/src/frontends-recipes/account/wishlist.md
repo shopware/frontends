@@ -120,14 +120,14 @@ You do not call `useSyncWishlist` directly. `useWishlist` drives the wishlist pa
 
 ## Request Flow
 
-| Step                  | Code                            | Store API                                      | Type                                                                                                                            |
-| --------------------- | ------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Save a product        | `addToWishlist()`               | `POST /customer/wishlist/add/{productId}`      | <SchemaTypeTooltip type-key='operations["addProductOnWishlist post /customer/wishlist/add/{productId}"]["response"]' />         |
-| Remove a product      | `removeFromWishlist()`          | `DELETE /customer/wishlist/delete/{productId}` | <SchemaTypeTooltip type-key='operations["deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"]["response"]' /> |
-| Load a wishlist page  | `getWishlistProducts(criteria)` | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["body"]' />                             |
-| Read the loaded page  | `products`, `count`, `limit`    | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["response"]' />                         |
-| Empty the loaded page | `clearWishlist()`               | `DELETE /customer/wishlist/delete/{productId}` | <SchemaTypeTooltip type-key='operations["deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"]["response"]' /> |
-| Merge the guest wishlist at login | `mergeWishlistProducts()` | `POST /customer/wishlist/merge`                | <SchemaTypeTooltip type-key='operations["mergeProductOnWishlist post /customer/wishlist/merge"]["response"]' />                 |
+| Step                              | Code                            | Store API                                      | Type                                                                                                                            |
+| --------------------------------- | ------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Save a product                    | `addToWishlist()`               | `POST /customer/wishlist/add/{productId}`      | <SchemaTypeTooltip type-key='operations["addProductOnWishlist post /customer/wishlist/add/{productId}"]["response"]' />         |
+| Remove a product                  | `removeFromWishlist()`          | `DELETE /customer/wishlist/delete/{productId}` | <SchemaTypeTooltip type-key='operations["deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"]["response"]' /> |
+| Load a wishlist page              | `getWishlistProducts(criteria)` | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["body"]' />                             |
+| Read the loaded page              | `products`, `count`, `limit`    | `POST /customer/wishlist`                      | <SchemaTypeTooltip type-key='operations["readCustomerWishlist post /customer/wishlist"]["response"]' />                         |
+| Empty the loaded page             | `clearWishlist()`               | `DELETE /customer/wishlist/delete/{productId}` | <SchemaTypeTooltip type-key='operations["deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"]["response"]' /> |
+| Merge the guest wishlist at login | `mergeWishlistProducts()`       | `POST /customer/wishlist/merge`                | <SchemaTypeTooltip type-key='operations["mergeProductOnWishlist post /customer/wishlist/merge"]["response"]' />                 |
 
 ## Composables
 
