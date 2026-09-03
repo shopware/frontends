@@ -68,13 +68,13 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/coverage-v8": "4.1.11",
     "fflate": "0.8.3",
     "h3": "1.15.11",
-    "happy-dom": "20.11.1",
+    "happy-dom": "20.12.0",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "dependencies": {
     "defu": "6.1.7",
