@@ -24,11 +24,6 @@ export default defineNuxtConfig({
       endpoint: "",
     },
     public: {
-      apiClientConfig: {
-        // A stalled call would otherwise hang the render indefinitely. Bounded,
-        // it fails fast and GET requests get ofetch's built-in retry.
-        timeout: 10000,
-      },
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
