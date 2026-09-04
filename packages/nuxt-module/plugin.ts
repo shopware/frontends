@@ -55,6 +55,12 @@ function getApiErrors(data: unknown): ApiError[] {
   return Array.isArray(errors) ? errors.filter(isApiError) : [];
 }
 
+function toTimeout(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? value
+    : undefined;
+}
+
 function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
   provide: ShopwarePluginInjections;
 } {
@@ -101,11 +107,20 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
 
   type ApiClientConfig = {
     headers?: Record<string, string>;
+    timeout?: unknown;
   };
 
   const privateApiClientConfig = import.meta.server
     ? (runtimeConfig.apiClientConfig as ApiClientConfig)
     : undefined;
+  const publicApiClientConfig = runtimeConfig.public
+    ?.apiClientConfig as ApiClientConfig;
+
+  const timeout =
+    toTimeout(privateApiClientConfig?.timeout) ??
+    toTimeout(publicApiClientConfig?.timeout) ??
+    toTimeout(shopwareRuntimeConfig?.apiClientConfig?.timeout) ??
+    toTimeout(shopwareRuntimeConfigPublic?.apiClientConfig?.timeout);
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -115,7 +130,8 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
       : "",
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
-      (runtimeConfig.public?.apiClientConfig as ApiClientConfig)?.headers,
+      publicApiClientConfig?.headers,
+    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
