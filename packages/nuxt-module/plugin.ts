@@ -55,6 +55,12 @@ function getApiErrors(data: unknown): ApiError[] {
   return Array.isArray(errors) ? errors.filter(isApiError) : [];
 }
 
+function toTimeout(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? value
+    : undefined;
+}
+
 function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
   provide: ShopwarePluginInjections;
 } {
@@ -111,7 +117,8 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     ?.apiClientConfig as ApiClientConfig;
 
   const timeout =
-    privateApiClientConfig?.timeout ?? publicApiClientConfig?.timeout;
+    toTimeout(privateApiClientConfig?.timeout) ??
+    toTimeout(publicApiClientConfig?.timeout);
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -122,9 +129,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
       publicApiClientConfig?.headers,
-    ...(typeof timeout === "number" && Number.isFinite(timeout) && timeout > 0
-      ? { fetchOptions: { timeout } }
-      : {}),
+    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {

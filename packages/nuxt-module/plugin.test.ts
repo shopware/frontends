@@ -152,6 +152,36 @@ describe("nuxt-module plugin", () => {
     );
   });
 
+  it.each([
+    0,
+    -1,
+    "5000",
+    "abc",
+    null,
+    true,
+    {},
+    Number.NaN,
+    Number.POSITIVE_INFINITY,
+  ])(
+    "falls back to a valid public timeout when the private one is %p",
+    async (timeout) => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout },
+        public: {
+          shopware: { ...SHOPWARE_CONFIG },
+          apiClientConfig: { timeout: 10000 },
+        },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: 10000 } }),
+      );
+    },
+  );
+
   it("omits fetchOptions when no timeout is configured", async () => {
     await runPlugin(createNuxtAppMock(true));
 

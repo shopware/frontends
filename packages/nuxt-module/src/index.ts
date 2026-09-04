@@ -144,6 +144,14 @@ export type ShopwareNuxtOptions = {
   shopwareAccessToken?: string;
   devStorefrontUrl?: string;
   /**
+   * @deprecated Not read. Configure the API client through
+   * `runtimeConfig.apiClientConfig` or `runtimeConfig.public.apiClientConfig`
+   * instead. Removed in the next major.
+   */
+  apiClientConfig?: {
+    timeout?: number | string;
+  };
+  /**
    * Use user context in SSR mode. Warning: with wrong edge caching it can cause serving another user's data.
    * Use when edge caching is configured properly.
    *
