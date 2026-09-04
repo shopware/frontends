@@ -118,7 +118,7 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 `apiClientConfig.timeout` aborts a Store API request that runs longer than the given number of milliseconds. Unset by default.
 
-It guards against requests that hang. It does not help with connection failures, which fail on their own within milliseconds.
+It guards against requests that hang. Connection failures usually fail fast on their own, so a timeout does not help there.
 
 ```json
 {
@@ -132,7 +132,7 @@ It guards against requests that hang. It does not help with connection failures,
 }
 ```
 
-A positive number is used as given, a numeric string is coerced, anything else counts as unset.
+Only a positive number arms it. Anything else counts as unset.
 
 Once set:
 

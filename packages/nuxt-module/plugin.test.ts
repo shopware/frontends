@@ -152,20 +152,6 @@ describe("nuxt-module plugin", () => {
     );
   });
 
-  it("coerces a numeric string timeout", async () => {
-    useRuntimeConfigMock.mockReturnValue({
-      shopware: { ...SHOPWARE_CONFIG },
-      apiClientConfig: { timeout: "7500" },
-      public: { shopware: { ...SHOPWARE_CONFIG } },
-    });
-
-    await runPlugin(createNuxtAppMock(true));
-
-    expect(createAPIClientMock).toHaveBeenCalledWith(
-      expect.objectContaining({ fetchOptions: { timeout: 7500 } }),
-    );
-  });
-
   it("omits fetchOptions when no timeout is configured", async () => {
     await runPlugin(createNuxtAppMock(true));
 
@@ -174,22 +160,32 @@ describe("nuxt-module plugin", () => {
     );
   });
 
-  it.each([0, -1, "0", "abc", null, Number.NaN, Number.POSITIVE_INFINITY])(
-    "omits fetchOptions for the timeout value %p",
-    async (timeout) => {
-      useRuntimeConfigMock.mockReturnValue({
-        shopware: { ...SHOPWARE_CONFIG },
-        apiClientConfig: { timeout },
-        public: { shopware: { ...SHOPWARE_CONFIG } },
-      });
+  it.each([
+    0,
+    -1,
+    "5000",
+    "0",
+    "abc",
+    null,
+    true,
+    false,
+    ["5"],
+    {},
+    Number.NaN,
+    Number.POSITIVE_INFINITY,
+  ])("omits fetchOptions for the timeout value %p", async (timeout) => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
 
-      await runPlugin(createNuxtAppMock(true));
+    await runPlugin(createNuxtAppMock(true));
 
-      expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
-        "fetchOptions",
-      );
-    },
-  );
+    expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
+      "fetchOptions",
+    );
+  });
 
   it("reaches createAPIClient with the endpoint and access token", async () => {
     await runPlugin(createNuxtAppMock(true));

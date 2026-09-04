@@ -101,7 +101,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
 
   type ApiClientConfig = {
     headers?: Record<string, string>;
-    timeout?: number;
+    timeout?: unknown;
   };
 
   const privateApiClientConfig = import.meta.server
@@ -110,9 +110,8 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
   const publicApiClientConfig = runtimeConfig.public
     ?.apiClientConfig as ApiClientConfig;
 
-  const timeout = Number(
-    privateApiClientConfig?.timeout ?? publicApiClientConfig?.timeout,
-  );
+  const timeout =
+    privateApiClientConfig?.timeout ?? publicApiClientConfig?.timeout;
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -123,7 +122,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
       publicApiClientConfig?.headers,
-    ...(Number.isFinite(timeout) && timeout > 0
+    ...(typeof timeout === "number" && Number.isFinite(timeout) && timeout > 0
       ? { fetchOptions: { timeout } }
       : {}),
   });
