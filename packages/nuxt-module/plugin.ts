@@ -119,8 +119,8 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
   const timeout =
     toTimeout(privateApiClientConfig?.timeout) ??
     toTimeout(publicApiClientConfig?.timeout) ??
-    toTimeout(shopwareRuntimeConfigPublic?.apiClientConfig?.timeout) ??
-    toTimeout(shopwareRuntimeConfig?.apiClientConfig?.timeout);
+    toTimeout(shopwareRuntimeConfig?.apiClientConfig?.timeout) ??
+    toTimeout(shopwareRuntimeConfigPublic?.apiClientConfig?.timeout);
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
