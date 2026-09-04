@@ -5,6 +5,7 @@ import { test as base } from "@playwright/test";
 import type { Request } from "@playwright/test";
 
 export const NETWORK_LOG = "diagnostics/network-failures.jsonl";
+export const ATTEMPT_LOG = "diagnostics/store-api-attempts.log";
 
 type Entry = Record<string, unknown>;
 
@@ -16,12 +17,26 @@ type Entry = Record<string, unknown>;
 export const test = base.extend<{ networkDiagnostics: void }>({
   networkDiagnostics: [
     async ({ page }, use, testInfo) => {
+      // Playwright closes the context while requests are still in flight, and
+      // Chromium reports those as ERR_FAILED rather than ERR_ABORTED. Counting
+      // them would attribute our own teardown to the backend.
+      let tearingDown = false;
+
+      // Anchors a failure to the backend's own request id and node, which is
+      // what infra needs to find it in their logs. A failed call has no
+      // response of its own, so the nearest success before it is the anchor.
+      let lastOk: Record<string, unknown> | null = null;
+
       const record = (entry: Entry) => {
         try {
           mkdirSync(dirname(NETWORK_LOG), { recursive: true });
           appendFileSync(
             NETWORK_LOG,
-            `${JSON.stringify({ test: testInfo.titlePath.join(" > "), ...entry })}\n`,
+            `${JSON.stringify({
+              at: new Date().toISOString(),
+              test: testInfo.titlePath.join(" > "),
+              ...entry,
+            })}\n`,
           );
         } catch {
           // Diagnostics must never fail a test.
@@ -47,9 +62,15 @@ export const test = base.extend<{ networkDiagnostics: void }>({
           method: request.method(),
           failure: request.failure()?.errorText ?? null,
           ms: started ? Date.now() - started : null,
+          precededBy: lastOk,
+          duringTeardown: tearingDown,
         });
       });
 
+      // Failures alone give no denominator, and 44 bad calls out of 200 and out
+      // of 5000 are different problems. Counted on the spot rather than at
+      // teardown: Playwright kills the worker after a failure, so a tally
+      // flushed at the end would lose exactly the tests that failed most.
       page.on("requestfinished", (request) => startedAt.delete(request));
 
       // A failed fetch during client side navigation renders Nuxt's error page
@@ -71,9 +92,11 @@ export const test = base.extend<{ networkDiagnostics: void }>({
               (document.body?.innerText ?? "").match(
                 /\[(?:GET|POST|PUT|PATCH|DELETE)\][^\n]{0,200}/,
               )?.[0] ?? null;
-            // A page titled with a bare 4xx/5xx and nothing error shaped on it
-            // would be a false positive, so require one of the two.
-            if (!cause && !/error/i.test(message ?? "")) return null;
+            // Nuxt's error page always pairs the status with a status text,
+            // so the presence of both is the signal. Requiring the word
+            // "error" missed "429 Too Many Requests" entirely, which is the
+            // one that actually breaks tests.
+            if (!message && !cause) return null;
             return { status, message, cause };
           });
           if (!error) return;
@@ -92,13 +115,47 @@ export const test = base.extend<{ networkDiagnostics: void }>({
       });
 
       page.on("response", async (response) => {
-        if (response.status() < 500) return;
+        const status = response.status();
+
+        if (response.url().includes("/store-api/")) {
+          // Which node answered. If failures cluster around one address, that
+          // narrows it from "the backend" to a specific instance.
+          const peer = await response.serverAddr().catch(() => null);
+          const at = new Date().toISOString();
+          const traceId = response.headers()["x-trace-id"] ?? null;
+          if (status < 400) {
+            lastOk = { at, traceId, node: peer?.ipAddress ?? null };
+          }
+          try {
+            mkdirSync(dirname(ATTEMPT_LOG), { recursive: true });
+            appendFileSync(ATTEMPT_LOG, `${peer?.ipAddress ?? "unknown"}\n`);
+          } catch {
+            // Diagnostics must never fail a test.
+          }
+        }
+        if (status < 400) return;
         const url = response.url();
 
         if (url.includes("/store-api/")) {
-          record({ kind: "store-api-5xx", url, status: response.status() });
+          // 4xx too: the Store API rate limit answers 429 and is shared across
+          // endpoints, so a run can be throttled without a single 5xx. The
+          // trace id is what the backend correlates against its own logs.
+          record({
+            kind:
+              status === 429 ? "store-api-throttled" : `store-api-${status}`,
+            url,
+            status,
+            traceId: response.headers()["x-trace-id"] ?? null,
+            node:
+              (await response.serverAddr().catch(() => null))?.ipAddress ??
+              null,
+            rateLimit: response.headers()["x-rate-limit-limit"] ?? null,
+            rateLimitRemaining:
+              response.headers()["x-rate-limit-remaining"] ?? null,
+          });
           return;
         }
+        if (status < 500) return;
         if (response.request().resourceType() !== "document") return;
 
         // The upstream cause is only in the rendered error page, never in a log.
@@ -114,12 +171,13 @@ export const test = base.extend<{ networkDiagnostics: void }>({
         record({
           kind: "storefront-5xx",
           url,
-          status: response.status(),
+          status,
           cause,
         });
       });
 
       await use();
+      tearingDown = true;
 
       // Last look: a client rendered error is usually still on screen when the
       // test gives up.

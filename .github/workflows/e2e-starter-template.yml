@@ -66,6 +66,11 @@ jobs:
           # starter's sales channel rejects with NO_SUCH_CHOICE_ERROR. Template
           # bug, tracked in #2585.
           NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
+          # Store API calls made while rendering are invisible to Playwright,
+          # and those are the ones that turn into an error page. The wrapper
+          # records them from inside the storefront's own process. Test only.
+          SSR_NETWORK_LOG: ${{ github.workspace }}/apps/e2e-tests/diagnostics/ssr-network.jsonl
+          NODE_OPTIONS: --import ${{ github.workspace }}/apps/e2e-tests/instrument-ssr.mjs
         run: |
           pnpm --filter vue-starter-template preview > "$RUNNER_TEMP/storefront.log" 2>&1 &
           for _ in $(seq 1 60); do
