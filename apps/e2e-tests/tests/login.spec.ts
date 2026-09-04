@@ -1,5 +1,4 @@
-import { expect, test } from "@playwright/test";
-
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 import { LoginForm } from "../page-objects/LoginPage";
 import { findEnv } from "../utils/helpers";
@@ -8,7 +7,7 @@ require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
 
-test.describe("Login user", { tag: "@vue-demo-store" }, () => {
+test.describe("Login user", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let loginForm: LoginForm;
 

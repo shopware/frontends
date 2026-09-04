@@ -23,13 +23,15 @@ const config: PlaywrightTestConfig = {
   testDir: "./tests",
   outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: process.env.CI ? 30000 : 5000,
+    // Well under the test timeout, so a failing assertion reports its own
+    // diff instead of the test dying first.
+    timeout: 10000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -44,7 +46,11 @@ const config: PlaywrightTestConfig = {
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 0,
+    // Bounded. Calls to the shared demo backend occasionally stall and never
+    // return; unlimited meant one stalled wait consumed the whole test budget
+    // (85s of a 90s test) instead of failing fast and letting the retry, which
+    // typically succeeds in under 10s, start straight away.
+    actionTimeout: 45 * 1000,
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://localhost:3000',
 

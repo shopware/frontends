@@ -27,9 +27,14 @@ async function handleSubmit() {
 }
 </script>
 <template>
-  <form @submit.prevent="handleSubmit" class="gap-3 flex flex-col">
+  <form
+    @submit.prevent="handleSubmit"
+    data-testid="login-form"
+    class="gap-3 flex flex-col"
+  >
     <FormInputField
       id="username"
+      data-testid="login-email-input"
       v-model="model.username"
       autocomplete="username"
       :label="$t('loginForm.loginLabel')"
@@ -37,12 +42,17 @@ async function handleSubmit() {
     />
     <FormInputField
       id="password"
+      data-testid="login-password-input"
       v-model="model.password"
       autocomplete="current-password"
       type="password"
       :label="$t('loginForm.passwordLabel')"
       :errorMessage="r$.password.$errors[0]"
     />
-    <FormBaseButton :label="$t('loginForm.submitButtonLabel')" type="submit" />
+    <FormBaseButton
+      data-testid="login-submit-button"
+      :label="$t('loginForm.submitButtonLabel')"
+      type="submit"
+    />
   </form>
 </template>

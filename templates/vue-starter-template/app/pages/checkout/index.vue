@@ -48,6 +48,7 @@ function handleUpdateQuantity(id: string, quantity: number) {
 }
 
 const isPlacingOrder = ref(false);
+const createAccount = ref(false);
 
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
@@ -75,9 +76,15 @@ async function handleSaveAddress() {
   $vBillingAddress.$touch();
 
   const { valid: validBaseInfo } = await $vBaseInfo.$validate();
-  const { valid: validbillingAddress } = await $vBillingAddress.$validate();
+  const { valid: validBillingAddress } = await $vBillingAddress.$validate();
 
-  if (validBaseInfo || validbillingAddress) {
+  // Guest checkout hides the password field, so only the email is required.
+  // Creating an account validates the whole form and never falls back to guest.
+  const validCustomer = createAccount.value
+    ? validBaseInfo
+    : !$vBaseInfo.email.$invalid;
+
+  if (!validCustomer || !validBillingAddress) {
     return;
   }
 
@@ -86,7 +93,7 @@ async function handleSaveAddress() {
     lastName: billingAddress.value.lastName,
     email: customerBaseInfo.value.email,
     password: customerBaseInfo.value.password,
-    guest: true,
+    guest: !createAccount.value,
     billingAddress: {
       customerId: "",
       firstName: billingAddress.value.firstName,
@@ -159,6 +166,7 @@ onMounted(() => {
             class="mb-4"
             v-model:email="customerBaseInfo.email"
             v-model:password="customerBaseInfo.password"
+            v-model:createAccount="createAccount"
             :errorMessages="toRef($vBaseInfo)"
           />
           <CheckoutCustomerAddress
@@ -168,6 +176,7 @@ onMounted(() => {
           />
           <FormBaseButton
             :label="$t('checkout.saveAddressButton')"
+            data-testid="checkout-pi-submit-button"
             @click="handleSaveAddress"
           />
 
@@ -188,6 +197,7 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
+          data-testid="checkout-place-order-button"
           :label="
             isPlacingOrder
               ? $t('checkout.placingOrder')

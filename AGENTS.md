@@ -93,7 +93,7 @@ pnpm run lint:fix                         # Fix linting issues
 pnpm run typecheck                        # TypeScript checking
 pnpm run test                             # Run tests
 pnpm run test:watch                       # Watch mode
-pnpm run test:e2e                         # E2E tests (demo store tag only)
+pnpm run test:e2e                         # E2E tests (@frontends specs)
 pnpm format                               # Format with Oxfmt
 pnpm run check:templates                  # templates/manifest.json matches disk
 ```
@@ -654,7 +654,8 @@ This creates a file in `.changeset/` - commit it with your changes.
 
 - Located in `apps/e2e-tests/`
 - Install the browsers once with `pnpm exec playwright install chromium`
-- Run with `pnpm run test:e2e`. That script is `playwright test --grep @vue-demo-store`, so it only covers the deprecated demo store template
+- Run with `pnpm run test:e2e`. That script is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs navigate generically, so they run against any storefront
+- CI runs them against `vue-starter-template` in `.github/workflows/e2e-starter-template.yml`. It passes, but still reports rather than gates: a few specs need a retry against the shared demo backend
 - The `@accessibility` specs are template agnostic. Run them against any storefront:
 
 ```bash

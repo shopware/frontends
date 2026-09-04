@@ -18,15 +18,19 @@ const { errorMessages } = defineProps<{
   >;
 }>();
 
+// The checkout page decides guest vs account, so it owns this.
+const createAccount = defineModel<boolean>("createAccount", {
+  default: false,
+});
+
 const switchAnimating = ref(false);
-const createAccountToggle = ref(false);
 
 function switchAnimation(e: Event) {
   e.preventDefault();
 
   switchAnimating.value = true;
   setTimeout(() => {
-    createAccountToggle.value = true;
+    createAccount.value = true;
     switchAnimating.value = false;
   }, 600);
 }
@@ -42,6 +46,7 @@ function handleUpdateBaseInfo() {
         class="mb-4"
         v-model="email"
         id="email"
+        data-testid="checkout-pi-email-input"
         :label="$t('checkout.customerBaseInfo.emailLabel')"
         :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
         :errorMessage="errorMessages?.value?.email?.$errors?.[0] ?? ''"
@@ -49,16 +54,20 @@ function handleUpdateBaseInfo() {
       <div
         class="relative transition-all"
         :class="{
-          'h-4': !createAccountToggle && !switchAnimating,
-          'h-15': switchAnimating || createAccountToggle,
+          'h-4': !createAccount && !switchAnimating,
+          'h-15': switchAnimating || createAccount,
         }"
       >
         <div
-          v-if="!createAccountToggle"
+          v-if="!createAccount"
           class="flex items-center gap-2 absolute"
           :class="{ 'animate-slide-up-out': switchAnimating }"
         >
-          <FormLinkButton class="border-b-0 text-sm" @click="switchAnimation">
+          <FormLinkButton
+            class="border-b-0 text-sm"
+            data-testid="checkout-create-account-toggle"
+            @click="switchAnimation"
+          >
             <Icon name="shopware:plus-xs" class="color-brand-primary" />
             <span class="text-brand-primary">{{
               $t("checkout.customerBaseInfo.createAccountToggleLabel")
@@ -66,10 +75,10 @@ function handleUpdateBaseInfo() {
           </FormLinkButton>
         </div>
         <div
-          v-show="createAccountToggle || switchAnimating"
+          v-show="createAccount || switchAnimating"
           class="absolute w-full"
           :class="{
-            'opacity-0': !createAccountToggle && switchAnimating,
+            'opacity-0': !createAccount && switchAnimating,
             'animate-slide-up-in': switchAnimating,
           }"
         >
@@ -77,6 +86,7 @@ function handleUpdateBaseInfo() {
             class="mb-4"
             v-model="password"
             id="password"
+            data-testid="checkout-pi-password-input"
             type="password"
             :label="$t('checkout.customerBaseInfo.passwordLabel')"
             :placeholder="$t('checkout.customerBaseInfo.passwordPlaceholder')"

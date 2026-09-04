@@ -17,10 +17,9 @@ export class LoginForm {
 
   // Define login page methods
   async login(username: string, password: string) {
-    await this.usernameInput.isVisible();
-    await this.usernameInput.type(username);
-    await this.passwordInput.type(password);
-    await this.page.waitForLoadState();
+    await this.usernameInput.waitFor({ state: "visible" });
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
     await this.submitButton.click();
   }
 }

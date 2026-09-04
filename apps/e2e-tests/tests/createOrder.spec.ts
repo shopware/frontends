@@ -1,31 +1,32 @@
 import { faker } from "@faker-js/faker";
-import { expect, test } from "@playwright/test";
 
+import { expect, test } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage";
 import { CheckoutPage } from "../page-objects/CheckoutPage";
 import { HomePage } from "../page-objects/HomePage";
-import { LoginForm } from "../page-objects/LoginPage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
+import { uniqueEmail, uniquePassword } from "../utils/data-helpers";
 import { findEnv } from "../utils/helpers";
+import { captureStoreApi } from "../utils/store-api";
 
+// A full purchase, and ProductPage.addToCart alone budgets 60s for its retries.
 require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
-test.setTimeout(50000);
 
-test.describe("Create Order", { tag: "@vue-demo-store" }, () => {
+test.setTimeout(90000);
+
+test.describe("Create Order", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
   let checkoutPage: CheckoutPage;
   let productPage: ProductPage;
   let cartPage: CartPage;
-  let loginform: LoginForm;
 
   // Before Hook
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    loginform = new LoginForm(page);
     cartPage = new CartPage(page);
     registrationPage = new RegisterForm(page);
     productPage = new ProductPage(page);
@@ -41,7 +42,7 @@ test.describe("Create Order", { tag: "@vue-demo-store" }, () => {
     await registrationPage.fillCustomerData(
       `e2e ${faker.person.firstName()}`,
       `e2e ${faker.person.lastName()}`,
-      faker.internet.exampleEmail(),
+      uniqueEmail(),
       faker.internet.password(),
     );
     await registrationPage.fillAddressData(
@@ -61,18 +62,57 @@ test.describe("Create Order", { tag: "@vue-demo-store" }, () => {
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
-  test("Create new order with login on checkout", async ({ page }) => {
+  test("Create new order as a signed in customer", async ({ page }) => {
+    // The checkout has no sign-in step, so establish the session first.
+    await homePage.loginAs(userEmail, password);
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
-    await checkoutPage.loginOnCheckout();
-    await loginform.login(userEmail, password);
-    await page.waitForLoadState();
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
     await expect(page.getByTestId("order-total")).toHaveCount(1);
+  });
+
+  test("Create new order and an account", async ({ page, request }) => {
+    const email = uniqueEmail();
+    const accountPassword = uniquePassword();
+    const storeApi = captureStoreApi(page);
+
+    await homePage.openCartPage();
+    await productPage.addToCart();
+    await cartPage.openMiniCart();
+    await checkoutPage.goToCheckout();
+    await checkoutPage.fillGuestUserData(
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
+      email,
+      faker.location.street(),
+      faker.location.zipCode(),
+      faker.location.city(),
+      accountPassword,
+    );
+    await checkoutPage.markTerms();
+    await checkoutPage.placeOrder();
+    await expect(page.getByTestId("order-total")).toHaveCount(1);
+
+    // A guest cannot sign in, so a successful login is what proves a real
+    // account was created with the password entered at checkout. Done over the
+    // API: a second pass through the UI doubles the exposure to slow renders
+    // without testing anything the checkout did not already cover.
+    expect(storeApi.value, "no store-api traffic seen").toBeDefined();
+    const signIn = await request.post(
+      `${storeApi.value?.endpoint}/account/login`,
+      {
+        headers: {
+          "sw-access-key": storeApi.value?.accessKey ?? "",
+          "content-type": "application/json",
+        },
+        data: { username: email, password: accountPassword },
+      },
+    );
+    expect(signIn.status(), await signIn.text()).toBe(200);
   });
 
   test("Create new order as a guest user", async ({ page }) => {
@@ -84,7 +124,7 @@ test.describe("Create Order", { tag: "@vue-demo-store" }, () => {
     await checkoutPage.fillGuestUserData(
       `e2e ${faker.person.firstName()}`,
       `e2e ${faker.person.lastName()}`,
-      faker.internet.exampleEmail(),
+      uniqueEmail(),
       faker.location.street(),
       faker.location.zipCode(),
       faker.location.city(),

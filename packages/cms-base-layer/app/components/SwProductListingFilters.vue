@@ -150,13 +150,6 @@ const handleFilterChange = async (event: {
 
 const executeSearch = async () => {
   try {
-    // Search context refetches from the URL (the page's useAsyncData watches
-    // route.query), so navigating below is enough; calling search() here too
-    // would double-fetch and flicker. Category listings have no URL watcher.
-    if (!isProductSearch) {
-      await search(searchCriteriaForRequest.value);
-    }
-
     // Build query directly from searchCriteriaForRequest which already has pipe-separated strings
     const criteria = searchCriteriaForRequest.value;
     const query: Record<string, unknown> = {};
@@ -180,9 +173,18 @@ const executeSearch = async () => {
     // otherwise drop `limit` and revert to the default on refresh/navigation.
     if (route.query.limit) query.limit = route.query.limit;
 
+    // URL first, the way changePage/changeLimit/sorting already do it. Gating
+    // it on the request left the selection out of the URL whenever the listing
+    // call was slow or failed, so a refresh or a shared link lost the filter.
     await router.push({
       query: query as LocationQueryRaw,
     });
+
+    // Search context refetches from the URL (the page's useAsyncData watches
+    // route.query). Category listings have no such watcher, so fetch here.
+    if (!isProductSearch) {
+      await search(criteria);
+    }
   } catch (error) {
     console.error("Search execution failed:", error);
   }
