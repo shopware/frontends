@@ -11,6 +11,8 @@ declare module "nuxt/schema" {
     headers?: {
       [key: string]: string;
     };
+    /** Milliseconds after which a Store API request is aborted. */
+    timeout?: number;
   }
 
   interface RuntimeConfig {
