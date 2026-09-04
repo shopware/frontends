@@ -753,8 +753,8 @@ describe("createAPIClient", () => {
 
       const controller = new AbortController();
 
-      // ofetch only arms its timeout when no signal is present, so the caller's
-      // signal takes over instead of combining with it.
+      // With the currently resolved fetch implementation, a per-request signal
+      // takes precedence over the client-level timeout.
       const response = await client.invoke(
         // @ts-expect-error this endpoint does not exist
         "testSignalWins get /slow-endpoint",
