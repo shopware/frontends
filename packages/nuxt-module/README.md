@@ -134,6 +134,8 @@ It guards against requests that hang. Connection failures usually fail fast on t
 
 Only a positive number arms it. Anything else counts as unset.
 
+`shopware: { apiClientConfig: { timeout } }` still works as a deprecated fallback, read only when neither `runtimeConfig` path is set. Move it to `runtimeConfig.apiClientConfig`; it goes away in the next major.
+
 Once set:
 
 - The error carries no HTTP status. Read `error.cause.name`, which is `TimeoutError`.

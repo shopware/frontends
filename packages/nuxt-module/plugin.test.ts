@@ -182,6 +182,95 @@ describe("nuxt-module plugin", () => {
     },
   );
 
+  it("falls back to the deprecated shopware module option", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 5000 } },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+    );
+  });
+
+  it("falls back to the deprecated shopware module option in the browser", async () => {
+    runOnClient();
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 5000 } },
+      },
+    });
+
+    await runPlugin(createNuxtAppMock(false));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+    );
+  });
+
+  it("prefers the private runtime config over the deprecated module option", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 5000 } },
+      apiClientConfig: { timeout: 3000 },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 3000 } }),
+    );
+  });
+
+  it("prefers the public runtime config over the deprecated module option", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 5000 } },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: 4000 },
+      },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 4000 } }),
+    );
+  });
+
+  it.each([0, -1, "5000", "abc", null, true, {}, Number.NaN])(
+    "falls back to the deprecated module option when the private value is %p",
+    async (timeout) => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 5000 } },
+        apiClientConfig: { timeout },
+        public: { shopware: { ...SHOPWARE_CONFIG } },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+      );
+    },
+  );
+
+  it("ignores an invalid deprecated module option", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: "5000" } },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
+      "fetchOptions",
+    );
+  });
+
   it("omits fetchOptions when no timeout is configured", async () => {
     await runPlugin(createNuxtAppMock(true));
 

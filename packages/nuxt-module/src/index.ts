@@ -144,9 +144,12 @@ export type ShopwareNuxtOptions = {
   shopwareAccessToken?: string;
   devStorefrontUrl?: string;
   /**
-   * @deprecated Not read. Configure the API client through
-   * `runtimeConfig.apiClientConfig` or `runtimeConfig.public.apiClientConfig`
-   * instead. Removed in the next major.
+   * Read last, after `runtimeConfig.apiClientConfig` and
+   * `runtimeConfig.public.apiClientConfig`. Only a positive number is used.
+   *
+   * @deprecated Configure the API client through `runtimeConfig.apiClientConfig`
+   * or `runtimeConfig.public.apiClientConfig` instead. This compatibility
+   * fallback will be removed in the next major.
    */
   apiClientConfig?: {
     timeout?: number | string;
