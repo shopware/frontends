@@ -84,10 +84,7 @@ function handleUpdateBaseInfo() {
         <div
           v-show="createAccountToggle || switchAnimating"
           class="absolute w-full"
-          :class="{
-            'opacity-0': !createAccountToggle && switchAnimating,
-            'animate-slide-up-in': switchAnimating,
-          }"
+          :class="{ 'animate-fade-in': switchAnimating }"
         >
           <FormInputField
             ref="passwordField"
@@ -117,14 +114,12 @@ function handleUpdateBaseInfo() {
   }
 }
 
-@keyframes slideUpIn {
+@keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: translateY(100%);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -132,7 +127,7 @@ function handleUpdateBaseInfo() {
   animation: slideUpOut v-bind(switchAnimationDuration) ease forwards;
 }
 
-.animate-slide-up-in {
-  animation: slideUpIn v-bind(switchAnimationDuration) ease forwards;
+.animate-fade-in {
+  animation: fadeIn 150ms ease forwards;
 }
 </style>
