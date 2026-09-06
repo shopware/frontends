@@ -81,8 +81,9 @@ const isLoading = computed(() => isInitialLoading.value || isLoadingMore.value);
 const shouldShowList = computed(
   () => isOpen.value && !singleCountryMode.value && !disabled,
 );
-const listboxId = computed(() =>
-  shouldShowList.value ? `${id}-listbox` : undefined,
+const listboxId = computed(() => `${id}-listbox`);
+const openListboxId = computed(() =>
+  shouldShowList.value ? listboxId.value : undefined,
 );
 const activeDescendant = computed(() =>
   highlightedIndex.value >= 0
@@ -294,6 +295,10 @@ async function openList() {
   const wasOpen = isOpen.value;
   isOpen.value = true;
 
+  if (countries.value.length) {
+    hasFetchError.value = false;
+  }
+
   if (!countries.value.length && !isInitialLoading.value) {
     await fetchCountries({
       page: 1,
@@ -314,7 +319,11 @@ async function closeList() {
 
   if (selectedCountry.value) return;
 
+  const wasFiltered = !!searchTerm.value;
   searchTerm.value = "";
+
+  if (!wasFiltered) return;
+
   await fetchCountries({
     page: 1,
   });
@@ -371,7 +380,6 @@ function handleEnter() {
 
 function handleEscape() {
   closeList();
-  searchInput.value?.blur();
 }
 
 async function handleScroll() {
@@ -469,7 +477,7 @@ onClickOutside(rootElement, closeList);
             role="combobox"
             class="text-sm w-full min-w-0 text-ellipsis outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
             :aria-activedescendant="activeDescendant"
-            :aria-controls="listboxId"
+            :aria-controls="openListboxId"
             :aria-expanded="shouldShowList"
             aria-autocomplete="list"
             :autocomplete="autocomplete"
@@ -477,6 +485,7 @@ onClickOutside(rootElement, closeList);
             :disabled="disabled"
             :placeholder="placeholder"
             @focus="handleFocus"
+            @click="openList"
             @input="handleInput"
             @blur="handleBlur"
             @keydown.down.prevent="moveHighlight(1)"
@@ -490,7 +499,7 @@ onClickOutside(rootElement, closeList);
             type="button"
             class="ml-2 -my-0.5 h-6 w-6 flex flex-none items-center justify-center rounded text-surface-on-surface-variant outline-none transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
             :aria-label="$t('form.clearCountry')"
-            data-testid="country-select-clear"
+            :data-testid="`${dataTestId}-clear`"
             @mousedown.prevent
             @click="clearSelection"
           >
@@ -500,18 +509,18 @@ onClickOutside(rootElement, closeList);
           <button
             v-else
             type="button"
-            class="flex flex-none items-center bg-transparent text-surface-on-surface-variant outline-none"
+            class="ml-2 -my-1 h-6 w-6 flex flex-none items-center justify-center bg-transparent text-surface-on-surface-variant"
             tabindex="-1"
-            :aria-controls="listboxId"
+            :aria-controls="openListboxId"
             :aria-expanded="shouldShowList"
             :aria-label="$t('form.toggleCountryList')"
             :disabled="disabled"
-            data-testid="country-select-toggle"
+            :data-testid="`${dataTestId}-toggle`"
             @mousedown.prevent
             @click="toggleList"
           >
             <span
-              class="i-carbon-chevron-down h-4 w-4 transition-transform duration-300 ease-in-out"
+              class="i-carbon-chevron-down h-4 w-4 transition-transform duration-300 ease-in-out motion-reduce:transition-none"
               :class="{ 'rotate-180': shouldShowList }"
               aria-hidden="true"
             />
@@ -521,7 +530,7 @@ onClickOutside(rootElement, closeList);
 
       <div
         v-if="shouldShowList"
-        :id="`${id}-listbox`"
+        :id="listboxId"
         ref="listElement"
         role="listbox"
         class="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-lg border border-outline-outline-variant bg-surface-surface p-1 shadow-lg"
