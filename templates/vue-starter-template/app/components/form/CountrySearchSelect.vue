@@ -81,6 +81,9 @@ const isLoading = computed(() => isInitialLoading.value || isLoadingMore.value);
 const shouldShowList = computed(
   () => isOpen.value && !singleCountryMode.value && !disabled,
 );
+const listboxId = computed(() =>
+  shouldShowList.value ? `${id}-listbox` : undefined,
+);
 const activeDescendant = computed(() =>
   highlightedIndex.value >= 0
     ? `${id}-option-${highlightedIndex.value}`
@@ -326,6 +329,16 @@ function handleFocus() {
   openList();
 }
 
+async function toggleList() {
+  if (shouldShowList.value) {
+    await closeList();
+    return;
+  }
+
+  searchInput.value?.focus();
+  await openList();
+}
+
 function handleBlur() {
   emit("blur");
 }
@@ -456,7 +469,7 @@ onClickOutside(rootElement, closeList);
             role="combobox"
             class="text-sm w-full min-w-0 text-ellipsis outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
             :aria-activedescendant="activeDescendant"
-            :aria-controls="`${id}-listbox`"
+            :aria-controls="listboxId"
             :aria-expanded="shouldShowList"
             aria-autocomplete="list"
             :autocomplete="autocomplete"
@@ -484,11 +497,25 @@ onClickOutside(rootElement, closeList);
             <span class="i-carbon-close block h-5 w-5" aria-hidden="true" />
           </button>
 
-          <span
+          <button
             v-else
-            class="i-carbon-chevron-down h-4 w-4 flex-none text-surface-on-surface-variant"
-            aria-hidden="true"
-          />
+            type="button"
+            class="flex flex-none items-center bg-transparent text-surface-on-surface-variant outline-none"
+            tabindex="-1"
+            :aria-controls="listboxId"
+            :aria-expanded="shouldShowList"
+            :aria-label="$t('form.toggleCountryList')"
+            :disabled="disabled"
+            data-testid="country-select-toggle"
+            @mousedown.prevent
+            @click="toggleList"
+          >
+            <span
+              class="i-carbon-chevron-down h-4 w-4 transition-transform duration-300 ease-in-out"
+              :class="{ 'rotate-180': shouldShowList }"
+              aria-hidden="true"
+            />
+          </button>
         </div>
       </div>
 
