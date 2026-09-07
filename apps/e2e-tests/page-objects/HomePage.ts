@@ -16,8 +16,8 @@ export class HomePage extends AbstractPage {
   constructor(page: Page) {
     super(page);
     this.signInButton = page.getByTestId("header-sign-in-link");
-    this.searchBar = page.getByTestId("layout-search-input");
-    this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
+    this.searchBar = page.getByTestId("header-search-input");
+    this.linkToRegistrationPage = page.getByTestId("login-sign-up-button");
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
     this.suggestResultLink = page.getByTestId(

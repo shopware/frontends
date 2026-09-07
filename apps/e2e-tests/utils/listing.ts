@@ -17,11 +17,7 @@ const NON_FILTER_PREFIXES = ["Add to cart", "Page ", "Submit"];
 
 const LISTING_TIMEOUT = 30000;
 
-/**
- * Criteria travel in the POST body, or gzipped into `_criteria` on the GET
- * variants, so read both. Keeps working if useListing starts honouring
- * cacheableReads (#2691) and listings move to GET.
- */
+/** POST body, or gzipped `_criteria` on GET. Both, so #2691 cannot break it. */
 function listingCriteria(request: {
   method: () => string;
   url: () => string;
@@ -48,10 +44,9 @@ function listingCriteria(request: {
 }
 
 /**
- * Matched on the path: /search-suggest fires while typing and carries none of
- * the listing criteria. With `carrying`, only a request that applies that
- * filter resolves, so a query string that changed without the search changing
- * fails here instead of passing against the previous listing.
+ * Matched on the path, since /search-suggest is not a listing. With `carrying`,
+ * only a request applying that filter resolves, so a query that changed without
+ * the search changing fails instead of passing against the previous listing.
  */
 function listingRequested(
   page: Page,

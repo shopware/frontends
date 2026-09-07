@@ -9,10 +9,10 @@ export class WishlistPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addToCartButton = page.getByTestId("add-to-cart-button");
-    this.wishlistButton = page.getByTestId("wishlist-button");
+    this.addToCartButton = page.getByTestId("wishlist-add-to-cart-button");
+    this.wishlistButton = page.getByTestId("header-wishlist-button");
     this.productInWishlistButton = page
-      .getByTestId("product-box-toggle-wishlist-button")
+      .getByTestId("wishlist-product-box-toggle-button")
       .first();
     this.clearWishlistButton = page.getByTestId("clear-wishlist-button");
   }
@@ -22,7 +22,9 @@ export class WishlistPage {
     // Client-side navigation: without this the next assertion sees the old page.
     await this.page.waitForURL(/\/wishlist/);
     await this.page
-      .locator('[data-testid="product-box"], [data-testid="wishlist-empty"]')
+      .locator(
+        '[data-testid="wishlist-product-box"], [data-testid="wishlist-empty-container"]',
+      )
       .first()
       .waitFor({ state: "visible" });
   }
@@ -33,7 +35,7 @@ export class WishlistPage {
    */
   async countEntries() {
     await this.openWishlist();
-    return this.page.getByTestId("product-box").count();
+    return this.page.getByTestId("wishlist-product-box").count();
   }
 
   /** The tile raises no notification, so the cart request is the signal. */

@@ -58,22 +58,24 @@ const limit = ref(
       : defaultLimit,
 );
 
-const initalRoute = defu(route);
+const initialPath = route.path;
+
+// The only place that fetches, so back and forward work.
 watch(
-  () => route,
-  (newRoute) => {
-    if (initalRoute.path !== newRoute.path) {
-      return;
-    }
-    if (Object.keys(newRoute.query).length > 0) {
-      return;
-    }
-    // this fires to reset the page when query are removed/empty on client side navigation for the same page (without hard reload)
-    changeCurrentPage(defaultPage, {
-      limit: defaultLimit,
-      p: defaultPage,
-      order: defaultOrder,
-    } as unknown as operations["searchPage post /search"]["body"]);
+  () => route.query,
+  (query) => {
+    // A different path mounts its own component.
+    if (route.path !== initialPath) return;
+
+    const hasQuery = Object.keys(query).length > 0;
+    const criteria = hasQuery
+      ? query
+      : { limit: defaultLimit, p: defaultPage, order: defaultOrder };
+
+    changeCurrentPage(
+      hasQuery && query.p ? Number(query.p) : defaultPage,
+      criteria as unknown as operations["searchPage post /search"]["body"],
+    );
   },
   { deep: true },
 );
@@ -86,10 +88,6 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  await changeCurrentPage(
-    page,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
@@ -101,10 +99,6 @@ const changeLimit = async (newLimit: number) => {
       p: defaultPage,
     },
   });
-  await changeCurrentPage(
-    defaultPage,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
   productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 

@@ -63,12 +63,12 @@ async function handleRemoveFromWishlist() {
 </script>
 <template>
   <div
-    data-testid="product-box"
+    data-testid="wishlist-product-box"
     class="flex flex-col gap-4 relative"
     :style="`width: ${ELEMENT_WIDTH}px;`"
   >
     <ProductWishlistIcon
-      data-testid="product-box-toggle-wishlist-button"
+      data-testid="wishlist-product-box-toggle-button"
       @click="handleRemoveFromWishlist"
       :isSelected="true"
       :disabled="removing"
@@ -100,7 +100,7 @@ async function handleRemoveFromWishlist() {
 
       <FormBaseButton
         class="mt-auto"
-        data-testid="add-to-cart-button"
+        data-testid="wishlist-add-to-cart-button"
         :label="$t('product.addToCart')"
         :loading="addingProducts"
         @click="handleAddToCart"

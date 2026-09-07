@@ -172,18 +172,12 @@ const executeSearch = async () => {
     // otherwise drop `limit` and revert to the default on refresh/navigation.
     if (route.query.limit) query.limit = route.query.limit;
 
-    // URL first, the way changePage/changeLimit/sorting already do it. Gating
-    // it on the request left the selection out of the URL whenever the listing
-    // call was slow or failed, so a refresh or a shared link lost the filter.
+    // URL first: gating it on the request lost the filter when the call failed.
     await router.push({
       query: query as LocationQueryRaw,
     });
 
-    // Search context refetches from the URL (the page's useAsyncData watches
-    // route.query). Category listings have no such watcher, so fetch here.
-    if (!isProductSearch) {
-      await search(criteria);
-    }
+    // The listing refetches from the URL; fetching here too would double it.
   } catch (error) {
     console.error("Search execution failed:", error);
   }
@@ -210,13 +204,7 @@ const currentSortingOrder = computed({
         },
       });
 
-      // Search context refetches from the URL; category fetches directly.
-      if (!isProductSearch) {
-        await changeCurrentSortingOrder(order, {
-          ...(route.query as unknown as operations["searchPage post /search"]["body"]),
-          limit: toNumber(firstQueryValue(route.query.limit)) ?? 15,
-        });
-      }
+      // Pushing is the whole job; the listing refetches from the URL.
     } catch (error) {
       console.error("Sorting order change failed:", error);
     }

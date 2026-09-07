@@ -25,7 +25,7 @@ export class CheckoutPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.goToCheckoutButton = page.getByTestId("cart-checkout-link");
+    this.goToCheckoutButton = page.getByTestId("checkout-cart-link");
     this.placeOrderButton = page.getByTestId("checkout-place-order-button");
     this.loginOnCheckoutButton = page.getByTestId("checkout-sign-in-link");
     this.notCreateAccountCheck = page.getByTestId(
@@ -50,8 +50,10 @@ export class CheckoutPage {
   }
 
   async goToCheckout() {
-    await this.page.waitForSelector("[data-testid='sidebar-right']");
-    await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
+    await this.page.waitForSelector("[data-testid='mini-cart-container']");
+    await this.page
+      .getByTestId("mini-cart-container")
+      .waitFor({ state: "visible" });
     await this.goToCheckoutButton.click();
     await this.page.waitForURL("**/checkout");
   }
@@ -103,9 +105,6 @@ export class CheckoutPage {
   ) {
     if (password) {
       await this.createAccountToggle.click();
-      // The switch animates for 600ms before createAccount flips, while the
-      // password field is already visible. Its disappearance is the signal.
-      await this.createAccountToggle.waitFor({ state: "detached" });
       await this.passwordInput.fill(password);
     }
     await selectFirstOptionIfPresent(this.salutation);

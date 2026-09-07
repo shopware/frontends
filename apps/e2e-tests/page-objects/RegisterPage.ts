@@ -69,7 +69,7 @@ export class RegisterForm {
     await this.vatId.fill(vatId);
   }
 
-  async submitRegistraionForm() {
+  async submitRegistrationForm() {
     // Without this the form simply stays put on a rejected registration, and
     // the failure reads as a timeout rather than as the API error it is.
     const registered = this.page.waitForResponse(
@@ -102,6 +102,6 @@ export class RegisterForm {
     await this.city.fill(faker.location.city());
     await selectCountry(this.page, this.country, "Germany");
     await selectFirstOptionIfPresent(this.countryState);
-    await this.submitRegistraionForm();
+    await this.submitRegistrationForm();
   }
 }

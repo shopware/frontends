@@ -50,7 +50,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await registrationPage.submitRegistraionForm();
+    await registrationPage.submitRegistrationForm();
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();

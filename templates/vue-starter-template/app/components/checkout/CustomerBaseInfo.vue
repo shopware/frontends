@@ -28,9 +28,10 @@ const switchAnimating = ref(false);
 function switchAnimation(e: Event) {
   e.preventDefault();
 
+  // On the click, not when the animation ends: a fast submit registered a guest.
+  createAccount.value = true;
   switchAnimating.value = true;
   setTimeout(() => {
-    createAccount.value = true;
     switchAnimating.value = false;
   }, 600);
 }
@@ -59,7 +60,7 @@ function handleUpdateBaseInfo() {
         }"
       >
         <div
-          v-if="!createAccount"
+          v-if="!createAccount || switchAnimating"
           class="flex items-center gap-2 absolute"
           :class="{ 'animate-slide-up-out': switchAnimating }"
         >
@@ -78,7 +79,6 @@ function handleUpdateBaseInfo() {
           v-show="createAccount || switchAnimating"
           class="absolute w-full"
           :class="{
-            'opacity-0': !createAccount && switchAnimating,
             'animate-slide-up-in': switchAnimating,
           }"
         >

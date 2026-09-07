@@ -16,8 +16,10 @@ export class ProductPage {
     this.page = page;
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.variant = page.getByTestId("product-variant");
-    this.miniCartLink = page.getByTestId("cart-button");
-    this.productRemove = page.getByTestId("product-remove-button");
+    this.miniCartLink = page.getByTestId("header-mini-cart-button");
+    this.productRemove = page.getByTestId(
+      "checkout-product-tile-remove-button",
+    );
     this.ratingStar = page.getByTestId("review-empty-star");
     this.reviewTitle = page.getByTestId("review-title-input");
     this.reviewText = page.getByTestId("review-text-input");
@@ -79,18 +81,20 @@ export class ProductPage {
 
     await this.addToCart();
     await this.miniCartLink.click();
-    await this.page.getByTestId("sidebar-right").waitFor({ state: "visible" });
+    await this.page
+      .getByTestId("mini-cart-container")
+      .waitFor({ state: "visible" });
 
     // Identity, not just presence: navigating to a variant URL while adding the
     // original product would otherwise pass.
     await expect(
       this.page.locator(
-        `[data-testid="cart-line-item"][data-product-id="${variantId}"]`,
+        `[data-testid="checkout-product-tile-item"][data-product-id="${variantId}"]`,
       ),
     ).toHaveCount(1);
 
     await this.productRemove.click();
-    await this.page.getByTestId("cart-close-button").click();
+    await this.page.getByTestId("mini-cart-close-button").click();
   }
 
   async fillReviewForm() {

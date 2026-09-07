@@ -28,15 +28,15 @@ test.describe.parallel(
     test("Add product to wishlist", async ({ page }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
-      await expect(page.getByTestId("product-box")).toHaveCount(1);
+      await expect(page.getByTestId("wishlist-product-box")).toHaveCount(1);
     });
 
     test("Remove product from wishlist", async ({ page }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
-      await expect(page.getByTestId("product-box")).toHaveCount(1);
+      await expect(page.getByTestId("wishlist-product-box")).toHaveCount(1);
       await wishlistPage.removeProductFromWishlist();
-      await expect(page.getByTestId("wishlist-empty")).toHaveCount(1);
+      await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
     });
 
     // vue-starter-template's wishlist page offers no "clear all" action, so
@@ -46,7 +46,7 @@ test.describe.parallel(
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
       await wishlistPage.clearWishlist();
-      await expect(page.getByTestId("wishlist-empty")).toHaveCount(1);
+      await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
     });
   },
 );

@@ -9,22 +9,14 @@ export const ATTEMPT_LOG = "diagnostics/store-api-attempts.log";
 
 type Entry = Record<string, unknown>;
 
-/**
- * Records storefront 5xx and failed store-api calls. Nitro does not log either,
- * so without this a backend stall reaches CI as an anonymous locator timeout
- * and there is nothing to hand to whoever owns the backend.
- */
+/** Nitro logs neither, so without this a stall is just a locator timeout. */
 export const test = base.extend<{ networkDiagnostics: void }>({
   networkDiagnostics: [
     async ({ page }, use, testInfo) => {
-      // Playwright closes the context while requests are still in flight, and
-      // Chromium reports those as ERR_FAILED rather than ERR_ABORTED. Counting
-      // them would attribute our own teardown to the backend.
+      // Chromium reports teardown cancellations as ERR_FAILED, not ERR_ABORTED.
       let tearingDown = false;
 
-      // Anchors a failure to the backend's own request id and node, which is
-      // what infra needs to find it in their logs. A failed call has no
-      // response of its own, so the nearest success before it is the anchor.
+      // A failed call has no trace id, so anchor it to the last success.
       let lastOk: Record<string, unknown> | null = null;
 
       const record = (entry: Entry) => {
@@ -43,8 +35,7 @@ export const test = base.extend<{ networkDiagnostics: void }>({
         }
       };
 
-      // How long a call ran before it died separates a timeout somewhere in the
-      // chain from a connection dropped at once, e.g. a reused dead keep-alive.
+      // Separates a timeout in the chain from a connection dropped at once.
       const startedAt = new Map<Request, number>();
       page.on("request", (request) => {
         if (request.url().includes("/store-api/")) {
@@ -67,15 +58,10 @@ export const test = base.extend<{ networkDiagnostics: void }>({
         });
       });
 
-      // Failures alone give no denominator, and 44 bad calls out of 200 and out
-      // of 5000 are different problems. Counted on the spot rather than at
-      // teardown: Playwright kills the worker after a failure, so a tally
-      // flushed at the end would lose exactly the tests that failed most.
+      // On the spot, not at teardown: a killed worker loses the worst tests.
       page.on("requestfinished", (request) => startedAt.delete(request));
 
-      // A failed fetch during client side navigation renders Nuxt's error page
-      // without any HTTP response, so the status handler below never sees it.
-      // Read it off the DOM instead, or the worst failures stay uncounted.
+      // A client-side failure renders an error page with no HTTP response.
       const seenErrorPages = new Set<string>();
       const recordErrorPage = async () => {
         try {
@@ -92,10 +78,7 @@ export const test = base.extend<{ networkDiagnostics: void }>({
               (document.body?.innerText ?? "").match(
                 /\[(?:GET|POST|PUT|PATCH|DELETE)\][^\n]{0,200}/,
               )?.[0] ?? null;
-            // Nuxt's error page always pairs the status with a status text,
-            // so the presence of both is the signal. Requiring the word
-            // "error" missed "429 Too Many Requests" entirely, which is the
-            // one that actually breaks tests.
+            // Requiring the word "error" missed "429 Too Many Requests".
             if (!message && !cause) return null;
             return { status, message, cause };
           });
@@ -118,8 +101,7 @@ export const test = base.extend<{ networkDiagnostics: void }>({
         const status = response.status();
 
         if (response.url().includes("/store-api/")) {
-          // Which node answered. If failures cluster around one address, that
-          // narrows it from "the backend" to a specific instance.
+          // Which node answered, in case failures cluster on one.
           const peer = await response.serverAddr().catch(() => null);
           const at = new Date().toISOString();
           const traceId = response.headers()["x-trace-id"] ?? null;
@@ -137,9 +119,7 @@ export const test = base.extend<{ networkDiagnostics: void }>({
         const url = response.url();
 
         if (url.includes("/store-api/")) {
-          // 4xx too: the Store API rate limit answers 429 and is shared across
-          // endpoints, so a run can be throttled without a single 5xx. The
-          // trace id is what the backend correlates against its own logs.
+          // 4xx too: the shared rate limit answers 429, never a 5xx.
           record({
             kind:
               status === 429 ? "store-api-throttled" : `store-api-${status}`,
@@ -179,8 +159,7 @@ export const test = base.extend<{ networkDiagnostics: void }>({
       await use();
       tearingDown = true;
 
-      // Last look: a client rendered error is usually still on screen when the
-      // test gives up.
+      // A client-rendered error is usually still on screen when a test gives up.
       await recordErrorPage();
     },
     { auto: true },

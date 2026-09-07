@@ -82,7 +82,7 @@ export class MyAccountPage {
     await this.accountChangeShippingAddressButton.click();
   }
 
-  async subsribeNewsletter() {
+  async subscribeNewsletter() {
     await this.newsletterCheckbox.click();
   }
 }

@@ -32,7 +32,7 @@ onClickOutside(miniCartContainer, () => {
 <template>
   <div
     ref="miniCartContainer"
-    data-testid="sidebar-right"
+    data-testid="mini-cart-container"
     class="z-20 max-w-[500px] w-full"
   >
     <div
@@ -45,7 +45,7 @@ onClickOutside(miniCartContainer, () => {
       </div>
       <FormIconButton
         type="ghost"
-        data-testid="cart-close-button"
+        data-testid="mini-cart-close-button"
         @click.stop="handleCloseMiniCart"
       >
         <Icon name="shopware:times-s" class="w-3 h-3" />
@@ -76,7 +76,7 @@ onClickOutside(miniCartContainer, () => {
         {{ $t("cart.miniCart.taxEstimation") }}
       </div>
       <NuxtLink
-        data-testid="cart-checkout-link"
+        data-testid="checkout-cart-link"
         :to="formatLink('/checkout')"
         class="bg-brand-primary text-brand-on-primary block text-center font-bold leading-6 py-1.5 rounded-md mb-2"
         >{{ $t("cart.miniCart.proceedToCheckout") }}</NuxtLink

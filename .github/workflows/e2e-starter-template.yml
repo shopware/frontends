@@ -66,9 +66,8 @@ jobs:
           # starter's sales channel rejects with NO_SUCH_CHOICE_ERROR. Template
           # bug, tracked in #2585.
           NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
-          # Store API calls made while rendering are invisible to Playwright,
-          # and those are the ones that turn into an error page. The wrapper
-          # records them from inside the storefront's own process. Test only.
+          # Records Store API calls made while rendering, which Playwright
+          # cannot see. Test only.
           SSR_NETWORK_LOG: ${{ github.workspace }}/apps/e2e-tests/diagnostics/ssr-network.jsonl
           NODE_OPTIONS: --import ${{ github.workspace }}/apps/e2e-tests/instrument-ssr.mjs
         run: |
@@ -95,28 +94,19 @@ jobs:
 
       - name: Run tests
         id: e2e
-        # Reports rather than gates. The suite passes against the starter, but
-        # the shared demo backend intermittently stalls store-api calls
-        # (context, cart, breadcrumb, product-listing) with no response at all,
-        # which strands the page mid-hydration and fails whichever spec was
-        # running. Retries absorb it. Kept out of failed-job-check.yml for the
-        # same reason.
+        # Reports rather than gates: the shared demo backend drops calls with
+        # no response, which retries absorb. Out of failed-job-check.yml too.
         continue-on-error: true
         timeout-minutes: 25
         run: |
           cd apps/e2e-tests
           # pnpm forwards these straight through; a `--` separator swallows them.
           #
-          # One worker: the specs share a single customer account and one demo
-          # backend, so parallel workers clobber each other's cart, wishlist and
-          # session. Measured: 5 passing at 4 workers vs 8 at one, same commit.
-          #
-          # Retries are left at the config default now that the suite is meant
-          # to pass; they absorb the shared backend's transient slowness.
+          # One worker: the specs share a customer and a backend, so parallel
+          # workers clobber each other. Measured 5 passing at 4 workers vs 8.
           pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
 
-      # Nitro logs neither storefront 500s nor failed store-api calls, so without
-      # this a backend problem reaches us as an anonymous locator timeout.
+      # Nitro logs neither, so without this a backend problem is just a timeout.
       - name: Report network failures
         if: always()
         run: |

@@ -31,7 +31,7 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await registrationPage.submitRegistraionForm();
+    await registrationPage.submitRegistrationForm();
     // Registration signs the customer in, so the header account control
     // switches to its logged-in role.
     await expect(page.getByTestId("account-menu-hello-button")).toBeVisible();
@@ -55,7 +55,7 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await registrationPage.submitRegistraionForm();
+    await registrationPage.submitRegistrationForm();
     // Registration signs the customer in, so the header account control
     // switches to its logged-in role.
     await expect(page.getByTestId("account-menu-hello-button")).toBeVisible();

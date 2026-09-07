@@ -1,7 +1,4 @@
-// Wraps fetch in the storefront's own Node process, so Store API calls made
-// during SSR are recorded too. The Playwright collector only sees the browser,
-// and SSR is where a failed call turns into a 500 page.
-//
+// Records Store API calls made during SSR, which Playwright cannot see.
 // Test-only: loaded with NODE_OPTIONS=--import, never by the app itself.
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
@@ -39,9 +36,7 @@ if (LOG) {
           ms: Date.now() - startedAt,
         });
       } else {
-        // Latency, not just failures. A page that renders too late looks
-        // identical to a broken one from a test's point of view, and without
-        // this there is nothing to tell the two apart.
+        // A late render looks like a broken one, so measure latency too.
         write({ kind: "store-api-ok", url, ms: Date.now() - startedAt });
       }
       return response;

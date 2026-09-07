@@ -9,9 +9,11 @@ export class CartPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.miniCartContainer = page.getByTestId("sidebar-right");
-    this.miniCartButton = page.getByTestId("cart-button");
-    this.removeMiniCart = page.getByTestId("product-remove-button");
+    this.miniCartContainer = page.getByTestId("mini-cart-container");
+    this.miniCartButton = page.getByTestId("header-mini-cart-button");
+    this.removeMiniCart = page.getByTestId(
+      "checkout-product-tile-remove-button",
+    );
     this.productOption = page.getByTestId("cart-product-options");
   }
 
