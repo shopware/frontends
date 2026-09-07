@@ -390,7 +390,7 @@ Images are optimized to prevent the browser from downloading images larger than 
 
 ### Product Card Images (`SwProductCardImage`)
 
-The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` stay on the component — NuxtImg presets don't propagate these reliably:
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height` and `loading` stay on the component: in `@nuxt/image` 2.1.0 a preset carries `width`/`height` only as `modifiers`, which shape the URL rather than the rendered attributes, and `loading` is not a preset field at all. `densities` is kept alongside them for consistency, though a preset would propagate it:
 
 ```ts
 // nuxt.config.ts

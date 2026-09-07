@@ -40,12 +40,25 @@ That's why the PR title is the commit message for the whole PR. Please make sure
 
 ## Agent instruction files
 
-`AGENTS.md` (root and per-package) is what AI coding agents read at the start of
-a session, and the root `CLAUDE.md` imports it so Claude Code loads the same
-file. Because they are loaded into context every session, **keep each one under
-200 lines** — past that they cost more context and get followed less.
+`AGENTS.md` is what AI coding agents read. Most agents pick up the nearest one
+in the directory tree on their own; Claude Code reads `CLAUDE.md` instead, so
+every `AGENTS.md` has a one-line `CLAUDE.md` beside it containing `@AGENTS.md`.
+**Add both files together** — an `AGENTS.md` without its `CLAUDE.md` sibling is
+invisible to Claude Code, and a gotcha filed there never reaches the session
+that needed it. Only the root pair loads at session start; a nested one is
+picked up when the agent works on files in that directory, which is exactly what
+you want for package-specific notes.
 
-Update them when a change makes them wrong, and keep them limited to what an
-agent cannot derive by reading the repo: gotchas, rationale and conventions
-that differ from tool defaults. Layouts, dependency lists, standard scripts and
-component inventories belong in the code or the docs site, not here.
+Because these files enter the context window every session, **keep each one
+under 200 lines**. Past that they cost more context and get followed less, so
+the budget is a correctness rule, not tidiness.
+
+Limit them to what an agent cannot derive by reading the repo: gotchas,
+rationale, and conventions that differ from tool defaults. Layouts, dependency
+lists, standard scripts and component inventories belong in the code or the docs
+site. Prefer pointing at the file that owns a fact over restating it — a
+condensed copy in an instruction file drifts from the original, and the original
+is the one with an owner. Update them in the same change that makes them wrong.
+
+Exported functions and types get a JSDoc block; that is what surfaces in
+consumers' editors.

@@ -12,8 +12,10 @@ what neither makes obvious.
 Type safety flows from one generic parameter:
 
 ```
-createAPIClient<operations>()  →  client.invoke("operationId method /path", body)
-                                            ↑ typed by the operations key
+createAPIClient<operations>()
+  → client.invoke("operationId method /path", params)
+                   ↑ key typed by operations   ↑ { body, query, pathParams,
+                                                   headers, fetchOptions }
 ```
 
 `operations` maps `"operationId method /path"` keys to `body`, `query`,
@@ -28,7 +30,9 @@ and knowing which one a project uses explains most type errors:
    types with custom ones.
 
 **Never hand-edit `api-types/*.d.ts`** — they are generated artifacts.
-Regenerate with `pnpm run generate-types` from the repo root.
+`pnpm run generate-types` from the repo root regenerates the **store** types;
+`adminApiTypes.d.ts` comes from this package's separate `generate-admin-types`
+script, which no root script wraps.
 
 ## Non-obvious extension points
 
@@ -36,11 +40,16 @@ Regenerate with `pnpm run generate-types` from the repo root.
   (`src/createAPIClient.ts`, `src/createAdminAPIClient.ts`) first — those types
   parameterise `createHooks<...>()` from hookable, so the type is what makes a
   hook name callable and consumer-visible, not the call site.
-- **New `fetchOptions`** are an explicit allow-list, not a passthrough: add the
-  option to the `Pick` list in `InvokeParameters["fetchOptions"]` in
-  `src/createAPIClient.ts` (and to `GlobalFetchOptions` if it should be settable
-  client-wide), then document it in the README. Anything not in the `Pick` is
-  dropped without warning.
+- **New `fetchOptions`** need adding to the `Pick` list in
+  `InvokeParameters["fetchOptions"]` in `src/createAPIClient.ts` (and to
+  `GlobalFetchOptions` if it should be settable client-wide), then documenting in
+  the README. That `Pick` is a **type-level** allow-list and nothing filters it
+  at runtime: the object is spread into ofetch verbatim, so an unlisted key that
+  gets past the types still reaches ofetch and still changes the request. The
+  type only catches it as an excess property when you pass an object _literal_ —
+  a prepared variable carrying an extra key compiles cleanly. `method`, `body`,
+  `headers` and `query` are the exceptions: `invoke` re-sets those after the
+  spread.
 - **`api-types/storeApiSchema.overrides.json`** ships as the default patch set
   that `api-gen` users reference from their own config. Keep it in sync whenever
   the bundled types are regenerated, or downstream generation drifts from ours.
@@ -57,6 +66,13 @@ in Node, `*.browser.test.ts` in happy-dom. **The
 file** — Vitest applies it to the whole file wherever it sits, so putting it
 inside an `it()` silently flips every test in that file.
 
-Request `Content-Type` handling is *not* environment-dependent:
-`resolveRequestHeaders` decides it from the body alone. The browser test file
-only guards that Node and browser stay in sync.
+Request `Content-Type` handling is _not_ environment-dependent, so the browser
+test file only guards that Node and the browser stay in sync. It is not decided
+from the body alone either: `resolveRequestHeaders` weighs the caller's header
+against the default, whether that default is the seeded `application/json`,
+multipart boundary usability, and header-casing collisions. An explicit
+non-JSON caller `Content-Type` wins for a runtime-managed body — a Blob's
+`image/png` survives — **except** for `FormData`, where a `Content-Type` without
+a boundary cannot describe the body and is dropped whatever the caller set (see
+`shouldDrop`, pinned by a test). Keep both branches when touching it, or Blob
+uploads or multipart break.
