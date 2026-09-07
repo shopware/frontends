@@ -1,0 +1,33 @@
+name: Examples
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build examples
+    timeout-minutes: 25
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TELEMETRY_DISABLED: 1
+      DO_NOT_TRACK: 1
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Build and typecheck examples
+        run: pnpm exec turbo run build typecheck --filter='./examples/*'

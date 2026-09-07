@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": ["pnpm-lock.yaml", "pnpm-workspace.yaml"],
   "tasks": {
     "build": {
       "dependsOn": ["^build", "nuxt-prepare"],
@@ -11,29 +12,19 @@
     },
     "nuxt-prepare": {
       "dependsOn": ["^build"],
-      "cache": false,
-      "outputs": []
+      "outputs": [".nuxt/**"]
     },
     "lint": {
-      "cache": false,
       "outputs": [],
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "lint:fix": {
-      "cache": false,
       "outputs": [],
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "typecheck": {
-      "dependsOn": ["build", "^build"],
-      "outputs": [],
-      "inputs": [
-        "src/**/*.ts",
-        "src/**/*.vue",
-        "*.ts",
-        "tsconfig.json",
-        "package.json"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "generate-types": {
       "cache": false,
