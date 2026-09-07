@@ -14,18 +14,25 @@ This file holds only what neither the README nor the code makes obvious.
 
 ## Component resolution
 
-Component names mirror the CMS hierarchy (`CmsSection{Type}`, `CmsBlock{Type}`,
-`CmsElement{Type}`) and are resolved at runtime by `resolveCmsComponent` from
-`@shopware/composables`. The naming rules for adding one are documented in
+Component names mirror the CMS hierarchy: `CmsSection{Type}`, `CmsBlock{Type}`,
+`CmsElement{Type}`. Blocks and elements are resolved at runtime by
+`resolveCmsComponent` from `@shopware/composables`; **sections are not** — they
+are resolved inline in `CmsPage.vue` with a bare `resolveComponent()` call. The
+naming rules for adding one are documented in
 [Creating CMS components](../../apps/docs/src/guides/cms/missing-component.md).
 
-**An unimplemented type renders differently per environment.** When the name
-does not resolve, dev mode logs a warning naming the exact component file to
-create and renders the `CmsNoComponent` placeholder — but production renders an
-empty `<div>` with no warning at all (`CmsGenericElement.vue`,
-`CmsGenericBlock.vue`). So CMS content that silently disappears in production
-while looking fine locally is a name that does not match the CMS type. Check the
-dev console before hunting for a data problem.
+**An unimplemented block or element renders differently per environment.**
+When the name does not resolve, dev mode logs a warning naming the exact
+component file to create and renders the `CmsNoComponent` placeholder — but
+production renders an empty `<div>` with no warning at all
+(`CmsGenericElement.vue`, `CmsGenericBlock.vue`). So a block or element that
+silently disappears in production while looking fine locally is a name that does
+not match the CMS type; check the dev console before hunting for a data problem.
+
+**Sections behave the opposite way.** `CmsPage.vue` has no dev gate: an
+unresolved section renders the literal string `There is no CmsSection{Type}`
+into the page, visibly, in production as well as locally. Nothing is logged, so
+there is no console warning to look for.
 
 Registration rules for the consuming template — which directories must be
 `global: true`, and the trap of registering one path twice — are commented at the
@@ -55,15 +62,21 @@ silent.** `useListing` also holds shared in-memory listing state
 (`createInjectionState` for `categoryListing`, `createSharedComposable` for
 `useProductSearchListing`). A search page's `useAsyncData` watches `route.query`,
 so navigating is enough there and calling `search()` as well double-fetches and
-flickers; a **category listing has no URL watcher**, so `search()` must be called
-explicitly — see the `if (!isProductSearch)` branch and its comment in
-`SwProductListingFilters.vue`.
+flickers; a **category listing has no watcher that refetches the listing**, so
+`search()` must be called explicitly — see the `if (!isProductSearch)` branch
+and its comment in `SwProductListingFilters.vue`. (`CmsElementProductListing.vue`
+does watch the route, but it early-returns unless the query is empty; its only
+job is resetting the page number.)
 
-When you add a filter, the place that turns query params back into a request body
-is `buildSearchCriteria` in
-[vue-starter-template/app/pages/search.vue](../../templates/vue-starter-template/app/pages/search.vue),
-not `CmsElementProductListing.vue` — that one only paginates and spreads
-`...route.query`, so new filters pass through it untouched.
+When you add a filter, the query params are turned back into a request body in
+**two** places, one per listing type, and both need the new field:
+`searchCriteriaForRequest` in `SwProductListingFilters.vue` (duplicated in
+`SwProductListingFiltersHorizontal.vue`) for category listings, and
+`buildSearchCriteria` in
+[vue-starter-template/app/pages/search.vue](../../templates/vue-starter-template/app/pages/search.vue)
+for the search page. Miss the first and the filter works on `/search` and
+silently does nothing on every category page. Also update `FilterState` and
+`applyQueryToFilters` so the value survives a reload.
 
 ## Images
 
@@ -75,8 +88,9 @@ not `CmsElementProductListing.vue` — that one only paginates and spreads
   `modifiers` — shaping the requested URL, never the rendered `<img>`
   attributes — and `loading` is not a field at all. Fixed dimensions on the
   component are also what avoids hydration mismatches from dynamic DOM
-  measurement. (`densities` and `sizes` _are_ preset fields and do propagate,
-  contrary to the older note in the README.)
+  measurement. (`densities` does work as a preset field. `sizes` does too, but
+  it lands on the same rendered attribute as the prop, so putting it in a preset
+  reproduces the mismatch the bullet above forbids — don't.)
 - The full sizing recipe, including the retina and SSR-measurement behaviour, is
   under [Responsive CMS Images](README.md#responsive-cms-images).
 

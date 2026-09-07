@@ -49,9 +49,11 @@ that needed it. Only the root pair loads at session start; a nested one is
 picked up when the agent works on files in that directory, which is exactly what
 you want for package-specific notes.
 
-Because these files enter the context window every session, **keep each one
-under 200 lines**. Past that they cost more context and get followed less, so
-the budget is a correctness rule, not tidiness.
+**Keep the root pair under 200 lines.** It is resident in every session, and
+past that size it costs more context and gets followed less — the budget is a
+correctness rule there, not tidiness. Nested files are bounded by relevance
+instead: they only load in their own subtree, so moving package detail down out
+of the root file is a real saving, not a reshuffle.
 
 Limit them to what an agent cannot derive by reading the repo: gotchas,
 rationale, and conventions that differ from tool defaults. Layouts, dependency
@@ -59,6 +61,8 @@ lists, standard scripts and component inventories belong in the code or the docs
 site. Prefer pointing at the file that owns a fact over restating it — a
 condensed copy in an instruction file drifts from the original, and the original
 is the one with an owner. Update them in the same change that makes them wrong.
+
+## Documenting code
 
 Exported functions and types get a JSDoc block; that is what surfaces in
 consumers' editors.
