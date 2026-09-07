@@ -794,6 +794,46 @@ describe("createAPIClient", () => {
 
       await expect(request).rejects.toThrow(/aborted/i);
     });
+
+    it("does not abort a response that stalls after its headers arrived", async () => {
+      let releaseResponse: (() => void) | undefined;
+      const app = createApp().use(
+        "/stalled-body",
+        eventHandler((event) => {
+          const response = event.node.res;
+          response.writeHead(200, { "content-type": "application/json" });
+          response.write('{"message":');
+          releaseResponse = () => response.end('"released"}');
+          return new Promise<never>(() => {});
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 100 },
+        baseURL,
+      });
+
+      const request = client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testStalledBody get /stalled-body", {})
+        .then(
+          () => "settled",
+          () => "settled",
+        );
+      const outcome = await Promise.race([
+        request,
+        new Promise<string>((resolve) =>
+          setTimeout(() => resolve("pending"), 400),
+        ),
+      ]);
+      releaseResponse?.();
+      await request;
+
+      expect(outcome).toBe("pending");
+    });
   });
 
   describe("default header changes", () => {

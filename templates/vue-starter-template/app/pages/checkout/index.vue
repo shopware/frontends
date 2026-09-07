@@ -38,6 +38,7 @@ const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
+const { handleApiError } = useApiErrorsResolver();
 
 function handleRemoveItem(id: string) {
   removeItemById(id);
@@ -57,6 +58,8 @@ async function handlePlaceOrder() {
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
+  } catch (error) {
+    handleApiError(error);
   } finally {
     isPlacingOrder.value = false;
   }

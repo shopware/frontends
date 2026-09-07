@@ -116,9 +116,9 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 ## API Client timeout
 
-`apiClientConfig.timeout` aborts a Store API request that runs longer than the given number of milliseconds. Unset by default.
+`apiClientConfig.timeout` aborts a Store API request when its response headers do not arrive within the given number of milliseconds. Unset by default.
 
-It guards against requests that hang. Connection failures usually fail fast on their own, so a timeout does not help there.
+It guards against a request that hangs before the server answers. Connection failures usually fail fast on their own, so a timeout does not help there. A response that stalls after its headers arrived is not aborted either.
 
 ```json
 {
@@ -134,7 +134,7 @@ It guards against requests that hang. Connection failures usually fail fast on t
 
 Only a positive number arms it. Anything else counts as unset.
 
-`shopware: { apiClientConfig: { timeout } }` still works as a deprecated fallback, read only when neither `runtimeConfig` path is set. Move it to `runtimeConfig.apiClientConfig`; it goes away in the next major.
+`shopware: { apiClientConfig: { timeout } }` still works as a deprecated fallback, read only when neither `runtimeConfig` path is set. Nuxt warns at build time when it is set. Move it to `runtimeConfig.apiClientConfig`; it goes away in the next major.
 
 Once set:
 

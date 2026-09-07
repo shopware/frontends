@@ -47,6 +47,14 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
     }
+    if (
+      resolvedPublicShopwareConfig?.apiClientConfig ||
+      resolvedPrivateShopwareConfig?.apiClientConfig
+    ) {
+      logger.warn(
+        "shopware.apiClientConfig is deprecated and will be removed in the next major. Move timeout to runtimeConfig.apiClientConfig or runtimeConfig.public.apiClientConfig.",
+      );
+    }
     const envPublicEndpoint =
       process.env.NUXT_PUBLIC_SHOPWARE_ENDPOINT ||
       process.env.NUXT_PUBLIC_SHOPWARE_SHOPWARE_ENDPOINT;
@@ -152,7 +160,7 @@ export type ShopwareNuxtOptions = {
    * fallback will be removed in the next major.
    */
   apiClientConfig?: {
-    timeout?: number | string;
+    timeout?: number;
   };
   /**
    * Use user context in SSR mode. Warning: with wrong edge caching it can cause serving another user's data.

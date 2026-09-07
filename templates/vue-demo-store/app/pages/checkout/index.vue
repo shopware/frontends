@@ -236,12 +236,15 @@ const placeOrder = async () => {
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
-    if (error instanceof ApiClientError)
+    if (error instanceof ApiClientError) {
       for (const errorItem of error.details.errors) {
         if (errorItem?.detail) {
           pushError(errorItem.detail);
         }
       }
+    } else {
+      pushError(t("errors.message-default"));
+    }
   } finally {
     isLoading.placeOrder = false;
   }

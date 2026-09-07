@@ -11,7 +11,7 @@ declare module "nuxt/schema" {
     headers?: {
       [key: string]: string;
     };
-    /** Milliseconds after which a Store API request is aborted. */
+    /** Milliseconds to wait for response headers before a Store API request is aborted. */
     timeout?: number;
   }
 

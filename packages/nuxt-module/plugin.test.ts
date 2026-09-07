@@ -152,6 +152,97 @@ describe("nuxt-module plugin", () => {
     );
   });
 
+  describe("precedence", () => {
+    const build = ({
+      privateTimeout,
+      publicTimeout,
+      deprecatedPrivateTimeout,
+      deprecatedPublicTimeout,
+    }: Record<string, unknown>) => ({
+      shopware: {
+        ...SHOPWARE_CONFIG,
+        apiClientConfig: { timeout: deprecatedPrivateTimeout },
+      },
+      apiClientConfig: { timeout: privateTimeout },
+      public: {
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: deprecatedPublicTimeout },
+        },
+        apiClientConfig: { timeout: publicTimeout },
+      },
+    });
+
+    it.each([
+      {
+        name: "runtimeConfig.apiClientConfig wins over every other source",
+        config: {
+          privateTimeout: 1000,
+          publicTimeout: 2000,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 1000,
+      },
+      {
+        name: "runtimeConfig.public.apiClientConfig wins over shopware.apiClientConfig",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: 2000,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 2000,
+      },
+      {
+        name: "shopware.apiClientConfig wins over public shopware.apiClientConfig",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: "2000",
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 3000,
+      },
+      {
+        name: "public shopware.apiClientConfig is read when every source above it is invalid",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: "2000",
+          deprecatedPrivateTimeout: -1,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 4000,
+      },
+    ])("$name", async ({ config, expected }) => {
+      useRuntimeConfigMock.mockReturnValue(build(config));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: expected } }),
+      );
+    });
+
+    it("skips both private sources in the browser", async () => {
+      runOnClient();
+      useRuntimeConfigMock.mockReturnValue(
+        build({
+          privateTimeout: 1000,
+          publicTimeout: 0,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        }),
+      );
+
+      await runPlugin(createNuxtAppMock(false));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: 4000 } }),
+      );
+    });
+  });
+
   describe.each([
     {
       name: "runtimeConfig.apiClientConfig",
