@@ -16,7 +16,7 @@
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
     "dev": "turbo run dev",
-    "lint": "oxlint . && oxfmt --check .",
+    "lint": "oxlint packages templates examples apps/e2e-tests && oxfmt --check packages templates examples apps/e2e-tests",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
