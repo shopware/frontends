@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { MaybeRef } from "vue";
 
+import type { FocusableInput } from "#imports";
+
 defineOptions({ inheritAttrs: false });
 
 const {
@@ -28,6 +30,12 @@ const errorId = `${id || useId()}-error`;
 const describedBy = computed(() => (errorText.value ? errorId : undefined));
 
 const { wrapperAttrs, controlAttrs } = useControlAttrs();
+
+const baseInput = useTemplateRef<FocusableInput>("baseInput");
+
+defineExpose<FocusableInput>({
+  focus: (options) => baseInput.value?.focus(options),
+});
 </script>
 <template>
   <div v-bind="wrapperAttrs" class="relative">
@@ -40,6 +48,7 @@ const { wrapperAttrs, controlAttrs } = useControlAttrs();
     </label>
 
     <FormBaseInput
+      ref="baseInput"
       class="text-sm w-full"
       v-model="model"
       :placeholder="placeholder"
