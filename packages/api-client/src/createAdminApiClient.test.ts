@@ -784,6 +784,105 @@ describe("createAdminAPIClient", () => {
 
       expect(isTimeoutError(error)).toBe(true);
     });
+
+    function createStalledRefreshApp() {
+      const app = createApp();
+      app.use(
+        "/oauth/token",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return {
+            access_token: "late-token",
+            refresh_token: "late-refresh",
+            expires_in: 3600,
+          };
+        }),
+      );
+      app.use(
+        "/order",
+        eventHandler(() => ({ message: "This should never be returned" })),
+      );
+      return app;
+    }
+
+    const expiredSession = {
+      accessToken: "Bearer expired-token",
+      refreshToken: "my-refresh-token",
+      expirationTime: Date.now() - 1000,
+    };
+
+    it("should abort a stalled token refresh through the client timeout", async () => {
+      const baseURL = await createPortAndGetUrl(createStalledRefreshApp());
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: { ...expiredSession },
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        .invoke("getOrderList get /order", {})
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
+
+    it("should abort a stalled token refresh through the merged signal and timeout", async () => {
+      const baseURL = await createPortAndGetUrl(createStalledRefreshApp());
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: { ...expiredSession },
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        .invoke("getOrderList get /order", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
+
+    it.each([
+      { level: "client", clientTimeout: 50.5, requestTimeout: undefined },
+      { level: "per-request", clientTimeout: undefined, requestTimeout: 0.5 },
+    ])(
+      "should round a fractional $level timeout up when combining it with a signal",
+      async ({ clientTimeout, requestTimeout }) => {
+        const app = createApp().use(
+          "/order",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            return { message: "This should never be returned" };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAdminAPIClient<operations>({
+          sessionData: {
+            accessToken: "Bearer my-access-token",
+            refreshToken: "my-refresh-token",
+            expirationTime: Date.now() + 1000 * 60,
+          },
+          fetchOptions: { timeout: clientTimeout },
+          baseURL,
+        });
+
+        const error = await client
+          .invoke("getOrderList get /order", {
+            fetchOptions: {
+              signal: new AbortController().signal,
+              timeout: requestTimeout,
+            },
+          })
+          .catch((caught: unknown) => caught);
+
+        expect(isTimeoutError(error)).toBe(true);
+      },
+    );
   });
 
   it("should let the runtime set multipart/form-data with a boundary for FormData uploads", async () => {

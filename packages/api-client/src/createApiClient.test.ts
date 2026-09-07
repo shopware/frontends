@@ -838,6 +838,75 @@ describe("createAPIClient", () => {
         });
       }
     });
+
+    it.each([
+      { level: "client", clientTimeout: 50.5, requestTimeout: undefined },
+      { level: "per-request", clientTimeout: undefined, requestTimeout: 0.5 },
+    ])(
+      "should round a fractional $level timeout up when combining it with a signal",
+      async ({ clientTimeout, requestTimeout }) => {
+        const app = createApp().use(
+          "/slow-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            return { message: "This should never be returned" };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          fetchOptions: { timeout: clientTimeout },
+          baseURL,
+        });
+
+        const error = await client
+          // @ts-expect-error this endpoint does not exist
+          .invoke("testFractionalTimeout get /slow-endpoint", {
+            fetchOptions: {
+              signal: new AbortController().signal,
+              timeout: requestTimeout,
+            },
+          })
+          .catch((caught: unknown) => caught);
+
+        expect(isTimeoutError(error)).toBe(true);
+      },
+    );
+
+    it("should time out while reading a stalled body when a signal is set", async () => {
+      let releaseResponse: (() => void) | undefined;
+      const app = createApp().use(
+        "/stalled-body",
+        eventHandler((event) => {
+          const response = event.node.res;
+          response.writeHead(200, { "content-type": "application/json" });
+          response.write('{"message":');
+          releaseResponse = () => response.end('"released"}');
+          return new Promise<never>(() => {});
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 100 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testStalledBodyWithSignal get /stalled-body", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught as { status?: number });
+      releaseResponse?.();
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+    });
   });
 
   describe("default header changes", () => {

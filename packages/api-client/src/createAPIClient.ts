@@ -217,7 +217,7 @@ export function createAPIClient<
     ) {
       fetchOptions.signal = AbortSignal.any([
         fetchOptions.signal,
-        AbortSignal.timeout(timeout),
+        AbortSignal.timeout(Math.ceil(timeout)),
       ]);
     }
 

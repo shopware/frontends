@@ -346,7 +346,7 @@ const request = client.invoke("readContext get /context", {
 });
 ```
 
-Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124 and Safari 17.4. Older browsers keep the previous behaviour, where a per-request `signal` switches the timeout off.
+Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124 and Safari 17.4. Older browsers keep the previous behaviour, where a per-request `signal` switches the timeout off. A fractional timeout is rounded up to whole milliseconds when combined.
 
 All exposed options available under `fetchOptions` are:
 
@@ -435,7 +435,7 @@ How the client handles this for you:
 
 Client is throwing `ApiClientError` with detailed information returned from the API. It will display clear message in the console or you can access `details` property to get raw information from the response.
 
-A request that runs into `fetchOptions.timeout` never reaches the API, so it is not an `ApiClientError` and has no HTTP status. Use `isTimeoutError` to tell it apart.
+A request that runs into `fetchOptions.timeout` did not get its complete response in time. It is not an `ApiClientError` and has no HTTP status. The request may already have reached the API and been processed, so the server-side outcome is unknown, and a mutation must not be retried without checking. Use `isTimeoutError` to tell it apart.
 
 ```typescript
 import { ApiClientError, isTimeoutError } from "@shopware/api-client";
@@ -447,7 +447,7 @@ try {
     console.error(error); // This prints message summary
     console.error("Details:", error.details); // Raw response from API
   } else if (isTimeoutError(error)) {
-    console.error("The request timed out before the API answered");
+    console.error("Timed out. The server may still have processed it.");
   } else {
     console.error("==>", error); // Another type of error, not recognized by API client
   }

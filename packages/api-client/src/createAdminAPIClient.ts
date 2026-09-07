@@ -160,6 +160,8 @@ export function createAdminAPIClient<
         await ofetch("/oauth/token", {
           baseURL: params.baseURL,
           method: "POST",
+          signal: options.signal,
+          timeout: options.timeout,
           body,
           headers: defaultHeaders as HeadersInit,
           onResponseError({ response }) {
@@ -249,7 +251,7 @@ export function createAdminAPIClient<
     ) {
       fetchOptions.signal = AbortSignal.any([
         fetchOptions.signal,
-        AbortSignal.timeout(timeout),
+        AbortSignal.timeout(Math.ceil(timeout)),
       ]);
     }
 

@@ -7,9 +7,11 @@ function isNamedTimeoutError(value: unknown): boolean {
 }
 
 /**
- * Whether a request failed because `fetchOptions.timeout` ran out.
- * Such a request never reaches the API, so it rejects with a plain
- * `FetchError` without an HTTP status and carries the timeout as its `cause`.
+ * Whether a request failed because `fetchOptions.timeout` ran out, so the
+ * client did not receive the complete response in time. The rejected error has
+ * no HTTP status and names the timeout itself or in its `cause`. The request
+ * may already have reached the API and been processed, so the server-side
+ * outcome is unknown; do not retry a mutation without checking.
  */
 export function isTimeoutError(error: unknown): boolean {
   return (
