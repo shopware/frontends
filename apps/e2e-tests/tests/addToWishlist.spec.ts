@@ -39,9 +39,7 @@ test.describe.parallel(
       await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
     });
 
-    // vue-starter-template's wishlist page offers no "clear all" action, so
-    // there is nothing for this to drive. Needs the feature, not a selector.
-    // Tracked in #2679.
+    // The starter has no "clear all" action. Needs the feature, see #2679.
     test.skip("Clear whole wishlist", async ({ page }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();

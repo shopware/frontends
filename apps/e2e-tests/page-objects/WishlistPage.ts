@@ -29,10 +29,7 @@ export class WishlistPage {
       .waitFor({ state: "visible" });
   }
 
-  /**
-   * Via the header link, not a goto: /wishlist is ssr:false and gated on the
-   * signed-in state, so a hard navigation renders neither list nor empty state.
-   */
+  /** Via the header link: /wishlist is ssr:false and gated on being signed in. */
   async countEntries() {
     await this.openWishlist();
     return this.page.getByTestId("wishlist-product-box").count();

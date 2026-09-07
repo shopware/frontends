@@ -44,9 +44,8 @@ function listingCriteria(request: {
 }
 
 /**
- * Matched on the path, since /search-suggest is not a listing. With `carrying`,
- * only a request applying that filter resolves, so a query that changed without
- * the search changing fails instead of passing against the previous listing.
+ * Path-matched, since /search-suggest is not a listing. `carrying` requires the
+ * filter to be in the request, so a changed query alone cannot pass.
  */
 function listingRequested(
   page: Page,

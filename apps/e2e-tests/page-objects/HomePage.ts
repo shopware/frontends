@@ -32,9 +32,8 @@ export class HomePage extends AbstractPage {
   async clickOnSignIn() {
     const emailInput = this.page.getByTestId("login-email-input");
 
-    // The header is server rendered, so the button is clickable before Vue has
-    // hydrated it and an early click is dropped without a trace. Retry until
-    // the panel actually opens.
+    // The header is clickable before Vue hydrates it, and an early click is
+    // dropped silently. Retry until the panel opens.
     await expect(async () => {
       if (await emailInput.isVisible()) return;
       await this.signInButton.click({ timeout: 5000 });
@@ -90,9 +89,8 @@ export class HomePage extends AbstractPage {
   }
 
   /**
-   * Template agnostic navigation. The first nav entry is not guaranteed to list
-   * products, so entries are tried in order, by href rather than by click: a
-   * click swaps the URL long before the listing renders.
+   * Entries tried in order by href: not every one lists products, and a click
+   * swaps the URL long before the listing renders.
    */
   async openFirstCategoryPage() {
     const sameTabEntries = this.page.locator(
@@ -157,9 +155,8 @@ export class HomePage extends AbstractPage {
     const form = this.page.getByTestId("registration-form");
     const signUpLink = this.linkToRegistrationPage;
 
-    // The login step renders first, so a single isVisible() probe on the link
-    // races it: a false reading skips the click and then waits out the timeout
-    // on a form that was never opened.
+    // A single isVisible() probe races the login step: a false reading skips
+    // the click, then waits out the timeout on a form never opened.
     await expect(async () => {
       if (await form.isVisible()) return;
       await signUpLink.click({ timeout: 5000 });

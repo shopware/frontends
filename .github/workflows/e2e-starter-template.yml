@@ -62,9 +62,8 @@ jobs:
 
       - name: Start the starter template
         env:
-          # nuxt.config.ts defaults this to the demo store's domain, which the
-          # starter's sales channel rejects with NO_SUCH_CHOICE_ERROR. Template
-          # bug, tracked in #2585.
+          # The template default is the demo store domain, which this sales
+          # channel rejects. Template bug, tracked in #2585.
           NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
           # Records Store API calls made while rendering, which Playwright
           # cannot see. Test only.
@@ -100,8 +99,7 @@ jobs:
         timeout-minutes: 25
         run: |
           cd apps/e2e-tests
-          # pnpm forwards these straight through; a `--` separator swallows them.
-          #
+          # pnpm forwards these straight through; `--` would swallow them.
           # One worker: the specs share a customer and a backend, so parallel
           # workers clobber each other. Measured 5 passing at 4 workers vs 8.
           pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
@@ -134,9 +132,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: playwright-report
-          # Self-contained: the html reporter copies each trace into
-          # playwright-report/data/ and bundles its own viewer, so uploading
-          # playwright.config.ts's outputDir (reports/) would only duplicate it.
+          # Self-contained: the html reporter already bundles traces and viewer.
           path: |
             apps/e2e-tests/playwright-report
             apps/e2e-tests/diagnostics

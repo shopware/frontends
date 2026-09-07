@@ -43,10 +43,7 @@ export class MyAccountPage {
     this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }
 
-  /**
-   * Some templates gate the profile form behind an edit button; others render
-   * it directly on the profile page. Go to the form either way.
-   */
+  /** Some templates gate the form behind an edit button; others do not. */
   async changePersonalData() {
     if ((await this.accountChangeProfileButton.count()) > 0) {
       await this.accountChangeProfileButton.click();

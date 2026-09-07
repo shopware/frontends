@@ -22,9 +22,7 @@ const browserOk = existsSync(ATTEMPTS)
   ? readFileSync(ATTEMPTS, "utf8").split("\n").filter(Boolean).length
   : 0;
 
-// SSR side, from the fetch wrapper loaded into the storefront's own process.
-// Without it, calls made while rendering are invisible, and those are the ones
-// that turn into a 500 page.
+// SSR side. Without it, calls made while rendering are invisible.
 const ssr = readJsonl(SSR_LOG);
 const ssrOk = ssr.filter((entry) => entry.kind === "store-api-ok").length;
 
@@ -57,19 +55,16 @@ const throttled = entries.filter(
 );
 
 const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
-// A 4xx is the backend answering, not the connection failing. Counting those
-// as failures would inflate the number that matters, and some are expected:
-// /customer/wishlist 404s by design for a customer without one.
+// A 4xx is the backend answering, not the connection failing. Some are
+// expected: /customer/wishlist 404s by design.
 const answered = entries.filter((entry) =>
   String(entry.kind).startsWith("store-api-4"),
 );
 const transport = entries.filter(
   (entry) => !String(entry.kind).startsWith("store-api-4"),
 );
-// Two kinds of failure are ours, not the backend's, and both would inflate the
-// number if counted: ERR_ABORTED is the client cancelling in flight, and
-// anything after the test body has finished is Playwright closing the context
-// on requests still in flight.
+// Ours, not the backend's: ERR_ABORTED is our own cancel, and anything after
+// the test body is Playwright closing the context.
 const aborted = transport.filter(
   (entry) => entry.failure === "net::ERR_ABORTED" || entry.duringTeardown,
 );

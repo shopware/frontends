@@ -46,10 +46,7 @@ const config: PlaywrightTestConfig = {
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    // Bounded. Calls to the shared demo backend occasionally stall and never
-    // return; unlimited meant one stalled wait consumed the whole test budget
-    // (85s of a 90s test) instead of failing fast and letting the retry, which
-    // typically succeeds in under 10s, start straight away.
+    // Bounded: unlimited let one stalled call eat 85s of a 90s test budget.
     actionTimeout: 45 * 1000,
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://localhost:3000',

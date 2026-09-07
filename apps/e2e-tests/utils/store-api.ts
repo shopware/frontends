@@ -2,10 +2,7 @@ import type { Page } from "@playwright/test";
 
 export type StoreApi = { endpoint: string; accessKey: string };
 
-/**
- * Learns the endpoint and sales channel key from the storefront's own traffic,
- * so a test can call the API without duplicating template config.
- */
+/** Learns endpoint and access key from traffic, so config is not duplicated. */
 export function captureStoreApi(page: Page) {
   const captured: { value?: StoreApi } = {};
 

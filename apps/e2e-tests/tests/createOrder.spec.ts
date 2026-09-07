@@ -97,10 +97,8 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
 
-    // A guest cannot sign in, so a successful login is what proves a real
-    // account was created with the password entered at checkout. Done over the
-    // API: a second pass through the UI doubles the exposure to slow renders
-    // without testing anything the checkout did not already cover.
+    // A guest cannot sign in, so this proves a real account. Over the API: a
+    // second pass through the UI only adds exposure to slow renders.
     expect(storeApi.value, "no store-api traffic seen").toBeDefined();
     const signIn = await request.post(
       `${storeApi.value?.endpoint}/account/login`,
