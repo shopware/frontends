@@ -58,6 +58,27 @@ describe("useNavigationSearch", () => {
       }),
     );
   });
+  it("should map headless sales channel route names to storefront route names", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        elements: [
+          {
+            ...mockedResponse,
+            routeName: "store-api.product.detail",
+            pathInfo: "/store-api/product/e05e9340aff4484f9009646dfd572df9",
+          },
+        ],
+      },
+    });
+
+    await expect(
+      vm.resolvePath("/Fred-3-Burner-Gas-Grill/941044"),
+    ).resolves.toMatchObject({
+      routeName: "frontend.detail.page",
+      foreignKey: "e05e9340aff4484f9009646dfd572df9",
+    });
+  });
   it("should resolve technical url", async () => {
     const { vm, injections } = useSetup(useNavigationSearch);
     injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });

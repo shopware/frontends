@@ -1,5 +1,6 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import {
+  getFrontendRouteName,
   getRouteFromPathInfo,
   isTechnicalPath,
   normalizePath,
@@ -63,7 +64,13 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
 
     const element = seoResult.data.elements?.[0];
     if (element) {
-      return element;
+      // headless (API type) sales channels persist SEO URLs against the
+      // store-api.* route family - map them to the frontend.* names the
+      // page resolvers work with
+      return {
+        ...element,
+        routeName: getFrontendRouteName(element.routeName),
+      } as Schemas["SeoUrl"];
     }
 
     const fallback = getRouteFromPathInfo(path);
