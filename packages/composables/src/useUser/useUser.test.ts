@@ -92,6 +92,8 @@ describe("useUser", () => {
       }),
     );
     expect(result).toEqual(registeredCustomer);
+    expect(refreshSessionContextSpy).toHaveBeenCalled();
+    expect(refreshCartSpy).toHaveBeenCalled();
   });
 
   it("register function with refresh", async () => {

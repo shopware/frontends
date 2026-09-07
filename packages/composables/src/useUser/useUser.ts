@@ -193,6 +193,7 @@ export function useUser(): UseUserReturn {
       _user.value = data;
     }
     await refreshSessionContext();
+    refreshCart();
     return data;
   }
 

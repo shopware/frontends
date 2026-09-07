@@ -28,7 +28,8 @@
       "passwordLabel": "Passwort",
       "createAccountToggleLabel": "Kundenkonto erstellen"
     },
-    "saveAddressButton": "Weiter",
+    "guestRegistrationButton": "Weiter",
+    "registeringGuest": "Daten werden gespeichert…",
     "success": {
       "header": "Wir haben Ihre Bestellung #{0} erhalten und werden sie so schnell wie möglich verarbeiten.",
       "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",
