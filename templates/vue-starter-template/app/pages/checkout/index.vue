@@ -81,7 +81,7 @@ async function handlePlaceOrder() {
   try {
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
-    refreshCart();
+    await refreshCart();
   } catch (error) {
     handlePlaceOrderError(error, persistentError);
     restoreFocus(trigger);

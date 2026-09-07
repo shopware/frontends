@@ -96,6 +96,28 @@ describe("useUser", () => {
     expect(refreshCartSpy).toHaveBeenCalled();
   });
 
+  it("register does not resolve before the cart refresh completes", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { id: "reg-2", email: "test@test.testwwww" },
+    });
+
+    let cartRefreshCompleted = false;
+    refreshCartSpy.mockImplementationOnce(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            cartRefreshCompleted = true;
+            resolve(undefined);
+          }, 0),
+        ),
+    );
+
+    await vm.register(REGISTRATION_DATA);
+
+    expect(cartRefreshCompleted).toBe(true);
+  });
+
   it("register function with refresh", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({
