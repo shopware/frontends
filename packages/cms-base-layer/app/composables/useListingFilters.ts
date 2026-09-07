@@ -188,6 +188,7 @@ export function useListingFilters(isProductSearch: boolean) {
 
   return {
     currentSortingOrder,
+    getCurrentSortingOrder,
     executeSearch,
     getSortingOrders,
     handleFilterChange,

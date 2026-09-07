@@ -35,6 +35,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const {
   currentSortingOrder,
+  getCurrentSortingOrder,
   getSortingOrders,
   handleFilterChange,
   handleRemoveFilterChip,
