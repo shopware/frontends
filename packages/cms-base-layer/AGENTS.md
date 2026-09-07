@@ -1,532 +1,63 @@
-# AI Agent Guide for @shopware/cms-base-layer
-
-This document provides guidance for AI assistants working with the `@shopware/cms-base-layer` package.
-
-## TL;DR
-
-**What**: Nuxt layer providing Vue components for Shopware 6 Shopping Experiences (CMS)
-**Purpose**: Pre-built, customizable CMS components
-**Tech**: Vue 3, Nuxt 4, @shopware/composables, @shopware/helpers
-
-**Key Concepts**:
-
-- CMS Page → Sections → Blocks → Elements (hierarchical structure)
-- Components auto-registered globally via Nuxt layer
-- Customizable via app.config.ts and component overriding
-
-**Quick Start**:
-
-```bash
-pnpm run test       # Run tests
-pnpm run typecheck  # Type check
-pnpm run lint       # Lint and format check
-```
-
-This package is a Nuxt layer. It ships its sources as-is and has no build step.
-
-## Package Overview
-
-The `@shopware/cms-base-layer` is a Nuxt layer that provides a complete implementation of Shopware's Shopping Experiences CMS system. It renders CMS pages created in Shopware Administration using Vue components.
-
-## Architecture
-
-### CMS Hierarchy
-
-Shopware CMS follows a strict hierarchical structure:
-
-```
-CmsPage
-├── CmsSection (layout container)
-│   ├── CmsBlock (content grouping)
-│   │   ├── CmsElement (actual content)
-│   │   └── CmsElement
-│   └── CmsBlock
-└── CmsSection
-```
-
-### Component Naming Convention
-
-Components follow a predictable naming pattern based on the CMS structure:
-
-| Level   | Pattern            | Example                                          |
-| ------- | ------------------ | ------------------------------------------------ |
-| Page    | `CmsPage`          | `CmsPage.vue`                                    |
-| Section | `CmsSection{Type}` | `CmsSectionDefault.vue`, `CmsSectionSidebar.vue` |
-| Block   | `CmsBlock{Type}`   | `CmsBlockImage.vue`, `CmsBlockText.vue`          |
-| Element | `CmsElement{Type}` | `CmsElementImage.vue`, `CmsElementText.vue`      |
-
-## Directory Structure
-
-```
-cms-base-layer/
-├── app/
-│   ├── app.config.ts              # Default app configuration
-│   ├── assets/                    # Static assets (icons, images)
-│   ├── components/
-│   │   ├── Sw*.vue               # Shared components (SwProductCard, etc.)
-│   │   ├── listing-filters/      # Product listing filter components
-│   │   ├── public/
-│   │   │   └── cms/              # CMS components (auto-registered)
-│   │   │       ├── CmsPage.vue
-│   │   │       ├── CmsGenericBlock.vue
-│   │   │       ├── CmsGenericElement.vue
-│   │   │       ├── block/        # Block components
-│   │   │       ├── element/      # Element components
-│   │   │       ├── section/      # Section components
-│   │   │       └── skeleton/     # Loading skeleton components
-│   │   └── ui/                   # Base UI components (prefixed with Sw)
-│   ├── composables/              # Layer-specific composables
-│   │   └── useLcpImagePreload.ts # LCP image preload via <link rel="preload">
-│   ├── helpers/                  # Utility functions
-│   │   └── cms/getImageSizes.ts  # Slot count → responsive sizes mapping
-│   ├── providers/                # Image providers (Shopware)
-│   └── utils/                    # Listing filter and route query helpers
-├── types/                        # Local #imports / #shopware shims (not published)
-├── index.d.ts                    # App config type augmentation
-├── nuxt.config.ts                # Layer configuration
-└── package.json
-```
-
-## Key Files
-
-### Entry Points
-
-- [nuxt.config.ts](nuxt.config.ts) - Layer configuration, component registration, image presets
-- [app/app.config.ts](app/app.config.ts) - Runtime configuration defaults
-
-### Core CMS Components
-
-- [app/components/public/cms/CmsPage.vue](app/components/public/cms/CmsPage.vue) - Main entry point for rendering CMS pages
-- [app/components/public/cms/CmsGenericBlock.vue](app/components/public/cms/CmsGenericBlock.vue) - Generic block renderer (provides responsive image sizes via inject)
-- [app/components/public/cms/CmsGenericElement.vue](app/components/public/cms/CmsGenericElement.vue) - Generic element renderer
-- [app/composables/useLcpImagePreload.ts](app/composables/useLcpImagePreload.ts) - Preloads LCP image during SSR
-- [app/helpers/cms/getImageSizes.ts](app/helpers/cms/getImageSizes.ts) - Maps block slot count to responsive `sizes` attribute
-
-### Sections (Layout)
-
-| Component           | Purpose                     |
-| ------------------- | --------------------------- |
-| `CmsSectionDefault` | Full-width section          |
-| `CmsSectionSidebar` | Section with sidebar layout |
-
-### Common Blocks
-
-| Component                    | Purpose                                               |
-| ---------------------------- | ----------------------------------------------------- |
-| `CmsBlockImage`              | Single image display                                  |
-| `CmsBlockText`               | Text content                                          |
-| `CmsBlockImageText`          | Image with text side-by-side                          |
-| `CmsBlockProductListing`     | Product grid/list                                     |
-| `CmsBlockProductSlider`      | Product carousel                                      |
-| `CmsBlockImageSlider`        | Image carousel                                        |
-| `CmsBlockImageGallery`       | Image gallery grid                                    |
-| `CmsBlockForm`               | Contact/newsletter forms                              |
-| `CmsBlockCategoryNavigation` | Category tree navigation                              |
-| `CmsBlockSpatialViewer`      | 3D model viewer (GLB) — dynamically imports SwMedia3D |
-
-### Common Elements
-
-| Component                  | Purpose                            |
-| -------------------------- | ---------------------------------- |
-| `CmsElementImage`          | Image with various display options |
-| `CmsElementText`           | Rich text content                  |
-| `CmsElementProductListing` | Product listing with filters       |
-| `CmsElementProductSlider`  | Product carousel                   |
-| `CmsElementBuyBox`         | Add to cart functionality          |
-| `CmsElementImageGallery`   | Product image gallery              |
-| `CmsElementForm`           | Form rendering                     |
-
-### Shared Components (Sw\* prefix)
-
-These are reusable components used across CMS and templates:
-
-| Component                           | Purpose                     |
-| ----------------------------------- | --------------------------- |
-| `SwProductCard`                     | Product card for listings   |
-| `SwProductGallery`                  | Product image gallery       |
-| `SwProductAddToCart`                | Add to cart button/quantity |
-| `SwVariantConfigurator`             | Product variant selection   |
-| `SwPagination`                      | Page navigation             |
-| `SwSlider`                          | Generic slider/carousel     |
-| `SwProductListingFilters`           | Filter sidebar              |
-| `SwProductListingFiltersHorizontal` | Horizontal filter bar       |
-
-### Listing Filters
-
-`SwProductListingFilter` picks a filter component from the filter `code`. The components live in
-`app/components/listing-filters/`:
-
-| Filter `code`   | Component              | Purpose              |
-| --------------- | ---------------------- | -------------------- |
-| `categories`    | `SwFilterCategories`   | Category tree facet  |
-| `price`         | `SwFilterPrice`        | Min/max price range  |
-| `rating`        | `SwFilterRating`       | Minimum star rating  |
-| `shipping-free` | `SwFilterShippingFree` | Free shipping toggle |
-| `manufacturer`  | `SwFilterProperties`   | Manufacturer list    |
-
-Any other filter that exposes `options` falls back to `SwFilterProperties`. State is shared through
-`app/utils/useSelectedListingFilters.ts`, and `app/utils/routeQuery.ts` maps the selection to and
-from the URL query.
-
-### On-demand Components (not auto-imported)
-
-| Component   | Purpose                                       |
-| ----------- | --------------------------------------------- |
-| `SwMedia3D` | Renders 3D models (GLB) using TresJS/Three.js |
-
-`SwMedia3D` is **excluded from Nuxt auto-import** to avoid bundling heavy 3D libraries in the initial bundle. It is dynamically imported via `defineAsyncComponent` by `CmsElementImage`, `CmsElementImageGallery`, and `CmsBlockSpatialViewer` when the media has a `.glb` extension. Apps that need 3D support must add `@tresjs/nuxt` to their `nuxt.config.ts` modules.
-
-### UI Components (Sw prefix via ui/)
-
-Base UI components for building interfaces:
-
-- `SwBaseButton` - Button component
-- `SwBaseIcon` - Icon wrapper
-- `SwCheckbox` - Checkbox input
-- `SwRadioButton` - Radio input
-- `SwSwitchButton` - Toggle switch
-- `SwIconButton` - Icon-only button
-
-## Usage in Projects
-
-### Basic Setup
-
-Register the layer in your Nuxt config:
-
-```typescript
-// nuxt.config.ts
-export default defineNuxtConfig({
-  extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
-});
-```
-
-### Rendering CMS Content
-
-```vue
-<template>
-  <!-- Pass CMS page data from category, product, or landing page response -->
-  <CmsPage v-if="cmsPage" :content="cmsPage" />
-</template>
-```
-
-### Template Examples
-
-> **Note**: These paths reference templates within the monorepo structure.
-
-#### vue-starter-template
-
-The [vue-starter-template](../../templates/vue-starter-template/) demonstrates full cms-base-layer integration:
-
-```typescript
-// templates/vue-starter-template/nuxt.config.ts
-export default defineNuxtConfig({
-  extends: [
-    "@shopware/composables/nuxt-layer",
-    "@shopware/cms-base-layer",
-    "@shopware/unocss-design-tokens-layer",
-  ],
-  // ...configuration
-});
-```
-
-Key features:
-
-- Uses cms-base-layer for all CMS rendering
-- SEO page resolvers live in `app/components/global/` (`Frontend*`, Nuxt global for `resolveComponent`)
-- Template CMS overrides go in `app/components/cms/` (also global)
-- Adds custom page components (checkout, account, etc.) under normal auto-import dirs
-- Configures app.config.ts for brand customization
-- Adds i18n support
-
-#### vue-starter-template-extended
-
-The [vue-starter-template-extended](../../templates/vue-starter-template-extended/) shows how to extend and customize:
-
-```typescript
-// templates/vue-starter-template-extended/nuxt.config.ts
-export default defineNuxtConfig({
-  extends: ["../vue-starter-template"], // Inherits cms-base-layer
-  // ...minimal customizations
-});
-```
-
-Key features:
-
-- Extends vue-starter-template (layer inheritance)
-- Overrides `app.config.ts` for brand-specific settings
-- Demonstrates component overriding pattern
-
-## Customization
-
-### App Configuration
-
-Override defaults via `app.config.ts`:
-
-```typescript
-// your-project/app/app.config.ts
-export default defineAppConfig({
-  // Customize image placeholder color
-  imagePlaceholder: {
-    color: "#B38A65", // Your brand color
-  },
-});
-```
-
-Available configuration:
-
-- `imagePlaceholder.color` - SVG placeholder background color (default: `"#543B95"`)
-- `backgroundImage.format` - Output format for CMS background images (default: `"webp"`). Appended as `&format=` to background image URLs. Accepts `"webp"`, `"avif"`, `"jpg"`, `"png"`.
-- `backgroundImage.quality` - Image quality for CMS background images (default: `90`). Appended as `&quality=` to background image URLs. Accepts `0`-`100`.
-- `lcpImagePreload` - Preload the first CMS image during SSR via `<link rel="preload">` (default: `false`). See `useLcpImagePreload`.
-- `imageSizes` - Maps CMS block slot count to responsive `sizes` attribute values. Used by `CmsGenericBlock` via provide/inject to give `CmsElementImage` sizing hints. See [Responsive CMS Images](#responsive-cms-images) in README.
-- `unocssRuntime` - Enable the UnoCSS runtime in the browser (default: `true`)
-
-### Component Overriding
-
-Override any CMS component by creating a component with the same name in your project:
-
-```
-your-project/
-  app/
-    components/
-      cms/
-        element/
-          CmsElementImage.vue    # Overrides cms-base-layer's CmsElementImage
-      SwProductCard.vue          # Overrides SwProductCard
-```
-
-Nuxt's component priority system ensures your components take precedence.
-
-### Adding Custom CMS Blocks
-
-For custom Shopware CMS blocks, create matching components:
-
-```vue
-<!-- app/components/cms/block/CmsBlockMyCustomBlock.vue -->
-<script setup lang="ts">
-import type { CmsBlock } from "@shopware/composables";
-
-defineProps<{
-  content: CmsBlock;
-}>();
-</script>
-
-<template>
-  <div class="my-custom-block">
-    <CmsGenericElement
-      v-for="slot in ['left', 'right']"
-      :key="slot"
-      :content="content.slots?.find((s) => s.slot === slot)"
-    />
-  </div>
-</template>
-```
-
-## Development
-
-There is no build step. The layer is consumed with `extends`, which resolves
-`nuxt.config.ts`, and the sources are published as-is. To see changes, run one of the
-templates that extends the layer.
-
-### Testing
-
-```bash
-pnpm run test        # Run tests
-pnpm run test:watch  # Watch mode
-```
-
-### Type Checking
-
-```bash
-pnpm run typecheck
-```
-
-### Linting
-
-```bash
-pnpm run lint        # Check
-pnpm run lint:fix    # Fix
-```
-
-## Image Handling
-
-The layer includes a custom Shopware image provider for `@nuxt/image`:
-
-```vue
-<NuxtImg
-  provider="shopware"
-  :src="product.cover?.media?.url"
-  preset="productCard"
-/>
-```
-
-Available presets (defined in [nuxt.config.ts](nuxt.config.ts)):
-
-- `productCard` - Optimized for product cards
-- `productDetail` - High quality for detail pages
-- `thumbnail` - Small thumbnails (150x150)
-- `hero` - Hero/banner images
-
-### Background Image Optimization
-
-CMS sections and blocks with `backgroundMedia` are automatically optimized. `CmsPage` and `CmsGenericBlock` read `format` and `quality` from `app.config.ts` and pass them to `getBackgroundImageUrl()` from `@shopware/helpers`:
-
-```typescript
-// app.config.ts defaults
-export default defineAppConfig({
-  backgroundImage: {
-    format: "webp", // appended as &format=webp
-    quality: 90, // appended as &quality=90
-  },
-});
-```
-
-The helper generates URLs like:
-
-```
-url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=webp&quality=85")
-```
-
-Set `format` or `quality` to `undefined` to omit that parameter. Requires remote thumbnail generation support (built-in on Shopware Cloud, plugin-based on self-hosted).
-
-## Responsive Image Architecture
-
-### Product Card Images (`SwProductCardImage`)
-
-The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` must stay on the component — NuxtImg presets don't propagate these reliably:
-
-```ts
-// nuxt.config.ts
-productCard: {
-  modifiers: { format: "webp", quality: 90, fit: "cover" },
-}
-```
-
-```vue
-<NuxtImg
-  preset="productCard"
-  :src="coverSrcPath"
-  width="400"
-  height="400"
-  densities="1x"
-  loading="lazy"
-/>
-```
-
-- Fixed `width`/`height` (400) avoid hydration mismatches caused by dynamic DOM measurement
-- `densities="1x"` prevents duplicate retina requests
-- `loading="lazy"` defers off-viewport images
-
-> **Note:** Avoid adding `decoding` or `sizes` props on the component — they've caused Vue hydration attribute mismatches with NuxtImg, which trigger duplicate image requests.
-
-### CMS Images (`CmsElementImage`)
-
-CMS images use `useElementSize()` to measure the rendered container and pass the size to NuxtImg via `width`/`height` props:
-
-```vue
-<NuxtImg
-  :width="imageSize"
-  :height="imageSize"
-  :src="imageAttrs.src"
-  loading="lazy"
-/>
-```
-
-- Returns `undefined` during SSR (no image fetched until client measurement)
-- After hydration, `useElementSize()` measures the container and NuxtImg fetches the correctly sized image
-- The size is multiplied by 2 (for retina) and rounded up to the nearest 100px
-
-### Other patterns
-
-1. **`CmsGenericBlock`** counts slots, calls `provide("cms-block-slot-count", slotCount)`
-2. **`useLcpImagePreload`** scans CMS sections for the first image and injects `<link rel="preload" as="image" fetchpriority="high">` during SSR
-
-### Type Declarations
-
-`index.d.ts` augments `nuxt/schema`'s `AppConfig` interface with JSDoc-documented types for all app.config options. This provides IDE autocompletion and type hints when using `useAppConfig()` or `defineAppConfig()` in end projects.
-
-## Common Patterns
-
-### Accessing CMS Data in Elements
-
-```vue
-<script setup lang="ts">
-import type { CmsElementImage } from "@shopware/composables";
-
-const props = defineProps<{
-  content: CmsElementImage;
-}>();
-
-// Access element configuration
-const config = computed(() => props.content.config);
-const media = computed(() => props.content.data?.media);
-</script>
-```
-
-### Using Composables
-
-```vue
-<script setup lang="ts">
-import { useCmsElementConfig } from "@shopware/composables";
-
-const props = defineProps<{ content: CmsElement }>();
-
-// Get typed configuration
-const { getConfigValue } = useCmsElementConfig(props.content);
-const displayMode = getConfigValue("displayMode");
-</script>
-```
-
-### Product Listing Context
-
-The `CmsPage` component automatically creates listing context for category pages:
-
-```vue
-<script setup lang="ts">
-// In any child component of CmsPage
-const { getCurrentListing } = useCategoryListing();
-const { elements, total } = getCurrentListing();
-</script>
-```
-
-## Troubleshooting
-
-### Components Not Rendering
-
-1. Ensure layer is properly registered in `nuxt.config.ts`
-2. Check component naming matches Shopware CMS type
-3. Verify `@shopware/composables/nuxt-layer` is also extended
-
-### Type Errors
-
-```bash
-# Regenerate types
-pnpm nuxt prepare
-pnpm run typecheck
-```
-
-## File Patterns
-
-- `Cms*.vue` - CMS-specific components (sections, blocks, elements)
-- `Sw*.vue` - Shared/reusable components
-- `*.md` - Component documentation (in same directory)
-- `*.test.ts` - Component tests
-
-## Best Practices
-
-1. **Use semantic component names** - Follow `CmsBlock{Type}`, `CmsElement{Type}` pattern
-2. **Leverage composables** - Use `@shopware/composables` for business logic
-3. **Override, don't modify** - Create overriding components instead of editing source
-4. **Test CMS rendering** - Verify with actual Shopware CMS content
-5. **Document custom blocks** - Add `.md` files for custom components
-
-## References
-
-- [Shopware Frontends Documentation](https://developer.shopware.com/frontends/)
-- [Shopping Experiences Guide](https://developer.shopware.com/frontends/concepts/shopping-experiences.html)
-- [Nuxt Layers](https://nuxt.com/docs/getting-started/layers)
-
----
-
-**Last Updated**: 2026-08-17
-**Package Version**: 3.1.0
+# @shopware/cms-base-layer — agent notes
+
+Nuxt layer implementing Shopware Shopping Experiences (CMS). **No build step** —
+it ships its sources as-is and is consumed with `extends`, so edits are live in
+any template that extends it.
+
+Usage, setup, image optimization, app-config options and component overriding
+are documented in [README.md](README.md) — that is the single source for them,
+do not restate it here. The `app.config.ts` options are typed with JSDoc in
+[index.d.ts](index.d.ts); read those two files rather than a copy of their
+contents.
+
+This file holds only what neither the README nor the code makes obvious.
+
+## Component resolution
+
+CMS content is hierarchical — page → section → block → element — and component
+names follow it exactly: `CmsSection{Type}`, `CmsBlock{Type}`, `CmsElement{Type}`,
+matching the type strings Shopware sends. `CmsGenericBlock`/`CmsGenericElement`
+resolve the name at runtime through `resolveCmsComponent` from
+`@shopware/composables`.
+
+**An unimplemented element renders differently per environment.** When the name
+does not resolve, dev mode logs a warning naming the exact component file to
+create and renders the `CmsNoComponent` placeholder — but production renders an
+empty `<div>` with no warning at all. So CMS content that silently disappears in
+production, while looking fine locally, is a name that does not match the CMS
+type. Check the dev console before hunting for a data problem.
+
+CMS components must stay globally registered for `resolveComponent` to find
+them, and overrides must live at the matching path in the consuming project.
+The registration rules and the `global: true` double-registration trap are in
+the root [AGENTS.md](../../AGENTS.md#nuxt-component-registration-templates).
+
+## Listing filters
+
+`SwProductListingFilter` dispatches on the filter's `code`, not on its shape:
+
+| `code`          | Component              |
+| --------------- | ---------------------- |
+| `categories`    | `SwFilterCategories`   |
+| `price`         | `SwFilterPrice`        |
+| `rating`        | `SwFilterRating`       |
+| `shipping-free` | `SwFilterShippingFree` |
+| `manufacturer`  | `SwFilterProperties`   |
+
+Any other filter exposing `options` falls back to `SwFilterProperties` — that
+fallback is why new backend filters often "just work". Selection state is shared
+through `app/utils/useSelectedListingFilters.ts`, and `app/utils/routeQuery.ts`
+maps it to and from the URL query. Change one without the other and the UI and
+the URL drift apart.
+
+## Heavy components
+
+`SwMedia3D` (TresJS/Three.js) is deliberately excluded from auto-import so the
+3D stack stays out of the initial bundle. It is loaded with
+`defineAsyncComponent` for `.glb` media by `CmsElementImage`,
+`CmsElementImageGallery` and `CmsBlockSpatialViewer`. Consuming apps must add
+`@tresjs/nuxt` to their modules themselves.
+
+Image pitfalls that will silently double your requests (NuxtImg `decoding`/
+`sizes`, preset props that don't propagate) are in the root
+[AGENTS.md](../../AGENTS.md#images-cms-base-layer).

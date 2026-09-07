@@ -37,3 +37,15 @@ In order to keep track of the changes inside project we do use `changesets` pack
 
 We're using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to keep our commit messages consistent. However to avoid having too much noise, we're squashing all commits into one when merging PRs.
 That's why the PR title is the commit message for the whole PR. Please make sure to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format when creating a PR title. We do have a GitHub Action that will check if the PR title is valid.
+
+## Agent instruction files
+
+`AGENTS.md` (root and per-package) is what AI coding agents read at the start of
+a session, and the root `CLAUDE.md` imports it so Claude Code loads the same
+file. Because they are loaded into context every session, **keep each one under
+200 lines** — past that they cost more context and get followed less.
+
+Update them when a change makes them wrong, and keep them limited to what an
+agent cannot derive by reading the repo: gotchas, rationale and conventions
+that differ from tool defaults. Layouts, dependency lists, standard scripts and
+component inventories belong in the code or the docs site, not here.
