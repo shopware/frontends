@@ -23,6 +23,10 @@ test.describe("Login user", { tag: "@frontends" }, () => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
     await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("account-menu-hello-button")).toHaveCount(1);
+    await expect(
+      page.locator(
+        '[data-testid="header-account-button"][data-logged-in="true"]',
+      ),
+    ).toHaveCount(1);
   });
 });

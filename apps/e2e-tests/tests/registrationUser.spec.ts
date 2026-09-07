@@ -34,7 +34,11 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
     await registrationPage.submitRegistrationForm();
     // Registration signs the customer in, so the header account control
     // switches to its logged-in role.
-    await expect(page.getByTestId("account-menu-hello-button")).toBeVisible();
+    await expect(
+      page.locator(
+        '[data-testid="header-account-button"][data-logged-in="true"]',
+      ),
+    ).toBeVisible();
   });
 
   test("Registration new user company", async ({ page }) => {
@@ -58,6 +62,10 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
     await registrationPage.submitRegistrationForm();
     // Registration signs the customer in, so the header account control
     // switches to its logged-in role.
-    await expect(page.getByTestId("account-menu-hello-button")).toBeVisible();
+    await expect(
+      page.locator(
+        '[data-testid="header-account-button"][data-logged-in="true"]',
+      ),
+    ).toBeVisible();
   });
 });

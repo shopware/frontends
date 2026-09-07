@@ -5,20 +5,22 @@ import { LoginForm } from "./LoginPage";
 
 export class HomePage extends AbstractPage {
   //readonly page: Page
-  readonly signInButton: Locator;
+  readonly accountButton: Locator;
   readonly linkToRegistrationPage: Locator;
   readonly searchBar: Locator;
   readonly wishlistButton: Locator;
-  readonly accountMenuHelloButton: Locator;
+  readonly signedIn: Locator;
   readonly myAccountLink: Locator;
   readonly suggestResultLink: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.signInButton = page.getByTestId("header-sign-in-link");
+    this.accountButton = page.getByTestId("header-account-button");
     this.searchBar = page.getByTestId("header-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-button");
-    this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
+    this.signedIn = page.locator(
+      '[data-testid="header-account-button"][data-logged-in="true"]',
+    );
     this.myAccountLink = page.getByTestId("header-my-account-link");
     this.suggestResultLink = page.getByTestId(
       "layout-search-result-box-more-link",
@@ -36,7 +38,7 @@ export class HomePage extends AbstractPage {
     // dropped silently. Retry until the panel opens.
     await expect(async () => {
       if (await emailInput.isVisible()) return;
-      await this.signInButton.click({ timeout: 5000 });
+      await this.accountButton.click({ timeout: 5000 });
       await emailInput.waitFor({ state: "visible", timeout: 5000 });
     }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
   }
@@ -46,7 +48,7 @@ export class HomePage extends AbstractPage {
     if (!this.page.url().startsWith("http")) await this.visitMainPage();
     await this.clickOnSignIn();
     await new LoginForm(this.page).login(email, password);
-    await this.accountMenuHelloButton.waitFor({ state: "visible" });
+    await this.signedIn.waitFor({ state: "visible" });
   }
 
   async openCartPage() {
@@ -228,8 +230,8 @@ export class HomePage extends AbstractPage {
   }
 
   async openMyAccount() {
-    await this.accountMenuHelloButton.waitFor();
-    await this.accountMenuHelloButton.dispatchEvent("click");
+    await this.signedIn.waitFor();
+    await this.signedIn.dispatchEvent("click");
     await this.myAccountLink.waitFor();
     await this.myAccountLink.dispatchEvent("click");
     await this.page.waitForURL("**/account");

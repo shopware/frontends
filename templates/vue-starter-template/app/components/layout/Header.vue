@@ -72,11 +72,8 @@ watch(
             <div class="relative">
               <FormIconButton
                 type="ghost"
-                :data-testid="
-                  isLoggedIn
-                    ? 'account-menu-hello-button'
-                    : 'header-sign-in-link'
-                "
+                data-testid="header-account-button"
+                :data-logged-in="isLoggedIn"
                 @click="handleMyAccountClick"
                 :aria-label="$t('layout.header.myAccount')"
               >
