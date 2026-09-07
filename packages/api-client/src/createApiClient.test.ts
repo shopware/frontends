@@ -13,7 +13,9 @@ import type { Listener } from "listhen";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 import type { operations } from "../api-types/storeApiTypes";
+import { ApiClientError } from "./ApiError";
 import { createAPIClient } from "./createAPIClient";
+import { isTimeoutError } from "./isTimeoutError";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -705,6 +707,136 @@ describe("createAPIClient", () => {
       ).rejects.toThrowErrorMatchingInlineSnapshot(
         `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
+    });
+
+    it("should abort through the client timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testSignalAndTimeout get /slow-endpoint", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught as Error & { status?: number });
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+      expect(error).not.toBeInstanceOf(ApiClientError);
+    });
+
+    it("should abort through a per-request timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testSignalAndRequestTimeout get /slow-endpoint", {
+          fetchOptions: { signal: new AbortController().signal, timeout: 50 },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
+
+    it("should let a per-request signal abort while a client timeout is configured", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 5000 },
+        baseURL,
+      });
+
+      const controller = new AbortController();
+      const request = client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testSignalAborts get /slow-endpoint",
+        { fetchOptions: { signal: controller.signal } },
+      );
+      controller.abort();
+
+      const error = await request.catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(false);
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).message).toMatch(/aborted/i);
+    });
+
+    it("should keep the caller's signal alone where AbortSignal.any is missing", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const combine = AbortSignal.any;
+      Object.defineProperty(AbortSignal, "any", {
+        value: undefined,
+        configurable: true,
+        writable: true,
+      });
+      try {
+        const response = await client.invoke(
+          // @ts-expect-error this endpoint does not exist
+          "testWithoutAbortSignalAny get /slow-endpoint",
+          { fetchOptions: { signal: new AbortController().signal } },
+        );
+
+        expect(response).toEqual({
+          data: { message: "Request succeeded" },
+          status: 200,
+        });
+      } finally {
+        Object.defineProperty(AbortSignal, "any", {
+          value: combine,
+          configurable: true,
+          writable: true,
+        });
+      }
     });
   });
 

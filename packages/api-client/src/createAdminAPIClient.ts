@@ -127,6 +127,7 @@ export function createAdminAPIClient<
     }
   }
 
+  const clientTimeout = params.fetchOptions?.timeout;
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     ...params.fetchOptions,
@@ -239,6 +240,18 @@ export function createAdminAPIClient<
     const fetchOptions: FetchOptions<"json"> = {
       ...(currentParams.fetchOptions || {}),
     };
+
+    const timeout = fetchOptions.timeout ?? clientTimeout;
+    if (
+      fetchOptions.signal &&
+      timeout &&
+      typeof AbortSignal.any === "function"
+    ) {
+      fetchOptions.signal = AbortSignal.any([
+        fetchOptions.signal,
+        AbortSignal.timeout(timeout),
+      ]);
+    }
 
     const mergedHeaders = resolveRequestHeaders(
       currentParams.headers,

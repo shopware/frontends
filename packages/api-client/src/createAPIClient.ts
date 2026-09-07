@@ -154,6 +154,7 @@ export function createAPIClient<
   }
 
   let apiFetch = createFetchClient(currentBaseURL);
+  const clientTimeout = params.fetchOptions?.timeout;
 
   /**
    * Invoke API request based on provided path definition.
@@ -207,6 +208,18 @@ export function createAPIClient<
     const fetchOptions: FetchOptions<"json"> = {
       ...(currentParams.fetchOptions || {}),
     };
+
+    const timeout = fetchOptions.timeout ?? clientTimeout;
+    if (
+      fetchOptions.signal &&
+      timeout &&
+      typeof AbortSignal.any === "function"
+    ) {
+      fetchOptions.signal = AbortSignal.any([
+        fetchOptions.signal,
+        AbortSignal.timeout(timeout),
+      ]);
+    }
 
     const mergedHeaders = resolveRequestHeaders(
       currentParams.headers,

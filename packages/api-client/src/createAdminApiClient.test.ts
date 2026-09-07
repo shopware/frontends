@@ -13,6 +13,7 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 
 import { createAdminAPIClient } from ".";
 import type { components, operations } from "../api-types/adminApiTypes";
+import { isTimeoutError } from "./isTimeoutError";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -723,6 +724,65 @@ describe("createAdminAPIClient", () => {
       ).rejects.toThrowErrorMatchingInlineSnapshot(
         `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
+    });
+
+    it("should abort through the client timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/order",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        .invoke("getOrderList get /order", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
+
+    it("should abort through a per-request timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/order",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        baseURL,
+      });
+
+      const error = await client
+        .invoke("getOrderList get /order", {
+          fetchOptions: { signal: new AbortController().signal, timeout: 50 },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
     });
   });
 
