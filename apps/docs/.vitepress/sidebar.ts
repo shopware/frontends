@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Cross-Selling and Associations",
+            link: "/frontends-recipes/catalog/cross-selling.html",
+          },
+        ],
+      },
     ],
   },
   {

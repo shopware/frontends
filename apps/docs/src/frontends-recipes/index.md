@@ -13,3 +13,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## Account
 
 <PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, registration, account state, and the customer wishlist." />
+
+## Catalog
+
+<PageRef page="catalog/" title="Catalog" sub="Product catalogue flows such as listings and filters, search and suggest, variant selection, price and tax state, product reviews, and cross-selling." />
