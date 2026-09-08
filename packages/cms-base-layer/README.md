@@ -390,7 +390,7 @@ Images are optimized to prevent the browser from downloading images larger than 
 
 ### Product Card Images (`SwProductCardImage`)
 
-The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` stay on the component — NuxtImg presets don't propagate these reliably:
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height` and `loading` stay on the component: in `@nuxt/image` 2.1.0 a preset carries `width`/`height` only as `modifiers`, which shape the URL rather than the rendered attributes, and `loading` is not a preset field at all. `densities` is kept alongside them for consistency, though a preset would propagate it:
 
 ```ts
 // nuxt.config.ts
@@ -456,7 +456,7 @@ The procedure is:
 
 - find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base-layer.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
 - take its name
-- create a file with the same name and place it into `~/components` dir in your nuxt project (or wherever according your nuxt config)
+- create a file with the same name and place it under a `components` directory that your `nuxt.config.ts` registers with `global: true` — CMS components are looked up with `resolveComponent`, so an override outside a global path is never found and this layer's version keeps rendering with no error. In the starter template that directory is `app/components/cms/`; because it is registered with `pathPrefix: false`, the name comes from the filename alone and subdirectory depth under it does not matter.
 
 ✅ Thanks to this, nuxt will take the component registered in your app instead of the one registered by this nuxt layer.
 
