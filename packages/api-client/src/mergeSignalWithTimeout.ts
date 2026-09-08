@@ -40,7 +40,7 @@ function timeoutError(): Error {
  * ofetch 1.5.1 only arms its own timer when no `signal` is set, which is why a
  * per-request `signal` used to switch the timeout off.
  *
- * TODO: remove this module once the client moves to ofetch 2.0+, which
+ * TODO(#2710): remove this module once the client moves to ofetch 2.0+, which
  * combines `signal` and `timeout` itself - https://github.com/unjs/ofetch/pull/508
  */
 export function mergeSignalWithTimeout(
