@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Prices and Tax State",
+            link: "/frontends-recipes/catalog/pricing.html",
+          },
+        ],
+      },
     ],
   },
   {
