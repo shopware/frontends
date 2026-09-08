@@ -13,3 +13,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## Account
 
 <PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, registration, account state, and the customer wishlist." />
+
+## Context
+
+<PageRef page="context/" title="Context" sub="Sales channel context flows such as reading and patching the session context, switching language and currency, navigation and breadcrumbs, and resolving SEO URLs." />

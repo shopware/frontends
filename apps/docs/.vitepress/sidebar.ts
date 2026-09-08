@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
+          },
+        ],
+      },
     ],
   },
   {
