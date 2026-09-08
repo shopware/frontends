@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Checkout",
+        link: "/frontends-recipes/checkout/",
+        collapsed: true,
+        items: [
+          {
+            text: "Checkout and Order Placement",
+            link: "/frontends-recipes/checkout/checkout.html",
+          },
+        ],
+      },
     ],
   },
   {
