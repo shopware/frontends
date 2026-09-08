@@ -4,6 +4,7 @@ on:
     workflows:
       [
         Code examples,
+        Examples,
         Lighthouse CI,
         Stackblitz templates,
         Audit check,
