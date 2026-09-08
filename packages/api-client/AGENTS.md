@@ -30,9 +30,9 @@ and knowing which one a project uses explains most type errors:
    `WithApiOverrides` in `shopware.d.ts`. Usage is in [README.md](README.md).
 
 **Never hand-edit `api-types/*.d.ts`** — they are generated artifacts.
-`pnpm run generate-types` from the repo root regenerates the **store** types;
-`adminApiTypes.d.ts` comes from this package's separate `generate-admin-types`
-script, which no root script wraps.
+`pnpm generate-types` in this package regenerates the **store** types;
+`adminApiTypes.d.ts` comes from `generate-admin-types`. Other workspaces import
+the result from `@shopware/api-client/store-api-types`.
 
 ## Non-obvious extension points
 
