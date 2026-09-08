@@ -31,5 +31,11 @@ else
   use_full_packages_and_templates
 fi
 
-echo "turbo run $* ${filters[*]}" >&2
-exec pnpm exec turbo run "$@" "${filters[@]}"
+# Run tasks one at a time. `turbo run build typecheck` would schedule a Nuxt
+# app's `nuxt build` and `nuxi typecheck` together; both write `.nuxt/` and
+# race (TS6053: nuxt.node.d.ts not found).
+echo "turbo filters: ${filters[*]}" >&2
+for task in "$@"; do
+  echo "turbo run ${task} ${filters[*]}" >&2
+  pnpm exec turbo run "${task}" "${filters[@]}"
+done
