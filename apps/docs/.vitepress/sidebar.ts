@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Checkout",
+        link: "/frontends-recipes/checkout/",
+        collapsed: true,
+        items: [
+          {
+            text: "Payment Handling and Return Flow",
+            link: "/frontends-recipes/checkout/payment.html",
+          },
+        ],
+      },
     ],
   },
   {
