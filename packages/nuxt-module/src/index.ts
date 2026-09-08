@@ -48,8 +48,8 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       );
     }
     if (
-      resolvedPublicShopwareConfig?.apiClientConfig ||
-      resolvedPrivateShopwareConfig?.apiClientConfig
+      resolvedPublicShopwareConfig?.apiClientConfig?.timeout !== undefined ||
+      resolvedPrivateShopwareConfig?.apiClientConfig?.timeout !== undefined
     ) {
       logger.warn(
         "shopware.apiClientConfig is deprecated and will be removed in the next major. Move timeout to runtimeConfig.apiClientConfig or runtimeConfig.public.apiClientConfig.",
@@ -140,6 +140,13 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
   },
 });
 
+// Shared with plugin.ts, which templates compile without the nuxt/schema augmentation.
+export type ApiClientRuntimeConfig = {
+  headers?: Record<string, string>;
+  /** Milliseconds to wait for response headers. A numeric string is coerced. */
+  timeout?: number | string;
+};
+
 export type ShopwareNuxtOptions = {
   /**
    * Endpoint for your shopware backend.
@@ -152,15 +159,13 @@ export type ShopwareNuxtOptions = {
   shopwareAccessToken?: string;
   devStorefrontUrl?: string;
   /**
-   * Read last, after `runtimeConfig.apiClientConfig` and
-   * `runtimeConfig.public.apiClientConfig`. Only a positive number is used.
+   * Read last. Positive milliseconds, or a numeric string.
    *
-   * @deprecated Configure the API client through `runtimeConfig.apiClientConfig`
-   * or `runtimeConfig.public.apiClientConfig` instead. This compatibility
-   * fallback will be removed in the next major.
+   * @deprecated Use `runtimeConfig.apiClientConfig` or
+   * `runtimeConfig.public.apiClientConfig`. Removed in the next major.
    */
   apiClientConfig?: {
-    timeout?: number;
+    timeout?: number | string;
   };
   /**
    * Use user context in SSR mode. Warning: with wrong edge caching it can cause serving another user's data.

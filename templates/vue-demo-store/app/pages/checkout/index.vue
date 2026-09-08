@@ -220,6 +220,10 @@ const rules = computed(() => ({
 
 const $v = useVuelidate(rules, state);
 
+// Replace with isTimeoutError() from @shopware/api-client once #2702 lands.
+const isTimeoutError = (error: unknown) =>
+  (error as { cause?: { name?: string } })?.cause?.name === "TimeoutError";
+
 const placeOrder = async () => {
   placeOrderTriggered.value = true;
 
@@ -242,6 +246,8 @@ const placeOrder = async () => {
           pushError(errorItem.detail);
         }
       }
+    } else if (isTimeoutError(error)) {
+      pushError(t("errors.order-timeout"));
     } else {
       pushError(t("errors.message-default"));
     }

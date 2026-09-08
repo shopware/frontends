@@ -118,7 +118,7 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 `apiClientConfig.timeout` aborts a Store API request when its response headers do not arrive within the given number of milliseconds. Unset by default.
 
-It guards against a request that hangs before the server answers. Connection failures usually fail fast on their own, so a timeout does not help there. A response that stalls after its headers arrived is not aborted either.
+It guards against a request that hangs before the server answers. The timer starts before the connection is opened, so a DNS lookup, TCP connect or TLS handshake that hangs is aborted too. A response that stalls after its headers arrived is not aborted, because the timer is cleared as soon as the headers land.
 
 ```json
 {
@@ -132,15 +132,15 @@ It guards against a request that hangs before the server answers. Connection fai
 }
 ```
 
-Only a positive number arms it. Anything else counts as unset.
+Only a positive number of milliseconds arms it, and a numeric string is coerced, so `"5000"` works. Leaving it out is silent. Setting it to anything else is ignored and logged once as a warning naming the config path the value came from.
 
-`shopware: { apiClientConfig: { timeout } }` still works as a deprecated fallback, read only when neither `runtimeConfig` path is set. Nuxt warns at build time when it is set. Move it to `runtimeConfig.apiClientConfig`; it goes away in the next major.
+`shopware: { apiClientConfig: { timeout } }` still works as a deprecated fallback, read only when neither `runtimeConfig` path holds a valid value. Nuxt warns at build time when a timeout is set there. Move it to `runtimeConfig.apiClientConfig`; it goes away in the next major.
 
 Once set:
 
 - The error carries no HTTP status. Read `error.cause.name`, which is `TimeoutError`.
 - A timed-out `GET` uses up its one automatic retry without reaching the server again.
-- Your own `signal` on a single call disables the timeout for that call.
+- Your own `signal` on a single call disables the timeout for that call, with the currently pinned ofetch 1.5.1. [#2702](https://github.com/shopware/frontends/pull/2702) changes this to combine the two, so either can abort.
 - `NUXT_API_CLIENT_CONFIG_TIMEOUT` and `NUXT_PUBLIC_API_CLIENT_CONFIG_TIMEOUT` only apply if the key is already in `nuxt.config`.
 
 ## Register custom API types (tailored for your Shopware instance)

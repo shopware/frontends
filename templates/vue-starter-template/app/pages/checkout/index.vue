@@ -39,6 +39,12 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
 const { handleApiError } = useApiErrorsResolver();
+const { pushError } = useNotifications();
+const { t } = useI18n();
+
+// Replace with isTimeoutError() from @shopware/api-client once #2702 lands.
+const isTimeoutError = (error: unknown) =>
+  (error as { cause?: { name?: string } })?.cause?.name === "TimeoutError";
 
 function handleRemoveItem(id: string) {
   removeItemById(id);
@@ -59,7 +65,11 @@ async function handlePlaceOrder() {
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
-    handleApiError(error);
+    if (isTimeoutError(error)) {
+      pushError(t("errors.order-timeout"));
+    } else {
+      handleApiError(error);
+    }
   } finally {
     isPlacingOrder.value = false;
   }

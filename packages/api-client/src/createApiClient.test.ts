@@ -734,7 +734,7 @@ describe("createAPIClient", () => {
       expect((error.cause as Error).name).toBe("TimeoutError");
     });
 
-    it("lets a per-request signal replace the client timeout, so a slow request still resolves", async () => {
+    it("ofetch 1.5.1 only: a per-request signal replaces the client timeout, so a slow request still resolves (deleted by #2702)", async () => {
       const app = createApp().use(
         "/slow-endpoint",
         eventHandler(async () => {
@@ -753,8 +753,6 @@ describe("createAPIClient", () => {
 
       const controller = new AbortController();
 
-      // With the currently resolved fetch implementation, a per-request signal
-      // takes precedence over the client-level timeout.
       const response = await client.invoke(
         // @ts-expect-error this endpoint does not exist
         "testSignalWins get /slow-endpoint",

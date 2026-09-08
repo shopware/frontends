@@ -188,6 +188,17 @@ describe("@shopware/nuxt-module", () => {
     );
   });
 
+  it("does not warn about an apiClientConfig that sets no timeout", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+
+    await setup({ apiClientConfig: {} }, createNuxtMock("/tmp/test-project"));
+
+    expect(loggerMock.warn).not.toHaveBeenCalledWith(
+      expect.stringContaining("apiClientConfig"),
+    );
+  });
+
   it("does not warn about shopware.apiClientConfig when it is unset", async () => {
     existsSyncMock.mockReturnValue(false);
     const setup = await getModuleSetup();

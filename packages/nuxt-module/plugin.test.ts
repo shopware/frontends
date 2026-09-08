@@ -14,6 +14,7 @@ const showErrorMock = vi.fn();
 const useRequestHeadersMock = vi.fn(() => ({}) as Record<string, string>);
 const useStateMock = vi.fn();
 const useRuntimeConfigMock = vi.fn();
+const consoleWarnMock = vi.spyOn(console, "warn").mockImplementation(() => {});
 
 vi.mock("@shopware/api-client", () => ({
   createAPIClient: createAPIClientMock,
@@ -198,7 +199,7 @@ describe("nuxt-module plugin", () => {
         name: "shopware.apiClientConfig wins over public shopware.apiClientConfig",
         config: {
           privateTimeout: 0,
-          publicTimeout: "2000",
+          publicTimeout: "2000ms",
           deprecatedPrivateTimeout: 3000,
           deprecatedPublicTimeout: 4000,
         },
@@ -208,7 +209,7 @@ describe("nuxt-module plugin", () => {
         name: "public shopware.apiClientConfig is read when every source above it is invalid",
         config: {
           privateTimeout: 0,
-          publicTimeout: "2000",
+          publicTimeout: "2000ms",
           deprecatedPrivateTimeout: -1,
           deprecatedPublicTimeout: 4000,
         },
@@ -246,6 +247,7 @@ describe("nuxt-module plugin", () => {
   describe.each([
     {
       name: "runtimeConfig.apiClientConfig",
+      source: "runtimeConfig.apiClientConfig",
       build: (timeout: unknown) => ({
         shopware: { ...SHOPWARE_CONFIG },
         apiClientConfig: { timeout },
@@ -254,6 +256,7 @@ describe("nuxt-module plugin", () => {
     },
     {
       name: "runtimeConfig.public.apiClientConfig",
+      source: "runtimeConfig.public.apiClientConfig",
       build: (timeout: unknown) => ({
         shopware: { ...SHOPWARE_CONFIG },
         public: {
@@ -264,6 +267,7 @@ describe("nuxt-module plugin", () => {
     },
     {
       name: "shopware.apiClientConfig",
+      source: "shopware.apiClientConfig",
       build: (timeout: unknown) => ({
         shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout } },
         public: { shopware: { ...SHOPWARE_CONFIG } },
@@ -271,6 +275,7 @@ describe("nuxt-module plugin", () => {
     },
     {
       name: "public shopware.apiClientConfig",
+      source: "shopware.apiClientConfig",
       build: (timeout: unknown) => ({
         shopware: { ...SHOPWARE_CONFIG },
         public: {
@@ -278,7 +283,7 @@ describe("nuxt-module plugin", () => {
         },
       }),
     },
-  ])("$name as the only source", ({ build }) => {
+  ])("$name as the only source", ({ build, source }) => {
     it("forwards a positive number", async () => {
       useRuntimeConfigMock.mockReturnValue(build(5000));
 
@@ -289,19 +294,46 @@ describe("nuxt-module plugin", () => {
       );
     });
 
+    it.each(["5000", " 5000 "])(
+      "coerces the numeric string %p",
+      async (timeout) => {
+        useRuntimeConfigMock.mockReturnValue(build(timeout));
+
+        await runPlugin(createNuxtAppMock(true));
+
+        expect(createAPIClientMock).toHaveBeenCalledWith(
+          expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+        );
+        expect(consoleWarnMock).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each([undefined, null])(
+      "treats %p as unset without warning",
+      async (timeout) => {
+        useRuntimeConfigMock.mockReturnValue(build(timeout));
+
+        await runPlugin(createNuxtAppMock(true));
+
+        expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
+          "fetchOptions",
+        );
+        expect(consoleWarnMock).not.toHaveBeenCalled();
+      },
+    );
+
     it.each([
       0,
       -1,
-      "5000",
       "abc",
-      null,
+      "5000ms",
       true,
       false,
       ["5"],
       {},
       Number.NaN,
       Number.POSITIVE_INFINITY,
-    ])("treats %p as unset", async (timeout) => {
+    ])("rejects %p and warns naming the source", async (timeout) => {
       useRuntimeConfigMock.mockReturnValue(build(timeout));
 
       await runPlugin(createNuxtAppMock(true));
@@ -309,6 +341,85 @@ describe("nuxt-module plugin", () => {
       expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
         "fetchOptions",
       );
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(`Ignoring ${source}.timeout`),
+      );
+    });
+
+    it("warns once for a repeated bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue(build(0));
+
+      await runPlugin(createNuxtAppMock(true));
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("warning dedupe", () => {
+    const withSources = (privateTimeout: unknown, publicTimeout: unknown) => ({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout: privateTimeout },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: publicTimeout },
+      },
+    });
+
+    it("warns for each source that holds a bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue(withSources(0, -1));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(2);
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Ignoring runtimeConfig.apiClientConfig.timeout",
+        ),
+      );
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Ignoring runtimeConfig.public.apiClientConfig.timeout",
+        ),
+      );
+    });
+
+    it("warns once when both deprecated tiers carry the same bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: "5000ms" },
+        },
+        public: {
+          shopware: {
+            ...SHOPWARE_CONFIG,
+            apiClientConfig: { timeout: "5000ms" },
+          },
+        },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(1);
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining("Ignoring shopware.apiClientConfig.timeout"),
+      );
+    });
+
+    it("warns twice when the deprecated tiers carry different bad values", async () => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: "5000ms" },
+        },
+        public: {
+          shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 0 } },
+        },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(2);
     });
   });
 
