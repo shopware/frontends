@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "URL Resolving and SEO URLs",
+            link: "/frontends-recipes/context/url-resolving.html",
+          },
+        ],
+      },
     ],
   },
   {
