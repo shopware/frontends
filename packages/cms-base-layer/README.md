@@ -491,31 +491,66 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 3.1.0
+### Latest changes: 4.0.0
+
+### Major Changes
+
+- [#2609](https://github.com/shopware/frontends/pull/2609) [`2dc86da`](https://github.com/shopware/frontends/commit/2dc86da2532e986ebdadd06a922e68403414a0ff) Thanks [@mkucmus](https://github.com/mkucmus)! - Make the package a plain Nuxt layer.
+
+  **Breaking:** the package now declares an `exports` map, so only the layer entry point
+  is importable. Deep imports such as
+  `@shopware/cms-base-layer/app/components/SwProductCard.vue` no longer resolve. Use the
+  auto-registered global components instead, which is what extending the layer gives you.
+
+  **Breaking:** the leftover Nuxt module is gone, so `index.cjs` and the `dist` build are
+  no longer published. The module registered a component folder that moved to `app/` a
+  while ago, so it could not work any more. Consume this package with `extends`, which
+  resolves `nuxt.config.ts`:
+
+  ```ts
+  export default defineNuxtConfig({
+    extends: ["@shopware/cms-base-layer"],
+  });
+  ```
+
+  Other changes:
+
+  - Dropped the `build` and `dev` scripts and the `unbuild` dev dependency. There is
+    nothing left to bundle.
+  - Fixed `files`. It listed `helpers` and `app.config.ts`, which do not exist at the
+    package root, and shipped the dead `dist` and `index.cjs`.
+  - Deleted `components.d.ts`. It typed two components at paths that moved to
+    `app/components/public/cms/`, and no tsconfig referenced the file.
+  - Removed two vitest aliases that pointed at files which do not exist.
+  - Removed the `check-colors` script. It read `uno.config.ts` from this package, which
+    moved to `@shopware/unocss-design-tokens-layer`, so it always found zero colors. It
+    also relied on `tsx` without declaring it.
 
 ### Minor Changes
 
-- [#2503](https://github.com/shopware/frontends/pull/2503) [`1b0ccc9`](https://github.com/shopware/frontends/commit/1b0ccc95fcef89de42931155fb40119b9075d21b) Thanks [@mkucmus](https://github.com/mkucmus)! - `SwProductListingFilters` and `SwProductListingFiltersHorizontal`: honor the `listingType` prop. When set to `productSearchListing` the components drive `useProductSearchListing` instead of `useCategoryListing` and keep the active search term in the request criteria and resulting URL, so the shared filter sidebar can be reused on the product search page without resetting the query. Category listing behavior is unchanged.
+- [#2574](https://github.com/shopware/frontends/pull/2574) [`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac) Thanks [@mkucmus](https://github.com/mkucmus)! - `SwProductListingFilters` and `SwProductListingFiltersHorizontal` render a new `SwFilterCategories` checkbox filter when the listing response contains the category aggregations from `getCategoryFilterAggregations()`. The selection is kept in the `categories` URL param and applied as a criteria `post-filter`. Both are search listings only (`listing-type="productSearchListing"`); on any other listing the category filter is not rendered, because the selection would neither reach the URL nor the criteria. Listings without these aggregations are unaffected.
 
 ### Patch Changes
 
-- [#2593](https://github.com/shopware/frontends/pull/2593) [`760635c`](https://github.com/shopware/frontends/commit/760635cdbaf3c80ae99fbe0f42a31a8ebaa14675) Thanks [@patzick](https://github.com/patzick)! - Stop registering the `@unocss/nuxt` module from the CMS layer. UnoCSS is not a dependency of this package anymore (it lives in `@shopware/unocss-design-tokens-layer`), so registering the module made every app that doesn't install UnoCSS itself fail to build with `Could not load @unocss/nuxt. Is it installed?` - for example the blank template. Apps that want the shared UnoCSS setup keep getting it from `@shopware/unocss-design-tokens-layer` or their own `@unocss/nuxt` registration.
+- [#2645](https://github.com/shopware/frontends/pull/2645) [`7a7ce3e`](https://github.com/shopware/frontends/commit/7a7ce3e5649e7ab84f7e547ce1ebcd9413117dde) Thanks [@mkucmus](https://github.com/mkucmus)! - Ship `component-dirs.json` in the published package. `nuxt.config.ts` imports it at load time, but it was missing from `files`, so the layer failed to load when installed from the registry.
 
-- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Add cacheable GET support for category details and product reviews while preserving the existing POST behavior when `cacheableReads` is disabled.
+- [#2660](https://github.com/shopware/frontends/pull/2660) [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Read translatable entity fields through their `translated` object instead of the untranslated entity root, so they follow the language of the current request instead of rendering the system language. Affected components: `SwContactForm` and `SwNewsletterForm` (salutation `displayName`), `SwStockInfo` (delivery time `name`), `SwVariantConfigurator` (property group `name` — the option values below it already used `translated`), `CmsElementBuyBox` (unit `name`), `CmsElementCrossSelling` (cross selling `name`), `CmsElementProductDescriptionReviews` (category `name`), `SwProductCardImage` and `CmsElementImageGallery` (media `alt`).
 
-  - `useCategorySearch.search` now calls `GET /category/{navigationId}` and sends the complete encoded Criteria in the `_criteria` query parameter when cacheable reads are enabled.
-  - `useProductReviews.loadProductReviews` now calls `GET /product/{productId}/reviews` and sends its encoded Criteria in `_criteria` when cacheable reads are enabled.
-  - The CMS product description reviews element follows the same flag and endpoint behavior when it needs to fetch reviews directly.
+  All of them now go through `getTranslatedProperty()` from `@shopware/helpers`, which falls back to the root property when `translated` is missing — so the rendered value only ever changes on storefronts whose language differs from the system language.
 
-- [#2571](https://github.com/shopware/frontends/pull/2571) [`c64ae1c`](https://github.com/shopware/frontends/commit/c64ae1c6e2d11e33bd52df4b55177cc26b646433) Thanks [@patzick](https://github.com/patzick)! - Show the category a shopper came from in product breadcrumbs, while direct product links continue to use the default category.
+- [#2606](https://github.com/shopware/frontends/pull/2606) [`1c9a604`](https://github.com/shopware/frontends/commit/1c9a604e05c0fa1b27708a5338cd5690a0ff5c67) Thanks [@mkucmus](https://github.com/mkucmus)! - Stop leaking internal types into the layer's public type surface.
 
-- [#2596](https://github.com/shopware/frontends/pull/2596) [`6572aa8`](https://github.com/shopware/frontends/commit/6572aa84431e1f4a34d6cf04e549037692d638a6) Thanks [@patzick](https://github.com/patzick)! - Reduce Rolldown/Vite build noise: scope Nuxt global components, keep the three.js async chunk warning intentional, avoid shipping full carbon icon JSON via UnoCSS runtime, and bump @vueuse to 14.4.0.
+  - `index.d.ts` now only augments the app config. It no longer re-exports `@shopware/composables` and `./.nuxt/imports`.
+  - The `#imports` shim moved to a private `types/imports.d.ts`, which is not published.
+  - `app.config` exports a plain object with `satisfies AppConfigInput` instead of calling `defineAppConfig`. No runtime change.
 
-- [#2592](https://github.com/shopware/frontends/pull/2592) [`fcc3d71`](https://github.com/shopware/frontends/commit/fcc3d71af05c2f2d409aa63ecb562714e6bc0e69) Thanks [@patzick](https://github.com/patzick)! - Replace CMS layer `@apply` styles with plain CSS declarations to avoid Nuxt build warnings.
+  This fixes `Cannot find name 'ref'` and similar errors in the shared and node contexts when a project uses the Nuxt 4 project-references `tsconfig.json`.
 
-- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Preserve CMS image aspect ratios when responsive dimensions are calculated after hydration, preventing visible image scaling as optimized sources load.
+- [#2601](https://github.com/shopware/frontends/pull/2601) [`e64d2f9`](https://github.com/shopware/frontends/commit/e64d2f9c13a99054d7e56e4b7ec2f1f23f9768b7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Typography for CMS-authored HTML is now scoped to a `cms-element-text` class and ships from the layer as `app/assets/css/rich-text.css`, with overflow guards for long strings, media, `pre` and tables. Headings and lists in your own markup that had no explicit size or `list-*` class were relying on the removed global rules and will change.
 
-- Updated dependencies [[`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003), [`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0), [`f16c5a0`](https://github.com/shopware/frontends/commit/f16c5a0785d6187b73c3edcf37feab7c90bd7988), [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`6572aa8`](https://github.com/shopware/frontends/commit/6572aa84431e1f4a34d6cf04e549037692d638a6), [`744833b`](https://github.com/shopware/frontends/commit/744833b9d7d2f8ea1f5dfe65be3fa554dbe4a09f), [`e03c91b`](https://github.com/shopware/frontends/commit/e03c91be172374894d90b7a0111855b76719fee1), [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0), [`38379a5`](https://github.com/shopware/frontends/commit/38379a5d52ab09008774533ef417ebe2cde3f7fd)]:
-  - @shopware/composables@1.12.1
-  - @shopware/api-client@1.5.1
-  - @shopware/helpers@1.7.2
+- [#2663](https://github.com/shopware/frontends/pull/2663) [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354) Thanks [@mkucmus](https://github.com/mkucmus)! - A linked CMS image always has an accessible name now. `CmsElementImage` names the link with the element's `ariaLabel`, then the media title, then a generic fallback translatable through `cms.image.linkWithoutLabel`. A decorative image skips the media title.
+
+- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4), [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
+  - @shopware/helpers@1.8.0
+  - @shopware/composables@1.13.0
+  - @shopware/api-client@1.6.0
