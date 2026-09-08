@@ -13,3 +13,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## Account
 
 <PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, registration, account state, and the customer wishlist." />
+
+## CMS
+
+<PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and elements, and the contact form element." />

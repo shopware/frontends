@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Rendering CMS Pages",
+            link: "/frontends-recipes/cms/rendering.html",
+          },
+        ],
+      },
     ],
   },
   {
