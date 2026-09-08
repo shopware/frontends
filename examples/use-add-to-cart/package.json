@@ -17,10 +17,10 @@
     "@shopware/nuxt-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "22.13.14",
-    "@unocss/nuxt": "66.7.5",
+    "@unocss/nuxt": "66.10.0",
     "nuxt": "4.5.2",
     "typescript": "5.9.3",
-    "vue": "3.5.41",
+    "vue": "3.5.42",
     "vue-tsc": "3.3.9",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0"
