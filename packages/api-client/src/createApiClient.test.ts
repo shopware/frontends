@@ -567,6 +567,39 @@ describe("createAPIClient", () => {
   });
 
   describe("fetchOptions", () => {
+    /**
+     * The merged timeout only shows up as a timer, so the release has to be
+     * observed through the timer itself rather than through the response.
+     */
+    async function releasedTimers(
+      timeout: number,
+      run: () => Promise<unknown>,
+    ) {
+      const armTimer = vi.spyOn(globalThis, "setTimeout");
+      const releaseTimer = vi.spyOn(globalThis, "clearTimeout");
+      try {
+        await run().catch(() => {});
+
+        const armed = armTimer.mock.calls
+          .map((call, index) =>
+            call[1] === timeout
+              ? armTimer.mock.results[index]?.value
+              : undefined,
+          )
+          .filter((timer) => timer !== undefined);
+
+        return {
+          armed: armed.length,
+          released: armed.filter((timer) =>
+            releaseTimer.mock.calls.some(([released]) => released === timer),
+          ).length,
+        };
+      } finally {
+        armTimer.mockRestore();
+        releaseTimer.mockRestore();
+      }
+    }
+
     it("should enforce the timeout for API requests when a timeout is provided", async () => {
       const app = createApp().use(
         "/slow-endpoint",
@@ -907,6 +940,112 @@ describe("createAPIClient", () => {
       expect(isTimeoutError(error)).toBe(true);
       expect(error.status).toBeUndefined();
     });
+
+    it.each([
+      ["negative", -5],
+      ["infinite", Number.POSITIVE_INFINITY],
+      ["NaN", Number.NaN],
+    ])(
+      "ignores a %s timeout instead of failing the request",
+      async (_name, timeout) => {
+        const app = createApp().use(
+          "/fast-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            return { message: "Request succeeded" };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          baseURL,
+        });
+
+        const response = await client.invoke(
+          // @ts-expect-error this endpoint does not exist
+          "testInvalidTimeout get /fast-endpoint",
+          {
+            fetchOptions: { signal: new AbortController().signal, timeout },
+          },
+        );
+
+        expect(response).toEqual({
+          data: { message: "Request succeeded" },
+          status: 200,
+        });
+      },
+    );
+
+    it("ignores an unusable client timeout instead of failing the request", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: -5 },
+        baseURL,
+      });
+
+      const response = await client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testInvalidClientTimeout get /fast-endpoint",
+        { fetchOptions: { signal: new AbortController().signal } },
+      );
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it.each([
+      ["a request that resolves", 200, "Request succeeded"],
+      ["a request that fails", 500, "Server error"],
+    ])(
+      "releases the timeout timer after %s",
+      async (_name, status, message) => {
+        const app = createApp().use(
+          "/release-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 20));
+            if (status !== 200) throw createError({ status, message });
+            return { message };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          baseURL,
+        });
+
+        const timers = await releasedTimers(12345, () =>
+          client.invoke(
+            // @ts-expect-error this endpoint does not exist
+            "testTimerRelease get /release-endpoint",
+            {
+              fetchOptions: {
+                signal: new AbortController().signal,
+                timeout: 12345,
+              },
+            },
+          ),
+        );
+
+        expect(timers.armed).toBe(1);
+        expect(timers.released).toBe(1);
+      },
+    );
   });
 
   describe("default header changes", () => {

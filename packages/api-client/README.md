@@ -346,7 +346,15 @@ const request = client.invoke("readContext get /context", {
 });
 ```
 
-Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124 and Safari 17.4. Older browsers keep the previous behaviour, where a per-request `signal` switches the timeout off. A fractional timeout is rounded up to whole milliseconds when combined.
+Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124, Safari 17.4 and Node 20.3. The package also runs server-side, so the Node version matters as much as the browser ones. Older runtimes keep the previous behaviour, where a per-request `signal` switches the timeout off.
+
+A `timeout` is rounded up to whole milliseconds and capped at 2147483647 (about 24 days), which is the largest value a timer can hold. A value that cannot be waited for, so anything that is not a finite positive number, is ignored. A spent budget such as `deadline - Date.now()` therefore leaves the request without a timeout instead of failing it.
+
+With a `signal`, the deadline covers the whole request, including reading the response body and any retry. Without one, ofetch stops its own timer once the response headers arrive, so a slow body is not bounded. A deadline that fires while the body is being read rejects with a plain `TimeoutError` instead of a wrapped fetch error, and `isTimeoutError` matches both.
+
+In the admin client an expired session is refreshed before the request runs. With a `signal`, the refresh and the request share one deadline. Without one, each gets the full `timeout`, so an expired session can take up to twice as long.
+
+Aborting or timing out a request while that refresh is in flight leaves the stored session as it was. If the server rotated the refresh token in the meantime, the stored one no longer works and the client has to authenticate again.
 
 All exposed options available under `fetchOptions` are:
 

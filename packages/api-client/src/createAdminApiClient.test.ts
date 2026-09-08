@@ -883,6 +883,142 @@ describe("createAdminAPIClient", () => {
         expect(isTimeoutError(error)).toBe(true);
       },
     );
+
+    function createSlowRefreshApp() {
+      const app = createApp();
+      app.use(
+        "/oauth/token",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          return {
+            access_token: "fresh-token",
+            refresh_token: "fresh-refresh",
+            expires_in: 3600,
+          };
+        }),
+      );
+      app.use(
+        "/order",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          return { message: "Request succeeded" };
+        }),
+      );
+      return app;
+    }
+
+    it("gives the token refresh a budget of its own when no signal is passed", async () => {
+      const baseURL = await createPortAndGetUrl(createSlowRefreshApp());
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: { ...expiredSession },
+        fetchOptions: { timeout: 300 },
+        baseURL,
+      });
+
+      const authChanged = vi.fn();
+      client.hook("onAuthChange", authChanged);
+
+      const startedAt = Date.now();
+      const response = await client.invoke("getOrderList get /order", {});
+      const elapsed = Date.now() - startedAt;
+
+      // the refresh ran and the request still succeeded after longer than the
+      // configured timeout, so each fetch was given the full budget
+      expect(authChanged).toHaveBeenCalledTimes(1);
+      expect(elapsed).toBeGreaterThan(300);
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("aborts a stalled token refresh in flight rather than letting it finish", async () => {
+      const baseURL = await createPortAndGetUrl(createStalledRefreshApp());
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: { ...expiredSession },
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const authChanged = vi.fn();
+      client.hook("onAuthChange", authChanged);
+
+      const error = await client
+        .invoke("getOrderList get /order", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(authChanged).not.toHaveBeenCalled();
+      expect(client.getSessionData().accessToken).toBe("Bearer expired-token");
+    });
+
+    it("releases the timeout timer after the request settles", async () => {
+      const app = createApp().use(
+        "/order",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 20));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        baseURL,
+      });
+
+      const armTimer = vi.spyOn(globalThis, "setTimeout");
+      const releaseTimer = vi.spyOn(globalThis, "clearTimeout");
+      try {
+        await client.invoke("getOrderList get /order", {
+          fetchOptions: {
+            signal: new AbortController().signal,
+            timeout: 12345,
+          },
+        });
+
+        const armed = armTimer.mock.calls
+          .map((call, index) =>
+            call[1] === 12345 ? armTimer.mock.results[index]?.value : undefined,
+          )
+          .filter((timer) => timer !== undefined);
+
+        expect(armed).toHaveLength(1);
+        expect(
+          releaseTimer.mock.calls.some(([released]) => released === armed[0]),
+        ).toBe(true);
+      } finally {
+        armTimer.mockRestore();
+        releaseTimer.mockRestore();
+      }
+    });
+
+    it("spans the token refresh and the request with one deadline when a signal is passed", async () => {
+      const baseURL = await createPortAndGetUrl(createSlowRefreshApp());
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: { ...expiredSession },
+        fetchOptions: { timeout: 300 },
+        baseURL,
+      });
+
+      const error = await client
+        .invoke("getOrderList get /order", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
   });
 
   it("should let the runtime set multipart/form-data with a boundary for FormData uploads", async () => {
