@@ -246,6 +246,10 @@ export const sidebar = [
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
+          {
+            text: "Customer Addresses",
+            link: "/frontends-recipes/account/addresses.html",
+          },
         ],
       },
     ],
