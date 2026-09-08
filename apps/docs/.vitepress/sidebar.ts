@@ -248,6 +248,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Product Variants",
+            link: "/frontends-recipes/catalog/variants.html",
+          },
+        ],
+      },
     ],
   },
   {
