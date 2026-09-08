@@ -187,20 +187,23 @@ Add a script to `package.json` to make regeneration easy:
 
 ### TypeScript overrides
 
-If your instance has custom fields, custom endpoints, or incorrect types in the OpenAPI spec, you can override or extend the generated types without modifying the generated file directly.
+If you only need extra endpoints, custom fields, or a few corrected types,
+keep the types shipped with `@shopware/api-client` and a small overlay file.
+Do **not** commit a generated `storeApiTypes.d.ts` for that — StackBlitz and
+other install-only environments cannot run `generate-types`, but they can
+resolve the published package types.
 
-Create an overrides file next to the generated types:
+Create an overrides file:
 
 - `api-types/storeApiTypes.overrides.ts` — for Store API
 - `api-types/adminApiTypes.overrides.ts` — for Admin API
 
-Create `api-types/storeApiTypes.overrides.ts` with your merged types:
+Import the bundled components when an override needs to refer to a core schema:
 
 ```typescript
 // api-types/storeApiTypes.overrides.ts
-import type { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "@shopware/api-client/store-api-types";
 
-// Extend schemas with your custom fields
 export type components = mainComponents & {
   schemas: Schemas;
 };
@@ -214,7 +217,6 @@ export type Schemas = {
   };
 };
 
-// Add or override operations
 export type operations = {
   // Add a custom endpoint
   "myCustomEndpoint post /custom/endpoint": {
@@ -238,22 +240,37 @@ export type operations = {
 > [!IMPORTANT]
 > Overriding a schema or operation requires a **full object definition** — partial overrides are not supported in TypeScript overlay files.
 
-Then point `shopware.d.ts` to the overrides file instead of the generated one:
+Merge the overlay onto the bundled types in `shopware.d.ts` with `WithApiOverrides`.
+Override keys replace the matching base key; new keys are added. Pointing
+`#shopware` at the overlay file alone would drop every default operation.
 
 ```typescript
 // shopware.d.ts
 declare module "#shopware" {
-  import type { createAPIClient } from "@shopware/api-client";
+  import type { createAPIClient, WithApiOverrides } from "@shopware/api-client";
+  import type {
+    components as StoreComponents,
+    operations as StoreOperations,
+  } from "@shopware/api-client/store-api-types";
 
-  export type operations =
-    import("./api-types/storeApiTypes.overrides").operations;
-  export type Schemas =
-    import("./api-types/storeApiTypes.overrides").components["schemas"];
+  export type operations = WithApiOverrides<
+    StoreOperations,
+    import("./api-types/storeApiTypes.overrides").operations
+  >;
+  export type Schemas = WithApiOverrides<
+    StoreComponents["schemas"],
+    import("./api-types/storeApiTypes.overrides").Schemas
+  >;
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
 ```
 
 Your `apiClient.ts` already imports from `#shopware`, so no change is needed there — the overridden types flow through automatically.
+
+If you later generate types from your own instance (`loadSchema` then
+`generate-types`), switch `shopware.d.ts` to `./api-types/storeApiTypes` as
+shown above. `generate` still applies the same overlay file when that generated
+file is the base.
 
 ### JSON patch overrides (partial schema fixes)
 

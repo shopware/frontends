@@ -1,8 +1,10 @@
-import type { components as coreComponents } from "./storeApiTypes";
+import type { components as coreComponents } from "@shopware/api-client/store-api-types";
 
 export type components = coreComponents & {
   schemas: Schemas;
 };
+
+export type Schemas = Record<never, never>;
 
 export type operations = {
   "handlePaymentMethod post /handle-payment": {

@@ -1,19 +1,17 @@
 declare module "#shopware" {
-  import type { createAPIClient } from "@shopware/api-client";
+  import type { createAPIClient, WithApiOverrides } from "@shopware/api-client";
+  import type {
+    components as StoreComponents,
+    operations as StoreOperations,
+  } from "@shopware/api-client/store-api-types";
 
-  // for default types
-  // export type operations =
-  //   import("@shopware/api-client/store-api-types").operations;
-  // or for locally generated types
-  export type operations = import("./api-types/storeApiTypes").operations;
-
-  // for default types
-  // export type Schemas =
-  //   import("@shopware/api-client/store-api-types").components["schemas"];
-  // or for locally generated types
-  export type Schemas =
-    import("./api-types/storeApiTypes").components["schemas"];
-
-  // we're exporting our own Api Client definition as it depends on our own instance
+  export type operations = WithApiOverrides<
+    StoreOperations,
+    import("./api-types/storeApiTypes.overrides").operations
+  >;
+  export type Schemas = WithApiOverrides<
+    StoreComponents["schemas"],
+    import("./api-types/storeApiTypes.overrides").Schemas
+  >;
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
