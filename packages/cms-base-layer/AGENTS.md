@@ -39,45 +39,6 @@ Registration rules for the consuming template — which directories must be
 `components` key of
 [vue-starter-template/nuxt.config.ts](../../templates/vue-starter-template/nuxt.config.ts).
 
-## Listing filters
-
-`SwProductListingFilter` dispatches on the filter's `code`, not on its shape;
-the mapping is the `componentMap` inside `filterComponent` in
-[SwProductListingFilter.vue](app/components/SwProductListingFilter.vue). Any
-filter that exposes `options` and matches no code falls back to
-`SwFilterProperties` — that fallback is why new backend filters often "just
-work" without a code change here.
-
-Each call to `useSelectedListingFilters` builds its own `reactive` state, so
-the sidebar and the horizontal bar do **not** share a selection object — a
-mutation in one is invisible to the other until it reaches the route.
-`applyQueryToFilters`
-([app/utils/useSelectedListingFilters.ts](app/utils/useSelectedListingFilters.ts))
-maps URL to state, and both filter components push it back with `router.push`.
-(`app/utils/routeQuery.ts` is only two query-parsing helpers — nothing
-filter-specific in it.)
-
-**How the results refetch differs by listing type, and getting it wrong is
-silent.** `useListing` also holds shared in-memory listing state
-(`createInjectionState` for `categoryListing`, `createSharedComposable` for
-`useProductSearchListing`). A search page's `useAsyncData` watches `route.query`,
-so navigating is enough there and calling `search()` as well double-fetches and
-flickers; a **category listing has no watcher that refetches the listing**, so
-`search()` must be called explicitly — see the `if (!isProductSearch)` branch
-and its comment in `SwProductListingFilters.vue`. (`CmsElementProductListing.vue`
-does watch the route, but it early-returns unless the query is empty; its only
-job is resetting the page number.)
-
-When you add a filter, the query params are turned back into a request body in
-**two** places, one per listing type, and both need the new field:
-`searchCriteriaForRequest` in `SwProductListingFilters.vue` (duplicated in
-`SwProductListingFiltersHorizontal.vue`) for category listings, and
-`buildSearchCriteria` in
-[vue-starter-template/app/pages/search.vue](../../templates/vue-starter-template/app/pages/search.vue)
-for the search page. Miss the first and the filter works on `/search` and
-silently does nothing on every category page. Also update `FilterState` and
-`applyQueryToFilters` so the value survives a reload.
-
 ## Images
 
 - **Never add `decoding` or `sizes` props to `NuxtImg`** in product-card or CMS
@@ -108,7 +69,7 @@ their modules themselves.
 
 ## Documenting components
 
-CMS **elements** and **sections** carry a sibling `.md` file
-(`CmsElementImage.vue` next to `CmsElementImage.md`): 18 of 20 elements and both
-sections have one. Blocks do not — none of the 41 `CmsBlock*.vue` files has a doc
-sibling. Follow the convention of the level you are adding to.
+CMS elements and sections are documented in a sibling `.md` file — `element/`
+holds `CmsElementImage.vue` next to `CmsElementImage.md`, and `section/` does
+the same. Blocks are not documented this way. Match the level you are adding
+to, and check the directory rather than assuming.

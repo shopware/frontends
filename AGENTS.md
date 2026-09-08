@@ -56,12 +56,16 @@ Turbo handles ordering, but knowing it explains stale-code symptoms:
   Only its `./lib` and `./dist` entries come from a build.
 - Every remaining package must be built, or run in stub mode, before a template
   sees the change: `cd packages/<name> && pnpm run dev` (`unbuild --stub`).
-- The layer packages run `nuxt prepare` as the first half of their own
-  `typecheck`, so a type error there is never stale `.nuxt` output — re-running
-  it changes nothing. Their program also includes all of `app/**`, so most such
-  errors are ordinary type errors in the layer's own source; only when the error
-  names a symbol from `@shopware/*` is the cause an unbuilt dependency, which is
-  why `turbo.json` gives `typecheck` a `dependsOn: ["build", "^build"]`.
+- The layer packages' `typecheck` is `nuxt prepare && tsgo --noEmit`, so
+  re-running `nuxt prepare` by hand before it adds nothing. When it fails, read
+  where the error points instead of assuming a cause — it can be the layer's own
+  `app/**`, the generated `.nuxt`, the checked-in `types/` shims, or an unbuilt
+  dependency (`turbo.json` gives `typecheck` a `dependsOn: ["build", "^build"]`
+  for that last case). The shims are the non-obvious one: `types/imports.d.ts`
+  re-exports `@shopware/composables`' auto-imports alongside `../.nuxt/imports`,
+  so a missing re-export reads as a type error with no faulty code behind it.
+  Only `helpers` and `api-client` resolve through `dist` and need a build;
+  `composables` resolves to `src`.
 - For a stale Turbo cache, `rm -rf .turbo`. If dependencies themselves look
   wrong, `rm -rf node_modules && pnpm i` — **keep `pnpm-lock.yaml`**. It is
   committed and nearly every CI job installs with `--frozen-lockfile` (the
@@ -71,8 +75,9 @@ Turbo handles ordering, but knowing it explains stale-code symptoms:
   guard live in `pnpm-workspace.yaml` and are re-applied on every install, so
   those survive either way.
 - Never hand-edit `packages/api-client/api-types/*.d.ts` — they are generated
-  by `@shopware/api-gen`. See that package's `AGENTS.md` for which script
-  regenerates which file.
+  by `@shopware/api-gen`. See
+  [packages/api-client/AGENTS.md](packages/api-client/AGENTS.md) for which
+  script regenerates which file.
 
 ## Caching
 
@@ -145,7 +150,21 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
   `AGENTS.md` — check the package directory
 - Repository: [github.com/shopware/frontends](https://github.com/shopware/frontends)
 
-## Maintaining this file
+## Maintaining these files
 
-The size budget for this file, and what belongs in it, are in
-[CONTRIBUTION.md](CONTRIBUTION.md#agent-instruction-files).
+`AGENTS.md` is what agents read; Claude Code reads `CLAUDE.md`, so every
+`AGENTS.md` has a one-line `CLAUDE.md` beside it containing `@AGENTS.md` — add
+both together, or the file is invisible to it. The root pair is resident in
+every session; a nested one loads when an agent works in that directory.
+
+**Keep the root pair under 200 lines.** Past that it costs more context and gets
+followed less, so the budget is a correctness rule, not tidiness. Nested files
+are bounded by relevance rather than context cost, which is why moving
+package-specific detail down out of this file is a real saving.
+
+Limit them to what an agent cannot derive by reading the repo: gotchas,
+rationale, and conventions that differ from tool defaults. Layouts, dependency
+lists, standard scripts and inventories belong in the code or the docs site.
+Prefer pointing at the file that owns a fact over restating it — a condensed
+copy drifts from the original, and the original is the one with an owner.
+Update these files in the same change that makes them wrong.

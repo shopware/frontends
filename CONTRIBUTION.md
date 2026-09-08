@@ -40,27 +40,10 @@ That's why the PR title is the commit message for the whole PR. Please make sure
 
 ## Agent instruction files
 
-`AGENTS.md` is what AI coding agents read. Most agents pick up the nearest one
-in the directory tree on their own; Claude Code reads `CLAUDE.md` instead, so
-every `AGENTS.md` has a one-line `CLAUDE.md` beside it containing `@AGENTS.md`.
-**Add both files together** — an `AGENTS.md` without its `CLAUDE.md` sibling is
-invisible to Claude Code, and a gotcha filed there never reaches the session
-that needed it. Only the root pair loads at session start; a nested one is
-picked up when the agent works on files in that directory, which is exactly what
-you want for package-specific notes.
-
-**Keep the root pair under 200 lines.** It is resident in every session, and
-past that size it costs more context and gets followed less — the budget is a
-correctness rule there, not tidiness. Nested files are bounded by relevance
-instead: they only load in their own subtree, so moving package detail down out
-of the root file is a real saving, not a reshuffle.
-
-Limit them to what an agent cannot derive by reading the repo: gotchas,
-rationale, and conventions that differ from tool defaults. Layouts, dependency
-lists, standard scripts and component inventories belong in the code or the docs
-site. Prefer pointing at the file that owns a fact over restating it — a
-condensed copy in an instruction file drifts from the original, and the original
-is the one with an owner. Update them in the same change that makes them wrong.
+The repo carries `AGENTS.md` / `CLAUDE.md` instruction files for AI coding
+agents, at the root and in some packages. If you add or edit one, the rules —
+file pairing, the size budget, and what belongs in them — are in
+[AGENTS.md](AGENTS.md#maintaining-these-files).
 
 ## Documenting code
 
