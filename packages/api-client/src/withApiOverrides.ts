@@ -5,10 +5,14 @@
  * so a redefined operation body does not collapse to `never`. New keys are
  * added. An empty override is a no-op.
  *
- * Use this from `shopware.d.ts` so override-only projects can keep the types
- * shipped with `@shopware/api-client` and a small `*.overrides.ts` file, without
- * committing a generated `storeApiTypes.d.ts`. That is what lets StackBlitz
- * examples typecheck after `npm install` with no generate step.
+ * @example
+ * import type { WithApiOverrides } from "@shopware/api-client";
+ * import type { operations as StoreOperations } from "@shopware/api-client/store-api-types";
+ *
+ * type operations = WithApiOverrides<
+ *   StoreOperations,
+ *   import("./api-types/storeApiTypes.overrides").operations
+ * >;
  */
 export type WithApiOverrides<Base, Override> = [keyof Override] extends [never]
   ? Base

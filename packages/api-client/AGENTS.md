@@ -23,20 +23,16 @@ createAPIClient<operations>()
 and knowing which one a project uses explains most type errors:
 
 1. **Bundled defaults** — `@shopware/api-client/store-api-types` or
-   `/admin-api-types`. This is the default for templates and examples.
-2. **Local TypeScript overrides** — `./api-types/storeApiTypes.overrides.ts`
-   merged with `WithApiOverrides` in `shopware.d.ts`. No generated `.d.ts`.
-   Required for StackBlitz examples that add plugin endpoints.
-3. **Generated from an instance** — `./api-types/storeApiTypes`, produced by
-   `@shopware/api-gen` after `loadSchema`. Only needed when the schema itself
-   differs from the shipped default.
+   `/admin-api-types`.
+2. **Generated from an instance** — `./api-types/storeApiTypes`, produced by
+   `@shopware/api-gen`.
+3. **Extended** — `./api-types/storeApiTypes.overrides.ts` merged with
+   `WithApiOverrides` in `shopware.d.ts`. Usage is in [README.md](README.md).
 
 **Never hand-edit `api-types/*.d.ts`** — they are generated artifacts.
-**Never commit generated `storeApiTypes.d.ts` outside this package.** The
-monorepo gitignores those copies; examples with extra endpoints keep only
-`*.overrides.ts`. `pnpm run generate-types` from the repo root regenerates the
-**store** types in this package; `adminApiTypes.d.ts` comes from this
-package's separate `generate-admin-types` script, which no root script wraps.
+`pnpm run generate-types` from the repo root regenerates the **store** types;
+`adminApiTypes.d.ts` comes from this package's separate `generate-admin-types`
+script, which no root script wraps.
 
 ## Non-obvious extension points
 
