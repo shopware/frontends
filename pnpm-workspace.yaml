@@ -13,29 +13,29 @@ overrides:
   "editorconfig>minimatch": "^9.0.9"
   "@vercel/blob>undici": "^6.28.0"
   less: ^4.8.1
-  "browserslist@<4.28.7": 4.28.8
   "qs@<6.16.0": 6.16.0
   "fast-uri@<3.1.6": 3.1.6
-  "@tiptap/core@<3.30.4": 3.30.4
   "@tiptap/pm@<3.30.4": 3.30.4
-  "fflate@>=0.6.0 <0.6.11": 0.6.11
   "nanoid@<3.3.18": "^3.3.18"
-  esbuild: ^0.28.1
-  vite: ^8.0.16
+  esbuild: ^0.28.2
+  vite: ^8.2.1
   "@vueuse/core": 14.4.0
   "@vueuse/shared": 14.4.0
   "@vueuse/metadata": 14.4.0
   "@vueuse/integrations": 14.4.0
-  vue: 3.5.40
-  "@vue/compiler-core": 3.5.40
-  "@vue/compiler-dom": 3.5.40
-  "@vue/compiler-sfc": 3.5.40
-  "@vue/compiler-ssr": 3.5.40
-  "@vue/reactivity": 3.5.40
-  "@vue/runtime-core": 3.5.40
-  "@vue/runtime-dom": 3.5.40
-  "@vue/server-renderer": 3.5.40
-  "@vue/shared": 3.5.40
+  vue: 3.5.42
+  "@vue/compiler-core": 3.5.42
+  "@vue/compiler-dom": 3.5.42
+  "@vue/compiler-sfc": 3.5.42
+  "@vue/compiler-ssr": 3.5.42
+  "@vue/reactivity": 3.5.42
+  "@vue/runtime-core": 3.5.42
+  "@vue/runtime-dom": 3.5.42
+  "@vue/server-renderer": 3.5.42
+  "@vue/shared": 3.5.42
+  browserslist: 4.28.9
+  "@tiptap/core": 3.30.4
+  "fflate@<0.6.11": "^0.6.11"
 
 peerDependencyRules:
   ignoreMissing:
