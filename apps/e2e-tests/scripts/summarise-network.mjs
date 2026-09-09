@@ -75,9 +75,7 @@ const genuine = transport.filter(
 // Error pages are not API calls, so they do not belong in the denominator.
 const apiCalls = (list) =>
   list.filter((entry) => entry.kind !== "storefront-error-page").length;
-const attempted =
-  completed +
-  entries.filter((entry) => entry.kind !== "storefront-error-page").length;
+const attempted = completed + apiCalls(entries);
 const pct = (n) => (attempted ? ((n / attempted) * 100).toFixed(1) : "0");
 const bySide = (list, side) => list.filter((e) => e.side === side).length;
 console.log(
