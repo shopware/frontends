@@ -1,0 +1,454 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const createAPIClientMock = vi.fn((_params: Record<string, unknown>) => ({
+  hook: vi.fn(),
+}));
+const isMaintenanceModeMock = vi.fn(() => false);
+const getCookieMock = vi.fn(() => "ssr-context-token");
+const cookiesMock = {
+  get: vi.fn(() => "csr-context-token"),
+  set: vi.fn(),
+};
+const createShopwareContextMock = vi.fn();
+const showErrorMock = vi.fn();
+const useRequestHeadersMock = vi.fn(() => ({}) as Record<string, string>);
+const useStateMock = vi.fn();
+const useRuntimeConfigMock = vi.fn();
+const consoleWarnMock = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+vi.mock("@shopware/api-client", () => ({
+  createAPIClient: createAPIClientMock,
+}));
+
+vi.mock("@shopware/helpers", () => ({
+  isMaintenanceMode: isMaintenanceModeMock,
+}));
+
+vi.mock("h3", () => ({
+  getCookie: getCookieMock,
+}));
+
+vi.mock("js-cookie", () => ({
+  default: cookiesMock,
+}));
+
+vi.mock("#imports", () => ({
+  createShopwareContext: createShopwareContextMock,
+  defineNuxtPlugin: (setup: unknown) => setup,
+  showError: showErrorMock,
+  useRequestHeaders: useRequestHeadersMock,
+  useRuntimeConfig: useRuntimeConfigMock,
+  useState: useStateMock,
+}));
+
+type NuxtAppMock = {
+  ssrContext?: { event: Record<string, unknown> };
+  vueApp: { provide: ReturnType<typeof vi.fn> };
+};
+
+function createNuxtAppMock(withSsrContext: boolean): NuxtAppMock {
+  return {
+    ...(withSsrContext ? { ssrContext: { event: {} } } : {}),
+    vueApp: { provide: vi.fn() },
+  };
+}
+
+async function runPlugin(nuxtApp: NuxtAppMock) {
+  const plugin = (await import("./plugin")).default as unknown as (
+    app: NuxtAppMock,
+  ) => unknown;
+  return plugin(nuxtApp);
+}
+
+function runOnClient() {
+  vi.stubGlobal("__NUXT_IMPORT_META_SERVER__", false);
+  vi.stubGlobal("__NUXT_IMPORT_META_CLIENT__", true);
+  vi.stubGlobal("navigator", { language: "de-DE" });
+}
+
+const SHOPWARE_CONFIG = {
+  endpoint: "https://test.shopware.store/store-api/",
+  accessToken: "test-token",
+};
+
+describe("nuxt-module plugin", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.resetModules();
+    createAPIClientMock.mockReturnValue({ hook: vi.fn() });
+    vi.stubGlobal("__NUXT_IMPORT_META_SERVER__", true);
+    vi.stubGlobal("__NUXT_IMPORT_META_CLIENT__", false);
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("passes the private timeout to createAPIClient on the server", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout: 5000 },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+    );
+  });
+
+  it("passes the public timeout to createAPIClient", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: 10000 },
+      },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 10000 } }),
+    );
+  });
+
+  it("prefers the private timeout over the public one on the server", async () => {
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout: 5000 },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: 10000 },
+      },
+    });
+
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+    );
+  });
+
+  it("reads only the public timeout in the browser", async () => {
+    runOnClient();
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout: 5000 },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: 10000 },
+      },
+    });
+
+    await runPlugin(createNuxtAppMock(false));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({ fetchOptions: { timeout: 10000 } }),
+    );
+  });
+
+  describe("precedence", () => {
+    const build = ({
+      privateTimeout,
+      publicTimeout,
+      deprecatedPrivateTimeout,
+      deprecatedPublicTimeout,
+    }: Record<string, unknown>) => ({
+      shopware: {
+        ...SHOPWARE_CONFIG,
+        apiClientConfig: { timeout: deprecatedPrivateTimeout },
+      },
+      apiClientConfig: { timeout: privateTimeout },
+      public: {
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: deprecatedPublicTimeout },
+        },
+        apiClientConfig: { timeout: publicTimeout },
+      },
+    });
+
+    it.each([
+      {
+        name: "runtimeConfig.apiClientConfig wins over every other source",
+        config: {
+          privateTimeout: 1000,
+          publicTimeout: 2000,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 1000,
+      },
+      {
+        name: "runtimeConfig.public.apiClientConfig wins over shopware.apiClientConfig",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: 2000,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 2000,
+      },
+      {
+        name: "shopware.apiClientConfig wins over public shopware.apiClientConfig",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: "2000ms",
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 3000,
+      },
+      {
+        name: "public shopware.apiClientConfig is read when every source above it is invalid",
+        config: {
+          privateTimeout: 0,
+          publicTimeout: "2000ms",
+          deprecatedPrivateTimeout: -1,
+          deprecatedPublicTimeout: 4000,
+        },
+        expected: 4000,
+      },
+    ])("$name", async ({ config, expected }) => {
+      useRuntimeConfigMock.mockReturnValue(build(config));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: expected } }),
+      );
+    });
+
+    it("skips both private sources in the browser", async () => {
+      runOnClient();
+      useRuntimeConfigMock.mockReturnValue(
+        build({
+          privateTimeout: 1000,
+          publicTimeout: 0,
+          deprecatedPrivateTimeout: 3000,
+          deprecatedPublicTimeout: 4000,
+        }),
+      );
+
+      await runPlugin(createNuxtAppMock(false));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: 4000 } }),
+      );
+    });
+  });
+
+  describe.each([
+    {
+      name: "runtimeConfig.apiClientConfig",
+      source: "runtimeConfig.apiClientConfig",
+      build: (timeout: unknown) => ({
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout },
+        public: { shopware: { ...SHOPWARE_CONFIG } },
+      }),
+    },
+    {
+      name: "runtimeConfig.public.apiClientConfig",
+      source: "runtimeConfig.public.apiClientConfig",
+      build: (timeout: unknown) => ({
+        shopware: { ...SHOPWARE_CONFIG },
+        public: {
+          shopware: { ...SHOPWARE_CONFIG },
+          apiClientConfig: { timeout },
+        },
+      }),
+    },
+    {
+      name: "shopware.apiClientConfig",
+      source: "shopware.apiClientConfig",
+      build: (timeout: unknown) => ({
+        shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout } },
+        public: { shopware: { ...SHOPWARE_CONFIG } },
+      }),
+    },
+    {
+      name: "public shopware.apiClientConfig",
+      source: "shopware.apiClientConfig",
+      build: (timeout: unknown) => ({
+        shopware: { ...SHOPWARE_CONFIG },
+        public: {
+          shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout } },
+        },
+      }),
+    },
+  ])("$name as the only source", ({ build, source }) => {
+    it("forwards a positive number", async () => {
+      useRuntimeConfigMock.mockReturnValue(build(5000));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+      );
+    });
+
+    it.each(["5000", " 5000 "])(
+      "coerces the numeric string %p",
+      async (timeout) => {
+        useRuntimeConfigMock.mockReturnValue(build(timeout));
+
+        await runPlugin(createNuxtAppMock(true));
+
+        expect(createAPIClientMock).toHaveBeenCalledWith(
+          expect.objectContaining({ fetchOptions: { timeout: 5000 } }),
+        );
+        expect(consoleWarnMock).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each([undefined, null])(
+      "treats %p as unset without warning",
+      async (timeout) => {
+        useRuntimeConfigMock.mockReturnValue(build(timeout));
+
+        await runPlugin(createNuxtAppMock(true));
+
+        expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
+          "fetchOptions",
+        );
+        expect(consoleWarnMock).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each([
+      0,
+      -1,
+      "abc",
+      "5000ms",
+      true,
+      false,
+      ["5"],
+      {},
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+    ])("rejects %p and warns naming the source", async (timeout) => {
+      useRuntimeConfigMock.mockReturnValue(build(timeout));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(createAPIClientMock.mock.calls[0]?.[0]).not.toHaveProperty(
+        "fetchOptions",
+      );
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(`Ignoring ${source}.timeout`),
+      );
+    });
+
+    it("warns once for a repeated bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue(build(0));
+
+      await runPlugin(createNuxtAppMock(true));
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("warning dedupe", () => {
+    const withSources = (privateTimeout: unknown, publicTimeout: unknown) => ({
+      shopware: { ...SHOPWARE_CONFIG },
+      apiClientConfig: { timeout: privateTimeout },
+      public: {
+        shopware: { ...SHOPWARE_CONFIG },
+        apiClientConfig: { timeout: publicTimeout },
+      },
+    });
+
+    it("warns for each source that holds a bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue(withSources(0, -1));
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(2);
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Ignoring runtimeConfig.apiClientConfig.timeout",
+        ),
+      );
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Ignoring runtimeConfig.public.apiClientConfig.timeout",
+        ),
+      );
+    });
+
+    it("warns once when both deprecated tiers carry the same bad value", async () => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: "5000ms" },
+        },
+        public: {
+          shopware: {
+            ...SHOPWARE_CONFIG,
+            apiClientConfig: { timeout: "5000ms" },
+          },
+        },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(1);
+      expect(consoleWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining("Ignoring shopware.apiClientConfig.timeout"),
+      );
+    });
+
+    it("warns twice when the deprecated tiers carry different bad values", async () => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: {
+          ...SHOPWARE_CONFIG,
+          apiClientConfig: { timeout: "5000ms" },
+        },
+        public: {
+          shopware: { ...SHOPWARE_CONFIG, apiClientConfig: { timeout: 0 } },
+        },
+      });
+
+      await runPlugin(createNuxtAppMock(true));
+
+      expect(consoleWarnMock).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("reaches createAPIClient with the endpoint and access token", async () => {
+    await runPlugin(createNuxtAppMock(true));
+
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        baseURL: "https://test.shopware.store/store-api/",
+        accessToken: "test-token",
+      }),
+    );
+  });
+
+  it("takes the browser branch when import.meta.server is false", async () => {
+    runOnClient();
+    useRuntimeConfigMock.mockReturnValue({
+      shopware: { endpoint: "https://private.internal/store-api/" },
+      public: { shopware: { ...SHOPWARE_CONFIG } },
+    });
+
+    await runPlugin(createNuxtAppMock(false));
+
+    expect(cookiesMock.get).toHaveBeenCalledWith("sw-context-token");
+    expect(getCookieMock).not.toHaveBeenCalled();
+    expect(createAPIClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        baseURL: "https://test.shopware.store/store-api/",
+      }),
+    );
+  });
+});

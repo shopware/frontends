@@ -742,6 +742,33 @@ describe("createAPIClient", () => {
       );
     });
 
+    it("should abort through the client timeout when no signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testTimeoutShape get /slow-endpoint", {})
+        .catch((caught: unknown) => caught as Error & { status?: number });
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+      expect(error).not.toBeInstanceOf(ApiClientError);
+    });
+
     it("should abort through the client timeout when a per-request signal is set", async () => {
       const app = createApp().use(
         "/slow-endpoint",
@@ -907,6 +934,46 @@ describe("createAPIClient", () => {
         expect(isTimeoutError(error)).toBe(true);
       },
     );
+
+    it("should not abort a stalled body when no signal is set", async () => {
+      let releaseResponse: (() => void) | undefined;
+      const app = createApp().use(
+        "/stalled-body",
+        eventHandler((event) => {
+          const response = event.node.res;
+          response.writeHead(200, { "content-type": "application/json" });
+          response.write('{"message":');
+          releaseResponse = () => response.end('"released"}');
+          return new Promise<never>(() => {});
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 100 },
+        baseURL,
+      });
+
+      const request = client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testStalledBody get /stalled-body", {})
+        .then(
+          () => "settled",
+          () => "settled",
+        );
+      const outcome = await Promise.race([
+        request,
+        new Promise<string>((resolve) =>
+          setTimeout(() => resolve("pending"), 400),
+        ),
+      ]);
+      releaseResponse?.();
+      await request;
+
+      expect(outcome).toBe("pending");
+    });
 
     it("should time out while reading a stalled body when a signal is set", async () => {
       let releaseResponse: (() => void) | undefined;
