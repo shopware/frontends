@@ -118,7 +118,7 @@ More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-
 
 `apiClientConfig.timeout` aborts a Store API request when its response headers do not arrive within the given number of milliseconds. Unset by default.
 
-It guards against a request that hangs before the server answers. The timer starts before the connection is opened, so a DNS lookup, TCP connect or TLS handshake that hangs is aborted too. A response that stalls after its headers arrived is not aborted, because the timer is cleared as soon as the headers land.
+It guards against a request that hangs before the server answers. The timer starts before the connection is opened, so a DNS lookup, TCP connect or TLS handshake that hangs is aborted too. A response that stalls after its headers arrived is not aborted, because the timer is cleared once the headers land. A call that passes its own `signal` is the exception: the combined timer keeps running, so a stalled body is aborted too.
 
 ```json
 {
@@ -138,9 +138,9 @@ Only a positive number of milliseconds arms it, and a numeric string is coerced,
 
 Once set:
 
-- The error carries no HTTP status. Read `error.cause.name`, which is `TimeoutError`.
+- The error carries no HTTP status and is not an `ApiClientError`. Detect it with `isTimeoutError()` from `@shopware/api-client`.
 - A timed-out `GET` uses up its one automatic retry without reaching the server again.
-- Your own `signal` on a single call disables the timeout for that call, with the currently pinned ofetch 1.5.1. [#2702](https://github.com/shopware/frontends/pull/2702) changes this to combine the two, so either can abort.
+- Your own `signal` on a single call is combined with the timeout, so whichever fires first aborts the request.
 - `NUXT_API_CLIENT_CONFIG_TIMEOUT` and `NUXT_PUBLIC_API_CLIENT_CONFIG_TIMEOUT` only apply if the key is already in `nuxt.config`.
 
 ## Register custom API types (tailored for your Shopware instance)

@@ -1,9 +1,3 @@
-import type { components as coreComponents } from "./storeApiTypes";
-
-export type components = coreComponents & {
-  schemas: Schemas;
-};
-
 export type operations = {
   "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";

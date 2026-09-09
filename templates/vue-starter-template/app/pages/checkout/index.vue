@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { isTimeoutError } from "@shopware/api-client";
+
 definePageMeta({
   layout: "checkout",
 });
@@ -41,10 +43,6 @@ const { push } = useRouter();
 const { handleApiError } = useApiErrorsResolver();
 const { pushError } = useNotifications();
 const { t } = useI18n();
-
-// Replace with isTimeoutError() from @shopware/api-client once #2702 lands.
-const isTimeoutError = (error: unknown) =>
-  (error as { cause?: { name?: string } })?.cause?.name === "TimeoutError";
 
 function handleRemoveItem(id: string) {
   removeItemById(id);

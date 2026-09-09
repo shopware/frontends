@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import {
+  ApiClientError,
+  type ApiError,
+  isTimeoutError,
+} from "@shopware/api-client";
 import {
   getShippingMethodDeliveryTime,
   getTranslatedProperty,
@@ -219,10 +223,6 @@ const rules = computed(() => ({
 }));
 
 const $v = useVuelidate(rules, state);
-
-// Replace with isTimeoutError() from @shopware/api-client once #2702 lands.
-const isTimeoutError = (error: unknown) =>
-  (error as { cause?: { name?: string } })?.cause?.name === "TimeoutError";
 
 const placeOrder = async () => {
   placeOrderTriggered.value = true;

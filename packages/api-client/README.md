@@ -187,26 +187,22 @@ Add a script to `package.json` to make regeneration easy:
 
 ### TypeScript overrides
 
-If your instance has custom fields, custom endpoints, or incorrect types in the OpenAPI spec, you can override or extend the generated types without modifying the generated file directly.
+`WithApiOverrides<Base, Override>` merges an overlay onto bundled or generated types. Matching keys are replaced, new keys are added.
 
-Create an overrides file next to the generated types:
+Create an overlay next to your types:
 
 - `api-types/storeApiTypes.overrides.ts` — for Store API
 - `api-types/adminApiTypes.overrides.ts` — for Admin API
 
-Create `api-types/storeApiTypes.overrides.ts` with your merged types:
-
 ```typescript
 // api-types/storeApiTypes.overrides.ts
-import type { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "@shopware/api-client/store-api-types";
 
-// Extend schemas with your custom fields
 export type components = mainComponents & {
   schemas: Schemas;
 };
 
 export type Schemas = {
-  // Fully override an existing schema
   Product: mainComponents["schemas"]["Product"] & {
     customFields: {
       my_custom_field: string;
@@ -214,9 +210,7 @@ export type Schemas = {
   };
 };
 
-// Add or override operations
 export type operations = {
-  // Add a custom endpoint
   "myCustomEndpoint post /custom/endpoint": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -224,7 +218,6 @@ export type operations = {
     response: components["schemas"]["Product"];
     responseCode: 200;
   };
-  // Override an existing operation (e.g. restrict the request body)
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -238,17 +231,36 @@ export type operations = {
 > [!IMPORTANT]
 > Overriding a schema or operation requires a **full object definition** — partial overrides are not supported in TypeScript overlay files.
 
-Then point `shopware.d.ts` to the overrides file instead of the generated one:
+Merge the overlay in `shopware.d.ts`. The base can be `@shopware/api-client/store-api-types` or `./api-types/storeApiTypes`. Pointing `#shopware` at the overlay file alone would drop every default operation.
 
 ```typescript
 // shopware.d.ts
 declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
 
-  export type operations =
-    import("./api-types/storeApiTypes.overrides").operations;
-  export type Schemas =
-    import("./api-types/storeApiTypes.overrides").components["schemas"];
+  // for default types
+  // export type operations =
+  //   import("@shopware/api-client/store-api-types").operations;
+  // or for local TypeScript overlays
+  export type operations = import("@shopware/api-client").WithApiOverrides<
+    import("@shopware/api-client/store-api-types").operations,
+    import("./api-types/storeApiTypes.overrides").operations
+  >;
+  // or for locally generated types
+  // export type operations = import("./api-types/storeApiTypes").operations;
+
+  // for default types
+  // export type Schemas =
+  //   import("@shopware/api-client/store-api-types").components["schemas"];
+  // or for local TypeScript overlays
+  export type Schemas = import("@shopware/api-client").WithApiOverrides<
+    import("@shopware/api-client/store-api-types").components["schemas"],
+    import("./api-types/storeApiTypes.overrides").Schemas
+  >;
+  // or for locally generated types
+  // export type Schemas =
+  //   import("./api-types/storeApiTypes").components["schemas"];
+
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
 ```
@@ -332,6 +344,29 @@ const request = client.invoke("readContext get /context", {
   },
 });
 ```
+
+`signal` and `timeout` work together. A per-request `signal` does not switch off the timeout, whether it was set on the client or on the call, so whichever fires first aborts the request:
+
+```typescript
+const controller = new AbortController();
+
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    signal: controller.signal,
+    timeout: 5000,
+  },
+});
+```
+
+Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124, Safari 17.4 and Node 20.3. The package also runs server-side, so the Node version matters as much as the browser ones. Older runtimes keep the previous behaviour, where a per-request `signal` switches the timeout off.
+
+A `timeout` is rounded up to whole milliseconds and capped at 2147483647 (about 24 days), which is the largest value a timer can hold. A value that cannot be waited for, so anything that is not a finite positive number, is ignored. A spent budget such as `deadline - Date.now()` therefore leaves the request without a timeout instead of failing it.
+
+With a `signal`, the deadline covers the whole request, including reading the response body and any retry. Without one, ofetch stops its own timer once the response headers arrive, so a slow body is not bounded. A deadline that fires while the body is being read rejects with a plain `TimeoutError` instead of a wrapped fetch error, and `isTimeoutError` matches both.
+
+In the admin client an expired session is refreshed before the request runs. With a `signal`, the refresh and the request share one deadline. Without one, each gets the full `timeout`, so an expired session can take up to twice as long.
+
+Aborting or timing out a request while that refresh is in flight leaves the stored session as it was. If the server rotated the refresh token in the meantime, the stored one no longer works and the client has to authenticate again.
 
 All exposed options available under `fetchOptions` are:
 
@@ -420,8 +455,10 @@ How the client handles this for you:
 
 Client is throwing `ApiClientError` with detailed information returned from the API. It will display clear message in the console or you can access `details` property to get raw information from the response.
 
+A request that runs into `fetchOptions.timeout` did not get its complete response in time. It is not an `ApiClientError` and has no HTTP status. The request may already have reached the API and been processed, so the server-side outcome is unknown, and a mutation must not be retried without checking. Use `isTimeoutError` to tell it apart.
+
 ```typescript
-import { ApiClientError } from "@shopware/api-client";
+import { ApiClientError, isTimeoutError } from "@shopware/api-client";
 
 try {
   // ... your request
@@ -429,6 +466,8 @@ try {
   if (error instanceof ApiClientError) {
     console.error(error); // This prints message summary
     console.error("Details:", error.details); // Raw response from API
+  } else if (isTimeoutError(error)) {
+    console.error("Timed out. The server may still have processed it.");
   } else {
     console.error("==>", error); // Another type of error, not recognized by API client
   }
