@@ -99,6 +99,14 @@ export type operations = {
 > [!IMPORTANT]  
 > Overriding components or operations in the TS files requires you to have a full object definitions!
 
+Override-only projects (extra plugin endpoints, no local OpenAPI JSON) should
+import components from `@shopware/api-client/store-api-types` and merge the
+overlay in `shopware.d.ts` with `WithApiOverrides` from `@shopware/api-client`.
+That keeps StackBlitz working without committing a generated `storeApiTypes.d.ts`.
+See the [api-client TypeScript overrides](https://www.npmjs.com/package/@shopware/api-client) docs.
+When you do run `generate`, it still applies the same overlay onto whatever base
+schema it resolved (local JSON, or the types shipped with the api-client).
+
 ### Partial overrides
 
 There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
