@@ -3,23 +3,6 @@ name: E2E Starter Template
 run-name: Playwright e2e suite against vue-starter-template 🚀
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - "templates/vue-starter-template/**"
-      - "apps/e2e-tests/**"
-      - ".github/workflows/e2e-starter-template.yml"
-      # Linked from packages/, so a change here rebuilds the starter without
-      # touching the template. api-gen is codegen only, so it is left out.
-      - "packages/api-client/**"
-      - "packages/cms-base-layer/**"
-      - "packages/composables/**"
-      - "packages/helpers/**"
-      - "packages/nuxt-module/**"
-      - "packages/unocss-design-tokens-layer/**"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
   schedule:
     - cron: "0 4 * * *"
 
@@ -27,15 +10,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   run-storefront-e2e:
     name: E2E against vue-starter-template
     runs-on: ubuntu-latest
-    # Above the step timeout below. A job that runs out of time fails outright,
-    # and `continue-on-error` on a step cannot absorb that.
+    # Above the step timeout below, so a slow run fails on the step.
     timeout-minutes: 45
     env:
       BASE_E2E_URL: http://localhost:3000/
@@ -95,9 +77,8 @@ jobs:
 
       - name: Run tests
         id: e2e
-        # Reports rather than gates: the shared demo backend drops calls with
-        # no response, which retries absorb. Out of failed-job-check.yml too.
-        continue-on-error: true
+        # No continue-on-error: the run has to fail for failed-job-check.yml to
+        # notify. Nothing is gated on it, since this is scheduled only.
         timeout-minutes: 25
         run: |
           cd apps/e2e-tests
@@ -114,15 +95,15 @@ jobs:
           node scripts/summarise-network.mjs >> "$GITHUB_STEP_SUMMARY"
 
       - name: Report result
+        if: always()
         run: |
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
 
-          Reporting only, this does not block the pull request. The suite is
-          expected to pass. Runs share one demo backend that intermittently
-          stalls store-api requests, so a spec can still go red for reasons
-          unrelated to the change under test. Retries absorb those, and they
-          show up as flaky rather than failed.
+          Scheduled only, so nothing is gated on this. A failure notifies
+          Slack through failed-job-check.yml. The suite is expected to pass;
+          runs share one demo backend that intermittently drops store-api
+          calls, which retries usually absorb.
           EOF
 
           echo "::group::storefront log"

@@ -29,12 +29,6 @@ export class WishlistPage {
       .waitFor({ state: "visible" });
   }
 
-  /** Via the header link: /wishlist is ssr:false and gated on being signed in. */
-  async countEntries() {
-    await this.openWishlist();
-    return this.page.getByTestId("wishlist-product-box").count();
-  }
-
   /** The tile raises no notification, so the cart request is the signal. */
   async addFirstProductToCart() {
     const cartUpdated = this.page.waitForResponse(

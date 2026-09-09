@@ -7,16 +7,31 @@ const LOG = process.env.SSR_NETWORK_LOG;
 if (LOG) {
   const original = globalThis.fetch;
 
-  const write = (entry) => {
+  // Buffered: a synchronous write per call would add blocking I/O to the very
+  // latency being measured. Flushed on a timer and on exit.
+  const buffer = [];
+
+  const flush = () => {
+    if (buffer.length === 0) return;
+    const lines = buffer.splice(0, buffer.length).join("");
     try {
       mkdirSync(dirname(LOG), { recursive: true });
-      appendFileSync(
-        LOG,
-        `${JSON.stringify({ at: new Date().toISOString(), side: "ssr", ...entry })}\n`,
-      );
+      appendFileSync(LOG, lines);
     } catch {
       // Diagnostics must never break the server.
     }
+  };
+
+  const timer = setInterval(flush, 2000);
+  timer.unref?.();
+  for (const signal of ["exit", "SIGINT", "SIGTERM"]) {
+    process.once(signal, flush);
+  }
+
+  const write = (entry) => {
+    buffer.push(
+      `${JSON.stringify({ at: new Date().toISOString(), side: "ssr", ...entry })}\n`,
+    );
   };
 
   globalThis.fetch = async (input, init) => {

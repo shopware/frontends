@@ -9,6 +9,7 @@ on:
         Stackblitz templates,
         Audit check,
         Accessibility Check,
+        E2E Starter Template,
       ]
     types: [completed]
     branches: [main, prod]

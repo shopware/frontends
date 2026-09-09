@@ -1,4 +1,3 @@
-import { getCategoryFilterPostFilter } from "@shopware/helpers";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import type { LocationQueryRaw } from "vue-router";
@@ -25,8 +24,7 @@ export function useListingFilters(isProductSearch: boolean) {
 
   const selectedFilters = useSelectedListingFilters();
 
-  // Only the filters this listing can apply: the category filter is
-  // search-only, matching the post-filter and URL gates below.
+  // Only the filters this listing can apply; the category filter is search-only.
   const visibleFilters = computed(() =>
     getVisibleListingFilters(getInitialFilters.value, { isProductSearch }),
   );
@@ -47,17 +45,6 @@ export function useListingFilters(isProductSearch: boolean) {
   > = computed(() => ({
     manufacturer: [...(selectedFilters.manufacturer as Set<string>)]?.join("|"),
     properties: [...(selectedFilters.properties as Set<string>)]?.join("|"),
-    // A post-filter so the category aggregation itself is not reduced. Search
-    // pages only: a stale ?categories= must not narrow a category page.
-    ...(isProductSearch && selectedFilters.categories.size > 0
-      ? {
-          "post-filter": [
-            getCategoryFilterPostFilter([
-              ...(selectedFilters.categories as Set<string>),
-            ]),
-          ],
-        }
-      : {}),
     "min-price": selectedFilters["min-price"] as number,
     "max-price": selectedFilters["max-price"] as number,
     order: getCurrentSortingOrder.value as string,
@@ -195,7 +182,6 @@ export function useListingFilters(isProductSearch: boolean) {
     handleRemoveFilterChip,
     handleSortChange,
     invokeCleanFilters,
-    searchCriteriaForRequest,
     selectedFilters,
     showResetFiltersButton,
     visibleFilters,

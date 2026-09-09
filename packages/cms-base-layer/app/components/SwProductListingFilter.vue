@@ -72,7 +72,7 @@ const handleSelectValue = ({
 };
 </script>
 <template>
-  <div>
+  <div :data-testid="`listing-filter-${filter.code}`">
     <component
       :is="filterComponent"
       :filter="filter"

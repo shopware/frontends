@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
+import { until } from "@vueuse/core";
 import { defu } from "defu";
 import { computed, ref, useTemplateRef, watch } from "vue";
+import type { LocationQuery } from "vue-router";
 
 import {
+  firstQueryValue,
+  toNumber,
   useCategoryListing,
   useCmsElementConfig,
   useRoute,
@@ -60,6 +64,31 @@ const limit = ref(
 
 const initialPath = route.path;
 
+/** Query values are strings; the Store API expects numbers and booleans. */
+function buildCriteria(query: LocationQuery) {
+  const criteria: Record<string, unknown> = {
+    limit: toNumber(firstQueryValue(query.limit)) ?? defaultLimit,
+    p: toNumber(firstQueryValue(query.p)) ?? defaultPage,
+    order: firstQueryValue(query.order) ?? defaultOrder,
+  };
+
+  const manufacturer = firstQueryValue(query.manufacturer);
+  if (manufacturer) criteria.manufacturer = manufacturer;
+  const properties = firstQueryValue(query.properties);
+  if (properties) criteria.properties = properties;
+  const minPrice = toNumber(firstQueryValue(query["min-price"]));
+  if (minPrice !== undefined) criteria["min-price"] = minPrice;
+  const maxPrice = toNumber(firstQueryValue(query["max-price"]));
+  if (maxPrice !== undefined) criteria["max-price"] = maxPrice;
+  const rating = toNumber(firstQueryValue(query.rating));
+  if (rating !== undefined) criteria.rating = rating;
+  if (query["shipping-free"])
+    criteria["shipping-free"] =
+      firstQueryValue(query["shipping-free"]) === "true";
+
+  return criteria as unknown as operations["searchPage post /search"]["body"];
+}
+
 // The only place that fetches, so back and forward work.
 watch(
   () => route.query,
@@ -67,18 +96,24 @@ watch(
     // A different path mounts its own component.
     if (route.path !== initialPath) return;
 
-    const hasQuery = Object.keys(query).length > 0;
-    const criteria = hasQuery
-      ? query
-      : { limit: defaultLimit, p: defaultPage, order: defaultOrder };
+    // The select and the skeleton count read this, so it has to follow the URL
+    // too, not just the products.
+    limit.value = toNumber(firstQueryValue(query.limit)) ?? defaultLimit;
 
     changeCurrentPage(
-      hasQuery && query.p ? Number(query.p) : defaultPage,
-      criteria as unknown as operations["searchPage post /search"]["body"],
+      toNumber(firstQueryValue(query.p)) ?? defaultPage,
+      buildCriteria(query),
     );
   },
   { deep: true },
 );
+
+// `v-if="!loading"` unmounts the list while the watcher refetches, so scrolling
+// straight after the push would target a node that is about to be detached.
+async function scrollToListing() {
+  await until(loading).toBe(false);
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
+}
 
 const changePage = async (page: number) => {
   await router.push({
@@ -88,7 +123,7 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  productListElement.value?.scrollIntoView({ behavior: "smooth" });
+  await scrollToListing();
 };
 
 const changeLimit = async (newLimit: number) => {
@@ -99,7 +134,7 @@ const changeLimit = async (newLimit: number) => {
       p: defaultPage,
     },
   });
-  productListElement.value?.scrollIntoView({ behavior: "smooth" });
+  await scrollToListing();
 };
 
 const isProductListing = computed(

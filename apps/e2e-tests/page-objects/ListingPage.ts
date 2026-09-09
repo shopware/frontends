@@ -2,18 +2,16 @@ import { expect, type Locator, type Page } from "@playwright/test";
 
 import { LISTING_TIMEOUT, listingRequested } from "../utils/listing";
 
-/** Property groups are sales channel content, so one is found by elimination. */
-const NON_PROPERTY_FILTERS = [
-  "Sort",
-  "shipping-free",
-  "rating",
-  "price",
+// Filter codes, matched against the panel's data-testid rather than its button
+// text, which is localised. Anything not in here is a property group.
+const NON_PROPERTY_FILTER_CODES = [
   "manufacturer",
+  "price",
+  "rating",
+  "shipping-free",
   // Search listings only: filters on categories=, not properties=.
-  "Categories",
+  "categories",
 ];
-
-const NON_FILTER_PREFIXES = ["Add to cart", "Page ", "Submit"];
 
 /** Shared by the category and search listings, which behave identically. */
 export abstract class ListingPage {
@@ -23,10 +21,7 @@ export abstract class ListingPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.manufacturerFilter = page.getByRole("button", {
-      name: "manufacturer",
-      exact: true,
-    });
+    this.manufacturerFilter = page.getByTestId("listing-filter-manufacturer");
     this.limitSelect = page.getByTestId("listing-pagination-limit-select");
   }
 
@@ -77,15 +72,16 @@ export abstract class ListingPage {
     panel: Locator,
     filterKey: "manufacturer" | "properties",
   ) {
-    const checkboxes = this.page.locator('input[type="checkbox"]');
-    const before = await checkboxes.count();
+    // Scoped to the panel: a page-wide index would shift if the rail closes
+    // another panel, or if anything else on the page adds a checkbox.
+    const option = panel.locator('input[type="checkbox"]').first();
 
-    await panel.click();
-    await checkboxes.nth(before).waitFor({ state: "attached" });
+    await panel.getByRole("button").first().click();
+    await option.waitFor({ state: "attached" });
 
     // Armed first: the request leaves as soon as the box is ticked.
     const listed = listingRequested(this.page, filterKey);
-    await checkboxes.nth(before).check({ force: true });
+    await option.check({ force: true });
     try {
       await listed;
     } catch {
@@ -101,24 +97,26 @@ export abstract class ListingPage {
     // The rail renders after the listing.
     await this.manufacturerFilter.waitFor({ state: "visible" });
 
-    const buttons = this.page.getByRole("button");
-    const names = await buttons.evaluateAll((elements) =>
-      elements.map((element) => element.textContent?.trim() ?? ""),
+    const panels = this.page.locator('[data-testid^="listing-filter-"]');
+    const codes = await panels.evaluateAll((elements) =>
+      elements.map((element) =>
+        (element.getAttribute("data-testid") ?? "").replace(
+          "listing-filter-",
+          "",
+        ),
+      ),
     );
 
-    const index = names.findIndex(
-      (name) =>
-        name.length > 0 &&
-        !NON_PROPERTY_FILTERS.includes(name) &&
-        !NON_FILTER_PREFIXES.some((prefix) => name.startsWith(prefix)),
+    const index = codes.findIndex(
+      (code) => code.length > 0 && !NON_PROPERTY_FILTER_CODES.includes(code),
     );
     if (index === -1) {
       throw new Error(
-        `No property filter on this listing. Buttons seen: ${names.filter(Boolean).join(", ")}.`,
+        `No property filter on this listing. Filter codes seen: ${codes.join(", ")}.`,
       );
     }
 
-    return buttons.nth(index);
+    return panels.nth(index);
   }
 
   /** Sort menus render as a menu of menuitems, not a native select. */

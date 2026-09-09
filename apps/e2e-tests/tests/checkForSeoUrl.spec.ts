@@ -25,6 +25,12 @@ test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
     // Any nav entry will do. Clicked rather than navigated to, because this
     // test is about client-side routing not issuing seo-url requests.
     await page.locator('[role="menubar"] [role="menuitem"]').first().click();
+    // Wait for the destination to render, or the assertion runs before the
+    // router has had a chance to request anything and proves nothing.
+    await page
+      .getByTestId("product-box-img")
+      .first()
+      .waitFor({ state: "visible" });
     await expect(SeoUrlRequest).toBe(false);
   });
 });

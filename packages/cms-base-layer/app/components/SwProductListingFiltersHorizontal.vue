@@ -51,9 +51,6 @@ const hasActiveFilter = (filter: { code: string }) => {
   if (filter.code === "manufacturer") {
     return sidebarSelectedFilters.manufacturer.size > 0;
   }
-  if (filter.code === "properties") {
-    return sidebarSelectedFilters.properties.size > 0;
-  }
   if (filter.code === "categories") {
     return sidebarSelectedFilters.categories.size > 0;
   }
@@ -69,7 +66,9 @@ const hasActiveFilter = (filter: { code: string }) => {
   if (filter.code === "shipping-free") {
     return sidebarSelectedFilters["shipping-free"] !== undefined;
   }
-  return false;
+  // Any other code is a property group. Each carries its own code and only
+  // normalises to "properties" when it emits, so this has to stay a fallback.
+  return sidebarSelectedFilters.properties.size > 0;
 };
 </script>
 
