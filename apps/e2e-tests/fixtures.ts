@@ -105,14 +105,16 @@ export const test = base.extend<{ networkDiagnostics: void }>({
           const peer = await response.serverAddr().catch(() => null);
           const at = new Date().toISOString();
           const traceId = response.headers()["x-trace-id"] ?? null;
+          // Successes only: a 4xx or 5xx is recorded below as well, and
+          // counting it in both would inflate the denominator.
           if (status < 400) {
             lastOk = { at, traceId, node: peer?.ipAddress ?? null };
-          }
-          try {
-            mkdirSync(dirname(ATTEMPT_LOG), { recursive: true });
-            appendFileSync(ATTEMPT_LOG, `${peer?.ipAddress ?? "unknown"}\n`);
-          } catch {
-            // Diagnostics must never fail a test.
+            try {
+              mkdirSync(dirname(ATTEMPT_LOG), { recursive: true });
+              appendFileSync(ATTEMPT_LOG, `${peer?.ipAddress ?? "unknown"}\n`);
+            } catch {
+              // Diagnostics must never fail a test.
+            }
           }
         }
         if (status < 400) return;

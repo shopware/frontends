@@ -100,10 +100,14 @@ watch(
     // too, not just the products.
     limit.value = toNumber(firstQueryValue(query.limit)) ?? defaultLimit;
 
+    // Caught, not discarded: the Store API drops calls often enough that an
+    // unhandled rejection here would be a routine occurrence.
     changeCurrentPage(
       toNumber(firstQueryValue(query.p)) ?? defaultPage,
       buildCriteria(query),
-    );
+    ).catch((error) => {
+      console.error("Listing update failed:", error);
+    });
   },
   { deep: true },
 );

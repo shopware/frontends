@@ -55,13 +55,14 @@ const throttled = entries.filter(
 );
 
 const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
-// A 4xx is the backend answering, not the connection failing. Some are
-// expected: /customer/wishlist 404s by design.
+// Anything the backend answered is not a transport failure, however bad the
+// answer. Some are expected: /customer/wishlist 404s by design. An error page
+// is a consequence of a failure already counted, so it stays out of both.
 const answered = entries.filter((entry) =>
-  String(entry.kind).startsWith("store-api-4"),
+  /^store-api-(4\d\d|5\d\d|throttled)$/.test(String(entry.kind)),
 );
 const transport = entries.filter(
-  (entry) => !String(entry.kind).startsWith("store-api-4"),
+  (entry) => entry.kind === "store-api-no-response",
 );
 // Ours, not the backend's: ERR_ABORTED is our own cancel, and anything after
 // the test body is Playwright closing the context.
@@ -71,14 +72,19 @@ const aborted = transport.filter(
 const genuine = transport.filter(
   (entry) => entry.failure !== "net::ERR_ABORTED" && !entry.duringTeardown,
 );
-const attempted = completed + entries.length;
+// Error pages are not API calls, so they do not belong in the denominator.
+const apiCalls = (list) =>
+  list.filter((entry) => entry.kind !== "storefront-error-page").length;
+const attempted =
+  completed +
+  entries.filter((entry) => entry.kind !== "storefront-error-page").length;
 const pct = (n) => (attempted ? ((n / attempted) * 100).toFixed(1) : "0");
 const bySide = (list, side) => list.filter((e) => e.side === side).length;
 console.log(
   `### Store API: ${genuine.length} of ${attempted} calls failed without a response (${pct(genuine.length)}%)\n`,
 );
 console.log(
-  `Browser ${bySide(genuine, "browser")} of ${browserOk + browser.length}, SSR ${bySide(genuine, "ssr")} of ${ssrOk + ssr.length - ssrOk}. SSR is measured by a fetch wrapper in the storefront process; without it those calls are invisible and are the ones that become 500 pages.\n`,
+  `Browser ${bySide(genuine, "browser")} of ${browserOk + apiCalls(browser)}, SSR ${bySide(genuine, "ssr")} of ${ssrOk + apiCalls(ssr)}. SSR is measured by a fetch wrapper in the storefront process; without it those calls are invisible and are the ones that become 500 pages.\n`,
 );
 if (aborted.length) {
   console.log(
