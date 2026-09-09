@@ -1,6 +1,6 @@
 {
   "name": "@shopware/unocss-design-tokens-layer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Reusable Nuxt Layer for Shopware design tokens and UnoCSS configuration",
   "author": "Shopware",
   "repository": {
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@iconify-json/carbon": "1.2.25",
-    "@unocss/nuxt": "66.7.5",
+    "@unocss/nuxt": "66.10.0",
     "@unocss/core": "66.7.5",
     "@unocss/preset-wind3": "66.7.5",
     "@unocss/runtime": "66.7.5",

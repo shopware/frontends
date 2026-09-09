@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { isTimeoutError } from "@shopware/api-client";
+
 definePageMeta({
   layout: "checkout",
 });
@@ -38,6 +40,9 @@ const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
+const { handleApiError } = useApiErrorsResolver();
+const { pushError } = useNotifications();
+const { t } = useI18n();
 
 function handleRemoveItem(id: string) {
   removeItemById(id);
@@ -58,6 +63,12 @@ async function handlePlaceOrder() {
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
+  } catch (error) {
+    if (isTimeoutError(error)) {
+      pushError(t("errors.order-timeout"));
+    } else {
+      handleApiError(error);
+    }
   } finally {
     isPlacingOrder.value = false;
   }

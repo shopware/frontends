@@ -99,6 +99,14 @@ export type operations = {
 > [!IMPORTANT]  
 > Overriding components or operations in the TS files requires you to have a full object definitions!
 
+Override-only projects (extra plugin endpoints, no local OpenAPI JSON) should
+import components from `@shopware/api-client/store-api-types` and merge the
+overlay in `shopware.d.ts` with `WithApiOverrides` from `@shopware/api-client`.
+That keeps StackBlitz working without committing a generated `storeApiTypes.d.ts`.
+See the [api-client TypeScript overrides](https://www.npmjs.com/package/@shopware/api-client) docs.
+When you do run `generate`, it still applies the same overlay onto whatever base
+schema it resolved (local JSON, or the types shipped with the api-client).
+
 ### Partial overrides
 
 There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
@@ -401,15 +409,9 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.5.1
+### Latest changes: 1.5.2
 
 ### Patch Changes
 
-- [#2575](https://github.com/shopware/frontends/pull/2575) [`1e8a64c`](https://github.com/shopware/frontends/commit/1e8a64c71197484e2c8d2a2f148f3f29ab63bccd) Thanks [@patzick](https://github.com/patzick)! - Support OpenAPI `const` schema values during type generation.
-
-- [#2515](https://github.com/shopware/frontends/pull/2515) [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173) Thanks [@patzick](https://github.com/patzick)! - Generate `customFields` properties with a dedicated `CustomFields` type instead of the broader `GenericRecord` type.
-
-- [#2516](https://github.com/shopware/frontends/pull/2516) [`13a3766`](https://github.com/shopware/frontends/commit/13a37660fbbf63054b9e7d02f39d161bb7f2b065) Thanks [@patzick](https://github.com/patzick)! - Use `oxfmt` instead of Prettier for generated API files.
-
-- Updated dependencies [[`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0), [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173), [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b), [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa), [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0)]:
-  - @shopware/api-client@1.5.1
+- Updated dependencies [[`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
+  - @shopware/api-client@1.6.0

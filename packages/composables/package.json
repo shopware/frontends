@@ -1,6 +1,6 @@
 {
   "name": "@shopware/composables",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
@@ -79,6 +79,6 @@
     "typescript": "5.9.3",
     "unbuild": "3.6.1",
     "vitest": "4.1.10",
-    "vue": "3.5.41"
+    "vue": "3.5.42"
   }
 }
