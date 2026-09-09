@@ -4,7 +4,8 @@ packages:
   - "templates/*"
   - "examples/*"
 
-# Reduciing the risk of installing fresh compromised packages before detected
+# Reducing the risk of installing fresh compromised packages before detected.
+# Keep .github/dependabot.yml cooldown.default-days in lockstep (4320 min = 3 days).
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
   - "@shopware/*"
