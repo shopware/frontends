@@ -57,8 +57,10 @@ jobs:
 
       # Leave NITRO_PRESET unset. The default node-server preset is the one that
       # writes .output/server/index.mjs, which is what `nuxt preview` runs.
+      # Through turbo: postinstall skips the package build on CI, so the
+      # packages the starter links need `^build` first.
       - name: Build the starter template
-        run: pnpm --filter vue-starter-template build
+        run: pnpm exec turbo run build --filter=vue-starter-template
 
       - name: Start the starter template
         env:
