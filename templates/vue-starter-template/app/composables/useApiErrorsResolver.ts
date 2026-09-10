@@ -67,7 +67,6 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
     const localErrorResolver = errorResolver || pushError;
 
     if (error instanceof ApiClientError) {
-      const { resolveApiErrors } = useApiErrorsResolver(context);
       const errors = resolveApiErrors(error.details.errors);
 
       for (const errorMessage of errors) {
