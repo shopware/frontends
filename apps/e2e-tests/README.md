@@ -24,14 +24,16 @@ pnpm run test:e2e
 
 `test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs navigate generically, so they run against any storefront rather than one template.
 
-CI runs them against `vue-starter-template`: on pull requests that touch `templates/vue-starter-template/**`, `apps/e2e-tests/**` or the workflow itself, nightly, and on manual dispatch. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
+CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
-The run passes against the starter. It still reports rather than gates, because a few specs need a retry against the shared demo backend. Two scenarios stay skipped for features the starter does not have: a clear-wishlist action ([#2679](https://github.com/shopware/frontends/issues/2679)) and product reviews ([#2680](https://github.com/shopware/frontends/issues/2680)).
+The run passes against the starter. Nothing is gated on it, since it does not run on pull requests; a failing run notifies Slack through `failed-job-check.yml`. Two scenarios stay skipped for features the starter does not have: a clear-wishlist action ([#2679](https://github.com/shopware/frontends/issues/2679)) and product reviews ([#2680](https://github.com/shopware/frontends/issues/2680)).
 
 To reproduce the CI run locally:
 
 ```sh
-pnpm --filter vue-starter-template build
+# Through turbo, like the workflow, so the packages the starter links are
+# built first rather than picked up stale.
+pnpm exec turbo run build --filter=vue-starter-template
 
 # The starter's sales channel accepts only this storefront URL, and
 # nuxt.config.ts defaults to the wrong one. See #2585.
