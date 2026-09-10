@@ -85,21 +85,22 @@ const handleEnterKey = () => {
 
 <template>
   <div ref="searchBox">
-    <FormBaseInput
-      id="search-input"
-      v-model="model"
-      :placeholder="$t('search.placeholder')"
-      @click="suggestIsActive = true"
-      @focus="suggestIsActive = true"
-      @keydown.enter="handleEnterKey"
-    >
-      <template #rightIcon>
-        <Icon
-          name="shopware:search-s"
-          class="color-surface-on-surface-variant rotate-90 ml-2"
-        />
-      </template>
-    </FormBaseInput>
+    <div @click="suggestIsActive = true">
+      <FormBaseInput
+        id="search-input"
+        v-model="model"
+        :placeholder="$t('search.placeholder')"
+        @focus="suggestIsActive = true"
+        @keydown.enter="handleEnterKey"
+      >
+        <template #rightIcon>
+          <Icon
+            name="shopware:search-s"
+            class="color-surface-on-surface-variant rotate-90 ml-2"
+          />
+        </template>
+      </FormBaseInput>
+    </div>
 
     <div
       v-if="showSuggest"

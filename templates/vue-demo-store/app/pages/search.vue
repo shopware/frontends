@@ -2,6 +2,7 @@
 import {
   getCategoryFilterAggregations,
   getCategoryFilterPostFilter,
+  getTranslatedProperty,
 } from "@shopware/helpers";
 import { watchDebounced } from "@vueuse/core";
 import { useTemplateRef } from "vue";
@@ -463,7 +464,7 @@ onMounted(() => {
                         isSortMenuOpen = false;
                       "
                     >
-                      {{ sorting.label }}
+                      {{ getTranslatedProperty(sorting, "label") }}
                     </button>
                   </div>
                 </div>

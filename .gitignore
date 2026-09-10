@@ -41,6 +41,13 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Generated API types. The defaults ship with @shopware/api-client.
+# Examples with extra endpoints keep only *.overrides.ts and merge them in
+# shopware.d.ts via WithApiOverrides — that is what StackBlitz needs.
+# Keep the copies in packages/api-client: those are the published schema.
+**/api-types/*ApiTypes.d.ts
+!/packages/api-client/api-types/*ApiTypes.d.ts
+
 # turbo
 .turbo
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { computed, defineAsyncComponent, ref } from "vue";
 
 import { useCmsElementConfig, useImagePlaceholder } from "#imports";
@@ -129,7 +130,7 @@ function onTouchEnd() {
             class="w-full h-full absolute inset-0 object-cover"
             :placeholder="placeholderSvg"
             :src="currentImage.url"
-            :alt="currentImage.alt || 'Product image'"
+            :alt="getTranslatedProperty(currentImage, 'alt') || 'Product image'"
           />
           <!-- Placeholder -->
           <img

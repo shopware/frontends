@@ -1,0 +1,41 @@
+name: Examples
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
+  pull_request:
+    paths:
+      - "examples/**"
+      - ".github/workflows/examples.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build examples
+    timeout-minutes: 25
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TELEMETRY_DISABLED: 1
+      DO_NOT_TRACK: 1
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # Sequential: build and typecheck both write `.nuxt/` in each example.
+      # Running them in one turbo graph races (TS6053: nuxt.node.d.ts not found).
+      - name: Build examples
+        run: pnpm exec turbo run build --filter='./examples/*'
+      - name: Typecheck examples
+        run: pnpm exec turbo run typecheck --filter='./examples/*'

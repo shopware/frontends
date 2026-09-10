@@ -178,7 +178,7 @@ const invokeSubmit = async () => {
           v-if="!companyOnly"
           class="col-span-12"
           v-model="accountTypeModel"
-          dataTestId="registration-account-type-select"
+          data-testid="registration-account-type-select"
           id="accountType"
         />
 

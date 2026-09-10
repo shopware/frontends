@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Shopware Frontends template manifest",
+  "description": "The single source of truth for which templates exist and what each one needs. Consumers read this instead of keeping their own list.",
+  "type": "object",
+  "required": ["manifestVersion", "templates"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "manifestVersion": {
+      "const": 1,
+      "description": "Version of this contract. Bumped when field semantics change, so out-of-repo consumers can detect a manifest they do not understand."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Anything that applies to every template."
+    },
+    "templates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/template"
+      }
+    }
+  },
+  "definitions": {
+    "template": {
+      "type": "object",
+      "required": [
+        "id",
+        "displayName",
+        "packageName",
+        "framework",
+        "purpose",
+        "docsUrl",
+        "issueUrl",
+        "supportLevel",
+        "scaffoldable",
+        "scaffoldCommand",
+        "deployable",
+        "devcontainer",
+        "env",
+        "node",
+        "devPort",
+        "buildCommand",
+        "devCommand",
+        "typeGeneration"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Directory name under templates/. This is the identity used everywhere.",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name, for docs navigation, pickers and devcontainer labels."
+        },
+        "packageName": {
+          "type": "string",
+          "description": "The name field in the template's package.json. It does not always match the id, so consumers that filter workspaces need both."
+        },
+        "framework": {
+          "type": "string",
+          "enum": ["nuxt", "astro", "vite"]
+        },
+        "purpose": {
+          "type": "string",
+          "description": "One sentence on what this template is for."
+        },
+        "docsUrl": {
+          "type": ["string", "null"],
+          "description": "Documentation page for this template. Null when no page exists, which is a gap worth closing rather than a valid state. Must resolve to a file under apps/docs/src/.",
+          "pattern": "^https://developer\\.shopware\\.com/frontends/.+\\.html$"
+        },
+        "issueUrl": {
+          "type": "string",
+          "description": "Prefilled link for reporting a problem with this template. The title is prefixed with the template id so issues arrive already triaged.",
+          "pattern": "^https://github\\.com/shopware/frontends/issues/new\\?.+$"
+        },
+        "supportLevel": {
+          "type": "string",
+          "description": "supported: receives feature work. example: builds in CI, no feature work, no support promise. deprecated: do not start new projects on it.",
+          "enum": ["supported", "example", "deprecated"]
+        },
+        "scaffoldable": {
+          "type": "boolean",
+          "description": "Whether consumers may offer this template as a starting point for a new project. False when copying it out of the monorepo breaks (see notes), or when new projects must not start on it."
+        },
+        "scaffoldCommand": {
+          "type": ["string", "null"],
+          "description": "Copies the template out of the monorepo into ./my-project. After running it: install dependencies with any package manager, then run the dev script. Null exactly when scaffoldable is false."
+        },
+        "deployable": {
+          "type": "boolean",
+          "description": "Whether this template is deployed to a hosting environment."
+        },
+        "devcontainer": {
+          "type": "boolean",
+          "description": "Whether .devcontainer/<id>/devcontainer.json exists, so it can be opened in GitHub Codespaces."
+        },
+        "env": {
+          "type": "object",
+          "description": "Env vars that point the template at your own Shopware instance, with what each one is for. Every template ships with working demo-backend defaults, so none are needed for a first run. They belong in a .env file in the project root.",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["description"],
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "node": {
+          "type": "string",
+          "description": "The engines.node range from the template's package.json. Check it before installing."
+        },
+        "devPort": {
+          "type": "integer",
+          "description": "Port the dev server listens on."
+        },
+        "buildCommand": {
+          "type": "string",
+          "description": "Contents of the build script in the template's package.json. Run the script through a package manager (npm run build), not this string directly."
+        },
+        "devCommand": {
+          "type": "string",
+          "description": "Contents of the dev script in the template's package.json. Starts a dev server, not a production one. Run the script through a package manager (npm run dev), not this string directly."
+        },
+        "typeGeneration": {
+          "type": ["object", "null"],
+          "description": "How to regenerate the Store API types against your own instance, so they include its extensions. Set the env vars, run loadSchemaCommand to fetch the instance schema into api-types/, then run the script. Skipping the fetch makes the script fall back to the published default types. Null when the template does not wire @shopware/api-gen.",
+          "additionalProperties": false,
+          "required": ["env", "loadSchemaCommand", "script"],
+          "properties": {
+            "env": {
+              "type": "object",
+              "description": "Env vars the schema fetch needs. Each description says how to derive the value from the storefront configuration, so a consumer does not have to ask for values it already has.",
+              "minProperties": 1,
+              "propertyNames": {
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["description"],
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            "loadSchemaCommand": {
+              "type": "string",
+              "description": "Fetches the instance's OpenAPI schema into api-types/. Executable as-is after dependencies are installed."
+            },
+            "script": {
+              "type": "string",
+              "description": "The package.json script that regenerates the types from the fetched schema."
+            }
+          }
+        },
+        "notes": {
+          "type": "string",
+          "description": "Anything a consumer needs to know that the fields above do not express."
+        }
+      }
+    }
+  }
+}

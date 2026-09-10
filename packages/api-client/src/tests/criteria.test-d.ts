@@ -2,7 +2,7 @@ import { assertType, describe, expectTypeOf, it } from "vitest";
 
 import type { Schemas } from "../../api-types/storeApiTypes";
 
-type Associations = Schemas["Association"];
+type Associations = Schemas["Associations"];
 
 describe("Criteria type", () => {
   it("Associations", () => {
@@ -15,23 +15,25 @@ describe("Criteria type", () => {
     // allow passing config
     expectTypeOf({
       media: {},
-    }).toMatchTypeOf<Associations>();
+    }).toExtend<Associations>();
 
     // allow nested config
     expectTypeOf({
       media: {
-        nestedValue: {},
+        associations: {
+          nestedValue: {},
+        },
       },
-    }).toMatchTypeOf<Associations>();
+    }).toExtend<Associations>();
 
     // do not allow string values
     expectTypeOf({
       media: "should not be allowed",
-    }).not.toEqualTypeOf<Associations>();
+    }).not.toExtend<Associations>();
 
     // do not allow number values
     expectTypeOf({
       media: 123,
-    }).not.toEqualTypeOf<Associations>();
+    }).not.toExtend<Associations>();
   });
 });

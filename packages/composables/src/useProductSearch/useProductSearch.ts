@@ -9,7 +9,7 @@ import { cmsAssociations } from "../cms/cmsAssociations";
 type UseProductSearchReturnOptions = {
   withCmsAssociations?: boolean;
   criteria?: Partial<Schemas["Criteria"]>;
-  associations?: Partial<Schemas["Association"]>;
+  associations?: Partial<Schemas["Associations"]>;
 };
 
 export type UseProductSearchReturn = {

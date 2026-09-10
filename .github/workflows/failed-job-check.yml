@@ -4,10 +4,11 @@ on:
     workflows:
       [
         Code examples,
+        Examples,
         Lighthouse CI,
         Stackblitz templates,
         Audit check,
-        Accessibiliy Check,
+        Accessibility Check,
       ]
     types: [completed]
     branches: [main, prod]

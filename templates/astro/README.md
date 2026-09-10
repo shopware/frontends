@@ -2,11 +2,11 @@
 
 ![Shopware Frontends](./public/shopware-frontends-logo.png)
 
-This repository shows an example of application built using Shopware Frontends Framework with [Astro](astro.build).
+This repository shows an example of application built using Shopware Frontends Framework with [Astro](https://astro.build).
 
 ## What's inside
 
-- Astro application [following official Guides > integrations > @astrojs/vue](https://docs.astro.build/en/guides/integrations-guide/vue/])
+- Astro application [following official Guides > integrations > @astrojs/vue](https://docs.astro.build/en/guides/integrations-guide/vue/)
 - Required libraries installed (api-client and composables)
 
 ## Requirements

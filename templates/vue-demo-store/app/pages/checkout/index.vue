@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
-import { ApiClientError, type ApiError } from "@shopware/api-client";
-import { getShippingMethodDeliveryTime } from "@shopware/helpers";
+import {
+  ApiClientError,
+  type ApiError,
+  isTimeoutError,
+} from "@shopware/api-client";
+import {
+  getShippingMethodDeliveryTime,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 
 import type { operations } from "#shopware";
@@ -233,12 +240,17 @@ const placeOrder = async () => {
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
-    if (error instanceof ApiClientError)
+    if (error instanceof ApiClientError) {
       for (const errorItem of error.details.errors) {
         if (errorItem?.detail) {
           pushError(errorItem.detail);
         }
       }
+    } else if (isTimeoutError(error)) {
+      pushError(t("errors.order-timeout"));
+    } else {
+      pushError(t("errors.message-default"));
+    }
   } finally {
     isLoading.placeOrder = false;
   }
@@ -454,7 +466,7 @@ const handleChangeBaseInfo = async (data: {
                       :key="salutation.id"
                       :value="salutation.id"
                     >
-                      {{ salutation.displayName }}
+                      {{ getTranslatedProperty(salutation, "displayName") }}
                     </option>
                   </select>
                 </div>
@@ -844,7 +856,7 @@ const handleChangeBaseInfo = async (data: {
                     <img
                       loading="lazy"
                       :src="singlePaymentMethod.media.url"
-                      :alt="`Logo of ${singlePaymentMethod.shortName}`"
+                      :alt="`Logo of ${getTranslatedProperty(singlePaymentMethod, 'shortName')}`"
                     />
                   </div>
                 </div>

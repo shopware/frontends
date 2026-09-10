@@ -12,7 +12,7 @@
     "@shopware/composables": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.7",
-    "vue": "3.5.41"
+    "vue": "3.5.42"
   },
   "devDependencies": {
     "@types/js-cookie": "3.0.6",
@@ -23,6 +23,16 @@
     "vue-tsc": "3.3.9"
   },
   "engines": {
-    "node": "^20.x || ^22.x || ^24.x"
+    "node": ">=22.12.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "oxfmt",
+      "oxlint",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }

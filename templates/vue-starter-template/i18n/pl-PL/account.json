@@ -25,6 +25,7 @@
       "seeLess": "Zobacz mniej",
       "orderLabel": "Zamówienie",
       "shippingStatus": "Status wysyłki",
+      "statusUnknown": "Nieznany",
       "shipping": "Wysyłka",
       "shippingMethod": "Metoda wysyłki",
       "total": "Całkowita kwota",

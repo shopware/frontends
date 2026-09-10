@@ -242,7 +242,7 @@ onMounted(async () => {
               :key="category.id"
               class="mb-2"
             >
-              {{ category.name }}
+              {{ getTranslatedProperty(category, "name") }}
             </div>
           </div>
           <div v-else>No categories available</div>

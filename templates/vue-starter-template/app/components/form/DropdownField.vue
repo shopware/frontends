@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { MaybeRef } from "vue";
 
+defineOptions({ inheritAttrs: false });
+
 const { errorMessage } = defineProps<{
   placeholder?: string;
   label?: string;
@@ -20,9 +22,11 @@ const model = defineModel<string>({
 });
 
 const errorText = computed(() => unref(errorMessage));
+
+const { wrapperAttrs, controlAttrs } = useControlAttrs();
 </script>
 <template>
-  <div>
+  <div v-bind="wrapperAttrs">
     <label
       class="text-surface-on-surface text-sm mb-1 block"
       v-if="label"
@@ -41,6 +45,7 @@ const errorText = computed(() => unref(errorMessage));
       :loading
       :autocomplete
       :variant="variant"
+      v-bind="controlAttrs"
     />
     <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
       errorText

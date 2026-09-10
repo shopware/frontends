@@ -2,13 +2,13 @@
 
 ![Shopware Frontends](./public/shopware-frontends-logo.png)
 
-This repository shows an example of application built using Shopware Frontends Framework on Nuxt 3.
+This repository shows an example of application built using Shopware Frontends Framework on Nuxt 4.
 
 ## What's inside
 
-- Nuxt 3 application
+- Nuxt 4 application
 - Required libraries installed (api-client, composables, nuxt-module)
-- Minimum configuration of Nuxt 3 module
+- Minimum configuration of the Shopware Nuxt module
 
 ## Requirements
 
@@ -20,7 +20,7 @@ In order to have a different API connected to the app, rename `.env.dist` file t
 
 ## Customize
 
-Now, you are free to use the `@shopware/composables` package in the application. You can start from [app.vue](./app.vue).
+Now, you are free to use the `@shopware/composables` package in the application. You can start from [app.vue](./app/app.vue).
 
 ## Install & Run
 

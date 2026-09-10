@@ -35,6 +35,21 @@ await page.waitFor(1000); // hard wait for 1000ms
 Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
 Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
 
+One exception: avoid `waitForLoadState("networkidle")` on a Shopware storefront. A Nuxt app keeps making
+requests after the page is usable, so the network rarely goes idle and the wait times out. Wait for the
+element you are about to act on instead.
+
+```js
+// flaky
+await page.waitForLoadState("networkidle");
+await page.getByTestId("product-box-product-name-link").first().click();
+
+// reliable
+const firstProduct = page.getByTestId("product-box-product-name-link").first();
+await firstProduct.waitFor({ state: "visible" });
+await firstProduct.click();
+```
+
 ### Pages
 
 Follow the PageObjects pattern for the suite template to encapsulate each internal page structure and responsibilities inside its highly cohesive class file. This allows you to define a new page object for each page as per your needs.

@@ -14,10 +14,16 @@ const { isLoggedIn } = useUser();
   <h1>{{ template }}</h1>
   <div class="example">
     <p>
-      Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
+      Currency:
+      <strong
+        >{{ currency?.translated?.name }} ({{
+          currency?.translated?.symbol
+        }})</strong
+      >
     </p>
     <p>
-      Default payment method: <strong>{{ selectedPaymentMethod?.name }}</strong>
+      Default payment method:
+      <strong>{{ selectedPaymentMethod?.translated?.name }}</strong>
     </p>
     <p>
       Is customer logged in: <strong>{{ isLoggedIn }}</strong>

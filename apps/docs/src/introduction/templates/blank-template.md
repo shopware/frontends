@@ -16,7 +16,7 @@ Alternatively, set up the vue-blank template manually by running the following c
 
 ```bash
 npx tiged shopware/frontends/templates/vue-blank vue-blank && cd vue-blank
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 ## Configure

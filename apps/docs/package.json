@@ -14,7 +14,7 @@
     "schema:update:store": "cp ../../packages/api-client/api-types/storeApiSchema.json .data/schema/storeApiSchema.json"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
   },
   "devDependencies": {
     "ts-dox": "^0.1.0",

@@ -96,9 +96,7 @@ The Shopware CMS backend includes:
 
 The template includes pre-configured styles for CMS blocks:
 
-- `.lumora-category-tiles` - Styled category image tiles with hover effects
-- `.lumora-featured-slider` - Product slider customization
-- `.lumora-editorial` - Editorial content section spacing
+- `.lumora-separator` - horizontal divider for CMS sections (defined as an UnoCSS shortcut in `uno.config.ts`)
 
 These can be applied directly in the Shopware CMS admin panel.
 
