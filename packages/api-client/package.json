@@ -74,7 +74,7 @@
     "happy-dom": "20.11.1",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "dependencies": {
     "defu": "6.1.7",
