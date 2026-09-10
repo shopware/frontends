@@ -28,8 +28,8 @@
       "passwordLabel": "Hasło",
       "createAccountToggleLabel": "Utwórz konto klienta"
     },
-    "guestRegistrationButton": "Dalej",
-    "registeringGuest": "Zapisywanie danych…",
+    "continueButton": "Dalej",
+    "savingDetails": "Zapisywanie danych…",
     "success": {
       "header": "Otrzymaliśmy Twoje zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
       "paymentProcessLabel": "Zakończ proces płatności.",

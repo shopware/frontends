@@ -26,7 +26,7 @@ const { changeProductQuantity, removeItemById, isEmpty, refreshCart, cart } =
 const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
   useUser();
 const { handleApiError: handleRegistrationError } = useApiErrorsResolver(
-  "checkout_guest_registration_form",
+  "checkout_registration_form",
 );
 const { handleApiError: handlePlaceOrderError } = useApiErrorsResolver(
   "checkout_place_order",
@@ -41,6 +41,7 @@ const {
   $vBillingAddress,
   customerBaseInfo,
   billingAddress,
+  createAccount,
 } = useTemplateCheckout();
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
@@ -74,7 +75,7 @@ function focusFirstInvalid() {
 }
 
 const isPlacingOrder = ref(false);
-const isRegisteringGuest = ref(false);
+const isRegistering = ref(false);
 
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
@@ -105,21 +106,21 @@ function handleChangePaymentMethod(id: string) {
   setPaymentMethod({ id });
 }
 
-async function handleRegisterGuest() {
-  if (isRegisteringGuest.value) return;
+async function handleRegister() {
+  if (isRegistering.value) return;
 
-  $vBaseInfo.email.$touch();
+  $vBaseInfo.$touch();
   $vBillingAddress.$touch();
 
-  const { valid: validEmail } = await $vBaseInfo.email.$validate();
+  const { valid: validBaseInfo } = await $vBaseInfo.$validate();
   const { valid: validBillingAddress } = await $vBillingAddress.$validate();
 
-  if (!validEmail || !validBillingAddress) {
+  if (!validBaseInfo || !validBillingAddress) {
     focusFirstInvalid();
     return;
   }
 
-  isRegisteringGuest.value = true;
+  isRegistering.value = true;
   const trigger = document.activeElement;
   try {
     await register({
@@ -127,7 +128,7 @@ async function handleRegisterGuest() {
       lastName: billingAddress.value.lastName,
       email: customerBaseInfo.value.email,
       password: customerBaseInfo.value.password,
-      guest: true,
+      guest: !createAccount.value,
       billingAddress: {
         customerId: "",
         firstName: billingAddress.value.firstName,
@@ -143,7 +144,7 @@ async function handleRegisterGuest() {
   } catch (error) {
     handleRegistrationError(error, persistentError);
   } finally {
-    isRegisteringGuest.value = false;
+    isRegistering.value = false;
     restoreFocus(trigger);
   }
 }
@@ -207,6 +208,7 @@ onMounted(() => {
               class="mb-4"
               v-model:email="customerBaseInfo.email"
               v-model:password="customerBaseInfo.password"
+              v-model:createAccount="createAccount"
               :errorMessages="toRef($vBaseInfo)"
             />
             <CheckoutCustomerAddress
@@ -216,12 +218,12 @@ onMounted(() => {
             />
             <FormBaseButton
               :label="
-                isRegisteringGuest
-                  ? $t('checkout.registeringGuest')
-                  : $t('checkout.guestRegistrationButton')
+                isRegistering
+                  ? $t('checkout.savingDetails')
+                  : $t('checkout.continueButton')
               "
-              :loading="isRegisteringGuest"
-              @click="handleRegisterGuest"
+              :loading="isRegistering"
+              @click="handleRegister"
             />
           </template>
 
