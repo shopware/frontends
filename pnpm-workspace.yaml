@@ -15,7 +15,7 @@ overrides:
   less: ^4.8.1
   "qs@<6.16.0": 6.16.0
   "fast-uri@<3.1.6": 3.1.6
-  "@tiptap/pm@<3.30.4": 3.30.4
+  "@tiptap/pm@<3.30.5": 3.30.5
   "nanoid@<3.3.18": "^3.3.18"
   esbuild: ^0.28.2
   vite: ^8.2.1
@@ -34,8 +34,15 @@ overrides:
   "@vue/server-renderer": 3.5.42
   "@vue/shared": 3.5.42
   browserslist: 4.28.9
-  "@tiptap/core": 3.30.4
+  "@tiptap/core": 3.30.5
   "fflate@<0.6.11": "^0.6.11"
+  "js-yaml@>=4.0.0 <4.3.2": 4.3.2
+  "svgo@>=4.0.0 <4.1.0": 4.1.0
+  "smol-toml@<=1.7.0": 1.7.1
+  "sharp@<0.35.4": 0.35.4
+  "astro@<7.2.8": 7.2.8
+  "vitest@>=2.1.0 <4.1.11": 4.1.11
+  "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
 
 peerDependencyRules:
   ignoreMissing:

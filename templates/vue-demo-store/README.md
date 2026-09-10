@@ -39,7 +39,7 @@ To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package
 3. generate types `pnpx @shopware/api-gen generate --apiType=store` (or run `pnpm generate-types`)
 
 > [!NOTE]
-> Do not edit your `api-types/storeApiTypes.d.ts` file. It will be overwritten on the next schema generation. Instead use your `shopware.d.ts` file to extend types.
+> The template uses the types shipped with `@shopware/api-client` until you generate your own. Do not edit a generated `api-types/storeApiTypes.d.ts` file; it is overwritten on the next schema generation. Switch `shopware.d.ts` to the generated file after `generate-types`, and put extra endpoints in `storeApiTypes.overrides.ts`.
 
 ## Styling and Shopping Experiences integration
 

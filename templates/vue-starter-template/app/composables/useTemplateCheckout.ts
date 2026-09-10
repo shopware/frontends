@@ -8,6 +8,7 @@ import { customValidators } from "../../i18n/utils/i18n-validators";
 interface UseTemplateCheckoutReturn {
   selectedShippingMethod: Ref<string | null>;
   selectedPaymentMethod: Ref<string | null>;
+  createAccount: Ref<boolean>;
   billingAddress: Ref<Omit<Schemas["CustomerAddress"], "id" | "customerId">>;
   canPlaceOrder: ComputedRef<boolean>;
   customerAddressRules: ComputedRef<object>;
@@ -29,6 +30,8 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
 
   const selectedShippingMethod = ref<string | null>(null);
   const selectedPaymentMethod = ref<string | null>(null);
+
+  const createAccount = ref(false);
 
   const billingAddress = ref<
     Omit<Schemas["CustomerAddress"], "id" | "customerId">
@@ -79,10 +82,12 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
       required,
       email,
     },
-    password: {
-      required,
-      minLength: minLength(3),
-    },
+    password: createAccount.value
+      ? {
+          required,
+          minLength: minLength(8),
+        }
+      : {},
   }));
 
   const { r$: $vBillingAddress } = useRegle(
@@ -94,6 +99,7 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
   return {
     selectedShippingMethod,
     selectedPaymentMethod,
+    createAccount,
     billingAddress,
     canPlaceOrder,
     customerAddressRules,

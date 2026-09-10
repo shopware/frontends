@@ -11,6 +11,10 @@ const password = defineModel<string>("password", {
   required: true,
 });
 
+const createAccount = defineModel<boolean>("createAccount", {
+  required: true,
+});
+
 const { errorMessages } = defineProps<{
   errorMessages?: Ref<
     Regle<{
@@ -24,34 +28,34 @@ const SWITCH_ANIMATION_MS = 600;
 const switchAnimationDuration = `${SWITCH_ANIMATION_MS}ms`;
 
 const switchAnimating = ref(false);
-const createAccountToggle = ref(false);
+let switchAnimationTimer: ReturnType<typeof setTimeout> | undefined;
 
 const passwordField = useTemplateRef<FocusableInput>("passwordField");
 
 async function switchAnimation() {
-  if (switchAnimating.value || createAccountToggle.value) return;
+  if (switchAnimating.value || createAccount.value) return;
 
+  createAccount.value = true;
   switchAnimating.value = true;
 
-  // `v-show` on the password field tracks `switchAnimating`, so the input is
+  // `v-show` on the password field tracks `createAccount`, so the input is
   // focusable as soon as this flag flushes. Focus it now rather than when the
   // animation ends: a delayed focus would pull the caret out of whatever the
   // user moved to during those 600ms.
   await nextTick();
   passwordField.value?.focus({ preventScroll: true });
 
-  setTimeout(() => {
-    createAccountToggle.value = true;
+  switchAnimationTimer = setTimeout(() => {
     switchAnimating.value = false;
   }, SWITCH_ANIMATION_MS);
 }
 
-function handleUpdateBaseInfo() {
-  console.log("handle data update");
-}
+// The checkout content sits behind a `v-if`/`v-else` on the empty cart, so this
+// component can be destroyed mid-animation.
+onUnmounted(() => clearTimeout(switchAnimationTimer));
 </script>
 <template>
-  <form @submit.prevent="handleUpdateBaseInfo">
+  <form @submit.prevent>
     <div>
       <FormInputField
         class="mb-4"
@@ -65,14 +69,15 @@ function handleUpdateBaseInfo() {
       <div
         class="relative transition-all"
         :class="{
-          'h-4': !createAccountToggle && !switchAnimating,
-          'h-15': switchAnimating || createAccountToggle,
+          'h-4': !createAccount,
+          'h-15': createAccount,
         }"
       >
         <div
-          v-if="!createAccountToggle"
+          v-if="!createAccount || switchAnimating"
           class="flex items-center gap-2 absolute"
           :class="{ 'animate-slide-up-out': switchAnimating }"
+          :inert="switchAnimating || undefined"
         >
           <FormLinkButton class="border-b-0 text-sm" @click="switchAnimation">
             <Icon name="shopware:plus-xs" class="color-brand-primary" />
@@ -82,7 +87,7 @@ function handleUpdateBaseInfo() {
           </FormLinkButton>
         </div>
         <div
-          v-show="createAccountToggle || switchAnimating"
+          v-show="createAccount"
           class="absolute w-full"
           :class="{ 'animate-fade-in': switchAnimating }"
         >
