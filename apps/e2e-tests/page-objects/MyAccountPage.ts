@@ -43,9 +43,14 @@ export class MyAccountPage {
     this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }
 
+  /** Some templates gate the form behind an edit button; others do not. */
   async changePersonalData() {
-    await this.accountChangeProfileButton.waitFor();
-    await this.accountChangeProfileButton.dispatchEvent("click");
+    if ((await this.accountChangeProfileButton.count()) > 0) {
+      await this.accountChangeProfileButton.click();
+      return;
+    }
+    await this.page.goto("/account/profile");
+    await this.personalFirstName.waitFor({ state: "visible" });
   }
 
   async changePersonalFirstName(firstname: string) {
@@ -74,7 +79,7 @@ export class MyAccountPage {
     await this.accountChangeShippingAddressButton.click();
   }
 
-  async subsribeNewsletter() {
+  async subscribeNewsletter() {
     await this.newsletterCheckbox.click();
   }
 }

@@ -4,8 +4,6 @@ export class ProductPage {
   readonly page: Page;
   readonly addToCartButton: Locator;
   readonly variant: Locator;
-  readonly variantText: Locator;
-  readonly productOption: Locator;
   readonly miniCartLink: Locator;
   readonly productRemove: Locator;
   readonly ratingStar: Locator;
@@ -18,10 +16,10 @@ export class ProductPage {
     this.page = page;
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.variant = page.getByTestId("product-variant");
-    this.variantText = page.getByTestId("product-variant-text");
-    this.productOption = page.getByTestId("cart-product-options");
-    this.miniCartLink = page.getByTestId("cart-button");
-    this.productRemove = page.getByTestId("product-remove-button");
+    this.miniCartLink = page.getByTestId("header-mini-cart-button");
+    this.productRemove = page.getByTestId(
+      "checkout-product-tile-remove-button",
+    );
     this.ratingStar = page.getByTestId("review-empty-star");
     this.reviewTitle = page.getByTestId("review-title-input");
     this.reviewText = page.getByTestId("review-text-input");
@@ -45,19 +43,58 @@ export class ProductPage {
   }
 
   async addVariantToCart() {
-    for (const variant of await this.page
-      .getByTestId("product-variant-text")
-      .all())
-      await variant.click();
-    await expect(this.page.getByTestId("loading")).toHaveCount(0);
-    await this.addToCartButton.nth(0).click();
-    await this.miniCartLink.click();
-    expect(this.variantText.textContent).toEqual(
-      this.productOption.textContent,
+    const urlBefore = this.page.url();
+    const isSelected = await this.variant.evaluateAll((options) =>
+      options.map((option) =>
+        option.className.includes("border-brand-primary"),
+      ),
     );
-    await this.page.waitForLoadState("networkidle");
+
+    // Not every option combination is a real variant, and one that is not
+    // leaves the page untouched. The handler is on the label, not the text.
+    let switched = false;
+    for (const [index, selected] of isSelected.entries()) {
+      if (selected) continue;
+      await this.variant.nth(index).click();
+      try {
+        await this.page.waitForURL((url) => url.href !== urlBefore, {
+          timeout: 10000,
+        });
+        switched = true;
+        break;
+      } catch {
+        continue;
+      }
+    }
+    if (!switched) {
+      throw new Error("No variant option switched the product.");
+    }
+
+    await expect(this.page.getByTestId("loading")).toHaveCount(0);
+
+    // The id the add-to-cart button will actually submit.
+    const variantId =
+      await this.addToCartButton.getAttribute("data-product-id");
+    if (!variantId) {
+      throw new Error("The add-to-cart button carries no data-product-id.");
+    }
+
+    await this.addToCart();
+    await this.miniCartLink.click();
+    await this.page
+      .getByTestId("mini-cart-container")
+      .waitFor({ state: "visible" });
+
+    // Identity, not just presence: navigating to a variant URL while adding the
+    // original product would otherwise pass.
+    await expect(
+      this.page.locator(
+        `[data-testid="checkout-product-tile-item"][data-product-id="${variantId}"]`,
+      ),
+    ).toHaveCount(1);
+
     await this.productRemove.click();
-    await this.page.getByTestId("cart-close-button").click();
+    await this.page.getByTestId("mini-cart-close-button").click();
   }
 
   async fillReviewForm() {

@@ -9,16 +9,34 @@ export class WishlistPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addToCartButton = page.getByTestId("add-to-cart-button");
-    this.wishlistButton = page.getByTestId("wishlist-button");
+    this.addToCartButton = page.getByTestId("wishlist-add-to-cart-button");
+    this.wishlistButton = page.getByTestId("header-wishlist-button");
     this.productInWishlistButton = page
-      .getByTestId("product-box-toggle-wishlist-button")
+      .getByTestId("wishlist-product-box-toggle-button")
       .first();
     this.clearWishlistButton = page.getByTestId("clear-wishlist-button");
   }
 
   async openWishlist() {
     await this.wishlistButton.click();
+    // Client-side navigation: without this the next assertion sees the old page.
+    await this.page.waitForURL(/\/wishlist/);
+    await this.page
+      .locator(
+        '[data-testid="wishlist-product-box"], [data-testid="wishlist-empty-container"]',
+      )
+      .first()
+      .waitFor({ state: "visible" });
+  }
+
+  /** The tile raises no notification, so the cart request is the signal. */
+  async addFirstProductToCart() {
+    const cartUpdated = this.page.waitForResponse(
+      (response) => response.url().includes("/checkout/cart") && response.ok(),
+      { timeout: 30000 },
+    );
+    await this.addToCartButton.first().click();
+    await cartUpdated;
   }
 
   async removeProductFromWishlist() {

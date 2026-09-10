@@ -30,6 +30,7 @@ function handleChange(id: string) {
     <div
       v-for="shippingMethod in shippingMethods"
       :key="shippingMethod.id"
+      data-testid="checkout-shipping-method"
       class="p-4"
     >
       <label :for="shippingMethod.id" class="flex items-center gap-4">
