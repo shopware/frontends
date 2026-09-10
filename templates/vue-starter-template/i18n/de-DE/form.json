@@ -19,6 +19,7 @@
     "country": "Land",
     "chooseCountry": "Land auswählen...",
     "clearCountry": "Länderauswahl löschen",
+    "toggleCountryList": "Länderliste ein-/ausblenden",
     "company": "Firma",
     "vatIds": "USt-IdNr.",
     "companyPlaceholder": "Firma eingeben...",
