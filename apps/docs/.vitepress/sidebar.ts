@@ -243,6 +243,10 @@ export const sidebar = [
             link: "/frontends-recipes/account/login.html",
           },
           {
+            text: "Register",
+            link: "/frontends-recipes/account/register.html",
+          },
+          {
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
