@@ -420,7 +420,7 @@ async function loadMainNavigation() {
 
 ### Dropping a default header per request
 
-Set a header to an empty string to leave a default header out of one request, for example `headers: { "sw-context-token": "" }`. The header is removed, not sent empty. Header names are matched case-insensitively, so this also removes a default `Sw-Context-Token`. The response to a request with an empty `sw-context-token` never sets or replaces the client's token.
+Set a header to `""` to leave a default header out of one request. Example: `headers: { "sw-context-token": "" }`. Header names match case-insensitively. A response to such a request never changes the client's token.
 
 ### Uploading files (`multipart/form-data`) and other binary bodies
 
@@ -566,7 +566,7 @@ apiClient.invoke("readProductGet get /product", {
 
 ### mergeRequestHeaders
 
-The `mergeRequestHeaders` function merges request headers over default headers the same way `invoke` does. Header names are matched case-insensitively and returned lowercase, and a header set to an empty string is removed.
+Merges request headers over default headers, like `invoke` does. Names match case-insensitively and come back lowercase. A header set to `""` is removed.
 
 ```typescript
 import { mergeRequestHeaders } from "@shopware/api-client/helpers";

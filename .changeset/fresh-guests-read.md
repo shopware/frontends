@@ -2,4 +2,4 @@
 "@shopware/composables": minor
 ---
 
-Added `useCacheableRead().invokeRead`. With `cacheableReads` on, it sends a read as the cacheable GET route, without `sw-context-token`, only when the loaded session and cart look like a fresh default guest; every other session stays POST. Branching on `useShopwareContext().cacheableReads` is deprecated. `createShopwareContext` takes a new `guestServerRender` option.
+Added `useCacheableRead().invokeRead`. It uses the cacheable GET route only for a fresh default guest. That GET has no `sw-context-token`. Other sessions stay POST. Branching on `useShopwareContext().cacheableReads` is deprecated. New `createShopwareContext` option: `guestServerRender`.

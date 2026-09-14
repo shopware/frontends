@@ -94,7 +94,7 @@ describe("cacheable reads coverage", () => {
 
     expect(
       bypasses,
-      "Add the route to cacheableReadRoutes and call useCacheableRead().invokeRead with its POST operation",
+      "Register the route in cacheableReadRoutes. Call invokeRead with its POST operation.",
     ).toEqual([]);
   });
 });

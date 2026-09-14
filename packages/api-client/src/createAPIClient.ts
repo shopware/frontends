@@ -144,8 +144,7 @@ export function createAPIClient<
         if (isPubliclyCacheableResponse(context.response)) {
           return;
         }
-        // A request that dropped the context token gets a fresh guest token
-        // back, which must not set or replace the client's session.
+        // An anonymous request gets a guest token back. Keep the session.
         if (ANONYMOUS_REQUEST in context.options) {
           return;
         }

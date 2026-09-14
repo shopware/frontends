@@ -92,12 +92,10 @@ The essentials for code changes:
   bodies are not HTTP-cacheable, so reads compress the Criteria into a
   `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`
   (JSON → gzip → base64url, matching the backend `RequestCriteriaBuilder`).
-  - For a read, call `useCacheableRead().invokeRead` with the POST operation; it
-    sends GET, without the token, only when the loaded session and cart look like
-    a fresh default guest. Never branch on
-    `cacheableReads`. Add a new GET twin to the registry in
-    `packages/composables/src/useCacheableRead/`; the coverage test there
-    enforces both. Mutations always stay POST/PATCH.
+  - For a read, call `useCacheableRead().invokeRead` with the POST operation.
+    It picks GET or POST per request. Never branch on `cacheableReads`.
+  - Register new GET twins in `packages/composables/src/useCacheableRead/`.
+    The coverage test there enforces it. Mutations always stay POST/PATCH.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
   `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
   routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static

@@ -36,9 +36,9 @@ ISR and route-rule caching are honored only by deployment targets that support t
 
 ## Request layer: `cacheableReads`
 
-`cacheableReads` is the headline new capability. It is an opt-in boolean flag (default `false`) that lets a defined set of read composables use the cacheable GET variants of the Store API instead of POST. POST responses are not cached by CDNs, reverse proxies, or browsers in practice (HTTP allows it only when explicitly marked, which shared caches generally ignore), whereas GET responses are cacheable by default. Enabling the flag is what makes that possible from the frontend side.
+`cacheableReads` is an opt-in flag (default `false`). It lets some read composables use the cacheable GET routes of the Store API. Shared caches do not store POST responses. They do store GET responses.
 
-When enabled, and only for a session that looks like a fresh default guest, these composables encode the Shopware Criteria object into a `_criteria` query parameter (gzip + base64url, via `encodeForQuery` from `@shopware/api-client/helpers`) and call the GET route instead of sending a POST body. All other sessions keep using POST, see [Which sessions use GET](#which-sessions-use-get).
+Only a session that looks like a fresh default guest uses GET. The Criteria goes into a `_criteria` query param (gzip + base64url, via `encodeForQuery` from `@shopware/api-client/helpers`). All other sessions use POST. See [Which sessions use GET](#which-sessions-use-get).
 
 ### Why GET over POST (the architectural decision)
 
@@ -46,7 +46,7 @@ Routing reads through GET is a deliberate Shopware platform decision, not just a
 
 The `_criteria` query parameter exists to remove that constraint. Its encoding - JSON -> gzip -> base64url - is defined by the platform, and `encodeForQuery` in `@shopware/api-client/helpers` implements precisely that format, keeping the Criteria small enough to travel in the URL for typical reads (very large criteria can still exceed environment URL-length limits). On the backend, `RequestCriteriaBuilder` decodes `_criteria` and rebuilds the same Criteria it would have parsed from a POST body, so the GET and POST variants return identical data. This is a transitional design: the interim approach until the HTTP `QUERY` method (a cacheable method that carries a body) is standardized.
 
-The generated types do not declare `_criteria` on every GET route yet. That does not block a route: `useCacheableRead` builds the GET call itself. The reads listed further down stay on POST because they are not migrated yet, or on purpose.
+Some GET routes lack `_criteria` in the generated types. That is fine: `useCacheableRead` builds the GET call itself.
 
 ### Enabling it
 
@@ -71,7 +71,7 @@ const shopware = createShopwareContext(app, {
 app.use(shopware);
 ```
 
-Inside a composable, do not read the flag. Call `useCacheableRead()` at setup and pass the POST operation and its params to `invokeRead`. It picks GET or POST on each request and returns the same type as `apiClient.invoke` for that operation:
+In a composable, never read the flag. Call `useCacheableRead()` at setup. Pass the POST operation and its params to `invokeRead`. It picks GET or POST per request. It returns the same type as `apiClient.invoke`:
 
 ```ts
 const { invokeRead } = useCacheableRead();
@@ -84,7 +84,7 @@ async function fetchCountries() {
 }
 ```
 
-A read can use GET only when its route is in the registry in `useCacheableRead`. A coverage test next to it fails when a read with a GET twin is in neither the registry nor its POST-only list, or when code calls a registered route without `invokeRead`.
+Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code calls a listed route without `invokeRead`.
 
 ### Which reads switch to GET
 
@@ -103,15 +103,21 @@ Exactly these composables read through `invokeRead`:
 
 ### Which sessions use GET
 
-`invokeRead` checks on every request. It sends GET only when the session and cart the frontend has loaded look like a fresh default guest: no customer (a guest account counts as one), an empty cart, and the sales channel's default language, currency, country, payment method and shipping method. When it cannot tell, it sends POST. Every other session sends the same POST as with the flag off.
+`invokeRead` checks every request. It sends GET only when the loaded session and cart look like a fresh default guest:
 
-A read that `invokeRead` sends as GET has three separate guarantees:
+- no customer (a guest account counts as one)
+- an empty cart
+- the sales channel's default language, currency, country, payment method and shipping method
 
-1. The request does not carry `sw-context-token`.
-2. The response cannot set or replace the client's context token, even when a login finishes while the read is still running.
-3. The choice between GET and POST uses the session and cart state the frontend has loaded. That state can be stale or incomplete, so the check does not prove that the backend session is a fresh default guest.
+If it cannot tell, it sends POST. Other sessions send the same POST as with the flag off.
 
-The check needs the cart. With `useUserContextInSSR: true` the server render does not load it, so server-side reads stay POST. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app yourself, or reads stay POST once a context token exists.
+A GET from `invokeRead` has three guarantees:
+
+1. It carries no `sw-context-token`.
+2. Its response cannot set or replace the client's token. This holds even when a login finishes during the read.
+3. The GET or POST choice uses the loaded session and cart. That state can be stale or incomplete. So it does not prove the backend session is a fresh guest.
+
+The check needs the cart. With `useUserContextInSSR: true`, the server render has no cart. So server-side reads stay POST. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app. Otherwise reads stay POST once a token exists.
 
 The loaded state cannot show:
 
@@ -119,18 +125,18 @@ The loaded state cannot show:
 - changes made in another tab with the same token
 - state that changed but is not refreshed in the frontend yet
 
-In those cases a session can get default guest data. Whether a response is stored, and under which key, is decided by the backend and any proxy in front of it, see [Backend HTTP cache and reverse proxy](#backend-http-cache-and-reverse-proxy).
+In those cases, a session can get default guest data. The backend and any proxy decide what gets stored. See [Backend HTTP cache and reverse proxy](#backend-http-cache-and-reverse-proxy).
 
-A non-default language always stays POST, also without a token. On Shopware 6.7.6.0 to 6.7.14.0 the built-in HTTP cache does not add `sw-language-id` to its cache key and does not check `Vary`, so a GET in another language would be stored under the same key as the default language. [shopware#20200](https://github.com/shopware/shopware/pull/20200) adds these headers to the key, but it is not in a release yet. A proxy that honors `Vary` would be safe, but the frontend cannot tell which cache it talks to.
+A non-default language always stays POST. Why: in Shopware 6.7.6.0 to 6.7.14.0, the built-in HTTP cache ignores `sw-language-id` and `Vary`. A GET in another language would share the default language's cache entry. [shopware#20200](https://github.com/shopware/shopware/pull/20200) fixes this, but it is not released yet. A proxy that honors `Vary` would be safe. The frontend cannot tell which cache it talks to.
 
 ### Which reads stay on POST, and why
 
 These reads have a GET twin but are not migrated yet:
 
-- `useListing` (product listing and search) - always `readProductListing post /product-listing/{categoryId}` or `searchPage post /search`, tracked in [#2691](https://github.com/shopware/frontends/issues/2691). Shopware core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` (released in 6.7.12.0).
+- `useListing` (listing and search), tracked in [#2691](https://github.com/shopware/frontends/issues/2691). Core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` in 6.7.12.0.
 - `useLandingSearch` - always `readLandingPage post /landing-page/{landingPageId}`
 
-Reads that depend on the session, such as payment and shipping methods, stay on POST on purpose. The coverage test holds the full POST-only list, with a reason for each route.
+Session-dependent reads stay POST on purpose, like payment and shipping methods. The coverage test lists every POST-only route with a reason.
 
 Write and auth/context mutations (login, register, logout, `readCustomer`, `updateContext`, checkout) also stay on POST/PATCH regardless of the flag, because they are mutations and are not cacheable by design.
 
@@ -259,15 +265,17 @@ These rendering modes (universal SSR, client-side, ISR, and the static/SPA optio
 
 The frontend layers stop at producing cacheable requests. Whether a GET response is actually stored, for how long, and with what cache key is decided by the Shopware backend HTTP cache and your reverse proxy (Varnish self-hosted, or Fastly on Shopware Cloud).
 
-This is where `cacheableReads` pays off. By switching reads to GET with a deterministic `_criteria` URL, the request layer produces cacheable requests; the backend reverse proxy then applies `Cache-Control`, cache tags, `sw-cache-hash`, and invalidation. None of that is handled by the frontend `@shopware/api-client` - it only forwards Shopware Store API headers (`sw-access-key`, `sw-context-token`, `sw-language-id`, and so on) and refreshes the context token from non-public response headers. It reads `Cache-Control` only to ignore `sw-context-token` on publicly cacheable responses, and it never takes a token from the response to a request sent with an empty `sw-context-token` override (what `invokeRead` sends for its GETs); it does not set `Cache-Control` or handle cache tags or `sw-cache-hash`.
+This is where `cacheableReads` pays off. GET reads with a stable `_criteria` URL are cacheable. The backend or proxy handles `Cache-Control`, cache tags, `sw-cache-hash` and invalidation.
 
-When a route is cacheable, Shopware marks it with the `_httpCache` route attribute and the `CacheResponseSubscriber` emits a public `Cache-Control` header (the documented default for cacheable Store API routes is `public, max-age=0, s-maxage=1800, stale-while-revalidate=86400, stale-if-error=7200`; non-cacheable routes get `no-cache, private`). The backend sets `sw-language-id`, `sw-currency-id`, and `sw-cache-hash` response headers and adds them to `Vary`. Invalidation reuses Shopware's existing cache tags. See the [HTTP cache concept](https://developer.shopware.com/docs/concepts/framework/http_cache.html) and the [Store API cache strategy](https://developer.shopware.com/docs/resources/references/adr/2025-09-15-store-api-cache-strategy.html) for the full model.
+`@shopware/api-client` does none of that. It forwards the Store API headers. It takes the context token from non-public responses. It ignores that token on public responses. It also ignores it on responses to a request with an empty `sw-context-token`, which `invokeRead` sends for its GETs.
+
+Shopware marks cacheable routes with the `_httpCache` attribute. `CacheResponseSubscriber` then sends a public `Cache-Control` header. The default is `public, max-age=0, s-maxage=1800, stale-while-revalidate=86400, stale-if-error=7200`. Other routes get `no-cache, private`. The backend also sends `sw-language-id`, `sw-currency-id` and `sw-cache-hash`, and adds them to `Vary`. Invalidation uses Shopware's cache tags. See the [HTTP cache concept](https://developer.shopware.com/docs/concepts/framework/http_cache.html) and the [Store API cache strategy](https://developer.shopware.com/docs/resources/references/adr/2025-09-15-store-api-cache-strategy.html) for the full model.
 
 A few consequences follow from how the backend cache works:
 
-- A `sw-context-token` does not keep a GET response out of a shared cache. The cache looks up entries by URL and, in a proxy that honors it, the `Vary` headers, and the token is not one of them. This is why `invokeRead` sends GET only for sessions that look like a fresh default guest, and without the token.
+- A `sw-context-token` does not keep a GET response out of a shared cache. The cache key is the URL, plus `Vary` headers in a proxy that honors them. The token is not part of it. So `invokeRead` sends GET only for fresh guests, and without the token.
 - If the backend responds with `no-store`/`no-cache`, nothing is cached regardless of using GET.
-- `cacheableReads` needs Shopware 6.7.6 or newer. Before that, the GET routes return `405` or ignore `_criteria`, so keep the flag off on older backends.
+- `cacheableReads` needs Shopware 6.7.6 or newer. Older GET routes return `405` or ignore `_criteria`.
 
 To configure the backend cache, follow the [Shopware reverse HTTP cache guide](https://developer.shopware.com/docs/guides/hosting/infrastructure/reverse-http-cache.html). The `_criteria` GET support is tracked in [Shopware issue #12388](https://github.com/shopware/shopware/issues/12388), referenced directly in the `encodeForQuery` source.
 
@@ -277,7 +285,7 @@ Beyond HTTP, the storefront avoids redundant work by sharing in-memory state acr
 
 - **Shared composables.** `useCart`, `usePrice`, and `useProductSearchListing` are wrapped with VueUse's `createSharedComposable()`, so a single instance is reused across the app on the client. During SSR it automatically falls back to per-request (non-shared) mode to avoid cross-request state pollution.
 - **Session, cart, user, listings.** State is held in shared refs under named injection keys (`swSessionContext`, `swCart`, `customer`, `swNavigation-${type}`, listing keys) via a `useContext` helper built on VueUse's `provideLocal`/`injectLocal`. Mutations reassign the shared ref so every consumer sees consistent state without refetching.
-- **Single API client.** One Store API client is created per app and provided via `provide`/`inject`, so all composables share its `defaultHeaders` - including the `sw-context-token` it captures from non-public (private or uncached) response headers and reuses on subsequent requests. Tokens on `Cache-Control: public` responses, and on responses to requests sent with an empty `sw-context-token` override, are ignored, so a CDN hit or an anonymous read cannot overwrite a logged-in session with a guest token.
+- **Single API client.** One Store API client per app, shared via `provide`/`inject`. All composables share its `defaultHeaders`, including the `sw-context-token`. It ignores tokens on public responses and on anonymous reads. So neither can overwrite a logged-in session.
 - **Navigation reuse.** Navigation results are fetched once with `useAsyncData` (with stable keys for deduplication and hydration-payload serialization) and shared down the tree with `provide`/`inject` rather than refetched after hydration.
 
 A couple of pieces of client state are also persisted durably outside memory: the `sw-context-token` is written to a cookie by the Nuxt plugin (so the session survives reloads and SSR), and `useLocalWishlist` persists wishlist ids to `localStorage`.

@@ -22,9 +22,8 @@ export type ShopwareContext = {
    * (CDN, reverse proxy, browser). Requires a backend that supports the GET
    * read routes.
    *
-   * @deprecated Do not branch requests on this flag. Use
-   * `useCacheableRead().invokeRead`, which also checks that the session may
-   * share a cached response.
+   * @deprecated Do not branch on this flag. Use
+   * `useCacheableRead().invokeRead`. It also checks the session.
    * @default false
    */
   cacheableReads: boolean;

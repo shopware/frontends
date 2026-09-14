@@ -14,8 +14,8 @@ type GetTwin<OPERATION> = OPERATION extends `${infer NAME} post ${infer PATH}`
   : never;
 
 /**
- * POST reads with a cacheable GET twin. `query` lists body keys the GET route
- * takes as plain query params instead of inside `_criteria`.
+ * POST reads with a cacheable GET twin. `query`: body keys sent as plain query
+ * params.
  */
 export const cacheableReadRoutes = {
   "readCategoryList post /category": {
@@ -60,9 +60,8 @@ type CacheableReadOperation = keyof typeof cacheableReadRoutes;
 
 export type UseCacheableReadReturn = {
   /**
-   * Same as `apiClient.invoke` for a POST read. Sent as the GET twin only when
-   * `cacheableReads` is on and the loaded state looks like a fresh default
-   * guest.
+   * Same as `apiClient.invoke` for a POST read. Uses the GET twin for fresh
+   * default guests.
    */
   invokeRead: ReturnType<
     typeof createAPIClient<Pick<operations, CacheableReadOperation>>
@@ -119,25 +118,25 @@ export function canUseCacheableGet({
   ) {
     return false;
   }
-  // without a token the backend answers for a fresh default guest
+  // no token: the backend answers as a fresh guest
   if (!token) return true;
-  // unknown session, or the token changed and the session is not refreshed yet
+  // session unknown, or not refreshed after a token change
   if (session?.token !== token) return false;
-  // the server render has no visitor session, so its cart is empty
+  // guest server render: the cart is empty
   if (guestServerRender) return true;
   return cart?.token === token && !cart.lineItems?.length;
 }
 
 /**
- * Reads through the cacheable GET Store API route when the loaded state looks
- * like a fresh default guest. Everything else stays POST.
+ * Uses the cacheable GET route for fresh default guests. Everything else stays
+ * POST.
  *
  * @public
  * @category Context & Language
  */
 export function useCacheableRead(): UseCacheableReadReturn {
   const { apiClient, cacheableReads, guestServerRender } = useShopwareContext();
-  // not useContext: it would provide a new empty ref when none exists
+  // not useContext: it creates an empty ref
   const session = injectLocal<Ref<SessionContext | undefined> | null>(
     "swSessionContext",
     null,

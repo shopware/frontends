@@ -22,8 +22,8 @@ export function createShopwareContext(
      */
     cacheableReads?: boolean;
     /**
-     * Set when the server render runs without the visitor's session. Every
-     * request is then a fresh guest with an empty cart.
+     * Server render without the visitor's session. Every request is a fresh
+     * guest.
      *
      * @default false
      */
