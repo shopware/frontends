@@ -21,6 +21,13 @@ export function createShopwareContext(
      * @default false
      */
     cacheableReads?: boolean;
+    /**
+     * Set when the server render runs without the visitor's session. Every
+     * request is then a fresh guest with an empty cart.
+     *
+     * @default false
+     */
+    guestServerRender?: boolean;
   },
 ) {
   const scope: EffectScope = effectScope(true);
@@ -44,6 +51,7 @@ export function createShopwareContext(
     state,
     browserLocale: options.browserLocale || "en-US",
     cacheableReads: options.cacheableReads ?? false,
+    guestServerRender: options.guestServerRender ?? false,
   });
 
   if (options?.enableDevtools && typeof window !== "undefined") {

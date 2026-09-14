@@ -120,11 +120,20 @@ export function createAPIClient<
   let currentAccessToken = params.accessToken;
 
   function createFetchClient(baseURL: string | undefined) {
+    // checked at send time, the token can change before the response arrives
+    const requestsWithoutClientToken = new WeakSet<object>();
+
     return ofetch.create({
       baseURL,
       ...params.fetchOptions,
       async onRequest(context) {
         apiClientHooks.callHook("onRequest", context);
+        if (
+          defaultHeaders["sw-context-token"] &&
+          !context.options.headers.has("sw-context-token")
+        ) {
+          requestsWithoutClientToken.add(context.options);
+        }
       },
       async onResponse(context) {
         apiClientHooks.callHook("onSuccessResponse", context.response);
@@ -134,6 +143,11 @@ export function createAPIClient<
         // out. Session-changing routes (login/logout/register/context) respond
         // with Cache-Control: private and still update the token as before.
         if (isPubliclyCacheableResponse(context.response)) {
+          return;
+        }
+        // A request sent without the client's token gets a fresh guest token
+        // back, which must not replace the client's session.
+        if (requestsWithoutClientToken.has(context.options)) {
           return;
         }
         if (

@@ -27,6 +27,12 @@ function withoutContentType(headers: ClientHeaders): ClientHeaders {
   );
 }
 
+function withoutEmptyValues(headers: ClientHeaders): ClientHeaders {
+  return Object.fromEntries(
+    Object.entries(headers).filter(([, value]) => value !== ""),
+  );
+}
+
 /**
  * A `multipart/form-data` is only usable with a non-empty `boundary`, and the
  * value may be quoted (`boundary="a;b"`). Read the value out rather than
@@ -100,7 +106,7 @@ export function resolveRequestHeaders(
   defaultHeaders: ClientHeaders,
   body: unknown,
 ): ClientHeaders {
-  const mergedHeaders = defu(callerHeaders, defaultHeaders);
+  const mergedHeaders = withoutEmptyValues(defu(callerHeaders, defaultHeaders));
 
   // The caller's Content-Type wins over the default, regardless of header
   // casing (`defu` merges case-sensitively, so both could otherwise survive).

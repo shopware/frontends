@@ -1,13 +1,7 @@
-import { encodeForQuery } from "@shopware/api-client/helpers";
-
-import { useShopwareContext } from "#imports";
-import type { Schemas, operations } from "#shopware";
+import { useCacheableRead } from "#imports";
+import type { Schemas } from "#shopware";
 
 import { cmsAssociations } from "../cms/cmsAssociations";
-
-type ReadCategoryGetQuery = NonNullable<
-  operations["readCategoryGet get /category/{navigationId}"]["query"]
-> & { _criteria?: string };
 
 export type UseCategorySearchReturn = {
   /**
@@ -37,7 +31,7 @@ export type UseCategorySearchReturn = {
  * @category Navigation & Routing
  */
 export function useCategorySearch(): UseCategorySearchReturn {
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   async function search(
     categoryId: string,
@@ -51,27 +45,18 @@ export function useCategorySearch(): UseCategorySearchReturn {
       associations,
       ...options?.query,
     };
-    const result = cacheableReads
-      ? await apiClient.invoke("readCategoryGet get /category/{navigationId}", {
-          pathParams: {
-            navigationId: categoryId,
-          },
-          headers: {
-            "sw-include-seo-urls": true,
-          },
-          query: {
-            _criteria: encodeForQuery(criteria),
-          } as ReadCategoryGetQuery,
-        })
-      : await apiClient.invoke("readCategory post /category/{navigationId}", {
-          pathParams: {
-            navigationId: categoryId,
-          },
-          headers: {
-            "sw-include-seo-urls": true,
-          },
-          body: criteria,
-        });
+    const result = await invokeRead(
+      "readCategory post /category/{navigationId}",
+      {
+        pathParams: {
+          navigationId: categoryId,
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+        body: criteria,
+      },
+    );
     return result.data;
   }
 
@@ -86,13 +71,9 @@ export function useCategorySearch(): UseCategorySearchReturn {
       associations,
       ...options?.query,
     };
-    const result = cacheableReads
-      ? await apiClient.invoke("readCategoryListGet get /category", {
-          query: { _criteria: encodeForQuery(criteria) },
-        })
-      : await apiClient.invoke("readCategoryList post /category", {
-          body: criteria,
-        });
+    const result = await invokeRead("readCategoryList post /category", {
+      body: criteria,
+    });
     return result.data.elements ?? [];
   }
 

@@ -22,9 +22,18 @@ export type ShopwareContext = {
    * (CDN, reverse proxy, browser). Requires a backend that supports the GET
    * read routes.
    *
+   * @deprecated Do not branch requests on this flag. Use
+   * `useCacheableRead().invokeRead`, which also checks that the session may
+   * share a cached response.
    * @default false
    */
   cacheableReads: boolean;
+  /**
+   * `true` when the server render runs without the visitor's session.
+   *
+   * @default false
+   */
+  guestServerRender: boolean;
 };
 
 /**
@@ -46,5 +55,6 @@ export function useShopwareContext(): ShopwareContext {
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
     browserLocale: shopwareContext.browserLocale || "en-US",
     cacheableReads: shopwareContext.cacheableReads ?? false,
+    guestServerRender: shopwareContext.guestServerRender ?? false,
   };
 }

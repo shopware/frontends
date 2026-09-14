@@ -249,6 +249,76 @@ describe("createAPIClient", () => {
     );
   });
 
+  it("should NOT adopt sw-context-token from a response to a request sent without it", async () => {
+    const app = createApp().use(
+      "/language",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "fresh-guest-token");
+        return { elements: [] };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "logged-in-token",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("readLanguagesGet get /language", {
+      // @ts-expect-error sw-context-token is not a typed header of this endpoint
+      headers: { "sw-context-token": "" },
+    });
+
+    expect(contextChangedMock).not.toHaveBeenCalled();
+    expect(client.defaultHeaders["sw-context-token"]).toEqual(
+      "logged-in-token",
+    );
+  });
+
+  it("should adopt sw-context-token from requests sent before the client had one", async () => {
+    let releaseLogin = () => {};
+    const loginReleased = new Promise<void>((resolve) => {
+      releaseLogin = resolve;
+    });
+    const app = createApp()
+      .use(
+        "/context",
+        eventHandler(async (event) => {
+          setHeader(event, "sw-context-token", "first-token");
+          return {};
+        }),
+      )
+      .use(
+        "/account/login",
+        eventHandler(async (event) => {
+          await loginReleased;
+          setHeader(event, "sw-context-token", "login-token");
+          return {};
+        }),
+      );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      baseURL,
+    });
+
+    const login = client.invoke("loginCustomer post /account/login", {
+      body: { username: "user", password: "pass" },
+    });
+    await client.invoke("readContext get /context");
+    expect(client.defaultHeaders["sw-context-token"]).toEqual("first-token");
+    releaseLogin();
+    await login;
+
+    expect(client.defaultHeaders["sw-context-token"]).toEqual("login-token");
+  });
+
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",

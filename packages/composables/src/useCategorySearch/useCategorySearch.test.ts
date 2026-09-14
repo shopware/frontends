@@ -69,13 +69,14 @@ describe("useCategorySearch", () => {
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCategoryGet get"),
-      expect.objectContaining({
+      "readCategoryGet get /category/{navigationId}",
+      {
         pathParams: {
           navigationId: "categoryId",
         },
         headers: {
           "sw-include-seo-urls": true,
+          "sw-context-token": "",
         },
         query: {
           _criteria: encodeForQuery({
@@ -85,7 +86,7 @@ describe("useCategorySearch", () => {
             sort: [{ field: "name", order: "ASC" }],
           }),
         },
-      }),
+      },
     );
   });
 
@@ -108,7 +109,7 @@ describe("useCategorySearch", () => {
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCategoryGet get"),
+      "readCategoryGet get /category/{navigationId}",
       expect.objectContaining({
         query: {
           _criteria: encodeForQuery({
@@ -186,15 +187,16 @@ describe("useCategorySearch", () => {
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCategoryListGet get"),
-      expect.objectContaining({
+      "readCategoryListGet get /category",
+      {
+        headers: { "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery({
             associations: {},
             limit: 10,
           }),
         },
-      }),
+      },
     );
   });
 });

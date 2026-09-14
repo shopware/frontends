@@ -85,20 +85,18 @@ The full reference is [Best practices: Caching](apps/docs/src/best-practices/cac
 The essentials for code changes:
 
 - **`cacheableReads` (request layer)** — an opt-in context flag (default
-  `false`) that switches a defined set of anonymous read composables from POST to
-  the cacheable GET variant of the Store API. Wired `nuxt.config`
+  `false`) that lets a defined set of anonymous reads use the cacheable GET
+  variant of the Store API. Wired `nuxt.config`
   (`shopware: { cacheableReads: true }`) → `createShopwareContext` →
-  `useShopwareContext()`. GET-over-POST is a Shopware platform decision: POST
+  `useCacheableRead()`. GET-over-POST is a Shopware platform decision: POST
   bodies are not HTTP-cacheable, so reads compress the Criteria into a
   `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`
   (JSON → gzip → base64url, matching the backend `RequestCriteriaBuilder`).
-  - When adding or editing a read composable, branch on `cacheableReads` and call
-    the GET route with `query: { _criteria: encodeForQuery(criteria) }`; keep the
-    POST variant as the `else`. Mutations always stay POST/PATCH. Where a GET
-    variant does not declare `_criteria` in the generated types yet, there is one
-    precedent for a local intersection type — `useCategorySearch.search`. Which
-    reads have already moved shifts as the platform ships GET variants, so read
-    that from the composables rather than from a list here.
+  - For a read, call `useCacheableRead().invokeRead` with the POST operation; it
+    sends GET only for a fresh default guest, without the token. Never branch on
+    `cacheableReads`. Add a new GET twin to the registry in
+    `packages/composables/src/useCacheableRead/`; the coverage test there
+    enforces both. Mutations always stay POST/PATCH.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
   `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
   routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static

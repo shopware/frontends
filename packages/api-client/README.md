@@ -418,6 +418,10 @@ async function loadMainNavigation() {
 }
 ```
 
+### Dropping a default header per request
+
+Set a header to an empty string to leave a default header out of one request, for example `headers: { "sw-context-token": "" }`. The header is removed, not sent empty. A response to a request that leaves out the client's `sw-context-token` does not replace it.
+
 ### Uploading files (`multipart/form-data`) and other binary bodies
 
 Some endpoints accept binary uploads sent as `multipart/form-data` - for example the Admin API `uploadV2 post /_action/media/upload`. For these requests, build a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) instance and pass it as `body`:
