@@ -172,18 +172,22 @@ describe("canUseCacheableGet", () => {
 describe("useCacheableRead", () => {
   function setup({
     cacheableReads = true,
+    guestServerRender = false,
     defaultHeaders = { "sw-context-token": "token" },
     session = ref(guestSession()),
+    cart = ref(cartOf()),
   }: {
     cacheableReads?: boolean;
+    guestServerRender?: boolean;
     defaultHeaders?: Record<string, string>;
     session?: unknown;
+    cart?: unknown;
   } = {}) {
     return useSetup(useCacheableRead, {
-      shopware: { cacheableReads },
+      shopware: { cacheableReads, guestServerRender },
       apiClient: { invoke: vi.fn(), defaultHeaders },
       swSessionContext: session,
-      swCart: ref(cartOf()),
+      swCart: cart,
     } as Parameters<typeof useSetup>[1]);
   }
 
@@ -222,6 +226,17 @@ describe("useCacheableRead", () => {
         pathParams: { productId: "product" },
         query: { _criteria: encodeForQuery(criteria) },
       },
+    );
+  });
+
+  it("sends GET without a loaded cart during a guest server render", async () => {
+    const { vm, injections } = setup({ guestServerRender: true, cart: ref() });
+
+    await vm.invokeRead("readLanguages post /language");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readLanguagesGet get /language",
+      expect.anything(),
     );
   });
 

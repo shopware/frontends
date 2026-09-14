@@ -66,7 +66,6 @@ const fetchReviews = async () => {
       "readProductReviews post /product/{productId}/reviews",
       {
         pathParams: { productId: product.value.id },
-        body: {},
       },
     );
     reviews.value = reviewsResponse.data.elements || [];
