@@ -25,6 +25,13 @@ const { changeProductQuantity, removeItemById, isEmpty, refreshCart, cart } =
 
 const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
   useUser();
+const { handleApiError: handleRegistrationError } = useApiErrorsResolver(
+  "checkout_registration_form",
+);
+const { handleApiError: handlePlaceOrderError } = useApiErrorsResolver(
+  "checkout_place_order",
+);
+const { pushError } = useNotifications();
 
 const {
   selectedShippingMethod,
@@ -34,14 +41,13 @@ const {
   $vBillingAddress,
   customerBaseInfo,
   billingAddress,
+  createAccount,
 } = useTemplateCheckout();
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
-const { handleApiError } = useApiErrorsResolver();
-const { pushError } = useNotifications();
 const { t } = useI18n();
 
 function handleRemoveItem(id: string) {
@@ -52,23 +58,41 @@ function handleUpdateQuantity(id: string, quantity: number) {
   changeProductQuantity({ id, quantity });
 }
 
+function persistentError(message: string) {
+  pushError(message, { persistent: true });
+}
+
+function restoreFocus(trigger: Element | null) {
+  if (trigger instanceof HTMLElement) {
+    nextTick(() => trigger.focus());
+  }
+}
+
+function focusFirstInvalid() {
+  nextTick(() => {
+    document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+  });
+}
+
 const isPlacingOrder = ref(false);
-const createAccount = ref(false);
+const isRegistering = ref(false);
 
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
 
   isPlacingOrder.value = true;
+  const trigger = document.activeElement;
   try {
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
-    refreshCart();
+    await refreshCart();
   } catch (error) {
     if (isTimeoutError(error)) {
-      pushError(t("errors.order-timeout"));
+      persistentError(t("errors.order-timeout"));
     } else {
-      handleApiError(error);
+      handlePlaceOrderError(error, persistentError);
     }
+    restoreFocus(trigger);
   } finally {
     isPlacingOrder.value = false;
   }
@@ -82,41 +106,47 @@ function handleChangePaymentMethod(id: string) {
   setPaymentMethod({ id });
 }
 
-async function handleSaveAddress() {
+async function handleRegister() {
+  if (isRegistering.value) return;
+
   $vBaseInfo.$touch();
   $vBillingAddress.$touch();
 
   const { valid: validBaseInfo } = await $vBaseInfo.$validate();
   const { valid: validBillingAddress } = await $vBillingAddress.$validate();
 
-  // Guest checkout hides the password field, so only the email is required.
-  // Creating an account validates the whole form and never falls back to guest.
-  const validCustomer = createAccount.value
-    ? validBaseInfo
-    : !$vBaseInfo.email.$invalid;
-
-  if (!validCustomer || !validBillingAddress) {
+  if (!validBaseInfo || !validBillingAddress) {
+    focusFirstInvalid();
     return;
   }
 
-  await register({
-    firstName: billingAddress.value.firstName,
-    lastName: billingAddress.value.lastName,
-    email: customerBaseInfo.value.email,
-    password: customerBaseInfo.value.password,
-    guest: !createAccount.value,
-    billingAddress: {
-      customerId: "",
+  isRegistering.value = true;
+  const trigger = document.activeElement;
+  try {
+    await register({
       firstName: billingAddress.value.firstName,
-      id: "",
       lastName: billingAddress.value.lastName,
-      street: billingAddress.value.street,
-      zipcode: billingAddress.value.zipcode,
-      city: billingAddress.value.city,
-      countryId: billingAddress.value.countryId,
-    },
-    acceptedDataProtection: true,
-  });
+      email: customerBaseInfo.value.email,
+      password: customerBaseInfo.value.password,
+      guest: !createAccount.value,
+      billingAddress: {
+        customerId: "",
+        firstName: billingAddress.value.firstName,
+        id: "",
+        lastName: billingAddress.value.lastName,
+        street: billingAddress.value.street,
+        zipcode: billingAddress.value.zipcode,
+        city: billingAddress.value.city,
+        countryId: billingAddress.value.countryId,
+      },
+      acceptedDataProtection: true,
+    });
+  } catch (error) {
+    handleRegistrationError(error, persistentError);
+  } finally {
+    isRegistering.value = false;
+    restoreFocus(trigger);
+  }
 }
 
 onMounted(() => {
@@ -173,25 +203,32 @@ onMounted(() => {
           </div>
         </div>
         <CheckoutStepHeader :step="1" label="Shipping address">
-          <CheckoutCustomerBaseInfo
-            class="mb-4"
-            v-model:email="customerBaseInfo.email"
-            v-model:password="customerBaseInfo.password"
-            v-model:createAccount="createAccount"
-            :errorMessages="toRef($vBaseInfo)"
-          />
-          <CheckoutCustomerAddress
-            class="mb-4"
-            v-model="billingAddress"
-            :errorMessages="toRef($vBillingAddress)"
-          />
-          <FormBaseButton
-            :label="$t('checkout.saveAddressButton')"
-            data-testid="checkout-pi-submit-button"
-            @click="handleSaveAddress"
-          />
+          <template v-if="!isUserSession">
+            <CheckoutCustomerBaseInfo
+              class="mb-4"
+              v-model:email="customerBaseInfo.email"
+              v-model:password="customerBaseInfo.password"
+              v-model:createAccount="createAccount"
+              :errorMessages="toRef($vBaseInfo)"
+            />
+            <CheckoutCustomerAddress
+              class="mb-4"
+              v-model="billingAddress"
+              :errorMessages="toRef($vBillingAddress)"
+            />
+            <FormBaseButton
+              :label="
+                isRegistering
+                  ? $t('checkout.savingDetails')
+                  : $t('checkout.continueButton')
+              "
+              :loading="isRegistering"
+              data-testid="checkout-pi-submit-button"
+              @click="handleRegister"
+            />
+          </template>
 
-          <!-- <CheckoutCustomerAddressChosen v-else :address="billingAddress" /> -->
+          <CheckoutCustomerAddressChosen v-else :address="billingAddress" />
         </CheckoutStepHeader>
         <CheckoutStepHeader :step="2" label="Shipping">
           <CheckoutShippingMethods
