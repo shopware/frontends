@@ -1,5 +1,8 @@
 import type { createAPIClient } from "@shopware/api-client";
-import { encodeForQuery } from "@shopware/api-client/helpers";
+import {
+  encodeForQuery,
+  mergeRequestHeaders,
+} from "@shopware/api-client/helpers";
 import { injectLocal } from "@vueuse/core";
 import type { Ref } from "vue";
 
@@ -58,7 +61,8 @@ type CacheableReadOperation = keyof typeof cacheableReadRoutes;
 export type UseCacheableReadReturn = {
   /**
    * Same as `apiClient.invoke` for a POST read. Sent as the GET twin only when
-   * `cacheableReads` is on and the session equals a fresh default guest.
+   * `cacheableReads` is on and the loaded state looks like a fresh default
+   * guest.
    */
   invokeRead: ReturnType<
     typeof createAPIClient<Pick<operations, CacheableReadOperation>>
@@ -72,7 +76,7 @@ type SessionContext = Schemas["SalesChannelContext"] & {
 
 type ReadParams = {
   body?: Record<string, unknown>;
-  headers?: Record<string, unknown>;
+  headers?: Record<string, string>;
   query?: Record<string, unknown>;
 };
 
@@ -125,8 +129,8 @@ export function canUseCacheableGet({
 }
 
 /**
- * Reads through the cacheable GET Store API route when the response is the
- * same for every fresh default guest. Everything else stays POST.
+ * Reads through the cacheable GET Store API route when the loaded state looks
+ * like a fresh default guest. Everything else stays POST.
  *
  * @public
  * @category Context & Language
@@ -155,7 +159,10 @@ export function useCacheableRead(): UseCacheableReadReturn {
     const canUseGet =
       cacheableReads &&
       canUseCacheableGet({
-        headers: { ...apiClient.defaultHeaders, ...params[0]?.headers },
+        headers: mergeRequestHeaders(
+          params[0]?.headers,
+          apiClient.defaultHeaders,
+        ),
         session: session?.value,
         cart: cart?.value,
         guestServerRender,

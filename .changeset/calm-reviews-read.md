@@ -2,4 +2,4 @@
 "@shopware/cms-base-layer": patch
 ---
 
-`CmsElementProductDescriptionReviews` loads reviews through `useCacheableRead().invokeRead`, so only a fresh default guest reads them from the cacheable GET route.
+`CmsElementProductDescriptionReviews` loads reviews through `useCacheableRead().invokeRead`, so they use the cacheable GET route only when the loaded session looks like a fresh default guest.

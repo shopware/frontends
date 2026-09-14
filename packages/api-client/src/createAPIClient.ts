@@ -87,6 +87,14 @@ function isPubliclyCacheableResponse(
   return /(?:^|,)\s*public\s*(?:,|$)/i.test(cacheControl);
 }
 
+const ANONYMOUS_REQUEST = Symbol("anonymousRequest");
+
+function dropsContextToken(headers: ClientHeaders | undefined): boolean {
+  return Object.entries(headers ?? {}).some(
+    ([key, value]) => key.toLowerCase() === "sw-context-token" && value === "",
+  );
+}
+
 export function createAPIClient<
   // TODO: Keep this broad until generated operation types are narrowed.
   OPERATIONS extends Record<string, any> = operations,
@@ -120,20 +128,11 @@ export function createAPIClient<
   let currentAccessToken = params.accessToken;
 
   function createFetchClient(baseURL: string | undefined) {
-    // checked at send time, the token can change before the response arrives
-    const requestsWithoutClientToken = new WeakSet<object>();
-
     return ofetch.create({
       baseURL,
       ...params.fetchOptions,
       async onRequest(context) {
         apiClientHooks.callHook("onRequest", context);
-        if (
-          defaultHeaders["sw-context-token"] &&
-          !context.options.headers.has("sw-context-token")
-        ) {
-          requestsWithoutClientToken.add(context.options);
-        }
       },
       async onResponse(context) {
         apiClientHooks.callHook("onSuccessResponse", context.response);
@@ -145,9 +144,9 @@ export function createAPIClient<
         if (isPubliclyCacheableResponse(context.response)) {
           return;
         }
-        // A request sent without the client's token gets a fresh guest token
-        // back, which must not replace the client's session.
-        if (requestsWithoutClientToken.has(context.options)) {
+        // A request that dropped the context token gets a fresh guest token
+        // back, which must not set or replace the client's session.
+        if (ANONYMOUS_REQUEST in context.options) {
           return;
         }
         if (
@@ -243,6 +242,9 @@ export function createAPIClient<
         body: currentParams.body,
         headers: mergedHeaders as HeadersInit,
         query: currentParams.query,
+        ...(dropsContextToken(currentParams.headers) && {
+          [ANONYMOUS_REQUEST]: true,
+        }),
       });
 
       return {

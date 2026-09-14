@@ -64,7 +64,7 @@ Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, 
 
 ### If the storefront breaks against your instance
 
-`nuxt.config.ts` sets `cacheableReads: true`. A session that equals a fresh default guest then reads Store API data through cacheable GET routes, so CDNs and browsers can cache the responses. Every other session (logged in, items in the cart, a non-default currency or language, and so on) keeps using POST. The module default is `false`, and it needs Shopware 6.7.6 or newer. On an older backend, set it to `false`.
+`nuxt.config.ts` sets `cacheableReads: true`. A session that looks like a fresh default guest, judged from the session and cart the storefront has loaded, then reads Store API data through cacheable GET routes, so CDNs and browsers can cache the responses. Every other session (logged in, items in the cart, a non-default currency or language, and so on) keeps using POST. The module default is `false`, and it needs Shopware 6.7.6 or newer. On an older backend, set it to `false`.
 
 ## Generate your own API types
 

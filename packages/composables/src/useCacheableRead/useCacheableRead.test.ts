@@ -236,15 +236,73 @@ describe("useCacheableRead", () => {
     );
   });
 
-  it("keeps POST when a per-call language header is not known to be default", async () => {
-    const { vm, injections } = setup({ defaultHeaders: {}, session: null });
-    const params = { headers: { "sw-language-id": "other" }, body: criteria };
+  it.each<{
+    name: string;
+    defaultHeaders?: Record<string, string>;
+    session?: unknown;
+    headers?: Record<string, string>;
+  }>([
+    {
+      name: "a tokenless language header without a loaded session",
+      defaultHeaders: {},
+      session: null,
+      headers: { "sw-language-id": "other" },
+    },
+    {
+      name: "a non-default language only in the session",
+      defaultHeaders: {},
+      session: ref(
+        guestSession({
+          context: { currencyId: "currency", languageIdChain: ["other"] },
+        }),
+      ),
+    },
+    {
+      name: "a logged-in customer",
+      session: ref(guestSession({ customer: { id: "customer" } })),
+    },
+    {
+      name: "a mixed-case language header",
+      headers: { "SW-Language-Id": "other" },
+    },
+    {
+      name: "a mixed-case currency header",
+      headers: { "Sw-Currency-ID": "other" },
+    },
+    {
+      name: "a mixed-case default language header",
+      defaultHeaders: {
+        "sw-context-token": "token",
+        "Sw-Language-Id": "other",
+      },
+    },
+    {
+      name: "a mixed-case context token that differs from the session",
+      headers: { "Sw-Context-Token": "old" },
+    },
+  ])("keeps POST for $name", async ({ headers, ...options }) => {
+    const { vm, injections } = setup(options);
+    const params = { headers, body: criteria };
 
     await vm.invokeRead("readSalutation post /salutation", params);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       "readSalutation post /salutation",
       params,
+    );
+  });
+
+  it("sends GET for mixed-case language and currency headers with the sales channel values", async () => {
+    const { vm, injections } = setup();
+
+    await vm.invokeRead("readSalutation post /salutation", {
+      // @ts-expect-error mixed-case header names are not typed
+      headers: { "SW-Language-Id": "language", "Sw-Currency-ID": "currency" },
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readSalutationGet get /salutation",
+      expect.anything(),
     );
   });
 

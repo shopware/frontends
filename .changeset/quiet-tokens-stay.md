@@ -1,5 +1,5 @@
 ---
-"@shopware/api-client": patch
+"@shopware/api-client": minor
 ---
 
-A request header set to an empty string is no longer sent, so one call can drop a default header such as `sw-context-token`. A response to a request that leaves out the client's `sw-context-token` no longer replaces it.
+Request headers now merge with the default headers case-insensitively, so a request header wins over a default in any casing. A header set to an empty string is not sent, in any casing, so one call can drop a default header such as `sw-context-token`. The response to a request with an empty `sw-context-token` never sets or replaces the client's token. Added `mergeRequestHeaders` to `@shopware/api-client/helpers`.

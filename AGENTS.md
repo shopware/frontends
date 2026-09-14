@@ -93,7 +93,8 @@ The essentials for code changes:
   `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`
   (JSON → gzip → base64url, matching the backend `RequestCriteriaBuilder`).
   - For a read, call `useCacheableRead().invokeRead` with the POST operation; it
-    sends GET only for a fresh default guest, without the token. Never branch on
+    sends GET, without the token, only when the loaded session and cart look like
+    a fresh default guest. Never branch on
     `cacheableReads`. Add a new GET twin to the registry in
     `packages/composables/src/useCacheableRead/`; the coverage test there
     enforces both. Mutations always stay POST/PATCH.

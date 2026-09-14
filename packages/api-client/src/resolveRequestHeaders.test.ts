@@ -202,6 +202,9 @@ describe("resolveRequestHeaders", () => {
       DEFAULTS,
       new Blob(["x"]),
     );
-    expect(contentTypeOf(headers)).toBe("application/pdf");
+    expect(headers).toEqual({
+      "content-type": "application/pdf",
+      accept: "application/json",
+    });
   });
 });
