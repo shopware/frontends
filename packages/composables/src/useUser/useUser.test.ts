@@ -412,26 +412,46 @@ describe("useUser", () => {
 
     await vm.loadCountry("country-id");
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCountryGet get"),
-      expect.objectContaining({
+      "readCountryGet get /country",
+      {
+        headers: { "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery({
             filter: [{ field: "id", type: "equals", value: "country-id" }],
           }),
         },
-      }),
+      },
     );
 
     await vm.loadSalutation("salutation-id");
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readSalutationGet get"),
-      expect.objectContaining({
+      "readSalutationGet get /salutation",
+      {
+        headers: { "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery({
             filter: [{ field: "id", type: "equals", value: "salutation-id" }],
           }),
         },
-      }),
+      },
+    );
+  });
+
+  it("loadCountry keeps POST for a logged-in session when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(() => useUser(), {
+      shopware: { cacheableReads: true },
+      swSessionContext: ref({ customer: { id: "customer" } }),
+    } as Parameters<typeof useSetup>[1]);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    await vm.loadCountry("country-id");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readCountry post /country",
+      {
+        body: {
+          filter: [{ field: "id", type: "equals", value: "country-id" }],
+        },
+      },
     );
   });
 

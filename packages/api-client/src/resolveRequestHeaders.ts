@@ -1,6 +1,5 @@
-import { defu } from "defu";
-
 import type { ClientHeaders } from "./defaultHeaders";
+import { mergeRequestHeaders } from "./helpers/mergeRequestHeaders";
 
 const CONTENT_TYPE = "content-type";
 
@@ -9,22 +8,6 @@ function findContentType(headers: ClientHeaders): string | undefined {
     if (key.toLowerCase() === CONTENT_TYPE) return value;
   }
   return undefined;
-}
-
-function contentTypeKeyCount(headers: ClientHeaders): number {
-  let count = 0;
-  for (const key of Object.keys(headers)) {
-    if (key.toLowerCase() === CONTENT_TYPE) count++;
-  }
-  return count;
-}
-
-function withoutContentType(headers: ClientHeaders): ClientHeaders {
-  return Object.fromEntries(
-    Object.entries(headers).filter(
-      ([key]) => key.toLowerCase() !== CONTENT_TYPE,
-    ),
-  );
 }
 
 /**
@@ -100,12 +83,9 @@ export function resolveRequestHeaders(
   defaultHeaders: ClientHeaders,
   body: unknown,
 ): ClientHeaders {
-  const mergedHeaders = defu(callerHeaders, defaultHeaders);
-
-  // The caller's Content-Type wins over the default, regardless of header
-  // casing (`defu` merges case-sensitively, so both could otherwise survive).
+  const mergedHeaders = mergeRequestHeaders(callerHeaders, defaultHeaders);
   const callerContentType = callerHeaders && findContentType(callerHeaders);
-  const contentType = callerContentType || findContentType(mergedHeaders);
+  const contentType = mergedHeaders[CONTENT_TYPE];
   if (!contentType) return mergedHeaders;
 
   const normalized = contentType.toLowerCase();
@@ -128,11 +108,6 @@ export function resolveRequestHeaders(
     // non-JSON type (e.g. a Blob's image/png or an octet-stream default)
     (runtimeManaged && (isMultipart || isSeededDefault));
 
-  if (shouldDrop) return withoutContentType(mergedHeaders);
-
-  // Nothing to drop: leave the merged headers untouched unless the caller's
-  // Content-Type collided with the default under a different casing, leaving
-  // two Content-Type keys. In that case keep a single, canonical one.
-  if (contentTypeKeyCount(mergedHeaders) < 2) return mergedHeaders;
-  return { ...withoutContentType(mergedHeaders), "Content-Type": contentType };
+  if (shouldDrop) delete mergedHeaders[CONTENT_TYPE];
+  return mergedHeaders;
 }
