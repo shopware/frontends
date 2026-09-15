@@ -157,7 +157,7 @@ Four things the generated reference will not tell you:
 
 - `useCartItem` takes a `Ref<LineItem>` and derives the whole row from it — `itemTotalPrice`, `itemStock`, `itemImageThumbnailUrl`, `isStackable`, `isRemovable` and the rest — so a row component needs no props beyond that one ref.
 - `useAddToCart` takes a `Ref<Product | undefined>`. The `undefined` is deliberate: it lets you call the composable at the top level of setup while the product is still loading.
-- `useCartNotification` gives you two ways to handle the same errors — `codeErrorsNotification()` pushes them as notifications, `getErrorsCodes()` returns them as `CartError[]`. Both call `consumeCartErrors()`, so the first one you call clears them for the other. Pick one per response.
+- `useCartNotification` consumes the collected cart errors, but its two methods do not hand you the same set. `codeErrorsNotification()` pushes every entry as a notification, using `pushSuccess` for the codes it treats as positive — today just `promotion-discount-added` — and `pushError` for everything else. `getErrorsCodes()` returns `CartError[]` with exactly those positive codes **dropped**, so an accepted promotion code yields an empty array. Both call `consumeCartErrors()`, so the first one you call clears them for the other. Pick one per response, and if you render the list yourself, confirm an applied promotion from `appliedPromotionCodes` rather than from the errors map.
 - `useCartErrorParamsResolver` returns `resolveCartError(error)`, which maps a `CartError` to a `messageKey` and `params` for your translation layer.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
@@ -189,8 +189,9 @@ type CartError = Schemas["CartError"];
 type CartDelivery = Schemas["CartDelivery"];
 
 // Cart["errors"] is a union: either a CartError[] or a keyed map whose values
-// carry an extra `code` and a widened `level`. Narrow before use, or take the
-// already-narrowed CartError[] from useCartNotification().getErrorsCodes().
+// carry an extra `code` and a widened `level`. Narrow it yourself when you read
+// a raw response; through useCart it is always the map, and getErrorsCodes()
+// hands you a CartError[].
 type CartErrors = NonNullable<Schemas["Cart"]["errors"]>;
 ```
 
@@ -220,6 +221,7 @@ const { getErrorsCodes } = useCartNotification();
 // Start as loading so the first render shows the loading state instead of
 // flashing "Your cart is empty." before the cart has arrived.
 const isLoading = ref(true);
+const loadError = ref("");
 const pendingItemId = ref("");
 const writeError = ref("");
 const cartErrors = ref<Schemas["CartError"][]>([]);
@@ -228,21 +230,26 @@ const cartErrors = ref<Schemas["CartError"][]>([]);
 // cart, so two in parallel race and the slower response overwrites the faster.
 const isWriting = computed(() => pendingItemId.value !== "");
 
-// Client-side only. useCart is a shared composable whose state is module-scoped
-// on the server, so fetching the cart during SSR would leak it between requests.
-onMounted(async () => {
+// Load on the client: a cart rendered during SSR is baked into the ISR-cached
+// HTML and served to every other visitor.
+const loadCart = async () => {
+  isLoading.value = true;
+  loadError.value = "";
+
   try {
     await refreshCart();
   } catch (error) {
     console.error(error);
-    writeError.value = "Your cart could not be loaded. Please try again.";
+    loadError.value = "Your cart could not be loaded.";
   } finally {
     // Errors that arrived with the initial cart belong to the load, not to the
     // customer's next action.
     cartErrors.value = getErrorsCodes();
     isLoading.value = false;
   }
-});
+};
+
+onMounted(loadCart);
 
 const runCartWrite = async (
   item: Schemas["LineItem"],
@@ -273,7 +280,8 @@ const runCartWrite = async (
 
 const changeLineItemQuantity = (item: Schemas["LineItem"], value: string) => {
   // min="1" constrains the stepper and validation, not the value you read here:
-  // a cleared field yields "" and Number("") is 0.
+  // a cleared field still reaches this handler as "", which parseInt turns into
+  // NaN - hence the isInteger guard rather than a bare > 0 check.
   const quantity = Number.parseInt(value, 10);
   if (!Number.isInteger(quantity) || quantity < 1) return;
   if (quantity === item.quantity) return;
@@ -306,6 +314,11 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
     </ul>
 
     <p v-if="isLoading">Loading your cart…</p>
+
+    <div v-else-if="loadError" role="alert">
+      <p>{{ loadError }}</p>
+      <button type="button" @click="loadCart">Try again</button>
+    </div>
 
     <p v-else-if="isEmpty">Your cart is empty.</p>
 
@@ -369,15 +382,19 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
 
 The errors are rendered inline rather than pushed through `codeErrorsNotification()`, so the example stands on its own. `codeErrorsNotification()` only writes into `useNotifications()` state — it renders nothing by itself, so it needs a notification outlet mounted somewhere above it, as `vue-starter-template` does with `<LayoutNotifications />` in its layouts.
 
-The example owns its initial load. `vue-starter-template` already calls `refreshCart()` once in `app.vue`, so inside that template you should drop the `onMounted` block here rather than fetching the cart twice on hydration.
+The example owns its initial load. `vue-starter-template` already calls `refreshCart()` once in `app.vue`, so inside that template drop the `onMounted(loadCart)` call here rather than fetching the cart twice on hydration — and start `isLoading` at `false` when you do. It is only ever cleared by `loadCart`, so removing the call without changing the initial value leaves the page showing "Loading your cart…" forever.
 
 ## State And Session
 
-The cart belongs to the sales channel session identified by the `sw-context-token` header, not to the customer. A guest has a cart, and logging in does not merge two carts in the frontend — the Store API resolves the cart for the token it receives.
+The cart belongs to the sales channel session identified by the `sw-context-token` header, not to the customer, and the Store API resolves the cart for the token it receives. A guest therefore has a cart — and it is not lost when they log in. Shopware merges the guest cart into the customer's saved cart **on the server**, so there is nothing for the frontend to merge: you re-read the cart and the merged result is what arrives, which is why `login()` triggers `refreshCart()`.
+
+A merged cart carries a `cart-merged-hint` notice in its `errors` map, which the templates translate under `errors.cart-merged-hint`. It is informational, but `codeErrorsNotification()` treats only `promotion-discount-added` as a success, so it reaches the customer as an error notification unless you special-case it.
 
 `useCart` is wrapped in `createSharedComposable`, so every call in the application returns the same instance. The cart itself lives in the `swCart` context value and the collected errors in `swCartErrors`, which is what makes a mini cart in the header and a cart page stay in sync without any prop passing or store of your own.
 
-That shared instance is module-scoped, and on the server nothing tears it down between requests — component scopes are never stopped after a render. **Never fetch the cart during SSR.** Load it from `onMounted` (or behind `import.meta.client`), as the example does; a `useAsyncData` wrapper around `refreshCart()` would write one customer's cart into process-global state, and under a template's `isr` route rules that HTML is then cached and served to everyone.
+The sharing is client-only, and deliberately so. On the server `createSharedComposable` returns the plain composable rather than a cached instance, and `useContext` provides through `injectLocal`/`provideLocal`, which is scoped to the app instance — and Nuxt builds one app per request. Each request therefore renders with its own cart, and no state crosses between customers.
+
+**Fetch the cart on the client anyway.** Load it from `onMounted` (or behind `import.meta.client`), as the example and the starter's own `app.vue` do. The reason is caching, not leakage. `vue-starter-template` applies `isr` to `/**` and opts only `/checkout` and `/checkout/**` out of it with `ssr: false`, so the cart page itself is safe — but a mini cart in the header renders on every catalog and CMS route, and those responses are cached and served to every other visitor. Personalized data does not belong in an ISR-cached response.
 
 Customer-specific prices, promotions and rules change with the customer context, so the cart has to be re-read when the session changes. `useUser().login()` and `logout()` call `refreshCart()` internally — but neither awaits it, and only `register()` does. Right after `await login()` resolves, the shared cart is still the pre-login guest cart for one more round trip, so `await refreshCart()` yourself if you render prices immediately after a session change.
 
@@ -386,9 +403,10 @@ Customer-specific prices, promotions and rules change with the customer context,
 - `count` only sums line items where `good` is `true`, so a promotion line item is visible in `cartItems` but does not raise the item count.
 - `subtotal` reads `cart.price.positionPrice` and `totalPrice` reads `cart.price.totalPrice`. They differ once shipping costs or promotions apply — do not compute either from the line items yourself.
 - A line item with `stackable: false` must not render a quantity input, and one with `removable: false` must not render a remove button. Both flags come from the cart response.
-- Adding a product that is already in the cart increases the existing line item instead of creating a second one, so `addProduct` can change `count` by more than the quantity you sent.
+- Adding a product that is already in the cart stacks onto the existing line item instead of creating a second one, so `cartItems.length` does not change. Do not decide whether an add succeeded by counting rows — read `count`.
+- The server can accept less than you asked for when stock runs out, so `count` may grow by less than the quantity you sent. The write still returns `2xx` and the reason arrives as a `product-stock-reached` entry in `errors`.
 - `consumeCartErrors()` clears `swCartErrors`. If two components call it for the same response, only the first one sees the errors — and `codeErrorsNotification()` and `getErrorsCodes()` both call it, so calling one after the other for the same response leaves the second empty.
-- `Cart["errors"]` is a union of `CartError[]` and a keyed map. `codeErrorsNotification()` returns early on the array branch and pushes nothing, so do not rely on it as your only path — `getErrorsCodes()` normalises both.
+- `Cart["errors"]` is a union at the type level: a `CartError[]` or a keyed map. Through `useCart` you always end up with the map — it merges the response with `Object.assign`, which turns an array into `{ "0": … }`. The array form only reaches you on a raw response you read yourself, and both `codeErrorsNotification()` and `getErrorsCodes()` return empty when handed one, so narrow the union before passing it to either.
 - Cart errors are merged into `swCartErrors` and never cleared by a later clean response. Consume them after the initial `refreshCart()` too, or the first write will surface load-time errors as if they belonged to that write.
 - `isVirtualCart` is `false` for an empty cart and ignores promotion line items, so use it to decide whether a shipping step is needed, not whether the cart has content.
 - `DELETE /checkout/cart` leaves the shared cart value untouched. Without a following `refreshCart()` the UI keeps rendering a cart the Store API has already discarded — and the same stale state appears if the delete succeeds but the refresh rejects, so await the refresh and handle its failure.
@@ -401,7 +419,7 @@ Customer-specific prices, promotions and rules change with the customer context,
 - Do not use `deleteCart delete /checkout/cart` without refreshing afterwards.
 - Do not compute totals in the template from `unitPrice * quantity`. Tax handling and promotions make that wrong in most configurations.
 - Do not let two cart writes run in parallel. Each one returns the whole cart, so the slower response overwrites the faster one and the UI settles on a cart that is missing a change.
-- Do not trust `min="1"` on a quantity input. It constrains the stepper and validation, not the value you read — a cleared field gives you `Number("") === 0`.
+- Do not trust `min="1"` on a quantity input. It constrains the stepper and validation, not the value you read — a cleared field hands you `""`, which `Number()` turns into `0` and `parseInt()` into `NaN`. Neither is a quantity, so validate before you send.
 - Do not render the raw `message` of an API exception. Map cart errors through `useCartNotification` or `useCartErrorParamsResolver` instead.
 
 ## Testing Checklist
