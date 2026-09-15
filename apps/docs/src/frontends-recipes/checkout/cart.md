@@ -282,7 +282,7 @@ const changeLineItemQuantity = (item: Schemas["LineItem"], value: string) => {
   // min="1" constrains the stepper and validation, not the value you read here:
   // a cleared field still reaches this handler as "", which parseInt turns into
   // NaN - hence the isInteger guard rather than a bare > 0 check.
-  const quantity = Number.parseInt(value, 10);
+  const quantity = Number.parseInt(value);
   if (!Number.isInteger(quantity) || quantity < 1) return;
   if (quantity === item.quantity) return;
 
