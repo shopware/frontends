@@ -64,15 +64,16 @@ const forbiddenKeys = [
   ...twins.map(getTwin),
 ];
 
-const quoted = (key: string) =>
-  new RegExp(`["'\`]${key.replace(/[{}]/g, "\\$&")}["'\`]`);
+const quotes = ['"', "'", "`"];
 
 function findBypasses(source: string) {
   const rest = source.replace(
     /(invokeRead\(|operations\[)\s*["'`][^"'`]+["'`]/g,
     "",
   );
-  const bypasses = forbiddenKeys.filter((key) => quoted(key).test(rest));
+  const bypasses = forbiddenKeys.filter((key) =>
+    quotes.some((quote) => rest.includes(quote + key + quote)),
+  );
   if (/\bcacheableReads\b/.test(source)) bypasses.push("cacheableReads");
   return bypasses;
 }
