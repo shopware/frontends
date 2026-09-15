@@ -420,7 +420,7 @@ async function loadMainNavigation() {
 
 ### Dropping a default header per request
 
-Set a header to `""` to leave a default header out of one request. Example: `headers: { "sw-context-token": "" }`. Header names match case-insensitively. A response to such a request never changes the client's token.
+Set a header to `""` to leave a default header out of one request. Example: `headers: { "sw-context-token": "" }`. Header names match case-insensitively. A response to a request that drops `sw-context-token` this way never changes the client's token.
 
 ### Uploading files (`multipart/form-data`) and other binary bodies
 

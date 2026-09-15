@@ -34,6 +34,7 @@ const postOnlyReads: Record<string, string> = {
   "searchSuggest post /search-suggest": "not migrated yet",
 };
 
+// the deprecated vue-demo-store (#2667) is out of scope
 const scannedDirs = [
   "packages/composables/src",
   "packages/cms-base-layer/app",
@@ -63,9 +64,15 @@ const forbiddenKeys = [
   ...twins.map(getTwin),
 ];
 
+const quoted = (key: string) =>
+  new RegExp(`["'\`]${key.replace(/[{}]/g, "\\$&")}["'\`]`);
+
 function findBypasses(source: string) {
-  const rest = source.replace(/(invokeRead\(|operations\[)\s*"[^"]+"/g, "");
-  const bypasses = forbiddenKeys.filter((key) => rest.includes(`"${key}"`));
+  const rest = source.replace(
+    /(invokeRead\(|operations\[)\s*["'`][^"'`]+["'`]/g,
+    "",
+  );
+  const bypasses = forbiddenKeys.filter((key) => quoted(key).test(rest));
   if (/\bcacheableReads\b/.test(source)) bypasses.push("cacheableReads");
   return bypasses;
 }

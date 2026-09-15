@@ -21,6 +21,26 @@ describe("mergeRequestHeaders", () => {
     ).toEqual({ "sw-access-key": "key" });
   });
 
+  it.each([
+    { "sw-context-token": "", "Sw-Context-Token": "token" },
+    { "Sw-Context-Token": "token", "sw-context-token": "" },
+  ])(
+    "removes the header when another casing is set in the same call",
+    (callerHeaders) => {
+      expect(mergeRequestHeaders(callerHeaders, {})).toEqual({});
+    },
+  );
+
+  it("skips empty or undefined defaults", () => {
+    expect(
+      mergeRequestHeaders(undefined, {
+        "sw-language-id": undefined,
+        "sw-currency-id": "",
+        accept: "application/json",
+      }),
+    ).toEqual({ accept: "application/json" });
+  });
+
   it("keeps the default when the caller header is undefined", () => {
     expect(
       mergeRequestHeaders(

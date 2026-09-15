@@ -84,7 +84,7 @@ async function fetchCountries() {
 }
 ```
 
-Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code calls a listed route without `invokeRead`.
+Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code in the packages and starter templates it scans calls a listed route without `invokeRead`.
 
 ### Which reads switch to GET
 
@@ -106,8 +106,10 @@ Exactly these composables read through `invokeRead`:
 `invokeRead` checks every request. It sends GET only when the loaded session and cart look like a fresh default guest:
 
 - no customer (a guest account counts as one)
-- an empty cart
+- an empty cart that belongs to the current context token
+- a session that belongs to the current context token
 - the sales channel's default language, currency, country, payment method and shipping method
+- no country state
 
 If it cannot tell, it sends POST. Other sessions send the same POST as with the flag off.
 
@@ -117,7 +119,7 @@ A GET from `invokeRead` has three guarantees:
 2. Its response cannot set or replace the client's token. This holds even when a login finishes during the read.
 3. The GET or POST choice uses the loaded session and cart. That state can be stale or incomplete. So it does not prove the backend session is a fresh guest.
 
-The check needs the cart. With `useUserContextInSSR: true`, the server render has no cart. So server-side reads stay POST. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app. Otherwise reads stay POST once a token exists.
+The check needs the cart. With `useUserContextInSSR: true`, the server render has no cart. So server-side reads stay POST once the visitor has a context token. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app. Otherwise reads stay POST once a token exists.
 
 The loaded state cannot show:
 

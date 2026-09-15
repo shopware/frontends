@@ -15,8 +15,8 @@ export function createShopwareContext(
     enableDevtools?: boolean;
     browserLocale?: string;
     /**
-     * Opt in to reading data via cacheable GET Store API routes instead of
-     * POST. Surfaced on the Shopware context as `cacheableReads`.
+     * Opt in to cacheable GET Store API reads. Only a session that looks like
+     * a fresh default guest uses GET. Every other session stays on POST.
      *
      * @default false
      */
