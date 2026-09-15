@@ -79,6 +79,10 @@ type ReadParams = {
   query?: Record<string, unknown>;
 };
 
+// a missing id on either side is unknown, not a match
+const sameId = (current: unknown, expected?: string) =>
+  !!expected && current === expected;
+
 function isDefaultGuest(
   session: SessionContext,
   headers: Record<string, unknown>,
@@ -87,15 +91,19 @@ function isDefaultGuest(
   return (
     !!salesChannel &&
     !session.customer &&
-    (headers["sw-currency-id"] ||
-      (session.context?.currencyId ?? session.currency?.id)) ===
-      salesChannel.currencyId &&
-    session.shippingLocation?.country?.id === salesChannel.countryId &&
     !session.shippingLocation?.state &&
-    session.paymentMethod?.id === salesChannel.paymentMethodId &&
-    session.shippingMethod?.id === salesChannel.shippingMethodId &&
-    (headers["sw-language-id"] || session.context?.languageIdChain?.[0]) ===
-      salesChannel.languageId
+    sameId(
+      headers["sw-currency-id"] ||
+        (session.context?.currencyId ?? session.currency?.id),
+      salesChannel.currencyId,
+    ) &&
+    sameId(session.shippingLocation?.country?.id, salesChannel.countryId) &&
+    sameId(session.paymentMethod?.id, salesChannel.paymentMethodId) &&
+    sameId(session.shippingMethod?.id, salesChannel.shippingMethodId) &&
+    sameId(
+      headers["sw-language-id"] || session.context?.languageIdChain?.[0],
+      salesChannel.languageId,
+    )
   );
 }
 
@@ -124,7 +132,7 @@ export function canUseCacheableGet({
   if (session?.token !== token) return false;
   // guest server render: the cart is empty
   if (guestServerRender) return true;
-  return cart?.token === token && !cart.lineItems?.length;
+  return cart?.token === token && cart.lineItems?.length === 0;
 }
 
 /**

@@ -66,13 +66,17 @@ describe("canUseCacheableGet", () => {
     },
     { name: "default guest with an empty cart", expected: true },
     {
-      name: "default guest with the currency entity and a cart without line items",
+      name: "default guest with the currency entity",
       session: guestSession({
         context: { languageIdChain: ["language"] },
         currency: { id: "currency" },
       }),
-      cart: cartOf({ lineItems: undefined }),
       expected: true,
+    },
+    {
+      name: "cart without a line items array",
+      cart: cartOf({ lineItems: undefined }),
+      expected: false,
     },
     {
       name: "customer",
@@ -157,6 +161,30 @@ describe("canUseCacheableGet", () => {
       session: guestSession({ salesChannel: undefined }),
       expected: false,
     },
+    ...(
+      [
+        [
+          "currency",
+          { context: { languageIdChain: ["language"] } },
+          "currencyId",
+        ],
+        [
+          "country",
+          { shippingLocation: { country: {}, state: null } },
+          "countryId",
+        ],
+        ["payment method", { paymentMethod: {} }, "paymentMethodId"],
+        ["shipping method", { shippingMethod: {} }, "shippingMethodId"],
+        ["language", { context: { currencyId: "currency" } }, "languageId"],
+      ] as const
+    ).map(([name, overrides, key]) => ({
+      name: `missing ${name} id on both sides`,
+      session: guestSession({
+        ...overrides,
+        salesChannel: { ...salesChannel, [key]: undefined },
+      }),
+      expected: false,
+    })),
   ])("$name", ({ expected, ...params }) => {
     expect(
       canUseCacheableGet({
