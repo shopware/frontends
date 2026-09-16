@@ -164,7 +164,7 @@ NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
 
 :::warning The env variable alone is not enough
-Nuxt applies `NUXT_*` overrides by walking the keys that already exist in the runtime config — `applyEnv()` iterates with `for (const key in obj)`, so a key that is absent is never visited and its environment variable is never read. The Nuxt module does not seed a default for `devStorefrontUrl`, it only merges what you pass in. Omit the key from `nuxt.config.ts` and `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is silently ignored — no warning, no error. This is why the templates commit the key: `vue-starter-template` ships `devStorefrontUrl: "https://frontends-demo.vercel.app"` and `vue-demo-store` ships `devStorefrontUrl: ""`.
+Nuxt applies `NUXT_*` overrides by walking the keys that already exist in the runtime config — `applyEnv()` iterates with `for (const key in obj)`, so a key that is absent is never visited and its environment variable is never read. The Nuxt module does not seed a default for `devStorefrontUrl`, it only merges what you pass in. Omit the key from `nuxt.config.ts` and `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is silently ignored — no warning, no error. This is why the templates commit the key: `vue-starter-template` ships `devStorefrontUrl: "https://frontends-starter-template.vercel.app"` and `vue-demo-store` ships `devStorefrontUrl: ""`.
 :::
 
 Outside of the Nuxt module — a plain Vue or Astro app — pass it to `createShopwareContext()`:
