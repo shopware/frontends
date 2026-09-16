@@ -249,17 +249,6 @@ export const sidebar = [
         ],
       },
       {
-        text: "Context",
-        link: "/frontends-recipes/context/",
-        collapsed: true,
-        items: [
-          {
-            text: "Session Context",
-            link: "/frontends-recipes/context/session-context.html",
-          },
-        ],
-      },
-      {
         text: "Checkout",
         link: "/frontends-recipes/checkout/",
         collapsed: true,
@@ -267,6 +256,17 @@ export const sidebar = [
           {
             text: "Cart",
             link: "/frontends-recipes/checkout/cart.html",
+          },
+        ],
+      },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
           },
         ],
       },
