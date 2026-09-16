@@ -32,6 +32,7 @@ To keep every example consistent in terms of using it by the users there are few
 - Keep It simple - the smaller example, the better
 - Always test you example using StackBlitz before publishing
 - Examples don't require a changeset
+- Do not commit generated `api-types/storeApiTypes.d.ts`. Use the types shipped with `@shopware/api-client`. If the example needs extra endpoints, add `api-types/storeApiTypes.overrides.ts` and merge it in `shopware.d.ts` with `WithApiOverrides` so StackBlitz still typechecks after install.
 
 For E2E purposes:
 
