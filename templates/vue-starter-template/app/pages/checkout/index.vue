@@ -76,7 +76,6 @@ function focusFirstInvalid() {
 }
 
 const isPlacingOrder = ref(false);
-const isRegistering = ref(false);
 
 async function validateCustomerForm() {
   const [baseInfoResult, billingAddressResult] = await Promise.all([
@@ -92,25 +91,66 @@ async function validateCustomerForm() {
   return true;
 }
 
+async function saveCustomerDetails() {
+  await register({
+    accountType: "private",
+    firstName: billingAddress.value.firstName,
+    lastName: billingAddress.value.lastName,
+    email: customerBaseInfo.value.email,
+    password: createAccount.value ? customerBaseInfo.value.password : "",
+    guest: !createAccount.value,
+    billingAddress: {
+      customerId: "",
+      firstName: billingAddress.value.firstName,
+      id: "",
+      lastName: billingAddress.value.lastName,
+      street: billingAddress.value.street,
+      zipcode: billingAddress.value.zipcode,
+      city: billingAddress.value.city,
+      countryId: billingAddress.value.countryId,
+      countryStateId: billingAddress.value.countryStateId || undefined,
+    },
+    acceptedDataProtection: true,
+  });
+  await Promise.all([getShippingMethods(), getPaymentMethods()]);
+
+  if (sessionSelectedPaymentMethod.value) {
+    selectedPaymentMethod.value = sessionSelectedPaymentMethod.value.id;
+  }
+  if (sessionSelectedShippingMethod.value) {
+    selectedShippingMethod.value = sessionSelectedShippingMethod.value.id;
+  }
+}
+
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
 
   if (!isUserSession.value) {
-    await handleRegister();
-    return;
+    const isValid = await validateCustomerForm();
+    if (!isValid) return;
   }
 
   if (!canPlaceOrder.value) return;
 
   isPlacingOrder.value = true;
   const trigger = document.activeElement;
+  let customerReady = isUserSession.value;
   try {
+    if (!customerReady) {
+      await saveCustomerDetails();
+      customerReady = true;
+    }
+
+    if (!canPlaceOrder.value) return;
+
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
     await refreshCart();
   } catch (error) {
     if (isTimeoutError(error)) {
       persistentError(t("errors.order-timeout"));
+    } else if (!customerReady) {
+      handleRegistrationError(error, persistentError);
     } else {
       handlePlaceOrderError(error, persistentError);
     }
@@ -126,44 +166,6 @@ function handleChangeShippingMethod(id: string) {
 
 function handleChangePaymentMethod(id: string) {
   setPaymentMethod({ id });
-}
-
-async function handleRegister() {
-  if (isRegistering.value) return;
-
-  const isValid = await validateCustomerForm();
-  if (!isValid) return;
-
-  isRegistering.value = true;
-  const trigger = document.activeElement;
-  try {
-    await register({
-      accountType: "private",
-      firstName: billingAddress.value.firstName,
-      lastName: billingAddress.value.lastName,
-      email: customerBaseInfo.value.email,
-      password: createAccount.value ? customerBaseInfo.value.password : "",
-      guest: !createAccount.value,
-      billingAddress: {
-        customerId: "",
-        firstName: billingAddress.value.firstName,
-        id: "",
-        lastName: billingAddress.value.lastName,
-        street: billingAddress.value.street,
-        zipcode: billingAddress.value.zipcode,
-        city: billingAddress.value.city,
-        countryId: billingAddress.value.countryId,
-        countryStateId: billingAddress.value.countryStateId || undefined,
-      },
-      acceptedDataProtection: true,
-    });
-    await Promise.all([getShippingMethods(), getPaymentMethods()]);
-  } catch (error) {
-    handleRegistrationError(error, persistentError);
-  } finally {
-    isRegistering.value = false;
-    restoreFocus(trigger);
-  }
 }
 
 onMounted(() => {
@@ -220,11 +222,7 @@ onMounted(() => {
           </div>
         </div>
         <CheckoutStepHeader :step="1" label="Shipping address">
-          <form
-            v-if="!isUserSession"
-            class="flex flex-col"
-            @submit.prevent="handleRegister"
-          >
+          <div v-if="!isUserSession" class="flex flex-col">
             <CheckoutCustomerBaseInfo
               class="mb-4"
               v-model:email="customerBaseInfo.email"
@@ -238,16 +236,7 @@ onMounted(() => {
               :validation="$vBillingAddress"
               @states-change="countryHasStates = $event.length > 0"
             />
-            <FormBaseButton
-              type="submit"
-              :label="
-                isRegistering
-                  ? $t('checkout.savingDetails')
-                  : $t('checkout.continueButton')
-              "
-              :loading="isRegistering"
-            />
-          </form>
+          </div>
 
           <CheckoutCustomerAddressChosen v-else :address="billingAddress" />
         </CheckoutStepHeader>

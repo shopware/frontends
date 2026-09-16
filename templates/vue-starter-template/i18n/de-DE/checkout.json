@@ -29,8 +29,6 @@
       "createAccountToggleLabel": "Kundenkonto erstellen",
       "continueAsGuestToggleLabel": "Als Gast fortfahren"
     },
-    "continueButton": "Weiter",
-    "savingDetails": "Daten werden gespeichert…",
     "success": {
       "header": "Wir haben Ihre Bestellung #{0} erhalten und werden sie so schnell wie möglich verarbeiten.",
       "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",

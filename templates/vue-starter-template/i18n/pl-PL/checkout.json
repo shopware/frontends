@@ -29,8 +29,6 @@
       "createAccountToggleLabel": "Utwórz konto klienta",
       "continueAsGuestToggleLabel": "Kontynuuj jako gość"
     },
-    "continueButton": "Dalej",
-    "savingDetails": "Zapisywanie danych…",
     "success": {
       "header": "Otrzymaliśmy Twoje zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
       "paymentProcessLabel": "Zakończ proces płatności.",
