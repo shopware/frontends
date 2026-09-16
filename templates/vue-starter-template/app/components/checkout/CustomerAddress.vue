@@ -9,69 +9,98 @@ const state = defineModel<
   required: true,
 });
 
-const { errorMessages } = defineProps<{
-  errorMessages?: Ref<
-    Regle<Omit<Schemas["CustomerAddress"], "id" | "customerId">>["r$"]
-  >;
+const { validation } = defineProps<{
+  validation?: Regle<
+    Omit<Schemas["CustomerAddress"], "id" | "customerId">
+  >["r$"];
 }>();
+
+const emit = defineEmits<{
+  "states-change": [states: Schemas["CountryState"][]];
+}>();
+
+const zipcodeModel = computed({
+  get: () => state.value.zipcode ?? "",
+  set: (value: string) => {
+    state.value.zipcode = value;
+  },
+});
+
+const countryStateIdModel = computed({
+  get: () => state.value.countryStateId ?? "",
+  set: (value: string) => {
+    state.value.countryStateId = value;
+  },
+});
+
+function handleCountryStatesChange(states: Schemas["CountryState"][]) {
+  emit("states-change", states);
+}
 </script>
 
 <template>
-  <form class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
     <div class="flex gap-4">
       <FormInputField
         class="basis-1/2"
         v-model="state.firstName"
         id="first-name"
+        autocomplete="given-name"
         :label="$t('checkout.customerAddress.firstNameLabel')"
         :placeholder="$t('checkout.customerAddress.firstNamePlaceholder')"
-        :errorMessage="errorMessages?.value?.firstName?.$errors?.[0] ?? ''"
+        :errorMessage="validation?.firstName.$errors[0]"
+        @blur="validation?.firstName.$touch()"
       />
       <FormInputField
         class="basis-1/2"
         v-model="state.lastName"
         id="last-name"
+        autocomplete="family-name"
         :label="$t('checkout.customerAddress.lastNameLabel')"
         :placeholder="$t('checkout.customerAddress.lastNamePlaceholder')"
-        :errorMessage="errorMessages?.value?.lastName?.$errors?.[0] ?? ''"
+        :errorMessage="validation?.lastName.$errors[0]"
+        @blur="validation?.lastName.$touch()"
       />
     </div>
     <div>
       <FormInputField
         v-model="state.street"
         id="street"
+        autocomplete="street-address"
         :label="$t('checkout.customerAddress.streetLabel')"
         :placeholder="$t('checkout.customerAddress.streetPlaceholder')"
-        :errorMessage="errorMessages?.value?.street?.$errors?.[0] ?? ''"
+        :errorMessage="validation?.street.$errors[0]"
+        @blur="validation?.street.$touch()"
       />
     </div>
     <div class="flex gap-4">
       <FormInputField
-        v-if="state.zipcode !== undefined"
         class="basis-1/2"
-        v-model="state.zipcode"
+        v-model="zipcodeModel"
         id="zipcode"
+        autocomplete="postal-code"
         :label="$t('checkout.customerAddress.zipcodeLabel')"
         :placeholder="$t('checkout.customerAddress.zipcodePlaceholder')"
-        :errorMessage="errorMessages?.value?.zipcode?.$errors?.[0] ?? ''"
+        :errorMessage="validation?.zipcode?.$errors[0]"
+        @blur="validation?.zipcode?.$touch()"
       />
       <FormInputField
         class="basis-1/2"
         v-model="state.city"
         id="city"
+        autocomplete="address-level2"
         :label="$t('checkout.customerAddress.cityLabel')"
         :placeholder="$t('checkout.customerAddress.cityPlaceholder')"
-        :errorMessage="errorMessages?.value?.city?.$errors?.[0] ?? ''"
+        :errorMessage="validation?.city.$errors[0]"
+        @blur="validation?.city.$touch()"
       />
     </div>
-    <div>
-      <FormCountrySearchSelect
-        id="country"
-        v-model="state.countryId"
-        :label="$t('checkout.customerAddress.countryLabel')"
-        :placeholder="$t('checkout.customerAddress.countryPlaceholder')"
-        :errorMessage="errorMessages?.value?.countryId?.$errors?.[0] ?? ''"
-      />
-    </div>
-  </form>
+    <SharedCountryStateInput
+      v-model:country-id="state.countryId"
+      v-model:state-id="countryStateIdModel"
+      :country-id-validation="validation?.countryId"
+      :state-id-validation="validation?.countryStateId"
+      @states-change="handleCountryStatesChange"
+    />
+  </div>
 </template>

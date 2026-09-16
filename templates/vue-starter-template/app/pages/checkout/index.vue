@@ -42,6 +42,7 @@ const {
   customerBaseInfo,
   billingAddress,
   createAccount,
+  countryHasStates,
 } = useTemplateCheckout();
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
@@ -77,8 +78,29 @@ function focusFirstInvalid() {
 const isPlacingOrder = ref(false);
 const isRegistering = ref(false);
 
+async function validateCustomerForm() {
+  const [baseInfoResult, billingAddressResult] = await Promise.all([
+    $vBaseInfo.$validate(),
+    $vBillingAddress.$validate(),
+  ]);
+
+  if (!baseInfoResult.valid || !billingAddressResult.valid) {
+    focusFirstInvalid();
+    return false;
+  }
+
+  return true;
+}
+
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
+
+  if (!isUserSession.value) {
+    await handleRegister();
+    return;
+  }
+
+  if (!canPlaceOrder.value) return;
 
   isPlacingOrder.value = true;
   const trigger = document.activeElement;
@@ -109,25 +131,18 @@ function handleChangePaymentMethod(id: string) {
 async function handleRegister() {
   if (isRegistering.value) return;
 
-  $vBaseInfo.$touch();
-  $vBillingAddress.$touch();
-
-  const { valid: validBaseInfo } = await $vBaseInfo.$validate();
-  const { valid: validBillingAddress } = await $vBillingAddress.$validate();
-
-  if (!validBaseInfo || !validBillingAddress) {
-    focusFirstInvalid();
-    return;
-  }
+  const isValid = await validateCustomerForm();
+  if (!isValid) return;
 
   isRegistering.value = true;
   const trigger = document.activeElement;
   try {
     await register({
+      accountType: "private",
       firstName: billingAddress.value.firstName,
       lastName: billingAddress.value.lastName,
       email: customerBaseInfo.value.email,
-      password: customerBaseInfo.value.password,
+      password: createAccount.value ? customerBaseInfo.value.password : "",
       guest: !createAccount.value,
       billingAddress: {
         customerId: "",
@@ -138,9 +153,11 @@ async function handleRegister() {
         zipcode: billingAddress.value.zipcode,
         city: billingAddress.value.city,
         countryId: billingAddress.value.countryId,
+        countryStateId: billingAddress.value.countryStateId || undefined,
       },
       acceptedDataProtection: true,
     });
+    await Promise.all([getShippingMethods(), getPaymentMethods()]);
   } catch (error) {
     handleRegistrationError(error, persistentError);
   } finally {
@@ -203,29 +220,34 @@ onMounted(() => {
           </div>
         </div>
         <CheckoutStepHeader :step="1" label="Shipping address">
-          <template v-if="!isUserSession">
+          <form
+            v-if="!isUserSession"
+            class="flex flex-col"
+            @submit.prevent="handleRegister"
+          >
             <CheckoutCustomerBaseInfo
               class="mb-4"
               v-model:email="customerBaseInfo.email"
               v-model:password="customerBaseInfo.password"
               v-model:createAccount="createAccount"
-              :errorMessages="toRef($vBaseInfo)"
+              :validation="$vBaseInfo"
             />
             <CheckoutCustomerAddress
               class="mb-4"
               v-model="billingAddress"
-              :errorMessages="toRef($vBillingAddress)"
+              :validation="$vBillingAddress"
+              @states-change="countryHasStates = $event.length > 0"
             />
             <FormBaseButton
+              type="submit"
               :label="
                 isRegistering
                   ? $t('checkout.savingDetails')
                   : $t('checkout.continueButton')
               "
               :loading="isRegistering"
-              @click="handleRegister"
             />
-          </template>
+          </form>
 
           <CheckoutCustomerAddressChosen v-else :address="billingAddress" />
         </CheckoutStepHeader>
@@ -244,13 +266,14 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
+          type="button"
           :label="
             isPlacingOrder
               ? $t('checkout.placingOrder')
               : $t('checkout.placeOrderButton')
           "
           :loading="isPlacingOrder"
-          :disabled="!canPlaceOrder"
+          :disabled="isUserSession && !canPlaceOrder"
           @click="handlePlaceOrder"
         />
       </div>

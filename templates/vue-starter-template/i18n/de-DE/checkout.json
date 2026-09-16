@@ -26,7 +26,8 @@
       "emailLabel": "E-Mail",
       "passwordPlaceholder": "Passwort eingeben",
       "passwordLabel": "Passwort",
-      "createAccountToggleLabel": "Kundenkonto erstellen"
+      "createAccountToggleLabel": "Kundenkonto erstellen",
+      "continueAsGuestToggleLabel": "Als Gast fortfahren"
     },
     "continueButton": "Weiter",
     "savingDetails": "Daten werden gespeichert…",
