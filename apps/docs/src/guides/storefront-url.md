@@ -55,11 +55,14 @@ In the upstream Store API schema, `/dsr/customer/generate-login-token` declares 
 
 ```ts
 function getStorefrontUrl() {
-  return devStorefrontUrl ?? window.location.origin ?? "";
+  const preferred = devStorefrontUrl ?? window.location.origin ?? "";
+  const domains = sessionContext.salesChannel.domains ?? [];
+  // keep preferred when it matches a configured domain; otherwise
+  // use the domain for the active language or the first domain
 }
 ```
 
-So: **if `devStorefrontUrl` is configured it wins, otherwise the browser origin is used.**
+So: **if `devStorefrontUrl` is configured it is tried first, otherwise the browser origin is used.** If that URL is not one of the current sales channel domains, Frontends sends a domain from the session context instead — otherwise `/account/register` fails with `VIOLATION::NO_SUCH_CHOICE_ERROR` and guest checkout never reaches `/checkout/order`.
 
 Two composables inject the result for you, which is why `storefrontUrl` is omitted from their parameter types:
 
