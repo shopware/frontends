@@ -78,12 +78,18 @@ function focusFirstInvalid() {
 const isPlacingOrder = ref(false);
 
 async function validateCustomerForm() {
-  const [baseInfoResult, billingAddressResult] = await Promise.all([
+  const [baseInfoResult, billingAddressResult] = await Promise.allSettled([
     $vBaseInfo.$validate(),
     $vBillingAddress.$validate(),
   ]);
 
-  if (!baseInfoResult.valid || !billingAddressResult.valid) {
+  const isBaseInfoValid =
+    baseInfoResult.status === "fulfilled" && baseInfoResult.value.valid;
+  const isBillingAddressValid =
+    billingAddressResult.status === "fulfilled" &&
+    billingAddressResult.value.valid;
+
+  if (!isBaseInfoValid || !isBillingAddressValid) {
     focusFirstInvalid();
     return false;
   }
@@ -112,7 +118,7 @@ async function saveCustomerDetails() {
     },
     acceptedDataProtection: true,
   });
-  await Promise.all([getShippingMethods(), getPaymentMethods()]);
+  await Promise.allSettled([getShippingMethods(), getPaymentMethods()]);
 
   if (sessionSelectedPaymentMethod.value) {
     selectedPaymentMethod.value = sessionSelectedPaymentMethod.value.id;
