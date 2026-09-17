@@ -223,6 +223,7 @@ onMounted(() => {
                   : $t('checkout.continueButton')
               "
               :loading="isRegistering"
+              data-testid="checkout-pi-submit-button"
               @click="handleRegister"
             />
           </template>
@@ -244,6 +245,7 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
+          data-testid="checkout-place-order-button"
           :label="
             isPlacingOrder
               ? $t('checkout.placingOrder')
