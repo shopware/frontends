@@ -257,6 +257,10 @@ export const sidebar = [
             text: "Payment Handling and Return Flow",
             link: "/frontends-recipes/checkout/payment.html",
           },
+          {
+            text: "Cart",
+            link: "/frontends-recipes/checkout/cart.html",
+          },
         ],
       },
     ],
