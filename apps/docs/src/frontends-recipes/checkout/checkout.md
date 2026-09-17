@@ -245,6 +245,7 @@ watch(selectedPaymentMethod, (m) => (paymentId.value = m?.id ?? ""), {
 
 const loadCheckout = async () => {
   loadError.value = "";
+  checkoutError.value = "";
   isLoadingCheckout.value = true;
 
   try {
@@ -257,8 +258,7 @@ const loadCheckout = async () => {
       getPaymentMethods({ forceReload: true }),
     ]);
     if (results.some((result) => result.status === "rejected")) {
-      checkoutError.value =
-        "Some delivery or payment options could not be loaded.";
+      loadError.value = "The delivery and payment options could not be loaded.";
     }
   } catch (error) {
     console.error(error);
@@ -317,8 +317,24 @@ const choosePaymentMethod = (id: string) =>
     "The payment method could not be selected.",
   );
 
+const canPlaceOrder = computed(
+  () =>
+    !isPlacingOrder.value &&
+    !isSelectingMethod.value &&
+    !!selectedPaymentMethod.value &&
+    (isVirtualCart.value || !!selectedShippingMethod.value),
+);
+
+const submitHint = computed(() => {
+  if (!isVirtualCart.value && !selectedShippingMethod.value)
+    return "Select a shipping method to continue.";
+  if (!selectedPaymentMethod.value)
+    return "Select a payment method to continue.";
+  return "";
+});
+
 const placeOrder = async () => {
-  if (isPlacingOrder.value || !selectedPaymentMethod.value) return;
+  if (!canPlaceOrder.value) return;
   checkoutError.value = "";
   isPlacingOrder.value = true;
 
@@ -418,19 +434,12 @@ const placeOrder = async () => {
         <dd>{{ totalPrice }}</dd>
       </dl>
 
-      <p v-if="!selectedPaymentMethod" id="submit-hint">
-        Select a payment method to continue.
-      </p>
+      <p v-if="submitHint" id="submit-hint">{{ submitHint }}</p>
 
       <button
         type="submit"
-        :aria-disabled="
-          isPlacingOrder ||
-          isSelectingMethod ||
-          !selectedPaymentMethod ||
-          (!isVirtualCart && !selectedShippingMethod)
-        "
-        :aria-describedby="!selectedPaymentMethod ? 'submit-hint' : undefined"
+        :aria-disabled="!canPlaceOrder"
+        :aria-describedby="submitHint ? 'submit-hint' : undefined"
       >
         {{ isPlacingOrder ? "Placing the order…" : "Place the order" }}
       </button>
@@ -447,7 +456,9 @@ The example shows the order number in place rather than navigating, so it stays 
 
 `getShippingMethods` and `getPaymentMethods` are called with `forceReload: true` on mount as well. Without it, a checkout that a customer re-enters in the same session would render the lists that were available before they changed an address.
 
-Four choices in the markup look unusual and are deliberate. The fieldsets and the submit button carry `aria-disabled` rather than `disabled`, because a disabled control cannot hold focus — a keyboard user selecting a method would be thrown back to the top of the document, so the handlers enforce the guard instead. The error paragraph is a `role="alert"`, because by the time it renders the control the customer used has been re-enabled and focus is nowhere near it. The total sits in an `aria-live="polite"` list, because choosing a shipping method changes the delivery costs without the customer touching the total. And the `h1` is focusable, because the form holding focus unmounts on success — without moving focus to the heading, a screen reader never learns the order went through.
+The two error refs are not a duplicate. `loadError` is blocking: it replaces the form and offers a retry, because a checkout whose method lists never arrived has nothing the customer can act on, and an empty — or worse, stale — fieldset beside a live order button lets them buy with options they cannot see. A rejected list request therefore counts as a failed load, not as a note above a usable form. `checkoutError` is the non-blocking one: the form stays up and the message sits above it, which is the right shape for a failed selection or a failed order, where what the customer had before is still valid.
+
+Four choices in the markup look unusual and are deliberate. The fieldsets and the submit button carry `aria-disabled` rather than `disabled`, because a disabled control cannot hold focus — a keyboard user selecting a method would be thrown back to the top of the document. `aria-disabled` does not stop activation, though, so the handler is the only thing standing between an inert-looking button and a real `POST /checkout/order`: `canPlaceOrder` is one computed read by both the button and `placeOrder`, never two conditions kept in sync by hand. The error paragraph is a `role="alert"`, because by the time it renders the control the customer used has been re-enabled and focus is nowhere near it. The total sits in an `aria-live="polite"` list, because choosing a shipping method changes the delivery costs without the customer touching the total. And the `h1` is focusable, because the form holding focus unmounts on success — without moving focus to the heading, a screen reader never learns the order went through.
 
 **Keep this route out of the shared HTML cache.** Loading from `onMounted` is deliberate: it is what keeps the billing address and the line items out of the server-rendered response. `vue-starter-template` applies `isr` to `/**` and opts `/checkout` and `/checkout/**` out of it with `ssr: false`, so the page is safe there — but drop this example at another path, or refactor the load to `useAsyncData`/`callOnce`, and one customer's address is rendered into HTML that ISR then serves to everyone else. Personalized data does not belong in an ISR-cached response.
 
@@ -471,7 +482,7 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 - Changing the shipping address or the billing address invalidates both method lists and the delivery costs. Reload both lists and the cart, not just one.
 - `POST /checkout/order` can fail after the customer has confirmed — a stock change or a rule that no longer matches. The cart still exists in that case, so refresh it rather than sending the customer to a confirmation page.
 - The order body carries `customerComment`, `affiliateCode` and `campaignCode` only. A prepared payment flow adds transaction details whose field names come from the payment handler, not from this operation.
-- The templates do not both implement this flow. `vue-starter-template` loads each list once and does not reload the opposite one after a selection; the reload-and-refresh pattern described here is implemented in `vue-demo-store`, which is deprecated and kept only as a reference. Read the starter for structure, this page for the flow.
+- Neither template implements this flow completely, so do not read either one as the reference. `vue-starter-template` loads each list once and reloads nothing after a selection. `vue-demo-store` — deprecated, kept only to read — gets closest but only in one direction: its shipping setter reloads the payment methods **and** the cart, while its payment setter reloads the shipping methods and leaves the cart untouched, so whatever a payment choice changes about the totals is missing from the summary the customer is looking at. Its address setters do refresh all three. Read the starter for structure, this page for the flow.
 
 ## Common Mistakes
 
@@ -491,16 +502,17 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 
 - Entering the checkout refreshes the session context and the cart before the method lists are requested.
 - A virtual cart issues no `readShippingMethod post /shipping-method` request and still allows an order.
-- Selecting a shipping method patches the context and reloads the payment methods with `forceReload`.
-- Selecting a payment method patches the context and reloads the shipping methods with `forceReload`, unless the cart is virtual.
+- Selecting a shipping method patches the context, reloads the payment methods with `forceReload`, and refreshes the cart.
+- Selecting a payment method patches the context, refreshes the cart, and reloads the shipping methods with `forceReload` unless the cart is virtual.
 - Changing the shipping address reloads both method lists and the cart.
 - Placing an order calls `createOrder post /checkout/order` once and exposes `order.id` for the route and `order.orderNumber` for the customer.
 - After a successful order the cart is refreshed and reports empty; a failing refresh surfaces a reload hint rather than passing silently.
 - A failing method selection shows an error, snaps the radio group back to the method still held in the context, and re-enables the fieldsets.
-- Both method lists failing to load shows an error rather than an empty fieldset.
+- A method list failing to load shows an error and a retry rather than an empty or stale fieldset.
 - A failing initial load offers a retry and never claims the cart is empty.
 - A failing order shows a UI-level error, keeps the cart, and leaves the customer on the checkout.
-- The submit button stays inert while no payment method is selected, and says why.
+- The submit button stays inert while a method is missing or a selection is still in flight, and says which one is missing.
+- Submitting the form anyway — by keyboard, or past the `aria-disabled` button — does not reach `createOrder post /checkout/order`.
 - Placing an order moves focus to the confirmation heading, and the heading is announced.
 
 ## Related Links
