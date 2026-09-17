@@ -70,6 +70,7 @@ const fetchWishlistProducts: OffsetPaginationFetcher<
 
         <template #empty>
           <div
+            data-testid="wishlist-empty-container"
             class="flex flex-col items-center justify-center py-20 px-6 text-center"
           >
             <AccountPageHeader

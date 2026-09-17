@@ -45,13 +45,18 @@ function switchToGuest() {
       id="email"
       type="email"
       autocomplete="email"
+      data-testid="checkout-pi-email-input"
       :label="$t('checkout.customerBaseInfo.emailLabel')"
       :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
       :errorMessage="validation?.email.$errors[0]"
       @blur="validation?.email.$touch()"
     />
     <div v-if="!createAccount" class="mb-4">
-      <FormLinkButton class="border-b-0 text-sm" @click="switchToAccount">
+      <FormLinkButton
+        class="border-b-0 text-sm"
+        data-testid="checkout-create-account-toggle"
+        @click="switchToAccount"
+      >
         <Icon name="shopware:plus-xs" class="color-brand-primary" />
         <span class="text-brand-primary">{{
           $t("checkout.customerBaseInfo.createAccountToggleLabel")
@@ -66,6 +71,7 @@ function switchToGuest() {
         id="password"
         type="password"
         autocomplete="new-password"
+        data-testid="checkout-pi-password-input"
         :label="$t('checkout.customerBaseInfo.passwordLabel')"
         :placeholder="$t('checkout.customerBaseInfo.passwordPlaceholder')"
         :errorMessage="validation?.password.$errors[0]"

@@ -310,6 +310,7 @@ onMounted(() => {
         </CheckoutStepHeader>
         <FormBaseButton
           type="button"
+          data-testid="checkout-place-order-button"
           :label="
             isPlacingOrder
               ? $t('checkout.placingOrder')
