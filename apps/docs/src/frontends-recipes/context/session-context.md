@@ -112,22 +112,22 @@ You do not need to call `refreshSessionContext()` after a setter from `useSessio
 
 ## Request Flow
 
-| Step                     | Code                                                       | Store API               | Type                                                                                        |
-| ------------------------ | ---------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------- |
-| Load the context         | `refreshSessionContext()`                                  | `GET /context`          | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />         |
-| Switch the currency      | `setCurrency({ id })`                                      | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
-| Switch the language      | `setLanguage({ id })`                                      | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
-| Switch the country       | `setCountry(countryId)`                                    | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
-| Set the shipping address | `setActiveShippingAddress({ id })`                         | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
-| Set the shipping method  | `setShippingMethod({ id })`                                | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
-| Seed the value locally   | `setContext(context)`                                      | none                    | <SchemaTypeTooltip type-key='Schemas["SalesChannelContext"]' />                             |
-| Run a context gateway    | `apiClient.invoke("contextGateway post /context/gateway")` | `POST /context/gateway` | <SchemaTypeTooltip type-key='operations["contextGateway post /context/gateway"]["body"]' /> |
+| Step                     | Code                                                                              | Store API               | Type                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------- |
+| Load the context         | `refreshSessionContext()`                                                         | `GET /context`          | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />         |
+| Switch the currency      | `setCurrency({ id })`                                                             | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
+| Switch the language      | `setLanguage({ id })`                                                             | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
+| Switch the country       | `setCountry(countryId)`                                                           | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
+| Set the shipping address | `setActiveShippingAddress({ id })`                                                | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
+| Set the shipping method  | `setShippingMethod({ id })`                                                       | `PATCH /context`        | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' />         |
+| Seed the value locally   | `setContext(context)`                                                             | none                    | <SchemaTypeTooltip type-key='Schemas["SalesChannelContext"]' />                             |
+| Run a context gateway    | `apiClient.invoke("contextGateway post /context/gateway", { body: { appName } })` | `POST /context/gateway` | <SchemaTypeTooltip type-key='operations["contextGateway post /context/gateway"]["body"]' /> |
 
 Every `PATCH /context` response can carry a `redirectUrl`. It is absent for a plain currency or country switch, and set when an app wants the browser to continue somewhere else before the switch is finished — follow it instead of dropping it.
 
 `setContext(context)` is synchronous and sends no request. It only overwrites the shared value, which is what you want when a context arrives from somewhere other than a `GET /context` — an SSR payload or a cross-tab sync message.
 
-`contextGateway post /context/gateway` has no composable wrapper. It lets an app manipulate the context server-side by `appName`, and it also does not return a context, so follow it with `refreshSessionContext()`. The same operation exists as `contextGatewayGet get /context/gateway`, which takes `appName` as a query parameter.
+`contextGateway post /context/gateway` has no composable wrapper. It lets an app manipulate the context server-side; the body requires `appName` and takes an optional `data` record, and the call does not type-check without it. Like a context patch it does not return a context, so follow it with `refreshSessionContext()`. The same operation exists as `contextGatewayGet get /context/gateway`, which takes `appName` as a query parameter.
 
 ## Composables
 
@@ -151,7 +151,7 @@ Seven things the generated reference will not tell you:
 - The setters do not fail the same way. `setShippingMethod`, `setActiveShippingAddress` and `setActiveBillingAddress` take a `Partial<>` and throw at runtime when the id is missing; `setPaymentMethod` requires `{ id: string }`, so the same mistake is a compile error rather than a throw; `setLanguage` returns without a request; `setCurrency` logs the problem with `console.error` and then returns; `setCountry` takes a plain string and validates nothing.
 - `setCurrency` and `setLanguage` take a `Partial<Schemas["Currency"]>` and a `Partial<Schemas["Language"]>`, so you can pass the whole entity you already rendered — only `id` is read from it.
 - `useInternationalization().changeLanguage(languageId)` sends the same `updateContext patch /context` and deliberately does **not** refresh the shared context. It is meant for a language switch that continues with a navigation or reload; if you call it and stay on the page, follow it with `refreshSessionContext()` yourself.
-- `countryStateId` is part of the patch body but has no setter. Reaching it means calling `apiClient.invoke("updateContext patch /context")` directly and refreshing afterwards.
+- `countryStateId` is part of the patch body but has no setter. Reaching it means calling `apiClient.invoke("updateContext patch /context", { body: { countryStateId } })` directly and refreshing afterwards.
 - `salesChannelLanguageId` and `currentLanguageId` are the current names of `languageId` and `languageIdChain`, which are deprecated aliases of the very same computed properties. `currentLanguageId` reads the first entry of `context.languageIdChain` and falls back to an empty string at runtime — but it is declared `ComputedRef<string | undefined>`, so you still have to narrow it before passing it somewhere that wants a `string`.
 - `setContext` exists for state that arrives outside the request cycle. The deprecated `vue-demo-store` reference template uses it to apply a context pushed over a `BroadcastChannel` from another tab.
 
@@ -207,7 +207,9 @@ const priceLabel = computed(() => {
   return "tax free";
 });
 
-const switchCountry = async (id: string) => {
+const switchCountry = async (id?: string) => {
+  if (!id) return;
+
   contextError.value = "";
   isSwitching.value = true;
 
@@ -255,7 +257,7 @@ const switchCountry = async (id: string) => {
     <button
       type="button"
       :disabled="isSwitching || !countryId"
-      @click="switchCountry(countryId!)"
+      @click="switchCountry(countryId)"
     >
       {{ isSwitching ? "Switching…" : "Re-apply the current country" }}
     </button>
@@ -323,7 +325,8 @@ Turning it on moves the problem to the cache. The server render then depends on 
 - After a successful switch, `countryId` and `sessionContext.shippingLocation.country` reflect the new country.
 - A failing `PATCH /context` leaves the previously rendered context intact and surfaces a UI-level error.
 - `setCurrency({})` without an id issues no request.
-- `setShippingMethod({})` without an id throws instead of issuing a request.
+- `setShippingMethod({})` throws instead of issuing a request — its public signature takes a `Partial<>`, so the missing id is a runtime failure, not a compile error.
+- `setPaymentMethod({})` is the opposite case and needs no test: that setter requires `{ id: string }`, so TypeScript rejects the call.
 - `activeBillingAddress` is `null` for a guest session and set after login.
 - With `useUserContextInSSR` left at its default, the server-rendered HTML of a logged-in visitor contains no customer data.
 
