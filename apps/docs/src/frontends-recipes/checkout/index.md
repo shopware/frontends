@@ -6,6 +6,8 @@ nav:
 
 # Checkout
 
-Recipes for the cart and checkout flows, starting with the cart.
+Recipes for the cart and checkout flows, from the first line item to a placed order.
 
 <PageRef page="cart.html" title="Cart" sub="Understand why every cart write returns the whole recalculated cart, the shared cart state behind useCart, the line item operations, and the errors map a 2xx response can carry." />
+
+<PageRef page="checkout.html" title="Checkout and Order Placement" sub="Understand why the shipping and payment method lists are recalculated on every change, how a method selection is a context patch, what the order request actually carries, and why the cart is gone afterwards." />
