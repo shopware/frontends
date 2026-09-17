@@ -41,6 +41,12 @@ describe("mergeRequestHeaders", () => {
     ).toEqual({ accept: "application/json" });
   });
 
+  it("treats missing defaults as empty", () => {
+    expect(
+      mergeRequestHeaders({ "Sw-Language-Id": "caller" }, undefined),
+    ).toEqual({ "sw-language-id": "caller" });
+  });
+
   it("keeps the default when the caller header is undefined", () => {
     expect(
       mergeRequestHeaders(

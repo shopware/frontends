@@ -7,10 +7,10 @@ import type { ClientHeaders } from "../defaultHeaders";
  */
 export function mergeRequestHeaders(
   callerHeaders: ClientHeaders | undefined,
-  defaultHeaders: ClientHeaders,
+  defaultHeaders: ClientHeaders | undefined,
 ): ClientHeaders {
   const headers: ClientHeaders = {};
-  for (const [key, value] of Object.entries(defaultHeaders)) {
+  for (const [key, value] of Object.entries(defaultHeaders ?? {})) {
     if (value) headers[key.toLowerCase()] = value;
   }
   const dropped: string[] = [];
