@@ -254,12 +254,12 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Payment Handling and Return Flow",
-            link: "/frontends-recipes/checkout/payment.html",
-          },
-          {
             text: "Cart",
             link: "/frontends-recipes/checkout/cart.html",
+          },
+          {
+            text: "Payment",
+            link: "/frontends-recipes/checkout/payment.html",
           },
         ],
       },
