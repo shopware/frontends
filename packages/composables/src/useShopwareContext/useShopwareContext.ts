@@ -29,7 +29,7 @@ export type ShopwareContext = {
    *
    * @default false
    */
-  guestServerRender: boolean;
+  guestServerRender?: boolean;
 };
 
 /**
