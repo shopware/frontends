@@ -9,10 +9,13 @@ recipe:
   composables:
     - useOrderDetails
     - useDefaultOrderAssociations
-  helpers: []
+    - useOrderPayment
+  helpers:
+    - downloadFile
   operations:
     - readOrder post /order
     - cancelOrder post /order/state/cancel
+    - handlePaymentMethod post /handle-payment
     - download post /document/download/{documentId}/{deepLinkCode}
     - orderDownloadFile get /order/download/{orderId}/{downloadId}
   schemas:
@@ -27,6 +30,7 @@ recipe:
 <script setup>
 import RecipeFlowDiagram from "../../components/RecipeFlowDiagram.vue";
 import SchemaTypeTooltip from "../../components/SchemaTypeTooltip.vue";
+import CodeExample from "../../components/CodeExample.vue";
 
 const steps = [
   {
@@ -78,9 +82,9 @@ const steps = [
     title: "Store API",
     action: "Cancel or download",
     detail:
-      "cancel() posts the order id and returns the new state, then reloads the order. Document and file downloads are separate binary operations that return a Blob.",
+      "cancel() posts the order id, reloads the order and returns the new state. Document and file downloads are separate operations whose binary body is parsed from the response content type.",
     code: "await cancel(); await getDocumentFile(documentId, deepLinkCode)",
-    state: "StateMachineState, Blob",
+    state: "swOrderDetails (reloaded)",
     typeKeys: ['Schemas["StateMachineState"]'],
   },
 ];
@@ -96,7 +100,7 @@ Build a page that shows one placed order — its state, line items, addresses, t
 
 `readOrder post /order` is a filtered entity search. Passing `ids: [orderId]` narrows it to one order, but the response is still an `EntitySearchResult`, and the order has to be taken from `orders.elements[0]`.
 
-What the operation does _not_ do is decide which nested data comes back. Without associations an order has no line items, no deliveries, no transactions and no addresses — it is a price and a state. `useDefaultOrderAssociations` exists precisely to supply the tree a detail page needs, and `useOrderDetails` merges anything extra into it instead of replacing it.
+What the operation does _not_ do is decide which nested data comes back. Without associations an order has no line items, no deliveries, no transactions and no addresses — it is a price and a set of ids. Even the state is an association: `status` reads `stateMachineState.translated.name`, which is why `stateMachineState` sits in the default tree next to the rest. `useDefaultOrderAssociations` exists precisely to supply the tree a detail page needs, and `useOrderDetails` merges anything extra into it instead of replacing it.
 
 <RecipeFlowDiagram label="Order details flow diagram" :steps="steps" />
 
@@ -107,9 +111,9 @@ Read the diagram from left to right:
 3. `readOrder post /order` is sent with `ids`, the merged `associations`, and `checkPromotion: true`.
 4. `useOrderDetails` stores `orders.elements[0]` as the shared order and `paymentChangeable` separately.
 5. The UI reads `status`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress` and `personalDetails` from computed properties.
-6. `cancel()` and the two download methods act on that order: the cancellation reloads it, the downloads return a `Blob`.
+6. `cancel()` and the two download methods act on that order: the cancellation reloads it, `getMediaFile` returns a `Blob`, and `getDocumentFile` returns `Blob | string` — the XML and HTML document variants come back as text.
 
-You do not need to reload the order after `cancel()` or `changePaymentMethod()` — both call `loadOrderDetails()` themselves.
+You do not need to reload the order after `useOrderDetails`' `cancel()` or `changePaymentMethod()` — both call `loadOrderDetails()` themselves.
 
 ## Request Flow
 
@@ -118,16 +122,22 @@ You do not need to reload the order after `cancel()` or `changePaymentMethod()` 
 | Load one order          | `loadOrderDetails()`                        | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["body"]' />                                            |
 | Read the search result  | `order`                                     | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["response"]' />                                        |
 | Cancel the order        | `cancel()`                                  | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["body"]' />                             |
-| Read the new state      | `status`, `statusTechnicalName`             | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["response"]' />                         |
+| Read the new state      | `await cancel()`                            | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["response"]' />                         |
 | Download a document     | `getDocumentFile(documentId, deepLinkCode)` | `POST /document/download/{documentId}/{deepLinkCode}` | <SchemaTypeTooltip type-key='operations["download post /document/download/{documentId}/{deepLinkCode}"]["response"]' /> |
 | Download a digital file | `getMediaFile(downloadId)`                  | `GET /order/download/{orderId}/{downloadId}`          | <SchemaTypeTooltip type-key='operations["orderDownloadFile get /order/download/{orderId}/{downloadId}"]["response"]' /> |
+| Start the payment       | `handlePayment(successUrl, errorUrl)`       | `POST /handle-payment`                                | <SchemaTypeTooltip type-key='operations["handlePaymentMethod post /handle-payment"]["body"]' />                         |
 
-The two download rows pass an explicit `accept` header — `application/pdf` for a document, `application/octet-stream` for a media file — so the API client returns binary content instead of trying to parse JSON.
+`cancel()` returns the new `StateMachineState`, but `status` and `statusTechnicalName` are not read from it — they are computed over the shared order and only change once the reload that `cancel()` triggers has finished.
+
+The `accept` value on the two download rows — `application/pdf` for a document, `application/octet-stream` for a media file — is part of the generated operation type, not a header: the type requires it, and on the document route it also picks which response variant — PDF, HTML or XML — the call is typed as. The API client does not forward it: every request still goes out with the client's default `Accept: application/json`. The binary body arrives because the Store API answers with the file's own content type, and the fetch layer parses the response by that type. Only `headers` reaches the wire, and for these two operations the generated headers type declares nothing but `sw-language-id`, so there is no typed way to set `Accept` per request.
 
 ## Composables
 
-- `useOrderDetails`: takes an order id and optional extra associations. Reads `order`, `status`, `statusTechnicalName`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress`, `personalDetails`, `shippingMethod`, `paymentMethod`, `documents`, `hasDocuments`, `paymentChangeable`. Acts with `loadOrderDetails`, `cancel`, `changePaymentMethod`, `handlePayment`, `getDocumentFile`, `getMediaFile`, `getPaymentMethods`.
-- `useDefaultOrderAssociations`: returns the default association tree — `stateMachineState`, `lineItems` with `cover` and `downloads.media`, `addresses`, `deliveries` with `shippingMethod`, `shippingOrderAddress` and `stateMachineState`, and `transactions` with `paymentMethod` and `stateMachineState`. Override it in your project when every order page in your storefront needs a different tree.
+- `useOrderDetails`: takes an order id and optional extra associations. Reads `order`, `status`, `statusTechnicalName`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress`, `personalDetails`, `shippingMethod`, `paymentMethod`, `documents`, `hasDocuments`, `paymentChangeable`, `paymentUrl`. Acts with `loadOrderDetails`, `cancel`, `changePaymentMethod`, `handlePayment`, `getDocumentFile`, `getMediaFile`, `getPaymentMethods`.
+- `useDefaultOrderAssociations`: returns the default association tree — `stateMachineState`, `lineItems` with `cover` and `downloads.media`, `addresses`, `deliveries` with `shippingMethod`, `shippingOrderAddress` and `stateMachineState`, and `transactions` with `paymentMethod` and `stateMachineState`. Override it in your project when every order page in your storefront needs a different tree. Note that `documents` is not in the tree and does not need to be — the Store API returns it with the order.
+- `useOrderPayment`: takes the `order` computed returned by `useOrderDetails` and drives the payment of an already placed order. Reads `activeTransaction`, `state`, `isAsynchronous`, `paymentMethod`, `paymentUrl`; acts with `handlePayment` and `changePaymentMethod`. This is what the starter template uses on the checkout success page, and it is the composable to reach for when a payment has to be retried or redirected. Its `paymentMethod` is the **active** transaction's, which is not necessarily the **last** one `useOrderDetails` reports.
+
+Each composable owns its own `paymentUrl` ref — they are not provided or shared — and `handlePayment()` writes the redirect target into that ref rather than handing it back; `useOrderDetails`' version returns nothing at all. Watch the ref belonging to whichever composable's `handlePayment()` you called.
 
 ## Types
 
@@ -150,16 +160,21 @@ type ReadOrderBody = operations["readOrder post /order"]["body"];
 type OrderRouteResponse = Schemas["OrderRouteResponse"];
 type Order = Schemas["Order"];
 type OrderLineItem = Schemas["OrderLineItem"];
-type OrderDocument = Schemas["Document"];
-type OrderState = Schemas["StateMachineState"];
+type Document = Schemas["Document"];
+type StateMachineState = Schemas["StateMachineState"];
 ```
 
-`ReadOrderBody` is where the criteria live. It is also the type that reveals the guest authentication fields — `filter`, `email`, `zipcode` and `login` — that a customer-session page never uses.
+`ReadOrderBody` is where the criteria live. It is also the type that reveals the guest authentication fields — `filter`, `email`, `zipcode` and `login` — which a customer-session page never touches and a guest order lookup is built on.
 
 ## Minimal Vue Example
 
+<CodeExample title="Minimal order details page">
+
 ```vue
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
+import { downloadFile } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 const orderId = useRoute().params.id as string;
@@ -185,65 +200,104 @@ const {
 
 const isLoading = ref(true);
 const isCancelling = ref(false);
-const orderError = ref("");
 
-const isCancellable = computed(
+const loadError = ref("");
+const cancelError = ref("");
+const documentError = ref("");
+
+const canCancelOrder = computed(
   () =>
     !!order.value &&
-    !["cancelled", "completed"].includes(statusTechnicalName.value ?? "")
+    !["cancelled", "completed"].includes(statusTechnicalName.value ?? ""),
 );
+
+const messageFor = (error: unknown, fallback: string) =>
+  error instanceof ApiClientError && error.status === 403
+    ? "Your session has expired. Please sign in again."
+    : fallback;
 
 onMounted(async () => {
   try {
     await loadOrderDetails();
-  } catch {
-    orderError.value = "This order could not be loaded.";
+  } catch (error) {
+    console.error(error);
+    loadError.value = messageFor(error, "This order could not be loaded.");
   } finally {
     isLoading.value = false;
   }
 });
 
-const cancelOrder = async () => {
-  orderError.value = "";
+const requestCancellation = async () => {
+  if (isCancelling.value) return;
+
+  cancelError.value = "";
   isCancelling.value = true;
 
   try {
     await cancel();
-  } catch {
-    orderError.value = "The order could not be cancelled.";
+  } catch (error) {
+    console.error(error);
+    cancelError.value = messageFor(
+      error,
+      "We could not confirm the cancellation. Please reload this page before trying again.",
+    );
   } finally {
     isCancelling.value = false;
   }
 };
 
-const openDocument = async (document: Schemas["Document"]) => {
-  const file = await getDocumentFile(document.id, document.deepLinkCode);
-  const url = URL.createObjectURL(
-    new Blob([file], { type: "application/pdf" })
-  );
+const downloadDocument = async (orderDocument: Schemas["Document"]) => {
+  documentError.value = "";
 
-  window.open(url, "_blank");
+  try {
+    const file = await getDocumentFile(
+      orderDocument.id,
+      orderDocument.deepLinkCode,
+    );
+
+    if (!(file instanceof Blob) || file.size === 0) {
+      documentError.value = "This document is no longer available.";
+      return;
+    }
+
+    downloadFile(
+      file,
+      `${orderDocument.config.name}.${orderDocument.fileType ?? "pdf"}`,
+    );
+  } catch (error) {
+    console.error(error);
+    documentError.value = messageFor(
+      error,
+      "This document could not be downloaded.",
+    );
+  }
 };
 </script>
 
 <template>
-  <p v-if="isLoading">Loading your order…</p>
+  <p v-if="isLoading" role="status">Loading your order…</p>
 
-  <p v-else-if="orderError">{{ orderError }}</p>
+  <p v-else-if="loadError" role="alert">{{ loadError }}</p>
 
   <p v-else-if="!order">This order does not exist.</p>
 
   <article v-else>
     <h1>Order {{ order.orderNumber }}</h1>
-    <p>{{ status }}</p>
-    <p>{{ personalDetails.firstName }} {{ personalDetails.lastName }}</p>
+    <p aria-live="polite">Status: {{ status }}</p>
+    <p>
+      Customer: {{ personalDetails.firstName }} {{ personalDetails.lastName }}
+    </p>
 
+    <h2>Items</h2>
     <ul>
       <li v-for="item in order.lineItems" :key="item.id">
-        {{ item.label }} × {{ item.quantity }} — {{ item.totalPrice }}
+        {{ item.label }}
+        <span class="sr-only">Quantity:</span> × {{ item.quantity }}
+        <span class="sr-only">Total:</span> — {{ item.totalPrice }}
       </li>
     </ul>
 
+    <h2>Summary</h2>
     <dl>
       <dt>Subtotal</dt>
       <dd>{{ subtotal }}</dd>
@@ -267,21 +321,28 @@ const openDocument = async (document: Schemas["Document"]) => {
 
     <section v-if="hasDocuments">
       <h2>Documents</h2>
+
+      <p v-if="documentError" role="alert">{{ documentError }}</p>
+
       <button
-        v-for="document in documents"
-        :key="document.id"
+        v-for="orderDocument in documents"
+        :key="orderDocument.id"
         type="button"
-        @click="openDocument(document)"
+        :aria-label="`Download ${orderDocument.config.name} (${orderDocument.fileType ?? 'pdf'})`"
+        @click="downloadDocument(orderDocument)"
       >
-        {{ document.config.name }}
+        {{ orderDocument.config.name }}
       </button>
     </section>
 
+    <p v-if="cancelError" role="alert">{{ cancelError }}</p>
+
     <button
-      v-if="isCancellable"
+      v-if="canCancelOrder"
       type="button"
-      :disabled="isCancelling"
-      @click="cancelOrder()"
+      :aria-disabled="isCancelling"
+      :aria-busy="isCancelling"
+      @click="requestCancellation()"
     >
       {{ isCancelling ? "Cancelling…" : "Cancel this order" }}
     </button>
@@ -289,53 +350,118 @@ const openDocument = async (document: Schemas["Document"]) => {
 </template>
 ```
 
+</CodeExample>
+
+Three choices in the markup are deliberate. The cancel button carries `aria-disabled` rather than `disabled`, because a disabled control cannot hold focus — a keyboard user who just pressed it would be thrown back to the top of the document; `aria-disabled` does not stop activation, so the `if (isCancelling.value) return` guard at the top of the handler is what actually prevents a second request. The error paragraphs are `role="alert"` and sit beside the control they belong to rather than in the `v-if` chain, because a failed cancellation or download leaves the order itself perfectly valid — replacing the whole page with the message would destroy what the customer came to read. And the status paragraph is `aria-live="polite"`, because `cancel()` reloads the order and changes that text without the customer touching it.
+
+`.sr-only` is the usual visually-hidden utility; the starter ships one, and any design system has an equivalent.
+
 ## State And Session
 
-The order is resolved from the `sw-context-token`: `readOrder post /order` returns only orders that belong to the customer the token identifies. An order id alone grants nothing, which is why an unauthenticated visitor gets an empty `elements` array rather than an error.
+The order is resolved from the `sw-context-token`: `readOrder post /order` returns only orders that belong to the customer the token identifies. An order id alone grants nothing. Without a customer session the route does not return an empty result — it answers `403` with `CHECKOUT__CUSTOMER_NOT_LOGGED_IN`, so the page needs a logged-in or guest session before it loads anything.
 
-`useOrderDetails` keeps the loaded order in the `swOrderDetails` injection. That is a single slot, not a cache keyed by id — every instance in the component tree points at the same order, so a page that renders two different orders at once will see them overwrite each other.
+The one way to read an order without that session is the guest authentication the request body carries. Send the order's `deepLinkCode` as a filter together with the buyer's `email` and the billing `zipcode`, and the route authenticates the request from those three values instead of the customer on the token:
+
+```ts
+const { apiClient } = useShopwareContext();
+
+const lookupError = ref("");
+const isLookingUp = ref(false);
+
+const findGuestOrder = async () => {
+  if (isLookingUp.value) return;
+
+  lookupError.value = "";
+  isLookingUp.value = true;
+
+  try {
+    const { data } = await apiClient.invoke("readOrder post /order", {
+      body: {
+        filter: [
+          { type: "equals", field: "deepLinkCode", value: deepLinkCode },
+        ],
+        email,
+        zipcode,
+        login: true,
+        associations: useDefaultOrderAssociations(),
+      },
+    });
+
+    // A wrong email or zipcode is the expected case here, not an edge one.
+    return data.orders?.elements?.[0];
+  } catch (error) {
+    console.error(error);
+    lookupError.value = "We could not find an order for those details.";
+  } finally {
+    isLookingUp.value = false;
+  }
+};
+```
+
+`login: true` asks Shopware to return a context token for that guest in the response header, which the API client picks up — from then on the session behaves like any other guest session and `useOrderDetails(orderId)` works normally. Leave it out and the lookup stays a one-off read. `useOrderDetails` does not expose these fields, so a guest order page calls `apiClient.invoke` directly for the first request.
+
+**Keep this route out of the shared HTML cache.** Loading from `onMounted` is deliberate: it is what keeps the order number, the addresses and the line items out of the server-rendered response. `vue-starter-template` applies `isr` to `/**` and opts `/account` and `/account/**` out of it with `ssr: false`, so the starter's own order page is safe — but mount an order page at another path, or refactor the load to `useAsyncData`/`callOnce`, and one customer's order is rendered into HTML that ISR then serves to everyone else. Personalized data does not belong in an ISR-cached response.
+
+`useOrderDetails` keeps the loaded order in the `swOrderDetails` injection. That is a single slot, not a cache keyed by id, and it is shared along the provide/inject chain: a component that calls `useOrderDetails` provides its ref to everything below it, so a descendant calling the composable with a different id overwrites the ancestor's order. Two siblings get their own refs only when no ancestor called the composable — `inject` walks the whole parent chain and falls back to its default just on a miss, so under a providing ancestor both siblings share that one slot and whichever loads second wins.
+
+The order id itself is read once, when the composable is created. It is a plain string, not a ref, so `loadOrderDetails`, `cancel` and `getMediaFile` keep pointing at the id the setup captured. In a Nuxt **page** this needs no work from you: Nuxt keys pages by their interpolated path, so `/account/order/details/[id]` remounts on its own when the id changes and `setup` re-runs. It matters for a **component** that receives the id as a prop — put a `:key` on it — and for any route where the id is not a path param.
 
 The order is a snapshot. Its line items, prices and addresses are `OrderLineItem` and `OrderAddress` entities copied at order time, not references to the current product or customer address. Nothing that changes in the catalogue or the account afterwards is reflected here.
 
 ## Edge Cases
 
-- `orders.elements` is empty when the id is unknown _or_ when the order belongs to a different session. Distinguish "not found" from "not yours" in the UI at your own risk — the API does not.
+- `orders.elements` is empty when the id is unknown _or_ when the order belongs to a different customer. Distinguish "not found" from "not yours" in the UI at your own risk — the API does not. No session at all is a different case: that is a `403`, not an empty list.
 - `shippingAddress` reads `deliveries[0].shippingOrderAddress`, so an order with no delivery — a purely digital order — has no shipping address at all.
 - `billingAddress` is found by matching `billingAddressId` against the `addresses` association. Drop `addresses` from the associations and it becomes `undefined` even though the id is present.
 - `paymentMethod` is the **last** transaction's method and `shippingMethod` the **last** delivery's. An order whose payment method was changed has more than one transaction, and the last one is the current one.
 - `paymentChangeable` is only populated because `loadOrderDetails` sends `checkPromotion: true`. It is a map keyed by order id in the response, exposed as a boolean for this order, defaulting to `false`.
 - `cancel()` cannot be reverted and returns the new `StateMachineState`. Whether it is allowed depends on the order state on the server, so a rejected call is a normal outcome, not a bug.
-- `getDocumentFile` needs both the document id and its `deepLinkCode`. The code comes from the `documents` association on the order, so a page without that data cannot build a download link.
+- `cancel()` is two awaits: the cancellation, then `loadOrderDetails()`. A rejection at the call site does not tell you which one failed, so the order may already be cancelled while the page still shows the old state. Word the message accordingly rather than claiming the cancellation failed.
+- `getDocumentFile` needs both the document id and its `deepLinkCode`. Both come from the `documents` array the order already carries — it is not part of the default association tree and does not have to be added.
+- A document download answers `204` when no such document is found — deprecated, and a `404` from 6.8.0.0 on. Today that resolves successfully with an empty body, so check the returned content before handing it to `downloadFile`. A `406` (unsupported mime type) and the later `404` throw like any other error status.
+- `getDocumentFile` is typed `Promise<Blob | string>`, not `Promise<Blob>`: the operation is a union keyed on `accept`, and the XML and HTML document variants come back as text. Only `getMediaFile` returns a plain `Blob`. `downloadFile` is generic, so the compiler will not catch a `string` reaching it — `URL.createObjectURL` throws on one at runtime.
+- The `readOrder` body is the `fields`-less criteria variant, not the full `Criteria`. `associations`, `ids`, `filter` and the rest are identical, but passing `fields` is an excess property the type rejects.
 - `getMediaFile` only works for line items whose `downloads` association is present, which the default associations request through `lineItems.downloads.media`.
+- `handlePayment` declares a third `paymentDetails` argument in both composables, and neither implementation reads it. Payment data that a provider needs has to travel through that provider's own integration.
 - `status` is the translated state name and `statusTechnicalName` the stable one. Branch on `statusTechnicalName`; show `status`.
+- The order id is captured when the composable is created and never re-read. A Nuxt page remounts on an id change by itself, but a component holding the composable behind a prop does not — key it, or every action stays pointed at the previous order.
 
 ## Common Mistakes
 
 - Do not treat `readOrder post /order` as a read-by-id. It is a search, and the order lives in `orders.elements[0]`.
 - Do not replace the default associations when you only need one more. Pass the extra tree and let `defu` merge it.
 - Do not branch on the translated `status` string. It changes with the language.
-- Do not call `loadOrderDetails()` again after `cancel()` or `changePaymentMethod()`.
-- Do not mount two `useOrderDetails` instances for different orders in the same tree. They share one `swOrderDetails` slot.
+- Do not call `loadOrderDetails()` again after `useOrderDetails`' own `cancel()` or `changePaymentMethod()`. `useOrderPayment.changePaymentMethod()` is the exception — it does not reload anything.
+- Do not call `useOrderDetails` for a second order below a component that already called it for a first. They share one `swOrderDetails` slot along the provide/inject chain.
+- Do not expect a composable held by a component to follow a changing route param. Key that component on the id. A Nuxt page already remounts itself, so it needs no `definePageMeta` key for this.
 - Do not resolve product data from an order line item against the current catalogue. The line item is a snapshot.
-- Do not build a document URL by hand. `getDocumentFile` sets the `accept` header the operation needs.
+- Do not build a document URL by hand. `getDocumentFile` returns the binary and `downloadFile` from `@shopware/helpers` turns it into a download.
+- Do not hand the result of `getDocumentFile` straight to `downloadFile`. Check it is a non-empty `Blob` first — a missing document resolves with an empty body rather than throwing.
+- Do not write `catch {}` without binding the error. You cannot log it, you cannot map it, and a programming error reaches the customer disguised as a failed order.
+- Do not put a failed cancellation or download in the same slot as a failed load. The order is still valid; replacing it with the message destroys what the customer came to read.
 - Do not show a cancel button for every state. Read `statusTechnicalName` first.
 
 ## Testing Checklist
 
 - Opening the page sends exactly one `readOrder post /order` with the order id in `ids`.
 - The request carries the default associations, and extra associations passed to the composable are merged rather than replacing them.
-- An unknown order id renders an empty state instead of throwing.
+- An unknown order id renders an empty state instead of throwing, while a request made without any session fails with `403 CHECKOUT__CUSTOMER_NOT_LOGGED_IN`.
+- A guest lookup with `deepLinkCode`, `email` and `zipcode` returns the order, and with `login: true` the following `useOrderDetails` call succeeds on the session it established.
 - `status` shows the translated state and `statusTechnicalName` the technical one.
 - Line items, addresses, shipping method and payment method render from the associations without a second request.
 - `cancel()` calls `cancelOrder post /order/state/cancel` and then reloads the order, and the rendered state changes.
-- A rejected cancellation shows a UI-level error and leaves the state unchanged.
-- Downloading a document calls `download post /document/download/{documentId}/{deepLinkCode}` with the document's `deepLinkCode`.
+- A rejected cancellation shows a UI-level error beside the button and leaves the rest of the order rendered.
+- A guest lookup with a wrong `zipcode` or `email` shows a message rather than failing silently.
+- Downloading a document calls `download post /document/download/{documentId}/{deepLinkCode}` with the document's `deepLinkCode`, and the returned binary reaches the browser as a file.
+- Downloading a document that no longer exists shows a message instead of doing nothing.
 - An order without deliveries renders without a shipping address block.
 
 ## Related Links
 
 - [Login recipe](../account/login.html)
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
-- [Payments documentation](../../getting-started/e-commerce/payments.html)
+- [Create a checkout](../../guides/e-commerce/checkout.html)
+- [Payments](../../guides/e-commerce/payments.html)
+- [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
+- [Helpers package](../../packages/helpers.html)

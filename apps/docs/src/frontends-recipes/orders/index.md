@@ -1,7 +1,7 @@
 ---
 nav:
   title: Orders
-  position: 40
+  position: 30
 ---
 
 # Orders

@@ -249,17 +249,6 @@ export const sidebar = [
         ],
       },
       {
-        text: "Orders",
-        link: "/frontends-recipes/orders/",
-        collapsed: true,
-        items: [
-          {
-            text: "Order Details",
-            link: "/frontends-recipes/orders/details.html",
-          },
-        ],
-      },
-      {
         text: "Checkout",
         link: "/frontends-recipes/checkout/",
         collapsed: true,
@@ -271,6 +260,17 @@ export const sidebar = [
           {
             text: "Checkout and Order Placement",
             link: "/frontends-recipes/checkout/checkout.html",
+          },
+        ],
+      },
+      {
+        text: "Orders",
+        link: "/frontends-recipes/orders/",
+        collapsed: true,
+        items: [
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
           },
         ],
       },
