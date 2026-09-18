@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import {
+  ApiClientError,
+  type ApiError,
+  isTimeoutError,
+} from "@shopware/api-client";
 import {
   getShippingMethodDeliveryTime,
   getTranslatedProperty,
@@ -236,12 +240,17 @@ const placeOrder = async () => {
     await push(formatLink(`/checkout/success/${order.id}`));
     refreshCart();
   } catch (error) {
-    if (error instanceof ApiClientError)
+    if (error instanceof ApiClientError) {
       for (const errorItem of error.details.errors) {
         if (errorItem?.detail) {
           pushError(errorItem.detail);
         }
       }
+    } else if (isTimeoutError(error)) {
+      pushError(t("errors.order-timeout"));
+    } else {
+      pushError(t("errors.message-default"));
+    }
   } finally {
     isLoading.placeOrder = false;
   }

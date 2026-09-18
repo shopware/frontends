@@ -80,6 +80,7 @@ async function onCurrencyChangeHandler(id: string) {
       </div>
     </header>
     <main class="mb-20" :aria-label="$t('layout.ariaLabels.checkout')">
+      <LayoutNotifications />
       <slot />
     </main>
   </div>
