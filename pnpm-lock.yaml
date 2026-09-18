@@ -1057,6 +1057,12 @@ importers:
       '@vitest/coverage-v8':
         specifier: 5.0.0
         version: 5.0.0(vitest@5.0.0)
+      '@vitest/expect':
+        specifier: 5.0.0
+        version: 5.0.0
+      '@vitest/utils':
+        specifier: 5.0.0
+        version: 5.0.0
       json5:
         specifier: 2.2.3
         version: 2.2.3
@@ -6787,6 +6793,9 @@ packages:
       '@vitest/browser':
         optional: true
 
+  '@vitest/expect@5.0.0':
+    resolution: {integrity: sha512-tius2p9fwkJR0STAVnbCU4po/hsJPWZmlgYuJG6Qj17Hb/Y0Evk4A5ENMGI111AjsDjXGam8BX2eVZLLUn//Ug==}
+
   '@vitest/istanbul-lib-coverage@1.0.1':
     resolution: {integrity: sha512-k3DJZ8LhMBK9NS4SclF1ASD3OgXEWDorbIcPTRDK0/Zae6fRvu+fJRxtFdLfHsa9Y24beCdPnoNZ4LviTNstfA==}
     engines: {node: '>=22'}
@@ -6806,8 +6815,14 @@ packages:
       vite:
         optional: true
 
+  '@vitest/pretty-format@5.0.0':
+    resolution: {integrity: sha512-PVRNuB3wpReb4SQEs4zTKM4KWFhQ5pw3spE8naoDJNB5T5aWRzGKHwXcLUllr0WeOTXpB6bSr3CJLo5+7XQSSQ==}
+
   '@vitest/spy@5.0.0':
     resolution: {integrity: sha512-uy+luWBAPw9XfthoHi5AkfHUnuPYEESjl0p/r+meoBnU8bxg5GDQ3Ey8MjcJ6sqahkL4PFyrvfMJJBw7LbU06g==}
+
+  '@vitest/utils@5.0.0':
+    resolution: {integrity: sha512-dO++xL3vDfvhTAVimfkuQUA3k+JClIF1i1vAkPqpcGAthRmeWnXmHB7YPViPvgCwviX8u7Y5W1u2N//AaQr3fw==}
 
   '@volar/language-core@2.4.28':
     resolution: {integrity: sha512-w4qhIJ8ZSitgLAkVay6AbcnC7gP3glYM3fYwKV3srj8m494E3xtrCv6E+bWviiK/8hs6e6t1ij1s2Endql7vzQ==}
@@ -25304,6 +25319,15 @@ snapshots:
       tinyrainbow: 3.1.1
       vitest: 5.0.0(@edge-runtime/vm@3.2.0)(@types/node@26.5.1)(@vitest/coverage-v8@5.0.0)(happy-dom@20.14.5)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.2.1(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
+  '@vitest/expect@5.0.0':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@types/chai': 5.2.3
+      '@vitest/spy': 5.0.0
+      '@vitest/utils': 5.0.0
+      chai: 6.2.2
+      tinyrainbow: 3.1.1
+
   '@vitest/istanbul-lib-coverage@1.0.1': {}
 
   '@vitest/istanbul-lib-report@1.0.1':
@@ -25328,7 +25352,17 @@ snapshots:
     optionalDependencies:
       vite: 8.2.1(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)
 
+  '@vitest/pretty-format@5.0.0':
+    dependencies:
+      tinyrainbow: 3.1.1
+
   '@vitest/spy@5.0.0': {}
+
+  '@vitest/utils@5.0.0':
+    dependencies:
+      '@vitest/pretty-format': 5.0.0
+      convert-source-map: 2.0.0
+      tinyrainbow: 3.1.1
 
   '@volar/language-core@2.4.28':
     dependencies:

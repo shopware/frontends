@@ -1,4 +1,5 @@
 // @vitest-environment happy-dom
+// @vitest-environment-options {"settings":{"fetch":{"disableSameOriginPolicy":true}}}
 
 import { createApp, eventHandler, getHeaders, toNodeListener } from "h3";
 import type { App } from "h3";

@@ -49,6 +49,8 @@
     "@types/yargs": "17.0.35",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "5.0.0",
+    "@vitest/expect": "5.0.0",
+    "@vitest/utils": "5.0.0",
     "json5": "2.2.3",
     "picocolors": "1.1.1",
     "tsconfig": "workspace:*",
