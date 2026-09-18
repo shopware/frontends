@@ -39,7 +39,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@iconify-json/carbon": "1.2.26",
+    "@iconify-json/carbon": "1.2.27",
     "@nuxt/image": "2.1.0",
     "@nuxt/kit": "4.5.2",
     "@shopware/api-client": "workspace:*",
@@ -66,7 +66,7 @@
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "vitest": "5.0.0",
-    "vue-router": "5.2.0",
-    "vue-tsc": "3.3.9"
+    "vue-router": "5.3.1",
+    "vue-tsc": "3.3.11"
   }
 }

@@ -26,7 +26,7 @@
     "oxlint": "1.77.0",
     "typescript": "5.9.3",
     "vue": "3.5.42",
-    "vue-tsc": "3.3.9"
+    "vue-tsc": "3.3.11"
   },
   "engines": {
     "node": "^20.x || ^22.x || ^24.x"

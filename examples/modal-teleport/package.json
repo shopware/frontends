@@ -11,12 +11,12 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@unocss/nuxt": "66.10.0",
-    "@unocss/reset": "66.7.5",
+    "@unocss/nuxt": "66.10.2",
+    "@unocss/reset": "66.10.2",
     "@vueuse/core": "14.4.0",
     "nuxt": "4.5.2",
-    "unocss": "66.7.5",
-    "vue-tsc": "3.3.9",
+    "unocss": "66.10.2",
+    "vue-tsc": "3.3.11",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0"
   },
