@@ -39,7 +39,7 @@ const { formatLink } = useInternationalization(localePath);
     v-if="notification.message.length > 0"
     :id="`toast-${notification.id}`"
     :data-testid="`notification-element-${notification.type}`"
-    class="pointer-events-auto flex items-start w-full max-w-md p-4 bg-white rounded-lg shadow"
+    class="flex items-start w-full max-w-md p-4 bg-white rounded-lg shadow"
     role="status"
   >
     <div

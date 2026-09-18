@@ -7,7 +7,7 @@ const { notifications, removeOne } = useNotifications();
     <div
       v-if="notifications.length"
       data-testid="notification-container"
-      class="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-stretch gap-2 p-4 sm:inset-x-auto sm:right-0 sm:items-end sm:p-5"
+      class="fixed inset-x-0 z-[60] flex flex-col items-stretch gap-2 p-4 sm:inset-x-auto sm:right-0 sm:items-end sm:p-5 bottom-[var(--sw-guidance-banner-height,0px)]"
       aria-live="polite"
       aria-relevant="additions"
     >
