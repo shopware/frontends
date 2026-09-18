@@ -55,7 +55,7 @@
     "picocolors": "1.1.1",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "5.0.0"
+    "vitest": "5.0.1"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
