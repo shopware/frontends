@@ -18,7 +18,6 @@ const {
   shippingAddress,
   billingAddress,
   shippingMethod,
-  status,
   order,
   subtotal,
   total,
@@ -49,7 +48,7 @@ watchDebounced(
       return;
     }
     try {
-      new URL(paymentUrl as string);
+      new URL(paymentUrl);
       window.location.href = paymentUrl;
     } catch (error) {
       console.error("err, redirect", error);
@@ -58,13 +57,10 @@ watchDebounced(
   { debounce: 5000 },
 );
 
-const isExpand = ref(false);
-
-const toggleView = () => {
-  isExpand.value = !isExpand.value;
-};
-
 const { browserLocale } = useShopwareContext();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+const { t } = useI18n();
 
 const formatDate = (date: string) =>
   new Intl.DateTimeFormat(browserLocale, {
@@ -74,367 +70,204 @@ const formatDate = (date: string) =>
     hour: "numeric",
     minute: "numeric",
   }).format(new Date(date));
+
+const shippingDeliveryTime = computed(() => {
+  if (!shippingMethod.value?.deliveryTime) {
+    return undefined;
+  }
+  return `${t("checkout.takesUpTo")} ${getShippingMethodDeliveryTime(shippingMethod.value)}`;
+});
+
+const orderDetailsLink = computed(() => {
+  if (isLoggedIn.value && order.value?.id) {
+    return formatLink(`/account/order/details/${order.value.id}`);
+  }
+  if (order.value?.deepLinkCode) {
+    return formatLink(`/account/order/${order.value.deepLinkCode}`);
+  }
+  return null;
+});
+
+const showPaymentAlert = computed(
+  () =>
+    Boolean(isAsynchronous.value) &&
+    Boolean(paymentUrl.value) &&
+    state.value?.technicalName === "open",
+);
 </script>
 
 <template>
   <ClientOnly>
+    <CheckoutSuccessSkeleton v-if="!order" />
     <div
-      class="max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-5xl lg:px-8"
+      v-else
+      class="container mx-auto px-6 sm:px-4 py-10 md:py-20"
+      data-testid="checkout-success-page"
     >
-      <div class="space-y-1">
-        <div class="text-secondary-800">
-          {{ $t("checkout.success.header", [order?.orderNumber]) }}
-        </div>
+      <header class="flex items-start gap-4 md:gap-6 mb-10 md:mb-16">
         <div
-          v-if="isAsynchronous && paymentUrl && state?.technicalName === 'open'"
-          class="mt-8 p-4 mb-8 mb-4 text-sm text-blue-700 bg-primary-100 rounded-lg dark:bg-primary-200 dark:text-blue-800"
-          role="alert"
+          class="flex items-center justify-center w-12.5 h-12.5 rounded-full bg-brand-secondary text-brand-on-secondary shrink-0"
+          aria-hidden="true"
         >
-          <div class="text-center w-full">
-            <span class="font-medium">
-              {{ $t("checkout.success.paymentProcessLabel") }}</span
+          <div class="w-6 h-6 i-carbon-checkmark" />
+        </div>
+        <div class="min-w-0">
+          <h1
+            class="text-10 font-['Noto_Serif'] text-surface-on-surface leading-15"
+          >
+            {{ $t("checkout.success.title") }}
+          </h1>
+          <p class="text-surface-on-surface mt-2 max-w-2xl leading-normal">
+            {{ $t("checkout.success.header", [order.orderNumber]) }}
+          </p>
+          <div class="flex flex-wrap items-center gap-3 mt-4">
+            <span
+              v-if="order.orderNumber"
+              class="text-sm text-surface-on-surface-variant"
             >
-            {{ $t("checkout.success.paymentProcessLabel") }}
-            <div>
-              <button
-                class="mt-4 rounded-md border border-transparent px-2 py-1 text-base font-small text-white shadow-sm bg-primary hover:bg-dark"
-                @click="goToUrl(paymentUrl)"
-              >
-                {{ $t("checkout.goToPayment") }}
-              </button>
-            </div>
+              {{ $t("account.order.orderNumber") }}
+              <span class="text-surface-on-surface font-medium">{{
+                order.orderNumber
+              }}</span>
+            </span>
+            <AccountOrderStatus
+              v-if="order.stateMachineState"
+              :state="order.stateMachineState"
+            />
+            <span
+              v-if="order.orderDate"
+              class="text-sm text-surface-on-surface-variant"
+            >
+              {{ formatDate(order.orderDate) }}
+            </span>
           </div>
         </div>
+      </header>
+
+      <div
+        v-if="showPaymentAlert"
+        class="mb-10 p-4 text-sm text-states-on-info-container bg-states-info-container"
+        role="alert"
+      >
+        <div class="font-medium">
+          {{ $t("checkout.success.paymentProcessLabel") }}
+        </div>
+        <p class="mt-1">
+          {{ $t("checkout.success.paymentProcessInfo") }}
+        </p>
+        <FormBaseButton
+          class="mt-4"
+          :label="$t('checkout.success.goToPayment')"
+          @click="goToUrl(paymentUrl)"
+        />
       </div>
-      <div v-if="billingAddress">
-        <div class="pt-8">
-          <div>
-            <AccountOrderSummary>
-              <div class="lg:col-span-2 text-surface-on-surface">
-                {{ order?.orderNumber }}
-              </div>
-              <div>
-                <SharedPrice
-                  v-if="order?.amountTotal"
-                  :value="order.amountTotal"
-                  class="text-surface-on-surface font-normal"
-                  data-testid="order-summary-total"
-                />
-              </div>
-              <div v-if="order?.orderDate" class="text-surface-on-surface">
-                {{ formatDate(order.orderDate) }}
-              </div>
-              <div class="text-surface-on-surface">
-                <AccountOrderStatus
-                  v-if="order?.stateMachineState"
-                  :state="order.stateMachineState"
-                />
-              </div>
-              <button
-                class="hidden sm:block justify-self-end text-dark cursor-pointer"
-                :aria-expanded="isExpand"
-                @click="toggleView"
-              >
-                {{ !isExpand ? "View" : "Hide" }}
-              </button>
-            </AccountOrderSummary>
-            <div>
-              <div
-                class="block sm:hidden text-center text-dark cursor-pointer bg-secondary-100 py-2"
-                :aria-expanded="isExpand"
-                @click="toggleView"
-              >
-                {{ !isExpand ? "View" : "Hide" }}
-              </div>
+
+      <div class="flex flex-col lg:flex-row gap-10 lg:gap-20 justify-between">
+        <div class="w-full lg:w-1/2 flex flex-col gap-10 order-2 lg:order-1">
+          <section>
+            <AccountSectionHeader
+              class="mb-4"
+              :title="$t('checkout.success.items')"
+            />
+            <AccountOrderDetails :order-id="order.id" />
+          </section>
+
+          <section>
+            <AccountSectionHeader
+              class="mb-6"
+              :title="$t('checkout.success.deliveryAndPayment')"
+            />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <CheckoutOrderAddress
+                v-if="shippingAddress"
+                :address="shippingAddress"
+                :label="$t('checkout.shippingAddressLabel')"
+              />
+              <CheckoutOrderAddress
+                v-if="billingAddress"
+                :address="billingAddress"
+                :label="$t('checkout.billingAddressLabel')"
+              />
+              <CheckoutOrderMethodCard
+                :label="$t('checkout.paymentMethodLabel')"
+                :title="paymentMethod?.translated.name"
+              />
+              <CheckoutOrderMethodCard
+                v-if="shippingMethod"
+                :label="$t('checkout.shippingMethodLabel')"
+                :title="shippingMethod.translated.name"
+                :description="shippingDeliveryTime"
+              />
             </div>
-            <template v-if="order?.id && isExpand">
-              <transition>
-                <AccountOrderDetails v-show="isExpand" :order-id="order.id" />
-              </transition>
-            </template>
-          </div>
+          </section>
         </div>
-        <div class="border-t border-outline-outline flex">
-          <div class="flex-1 flex-col ml-4">
-            <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
-            >
-              <div v-if="shippingAddress" class="w-auto md:w-1/2">
-                <div class="font-medium">
-                  {{ $t("checkout.shippingAddressLabel") }}
-                </div>
-                <div class="pt-2 text-surface-on-surface">
-                  <div>
-                    {{ shippingAddress?.firstName }}
-                    {{ shippingAddress?.lastName }}
-                  </div>
-                  <div>
-                    {{ shippingAddress?.street }}
-                  </div>
-                  <div>
-                    {{ shippingAddress?.city }}, {{ shippingAddress?.zipcode }}
-                  </div>
-                </div>
-              </div>
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">
-                  {{ $t("checkout.billingAddressLabel") }}
-                </div>
-                <div class="pt-2 text-surface-on-surface">
-                  <div>
-                    {{ billingAddress.firstName }} {{ billingAddress.lastName }}
-                  </div>
-                  <div>
-                    {{ billingAddress.street }}
-                  </div>
-                  <div>
-                    {{ billingAddress.city }}, {{ billingAddress.zipcode }}
-                  </div>
-                </div>
-              </div>
+
+        <aside class="w-full lg:w-1/2 order-1 lg:order-2">
+          <div class="border border-outline-outline sticky top-2">
+            <div class="border-b border-outline-outline-variant">
+              <h2 class="text-10 px-6 font-['Noto_Serif']">
+                {{ $t("checkout.summary") }}
+              </h2>
             </div>
-            <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-outline-outline md:flex py-6 md:py-10"
-            >
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">
-                  {{ $t("checkout.paymentMethodLabel") }}
-                </div>
-                <div class="pt-2 text-surface-on-surface">
-                  <div>{{ paymentMethod?.translated.name }}</div>
-                </div>
-              </div>
-              <div v-if="shippingMethod" class="w-auto md:w-1/2">
-                <div class="font-medium">
-                  {{ $t("checkout.shippingMethodLabel") }}
-                </div>
-                <div class="pt-2 text-surface-on-surface">
-                  <div>{{ shippingMethod?.translated.name }}</div>
-                  <div v-if="shippingMethod?.deliveryTime">
-                    {{ $t("checkout.takesUpTo") }}
-                    {{ getShippingMethodDeliveryTime(shippingMethod) }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="border-t border-outline-outline py-6 md:py-10 space-y-4"
-            >
-              <div class="md:w-1/2 ml-auto flex flex-col gap-2">
-                <div
-                  v-if="subtotal"
-                  class="flex justify-between text-base font-medium"
-                >
-                  <p>{{ $t("checkout.subtotal") }}</p>
+            <div class="p-6">
+              <div
+                class="py-4 border-b border-outline-outline-variant flex flex-col gap-1"
+              >
+                <div class="flex justify-between text-sm leading-normal">
+                  <span class="text-surface-on-surface-variant">{{
+                    $t("checkout.subtotal")
+                  }}</span>
                   <SharedPrice
                     :value="subtotal"
                     class="text-surface-on-surface font-normal"
                     data-testid="order-subtotal"
                   />
                 </div>
-                <div
-                  v-if="shippingCosts"
-                  class="flex justify-between text-base font-medium"
-                >
-                  <p>{{ $t("checkout.shippingPriceLabel") }}</p>
+                <div class="flex justify-between text-sm leading-normal">
+                  <span class="text-surface-on-surface-variant">{{
+                    $t("checkout.shippingPriceLabel")
+                  }}</span>
                   <SharedPrice
                     :value="shippingCosts"
                     class="text-surface-on-surface font-normal"
                     data-testid="order-shipping"
                   />
                 </div>
-                <div
-                  v-if="total"
-                  class="flex justify-between text-base font-medium"
+              </div>
+              <div class="pt-4 flex justify-between">
+                <span
+                  class="text-surface-on-surface text-base leading-normal"
+                  >{{ $t("checkout.totalLabel") }}</span
                 >
-                  <p>{{ $t("checkout.totalLabel") }}</p>
-                  <SharedPrice
-                    :value="total"
-                    class="text-surface-on-surface font-normal"
-                    data-testid="order-total"
-                  />
-                </div>
+                <SharedPrice
+                  :value="total"
+                  class="text-surface-on-surface text-base leading-normal"
+                  data-testid="order-total"
+                />
+              </div>
+
+              <div class="mt-8 flex flex-col gap-3">
+                <NuxtLink
+                  :to="formatLink('/')"
+                  class="bg-brand-primary text-brand-on-primary text-center font-bold leading-6 py-3 px-4 rounded inline-flex justify-center items-center"
+                >
+                  {{ $t("checkout.success.continueShopping") }}
+                </NuxtLink>
+                <NuxtLink
+                  v-if="orderDetailsLink"
+                  :to="orderDetailsLink"
+                  class="border-1 border-brand-primary text-brand-primary text-center font-bold leading-6 py-3 px-4 rounded inline-flex justify-center items-center"
+                >
+                  {{ $t("checkout.success.viewInAccount") }}
+                </NuxtLink>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
     <template #placeholder>
-      <div
-        role="status"
-        class="animate-pulse max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-5xl lg:px-8"
-      >
-        <div class="space-y-1">
-          <div class="text-secondary-800">
-            <div
-              class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/2"
-            />
-          </div>
-        </div>
-        <div>
-          <div class="pt-8">
-            <div>
-              <div
-                class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 px-2 py-6"
-              />
-              <div class="px-2 py-4">
-                <div class="grid grid-cols-5 gap-y-10 pb-4 text-secondary-800">
-                  <div
-                    class="col-span-2 h-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/2"
-                  />
-                  <div
-                    class="h-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/2"
-                  />
-                  <div
-                    class="h-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/4"
-                  />
-                  <div
-                    class="h-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-full"
-                  />
-                </div>
-                <div
-                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-outline-outline text-surface-on-surface items-center"
-                >
-                  <div
-                    class="flex items-center col-span-2 text-surface-on-surface"
-                  >
-                    <div
-                      class="i-carbon-image bg-secondary-200 h-18 w-18 mr-2"
-                    />
-                    <div
-                      class="h-4 ml-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-full"
-                    />
-                  </div>
-                  <div
-                    class="h-4 ml-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/4"
-                  />
-                  <div>
-                    <div
-                      class="flex gap-1 text-surface-on-surface font-normal"
-                      data-testid="order-item-unitprice"
-                    >
-                      <div
-                        class="h-4 ml-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/4"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="h-4 ml-4 bg-secondary-200 rounded-full dark:bg-secondary-700 w-1/2"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="border-t border-outline-outline flex">
-            <div class="flex-1 flex-col ml-4">
-              <div class="md:flex md:flex-wrap py-6 md:py-10">
-                <div class="w-auto md:w-1/2 w-1/2 pr-4">
-                  <div
-                    class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48 mb-4"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-32"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-8"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48"
-                  />
-                </div>
-                <div class="w-auto md:w-1/2">
-                  <div
-                    class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48 mb-4"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-32"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-8"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48"
-                  />
-                </div>
-              </div>
-              <div
-                class="md:flex md:flex-wrap border-t border-outline-outline md:flex py-6 md:py-10"
-              >
-                <div class="w-auto md:w-1/2">
-                  <div
-                    class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48 mb-4"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-32"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-8"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48"
-                  />
-                </div>
-                <div class="w-auto md:w-1/2">
-                  <div
-                    class="h-2.5 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48 mb-4"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-32"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-8"
-                  />
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 w-48"
-                  />
-                </div>
-              </div>
-              <div
-                class="border-t border-outline-outline py-6 md:py-10 space-y-4"
-              >
-                <div class="flex justify-between text-base font-medium">
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-12"
-                  />
-                  <div
-                    class="flex gap-1 text-surface-on-surface font-normal"
-                    data-testid="order-subtotal"
-                  >
-                    <div
-                      class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-16"
-                    />
-                  </div>
-                </div>
-                <div class="flex justify-between text-base font-medium">
-                  <div
-                    class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-12"
-                  />
-                  <div
-                    class="flex gap-1 text-surface-on-surface-600y-600y-600y-600y-600y-600y-600y-600y-600 font-normal"
-                    data-testid="order-total"
-                  >
-                    <div
-                      class="h-2 bg-secondary-200 rounded-full dark:bg-secondary-700 mb-2.5 w-20"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CheckoutSuccessSkeleton />
     </template>
   </ClientOnly>
 </template>
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>

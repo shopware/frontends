@@ -5,41 +5,41 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t border-outline-outline text-surface-on-surface sm:items-center"
-  >
-    <div class="sm:flex items-center col-span-2 text-surface-on-surface">
-      <div class="w-26 i-carbon-tag text-3xl text-center align-end"></div>
-      <div class="my-5">
-        {{ lineItem.label }}
-        <span
-          class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
-          >{{ $t("cart.promotion") }}</span
-        >
-      </div>
-    </div>
-    <div class="flex justify-between">
-      <div class="sm:hidden">{{ $t("account.order.quantity") }}</div>
-      <div>{{ lineItem.quantity }}</div>
-    </div>
-    <div v-if="lineItem.unitPrice" class="flex justify-between">
-      <div class="sm:hidden">{{ $t("account.order.price") }}</div>
-      <SharedPrice
-        :value="lineItem.unitPrice"
-        class="text-surface-on-surface font-normal"
-        data-testid="order-item-promotion-unitprice"
-      />
+  <div class="flex gap-4 py-4 text-surface-on-surface">
+    <div
+      class="w-24 h-24 flex-shrink-0 bg-surface-surface-container-low flex items-center justify-center"
+    >
+      <div class="w-8 h-8 i-carbon-tag text-brand-primary" />
     </div>
     <div
-      v-if="lineItem.totalPrice"
-      class="flex justify-between sm:justify-self-end"
+      class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2"
     >
-      <div class="sm:hidden">{{ $t("account.order.subtotal") }}</div>
-      <SharedPrice
-        :value="lineItem.totalPrice"
-        class="text-surface-on-surface font-normal"
-        data-testid="order-item-promotion-totalprice"
-      />
+      <div>
+        <div class="text-surface-on-surface leading-normal">
+          {{ lineItem.label }}
+          <span
+            class="bg-states-success-container text-states-on-success-container text-xs font-medium ml-2 px-2.5 py-0.5 rounded-full"
+            >{{ $t("cart.promotion") }}</span
+          >
+        </div>
+        <div class="text-sm text-surface-on-surface-variant mt-1">
+          {{ $t("account.order.quantity") }} {{ lineItem.quantity }}
+        </div>
+      </div>
+      <div class="sm:text-right shrink-0">
+        <SharedPrice
+          v-if="lineItem.totalPrice"
+          :value="lineItem.totalPrice"
+          class="text-surface-on-surface"
+          data-testid="order-item-promotion-totalprice"
+        />
+        <SharedPrice
+          v-if="lineItem.unitPrice && lineItem.quantity > 1"
+          :value="lineItem.unitPrice"
+          class="text-sm text-surface-on-surface-variant font-normal"
+          data-testid="order-item-promotion-unitprice"
+        />
+      </div>
     </div>
   </div>
 </template>
