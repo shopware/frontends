@@ -21,7 +21,7 @@ Yes, and it is a mode of the starter rather than a separate template. Nothing in
 
 The starter resolves every storefront URL through one `app/pages/[...all].vue`, which asks the Shopware CMS what to render, so it is reasonable to expect a generator to have no route list to crawl. In practice Nitro starts at the root and follows links, and the catch-all renders whatever it is given.
 
-Crawling proves the catch-all works. It does not give you the catalog. Listing pagination renders as buttons that call `router.push`, not as links, so nothing past the first page of a category is discoverable. A product linked only from page two is never found, however well the build goes. When you need complete product, category and locale coverage, supply the route list yourself from the backend or a sitemap.
+Crawling proves the catch-all works. It does not give you the catalog. Listing pagination renders as buttons that call `router.push`, not as links, so nothing past the first page of a category is discoverable. A product reachable only through pagination is not discovered unless some other crawlable link points at it. When you need complete product, category and locale coverage, supply the route list yourself from the backend or a sitemap.
 
 ## Configuration
 
@@ -65,7 +65,7 @@ Pages are a snapshot. Any price, stock or catalog change invalidates them until 
 
 Prerendering does not extend to the parts of the starter that are already client-only. `/checkout`, `/account` and `/wishlist` are set to `ssr: false` in `routeRules` because they are personalized, and they stay client-rendered in a static build too.
 
-Those routes have no generated file, so the host has to serve the application shell for them. Publish `.output/public` and configure the host's fallback, then test a direct request to `/account`, not just a click through from the homepage.
+`ssr: false` turns off server rendering of the content, not the file. Those routes still get an HTML shell, which the browser fills in. What needs a host fallback is any URL with no file of its own, such as a product that was never prerendered. Publish `.output/public`, configure that fallback, and test a direct request rather than only a click through from the homepage.
 
 The `isr` rule the starter ships does nothing on a static host. There is no server to revalidate, so pages change when you generate again and not before.
 
