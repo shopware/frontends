@@ -261,6 +261,10 @@ export const sidebar = [
             text: "Payment",
             link: "/frontends-recipes/checkout/payment.html",
           },
+          {
+            text: "Checkout and Order Placement",
+            link: "/frontends-recipes/checkout/checkout.html",
+          },
         ],
       },
     ],

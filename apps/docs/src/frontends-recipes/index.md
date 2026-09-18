@@ -16,4 +16,4 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Checkout
 
-<PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows such as line item handling, cart errors, order placement, and payment return handling." />
+<PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />
