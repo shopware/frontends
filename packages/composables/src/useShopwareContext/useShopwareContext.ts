@@ -16,15 +16,20 @@ export type ShopwareContext = {
    */
   browserLocale: string;
   /**
-   * When `true`, composables read data through the cacheable GET variants of
-   * the Store API (criteria compressed into the `_criteria` query param)
-   * instead of POST, so the responses can be cached by HTTP infrastructure
-   * (CDN, reverse proxy, browser). Requires a backend that supports the GET
-   * read routes.
+   * When `true`, reads may use the cacheable GET variants of the Store API.
+   * `useCacheableRead().invokeRead` decides per request.
    *
+   * @deprecated Do not branch on this flag. Use
+   * `useCacheableRead().invokeRead`. It also checks the session.
    * @default false
    */
   cacheableReads: boolean;
+  /**
+   * `true` when the server render runs without the visitor's session.
+   *
+   * @default false
+   */
+  guestServerRender?: boolean;
 };
 
 /**
@@ -46,5 +51,6 @@ export function useShopwareContext(): ShopwareContext {
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
     browserLocale: shopwareContext.browserLocale || "en-US",
     cacheableReads: shopwareContext.cacheableReads ?? false,
+    guestServerRender: shopwareContext.guestServerRender ?? false,
   };
 }

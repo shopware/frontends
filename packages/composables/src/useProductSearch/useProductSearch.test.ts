@@ -1,5 +1,6 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
+import { ref } from "vue";
 
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
@@ -46,15 +47,36 @@ describe("useProductSearch", () => {
       withCmsAssociations: true,
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readProductDetailGet get"),
-      expect.objectContaining({
+      "readProductDetailGet get /product/{productId}",
+      {
+        headers: { "sw-include-seo-urls": true, "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery(cmsAssociations),
         },
         pathParams: {
           productId: "test",
         },
+      },
+    );
+  });
+
+  it("keeps POST for a non-default currency when cacheableReads is enabled", async () => {
+    const { vm, injections } = useSetup(() => useProductSearch(), {
+      shopware: { cacheableReads: true },
+      swSessionContext: ref({
+        salesChannel: { currencyId: "default-currency" },
+        context: { currencyId: "other-currency" },
       }),
+    } as Parameters<typeof useSetup>[1]);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.search("test");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readProductDetail post /product/{productId}",
+      {
+        headers: { "sw-include-seo-urls": true },
+        pathParams: { productId: "test" },
+        body: { associations: {} },
+      },
     );
   });
 });

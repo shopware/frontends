@@ -48,6 +48,7 @@ describe("useSalutations", () => {
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       "readSalutationGet get /salutation",
+      { headers: { "sw-context-token": "" }, query: {} },
     );
   });
 

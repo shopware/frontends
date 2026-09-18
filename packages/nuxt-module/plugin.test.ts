@@ -434,6 +434,38 @@ describe("nuxt-module plugin", () => {
     );
   });
 
+  it.each([
+    { ssr: true, useUserContextInSSR: false, guestServerRender: true },
+    { ssr: true, useUserContextInSSR: true, guestServerRender: false },
+    { ssr: false, useUserContextInSSR: false, guestServerRender: false },
+  ])(
+    "sets guestServerRender to $guestServerRender for ssr $ssr and useUserContextInSSR $useUserContextInSSR",
+    async ({ ssr, useUserContextInSSR, guestServerRender }) => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: { ...SHOPWARE_CONFIG },
+        public: { shopware: { ...SHOPWARE_CONFIG, useUserContextInSSR } },
+      });
+
+      await runPlugin(createNuxtAppMock(ssr));
+
+      expect(createShopwareContextMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ guestServerRender }),
+      );
+    },
+  );
+
+  it("provides the cart state app-wide", async () => {
+    const nuxtApp = createNuxtAppMock(true);
+
+    await runPlugin(nuxtApp);
+
+    expect(nuxtApp.vueApp.provide).toHaveBeenCalledWith(
+      "swCart",
+      expect.objectContaining({ value: undefined }),
+    );
+  });
+
   it("takes the browser branch when import.meta.server is false", async () => {
     runOnClient();
     useRuntimeConfigMock.mockReturnValue({

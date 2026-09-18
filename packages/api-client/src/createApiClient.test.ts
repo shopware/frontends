@@ -249,6 +249,179 @@ describe("createAPIClient", () => {
     );
   });
 
+  it.each([
+    { name: "replace the client token", contextToken: "logged-in-token" },
+    { name: "set a token", contextToken: undefined },
+  ])(
+    "should NOT let a response to a request with an empty sw-context-token $name",
+    async ({ contextToken }) => {
+      const app = createApp().use(
+        "/language",
+        eventHandler(async (event) => {
+          setHeader(event, "sw-context-token", "fresh-guest-token");
+          return { elements: [] };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+      const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken,
+        baseURL,
+      });
+      client.hook("onContextChanged", contextChangedMock);
+
+      await client.invoke("readLanguagesGet get /language", {
+        // @ts-expect-error sw-context-token is not a typed header of this endpoint
+        headers: { "Sw-Context-Token": "" },
+      });
+
+      expect(contextChangedMock).not.toHaveBeenCalled();
+      expect(client.defaultHeaders["sw-context-token"]).toEqual(contextToken);
+    },
+  );
+
+  it.each([
+    { cacheControl: "no-cache, private", loginFirst: true },
+    { cacheControl: "no-cache, private", loginFirst: false },
+    { cacheControl: undefined, loginFirst: true },
+    { cacheControl: undefined, loginFirst: false },
+  ])(
+    "should keep the token of a concurrent login over an anonymous read (cache-control: $cacheControl, login responds first: $loginFirst)",
+    async ({ cacheControl, loginFirst }) => {
+      const read = Promise.withResolvers<void>();
+      const login = Promise.withResolvers<void>();
+      const app = createApp()
+        .use(
+          "/language",
+          eventHandler(async (event) => {
+            await read.promise;
+            setHeader(event, "sw-context-token", "fresh-guest-token");
+            if (cacheControl) setHeader(event, "cache-control", cacheControl);
+            return { elements: [] };
+          }),
+        )
+        .use(
+          "/account/login",
+          eventHandler(async (event) => {
+            await login.promise;
+            setHeader(event, "sw-context-token", "login-token");
+            return {};
+          }),
+        );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+      client.hook("onContextChanged", contextChangedMock);
+
+      const steps = [
+        {
+          release: read.resolve,
+          request: client.invoke("readLanguagesGet get /language", {
+            // @ts-expect-error sw-context-token is not a typed header of this endpoint
+            headers: { "sw-context-token": "" },
+          }),
+        },
+        {
+          release: login.resolve,
+          request: client.invoke("loginCustomer post /account/login", {
+            body: { username: "user", password: "pass" },
+          }),
+        },
+      ];
+      for (const { release, request } of loginFirst ? steps.reverse() : steps) {
+        release();
+        await request;
+      }
+
+      expect(contextChangedMock.mock.calls).toEqual([["login-token"]]);
+      expect(client.defaultHeaders["sw-context-token"]).toEqual("login-token");
+    },
+  );
+
+  it.each([
+    {
+      defaultHeaders: { "sw-context-token": "token" },
+      headers: { "SW-CONTEXT-TOKEN": "" },
+    },
+    {
+      defaultHeaders: { "Sw-Context-Token": "token" },
+      headers: { "sw-context-token": "" },
+    },
+  ])(
+    "should send no sw-context-token when an empty override has a different casing than the default",
+    async ({ defaultHeaders, headers }) => {
+      let receivedHeaders = {};
+      const app = createApp().use(
+        "/language",
+        eventHandler(async (event) => {
+          receivedHeaders = getHeaders(event);
+          return { elements: [] };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        defaultHeaders,
+        baseURL,
+      });
+
+      // @ts-expect-error sw-context-token is not a typed header of this endpoint
+      await client.invoke("readLanguagesGet get /language", { headers });
+
+      // node lowercases incoming header names, so this covers every casing
+      expect(receivedHeaders).toHaveProperty("sw-access-key", "123");
+      expect(receivedHeaders).not.toHaveProperty("sw-context-token");
+    },
+  );
+
+  it("should adopt sw-context-token from requests sent before the client had one", async () => {
+    const loginReleased = Promise.withResolvers<void>();
+    const app = createApp()
+      .use(
+        "/context",
+        eventHandler(async (event) => {
+          setHeader(event, "sw-context-token", "first-token");
+          return {};
+        }),
+      )
+      .use(
+        "/account/login",
+        eventHandler(async (event) => {
+          await loginReleased.promise;
+          setHeader(event, "sw-context-token", "login-token");
+          return {};
+        }),
+      );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      baseURL,
+    });
+
+    const login = client.invoke("loginCustomer post /account/login", {
+      body: { username: "user", password: "pass" },
+    });
+    await client.invoke("readContext get /context");
+    expect(client.defaultHeaders["sw-context-token"]).toEqual("first-token");
+    loginReleased.resolve();
+    await login;
+
+    expect(client.defaultHeaders["sw-context-token"]).toEqual("login-token");
+  });
+
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",

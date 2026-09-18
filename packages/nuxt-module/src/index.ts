@@ -175,12 +175,11 @@ export type ShopwareNuxtOptions = {
    */
   useUserContextInSSR?: boolean;
   /**
-   * Read anonymous Store API data through cacheable GET routes instead of POST.
-   * Criteria is compressed into the `_criteria` query param, which lets CDNs /
-   * reverse proxies / the browser cache the responses.
+   * Read Store API data through cacheable GET routes. Only a session that
+   * looks like a fresh default guest uses GET. Every other session stays on
+   * POST.
    *
-   * Requires a Shopware backend that supports the GET read routes and the
-   * `_criteria` query param. Leave disabled unless your caching layer is set up.
+   * Needs Shopware 6.7.6 or newer.
    *
    * @default false
    */
