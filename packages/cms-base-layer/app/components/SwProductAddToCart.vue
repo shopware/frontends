@@ -22,6 +22,7 @@ const props = defineProps<{
 type Translations = {
   product: {
     addedToCart: string;
+    viewCart: string;
     qty: string;
     addToCart: string;
     productNumber: string;
@@ -34,6 +35,7 @@ type Translations = {
 let translations: Translations = {
   product: {
     addedToCart: "has been added to cart.",
+    viewCart: "View cart",
     qty: "Qty",
     addToCart: "Add to cart",
     productNumber: "Product number",
@@ -67,6 +69,12 @@ const addToCartProxy = async () => {
   if (!errors.length)
     pushSuccess(
       `${props.product?.translated.name} ${translations.product.addedToCart}`,
+      {
+        action: {
+          label: translations.product.viewCart,
+          to: "/checkout/cart",
+        },
+      },
     );
 };
 </script>

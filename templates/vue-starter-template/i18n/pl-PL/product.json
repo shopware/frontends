@@ -1,6 +1,7 @@
 {
   "product": {
     "addToCart": "Dodaj do koszyka",
+    "viewCart": "Zobacz koszyk",
     "addToWishlist": "Dodaj do listy życzeń",
     "removeFromWishlist": "Usuń z listy życzeń",
     "addReview": "Dodaj recenzję",
