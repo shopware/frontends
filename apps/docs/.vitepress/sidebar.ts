@@ -263,6 +263,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Orders",
+        link: "/frontends-recipes/orders/",
+        collapsed: true,
+        items: [
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
+          },
+        ],
+      },
     ],
   },
   {

@@ -307,7 +307,7 @@ const {
   billingAddress,
   shippingAddress,
   order,
-} = useOrderDetails({ order: { id: orderId } as any });
+} = useOrderDetails(orderId);
 
 await loadOrderDetails();
 ```
