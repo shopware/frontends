@@ -92,6 +92,7 @@ const addToCartProxy = async () => {
         :disabled="!product?.available"
         block
         data-testid="add-to-cart-button"
+        :data-product-id="product?.id"
         @click="addToCartProxy"
       >
         {{ translations.product.addToCart }}
