@@ -1,5 +1,19 @@
 # @shopware/nuxt-module
 
+## 1.6.0
+
+### Minor Changes
+
+- [#2693](https://github.com/shopware/frontends/pull/2693) [`9d4710c`](https://github.com/shopware/frontends/commit/9d4710ca02ab35f35c65ea39bebd384630f4e1a7) Thanks [@mkucmus](https://github.com/mkucmus)! - `apiClientConfig.timeout` now works. Set it in milliseconds under `runtimeConfig.apiClientConfig` or `runtimeConfig.public.apiClientConfig`, next to `headers`, and the plugin forwards it to the API client. Unset by default. Only a positive number arms it, and a numeric string is coerced. Any other value is ignored and logged once as a warning naming the config path the value came from, instead of being dropped silently. It aborts a request whose response headers do not arrive in time, including one still opening its connection. It does not abort a response that stalls after its headers arrived, unless the call passes its own `signal`.
+
+  `apiClientConfig` under the `shopware` module options is deprecated, and now works as a fallback. It had never been read before, so a value set there in the past becomes active with this release. It is read last, only when neither `runtimeConfig` path holds a valid value, and Nuxt warns at build time when a timeout is set there. Move to `runtimeConfig.apiClientConfig`; the fallback goes away in the next major.
+
+### Patch Changes
+
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+  - @shopware/composables@1.13.1
+
 ## 1.5.2
 
 ### Patch Changes

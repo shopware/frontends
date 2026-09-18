@@ -254,7 +254,7 @@ onMounted(loadCart);
 const runCartWrite = async (
   item: Schemas["LineItem"],
   write: () => Promise<Schemas["Cart"]>,
-  fallbackMessage: string
+  fallbackMessage: string,
 ) => {
   if (isWriting.value) return;
 
@@ -289,7 +289,7 @@ const changeLineItemQuantity = (item: Schemas["LineItem"], value: string) => {
   return runCartWrite(
     item,
     () => changeProductQuantity({ id: item.id, quantity }),
-    "The quantity could not be updated."
+    "The quantity could not be updated.",
   );
 };
 
@@ -297,7 +297,7 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
   runCartWrite(
     item,
     () => removeItemById(item.id),
-    "The item could not be removed."
+    "The item could not be removed.",
   );
 </script>
 
@@ -341,7 +341,7 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
               @change="
                 changeLineItemQuantity(
                   item,
-                  ($event.target as HTMLInputElement).value
+                  ($event.target as HTMLInputElement).value,
                 )
               "
             />
