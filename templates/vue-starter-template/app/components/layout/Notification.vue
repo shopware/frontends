@@ -32,24 +32,6 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
 
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
-const miniCartModal = useMiniCartModal();
-const route = useRoute();
-
-function onActionClick(event: MouseEvent) {
-  emit("click:close", props.notification.id);
-
-  // Default layout has the mini cart; checkout does not. Modifier-clicks keep
-  // the real cart link so the page can still open in a new tab.
-  if (
-    route.meta.layout !== "checkout" &&
-    !event.metaKey &&
-    !event.ctrlKey &&
-    event.button === 0
-  ) {
-    event.preventDefault();
-    miniCartModal.open();
-  }
-}
 </script>
 <template>
   <!-- don't remove; enforce unocss to include dynamically used classes: class="bg-blue-100 bg-green-100 bg-orange-100 bg-red-100" -->
@@ -78,8 +60,8 @@ function onActionClick(event: MouseEvent) {
         v-if="notification.action"
         :to="formatLink(notification.action.to)"
         data-testid="notification-element-action"
-        class="mt-2 inline-block text-sm font-bold text-brand-primary"
-        @click="onActionClick"
+        class="mt-1 inline-flex min-h-8 items-center text-sm font-bold text-brand-primary"
+        @click="emit('click:close', notification.id)"
       >
         {{ notification.action.label }}
       </NuxtLink>
