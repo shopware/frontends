@@ -73,7 +73,7 @@
     "@nuxt/kit": "4.5.2",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "5.0.0",
-    "@vue/test-utils": "2.4.11",
+    "@vue/test-utils": "2.5.0",
     "happy-dom": "20.14.5",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
