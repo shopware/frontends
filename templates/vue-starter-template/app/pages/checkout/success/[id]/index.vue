@@ -79,13 +79,10 @@ const shippingDeliveryTime = computed(() => {
 });
 
 const orderDetailsLink = computed(() => {
-  if (isLoggedIn.value && order.value?.id) {
-    return formatLink(`/account/order/details/${order.value.id}`);
+  if (!isLoggedIn.value || !order.value?.id) {
+    return null;
   }
-  if (order.value?.deepLinkCode) {
-    return formatLink(`/account/order/${order.value.deepLinkCode}`);
-  }
-  return null;
+  return formatLink(`/account/order/details/${order.value.id}`);
 });
 
 const showPaymentAlert = computed(
