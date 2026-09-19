@@ -257,10 +257,6 @@ export const sidebar = [
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",
           },
-          {
-            text: "Product Listing",
-            link: "/frontends-recipes/catalog/product-listing.html",
-          },
         ],
       },
       {
