@@ -246,6 +246,10 @@ export const sidebar = [
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
+          {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
         ],
       },
       {
