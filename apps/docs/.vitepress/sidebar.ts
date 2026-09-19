@@ -249,6 +249,17 @@ export const sidebar = [
         ],
       },
       {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
+        ],
+      },
+      {
         text: "Checkout",
         link: "/frontends-recipes/checkout/",
         collapsed: true,
