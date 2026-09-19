@@ -19,6 +19,7 @@
     "country": "Kraj",
     "chooseCountry": "Wybierz kraj...",
     "clearCountry": "Wyczyść wybór kraju",
+    "toggleCountryList": "Pokaż lub ukryj listę krajów",
     "company": "Firma",
     "vatIds": "Numer identyfikacji podatkowej",
     "companyPlaceholder": "Wprowadź nazwę firmy...",
