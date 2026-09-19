@@ -257,6 +257,29 @@ export const sidebar = [
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",
           },
+          {
+            text: "Product Listing",
+            link: "/frontends-recipes/catalog/product-listing.html",
+          },
+        ],
+      },
+      {
+        text: "Checkout",
+        link: "/frontends-recipes/checkout/",
+        collapsed: true,
+        items: [
+          {
+            text: "Cart",
+            link: "/frontends-recipes/checkout/cart.html",
+          },
+          {
+            text: "Payment",
+            link: "/frontends-recipes/checkout/payment.html",
+          },
+          {
+            text: "Checkout and Order Placement",
+            link: "/frontends-recipes/checkout/checkout.html",
+          },
         ],
       },
     ],

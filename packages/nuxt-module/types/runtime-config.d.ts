@@ -1,4 +1,4 @@
-import type { ShopwareNuxtOptions } from "../src";
+import type { ApiClientRuntimeConfig, ShopwareNuxtOptions } from "../src";
 
 declare module "nuxt/schema" {
   interface NuxtConfig {
@@ -7,11 +7,7 @@ declare module "nuxt/schema" {
   interface NuxtOptions {
     shopware?: ShopwareNuxtOptions;
   }
-  interface ApiClientConfig {
-    headers?: {
-      [key: string]: string;
-    };
-  }
+  interface ApiClientConfig extends ApiClientRuntimeConfig {}
 
   interface RuntimeConfig {
     shopware: ShopwareNuxtOptions;
