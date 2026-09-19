@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 60
+  position: 30
 recipe:
   area: account
   status: stable
@@ -11,6 +11,7 @@ recipe:
     - useCountries
     - useSalutations
     - useSessionContext
+    - useUser
   helpers: []
   operations:
     - listAddress post /account/list-address
@@ -26,6 +27,7 @@ recipe:
     - CustomerAddressBody
     - Country
     - CountryState
+    - Customer
 ---
 
 <script setup>
@@ -84,12 +86,10 @@ const steps = [
     title: "Store API",
     action: "Switch a default",
     detail:
-      "The two default operations are bodyless PATCH requests carrying the address id in the path. They change isDefaultBillingAddress and isDefaultShippingAddress on the list entries.",
+      "The two default operations are bodyless PATCH requests carrying the address id in the path. They answer 200 with an empty body and change defaultBillingAddressId and defaultShippingAddressId on the customer, not on the address.",
     code: "await setDefaultCustomerBillingAddress(addressId)",
     state: "customer defaults",
-    typeKeys: [
-      'operations["defaultBillingAddress patch /account/address/default-billing/{addressId}"]["response"]',
-    ],
+    typeKeys: ['Schemas["Customer"]'],
   },
 ];
 </script>
@@ -117,27 +117,31 @@ Read the diagram from left to right:
 5. The handler calls `loadCustomerAddresses()` again, because nothing else will.
 6. `setDefaultCustomerBillingAddress(id)` and `setDefaultCustomerShippingAddress(id)` are bodyless PATCH requests that need the same reload.
 
-You do not need to refresh the session context after editing an address book entry — but you do after changing a default, because `useSessionContext().activeBillingAddress` reads the customer from the context.
+Editing an address book entry needs nothing beyond that reload. Changing a default needs one more call, because the defaults live on the customer rather than on the address: `refreshSessionContext()`. It is the refresh that covers both consumers — see [State And Session](#state-and-session).
 
 ## Request Flow
 
-| Step                     | Code                                           | Store API                                             | Type                                                                                                                                  |
-| ------------------------ | ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Load the addresses       | `loadCustomerAddresses()`                      | `POST /account/list-address`                          | <SchemaTypeTooltip type-key='operations["listAddress post /account/list-address"]["response"]' />                                     |
-| Load the countries       | `fetchCountries()`                             | `POST /country`                                       | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' />                                                  |
-| Create an address        | `createCustomerAddress(address)`               | `POST /account/address`                               | <SchemaTypeTooltip type-key='operations["createCustomerAddress post /account/address"]["body"]' />                                    |
-| Update an address        | `updateCustomerAddress(address)`               | `PATCH /account/address/{addressId}`                  | <SchemaTypeTooltip type-key='operations["updateCustomerAddress patch /account/address/{addressId}"]["body"]' />                       |
-| Delete an address        | `deleteCustomerAddress(addressId)`             | `DELETE /account/address/{addressId}`                 | none — the operation answers `204 No Content`                                                                                         |
-| Set the default billing  | `setDefaultCustomerBillingAddress(addressId)`  | `PATCH /account/address/default-billing/{addressId}`  | <SchemaTypeTooltip type-key='operations["defaultBillingAddress patch /account/address/default-billing/{addressId}"]["response"]' />   |
-| Set the default shipping | `setDefaultCustomerShippingAddress(addressId)` | `PATCH /account/address/default-shipping/{addressId}` | <SchemaTypeTooltip type-key='operations["defaultShippingAddress patch /account/address/default-shipping/{addressId}"]["response"]' /> |
+| Step                     | Code                                           | Store API                                             | Type                                                                                               |
+| ------------------------ | ---------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Load the addresses       | `loadCustomerAddresses()`                      | `POST /account/list-address`                          | <SchemaTypeTooltip type-key='operations["listAddress post /account/list-address"]["response"]' />   |
+| Load the countries       | `fetchCountries()`                             | `POST /country`                                       | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' />                |
+| Load the salutations     | `fetchSalutations()`                           | `POST /salutation`                                    | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' />          |
+| Create an address        | `createCustomerAddress(address)`               | `POST /account/address`                               | <SchemaTypeTooltip type-key='operations["createCustomerAddress post /account/address"]["body"]' />  |
+| Update an address        | `updateCustomerAddress(address)`               | `PATCH /account/address/{addressId}`                  | <SchemaTypeTooltip type-key='operations["updateCustomerAddress patch /account/address/{addressId}"]["body"]' /> |
+| Delete an address        | `deleteCustomerAddress(addressId)`             | `DELETE /account/address/{addressId}`                 | none — the operation answers `204 No Content`                                                      |
+| Set the default billing  | `setDefaultCustomerBillingAddress(addressId)`  | `PATCH /account/address/default-billing/{addressId}`  | none — the operation answers `200` with an empty body                                              |
+| Set the default shipping | `setDefaultCustomerShippingAddress(addressId)` | `PATCH /account/address/default-shipping/{addressId}` | none — the operation answers `200` with an empty body                                              |
 
-The two default rows send no body. The address id is the whole request, which is why they cannot fail on validation — only on ownership.
+The two default rows send no body. The address id is the whole request, which is why they cannot fail on validation — only on ownership. Neither answers with a body either, so the `Promise<string>` that `useAddress` declares for them resolves to nothing usable — call them for the effect, not for the return value.
+
+`fetchCountries` and `fetchSalutations` are the only rows you do not normally call yourself: both composables fetch on mount when their shared list is still empty. The methods are there for the cases where you need to refetch or to seed the list before mount.
 
 ## Composables
 
 - `useAddress`: the address book. Reads `customerAddresses`, loads it with `loadCustomerAddresses`, writes with `createCustomerAddress`, `updateCustomerAddress`, `deleteCustomerAddress`, `setDefaultCustomerBillingAddress` and `setDefaultCustomerShippingAddress`, and offers `errorMessageBuilder(error)` for one specific violation code.
 - `useCountries`: `getCountries` and `getCountriesOptions` for the country select, and `getStatesForCountry(countryId)` for the dependent state select. It fetches on mount with a `states` association already merged in, so the states are present without a second request.
 - `useSalutations`: `getSalutations` for the salutation select, since the address takes a `salutationId`.
+- `useUser`: `defaultBillingAddressId` and `defaultShippingAddressId` to decide which entry in the list is a default. They read `user.defaultBillingAddressId`, which every Shopware version returns.
 
 ## Types
 
@@ -163,7 +167,7 @@ type Country = Schemas["Country"];
 type CountryState = Schemas["CountryState"];
 ```
 
-The two address types are not the same and the difference matters. `CustomerAddressBody` is what the operations accept and requires `countryId`, `firstName`, `lastName`, `city` and `street`. `CustomerAddress` is what comes back and additionally carries `id`, `customerId`, `isDefaultBillingAddress` and `isDefaultShippingAddress`.
+The two address types are not the same and the difference matters. `CustomerAddressBody` is what the operations accept and requires `countryId`, `firstName`, `lastName`, `city` and `street`. `CustomerAddress` is what comes back and additionally carries `id` and `customerId`. It also declares `isDefaultBillingAddress` and `isDefaultShippingAddress`, but those two are optional runtime fields that only exist from Shopware 6.7.7.0 — read the Edge Cases before you branch on them.
 
 ## Minimal Vue Example
 
@@ -183,6 +187,8 @@ const {
 const { getCountries, getStatesForCountry } = useCountries();
 const { getSalutations } = useSalutations();
 const { refreshSessionContext } = useSessionContext();
+// the ids work on every Shopware version — see Edge Cases for why not the address flags
+const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 
 const emptyAddress = () => ({
   salutationId: "",
@@ -202,8 +208,27 @@ const isSaving = ref(false);
 const addressError = ref("");
 
 const states = computed(() =>
-  form.countryId ? getStatesForCountry(form.countryId) ?? [] : []
+  form.countryId ? (getStatesForCountry(form.countryId) ?? []) : []
 );
+
+// an empty string is not a valid UUID, so drop the optional ids left unset.
+// the body type is what the operation really accepts; the cast only satisfies
+// the stricter signature useAddress declares.
+const toRequestBody = () => {
+  const { salutationId, countryStateId, ...required } = form;
+  const body: Schemas["CustomerAddressBody"] = {
+    ...required,
+    ...(salutationId ? { salutationId } : {}),
+    ...(countryStateId ? { countryStateId } : {}),
+  };
+  return body as Schemas["CustomerAddress"];
+};
+
+const selectCountry = (countryId: string) => {
+  form.countryId = countryId;
+  // a state id from the previous country is not valid for the new one
+  form.countryStateId = "";
+};
 
 onMounted(async () => {
   try {
@@ -239,11 +264,11 @@ const save = async () => {
   try {
     if (editedId.value) {
       await updateCustomerAddress({
-        ...form,
+        ...toRequestBody(),
         id: editedId.value,
-      } as Schemas["CustomerAddress"]);
+      });
     } else {
-      await createCustomerAddress({ ...form } as Schemas["CustomerAddress"]);
+      await createCustomerAddress(toRequestBody());
     }
 
     // no write method updates the shared list
@@ -312,8 +337,12 @@ const makeDefaultShipping = (addressId: string) =>
         {{ address.zipcode }} {{ address.city }}
       </p>
 
-      <p v-if="address.isDefaultBillingAddress">Default billing address</p>
-      <p v-if="address.isDefaultShippingAddress">Default shipping address</p>
+      <p v-if="address.id === defaultBillingAddressId">
+        Default billing address
+      </p>
+      <p v-if="address.id === defaultShippingAddressId">
+        Default shipping address
+      </p>
 
       <button
         type="button"
@@ -324,7 +353,7 @@ const makeDefaultShipping = (addressId: string) =>
       </button>
 
       <button
-        v-if="!address.isDefaultBillingAddress"
+        v-if="address.id !== defaultBillingAddressId"
         type="button"
         :disabled="pendingId === address.id"
         @click="makeDefaultBilling(address.id)"
@@ -333,7 +362,7 @@ const makeDefaultShipping = (addressId: string) =>
       </button>
 
       <button
-        v-if="!address.isDefaultShippingAddress"
+        v-if="address.id !== defaultShippingAddressId"
         type="button"
         :disabled="pendingId === address.id"
         @click="makeDefaultShipping(address.id)"
@@ -343,7 +372,8 @@ const makeDefaultShipping = (addressId: string) =>
 
       <button
         v-if="
-          !address.isDefaultBillingAddress && !address.isDefaultShippingAddress
+          address.id !== defaultBillingAddressId &&
+          address.id !== defaultShippingAddressId
         "
         type="button"
         :disabled="pendingId === address.id"
@@ -398,7 +428,10 @@ const makeDefaultShipping = (addressId: string) =>
 
     <label>
       Country
-      <select v-model="form.countryId">
+      <select
+        :value="form.countryId"
+        @change="selectCountry(($event.target as HTMLSelectElement).value)"
+      >
         <option value="">Select a country</option>
         <option
           v-for="country in getCountries"
@@ -433,9 +466,14 @@ const makeDefaultShipping = (addressId: string) =>
 
 The list lives in the `swCustomerAddresses` injection, so an address selector in the checkout and the address book on the account page read the same array. It starts as an empty array rather than `undefined`, which means "no addresses" and "not loaded yet" look identical — track the loading state yourself if that distinction matters.
 
+`useUser().defaultBillingAddressId` needs no loading call of its own. A Nuxt storefront refreshes the session context once at app start, and `useUser` derives its state from that context, so the default ids are already there when the page mounts.
+
 Ownership is entirely session-based. Every operation resolves the customer from the `sw-context-token`; there is no customer id in any path or body. A guest or a logged-out visitor gets a `403`, and `loadCustomerAddresses` handles that one status specially: it clears the shared list and then rethrows, so the UI empties _and_ the error surfaces.
 
-Changing a default also changes the sales channel context, because `useSessionContext().activeBillingAddress` reads `customer.activeBillingAddress`. That is the one case on this page where reloading the address list is not enough.
+Changing a default also changes the customer, so reloading the address list is not enough — that is the one case on this page that needs a second call. Use `refreshSessionContext()`, not `refreshUser()`:
+
+- `refreshSessionContext()` calls `readContext get /context`, whose response carries the whole `customer`. `useUser` mirrors that customer into its own state with `syncRefs`, so this one call updates `useSessionContext().activeBillingAddress` **and** `useUser().defaultBillingAddressId`.
+- `refreshUser()` calls `readCustomer post /account/customer` and writes only `useUser`'s state. The sales channel context stays stale, and the checkout reads its active addresses from that context.
 
 ## Edge Cases
 
@@ -445,6 +483,10 @@ Changing a default also changes the sales channel context, because `useSessionCo
 - `updateCustomerAddress` reads the address id from the object and puts it in the path. An object without `id` produces a request against `/account/address/undefined`.
 - `countryId`, `firstName`, `lastName`, `city` and `street` are required. `zipcode` is not, because not every country has one.
 - `countryStateId` is only valid for countries that have states. `getStatesForCountry` returns `null` — not an empty array — for those that do not.
+- An empty string is not a valid id. A form that seeds `salutationId` and `countryStateId` with `""` has to strip them before the request, or the server rejects the write on a field the customer never filled in.
+- Switching the country does not invalidate a `countryStateId` that was picked for the previous one. Clear it in the country change handler; nothing in `useCountries` does it for you.
+- `CustomerAddress` does carry `isDefaultBillingAddress` and `isDefaultShippingAddress`, but both are optional runtime fields added in Shopware 6.7.7.0. Against an older instance they come back `undefined`, which reads as "not a default" for every entry. `useUser().defaultBillingAddressId` compared against `address.id` has no version floor, which is why the example and the starter template both use it.
+- `setDefaultCustomerBillingAddress` and `setDefaultCustomerShippingAddress` are declared `Promise<string>`, but both operations answer with an empty body. The resolved value is not a usable id.
 - Deleting the default billing or shipping address is rejected by the server. Hide the button for those entries rather than explaining the failure afterwards.
 - `errorMessageBuilder` handles only `VIOLATION::IS_BLANK_ERROR` and returns `null` for everything else. Treat `null` as "not a message I can build", not as "no error".
 - A `403` from `loadCustomerAddresses` both empties the list and throws. Catching the error without rendering an empty state gives the customer a blank page.
@@ -454,8 +496,10 @@ Changing a default also changes the sales channel context, because `useSessionCo
 - Do not assume a successful write refreshed the list.
 - Do not patch `customerAddresses` locally after a write. It is a `ComputedRef` over the shared value.
 - Do not skip the context refresh after changing a default. The checkout reads the active addresses from the context.
+- Do not reach for `refreshUser()` to pick up a new default. It leaves the sales channel context stale; `refreshSessionContext()` updates both.
 - Do not treat an empty `customerAddresses` as proof that the customer has no addresses.
-- Do not send a `countryStateId` for a country without states.
+- Do not send a `countryStateId` for a country without states, and do not send it as an empty string either.
+- Do not read `address.isDefaultBillingAddress` unless you require Shopware 6.7.7.0 or newer.
 - Do not offer to delete an address that is a current default.
 - Do not render `errorMessageBuilder(error)` without a fallback for its `null` result.
 - Do not build the update path yourself. `updateCustomerAddress` derives it from the address id.
@@ -468,14 +512,17 @@ Changing a default also changes the sales channel context, because `useSessionCo
 - Updating an address sends the id in the path and reloads the list.
 - Deleting an address calls the delete operation and removes the entry from the rendered list.
 - Setting a default calls the matching bodyless PATCH, reloads the list, and refreshes the session context.
-- The `isDefaultBillingAddress` and `isDefaultShippingAddress` flags drive which buttons render.
+- After that refresh, both `useSessionContext().activeBillingAddress` and `useUser().defaultBillingAddressId` reflect the new default.
+- `defaultBillingAddressId` and `defaultShippingAddressId` drive which buttons render on each entry.
 - Submitting the form without a country is rejected and shown on that field.
-- Selecting a country without states hides the state select.
+- Selecting a country without states hides the state select and sends no `countryStateId`.
+- Switching from a country with states to one without clears the previously selected state.
 - A logged-out visitor sees an empty state and an error rather than a stale list.
 
 ## Related Links
 
 - [Login recipe](login.html)
+- [Checkout recipe](../checkout/checkout.html)
 - [Checkout documentation](../../getting-started/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
