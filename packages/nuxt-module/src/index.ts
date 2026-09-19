@@ -47,6 +47,14 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
     }
+    if (
+      resolvedPublicShopwareConfig?.apiClientConfig?.timeout !== undefined ||
+      resolvedPrivateShopwareConfig?.apiClientConfig?.timeout !== undefined
+    ) {
+      logger.warn(
+        "shopware.apiClientConfig is deprecated and will be removed in the next major. Move timeout to runtimeConfig.apiClientConfig or runtimeConfig.public.apiClientConfig.",
+      );
+    }
     const envPublicEndpoint =
       process.env.NUXT_PUBLIC_SHOPWARE_ENDPOINT ||
       process.env.NUXT_PUBLIC_SHOPWARE_SHOPWARE_ENDPOINT;
@@ -132,6 +140,13 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
   },
 });
 
+// Shared with plugin.ts, which templates compile without the nuxt/schema augmentation.
+export type ApiClientRuntimeConfig = {
+  headers?: Record<string, string>;
+  /** Milliseconds to wait for response headers. A numeric string is coerced. */
+  timeout?: number | string;
+};
+
 export type ShopwareNuxtOptions = {
   /**
    * Endpoint for your shopware backend.
@@ -143,6 +158,12 @@ export type ShopwareNuxtOptions = {
   accessToken?: string;
   shopwareAccessToken?: string;
   devStorefrontUrl?: string;
+  /**
+   * Read last. Positive milliseconds, or a numeric string.
+   *
+   * @deprecated Use `runtimeConfig.apiClientConfig` or
+   * `runtimeConfig.public.apiClientConfig`. Removed in the next major.
+   */
   apiClientConfig?: {
     timeout?: number | string;
   };
