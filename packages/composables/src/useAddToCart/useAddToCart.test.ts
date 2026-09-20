@@ -5,24 +5,24 @@ import { useSetup } from "../_test";
 import ProductMocked from "../mocks/Product";
 import { useAddToCart } from "./useAddToCart";
 
-describe("useAddToCart", () => {
-  vi.mock("../useCart/useCart.ts", () => ({
-    useCart() {
-      return {
-        addProduct: () => ({}),
-        cartItems: {
-          value: [
-            {
-              referencedId: ProductMocked.id,
-              good: true,
-              quantity: 1,
-            },
-          ],
-        },
-      };
-    },
-  }));
+vi.mock("../useCart/useCart.ts", () => ({
+  useCart() {
+    return {
+      addProduct: () => ({}),
+      cartItems: {
+        value: [
+          {
+            referencedId: ProductMocked.id,
+            good: true,
+            quantity: 1,
+          },
+        ],
+      },
+    };
+  },
+}));
 
+describe("useAddToCart", () => {
   it("add product to cart", async () => {
     const { vm } = await useSetup(() => useAddToCart(ref(ProductMocked)));
 
