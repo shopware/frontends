@@ -255,7 +255,7 @@ export const sidebar = [
         items: [
           {
             text: "Prices and Tax State",
-            link: "/frontends-recipes/catalog/pricing.html",
+            link: "/frontends-recipes/catalog/prices.html",
           },
         ],
       },
