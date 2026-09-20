@@ -17,3 +17,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## Catalog
 
 <PageRef page="catalog/" title="Catalog" sub="Product catalogue flows such as listings and filters, search and suggest, variant selection, price and tax state, product reviews, and cross-selling." />
+
+## Checkout
+
+<PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />

@@ -18,10 +18,12 @@ const { address } = defineProps<{
       <div class="text-surface-on-surface text-base">
         {{ address.zipcode }} {{ address.city }}
       </div>
-      <div class="text-surface-on-surface text-base">
-        {{ address.country?.translated.name }}
+      <div
+        v-if="address.country?.translated.name"
+        class="text-surface-on-surface text-base"
+      >
+        {{ address.country.translated.name }}
       </div>
     </div>
-    <div>[ADD BUTTON]</div>
   </div>
 </template>
