@@ -68,7 +68,7 @@ Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, 
 
 ## Generate your own API types
 
-After pointing the template at your own instance, regenerate the API types so they match your schema, including any extensions:
+The template uses the types shipped with `@shopware/api-client` until you point it at your own instance. After that, regenerate the API types so they match your schema, including any extensions:
 
 ```bash
 npx shopware-api-gen loadSchema --apiType=store
@@ -77,7 +77,7 @@ pnpm generate-types
 
 Both read `OPENAPI_JSON_URL` and `OPENAPI_ACCESS_KEY` from `.env`. `OPENAPI_JSON_URL` is the base URL of your instance, without the `/store-api/` suffix.
 
-Run `loadSchema` first. On its own, `generate-types` falls back to the published default types, which do not include your instance's extensions.
+Run `loadSchema` first. On its own, `generate-types` falls back to the published default types, which do not include your instance's extensions. Then switch `shopware.d.ts` from `@shopware/api-client/store-api-types` to `./api-types/storeApiTypes`.
 
 ## Styling and Shopping Experiences integration
 

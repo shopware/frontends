@@ -1,4 +1,4 @@
-import type { components as coreComponents } from "./storeApiTypes";
+import type { components as coreComponents } from "@shopware/api-client/store-api-types";
 
 export type components = coreComponents & {
   schemas: Schemas;
@@ -30,6 +30,21 @@ export type Schemas = {
         removable: boolean;
       };
     };
+  };
+  SwagCustomizedProductsTemplateOption: {
+    id: string;
+    type: string;
+    placeholder?: string;
+    description?: string;
+    translated: {
+      displayName: string;
+    };
+    values?: Array<{
+      id?: string;
+      displayName: string;
+      value?: string | null;
+      price?: Array<{ gross: string | number }>;
+    }>;
   };
   SwagCustomizedProductsTemplate: {
     versionId: string;

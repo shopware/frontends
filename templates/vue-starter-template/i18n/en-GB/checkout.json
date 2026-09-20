@@ -28,7 +28,8 @@
       "passwordLabel": "Password",
       "createAccountToggleLabel": "Create customer account"
     },
-    "saveAddressButton": "Next",
+    "continueButton": "Next",
+    "savingDetails": "Saving your details…",
     "success": {
       "header": "We have received your order #{0} and will process it as soon as possible.",
       "paymentProcessLabel": "Finish payment process.",
