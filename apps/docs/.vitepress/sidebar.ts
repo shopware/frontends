@@ -254,7 +254,7 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Cross-Selling and Associations",
+            text: "Cross-Selling",
             link: "/frontends-recipes/catalog/cross-selling.html",
           },
         ],
