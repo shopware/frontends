@@ -17,3 +17,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## Context
 
 <PageRef page="context/" title="Context" sub="Sales channel context flows such as reading and patching the session context, switching language and currency, navigation and breadcrumbs, and resolving SEO URLs." />
+
+## Checkout
+
+<PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />
