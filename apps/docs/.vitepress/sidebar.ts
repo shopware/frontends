@@ -254,20 +254,20 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Cart Errors",
-            link: "/frontends-recipes/checkout/cart-errors.html",
-          },
-          {
             text: "Cart",
             link: "/frontends-recipes/checkout/cart.html",
           },
           {
-            text: "Payment",
-            link: "/frontends-recipes/checkout/payment.html",
+            text: "Cart Errors",
+            link: "/frontends-recipes/checkout/cart-errors.html",
           },
           {
             text: "Checkout and Order Placement",
             link: "/frontends-recipes/checkout/checkout.html",
+          },
+          {
+            text: "Payment",
+            link: "/frontends-recipes/checkout/payment.html",
           },
         ],
       },
