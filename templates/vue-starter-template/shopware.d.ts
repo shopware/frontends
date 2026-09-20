@@ -4,13 +4,23 @@ declare module "#shopware" {
   // for default types
   export type operations =
     import("@shopware/api-client/store-api-types").operations;
+  // or for local TypeScript overlays
+  // export type operations = import("@shopware/api-client").WithApiOverrides<
+  //   import("@shopware/api-client/store-api-types").operations,
+  //   import("./api-types/storeApiTypes.overrides").operations
+  // >;
   // or for locally generated types
   // export type operations = import("./api-types/storeApiTypes").operations;
 
   // for default types
   export type Schemas =
     import("@shopware/api-client/store-api-types").components["schemas"];
-  // // or for locally generated types
+  // or for local TypeScript overlays
+  // export type Schemas = import("@shopware/api-client").WithApiOverrides<
+  //   import("@shopware/api-client/store-api-types").components["schemas"],
+  //   import("./api-types/storeApiTypes.overrides").Schemas
+  // >;
+  // or for locally generated types
   // export type Schemas =
   //   import("./api-types/storeApiTypes").components["schemas"];
 

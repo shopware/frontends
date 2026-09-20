@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
 
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 
 test.describe(

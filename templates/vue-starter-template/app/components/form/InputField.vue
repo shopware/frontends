@@ -26,6 +26,9 @@ const model = defineModel<string>({
 
 const errorText = computed(() => unref(errorMessage));
 
+const errorId = `${id || useId()}-error`;
+const describedBy = computed(() => (errorText.value ? errorId : undefined));
+
 const { wrapperAttrs, controlAttrs } = useControlAttrs();
 
 const baseInput = useTemplateRef<FocusableInput>("baseInput");
@@ -53,10 +56,15 @@ defineExpose<FocusableInput>({
       :id="id"
       :invalid="!!errorText"
       :autocomplete="autocomplete"
+      :aria-invalid="errorText ? true : undefined"
+      :aria-describedby="describedBy"
       v-bind="controlAttrs"
     />
-    <span v-if="errorText" class="text-states-error text-xs block mt-1">{{
-      errorText
-    }}</span>
+    <span
+      v-if="errorText"
+      :id="errorId"
+      class="text-states-error text-xs block mt-1"
+      >{{ errorText }}</span
+    >
   </div>
 </template>
