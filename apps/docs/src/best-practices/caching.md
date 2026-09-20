@@ -99,7 +99,9 @@ Exactly these composables gain a GET branch when `cacheableReads` is enabled:
 - `useInternationalization` (`getAvailableLanguages`)
 - `useProductConfigurator`
 - `useProductSearch` (single product detail)
+- `useProductReviews` (`loadProductReviews`)
 - `useCategorySearch.advancedSearch` (category list)
+- `useCategorySearch.search` (single category)
 
 ::: tip
 The flag is a blanket GET/POST switch per composable, not a runtime authentication check. Even account-related lookups such as `useUser.loadCountry`/`loadSalutation` use GET when the flag is on. "Anonymous" here means the data is public reference or catalog data suitable for shared HTTP caching, not that the code inspects the login state. Whether a response is actually cached, and how it is scoped per user, is governed by the Shopware backend cache rules and your CDN configuration.
@@ -107,10 +109,9 @@ The flag is a blanket GET/POST switch per composable, not a runtime authenticati
 
 ### Which reads stay on POST, and why
 
-A few read paths intentionally stay on POST because the generated Store API schema does not type the `_criteria` parameter on their GET route:
+A few read paths stay on POST because the generated Store API schema does not type the `_criteria` parameter on their GET route. `useCategorySearch.search` is the exception that proves the rule: it already uses `readCategoryGet get /category/{navigationId}` and declares `_criteria` through a local intersection type until the generated types catch up.
 
 - `useListing` (product listing) - always `readProductListing post /product-listing/{categoryId}`
-- `useCategorySearch.search` (single category) - always `readCategory post /category/{navigationId}`
 - `useLandingSearch` - always `readLandingPage post /landing-page/{landingPageId}`
 
 As those GET schemas gain `_criteria` typing upstream, these reads can migrate too. Product listing is the first: Shopware core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` (released in 6.7.12.0), so `useListing` can switch to the cacheable GET variant once the Store API types are regenerated against that schema.
