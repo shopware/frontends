@@ -91,6 +91,9 @@ export const applyQueryToFilters = (
  */
 export const useSelectedListingFilters = (): UnwrapNestedRefs<FilterState> => {
   const route = useRoute();
+  // Fresh state per call, deliberately: the sidebar and the horizontal filter
+  // bar each hold their own selection object, so a mutation in one is invisible
+  // to the other until it reaches the route. The URL is what synchronises them.
   const state = reactive<FilterState>(createEmptyFilterState());
 
   // Initial parse (SSR + first client render).
