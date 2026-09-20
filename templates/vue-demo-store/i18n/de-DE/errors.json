@@ -26,6 +26,7 @@
     "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus.",
     "login_no_matching_customer_internal": "Ungültiger Benutzername und/oder Passwort.",
     "message-default": "Leider ist ein Fehler aufgetreten.",
+    "order-timeout": "Wir haben nicht rechtzeitig eine Bestätigung erhalten. Ihre Bestellung wurde möglicherweise trotzdem aufgegeben. Bitte prüfen Sie Ihre Bestellungen, bevor Sie es erneut versuchen.",
     "message-404": "Die angeforderte Seite konnte nicht gefunden werden.",
     "addToCartError": "Beim Versuch, Artikel zum Warenkorb hinzuzufügen, ist ein Fehler aufgetreten.",
     "productNotFound": "Produkt {number} nicht gefunden.",
