@@ -246,6 +246,21 @@ export const sidebar = [
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
+          {
+            text: "Customer Addresses",
+            link: "/frontends-recipes/account/addresses.html",
+          },
+        ],
+      },
+      {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Product Listing and Filters",
+            link: "/frontends-recipes/catalog/listing.html",
+          },
         ],
       },
       {
