@@ -517,6 +517,7 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 
 ## Related Links
 
+- [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Payments](../../guides/e-commerce/payments.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)
