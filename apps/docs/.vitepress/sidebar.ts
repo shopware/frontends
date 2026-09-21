@@ -246,6 +246,14 @@ export const sidebar = [
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
+          {
+            text: "Newsletter",
+            link: "/frontends-recipes/account/newsletter.html",
+          },
+          {
+            text: "Customer Addresses",
+            link: "/frontends-recipes/account/addresses.html",
+          },
         ],
       },
       {
@@ -253,6 +261,10 @@ export const sidebar = [
         link: "/frontends-recipes/catalog/",
         collapsed: true,
         items: [
+          {
+            text: "Product Listing and Filters",
+            link: "/frontends-recipes/catalog/listing.html",
+          },
           {
             text: "Cross-Selling",
             link: "/frontends-recipes/catalog/cross-selling.html",
@@ -269,12 +281,16 @@ export const sidebar = [
             link: "/frontends-recipes/checkout/cart.html",
           },
           {
-            text: "Payment",
-            link: "/frontends-recipes/checkout/payment.html",
+            text: "Cart Errors",
+            link: "/frontends-recipes/checkout/cart-errors.html",
           },
           {
             text: "Checkout and Order Placement",
             link: "/frontends-recipes/checkout/checkout.html",
+          },
+          {
+            text: "Payment",
+            link: "/frontends-recipes/checkout/payment.html",
           },
         ],
       },
