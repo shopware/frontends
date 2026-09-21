@@ -19,6 +19,7 @@
     "country": "Country",
     "chooseCountry": "Choose country...",
     "clearCountry": "Clear country selection",
+    "toggleCountryList": "Toggle country list",
     "company": "Company",
     "vatIds": "VAT Registration Number",
     "companyPlaceholder": "Enter company...",

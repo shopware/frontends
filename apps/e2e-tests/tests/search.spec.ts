@@ -1,9 +1,8 @@
-import { test } from "@playwright/test";
-
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 
-test.describe("Search phrase", { tag: "@vue-demo-store" }, () => {
+test.describe("Search phrase", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let resultPage: SearchResultPage;
 
@@ -16,12 +15,12 @@ test.describe("Search phrase", { tag: "@vue-demo-store" }, () => {
   });
 
   test("Search phrase and verify result page", async () => {
-    await homePage.typeSearchPhrase("bag");
-    await resultPage.searchResultBox.isVisible();
+    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+    await expect(resultPage.searchResultBox).toBeVisible();
   });
 
   test("Search phrase by suggest and verify result page", async () => {
-    await homePage.searchBySuggest("bag");
-    await resultPage.searchResultBox.isVisible();
+    await homePage.searchBySuggest(await homePage.firstProductSearchTerm());
+    await expect(resultPage.searchResultBox).toBeVisible();
   });
 });
