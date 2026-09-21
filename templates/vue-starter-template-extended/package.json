@@ -24,7 +24,7 @@
   "dependencies": {
     "@shopware/api-client": "canary",
     "nuxt": "4.5.2",
-    "vue": "3.5.41",
+    "vue": "3.5.42",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
