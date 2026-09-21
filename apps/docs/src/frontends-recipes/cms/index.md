@@ -1,7 +1,7 @@
 ---
 nav:
   title: CMS
-  position: 60
+  position: 30
 ---
 
 # CMS
