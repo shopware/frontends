@@ -47,7 +47,7 @@ const steps = [
     action: "Read the failure code",
     detail:
       "For a guest order the call rejects with CHECKOUT__GUEST_NOT_AUTHENTICATED. That is not a bug — it is the signal to ask for the email and the postal code.",
-    code: "error.code === 'CHECKOUT__GUEST_NOT_AUTHENTICATED'",
+    code: 'new Set(error.details.errors.map((e) => e.code)).has("CHECKOUT__GUEST_NOT_AUTHENTICATED")',
     state: "needsCredentials",
     typeKeys: [],
   },
@@ -131,7 +131,7 @@ The lookup itself has no composable. `useOrderDetails` is what you reach for aft
 
 - **Read** — `order`, `status`, `statusTechnicalName`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress`, `personalDetails`, `shippingMethod`, `paymentMethod`, `paymentChangeable`, `documents`, `hasDocuments`.
 - **Load** — `loadOrderDetails()` re-reads the order through `readOrder post /order` and returns the whole `OrderRouteResponse`, including `paymentChangeable`.
-- **Act** — `cancel()`, `handlePayment()`, `getDocumentFile()`, `getMediaFile()`.
+- **Act** — `cancel()`, `getDocumentFile()`, `getMediaFile()`, and the payment members `handlePayment()` and `changePaymentMethod()`, which the [Payment recipe](../checkout/payment.html) covers in full.
 
 Three things the generated reference will not tell you:
 
@@ -414,8 +414,10 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 
 ## Related Links
 
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
+- [Checkout and Order Placement recipe](../checkout/checkout.html)
+- [Payment recipe](../checkout/payment.html)
 - [Login recipe](../account/login.html)
-- [API client package](../../packages/api-client.html)
+- [Create a checkout](../../guides/e-commerce/checkout.html)
+- [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)
 - [Reference implementation in `vue-starter-template`](https://github.com/shopware/frontends/blob/main/templates/vue-starter-template/app/pages/account/order/%5BdeepCode%5D.vue)
