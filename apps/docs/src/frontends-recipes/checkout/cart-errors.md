@@ -111,7 +111,7 @@ Read the diagram from left to right:
 5. Your i18n layer translates `errors.<messageKey>` with those params.
 6. The UI reads the notifications from `useNotifications` instead of keeping its own copy.
 
-You do not need to check the HTTP status to find these. A rejected request is a different thing entirely: that throws an `ApiClientError` and never reaches `swCartErrors`.
+You do not need to check the HTTP status to find these. A rejected request is a different thing entirely: an HTTP error throws an `ApiClientError`, while timeouts and other transport failures can throw other error types; none reaches `swCartErrors`.
 
 ## Request Flow
 
@@ -291,6 +291,7 @@ Errors are app state, not component state. A mini cart, a cart page and a checko
 ## Edge Cases
 
 - A cart error arrives with a `2xx` status. Checking `response.ok` finds none of them.
+- A timed out write has an unknown outcome. `isTimeoutError` from `@shopware/api-client` identifies it, and the request may already have reached the API, so the line item may exist even though the customer saw an error. Call `refreshCart()` before letting them retry, rather than repeating the write blind.
 - `consumeCartErrors()` clears the map. `codeErrorsNotification()` and `getErrorsCodes()` both consume, so calling both after one write shows the errors once and silently drops them for the second caller.
 - A response without errors does not reset the map. An entry collected by an earlier write survives until something consumes it, so a stale stock warning can surface after an unrelated successful write.
 - `refreshCart(newCart)` returns early when you pass a cart in, skipping error collection entirely. Only the argument-less `refreshCart()` issues the request and collects.
@@ -316,7 +317,7 @@ Errors are app state, not component state. A mini cart, a cart page and a checko
 - Do not handle the array form of `errors` behind `useCart`. The `Object.assign` merge normalises it to a map first, so nothing the composables hand you is ever an array.
 - Do not translate a `messageKey` without checking the snippet exists. An unmapped key renders as the literal string `errors.<messageKey>` in the customer's notification.
 - Do not expect `{name}` and `{quantity}` placeholders to be filled for keys the resolver does not special-case.
-- Do not confuse a rejected request with a cart error. Catch `ApiClientError` separately.
+- Do not confuse a rejected request with a cart error. Catch `ApiClientError` separately, and do not assume it is the only thing a cart write can throw — a timeout is not an `ApiClientError`.
 - Do not consume the errors in a component that may not be mounted. The map is cleared by whoever reads it first.
 
 ## Testing Checklist
@@ -331,6 +332,7 @@ Errors are app state, not component state. A mini cart, a cart page and a checko
 - An error collected by one write is still present after a later error-free write, until it is consumed.
 - `refreshCart(someCart)` collects no errors, while `refreshCart()` does.
 - A rejected request shows a request-level error and adds nothing to the shared map.
+- A timed out write is reported as a generic failure, not as `errors.addToCartError`, and a following `refreshCart()` shows whether the line item was added anyway.
 - An `errors` payload in array form, handed to a consumer directly, is skipped without throwing — through `useCart` it is normalised to a map first, so that guard cannot be reached from a cart write.
 - An unmapped `messageKey` falls back to a generic message instead of rendering the raw `errors.<messageKey>` string.
 
