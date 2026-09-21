@@ -25,3 +25,7 @@ These pages are written for frontend developers who want to understand the Shopw
 ## CMS
 
 <PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and elements, and the contact form element." />
+
+## Orders
+
+<PageRef page="orders/" title="Orders" sub="Placed order flows, starting with reading a guest order from the deep link in its confirmation mail." />
