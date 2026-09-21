@@ -147,12 +147,12 @@ The two pagination rows do not use the same field. `changeCurrentPage(page)` sen
 
 Pick by scope — how much of the listing the composable is about:
 
-| Composable                     | Scope                       | Reach for it when                                             |
-| ------------------------------ | --------------------------- | ------------------------------------------------------------- |
-| `useListing`                   | one listing                 | building any listing, filter panel, sorting or pagination     |
+| Composable                     | Scope                       | Reach for it when                                               |
+| ------------------------------ | --------------------------- | --------------------------------------------------------------- |
+| `useListing`                   | one listing                 | building any listing, filter panel, sorting or pagination       |
 | `useCategory`                  | the category in context     | you need the category itself — `useListing` consults it for you |
-| `createCategoryListingContext` | one shared category listing | a filter panel and a product grid are separate components     |
-| `useProductSearchListing`      | the shared search listing   | building a search results page                                |
+| `createCategoryListingContext` | one shared category listing | a filter panel and a product grid are separate components       |
+| `useProductSearchListing`      | the shared search listing   | building a search results page                                  |
 
 `useListing` is the one you reach for most:
 
@@ -164,10 +164,10 @@ Pick by scope — how much of the listing the composable is about:
 Six things the generated reference will not tell you:
 
 - `initSearch()` is deprecated and is not `search()` with a return value. It runs the request and hands you the result **without storing it**, so the UI never updates. It is named here only so you recognise it in older code.
-- `search()` deep-merges your criteria over the `defaultSearchCriteria` you passed to `useListing`, then calls the operation the listing type selected. `loadMore()` does not inherit that criteria. With no argument it sends `{ p }` alone, so on a filtered or sorted listing you have to pass yours again.
+- `search()` deep-merges your criteria over the `defaultSearchCriteria` you passed to `useListing`, then calls the operation the listing type selected. `loadMore()` merges the same defaults, but it does not carry over the criteria of the last `search()`. With no argument it sends `defaultSearchCriteria` plus `{ p }`, so on a filtered or sorted listing you have to pass the filters and the sorting again.
 - `setCurrentFilters()` narrows the products but not the filter options. A source comment states it outright: the aggregations are not reduced by the filter, so the option lists do not shrink as the customer selects. Send `reduce-aggregations` when you do want them narrowed.
 - `loading` and `loadingMore` are plain refs created per composable call, not injected like the listings themselves. Two components that share the same listing state still track their own loading flags.
-- Nothing here carries a request deadline, a cancellation signal or a sequence guard. Two overlapping searches are stored in the order their responses arrive, not the order they were sent.
+- Nothing here carries a request deadline, a cancellation signal or a sequence guard. Two overlapping searches are stored in the order their responses arrive, not the order they were sent. A deadline is available one layer down: `runtimeConfig.apiClientConfig.timeout` applies to every call, and `isTimeoutError` from `@shopware/api-client` tells a timeout apart from any other rejection.
 - `useCategory` is consulted automatically when `listingType` is `categoryListing` and no `categoryId` was passed. The category id comes from `category.value?.id`, and `useCategory()` throws when no category is in context, so the listing hard-depends on a category being resolved.
 
 Two wrappers exist for sharing one listing across components. `createCategoryListingContext(initialListing)` must be called on a parent before any child calls `useCategoryListing()`, which throws otherwise. `useProductSearchListing()` is a shared composable and needs no setup. Both are documented in the source as temporary.
@@ -332,8 +332,8 @@ const loadNext = async () => {
   if (loadingMore.value || !hasMore.value) return;
   listingError.value = "";
   try {
-    // loadMore() with no argument sends only `p`, so the filters, the sorting
-    // and the limit have to be passed again or the appended page ignores them.
+    // loadMore() does not reuse the criteria of the last search, so the filters,
+    // the sorting and the limit have to be passed again or the page ignores them.
     await loadMore({
       ...buildCriteria(route.query),
       p: getCurrentPage.value + 1,
@@ -431,13 +431,13 @@ const statusMessage = computed(() =>
     <!-- Always mounted and aria-disabled rather than disabled: removing or
          disabling the focused button drops focus to the document body.
          loadNext() guards the click. -->
-    <button type="button" :aria-disabled="loadingMore || !hasMore" @click="loadNext()">
+    <button
+      type="button"
+      :aria-disabled="loadingMore || !hasMore"
+      @click="loadNext()"
+    >
       {{
-        loadingMore
-          ? "Loading…"
-          : hasMore
-            ? "Show more"
-            : "All products loaded"
+        loadingMore ? "Loading…" : hasMore ? "Show more" : "All products loaded"
       }}
     </button>
   </section>
