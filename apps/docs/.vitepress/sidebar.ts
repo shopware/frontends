@@ -249,17 +249,6 @@ export const sidebar = [
         ],
       },
       {
-        text: "CMS",
-        link: "/frontends-recipes/cms/",
-        collapsed: true,
-        items: [
-          {
-            text: "Rendering CMS Pages",
-            link: "/frontends-recipes/cms/rendering.html",
-          },
-        ],
-      },
-      {
         text: "Checkout",
         link: "/frontends-recipes/checkout/",
         collapsed: true,
@@ -275,6 +264,17 @@ export const sidebar = [
           {
             text: "Checkout and Order Placement",
             link: "/frontends-recipes/checkout/checkout.html",
+          },
+        ],
+      },
+      {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Rendering CMS Pages",
+            link: "/frontends-recipes/cms/rendering.html",
           },
         ],
       },
