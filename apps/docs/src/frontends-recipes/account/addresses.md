@@ -328,7 +328,7 @@ const makeDefaultShipping = (addressId: string) =>
 <template>
   <p v-if="addressError">{{ addressError }}</p>
 
-  <p v-if="!customerAddresses.length">You have no saved addresses yet.</p>
+  <p v-if="!customerAddresses.length">No addresses to display (the list is also empty before the first load resolves).</p>
 
   <ul v-else>
     <li v-for="address in customerAddresses" :key="address.id">
