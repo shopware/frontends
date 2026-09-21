@@ -17,10 +17,10 @@
     "@shopware/api-client": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
-    "@unocss/nuxt": "66.7.5",
+    "@unocss/nuxt": "66.10.0",
     "js-cookie": "3.0.7",
     "nuxt": "4.5.2",
-    "vue": "3.5.41"
+    "vue": "3.5.42"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",

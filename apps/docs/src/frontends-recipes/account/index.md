@@ -13,3 +13,5 @@ Recipes for customer session and account flows.
 <PageRef page="wishlist.html" title="Wishlist" sub="Understand the customer wishlist as a paginated product search, the Store API wishlist operations, the shared composable state, and what one page of results does not tell you." />
 
 <PageRef page="order-history.html" title="Order History" sub="Understand the paginated order list, the associations a list row does not contain, the order detail request, payment change, cancellation, and guest order access." />
+
+<PageRef page="addresses.html" title="Customer Addresses" sub="Understand why no write updates the shared list, how the request body differs from the address entity, which default switch also needs a context refresh, and what the country and state selects depend on." />

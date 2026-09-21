@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { FocusableInput } from "#imports";
+
 type InputTypeAttribute =
   | "email"
   | "number"
@@ -36,6 +38,12 @@ const emit = defineEmits<{
 }>();
 
 const { wrapperAttrs, controlAttrs } = useControlAttrs();
+
+const inputElement = useTemplateRef<HTMLInputElement>("inputElement");
+
+defineExpose<FocusableInput>({
+  focus: (options) => inputElement.value?.focus(options),
+});
 </script>
 <template>
   <div
@@ -50,6 +58,7 @@ const { wrapperAttrs, controlAttrs } = useControlAttrs();
     >
       <slot name="leftIcon" />
       <input
+        ref="inputElement"
         :id="id"
         v-model="model"
         class="text-sm w-full outline-none bg-transparent text-surface-on-surface placeholder:text-surface-on-surface-variant"
