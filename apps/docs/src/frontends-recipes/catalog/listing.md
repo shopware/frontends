@@ -310,8 +310,9 @@ function buildCriteria(query: LocationQuery) {
 }
 
 // useListing stores whatever response lands last, so back/forward or a quick
-// second toggle can leave a stale listing on screen. The token cannot unsend
-// the request, but it keeps a stale failure from overwriting a fresh result.
+// second toggle can leave a stale listing on screen. The token cannot unsend the
+// request or reorder the writes — it only keeps a stale failure from replacing
+// the error state of the request that superseded it.
 let requestId = 0;
 
 const searchFromQuery = async (query: LocationQuery) => {
@@ -522,7 +523,8 @@ A listing is context-dependent. Prices come back calculated in the current curre
 - `loading` is `true` during a `search()` and `false` during a `loadMore()`.
 - A failed `search()` shows an error, keeps the previous products on screen, and lets the customer retry.
 - A failed `loadMore()` leaves the already-loaded products in place and says that more could not be loaded.
-- Toggling three filters quickly renders the result of the last one, whatever order the responses arrive in.
+- Toggling three filters quickly leaves whichever response arrives last on screen. `useListing` has no sequence guard, so a delayed first response replaces a newer one — assert that behaviour rather than a newest-wins one.
+- A superseded request that fails does not overwrite the error state of the request that replaced it.
 - The result count, the loading state and the error are announced to a screen reader.
 - An empty result renders an empty state rather than a stale page.
 
