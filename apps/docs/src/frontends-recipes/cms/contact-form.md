@@ -51,7 +51,7 @@ const steps = [
     title: "UI",
     action: "Validate before sending",
     detail:
-      "Only email, subject and comment are required by the schema. Everything else may or may not be required depending on the shop's settings, so client-side rules are a guess.",
+      "The schema marks three fields required, but a default installation needs seven: salutationId is always required, and firstName, lastName and phone are settings that ship enabled. Read the required set from the shop, not from the schema.",
     code: "const valid = await $v.value.$validate()",
     state: "local form state",
     typeKeys: ['operations["sendContactMail post /contact-form"]["body"]'],
@@ -60,8 +60,8 @@ const steps = [
     title: "Context",
     action: "Attach the navigation id",
     detail:
-      "navigationId identifies the category whose contact form configuration applies. It comes from the navigation context's foreignKey, which is an empty string — not undefined — whenever nothing upstream seeded that context, including on any route outside the catch-all page.",
-    code: "navigationId: foreignKey.value || undefined",
+      "slotId is what makes the element's own mailReceiver and confirmation text apply; without it the backend falls back to the shop's default address and an empty message. navigationId only overrides that resolved configuration with a category's, so it is the secondary of the two.",
+    code: "slotId: content.id, navigationId: foreignKey.value || undefined",
     state: "navigation context",
     typeKeys: ['Schemas["SeoUrl"]'],
   },
@@ -69,7 +69,7 @@ const steps = [
     title: "Store API",
     action: "Send the mail",
     detail:
-      "There is no composable. apiClient.invoke sends the body, and the operation answers 200 with no payload — no id, no confirmation, nothing to read.",
+      "There is no composable. apiClient.invoke sends the body and a default installation answers 200 with individualSuccessMessage — the resolved confirmation text. There is still no id, and the generated type says never, so reading it needs a cast.",
     code: 'apiClient.invoke("sendContactMail post /contact-form", { body })',
     state: "sw-context-token",
     typeKeys: [],
@@ -78,7 +78,7 @@ const steps = [
     title: "UI",
     action: "Show the confirmation",
     detail:
-      "Because nothing comes back, the success state is entirely local. Replace the form with the configured confirmation text rather than leaving it fillable.",
+      "The success flag is local, but the message is not: individualSuccessMessage is the only value that reflects a category override, so prefer it over the slot config you read client-side.",
     code: "formSent.value = true",
     state: "formSent",
     typeKeys: [],
@@ -90,15 +90,19 @@ const steps = [
 
 ## Goal
 
-Build a contact form that submits to the Store API. The important part is what the schema warns about in its own description: only three fields are required there, and the shop's settings can require more — so the validation you write on the client is never the whole truth.
+Build a contact form that submits to the Store API. The important part is the gap between the schema and a real shop: the schema marks three fields required, a default Shopware installation rejects the form unless seven are filled — so the schema is a floor, not the contract.
 
 ## Shopware Flow
 
-`sendContactMail post /contact-form` has no composable wrapper. You call it through `apiClient.invoke`, and its response is `200` with no body at all — no reference number, no echo of the submission.
+`sendContactMail post /contact-form` has no composable wrapper. You call it through `apiClient.invoke`, and the schema declares its `200` with no response content at all — which is why `@shopware/api-gen` emits `response: never` for it. A default installation does return a body, `{ "individualSuccessMessage": "..." }`, so the generated type is wrong rather than the endpoint being silent. What is genuinely absent is any identifier: no reference number, no echo of the submission.
 
-The operation's description says outright that "there can be more required fields, depending on the system settings". Its own `required` list is just `email`, `subject` and `comment`; `firstName`, `lastName` and `phone` are each documented as "may be required depending on the system settings". A rejection for a field your form treated as optional is therefore a normal outcome, not a bug in your validation.
+The operation's description says outright that "there can be more required fields, depending on the system settings", and on a default installation it already does. Its `required` list is just `email`, `subject` and `comment`, but `firstName`, `lastName` and `phone` — each documented as "may be required depending on the system settings" — are settings that ship **enabled**. Post only the three the schema names and a stock shop answers `400` for four fields, not zero.
 
-One step happens before any of this. The CMS element is a generic form element, not a contact form element: `CmsElementForm` reads `getConfigValue("type")` and renders `SwNewsletterForm` for `"newsletter"`, falling through to `SwContactForm` for everything else. Keep that switch when you override the element.
+`salutationId` is the fourth of those, and the sharpest: the schema gives no warning about it at all. It is absent from `required`, carries no note, and is not a setting you can turn off — the platform's contact form validation requires it unconditionally. Neither an empty string nor an omitted field gets through, which is why the example preselects a salutation instead of starting the select empty.
+
+So the practical default is seven fields: `email`, `subject` and `comment` from the schema, `salutationId` always, and `firstName`, `lastName` and `phone` from settings a shop can switch off. Build the form for seven and let the `400` tell you if a particular shop wants fewer.
+
+One step happens before any of this. The CMS element is a generic form element, not a contact form element: `CmsElementForm` reads `getConfigValue("type")` and renders `SwNewsletterForm` for `"newsletter"`, falling through to `SwContactForm` for everything else. Keep that switch when you override the element — the other branch is its own flow, covered by the [Newsletter recipe](../account/newsletter.html).
 
 Where you put that override matters as much as what is in it. CMS elements are resolved at runtime through `resolveComponent`, so an override only takes effect from a directory registered `global: true` — in `vue-starter-template` that is `app/components/cms/`. Dropped anywhere else, including plain `app/components/`, the base layer's component keeps rendering with no error and no warning. See [Overwriting CMS components](../../guides/cms/overwriting-cms.html).
 
@@ -108,10 +112,10 @@ Read the diagram from left to right:
 
 1. The element configuration decides which form renders, and supplies the form title and the confirmation text.
 2. `useSalutations` provides the list a salutation select needs, since the body takes a `salutationId`.
-3. The form validates locally against the three fields the schema requires, plus whatever your shop configures.
-4. `navigationId` is taken from `useNavigationContext().foreignKey` so the right category configuration applies.
-5. `apiClient.invoke("sendContactMail post /contact-form")` sends the body and returns nothing.
-6. The success state is local — replace the form with the configured confirmation text.
+3. The form validates locally against the seven fields a default shop requires, knowing a given shop may want fewer.
+4. `slotId` carries the element's id so its own configuration applies, and `navigationId` from `useNavigationContext().foreignKey` overrides it with a category's.
+5. `apiClient.invoke("sendContactMail post /contact-form")` sends the body and answers `200` with `individualSuccessMessage`, which the generated type does not describe.
+6. The success flag is local, but the confirmation copy comes from `individualSuccessMessage` in the response, with the slot config as fallback.
 
 You do not get any identifier back. There is nothing to poll, nothing to look up, and no way to tell a duplicate submission from a first one.
 
@@ -123,11 +127,11 @@ You do not get any identifier back. There is nothing to poll, nothing to look up
 | Load the salutations    | `getSalutations`                                         | `POST /salutation`   | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' /> |
 | Read the navigation id  | `foreignKey`                                             | none                 | <SchemaTypeTooltip type-key='Schemas["SeoUrl"]' />                                         |
 | Submit the form         | `invoke("sendContactMail post /contact-form", { body })` | `POST /contact-form` | <SchemaTypeTooltip type-key='operations["sendContactMail post /contact-form"]["body"]' />  |
-| Read the result         | none                                                     | `POST /contact-form` | none — the operation answers `200` with no body                                            |
+| Read the result         | `data.individualSuccessMessage`                          | `POST /contact-form` | `never` in the generated types — see below                                                 |
 
 The salutation row has a second variant, and it is the one you will actually hit. With `cacheableReads` enabled, `useSalutations` calls <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> over `GET /salutation` instead, so the list is HTTP-cacheable. The library default is off, but `vue-starter-template` ships `cacheableReads: true`, so in the supported starting point the salutation list arrives over `GET`. The payload is the same either way, and nothing in your form code changes.
 
-The body also declares `slotId`, `cmsPageType` and `entityName` for resolving the slot configuration server-side. The component shipped in the CMS base layer sends only `navigationId`, so reach for the others when a form lives outside a category page.
+The body also declares `slotId`, `cmsPageType` and `entityName`, and `slotId` is the one that matters most: it is how the backend finds the element's own `mailReceiver` and confirmation text. `navigationId` is described in the schema as an override of that configuration, not a replacement for it — send only `navigationId` and the mail goes to the shop's default address with an empty message. The component shipped in the CMS base layer sends only `navigationId`, so an element-level receiver configured in the administration never reaches the API.
 
 ## Composables
 
@@ -177,7 +181,17 @@ type Salutation = Schemas["Salutation"];
 
 `ContactFormBody` is the field list to build the form from — and the reminder that a privacy consent checkbox is not on it. Consent is a UI concern; the operation has no field for it.
 
-`salutationId` and `navigationId` are both declared `?: string` — optional, and a plain `string` when present, while the schema narrows them with `pattern: ^[0-9a-f]{32}$`. Being optional is what lets you omit them, which is exactly what the example's `|| undefined` does. The type will not stop you from posting `""`; the backend's validation will.
+The response type is the one place the generated types are wrong. Because the schema declares the `200` with no content, `api-gen` emits `response: never`, so `invoke` resolves to `{ data: never; status: 200 }` and `data.individualSuccessMessage` will not compile. Cast at that one point until the schema catches up, and keep the cast on `data` rather than on the whole call so the request stays type-checked:
+
+```ts
+type ContactFormResult = { individualSuccessMessage?: string };
+```
+
+Never hand-edit `packages/api-client/api-types/*.d.ts` to add it — those files are generated.
+
+`salutationId` and `navigationId` are both declared `?: string` — optional, and a plain `string` when present, while the schema narrows them with `pattern: ^[0-9a-f]{32}$`. Being optional is what lets you omit `navigationId`, which is exactly what the example's `|| undefined` does. The type will not stop you from posting `""`; the backend's validation will.
+
+`salutationId` is the field where that optionality is a lie. The schema leaves it out of `required`, but the platform's contact form validation requires it unconditionally, so both `""` and an omitted field come back as a `400` pointing at `/salutationId`. Treat it as required, and read the next section for what to preselect.
 
 `ApiError` is optional throughout — `detail?`, `title?`, `code?`, `source?: { pointer? }` — so type an error list as `ApiError[]` and reach into it with `error.source?.pointer`, never `error.source.pointer`.
 
@@ -191,13 +205,52 @@ import { ApiClientError, isTimeoutError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { getTranslatedProperty } from "@shopware/helpers";
 
+import type { CmsElementForm } from "@shopware/composables";
+
 import type { operations } from "#shopware";
+
+// the form is a CMS element, so the element is what carries its configuration
+const { content } = defineProps<{ content: CmsElementForm }>();
 
 const { apiClient } = useShopwareContext();
 const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
+const { getConfigValue } = useCmsElementConfig(content);
+
+// `||` rather than `??`: getConfigValue yields `false` for a mapped source and
+// `""` for a value left blank in the administration, and neither should render
+const title = computed(() => getConfigValue("title") || "Contact");
+
+// the schema declares no response content, so `invoke` types `data` as `never`
+type ContactFormResult = { individualSuccessMessage?: string };
+
+const sentMessage = ref("");
+
+// the response carries the confirmation the backend resolved, which is the only
+// copy that reflects a category override; the slot config is the fallback
+const confirmation = computed(
+  () =>
+    sentMessage.value ||
+    getConfigValue("confirmationText") ||
+    "We have received your message and will get back to you shortly.",
+);
 
 const heading = ref<HTMLElement>();
+
+const notSpecifiedId = computed(
+  () =>
+    getSalutations.value.find(
+      (salutation) => salutation.salutationKey === "not_specified",
+    )?.id ?? "",
+);
+
+watch(
+  notSpecifiedId,
+  (id) => {
+    if (!form.salutationId) form.salutationId = id;
+  },
+  { immediate: true },
+);
 
 const form = reactive<operations["sendContactMail post /contact-form"]["body"]>(
   {
@@ -247,14 +300,22 @@ const submit = async () => {
   isSubmitting.value = true;
 
   try {
-    await apiClient.invoke("sendContactMail post /contact-form", {
-      body: {
-        ...form,
-        salutationId: form.salutationId || undefined,
-        navigationId: foreignKey.value || undefined,
+    const { data } = await apiClient.invoke(
+      "sendContactMail post /contact-form",
+      {
+        body: {
+          ...form,
+          // resolves the element's own mailReceiver and confirmation text
+          slotId: content.id,
+          // overrides that with a category's configuration when present
+          navigationId: foreignKey.value || undefined,
+        },
       },
-    });
+    );
 
+    sentMessage.value =
+      (data as unknown as ContactFormResult | undefined)
+        ?.individualSuccessMessage ?? "";
     formSent.value = true;
     await nextTick();
     heading.value?.focus();
@@ -279,11 +340,11 @@ const submit = async () => {
 
 <template>
   <section>
-    <h2 ref="heading" tabindex="-1">{{ formSent ? "Thank you" : "Contact" }}</h2>
+    <h2 ref="heading" tabindex="-1">
+      {{ formSent ? "Thank you" : title }}
+    </h2>
 
-    <p v-if="formSent" role="status">
-      We have received your message and will get back to you shortly.
-    </p>
+    <p v-if="formSent" role="status">{{ confirmation }}</p>
 
     <form v-else @submit.prevent="submit">
       <p v-if="formError" role="alert">{{ formError }}</p>
@@ -293,8 +354,11 @@ const submit = async () => {
         id="salutation"
         v-model="form.salutationId"
         :disabled="!getSalutations.length"
+        :aria-invalid="errorsByField.salutationId ? 'true' : undefined"
+        :aria-describedby="
+          errorsByField.salutationId ? 'salutation-error' : undefined
+        "
       >
-        <option value="">Not specified</option>
         <option
           v-for="salutation in getSalutations"
           :key="salutation.id"
@@ -303,6 +367,9 @@ const submit = async () => {
           {{ getTranslatedProperty(salutation, "displayName") }}
         </option>
       </select>
+      <p v-if="errorsByField.salutationId" id="salutation-error" role="alert">
+        {{ errorsByField.salutationId }}
+      </p>
 
       <label for="first-name">First name</label>
       <input
@@ -310,6 +377,7 @@ const submit = async () => {
         v-model="form.firstName"
         type="text"
         autocomplete="given-name"
+        required
         :aria-invalid="errorsByField.firstName ? 'true' : undefined"
         :aria-describedby="
           errorsByField.firstName ? 'first-name-error' : undefined
@@ -325,6 +393,7 @@ const submit = async () => {
         v-model="form.lastName"
         type="text"
         autocomplete="family-name"
+        required
         :aria-invalid="errorsByField.lastName ? 'true' : undefined"
         :aria-describedby="
           errorsByField.lastName ? 'last-name-error' : undefined
@@ -354,6 +423,7 @@ const submit = async () => {
         v-model="form.phone"
         type="tel"
         autocomplete="tel"
+        required
         :aria-invalid="errorsByField.phone ? 'true' : undefined"
         :aria-describedby="errorsByField.phone ? 'phone-error' : undefined"
       />
@@ -407,9 +477,11 @@ const submit = async () => {
 
 The consent checkbox gates the submit button and is not part of the body. It is a UI requirement with no field on the operation, so it lives in its own `ref` rather than in `form` — spreading a form state that contains it would send an undeclared property.
 
-The two `|| undefined` guards are the other thing to copy. `SwContactForm` in the CMS base layer posts `navigationId: foreignKey.value` unguarded and keeps `salutationId` at `""`, so on a page the navigation context did not resolve it sends empty strings for two fields the schema restricts to UUIDs.
+Two details are worth copying. The `|| undefined` guard on `navigationId` keeps the empty string out of a field the schema restricts to a UUID — `SwContactForm` in the CMS base layer posts `foreignKey.value` unguarded, so on a page the navigation context did not resolve it sends `""`.
 
-Nothing comes back from a successful call, so `formSent` is the whole success story and it is local. The `catch` splits three ways because the three failures need different copy. A timeout is not an `ApiClientError` at all — it has no HTTP status and `isTimeoutError` is the only way to recognise it — and it must not invite a resend, because the mail may already have gone out. An `ApiClientError` carries the shop's own validation, which is where a field your form treated as optional turns out to be required. Anything else is a network failure.
+`salutationId` gets the opposite treatment, because omitting it is not allowed either. The example preselects the shop's `not_specified` salutation as soon as the list arrives, which is a real UUID the API accepts, and leaves the user free to change it. `SwContactForm` does neither: it keeps `salutationId` at `""`, has no validation rule for it, and renders no error line for it — so its first submit fails with a `400` the customer never sees.
+
+A successful call does come back with something, just not an identifier: `individualSuccessMessage` carries the resolved confirmation text. `formSent` therefore stays local — it is the flag, not the copy — while the message is the one part of the success state worth taking from the response. The `catch` splits three ways because the three failures need different copy. A timeout is not an `ApiClientError` at all — it has no HTTP status and `isTimeoutError` is the only way to recognise it — and it must not invite a resend, because the mail may already have gone out. An `ApiClientError` carries the shop's own validation, which is where a field your form treated as optional turns out to be required. Anything else is a network failure.
 
 `error.details` is the raw response body, not a parsed envelope: a proxy that answers with an HTML error page makes it a string, so `details?.errors ?? []` is load-bearing rather than defensive. `ApiError` is optional throughout, which is why `errorsByField` falls back through `detail` to `title` to its own copy, and why an error with no `source.pointer` falls out of the map into the form-level message instead of vanishing. Never render `detail` unfiltered — when the response body is empty the client substitutes a developer-facing placeholder that tells the customer to check their network tab.
 
@@ -417,30 +489,38 @@ Four things in the markup are deliberate. The heading is focusable and receives 
 
 The salutation select is disabled until the list arrives. `useSalutations` fetches in `onMounted`, so the list is never part of the server-rendered HTML and `getSalutations` is `[]` for the whole first-paint-to-fetch window. The composable exposes no pending flag, so if you want the list in the SSR payload or a real loading state, fetch it yourself — `vue-starter-template` does exactly that in `app/components/form/SalutationSelect.vue`, with `useAsyncData` plus `getCachedData` and an `isLoading` derived from `status`, rather than through `useSalutations`.
 
-The heading text is hardcoded here to keep the example self-contained. In an element override it comes from `getConfigValue("title")`, and the confirmation from `getConfigValue("confirmationText")`.
+The title and the confirmation come from the element's own config, with `||` rather than `??` so that a mapped source or a value left blank in the administration falls back to readable copy instead of rendering `false` or nothing — which is the trap `SwContactForm` walks into with `??` on `confirmationText`.
 
 ## State And Session
 
 The form's own state is entirely local: the form data, the success flag and the errors all live in the component. What the recipe reads from outside are three injected values — `swSalutations`, `navigation` and `cmsTranslations` — and none of them is application-wide.
 
-`swSalutations` is the one worth understanding, because its name suggests a global. `useSalutations` does `inject("swSalutations", ref())` followed by `provide("swSalutations", _salutations)`, and nothing in the packages or the templates provides that key at the application root. `provide` only reaches descendants, and the `ref()` default is created fresh on every call, so two callers that are siblings rather than ancestor and descendant each get their own list. That is not hypothetical for this recipe: `SwNewsletterForm` calls `useSalutations` too, so a page carrying a contact form element and a newsletter form element issues two `POST /salutation` requests and holds two copies of the result.
+`swSalutations` is the one worth understanding, because its name suggests a global. `useSalutations` does `inject("swSalutations", ref())` followed by `provide("swSalutations", _salutations)`, and nothing in the packages or the templates provides that key at the application root. `provide` only reaches descendants, and the `ref()` default is created fresh on every call, so two callers that are siblings rather than ancestor and descendant each get their own list. That is not hypothetical for this recipe: `SwNewsletterForm` calls `useSalutations` too, so a page carrying a contact form element and a newsletter form element fetches the salutation list twice and holds two copies of the result. Both requests take whichever route `cacheableReads` selects, so in `vue-starter-template` that is two `GET /salutation` calls, not two `POST`s — and the duplication survives either way, because the shared ref never reaches both callers.
 
 Adding an application-root `provide("swSalutations", ref())` makes the two share one ref but does not reduce the request count, because both `onMounted` hooks run before either fetch assigns and the `if (!_salutations.value)` guard is therefore still `true` in both. If one request is what you want, fetch the list through `useAsyncData` under a shared key — the way `vue-starter-template` does in `app/components/form/SalutationSelect.vue` — rather than relying on the composable's injection.
 
 The submission still runs in the session identified by the `sw-context-token`, which is how the shop resolves the sales channel and therefore the language of the mail. It does not require a logged-in customer, and it does not read the customer's details — a logged-in visitor still types their email address into the form.
 
-`navigationId` is the one piece of context that changes what the backend does. It points at a category whose contact form configuration overrides the default, which is why the shipped component takes it from `useNavigationContext().foreignKey` rather than from a prop.
+`slotId` and `navigationId` are the two pieces of context that change what the backend does, and they are not interchangeable. `slotId` selects the element's own configuration — `mailReceiver`, `defaultMailReceiver` and `confirmationText` all live in `FormElementConfig`, so without the slot id the backend has no element config to read and falls back to the shop default. `navigationId` then overrides whatever was resolved with a category's settings, which is exactly the word the schema uses for it.
+
+Send both from an element override: `slotId` from `content.id`, which `CmsSlot` always carries, and `navigationId` from `useNavigationContext().foreignKey` when the context reaches you.
 
 ## Edge Cases
 
-- The schema requires only `email`, `subject` and `comment`. `firstName`, `lastName` and `phone` are documented as possibly required by the shop's settings, so a `400` on a field you left optional is expected behaviour.
-- The shipped `SwContactForm` validates _more_ strictly than the schema, not less: it requires `firstName`, `lastName` and `phone`, and a `comment` of at least 10 characters. Copying those rules rejects input the Store API would have accepted. The schema plus the shop's settings are the contract, not the reference implementation.
-- The operation answers `200` with no body. There is no submission id, so a duplicate submit cannot be detected or deduplicated after the fact.
-- Nothing is returned, so the confirmation is local state. Leaving the form fillable after a success invites a second identical mail.
-- `salutationId` and `navigationId` both declare `pattern: ^[0-9a-f]{32}$`. An unselected `<select>` leaves `""`, and `foreignKey` is `""` when the route resolved to nothing — neither is a valid value, so omit the field instead of sending the empty string.
+- A default installation requires seven fields, not the three the schema names: `salutationId` unconditionally, plus `firstName`, `lastName` and `phone` from settings that ship enabled. Submitting only `email`, `subject` and `comment` answers `400` for the other four.
+- Those three settings can be switched off per shop, so seven is the default rather than the contract. A `400` on a field you left optional, and a shop that accepts a field you made mandatory, are both normal.
+- The shipped `SwContactForm` looks stricter than the schema but is not: its rules require `firstName`, `lastName` and `phone` precisely because a default shop does. The schema is the outlier here, not the component. Its own `comment` minimum of 10 characters is invented, though, and it has no rule for `salutationId` at all — the one field the backend always requires.
+- The `200` carries `individualSuccessMessage` on a default installation, although the schema declares no response content and the generated type is therefore `never`. Reading it needs a cast; the field can also be `""`, so keep a fallback.
+- What the `200` does not carry is an identifier. There is no submission id, so a duplicate submit cannot be detected or deduplicated after the fact.
+- The success flag is local whatever the response says. Leaving the form fillable after a success invites a second identical mail.
+- `individualSuccessMessage` is the resolved confirmation text, so it is the only value that reflects a category override. `getConfigValue("confirmationText")` reads the slot's copy and cannot see that override — prefer the response and fall back to the config.
+- `salutationId` is required by the backend although the schema does not list it. Both `""` and an omitted field answer `400` with `source.pointer` `/salutationId`. Preselect the salutation whose `salutationKey` is `not_specified` rather than starting the select on an empty value, and render an error line for the select so the failure is visible if the shop has no such salutation.
+- `navigationId` declares `pattern: ^[0-9a-f]{32}$` and `foreignKey` is `""` when the route resolved to nothing. That empty string is not a valid value, so omit the field instead of sending it.
 - `salutationId` is a UUID, not a label. Loading the salutation list is a prerequisite for that field, and `useSalutations().getSalutations` is the list rather than a loader.
 - A privacy consent checkbox has no field on the body. Spreading a form state that contains one sends an undeclared property — the CMS base layer's own component does exactly that.
-- `slotId`, `cmsPageType` and `entityName` exist for resolving the slot configuration when the form is not on a category page. The shipped component sends none of them.
+- `slotId` is what resolves the element's own configuration, so omitting it is not a neutral choice: the mail then goes to the shop's default address with an empty message, whatever the element was configured with in the administration. `cmsPageType` and `entityName` exist for the same resolution — `entityName` is documented as "Entity name for slot config".
+- `navigationId` and `slotId` are not alternatives. With both, the category's configuration wins; with `slotId` alone, the element's applies; with `navigationId` alone, neither does.
+- The shipped `SwContactForm` sends neither `slotId`, `cmsPageType` nor `entityName`, although `content.id` is right there in its props. An element-level `mailReceiver` therefore has no effect on it.
 - The CMS element is a form element, not a contact form element. `CmsElementForm` branches on `getConfigValue("type")`, so an override that assumes "contact form" breaks the newsletter variant.
 - HTTP failures arrive as an `ApiClientError`. Each entry in `details.errors` _may_ carry a `detail` and a `source.pointer` identifying the field — both are optional on `ApiError`, so read them as `error.source?.pointer` and fall back to `error.title`.
 - `error.details` is the raw response body, not a guaranteed envelope. It is `response._data`, so a proxy answering with an HTML error page makes it a string and `details.errors` `undefined`; read it as `error.details?.errors ?? []`. When the body is empty the client substitutes its own placeholder entry whose `detail` reads "API did not return errors, but request failed. Please check the network tab." — never render that to a customer.
@@ -452,15 +532,19 @@ The submission still runs in the session identified by the `sw-context-token`, w
 
 ## Common Mistakes
 
-- Do not treat your client-side rules as the contract. The shop can require more fields, and the shipped component's rules require more than the schema does.
+- Do not build the form from the schema's `required` list. It names three fields; a default shop wants seven.
 - Do not spread a form state containing a consent checkbox into the request body.
-- Do not post `""` for `salutationId` or `navigationId`. Both declare a UUID pattern — omit the field instead.
+- Do not start the salutation select on `""`, and do not omit `salutationId` to work around it. Both fail — preselect the `not_specified` salutation instead.
+- Do not leave the salutation select without an error line. It is the one field the backend requires that the schema does not, so a silent failure lands exactly there.
+- Do not post `""` for `navigationId`. It declares a UUID pattern — omit the field instead.
 - Do not drop the `getConfigValue("type")` switch when overriding `CmsElementForm`, and do not put the override outside a directory registered `global: true` — it will never render.
 - Do not leave the form on screen after a successful submit.
-- Do not expect an identifier back to confirm the submission.
+- Do not expect an identifier back to confirm the submission. A body does come back, but it holds copy, not an id.
+- Do not take the generated `response: never` as proof the endpoint is silent. It mirrors a gap in the schema, not the runtime.
 - Do not render a salutation select before the salutation list has loaded.
 - Do not call `getSalutations()` as a function. It is the list.
-- Do not omit `navigationId` on a category page — the category's own form configuration depends on it.
+- Do not omit `slotId`. It is what makes the element's configured receiver and confirmation text apply at all.
+- Do not treat `navigationId` as the way to select a configuration. It overrides one; on its own it selects nothing.
 - Do not render the raw `detail` of every API error as one blob. Map them onto fields with `source.pointer`, and keep your own copy for the ones that carry no pointer.
 - Do not read `error.details.errors` unguarded. A non-JSON error body makes `details` a string, and the unguarded read crashes the form's render.
 - Do not tell the customer a timed-out submission failed. Check `isTimeoutError` first — the mail may already be on its way.
@@ -472,11 +556,13 @@ The submission still runs in the session identified by the `sw-context-token`, w
 - The salutation select is populated from `readSalutationGet get /salutation` when `cacheableReads` is on, and from `readSalutation post /salutation` when it is off. Assert whichever your `nuxt.config` selects — `vue-starter-template` ships the flag on.
 - The salutation select is inert until the list arrives, and the server-rendered HTML does not claim the list is empty.
 - Submitting calls `sendContactMail post /contact-form` exactly once.
+- The request body carries `slotId` from the element, so a receiver configured on the element is the one that gets the mail.
 - The request body carries `navigationId` from the navigation context on a category page, and the component is mounted somewhere that navigation context actually reaches.
-- An unselected salutation omits `salutationId` instead of sending an empty string.
+- The salutation select is preselected on the `not_specified` salutation once the list has loaded, and the submitted body carries that id.
+- A `400` pointing at `/salutationId` renders an error on the select rather than nowhere.
 - The request body does not carry the consent checkbox.
 - `CmsElementForm` still renders the newsletter form when the element's `type` is `newsletter`.
-- A successful submit replaces the form with the confirmation text and moves focus to the heading.
+- A successful submit replaces the form with `individualSuccessMessage` from the response, falls back to the slot's `confirmationText` when that field is `""`, and moves focus to the heading.
 - Submitting without consent is refused by the handler, not only by the button's appearance.
 - A `400` naming a field the form treated as optional is shown on that field, wired to it with `aria-describedby`.
 - A rejection whose entries carry no `source.pointer` still produces a visible form-level message.
@@ -487,6 +573,7 @@ The submission still runs in the session identified by the `sw-context-token`, w
 
 ## Related Links
 
+- [Newsletter recipe](../account/newsletter.html)
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
