@@ -45,7 +45,7 @@ const steps = [
     action: "Fetch the entity",
     detail:
       "The CMS page is not fetched on its own. The category and landing page routes resolve the layout server-side and return it as the entity's cmsPage property, so withCmsAssociations is not what produces it.",
-    code: "search(navigationId, { withCmsAssociations: true })",
+    code: "search(navigationId)",
     state: "category or landing page",
     typeKeys: [
       'operations["readCategory post /category/{navigationId}"]["body"]',
@@ -136,15 +136,15 @@ You do not need a request per section, block or element. The only later requests
 
 ## Request Flow
 
-| Step                        | Code                                                            | Store API                            | Type                                                                                                      |
-| --------------------------- | --------------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| Fetch a category page       | `useCategorySearch().search(id, { withCmsAssociations: true })` | `POST /category/{navigationId}`      | <SchemaTypeTooltip type-key='operations["readCategory post /category/{navigationId}"]["body"]' />         |
-| Fetch a landing page        | `useLandingSearch().search(id, { withCmsAssociations: true })`  | `POST /landing-page/{landingPageId}` | <SchemaTypeTooltip type-key='operations["readLandingPage post /landing-page/{landingPageId}"]["body"]' /> |
-| Read the CMS page           | `entity.cmsPage`                                                | either                               | <SchemaTypeTooltip type-key='Schemas["CmsPage"]' />                                                       |
-| Read one section            | `useCmsSection(section).section`                                | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSection"]' />                                                    |
-| Read blocks by position     | `getPositionContent("main")`                                    | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsBlock"]' />                                                      |
-| Read one slot               | `getSlotContent("left")`                                        | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSlot"]' />                                                       |
-| Fetch a page by id directly | `invoke("readCms post /cms/{id}", { body: { slots } })`         | `POST /cms/{id}`                     | <SchemaTypeTooltip type-key='operations["readCms post /cms/{id}"]["body"]' />                             |
+| Step                        | Code                                                                        | Store API                            | Type                                                                                                      |
+| --------------------------- | --------------------------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Fetch a category page       | `useCategorySearch().search(id)`             | `POST /category/{navigationId}`      | <SchemaTypeTooltip type-key='operations["readCategory post /category/{navigationId}"]["body"]' />         |
+| Fetch a landing page        | `useLandingSearch().search(id, { withCmsAssociations: true })`              | `POST /landing-page/{landingPageId}` | <SchemaTypeTooltip type-key='operations["readLandingPage post /landing-page/{landingPageId}"]["body"]' /> |
+| Read the CMS page           | `entity.cmsPage`                                                            | either                               | <SchemaTypeTooltip type-key='Schemas["CmsPage"]' />                                                       |
+| Read one section            | `useCmsSection(section).section`                                            | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSection"]' />                                                    |
+| Read blocks by position     | `getPositionContent("main")`                                                | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsBlock"]' />                                                      |
+| Read one slot               | `getSlotContent("left")`                                                    | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSlot"]' />                                                       |
+| Fetch a page by id directly | `invoke("readCms post /cms/{id}", { pathParams: { id }, body: { slots } })` | `POST /cms/{id}`                     | <SchemaTypeTooltip type-key='operations["readCms post /cms/{id}"]["body"]' />                             |
 
 `POST` is the request-layer default, but not what the supported template does: `vue-starter-template` sets `cacheableReads: true` under `runtimeConfig.public.shopware`, and with that flag `useCategorySearch` calls `readCategoryGet get /category/{navigationId}` instead, compressing the same criteria into a `_criteria` query param so the read is HTTP-cacheable. `useLandingSearch` has not been moved to the cacheable variant and always posts. Either way the same `cmsPage` tree comes back.
 
@@ -262,7 +262,7 @@ A section component then does the same one level down. `useCmsSection(content)` 
 
 Almost nothing here is state. `useCmsSection`, `useCmsBlock` and `useCmsMeta` all take a plain object and return derived values over it. `useCmsMeta` wraps its output in computeds, but nothing is stored, no context is provided and no request is made. They are helpers with a composable's naming, and passing a `Ref` instead of the object breaks them — loudly in `useCmsSection` and `useCmsBlock`, silently in `useCmsMeta`.
 
-The two places state does appear are worth knowing. `useCmsTranslations()` injects whatever the application provided under `cmsTranslations`, so a CMS component's fallback strings can be overridden per locale without prop drilling. And on a category page the base layer's `CmsPage` lifts the product listing out of the CMS payload with `getProductListingFromCmsPage` and seeds the shared listing context with `createCategoryListingContext(initialListing)` — which is why a category listing renders products before any listing request is made.
+The two places state does appear are worth knowing. `useCmsTranslations()` injects whatever the application provided under `cmsTranslations`, so a CMS component's fallback strings can be overridden per locale without prop drilling. And on a category page the base layer's `CmsPage` lifts the product listing out of the CMS payload with `getProductListingFromCmsPage` and seeds the shared listing context with `createCategoryListingContext(initialListing)` — which is why a category listing renders products before any listing request is made. What the listing composable then does with that seed — the initial listing, the applied one that shadows it, and the filters on top — is the [Product Listing and Filters recipe](../catalog/listing.html).
 
 The CMS payload is context-dependent like everything else. Prices inside a product element are calculated for the current currency and tax state, and `visibility` on a section or block can hide it for a given device. A currency or language switch invalidates the whole rendered page.
 
@@ -312,6 +312,7 @@ The CMS payload is context-dependent like everything else. Prices inside a produ
 
 ## Related Links
 
+- [Product Listing and Filters recipe](../catalog/listing.html)
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create Blocks (CMS)](../../guides/cms/create-blocks.html)
 - [Create Elements (CMS)](../../guides/cms/create-elements.html)

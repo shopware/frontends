@@ -523,6 +523,6 @@ Changing a default also changes the customer, so reloading the address list is n
 
 - [Login recipe](login.html)
 - [Checkout recipe](../checkout/checkout.html)
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
+- [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

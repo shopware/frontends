@@ -305,4 +305,4 @@ That shared state holds exactly one page. `items` contains the ids of the produc
 - [Login recipe](login.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Product listing](../../getting-started/e-commerce/product-listing.html)
+- [Product listing](../../guides/e-commerce/product-listing.html)

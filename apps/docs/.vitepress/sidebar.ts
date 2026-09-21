@@ -295,17 +295,6 @@ export const sidebar = [
         ],
       },
       {
-        text: "Orders",
-        link: "/frontends-recipes/orders/",
-        collapsed: true,
-        items: [
-          {
-            text: "Guest Order Lookup via Deep Link",
-            link: "/frontends-recipes/orders/guest-order-lookup.html",
-          },
-        ],
-      },
-      {
         text: "CMS",
         link: "/frontends-recipes/cms/",
         collapsed: true,
@@ -313,6 +302,17 @@ export const sidebar = [
           {
             text: "Rendering CMS Pages",
             link: "/frontends-recipes/cms/rendering.html",
+          },
+        ],
+      },
+      {
+        text: "Orders",
+        link: "/frontends-recipes/orders/",
+        collapsed: true,
+        items: [
+          {
+            text: "Guest Order Lookup via Deep Link",
+            link: "/frontends-recipes/orders/guest-order-lookup.html",
           },
         ],
       },
