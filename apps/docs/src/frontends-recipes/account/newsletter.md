@@ -20,12 +20,13 @@ recipe:
   schemas:
     - AccountNewsletterRecipient
     - SuccessResponse
-    - Criteria
 ---
 
 <script setup>
 import RecipeFlowDiagram from "../../components/RecipeFlowDiagram.vue";
 import SchemaTypeTooltip from "../../components/SchemaTypeTooltip.vue";
+import CodeExample from "../../components/CodeExample.vue";
+import StorefrontUrlNotice from "../../components/StorefrontUrlNotice.vue";
 
 const steps = [
   {
@@ -69,7 +70,7 @@ const steps = [
     typeKeys: [],
   },
   {
-    title: "Confirmation",
+    title: "UI",
     action: "Open the link from the email",
     detail:
       "The double opt-in link carries em and hash as query parameters. No composable covers this step, so the page invokes the confirm operation through the API client.",
@@ -80,7 +81,7 @@ const steps = [
     ],
   },
   {
-    title: "Store API",
+    title: "Composable",
     action: "Read the customer status",
     detail:
       "getNewsletterStatus posts to the account route, which the schema secures with the context token, so it answers for the logged-in customer and not for an arbitrary address.",
@@ -106,7 +107,7 @@ const steps = [
 
 ## Goal
 
-Build a newsletter subscription: a form for any visitor and a subscription toggle on the account page. The important part is not the form, but the double opt-in lifecycle behind `status`, and the fact that `useNewsletter` fills in `storefrontUrl` for you because that value decides which domain the confirmation email links back to.
+Build a newsletter subscription: a form for any visitor and a subscription toggle on the account page. The important part is not the form, but the double opt-in lifecycle behind `status` — a subscribe request that succeeds has not subscribed anybody yet, and the status it returns lives per composable instance rather than in shared state.
 
 ## Shopware Flow
 
@@ -128,24 +129,52 @@ Read the diagram from left to right:
 6. `getNewsletterStatus()` reads the status of the logged-in customer from the account route.
 7. The UI reads `isNewsletterSubscriber` and `confirmationNeeded` from the composable instead of keeping its own copy.
 
-You do not build the subscribe body yourself. `useNewsletter` types its parameter as the operation body with `storefrontUrl` omitted and injects that field, so passing it from a component is neither needed nor possible without casting.
+<StorefrontUrlNotice
+  operation="subscribeToNewsletter post /newsletter/subscribe"
+  :required="true"
+  :injected="true"
+/>
+
+You never call the status route after subscribing, and you never refresh the session or the cart. `newsletterSubscribe` already wrote the status the response carried, and no context value, price, or cart line depends on a newsletter subscription.
 
 ## Request Flow
 
 | Step                      | Code                                                             | Store API                            | Type                                                                                                                  |
 | ------------------------- | ---------------------------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | Subscribe an address      | `newsletterSubscribe({ email, option: SUBSCRIBE_KEY })`          | `POST /newsletter/subscribe`         | <SchemaTypeTooltip type-key='operations["subscribeToNewsletter post /newsletter/subscribe"]["body"]' />               |
-| Read the returned status  | `newsletterStatus`                                               | `POST /newsletter/subscribe`         | <SchemaTypeTooltip type-key='operations["subscribeToNewsletter post /newsletter/subscribe"]["response"]' />           |
 | Confirm the double opt-in | `apiClient.invoke("confirmNewsletter post /newsletter/confirm")` | `POST /newsletter/confirm`           | <SchemaTypeTooltip type-key='operations["confirmNewsletter post /newsletter/confirm"]["body"]' />                     |
 | Unsubscribe an address    | `newsletterUnsubscribe(email)`                                   | `POST /newsletter/unsubscribe`       | <SchemaTypeTooltip type-key='operations["unsubscribeToNewsletter post /newsletter/unsubscribe"]["body"]' />           |
 | Read the customer status  | `getNewsletterStatus()`                                          | `POST /account/newsletter-recipient` | <SchemaTypeTooltip type-key='operations["readNewsletterRecipient post /account/newsletter-recipient"]["response"]' /> |
 
+`newsletterSubscribe` resolves with the response body — <SchemaTypeTooltip type-key='operations["subscribeToNewsletter post /newsletter/subscribe"]["response"]' /> — and writes its `status` into `newsletterStatus` on the way out, so the subscribe call is also the status call. The other two writes give you nothing: `newsletterUnsubscribe` resolves with `void`, and the confirm operation answers a bare `SuccessResponse`.
+
 ## Composables
 
-- `useNewsletter`: the whole feature except the confirmation call. Exposes `newsletterSubscribe`, `newsletterUnsubscribe`, `getNewsletterStatus`, `newsletterStatus`, `isNewsletterSubscriber`, `confirmationNeeded`, `SUBSCRIBE_KEY`, and `UNSUBSCRIBE_KEY`. `SUBSCRIBE_KEY` is `"subscribe"` and `UNSUBSCRIBE_KEY` is `"unsubscribe"`, the two `option` values the composable ships; the Store API also documents `direct` and `confirmSubscribe`.
-- `useInternationalization`: provides `getStorefrontUrl()`, which `useNewsletter` calls internally for every subscribe request. It returns the configured `devStorefrontUrl` and otherwise `window.location.origin`.
-- `useShopwareContext`: provides `apiClient` for `confirmNewsletter post /newsletter/confirm`, the one step of this flow that no composable wraps.
-- `useUser`: provides `isLoggedIn` and `user`, which decide whether you may call `getNewsletterStatus()` and which email address the account toggle submits.
+Pick by scope — how much of the flow the composable is about:
+
+| Composable                | Scope                  | Reach for it when                                                    |
+| ------------------------- | ---------------------- | -------------------------------------------------------------------- |
+| `useNewsletter`           | the whole subscription | subscribing, unsubscribing, or rendering the current status          |
+| `useUser`                 | the customer session   | `isLoggedIn` gates the status call, `user` supplies the email        |
+| `useInternationalization` | the storefront origin  | you need `getStorefrontUrl()` outside a `useNewsletter` call         |
+| `useShopwareContext`      | the raw API client     | `apiClient` confirms the double opt-in, the step no composable wraps |
+
+`useNewsletter` is the one this recipe is about:
+
+- **Read** — `newsletterStatus`, `isNewsletterSubscriber`, `confirmationNeeded`.
+- **Write** — `newsletterSubscribe(params)`, `newsletterUnsubscribe(email)`.
+- **Load** — `getNewsletterStatus()`.
+- **Option values** — `SUBSCRIBE_KEY` (`"subscribe"`) and `UNSUBSCRIBE_KEY` (`"unsubscribe"`).
+
+Five things the generated reference will not tell you:
+
+- `newsletterStatus` is a plain `ref` created inside the function body. There is no `useContext` key and no module-level state behind it, so a footer subscribe box and an account toggle each get their own status and never see each other's updates.
+- The three calls disagree about who writes that ref. `newsletterSubscribe` and `getNewsletterStatus` both store the status they received; `newsletterUnsubscribe` resolves with `void` and leaves it untouched, so the UI keeps rendering the previous state until you reload the status.
+- `isNewsletterSubscriber` is true for every status except `optOut` and `undefined`, and `confirmationNeeded` is true only for `notSet`. A recipient in `notSet` is therefore reported as a subscriber **and** as awaiting confirmation at the same time — check `confirmationNeeded` first.
+- `SUBSCRIBE_KEY` and `UNSUBSCRIBE_KEY` are typed `string`, and `option` in the request body is a plain `string` too, so nothing type-checks the value. The operation description also documents `direct`, which activates the subscription without a confirmation mail, and `confirmSubscribe`.
+- `getNewsletterStatus()` performs no session check of its own. It posts to an account route, so without a customer session the request fails rather than returning an empty status.
+
+The [composables reference](../../packages/composables/) is generated from source and lists every member.
 
 ## Types
 
@@ -169,13 +198,17 @@ type NewsletterSubscribeResponse =
   operations["subscribeToNewsletter post /newsletter/subscribe"]["response"];
 type NewsletterConfirmBody =
   operations["confirmNewsletter post /newsletter/confirm"]["body"];
-type NewsletterRecipient = Schemas["AccountNewsletterRecipient"];
-type NewsletterStatus = Schemas["NewsletterStatus"];
+type AccountNewsletterRecipient = Schemas["AccountNewsletterRecipient"];
+type NewsletterRecipientStatus = AccountNewsletterRecipient["status"];
 ```
 
-`newsletterSubscribe` accepts `Omit<NewsletterSubscribeBody, "storefrontUrl">`, and `NewsletterStatus` is the union `"notSet" | "optIn" | "optOut" | "direct" | "undefined"`.
+`newsletterSubscribe` accepts `Omit<NewsletterSubscribeBody, "storefrontUrl">`, and the status is the union `"notSet" | "optIn" | "optOut" | "direct" | "undefined"` — the same type the composable declares for `newsletterStatus`.
+
+Derive the status from `AccountNewsletterRecipient` rather than from `Schemas["NewsletterStatus"]`. The named schema is recent — the `6.6.10` and `6.7.10` schemas shipped in this repo do not declare it, `6.7.13` does — and on an older backend the generated types spell the same union inline on the recipient instead. The alias above works against either.
 
 ## Minimal Vue Example
+
+<CodeExample title="Newsletter box and account toggle">
 
 ```vue
 <script setup lang="ts">
@@ -184,6 +217,7 @@ const {
   newsletterSubscribe,
   newsletterUnsubscribe,
   getNewsletterStatus,
+  newsletterStatus,
   isNewsletterSubscriber,
   confirmationNeeded,
   SUBSCRIBE_KEY,
@@ -193,6 +227,11 @@ const email = ref("");
 const isSubmitting = ref(false);
 const isLoadingStatus = ref(false);
 const newsletterError = ref("");
+const errorId = useId();
+
+const subscriberEmail = computed(() =>
+  isLoggedIn.value ? (user.value?.email ?? "") : email.value,
+);
 
 const loadStatus = async () => {
   // The account route answers for the logged-in customer only.
@@ -217,7 +256,7 @@ const subscribe = async () => {
     // storefrontUrl is added by the composable, never by the form.
     // The response status is written to newsletterStatus, so no reload here.
     await newsletterSubscribe({
-      email: user.value?.email ?? email.value,
+      email: subscriberEmail.value,
       option: SUBSCRIBE_KEY,
     });
   } catch {
@@ -232,7 +271,7 @@ const unsubscribe = async () => {
   isSubmitting.value = true;
 
   try {
-    await newsletterUnsubscribe(user.value?.email ?? email.value);
+    await newsletterUnsubscribe(subscriberEmail.value);
     // newsletterUnsubscribe resolves with void and leaves newsletterStatus
     // untouched, so read the status again for a logged-in customer.
     await loadStatus();
@@ -245,35 +284,59 @@ const unsubscribe = async () => {
 
 // Immediate watcher instead of onMounted: it also runs when the customer
 // signs in without a page change, for example through the login modal.
-watch(isLoggedIn, () => loadStatus(), { immediate: true });
+watch(
+  isLoggedIn,
+  (loggedIn) => {
+    if (!loggedIn) {
+      newsletterStatus.value = "undefined";
+      newsletterError.value = "";
+      email.value = "";
+      return;
+    }
+
+    loadStatus();
+  },
+  { immediate: import.meta.client },
+);
 </script>
 
 <template>
   <section>
     <h2>Newsletter</h2>
 
-    <p v-if="newsletterError">{{ newsletterError }}</p>
+    <p v-if="newsletterError" :id="errorId" role="alert">
+      {{ newsletterError }}
+    </p>
 
     <form v-if="!isLoggedIn" @submit.prevent="subscribe">
       <label>
         Email
-        <input v-model="email" type="email" autocomplete="email" required />
+        <input
+          v-model="email"
+          type="email"
+          autocomplete="email"
+          required
+          :aria-invalid="newsletterError ? true : undefined"
+          :aria-describedby="newsletterError ? errorId : undefined"
+        />
       </label>
 
       <button type="submit" :disabled="isSubmitting">
         {{ isSubmitting ? "Sending..." : "Subscribe" }}
       </button>
 
-      <p v-if="confirmationNeeded">
+      <p v-if="confirmationNeeded" role="status">
         Check your inbox and confirm the subscription through the link we sent.
       </p>
     </form>
 
     <template v-else>
-      <p v-if="isLoadingStatus">Loading subscription status...</p>
+      <p v-if="isLoadingStatus && !isSubmitting" role="status">
+        Loading subscription status...
+      </p>
 
       <template v-else>
-        <p v-if="confirmationNeeded">
+        <p v-if="confirmationNeeded" role="status">
           Your subscription is waiting for the confirmation link sent to
           {{ user?.email }}.
         </p>
@@ -301,25 +364,27 @@ watch(isLoggedIn, () => loadStatus(), { immediate: true });
 </template>
 ```
 
+</CodeExample>
+
 ## State And Session
 
 Subscribing changes nothing about the sales channel session. The recipient is identified by the email address in the body, not by `sw-context-token`, and `useNewsletter` calls neither `refreshSessionContext()` nor `refreshCart()` because no context value, price, or cart line depends on a newsletter subscription.
 
-`getNewsletterStatus()` is the exception. `readNewsletterRecipient post /account/newsletter-recipient` is declared with the context token in the schema and returns an `AccountNewsletterRecipient`, the status of the customer behind the current session. Call it after login, as both starter templates do on the account overview.
+`getNewsletterStatus()` is the exception. `readNewsletterRecipient post /account/newsletter-recipient` is declared with the context token in the schema and returns an `AccountNewsletterRecipient`, the status of the customer behind the current session. Call it after login, as `vue-starter-template` does on the account overview in `app/pages/account/index.vue`.
 
-`newsletterStatus` is a `ref` created inside the `useNewsletter()` function body. There is no `useContext` key and no shared module state behind it, so every component that calls `useNewsletter()` gets its own status ref. A footer subscribe box and an account toggle do not see each other's updates; each component that renders subscription state has to fill its own instance with `newsletterSubscribe()` or `getNewsletterStatus()`.
-
-Both derived values read that ref. `isNewsletterSubscriber` is true for every status except `optOut` and `undefined`, where `undefined` is the initial value before any request. `confirmationNeeded` is true only for `notSet`. A recipient in the `notSet` state is therefore reported as a subscriber and as awaiting confirmation at the same time.
+Because `newsletterStatus` lives per composable instance, every component that renders subscription state has to fill its own instance with `newsletterSubscribe()` or `getNewsletterStatus()`. Until one of them resolves, the ref holds its initial `"undefined"`, which reads as "not a subscriber" rather than as "not loaded yet" — track loading separately if the difference matters to the UI.
 
 ## Edge Cases
 
-- `getStorefrontUrl()` reads `window.location.origin` unless `devStorefrontUrl` is configured, so trigger `newsletterSubscribe` from a client-side handler and set `devStorefrontUrl` for local development, where the origin is `localhost` and matches no sales channel domain.
+- `getStorefrontUrl()` reads `window.location.origin` unless `devStorefrontUrl` is configured, so on the server it throws a `ReferenceError` instead of returning a fallback. Trigger `newsletterSubscribe` from a client-side handler, and set `devStorefrontUrl` for local development, where the origin is `localhost` and matches no sales channel domain.
 - In a multi-domain or multi-language sales channel, `storefrontUrl` decides which domain the confirmation link points at. Subscribing from the wrong origin sends the customer to a domain that may not serve your confirmation route.
-- No composable wraps `confirmNewsletter post /newsletter/confirm`. The templates handle it in `app/pages/newsletter-subscribe.vue` by reading `em` and `hash` from the query and calling `apiClient.invoke` directly. Without such a page, double opt-in subscriptions never activate.
+- No composable wraps `confirmNewsletter post /newsletter/confirm`. `vue-starter-template` handles it in `app/pages/newsletter-subscribe.vue` by reading `em` and `hash` from the query and calling `apiClient.invoke` directly. Without such a page, double opt-in subscriptions never activate.
 - `newsletterUnsubscribe` resolves with `void`. It does not touch `newsletterStatus`, so the UI keeps showing the previous state until you call `getNewsletterStatus()` again, which is only possible for a logged-in customer.
 - A guest has no way to read a status. After a guest subscribe, the only status you have is the one returned by that single request.
+- `isLoggedIn` is `!!user.id && !!user.active && !user.guest`, so it is false for a guest-checkout session — and that session still fills `user` with the address from the order. A component that picks the address with `user.value?.email ?? email.value` therefore sends the checkout address and silently discards the one the visitor typed. Pick the address from the same flag the template branches on, not from whether `user` happens to be set.
 - `useNewsletter` does not check the session before `getNewsletterStatus()`. The route resolves the recipient from the customer behind the context token, so guard the call with `isLoggedIn` and keep it out of pages a guest can open.
-- Neither `useNewsletter` nor the shipped form components send a captcha, honeypot, or any other bot-protection field. The subscribe route is reachable with the sales channel access token alone, so rate limiting and bot protection belong in front of the Store API.
+- The subscribe body also accepts `salutationId`, `firstName`, `lastName`, `street`, `zipCode`, `city`, `languageId`, and `customFields`. `SwNewsletterForm` in `@shopware/cms-base-layer` — what the CMS form element renders — sends the first three; the starter's footer box sends only `email`.
+- Neither `useNewsletter` nor the shipped form components (`SwNewsletterForm`, the starter's `NewsletterBox`) send a captcha, honeypot, or any other bot-protection field. The subscribe route is reachable with the sales channel access token alone, so rate limiting and bot protection belong in front of the Store API.
 
 ## Common Mistakes
 
@@ -345,6 +410,7 @@ Both derived values read that ref. `isNewsletterSubscriber` is true for every st
 ## Related Links
 
 - [Login recipe](login.html)
-- [useNewsletter composable](../../packages/composables/useNewsletter.html)
+- [Storefront URL](../../guides/storefront-url.html)
+- [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
 - [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)

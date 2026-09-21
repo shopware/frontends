@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 30
+  position: 40
 recipe:
   area: account
   status: stable
