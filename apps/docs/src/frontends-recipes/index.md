@@ -22,6 +22,10 @@ These pages are written for frontend developers who want to understand the Shopw
 
 <PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />
 
+## CMS
+
+<PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and slots, and resolving each node to a component." />
+
 ## Orders
 
 <PageRef page="orders/" title="Orders" sub="Placed order flows, starting with reading a guest order from the deep link in its confirmation mail." />

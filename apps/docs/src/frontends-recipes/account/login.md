@@ -185,7 +185,7 @@ After `POST /account/login`, `useUser().login()` calls `refreshSessionContext()`
 
 ## Related Links
 
-- [Login form page element](../../getting-started/page-elements/login-form.html)
+- [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../getting-started/e-commerce/cart.html)
+- [Cart documentation](../../guides/e-commerce/cart.html)
