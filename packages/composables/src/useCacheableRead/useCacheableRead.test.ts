@@ -157,6 +157,12 @@ describe("canUseCacheableGet", () => {
       expected: true,
     },
     {
+      name: "guest server render with a loaded cart with line items",
+      cart: cartOf({ lineItems: [{ id: "item" }] }),
+      guestServerRender: true,
+      expected: false,
+    },
+    {
       name: "missing sales channel",
       session: guestSession({ salesChannel: undefined }),
       expected: false,

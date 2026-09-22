@@ -130,8 +130,8 @@ export function canUseCacheableGet({
   if (!token) return true;
   // session unknown, or not refreshed after a token change
   if (session?.token !== token) return false;
-  // guest server render: the cart is empty
-  if (guestServerRender) return true;
+  // guest server render: a cart that was never loaded is empty
+  if (guestServerRender && !cart) return true;
   return cart?.token === token && cart.lineItems?.length === 0;
 }
 
