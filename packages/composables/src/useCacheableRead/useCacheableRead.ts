@@ -23,6 +23,7 @@ export const cacheableReadRoutes = {
   },
   "readCategory post /category/{navigationId}": {
     get: "readCategoryGet get /category/{navigationId}",
+    query: ["slots"],
   },
   "readCountry post /country": {
     get: "readCountryGet get /country",

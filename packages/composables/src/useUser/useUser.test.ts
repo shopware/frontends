@@ -3,7 +3,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 
-import { useSetup } from "../_test";
+import { guestSession, useSetup } from "../_test";
 import { useUser } from "./useUser";
 
 const refreshCartSpy = vi.fn();
@@ -440,7 +440,7 @@ describe("useUser", () => {
   it("loadCountry keeps POST for a logged-in session when cacheableReads is enabled", async () => {
     const { vm, injections } = useSetup(() => useUser(), {
       shopware: { cacheableReads: true },
-      swSessionContext: ref({ customer: { id: "customer" } }),
+      swSessionContext: ref(guestSession({ customer: { id: "customer" } })),
     } as Parameters<typeof useSetup>[1]);
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
 

@@ -2,7 +2,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
 import { ref } from "vue";
 
-import { useSetup } from "../_test";
+import { guestSession, useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
 import { useProductSearch } from "./useProductSearch";
 
@@ -63,10 +63,11 @@ describe("useProductSearch", () => {
   it("keeps POST for a non-default currency when cacheableReads is enabled", async () => {
     const { vm, injections } = useSetup(() => useProductSearch(), {
       shopware: { cacheableReads: true },
-      swSessionContext: ref({
-        salesChannel: { currencyId: "default-currency" },
-        context: { currencyId: "other-currency" },
-      }),
+      swSessionContext: ref(
+        guestSession({
+          context: { currencyId: "other", languageIdChain: ["language"] },
+        }),
+      ),
     } as Parameters<typeof useSetup>[1]);
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.search("test");

@@ -2,38 +2,8 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 
-import type { Schemas } from "#shopware";
-
-import { useSetup } from "../_test";
+import { cartOf, guestSession, salesChannel, useSetup } from "../_test";
 import { canUseCacheableGet, useCacheableRead } from "./useCacheableRead";
-
-const salesChannel = {
-  currencyId: "currency",
-  countryId: "country",
-  paymentMethodId: "payment",
-  shippingMethodId: "shipping",
-  languageId: "language",
-};
-
-function guestSession(overrides: Record<string, unknown> = {}) {
-  return {
-    token: "token",
-    salesChannel,
-    context: { currencyId: "currency", languageIdChain: ["language"] },
-    shippingLocation: { country: { id: "country" }, state: null },
-    paymentMethod: { id: "payment" },
-    shippingMethod: { id: "shipping" },
-    ...overrides,
-  } as unknown as Schemas["SalesChannelContext"];
-}
-
-function cartOf(overrides: Record<string, unknown> = {}) {
-  return {
-    token: "token",
-    lineItems: [],
-    ...overrides,
-  } as unknown as Schemas["Cart"];
-}
 
 describe("canUseCacheableGet", () => {
   const withToken = { "sw-context-token": "token" };
