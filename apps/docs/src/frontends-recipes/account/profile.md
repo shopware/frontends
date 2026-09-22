@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 30
+  position: 70
 recipe:
   area: account
   status: stable
@@ -19,6 +19,7 @@ recipe:
     - deleteCustomer delete /account/customer
     - convertGuest post /account/convert-guest
     - readSalutation post /salutation
+    - readSalutationGet get /salutation
   schemas:
     - Customer
     - Salutation
@@ -119,18 +120,20 @@ Read the diagram from left to right:
 5. The UI re-renders from `user` and the session flags computed over it.
 6. `convertGuest post /account/convert-guest` and `deleteCustomer delete /account/customer` are called through `apiClient.invoke`, followed by a context refresh.
 
-You do not need to call `refreshSessionContext()` after a profile or email change. The token and the sales channel are untouched — only the customer record changed, and `refreshUser()` already writes the fresh customer into the shared value. Keep the context refresh for `convertGuest` and `deleteCustomer`, which change who the token resolves to.
+You do not need to call `refreshSessionContext()` after a profile or email change. The token and the sales channel are untouched, and `refreshUser()` already writes the fresh customer into the shared value. It writes only there, though: the customer copy inside the sales channel context keeps the old name until something refreshes it. That is harmless for a name, a salutation or an email address, and it is exactly why the [addresses recipe](addresses.html) reaches for `refreshSessionContext()` instead — the checkout reads its active addresses from that context. Keep the context refresh for `convertGuest` and `deleteCustomer` too, which change who the token resolves to.
 
 ## Request Flow
 
-| Step                     | Code                                                          | Store API                      | Type                                                                                              |
-| ------------------------ | ------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| Load the salutations     | `fetchSalutations()`                                          | `POST /salutation`             | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' />        |
-| Change the profile       | `updatePersonalInfo(profile)`                                 | `POST /account/change-profile` | <SchemaTypeTooltip type-key='operations["changeProfile post /account/change-profile"]["body"]' /> |
-| Change the email address | `updateEmail(emailChange)`                                    | `POST /account/change-email`   | <SchemaTypeTooltip type-key='operations["changeEmail post /account/change-email"]["body"]' />     |
-| Read the customer back   | `refreshUser()`                                               | `POST /account/customer`       | <SchemaTypeTooltip type-key='operations["readCustomer post /account/customer"]["response"]' />    |
-| Convert a guest          | `apiClient.invoke("convertGuest …", { body: { password } })`  | `POST /account/convert-guest`  | <SchemaTypeTooltip type-key='operations["convertGuest post /account/convert-guest"]["body"]' />   |
-| Delete the account       | `apiClient.invoke("deleteCustomer delete /account/customer")` | `DELETE /account/customer`     | none — the operation answers `204 No Content`                                                     |
+| Step                     | Code                                                          | Store API                                                      | Type                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Load the salutations     | `fetchSalutations()`                                          | `POST /salutation`, or `GET /salutation` with `cacheableReads` | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' /> <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> |
+| Change the profile       | `updatePersonalInfo(profile)`                                 | `POST /account/change-profile`                                 | <SchemaTypeTooltip type-key='operations["changeProfile post /account/change-profile"]["body"]' />                                                                                       |
+| Change the email address | `updateEmail(emailChange)`                                    | `POST /account/change-email`                                   | <SchemaTypeTooltip type-key='operations["changeEmail post /account/change-email"]["body"]' />                                                                                           |
+| Read the customer back   | `refreshUser()`                                               | `POST /account/customer`                                       | <SchemaTypeTooltip type-key='operations["readCustomer post /account/customer"]["response"]' />                                                                                          |
+| Convert a guest          | `apiClient.invoke("convertGuest …", { body: { password } })`  | `POST /account/convert-guest`                                  | <SchemaTypeTooltip type-key='operations["convertGuest post /account/convert-guest"]["body"]' />                                                                                         |
+| Delete the account       | `apiClient.invoke("deleteCustomer delete /account/customer")` | `DELETE /account/customer`                                     | none — the operation answers `204 No Content`                                                                                                                                           |
+
+The salutation row is the only one whose route depends on configuration. `useSalutations` switches to the cacheable GET variant when `shopware.cacheableReads` is set, and `vue-starter-template` sets it, so that is the request the supported template issues. Everything else on this page stays a POST: the writes are not cacheable, and `readCustomer` has no GET variant to switch to. See [Caching](../../best-practices/caching.html).
 
 `refreshUser()` accepts a `Criteria`, so associations the context does not carry — the full `addresses` list, the `salutation` entity — can be requested here rather than in a second call. The default addresses are a different case: `userDefaultBillingAddress` and `userDefaultShippingAddress` are computed straight off the context customer, so they are already there before you call anything.
 
@@ -151,13 +154,13 @@ Pick by scope — how much of the session the composable is about:
 
 - **Read** — `user`, `isLoggedIn`, `isCustomerSession`, `isGuestSession`, `defaultBillingAddressId`, `defaultShippingAddressId`, `userDefaultBillingAddress`, `userDefaultShippingAddress`, `userDefaultPaymentMethod`.
 - **Write** — `updatePersonalInfo`, `updateEmail`, and `refreshUser` to read the customer back afterwards.
-- **Resolve by id** — `loadCountry(id)` and `loadSalutation(id)` fill the `country` and `salutation` refs for a single entity.
+- **Resolve by id** — `loadCountry(id)` and `loadSalutation(id)` fill the `country` and `salutation` refs for a single entity. Both follow the same `cacheableReads` switch as `fetchSalutations()`.
 
 Four things the generated reference will not tell you:
 
 - `updatePersonalInfo()` and `updateEmail()` resolve to `void` because the operations answer with a bare `SuccessResponse`. The pair is `await updatePersonalInfo(...)` followed by `await refreshUser()`; without the second call nothing on the page changes.
 - `refreshUser()` writes the shared customer directly, which is why it can carry associations the context does not have. The sync from `useSessionContext().userFromContext` runs one way only, so a later `refreshSessionContext()` replaces that enriched customer with the leaner one.
-- `useSalutations().getSalutations` is a `ComputedRef` of the array despite the verb in its name — `fetchSalutations()` is the request. The composable fires it `onMounted` the first time, while the shared list is still unfetched. That mount-time call has no error surface: a rejected `readSalutation` goes to the application error handler, `getSalutations` stays empty, and the customer is told nothing. Keep `fetchSalutations` in the destructuring so you have something to retry with.
+- `useSalutations().getSalutations` is a `ComputedRef` of the array despite the verb in its name — `fetchSalutations()` is the request. The composable fires it `onMounted` the first time, while the shared list is still unfetched. That mount-time call has no error surface: a rejected salutation request — `readSalutation` or its GET variant — goes to the application error handler, `getSalutations` stays empty, and the customer is told nothing. Keep `fetchSalutations` in the destructuring so you have something to retry with.
 - `userDefaultPaymentMethod` falls back to a `defaultPaymentMethod` field that was removed in 6.7. Against a current schema it reads `lastPaymentMethod` only.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
@@ -240,7 +243,6 @@ const profileFieldErrors = ref<Record<string, string>>({});
 const emailFieldErrors = ref<Record<string, string>>({});
 const profileSaved = ref("");
 const emailSaved = ref("");
-const salutationsError = ref("");
 const reloadError = ref("");
 
 const messageFor = (violation: ApiError) => {
@@ -266,18 +268,6 @@ const fieldErrorsFrom = (error: unknown): Record<string, string> => {
   }
   return byField;
 };
-
-const loadSalutations = async () => {
-  salutationsError.value = "";
-  try {
-    await fetchSalutations();
-  } catch (error) {
-    console.error(error);
-    salutationsError.value = "The salutations could not be loaded.";
-  }
-};
-
-onMounted(loadSalutations);
 
 watch(
   () => user.value?.id,
@@ -410,9 +400,9 @@ const saveEmail = async () => {
         <p v-if="profileSaved" role="status">{{ profileSaved }}</p>
         <p v-if="profileError" role="alert">{{ profileError }}</p>
 
-        <p v-if="salutationsError" role="alert">
-          {{ salutationsError }}
-          <button type="button" @click="loadSalutations">Retry</button>
+        <p v-if="!getSalutations.length" role="alert">
+          The salutations are not available.
+          <button type="button" @click="fetchSalutations">Retry</button>
         </p>
 
         <label for="salutation">Salutation</label>
@@ -568,6 +558,8 @@ There is one customer value in the application, held under the `customer` inject
 
 That sync runs in one direction only — context to customer. `refreshUser()` writes the shared value directly, which is why it can carry associations the context does not have. It also means a later `refreshSessionContext()` replaces the enriched customer with the leaner one from the context.
 
+The sync is set up inside `useUser()` itself, with `immediate: true`, so it is not only a context refresh that overwrites the shared value: the next component to call `useUser()` re-runs that write on mount. Anything you add with `refreshUser({ associations })` lives until then. Data a page needs for longer belongs in its own state, not on the shared customer.
+
 The three session flags are computed differently and are not interchangeable. `isLoggedIn` requires an id, `active` **and** not `guest`. `isCustomerSession` requires an id and not `guest`, ignoring `active`. `isGuestSession` is just `guest`. An inactive customer is therefore a customer session but not a logged-in one, so gate the account area on the flag you actually mean.
 
 ## Edge Cases
@@ -585,7 +577,9 @@ The three session flags are computed differently and are not interchangeable. `i
 - Constraint violations arrive as `ApiClientError.details.errors`, each carrying a `code` and a `source.pointer`. The pointer shape differs per operation — `/email` and `/data/attributes/lastName` both occur — so key on its last segment rather than matching the whole string.
 - `convertGuest post /account/convert-guest` takes only a password and turns the guest into a customer. It has no composable, and the session flags stay wrong until the context is refreshed.
 - `deleteCustomer delete /account/customer` answers `204` with no body. Nothing in the frontend reacts to it — refresh the context and route the visitor away yourself.
+- `useSalutations()` fetches the list on mount by itself, and nothing awaits or catches that promise. Do not add a second `fetchSalutations()` in your own `onMounted` to get an error path — the guard inside the composable only checks whether the list is still unfetched, so both requests go out. Render the select so an empty list is survivable, and hang a retry on `fetchSalutations()`.
 - `getSalutations` is shared through `provide`/`inject`, so every component below the one that mounted it reads the same list.
+- The password is not part of this page. `changeProfile` cannot touch it and `changeEmail` only verifies the current one — changing it is the [password recipe](password.html).
 
 ## Common Mistakes
 
@@ -596,7 +590,7 @@ The three session flags are computed differently and are not interchangeable. `i
 - Do not send `company` or `vatIds` without `accountType: "business"`.
 - Do not keep the entered password in state after an email change.
 - Do not call `deleteCustomer` without refreshing the context and leaving the account area.
-- Do not enrich the customer with `refreshUser({ associations })` and then rely on it surviving a context refresh.
+- Do not enrich the customer with `refreshUser({ associations })` and then rely on it surviving. The next `useUser()` call re-syncs the shared value from the context.
 - Do not render the raw constraint violation from a duplicate email address.
 - Do not report a failed read-back as a failed write. The customer acts on that message, and after `changeEmail` it sends them back to an address that no longer signs them in.
 - Do not write `catch {}` without binding the error. You cannot log it, you cannot map it to a field, and a programming error reaches the customer disguised as a rejected save.
@@ -621,6 +615,9 @@ The three session flags are computed differently and are not interchangeable. `i
 ## Related Links
 
 - [Login recipe](login.html)
-- [Login form page element](../../getting-started/page-elements/login-form.html)
+- [Register recipe](register.html)
+- [Password Recovery and Change recipe](password.html)
+- [Customer Addresses recipe](addresses.html)
+- [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

@@ -255,16 +255,16 @@ export const sidebar = [
             link: "/frontends-recipes/account/wishlist.html",
           },
           {
-            text: "Customer Profile",
-            link: "/frontends-recipes/account/profile.html",
-          },
-          {
             text: "Newsletter",
             link: "/frontends-recipes/account/newsletter.html",
           },
           {
             text: "Customer Addresses",
             link: "/frontends-recipes/account/addresses.html",
+          },
+          {
+            text: "Customer Profile",
+            link: "/frontends-recipes/account/profile.html",
           },
         ],
       },
