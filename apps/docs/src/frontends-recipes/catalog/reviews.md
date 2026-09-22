@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 30
 recipe:
   area: catalog
   status: stable
@@ -265,7 +265,7 @@ const submitReview = async () => {
   <section>
     <h2>Reviews</h2>
 
-    <p v-if="product.ratingAverage">
+    <p v-if="product.ratingAverage != null">
       {{ product.ratingAverage.toFixed(1) }} out of 5
     </p>
 
@@ -412,8 +412,9 @@ Reviews carry a `status` and a `comment`. `status` is the moderation flag — `f
 
 ## Related Links
 
-- [Product detail page](../../getting-started/e-commerce/product-detail-page.html)
+- [Product Listing and Filters recipe](listing.html)
 - [Login recipe](../account/login.html)
+- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
