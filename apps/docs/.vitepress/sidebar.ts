@@ -247,6 +247,10 @@ export const sidebar = [
             link: "/frontends-recipes/account/register.html",
           },
           {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
+          {
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
