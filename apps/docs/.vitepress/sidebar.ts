@@ -273,13 +273,6 @@ export const sidebar = [
             text: "Product Listing and Filters",
             link: "/frontends-recipes/catalog/listing.html",
           },
-        ],
-      },
-      {
-        text: "Catalog",
-        link: "/frontends-recipes/catalog/",
-        collapsed: true,
-        items: [
           {
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",

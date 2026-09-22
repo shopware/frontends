@@ -9,7 +9,7 @@ recipe:
   composables:
     - useProductSearchSuggest
     - useProductSearch
-    - useProductSearchListing
+    - useListing
     - useShopwareContext
   helpers:
     - getTranslatedProperty
@@ -312,7 +312,7 @@ Six choices in that example are deliberate, and each one is there because the sh
 
 The input carries no `role="combobox"`. The full pattern needs `aria-controls`, a `listbox` popup, `option` roles, `aria-activedescendant` and arrow-key handling; declaring the role without them tells a screen reader to press Down Arrow and then does nothing, which is worse than leaving the native `type="search"` semantics alone. Build the full pattern or keep the honest one — the suggestions stay reachable by Tab either way.
 
-The results page is a separate request, not a continuation of this one. It reads the same listing through `useProductSearchListing()` — which also gives it the filters and sortings the suggest composable does not re-export — but it builds its own criteria from the URL, so filters, sorting and pagination survive a reload and a shared link.
+The results page is a separate request, not a continuation of this one. It reads the same listing through `useProductSearchListing()` — which also gives it the filters and sortings the suggest composable does not re-export — but it builds its own criteria from the URL, so filters, sorting and pagination survive a reload and a shared link. [Product Listing and Filters](listing.html) covers that side in full: how the initial and applied listings differ, what `loadMore` keeps from the previous page, and why the filter option counts do not shrink.
 
 There is one thing the example above cannot fix, and it is the reason to think twice before shipping it as-is. Every suggest search writes into the applied listing the results page renders from, so typing in a header input while the customer is on `/search` replaces the grid behind the open panel with the ten preview products, changes the total, and resets pagination — with no navigation and no way back except a reload. The `no-aggregations` flag makes it worse: `getAvailableFilters` reads the applied listing's aggregations first, so the facet sidebar empties too. No amount of component-level care prevents this, because the component does not own the state being written.
 
@@ -394,8 +394,9 @@ The results are context-dependent like any listing: prices arrive calculated in 
 
 ## Related Links
 
-- [Product listing documentation](../../getting-started/e-commerce/product-listing.html)
-- [Product detail page](../../getting-started/e-commerce/product-detail-page.html)
+- [Product Listing and Filters recipe](listing.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
+- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)

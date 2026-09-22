@@ -188,4 +188,4 @@ After `POST /account/login`, `useUser().login()` calls `refreshSessionContext()`
 - [Login form page element](../../getting-started/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../getting-started/e-commerce/cart.html)
+- [Cart documentation](../../guides/e-commerce/cart.html)

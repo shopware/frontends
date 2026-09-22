@@ -530,8 +530,9 @@ A listing is context-dependent. Prices come back calculated in the current curre
 
 ## Related Links
 
-- [Product listing documentation](../../getting-started/e-commerce/product-listing.html)
-- [Prices documentation](../../getting-started/e-commerce/prices.html)
+- [Search and Suggest recipe](search.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
+- [Prices documentation](../../guides/e-commerce/prices.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
