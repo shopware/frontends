@@ -82,9 +82,9 @@ const requirementPhrase = computed(() =>
   gap: 8px;
   margin: 16px 0;
   padding: 16px;
+  border: 1px solid var(--vp-c-divider);
   border-left: 3px solid var(--vp-c-brand-1);
   border-radius: 8px;
-  background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
   font-size: var(--vp-custom-block-font-size, 14px);
   line-height: 1.6;

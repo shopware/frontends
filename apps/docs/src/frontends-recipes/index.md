@@ -12,8 +12,16 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Account
 
-<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, registration, account state, and the customer wishlist." />
+<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
+
+## Catalog
+
+<PageRef page="catalog/" title="Catalog" sub="Product catalog flows such as listings and filters, search and suggest, variant selection, price and tax state, product reviews, and cross-selling." />
 
 ## Checkout
 
 <PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />
+
+## Orders
+
+<PageRef page="orders/" title="Orders" sub="Placed order flows, starting with reading a guest order from the deep link in its confirmation mail." />
