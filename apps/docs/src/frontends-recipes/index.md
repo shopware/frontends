@@ -12,7 +12,7 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Account
 
-<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
+<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, registration, password recovery and change, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
 
 ## Catalog
 

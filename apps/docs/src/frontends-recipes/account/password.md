@@ -161,7 +161,7 @@ Three things the generated reference will not tell you:
 - `resetPassword` forwards its payload untouched, so `storefrontUrl` is yours to add. `register()` and `newsletterSubscribe()` do the opposite — they inject the value and `Omit` the field from their parameter types, which is why only this one needs it at the call site.
 - Both methods return `response.data` rather than the API client envelope, so what you get back is the `SuccessResponse` itself — a single optional `success` flag. It is not worth branching on: a rejected request arrives as a thrown `ApiClientError`.
 
-From `useUser` this recipe needs only `isLoggedIn`, to choose which form to render, and `login()`, to sign the customer in after a completed reset.
+From `useInternationalization` this recipe needs only `getStorefrontUrl()`, which returns `devStorefrontUrl` when it is configured and `window.location.origin` otherwise. From `useUser` it needs only `isLoggedIn`, to choose which form to render, and `login()`, to sign the customer in after a completed reset.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
 
@@ -572,6 +572,8 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 ## Related Links
 
 - [Login recipe](login.html)
-- [Login form page element](../../getting-started/page-elements/login-form.html)
+- [Register recipe](register.html)
+- [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)
+- [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
