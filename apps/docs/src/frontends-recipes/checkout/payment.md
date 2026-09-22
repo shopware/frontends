@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 20
+  position: 40
 recipe:
   area: checkout
   status: stable
