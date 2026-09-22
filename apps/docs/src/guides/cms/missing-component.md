@@ -144,8 +144,8 @@ const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const mainContent = getSlotContent("main");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const mainContent = computed(() => getSlotContent("main"));
 </script>
 
 <template>

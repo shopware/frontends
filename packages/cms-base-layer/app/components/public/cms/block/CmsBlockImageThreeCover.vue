@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageThreeCover } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,11 +8,11 @@ const props = defineProps<{
   content: CmsBlockImageThreeCover;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
   <div

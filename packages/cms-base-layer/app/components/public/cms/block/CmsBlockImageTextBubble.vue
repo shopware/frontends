@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageTextBubble } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,14 +8,14 @@ const props = defineProps<{
   content: CmsBlockImageTextBubble;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftText = getSlotContent("left-text");
-const leftImage = getSlotContent("left-image");
-const centerText = getSlotContent("center-text");
-const centerImage = getSlotContent("center-image");
-const rightText = getSlotContent("right-text");
-const rightImage = getSlotContent("right-image");
+const leftText = computed(() => getSlotContent("left-text"));
+const leftImage = computed(() => getSlotContent("left-image"));
+const centerText = computed(() => getSlotContent("center-text"));
+const centerImage = computed(() => getSlotContent("center-image"));
+const rightText = computed(() => getSlotContent("right-text"));
+const rightImage = computed(() => getSlotContent("right-image"));
 </script>
 <template>
   <div

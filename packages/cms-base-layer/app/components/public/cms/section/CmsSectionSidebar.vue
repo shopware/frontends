@@ -6,12 +6,12 @@ import { computed, provide } from "vue";
 const props = defineProps<{
   content: CmsSectionSidebar;
 }>();
-const { getPositionContent, section } = useCmsSection(props.content);
+const { getPositionContent } = useCmsSection(() => props.content);
 
-const sidebarBlocks = getPositionContent("sidebar");
-const mainBlocks = getPositionContent("main");
+const sidebarBlocks = computed(() => getPositionContent("sidebar"));
+const mainBlocks = computed(() => getPositionContent("main"));
 const mobileBehavior = computed(() => props.content.mobileBehavior);
-const fullWidth = computed(() => section.sizingMode === "full_width");
+const fullWidth = computed(() => props.content.sizingMode === "full_width");
 
 // Provide layout context for child components
 provide("cms-section-layout", "sidebar");

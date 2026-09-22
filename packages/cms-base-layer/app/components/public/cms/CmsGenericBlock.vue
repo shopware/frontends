@@ -22,17 +22,10 @@ provide("cms-block-slot-count", slotCount);
 provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
 
 const DynamicRender = () => {
-  const {
-    resolvedComponent,
-    componentName,
-    isResolved,
-    componentNameToResolve,
-  } = resolveCmsComponent(props.content);
+  const { resolvedComponent, componentName, componentNameToResolve } =
+    resolveCmsComponent(props.content);
 
   if (resolvedComponent) {
-    if (!isResolved)
-      return h("div", {}, `Problem resolving component: ${componentName}`);
-
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
     );

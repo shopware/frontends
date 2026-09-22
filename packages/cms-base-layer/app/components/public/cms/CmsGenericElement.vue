@@ -6,20 +6,20 @@ import { h, resolveComponent } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["CmsSlot"];
+  /**
+   * A block asks for its slots by name, and a block does not have to carry
+   * every slot its layout allows, so this can be undefined.
+   */
+  content?: Schemas["CmsSlot"];
 }>();
 
 const DynamicRender = () => {
-  const {
-    resolvedComponent,
-    componentName,
-    isResolved,
-    componentNameToResolve,
-  } = resolveCmsComponent(props.content);
-  if (resolvedComponent) {
-    if (!isResolved)
-      return h("div", {}, `Problem resolving component: ${componentName}`);
+  // Nothing to render for a slot the block does not carry.
+  if (!props.content) return h("div", {}, "");
 
+  const { resolvedComponent, componentName, componentNameToResolve } =
+    resolveCmsComponent(props.content);
+  if (resolvedComponent) {
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
     );

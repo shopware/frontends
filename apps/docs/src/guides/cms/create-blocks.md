@@ -64,7 +64,7 @@ Let's build the `image-three-column` block, which has three slots - `left`, `cen
 
 That works, but it's quite repetiive and hard to read. So we can use another composable `useCmsBlock` which makes our lives way easier.
 
-```vue{8,10-12,16-18}
+```vue{10,12-14,18-20}
 <script setup lang="ts">
 import { CmsBlockImageThreeColumn } from "@shopware/composables";
 
@@ -72,11 +72,13 @@ const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+// A getter keeps the lookups pointed at the current block, and a computed
+// re-runs the lookup when that block is replaced.
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
     <div class="grid grid-cols-3">
