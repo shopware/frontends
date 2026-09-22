@@ -9,3 +9,5 @@ nav:
 Recipes for the product catalog: listings and filters, search, variants, prices, reviews, and cross-selling.
 
 <PageRef page="search.html" title="Search and Suggest" sub="Which of the two Store API search operations the composables actually run, how much state the suggest dropdown shares with the results page, why the term on the ref always wins, and what useProductSearch really does." />
+
+<PageRef page="listing.html" title="Product Listing and Filters" sub="Understand why one listing response answers every listing concern, how the initial and applied listings differ, why filter option counts do not shrink, and what loadMore keeps from the previous page." />
