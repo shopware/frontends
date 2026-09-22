@@ -19,3 +19,5 @@ Recipes for customer session and account flows.
 <PageRef page="newsletter.html" title="Newsletter" sub="Understand the double opt-in lifecycle, the newsletter Store API operations, the injected storefrontUrl, the per-instance status state, and what stays unknown for a guest." />
 
 <PageRef page="addresses.html" title="Customer Addresses" sub="Understand why no write updates the shared list, how the request body differs from the address entity, which default switch also needs a context refresh, and what the country and state selects depend on." />
+
+<PageRef page="profile.html" title="Customer Profile" sub="Understand why a profile write returns nothing, where the customer value actually comes from, how the three session flags differ, and which operations have no composable at all." />
