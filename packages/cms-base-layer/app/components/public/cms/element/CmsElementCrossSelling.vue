@@ -5,7 +5,8 @@ import type {
 } from "@shopware/composables";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
-import { computed, inject, ref, useTemplateRef } from "vue";
+import { computed, inject, ref, toValue, useTemplateRef } from "vue";
+import type { MaybeRefOrGetter } from "vue";
 
 import { useCmsElementConfig } from "#imports";
 
@@ -48,13 +49,14 @@ const crossSellCollections = computed(() => {
 });
 
 const { width } = useElementSize(crossSellContainer);
-const slotCount = inject<number>("cms-block-slot-count", 1);
+// CmsGenericBlock provides a computed; a plain number is still accepted.
+const slotCount = inject<MaybeRefOrGetter<number>>("cms-block-slot-count", 1);
 const elMinWidth = computed(
   () => +(config.value.minWidth?.value.replace(/\D+/g, "") || 300),
 );
 const slidesToShow = computed(() => {
   // SSR: useElementSize returns 0, fallback to 1200px estimate divided by slot count
-  const containerWidth = width.value || 1200 / slotCount;
+  const containerWidth = width.value || 1200 / toValue(slotCount);
   return Math.max(1, Math.floor(containerWidth / elMinWidth.value));
 });
 
@@ -63,7 +65,7 @@ const ssrBreakpoints = computed(() => {
   const max = slidesToShow.value;
   const bp: Record<string, number> = {};
   for (let n = 2; n <= max; n++) {
-    bp[`(min-width: ${elMinWidth.value * n * slotCount}px)`] = n;
+    bp[`(min-width: ${elMinWidth.value * n * toValue(slotCount)}px)`] = n;
   }
   return bp;
 });

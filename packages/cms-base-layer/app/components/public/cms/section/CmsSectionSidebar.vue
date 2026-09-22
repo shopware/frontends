@@ -31,20 +31,12 @@ provide("cms-section-layout", "sidebar");
         'hidden lg:block': mobileBehavior === 'hidden',
       }"
     >
-      <div
-        v-for="cmsBlock in sidebarBlocks"
-        :key="`${cmsBlock.id}:${cmsBlock.slots?.length ?? 0}`"
-        class="w-full"
-      >
+      <div v-for="cmsBlock in sidebarBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />
       </div>
     </aside>
     <div class="flex-1 flex flex-col justify-start items-stretch gap-20">
-      <div
-        v-for="cmsBlock in mainBlocks"
-        :key="`${cmsBlock.id}:${cmsBlock.slots?.length ?? 0}`"
-        class="w-full"
-      >
+      <div v-for="cmsBlock in mainBlocks" :key="cmsBlock.id" class="w-full">
         <CmsGenericBlock :content="cmsBlock" />
       </div>
     </div>

@@ -4,7 +4,7 @@ import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
-import { h, provide, resolveComponent } from "vue";
+import { computed, h, provide, resolveComponent } from "vue";
 
 import type { Schemas } from "#shopware";
 
@@ -17,9 +17,14 @@ const props = defineProps<{
 
 const appConfig = useTypedAppConfig();
 
-const slotCount = props.content.slots?.length || 1;
+// Provided as computeds so a block handed different content updates its
+// children in place instead of needing a remount. Read them with `toValue()`.
+const slotCount = computed(() => props.content.slots?.length || 1);
 provide("cms-block-slot-count", slotCount);
-provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
+provide(
+  "cms-image-sizes",
+  computed(() => getImageSizes(slotCount.value, appConfig.imageSizes)),
+);
 
 const DynamicRender = () => {
   const { resolvedComponent, componentName, componentNameToResolve } =
@@ -68,7 +73,8 @@ const DynamicRender = () => {
     );
     return h(resolveComponent("CmsNoComponent"), { content: props.content });
   }
-  return h("div", {}, "");
+  // Production: a block type with no component renders nothing.
+  return null;
 };
 </script>
 

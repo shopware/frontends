@@ -14,8 +14,11 @@ const props = defineProps<{
 }>();
 
 const DynamicRender = () => {
-  // A slot the block does not carry renders nothing at all: an empty element
-  // would still take a class from the call site and occupy a grid or flex cell.
+  // Nothing to render for a slot the block does not carry. An element would
+  // take the class the call site passes and occupy a cell of its own wherever a
+  // block renders this straight into a grid, as CmsBlockCenterText does. A
+  // wrapper the block puts around the call site renders either way — sizing
+  // that wrapper for an absent slot is the block's business, not this one's.
   if (!props.content) return null;
 
   const { resolvedComponent, componentName, componentNameToResolve } =
@@ -36,7 +39,9 @@ const DynamicRender = () => {
     );
     return h(resolveComponent("CmsNoComponent"), { content: props.content });
   }
-  return h("div", {}, "");
+  // Production: an element type with no component renders nothing, for the same
+  // reason the missing slot above does.
+  return null;
 };
 </script>
 
