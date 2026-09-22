@@ -14,8 +14,9 @@ const props = defineProps<{
 }>();
 
 const DynamicRender = () => {
-  // Nothing to render for a slot the block does not carry.
-  if (!props.content) return h("div", {}, "");
+  // A slot the block does not carry renders nothing at all: an empty element
+  // would still take a class from the call site and occupy a grid or flex cell.
+  if (!props.content) return null;
 
   const { resolvedComponent, componentName, componentNameToResolve } =
     resolveCmsComponent(props.content);

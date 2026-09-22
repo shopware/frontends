@@ -14,7 +14,7 @@ const { sizingMode: _, ...sectionStyles } = layoutStyles;
   <div class="my-4" :class="cssClasses" :style="sectionStyles as any">
     <CmsGenericBlock
       v-for="cmsBlock in content.blocks"
-      :key="cmsBlock.id"
+      :key="`${cmsBlock.id}:${cmsBlock.slots?.length ?? 0}`"
       :content="cmsBlock"
     />
   </div>
