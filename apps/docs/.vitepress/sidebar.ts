@@ -277,6 +277,10 @@ export const sidebar = [
             text: "Product Listing and Filters",
             link: "/frontends-recipes/catalog/listing.html",
           },
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
         ],
       },
       {
