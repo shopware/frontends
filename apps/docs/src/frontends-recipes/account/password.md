@@ -222,6 +222,7 @@ const heading = ref<HTMLElement | null>(null);
 
 const email = ref("");
 const isRecoveryRequested = ref(false);
+const recoveryError = ref("");
 
 const isHashChecked = ref(false);
 const isExpired = ref(false);
@@ -301,20 +302,25 @@ const requestRecoveryMail = async () => {
   if (isSubmitting.value) return;
   startSubmit();
 
+  recoveryError.value = "";
+
   try {
     await resetPassword({
       email: email.value,
       // resolved here, because setup also runs on the server, where there is no window
       storefrontUrl: getStorefrontUrl(),
     });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // Unconditional: the acknowledgement must not differ between a known and
-    // an unknown address, so it cannot depend on the response.
+    // Same wording for a known and an unknown address: the API already
+    // answered both with a success.
     isRecoveryRequested.value = true;
-    isSubmitting.value = false;
     await announce();
+  } catch (error) {
+    // A rejection is operational, not about the address, so say so and keep
+    // the form for another try.
+    console.error(error);
+    recoveryError.value = "We could not send the mail. Please try again.";
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
@@ -504,6 +510,8 @@ onMounted(checkHash);
     </p>
 
     <form v-else @submit.prevent="requestRecoveryMail">
+      <p v-if="recoveryError" role="alert">{{ recoveryError }}</p>
+
       <label>
         Email
         <input v-model="email" type="email" autocomplete="email" required />
@@ -531,7 +539,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 ## Edge Cases
 
-- `sendRecoveryMail` answers the same way for a known and an unknown address. Never render "no account with that address" — the API does not tell you, and saying it would leak who has an account. Set the acknowledgement unconditionally, so a rejected request does not become an observable difference either.
+- `sendRecoveryMail` answers the same way for a known and an unknown address. Never render "no account with that address" — the API does not tell you, and saying it would leak who has an account. A rejected request is a different matter: Shopware validates `storefrontUrl` and applies its rate limit before it looks the customer up, so a failure says nothing about the address. Show a generic error and keep the form instead of claiming a mail is on its way.
 - The recovery hash expires, which is the whole reason `getCustomerRecoveryIsExpired` exists. Check it before showing a form, or the customer fills in two fields for nothing.
 - Only a rejection from the API means the link is dead. A dropped connection or a 5xx says nothing about the hash, so treating every failure as expiry sends a customer back for a new mail they did not need — keep the two apart and offer a retry.
 - Nothing in the composables carries a request deadline. Configure `apiClientConfig.timeout` or pass one per call, or a hash check that never settles leaves the page on "Checking the link…" with no error and no way out.
@@ -543,7 +551,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 ## Common Mistakes
 
-- Do not tell the customer whether the address was found, and do not let a failed request say it for you.
+- Do not tell the customer whether the address was found, and do not let a failed request claim a mail was sent.
 - Do not call `getStorefrontUrl()` in the component body — resolve it in the submit handler.
 - Do not render the reset form before the hash check has answered.
 - Do not read `isExpired` off the response root. It is inside the `data` array.
@@ -558,7 +566,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 ## Testing Checklist
 
 - Submitting the forgotten-password form calls `sendRecoveryMail post /account/recovery-password` with a `storefrontUrl`.
-- An unknown address produces the same UI as a known one, and so does a rejected request.
+- An unknown address produces the same UI as a known one. A rejected request keeps the form and shows a generic error.
 - Opening a reset link calls `getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired` before any form is rendered.
 - An expired hash renders the expiry message and no password form.
 - A hash check that fails on the transport renders a retry, not the expiry message.

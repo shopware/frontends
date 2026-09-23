@@ -9,6 +9,7 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink, getStorefrontUrl } = useInternationalization(localePath);
 const { resetPassword } = useCustomerPassword();
+const { pushError } = useNotifications();
 
 useSeoMeta({
   title: () => t("account.recoverPassword.header"),
@@ -31,12 +32,13 @@ async function handleSubmit() {
       email: state.value.email,
       storefrontUrl: getStorefrontUrl(),
     });
-  } catch (error) {
-    // Same acknowledgement for every outcome, so the page never tells
-    // whether an account exists for the address.
-    console.error("[account/recover]", error);
-  } finally {
     isRequested.value = true;
+  } catch (error) {
+    // Shopware answers a known and an unknown address alike, so a failure
+    // here is operational. Say so and keep the form for another try.
+    console.error("[account/recover]", error);
+    pushError(t("account.recoverPassword.errorMessage"));
+  } finally {
     loading.value = false;
   }
 }

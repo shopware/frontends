@@ -11,6 +11,7 @@ export class PasswordRecoveryPage extends AbstractPage {
   readonly resetForm: Locator;
   readonly expiredMessage: Locator;
   readonly retryButton: Locator;
+  readonly errorNotification: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -22,6 +23,7 @@ export class PasswordRecoveryPage extends AbstractPage {
     this.resetForm = page.getByTestId("reset-password-form");
     this.expiredMessage = page.getByTestId("reset-password-expired-message");
     this.retryButton = page.getByTestId("reset-password-retry-button");
+    this.errorNotification = page.getByTestId("notification-element-danger");
   }
 
   async visitRecoverPage() {

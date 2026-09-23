@@ -168,6 +168,7 @@
       "subHeader": "Podaj swój adres e-mail, a wyślemy Ci link do ustawienia nowego hasła.",
       "submitButton": "Wyślij wiadomość",
       "successMessage": "Jeśli istnieje konto z tym adresem e-mail, wiadomość z linkiem do ustawienia nowego hasła jest już w drodze.",
+      "errorMessage": "Nie udało się wysłać wiadomości. Spróbuj ponownie za chwilę.",
       "backToLogin": "Wróć do logowania"
     },
     "resetPassword": {

@@ -1,7 +1,3 @@
-import { createAPIClient } from "@shopware/api-client";
-
-import type { operations } from "#shopware";
-
 const XML_ESCAPES: Record<string, string> = {
   "&": "&amp;",
   "<": "&lt;",
@@ -15,23 +11,20 @@ function escapeXml(value: string) {
 }
 
 /**
- * Sitemap index pointing at the sitemap files Shopware generates for the
- * sales channel. Shopware crawls its own SEO URLs, so nothing is listed here
- * by hand.
+ * Sitemap index for the files Shopware generates for the sales channel. The
+ * files are served by `/sitemap/[...path]`, so every location is on this host.
  */
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
-  const apiClient = createAPIClient<operations>({
-    accessToken: config.public.shopware.accessToken,
-    baseURL: config.public.shopware.endpoint,
+  const { origin } = getRequestURL(event, {
+    xForwardedHost: true,
+    xForwardedProto: true,
   });
+  const files = await listSitemapFiles();
 
-  const { data: sitemaps } = await apiClient.invoke("readSitemap get /sitemap");
-
-  const entries = sitemaps
+  const entries = files
     .map(
-      ({ filename }) =>
-        `  <sitemap>\n    <loc>${escapeXml(filename)}</loc>\n  </sitemap>`,
+      ({ path }) =>
+        `  <sitemap>\n    <loc>${escapeXml(`${origin}/sitemap/${path}`)}</loc>\n  </sitemap>`,
     )
     .join("\n");
 

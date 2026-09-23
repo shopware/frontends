@@ -26,6 +26,36 @@ test.describe("Password recovery", { tag: "@frontends" }, () => {
     await expect(recoveryPage.recoverForm).toHaveCount(0);
   });
 
+  // Shopware answers a known and an unknown address alike, so only an
+  // operational failure may keep the form. The API is mocked because a real
+  // outage cannot be provoked on demand.
+  for (const [name, respond] of [
+    ["unreachable", (route) => route.abort("connectionfailed")],
+    [
+      "rate limited",
+      (route) =>
+        route.fulfill({
+          status: 429,
+          contentType: "application/json",
+          body: JSON.stringify({
+            errors: [{ status: "429", code: "FRAMEWORK__RATE_LIMIT_EXCEEDED" }],
+          }),
+        }),
+    ],
+  ] as const) {
+    test(`Recovery request keeps the form when the API is ${name}`, async ({
+      page,
+    }) => {
+      await page.route("**/store-api/account/recovery-password", respond);
+      await recoveryPage.visitRecoverPage();
+      await recoveryPage.requestRecoveryMail("nobody@example.invalid");
+
+      await expect(recoveryPage.errorNotification).toBeVisible();
+      await expect(recoveryPage.recoverForm).toBeVisible();
+      await expect(recoveryPage.successMessage).toHaveCount(0);
+    });
+  }
+
   test("Reset page rejects an invalid link", async () => {
     await recoveryPage.visitResetPage("not-a-valid-hash");
 
