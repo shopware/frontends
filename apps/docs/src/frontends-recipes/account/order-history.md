@@ -126,7 +126,7 @@ Read the diagram from left to right:
 
 1. The customer opens the order history and the page calls `loadOrders` with a criteria.
 2. `useCustomerOrders` overwrites the `limit` in that criteria with its own `limit` ref and sets `"total-count-mode": "exact"`.
-3. The Store API returns one page of orders for the customer behind the context token. The list request sends no `checkPromotion`, so no `paymentChangeable` map comes back.
+3. The Store API returns one page of orders for the customer behind the context token. `useCustomerOrders` adds no `checkPromotion` of its own, so unless your criteria passes one no `paymentChangeable` map comes back.
 4. The composable keeps `orders.elements`, `orders.total`, and `orders.page`, and exposes `orders`, `currentPage`, and `totalPages`.
 5. The customer opens one order and the detail view calls `useOrderDetails(orderId).loadOrderDetails()`.
 6. `loadOrderDetails` calls `readOrder post /order` again with `ids`, the default order associations, and `checkPromotion: true`.
@@ -384,7 +384,7 @@ watch(
 
 The Store API resolves the customer of `readOrder post /order`, `orderSetPayment post /order/payment`, and `cancelOrder post /order/state/cancel` from the `sw-context-token` header. Nothing in the request names the customer, so the order history changes with the session and not with a route parameter.
 
-`handlePaymentMethod post /handle-payment` names its target explicitly instead: the order comes from `orderId` in the body, not from the session. `readPaymentMethod post /payment-method` is secured with the access key alone, because payment methods are sales-channel data rather than customer data. Before relying on that for any other route, read the `security` block of the schema your backend ships rather than assuming it: the declared requirement of a route can change between Shopware releases, and `/handle-payment` is one route where it has.
+`handlePaymentMethod post /handle-payment` names its target explicitly instead: the order comes from `orderId` in the body, not from the session alone — the route still requires the context token. `readPaymentMethod post /payment-method` is secured with the access key alone, because payment methods are sales-channel data rather than customer data. Before relying on that for any other route, read the `security` block of the schema your backend ships rather than assuming it: the declared requirement of a route can change between Shopware releases, and `/handle-payment` is one route where it has.
 
 Neither `useCustomerOrders` nor `useOrderDetails` refreshes the session context or the cart. Unlike login, reading orders does not change the session, so `orders` simply keeps describing the customer that was authenticated when the request was sent.
 
