@@ -24,7 +24,7 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## CMS
 
-<PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and elements, and the contact form element." />
+<PageRef page="cms/" title="CMS" sub="Shopping Experiences flows, starting with the CMS form element: where a contact form resolves its configuration from, and what the Store API enforces beyond what its schema declares." />
 
 ## Context
 
