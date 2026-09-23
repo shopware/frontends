@@ -59,7 +59,7 @@ const steps = [
     title: "Store API",
     action: "Patch the context",
     detail:
-      "PATCH /context accepts a narrow body of ids: currencyId, languageId, countryId, countryStateId, billingAddressId, shippingAddressId, paymentMethodId, shippingMethodId. It answers with the sw-context-token header and a body that carries only an optional redirectUrl — never the new context.",
+      "PATCH /context accepts a narrow body of ids: currencyId, languageId, countryId, countryStateId, billingAddressId, shippingAddressId, paymentMethodId, shippingMethodId. It answers with the sw-context-token header and a body that carries only an optional redirectUrl, set for a language switch alone — never the new context.",
     code: 'apiClient.invoke("updateContext patch /context", { body })',
     state: "sw-context-token",
     typeKeys: ['operations["updateContext patch /context"]["body"]'],
@@ -123,11 +123,13 @@ You do not need to call `refreshSessionContext()` after a setter from `useSessio
 | Seed the value locally   | `setContext(context)`                                                             | none                    | <SchemaTypeTooltip type-key='Schemas["SalesChannelContext"]' />                             |
 | Run a context gateway    | `apiClient.invoke("contextGateway post /context/gateway", { body: { appName } })` | `POST /context/gateway` | <SchemaTypeTooltip type-key='operations["contextGateway post /context/gateway"]["body"]' /> |
 
-Every `PATCH /context` response can carry a `redirectUrl`. It is absent for a plain currency or country switch, and set when an app wants the browser to continue somewhere else before the switch is finished — follow it instead of dropping it.
+A `redirectUrl` on the `PATCH /context` response comes from one place only. Core fills it in `ContextSwitchRoute::checkNewDomain`, which returns a URL when the body carries a `languageId` that differs from the current one **and** the sales channel has a domain bound to that language; a currency, country, address or method switch never produces one, and neither does a language that has no domain. The value is that domain's own `url`, which can be another host or the same host with a path prefix such as `https://myshop.com/de`, so navigate to it as given rather than deriving a host from it.
+
+No setter on `useSessionContext` hands you that value: they all discard the response, and `setLanguage()` is declared `Promise<void>`. Reading it means calling `useInternationalization().changeLanguage(id)`, which returns the body — see the [Language and Currency Switch recipe](language-and-currency.html).
 
 `setContext(context)` is synchronous and sends no request. It only overwrites the shared value, which is what you want when a context arrives from somewhere other than a `GET /context` — an SSR payload or a cross-tab sync message.
 
-`contextGateway post /context/gateway` has no composable wrapper. It lets an app manipulate the context server-side; the body requires `appName` and takes an optional `data` record, and the call does not type-check without it. Like a context patch it does not return a context, so follow it with `refreshSessionContext()`. The same operation exists as `contextGatewayGet get /context/gateway`, which takes `appName` as a query parameter.
+`contextGateway post /context/gateway` has no composable wrapper. It lets an app manipulate the context server-side; the body requires `appName` and takes an optional `data` record, and the call does not type-check without it. Like a context patch it does not return a context, so follow it with `refreshSessionContext()`. Its response carries a `redirectUrl` of its own, which the language-domain rule above does not describe — it is a different route. The same operation exists as `contextGatewayGet get /context/gateway`, which takes `appName` as a query parameter.
 
 ## Composables
 
@@ -150,7 +152,7 @@ Seven things the generated reference will not tell you:
 - `useSessionContext()` has to run in `setup` or inside an active effect scope. `useContext` calls VueUse's `provideLocal` on every invocation, and that function throws `"provideLocal must be called in setup"` when there is neither a component instance nor a scope — so a call from an event handler or a plain module fails loudly instead of returning an empty context.
 - The setters do not fail the same way. `setShippingMethod`, `setActiveShippingAddress` and `setActiveBillingAddress` take a `Partial<>` and throw at runtime when the id is missing; `setPaymentMethod` requires `{ id: string }`, so the same mistake is a compile error rather than a throw; `setLanguage` returns without a request; `setCurrency` logs the problem with `console.error` and then returns; `setCountry` takes a plain string and validates nothing.
 - `setCurrency` and `setLanguage` take a `Partial<Schemas["Currency"]>` and a `Partial<Schemas["Language"]>`, so you can pass the whole entity you already rendered — only `id` is read from it.
-- `useInternationalization().changeLanguage(languageId)` sends the same `updateContext patch /context` and deliberately does **not** refresh the shared context. It is meant for a language switch that continues with a navigation or reload; if you call it and stay on the page, follow it with `refreshSessionContext()` yourself.
+- `useInternationalization().changeLanguage(languageId)` sends the same `updateContext patch /context`, returns the response body and deliberately does **not** refresh the shared context, because a language switch ends in a redirect. `setLanguage()` is the same patch with the response thrown away and a refresh added, so it can never show you a `redirectUrl`. If you call `changeLanguage()` and stay on the page, follow it with `refreshSessionContext()` yourself — the [Language and Currency Switch recipe](language-and-currency.html) covers that flow.
 - `countryStateId` is part of the patch body but has no setter. Reaching it means calling `apiClient.invoke("updateContext patch /context", { body: { countryStateId } })` directly and refreshing afterwards.
 - `salesChannelLanguageId` and `currentLanguageId` are the current names of `languageId` and `languageIdChain`, which are deprecated aliases of the very same computed properties. `currentLanguageId` reads the first entry of `context.languageIdChain` and falls back to an empty string at runtime — but it is declared `ComputedRef<string | undefined>`, so you still have to narrow it before passing it somewhere that wants a `string`.
 - `setContext` exists for state that arrives outside the request cycle. The deprecated `vue-demo-store` reference template uses it to apply a context pushed over a `BroadcastChannel` from another tab.
@@ -328,13 +330,16 @@ Turning it on moves the problem to the cache. The server render then depends on 
 - `setShippingMethod({})` throws instead of issuing a request — its public signature takes a `Partial<>`, so the missing id is a runtime failure, not a compile error.
 - `setPaymentMethod({})` is the opposite case and needs no test: that setter requires `{ id: string }`, so TypeScript rejects the call.
 - `activeBillingAddress` is `null` for a guest session and set after login.
+- Switching to a language that has a sales channel domain answers with a `redirectUrl`; switching the currency answers without one.
 - With `useUserContextInSSR` left at its default, the server-rendered HTML of a logged-in visitor contains no customer data.
 
 ## Related Links
 
-- [Languages documentation](../../getting-started/languages.html)
+- [Language and Currency Switch recipe](language-and-currency.html)
+- [Work with languages](../../guides/languages.html)
+- [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Login recipe](../account/login.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
 - [Nuxt module package](../../packages/nuxt-module.html)
-- [Prices documentation](../../getting-started/e-commerce/prices.html)
+- [Prices documentation](../../guides/e-commerce/prices.html)

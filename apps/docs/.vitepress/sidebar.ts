@@ -327,6 +327,10 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
+          },
+          {
             text: "Language and Currency Switch",
             link: "/frontends-recipes/context/language-and-currency.html",
           },
@@ -340,17 +344,6 @@ export const sidebar = [
           {
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
-          },
-        ],
-      },
-      {
-        text: "Context",
-        link: "/frontends-recipes/context/",
-        collapsed: true,
-        items: [
-          {
-            text: "Session Context",
-            link: "/frontends-recipes/context/session-context.html",
           },
         ],
       },
