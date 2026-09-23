@@ -10,6 +10,7 @@ recipe:
     - useProductAssociations
     - useProductSearch
     - useProduct
+    - useInternationalization
   helpers:
     - getTranslatedProperty
     - getProductRoute
@@ -145,11 +146,12 @@ The first row assumes the default configuration. With `shopware: { cacheableRead
 
 Pick by scope — where the product ref comes from, then what you do with it:
 
-| Composable               | Scope                                   | Reach for it when                                                        |
-| ------------------------ | --------------------------------------- | ------------------------------------------------------------------------ |
-| `useProductSearch`       | one product, fetched by id              | you build the detail page yourself and have to resolve the product first |
-| `useProduct`             | the product a parent already provided   | you are inside a detail page that injected the product                   |
-| `useProductAssociations` | the cross-selling groups of one product | rendering "customers also bought", accessories, or a related stream      |
+| Composable                | Scope                                   | Reach for it when                                                        |
+| ------------------------- | --------------------------------------- | ------------------------------------------------------------------------ |
+| `useProductSearch`        | one product, fetched by id              | you build the detail page yourself and have to resolve the product first |
+| `useProduct`              | the product a parent already provided   | you are inside a detail page that injected the product                   |
+| `useProductAssociations`  | the cross-selling groups of one product | rendering "customers also bought", accessories, or a related stream      |
+| `useInternationalization` | link prefixing for the current locale   | linking to the cross-sold products from a multi-language storefront      |
 
 `useProductAssociations` is the one this recipe is about:
 
@@ -204,6 +206,8 @@ import type { Schemas } from "#shopware";
 
 const { product } = defineProps<{ product: Schemas["Product"] }>();
 
+const { formatLink } = useInternationalization(localePath);
+
 const { productAssociations, isLoading, loadAssociations } =
   useProductAssociations(
     computed(() => product),
@@ -229,7 +233,7 @@ watch(
 
     <ul>
       <li v-for="crossSellProduct in group.products" :key="crossSellProduct.id">
-        <NuxtLink :to="getProductRoute(crossSellProduct)">
+        <NuxtLink :to="formatLink(getProductRoute(crossSellProduct))">
           {{ getTranslatedProperty(crossSellProduct, "name") }}
         </NuxtLink>
       </li>
@@ -245,6 +249,8 @@ watch(
 </CodeExample>
 
 The groups are rendered stacked, each under its own `h2`, rather than as tabs. A tab strip needs the full `tablist`/`tab`/`tabpanel` pattern with roving focus to be reachable by keyboard, and none of that is about cross-selling — stacked headings are navigable out of the box and cannot strand the reader on a panel that no longer exists.
+
+`formatLink` wraps `getProductRoute` because the helper returns an unprefixed route, and it is a no-op unless the composable was created with a path resolver — `useInternationalization(localePath)`. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL.
 
 `crossSelling.limit` is configured in the Admin and caps how many products a group returns, so `group.total` can be the larger number. The operation takes no limit and no page of its own, so there is no way to load the remainder — render the count as information, not as a control.
 
@@ -265,6 +271,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - A configured cross-selling group can return zero products — a stream that currently matches nothing, or products hidden by the customer's rules. Filter on `products.length`.
 - `group.total` can exceed `group.products.length` because `crossSelling.limit` caps how many products the group returns. There is no way to fetch the rest through this operation.
 - Without `includeSeoUrls: true` the returned products carry no `seoUrls`, so `getProductRoute` falls back to `/detail/{id}`.
+- `getProductRoute` returns an unprefixed route either way. On a localised storefront it has to be wrapped in `formatLink` from `useInternationalization`, as every call site in `vue-starter-template` does.
 - A failed **first** load renders nothing and is indistinguishable from a product that has no cross-selling at all: `productAssociations` stays `[]`, `isLoading` returns to `false`, and no error is observable from outside the composable. Nothing the consumer writes can tell the two apart.
 - A failed **reload** looks identical to a successful one that changed nothing, because the errors are swallowed and the previous groups stay rendered.
 - `loadAssociations` has no in-flight guard, no sequence token and no cancellation. Two overlapping calls both write to `productAssociations` and the last response to arrive wins regardless of the order they were issued, while `isLoading` flips back to `false` as soon as the first one settles. Guard the caller if you wire a reload to a control a customer can activate twice.
@@ -282,6 +289,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - Do not render a group without checking `products.length`.
 - Do not offer a "show more" control per group. The operation cannot page.
 - Do not omit `includeSeoUrls` when the groups link to product pages.
+- Do not link with a bare `getProductRoute`. Wrap it in `formatLink` or a localised storefront drops the prefix.
 - Do not call this composable on a CMS product page that already has the data.
 - Do not expect `cacheableReads` to make these requests cacheable. This composable always sends a `POST`.
 - Do not keep an index into the rendered groups without clamping it. A reload can return fewer groups than are on screen.
@@ -301,6 +309,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 
 - [Product Listing and Filters recipe](listing.html)
 - [Product Reviews recipe](reviews.html)
+- [Search and Suggest recipe](search.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
