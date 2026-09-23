@@ -19,6 +19,7 @@ recipe:
     - readProduct post /product
     - readProductGet get /product
     - readProductDetail post /product/{productId}
+    - readProductDetailGet get /product/{productId}
     - searchProductVariantIds post /product/{productId}/find-variant
     - searchProductVariantIdsGet get /product/{productId}/find-variant
   schemas:
@@ -118,7 +119,11 @@ Read the diagram from left to right:
 
 You do not get a request from `handleChange` itself. The composable separates "the customer changed the selection" from "resolve what that selection means", and the second half is yours to trigger.
 
-`cms-base-layer` ships that second half: `SwVariantConfigurator` renders the groups and resolves the variant, with an `allowRedirect` prop that is `true` by default. Set it to `false` and the component emits `change` with the resolved variant instead of navigating. `CmsElementBuyBox` renders it with `@change="changeVariant"` but leaves the default in place, so out of the box the redirect always wins; that handler only runs in a project that renders `SwVariantConfigurator` itself with `:allow-redirect="false"`. `vue-starter-template` has no selector of its own — it extends `@shopware/cms-base-layer`, so a CMS-rendered product page gets that one as-is. Read it before writing your own.
+`cms-base-layer` ships that second half: `SwVariantConfigurator` renders the groups and resolves the variant, with an `allowRedirect` prop that is `true` by default. `vue-starter-template` has no selector of its own — it extends `@shopware/cms-base-layer`, so a CMS-rendered product page gets that one as-is. Read it before writing your own, and read it knowing what it does with a miss.
+
+At the default it navigates on every change, including the ones that resolve nothing. `getProductRoute(undefined)` carries `path: "/"`, and `buildUrlPrefix` always returns an object, so the component's `allowRedirect && path` guard never blocks anything: an unavailable combination sends the customer to the home page, or to `/<prefix>/` on a localised storefront. Pass `:allow-redirect="false"` and handle the miss yourself if that is not what you want.
+
+The same default makes the `change` event unreachable. `CmsElementBuyBox` wires it to `changeVariant`, but only a project that renders `SwVariantConfigurator` itself with `:allow-redirect="false"` ever receives it. The `try`/`catch` around the component's `router.push` is synchronous around a promise, so nothing a navigation produces lands in it either.
 
 ## Request Flow
 
