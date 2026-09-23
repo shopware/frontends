@@ -30,11 +30,15 @@ You don't need to create a cart explicitly. Upon calling `refreshCart`, a new ca
 Internally, Shopware's Store API uses the `sw-context-token` header parameter to identify the current user and their cart.
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/create-a-cart.ts" code lang="ts" no-name -->
+
 ```ts
 const { refreshCart } = useCart();
 
 await refreshCart();
 ```
+
+<!-- /automd -->
 
 The `refreshCart` method is called automatically after any action within the cart (add product, remove item, etc.), but can be used explicitly if there was some request made outside the composables, for the same session context.
 
@@ -50,6 +54,8 @@ The `useCart` composable also offers methods to add items to the cart, such as
 ### Add product to the cart
 
 You can use the `useAddToCart` composable to add a product to the cart:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-product-to-the-cart.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -67,9 +73,13 @@ const { addProduct, quantity, getAvailableStock } = useAddToCart({
 </template>
 ```
 
+<!-- /automd -->
+
 ### Add promotion to the cart
 
 The process of adding a promotions code is just as straightforward as adding a product to the cart. You can use the `appliedPromotionCodes` field to receive a list of all applied promotion codes.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-promotion-to-the-cart.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -82,11 +92,15 @@ const { addPromotionCode, appliedPromotionCodes } = useCart();
 </template>
 ```
 
+<!-- /automd -->
+
 Promitions will appear as a line item in the cart with a negative price.
 
 ## Display the cart items
 
 Once the products are added to the cart, the can be accessed through the `cartItems` reference. In a similar fashion, you can access other information like `totalPrice`, `subtotal` or `cartErrors` which can occur in the case of invalid cart configurations.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/display-the-cart-items.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -104,6 +118,8 @@ const { cartItems, totalPrice, count } = useCart();
 </template>
 ```
 
+<!-- /automd -->
+
 Find a table of commonly used properties of cart items below:
 
 | Property       | Description                                                                                                                           |
@@ -120,6 +136,8 @@ Find a table of commonly used properties of cart items below:
 
 The `changeProductQuantity` method can be used to change the quantity of a cart item.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/change-the-quantity-of-a-cart-item.ts" code lang="ts" no-name -->
+
 ```ts
 const { changeProductQuantity } = useCart();
 
@@ -131,9 +149,13 @@ const cartItem: LineItem = {
 changeProductQuantity(cartItem);
 ```
 
+<!-- /automd -->
+
 ## Remove a cart item
 
 You can remove items from the cart using the `useCart` or the `useCartItem` composables:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item.ts" code lang="ts" no-name -->
 
 ```ts
 const { removeItem } = useCart();
@@ -141,7 +163,11 @@ const { removeItem } = useCart();
 await removeItem({ id: "7b5b97bd48454979b14f21c8ef38ce08" });
 ```
 
+<!-- /automd -->
+
 In case of the `useCartItem` composable, you pass the item identifier when calling the composable, but not when calling the `removeItem` method.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item-2.ts" code lang="ts" no-name -->
 
 ```ts
 const { cartItem } = toRefs(props);
@@ -149,6 +175,8 @@ const { removeItem } = useCartItem(cartItem);
 
 await removeItem();
 ```
+
+<!-- /automd -->
 
 ## Full example: simple cart UI
 
@@ -163,6 +191,8 @@ This cart is positioned sticky on the right side of the screen and shows a basic
 <img src="../../.assets/e-commerce/cart/simple-cart-md.png" alt="Preview of a simple cart UI" class="p-3 border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 </div>
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/full-example-simple-cart-ui.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -212,3 +242,5 @@ onMounted(() => {
   </div>
 </template>
 ```
+
+<!-- /automd -->

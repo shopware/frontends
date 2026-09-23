@@ -19,6 +19,8 @@ You can activate the maintenance mode of your store by selecting your sales chan
 
 Maintenance mode is returned as an error from all of the endpoints. We can detect it by using `onResponseError` hook.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/detecting-maintenance-mode-via-api.ts" code lang="ts" no-name -->
+
 ```ts
 import { isMaintenanceMode } from "@shopware/helpers";
 
@@ -34,6 +36,8 @@ apiClient.hook("onResponseError", (response) => {
 });
 ```
 
+<!-- /automd -->
+
 ## Displaying maintenance page
 
 :::warning
@@ -43,6 +47,8 @@ This example is for Nuxt 3 apps
 ### Throwing MAINTENANCE_MODE error
 
 Every error thrown within the application is automatically caught and the `error.vue` page is displayed.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/throwing-maintenance-mode-error.ts" code lang="ts" no-name -->
 
 ```ts
 import { isMaintenanceMode } from "@shopware/helpers";
@@ -58,7 +64,11 @@ apiClient.hook("onResponseError", (response) => {
 });
 ```
 
+<!-- /automd -->
+
 ### Displaying maintenance mode page
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/displaying-maintenance-mode-page.vue" code lang="vue" no-name -->
 
 ```vue
 // error.vue
@@ -80,6 +90,8 @@ const isMaintenanceMode = computed(() => {
   <div v-if="isMaintenanceMode">Maintenance Mode Page Content</div>
 </template>
 ```
+
+<!-- /automd -->
 
 ### IP Allowlisting
 

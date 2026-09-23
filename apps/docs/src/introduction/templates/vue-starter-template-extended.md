@@ -18,15 +18,21 @@ This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) a
 
 Scaffold both templates side by side:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template vue-starter-template
 npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-store
 ```
 
+<!-- /automd -->
+
 Update the `lumora-store/package.json` to reference local paths instead of workspace protocol:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup.diff" code lang="diff" no-name -->
+
 ```diff
-  "dependencies": {
+"dependencies": {
 -   "vue-starter-template": "workspace:*"
 +   "vue-starter-template": "file:../vue-starter-template"
   },
@@ -36,12 +42,18 @@ Update the `lumora-store/package.json` to reference local paths instead of works
   }
 ```
 
+<!-- /automd -->
+
 Then install and run:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-2.sh" code lang="bash" no-name -->
 
 ```bash
 cd lumora-store
 npm i && npm run dev
 ```
+
+<!-- /automd -->
 
 :::tip
 This setup works with **npm**, **yarn**, **pnpm**, or **bun**.
@@ -62,6 +74,8 @@ Lumora is a fictional brand selling modern home scents (candles, reed diffusers,
 
 This template extends the Vue Starter Template using Nuxt's layer system:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/layer-architecture.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -69,6 +83,8 @@ export default defineNuxtConfig({
   // ... Lumora-specific configuration
 });
 ```
+
+<!-- /automd -->
 
 ### What You Inherit
 
@@ -85,6 +101,8 @@ By extending the base template, you automatically get:
 
 The extended template contains only:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/what-you-customize" code no-name -->
+
 ```
 lumora-store/
 ├─ app/
@@ -95,11 +113,15 @@ lumora-store/
 └─ package.json            # Dependencies
 ```
 
+<!-- /automd -->
+
 ## Customization Example
 
 ### Brand Color Configuration
 
 The template demonstrates how to customize the image placeholder color using `app.config.ts`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/brand-color-configuration.ts" code lang="ts" no-name -->
 
 ```ts
 // app/app.config.ts
@@ -110,11 +132,15 @@ export default defineAppConfig({
 });
 ```
 
+<!-- /automd -->
+
 This setting is used by the `useImagePlaceholder` composable from `@shopware/cms-base-layer`.
 
 ### Theme Customization
 
 Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on top of the shared base config generated from the extended layers:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/theme-customization.ts" code lang="ts" no-name -->
 
 ```ts
 // uno.config.ts
@@ -134,9 +160,13 @@ export default mergeConfigs([
 ]);
 ```
 
+<!-- /automd -->
+
 ## Overriding Components
 
 To override a component from the base template, create a file with the same name in your `app/components/` directory:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/overriding-components" code no-name -->
 
 ```
 lumora-store/
@@ -146,6 +176,8 @@ lumora-store/
       layout/
         LayoutHeader.vue # Overrides base header
 ```
+
+<!-- /automd -->
 
 Nuxt automatically prioritizes your local components over the base template components.
 
@@ -159,14 +191,20 @@ Only maintain code that differs from the base template. In this example, the ent
 
 When the base template improves (bug fixes, new features), you can update it without touching your customizations:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/2-automatic-updates.sh" code lang="bash" no-name -->
+
 ```bash
 # Update base template dependency
 npm update vue-starter-template
 ```
 
+<!-- /automd -->
+
 ### 3. Multiple Brands
 
 Create multiple brand variants from a single base:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/3-multiple-brands" code no-name -->
 
 ```
 my-monorepo/
@@ -175,6 +213,8 @@ my-monorepo/
 ├─ another-brand/             # Brand B (extends base)
 └─ premium-brand/             # Brand C (extends base)
 ```
+
+<!-- /automd -->
 
 ### 4. Clean Separation
 
@@ -190,6 +230,8 @@ Your brand-specific code stays separate from the framework code, making it easie
 
 Instead of a local path, you can extend from an npm package:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-from-npm-package.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -198,9 +240,13 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 ### Extend Multiple Layers
 
 You can extend multiple layers:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-multiple-layers.ts" code lang="ts" no-name -->
 
 ```ts
 // nuxt.config.ts
@@ -209,9 +255,13 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 ## Production Deployment
 
 The extended template can be deployed like any Nuxt application:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/production-deployment.sh" code lang="bash" no-name -->
 
 ```bash
 # Build for production
@@ -220,6 +270,8 @@ npm run build
 # Preview production build
 npm run preview
 ```
+
+<!-- /automd -->
 
 <PageRef page="https://nuxt.com/docs/getting-started/deployment" target="blank" title="Nuxt Deployment Guide" sub="Learn how to deploy your Nuxt application to various platforms" />
 

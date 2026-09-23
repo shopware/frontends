@@ -20,6 +20,8 @@ In this chapter, you will learn how to
 
 Let us start by providing some reactive objects and input elements to get customer login credentials from the browser.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/build-the-form.vue" code lang="vue{3,4,10,11}" no-name -->
+
 ```vue{3,4,10,11}
 <script setup lang="ts">
     const loginCredentials = reactive({
@@ -38,11 +40,15 @@ Let us start by providing some reactive objects and input elements to get custom
 </template>
 ```
 
+<!-- /automd -->
+
 ## Manage the user session
 
 Now, the presentation layer has all required fields to perform a login process.
 
 In the next step, use the `useUser` composable. It provides user data, login methods, and other interfaces.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/manage-the-user-session.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -59,11 +65,15 @@ const invokeLogin = () => login(loginCredentials);
 ...
 ```
 
+<!-- /automd -->
+
 The `invokeLogin` method is triggered using the `@click` event of the button. It executes the `login()` method from the `useUser` composable, accepting `loginCredentials` (the `v-model` of inputs) as an argument.
 
 ## Display user data
 
 If the login process was successful, the `isLoggedIn` computed property becomes `true`. Now we can use `user` object to access customer data.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/display-user-data.vue" code lang="vue{2,6}" no-name -->
 
 ```vue{2,6}
 <template>
@@ -77,6 +87,8 @@ If the login process was successful, the `isLoggedIn` computed property becomes 
 </template>
 ```
 
+<!-- /automd -->
+
 The example above shows the conditional visibility of content depending on the customer's logged in state.
 
 ## Handle authentication errors
@@ -84,6 +96,8 @@ The example above shows the conditional visibility of content depending on the c
 To finish, we would like to inform the user about problems that may appear during the authentication.
 
 In order to achieve it, the `errors` computed ref can be used:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/handle-authentication-errors.vue" code lang="vue{5}" no-name -->
 
 ```vue{5}
 <template>
@@ -95,9 +109,13 @@ In order to achieve it, the `errors` computed ref can be used:
 </template>
 ```
 
+<!-- /automd -->
+
 The example explains how to display only the first error that may appear in the response while processing the `login` method (see, the `errors` computed has prefixed `login` nested object).
 
 ## Full example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/full-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -130,5 +148,7 @@ const invokeLogin = () => login(loginCredentials);
 }
 </style>
 ```
+
+<!-- /automd -->
 
 <StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/login-form" openPath="/" />

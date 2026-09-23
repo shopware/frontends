@@ -19,6 +19,8 @@ Make sure, you've created a new file as described in [customize components](cust
 
 Next, import the correct type for your block and use it to define the `content` property:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/example.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
 <script setup lang="ts">
@@ -29,6 +31,8 @@ const props = defineProps<{
 }>();
 </script>
 ```
+
+<!-- /automd -->
 
 ## Slots
 
@@ -41,6 +45,8 @@ Since blocks are usually layouts, they have slots which can be filled with dynam
 For that reason, there's a generic element `CmsGenericElement` which can be placed in every slot. It receives the `content` configuration as its only prop.
 
 Let's build the `image-three-column` block, which has three slots - `left`, `center` and `right`.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/slots.vue" code lang="vue{4-15}" no-name -->
 
 ```vue{4-15}
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
@@ -62,7 +68,11 @@ Let's build the `image-three-column` block, which has three slots - `left`, `cen
 </template>
 ```
 
+<!-- /automd -->
+
 That works, but it's quite repetiive and hard to read. So we can use another composable `useCmsBlock` which makes our lives way easier.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/slots-2.vue" code lang="vue{8,10-12,16-18}" no-name -->
 
 ```vue{8,10-12,16-18}
 <script setup lang="ts">
@@ -86,5 +96,7 @@ const centerContent = getSlotContent("center");
     </div>
 </template>
 ```
+
+<!-- /automd -->
 
 No you can go ahead and override blocks and elements step by step.

@@ -25,6 +25,8 @@ By default, the broadcasting feature is disabled in the Vue-Demo template. To en
 2. Locate the broadcasting configuration setting.
 3. Set the `broadcasting` property to `true` as shown below:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/broadcasting/enabling-broadcasting-in-vue-demo-template.ts" code lang="typescript" no-name -->
+
 ```typescript
 export default defineNuxtConfig({
   // Other configurations...
@@ -33,6 +35,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 For more information, please visit the [troubleshooting page](https://developer.shopware.com/frontends/resources/troubleshooting.html#broadcasting-and-bfcache-compatibility)
 

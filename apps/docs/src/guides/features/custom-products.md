@@ -39,6 +39,8 @@ Works only if the `useProduct` is fulfilled and the product data is known. Typic
 Visit the [useProduct]/packages/composables.html#useproduct) reference to see more details.
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.ts" code lang="ts" no-name -->
+
 ```ts
 // useProductCustomizedProductConfigurator is autoimported
 // in vue-demo-store template as it's located in ~/composables
@@ -50,6 +52,8 @@ const {
   handleFileUpload, // uploads an image, then gets mediaId from API and assigns it to the state
 } = useProductCustomizedProductConfigurator();
 ```
+
+<!-- /automd -->
 
 ## Presentation: Vue component
 
@@ -63,6 +67,8 @@ The component is responsible for:
 ## Implementation
 
 Add the mentioned component in a template. For instance in `<ProductStatic/>` for templates that not come from CMS:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.html" code lang="html{9}" no-name -->
 
 ```html{9}
 <!-- part of templates/vue-demo-store/components/product/ProductStatic.vue -->
@@ -79,7 +85,11 @@ Add the mentioned component in a template. For instance in `<ProductStatic/>` fo
 </div>
 ```
 
+<!-- /automd -->
+
 Overwrite a logic in `<ProductAddToCart/>` (or any other responsible for adding a product to cart in your template):
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.ts" code lang="ts{3-6,9-10}" no-name -->
 
 ```ts{3-6,9-10}
 // part of templates/vue-demo-store/components/product/ProductAddToCart.vue;
@@ -97,6 +107,8 @@ const addToCartProxy = async () => {
   }
 ...
 ```
+
+<!-- /automd -->
 
 Used composable function allows to use `addToCart()` method and `isActive` computed property. Both are described in "Example of usage" chapter above.
 

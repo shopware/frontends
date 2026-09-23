@@ -22,15 +22,21 @@ Axe Core is an open-source accessibility testing engine used for automated web t
 Playwright and e2e tests can also be used to test application for many types of accessibility issues.
 By default, axe checks against a wide variety of accessibility rules, but rules can be defined easily at the test level
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/axe-core.js" code lang="js" no-name -->
+
 ```js
 const accessibilityScanResults = await new AxeBuilder({ page })
   .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
   .analyze();
 ```
 
+<!-- /automd -->
+
 ## Example accessibility tests
 
 Using the ax core library is practically no different from typical work with playwright. You can create tests for each page from scratch or integrate accessibility scans and assertions into your existing test cases.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/example-accessibility-tests.js" code lang="js" no-name -->
 
 ```js
 import { test, expect } from '@playwright/test';
@@ -46,7 +52,11 @@ test('Check accessibility violations', async ({ page }) => {
       expect(accessibilityScanResults.violations).toEqual([]);
 ```
 
+<!-- /automd -->
+
 You can also run tests for a specific part of the page
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/example-accessibility-tests-2.js" code lang="js" no-name -->
 
 ```js
 test("navigation menu should not have automatically detectable accessibility violations", async ({
@@ -68,3 +78,5 @@ test("navigation menu should not have automatically detectable accessibility vio
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 ```
+
+<!-- /automd -->

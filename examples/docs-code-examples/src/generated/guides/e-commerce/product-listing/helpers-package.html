@@ -1,0 +1,9 @@
+<img
+  :src="getSmallestThumbnailUrl(product)"
+  width="100"
+  height="100"
+  :alt="product.name"
+/>
+<a :href="getProductUrl(product)">
+  {{ getTranslatedProperty(product, "name") }}
+</a>

@@ -68,10 +68,14 @@ Supported managers:
 :::tip Template Compatibility
 All main templates (`vue-starter-template`, `vue-blank`, `astro`) work with **any package manager** after scaffolding. The documentation examples use `npm` for universal compatibility:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/requirements/package-manager.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
 npm i && npm run dev
 ```
+
+<!-- /automd -->
 
 **Note:** The `vue-starter-template-extended` template uses Nuxt layers and requires additional setup. See the [template documentation](../introduction/templates/vue-starter-template-extended.html#setup-run) for instructions.
 :::

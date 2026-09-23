@@ -36,6 +36,8 @@ You can use the `useWishlist` composable to get the wishlist products.
 `getWishlistProducts` method will detect if the customer is logged in or not
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/get-wishlist.vue" code lang="vue" no-name -->
+
 ```vue
 <script>
 import type { Schemas } from "#shopware";
@@ -96,6 +98,8 @@ onMounted(async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 ## Add product to the wishlist
 
 You can use the `useProductWishlist` composable to add a product to the wishlist.
@@ -105,6 +109,8 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 :::tip
 `addToWishlist` method will detect if the customer is logged in or not
 :::
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/add-product-to-the-wishlist.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -122,6 +128,8 @@ const { addToWishlist, isInWishlist } = useProductWishlist(product);
 </template>
 ```
 
+<!-- /automd -->
+
 ## Remove product from the wishlist
 
 You can use the `useProductWishlist` composable to remove a product from the wishlist.
@@ -131,6 +139,8 @@ To avoid such a situation, `isInWishlist` property should protect `removeFromWis
 :::tip
 `removeFromWishlist` method will detect if the customer is logged in or not
 :::
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/remove-product-from-the-wishlist.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -148,9 +158,13 @@ const { removeFromWishlist, isInWishlist } = useProductWishlist(product);
 </template>
 ```
 
+<!-- /automd -->
+
 ## Merge wishlists
 
 To synchronize the local wishlist with the remote wishlist (associated with the user's account), the `mergeWishlistProducts()` method must be triggered after the customer has logged in.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/merge-wishlists.vue" code lang="vue{10}" no-name -->
 
 ```vue{10}
 <script setup lang="ts">
@@ -200,3 +214,5 @@ const invokeLogin = async (): Promise<void> => {
   </form>
 </template>
 ```
+
+<!-- /automd -->

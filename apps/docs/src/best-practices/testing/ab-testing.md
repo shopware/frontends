@@ -40,6 +40,8 @@ Before you start your A/B test, you should have a clear hypothesis. What do you 
 
 You should split your components dynamically. This will help you to avoid enlarged bundle sizes. You can use the `import()` function to load components on demand. Example:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/split-components-dynamically-to-avoid-enlagred-bundle-sizes.ts" code lang="ts" no-name -->
+
 ```ts
 const myExperimentFlag = useABTesting("myExperimentFlag");
 
@@ -50,9 +52,13 @@ const MyComponent = myExperimentFlag ? import("./MyComponentVariantA") : import(
 <MyComponent />
 ```
 
+<!-- /automd -->
+
 ### Testing smaller components
 
 While dynamic splitting is very effective to avoid loading too much code to the client's browser, this would not be efficient with some very small components. For example if you only want to test a different button variant, then in most cases it could be done in a single component. Example:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/testing-smaller-components.ts" code lang="ts" no-name -->
 
 ```ts
 const myExperimentFlag = useABTesting("myExperimentFlag");
@@ -69,6 +75,8 @@ const myExperimentFlag = useABTesting("myExperimentFlag");
 <button v-if="myExperimentFlag" class="bg-color-red"> Click me </button>
 <button v-else class="bg-color-blue"> Click me please! </button>
 ```
+
+<!-- /automd -->
 
 ### Clean your code
 

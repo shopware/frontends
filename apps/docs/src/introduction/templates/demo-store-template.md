@@ -18,10 +18,14 @@ The **Demo Store Template** is a reference implementation. It is under constant 
 
 Alternatively, set up the vue-demo-store template manually by running the following commands in a new directory:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/demo-store-template/setup-run.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-demo-store demo-store && cd demo-store
 npm i && npm run dev
 ```
+
+<!-- /automd -->
 
 The vue-demo-store template is connected to a Shopware Cloud instance by default. However, you can change the [configuration](#configure) to use your own instance.
 
@@ -30,6 +34,8 @@ We recommend using [devenv](https://developer.shopware.com/docs/guides/installat
 ## Directory structure
 
 The directory structure is the same as in a [default Nuxt project](https://nuxtjs.org/docs/get-started/directory-structure/):
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/demo-store-template/directory-structure.json" code lang="json" no-name -->
 
 ```json
 demo-store/
@@ -51,6 +57,8 @@ demo-store/
 ├─ package.json
 ├─ tsconfig.json
 ```
+
+<!-- /automd -->
 
 The `components` directory contains components that have been extracted from their corresponding page components, so these become more readable. The components within `components` are organized based on the page and layout components they are used in. The `shared` directory contains generic components that are used across multiple pages and layouts.
 
@@ -74,6 +82,8 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/demo-store-template/configure.ts" code lang="ts" no-name -->
+
 ```ts
 /* ... */
 export default defineNuxtConfig({
@@ -94,6 +104,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 

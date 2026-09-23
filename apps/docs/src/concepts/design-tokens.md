@@ -37,6 +37,8 @@ Every token name follows the pattern **`<category>-<role>[-<variant>]`**.
 
 Because the tokens are registered as Uno `theme.colors`, they work with every color utility:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/design-tokens/usage.html" code lang="html" no-name -->
+
 ```html
 <div class="bg-brand-primary text-brand-on-primary">Primary button</div>
 
@@ -49,9 +51,13 @@ Because the tokens are registered as Uno `theme.colors`, they work with every co
 <div class="bg-overlay-dark-high">Dark overlay at 50 % opacity</div>
 ```
 
+<!-- /automd -->
+
 ## Customising tokens
 
 Override or extend tokens in your project's `uno.config.ts`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/design-tokens/customising-tokens.ts" code lang="ts" no-name -->
 
 ```ts
 theme: {
@@ -61,6 +67,8 @@ theme: {
   },
 }
 ```
+
+<!-- /automd -->
 
 The documentation keeps a copy of the token map in [`apps/docs/.vitepress/data/design-tokens-colors.ts`](https://github.com/shopware/frontends/blob/main/apps/docs/.vitepress/data/design-tokens-colors.ts), aligned with [`packages/unocss-design-tokens-layer/uno.config.ts`](https://github.com/shopware/frontends/blob/main/packages/unocss-design-tokens-layer/uno.config.ts). Use the export button below to grab the full snippet ready to paste into your Uno config.
 

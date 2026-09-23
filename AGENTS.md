@@ -258,6 +258,24 @@ Generates optimized CSS `url()` values for CMS background images. Accepts an opt
 
 Templates are starter projects demonstrating different use cases and setups.
 
+## Docs Code Examples
+
+Code examples in `apps/docs/src` must be sourced from real files instead of
+hand-written fenced blocks. Put shared docs snippets in
+`examples/docs-code-examples` by default, or in a dedicated `examples/*` project
+when the scenario already needs its own setup. Include snippets with
+`automd:file` comments so `pnpm generateAutomd` materializes the fenced block in
+markdown. Prefer small focused files or line ranges over dumping a full page into
+the docs.
+
+When editing docs examples:
+
+- Do not add new inline fenced code blocks under `apps/docs/src`.
+- Keep TypeScript and Vue snippets compilable when practical, and run
+  `pnpm --filter example-docs-code-examples typecheck` after changing snippets.
+- Run `pnpm generateAutomd` after changing any automd-backed source file or
+  include comment.
+
 ### vue-demo-store
 
 **Purpose**: Full-featured reference implementation

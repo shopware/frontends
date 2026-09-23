@@ -98,15 +98,21 @@ If the component belongs to a custom plugin or you created the block yourself in
 
 Create the file anywhere inside your `components/` directory. Nuxt picks it up automatically as a global component:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-1-create-the-file" code no-name -->
+
 ```
 your-project/
 └── components/
     └── {{ componentName }}.vue   ← create this
 ```
 
+<!-- /automd -->
+
 ## Step 2 — Define the props
 
 Every CMS component receives a single `content` prop. Use the Shopware schema type matching the CMS node type:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -118,6 +124,8 @@ const props = defineProps<{
 }>();
 </script>
 ```
+
+<!-- /automd -->
 
 ## Step 3 — Render the content
 
@@ -132,6 +140,8 @@ Use the **copy AI prompt** button on the placeholder to get a pre-filled prompt 
 A minimal working {{ cmsType }}:
 
 <div v-if="cmsType === 'block'">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -153,9 +163,13 @@ const mainContent = getSlotContent("main");
 </template>
 ```
 
+<!-- /automd -->
+
 </div>
 
 <div v-else>
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -177,6 +191,8 @@ const title = props.content.config?.title?.value as string | undefined;
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 </div>
 

@@ -28,6 +28,8 @@ Which means if you need to work with images, ensure the requests contains additi
 
 Example of request's payload with media association included, to avoid an empty `media` object within the response:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/example.json" code lang="json" no-name -->
+
 ```json
 {
   "associations": {
@@ -35,6 +37,8 @@ Example of request's payload with media association included, to avoid an empty 
   }
 }
 ```
+
+<!-- /automd -->
 
 :::
 
@@ -50,6 +54,8 @@ Media objects can be used in many places, such as:
 Regardless the outer container (see [ProductMedia](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/product/ProductMedia.d.ts#L8) as example) an image object can be wrapped with, the inner structure is reflected in type definition at [Media](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/media/Media.d.ts#L23)
 
 Let's have a look what's inside:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/structure-of-media-objects.json" code lang="json" no-name -->
 
 ```json
 {
@@ -87,6 +93,8 @@ Let's have a look what's inside:
 }
 ```
 
+<!-- /automd -->
+
 The media object, and its `thumbnails` list, contain all required information about the file to be used in the browser like URL and sizes.
 
 ## Thumbnails and resolutions
@@ -111,6 +119,8 @@ There are few functions that could be used to extract some crucial information a
 
 Example how to work with Product's main image:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/helpers.ts" code lang="ts" no-name -->
+
 ```ts
 import { getMainImageUrl } from "@shopware/helpers";
 
@@ -118,9 +128,13 @@ const coverUrl = getMainImageUrl(product);
 // coverUrl is now an URL to the resource (or undefined)
 ```
 
+<!-- /automd -->
+
 ## Responsive Images
 
 Having additional information about resized images (see `thumbnails` array in `Media` object), we are able to use them to define [srcset](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-srcset) attribute for `<img>`.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/responsive-images.vue" code lang="vue{8}" no-name -->
 
 ```vue{8}
 <script>
@@ -142,6 +156,8 @@ const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.widt
   >
 </template>
 ```
+
+<!-- /automd -->
 
 ### Live example
 
@@ -172,6 +188,8 @@ Three.js and TresJS are large libraries. To avoid adding their weight to the ini
 
 The cms-base-layer provides the `SwMedia3D` component and the dynamic imports, but it does **not** ship the TresJS Nuxt module. To enable 3D rendering in your app, add `@tresjs/nuxt` to your Nuxt modules:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/enabling-3d-support.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -181,6 +199,8 @@ export default defineNuxtConfig({
   ],
 });
 ```
+
+<!-- /automd -->
 
 You do not need to register `SwMedia3D` manually. The cms-base-layer already dynamically imports it wherever spatial media is detected. Once `@tresjs/nuxt` is installed, GLB media in image elements, image galleries, and the Spatial Viewer block will render as interactive 3D viewers automatically.
 

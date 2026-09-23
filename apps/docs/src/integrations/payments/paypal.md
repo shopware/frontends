@@ -84,6 +84,8 @@ The PayPal SDK and all its methods should only be invoked on client side rendere
 
 In a Vue component we can use the `loadScript` method from the [`@paypal/paypal-js`](https://www.npmjs.com/package/@paypal/paypal-js) npm package:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk.ts" code lang="ts" no-name -->
+
 ```ts
 import { loadScript } from "@paypal/paypal-js";
 
@@ -96,6 +98,8 @@ loadScript({
 });
 ```
 
+<!-- /automd -->
+
 Now, the `paypal` object will be available in the global `window` object.
 
 Alternatively, the `loadScript` function returns a promise resolving to the paypal object. This can be useful if you want to load the script multiple times with different options. Note that you must delete `window.paypal` first.
@@ -103,6 +107,8 @@ Alternatively, the `loadScript` function returns a promise resolving to the payp
 ### Register the buttons
 
 In order to display a PayPal Button component, we need to mount it in the DOM.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.ts" code lang="ts" no-name -->
 
 ```ts
 const divContainer = ref();
@@ -115,6 +121,8 @@ window.paypal
   .render(divContainer);
 // this script will mount the component in element `divContainer`
 ```
+
+<!-- /automd -->
 
 ## React on PayPal events
 
@@ -129,6 +137,8 @@ There are additional events like `onInit`, `onClick`, `onCancel` or `onError` (a
 
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal checkout button.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.ts" code lang="ts" no-name -->
 
 ```ts
 const divContainer = ref();
@@ -146,10 +156,14 @@ window.paypal
   .render(divContainer);
 ```
 
+<!-- /automd -->
+
 ### `createOrder` event (Express)
 
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal express checkout button.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.ts" code lang="ts" no-name -->
 
 ```ts
 const divContainer = ref();
@@ -171,6 +185,8 @@ window.paypal
   .render(divContainer);
 ```
 
+<!-- /automd -->
+
 The approach here is to set the payment method internally, then add a current product to the cart, and then prepare a PayPal token to be used later on.
 
 In the example above we do a couple of things:
@@ -183,8 +199,10 @@ In the example above we do a couple of things:
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event.ts" code lang="ts" no-name -->
+
 ```ts
-  ...
+...
   // part of window.paypal.Buttons({}) params
   onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
     // createOrder from useCheckout composable
@@ -212,14 +230,18 @@ This event is called when the user approves the payment process. It's the last s
   ...
 ```
 
+<!-- /automd -->
+
 The example above shows the code that is executed after a payer approves the PayPal popup. This function calls `createOrder()` which creates an order through the Store-API. Once the order is created, its `id` can be used to invoke the `handle-payment` action to process payment. This action captures the money or redirects the user to an external payment gateway.
 
 ### `onApprove` event (Express)
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event-express.ts" code lang="ts" no-name -->
+
 ```ts
-  ...
+...
   // part of window.paypal.Buttons({}) params
   onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
     await apiClient.invoke(
@@ -255,6 +277,8 @@ This event is called when the user approves the payment process. It's the last s
   ...
 ```
 
+<!-- /automd -->
+
 The example above shows the code that is executed after a payer approves the PayPal popup. This function calls the `prepare-checkout` endpoint to register the upcoming PayPal transaction.
 
 Thanks to the internal logic of the PayPal extension, the is already connected with the logged in customer. Now you can call `createOrder()` which creates an order through the Store-API. Once the order is created, its `id` can be used to invoke the `handle-payment` action to process payment. This action captures the money or redirects the user to an external payment gateway.
@@ -274,6 +298,8 @@ For reference check out [PayPal's documentation](https://developer.paypal.com/do
 
 The `createOrder` and `onApprove` events are the same for all payment methods.
 The only difference is the product used to create the order.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/shared-behaviour-of-createorder-and-onapprove.ts" code lang="ts" no-name -->
 
 ```ts
 async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlepay' | 'applepay' | 'venmo') {
@@ -310,9 +336,13 @@ async function onApprove(data: { orderID: string }) {
 }
 ```
 
+<!-- /automd -->
+
 ### Load the PayPal SDK including the additional payment methods
 
 Depending on the type of the payment method and how it integrates with PayPal, you need to add it to `enable-funding` or `components`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk-including-the-additional-payment-methods.ts" code lang="ts" no-name -->
 
 ```ts
 import { loadScript } from "@paypal/paypal-js";
@@ -326,7 +356,11 @@ loadScript({
 });
 ```
 
+<!-- /automd -->
+
 ### Pay Later
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.ts" code lang="ts" no-name -->
 
 ```ts
 const divContainer = ref();
@@ -342,7 +376,11 @@ window.paypal
   .render(divContainer);
 ```
 
+<!-- /automd -->
+
 ### Venmo
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.ts" code lang="ts" no-name -->
 
 ```ts
 const divContainer = ref();
@@ -358,7 +396,11 @@ window.paypal
   .render(divContainer);
 ```
 
+<!-- /automd -->
+
 ### Credit card (ACDC)
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc.ts" code lang="ts" no-name -->
 
 ```ts
 const cardFields = paypal.CardFields({
@@ -390,7 +432,11 @@ const expiryField = cardFields.ExpiryField({
 expiryField.render("#acdc-expiry-field-container");
 ```
 
+<!-- /automd -->
+
 Upon form submit via your own rendered button you need to check the validity of the card fields:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc-2.ts" code lang="ts" no-name -->
 
 ```ts
 async function onFormSubmit() {
@@ -411,11 +457,15 @@ async function onFormSubmit() {
 }
 ```
 
+<!-- /automd -->
+
 After submitting the card fields, the `onApprove` event will be triggered.
 
 ### Google Pay
 
 For Google Pay to work, you need to load the Google Pay script in the head of your HTML document.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.html" code lang="html" no-name -->
 
 ```html
 <head>
@@ -424,7 +474,11 @@ For Google Pay to work, you need to load the Google Pay script in the head of yo
 </head>
 ```
 
+<!-- /automd -->
+
 Now you can render the Google Pay button in your frontend:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.ts" code lang="ts" no-name -->
 
 ```ts
 const { cart, totalPrice } = useCart();
@@ -545,9 +599,13 @@ async function onPaymentAuthorized(paymentData) {
 }
 ```
 
+<!-- /automd -->
+
 ### Apple Pay
 
 For Apple Pay to work, you need to load the Apple Pay script in the head of your HTML document.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.html" code lang="html" no-name -->
 
 ```html
 <head>
@@ -556,7 +614,11 @@ For Apple Pay to work, you need to load the Apple Pay script in the head of your
 </head>
 ```
 
+<!-- /automd -->
+
 Now you can render the Apple Pay button in your frontend:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.ts" code lang="ts" no-name -->
 
 ```ts
 const { totalPrice } = useCart();
@@ -662,3 +724,5 @@ async function onPaymentAuthorized(session, billingContact, paymentData) {
   }
 }
 ```
+
+<!-- /automd -->

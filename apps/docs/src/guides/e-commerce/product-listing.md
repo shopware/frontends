@@ -30,12 +30,16 @@ Before using the composable, define the type related to the context:
 - `categoryListing` for navigation/category/cms pages
 - `productSearchListing` for search page
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/listing-type-and-context.ts" code lang="ts{3}" no-name -->
+
 ```ts{3}
 const { search, getElements } = useListing({
   listingType: "categoryListing",
   categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
 });
 ```
+
+<!-- /automd -->
 
 The `categoryId` is obligatory only if the current page is not a result of using `useCms` composable (generated from Shopping Experiences).
 
@@ -46,6 +50,8 @@ If the `useListing` composable is used within a CMS Page, `categoryId` is resolv
 ## Define search criteria
 
 In order to get the expected products, we need to define the search criteria. This criteria is an object of type Search Parameters explained in [documentation of API](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries).
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/define-search-criteria.ts" code lang="ts" no-name -->
 
 ```ts
 const { search } = useListing();
@@ -62,6 +68,8 @@ search({
 });
 ```
 
+<!-- /automd -->
+
 :::tip
 Don't use [`includes`](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#includes-apialias) parameter if you want to have the whole entity object available in the response.
 :::
@@ -72,6 +80,8 @@ In order to display products of product listing we need to:
 
 - Invoke the `search()` method with a positive result
 - Iterate over `getElements` array of elements, where each element has the `Product` type.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/display-listing-elements.vue" code lang="vue{11,22}" no-name -->
 
 ```vue{11,22}
 <script setup lang="ts">
@@ -103,6 +113,8 @@ search({ // invoke search() method
 </template>
 ```
 
+<!-- /automd -->
+
 ## Sorting
 
 Available methods of `useListing` to manage sorting order:
@@ -110,6 +122,8 @@ Available methods of `useListing` to manage sorting order:
 - `getSortingOrders()` - returns all available sorting options
 - `getCurrentSortingOrder()` - returns the current order, available in the response
 - `changeCurrentSortingOrder()` - sets the new order, invoking a `search` method internally
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting.ts" code lang="ts{3-5}" no-name -->
 
 ```ts{3-5}
 // part of <script setup> section
@@ -127,7 +141,11 @@ const {
 });
 ```
 
+<!-- /automd -->
+
 Show all available sortings:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
@@ -143,7 +161,11 @@ Show all available sortings:
 </select>
 ```
 
+<!-- /automd -->
+
 Refresh the product listing on option's change:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.ts" code lang="ts{4-6}" no-name -->
 
 ```ts{4-6}
 const onOrderChange = (onOrderChangeEvent: Event) => {
@@ -155,28 +177,42 @@ const onOrderChange = (onOrderChangeEvent: Event) => {
 };
 ```
 
+<!-- /automd -->
+
 Add event listener to the `<select>` element:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.html" code lang="html" no-name -->
 
 ```html
 <select @change="onOrderChange"></select>
 ```
 
+<!-- /automd -->
+
 ## Enable adding to the cart
 
 To achieve this, you can use `useCart` composable which expose `addProduct` method, including other useful functions to manage a cart.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/enable-adding-to-the-cart.ts" code lang="ts" no-name -->
 
 ```ts
 // part of <script setup> section
 const { addProduct } = useCart();
 ```
 
+<!-- /automd -->
+
 Utilize the method in a template:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/enable-adding-to-the-cart.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
 <div>price: {{ product?.calculatedPrice?.unitPrice }} $</div>
 <button @click="addProduct(product)">Add to cart</button>
 ```
+
+<!-- /automd -->
 
 Now, when the customer clicks the `Add to cart` button, a proper request is sent to the API. The cart is then refreshed and is up to date in the entire application.
 
@@ -191,6 +227,8 @@ Pagination is available by using three methods from `useListing` composable:
 - `getCurrentPage`
 - `changeCurrentPage` - invokes `search()` method internally with the provided number of the page
 - `getTotalPagesCount` - calculates the number of available pages depending on products per page parameters (i.e. `limit` in search criteria)
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/add-pagination.ts" code lang="ts{5-7}" no-name -->
 
 ```ts{5-7}
 // part of <script setup> section
@@ -211,7 +249,11 @@ const {
 })
 ```
 
+<!-- /automd -->
+
 The implementation can look similar to:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/add-pagination.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
@@ -232,6 +274,8 @@ The implementation can look similar to:
   </button>
 </div>
 ```
+
+<!-- /automd -->
 
 ## Using Filters
 
@@ -259,13 +303,19 @@ The diagram explains the source of available filters. The API response contains 
 
 In order to get the list of available filters, use the following command:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.ts" code lang="ts" no-name -->
+
 ```ts
 const { getAvailableFilters } = useListing(/** parameters omitted */);
 ```
 
+<!-- /automd -->
+
 You can then iterate the filter objects available in the array. The filter object has a [ListingFilter](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L19) interface and depending on the `code`, or `displayType`, the handling process can be different. Let us have a closer look at it:
 
 `ListingFilter.code`: **manufacturer**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.vue" code lang="vue{15,17}" no-name -->
 
 ```vue{15,17}
 <script setup lang="ts">
@@ -334,6 +384,8 @@ const manufacturerFilter = {
 </template>
 ```
 
+<!-- /automd -->
+
 - All available options for the Manufacturer filter are displayed in `v-for` loop. See `entities` property for the same.
 - If the `manufacturer.id` is present in `getCurrentFilters['manufacturer']` array, set the option as checked.
 - On the `click` event, invoke `setCurrentFilters({code, value})` method with code (`manufacturer`) and value (specific manufacturer ID) provided.
@@ -345,6 +397,8 @@ const manufacturerFilter = {
 [Properties](https://docs.shopware.com/en/shopware-6-en/products/properties?category=shopware-6-en/catalogues) is a generic type of filter responsible for displaying property entities that can describe a product that is configured on the backend side.
 
 Despite being in the same filter group, every entity of property defined in the admin panel is available separately.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.ts" code lang="ts" no-name -->
 
 ```ts
 const ColorFilter: ListingFiler = {
@@ -365,12 +419,16 @@ const ColorFilter: ListingFiler = {
 };
 ```
 
+<!-- /automd -->
+
 ### Apply filter value
 
 In order to apply a specific filter you need to be aware of:
 
 - Filter code (see available codes at [ListingFilterCode](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L7))
 - Value
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/apply-filter-value.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -390,9 +448,13 @@ setCurrentFilters({
 </script>
 ```
 
+<!-- /automd -->
+
 ### Get list of applied (active) filters or its options
 
 <img src="../../.assets/filter.getCurrentFilters.svg" />
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-applied-active-filters-or-its-options.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -413,6 +475,8 @@ const { getCurrentFilters } = useListing(/** parameters omitted */);
   <!-- ["property-A-option-ID-1", "property-A-option-ID-2", "property-B-option-ID-1"]-->
 </template>
 ```
+
+<!-- /automd -->
 
 You can achieve that by comparing stored value with displayed one.
 
@@ -436,6 +500,8 @@ The purpose of `@shopware/helpers` is to make developer's life easier.
 
 In the present case, we could use the product's thumbnail or use the translated name, or even get the product details page's URL, if the application supports a routing.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/helpers-package.ts" code lang="ts" no-name -->
+
 ```ts
 // part of <script setup> section
 import {
@@ -444,6 +510,10 @@ import {
   getTranslatedProperty,
 } from "@shopware/helpers";
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/helpers-package.html" code lang="html" no-name -->
 
 ```html
 <img
@@ -456,6 +526,8 @@ import {
   {{ getTranslatedProperty(product, "name") }}
 </a>
 ```
+
+<!-- /automd -->
 
 ## Variants presentation
 
@@ -535,6 +607,8 @@ This listing shows the product name and price with soft hover effects and a fade
 
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/full-example-condensed-product-listing-ui.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { useProductSearchSuggest } from "@shopware/composables";
@@ -593,3 +667,5 @@ const { addProduct, refreshCart } = useCart();
   </div>
 </template>
 ```
+
+<!-- /automd -->

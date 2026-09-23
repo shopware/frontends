@@ -25,11 +25,17 @@ The Vue demonstration store incorporates a specific composable, `useProductJsonL
 
 As first parameter composable takes product object.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/json-ld/json-ld-in-vue-demo-store.ts" code lang="ts" no-name -->
+
 ```ts
 useProductJsonLD(productResponse.value.product);
 ```
 
+<!-- /automd -->
+
 ### Extending
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/json-ld/extending.ts" code lang="ts" no-name -->
 
 ```ts
 useProductJsonLD(productResponse.value.product, {
@@ -39,3 +45,5 @@ useProductJsonLD(productResponse.value.product, {
   },
 });
 ```
+
+<!-- /automd -->

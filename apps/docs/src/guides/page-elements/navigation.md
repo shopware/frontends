@@ -24,21 +24,31 @@ In this chapter you will learn how to
 
 We can retrieve the navigation of a store using the `useNavigation` composable hook.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/fetch-the-navigation.js" code lang="js" no-name -->
+
 ```js
 const { loadNavigationElements, navigationElements } = useNavigation();
 ```
 
+<!-- /automd -->
+
 The `navigationElements` property is a reactive reference to the navigation items which is updated as we fetch the navigation elements:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/fetch-the-navigation-2.js" code lang="js" no-name -->
 
 ```js
 await loadNavigationElements({ depth: 2 });
 ```
+
+<!-- /automd -->
 
 ## Build a navigation template
 
 Now all values can be accessed in the template to build a navigation menu
 
 Note that all the navigation items are in type `Category`, and thanks to this the `getCategoryUrl` helper can be used to extract the correct pretty URL or technical URL as a fallback.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/build-a-navigation-template.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -68,6 +78,8 @@ await loadNavigationElements({ depth: 2 });
 </template>
 ```
 
+<!-- /automd -->
+
 There is an additional attribute `target` used, in order to open a link in another window (external links or configured as `new tab` link).
 
 ## Full example: simple top navigation
@@ -83,6 +95,8 @@ Copy the snippet and paste it into your project. It's often useful to extract it
 <img src="../../.assets/page-elements/navigation/simple-navigation-sm.png" alt="Preview for small screen size" class="sm:hidden border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 </div>
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/full-example-simple-top-navigation.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -121,6 +135,8 @@ const isActive = (path: string) => {
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 ## Next steps
 

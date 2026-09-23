@@ -26,14 +26,20 @@ This template provides essential packages and configuration to start building yo
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/setup-run.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
 npm i && npm run dev
 ```
 
+<!-- /automd -->
+
 ## Directory structure
 
 The directory structure follows [Nuxt 4.x conventions](https://nuxt.com/docs/guide/directory-structure) with the `app/` directory:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/directory-structure.json" code lang="json" no-name -->
 
 ```json
 my-store/
@@ -66,6 +72,8 @@ my-store/
 ├─ tsconfig.json
 ```
 
+<!-- /automd -->
+
 The `app/components/` directory contains components organized by their usage context. The `app/composables/` directory contains auto-imported composables for shared logic.
 
 ## Customizing the template
@@ -87,6 +95,8 @@ One exception to the rule are CMS components. CMS components are handled as a se
 The Vue Starter Template is pre-configured to connect to a public Shopware backend, so you can start building right away.
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/configure.ts" code lang="ts" no-name -->
 
 ```ts
 /* ... */
@@ -110,6 +120,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 

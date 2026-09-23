@@ -52,6 +52,8 @@ A route can only be migrated to GET once its GET variant declares `_criteria` in
 
 For a Nuxt app, set it as a module option in `nuxt.config.ts`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.ts" code lang="ts" no-name -->
+
 ```ts
 export default defineNuxtConfig({
   shopware: {
@@ -60,7 +62,11 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 The flag is read from the public runtime config, so it is available on both server and client. For a non-Nuxt setup, pass it directly to `createShopwareContext`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { createShopwareContext } from "@shopware/composables";
@@ -71,7 +77,11 @@ const shopware = createShopwareContext(app, {
 app.use(shopware);
 ```
 
+<!-- /automd -->
+
 Inside a composable the flag is read from the Shopware context and used to branch the request:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it-3.ts" code lang="ts" no-name -->
 
 ```ts
 import { encodeForQuery } from "@shopware/api-client/helpers";
@@ -86,6 +96,8 @@ const result = cacheableReads
       body: criteria,
     });
 ```
+
+<!-- /automd -->
 
 ### Which reads switch to GET
 
@@ -121,12 +133,16 @@ Write and auth/context mutations (login, register, logout, `readCustomer`, `upda
 
 `encodeForQuery` is a deterministic, pure function: it serializes the object with `JSON.stringify`, gzips it (via `fflate`), then base64url-encodes the result (no `+`, `/`, or `=`), producing a URL-safe value.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/how-the-criteria-is-encoded.ts" code lang="ts" no-name -->
+
 ```ts
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
 const criteria = { associations: { states: {} } };
 const encoded = encodeForQuery(criteria); // gzip + base64url string, safe in a URL / cache key
 ```
+
+<!-- /automd -->
 
 Because it is deterministic, identical criteria produce an identical `_criteria` value and therefore an identical URL. That stable URL is what lets a CDN or browser register a cache hit. Object key order matters: "identical criteria" means an identical serialization, not merely a semantically equal object.
 
@@ -139,6 +155,8 @@ Shopware Frontends configures page-level HTTP caching declaratively through Nuxt
 `isr: <seconds>` serves a cached static HTML response and revalidates it after the given window with stale-while-revalidate semantics. This is the primary strategy for storefront and catalog pages, which change infrequently relative to how often they are requested.
 
 The `vue-demo-store` template uses a 24-hour window on the homepage and the catch-all:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.ts" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -166,7 +184,11 @@ routeRules: {
 }
 ```
 
+<!-- /automd -->
+
 The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -192,6 +214,8 @@ routeRules: {
 }
 ```
 
+<!-- /automd -->
+
 `vue-starter-template-extended` extends `../vue-starter-template` and defines no `routeRules` of its own, so it inherits the parent's caching. Nuxt layer extends merges parent route rules, so changes in the parent propagate to the child. `vue-blank` defines no `routeRules`, so default Nitro behavior (full SSR, no ISR) applies.
 
 ::: warning
@@ -205,6 +229,8 @@ ISR is only active in production builds and requires a runtime that can store an
 ### `headers` - per-route `Cache-Control`
 
 Route rules can set HTTP `Cache-Control` directly. The templates use it two ways:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.ts" code lang="ts" no-name -->
 
 ```ts
 // Prevent any caching on sensitive routes
@@ -221,6 +247,8 @@ Route rules can set HTTP `Cache-Control` directly. The templates use it two ways
   },
 },
 ```
+
+<!-- /automd -->
 
 `max-age=31536000` is one year; `immutable` tells clients never to revalidate, which is safe only for versioned/hashed or otherwise stable assets. Note the SVG rule exists in `vue-starter-template` (and its extended child) but not in `vue-demo-store`.
 

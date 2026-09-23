@@ -40,10 +40,16 @@ For the frontend app we recommend to use `vue-i18n` module.
 Backend languages codes and frontend languages codes must be the same!
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration" code no-name -->
+
 ```
 www.example.com         // GB site
 www.example.com/de-DE   // DE site
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-2" code no-name -->
 
 ```
 {
@@ -70,12 +76,20 @@ www.example.com/de-DE   // DE site
 }
 ```
 
+<!-- /automd -->
+
 **_When you are using different domains:_**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-3" code no-name -->
 
 ```
 www.example1.com     // GB site
 www.example2.com     // DE site
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-4" code no-name -->
 
 ```
 {
@@ -102,10 +116,14 @@ www.example2.com     // DE site
 }
 ```
 
+<!-- /automd -->
+
 ## Routing
 
 When you are using _prefix_ domain languages, you have to use `formatLink()` method from `useInternationalization` composable for building URLs.
 The main task of this composable is to add a prefix to URL if needed.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/routing.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -117,20 +135,28 @@ const { formatLink } = useInternationalization(localePath);
 </template>
 ```
 
+<!-- /automd -->
+
 ## Testing
 
 If you want to test languages locally, and your local domain differs from what is declared on the backend, you can use environment variables.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/testing" code no-name -->
 
 ```
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=http://127.0.0.1:3000
 ```
 
+<!-- /automd -->
+
 ## localeId
 
 In more complex scenarios, such as when different prefixes are used on the backend and frontend, the `localeId` attribute can be utilized.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/localeid" code no-name -->
+
 ```
-  i18n: {
+i18n: {
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
@@ -152,6 +178,8 @@ In more complex scenarios, such as when different prefixes are used on the backe
   },
 ```
 
+<!-- /automd -->
+
 The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages
 
 ## Multi domain example
@@ -168,6 +196,8 @@ _This example should be run locally because of the multi-domain requirements_
 
 After switching the language, the URL returned from the backend is used as the basis for redirection which leads to exiting the localhost context.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/switching-language-locally.ts" code lang="typescript" no-name -->
+
 ```typescript
 const onChangeHandler = async (option: Event) => {
   const data = await changeLanguage((option.target as HTMLSelectElement).value);
@@ -180,6 +210,8 @@ const onChangeHandler = async (option: Event) => {
 };
 ```
 
+<!-- /automd -->
+
 This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
 
 ### Locally host overrides
@@ -190,17 +222,23 @@ Windows: `C:\Windows\System32\drivers\etc`
 Linux: `/etc/hosts`
 macOS: `/etc/hosts`
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/locally-host-overrides" code no-name -->
+
 ```
 127.0.0.1       yourDomainFromBackend.com
 #IPv6
 ::1             yourDomainFromBackend.com
 ```
 
+<!-- /automd -->
+
 Thanks to this, you will be able to use your local Frontends app instance with the domain returned by the backend.
 
 ### Add dev resolver
 
 You can add own dev resolver to avoid redirection
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/add-dev-resolver.ts" code lang="typescript" no-name -->
 
 ```typescript
 const dev = process.dev;
@@ -226,6 +264,8 @@ const onChangeHandler = async (option: Event) => {
   }
 };
 ```
+
+<!-- /automd -->
 
 ## Troubleshooting in reverse proxy environments
 

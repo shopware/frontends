@@ -10,6 +10,8 @@ Context composables allow for a more granular way of sharing state between compo
 
 Instead of doing this:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- Product.vue -->
 <script setup lang="ts">
@@ -21,6 +23,10 @@ const product = searchProduct();
   </div>
 </template>
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- ProductConfigurator.vue -->
@@ -36,6 +42,10 @@ const props = defineProps<{
 </template>
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-3.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- ProductPrice.vue -->
 <script setup lang="ts">
@@ -50,6 +60,8 @@ const props = defineProps<{
 </template>
 ```
 
+<!-- /automd -->
+
 A parent component calls the composable and provides context - all child components can feed off that context. Have a look at the example below:
 
 ![wireframe of an application showing multiple context composables](../../.assets/wireframe-proposal-01.png)
@@ -58,9 +70,13 @@ In the example above, there are multiple usages of the `useProduct` composable a
 
 For example, the call
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables.js" code lang="js" no-name -->
+
 ```js
 const { product } = useProduct(detailProduct);
 ```
+
+<!-- /automd -->
 
 creates a new context boundary for all underlying components. The `ProductConfigurator` component can access the `product` state without having to pass it down as a prop.
 
@@ -69,17 +85,25 @@ creates a new context boundary for all underlying components. The `ProductConfig
 This context boundary is usually global to the whole application, unless you have explicit requirements for sub-routes within your pages.
 Just call the following to access navigation context information from almost anywhere in your application:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/navigation-context-blue.js" code lang="js" no-name -->
+
 ```js
 const { routeName, foreignKey } = useNavigationContext();
 ```
+
+<!-- /automd -->
 
 ### Detail page <span class="text-red">(red)</span>
 
 The detail page component calls the composable with the `detailProduct` parameter and creates a new context boundary (red). Every child component of the detail page can now call
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/detail-page-red.js" code lang="js" no-name -->
+
 ```js
 const { product } = useProduct();
 ```
+
+<!-- /automd -->
 
 and access data from the correct product, such as title, description or price.
 
@@ -103,6 +127,8 @@ See a simple example with the context composable `useCategory` below.
 
 First, fetch a category from the API and store it in the context state by passing it to the `useCategory` composable.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/example.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- Category.vue -->
 
@@ -121,7 +147,11 @@ const { category } = useCategory(categoryResponse);
 </template>
 ```
 
+<!-- /automd -->
+
 Then, use the `useCategory` composable in the child component to retrieve the category from the context state.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/example-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- CategoryHeader.vue -->
@@ -136,3 +166,5 @@ const { category } = useCategory();
   <p>{{ category.description }}</p>
 </template>
 ```
+
+<!-- /automd -->

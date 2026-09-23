@@ -1,0 +1,4 @@
+CmsPage
+  └── CmsSection  (type e.g. "default", "sidebar")
+        └── CmsBlock    (type e.g. "image-text", "product-slider")
+              └── CmsSlot     (type e.g. "image", "text")

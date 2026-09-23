@@ -22,13 +22,19 @@ Before fetching, ensure the cart is not empty by using `refreshCart` in the `use
 
 **Get shipping methods**
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information.ts" code lang="ts" no-name -->
+
 ```ts
 const { getShippingMethods } = useCheckout();
 
 await getShippingMethods();
 ```
 
+<!-- /automd -->
+
 **Display shipping methods**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -64,6 +70,8 @@ const selectedShippingMethod = computed({
 </template>
 ```
 
+<!-- /automd -->
+
 The shipping method position on the list is determined by the `position` field settled on the admin panel. Sorting logic in `useCheckout.ts::getShippingMethods()`
 
 You can also display:
@@ -74,13 +82,19 @@ You can also display:
 
 **Get payment methods**
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.ts" code lang="ts" no-name -->
+
 ```ts
 const { getPaymentMethods } = useCheckout();
 
 await getPaymentMethods();
 ```
 
+<!-- /automd -->
+
 **Display payment methods**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -115,10 +129,14 @@ const selectedPaymentMethod = computed({
 </template>
 ```
 
+<!-- /automd -->
+
 ## Personal information
 
 Each guest user has to provide billing data.
 Those data will be used to create a standard or temporary account.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/personal-information.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -244,6 +262,8 @@ const invokeSubmit = () => {
 </template>
 ```
 
+<!-- /automd -->
+
 ## Order summary
 
 We can use some helper methods from `useCart` composable to display an order summary and format prices.
@@ -253,6 +273,8 @@ Refer to [formatting prices](prices.html) for more information on displaying pri
 :::warning
 Totals should **not** be calculated by the frontend. All calculations should be done on the backend side.
 :::
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/order-summary.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -279,6 +301,8 @@ await refreshCart();
 </template>
 ```
 
+<!-- /automd -->
+
 ## Place an order
 
 Placing an order requires
@@ -289,6 +313,8 @@ Placing an order requires
 
 After placing an order with the `createOrder` method, the cart is refreshed automatically.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order.ts" code lang="ts" no-name -->
+
 ```ts
 const { createOrder } = useCheckout();
 const { refreshCart } = useCart();
@@ -297,8 +323,12 @@ const order = await createOrder();
 refreshCart();
 ```
 
+<!-- /automd -->
+
 After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.
 The backend allows fetching orders related only to the current user by checking the session.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order-2.ts" code lang="ts" no-name -->
 
 ```ts
 const {
@@ -312,6 +342,8 @@ const {
 await loadOrderDetails();
 ```
 
+<!-- /automd -->
+
 ## Guest checkout boundaries
 
 Guest checkout uses the active Shopware customer from the current session
@@ -324,6 +356,8 @@ is placed and before starting a new checkout. `logout()` refreshes the session
 context and throws if the new context cannot be verified, so block checkout
 progression when it fails.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/guest-checkout-boundaries.ts" code lang="ts" no-name -->
+
 ```ts
 const { logout } = useUser();
 
@@ -334,6 +368,8 @@ try {
   console.error("[Checkout][logout]", error);
 }
 ```
+
+<!-- /automd -->
 
 For asynchronous payment or order-processing flows, the application backend
 should own the boundary. Keep the old context token only while payment handlers

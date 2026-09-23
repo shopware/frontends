@@ -38,8 +38,10 @@ In general, the store API should only output content that would also be visible 
 
 - Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
-  ```ts
-  import basicSsl from '@vitejs/plugin-basic-ssl'
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
+
+```ts
+import basicSsl from '@vitejs/plugin-basic-ssl'
   // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
   export default defineNuxtConfig({
   // ...
@@ -52,7 +54,9 @@ In general, the store API should only output content that would also be visible 
     ],
   },
   // ...
-  ```
+```
+
+<!-- /automd -->
 - Start your dev server with `pnpm run dev`
 - Your browser may ask you to accept the risk when you visit `https://localhost:3000`. This is because it is a self-signed certificate.
 
@@ -64,6 +68,8 @@ If you are using DDEV as a local environment with SSR = true (Nuxt config for ro
 
 The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `accessToken` is incorrect or not correct for the specified `endpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.ts" code lang="ts" no-name -->
+
 ```ts
 // a part of nuxt.config.ts
 
@@ -72,8 +78,9 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
     endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
     devStorefrontUrl: "https://demo-frontends.shopware.store", // see section below
   },
-
 ```
+
+<!-- /automd -->
 
 ## What is `devStorefrontUrl` and when to use it?
 
@@ -90,6 +97,8 @@ By default, the application uses `window.location.origin` (e.g., `https://your-s
 
 Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -105,11 +114,17 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 Or use an environment variable:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
+
+<!-- /automd -->
 
 :::tip
 If customer registration works in production but fails locally, `devStorefrontUrl` is likely the solution. Set it to your production storefront domain during local development.
@@ -127,8 +142,10 @@ If you're encountering issues related to Cross-Origin Resource Sharing (CORS) or
 
 Edit your `nuxt.config.ts` file and add:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example" code no-name -->
+
 ```
-  vite: {
+vite: {
     server: {
       proxy: {
         "/store-api": {
@@ -141,10 +158,14 @@ Edit your `nuxt.config.ts` file and add:
   },
 ```
 
+<!-- /automd -->
+
 Modify the Shopware API endpoint to match your local frontend URL.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example-2" code no-name -->
+
 ```
-  {
+{
     ...
       shopware: {
           endpoint: "<frontends >store-api/",
@@ -152,6 +173,8 @@ Modify the Shopware API endpoint to match your local frontend URL.
       }
   }
 ```
+
+<!-- /automd -->
 
 ## Broadcasting and BFCache Compatibility
 
@@ -163,6 +186,8 @@ When Broadcasting is enabled, the BFCache (Back-Forward Cache) functionality is 
 
 To leverage the benefits of BFCache, we have decided to disable Broadcasting. By turning off Broadcasting, we ensure that the BFCache can function correctly, providing a smoother and faster navigation experience for users.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/resolution-vue-demo-template" code no-name -->
+
 ```
 ...
 runtimeConfig: {
@@ -170,6 +195,8 @@ runtimeConfig: {
 },
 ...
 ```
+
+<!-- /automd -->
 
 ### Additional Information
 
@@ -197,6 +224,8 @@ When you use Nuxt layers, the layer system merges TypeScript configuration files
 
 Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -206,8 +235,12 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 :::tip
 If you're using `@shopware/cms-base-layer`, you can extend both layers together:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.ts" code lang="ts" no-name -->
 
 ```ts
 extends: [
@@ -216,6 +249,8 @@ extends: [
   "@shopware/unocss-design-tokens-layer"
 ],
 ```
+
+<!-- /automd -->
 
 :::
 

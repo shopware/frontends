@@ -28,9 +28,13 @@ nav:
 
 Avoiding hard waits in Playwright.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/waits-best-practice.js" code lang="js" no-name -->
+
 ```js
 await page.waitFor(1000); // hard wait for 1000ms
 ```
+
+<!-- /automd -->
 
 Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
 Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
@@ -54,6 +58,8 @@ Each page must contain a cohesive set of locators and actions.
 |- utils # Predefined helpers and their factory functions
 
 For a page object to be as readable as possible, you must follow the below structure:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/structure-e2e-tests.js" code lang="js" no-name -->
 
 ```js
 import { expect, Locator, Page } from "@playwright/test";
@@ -84,6 +90,8 @@ export class LoginForm {
 };
 ```
 
+<!-- /automd -->
+
 ## data-testid attribute
 
 You are recommended to add the custom data attributes data-testid for:
@@ -95,16 +103,22 @@ The main benefit of adding those attributes is that you can easily get elements 
 
 ### Naming convention
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/naming-convention" code no-name -->
+
 ```
 data-testid="{scope}-{name}-{type}"
 data-testid="header-search-input"
 ```
+
+<!-- /automd -->
 
 **Scope** - indicates where the element is placed. For example - page
 **Name** - defines the element. For example - input name
 **Type** - indicates the type of element. For example - input
 
 ### Usage in tests
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/usage-in-tests.js" code lang="js" no-name -->
 
 ```js
 import { test, expect } from "@playwright/test";
@@ -131,3 +145,5 @@ test("failed login", async ({ page }) => {
   ).toBeVisible();
 });
 ```
+
+<!-- /automd -->

@@ -37,6 +37,8 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 
 ::: details Example of a `CalculatedPrice` object
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/structure-of-a-price.json" code lang="json" no-name -->
+
 ```json
 {
   "unitPrice": 58,
@@ -72,6 +74,8 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 }
 ```
 
+<!-- /automd -->
+
 :::
 
 Each product has at least one `CalculatedPrice` object assigned to it, which can be accessed through `product.calculatedPrice`. It contains the product's default price, which applies when no other prices are defined.
@@ -87,6 +91,8 @@ All prices are passed as floating point numbers, rounded to the decimals which a
 		<small class="text-green-600"><del class="text-slate-500">83.30 €</del> (-51.98%) </small>
 	</div>
 </div>
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/display-a-default-price.vue" code lang="vue{4,16,24}" no-name -->
 
 ```vue{4,16,24}
 <script setup>
@@ -123,11 +129,15 @@ const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(produ
 </template>
 ```
 
+<!-- /automd -->
+
 ## Pricing tiers and quantity prices
 
 Pricing tiers add one layer of complexity to the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
 
 These pricing tiers are passed through a product's `calculatedPrices` field. The `calculatedPrices` field is an array of `CalculatedPrice` objects sorted by the `quantity` field, which defines the bounds of a pricing range.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/pricing-tiers-and-quantity-prices.json" code lang="json" no-name -->
 
 ```json
 [
@@ -150,6 +160,8 @@ These pricing tiers are passed through a product's `calculatedPrices` field. The
 		/* ... */
 ]
 ```
+
+<!-- /automd -->
 
 ### Display tier prices
 
@@ -182,6 +194,8 @@ class="mx-auto p-10 shadow-md rounded-md dark:bg-#242424 text-gray-700 dark:text
 </div>
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/display-tier-prices.vue" code lang="vue{3,9}" no-name -->
+
 ```vue{3,9}
 <script setup>
 import { useProduct } from "@shopware/composables";
@@ -205,6 +219,8 @@ await search("some-product-id");
   </ul>
 </template>
 ```
+
+<!-- /automd -->
 
 ### Advanced prices
 
@@ -237,6 +253,8 @@ Display <a href="#display-a-default-price">default price</a>
 See a full example of displaying the default price or pricing tiers depending on the product's pricing structure below:
 
 :::details Click to expand full example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/full-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup>
@@ -289,6 +307,8 @@ const defaultPrice = computed(() => {
 </template>
 ```
 
+<!-- /automd -->
+
 :::
 
 ## useProductPrice composable
@@ -298,6 +318,8 @@ See dedicated [Composables > useProductPrice](../../packages/composables/useProd
 ### Product listing
 
 Price for **non-variant** product (also for having tier pricing):
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing.vue" code lang="vue{6}" no-name -->
 
 ```vue{6}
 <script setup lang="ts">
@@ -310,9 +332,13 @@ const { totalPrice, displayFrom } = useProductPrice(/** argument omitted - Produ
 </template>
 ```
 
+<!-- /automd -->
+
 If there is a range of prices available, you can point this out by adding `from` prefix, using the `displayFrom` indicator. The result will be a total price, prefixed by `from` phrase. In this case, unit price is equal to the lowest price available.
 
 In order to ensure if the variant prices are available, you can utilize the `displayVariantsFrom` computed property, that contains the value in current currency:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing-2.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -329,6 +355,8 @@ const { totalPrice, displayVariantsFrom } =
 </template>
 ```
 
+<!-- /automd -->
+
 ### Product details page
 
 In this case, there are few options to display:
@@ -337,13 +365,19 @@ In this case, there are few options to display:
 - Product with list price (kind of discount)
 - Tier prices
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.ts" code lang="ts" no-name -->
+
 ```ts
 const { totalPrice, price, tierPrices, hasListPrice } =
   useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 ```
 
+<!-- /automd -->
+
 Regular price, with list price included (in case of manufacturer's suggested retail price):
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.vue" code lang="vue" no-name -->
 
 ```vue
 <template>
@@ -358,7 +392,11 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 </template>
 ```
 
+<!-- /automd -->
+
 Tier prices presented as a table with range labeled by "to" and "from":
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-2.vue" code lang="vue" no-name -->
 
 ```vue
 <template>
@@ -382,9 +420,13 @@ Tier prices presented as a table with range labeled by "to" and "from":
 </template>
 ```
 
+<!-- /automd -->
+
 ### Format price according to current context
 
 There are additional metadata available in the _current_ API context. One of them is the _current currency_. In order to display the price together with the currency symbol applied to the current context, use `getFormattedPrice` helper.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/format-price-according-to-current-context.ts" code lang="ts" no-name -->
 
 ```ts
 const price = 12.95;
@@ -392,5 +434,7 @@ const { getFormattedPrice } = usePrice();
 const priceWithCurrency = getFormattedPrice(price);
 // output: 12.95 $
 ```
+
+<!-- /automd -->
 
 Thanks to this, the `priceWithCurrency` will have the current currency symbol prefixed or suffixed, according to the configuration.

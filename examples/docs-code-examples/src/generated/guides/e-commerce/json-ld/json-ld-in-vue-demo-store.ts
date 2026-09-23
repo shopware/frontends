@@ -1,0 +1,1 @@
+useProductJsonLD(productResponse.value.product);

@@ -28,6 +28,8 @@ Some of relations need to be assigned explicitly by [associations](https://shopw
 
 The `useProductSearch` allows us to `search` in the product's collection:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas } from "#shopware";
 import { useProductSearch } from "@shopware/composables";
@@ -44,6 +46,8 @@ const product: Schemas["Product"] = productResponse.product;
 const propertyGroups: Schemas["PropertyGroup"][] = productResponse.configurator;
 ```
 
+<!-- /automd -->
+
 Thanks to this, in the response we are able to access `Product` and `configurator` object. The latter is responsible for keeping related variants information to be used for more complex products.
 
 :::info
@@ -51,6 +55,8 @@ If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` prope
 :::
 
 Having source of the data, you can display all you need in your Vue.js template:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.js" code lang="js" no-name -->
 
 ```js
 import { computed } from "vue";
@@ -62,11 +68,15 @@ const productNumber = computed(() => product.value?.productNumber);
 ...
 ```
 
+<!-- /automd -->
+
 ## Load additional data asynchronously
 
 Each product can have additional resource loaded asynchronously like Cross-Sells, or Customer Reviews.
 
 Thanks to [useProductAssociations](../../packages/composables/useProductAssociations) composable, you can load it providing the product you are on:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/load-additional-data-asynchronously.js" code lang="js" no-name -->
 
 ```js
 const { loadAssociations, isLoading, productAssociations } =
@@ -74,6 +84,8 @@ const { loadAssociations, isLoading, productAssociations } =
     associationContext: "cross-selling",
   });
 ```
+
+<!-- /automd -->
 
 ## Static example
 
@@ -90,6 +102,8 @@ A minimal, static rendering of a product detail page - useful as a starting poin
 </div>
 
 Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/static-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -240,6 +254,8 @@ const handleVariantChange = (val: Schemas["Product"]) => {
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 ## Full source
 

@@ -23,6 +23,8 @@ Implementing a footer navigation can be described in a few steps:
 
 ## Code example
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/footer-navigation/code-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { useNavigation } from "@shopware/composables";
@@ -80,6 +82,8 @@ loadNavigationElements({
   </style>
 </template>
 ```
+
+<!-- /automd -->
 
 [getCategoryUrl](../../packages/helpers#getcategoryurl) method imported from the `helpers` package can extract a SEO URL or technical URL for a given category.
 
