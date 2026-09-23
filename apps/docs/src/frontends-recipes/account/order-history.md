@@ -56,7 +56,7 @@ const steps = [
     title: "Store API",
     action: "Read one page of orders",
     detail:
-      "readOrder resolves the customer from the context token. No customer id is part of the request. The response carries one page of orders. It also carries a paymentChangeable map keyed by order id, but only when the request sent checkPromotion, which the list never does.",
+      "readOrder resolves the customer from the context token. No customer id is part of the request. The response carries one page of orders. It also carries a paymentChangeable map keyed by order id, but only when the request sent checkPromotion, which useCustomerOrders does not add.",
     code: 'apiClient.invoke("readOrder post /order")',
     state: "sw-context-token",
     typeKeys: [
@@ -126,7 +126,7 @@ Read the diagram from left to right:
 
 1. The customer opens the order history and the page calls `loadOrders` with a criteria.
 2. `useCustomerOrders` overwrites the `limit` in that criteria with its own `limit` ref and sets `"total-count-mode": "exact"`.
-3. The Store API returns one page of orders for the customer behind the context token, together with a `paymentChangeable` map.
+3. The Store API returns one page of orders for the customer behind the context token. The list request sends no `checkPromotion`, so no `paymentChangeable` map comes back.
 4. The composable keeps `orders.elements`, `orders.total`, and `orders.page`, and exposes `orders`, `currentPage`, and `totalPages`.
 5. The customer opens one order and the detail view calls `useOrderDetails(orderId).loadOrderDetails()`.
 6. `loadOrderDetails` calls `readOrder post /order` again with `ids`, the default order associations, and `checkPromotion: true`.
@@ -178,9 +178,9 @@ Six things the generated reference will not tell you:
 - `paymentDetails` exists only in the declared type of `handlePayment`. The function itself takes just `finishUrl` and `errorUrl`, so a third argument type-checks and is then ignored — only `orderId`, `finishUrl`, and `errorUrl` reach the Store API.
 - `handlePayment()` stores the returned `redirectUrl` in `paymentUrl` and does nothing else. No navigation happens until you watch `paymentUrl` and redirect yourself — and check its scheme first, because `new URL()` parses `javascript:` and `data:` without throwing. The [Payment recipe](../checkout/payment.html) owns that guard.
 - The two composables hold state differently. `useCustomerOrders` creates its refs per call, so two components calling it keep two independent lists. `useOrderDetails` injects and provides one shared `swOrderDetails` ref, so everything below the first caller reads the same order object.
-- `getMediaFile(downloadId)` returns a `Blob` from `orderDownloadFile get /order/download/{orderId}/{downloadId}`. `getDocumentFile(documentId, deepLinkCode)` returns `Blob | string` from `download post /document/download/{documentId}/{deepLinkCode}`, because a document can be a PDF, HTML, or XML — narrow it before you hand it to `URL.createObjectURL`. Both are about attachments, not about the order body. `documents` is the one field that arrives without being asked for: `useDefaultOrderAssociations()` never requests it, but the route returns it anyway — which is why `hasDocuments` gets away with reading `order.documents.length` unguarded, while `documents` itself still falls back to an empty array.
+- `getMediaFile(downloadId)` returns a `Blob` from `orderDownloadFile get /order/download/{orderId}/{downloadId}`. `getDocumentFile(documentId, deepLinkCode)` returns `Blob | string` from `download post /document/download/{documentId}/{deepLinkCode}`. The union is the hand-written return type, which covers every `accept` variant of the operation, but `getDocumentFile` always sends `accept: "application/pdf"`, so at runtime you get the `Blob` arm — an HTML or XML document is not reachable through this composable. Narrow it anyway to satisfy TypeScript before you hand it to `URL.createObjectURL`. Both are about attachments, not about the order body. `documents` is the one field that arrives without being asked for: `useDefaultOrderAssociations()` never requests it, but the route returns it anyway — which is why `hasDocuments` gets away with reading `order.documents.length` unguarded, while `documents` itself still falls back to an empty array.
 
-`useUser` contributes only `isLoggedIn`, and it is narrower than it sounds: it is false for a guest, because it requires an active, non-guest customer. It gates the _registered_ customer's history, not every session the order routes will answer for — see the guest flow under [State And Session](#state-and-session).
+`useUser` contributes only `isLoggedIn`, and it is narrower than it sounds: it is false for a guest, because it requires an active, non-guest customer — the [Customer Profile recipe](profile.html) compares it with `isCustomerSession` and `isGuestSession`. It gates the _registered_ customer's history, not every session the order routes will answer for — see the guest flow under [State And Session](#state-and-session).
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
 
@@ -227,8 +227,10 @@ const {
 } = useCustomerOrders();
 const { isLoggedIn } = useUser();
 
-// Locale and currency come from the Shopware context, not the host default:
-// a de-DE storefront rendering US dates and bare numbers is the alternative.
+// browserLocale is the visitor's locale (navigator.language, or accept-language
+// during SSR), not the storefront's. usePrice formats in that locale too, but
+// takes the currency from the session context. Both beat the host default,
+// which differs between the server render and the browser.
 const { browserLocale } = useShopwareContext();
 const { getFormattedPrice } = usePrice();
 const localePath = useLocalePath();
@@ -386,7 +388,7 @@ The Store API resolves the customer of `readOrder post /order`, `orderSetPayment
 
 Neither `useCustomerOrders` nor `useOrderDetails` refreshes the session context or the cart. Unlike login, reading orders does not change the session, so `orders` simply keeps describing the customer that was authenticated when the request was sent.
 
-Guest orders reach the same route with `email`, `zipcode`, and an `equals` filter on `deepLinkCode` in the body. With `login: true`, the response carries an `sw-context-token` header, and the API client adopts that token as its new default header when the response is not publicly cacheable. Neither order composable sends those fields, so a guest order page calls `apiClient.invoke("readOrder post /order")` directly.
+Guest orders reach the same route with `email`, `zipcode`, and an `equals` filter on `deepLinkCode` in the body. With `login: true`, the response carries an `sw-context-token` header, and the API client adopts that token as its new default header when the response is not publicly cacheable — the [Session Context recipe](../context/session-context.html) explains why a `Cache-Control: public` token is ignored. Neither composable adds those fields for you. `useOrderDetails` cannot send them at all, and `useCustomerOrders` would forward them only because `loadOrders` spreads the whole body — it keeps just `orders.elements`, `total` and `page` in list refs and exposes nothing else of the response. A guest order page therefore calls `apiClient.invoke("readOrder post /order")` directly.
 
 That route answers a guest session `isLoggedIn` reports as signed out, so a guest page branches on the rejection rather than on session state. The three codes it has to tell apart are `CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND`, `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which is the signal to show the email and postcode form, and `CHECKOUT__GUEST_WRONG_CREDENTIALS`. The [Guest Order Lookup recipe](../orders/guest-order-lookup.html) walks through that flow end to end.
 
@@ -426,15 +428,19 @@ That route answers a guest session `isLoggedIn` reports as signed out, so a gues
 - A failing request shows a list-level error instead of an empty order history, keeps the previously loaded page on screen, and offers a retry.
 - Starting a page change announces the loading state and leaves focus on the pagination control that triggered it.
 - A `paymentUrl` whose scheme is not `https:` — including `javascript:` and `data:` — does not trigger a navigation.
-- Order dates and totals render in the storefront's locale and currency, not the host default.
+- Order dates render in the visitor's browser locale (`browserLocale`) and totals in the session currency, not the host default.
 - A session without a logged-in customer renders the signed-out state and sends no order request.
 - A guest reaching an order by deep link is prompted for email and postcode on `CHECKOUT__GUEST_NOT_AUTHENTICATED` rather than shown the signed-out state.
 
 ## Related Links
 
 - [Login recipe](login.html)
+- [Customer Profile recipe](profile.html)
+- [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Payment recipe](../checkout/payment.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
+- [Session Context recipe](../context/session-context.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
