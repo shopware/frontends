@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 30
+  position: 45
 recipe:
   area: account
   status: stable
@@ -388,7 +388,7 @@ Neither `useCustomerOrders` nor `useOrderDetails` refreshes the session context 
 
 Guest orders reach the same route with `email`, `zipcode`, and an `equals` filter on `deepLinkCode` in the body. With `login: true`, the response carries an `sw-context-token` header, and the API client adopts that token as its new default header when the response is not publicly cacheable. Neither order composable sends those fields, so a guest order page calls `apiClient.invoke("readOrder post /order")` directly.
 
-That route answers a guest session `isLoggedIn` reports as signed out, so a guest page branches on the rejection rather than on session state. The three codes it has to tell apart are `CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND`, `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which is the signal to show the email and postcode form, and `CHECKOUT__GUEST_WRONG_CREDENTIALS`.
+That route answers a guest session `isLoggedIn` reports as signed out, so a guest page branches on the rejection rather than on session state. The three codes it has to tell apart are `CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND`, `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which is the signal to show the email and postcode form, and `CHECKOUT__GUEST_WRONG_CREDENTIALS`. The [Guest Order Lookup recipe](../orders/guest-order-lookup.html) walks through that flow end to end.
 
 ## Edge Cases
 
@@ -434,7 +434,8 @@ That route answers a guest session `isLoggedIn` reports as signed out, so a gues
 
 - [Login recipe](login.html)
 - [Payment recipe](../checkout/payment.html)
+- [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
-- [Payments documentation](../../getting-started/e-commerce/payments.html)
+- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Payments documentation](../../guides/e-commerce/payments.html)

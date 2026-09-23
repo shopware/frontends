@@ -243,6 +243,14 @@ export const sidebar = [
             link: "/frontends-recipes/account/login.html",
           },
           {
+            text: "Register",
+            link: "/frontends-recipes/account/register.html",
+          },
+          {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
+          {
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
@@ -251,8 +259,16 @@ export const sidebar = [
             link: "/frontends-recipes/account/order-history.html",
           },
           {
+            text: "Newsletter",
+            link: "/frontends-recipes/account/newsletter.html",
+          },
+          {
             text: "Customer Addresses",
             link: "/frontends-recipes/account/addresses.html",
+          },
+          {
+            text: "Customer Profile",
+            link: "/frontends-recipes/account/profile.html",
           },
         ],
       },
@@ -264,6 +280,14 @@ export const sidebar = [
           {
             text: "Product Listing and Filters",
             link: "/frontends-recipes/catalog/listing.html",
+          },
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
+          {
+            text: "Product Reviews",
+            link: "/frontends-recipes/catalog/reviews.html",
           },
         ],
       },
@@ -287,6 +311,39 @@ export const sidebar = [
           {
             text: "Payment",
             link: "/frontends-recipes/checkout/payment.html",
+          },
+        ],
+      },
+      {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Contact Form",
+            link: "/frontends-recipes/cms/contact-form.html",
+          },
+        ],
+      },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Language and Currency Switch",
+            link: "/frontends-recipes/context/language-and-currency.html",
+          },
+        ],
+      },
+      {
+        text: "Orders",
+        link: "/frontends-recipes/orders/",
+        collapsed: true,
+        items: [
+          {
+            text: "Guest Order Lookup via Deep Link",
+            link: "/frontends-recipes/orders/guest-order-lookup.html",
           },
         ],
       },
