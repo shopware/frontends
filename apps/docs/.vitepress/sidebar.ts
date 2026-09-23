@@ -315,6 +315,17 @@ export const sidebar = [
         ],
       },
       {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Contact Form",
+            link: "/frontends-recipes/cms/contact-form.html",
+          },
+        ],
+      },
+      {
         text: "Context",
         link: "/frontends-recipes/context/",
         collapsed: true,
