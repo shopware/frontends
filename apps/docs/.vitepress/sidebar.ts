@@ -285,13 +285,6 @@ export const sidebar = [
             text: "Product Reviews",
             link: "/frontends-recipes/catalog/reviews.html",
           },
-        ],
-      },
-      {
-        text: "Catalog",
-        link: "/frontends-recipes/catalog/",
-        collapsed: true,
-        items: [
           {
             text: "Cross-Selling",
             link: "/frontends-recipes/catalog/cross-selling.html",

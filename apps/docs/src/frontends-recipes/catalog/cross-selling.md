@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 40
 recipe:
   area: catalog
   status: stable
@@ -160,7 +160,7 @@ Pick by scope — where the product ref comes from, then what you do with it:
 Seven things the generated reference will not tell you:
 
 - `loadAssociations` declares a `params` argument with `method` and `searchParams`, and the implementation takes no parameters at all. Both are discarded — but the argument is still **required by the type**, so a bare `loadAssociations()` fails to compile with `TS2554`. Pass `{ searchParams: {} }` and expect it to be thrown away. `examples/product-detail-page` passes a full `associations` object inside `searchParams` that goes nowhere — treat it as a warning, not a pattern.
-- `options.associationContext` accepts `"cross-selling" | "reviews"`, but the implementation always calls the cross-selling operation. Passing `"reviews"` fetches cross-sellings. Use `useProductReviews` for reviews.
+- `options.associationContext` accepts `"cross-selling" | "reviews"`, but the implementation always calls the cross-selling operation. Passing `"reviews"` fetches cross-sellings. Use `useProductReviews` instead — see the [Product Reviews recipe](reviews.html).
 - The composable throws `[useProductAssociations]: Product is not provided.` during setup when the product ref is empty. It is a `throw` in the composable body, not a rejected promise, so it takes the whole component down — and on a server render it propagates to Nitro as a 500 for the entire route unless a `<NuxtErrorBoundary>` catches it. Resolve the product first.
 - Errors from the request are caught, logged to the console and swallowed. A resolved `loadAssociations()` is not proof that anything was fetched.
 - `productAssociations` is backed by a plain `ref([])` created per call. Nothing is provided or shared, so two components calling it for the same product each issue their own request.
@@ -299,9 +299,13 @@ The request carries the `sw-context-token` like any other Store API call, and th
 
 ## Related Links
 
+- [Product Listing and Filters recipe](listing.html)
+- [Product Reviews recipe](reviews.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
-- [Best practices: Caching](../../best-practices/caching.html)
+- [Caching best practices](../../best-practices/caching.html)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
+- [API client package](../../packages/api-client.html)
