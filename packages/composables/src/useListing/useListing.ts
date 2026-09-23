@@ -96,7 +96,9 @@ export type UseListingReturn = {
    * Available sorting orders
    */
   getSortingOrders: ComputedRef<
-    Schemas["ProductSorting"][] | { key: string; label: string }[] | undefined
+    | Schemas["ProductListingResult"]["availableSortings"]
+    | { key: string; label: string }[]
+    | undefined
   >;
   /**
    * Current sorting order

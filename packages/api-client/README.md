@@ -53,8 +53,10 @@ import type { operations } from "./api-types/storeApiTypes";
 // you can pick cookies library of your choice
 import Cookies from "js-cookie";
 
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+
 export const apiClient = createAPIClient<operations>({
-  baseURL: "https://demo-frontends.shopware.store/store-api",
+  baseURL: shopwareEndpoint,
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
 });
@@ -75,7 +77,7 @@ apiClient.hook("onContextChanged", (newContextToken) => {
 import { createAdminAPIClient } from "@shopware/api-client";
 ```
 
-The setup works the same way as `creteAPIClient` function, with few differences
+The setup works the same way as `createAPIClient` function, with few differences
 
 ### credentials (optional) - Quick scripting or token-based authentication
 
@@ -122,8 +124,10 @@ import { createAdminAPIClient } from "@shopware/api-client";
 import type { operations, Schemas } from "@shopware/api-client/admin-api-types"; // we take default admin api types from different directory than store-api
 import Cookies from "js-cookie";
 
+const shopwareEndpoint = "https://demo-frontends.shopware.store/api";
+
 export const adminApiClient = createAdminAPIClient<operations>({
-  baseURL: "https://demo-frontends.shopware.store/api",
+  baseURL: shopwareEndpoint,
   sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
 });
 
@@ -155,7 +159,7 @@ pnpx @shopware/api-gen loadSchema --apiType=store
 pnpx @shopware/api-gen generate --apiType=store
 ```
 
-This creates `api-types/storeApiTypes.ts` (or `adminApiTypes.ts` for Admin API). Point `shopware.d.ts` to your generated types instead of the bundled defaults:
+This creates `api-types/storeApiTypes.d.ts` (or `adminApiTypes.d.ts` for Admin API). Point `shopware.d.ts` to your generated types instead of the bundled defaults:
 
 ```typescript
 // shopware.d.ts
@@ -183,26 +187,22 @@ Add a script to `package.json` to make regeneration easy:
 
 ### TypeScript overrides
 
-If your instance has custom fields, custom endpoints, or incorrect types in the OpenAPI spec, you can override or extend the generated types without modifying the generated file directly.
+`WithApiOverrides<Base, Override>` merges an overlay onto bundled or generated types. Matching keys are replaced, new keys are added.
 
-Create an overrides file next to the generated types:
+Create an overlay next to your types:
 
 - `api-types/storeApiTypes.overrides.ts` — for Store API
 - `api-types/adminApiTypes.overrides.ts` — for Admin API
 
-Create `api-types/storeApiTypes.overrides.ts` with your merged types:
-
 ```typescript
 // api-types/storeApiTypes.overrides.ts
-import type { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "@shopware/api-client/store-api-types";
 
-// Extend schemas with your custom fields
 export type components = mainComponents & {
   schemas: Schemas;
 };
 
 export type Schemas = {
-  // Fully override an existing schema
   Product: mainComponents["schemas"]["Product"] & {
     customFields: {
       my_custom_field: string;
@@ -210,9 +210,7 @@ export type Schemas = {
   };
 };
 
-// Add or override operations
 export type operations = {
-  // Add a custom endpoint
   "myCustomEndpoint post /custom/endpoint": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -220,7 +218,6 @@ export type operations = {
     response: components["schemas"]["Product"];
     responseCode: 200;
   };
-  // Override an existing operation (e.g. restrict the request body)
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -234,17 +231,36 @@ export type operations = {
 > [!IMPORTANT]
 > Overriding a schema or operation requires a **full object definition** — partial overrides are not supported in TypeScript overlay files.
 
-Then point `shopware.d.ts` to the overrides file instead of the generated one:
+Merge the overlay in `shopware.d.ts`. The base can be `@shopware/api-client/store-api-types` or `./api-types/storeApiTypes`. Pointing `#shopware` at the overlay file alone would drop every default operation.
 
 ```typescript
 // shopware.d.ts
 declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
 
-  export type operations =
-    import("./api-types/storeApiTypes.overrides").operations;
-  export type Schemas =
-    import("./api-types/storeApiTypes.overrides").components["schemas"];
+  // for default types
+  // export type operations =
+  //   import("@shopware/api-client/store-api-types").operations;
+  // or for local TypeScript overlays
+  export type operations = import("@shopware/api-client").WithApiOverrides<
+    import("@shopware/api-client/store-api-types").operations,
+    import("./api-types/storeApiTypes.overrides").operations
+  >;
+  // or for locally generated types
+  // export type operations = import("./api-types/storeApiTypes").operations;
+
+  // for default types
+  // export type Schemas =
+  //   import("@shopware/api-client/store-api-types").components["schemas"];
+  // or for local TypeScript overlays
+  export type Schemas = import("@shopware/api-client").WithApiOverrides<
+    import("@shopware/api-client/store-api-types").components["schemas"],
+    import("./api-types/storeApiTypes.overrides").Schemas
+  >;
+  // or for locally generated types
+  // export type Schemas =
+  //   import("./api-types/storeApiTypes").components["schemas"];
+
   export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
 }
 ```
@@ -255,7 +271,7 @@ Your `apiClient.ts` already imports from `#shopware`, so no change is needed the
 
 For fine-grained, field-level corrections to the JSON schema (e.g. marking a field as `required`, fixing a wrong type), use patch files. These are applied before TypeScript generation and support partial changes.
 
-Create a `storeApiTypes.overrides.json` patch file:
+Create a patch file, for example `./api-types/myCustomPatches.json`:
 
 ```json
 {
@@ -290,15 +306,14 @@ Take a look at [example project using API Client](https://stackblitz.com/github/
 ### Simple invocation
 
 ```typescript
-import { apiClient, RequestReturnType } from "./apiClient";
-
-// could be reactive value, you can use ApiReturnType to type it properly
-let productsResponse: RequestReturnType<"readProduct">;
+import { apiClient } from "./apiClient";
 
 async function loadProducts() {
-  productsResponse = await apiClient.invoke("readProduct post /product", {
-    limit: 2,
+  // the response type is inferred from the invoked operation
+  const productsResponse = await apiClient.invoke("readProduct post /product", {
+    body: { limit: 2 },
   });
+  return productsResponse;
 }
 ```
 
@@ -329,6 +344,29 @@ const request = client.invoke("readContext get /context", {
   },
 });
 ```
+
+`signal` and `timeout` work together. A per-request `signal` does not switch off the timeout, whether it was set on the client or on the call, so whichever fires first aborts the request:
+
+```typescript
+const controller = new AbortController();
+
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    signal: controller.signal,
+    timeout: 5000,
+  },
+});
+```
+
+Combining the two needs `AbortSignal.any`, available since Chrome 116, Firefox 124, Safari 17.4 and Node 20.3. The package also runs server-side, so the Node version matters as much as the browser ones. Older runtimes keep the previous behaviour, where a per-request `signal` switches the timeout off.
+
+A `timeout` is rounded up to whole milliseconds and capped at 2147483647 (about 24 days), which is the largest value a timer can hold. A value that cannot be waited for, so anything that is not a finite positive number, is ignored. A spent budget such as `deadline - Date.now()` therefore leaves the request without a timeout instead of failing it.
+
+With a `signal`, the deadline covers the whole request, including reading the response body and any retry. Without one, ofetch stops its own timer once the response headers arrive, so a slow body is not bounded. A deadline that fires while the body is being read rejects with a plain `TimeoutError` instead of a wrapped fetch error, and `isTimeoutError` matches both.
+
+In the admin client an expired session is refreshed before the request runs. With a `signal`, the refresh and the request share one deadline. Without one, each gets the full `timeout`, so an expired session can take up to twice as long.
+
+Aborting or timing out a request while that refresh is in flight leaves the stored session as it was. If the server rotated the refresh token in the meantime, the stored one no longer works and the client has to authenticate again.
 
 All exposed options available under `fetchOptions` are:
 
@@ -369,12 +407,13 @@ const readNavigation = ({
     },
   });
 
-// in another file you can use it, and depth property will be set to 2 by default
+// in another file you can use it
 import { readNavigation } from "./apiClient";
 
 async function loadMainNavigation() {
   const navigation = await readNavigation({
-    body: { activeId: "main-navigation", rootId: "main-navigation" },
+    depth: 2,
+    type: "main-navigation",
   });
 }
 ```
@@ -416,8 +455,10 @@ How the client handles this for you:
 
 Client is throwing `ApiClientError` with detailed information returned from the API. It will display clear message in the console or you can access `details` property to get raw information from the response.
 
+A request that runs into `fetchOptions.timeout` did not get its complete response in time. It is not an `ApiClientError` and has no HTTP status. The request may already have reached the API and been processed, so the server-side outcome is unknown, and a mutation must not be retried without checking. Use `isTimeoutError` to tell it apart.
+
 ```typescript
-import { ApiClientError } from "@shopware/api-client";
+import { ApiClientError, isTimeoutError } from "@shopware/api-client";
 
 try {
   // ... your request
@@ -425,6 +466,8 @@ try {
   if (error instanceof ApiClientError) {
     console.error(error); // This prints message summary
     console.error("Details:", error.details); // Raw response from API
+  } else if (isTimeoutError(error)) {
+    console.error("Timed out. The server may still have processed it.");
   } else {
     console.error("==>", error); // Another type of error, not recognized by API client
   }
@@ -510,9 +553,9 @@ const criteria = {
 };
 
 // Use in URL
-apiClient.invoke("getProducts get /product", {
+apiClient.invoke("readProductGet get /product", {
   query: {
-    _criteria: encodeForQuery(encodedCriteria),
+    _criteria: encodeForQuery(criteria),
   },
 });
 ```
@@ -529,23 +572,10 @@ apiClient.invoke("getProducts get /product", {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.5.1
+### Latest changes: 1.6.0
 
-### Patch Changes
+### Minor Changes
 
-- [#2600](https://github.com/shopware/frontends/pull/2600) [`b767721`](https://github.com/shopware/frontends/commit/b767721847bf3391f9067eca7a045089fb22fce0) Thanks [@patzick](https://github.com/patzick)! - Stop adopting `sw-context-token` from publicly cacheable Store API responses. CDN hits for `cacheableReads` GETs can replay a guest token from when the entry was stored, which overwrote the logged-in session and logged users out when navigating to account pages (e.g. before `account/newsletter-recipient`).
+- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update the default Store API schema and types from `6.7.10.1` to `6.7.12.1`.
 
-- [#2515](https://github.com/shopware/frontends/pull/2515) [`978b02c`](https://github.com/shopware/frontends/commit/978b02c969ca4b16f5fc1d7a953ec4cce3d98173) Thanks [@patzick](https://github.com/patzick)! - Generate `customFields` properties with a dedicated `CustomFields` type instead of the broader `GenericRecord` type.
-
-- [#2522](https://github.com/shopware/frontends/pull/2522) [`33facb1`](https://github.com/shopware/frontends/commit/33facb178792c8cb26b47ab984ac48c08ab4b72b) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix file uploads and other binary requests. The client no longer forces the default `Content-Type: application/json` onto `FormData`, `Blob`/`File`, `URLSearchParams`, or binary/stream bodies, so the runtime can set the right content type itself (e.g. `multipart/form-data` with a boundary). Just pass the body and leave `Content-Type` alone.
-
-  On a `FormData` body the client now also drops a `Content-Type` you set yourself when it carries no `boundary`. Only the runtime knows the boundary, and it reaches the server through that header, so keeping the header made the upload arrive as unparseable bytes with no error.
-
-- [#2554](https://github.com/shopware/frontends/pull/2554) [`9137475`](https://github.com/shopware/frontends/commit/91374753cedb2034385f642e6af11314f2971caa) Thanks [@patzick](https://github.com/patzick)! - Make `_criteria` query encoding deterministic by pinning the gzip timestamp.
-
-- [#2526](https://github.com/shopware/frontends/pull/2526) [`474d3fe`](https://github.com/shopware/frontends/commit/474d3fed346816135b0c7c797990b215a8b691c0) Thanks [@mkucmus](https://github.com/mkucmus)! - Split the `createAPIClient` tests so Node and browser behavior are each tested in the right environment:
-
-  - Node (`createApiClient.test.ts`): keeps the multipart `Content-Type`, aborts with `This operation was aborted`.
-  - Browser (`createApiClient.browser.test.ts`, runs in `happy-dom`): drops the multipart `Content-Type`, aborts with `signal is aborted without reason`.
-
-  Previously a stray `@vitest-environment` comment ran the whole suite in browser mode, so the Node paths were never actually checked.
+- [#2676](https://github.com/shopware/frontends/pull/2676) [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update the default Store API schema and types from `6.7.12.1` to `6.7.13.0`.

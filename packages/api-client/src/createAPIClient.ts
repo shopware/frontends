@@ -10,6 +10,7 @@ import {
 import type { operations } from "../api-types/storeApiTypes";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import { mergeSignalWithTimeout } from "./mergeSignalWithTimeout";
 import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
 
@@ -22,11 +23,9 @@ type SimpleUnionPick<T, K extends keyof T> = T extends unknown
   : never;
 
 type RenameByT<T, U> = {
-  [K in keyof U as K extends keyof T
-    ? T[K] extends string
-      ? T[K]
-      : never
-    : K]: K extends keyof U ? U[K] : never;
+  [
+    K in keyof U as K extends keyof T ? (T[K] extends string ? T[K] : never) : K
+  ]: K extends keyof U ? U[K] : never;
 };
 
 export type RequestReturnType<
@@ -156,6 +155,7 @@ export function createAPIClient<
   }
 
   let apiFetch = createFetchClient(currentBaseURL);
+  const clientTimeout = params.fetchOptions?.timeout;
 
   /**
    * Invoke API request based on provided path definition.
@@ -216,20 +216,28 @@ export function createAPIClient<
       currentParams.body,
     );
 
-    const resp = await apiFetch.raw<
-      SimpleUnionPick<CURRENT_OPERATION, "response">
-    >(requestPathWithParams, {
-      ...fetchOptions,
-      method,
-      body: currentParams.body,
-      headers: mergedHeaders as HeadersInit,
-      query: currentParams.query,
-    });
+    // armed last, so nothing between here and the `finally` can leave the
+    // timer running
+    const releaseTimeout = mergeSignalWithTimeout(fetchOptions, clientTimeout);
 
-    return {
-      data: resp._data,
-      status: resp.status,
-    } as RequestReturnType<CURRENT_OPERATION>;
+    try {
+      const resp = await apiFetch.raw<
+        SimpleUnionPick<CURRENT_OPERATION, "response">
+      >(requestPathWithParams, {
+        ...fetchOptions,
+        method,
+        body: currentParams.body,
+        headers: mergedHeaders as HeadersInit,
+        query: currentParams.query,
+      });
+
+      return {
+        data: resp._data,
+        status: resp.status,
+      } as RequestReturnType<CURRENT_OPERATION>;
+    } finally {
+      releaseTimeout();
+    }
   }
 
   return {

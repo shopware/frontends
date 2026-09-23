@@ -49,7 +49,7 @@ watch(countryId, (newValue, oldValue) => {
       v-model="countryId"
       :label="$t('form.country')"
       :placeholder="$t('form.chooseCountry')"
-      data-testid="country-select"
+      dataTestId="country-select"
       :errorMessage="countryIdValidation?.$errors[0]"
       @states-change="handleStatesChange"
     />

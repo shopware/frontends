@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
+
 const { breadcrumbs, clearBreadcrumbs } = useBreadcrumbs();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
@@ -82,11 +84,11 @@ if (import.meta.client) {
         >
           <NuxtLink v-if="breadcrumb.path" :to="formatLink(breadcrumb.path)">
             <LayoutBreadcrumbsElement>
-              {{ breadcrumb.name }}
+              {{ getTranslatedProperty(breadcrumb, "name") }}
             </LayoutBreadcrumbsElement>
           </NuxtLink>
           <LayoutBreadcrumbsElement v-else>
-            {{ breadcrumb.name }}
+            {{ getTranslatedProperty(breadcrumb, "name") }}
           </LayoutBreadcrumbsElement>
           <LayoutBreadcrumbsDivider v-if="index < breadcrumbs.length - 1" />
         </li>

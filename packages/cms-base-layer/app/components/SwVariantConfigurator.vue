@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useCmsTranslations } from "@shopware/composables";
-import { buildUrlPrefix, getProductRoute } from "@shopware/helpers";
+import {
+  buildUrlPrefix,
+  getProductRoute,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 import { defu } from "defu";
 import { computed, ref, unref } from "vue";
 import type { ComputedRef } from "vue";
@@ -86,11 +90,12 @@ const onHandleChange = async () => {
       class="mt-6"
     >
       <div class="text-sm text-gray-900 font-medium">
-        {{ optionGroup.name }}
+        {{ getTranslatedProperty(optionGroup, "name") }}
       </div>
       <fieldset class="mt-4 flex-1">
         <legend class="sr-only">
-          {{ translations.product.chooseA }} {{ optionGroup.name }}
+          {{ translations.product.chooseA }}
+          {{ getTranslatedProperty(optionGroup, "name") }}
         </legend>
         <div class="flex gap-3">
           <label

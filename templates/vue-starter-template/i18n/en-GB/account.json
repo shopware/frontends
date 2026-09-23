@@ -25,6 +25,7 @@
       "seeLess": "See less",
       "orderLabel": "Order",
       "shippingStatus": "Shipping Status",
+      "statusUnknown": "Unknown",
       "shipping": "Shipping",
       "shippingMethod": "Shipping method",
       "total": "Total",

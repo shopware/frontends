@@ -33,7 +33,7 @@ const subcategories = computed(() => {
         @click="currentMenuPosition = undefined"
       >
         <div class="text-brand-primary font-bold flex items-center gap-1">
-          {{ subcategory.name }}
+          {{ getTranslatedProperty(subcategory, "name") }}
           <Icon
             v-if="subcategory.children.length"
             name="shopware:chevron-right-xxs"
@@ -51,7 +51,7 @@ const subcategories = computed(() => {
             @click="currentMenuPosition = undefined"
           >
             <div>
-              {{ child.name }}
+              {{ getTranslatedProperty(child, "name") }}
             </div>
           </NuxtLink>
         </li>

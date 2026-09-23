@@ -1,137 +1,78 @@
-# AI Agent Guide for @shopware/api-client
+# @shopware/api-client — agent notes
 
-This document provides guidance for AI assistants working with the `@shopware/api-client` package.
+A thin, fully typed wrapper around [ofetch](https://github.com/unjs/ofetch) for
+the Shopware Store API and Admin API.
 
-## TL;DR
+Setup, type customization and usage examples are in [README.md](README.md).
+The file layout and exports are discoverable from `src/`. This file holds only
+what neither makes obvious.
 
-**What**: Fully typed HTTP client for Shopware 6 Store API and Admin API
-**Tech**: TypeScript, ofetch, openapi-fetch-runtime
-**Types**: Generated from OpenAPI spec via `@shopware/api-gen` CLI
+## The `operations` generic is the whole design
 
-**Quick Start**:
-
-```bash
-pnpm run build    # Build the package
-pnpm run dev      # Stub mode for development (hot reload)
-pnpm run test     # Run tests
-```
-
-**Before commits**: `pnpm run lint:fix && pnpm format && pnpm run typecheck`
-
-## Package Overview
-
-`@shopware/api-client` is a thin, typed wrapper around [ofetch](https://github.com/unjs/ofetch). Its key feature is the `operations` generic that carries OpenAPI operation types end-to-end — from the `invoke()` call signature to the return type. Users either import the bundled default types or replace them with types generated from their own Shopware instance via `@shopware/api-gen`.
-
-## Directory Structure
+Type safety flows from one generic parameter:
 
 ```
-api-client/
-├── src/
-│   ├── createAPIClient.ts         # Store API client factory
-│   ├── createAdminAPIClient.ts    # Admin API client factory
-│   ├── errorInterceptor.ts        # ApiClientError + error parsing
-│   ├── helpers.ts                 # encodeForQuery helper
-│   └── index.ts                   # Public exports
-├── api-types/
-│   ├── storeApiTypes.d.ts         # Bundled Store API types (generated)
-│   ├── adminApiTypes.d.ts         # Bundled Admin API types (generated)
-│   └── storeApiSchema.overrides.json  # Default JSON patches applied during generation
-├── src/fetch/                     # Low-level fetch wrappers
-└── _tests/                        # Vitest tests with mock server
+createAPIClient<operations>()
+  → client.invoke("operationId method /path", params)
+                   ↑ key typed by operations   ↑ { body, query, pathParams,
+                                                   headers, fetchOptions }
 ```
 
-## Key Files
+`operations` maps `"operationId method /path"` keys to `body`, `query`,
+`pathParams`, `response` and `responseCode`. It comes from one of three places,
+and knowing which one a project uses explains most type errors:
 
-- [src/createAPIClient.ts](src/createAPIClient.ts) — `createAPIClient<operations>()` factory; hooks, context token management, `invoke()`
-- [src/createAdminAPIClient.ts](src/createAdminAPIClient.ts) — `createAdminAPIClient<operations>()` factory; OAuth2 (password + client_credentials), session persistence
-- [src/errorInterceptor.ts](src/errorInterceptor.ts) — `ApiClientError` class with parsed API error details
-- [src/helpers.ts](src/helpers.ts) — `encodeForQuery()` for compressed GET criteria
-- [api-types/storeApiSchema.overrides.json](api-types/storeApiSchema.overrides.json) — default patches shipped with the package (referenced by `api-gen` users)
+1. **Bundled defaults** — `@shopware/api-client/store-api-types` or
+   `/admin-api-types`.
+2. **Generated from an instance** — `./api-types/storeApiTypes`, produced by
+   `@shopware/api-gen`.
+3. **Extended** — `./api-types/storeApiTypes.overrides.ts` merged with
+   `WithApiOverrides` in `shopware.d.ts`. Usage is in [README.md](README.md).
 
-## Type System
+**Never hand-edit `api-types/*.d.ts`** — they are generated artifacts.
+`pnpm generate-types` in this package regenerates the **store** types;
+`adminApiTypes.d.ts` comes from `generate-admin-types`. Other workspaces import
+the result from `@shopware/api-client/store-api-types`.
 
-The entire type safety model flows from a single generic parameter `operations`:
+## Non-obvious extension points
 
-```
-createAPIClient<operations>()  →  client.invoke("operationId method /path", body)
-                                             ↑ typed by operations key
-```
+- **New hooks** go into the `ApiClientHooks` / `AdminApiClientHooks` types
+  (`src/createAPIClient.ts`, `src/createAdminAPIClient.ts`) first — those types
+  parameterise `createHooks<...>()` from hookable, so the type is what makes a
+  hook name callable and consumer-visible, not the call site.
+- **New `fetchOptions`** need adding to the `Pick` list in
+  `InvokeParameters["fetchOptions"]` in `src/createAPIClient.ts` (and to
+  `GlobalFetchOptions` if it should be settable client-wide), then documenting in
+  the README. That `Pick` is a **type-level** allow-list and nothing filters it
+  at runtime: the object is spread into ofetch verbatim, so an unlisted key that
+  gets past the types still reaches ofetch and still changes the request. The
+  type only catches it as an excess property when you pass an object _literal_ —
+  a prepared variable carrying an extra key compiles cleanly. `method`, `body`,
+  `headers` and `query` are the exceptions: `invoke` re-sets those after the
+  spread.
+- **`api-types/storeApiSchema.overrides.json`** ships as the default patch set
+  that `api-gen` users reference from their own config. Keep it in sync whenever
+  the bundled types are regenerated, or downstream generation drifts from ours.
 
-The `operations` type is a map of `"operationId method /path"` keys to objects describing `body`, `query`, `pathParams`, `response`, and `responseCode`.
+## Tests
 
-**Three sources for `operations`**:
+Vitest against a mock HTTP server — no Shopware instance needed. Tests sit next
+to sources, with extra suites in `src/tests/`.
 
-1. **Bundled default** — `@shopware/api-client/store-api-types` or `@shopware/api-client/admin-api-types`
-2. **Generated from instance** — `./api-types/storeApiTypes` (via `@shopware/api-gen`)
-3. **Extended/overridden** — `./api-types/storeApiTypes.overrides.ts` (merges generated + custom)
+Some behaviour is runtime-dependent (abort and rejection messages differ between
+Node and `happy-dom`), so those cases are split by environment: `*.test.ts` runs
+in Node, `*.browser.test.ts` in happy-dom. **The
+`// @vitest-environment happy-dom` docblock must be on the FIRST line of the
+file** — Vitest applies it to the whole file wherever it sits, so putting it
+inside an `it()` silently flips every test in that file.
 
-When working on this package, never edit `api-types/*.d.ts` manually — they are generated artifacts. To regenerate them, use `@shopware/api-gen` with the appropriate schema.
-
-## Common Tasks
-
-### Adding a hook
-
-Hooks are registered in `createAPIClient.ts` / `createAdminAPIClient.ts`. Available hook names are typed via the `ClientHooks` interface. Add new hook types there first, then wire them into the fetch lifecycle.
-
-### Fixing error handling
-
-Error parsing lives in `errorInterceptor.ts`. The `ApiClientError` class wraps raw API responses and exposes `details` for structured error data.
-
-### Updating bundled types
-
-Bundled types (`api-types/*.d.ts`) are generated — do not edit them. To update:
-
-```bash
-# From repo root
-pnpm run generate-types
-```
-
-This runs `@shopware/api-gen` against the configured Shopware instance and regenerates the `.d.ts` files.
-
-### Adding new `fetchOptions`
-
-The allowed subset of `ofetch` options is explicitly listed in the client types. If a new option needs to be exposed, add it to the `FetchOptions` type in `src/createAPIClient.ts` and document it in the README.
-
-## Testing
-
-Tests live in `_tests/` and use Vitest with a mock HTTP server (no real Shopware instance needed).
-
-```bash
-pnpm run test          # Run all tests
-pnpm run test:watch    # Watch mode
-```
-
-Tests exercise `invoke()` calls, hook firing, error parsing, and auth flows. When adding features, add matching tests.
-
-Some behaviour still depends on the runtime — for example abort/rejection messages differ between Node and `happy-dom`. Keep those split by environment:
-
-- `*.test.ts` runs in the default Node environment.
-- `*.browser.test.ts` runs in `happy-dom` via a `// @vitest-environment happy-dom` docblock on the **first line** of the file.
-
-Vitest applies that docblock to the whole file regardless of where it appears, so never place it inside a single `it()` block — doing so silently flips every test in the file to the browser environment.
-
-Request `Content-Type` handling is **not** environment-dependent: `resolveRequestHeaders` decides it from the body alone, so Node and the browser produce the same headers. The browser test file only guards that they stay in sync.
-
-## Relationship with @shopware/api-gen
-
-`@shopware/api-gen` is the CLI companion that produces the `operations` and `components` types consumed here. The two packages are decoupled — `api-client` ships default types for convenience, but end users are encouraged to generate their own.
-
-The default patches file `api-types/storeApiSchema.overrides.json` is referenced by `api-gen` users via:
-
-```json
-{
-  "store-api": {
-    "patches": [
-      "./node_modules/@shopware/api-client/api-types/storeApiSchema.overrides.json"
-    ]
-  }
-}
-```
-
-Keep this file in sync when the bundled types are regenerated.
-
-## References
-
-- [README.md](README.md) — User-facing docs including setup, type customization, usage examples
-- [@shopware/api-gen](../api-gen/README.md) — Type generation CLI
-- [developer.shopware.com/frontends](https://developer.shopware.com/frontends/) — Full documentation
+Request `Content-Type` handling is _not_ environment-dependent, so the browser
+test file only guards that Node and the browser stay in sync. It is not decided
+from the body alone either: `resolveRequestHeaders` weighs the caller's header
+against the default, whether that default is the seeded `application/json`,
+multipart boundary usability, and header-casing collisions. An explicit
+non-JSON caller `Content-Type` wins for a runtime-managed body — a Blob's
+`image/png` survives — **except** for `FormData`, where a `Content-Type` without
+a boundary cannot describe the body and is dropped whatever the caller set (see
+`shouldDrop`, pinned by a test). Keep both branches when touching it, or Blob
+uploads or multipart break.

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { watchDebounced } from "@vueuse/core";
 
 defineOptions({
@@ -211,7 +212,7 @@ const formatDate = (date: string) =>
                   <div>{{ shippingMethod?.translated.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     {{ $t("checkout.takesUpTo") }}
-                    {{ shippingMethod.deliveryTime?.name }}
+                    {{ getShippingMethodDeliveryTime(shippingMethod) }}
                   </div>
                 </div>
               </div>

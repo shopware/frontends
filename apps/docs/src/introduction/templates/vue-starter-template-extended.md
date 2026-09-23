@@ -16,6 +16,12 @@ This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) a
 
 ### Quick setup
 
+Unlike the other templates, this one cannot simply be copied out of the
+repository: it is `scaffoldable: false` in `templates/manifest.json`, because its
+`nuxt.config.ts` extends `../vue-starter-template` by relative path and its
+`package.json` depends on `vue-starter-template` through the workspace protocol.
+The steps below are the manual setup that works around both.
+
 Scaffold both templates side by side:
 
 ```bash
@@ -40,12 +46,8 @@ Then install and run:
 
 ```bash
 cd lumora-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
-
-:::tip
-This setup works with **npm**, **yarn**, **pnpm**, or **bun**.
-:::
 
 ## What is Lumora?
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { watchDebounced } from "@vueuse/core";
 
 defineOptions({
@@ -117,7 +118,7 @@ const formatDate = (date: string) =>
                   v-if="order?.amountTotal"
                   :value="order.amountTotal"
                   class="text-surface-on-surface font-normal"
-                  data-testid="order-subtotal"
+                  data-testid="order-summary-total"
                 />
               </div>
               <div v-if="order?.orderDate" class="text-surface-on-surface">
@@ -211,7 +212,7 @@ const formatDate = (date: string) =>
                   <div>{{ shippingMethod?.translated.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     {{ $t("checkout.takesUpTo") }}
-                    {{ shippingMethod.deliveryTime?.name }}
+                    {{ getShippingMethodDeliveryTime(shippingMethod) }}
                   </div>
                 </div>
               </div>

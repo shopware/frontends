@@ -28,7 +28,7 @@ Alternatively, set up the vue-starter-template manually by running the following
 
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 ## Directory structure
@@ -114,7 +114,7 @@ export default defineNuxtConfig({
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 
 :::info devStorefrontUrl for local development
-If you're developing locally and need customer registration to work, set `devStorefrontUrl` to a domain configured in your Sales Channel settings. See the [troubleshooting guide](../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for details.
+If you're developing locally and need customer registration to work, set `devStorefrontUrl` to a domain configured in your Sales Channel settings. See [Storefront URL](../guides/storefront-url.html) for details.
 :::
 
 ## Next Steps
