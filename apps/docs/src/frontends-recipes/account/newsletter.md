@@ -410,6 +410,7 @@ Because `newsletterStatus` lives per composable instance, every component that r
 ## Related Links
 
 - [Login recipe](login.html)
+- [Contact form recipe](../cms/contact-form.html)
 - [Storefront URL](../../guides/storefront-url.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
