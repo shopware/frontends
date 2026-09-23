@@ -395,6 +395,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 ## Related Links
 
 - [Product Listing and Filters recipe](listing.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)

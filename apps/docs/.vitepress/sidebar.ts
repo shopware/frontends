@@ -315,6 +315,17 @@ export const sidebar = [
         ],
       },
       {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Language and Currency Switch",
+            link: "/frontends-recipes/context/language-and-currency.html",
+          },
+        ],
+      },
+      {
         text: "Orders",
         link: "/frontends-recipes/orders/",
         collapsed: true,
