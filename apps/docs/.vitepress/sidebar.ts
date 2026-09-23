@@ -330,6 +330,10 @@ export const sidebar = [
             text: "Language and Currency Switch",
             link: "/frontends-recipes/context/language-and-currency.html",
           },
+          {
+            text: "Navigation and Breadcrumbs",
+            link: "/frontends-recipes/context/navigation.html",
+          },
         ],
       },
       {
@@ -340,17 +344,6 @@ export const sidebar = [
           {
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
-          },
-        ],
-      },
-      {
-        text: "Context",
-        link: "/frontends-recipes/context/",
-        collapsed: true,
-        items: [
-          {
-            text: "Navigation and Breadcrumbs",
-            link: "/frontends-recipes/context/navigation.html",
           },
         ],
       },

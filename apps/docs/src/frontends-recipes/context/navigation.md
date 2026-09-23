@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 20
 recipe:
   area: context
   status: stable
@@ -68,8 +68,8 @@ const steps = [
     title: "Route",
     action: "Hold the resolution",
     detail:
-      "useNavigationContext stores that SeoUrl and issues no request of its own. routeName says whether the page is a category, a product or a landing page, and foreignKey is its id.",
-    code: "const { routeName, foreignKey } = useNavigationContext(seoUrl)",
+      "useNavigationContext stores that SeoUrl and issues no request of its own. It takes a Ref, so the plain value resolvePath returned has to be wrapped. routeName says whether the page is a category, a product or a landing page, and foreignKey is its id.",
+    code: "const { routeName, foreignKey } = useNavigationContext(ref(seoUrl))",
     state: "navigation context",
     typeKeys: ['Schemas["SeoUrl"]'],
   },
@@ -126,7 +126,7 @@ Read the diagram from left to right:
 1. The layout calls `useNavigation({ type })` once per navigation and loads it inside `useAsyncData`.
 2. `readNavigation post /navigation/{activeId}/{rootId}` returns a category array, cached under `swNavigation-<type>`.
 3. The catch-all route calls `resolvePath(path)`, which asks `/seo-url` which entity that path belongs to.
-4. `useNavigationContext(seoUrl)` holds the answer and exposes it as `routeName` and `foreignKey`.
+4. `useNavigationContext(ref(seoUrl))` holds the answer and exposes it as `routeName` and `foreignKey`.
 5. The page fetches the category for that id, passing listing criteria because a category page is also a listing.
 6. The page invokes `readBreadcrumb get /breadcrumb/{id}` itself and hands the response to `buildDynamicBreadcrumbs`, which writes the shared trail with router-ready paths.
 7. The layout renders the tree from the ref it loaded, and a breadcrumb component reads `breadcrumbs` from the composable.
@@ -144,7 +144,7 @@ You do not need to reload the navigation on every route change, and you do not n
 | Store the trail       | `buildDynamicBreadcrumbs(response.data)`        | none                                   | <SchemaTypeTooltip type-key='Schemas["Breadcrumb"]' />                                                     |
 | Append one breadcrumb | `pushBreadcrumb({ name, path })`                | none                                   | <SchemaTypeTooltip type-key='Schemas["Breadcrumb"]' />                                                     |
 
-The breadcrumb request is the only row without a composable. It also accepts a `type` query parameter, which selects whether the id is a product or a category and defaults to `product`, and `referrerCategoryId`, which picks the trail when a product is reachable through several categories.
+The breadcrumb request is the only row without a composable. `referrerCategoryId` picks the trail when a product is reachable through several categories. `type` is the one to read the edge case on: its documented default of `product` does not mean a category page has to override it.
 
 The tooltip on the last two rows shows `Schemas["Breadcrumb"]`, the full wire shape. `pushBreadcrumb` is looser than that: it also accepts a bare `{ name, path }`, which is what you hand it for a crumb you build yourself.
 
@@ -175,7 +175,7 @@ Six things the generated reference will not tell you:
 - `loadNavigationElements(criteria)` takes the POST body, not a plain criteria object: `depth` and `buildTree` sit alongside the criteria fields. It also swallows its own errors — it sets the shared array to `[]`, logs, and resolves.
 - `navigationElements` is typed `NavigationRouteResponse | null`, and the shared ref starts as `[]`. `useNavigation` closes over that ref at call time, so the layout's own `navigationElements` keeps pointing at it even after the layout re-provides the `useAsyncData` ref under the same key. Descendants read the re-provided ref; the layout has to render from its `useAsyncData` data instead.
 - `resolvePath("/")` returns early with the sales channel's `navigationCategoryId` and never touches the Store API. Every other path costs one `/seo-url` request, with a technical-path fallback derived locally when nothing matches.
-- `useNavigationContext(seoUrl)` creates a new context from the ref you pass; calling it with no argument injects whatever a component above provided, which in practice means the catch-all route. Off that route nothing is provided and nothing throws: `routeName` is `undefined` and `foreignKey` is `""`. Either way it issues no request — the `SeoUrl` it exposes was fetched by `resolvePath`.
+- `useNavigationContext` is typed to take a `Ref<SeoUrl | null>`, but `resolvePath` resolves to a plain value, so it has to be wrapped: `useNavigationContext(ref(seoUrl))`. The `Ref` is only a type requirement — `useContext` immediately does `ref(unref(context))`, which snapshots the value, so a `computed` passed in does not keep the context in sync either. Calling it with no argument injects whatever a component above provided, which in practice means the catch-all route. Off that route nothing is provided and nothing throws: `routeName` is `undefined` and `foreignKey` is `""`. Either way it issues no request.
 - `buildDynamicBreadcrumbs` is `async` but does no I/O — it maps the response you already fetched. `breadcrumbs` is `undefined`, not `[]`, until the first write, so guard with `breadcrumbs?.length`.
 - `useCategory(categoryResponse)` provides the category and `useCategory()` injects it, but the injecting call throws a `ContextError` when nothing was provided above it. `CmsElementCategoryNavigation` relies on the page having made that call. What you pass in is copied, not aliased, so a later `refresh()` of the source ref does not reach the consumers below.
 
@@ -397,7 +397,7 @@ That sharing is `inject` with a `provide` fallback, so it only reaches component
 
 Where that call sits decides the lifetime. In the starter every caller is a page-level component and the breadcrumb bar is their child, so the ref is created and destroyed with the page: the trail does not survive a route change. Call `useBreadcrumbs()` in a layout or above `NuxtPage` instead and the same ref outlives every navigation — which is the arrangement that makes a stale trail, and an uncancelled breadcrumb request, something you have to handle.
 
-Once a session context token exists, every request carries it as `sw-context-token`, so the language and currency in that context decide which translations and prices come back. The very first anonymous request goes out without the header and adopts the token from the response. Changing either invalidates the navigation you already loaded; reload it rather than translating the cached tree.
+Once a session context token exists, every request carries it as `sw-context-token`, so the language and currency in that context decide which translations and prices come back. The very first anonymous request goes out without the header and adopts the token from the response. A language switch invalidates the tree you already loaded, which is one reason it ends in a full page load rather than a reactive update. A currency switch does not: the navigation carries category names, not prices.
 
 `useNavigationContext` holds route data rather than fetching it. It wraps the `SeoUrl` that `useNavigationSearch().resolvePath()` produced, and `routeName` is what a catch-all route branches on to decide which page component to render.
 
@@ -407,11 +407,13 @@ Once a session context token exists, every request carries it as `sw-context-tok
 - `loadNavigationElements` catches its own errors, sets the shared array to `[]` and logs. A failed load is indistinguishable from an empty navigation.
 - `buildTree` is described as choosing between a tree and a flat list but is declared in the schema as an array of objects. Verify the shape against your Shopware version before relying on it.
 - On the cacheable GET variant the composable strips `buildTree` and `depth` out of the criteria and sends them as dedicated query parameters. On the POST variant they stay in the body. A hand-rolled request has to match the variant it uses.
-- `depth` counts the levels _below_ the root, so `depth: 1` returns the top level plus its children and `depth: 2` adds one more. A navigation rendered three levels deep with `depth: 1` shows no grandchildren and no error.
+- `depth` counts the levels _below_ the root, so `depth: 1` returns the top level plus its children and `depth: 2` adds one more; omitting it behaves like `depth: 2`. Only the nesting changes — the number of root elements is identical at every depth, so comparing two depths by the length of `navigationElements` shows nothing. A navigation rendered three levels deep with `depth: 1` shows no grandchildren and no error.
 - `resolvePath` returns `null` when `/seo-url` matches nothing and no technical-path fallback applies. A catch-all route that does not check `foreignKey` renders a page component with an empty id.
 - `resolvePath` rejects rather than returning `null` when the request itself fails — the `/seo-url` call is not wrapped. `null` means "no match", an exception means "could not ask". Map only `null` to a 404, or a Store API blip surfaces as an unhandled error page.
 - `useCategorySearch().search()` rejects on any non-2xx. Reading only `data` from `useAsyncData` and treating a null value as "not found" turns every 500 and timeout into a 404 — cached for as long as your `isr` rule says. Read `error` and rethrow anything that is not a real 404.
 - `readBreadcrumb get /breadcrumb/{id}` has no composable. `buildDynamicBreadcrumbs` consumes its response, so forgetting the request leaves the trail empty rather than failing.
+- `type` is documented as defaulting to `product`, which reads as though a category page must send `type: "category"`. It does not. Against the demo backend only `category` is restrictive — it resolves categories and nothing else, while an absent, `product` or even unrecognised value resolves either kind. That is why a category id returns a byte-identical trail with `type` absent, `category` or `product`, and why the starter omits it. The parameter bites in the other direction instead: `type: "category"` on a *product* id returns an empty array with a `200`, not an error. Leave it unset unless you are deliberately restricting the lookup.
+- An id that matches nothing also answers `200` with `[]`. Every failure mode of this endpoint is an empty trail, never a thrown error, so a missing breadcrumb bar is the only symptom you get.
 - Fetching the trail from `onMounted` keeps it out of the server-rendered HTML. Whatever the template renders while the request is pending is what ships in the markup and what a crawler indexes, so start a loading flag at `false` and raise it inside `onMounted` rather than initialising it to `true`. If breadcrumbs must be in the initial markup, move the request into the same `useAsyncData` as the category and accept the extra server round trip.
 - Nothing cancels the breadcrumb request for you. `buildDynamicBreadcrumbs` replaces the trail wholesale, so once the ref outlives the page a response that lands after the user has navigated away overwrites the new page's trail. Pass an `AbortController` signal and abort it from `router.beforeEach` and `onBeforeUnmount`, as the starter does.
 - `buildDynamicBreadcrumbs` prefixes every `path` with `/`. Passing an already-absolute path produces `//path`.
@@ -455,10 +457,12 @@ Once a session context token exists, every request carries it as `sw-context-tok
 
 ## Related Links
 
-- [Navigation page element](../../getting-started/page-elements/navigation.html)
-- [Breadcrumbs page element](../../getting-started/page-elements/breadcrumbs.html)
-- [Routing](../../getting-started/routing.html)
-- [Product listing](../../getting-started/e-commerce/product-listing.html)
+- [Create a navigation](../../guides/page-elements/navigation.html)
+- [Breadcrumbs](../../guides/page-elements/breadcrumbs.html)
+- [Routing](../../guides/routing.html)
+- [Product listing](../../guides/e-commerce/product-listing.html)
+- [Product Listing and Filters recipe](../catalog/listing.html)
+- [Language and Currency Switch recipe](language-and-currency.html)
 - [Helpers package](../../packages/helpers.html)
 - [API client package](../../packages/api-client.html)
 - [Composables reference](../../packages/composables/)

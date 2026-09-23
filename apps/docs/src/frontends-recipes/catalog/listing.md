@@ -532,6 +532,7 @@ A listing is context-dependent. Prices come back calculated in the current curre
 
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
+- [Navigation and Breadcrumbs recipe](../context/navigation.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Prices documentation](../../guides/e-commerce/prices.html)
