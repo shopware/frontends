@@ -257,7 +257,7 @@ const canSetPassword = computed(
     isHashChecked.value &&
     !isCheckFailed.value &&
     !isExpired.value &&
-    !isResetComplete.value
+    !isResetComplete.value,
 );
 
 const startSubmit = () => {
@@ -280,7 +280,7 @@ const checkHash = async () => {
   try {
     const { data: recoveryResponse } = await apiClient.invoke(
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
-      { body: { hash }, fetchOptions: { timeout: 10_000 } }
+      { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
     // the flag sits inside an array_struct envelope, not on the response root
     isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
@@ -325,7 +325,7 @@ const confirmNewPassword = async () => {
   try {
     await apiClient.invoke(
       "recoveryPassword post /account/recovery-password-confirm",
-      { body: { hash, ...resetForm } }
+      { body: { hash, ...resetForm } },
     );
     resetForm.newPassword = "";
     resetForm.newPasswordConfirm = "";
@@ -519,7 +519,7 @@ onMounted(checkHash);
 
 </CodeExample>
 
-The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-demo-store` pins it with `definePageMeta({ path: "/account/recover/password" })`.
+The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-starter-template` serves the default `/account/recover/password` from `app/pages/account/recover/password.vue`.
 
 Three choices in the markup are deliberate. The submit buttons carry `aria-disabled` rather than `disabled`, because a disabled control cannot hold focus — the customer who just pressed it would be thrown back to the top of the document, so the handlers guard on `isSubmitting` instead. The error paragraphs are `role="alert"` and sit inside the form, above the button, because by the time one renders the control has been re-enabled and focus is nowhere near it. And each `h1` is focusable, because the form holding focus unmounts on success — without moving focus to the heading, a screen reader never learns the request went through.
 
