@@ -3,6 +3,11 @@ import type { ApiClientRuntimeConfig } from "@shopware/nuxt-module";
 
 import type { operations } from "#shopware";
 
+function toTimeout(value: unknown) {
+  const timeout = Number(value);
+  return Number.isFinite(timeout) && timeout > 0 ? timeout : undefined;
+}
+
 /**
  * Same precedence as the @shopware/nuxt-module plugin on the server: the
  * private endpoint (NUXT_SHOPWARE_ENDPOINT) wins, the public one is the fallback.
@@ -13,21 +18,36 @@ export function getShopwareServerEndpoint() {
 }
 
 /**
+ * Headers and timeout for server-side Store API calls. Like the plugin, each
+ * field falls back from the private tier to the public one on its own.
+ */
+export function getServerApiClientOptions() {
+  const config = useRuntimeConfig();
+  const privateConfig = config.apiClientConfig as
+    | ApiClientRuntimeConfig
+    | undefined;
+  const publicConfig = config.public.apiClientConfig as
+    | ApiClientRuntimeConfig
+    | undefined;
+
+  return {
+    headers: privateConfig?.headers || publicConfig?.headers,
+    timeout:
+      toTimeout(privateConfig?.timeout) ?? toTimeout(publicConfig?.timeout),
+  };
+}
+
+/**
  * Store API client for server routes. It carries no customer session, so use
  * it only for data that is the same for every visitor.
  */
 export function createServerApiClient() {
-  const config = useRuntimeConfig();
-  const apiClientConfig = (config.apiClientConfig ??
-    config.public.apiClientConfig) as ApiClientRuntimeConfig | undefined;
-  const timeout = Number(apiClientConfig?.timeout);
+  const { headers, timeout } = getServerApiClientOptions();
 
   return createAPIClient<operations>({
     baseURL: getShopwareServerEndpoint(),
-    accessToken: config.public.shopware.accessToken,
-    defaultHeaders: apiClientConfig?.headers,
-    ...(Number.isFinite(timeout) && timeout > 0
-      ? { fetchOptions: { timeout } }
-      : {}),
+    accessToken: useRuntimeConfig().public.shopware.accessToken,
+    defaultHeaders: headers,
+    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });
 }

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: "Sitemap not found" });
   }
 
-  const upstream = await fetch(file.url);
+  const upstream = await fetchSitemapFile(file);
   if (!upstream.ok) {
     throw createError({
       statusCode: 502,

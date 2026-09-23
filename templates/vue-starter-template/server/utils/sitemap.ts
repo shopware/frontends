@@ -22,3 +22,24 @@ export async function listSitemapFiles(): Promise<SitemapFile[]> {
     return path ? [{ path, url }] : [];
   });
 }
+
+/**
+ * On the backend host the file can sit behind the Store API, which needs the
+ * access key and the configured headers. Those never go to another host,
+ * such as a CDN.
+ */
+export function fetchSitemapFile(file: SitemapFile) {
+  const { headers, timeout } = getServerApiClientOptions();
+  const backendOrigin = new URL(getShopwareServerEndpoint()).origin;
+  const isBackend = new URL(file.url).origin === backendOrigin;
+
+  return fetch(file.url, {
+    headers: isBackend
+      ? {
+          "sw-access-key": useRuntimeConfig().public.shopware.accessToken,
+          ...headers,
+        }
+      : undefined,
+    signal: timeout === undefined ? undefined : AbortSignal.timeout(timeout),
+  });
+}
