@@ -206,6 +206,7 @@ import type { Schemas } from "#shopware";
 
 const { product } = defineProps<{ product: Schemas["Product"] }>();
 
+const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 const { productAssociations, isLoading, loadAssociations } =
@@ -250,7 +251,7 @@ watch(
 
 The groups are rendered stacked, each under its own `h2`, rather than as tabs. A tab strip needs the full `tablist`/`tab`/`tabpanel` pattern with roving focus to be reachable by keyboard, and none of that is about cross-selling — stacked headings are navigable out of the box and cannot strand the reader on a panel that no longer exists.
 
-`formatLink` wraps `getProductRoute` because the helper returns an unprefixed route, and it is a no-op unless the composable was created with a path resolver — `useInternationalization(localePath)`. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL.
+`formatLink` wraps `getProductRoute` because the helper returns an unprefixed route. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL. The resolver is what makes it work: `formatLink` returns the link untouched unless `useInternationalization` was created with one, so the path resolver from Nuxt i18n has to be resolved first and passed in — two lines, never one.
 
 `crossSelling.limit` is configured in the Admin and caps how many products a group returns, so `group.total` can be the larger number. The operation takes no limit and no page of its own, so there is no way to load the remainder — render the count as information, not as a control.
 
@@ -272,6 +273,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - `group.total` can exceed `group.products.length` because `crossSelling.limit` caps how many products the group returns. There is no way to fetch the rest through this operation.
 - Without `includeSeoUrls: true` the returned products carry no `seoUrls`, so `getProductRoute` falls back to `/detail/{id}`.
 - `getProductRoute` returns an unprefixed route either way. On a localised storefront it has to be wrapped in `formatLink` from `useInternationalization`, as every call site in `vue-starter-template` does.
+- `formatLink` silently does nothing when `useInternationalization` was created without a path resolver, so the resolver has to be resolved into a local first. Nuxt i18n auto-imports the composable that returns it, not the resolver itself — a bare identifier is a `ReferenceError`.
 - A failed **first** load renders nothing and is indistinguishable from a product that has no cross-selling at all: `productAssociations` stays `[]`, `isLoading` returns to `false`, and no error is observable from outside the composable. Nothing the consumer writes can tell the two apart.
 - A failed **reload** looks identical to a successful one that changed nothing, because the errors are swallowed and the previous groups stay rendered.
 - `loadAssociations` has no in-flight guard, no sequence token and no cancellation. Two overlapping calls both write to `productAssociations` and the last response to arrive wins regardless of the order they were issued, while `isLoading` flips back to `false` as soon as the first one settles. Guard the caller if you wire a reload to a control a customer can activate twice.
@@ -290,6 +292,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - Do not offer a "show more" control per group. The operation cannot page.
 - Do not omit `includeSeoUrls` when the groups link to product pages.
 - Do not link with a bare `getProductRoute`. Wrap it in `formatLink` or a localised storefront drops the prefix.
+- Do not call `useInternationalization()` with no argument and expect `formatLink` to prefix anything. It returns the link untouched.
 - Do not call this composable on a CMS product page that already has the data.
 - Do not expect `cacheableReads` to make these requests cacheable. This composable always sends a `POST`.
 - Do not keep an index into the rendered groups without clamping it. A reload can return fewer groups than are on screen.
