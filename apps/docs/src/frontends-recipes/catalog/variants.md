@@ -121,7 +121,7 @@ You do not get a request from `handleChange` itself. The composable separates "t
 
 `cms-base-layer` ships that second half: `SwVariantConfigurator` renders the groups and resolves the variant, with an `allowRedirect` prop that is `true` by default. `vue-starter-template` has no selector of its own — it extends `@shopware/cms-base-layer`, so a CMS-rendered product page gets that one as-is. Read it before writing your own, and read it knowing what it does with a miss.
 
-At the default it navigates on every change, including the ones that resolve nothing. `getProductRoute(undefined)` carries `path: "/"`, and `buildUrlPrefix` always returns an object, so the component's `allowRedirect && path` guard never blocks anything: an unavailable combination sends the customer to the home page, or to `/<prefix>/` on a localised storefront. Pass `:allow-redirect="false"` and handle the miss yourself if that is not what you want.
+At the default it navigates on every change, including the ones that resolve nothing. `getProductRoute(undefined)` carries `path: "/"`, and `buildUrlPrefix` always returns an object — `{ path: "" }` at worst — so the component's `allowRedirect && selectedOptionsVariantPath` guard never blocks anything. Despite its name, that variable holds the route object passed to `router.push`, and an object is always truthy. An unavailable combination therefore sends the customer to the home page, or to `/<prefix>/` on a localised storefront. Pass `:allow-redirect="false"` and handle the miss yourself if that is not what you want.
 
 The same default makes the `change` event unreachable. `CmsElementBuyBox` wires it to `changeVariant`, but only a project that renders `SwVariantConfigurator` itself with `:allow-redirect="false"` ever receives it. The `try`/`catch` around the component's `router.push` is synchronous around a promise, so nothing a navigation produces lands in it either.
 
@@ -137,7 +137,7 @@ The same default makes the `change` event unreachable. `CmsElementBuyBox` wires 
 | Merge without navigating | `changeVariant(variant)`                                                   | none                                                      | <SchemaTypeTooltip type-key='Schemas["Product"]' />                                                                   |
 | Use the dedicated route  | `invoke("searchProductVariantIds post /product/{productId}/find-variant")` | `POST /product/{productId}/find-variant`                  | <SchemaTypeTooltip type-key='operations["searchProductVariantIds post /product/{productId}/find-variant"]["body"]' /> |
 
-The last row has no composable. It takes the selected options — as an array of option ids, or as a map keyed by **group id**, not by group name — and returns the found combination with the variant id, so a custom selector that only needs an id can avoid the product search entirely.
+The last row has no composable. It takes the selected options — as an array of option ids, or as a map keyed by **group id**, not by group name — and returns the found combination with the variant id, so a custom selector that only needs an id can avoid the product search entirely. The generated type does not encode that key: `options` arrives as `string[] | { [key: string]: string }`, because the `groupId => optionId` wording sits on the schema's `oneOf` branches and only property-level descriptions survive into the `.d.ts` — `switchedGroup` keeps its comment, `options` does not. Read the key convention from the schema, not from the type.
 
 Its response type is the one place on this page where the generated contract does not match the route. `FindProductVariantRouteResponse` nests the payload under an optional `foundCombination` object, while the route answers with the `FoundCombination` struct flat — `variantId`, `options` and `apiAlias` at the root — on the POST operation and on `searchProductVariantIdsGet` alike. Read `variantId` from the response root and type it locally; typed access through the generated response points one level too deep and reads `undefined`.
 
@@ -198,7 +198,7 @@ type FoundCombination = {
 };
 ```
 
-`ProductDetailResponse` is where the configurator comes from: it is `{ product, configurator }`, and `configurator` is the `PropertyGroup[]` that `getOptionGroups` returns.
+`ProductDetailResponse` is where the configurator comes from, and only `product` is required on it. `configurator?: PropertyGroup[]` is the optional half — the same array `getOptionGroups` returns — so a product that is not configurable answers without it and the selector has nothing to render.
 
 `FoundCombination` is written by hand for the mismatch above: the generated response type puts those two fields inside a `foundCombination` object that the route does not send.
 
@@ -218,7 +218,8 @@ import type { Schemas } from "#shopware";
 
 const { product, configurator } = defineProps<{
   product: Schemas["Product"];
-  configurator: Schemas["PropertyGroup"][];
+  // optional on ProductDetailResponse, so optional here
+  configurator?: Schemas["PropertyGroup"][];
 }>();
 
 useProduct(product, configurator);
@@ -318,12 +319,12 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 ## Edge Cases
 
 - The initial map is built once during setup and never rebuilt. An `optionId` whose option is in no configurator group is skipped, because the group lookup returns an empty name.
-- `getSelectedOptions` is keyed by the translated group name, with a fallback to the untranslated `name`. If the component survives a language switch, `handleChange` writes the new translation as an additional key and the stale one stays — two options of the same group in the filter, and no match. Remount the selector with the product instead.
+- `getSelectedOptions` is keyed by the translated group name, with a fallback to the untranslated `name`. A language switch normally redirects or reloads, so the map is rebuilt — see the [language and currency recipe](../context/language-and-currency.html). Switch in place and it is not: `handleChange` writes the new translation as an additional key, the stale one stays, and two options of the same group go into the filter and match nothing.
 - `findVariantForSelectedOptions` catches its own errors, logs them, and returns `undefined`. A failed request and an unavailable combination are indistinguishable from the outside.
 - It accepts no abort signal, and no timeout is armed unless you set `runtimeConfig.apiClientConfig.timeout` in milliseconds. Without one, a request that hangs never settles and nothing clears your pending flag.
 - `router.push` resolves with a `NavigationFailure` instead of throwing when a guard aborts the navigation or the target is the current route. Check the resolved value; only a guard that throws reaches a `catch`.
 - The variant search restricts the product to `id`, `translated`, `productNumber` and `seoUrls`. Passing that into `changeVariant` leaves price, stock, cover and every other field at the previous variant's values.
-- The search filters on `parentId`, so it works only for a variant of a configurable product. A standalone product carries `parentId: null`, which serialises as `"value": null` and matches nothing: the Store API answers `200` with an empty result and the composable returns `undefined` without logging. Only a product whose response omits `parentId` entirely drops the key from the filter, and that is what earns a `400 FRAMEWORK__INVALID_FILTER_QUERY`.
+- The search filters on `parentId`, so it only makes sense for a variant of a configurable product. A standalone product carries `parentId: null`, and `equals` on `null` matches every parentless product in the catalog. Such a product also has no `optionIds`, so nothing else narrows the filter and the search answers `200` with the first parentless product it finds — a product the customer never picked, which the shipped configurator would then navigate to. Check `product.parentId` before you resolve. A response that omits `parentId` entirely drops the key from the filter instead, and that is what earns a `400 FRAMEWORK__INVALID_FILTER_QUERY`.
 - The selection is committed before your callback runs and is never rolled back. After a combination that resolves to nothing, `getSelectedOptions` still holds the option that failed, so every later pick in another group carries it into the filter and also matches nothing. Restore the previous value yourself if the customer needs a way back.
 - `useProductConfigurator()` reads `product.value.options` during setup without a guard. An empty product context throws from `useProduct` first, so provide it before mounting the selector.
 - `getOptionGroups` is empty for a product without a configurator, which is the correct signal not to render a selector at all.
@@ -363,6 +364,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - [Product Listing and Filters recipe](listing.html)
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
