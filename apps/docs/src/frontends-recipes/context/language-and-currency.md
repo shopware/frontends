@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 20
 recipe:
   area: context
   status: stable
@@ -408,6 +408,7 @@ The current language itself is read from the context, not from this composable. 
 
 ## Related Links
 
+- [Session Context recipe](session-context.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Search and Suggest recipe](../catalog/search.html)
 - [Cart recipe](../checkout/cart.html)
