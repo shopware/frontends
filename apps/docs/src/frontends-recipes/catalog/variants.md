@@ -123,7 +123,7 @@ You do not get a request from `handleChange` itself. The composable separates "t
 
 At the default it navigates on every change, including the ones that resolve nothing. `getProductRoute(undefined)` carries `path: "/"`, and `buildUrlPrefix` always returns an object — `{ path: "" }` at worst — so the component's `allowRedirect && selectedOptionsVariantPath` guard never blocks anything. Despite its name, that variable holds the route object passed to `router.push`, and an object is always truthy. An unavailable combination therefore sends the customer to the home page, or to `/<prefix>/` on a localised storefront. Pass `:allow-redirect="false"` and handle the miss yourself if that is not what you want.
 
-The same default makes the `change` event unreachable. `CmsElementBuyBox` wires it to `changeVariant`, but only a project that renders `SwVariantConfigurator` itself with `:allow-redirect="false"` ever receives it. The `try`/`catch` around the component's `router.push` is synchronous around a promise, so nothing a navigation produces lands in it either.
+The same default makes the `change` event unreachable. `CmsElementBuyBox` wires it to `changeVariant`, but only a project that renders `SwVariantConfigurator` itself with `:allow-redirect="false"` ever receives it. On a CMS-rendered page that means overriding `CmsElementBuyBox`, and CMS elements resolve through `resolveComponent`, so the override only takes effect from a directory registered `global: true` — `app/components/cms/` in `vue-starter-template`. Anywhere else the base layer's component keeps rendering, with no error and no warning; see [Overwriting CMS components](../../guides/cms/overwriting-cms.html). The `try`/`catch` around the component's `router.push` is synchronous around a promise, so nothing a navigation produces lands in it either.
 
 ## Request Flow
 
@@ -368,6 +368,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
+- [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
 - [Helpers package](../../packages/helpers.html)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [Composables reference](../../packages/composables/)
