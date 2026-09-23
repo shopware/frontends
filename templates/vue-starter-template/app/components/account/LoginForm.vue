@@ -42,6 +42,7 @@ function handleSignUp() {
     <LoginForm @submit="handleLogin" />
     <FormBaseButton
       v-if="!hideSignUp"
+      data-testid="login-sign-up-button"
       :label="$t('loginForm.signUpButtonLabel')"
       variant="secondary"
       @click="handleSignUp"

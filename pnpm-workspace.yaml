@@ -43,6 +43,7 @@ overrides:
   "astro@<7.2.8": 7.2.8
   "vitest@>=2.1.0 <4.1.11": 4.1.11
   "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
+  "devalue@<5.9.1": 5.9.1
 
 peerDependencyRules:
   ignoreMissing:

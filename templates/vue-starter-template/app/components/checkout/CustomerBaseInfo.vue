@@ -61,6 +61,7 @@ onUnmounted(() => clearTimeout(switchAnimationTimer));
         class="mb-4"
         v-model="email"
         id="email"
+        data-testid="checkout-pi-email-input"
         autocomplete="email"
         :label="$t('checkout.customerBaseInfo.emailLabel')"
         :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
@@ -79,7 +80,11 @@ onUnmounted(() => clearTimeout(switchAnimationTimer));
           :class="{ 'animate-slide-up-out': switchAnimating }"
           :inert="switchAnimating || undefined"
         >
-          <FormLinkButton class="border-b-0 text-sm" @click="switchAnimation">
+          <FormLinkButton
+            class="border-b-0 text-sm"
+            data-testid="checkout-create-account-toggle"
+            @click="switchAnimation"
+          >
             <Icon name="shopware:plus-xs" class="color-brand-primary" />
             <span class="text-brand-primary">{{
               $t("checkout.customerBaseInfo.createAccountToggleLabel")
@@ -96,6 +101,7 @@ onUnmounted(() => clearTimeout(switchAnimationTimer));
             class="mb-4"
             v-model="password"
             id="password"
+            data-testid="checkout-pi-password-input"
             type="password"
             autocomplete="new-password"
             :label="$t('checkout.customerBaseInfo.passwordLabel')"

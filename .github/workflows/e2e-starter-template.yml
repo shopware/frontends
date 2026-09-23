@@ -1,0 +1,123 @@
+name: E2E Starter Template
+
+run-name: Playwright e2e suite against vue-starter-template 🚀
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  run-storefront-e2e:
+    name: E2E against vue-starter-template
+    runs-on: ubuntu-latest
+    # Above the step timeout below, so a slow run fails on the step.
+    timeout-minutes: 45
+    env:
+      BASE_E2E_URL: http://localhost:3000/
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: install
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install dependencies with Playwright
+        run: pnpm playwright install --with-deps chromium
+
+      # Leave NITRO_PRESET unset. The default node-server preset is the one that
+      # writes .output/server/index.mjs, which is what `nuxt preview` runs.
+      # Through turbo: postinstall skips the package build on CI, so the
+      # packages the starter links need `^build` first.
+      - name: Build the starter template
+        run: pnpm exec turbo run build --filter=vue-starter-template
+
+      - name: Start the starter template
+        env:
+          # The template default is the demo store domain, which this sales
+          # channel rejects. Template bug, tracked in #2585.
+          NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
+          # Records Store API calls made while rendering, which Playwright
+          # cannot see. Test only.
+          SSR_NETWORK_LOG: ${{ github.workspace }}/apps/e2e-tests/diagnostics/ssr-network.jsonl
+          NODE_OPTIONS: --import ${{ github.workspace }}/apps/e2e-tests/instrument-ssr.mjs
+        run: |
+          pnpm --filter vue-starter-template preview > "$RUNNER_TEMP/storefront.log" 2>&1 &
+          for _ in $(seq 1 60); do
+            if curl -sf -o /dev/null "$BASE_E2E_URL"; then
+              echo "storefront is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "storefront did not answer on $BASE_E2E_URL within 120s"
+          cat "$RUNNER_TEMP/storefront.log"
+          exit 1
+
+      # Only SSR routes are worth warming; /account, /checkout and /wishlist
+      # are ssr:false. Status is echoed so a miss is visible.
+      - name: Warm the storefront
+        run: |
+          for path in / /New-Arrivals/; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "${BASE_E2E_URL%/}$path" || echo 000)
+            echo "warm $path -> $code"
+          done
+
+      - name: Run tests
+        id: e2e
+        # No continue-on-error: the run has to fail for failed-job-check.yml to
+        # notify. Nothing is gated on it, since this is scheduled only.
+        timeout-minutes: 25
+        run: |
+          cd apps/e2e-tests
+          # pnpm forwards these straight through; `--` would swallow them.
+          # One worker: the specs share a customer and a backend, so parallel
+          # workers clobber each other. Measured 5 passing at 4 workers vs 8.
+          pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
+
+      # Nitro logs neither, so without this a backend problem is just a timeout.
+      - name: Report network failures
+        if: always()
+        run: |
+          cd apps/e2e-tests
+          node scripts/summarise-network.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report result
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
+
+          Scheduled only, so nothing is gated on this. A failure notifies
+          Slack through failed-job-check.yml. The suite is expected to pass;
+          runs share one demo backend that intermittently drops store-api
+          calls, which retries usually absorb.
+          EOF
+
+          echo "::group::storefront log"
+          tail -n 50 "$RUNNER_TEMP/storefront.log"
+          echo "::endgroup::"
+
+      - name: Upload the Playwright report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          # Self-contained: the html reporter already bundles traces and viewer.
+          path: |
+            apps/e2e-tests/playwright-report
+            apps/e2e-tests/diagnostics
+          retention-days: 7
+          if-no-files-found: warn
