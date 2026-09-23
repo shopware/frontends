@@ -408,6 +408,7 @@ The current language itself is read from the context, not from this composable. 
 
 ## Related Links
 
+- [URL Resolving and SEO URLs recipe](url-resolving.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Search and Suggest recipe](../catalog/search.html)
 - [Cart recipe](../checkout/cart.html)

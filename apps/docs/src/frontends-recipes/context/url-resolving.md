@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 20
 recipe:
   area: context
   status: stable
@@ -10,6 +10,7 @@ recipe:
     - useNavigationSearch
     - useNavigationContext
     - useCategorySearch
+    - useProductSearch
     - useLandingSearch
     - useUrlResolver
     - useBreadcrumbs
@@ -25,6 +26,8 @@ recipe:
     - readSeoUrlGet get /seo-url
     - readCategory post /category/{navigationId}
     - readCategoryGet get /category/{navigationId}
+    - readProductDetail post /product/{productId}
+    - readProductDetailGet get /product/{productId}
     - readLandingPage post /landing-page/{landingPageId}
   schemas:
     - SeoUrl
@@ -97,10 +100,12 @@ const steps = [
     title: "Page",
     action: "Fetch the entity",
     detail:
-      "The page component receives the foreign key and fetches the category or the landing page, with the CMS associations that a rendered page needs, and loads its own breadcrumbs.",
-    code: "useCategorySearch().search(foreignKey, { withCmsAssociations: true })",
-    state: "category or landing page",
+      "The page component receives the foreign key and fetches its own entity: useCategorySearch for frontend.navigation.page, useProductSearch for frontend.detail.page, useLandingSearch for frontend.landing.page. Each pulls the CMS associations a rendered page needs and loads its own breadcrumbs.",
+    code: "search(foreignKey, { withCmsAssociations: true })",
+    state: "category, product or landing page",
     typeKeys: [
+      'operations["readCategory post /category/{navigationId}"]["response"]',
+      'operations["readProductDetail post /product/{productId}"]["response"]',
       'operations["readLandingPage post /landing-page/{landingPageId}"]["response"]',
     ],
   },
@@ -129,7 +134,7 @@ Read the diagram from left to right:
 4. With no match, `getRouteFromPathInfo` derives a resolution from the technical prefix, or returns `null`.
 5. A technical path that mapped to a real SEO URL is redirected with a `301`.
 6. `useNavigationContext(seoUrl)` provides `routeName` and `foreignKey`, and the pascal-cased route name is the page component.
-7. That component fetches its entity from composables instead of keeping its own copy of the resolution.
+7. That component fetches its own entity — a category, a product or a landing page — from composables instead of keeping its own copy of the resolution.
 
 You do not need one route per page type, and you do not fetch the entity in the catch-all. The `routeName` on the resolution is what selects the component, which is why `frontend.navigation.page` becomes `FrontendNavigationPage`.
 
@@ -141,11 +146,12 @@ You do not need one route per page type, and you do not fetch the entity in the 
 | Resolve a SEO path    | `resolvePath("/my-category/my-product")`                        | `POST /seo-url`                      | <SchemaTypeTooltip type-key='operations["readSeoUrl post /seo-url"]["body"]' />                           |
 | Read the resolution   | `routeName`, `foreignKey`                                       | `POST /seo-url`                      | <SchemaTypeTooltip type-key='operations["readSeoUrl post /seo-url"]["response"]' />                       |
 | Fetch a category page | `useCategorySearch().search(id, { withCmsAssociations: true })` | `POST /category/{navigationId}`      | <SchemaTypeTooltip type-key='operations["readCategory post /category/{navigationId}"]["body"]' />         |
+| Fetch a product page  | `useProductSearch().search(id, { withCmsAssociations: true })`  | `POST /product/{productId}`          | <SchemaTypeTooltip type-key='operations["readProductDetail post /product/{productId}"]["body"]' />        |
 | Fetch a landing page  | `useLandingSearch().search(id, { withCmsAssociations: true })`  | `POST /landing-page/{landingPageId}` | <SchemaTypeTooltip type-key='operations["readLandingPage post /landing-page/{landingPageId}"]["body"]' /> |
 
-The methods in that column are the defaults. With `cacheableReads` enabled — `vue-starter-template` sets it under `runtimeConfig.public.shopware`, and `shopware: { cacheableReads: true }` is the equivalent module-option form — `resolvePath` and `useCategorySearch().search` call the GET variants instead, `readSeoUrlGet get /seo-url` and `readCategoryGet get /category/{navigationId}`, with the same criteria compressed into a `_criteria` query parameter. The filters, the fallback and the redirect are identical; only the transport changes. `useLandingSearch` has no GET branch and always posts. See [Caching](../../best-practices/caching.html) for what that buys you.
+The methods in that column are the defaults. With `cacheableReads` enabled — `vue-starter-template` sets it under `runtimeConfig.public.shopware`, and `shopware: { cacheableReads: true }` is the equivalent module-option form — `resolvePath`, `useCategorySearch().search` and `useProductSearch().search` call their GET variants instead, with the same criteria compressed into a `_criteria` query parameter: `readSeoUrlGet get /seo-url`, `readCategoryGet get /category/{navigationId}` and `readProductDetailGet get /product/{productId}`. The filters, the fallback and the redirect are identical; only the transport changes. `useLandingSearch` has no GET branch and always posts. See [Caching](../../best-practices/caching.html) for what that buys you.
 
-`useUrlResolver().resolveUrl` is not part of the resolution chain despite the name. It rewrites a CMS-authored internal link into a prefixed route and leaves everything else untouched.
+`useUrlResolver().resolveUrl` is not part of the resolution chain despite the name. It puts the application's URL prefix in front of a CMS-authored internal navigation link and leaves everything else untouched.
 
 ## Composables
 
@@ -156,9 +162,10 @@ Pick by scope — how much of the resolution the composable is about:
 | `useNavigationSearch`  | any path                    | turning a URL into a `SeoUrl`                                     |
 | `useNavigationContext` | the resolved `SeoUrl`       | reading `routeName` or `foreignKey` anywhere below the route      |
 | `useCategorySearch`    | one category, or a criteria | building the category page a `frontend.navigation.page` points at |
+| `useProductSearch`     | one product                 | building the detail page a `frontend.detail.page` points at       |
 | `useLandingSearch`     | one landing page            | building the `frontend.landing.page` component                    |
 | `useUrlResolver`       | one CMS link                | rendering author-written HTML that contains internal links        |
-| `useBreadcrumbs`       | the global trail            | a page component that owns its own breadcrumbs                    |
+| `useBreadcrumbs`       | one page's trail            | a page component that owns its breadcrumbs, never a layout        |
 
 `useNavigationSearch` is the one the recipe turns on, and it has a single entry point. `resolvePath(path)` returns `Promise<Schemas["SeoUrl"] | null>` and branches on the shape of the path:
 
@@ -171,10 +178,10 @@ Seven things the generated reference will not tell you:
 
 - `resolvePath("/")` issues no request at all, so it is only as correct as the session context. The id it returns changes with the sales channel, not with the route.
 - `useNavigationContext(context)` snapshots what you pass it. `useContext` stores `ref(unref(context))`, so a `computed` handed to it is read once rather than tracked — which is what you want for a per-navigation resolution, and a trap if you expect it to follow a later change.
-- `useNavigationContext` issues no requests. It provides the `navigation` injection and exposes `navigationContext`, `routeName` and `foreignKey`; `foreignKey` falls back to `""`, never `undefined`.
+- `useNavigationContext` issues no requests. It provides the `navigation` injection and exposes `navigationContext`, `routeName` and `foreignKey`; `foreignKey` falls back to `""`, never `undefined`. Called without an argument it only injects, and in `vue-starter-template` the catch-all is the only thing that seeds it — under an explicit file route you pass the `SeoUrl` in yourself.
 - `useCategorySearch` has two methods and they are not symmetrical. `search(categoryId, options)` sends `sw-include-seo-urls: true`; `advancedSearch({ query })` does not send that header at all.
-- `useLandingSearch().search` passes `cmsAssociations.associations` as the `associations` body field, while `useCategorySearch().search` passes the whole `cmsAssociations` object. The two are not interchangeable if you build a request by hand.
-- `useUrlResolver().resolveUrl(url)` does more than prefix: it drops the first path segment before re-joining, and it throws `URL Input too long` for input over 2083 characters. `getUrlPrefix()` reads an injected `urlPrefix` that the application provides, not the composable.
+- `useCategorySearch().search` is the odd one out on associations: it puts the whole `cmsAssociations` object into the body's `associations` field, so the CMS tree ends up nested one level deeper. `useLandingSearch().search` and `useProductSearch().search` both send `cmsAssociations.associations` unwrapped. The three are not interchangeable if you build a request by hand.
+- `useUrlResolver().resolveUrl(url)` prefixes the path, it does not rewrite it. The `split("/").slice(1)` inside reads like it removes a path segment, but on a path that starts with a slash the element it removes is the empty string in front of it: `/en/navigation/123` with `urlPrefix: "shop"` comes back as `/shop/en/navigation/123`, locale segment intact, which is what the composable's own test pins. Only a path handed in without a leading slash loses a real segment. It also throws `URL Input too long` for input over 2083 characters, and `getUrlPrefix()` reads an injected `urlPrefix` that the application provides, not the composable.
 - `useBreadcrumbs` is scoped, not global. It goes through `useContext("swBreadcrumb")`, which injects an ancestor's ref or, finding none, creates its own and provides it downwards. Nothing above the page components provides it, so each page roots a fresh trail per mount and cannot inherit another page's. `clearBreadcrumbs()` empties the trail, and calling `useBreadcrumbs(breadcrumbs)` with an argument replaces it outright.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
@@ -286,7 +293,7 @@ if (!canonicalRedirectTarget && !seoResult.value?.foreignKey) {
 }
 
 const { routeName, foreignKey } = useNavigationContext(
-  ref(canonicalRedirectTarget ? null : seoResult.value),
+  ref((canonicalRedirectTarget ? null : seoResult.value) ?? null),
 );
 
 const componentName = routeName.value ? pascalCase(routeName.value) : null;
@@ -319,7 +326,7 @@ Four things that route depends on and the code does not show:
 - **`navigateTo` does not halt `<script setup>`.** Everything after the redirect still runs, on the server and on the client, which is why every later step is gated on `!canonicalRedirectTarget`. An unguarded request or `throw` below it fires work against a response nobody will see — and at `301` a wrong answer is cached permanently.
 - **The component is remounted per path.** Every derived value is a plain `const`, which is correct only because Nuxt's default page key changes with the route. A `keepalive` or a custom `page-key` freezes them on the first path resolved.
 
-The page component receives only the `foreignKey`. It is the component's job to fetch the category or the landing page with `withCmsAssociations: true`, and to own its breadcrumbs — in `vue-starter-template`, `FrontendNavigationPage` and `FrontendDetailPage` call `clearBreadcrumbs()` before building their own trail, and `FrontendLandingPage` passes the CMS breadcrumbs to `useBreadcrumbs()`.
+The page component receives only the `foreignKey`. It is the component's job to fetch its own entity with `withCmsAssociations: true`: in `vue-starter-template`, `FrontendNavigationPage` reads a category, `FrontendDetailPage` reads a product through `useProductSearch`, and `FrontendLandingPage` reads a landing page. Each also owns its breadcrumbs — the first two call `clearBreadcrumbs()` before building their own trail, and `FrontendLandingPage` passes the CMS breadcrumbs to `useBreadcrumbs()`.
 
 ## State And Session
 
@@ -342,9 +349,9 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - The redirect uses `301`. Getting the condition wrong caches the wrong target in browsers and CDNs.
 - `routeName` is pascal-cased into a component name, and `resolveComponent` only finds components registered `global: true`. It returns the name string rather than throwing when nothing matches, which is why the example compares the result against the name and turns a miss into a `404`.
 - `resolveUrl` throws `URL Input too long` for input over 2083 characters. That is a deliberate guard against a polynomial regular expression, not a validation error to surface.
-- `resolveUrl` only rewrites URLs matching `[a-zA-Z0-9]+/navigation/[a-zA-Z0-9]+`, dropping the first path segment, and returns everything else unchanged. A `/detail/<id>` link is not rewritten.
+- `resolveUrl` only touches URLs matching `[a-zA-Z0-9]+/navigation/[a-zA-Z0-9]+` and returns everything else unchanged — including a `/detail/<id>` link, and including `/navigation/<id>` itself, which has no segment before the slash for the pattern to match and so never gets the prefix.
 - The breadcrumb trail is scoped to the subtree of whichever component calls `useBreadcrumbs` first. In `vue-starter-template` that is the page component, so each page starts from an empty trail and a page that builds none renders none.
-- The `history.state` shortcut only fires for links built by `getProductRoute` or `getCategoryRoute`, which are what write `routeName` and `foreignKey` into the navigation state. A hand-written `<NuxtLink to="/my-category">` always takes the lookup.
+- The `history.state` shortcut keys off the field, not its provenance: `[...all].vue` takes it whenever a client-side navigation to a non-technical path carries `history.state.routeName`, and reads `foreignKey` alongside it without requiring it. A plain `<NuxtLink to="/my-category">` therefore still takes the lookup, while anything that writes that state skips it — including a link that sets `routeName` alone, whose resolution then trips the `404` guard on click and resolves fine on reload. `getProductRoute` and `getCategoryRoute` are what write the pair in practice, and both can emit a `routeName` with an undefined `foreignKey` — `getProductRoute` takes an optional product, and `getCategoryRoute` reads `internalLink` for a `product` or `landing_page` link. That is why the example above guards on both fields.
 - Nothing on this path carries a timeout. `resolvePath` takes no signal, so a Store API that accepts the connection and never answers hangs the render until the platform kills it. Set `runtimeConfig.apiClientConfig.timeout` if you want a bound.
 
 ## Common Mistakes
@@ -379,6 +386,9 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 
 ## Related Links
 
+- [Language and Currency Switch recipe](language-and-currency.html)
+- [Product Listing and Filters recipe](../catalog/listing.html)
+- [Contact Form recipe](../cms/contact-form.html)
 - [Work with routing](../../guides/routing.html)
 - [Build a navigation](../../guides/page-elements/navigation.html)
 - [Content pages](../../guides/cms/content-pages.html)
