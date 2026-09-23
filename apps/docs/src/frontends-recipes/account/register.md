@@ -643,8 +643,9 @@ The Store API identifies the sales channel session with the `sw-context-token` h
 ## Related Links
 
 - [Login recipe](login.html)
+- [Customer Profile recipe](profile.html)
 - [Storefront URL](../../guides/storefront-url.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../getting-started/e-commerce/cart.html)
+- [Cart documentation](../../guides/e-commerce/cart.html)
 - [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)

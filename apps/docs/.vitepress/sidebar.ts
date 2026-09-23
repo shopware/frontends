@@ -247,6 +247,10 @@ export const sidebar = [
             link: "/frontends-recipes/account/register.html",
           },
           {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
+          {
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
           },
@@ -258,6 +262,10 @@ export const sidebar = [
             text: "Customer Addresses",
             link: "/frontends-recipes/account/addresses.html",
           },
+          {
+            text: "Customer Profile",
+            link: "/frontends-recipes/account/profile.html",
+          },
         ],
       },
       {
@@ -268,6 +276,14 @@ export const sidebar = [
           {
             text: "Product Listing and Filters",
             link: "/frontends-recipes/catalog/listing.html",
+          },
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
+          {
+            text: "Product Reviews",
+            link: "/frontends-recipes/catalog/reviews.html",
           },
         ],
       },
@@ -302,6 +318,17 @@ export const sidebar = [
           {
             text: "Contact Form",
             link: "/frontends-recipes/cms/contact-form.html",
+          },
+        ],
+      },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Language and Currency Switch",
+            link: "/frontends-recipes/context/language-and-currency.html",
           },
         ],
       },

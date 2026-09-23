@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 50
+  position: 60
 recipe:
   area: account
   status: stable
@@ -522,7 +522,8 @@ Changing a default also changes the customer, so reloading the address list is n
 ## Related Links
 
 - [Login recipe](login.html)
+- [Customer Profile recipe](profile.html)
 - [Checkout recipe](../checkout/checkout.html)
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
+- [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

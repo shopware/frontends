@@ -12,7 +12,7 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Account
 
-<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, logout, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
+<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, registration, password recovery and change, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
 
 ## Catalog
 
@@ -25,6 +25,10 @@ These pages are written for frontend developers who want to understand the Shopw
 ## CMS
 
 <PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and elements, and the contact form element." />
+
+## Context
+
+<PageRef page="context/" title="Context" sub="Sales channel context flows such as reading and patching the session context, switching language and currency, navigation and breadcrumbs, and resolving SEO URLs." />
 
 ## Orders
 
