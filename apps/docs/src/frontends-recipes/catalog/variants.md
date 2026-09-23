@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 40
 recipe:
   area: catalog
   status: stable
@@ -20,6 +20,7 @@ recipe:
     - readProductGet get /product
     - readProductDetail post /product/{productId}
     - searchProductVariantIds post /product/{productId}/find-variant
+    - searchProductVariantIdsGet get /product/{productId}/find-variant
   schemas:
     - Product
     - PropertyGroup
@@ -102,7 +103,7 @@ The Store API has an operation built for this — `searchProductVariantIds post 
 
 That search carries an `includes` clause restricting the product to `id`, `translated`, `productNumber` and `seoUrls`, plus a `seoUrls` association and a `seo_url` include for `seoPathInfo`. The result is therefore a link target, not a product you can render. Which is exactly why the shipped configurator pushes the router to the variant's URL and lets the page reload the real product.
 
-The request is `readProduct post /product` by default. With `shopware: { cacheableReads: true }` — which `vue-starter-template` ships with — the composable sends the identical criteria to `readProductGet get /product` in the `_criteria` query parameter instead, so the storefront can cache it. Filter, `includes` and result are the same either way; only the transport changes. See [Caching](../../best-practices/caching.html).
+The request is `readProduct post /product` by default. With `shopware: { cacheableReads: true }` — which `vue-starter-template` ships with — the composable sends the identical criteria to `readProductGet get /product` in the `_criteria` query parameter instead, so the storefront can cache it. Filter, `includes` and result are the same either way; only the transport changes. See [Caching best practices](../../best-practices/caching.html).
 
 <RecipeFlowDiagram label="Product variants flow diagram" :steps="steps" />
 
@@ -133,7 +134,7 @@ You do not get a request from `handleChange` itself. The composable separates "t
 
 The last row has no composable. It takes the selected options — as an array of option ids, or as a map keyed by **group id**, not by group name — and returns the found combination with the variant id, so a custom selector that only needs an id can avoid the product search entirely.
 
-The generated type wraps that payload in a `foundCombination` key. The Store API returns it flat: read `variantId` from the response root, not from `response.data.foundCombination`.
+Its response type is the one place on this page where the generated contract does not match the route. `FindProductVariantRouteResponse` nests the payload under an optional `foundCombination` object, while the route answers with the `FoundCombination` struct flat — `variantId`, `options` and `apiAlias` at the root — on the POST operation and on `searchProductVariantIdsGet` alike. Read `variantId` from the response root and type it locally; typed access through the generated response points one level too deep and reads `undefined`.
 
 ## Composables
 
@@ -184,9 +185,17 @@ type PropertyGroupOption = Schemas["PropertyGroupOption"];
 type FindVariantBody =
   operations["searchProductVariantIds post /product/{productId}/find-variant"]["body"];
 type Product = Schemas["Product"];
+
+// what the find-variant route actually answers with
+type FoundCombination = {
+  variantId?: string;
+  options?: string[];
+};
 ```
 
 `ProductDetailResponse` is where the configurator comes from: it is `{ product, configurator }`, and `configurator` is the `PropertyGroup[]` that `getOptionGroups` returns.
+
+`FoundCombination` is written by hand for the mismatch above: the generated response type puts those two fields inside a `foundCombination` object that the route does not send.
 
 ## Minimal Vue Example
 
@@ -346,9 +355,13 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 
 ## Related Links
 
-- [Product detail page](../../getting-started/e-commerce/product-detail-page.html)
-- [Product listing documentation](../../getting-started/e-commerce/product-listing.html)
-- [Caching](../../best-practices/caching.html)
+- [Product Listing and Filters recipe](listing.html)
+- [Search and Suggest recipe](search.html)
+- [Product Reviews recipe](reviews.html)
+- [Product detail page](../../guides/e-commerce/product-detail-page.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
+- [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [Composables reference](../../packages/composables/)
+- [API client package](../../packages/api-client.html)
