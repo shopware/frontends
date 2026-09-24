@@ -163,7 +163,7 @@ Pick by scope — how much of the order history the composable is about:
 - **Read** — `orders`, `currentPage`, `totalPages`.
 - **Configure** — `limit`, the writable ref that decides the page size.
 
-`useOrderDetails` carries the detail view, one order at a time:
+`useOrderDetails` carries the detail view, one order at a time — the [Order Details recipe](../orders/details.html) covers that page on its own, down to the associations, the cancellation and the downloads:
 
 - **Load** — `loadOrderDetails()` fills every value below except `paymentUrl`, which only `handlePayment()` writes, and returns the raw `OrderRouteResponse`.
 - **Read** — `order`, `status`, `statusTechnicalName`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress`, `personalDetails`, `shippingMethod`, `paymentMethod`.
@@ -178,7 +178,7 @@ Six things the generated reference will not tell you:
 - `paymentDetails` exists only in the declared type of `handlePayment`. The function itself takes just `finishUrl` and `errorUrl`, so a third argument type-checks and is then ignored — only `orderId`, `finishUrl`, and `errorUrl` reach the Store API.
 - `handlePayment()` stores the returned `redirectUrl` in `paymentUrl` and does nothing else. No navigation happens until you watch `paymentUrl` and redirect yourself — and check its scheme first, because `new URL()` parses `javascript:` and `data:` without throwing. The [Payment recipe](../checkout/payment.html) owns that guard.
 - The two composables hold state differently. `useCustomerOrders` creates its refs per call, so two components calling it keep two independent lists. `useOrderDetails` injects and provides one shared `swOrderDetails` ref, so everything below the first caller reads the same order object.
-- `getMediaFile(downloadId)` returns a `Blob` from `orderDownloadFile get /order/download/{orderId}/{downloadId}`. `getDocumentFile(documentId, deepLinkCode)` returns `Blob | string` from `download post /document/download/{documentId}/{deepLinkCode}`. The union is the hand-written return type, which covers every `accept` variant of the operation, but `getDocumentFile` always sends `accept: "application/pdf"`, so at runtime you get the `Blob` arm — an HTML or XML document is not reachable through this composable. Narrow it anyway to satisfy TypeScript before you hand it to `URL.createObjectURL`. Both are about attachments, not about the order body. `documents` is the one field that arrives without being asked for: `useDefaultOrderAssociations()` never requests it, but the route returns it anyway — which is why `hasDocuments` gets away with reading `order.documents.length` unguarded, while `documents` itself still falls back to an empty array.
+- `getMediaFile(downloadId)` returns a `Blob` from `orderDownloadFile get /order/download/{orderId}/{downloadId}`. `getDocumentFile(documentId, deepLinkCode)` returns `Blob | string` from `download post /document/download/{documentId}/{deepLinkCode}`. The union is the hand-written return type, which covers every `accept` variant of the operation. `getDocumentFile` passes `accept: "application/pdf"`, but that selects the typed variant rather than setting a request header — as the [Order Details recipe](../orders/details.html) explains — so which arm you actually get follows the document's own file type: a PDF is parsed as a `Blob`, an HTML or XML one as text. Narrow it before you hand it to `URL.createObjectURL`, and wrap the string arm rather than discarding it. Both are about attachments, not about the order body. `documents` is the one field that arrives without being asked for: `useDefaultOrderAssociations()` never requests it, but the route returns it anyway — which is why `hasDocuments` gets away with reading `order.documents.length` unguarded, while `documents` itself still falls back to an empty array.
 
 `useUser` contributes only `isLoggedIn`, and it is narrower than it sounds: it is false for a guest, because it requires an active, non-guest customer — the [Customer Profile recipe](profile.html) compares it with `isCustomerSession` and `isGuestSession`. It gates the _registered_ customer's history, not every session the order routes will answer for — see the guest flow under [State And Session](#state-and-session).
 
@@ -438,6 +438,7 @@ That route answers a guest session `isLoggedIn` reports as signed out, so a gues
 - [Customer Profile recipe](profile.html)
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Payment recipe](../checkout/payment.html)
+- [Order Details recipe](../orders/details.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Session Context recipe](../context/session-context.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)

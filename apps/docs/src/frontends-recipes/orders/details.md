@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 20
 recipe:
   area: orders
   status: stable
@@ -15,6 +15,8 @@ recipe:
   operations:
     - readOrder post /order
     - cancelOrder post /order/state/cancel
+    - readPaymentMethod post /payment-method
+    - orderSetPayment post /order/payment
     - handlePaymentMethod post /handle-payment
     - download post /document/download/{documentId}/{deepLinkCode}
     - orderDownloadFile get /order/download/{orderId}/{downloadId}
@@ -96,6 +98,8 @@ const steps = [
 
 Build a page that shows one placed order — its state, line items, addresses, totals, documents and downloads — and lets the customer cancel it. The important part is that `POST /order` is a search whose result depends entirely on the associations you ask for, so a detail page is defined by its criteria rather than by its id.
 
+This recipe is about the single order. The paginated list it is opened from is the [Order History recipe](../account/order-history.html), and reaching one order without a customer session is the [Guest Order Lookup recipe](guest-order-lookup.html).
+
 ## Shopware Flow
 
 `readOrder post /order` is a filtered entity search. Passing `ids: [orderId]` narrows it to one order, but the response is still an `EntitySearchResult`, and the order has to be taken from `orders.elements[0]`.
@@ -117,17 +121,19 @@ You do not need to reload the order after `useOrderDetails`' `cancel()` or `chan
 
 ## Request Flow
 
-| Step                    | Code                                        | Store API                                             | Type                                                                                                                    |
-| ----------------------- | ------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Load one order          | `loadOrderDetails()`                        | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["body"]' />                                            |
-| Read the search result  | `order`                                     | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["response"]' />                                        |
-| Cancel the order        | `cancel()`                                  | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["body"]' />                             |
-| Read the new state      | `await cancel()`                            | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["response"]' />                         |
-| Download a document     | `getDocumentFile(documentId, deepLinkCode)` | `POST /document/download/{documentId}/{deepLinkCode}` | <SchemaTypeTooltip type-key='operations["download post /document/download/{documentId}/{deepLinkCode}"]["response"]' /> |
-| Download a digital file | `getMediaFile(downloadId)`                  | `GET /order/download/{orderId}/{downloadId}`          | <SchemaTypeTooltip type-key='operations["orderDownloadFile get /order/download/{orderId}/{downloadId}"]["response"]' /> |
-| Start the payment       | `handlePayment(successUrl, errorUrl)`       | `POST /handle-payment`                                | <SchemaTypeTooltip type-key='operations["handlePaymentMethod post /handle-payment"]["body"]' />                         |
+| Step                      | Code                                        | Store API                                             | Type                                                                                                                    |
+| ------------------------- | ------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Load one order            | `loadOrderDetails()`                        | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["body"]' />                                            |
+| Read the search result    | `order`                                     | `POST /order`                                         | <SchemaTypeTooltip type-key='operations["readOrder post /order"]["response"]' />                                        |
+| Cancel the order          | `cancel()`                                  | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["body"]' />                             |
+| Read the new state        | `await cancel()`                            | `POST /order/state/cancel`                            | <SchemaTypeTooltip type-key='operations["cancelOrder post /order/state/cancel"]["response"]' />                         |
+| Download a document       | `getDocumentFile(documentId, deepLinkCode)` | `POST /document/download/{documentId}/{deepLinkCode}` | <SchemaTypeTooltip type-key='operations["download post /document/download/{documentId}/{deepLinkCode}"]["response"]' /> |
+| Download a digital file   | `getMediaFile(downloadId)`                  | `GET /order/download/{orderId}/{downloadId}`          | <SchemaTypeTooltip type-key='operations["orderDownloadFile get /order/download/{orderId}/{downloadId}"]["response"]' /> |
+| List selectable payments  | `getPaymentMethods()`                       | `POST /payment-method`                                | <SchemaTypeTooltip type-key='operations["readPaymentMethod post /payment-method"]["response"]' />                       |
+| Change the payment method | `changePaymentMethod(paymentMethodId)`      | `POST /order/payment`                                 | <SchemaTypeTooltip type-key='operations["orderSetPayment post /order/payment"]["body"]' />                              |
+| Start the payment         | `handlePayment(successUrl, errorUrl)`       | `POST /handle-payment`                                | <SchemaTypeTooltip type-key='operations["handlePaymentMethod post /handle-payment"]["body"]' />                         |
 
-`cancel()` returns the new `StateMachineState`, but `status` and `statusTechnicalName` are not read from it — they are computed over the shared order and only change once the reload that `cancel()` triggers has finished.
+`changePaymentMethod()` and `cancel()` each send a second request of their own: both await `loadOrderDetails()` before they resolve, so the first row runs again without you asking for it. `cancel()` returns the new `StateMachineState`, but `status` and `statusTechnicalName` are not read from it — they are computed over the shared order and only change once the reload that `cancel()` triggers has finished.
 
 The `accept` value on the two download rows — `application/pdf` for a document, `application/octet-stream` for a media file — is part of the generated operation type, not a header: the type requires it, and on the document route it also picks which response variant — PDF, HTML or XML — the call is typed as. The API client does not forward it: every request still goes out with the client's default `Accept: application/json`. The binary body arrives because the Store API answers with the file's own content type, and the fetch layer parses the response by that type. Only `headers` reaches the wire, and for these two operations the generated headers type declares nothing but `sw-language-id`, so there is no typed way to set `Accept` per request.
 
@@ -135,9 +141,9 @@ The `accept` value on the two download rows — `application/pdf` for a document
 
 - `useOrderDetails`: takes an order id and optional extra associations. Reads `order`, `status`, `statusTechnicalName`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress`, `personalDetails`, `shippingMethod`, `paymentMethod`, `documents`, `hasDocuments`, `paymentChangeable`, `paymentUrl`. Acts with `loadOrderDetails`, `cancel`, `changePaymentMethod`, `handlePayment`, `getDocumentFile`, `getMediaFile`, `getPaymentMethods`.
 - `useDefaultOrderAssociations`: returns the default association tree — `stateMachineState`, `lineItems` with `cover` and `downloads.media`, `addresses`, `deliveries` with `shippingMethod`, `shippingOrderAddress` and `stateMachineState`, and `transactions` with `paymentMethod` and `stateMachineState`. Override it in your project when every order page in your storefront needs a different tree. Note that `documents` is not in the tree and does not need to be — the Store API returns it with the order.
-- `useOrderPayment`: takes the `order` computed returned by `useOrderDetails` and drives the payment of an already placed order. Reads `activeTransaction`, `state`, `isAsynchronous`, `paymentMethod`, `paymentUrl`; acts with `handlePayment` and `changePaymentMethod`. This is what the starter template uses on the checkout success page, and it is the composable to reach for when a payment has to be retried or redirected. Its `paymentMethod` is the **active** transaction's, which is not necessarily the **last** one `useOrderDetails` reports.
+- `useOrderPayment`: takes the `order` computed returned by `useOrderDetails` and drives the payment of an already placed order. Reads `activeTransaction`, `state`, `isAsynchronous`, `paymentMethod`, `paymentUrl`; acts with `handlePayment` and `changePaymentMethod`. This is what the starter template uses on the checkout success page, and it is the composable to reach for when a payment has to be retried or redirected. Its `paymentMethod` is the **first** transaction whose payment method is active, which is not necessarily the **last** one `useOrderDetails` reports.
 
-Each composable owns its own `paymentUrl` ref — they are not provided or shared — and `handlePayment()` writes the redirect target into that ref rather than handing it back; `useOrderDetails`' version returns nothing at all. Watch the ref belonging to whichever composable's `handlePayment()` you called.
+Each composable owns its own `paymentUrl` ref — they are not provided or shared — and `handlePayment()` writes the redirect target into that ref rather than handing it back; `useOrderDetails`' version returns nothing at all. Watch the ref belonging to whichever composable's `handlePayment()` you called, and check the URL's scheme before following it — `new URL()` parses `javascript:` and `data:` without throwing. The [Payment recipe](../checkout/payment.html) owns that guard and the rest of the retry flow.
 
 ## Types
 
@@ -248,6 +254,7 @@ const requestCancellation = async () => {
 
 const downloadDocument = async (orderDocument: Schemas["Document"]) => {
   documentError.value = "";
+  const fileType = orderDocument.fileType ?? "pdf";
 
   try {
     const file = await getDocumentFile(
@@ -255,15 +262,21 @@ const downloadDocument = async (orderDocument: Schemas["Document"]) => {
       orderDocument.deepLinkCode,
     );
 
-    if (!(file instanceof Blob) || file.size === 0) {
+    // A PDF arrives as a Blob, the HTML and XML variants as text. Both are
+    // valid documents, so wrap the text instead of treating it as a failure.
+    const blob =
+      typeof file === "string"
+        ? new Blob([file], {
+            type: fileType === "xml" ? "application/xml" : "text/html",
+          })
+        : file;
+
+    if (!(blob instanceof Blob) || blob.size === 0) {
       documentError.value = "This document is no longer available.";
       return;
     }
 
-    downloadFile(
-      file,
-      `${orderDocument.config.name}.${orderDocument.fileType ?? "pdf"}`,
-    );
+    downloadFile(blob, `${orderDocument.config.name}.${fileType}`);
   } catch (error) {
     console.error(error);
     documentError.value = messageFor(
@@ -360,45 +373,7 @@ Three choices in the markup are deliberate. The cancel button carries `aria-disa
 
 The order is resolved from the `sw-context-token`: `readOrder post /order` returns only orders that belong to the customer the token identifies. An order id alone grants nothing. Without a customer session the route does not return an empty result — it answers `403` with `CHECKOUT__CUSTOMER_NOT_LOGGED_IN`, so the page needs a logged-in or guest session before it loads anything.
 
-The one way to read an order without that session is the guest authentication the request body carries. Send the order's `deepLinkCode` as a filter together with the buyer's `email` and the billing `zipcode`, and the route authenticates the request from those three values instead of the customer on the token:
-
-```ts
-const { apiClient } = useShopwareContext();
-
-const lookupError = ref("");
-const isLookingUp = ref(false);
-
-const findGuestOrder = async () => {
-  if (isLookingUp.value) return;
-
-  lookupError.value = "";
-  isLookingUp.value = true;
-
-  try {
-    const { data } = await apiClient.invoke("readOrder post /order", {
-      body: {
-        filter: [
-          { type: "equals", field: "deepLinkCode", value: deepLinkCode },
-        ],
-        email,
-        zipcode,
-        login: true,
-        associations: useDefaultOrderAssociations(),
-      },
-    });
-
-    // A wrong email or zipcode is the expected case here, not an edge one.
-    return data.orders?.elements?.[0];
-  } catch (error) {
-    console.error(error);
-    lookupError.value = "We could not find an order for those details.";
-  } finally {
-    isLookingUp.value = false;
-  }
-};
-```
-
-`login: true` asks Shopware to return a context token for that guest in the response header, which the API client picks up — from then on the session behaves like any other guest session and `useOrderDetails(orderId)` works normally. Leave it out and the lookup stays a one-off read. `useOrderDetails` does not expose these fields, so a guest order page calls `apiClient.invoke` directly for the first request.
+The one way in without that session is the guest authentication the request body carries: a `filter` restricted to `deepLinkCode`, the buyer's `email`, the billing `zipcode` and `login`. `useOrderDetails` takes an order id and associations only, so that request is built with `apiClient.invoke` directly — and it is a two-step flow, because the code alone is rejected with `CHECKOUT__GUEST_NOT_AUTHENTICATED` until the credentials arrive with it. The [Guest Order Lookup recipe](guest-order-lookup.html) walks through it, including the error codes to branch on and the session token `login: true` establishes. Once that session exists, everything on this page works for a guest exactly as it does for a registered customer.
 
 **Keep this route out of the shared HTML cache.** Loading from `onMounted` is deliberate: it is what keeps the order number, the addresses and the line items out of the server-rendered response. `vue-starter-template` applies `isr` to `/**` and opts `/account` and `/account/**` out of it with `ssr: false`, so the starter's own order page is safe — but mount an order page at another path, or refactor the load to `useAsyncData`/`callOnce`, and one customer's order is rendered into HTML that ISR then serves to everyone else. Personalized data does not belong in an ISR-cached response.
 
@@ -419,7 +394,7 @@ The order is a snapshot. Its line items, prices and addresses are `OrderLineItem
 - `cancel()` is two awaits: the cancellation, then `loadOrderDetails()`. A rejection at the call site does not tell you which one failed, so the order may already be cancelled while the page still shows the old state. Word the message accordingly rather than claiming the cancellation failed.
 - `getDocumentFile` needs both the document id and its `deepLinkCode`. Both come from the `documents` array the order already carries — it is not part of the default association tree and does not have to be added.
 - A document download answers `204` when no such document is found — deprecated, and a `404` from 6.8.0.0 on. Today that resolves successfully with an empty body, so check the returned content before handing it to `downloadFile`. A `406` (unsupported mime type) and the later `404` throw like any other error status.
-- `getDocumentFile` is typed `Promise<Blob | string>`, not `Promise<Blob>`: the operation is a union keyed on `accept`, and the XML and HTML document variants come back as text. Only `getMediaFile` returns a plain `Blob`. `downloadFile` is generic, so the compiler will not catch a `string` reaching it — `URL.createObjectURL` throws on one at runtime.
+- `getDocumentFile` is typed `Promise<Blob | string>`, not `Promise<Blob>`, and the string arm is a document rather than a failure. Because the `accept` value never reaches the wire, which arm you get follows the document's own file type: a PDF is parsed as a `Blob`, while `text/html` and `application/xml` are parsed as text. Only `getMediaFile` returns a plain `Blob`. `downloadFile` is generic, so the compiler will not catch a `string` reaching it — `URL.createObjectURL` throws on one at runtime. Wrap the text in a `Blob`; rejecting it reports a perfectly good HTML document to the customer as missing.
 - The `readOrder` body is the `fields`-less criteria variant, not the full `Criteria`. `associations`, `ids`, `filter` and the rest are identical, but passing `fields` is an excess property the type rejects.
 - `getMediaFile` only works for line items whose `downloads` association is present, which the default associations request through `lineItems.downloads.media`.
 - `handlePayment` declares a third `paymentDetails` argument in both composables, and neither implementation reads it. Payment data that a provider needs has to travel through that provider's own integration.
@@ -436,7 +411,7 @@ The order is a snapshot. Its line items, prices and addresses are `OrderLineItem
 - Do not expect a composable held by a component to follow a changing route param. Key that component on the id. A Nuxt page already remounts itself, so it needs no `definePageMeta` key for this.
 - Do not resolve product data from an order line item against the current catalogue. The line item is a snapshot.
 - Do not build a document URL by hand. `getDocumentFile` returns the binary and `downloadFile` from `@shopware/helpers` turns it into a download.
-- Do not hand the result of `getDocumentFile` straight to `downloadFile`. Check it is a non-empty `Blob` first — a missing document resolves with an empty body rather than throwing.
+- Do not hand the result of `getDocumentFile` straight to `downloadFile`, and do not treat its string arm as an error. Wrap a string in a `Blob`, then check the result is non-empty — a missing document resolves with an empty body rather than throwing.
 - Do not write `catch {}` without binding the error. You cannot log it, you cannot map it, and a programming error reaches the customer disguised as a failed order.
 - Do not put a failed cancellation or download in the same slot as a failed load. The order is still valid; replacing it with the message destroys what the customer came to read.
 - Do not show a cancel button for every state. Read `statusTechnicalName` first.
@@ -446,18 +421,20 @@ The order is a snapshot. Its line items, prices and addresses are `OrderLineItem
 - Opening the page sends exactly one `readOrder post /order` with the order id in `ids`.
 - The request carries the default associations, and extra associations passed to the composable are merged rather than replacing them.
 - An unknown order id renders an empty state instead of throwing, while a request made without any session fails with `403 CHECKOUT__CUSTOMER_NOT_LOGGED_IN`.
-- A guest lookup with `deepLinkCode`, `email` and `zipcode` returns the order, and with `login: true` the following `useOrderDetails` call succeeds on the session it established.
+- Once a guest lookup has established a session, this page loads the order with no credentials of its own.
 - `status` shows the translated state and `statusTechnicalName` the technical one.
 - Line items, addresses, shipping method and payment method render from the associations without a second request.
 - `cancel()` calls `cancelOrder post /order/state/cancel` and then reloads the order, and the rendered state changes.
 - A rejected cancellation shows a UI-level error beside the button and leaves the rest of the order rendered.
-- A guest lookup with a wrong `zipcode` or `email` shows a message rather than failing silently.
 - Downloading a document calls `download post /document/download/{documentId}/{deepLinkCode}` with the document's `deepLinkCode`, and the returned binary reaches the browser as a file.
 - Downloading a document that no longer exists shows a message instead of doing nothing.
 - An order without deliveries renders without a shipping address block.
 
 ## Related Links
 
+- [Order History recipe](../account/order-history.html)
+- [Guest Order Lookup recipe](guest-order-lookup.html)
+- [Payment recipe](../checkout/payment.html)
 - [Login recipe](../account/login.html)
 - [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Payments](../../guides/e-commerce/payments.html)

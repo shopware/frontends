@@ -349,13 +349,6 @@ export const sidebar = [
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
           },
-        ],
-      },
-      {
-        text: "Orders",
-        link: "/frontends-recipes/orders/",
-        collapsed: true,
-        items: [
           {
             text: "Order Details",
             link: "/frontends-recipes/orders/details.html",

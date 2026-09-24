@@ -419,6 +419,7 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 ## Related Links
 
 - [Order History recipe](../account/order-history.html)
+- [Order Details recipe](../orders/details.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Payments documentation](../../guides/e-commerce/payments.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
