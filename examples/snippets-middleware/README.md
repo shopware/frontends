@@ -53,19 +53,18 @@ Since now, the `/api/snippet` or `/api/search/snippet` will have a newly created
 
 The example does the requests to the Admin API, so it's a good reason to utilize the machine-to-machine authentication grant type, named [Client Credentials](https://shopware.stoplight.io/docs/admin-api/8e1d78252fa6f-authentication#client-credentials).
 
-Beforehand, make sure there is a Role with only READ rights you can use later on.
-Then create an [Integration](https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system) to generate the API tokens pair.
-
-For demo purposes, we can use the predefined "snippet-reader" integration, having only two ACL's items role: READ `snippet` and READ `snippet-set`:
+1. Create a role with READ rights for `snippet` and `snippet_set` only.
+2. Create an [Integration](https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system) with that role. Shopware generates an access key ID and a secret access key.
+3. Copy `.env.template` to `.env` and paste them in:
 
 ```
-Access key ID: SWIARW9QA2DYOUX3OXJMRGX2UQ
-Secret access key: dTRpT3ptZDlmMHZocDNrb2ZOODYxYWtIWnZtRTByUnBvRXh5M3Q
+NUXT_API_CLIENT_ID=<access key ID>
+NUXT_API_CLIENT_SECRET=<secret access key>
 ```
 
-(see [translations.get.ts](./server/api/translations.get.ts) file, line 38.)
+Nuxt maps these variables to `runtimeConfig.api_client_id` and `runtimeConfig.api_client_secret`. The API client in [translations.get.ts](./server/api/translations.get.ts) reads them from there and sends every request with those credentials.
 
-API Client configured that way will make every requests using those credentials.
+Use your own Shopware instance for this. The public demo instance has no integration for this example anymore. Set `NUXT_PUBLIC_SHOPWARE_ENDPOINT` and `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN` in `.env` to the instance that holds your snippets and the integration. Without credentials, `/api/translations` responds with an error and the keys stay untranslated.
 
 ## @nuxtjs/i18n configuration
 
@@ -74,17 +73,17 @@ API Client configured that way will make every requests using those credentials.
 i18n: {
     defaultLocale: "en-GB", // fallback locale
     detectBrowserLanguage: false,
-    langDir: "./i18n/langs", // place when `all.ts` entrypoint is stored
+    langDir: "./langs", // resolved inside the ./i18n directory
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
-        file: "all.ts", // common entrypoint accepting locale code
+        language: "en-GB",
+        file: { path: "en-GB.ts", cache: false }, // loader, runs on every locale switch
       },
       {
         code: "de-DE",
-        iso: "de-DE",
-        file: "all.ts", // common entrypoint accepting locale code
+        language: "de-DE",
+        file: { path: "de-DE.ts", cache: false },
       },
     ],
   },
@@ -93,10 +92,10 @@ i18n: {
 ## Translations source
 
 ```ts
-// ./i18n/langs/all.ts
-export default defineI18nLocale(async (locale) => {
+// ./i18n/langs/en-GB.ts (de-DE.ts is the same)
+export default async (locale: string) => {
   return $fetch(`/api/translations?locale=${locale}`); // points to endpoint exposed via ./server/api/translations.get.ts file
-});
+};
 ```
 
 ## API middleware - what it does
@@ -109,12 +108,15 @@ Server API exposes an endpoint under `/api/translations` for HTTP GET requests t
 
 ## Install & Run
 
-1. `pnpm i` to install deps
-2. `pnpm dev` to run the project in dev mode
+1. `cp .env.template .env` and fill in the values (see the sections above)
+2. `pnpm i` to install deps
+3. `pnpm dev` to run the project in dev mode
 
 ## Try it online
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/snippets-middleware)
+
+Create the same `.env` file there, or the translations endpoint has no credentials.
 
 ## Pretty URLs resolving
 
