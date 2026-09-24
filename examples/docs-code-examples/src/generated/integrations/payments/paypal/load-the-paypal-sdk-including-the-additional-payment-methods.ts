@@ -1,8 +1,9 @@
 import { loadScript } from "@paypal/paypal-js";
 
 loadScript({
+  clientId: "your-paypal-client-id",
   // Pay Later or Venmo.
-  "enable-funding": "paylater,venmo",
+  enableFunding: "paylater,venmo",
   // ACDC, Apple Pay or Google Pay.
   components: "card-fields,applepay,googlepay",
   // other options

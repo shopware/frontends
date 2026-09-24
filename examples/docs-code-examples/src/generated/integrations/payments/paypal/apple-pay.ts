@@ -1,41 +1,50 @@
 import { ref, useCart, useSessionContext } from "#imports";
 
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
+
 const { totalPrice } = useCart();
 const { activeBillingAddress } = useSessionContext();
-const divContainer = ref();
+const divContainer = ref<HTMLElement | null>(null);
 
 async function renderApplePay() {
   if (
-    !window.ApplePaySession?.supportsVersion(4) ||
-    !window.ApplePaySession?.canMakePayments()
+    !ApplePaySession.supportsVersion(4) ||
+    !ApplePaySession.canMakePayments()
   ) {
     throw new Error("Browser does not support Apple Pay");
   }
 
+  const paypal = getPayPal();
   const {
     isEligible,
     countryCode,
     merchantCapabilities,
     supportedNetworks,
     currencyCode,
-  } = await window.paypal.Applepay().config();
+  } = await paypal.Applepay().config();
 
   if (!isEligible) {
     throw new Error("Funding for Apple Pay is not eligible");
   }
 
-  const billingContact = {
-    addressLines: [activeBillingAddress.street],
-    administrativeArea: activeBillingAddress.countryState?.name,
-    country: activeBillingAddress.country?.iso3,
-    countryCode: activeBillingAddress.country?.iso,
-    familyName: activeBillingAddress.lastName,
-    givenName: activeBillingAddress.firstName,
-    locality: activeBillingAddress.city,
-    postalCode: activeBillingAddress.zipcode,
+  const billingAddress = activeBillingAddress.value;
+
+  if (!billingAddress) {
+    throw new Error("Billing address is required for Apple Pay");
+  }
+
+  const billingContact: ApplePayJS.ApplePayPaymentContact = {
+    addressLines: [billingAddress.street ?? ""],
+    administrativeArea: billingAddress.countryState?.name,
+    country: billingAddress.country?.iso3,
+    countryCode: billingAddress.country?.iso,
+    familyName: billingAddress.lastName,
+    givenName: billingAddress.firstName,
+    locality: billingAddress.city,
+    postalCode: billingAddress.zipcode,
   };
 
-  const paymentDataRequest = {
+  const paymentDataRequest: ApplePayJS.ApplePayPaymentRequest = {
     countryCode,
     merchantCapabilities,
     supportedNetworks,
@@ -46,7 +55,7 @@ async function renderApplePay() {
     total: {
       label: "TOTAL",
       type: "final",
-      amount: totalPrice.value,
+      amount: totalPrice.value.toFixed(2),
     },
   };
 
@@ -56,28 +65,27 @@ async function renderApplePay() {
   button.addEventListener("click", () => {
     // do some form validity checks before continue
 
-    const session = new window.ApplePaySession(4, paymentRequest);
+    const session = new ApplePaySession(4, paymentDataRequest);
 
-    session.onvalidatemerchant = this.onValidateMerchant.bind(this, session);
-    session.onpaymentauthorized = this.onPaymentAuthorized.bind(
-      this,
-      session,
-      billingContact,
-    );
+    session.onvalidatemerchant = (event) => onValidateMerchant(session, event);
+    session.onpaymentauthorized = (event) =>
+      onPaymentAuthorized(session, billingContact, event);
 
     session.begin();
   });
 
-  divContainer.appendChild(button);
+  divContainer.value?.appendChild(button);
 }
 
-async function onValidateMerchant(session, event) {
+async function onValidateMerchant(
+  session: ApplePaySession,
+  event: ApplePayJS.ApplePayValidateMerchantEvent,
+) {
   try {
-    const { merchantSession } = await window.paypal
-      .Applepay()
-      .validateMerchant({
-        validationUrl: event.validationURL,
-      });
+    const paypal = getPayPal();
+    const { merchantSession } = await paypal.Applepay().validateMerchant({
+      validationUrl: event.validationURL,
+    });
 
     session.completeMerchantValidation(merchantSession);
   } catch (e) {
@@ -85,9 +93,14 @@ async function onValidateMerchant(session, event) {
   }
 }
 
-async function onPaymentAuthorized(session, billingContact, paymentData) {
+async function onPaymentAuthorized(
+  session: ApplePaySession,
+  billingContact: ApplePayJS.ApplePayPaymentContact,
+  event: ApplePayJS.ApplePayPaymentAuthorizedEvent,
+) {
   try {
     const orderId = await createOrder("applepay");
+    const paypal = getPayPal();
 
     await paypal.Applepay().confirmOrder({
       orderId,
@@ -95,9 +108,9 @@ async function onPaymentAuthorized(session, billingContact, paymentData) {
       billingContact,
     });
 
-    session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+    session.completePayment(ApplePaySession.STATUS_SUCCESS);
 
-    this.onApprove({ orderId });
+    await onApprove({ orderID: orderId });
   } catch (e) {
     session.abort();
   }

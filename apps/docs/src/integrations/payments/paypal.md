@@ -91,7 +91,7 @@ import { loadScript } from "@paypal/paypal-js";
 
 loadScript({
   // client id is generated in the PayPal account's apps section
-  "client-id":
+  clientId:
     "AUAcLFoadrmy9JiW2cHgriy1mTy0MCqQOP_1SSeQEUArz_zPeF1VcNY2CCxcFBQpf_N4g1k5wFVNJ1Bk",
   currency: "EUR", // or use some reference to the current currency
   locale: "en_US", // as same as in the field above
@@ -108,19 +108,14 @@ Alternatively, the `loadScript` function returns a promise resolving to the payp
 
 In order to display a PayPal Button component, we need to mount it in the DOM.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
-
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
 // client only
-window.paypal
-  .Buttons({
-    /** configuration skipped */
-  })
-  .render(divContainer);
+paypal.Buttons({}).render(divContainer);
 // this script will mount the component in element `divContainer`
 ```
 
@@ -140,17 +135,16 @@ There are additional events like `onInit`, `onClick`, `onCancel` or `onError` (a
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal checkout button.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
-
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
 // client only
-window.paypal
+paypal
   .Buttons({
-    createOrder: async (data: CreateOrderData, actions: CreateOrderActions) => {
+    createOrder: async () => {
       const response = await apiClient.invoke(
         "createPayPalOrder post /store-api/paypal/create-order",
       );
@@ -167,17 +161,16 @@ window.paypal
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal express checkout button.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.ts" lines="9:" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
-
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
 // client only
-window.paypal
+paypal
   .Buttons({
-    createOrder: async (data: CreateOrderData, actions: CreateOrderActions) => {
+    createOrder: async () => {
       await setPaymentMethod(paypalMethod.value);
 
       await addToCart();
@@ -205,17 +198,17 @@ In the example above we do a couple of things:
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event.ts" lines="18:43" code lang="ts" no-name -->
 
 ```ts
-...
+const paypalButtons = {
   // part of window.paypal.Buttons({}) params
   onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
     // createOrder from useCheckout composable
     orderCreated.value = await createOrder({
       paypalOrderId: data.orderID,
     });
-    refreshCart()
+    refreshCart();
     // apiClient from useShopwareContext composable
     const handlePaymentResponse = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
@@ -233,7 +226,7 @@ This event is called when the user approves the payment process. It's the last s
     await fetch(handlePaymentResponse.data.redirectUrl);
     // ...
   },
-  ...
+};
 ```
 
 <!-- /automd -->
@@ -244,21 +237,21 @@ The example above shows the code that is executed after a payer approves the Pay
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event-express.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event-express.ts" lines="16:49" code lang="ts" no-name -->
 
 ```ts
-...
+const paypalButtons = {
   // part of window.paypal.Buttons({}) params
   onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
     await apiClient.invoke(
       "preparePayPalExpressCheckout post /store-api/paypal/express/prepare-checkout",
       {
         body: { token: data.orderID },
-      }
+      },
     );
     // createOrder from useCheckout composable
     const order = await createOrder({ paypalOrderId: data.orderID });
-    refreshCart()
+    refreshCart();
 
     // redirect to order confirmation site
 
@@ -280,7 +273,7 @@ This event is called when the user approves the payment process. It's the last s
     await fetch(handlePaymentResponse.data.redirectUrl);
     // ...
   },
-  ...
+};
 ```
 
 <!-- /automd -->
@@ -305,10 +298,12 @@ For reference check out [PayPal's documentation](https://developer.paypal.com/do
 The `createOrder` and `onApprove` events are the same for all payment methods.
 The only difference is the product used to create the order.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/shared-behaviour-of-createorder-and-onapprove.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/shared-behaviour-of-createorder-and-onapprove.ts" lines="16:52" code lang="ts" no-name -->
 
 ```ts
-async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlepay' | 'applepay' | 'venmo') {
+async function createOrder(
+  product?: "paylater" | "acdc" | "applepay" | "googlepay" | "venmo",
+) {
   const response = await apiClient.invoke(
     "createPayPalOrder post /store-api/paypal/create-order",
     { body: { product } },
@@ -317,12 +312,16 @@ async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlep
   return response?.data?.token;
 }
 
+async function createShopwareOrder(payload: { paypalOrderId: string }) {
+  return { id: "order-id", ...payload };
+}
+
 async function onApprove(data: { orderID: string }) {
   // createOrder from useCheckout composable
-  orderCreated.value = await createOrder({
+  orderCreated.value = await createShopwareOrder({
     paypalOrderId: data.orderID,
   });
-  refreshCart()
+  refreshCart();
   // apiClient from useShopwareContext composable
   const handlePaymentResponse = await apiClient.invoke(
     "handlePaymentMethod post /handle-payment",
@@ -338,7 +337,6 @@ async function onApprove(data: { orderID: string }) {
   );
   // call the /payment/finalize-transaction endpoint
   await fetch(handlePaymentResponse.data.redirectUrl);
-  ...
 }
 ```
 
@@ -354,8 +352,9 @@ Depending on the type of the payment method and how it integrates with PayPal, y
 import { loadScript } from "@paypal/paypal-js";
 
 loadScript({
+  clientId: "your-paypal-client-id",
   // Pay Later or Venmo.
-  "enable-funding": "paylater,venmo",
+  enableFunding: "paylater,venmo",
   // ACDC, Apple Pay or Google Pay.
   components: "card-fields,applepay,googlepay",
   // other options
@@ -366,18 +365,17 @@ loadScript({
 
 ### Pay Later
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
-const divContainer = ref();
-
-window.paypal
+paypal
   .Buttons({
-    fundingSource: paypal.FUNDING.PAYLATER,
-    createOrder: createOrder.bind(this, "paylater"),
-    onApprove: onApprove.bind(this),
+    fundingSource: "paylater",
+    createOrder: () => createOrder("paylater"),
+    onApprove,
 
     // ...
   })
@@ -388,18 +386,17 @@ window.paypal
 
 ### Venmo
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
-const divContainer = ref();
-
-window.paypal
+paypal
   .Buttons({
-    fundingSource: paypal.FUNDING.VENMO,
-    createOrder: createOrder.bind(this, "venmo"),
-    onApprove: onApprove.bind(this),
+    fundingSource: "venmo",
+    createOrder: () => createOrder("venmo"),
+    onApprove,
 
     // ...
   })
@@ -410,14 +407,21 @@ window.paypal
 
 ### Credit card (ACDC)
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
+const paypal = getPayPal();
+
 const cardFields = paypal.CardFields({
-  createOrder: createOrder.bind(this, "acdc"),
-  onApprove: onApprove.bind(this),
+  createOrder: () => createOrder("acdc"),
+  onApprove,
+  onError(error) {
+    console.error(error);
+  },
   style: {
-    /** some custom styling */
+    input: {
+      color: "#1f2937",
+    },
   },
 });
 
@@ -446,13 +450,13 @@ expiryField.render("#acdc-expiry-field-container");
 
 Upon form submit via your own rendered button you need to check the validity of the card fields:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc-2.ts" lines="3:" code lang="ts" no-name -->
 
 ```ts
 async function onFormSubmit() {
   const cardState = await cardFields.getState();
 
-  if (state.isFormValid) {
+  if (cardState.isFormValid) {
     // This will trigger the `onApprove` event
     cardFields.submit();
 
@@ -460,10 +464,13 @@ async function onFormSubmit() {
   }
 
   // Do some advanced error handling, e.g. focus the invalid field
-  const firstInvalidFieldKey = Object.keys(state.fields).find(
-    (key) => !state.fields[key].isValid,
+  const firstInvalidFieldKey = Object.keys(cardState.fields).find(
+    (key): key is keyof typeof cardState.fields =>
+      !cardState.fields[key as keyof typeof cardState.fields].isValid,
   );
-  this.fields[firstInvalidFieldKey]?.focus();
+  if (firstInvalidFieldKey) {
+    cardFieldElements[firstInvalidFieldKey]?.focus();
+  }
 }
 ```
 
@@ -488,20 +495,23 @@ For Google Pay to work, you need to load the Google Pay script in the head of yo
 
 Now you can render the Google Pay button in your frontend:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.ts" lines="1:" code lang="ts" no-name -->
 
 ```ts
 import { ref, useCart, useSessionContext } from "#imports";
 
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
+
 const { cart, totalPrice } = useCart();
 const { currency } = useSessionContext();
-const divContainer = ref();
+const divContainer = ref<HTMLElement | null>(null);
 
 async function renderGooglePay() {
   if (!window?.google?.payments?.api?.PaymentsClient) {
     throw new Error("Google Pay script is not load");
   }
 
+  const paypal = getPayPal();
   const {
     isEligible,
     apiVersion,
@@ -509,7 +519,7 @@ async function renderGooglePay() {
     allowedPaymentMethods,
     merchantInfo,
     countryCode,
-  } = await window.paypal.Googlepay().config();
+  } = await paypal.Googlepay().config();
 
   if (!isEligible) {
     throw new Error("Funding for Google Pay is not eligible");
@@ -523,11 +533,13 @@ async function renderGooglePay() {
           await onPaymentAuthorized(paymentData);
           return { transactionState: "SUCCESS" };
         } catch (e) {
+          const message = e instanceof Error ? e.message : "TRANSACTION FAILED";
           return {
             transactionState: "ERROR",
             error: {
+              reason: "OTHER_ERROR",
               intent: "PAYMENT_AUTHORIZATION",
-              message: e.message || "TRANSACTION FAILED",
+              message,
             },
           };
         }
@@ -544,7 +556,13 @@ async function renderGooglePay() {
     throw new Error("Browser does not support Google Pay");
   }
 
-  const paymentDataRequest = {
+  const taxTotal =
+    cart.value?.price?.calculatedTaxes?.reduce(
+      (total, tax) => total + tax.tax,
+      0,
+    ) ?? 0;
+
+  const paymentDataRequest: google.payments.api.PaymentDataRequest = {
     apiVersion,
     apiVersionMinor,
     allowedPaymentMethods,
@@ -554,17 +572,17 @@ async function renderGooglePay() {
       countryCode,
       totalPriceStatus: "FINAL",
       totalPriceLabel: "Grand Total",
-      currencyCode: currency.value.isoCode,
-      totalPrice: totalPrice.value,
+      currencyCode: currency.value?.isoCode ?? "EUR",
+      totalPrice: totalPrice.value.toFixed(2),
       displayItems: [
         {
           label: "Subtotal",
-          price: cart.price.netPrice,
+          price: (cart.value?.price?.netPrice ?? 0).toFixed(2),
           type: "SUBTOTAL",
         },
         {
           label: "Tax",
-          price: cart.price.calculatedTaxes.price,
+          price: taxTotal.toFixed(2),
           type: "TAX",
         },
       ],
@@ -578,21 +596,24 @@ async function renderGooglePay() {
     onClick: () => {
       // do some form validity checks before continue
 
-      gpClient.loadPaymentData(paymentDataRequest).catch();
+      gpClient.loadPaymentData(paymentDataRequest).catch(() => {});
     },
   });
 
-  divContainer.appendChild(button);
+  divContainer.value?.appendChild(button);
 }
 
-async function onPaymentAuthorized(paymentData) {
+async function onPaymentAuthorized(
+  paymentData: google.payments.api.PaymentData,
+) {
   const orderId = await createOrder("googlepay");
 
   if (!orderId) {
     throw new Error("PayPal order could not be created");
   }
 
-  const confirmOrderResponse = await window.paypal.Googlepay().confirmOrder({
+  const paypal = getPayPal();
+  const confirmOrderResponse = await paypal.Googlepay().confirmOrder({
     orderId,
     paymentMethodData: paymentData.paymentMethodData,
   });
@@ -604,10 +625,10 @@ async function onPaymentAuthorized(paymentData) {
   }
 
   if ("PAYER_ACTION_REQUIRED" === confirmOrderResponse.status) {
-    await window.paypal.Googlepay().initiatePayerAction({ orderId });
+    await paypal.Googlepay().initiatePayerAction({ orderId });
   }
 
-  this.onApprove({ orderId });
+  await onApprove({ orderID: orderId });
 }
 ```
 
@@ -630,47 +651,56 @@ For Apple Pay to work, you need to load the Apple Pay script in the head of your
 
 Now you can render the Apple Pay button in your frontend:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.ts" lines="1:" code lang="ts" no-name -->
 
 ```ts
 import { ref, useCart, useSessionContext } from "#imports";
 
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
+
 const { totalPrice } = useCart();
 const { activeBillingAddress } = useSessionContext();
-const divContainer = ref();
+const divContainer = ref<HTMLElement | null>(null);
 
 async function renderApplePay() {
   if (
-    !window.ApplePaySession?.supportsVersion(4) ||
-    !window.ApplePaySession?.canMakePayments()
+    !ApplePaySession.supportsVersion(4) ||
+    !ApplePaySession.canMakePayments()
   ) {
     throw new Error("Browser does not support Apple Pay");
   }
 
+  const paypal = getPayPal();
   const {
     isEligible,
     countryCode,
     merchantCapabilities,
     supportedNetworks,
     currencyCode,
-  } = await window.paypal.Applepay().config();
+  } = await paypal.Applepay().config();
 
   if (!isEligible) {
     throw new Error("Funding for Apple Pay is not eligible");
   }
 
-  const billingContact = {
-    addressLines: [activeBillingAddress.street],
-    administrativeArea: activeBillingAddress.countryState?.name,
-    country: activeBillingAddress.country?.iso3,
-    countryCode: activeBillingAddress.country?.iso,
-    familyName: activeBillingAddress.lastName,
-    givenName: activeBillingAddress.firstName,
-    locality: activeBillingAddress.city,
-    postalCode: activeBillingAddress.zipcode,
+  const billingAddress = activeBillingAddress.value;
+
+  if (!billingAddress) {
+    throw new Error("Billing address is required for Apple Pay");
+  }
+
+  const billingContact: ApplePayJS.ApplePayPaymentContact = {
+    addressLines: [billingAddress.street ?? ""],
+    administrativeArea: billingAddress.countryState?.name,
+    country: billingAddress.country?.iso3,
+    countryCode: billingAddress.country?.iso,
+    familyName: billingAddress.lastName,
+    givenName: billingAddress.firstName,
+    locality: billingAddress.city,
+    postalCode: billingAddress.zipcode,
   };
 
-  const paymentDataRequest = {
+  const paymentDataRequest: ApplePayJS.ApplePayPaymentRequest = {
     countryCode,
     merchantCapabilities,
     supportedNetworks,
@@ -681,7 +711,7 @@ async function renderApplePay() {
     total: {
       label: "TOTAL",
       type: "final",
-      amount: totalPrice.value,
+      amount: totalPrice.value.toFixed(2),
     },
   };
 
@@ -691,28 +721,27 @@ async function renderApplePay() {
   button.addEventListener("click", () => {
     // do some form validity checks before continue
 
-    const session = new window.ApplePaySession(4, paymentRequest);
+    const session = new ApplePaySession(4, paymentDataRequest);
 
-    session.onvalidatemerchant = this.onValidateMerchant.bind(this, session);
-    session.onpaymentauthorized = this.onPaymentAuthorized.bind(
-      this,
-      session,
-      billingContact,
-    );
+    session.onvalidatemerchant = (event) => onValidateMerchant(session, event);
+    session.onpaymentauthorized = (event) =>
+      onPaymentAuthorized(session, billingContact, event);
 
     session.begin();
   });
 
-  divContainer.appendChild(button);
+  divContainer.value?.appendChild(button);
 }
 
-async function onValidateMerchant(session, event) {
+async function onValidateMerchant(
+  session: ApplePaySession,
+  event: ApplePayJS.ApplePayValidateMerchantEvent,
+) {
   try {
-    const { merchantSession } = await window.paypal
-      .Applepay()
-      .validateMerchant({
-        validationUrl: event.validationURL,
-      });
+    const paypal = getPayPal();
+    const { merchantSession } = await paypal.Applepay().validateMerchant({
+      validationUrl: event.validationURL,
+    });
 
     session.completeMerchantValidation(merchantSession);
   } catch (e) {
@@ -720,9 +749,14 @@ async function onValidateMerchant(session, event) {
   }
 }
 
-async function onPaymentAuthorized(session, billingContact, paymentData) {
+async function onPaymentAuthorized(
+  session: ApplePaySession,
+  billingContact: ApplePayJS.ApplePayPaymentContact,
+  event: ApplePayJS.ApplePayPaymentAuthorizedEvent,
+) {
   try {
     const orderId = await createOrder("applepay");
+    const paypal = getPayPal();
 
     await paypal.Applepay().confirmOrder({
       orderId,
@@ -730,9 +764,9 @@ async function onPaymentAuthorized(session, billingContact, paymentData) {
       billingContact,
     });
 
-    session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+    session.completePayment(ApplePaySession.STATUS_SUCCESS);
 
-    this.onApprove({ orderId });
+    await onApprove({ orderID: orderId });
   } catch (e) {
     session.abort();
   }

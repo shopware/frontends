@@ -1,14 +1,17 @@
 import { ref, useCart, useSessionContext } from "#imports";
 
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
+
 const { cart, totalPrice } = useCart();
 const { currency } = useSessionContext();
-const divContainer = ref();
+const divContainer = ref<HTMLElement | null>(null);
 
 async function renderGooglePay() {
   if (!window?.google?.payments?.api?.PaymentsClient) {
     throw new Error("Google Pay script is not load");
   }
 
+  const paypal = getPayPal();
   const {
     isEligible,
     apiVersion,
@@ -16,7 +19,7 @@ async function renderGooglePay() {
     allowedPaymentMethods,
     merchantInfo,
     countryCode,
-  } = await window.paypal.Googlepay().config();
+  } = await paypal.Googlepay().config();
 
   if (!isEligible) {
     throw new Error("Funding for Google Pay is not eligible");
@@ -30,11 +33,13 @@ async function renderGooglePay() {
           await onPaymentAuthorized(paymentData);
           return { transactionState: "SUCCESS" };
         } catch (e) {
+          const message = e instanceof Error ? e.message : "TRANSACTION FAILED";
           return {
             transactionState: "ERROR",
             error: {
+              reason: "OTHER_ERROR",
               intent: "PAYMENT_AUTHORIZATION",
-              message: e.message || "TRANSACTION FAILED",
+              message,
             },
           };
         }
@@ -51,7 +56,13 @@ async function renderGooglePay() {
     throw new Error("Browser does not support Google Pay");
   }
 
-  const paymentDataRequest = {
+  const taxTotal =
+    cart.value?.price?.calculatedTaxes?.reduce(
+      (total, tax) => total + tax.tax,
+      0,
+    ) ?? 0;
+
+  const paymentDataRequest: google.payments.api.PaymentDataRequest = {
     apiVersion,
     apiVersionMinor,
     allowedPaymentMethods,
@@ -61,17 +72,17 @@ async function renderGooglePay() {
       countryCode,
       totalPriceStatus: "FINAL",
       totalPriceLabel: "Grand Total",
-      currencyCode: currency.value.isoCode,
-      totalPrice: totalPrice.value,
+      currencyCode: currency.value?.isoCode ?? "EUR",
+      totalPrice: totalPrice.value.toFixed(2),
       displayItems: [
         {
           label: "Subtotal",
-          price: cart.price.netPrice,
+          price: (cart.value?.price?.netPrice ?? 0).toFixed(2),
           type: "SUBTOTAL",
         },
         {
           label: "Tax",
-          price: cart.price.calculatedTaxes.price,
+          price: taxTotal.toFixed(2),
           type: "TAX",
         },
       ],
@@ -85,21 +96,24 @@ async function renderGooglePay() {
     onClick: () => {
       // do some form validity checks before continue
 
-      gpClient.loadPaymentData(paymentDataRequest).catch();
+      gpClient.loadPaymentData(paymentDataRequest).catch(() => {});
     },
   });
 
-  divContainer.appendChild(button);
+  divContainer.value?.appendChild(button);
 }
 
-async function onPaymentAuthorized(paymentData) {
+async function onPaymentAuthorized(
+  paymentData: google.payments.api.PaymentData,
+) {
   const orderId = await createOrder("googlepay");
 
   if (!orderId) {
     throw new Error("PayPal order could not be created");
   }
 
-  const confirmOrderResponse = await window.paypal.Googlepay().confirmOrder({
+  const paypal = getPayPal();
+  const confirmOrderResponse = await paypal.Googlepay().confirmOrder({
     orderId,
     paymentMethodData: paymentData.paymentMethodData,
   });
@@ -111,8 +125,8 @@ async function onPaymentAuthorized(paymentData) {
   }
 
   if ("PAYER_ACTION_REQUIRED" === confirmOrderResponse.status) {
-    await window.paypal.Googlepay().initiatePayerAction({ orderId });
+    await paypal.Googlepay().initiatePayerAction({ orderId });
   }
 
-  this.onApprove({ orderId });
+  await onApprove({ orderID: orderId });
 }

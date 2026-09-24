@@ -2,7 +2,7 @@
 import { useB2bQuoteManagement } from "@shopware/composables";
 import { ref } from "vue";
 const declineComment = ref("");
-const quote = ref("example-id");
+const quote = ref({ id: "example-id" });
 const { declineQuote } = useB2bQuoteManagement();
 const handleDecline = async () => {
   declineQuote(quote.value.id, declineComment.value);

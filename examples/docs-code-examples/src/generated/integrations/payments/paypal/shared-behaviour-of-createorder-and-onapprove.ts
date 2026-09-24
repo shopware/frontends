@@ -1,10 +1,3 @@
-type PayPalProduct =
-  | "paylater"
-  | "acdc"
-  | "applepay"
-  | "googlepay"
-  | "venmo";
-
 const orderCreated = { value: null as unknown };
 const order = { id: "order-id" };
 const apiClient = {
@@ -20,7 +13,9 @@ const apiClient = {
 
 function refreshCart() {}
 
-async function createOrder(product?: PayPalProduct) {
+async function createOrder(
+  product?: "paylater" | "acdc" | "applepay" | "googlepay" | "venmo",
+) {
   const response = await apiClient.invoke(
     "createPayPalOrder post /store-api/paypal/create-order",
     { body: { product } },
