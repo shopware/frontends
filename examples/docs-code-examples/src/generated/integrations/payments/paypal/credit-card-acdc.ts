@@ -6,9 +6,7 @@ const cardFields = getPayPal().CardFields({
   onError: (error) => {
     console.error(error);
   },
-  style: {
-    /** some custom styling */
-  },
+  style: {/** some custom styling */},
 });
 
 const nameField = cardFields.NameField({
