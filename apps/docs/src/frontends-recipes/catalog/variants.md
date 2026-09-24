@@ -370,6 +370,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 ## Related Links
 
 - [Product Listing and Filters recipe](listing.html)
+- [Prices and Tax State recipe](prices.html)
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
