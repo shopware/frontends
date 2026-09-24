@@ -34,7 +34,7 @@ The demo store utilizes Nuxt 3, which by default registers all components global
 
 [Global registration](https://vuejs.org/guide/components/registration#global-registration) in Vue apps
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.txt" code lang="ts" no-name -->
 
 ```ts
 import CmsBlockCustomBlock from "./components/cms/CmsElementDailymotion.vue";
@@ -75,7 +75,7 @@ Shopware.Service('cmsService').registerCmsElement({
 
 Lets create new component `components/cms/element/CmsElementDailymotion.vue`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming-vue.txt" code lang="vue" no-name -->
 
 ```vue
 // components/cms/element/CmsElementDailymotion.vue

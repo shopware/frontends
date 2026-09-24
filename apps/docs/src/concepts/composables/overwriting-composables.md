@@ -21,7 +21,7 @@ Designed architecture allows you to replace and overwrite almost any part of the
 
 In order to extend or overwrite the logic of the composables, you need to create a new file in the `composables` folder with the same name as the one you want to overwrite. For example, if you want to overwrite the logic of the `useAddToCart` composable, you need to create a new file called `useAddToCart.ts` in the `composables` folder.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/example.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/example.txt" code lang="ts" no-name -->
 
 ```ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
@@ -56,7 +56,7 @@ If you want to overwrite the whole composable, you need to make sure that you ar
 Let's say we want additional method to be available in the `useAddToCart` composable.
 This case is not problematic, as the existing API is not changing. Let's try to have additional computed property which returns quantity of the product in the cart.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-composable.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-composable.txt" code lang="ts" no-name -->
 
 ```ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
@@ -89,7 +89,7 @@ You can achieve the same effect by creating a new composable as well and write a
 
 This might be especially useful for high customization. Let's say we want to add analytics after the product is added to the cart.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-specific-method.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-specific-method.txt" code lang="ts" no-name -->
 
 ```ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
@@ -121,7 +121,7 @@ That kind of customisation is extremly powerful and can be used to achieve almos
 
 Sometimes you want to completly replace original logic, maybe you want to call a different API endpoint or need another order of the things.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/overwriting-the-whole-method.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/overwriting-the-whole-method.txt" code lang="ts" no-name -->
 
 ```ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
@@ -149,7 +149,7 @@ export function useAddToCart(product: Ref<Product>) {
 
 If you need to replace whole composable logic you can do this by not invoking core composable at all. This is the most radical way of customisation as you need to make sure that you are returning the same interface as the original one. A lot of things might break if you are not aware of the consequences of the change.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/replacing-the-whole-composable.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/replacing-the-whole-composable.txt" code lang="ts" no-name -->
 
 ```ts
 // composables/useAddToCart.ts

@@ -172,7 +172,7 @@ Show all available sortings:
 
 Refresh the product listing on option's change:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.ts" code lang="ts{4-6}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.txt" code lang="ts{4-6}" no-name -->
 
 ```ts{4-6}
 const onOrderChange = (onOrderChangeEvent: Event) => {
@@ -328,7 +328,7 @@ You can then iterate the filter objects available in the array. The filter objec
 
 `ListingFilter.code`: **manufacturer**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.vue" code lang="vue{15,17}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.txt" code lang="vue{15,17}" no-name -->
 
 ```vue{15,17}
 <script setup lang="ts">
@@ -414,7 +414,7 @@ const manufacturerFilter = {
 
 Despite being in the same filter group, every entity of property defined in the admin panel is available separately.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.txt" code lang="ts" no-name -->
 
 ```ts
 const ColorFilter: ListingFiler = {
@@ -444,7 +444,7 @@ In order to apply a specific filter you need to be aware of:
 - Filter code (see available codes at [ListingFilterCode](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L7))
 - Value
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/apply-filter-value.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/apply-filter-value.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -626,7 +626,7 @@ This listing shows the product name and price with soft hover effects and a fade
 
 </div>
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/full-example-condensed-product-listing-ui.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/full-example-condensed-product-listing-ui.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

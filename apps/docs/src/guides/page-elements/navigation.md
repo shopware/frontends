@@ -48,7 +48,7 @@ Now all values can be accessed in the template to build a navigation menu
 
 Note that all the navigation items are in type `Category`, and thanks to this the `getCategoryUrl` helper can be used to extract the correct pretty URL or technical URL as a fallback.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/build-a-navigation-template.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/build-a-navigation-template.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -98,7 +98,7 @@ Copy the snippet and paste it into your project. It's often useful to extract it
 
 </div>
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/full-example-simple-top-navigation.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/navigation/full-example-simple-top-navigation.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

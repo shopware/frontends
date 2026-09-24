@@ -123,7 +123,7 @@ www.example2.com     // DE site
 When you are using _prefix_ domain languages, you have to use `formatLink()` method from `useInternationalization` composable for building URLs.
 The main task of this composable is to add a prefix to URL if needed.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/routing.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/routing.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -197,7 +197,7 @@ _This example should be run locally because of the multi-domain requirements_
 
 After switching the language, the URL returned from the backend is used as the basis for redirection which leads to exiting the localhost context.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/switching-language-locally.ts" code lang="typescript" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/switching-language-locally.txt" code lang="typescript" no-name -->
 
 ```typescript
 const onChangeHandler = async (option: Event) => {
@@ -239,7 +239,7 @@ Thanks to this, you will be able to use your local Frontends app instance with t
 
 You can add own dev resolver to avoid redirection
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/add-dev-resolver.ts" code lang="typescript" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/add-dev-resolver.txt" code lang="typescript" no-name -->
 
 ```typescript
 const dev = process.dev;

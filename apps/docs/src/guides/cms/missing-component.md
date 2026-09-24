@@ -112,7 +112,7 @@ your-project/
 
 Every CMS component receives a single `content` prop. Use the Shopware schema type matching the CMS node type:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props.txt" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -170,7 +170,7 @@ const mainContent = getSlotContent("main");
 
 <div v-else>
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content-2.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content-2.txt" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->

@@ -84,7 +84,7 @@ The PayPal SDK and all its methods should only be invoked on client side rendere
 
 In a Vue component we can use the `loadScript` method from the [`@paypal/paypal-js`](https://www.npmjs.com/package/@paypal/paypal-js) npm package:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk.txt" code lang="ts" no-name -->
 
 ```ts
 import { loadScript } from "@paypal/paypal-js";
@@ -108,7 +108,7 @@ Alternatively, the `loadScript` function returns a promise resolving to the payp
 
 In order to display a PayPal Button component, we need to mount it in the DOM.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -140,7 +140,7 @@ There are additional events like `onInit`, `onClick`, `onCancel` or `onError` (a
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal checkout button.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -167,7 +167,7 @@ window.paypal
 In the `creatOrder` callback, you need to prepare the PayPal order and return a token that identifies the order in PayPal. This token will be used later on to capture the payment.
 It is called when the user clicks on the PayPal express checkout button.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -348,7 +348,7 @@ async function onApprove(data: { orderID: string }) {
 
 Depending on the type of the payment method and how it integrates with PayPal, you need to add it to `enable-funding` or `components`:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk-including-the-additional-payment-methods.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/load-the-paypal-sdk-including-the-additional-payment-methods.txt" code lang="ts" no-name -->
 
 ```ts
 import { loadScript } from "@paypal/paypal-js";
@@ -366,7 +366,7 @@ loadScript({
 
 ### Pay Later
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -388,7 +388,7 @@ window.paypal
 
 ### Venmo
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -410,7 +410,7 @@ window.paypal
 
 ### Credit card (ACDC)
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc.txt" code lang="ts" no-name -->
 
 ```ts
 const cardFields = paypal.CardFields({
@@ -446,7 +446,7 @@ expiryField.render("#acdc-expiry-field-container");
 
 Upon form submit via your own rendered button you need to check the validity of the card fields:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/credit-card-acdc-2.txt" code lang="ts" no-name -->
 
 ```ts
 async function onFormSubmit() {
@@ -488,7 +488,7 @@ For Google Pay to work, you need to load the Google Pay script in the head of yo
 
 Now you can render the Google Pay button in your frontend:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref, useCart, useSessionContext } from "#imports";
@@ -630,7 +630,7 @@ For Apple Pay to work, you need to load the Apple Pay script in the head of your
 
 Now you can render the Apple Pay button in your frontend:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.txt" code lang="ts" no-name -->
 
 ```ts
 import { ref, useCart, useSessionContext } from "#imports";

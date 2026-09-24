@@ -39,7 +39,7 @@ Works only if the `useProduct` is fulfilled and the product data is known. Typic
 Visit the [useProduct]/packages/composables.html#useproduct) reference to see more details.
 :::
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.txt" code lang="ts" no-name -->
 
 ```ts
 // useProductCustomizedProductConfigurator is autoimported

@@ -144,7 +144,7 @@ This setting is used by the `useImagePlaceholder` composable from `@shopware/cms
 
 Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on top of the shared base config generated from the extended layers:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/theme-customization.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/theme-customization.txt" code lang="ts" no-name -->
 
 ```ts
 // uno.config.ts

@@ -18,7 +18,7 @@ Typically you extend shared composable by using the same core composable. In the
 
 Example:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/shared-composables/overwrite-extend-shared-composable.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/shared-composables/overwrite-extend-shared-composable.txt" code lang="ts" no-name -->
 
 ```ts
 import { useCartFunction } from "@shopware/composables";

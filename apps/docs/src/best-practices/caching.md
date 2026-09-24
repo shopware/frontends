@@ -52,7 +52,7 @@ A route can only be migrated to GET once its GET variant declares `_criteria` in
 
 For a Nuxt app, set it as a module option in `nuxt.config.ts`:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.txt" code lang="ts" no-name -->
 
 ```ts
 import { defineNuxtConfig } from "nuxt/config";

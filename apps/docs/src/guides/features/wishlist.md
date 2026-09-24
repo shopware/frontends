@@ -119,7 +119,7 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 `addToWishlist` method will detect if the customer is logged in or not
 :::
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/add-product-to-the-wishlist.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/add-product-to-the-wishlist.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -150,7 +150,7 @@ To avoid such a situation, `isInWishlist` property should protect `removeFromWis
 `removeFromWishlist` method will detect if the customer is logged in or not
 :::
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/remove-product-from-the-wishlist.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/remove-product-from-the-wishlist.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -175,7 +175,7 @@ const { removeFromWishlist, isInWishlist } = useProductWishlist(product);
 
 To synchronize the local wishlist with the remote wishlist (associated with the user's account), the `mergeWishlistProducts()` method must be triggered after the customer has logged in.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/merge-wishlists.vue" code lang="vue{10}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/merge-wishlists.txt" code lang="vue{10}" no-name -->
 
 ```vue{10}
 <script setup lang="ts">

@@ -57,7 +57,7 @@ The `useCart` composable also offers methods to add items to the cart, such as
 
 You can use the `useAddToCart` composable to add a product to the cart:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-product-to-the-cart.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-product-to-the-cart.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -82,7 +82,7 @@ const { addProduct, quantity, getAvailableStock } = useAddToCart({
 
 The process of adding a promotions code is just as straightforward as adding a product to the cart. You can use the `appliedPromotionCodes` field to receive a list of all applied promotion codes.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-promotion-to-the-cart.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/add-promotion-to-the-cart.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -104,7 +104,7 @@ Promitions will appear as a line item in the cart with a negative price.
 
 Once the products are added to the cart, the can be accessed through the `cartItems` reference. In a similar fashion, you can access other information like `totalPrice`, `subtotal` or `cartErrors` which can occur in the case of invalid cart configurations.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/display-the-cart-items.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/display-the-cart-items.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -141,7 +141,7 @@ Find a table of commonly used properties of cart items below:
 
 The `changeProductQuantity` method can be used to change the quantity of a cart item.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/change-the-quantity-of-a-cart-item.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/change-the-quantity-of-a-cart-item.txt" code lang="ts" no-name -->
 
 ```ts
 import { useCart } from "#imports";
@@ -162,7 +162,7 @@ changeProductQuantity(cartItem);
 
 You can remove items from the cart using the `useCart` or the `useCartItem` composables:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item.txt" code lang="ts" no-name -->
 
 ```ts
 import { useCart } from "#imports";
@@ -176,7 +176,7 @@ await removeItem({ id: "7b5b97bd48454979b14f21c8ef38ce08" });
 
 In case of the `useCartItem` composable, you pass the item identifier when calling the composable, but not when calling the `removeItem` method.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item-2.txt" code lang="ts" no-name -->
 
 ```ts
 import { toRefs, useCartItem } from "#imports";
@@ -203,7 +203,7 @@ This cart is positioned sticky on the right side of the screen and shows a basic
 
 </div>
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/full-example-simple-cart-ui.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/full-example-simple-cart-ui.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

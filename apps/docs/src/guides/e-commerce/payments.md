@@ -89,7 +89,7 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
 
    This is the moment, when any additional information can be passed (if a payment extension allows to do so). Payment handler can communicate with an external service to init some additional process, like preparation of external gateway session to process the payment for specific order.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/external-gateway-3.ts" code lang="js{6-15}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/external-gateway-3.txt" code lang="js{6-15}" no-name -->
 
 ```js{6-15}
 // where to redirect an user when payment is done correctly
@@ -191,7 +191,7 @@ Since the endpoint returns a `jwt` token containing all required data to identif
 
 For example:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/app-server-integration-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/app-server-integration-2.txt" code lang="ts" no-name -->
 
 ```ts
 await fetch("https://shopware.mypaymentgateway.com/api/store/card", {

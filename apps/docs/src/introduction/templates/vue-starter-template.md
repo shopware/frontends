@@ -170,7 +170,7 @@ The template extends three Nuxt layers:
 
 The design-tokens layer provides the shared UnoCSS setup and token palette. Your local `uno.config.ts` should only add template-specific customizations on top of the generated config:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/styling-with-unocss.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/styling-with-unocss.txt" code lang="ts" no-name -->
 
 ```ts
 import { mergeConfigs } from "@unocss/core";

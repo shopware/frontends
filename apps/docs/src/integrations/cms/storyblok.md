@@ -159,7 +159,7 @@ onMounted(async () => {
 
    **[...all].vue**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-6.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-6.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -181,7 +181,7 @@ import Frontends from "../components/Frontends.vue";
 
    **storyblok/[slug].vue**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

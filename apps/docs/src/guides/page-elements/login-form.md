@@ -49,7 +49,7 @@ Now, the presentation layer has all required fields to perform a login process.
 
 In the next step, use the `useUser` composable. It provides user data, login methods, and other interfaces.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/manage-the-user-session.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/manage-the-user-session.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -75,7 +75,7 @@ The `invokeLogin` method is triggered using the `@click` event of the button. It
 
 If the login process was successful, the `isLoggedIn` computed property becomes `true`. Now we can use `user` object to access customer data.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/display-user-data.vue" code lang="vue{2,6}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/display-user-data.txt" code lang="vue{2,6}" no-name -->
 
 ```vue{2,6}
 <template>
@@ -99,7 +99,7 @@ To finish, we would like to inform the user about problems that may appear durin
 
 In order to achieve it, the `errors` computed ref can be used:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/handle-authentication-errors.vue" code lang="vue{5}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/handle-authentication-errors.txt" code lang="vue{5}" no-name -->
 
 ```vue{5}
 <template>
@@ -117,7 +117,7 @@ The example explains how to display only the first error that may appear in the 
 
 ## Full example
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/full-example.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/full-example.txt" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

@@ -17,7 +17,7 @@ nav:
 
 Start with importing the correct element type from the `@shopware/composables` package and using it in the `defineProps` method to define the type of your `content` property:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example.txt" code lang="vue" no-name -->
 
 ```vue
 <!-- components/cms/CmsElementImage.vue -->
@@ -35,7 +35,7 @@ const props = defineProps<{
 
 Now, you can use `props.content` to access all properties of the element in your template.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-2.vue" code lang="vue{8}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-2.txt" code lang="vue{8}" no-name -->
 
 ```vue{8}
 <!-- components/cms/CmsElementImage.vue -->
@@ -54,7 +54,7 @@ import { CmsElementImage } from "#imports";
 
 However, for some elements the configuration can be quite complex, so there are composables to give you a hand:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-3.vue" code lang="vue{10-14,18-20}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-3.txt" code lang="vue{10-14,18-20}" no-name -->
 
 ```vue{10-14,18-20}
 <!-- components/cms/CmsElementImage.vue -->

@@ -38,7 +38,7 @@ In general, the store API should only output content that would also be visible 
 
 - Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.txt" code lang="ts" no-name -->
 
 ```ts
 import basicSsl from "@vitejs/plugin-basic-ssl";
@@ -96,7 +96,7 @@ By default, the application uses `window.location.origin` (e.g., `https://your-s
 
 Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.txt" code lang="ts" no-name -->
 
 ```ts
 // nuxt.config.ts
