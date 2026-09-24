@@ -17,14 +17,14 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "js-cookie": "3.0.7",
-    "nuxt": "4.4.8",
-    "vue": "3.5.39"
+    "nuxt": "4.5.2",
+    "vue": "3.5.43"
   },
   "devDependencies": {
     "@types/js-cookie": "3.0.6",
     "@types/node": "22.13.14",
     "@unocss/nuxt": "66.7.5",
-    "@vueuse/core": "14.3.0",
+    "@vueuse/core": "14.4.0",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.7",
     "oxfmt": "0.58.0",
