@@ -52,7 +52,7 @@ Note that all the navigation items are in type `Category`, and thanks to this th
 
 ```vue
 <script setup lang="ts">
-import { getCategoryUrl } from "@shopware/helpers";
+import { getCategoryRoute } from "@shopware/helpers";
 
 import { useNavigation } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
@@ -62,7 +62,7 @@ await loadNavigationElements({ depth: 2 });
 <template>
   <ul>
     <li
-      v-for="navigationElement in navigationElements"
+      v-for="navigationElement in navigationElements ?? []"
       :key="navigationElement.id"
     >
       <RouterLink
@@ -102,11 +102,16 @@ Copy the snippet and paste it into your project. It's often useful to extract it
 
 ```vue
 <script setup lang="ts">
-import { h, useNavigation, useRoute } from "#imports";
+import { useNavigation, useRoute } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 
 const { path: currentPath } = useRoute();
+
+type NavigationElement = NonNullable<typeof navigationElements.value>[number];
+
+const getSeoPath = (navigationElement: NavigationElement) =>
+  navigationElement.seoUrls?.[0]?.seoPathInfo ?? "";
 
 const isActive = (path: string) => {
   return "/" + path === currentPath;
@@ -119,14 +124,14 @@ const isActive = (path: string) => {
       class="w-full flex flex-col divide-gray-200 divide-y md:flex-row md:max-w-screen-xl md:mx-auto md:divide-y-0 md:divide-x"
     >
       <RouterLink
-        v-for="navigationElement in navigationElements"
+        v-for="navigationElement in navigationElements ?? []"
         :key="navigationElement.id"
-        :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
+        :to="'/' + getSeoPath(navigationElement)"
       >
         <div
           class="flex p-4 h-full border-l-5 hover:border-gray-200 md:border-l-none md:border-b-5 md:w-60 transition duration-200 items-center"
           :class="[
-            isActive(navigationElement.seoUrls[0]?.seoPathInfo)
+            isActive(getSeoPath(navigationElement))
               ? 'border-indigo-500'
               : 'border-white',
           ]"

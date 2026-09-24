@@ -33,16 +33,22 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
    `pnpm add @storyblok/vue -D`
 5. Now add the storyblok access token to you `nuxt.config.ts` file
    _(you need a storyblok account to get that token)_
+
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.ts" code lang="ts" no-name -->
 
 ```ts
-modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
   storyblok: {
-  accessToken: "super-secret-token"
-},
+    accessToken: "super-secret-token",
+  },
+});
 ```
 
 <!-- /automd -->
+
 6. In the root directory of your project create a `storyblok` folder.
 7. Let's create our base components files inside our `vue-blank-storyblok/storyblok` folder
 
@@ -64,7 +70,7 @@ defineProps({ blok: Object });
 
 <!-- /automd -->
 
-   **Grid.vue**
+**Grid.vue**
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-2.vue" code lang="vue" no-name -->
 
@@ -84,7 +90,7 @@ defineProps({ blok: Object });
 
 <!-- /automd -->
 
-   **Page.vue**
+**Page.vue**
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-3.vue" code lang="vue" no-name -->
 
@@ -106,7 +112,7 @@ defineProps({ blok: Object });
 
 <!-- /automd -->
 
-   **Teaser.vue**
+**Teaser.vue**
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-4.vue" code lang="vue" no-name -->
 
@@ -179,7 +185,7 @@ import Frontends from "../components/Frontends.vue";
 
 <!-- /automd -->
 
-   **storyblok/[slug].vue**
+**storyblok/[slug].vue**
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.vue" code lang="vue" no-name -->
 

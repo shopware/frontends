@@ -124,11 +124,12 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 ```vue
 <script setup lang="ts">
 import { useProductWishlist } from "#imports";
+
 // Mocked product
-const product: Schemas["Product"] = {
+const product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
-const { addToWishlist, isInWishlist } = useProductWishlist(product);
+const { addToWishlist, isInWishlist } = useProductWishlist(product.id);
 </script>
 
 <template>
@@ -155,11 +156,12 @@ To avoid such a situation, `isInWishlist` property should protect `removeFromWis
 ```vue
 <script setup lang="ts">
 import { useProductWishlist } from "#imports";
+
 // Mocked product
-const product: Product = {
+const product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
-const { removeFromWishlist, isInWishlist } = useProductWishlist(product);
+const { removeFromWishlist, isInWishlist } = useProductWishlist(product.id);
 </script>
 
 <template>
@@ -179,7 +181,10 @@ To synchronize the local wishlist with the remote wishlist (associated with the 
 
 ```vue{10}
 <script setup lang="ts">
-import { ref } from "#imports";
+import { ref, useUser, useWishlist } from "#imports";
+
+const { login } = useUser();
+const { mergeWishlistProducts } = useWishlist();
 const formData = ref({
   username: "",
   password: "",

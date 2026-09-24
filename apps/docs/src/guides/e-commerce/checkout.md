@@ -148,13 +148,18 @@ Those data will be used to create a standard or temporary account.
 <script setup lang="ts">
 import { reactive, useCountries, useSalutations, useUser } from "#imports";
 const state = reactive({
+  acceptedDataProtection: true,
   salutationId: "",
   firstName: "",
   lastName: "",
   email: "",
   password: "",
-  guest: false,
+  guest: false as false,
   billingAddress: {
+    customerId: "",
+    firstName: "",
+    id: "",
+    lastName: "",
     street: "",
     zipcode: "",
     city: "",
@@ -343,13 +348,14 @@ The backend allows fetching orders related only to the current user by checking 
 ```ts
 import { useOrderDetails } from "#imports";
 
+const orderId = "example-order-id";
 const {
   loadOrderDetails,
   personalDetails,
   billingAddress,
   shippingAddress,
   order,
-} = useOrderDetails({ order: { id: orderId } as any });
+} = useOrderDetails(orderId);
 
 await loadOrderDetails();
 ```

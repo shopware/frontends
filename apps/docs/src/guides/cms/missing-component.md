@@ -120,7 +120,7 @@ Every CMS component receives a single `content` prop. Use the Shopware schema ty
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["{{ schemaType }}"];
+  content: Schemas["CmsBlock"];
 }>();
 </script>
 ```
@@ -182,7 +182,9 @@ const props = defineProps<{
 }>();
 
 // config values are typed as `unknown` — assert the shape you need
-const title = props.content.config?.title?.value as string | undefined;
+const config = props.content.config as
+  { title?: { value?: string } } | null | undefined;
+const title = config?.title?.value;
 </script>
 
 <template>

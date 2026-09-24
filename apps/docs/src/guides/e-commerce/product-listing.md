@@ -175,6 +175,10 @@ Refresh the product listing on option's change:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.ts" code lang="ts{4-6}" no-name -->
 
 ```ts{4-6}
+import { useListing } from "#imports";
+
+const { changeCurrentSortingOrder } = useListing();
+
 const onOrderChange = (onOrderChangeEvent: Event) => {
   // accept the DOM Event and extract the option's value
   // pass the value to the listing method that triggers the search() method internally
@@ -337,10 +341,7 @@ const { getAvailableFilters, getCurrentFilters, setCurrentFilters } =
   useListing(/** parameters omitted */);
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
-  setCurrentFilters({
-    code: "manufacturer",
-    value: manufacturerId,
-  });
+  setCurrentFilters([{ code: "manufacturer", value: [manufacturerId] }]);
 };
 
 // element from getAvailableFilters.value
@@ -417,7 +418,15 @@ Despite being in the same filter group, every entity of property defined in the 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.ts" code lang="ts" no-name -->
 
 ```ts
-const ColorFilter: ListingFiler = {
+type ListingFilter = {
+  name: string;
+  options: Array<{
+    id: string;
+    name: string;
+  }>;
+};
+
+const ColorFilter: ListingFilter = {
   name: "Color",
   // other properties omitted
   options: [
@@ -451,17 +460,11 @@ In order to apply a specific filter you need to be aware of:
 import { useListing } from "#imports";
 const { setCurrentFilters } = useListing(/** parameters omitted */);
 
-setCurrentFilters({
-  code: "properties",
-  value: "some-property-id",
-});
+setCurrentFilters([{ code: "properties", value: ["some-property-id"] }]);
 
 // or
 
-setCurrentFilters({
-  code: "rating",
-  value: 5, // 5 stars rated products
-});
+setCurrentFilters([{ code: "rating", value: 5 }]);
 </script>
 ```
 
@@ -643,7 +646,7 @@ onMounted(() => {
   search();
 });
 
-const addProductAndRefresh = async ({ id }) => {
+const addProductAndRefresh = async ({ id }: { id: string }) => {
   await addProduct({ id });
   refreshCart();
 };
@@ -662,7 +665,7 @@ const { addProduct, refreshCart } = useCart();
           class="h-full w-full object-cover bg-white cursor-pointer overflow-hidden"
         >
           <img
-            :src="product.cover.media.url"
+            :src="product.cover?.media?.url"
             class="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
           />
         </div>

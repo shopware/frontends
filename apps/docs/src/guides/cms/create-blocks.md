@@ -24,7 +24,7 @@ Next, import the correct type for your block and use it to define the `content` 
 ```vue
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware/composables";
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
@@ -50,17 +50,27 @@ Let's build the `image-three-column` block, which has three slots - `left`, `cen
 
 ```vue{4-15}
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
+<script setup lang="ts">
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
+
+import { useCmsBlock } from "#imports";
+
+const props = defineProps<{
+  content: CmsBlockImageThreeColumn;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const leftContent = getSlotContent("left");
+const centerContent = getSlotContent("center");
+const rightContent = getSlotContent("right");
+</script>
+
 <template>
   <div class="grid grid-cols-3">
-    <CmsGenericElement
-      :content="props.content.slots.filter((slot) => slot.slot === 'left')"
-    />
-    <CmsGenericElement
-      :content="props.content.slots.filter((slot) => slot.slot === 'center')"
-    />
-    <CmsGenericElement
-      :content="props.content.slots.filter((slot) => slot.slot === 'right')"
-    />
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
   </div>
 </template>
 ```
@@ -73,7 +83,7 @@ That works, but it's quite repetiive and hard to read. So we can use another com
 
 ```vue{8,10-12,16-18}
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware/composables";
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 import { useCmsBlock } from "#imports";
 

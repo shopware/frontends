@@ -22,7 +22,12 @@ Maintenance mode is returned as an error from all of the endpoints. We can detec
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/detecting-maintenance-mode-via-api.ts" code lang="ts" no-name -->
 
 ```ts
+import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import Cookies from "js-cookie";
+
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api/";
+const shopwareAccessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
 const apiClient = createAPIClient({
   baseURL: shopwareEndpoint,
@@ -31,7 +36,10 @@ const apiClient = createAPIClient({
 });
 
 apiClient.hook("onResponseError", (response) => {
-  const error = isMaintenanceMode(response._data?.errors ?? []);
+  const payload = response._data as { errors?: [{ code?: string }] };
+  const error = isMaintenanceMode(
+    payload.errors ?? ([{}] as [{ code?: string }]),
+  );
   // do proper reaction to maintenance mode
 });
 ```
@@ -51,12 +59,26 @@ Every error thrown within the application is automatically caught and the `error
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/throwing-maintenance-mode-error.ts" code lang="ts" no-name -->
 
 ```ts
+import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import Cookies from "js-cookie";
 
 import { createError } from "#imports";
 
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api/";
+const shopwareAccessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
+
+const apiClient = createAPIClient({
+  baseURL: shopwareEndpoint,
+  accessToken: shopwareAccessToken,
+  contextToken: Cookies.get("sw-context-token"),
+});
+
 apiClient.hook("onResponseError", (response) => {
-  const error = isMaintenanceMode(response._data?.errors ?? []);
+  const payload = response._data as { errors?: [{ code?: string }] };
+  const error = isMaintenanceMode(
+    payload.errors ?? ([{}] as [{ code?: string }]),
+  );
   if (error) {
     throw createError({
       statusCode: 503,

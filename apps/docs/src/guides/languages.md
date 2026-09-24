@@ -128,7 +128,7 @@ The main task of this composable is to add a prefix to URL if needed.
 ```vue
 <script setup lang="ts">
 import { useInternationalization } from "#imports";
-const localePath = useLocalePath();
+const localePath = (path: string) => path;
 const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
@@ -200,6 +200,10 @@ After switching the language, the URL returned from the backend is used as the b
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/switching-language-locally.ts" code lang="typescript" no-name -->
 
 ```typescript
+import { useInternationalization } from "#imports";
+
+const { changeLanguage, replaceToDevStorefront } = useInternationalization();
+
 const onChangeHandler = async (option: Event) => {
   const data = await changeLanguage((option.target as HTMLSelectElement).value);
 
@@ -242,6 +246,11 @@ You can add own dev resolver to avoid redirection
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/add-dev-resolver.ts" code lang="typescript" no-name -->
 
 ```typescript
+import { ref, useInternationalization } from "#imports";
+
+const { changeLanguage, getLanguageCodeFromId, replaceToDevStorefront } =
+  useInternationalization();
+const locale = ref("");
 const dev = process.dev;
 
 const onChangeHandler = async (option: Event) => {

@@ -44,7 +44,8 @@ const productResponse = await search("some-product-id", {
 // object that keeps a Product entity
 const product: Schemas["Product"] = productResponse.product;
 // object with variants configuration
-const propertyGroups: Schemas["PropertyGroup"][] = productResponse.configurator;
+const propertyGroups: Schemas["PropertyGroup"][] =
+  productResponse.configurator ?? [];
 ```
 
 <!-- /automd -->
@@ -60,13 +61,23 @@ Having source of the data, you can display all you need in your Vue.js template:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.js" code lang="js" no-name -->
 
 ```js
-import { computed } from "vue";
-...
+import { computed, ref } from "vue";
+
+const product = ref({
+  translated: {
+    name: "Example product",
+    description: "Example product description",
+  },
+  manufacturer: {
+    name: "Example manufacturer",
+  },
+  productNumber: "SW-10001",
+});
+
 const productName = computed(() => product.value?.translated.name);
 const manufacturer = computed(() => product.value?.manufacturer?.name);
 const description = computed(() => product.value?.translated.description);
 const productNumber = computed(() => product.value?.productNumber);
-...
 ```
 
 <!-- /automd -->
@@ -123,6 +134,7 @@ import {
 import type { Schemas } from "#shopware";
 
 const router = useRouter();
+const $t = (key: string) => key;
 
 const { search } = useProductSearch();
 const { data: productResponse } = await useAsyncData(

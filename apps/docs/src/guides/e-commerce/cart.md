@@ -61,13 +61,16 @@ You can use the `useAddToCart` composable to add a product to the cart:
 
 ```vue
 <script setup lang="ts">
+import { ref } from "vue";
+
 import { useAddToCart } from "#imports";
-const product: Product = {
+import type { Schemas } from "#shopware";
+
+const product = ref({
   id: "7b5b97bd48454979b14f21c8ef38ce08",
-};
-const { addProduct, quantity, getAvailableStock } = useAddToCart({
-  product,
-});
+  availableStock: 10,
+} as Schemas["Product"]);
+const { addToCart, quantity, getAvailableStock } = useAddToCart(product);
 </script>
 <template>
   Only {{ getAvailableStock }} in stock<br />
@@ -92,7 +95,9 @@ const { addPromotionCode, appliedPromotionCodes } = useCart();
 </script>
 <template>
   <input type="text" v-model="promotionCode" />
-  <button @click="addPromotionCode(promotionCode)">Apply promotion code</button>
+  <button @click="promotionCode && addPromotionCode(promotionCode)">
+    Apply promotion code
+  </button>
 </template>
 ```
 
@@ -117,7 +122,7 @@ const { cartItems, totalPrice, count } = useCart();
 
   <ul>
     <li v-for="cartItem in cartItems" :id="cartItem.id">
-      {{ cartItem.label }} - {{ cartItem.price.totalPrice }}
+      {{ cartItem.label }} - {{ cartItem.price?.totalPrice }}
     </li>
   </ul>
 </template>
@@ -148,7 +153,7 @@ import { useCart } from "#imports";
 
 const { changeProductQuantity } = useCart();
 
-const cartItem: LineItem = {
+const cartItem = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
   quantity: 2,
 };
@@ -166,10 +171,13 @@ You can remove items from the cart using the `useCart` or the `useCartItem` comp
 
 ```ts
 import { useCart } from "#imports";
+import type { Schemas } from "#shopware";
 
 const { removeItem } = useCart();
 
-await removeItem({ id: "7b5b97bd48454979b14f21c8ef38ce08" });
+await removeItem({
+  id: "7b5b97bd48454979b14f21c8ef38ce08",
+} as Schemas["LineItem"]);
 ```
 
 <!-- /automd -->
@@ -180,7 +188,11 @@ In case of the `useCartItem` composable, you pass the item identifier when calli
 
 ```ts
 import { toRefs, useCartItem } from "#imports";
+import type { Schemas } from "#shopware";
 
+const props = defineProps<{
+  cartItem: Schemas["LineItem"];
+}>();
 const { cartItem } = toRefs(props);
 const { removeItem } = useCartItem(cartItem);
 
@@ -236,10 +248,10 @@ onMounted(() => {
           <p class="text-gray-600 text-xs">{{ item.quantity }}</p>
         </div>
         <div class="text-right flex flex-col justify-between">
-          <p>$ {{ item.price.totalPrice }}</p>
+          <p>$ {{ item.price?.totalPrice }}</p>
           <p
             class="text-blue-600 cursor-pointer hover:underline"
-            @click="removeItem({ id: item.id })"
+            @click="removeItem(item)"
           >
             Remove
           </p>

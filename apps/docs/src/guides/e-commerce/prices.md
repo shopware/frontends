@@ -330,10 +330,13 @@ Price for **non-variant** product (also for having tier pricing):
 
 ```vue{6}
 <script setup lang="ts">
+import { ref } from "vue";
+
 import { useProductPrice } from "#imports";
-const { totalPrice, displayFrom } = useProductPrice(
-  /** argument omitted - Product object */
-);
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { totalPrice, displayFrom } = useProductPrice(product);
 </script>
 <template>
   <div><span v-if="displayFrom">from</span>{{ totalPrice }} $</div>
@@ -350,16 +353,19 @@ In order to ensure if the variant prices are available, you can utilize the `dis
 
 ```vue
 <script setup lang="ts">
+import { ref } from "vue";
+
 import { useProductPrice } from "#imports";
-const { totalPrice, displayVariantsFrom } = useProductPrice(
-  /** argument omitted - Product object */
-);
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { totalPrice, displayFromVariants } = useProductPrice(product);
 </script>
 <template>
   <div>
     {{ totalPrice }} $
-    <span v-if="displayVariantsFrom">
-      Variants from {{ displayVariantsFrom }} $
+    <span v-if="displayFromVariants">
+      Variants from {{ displayFromVariants }} $
     </span>
   </div>
 </template>
@@ -378,8 +384,12 @@ In this case, there are few options to display:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.ts" code lang="ts" no-name -->
 
 ```ts
-import { usePrice, useProductPrice } from "#imports";
+import { ref } from "vue";
 
+import { usePrice, useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
 const { totalPrice, price, tierPrices, hasListPrice } =
   useProductPrice(product);
 const { getFormattedPrice } = usePrice();
@@ -392,6 +402,16 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.vue" code lang="vue" no-name -->
 
 ```vue
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { hasListPrice, price, totalPrice } = useProductPrice(product);
+</script>
+
 <template>
   <div v-if="hasListPrice" class="old-price line-through">
     {{ price?.listPrice?.price }} $
@@ -411,6 +431,16 @@ Tier prices presented as a table with range labeled by "to" and "from":
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-2.vue" code lang="vue" no-name -->
 
 ```vue
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { tierPrices, totalPrice } = useProductPrice(product);
+</script>
+
 <template>
   <div>
     <table v-if="tierPrices.length">
@@ -421,7 +451,7 @@ Tier prices presented as a table with range labeled by "to" and "from":
           <span v-else> From </span>
           {{ tierPrice.quantity }}
         </td>
-        <td>{{ tierPrice.totalPrice }} $</td>
+        <td>{{ tierPrice.unitPrice }} $</td>
       </tr>
     </table>
     <div v-else>

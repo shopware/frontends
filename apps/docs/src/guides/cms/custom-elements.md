@@ -37,8 +37,11 @@ The demo store utilizes Nuxt 3, which by default registers all components global
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.ts" code lang="ts" no-name -->
 
 ```ts
+import { createApp } from "vue";
+
 import CmsBlockCustomBlock from "./components/cms/CmsElementDailymotion.vue";
 
+const app = createApp({});
 app.component("CmsElementDailymotion", CmsBlockCustomBlock);
 ```
 
@@ -64,10 +67,18 @@ Component name must be the same as it was registered in the backed.
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.ts" code lang="ts{3}" no-name -->
 
 ```ts{3}
-Shopware.Service('cmsService').registerCmsElement({
-    ...
-    name: 'dailymotion',
-    ...
+type CmsElementRegistration = {
+  name: string;
+};
+
+declare const Shopware: {
+  Service(service: "cmsService"): {
+    registerCmsElement(config: CmsElementRegistration): void;
+  };
+};
+
+Shopware.Service("cmsService").registerCmsElement({
+  name: "dailymotion",
 });
 ```
 
@@ -80,11 +91,11 @@ Lets create new component `components/cms/element/CmsElementDailymotion.vue`
 ```vue
 // components/cms/element/CmsElementDailymotion.vue
 <script setup lang="ts">
-import type { Schemas } from "#showpare";
+import type { Schemas } from "#shopware";
 
 type CmsElementDailymotion = Schemas["CmsSlot"] & {
   type: "dailymotion" | typeof String;
-  slot: typeof String;
+  slot: string;
   config: CmsElementDailymotionConfig;
   translated: {
     config: CmsElementDailymotionConfig;
@@ -132,16 +143,30 @@ The following is an example of how to convert the backend registration config to
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.ts" code lang="ts{4-9}" no-name -->
 
 ```ts{4-9}
-Shopware.Service('cmsService').registerCmsElement({
-  ...
-    name: 'dailymotion',
-    defaultConfig: {
-        dailyUrl: {
-            source: 'static',
-            value: ''
-        }
-    }
-  ...
+type CmsElementRegistration = {
+  name: string;
+  defaultConfig: {
+    dailyUrl: {
+      source: "static";
+      value: string;
+    };
+  };
+};
+
+declare const Shopware: {
+  Service(service: "cmsService"): {
+    registerCmsElement(config: CmsElementRegistration): void;
+  };
+};
+
+Shopware.Service("cmsService").registerCmsElement({
+  name: "dailymotion",
+  defaultConfig: {
+    dailyUrl: {
+      source: "static",
+      value: "",
+    },
+  },
 });
 ```
 

@@ -23,7 +23,7 @@ Start with importing the correct element type from the `@shopware/composables` p
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage } from "@shopware/composables";
+import type { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsElementImage;
@@ -41,8 +41,11 @@ Now, you can use `props.content` to access all properties of the element in your
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage } from "#imports";
-// see above
+import type { CmsElementImage } from "@shopware/composables";
+
+const props = defineProps<{
+  content: CmsElementImage;
+}>();
 </script>
 
 <template>
@@ -60,7 +63,8 @@ However, for some elements the configuration can be quite complex, so there are 
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage, useCmsElementImage } from "@shopware/composables";
+import { useCmsElementImage } from "@shopware/composables";
+import type { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsElementImage;

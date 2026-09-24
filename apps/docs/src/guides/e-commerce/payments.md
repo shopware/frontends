@@ -91,7 +91,14 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/external-gateway-3.ts" code lang="ts{6-15}" no-name -->
 
-```js{6-15}
+```ts{6-15}
+declare const orderId: string;
+declare function handlePayment(
+  successUrl: string,
+  failureUrl: string,
+  additionalData: Record<string, unknown>,
+): Promise<unknown>;
+
 // where to redirect an user when payment is done correctly
 const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
 // go to this page otherwise
@@ -111,7 +118,7 @@ const handlePaymentResponse = await handlePayment(
 
 <!-- /automd -->
 
-   Note that, this is an example, does not show how to create success/failure pages.
+Note that, this is an example, does not show how to create success/failure pages.
 
 4. Do the action on processed payment handler
 
@@ -128,8 +135,8 @@ const redirectUrl = handlePaymentResponse?.redirectUrl; // URL or undefined
 
 <!-- /automd -->
 
-   Then you are ready to perform a redirection of an user to the URL in order to finish the payment.
-   If succeed, the customer will be redirected back to `SUCCESS_PAYMENT_URL` defined before. Otherwise, `FAILURE_PAYMENT_URL` will be displayed.
+Then you are ready to perform a redirection of an user to the URL in order to finish the payment.
+If succeed, the customer will be redirected back to `SUCCESS_PAYMENT_URL` defined before. Otherwise, `FAILURE_PAYMENT_URL` will be displayed.
 
 ### Credit cards
 
@@ -194,6 +201,12 @@ For example:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/app-server-integration-2.ts" code lang="ts" no-name -->
 
 ```ts
+const tokenResponse = {
+  data: {
+    token: "example-jwt",
+  },
+};
+
 await fetch("https://shopware.mypaymentgateway.com/api/store/card", {
   method: "POST",
   headers: {

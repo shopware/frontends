@@ -44,6 +44,8 @@ Visit the [useProduct]/packages/composables.html#useproduct) reference to see mo
 ```ts
 // useProductCustomizedProductConfigurator is autoimported
 // in vue-demo-store template as it's located in ~/composables
+import { useProductCustomizedProductConfigurator } from "#imports";
+
 const {
   isActive, // indicates whether product is empowered by Custom Products extension and active
   customizedProduct, // returns the custom product's template data
@@ -93,8 +95,17 @@ Overwrite a logic in `<ProductAddToCart/>` (or any other responsible for adding 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.ts" code lang="ts{3-6,9-10}" no-name -->
 
 ```ts{3-6,9-10}
-// part of templates/vue-demo-store/components/product/ProductAddToCart.vue;
-// the <script setup lang="ts"> section
+import { ref } from "vue";
+
+async function addToCart() {}
+
+function useProductCustomizedProductConfigurator() {
+  return {
+    addToCart: async () => {},
+    isActive: ref(false),
+  };
+}
+
 const {
   addToCart: customizedProductAddToCart,
   isActive: isCustomizedProductActive,
@@ -106,7 +117,7 @@ const addToCartProxy = async () => {
   } else {
     await addToCart();
   }
-...
+};
 ```
 
 <!-- /automd -->
