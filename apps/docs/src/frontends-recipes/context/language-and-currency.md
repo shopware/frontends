@@ -409,6 +409,7 @@ The current language itself is read from the context, not from this composable. 
 ## Related Links
 
 - [Session Context recipe](session-context.html)
+- [Prices and Tax State recipe](../catalog/prices.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Search and Suggest recipe](../catalog/search.html)
 - [Cart recipe](../checkout/cart.html)
