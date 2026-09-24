@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 40
+  position: 50
 recipe:
   area: catalog
   status: stable
@@ -253,6 +253,8 @@ The groups are rendered stacked, each under its own `h2`, rather than as tabs. A
 
 `formatLink` wraps `getProductRoute` because the helper returns an unprefixed route. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL. The resolver is what makes it work: `formatLink` returns the link untouched unless `useInternationalization` was created with one, so the path resolver from Nuxt i18n has to be resolved first and passed in — two lines, never one.
 
+`buildUrlPrefix` from `@shopware/helpers` prefixes a route too, and you will see it in `cms-base-layer` components such as `SwProductCard`. Reach for it there, not here: that layer has no dependency on `@nuxtjs/i18n`, so it takes the prefix from an injected `urlPrefix` string instead. In template code the i18n resolver is available, and `formatLink` delegates to it — which is what honours a strategy such as `prefix_except_default`, where the default locale is supposed to carry no prefix at all. `vue-starter-template` calls `formatLink` at every one of its own link sites and `buildUrlPrefix` at none.
+
 `crossSelling.limit` is configured in the Admin and caps how many products a group returns, so `group.total` can be the larger number. The operation takes no limit and no page of its own, so there is no way to load the remainder — render the count as information, not as a control.
 
 ## State And Session
@@ -293,6 +295,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - Do not omit `includeSeoUrls` when the groups link to product pages.
 - Do not link with a bare `getProductRoute`. Wrap it in `formatLink` or a localised storefront drops the prefix.
 - Do not call `useInternationalization()` with no argument and expect `formatLink` to prefix anything. It returns the link untouched.
+- Do not reach for `buildUrlPrefix` in template code because a `cms-base-layer` component uses it. That helper is the fallback for a layer that cannot see Nuxt i18n.
 - Do not call this composable on a CMS product page that already has the data.
 - Do not expect `cacheableReads` to make these requests cacheable. This composable always sends a `POST`.
 - Do not keep an index into the rendered groups without clamping it. A reload can return fewer groups than are on screen.
@@ -313,6 +316,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - [Product Listing and Filters recipe](listing.html)
 - [Product Reviews recipe](reviews.html)
 - [Search and Suggest recipe](search.html)
+- [Product Variants recipe](variants.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)

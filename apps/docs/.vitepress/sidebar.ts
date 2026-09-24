@@ -290,12 +290,12 @@ export const sidebar = [
             link: "/frontends-recipes/catalog/reviews.html",
           },
           {
-            text: "Cross-Selling",
-            link: "/frontends-recipes/catalog/cross-selling.html",
-          },
-          {
             text: "Product Variants",
             link: "/frontends-recipes/catalog/variants.html",
+          },
+          {
+            text: "Cross-Selling",
+            link: "/frontends-recipes/catalog/cross-selling.html",
           },
         ],
       },
