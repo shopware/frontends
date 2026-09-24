@@ -32,4 +32,4 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Orders
 
-<PageRef page="orders/" title="Orders" sub="Placed order flows, starting with reading a guest order from the deep link in its confirmation mail." />
+<PageRef page="orders/" title="Orders" sub="Placed order flows such as reading a guest order from the deep link in its confirmation mail, and rendering one order with its associations, cancellation, documents and downloads." />

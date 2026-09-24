@@ -349,6 +349,10 @@ export const sidebar = [
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
           },
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
+          },
         ],
       },
     ],

@@ -102,7 +102,7 @@ Read the diagram from left to right:
 3. The call rejects with `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which the page reads as "ask for credentials".
 4. A form collects the email address and the billing postal code of the order.
 5. The request is repeated with `filter`, `email`, `zipcode` and `login: true`, and the response header establishes a guest session.
-6. With a session in place, `useOrderDetails(order.id)` renders the order exactly as it does for a registered customer.
+6. With a session in place, `useOrderDetails(order.id)` renders the order exactly as it does for a registered customer — the [Order Details recipe](details.html) takes it from there.
 
 You do not need a separate authentication request. `login: true` on this operation is the login, which is why no composable wraps it — the credentials belong to one order, not to an account.
 
@@ -391,7 +391,7 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 - Do not branch on the HTTP status. The three outcomes differ only by `error.details.errors[].code`.
 - Do not read the first rejection as a reason to stop. Sending the credentials up front is fine — the starter template does exactly that with empty strings — but you still have to handle `CHECKOUT__GUEST_NOT_AUTHENTICATED`, because an empty `email` or `zipcode` produces it just the same.
 - Do not use the `filter` array for anything else. Its `field` is restricted to `deepLinkCode`.
-- Do not build the detail view from the lookup response. It has no associations — reload through `useOrderDetails`.
+- Do not build the detail view from the lookup response. It has no associations — reload through `useOrderDetails`, as the [Order Details recipe](details.html) describes.
 - Do not put the deep link code in an error message or an analytics event. It grants access to the order.
 - Do not render the raw `detail` of the API error next to the form. Map each code to a sentence the customer can act on.
 - Do not end the branch chain without a terminal `v-else`. Every unmapped state then renders an empty page, and the customer has no way to tell a dead link from a broken one.
@@ -416,6 +416,7 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Payment recipe](../checkout/payment.html)
+- [Order Details recipe](details.html)
 - [Login recipe](../account/login.html)
 - [Order History recipe](../account/order-history.html)
 - [Create a checkout](../../guides/e-commerce/checkout.html)
