@@ -181,9 +181,10 @@ const props = defineProps<{
   content: Schemas["CmsSlot"];
 }>();
 
+type TitleConfig = { title?: { value?: string } } | null | undefined;
+
 // config values are typed as `unknown` — assert the shape you need
-const config = props.content.config as
-  { title?: { value?: string } } | null | undefined;
+const config = props.content.config as TitleConfig;
 const title = config?.title?.value;
 </script>
 
