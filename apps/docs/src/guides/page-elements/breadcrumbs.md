@@ -31,6 +31,8 @@ In this chapter you will learn how to
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-a-static-page.ts" code lang="ts" no-name -->
 
 ```ts
+import { useBreadcrumbs } from "#imports";
+
 useBreadcrumbs([
   {
     name: "Shopware",
@@ -47,6 +49,8 @@ useBreadcrumbs([
 
 ```ts
 // props.navigationId is a page id
+
+import { useBreadcrumbs } from "#imports";
 
 const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 buildDynamicBreadcrumbs(props.navigationId);
@@ -73,6 +77,8 @@ we can convert current `string` array to the `Breadcrumb` object using [getCateg
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware/helpers";
 
+import { useBreadcrumbs } from "#imports";
+
 let breadcrumbs = getCategoryBreadcrumbs(
   productResponse.value?.product?.seoCategory,
 );
@@ -88,6 +94,8 @@ It's important to clear breadcrumbs list when you leave the page, otherwise you'
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/clearing-breadcrumbs-list.ts" code lang="ts" no-name -->
 
 ```ts
+import { onBeforeRouteLeave, useBreadcrumbs } from "#imports";
+
 const { clearBreadcrumbs } = useBreadcrumbs();
 
 onBeforeRouteLeave(() => {
@@ -105,6 +113,7 @@ Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](..
 
 ```vue
 <script setup lang="ts">
+import { useBreadcrumbs } from "#imports";
 const { breadcrumbs } = useBreadcrumbs();
 </script>
 <template>

@@ -55,7 +55,7 @@ Regardless the outer container (see [ProductMedia](https://github.com/shopware/f
 
 Let's have a look what's inside:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/structure-of-media-objects.json" code lang="json" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/structure-of-media-objects.txt" code lang="json" no-name -->
 
 ```json
 {
@@ -137,23 +137,27 @@ Having additional information about resized images (see `thumbnails` array in `M
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/responsive-images.vue" code lang="vue{8}" no-name -->
 
 ```vue{8}
-<script>
+<script setup lang="ts">
 import type { Schemas } from "#shopware";
-const product: Schemas['Product'] = {} // an object omitted
-// get the cover media image (main image for a product)
-const coverMedia = product.cover?.media
-// prepare `srcset` string for available thumbnails
-// let the breakpoints be for every width range
-const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.width}w`).join(", ")
+
+const product = {} as Schemas["Product"];
+
+// Get the cover media image (main image for a product).
+const coverMedia = product.cover?.media;
+
+// Prepare srcset string for available thumbnails. Let the breakpoints be for every width range.
+const srcset = coverMedia?.thumbnails
+  ?.map((thumb) => `${thumb.url} ${thumb.width}w`)
+  .join(", ");
 </script>
 
 <template>
-   <img
+  <img
     :srcset="srcset"
     :src="coverMedia?.url"
     :alt="coverMedia?.alt"
     :title="coverMedia?.title"
-  >
+  />
 </template>
 ```
 
@@ -192,6 +196,8 @@ The cms-base-layer provides the `SwMedia3D` component and the dynamic imports, b
 
 ```ts
 // nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   modules: [
     // ...other modules

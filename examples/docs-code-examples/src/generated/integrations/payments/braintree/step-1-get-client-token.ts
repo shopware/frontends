@@ -1,3 +1,5 @@
+import { useSessionContext, useShopwareContext } from "#imports";
+
 const { apiClient } = useShopwareContext();
 const { sessionContext } = useSessionContext();
 

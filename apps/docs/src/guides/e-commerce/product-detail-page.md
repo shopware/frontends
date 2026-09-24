@@ -31,8 +31,9 @@ The `useProductSearch` allows us to `search` in the product's collection:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.ts" code lang="ts" no-name -->
 
 ```ts
-import type { Schemas } from "#shopware";
 import { useProductSearch } from "@shopware/composables";
+
+import type { Schemas } from "#shopware";
 
 const { search } = useProductSearch();
 
@@ -56,7 +57,7 @@ If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` prope
 
 Having source of the data, you can display all you need in your Vue.js template:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.js" code lang="js" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.txt" code lang="js" no-name -->
 
 ```js
 import { computed } from "vue";
@@ -107,9 +108,19 @@ Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 
 ```vue
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
+
+import {
+  computed,
+  onMounted,
+  useAsyncData,
+  useProduct,
+  useProductReviews,
+  useProductSearch,
+  useRouter,
+} from "#imports";
+import type { Schemas } from "#shopware";
 
 const router = useRouter();
 

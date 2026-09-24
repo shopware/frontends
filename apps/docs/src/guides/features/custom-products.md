@@ -79,7 +79,8 @@ Add the mentioned component in a template. For instance in `<ProductStatic/>` fo
     <ProductPrice :product="product" />
     <ProductUnits :product="product" class="text-sm" />
     <ProductVariantConfigurator @change="handleVariantChange" />
-    <ProductCustomizedProductConfigurator /> <!-- ADDED -->
+    <ProductCustomizedProductConfigurator />
+    <!-- ADDED -->
     <ProductAddToCart :product="product" />
   </div>
 </div>
@@ -89,7 +90,7 @@ Add the mentioned component in a template. For instance in `<ProductStatic/>` fo
 
 Overwrite a logic in `<ProductAddToCart/>` (or any other responsible for adding a product to cart in your template):
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.ts" code lang="ts{3-6,9-10}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.txt" code lang="ts{3-6,9-10}" no-name -->
 
 ```ts{3-6,9-10}
 // part of templates/vue-demo-store/components/product/ProductAddToCart.vue;

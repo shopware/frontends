@@ -51,20 +51,17 @@ Let's build the `image-three-column` block, which has three slots - `left`, `cen
 ```vue{4-15}
 <!-- components/cms/CmsBlockImageThreeColumn.vue -->
 <template>
-    <div class="grid grid-cols-3">
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'left')
-            " />
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'center')
-            " />
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'right')
-            " />
-    </div>
+  <div class="grid grid-cols-3">
+    <CmsGenericElement
+      :content="props.content.slots.filter((slot) => slot.slot === 'left')"
+    />
+    <CmsGenericElement
+      :content="props.content.slots.filter((slot) => slot.slot === 'center')"
+    />
+    <CmsGenericElement
+      :content="props.content.slots.filter((slot) => slot.slot === 'right')"
+    />
+  </div>
 </template>
 ```
 
@@ -78,6 +75,8 @@ That works, but it's quite repetiive and hard to read. So we can use another com
 <script setup lang="ts">
 import { CmsBlockImageThreeColumn } from "@shopware/composables";
 
+import { useCmsBlock } from "#imports";
+
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
@@ -89,11 +88,11 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-    <div class="grid grid-cols-3">
-        <CmsGenericElement :content="leftContent" />
-        <CmsGenericElement :content="centerContent" />
-        <CmsGenericElement :content="rightContent" />
-    </div>
+  <div class="grid grid-cols-3">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
 ```
 

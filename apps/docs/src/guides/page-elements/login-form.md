@@ -24,19 +24,20 @@ Let us start by providing some reactive objects and input elements to get custom
 
 ```vue{3,4,10,11}
 <script setup lang="ts">
-    const loginCredentials = reactive({
-        username: "",
-        password: "",
-    })
-    const invokeLogin = () => {}
+import { reactive } from "#imports";
+const loginCredentials = reactive({
+  username: "",
+  password: "",
+});
+const invokeLogin = () => {};
 </script>
 <template>
-    <div>
-        <input type="text" v-model="loginCredentials.username" />
-        <input type="password" v-model="loginCredentials.password" />
+  <div>
+    <input type="text" v-model="loginCredentials.username" />
+    <input type="password" v-model="loginCredentials.password" />
 
-        <button @click="invokeLogin">Sign in</button>
-    </div>
+    <button @click="invokeLogin">Sign in</button>
+  </div>
 </template>
 ```
 
@@ -52,6 +53,7 @@ In the next step, use the `useUser` composable. It provides user data, login met
 
 ```vue
 <script setup lang="ts">
+import { useUser } from "#imports";
 const {
   login, // login method, accepts username and password
   logout, // performing a logout
@@ -101,11 +103,11 @@ In order to achieve it, the `errors` computed ref can be used:
 
 ```vue{5}
 <template>
-    <div v-if="!isLoggedIn">
-        <div v-if="errors.login.length">
-            {{ errors.login[0].detail }}
-        </div>
+  <div v-if="!isLoggedIn">
+    <div v-if="errors.login.length">
+      {{ errors.login[0].detail }}
     </div>
+  </div>
 </template>
 ```
 
@@ -119,6 +121,7 @@ The example explains how to display only the first error that may appear in the 
 
 ```vue
 <script setup lang="ts">
+import { reactive, useUser } from "#imports";
 const { logout, login, errors, isLoggedIn, user } = useUser();
 const loginCredentials = reactive({
   username: "",

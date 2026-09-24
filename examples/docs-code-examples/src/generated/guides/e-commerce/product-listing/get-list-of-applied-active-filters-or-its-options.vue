@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useListing } from "#imports";
 const { getCurrentFilters } = useListing(/** parameters omitted */);
 </script>
+
 <template>
   {{ getCurrentFilters.navigationId }}
   <!-- "category-A-ID-1" -->
@@ -10,7 +12,7 @@ const { getCurrentFilters } = useListing(/** parameters omitted */);
   <!-- { min: 0, max: 299 } -->
   {{ getCurrentFilters.rating }}
   <!-- null -->
-  {{ getCurrentFilters.["shipping-free"] }}
+  {{ getCurrentFilters["shipping-free"] }}
   <!-- false -->
   {{ getCurrentFilters.properties }}
   <!-- ["property-A-option-ID-1", "property-A-option-ID-2", "property-B-option-ID-1"]-->

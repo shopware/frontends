@@ -75,6 +75,7 @@ will become
 ```vue
 <!-- ImageCircle.vue -->
 <script setup>
+import { h } from "#imports";
 defineProps(["imageSrc"]);
 </script>
 
@@ -91,13 +92,13 @@ defineProps(["imageSrc"]);
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/reusability-2.vue" code lang="vue" no-name -->
 
 ```vue
-<!--- ImageContainer.vue -->
-<script setup>
-defineProps(['images'])
+<!-- ImageContainer.vue -->
+<script setup lang="ts">
+defineProps<{ images: string[] }>();
 </script>
 
 <template>
-    <ImageCircle v-for="image in images" :imageSrc="image">
+  <ImageCircle v-for="image in images" :key="image" :image-src="image" />
 </template>
 ```
 

@@ -1,5 +1,6 @@
 <!-- app/components/sections/SectionFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 const props = defineProps<{
   section: { _key?: string; heading?: string; productIds?: string[] };
 }>();

@@ -1,6 +1,8 @@
 <script setup>
 import { useProduct } from "@shopware/composables";
 
+import { computed, usePrice } from "#imports";
+
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
 

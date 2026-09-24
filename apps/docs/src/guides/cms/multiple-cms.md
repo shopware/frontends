@@ -27,13 +27,15 @@ To add multiple CMS support, you need to inject a middleware into the main routi
 
 `templates/vue-starter-template/app/pages/[...all].vue`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/multiple-cms/adding-middleware.ts" code lang="ts{17-24,49-56}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/multiple-cms/adding-middleware.vue" code lang="ts{17-24,49-56}" no-name -->
 
 ```ts{17-24,49-56}
 <script setup lang="ts">
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
+
+import { VNode, h, inject, useAsyncData, useRoute } from "#imports";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -95,8 +97,7 @@ function render() {
     return cmsPageRendererComponent;
   }
 
-  if (!componentName)
-    return h("div", h("div", {}, "No component found"));
+  if (!componentName) return h("div", h("div", {}, "No component found"));
 
   const componentNameToResolve = pascalCase(componentName as string);
   const cmsPageView = routeName && resolveComponent(componentNameToResolve);

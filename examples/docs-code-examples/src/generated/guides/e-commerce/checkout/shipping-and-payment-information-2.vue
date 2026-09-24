@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, useCheckout } from "#imports";
 const {
   paymentMethods,
   selectedPaymentMethod: paymentMethod,

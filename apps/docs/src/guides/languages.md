@@ -127,6 +127,7 @@ The main task of this composable is to add a prefix to URL if needed.
 
 ```vue
 <script setup lang="ts">
+import { useInternationalization } from "#imports";
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 </script>

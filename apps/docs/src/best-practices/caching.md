@@ -55,6 +55,8 @@ For a Nuxt app, set it as a module option in `nuxt.config.ts`:
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.ts" code lang="ts" no-name -->
 
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   shopware: {
     cacheableReads: true, // route anonymous Store API reads through cacheable GET routes
@@ -70,7 +72,9 @@ The flag is read from the public runtime config, so it is available on both serv
 
 ```ts
 import { createShopwareContext } from "@shopware/composables";
+import { createApp } from "vue";
 
+const app = createApp({});
 const shopware = createShopwareContext(app, {
   cacheableReads: true,
 });
@@ -86,7 +90,10 @@ Inside a composable the flag is read from the Shopware context and used to branc
 ```ts
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
+import { useShopwareContext } from "#imports";
+
 const { apiClient, cacheableReads } = useShopwareContext();
+const criteria = {};
 
 const result = cacheableReads
   ? await apiClient.invoke("readCountryGet get /country", {
@@ -156,7 +163,7 @@ Shopware Frontends configures page-level HTTP caching declaratively through Nuxt
 
 The `vue-demo-store` template uses a 24-hour window on the homepage and the catch-all:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.txt" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -188,7 +195,7 @@ routeRules: {
 
 The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.txt" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -230,7 +237,7 @@ ISR is only active in production builds and requires a runtime that can store an
 
 Route rules can set HTTP `Cache-Control` directly. The templates use it two ways:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.txt" code lang="ts" no-name -->
 
 ```ts
 // Prevent any caching on sensitive routes

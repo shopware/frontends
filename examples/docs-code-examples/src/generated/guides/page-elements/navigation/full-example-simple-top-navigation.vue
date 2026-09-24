@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { h, useNavigation, useRoute } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 

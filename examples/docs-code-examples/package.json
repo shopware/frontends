@@ -6,8 +6,8 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "lint": "oxlint app scripts types nuxt.config.ts && oxfmt --check app scripts types nuxt.config.ts package.json tsconfig.json",
-    "lint:fix": "oxlint --fix app scripts types nuxt.config.ts && oxfmt --write app scripts types nuxt.config.ts package.json tsconfig.json",
+    "lint": "oxlint -A no-unused-vars app scripts src types nuxt.config.ts && oxfmt --check app scripts src types nuxt.config.ts package.json tsconfig.json",
+    "lint:fix": "oxlint --fix -A no-unused-vars app scripts src types nuxt.config.ts && oxfmt --write app scripts src types nuxt.config.ts package.json tsconfig.json",
     "typecheck": "nuxt prepare && vue-tsc --noEmit && node ./scripts/check-docs-code-examples.mjs"
   },
   "dependencies": {

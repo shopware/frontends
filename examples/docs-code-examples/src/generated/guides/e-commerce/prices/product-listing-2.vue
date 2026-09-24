@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const { totalPrice, displayVariantsFrom } =
-  useProductPrice(/** argument omitted - Product object */);
+import { useProductPrice } from "#imports";
+const { totalPrice, displayVariantsFrom } = useProductPrice(
+  /** argument omitted - Product object */
+);
 </script>
 <template>
   <div>

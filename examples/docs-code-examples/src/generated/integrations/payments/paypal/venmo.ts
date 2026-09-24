@@ -1,3 +1,5 @@
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 window.paypal

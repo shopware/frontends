@@ -2,6 +2,8 @@
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
+
+import { VNode, h, inject, useAsyncData, useRoute } from "#imports";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -63,8 +65,7 @@ function render() {
     return cmsPageRendererComponent;
   }
 
-  if (!componentName)
-    return h("div", h("div", {}, "No component found"));
+  if (!componentName) return h("div", h("div", {}, "No component found"));
 
   const componentNameToResolve = pascalCase(componentName as string);
   const cmsPageView = routeName && resolveComponent(componentNameToResolve);

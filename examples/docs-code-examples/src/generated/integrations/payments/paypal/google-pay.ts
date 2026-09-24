@@ -1,3 +1,5 @@
+import { ref, useCart, useSessionContext } from "#imports";
+
 const { cart, totalPrice } = useCart();
 const { currency } = useSessionContext();
 const divContainer = ref();

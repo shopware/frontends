@@ -24,8 +24,10 @@ In order to extend or overwrite the logic of the composables, you need to create
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/example.ts" code lang="ts" no-name -->
 
 ```ts
-// composables/useAddToCart.ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
+
+// composables/useAddToCart.ts
+import { Ref } from "#imports";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -57,8 +59,10 @@ This case is not problematic, as the existing API is not changing. Let's try to 
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-composable.ts" code lang="ts" no-name -->
 
 ```ts
-// composables/useAddToCart.ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
+
+// composables/useAddToCart.ts
+import { Ref, computed, useCart } from "#imports";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -88,8 +92,10 @@ This might be especially useful for high customization. Let's say we want to add
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/extending-the-logic-of-the-specific-method.ts" code lang="ts" no-name -->
 
 ```ts
-// composables/useAddToCart.ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
+
+// composables/useAddToCart.ts
+import { Ref } from "#imports";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -118,8 +124,10 @@ Sometimes you want to completly replace original logic, maybe you want to call a
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/overwriting-composables/overwriting-the-whole-method.ts" code lang="ts" no-name -->
 
 ```ts
-// composables/useAddToCart.ts
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
+
+// composables/useAddToCart.ts
+import { Ref } from "#imports";
 
 export function useAddToCart(product: Ref<Product>) {
   const coreFunctionality = coreUseAddToCart(product);
@@ -145,6 +153,8 @@ If you need to replace whole composable logic you can do this by not invoking co
 
 ```ts
 // composables/useAddToCart.ts
+
+import { Ref, useAddToCart } from "#imports";
 
 export function useAddToCart(product: Ref<Product>) {
   // your own implementation

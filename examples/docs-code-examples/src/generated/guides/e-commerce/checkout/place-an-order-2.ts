@@ -1,3 +1,5 @@
+import { useOrderDetails } from "#imports";
+
 const {
   loadOrderDetails,
   personalDetails,

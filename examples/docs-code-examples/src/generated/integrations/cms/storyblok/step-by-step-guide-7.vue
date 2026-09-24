@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createError, useRoute } from "#imports";
 const route = useRoute();
 const slug = route.params.slug.toString() ?? "home";
 const story = await useAsyncStoryblok(

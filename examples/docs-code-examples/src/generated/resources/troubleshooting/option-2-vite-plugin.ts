@@ -1,13 +1,12 @@
-  import basicSsl from '@vitejs/plugin-basic-ssl'
-  // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
-  export default defineNuxtConfig({
-  // ...
+import basicSsl from "@vitejs/plugin-basic-ssl";
+import { defineNuxtConfig } from "nuxt/config";
+
+// https://nuxt.com/docs/guide/directory-structure/nuxt-config
+export default defineNuxtConfig({
   devServer: {
     https: true,
   },
   vite: {
-    plugins: [
-      basicSsl(),
-    ],
+    plugins: [basicSsl()],
   },
-  // ...
+});

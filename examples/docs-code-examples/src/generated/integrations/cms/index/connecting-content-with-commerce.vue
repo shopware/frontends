@@ -1,5 +1,6 @@
 <!-- app/components/external-cms/CmsFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

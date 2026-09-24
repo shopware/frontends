@@ -9,7 +9,7 @@ const handlePaymentResponse = await handlePayment(
   {
     /**
      * here goes additional information required by payment provider
-    * can be payment intent token
-    */
-  }
-)
+     * can be payment intent token
+     */
+  },
+);

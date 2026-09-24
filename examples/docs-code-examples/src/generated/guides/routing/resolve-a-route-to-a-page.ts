@@ -1,11 +1,18 @@
-import type { Schemas } from "#shopware";
-
 import {
   useNavigation,
   useNavigationContext,
   useNavigationSearch,
   useCategorySearch,
 } from "@shopware/composables";
+
+import {
+  ref,
+  useCategory,
+  useLandingSearch,
+  useProduct,
+  useProductSearch,
+} from "#imports";
+import type { Schemas } from "#shopware";
 
 const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 

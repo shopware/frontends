@@ -39,32 +39,40 @@ You can use the `useWishlist` composable to get the wishlist products.
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/get-wishlist.vue" code lang="vue" no-name -->
 
 ```vue
-<script>
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
+
+import { useShopwareContext, useWishlist } from "#imports";
 import type { Schemas } from "#shopware";
 
-// Contains a list of products ids in the wishlist
+const products = ref<Schemas["Product"][]>([]);
+const isLoading = ref(false);
+
+// Contains a list of products ids in the wishlist.
 const { getWishlistProducts, items } = useWishlist();
 const { apiClient } = useShopwareContext();
 
-// Load products data
+// Load products data.
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
   try {
-    // Backend API call for product data
+    // Backend API call for product data.
     const result = await apiClient.invoke("readProduct post /product", {
       body: {
         ids: itemIds || items.value,
       },
     });
 
-    products.value = result.data.elements;
+    products.value = result.data.elements ?? [];
   } catch (error) {
     console.error(error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
-// Watch changes and update product data
+// Watch changes and update product data.
 watch(
   items,
   (items, oldItems) => {
@@ -78,14 +86,15 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 
 onMounted(async () => {
-  // Fetch wishlist products
+  // Fetch wishlist products.
   await getWishlistProducts();
 });
 </script>
+
 <template>
   <div v-if="products.length">
     <h1>Wishlist</h1>
@@ -114,6 +123,7 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 
 ```vue
 <script setup lang="ts">
+import { useProductWishlist } from "#imports";
 // Mocked product
 const product: Schemas["Product"] = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
@@ -144,6 +154,7 @@ To avoid such a situation, `isInWishlist` property should protect `removeFromWis
 
 ```vue
 <script setup lang="ts">
+import { useProductWishlist } from "#imports";
 // Mocked product
 const product: Product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
@@ -168,6 +179,7 @@ To synchronize the local wishlist with the remote wishlist (associated with the 
 
 ```vue{10}
 <script setup lang="ts">
+import { ref } from "#imports";
 const formData = ref({
   username: "",
   password: "",

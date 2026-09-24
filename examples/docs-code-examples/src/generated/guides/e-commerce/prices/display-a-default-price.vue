@@ -1,12 +1,16 @@
 <script setup>
-import { useProductSearch } from '@shopware/composables';
+import { useProductSearch } from "@shopware/composables";
+
+import { ref, usePrice, useProductPrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { search } = useProductSearch();
 
-const { product } = await search('some-product-id');
+const { product } = await search("some-product-id");
 
-const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(product));
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(
+  ref(product),
+);
 </script>
 
 <template>
@@ -16,9 +20,7 @@ const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(produ
     </div>
     <div>
       {{ getFormattedPrice(unitPrice) }}
-      <small>
-        incl. {{ price.taxRules[0].taxRate }}% tax
-      </small>
+      <small> incl. {{ price.taxRules[0].taxRate }}% tax </small>
     </div>
     <div v-if="hasListPrice">
       <small>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { CmsBlockImageThreeColumn } from "@shopware/composables";
 
+import { useCmsBlock } from "#imports";
+
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
@@ -12,9 +14,9 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-    <div class="grid grid-cols-3">
-        <CmsGenericElement :content="leftContent" />
-        <CmsGenericElement :content="centerContent" />
-        <CmsGenericElement :content="rightContent" />
-    </div>
+  <div class="grid grid-cols-3">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>

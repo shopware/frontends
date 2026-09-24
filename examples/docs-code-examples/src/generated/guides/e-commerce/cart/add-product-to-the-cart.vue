@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAddToCart } from "#imports";
 const product: Product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };

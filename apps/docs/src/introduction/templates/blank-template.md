@@ -32,6 +32,8 @@ In order to connect it to your own store backend, you need to edit the `nuxt.con
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/blank-template/configure.ts" code lang="ts" no-name -->
 
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 /* ... */
 export default defineNuxtConfig({
   runtimeConfig: {

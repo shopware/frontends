@@ -36,7 +36,7 @@ Now, you can import all components from the `@shopware/cms-base-layer` package a
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/content-pages/render-the-page.html" code lang="vue-html" no-name -->
 
 ```vue-html
-<CmsPage v-if="data" :content="data.cmsPage"/>
+<CmsPage v-if="data" :content="data.cmsPage" />
 ```
 
 <!-- /automd -->

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useProductWishlist } from "#imports";
 // Mocked product
 const product: Schemas["Product"] = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",

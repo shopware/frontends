@@ -33,6 +33,8 @@ Before using the composable, define the type related to the context:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/listing-type-and-context.ts" code lang="ts{3}" no-name -->
 
 ```ts{3}
+import { useListing } from "#imports";
+
 const { search, getElements } = useListing({
   listingType: "categoryListing",
   categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
@@ -54,6 +56,8 @@ In order to get the expected products, we need to define the search criteria. Th
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/define-search-criteria.ts" code lang="ts" no-name -->
 
 ```ts
+import { useListing } from "#imports";
+
 const { search } = useListing();
 
 search({
@@ -85,17 +89,21 @@ In order to display products of product listing we need to:
 
 ```vue{11,22}
 <script setup lang="ts">
+import { useListing } from "#imports";
 const { search, getElements } = useListing({
-    listingType: "categoryListing",
-    categoryId: "dfd52ab937f840fd87e9d24ebf6bd245", // entrypoint to browse
-    defaultSearchCriteria: { // set the default criteria
-        limit: 3,
-        p: 1,
-    },
+  listingType: "categoryListing",
+  categoryId: "dfd52ab937f840fd87e9d24ebf6bd245", // entrypoint to browse
+  defaultSearchCriteria: {
+    // set the default criteria
+    limit: 3,
+    p: 1,
+  },
 });
 
-search({ // invoke search() method
-  includes: { // omit this parameter if you want to use the whole product entity
+search({
+  // invoke search() method
+  includes: {
+    // omit this parameter if you want to use the whole product entity
     product: ["id", "name", "cover", "calculatedPrice", "translated"],
     product_media: ["media"],
     media: ["url", "thumbnails"],
@@ -103,13 +111,13 @@ search({ // invoke search() method
 });
 </script>
 <template>
- <div>
+  <div>
     <!-- iterate the getElements array -->
     <div v-for="product in getElements" :key="product.id">
-        {{ product.name }}
-        <!-- use other properties of type Product -->
+      {{ product.name }}
+      <!-- use other properties of type Product -->
     </div>
- </div>
+  </div>
 </template>
 ```
 
@@ -127,18 +135,17 @@ Available methods of `useListing` to manage sorting order:
 
 ```ts{3-5}
 // part of <script setup> section
-const {
-  getCurrentSortingOrder,
-  getSortingOrders,
-  changeCurrentSortingOrder,
-} = useListing({
-  listingType: "categoryListing",
-  categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
-  defaultSearchCriteria: {
-    limit: 3,
-    p: 1,
-  },
-});
+import { useListing } from "#imports";
+
+const { getCurrentSortingOrder, getSortingOrders, changeCurrentSortingOrder } =
+  useListing({
+    listingType: "categoryListing",
+    categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
+    defaultSearchCriteria: {
+      limit: 3,
+      p: 1,
+    },
+  });
 ```
 
 <!-- /automd -->
@@ -169,11 +176,11 @@ Refresh the product listing on option's change:
 
 ```ts{4-6}
 const onOrderChange = (onOrderChangeEvent: Event) => {
-    // accept the DOM Event and extract the option's value
-    // pass the value to the listing method that triggers the search() method internally
-    changeCurrentSortingOrder(
-        (onOrderChangeEvent.target as HTMLSelectElement).value
-    );
+  // accept the DOM Event and extract the option's value
+  // pass the value to the listing method that triggers the search() method internally
+  changeCurrentSortingOrder(
+    (onOrderChangeEvent.target as HTMLSelectElement).value,
+  );
 };
 ```
 
@@ -197,6 +204,8 @@ To achieve this, you can use `useCart` composable which expose `addProduct` meth
 
 ```ts
 // part of <script setup> section
+import { useCart } from "#imports";
+
 const { addProduct } = useCart();
 ```
 
@@ -232,21 +241,23 @@ Pagination is available by using three methods from `useListing` composable:
 
 ```ts{5-7}
 // part of <script setup> section
+import { useListing } from "#imports";
+
 const {
-    search,
-    getElements,
-    getCurrentPage,
-    changeCurrentPage,
-    getTotalPagesCount,
-    getAvailableFilters
+  search,
+  getElements,
+  getCurrentPage,
+  changeCurrentPage,
+  getTotalPagesCount,
+  getAvailableFilters,
 } = useListing({
-    listingType: "categoryListing",
-    categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
-    defaultSearchCriteria: {
-        limit: 3,
-        p: 1,
-    },
-})
+  listingType: "categoryListing",
+  categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
+  defaultSearchCriteria: {
+    limit: 3,
+    p: 1,
+  },
+});
 ```
 
 <!-- /automd -->
@@ -306,6 +317,8 @@ In order to get the list of available filters, use the following command:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.ts" code lang="ts" no-name -->
 
 ```ts
+import { useListing } from "#imports";
+
 const { getAvailableFilters } = useListing(/** parameters omitted */);
 ```
 
@@ -319,68 +332,71 @@ You can then iterate the filter objects available in the array. The filter objec
 
 ```vue{15,17}
 <script setup lang="ts">
-const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useListing(/** parameters omitted */)
+import { useListing } from "#imports";
+const { getAvailableFilters, getCurrentFilters, setCurrentFilters } =
+  useListing(/** parameters omitted */);
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
   setCurrentFilters({
     code: "manufacturer",
-    value: manufacturerId
-  })
-}
+    value: manufacturerId,
+  });
+};
 
 // element from getAvailableFilters.value
-// i.e: getAvailableFilters.value?.find(({code}) => code === "manufacturer")?.[0]
+// i.e: getAvailableFilters.value?.find(({ code }) => code === "manufacturer")?.[0]
 const manufacturerFilter = {
-  apiAlias:"manufacturer_aggregation",
-  code:"manufacturer",
-  label:"manufacturer",
+  apiAlias: "manufacturer_aggregation",
+  code: "manufacturer",
+  label: "manufacturer",
   entities: [
-      {
-        "extensions": {
-          "foreignKeys": {
-            "apiAlias": "array_struct"
-          }
+    {
+      extensions: {
+        foreignKeys: {
+          apiAlias: "array_struct",
         },
-        "_uniqueIdentifier": "1d39db66fd184de8bdcfbf995197f8ea",
-        "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-        "translated": {
-          "name": "Boomers Gourmet",
-          "description": "Description",
-          "customFields": {}
-        },
-        "createdAt": "2020-08-06T06:26:30.608+00:00",
-        "updatedAt": null,
-        "mediaId": "ef102a5043174d8b936623b175c8af57",
-        "name": "Boomers Gourmet",
-        "link": "http://www.gewuerze-boomers.de/",
-        "description": "Description",
-        "media": null,
-        "translations": null,
-        "id": "1d39db66fd184de8bdcfbf995197f8ea",
-        "customFields": null,
-        "apiAlias": "product_manufacturer"
-      },]
-    { // other manufacturer objects
-    }
-  ]
-}
+      },
+      _uniqueIdentifier: "1d39db66fd184de8bdcfbf995197f8ea",
+      versionId: "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      translated: {
+        name: "Boomers Gourmet",
+        description: "Description",
+        customFields: {},
+      },
+      createdAt: "2020-08-06T06:26:30.608+00:00",
+      updatedAt: null,
+      mediaId: "ef102a5043174d8b936623b175c8af57",
+      name: "Boomers Gourmet",
+      link: "http://www.gewuerze-boomers.de/",
+      description: "Description",
+      media: null,
+      translations: null,
+      id: "1d39db66fd184de8bdcfbf995197f8ea",
+      customFields: null,
+      apiAlias: "product_manufacturer",
+    },
+    // other manufacturer objects
+  ],
+};
 </script>
-<template>
-<h3>{{ manufacturerFilter.label }}</h3>
-  <div v-for="manufacturer in manufacturerFilter?.entities">
-    <input
-        type="checkbox"
-        :id="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`"
-        :key="manufacturer.id"
-        :name="manufacturerFilter.code"
-        @click="selectManufacturerAndSearch(manufacturer.id)"
-        :checked="getCurrentFilters['manufacturer']?.includes(manufacturer.id)"
-      />
-      <label :for="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`">
-        {{ manufacturer.name }}
-      </label>
-  </div>
 
+<template>
+  <h3>{{ manufacturerFilter.label }}</h3>
+  <div
+    v-for="manufacturer in manufacturerFilter.entities"
+    :key="manufacturer.id"
+  >
+    <input
+      :id="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`"
+      type="checkbox"
+      :name="manufacturerFilter.code"
+      :checked="getCurrentFilters.manufacturer?.includes(manufacturer.id)"
+      @click="selectManufacturerAndSearch(manufacturer.id)"
+    />
+    <label :for="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`">
+      {{ manufacturer.name }}
+    </label>
+  </div>
 </template>
 ```
 
@@ -432,6 +448,7 @@ In order to apply a specific filter you need to be aware of:
 
 ```vue
 <script setup lang="ts">
+import { useListing } from "#imports";
 const { setCurrentFilters } = useListing(/** parameters omitted */);
 
 setCurrentFilters({
@@ -458,8 +475,10 @@ setCurrentFilters({
 
 ```vue
 <script setup lang="ts">
+import { useListing } from "#imports";
 const { getCurrentFilters } = useListing(/** parameters omitted */);
 </script>
+
 <template>
   {{ getCurrentFilters.navigationId }}
   <!-- "category-A-ID-1" -->
@@ -469,7 +488,7 @@ const { getCurrentFilters } = useListing(/** parameters omitted */);
   <!-- { min: 0, max: 299 } -->
   {{ getCurrentFilters.rating }}
   <!-- null -->
-  {{ getCurrentFilters.["shipping-free"] }}
+  {{ getCurrentFilters["shipping-free"] }}
   <!-- false -->
   {{ getCurrentFilters.properties }}
   <!-- ["property-A-option-ID-1", "property-A-option-ID-2", "property-B-option-ID-1"]-->
@@ -613,6 +632,8 @@ This listing shows the product name and price with soft hover effects and a fade
 <script setup lang="ts">
 import { useProductSearchSuggest } from "@shopware/composables";
 import { getTranslatedProperty } from "@shopware/helpers";
+
+import { h, onMounted, useCart } from "#imports";
 
 const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
 

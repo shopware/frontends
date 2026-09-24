@@ -1,3 +1,5 @@
+import { useAddToCart, useNotifications } from "#imports";
+
 const { addToCart } = useAddToCart(product);
 const { pushSuccess } = useNotifications();
 

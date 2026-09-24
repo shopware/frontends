@@ -53,6 +53,8 @@ Note that all the navigation items are in type `Category`, and thanks to this th
 ```vue
 <script setup lang="ts">
 import { getCategoryUrl } from "@shopware/helpers";
+
+import { useNavigation } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 </script>
@@ -100,6 +102,7 @@ Copy the snippet and paste it into your project. It's often useful to extract it
 
 ```vue
 <script setup lang="ts">
+import { h, useNavigation, useRoute } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 

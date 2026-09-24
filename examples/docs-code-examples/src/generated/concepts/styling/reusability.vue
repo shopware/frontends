@@ -1,5 +1,6 @@
 <!-- ImageCircle.vue -->
 <script setup>
+import { h } from "#imports";
 defineProps(["imageSrc"]);
 </script>
 

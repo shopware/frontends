@@ -1,3 +1,5 @@
+import { ref, useCart, useSessionContext } from "#imports";
+
 const { totalPrice } = useCart();
 const { activeBillingAddress } = useSessionContext();
 const divContainer = ref();

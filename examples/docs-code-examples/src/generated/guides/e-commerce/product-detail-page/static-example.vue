@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
 import type { Ref } from "vue";
+
+import {
+  computed,
+  onMounted,
+  useAsyncData,
+  useProduct,
+  useProductReviews,
+  useProductSearch,
+  useRouter,
+} from "#imports";
+import type { Schemas } from "#shopware";
 
 const router = useRouter();
 

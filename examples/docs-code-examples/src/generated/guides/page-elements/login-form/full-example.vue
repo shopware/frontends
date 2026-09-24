@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { reactive, useUser } from "#imports";
 const { logout, login, errors, isLoggedIn, user } = useUser();
 const loginCredentials = reactive({
   username: "",

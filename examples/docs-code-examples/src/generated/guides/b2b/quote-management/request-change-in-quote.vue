@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useB2bQuoteManagement } from "@shopware/composables";
+import { ref } from "vue";
 const quote = ref("example-id");
 const changeRequest = ref("");
 const { requestChangeQuote } = useB2bQuoteManagement();

@@ -1,9 +1,10 @@
 <!-- app/components/ExternalCmsPage.vue -->
 <script setup lang="ts">
 import type { Component } from "vue";
+
+import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 import CmsHero from "./external-cms/CmsHero.vue";
 import CmsRichText from "./external-cms/CmsRichText.vue";
-import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 
 defineProps<{
   blocks: Array<{

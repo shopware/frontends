@@ -73,6 +73,8 @@ To connect to your own Shopware instance, edit the `nuxt.config.ts` file:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/shopware-connection.ts" code lang="ts" no-name -->
 
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -172,6 +174,7 @@ The design-tokens layer provides the shared UnoCSS setup and token palette. Your
 
 ```ts
 import { mergeConfigs } from "@unocss/core";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 export default mergeConfigs([

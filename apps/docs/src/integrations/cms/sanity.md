@@ -66,6 +66,8 @@ npx nuxi@latest module add sanity
 
 ```ts
 // nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware/nuxt-module", "@nuxtjs/sanity"],
@@ -165,8 +167,8 @@ const { data: page } = await useSanityQuery(PAGE_QUERY);
 ```vue
 <!-- app/components/PageBuilder.vue -->
 <script setup lang="ts">
-import SectionHero from "./sections/SectionHero.vue";
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
+import SectionHero from "./sections/SectionHero.vue";
 // ...
 
 const components = {
@@ -203,6 +205,7 @@ with `useProductSearch` during SSR, so the cards render in the initial HTML:
 ```vue
 <!-- app/components/sections/SectionFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 const props = defineProps<{
   section: { _key?: string; heading?: string; productIds?: string[] };
 }>();
@@ -242,6 +245,8 @@ cart and raises a toast; a mini cart reads the live cart:
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications.ts" code lang="ts" no-name -->
 
 ```ts
+import { useAddToCart, useNotifications } from "#imports";
+
 const { addToCart } = useAddToCart(product);
 const { pushSuccess } = useNotifications();
 
@@ -257,6 +262,8 @@ const add = async () => {
 
 ```ts
 // the cart is per-user session state - load it on the client, not in cached SSR
+import { onMounted, useCart } from "#imports";
+
 const { cartItems, count, totalPrice, isEmpty, removeItem, refreshCart } =
   useCart();
 onMounted(() => refreshCart());

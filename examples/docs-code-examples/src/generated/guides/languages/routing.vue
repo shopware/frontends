@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useInternationalization } from "#imports";
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 </script>

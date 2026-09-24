@@ -61,7 +61,7 @@ const resolvedComponent = resolveComponent(componentNameToResolve);
 
 Component name must be the same as it was registered in the backed.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.ts" code lang="ts{3}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.txt" code lang="ts{3}" no-name -->
 
 ```ts{3}
 Shopware.Service('cmsService').registerCmsElement({
@@ -129,7 +129,7 @@ Component settings are passed via props. The declared `defaultConfig` can be acc
 
 The following is an example of how to convert the backend registration config to a TypeScript type.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.ts" code lang="ts{4-9}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.txt" code lang="ts{4-9}" no-name -->
 
 ```ts{4-9}
 Shopware.Service('cmsService').registerCmsElement({

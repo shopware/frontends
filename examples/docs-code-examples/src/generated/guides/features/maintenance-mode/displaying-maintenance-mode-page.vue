@@ -1,5 +1,6 @@
 // error.vue
 <script setup lang="ts">
+import { computed } from "#imports";
 const props = defineProps<{
   error: {
     statusCode: number;

@@ -163,9 +163,10 @@ show a small placeholder so the missing component is obvious.
 <!-- app/components/ExternalCmsPage.vue -->
 <script setup lang="ts">
 import type { Component } from "vue";
+
+import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 import CmsHero from "./external-cms/CmsHero.vue";
 import CmsRichText from "./external-cms/CmsRichText.vue";
-import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 
 defineProps<{
   blocks: Array<{
@@ -214,6 +215,7 @@ a route component.
 ```vue
 <!-- app/pages/[...all].vue -->
 <script setup lang="ts">
+import { createError, useAsyncData, useRoute, useSeoMeta } from "#imports";
 const route = useRoute();
 const { locale } = useI18n();
 const { resolvePage } = useExternalCms();
@@ -253,6 +255,7 @@ resolve them during SSR with Shopware composables.
 ```vue
 <!-- app/components/external-cms/CmsFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

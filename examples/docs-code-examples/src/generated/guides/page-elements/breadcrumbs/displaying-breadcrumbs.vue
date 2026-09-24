@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBreadcrumbs } from "#imports";
 const { breadcrumbs } = useBreadcrumbs();
 </script>
 <template>

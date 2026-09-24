@@ -133,6 +133,7 @@ First, fetch a category from the API and store it in the context state by passin
 <!-- Category.vue -->
 
 <script setup>
+import { useCategory, useCategorySearch, useRoute } from "#imports";
 const { path } = useRoute();
 const { search } = useCategorySearch();
 
@@ -157,6 +158,7 @@ Then, use the `useCategory` composable in the child component to retrieve the ca
 <!-- CategoryHeader.vue -->
 
 <script setup>
+import { useCategory } from "#imports";
 // Resolving the category from the closest parent context boundary
 const { category } = useCategory();
 </script>

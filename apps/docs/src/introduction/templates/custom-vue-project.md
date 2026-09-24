@@ -97,16 +97,21 @@ Import necessary methods from `@shopware/api-client`, `@shopware/composables` an
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client.ts" code lang="ts" no-name -->
 
 ```ts
-// ./plugins/vue-shopware-frontends.ts file
-import { ref } from "vue";
-import type { App } from "vue";
 import { createAPIClient } from "@shopware/api-client";
 import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
+// ./plugins/vue-shopware-frontends.ts file
+import type { App } from "vue";
+import { ref } from "vue";
+
+interface ShopwareFrontendsOptions {
+  accessToken: string;
+  endpoint: string;
+}
 
 export default {
   install: (app: App, options: ShopwareFrontendsOptions) => {
-    ...
+    // Configure the API client and Shopware context here.
   },
 };
 ```
@@ -137,6 +142,8 @@ The install method is a good place to do that:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-3.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const cookieContextToken = Cookies.get("sw-context-token");
 const cookieLanguageId = Cookies.get("sw-language-id");
 
@@ -198,6 +205,8 @@ Another step is to create a Shopware instance that combines API Client and the b
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-2.ts" code lang="ts" no-name -->
 
 ```ts
+import { createShopwareContext } from "#imports";
+
 const shopwareContext = createShopwareContext(app, {
   enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
 });
@@ -210,6 +219,8 @@ And the last step is to provide the shopwareContext:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-3.ts" code lang="ts" no-name -->
 
 ```ts
+import { provide, ref } from "#imports";
+
 app.provide("apiClient", apiClient);
 app.provide("shopware", shopwareContext);
 // thanks to this, `shopwareContext` can be injected in a component and other Vue-instance-aware places (like composables).
@@ -225,6 +236,7 @@ app.provide("swSessionContext", ref());
 ```ts{6,9-14}
 // main.ts
 import { createApp } from "vue";
+
 import "./style.css";
 import App from "./App.vue";
 // import previously implemented module
@@ -232,10 +244,10 @@ import ShopwareFrontends from "./plugins/vue-shopware-frontends";
 const app = createApp(App);
 
 app.use(ShopwareFrontends, {
-    // pass options described under ShopwareFrontendsOptions type in the previous section
-    endpoint: "https://demo-frontends.swstage.store",
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    apiDefaults: {},
+  // pass options described under ShopwareFrontendsOptions type in the previous section
+  endpoint: "https://demo-frontends.swstage.store",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  apiDefaults: {},
 });
 
 app.mount("#app");
@@ -248,12 +260,14 @@ app.mount("#app");
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/plugin-code.ts" code lang="ts" no-name -->
 
 ```ts
-// ./plugins/vue-shopware-frontends.ts file
-import { ref } from "vue";
-import type { App } from "vue";
 import { createAPIClient } from "@shopware/api-client";
 import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
+// ./plugins/vue-shopware-frontends.ts file
+import { ref } from "vue";
+import type { App } from "vue";
+
+import { provide } from "#imports";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 export type ShopwareFrontendsOptions = {

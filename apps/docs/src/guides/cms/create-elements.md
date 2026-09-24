@@ -41,11 +41,12 @@ Now, you can use `props.content` to access all properties of the element in your
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
+import { CmsElementImage } from "#imports";
 // see above
 </script>
 
 <template>
-    <img :src="props.content.data.media.url" />
+  <img :src="props.content.data.media.url" />
 </template>
 ```
 
@@ -62,20 +63,20 @@ However, for some elements the configuration can be quite complex, so there are 
 import { CmsElementImage, useCmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
-    content: CmsElementImage
+  content: CmsElementImage;
 }>();
 
 const {
-    containerStyle, // padding, background-color etc.
-    displayMode, // cover, contain, stretch etc.
-    imageAttrs, // automatically resolves src, alt and srcset attributes
+  containerStyle, // padding, background-color etc.
+  displayMode, // cover, contain, stretch etc.
+  imageAttrs, // automatically resolves src, alt and srcset attributes
 } = useCmsElementImage(props.content);
 </script>
 
 <template>
-    <div :style="containerStyle">
-        <img v-bind="imageAttrs"/>
-    </div>
+  <div :style="containerStyle">
+    <img v-bind="imageAttrs" />
+  </div>
 </template>
 ```
 

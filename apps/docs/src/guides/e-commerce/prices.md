@@ -96,14 +96,18 @@ All prices are passed as floating point numbers, rounded to the decimals which a
 
 ```vue{4,16,24}
 <script setup>
-import { useProductSearch } from '@shopware/composables';
+import { useProductSearch } from "@shopware/composables";
+
+import { ref, usePrice, useProductPrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { search } = useProductSearch();
 
-const { product } = await search('some-product-id');
+const { product } = await search("some-product-id");
 
-const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(product));
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(
+  ref(product),
+);
 </script>
 
 <template>
@@ -113,9 +117,7 @@ const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(produ
     </div>
     <div>
       {{ getFormattedPrice(unitPrice) }}
-      <small>
-        incl. {{ price.taxRules[0].taxRate }}% tax
-      </small>
+      <small> incl. {{ price.taxRules[0].taxRate }}% tax </small>
     </div>
     <div v-if="hasListPrice">
       <small>
@@ -137,7 +139,7 @@ Pricing tiers add one layer of complexity to the pricing model. In Shopware, you
 
 These pricing tiers are passed through a product's `calculatedPrices` field. The `calculatedPrices` field is an array of `CalculatedPrice` objects sorted by the `quantity` field, which defines the bounds of a pricing range.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/pricing-tiers-and-quantity-prices.json" code lang="json" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/pricing-tiers-and-quantity-prices.txt" code lang="json" no-name -->
 
 ```json
 [
@@ -200,6 +202,8 @@ class="mx-auto p-10 shadow-md rounded-md dark:bg-#242424 text-gray-700 dark:text
 <script setup>
 import { useProduct } from "@shopware/composables";
 
+import { usePrice } from "#imports";
+
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
 
@@ -210,11 +214,12 @@ await search("some-product-id");
   <ul>
     <li
       v-for="(tierPrice, index) in product.calculatedPrices"
-      :key="tierPrice.quantity">
-        <!-- Display "from" or "to" depending on quantity level -->
-        {{ index == product.calculatedPrices.length - 1 ? 'from' : 'to' }}
-        {{ tierPrice.quantity }} -
-        {{ getFormattedPrice(tierPrice.unitPrice) }}
+      :key="tierPrice.quantity"
+    >
+      <!-- Display "from" or "to" depending on quantity level -->
+      {{ index == product.calculatedPrices.length - 1 ? "from" : "to" }}
+      {{ tierPrice.quantity }} -
+      {{ getFormattedPrice(tierPrice.unitPrice) }}
     </li>
   </ul>
 </template>
@@ -259,6 +264,8 @@ See a full example of displaying the default price or pricing tiers depending on
 ```vue
 <script setup>
 import { useProduct } from "@shopware/composables";
+
+import { computed, usePrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
@@ -323,12 +330,13 @@ Price for **non-variant** product (also for having tier pricing):
 
 ```vue{6}
 <script setup lang="ts">
-const { totalPrice, displayFrom } = useProductPrice(/** argument omitted - Product object */);
+import { useProductPrice } from "#imports";
+const { totalPrice, displayFrom } = useProductPrice(
+  /** argument omitted - Product object */
+);
 </script>
 <template>
-<div>
-  <span v-if="displayFrom">from</span>{{ totalPrice }} $
-</div>
+  <div><span v-if="displayFrom">from</span>{{ totalPrice }} $</div>
 </template>
 ```
 
@@ -342,8 +350,10 @@ In order to ensure if the variant prices are available, you can utilize the `dis
 
 ```vue
 <script setup lang="ts">
-const { totalPrice, displayVariantsFrom } =
-  useProductPrice(/** argument omitted - Product object */);
+import { useProductPrice } from "#imports";
+const { totalPrice, displayVariantsFrom } = useProductPrice(
+  /** argument omitted - Product object */
+);
 </script>
 <template>
   <div>
@@ -368,6 +378,8 @@ In this case, there are few options to display:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.ts" code lang="ts" no-name -->
 
 ```ts
+import { usePrice, useProductPrice } from "#imports";
+
 const { totalPrice, price, tierPrices, hasListPrice } =
   useProductPrice(product);
 const { getFormattedPrice } = usePrice();
@@ -429,6 +441,8 @@ There are additional metadata available in the _current_ API context. One of the
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/format-price-according-to-current-context.ts" code lang="ts" no-name -->
 
 ```ts
+import { usePrice } from "#imports";
+
 const price = 12.95;
 const { getFormattedPrice } = usePrice();
 const priceWithCurrency = getFormattedPrice(price);

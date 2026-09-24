@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUser } from "#imports";
 const {
   login, // login method, accepts username and password
   logout, // performing a logout

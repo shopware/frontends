@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
 import { useB2bQuoteManagement } from "@shopware/composables";
+import { ref, onBeforeMount } from "vue";
 const quotesList = ref([]);
 const { getQuoteList } = useB2bQuoteManagement();
 onBeforeMount(async () => {

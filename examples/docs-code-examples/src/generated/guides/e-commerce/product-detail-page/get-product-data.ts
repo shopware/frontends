@@ -1,5 +1,6 @@
-import type { Schemas } from "#shopware";
 import { useProductSearch } from "@shopware/composables";
+
+import type { Schemas } from "#shopware";
 
 const { search } = useProductSearch();
 

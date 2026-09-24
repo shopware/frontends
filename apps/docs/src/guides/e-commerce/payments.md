@@ -89,7 +89,7 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
 
    This is the moment, when any additional information can be passed (if a payment extension allows to do so). Payment handler can communicate with an external service to init some additional process, like preparation of external gateway session to process the payment for specific order.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/external-gateway-3.js" code lang="js{6-15}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/external-gateway-3.ts" code lang="js{6-15}" no-name -->
 
 ```js{6-15}
 // where to redirect an user when payment is done correctly
@@ -103,10 +103,10 @@ const handlePaymentResponse = await handlePayment(
   {
     /**
      * here goes additional information required by payment provider
-    * can be payment intent token
-    */
-  }
-)
+     * can be payment intent token
+     */
+  },
+);
 ```
 
 <!-- /automd -->
@@ -156,6 +156,8 @@ In detached API consumer like headless app, the mentioned information can be obt
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/payments/app-server-integration.ts" code lang="ts" no-name -->
 
 ```ts
+import { useShopwareContext } from "#imports";
+
 const { apiClient } = useShopwareContext(); // or use an instance of @shopware/api-client library
 
 const tokenResponse = await apiClient.invoke(

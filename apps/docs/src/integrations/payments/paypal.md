@@ -111,6 +111,8 @@ In order to display a PayPal Button component, we need to mount it in the DOM.
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/register-the-buttons.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 // client only
@@ -141,6 +143,8 @@ It is called when the user clicks on the PayPal checkout button.
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 // client only
@@ -166,6 +170,8 @@ It is called when the user clicks on the PayPal express checkout button.
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/createorder-event-express.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 // client only
@@ -199,7 +205,7 @@ In the example above we do a couple of things:
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event.txt" code lang="ts" no-name -->
 
 ```ts
 ...
@@ -238,7 +244,7 @@ The example above shows the code that is executed after a payer approves the Pay
 
 This event is called when the user approves the payment process. It's the last step before the payment is captured.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event-express.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/onapprove-event-express.txt" code lang="ts" no-name -->
 
 ```ts
 ...
@@ -299,7 +305,7 @@ For reference check out [PayPal's documentation](https://developer.paypal.com/do
 The `createOrder` and `onApprove` events are the same for all payment methods.
 The only difference is the product used to create the order.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/shared-behaviour-of-createorder-and-onapprove.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/shared-behaviour-of-createorder-and-onapprove.txt" code lang="ts" no-name -->
 
 ```ts
 async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlepay' | 'applepay' | 'venmo') {
@@ -348,11 +354,11 @@ Depending on the type of the payment method and how it integrates with PayPal, y
 import { loadScript } from "@paypal/paypal-js";
 
 loadScript({
-  // Pay Later or venmo
+  // Pay Later or Venmo.
   "enable-funding": "paylater,venmo",
-  // ACDC, Apple Pay or Google Pay
+  // ACDC, Apple Pay or Google Pay.
   components: "card-fields,applepay,googlepay",
-  ...
+  // other options
 });
 ```
 
@@ -363,6 +369,8 @@ loadScript({
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/pay-later.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 window.paypal
@@ -383,6 +391,8 @@ window.paypal
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/venmo.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref } from "#imports";
+
 const divContainer = ref();
 
 window.paypal
@@ -481,6 +491,8 @@ Now you can render the Google Pay button in your frontend:
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/google-pay.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref, useCart, useSessionContext } from "#imports";
+
 const { cart, totalPrice } = useCart();
 const { currency } = useSessionContext();
 const divContainer = ref();
@@ -621,6 +633,8 @@ Now you can render the Apple Pay button in your frontend:
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/paypal/apple-pay.ts" code lang="ts" no-name -->
 
 ```ts
+import { ref, useCart, useSessionContext } from "#imports";
+
 const { totalPrice } = useCart();
 const { activeBillingAddress } = useSessionContext();
 const divContainer = ref();

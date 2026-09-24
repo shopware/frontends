@@ -41,19 +41,18 @@ In general, the store API should only output content that would also be visible 
 <!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
 
 ```ts
-import basicSsl from '@vitejs/plugin-basic-ssl'
-  // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
-  export default defineNuxtConfig({
-  // ...
+import basicSsl from "@vitejs/plugin-basic-ssl";
+import { defineNuxtConfig } from "nuxt/config";
+
+// https://nuxt.com/docs/guide/directory-structure/nuxt-config
+export default defineNuxtConfig({
   devServer: {
     https: true,
   },
   vite: {
-    plugins: [
-      basicSsl(),
-    ],
+    plugins: [basicSsl()],
   },
-  // ...
+});
 ```
 
 <!-- /automd -->
@@ -68,7 +67,7 @@ If you are using DDEV as a local environment with SSR = true (Nuxt config for ro
 
 The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `accessToken` is incorrect or not correct for the specified `endpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.txt" code lang="ts" no-name -->
 
 ```ts
 // a part of nuxt.config.ts
@@ -101,6 +100,8 @@ Set `devStorefrontUrl` to a domain that is configured in your Shopware admin und
 
 ```ts
 // nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -228,6 +229,8 @@ Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
 
 ```ts
 // nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware/nuxt-module"],
@@ -240,7 +243,7 @@ export default defineNuxtConfig({
 :::tip
 If you're using `@shopware/cms-base-layer`, you can extend both layers together:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.txt" code lang="ts" no-name -->
 
 ```ts
 extends: [

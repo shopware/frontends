@@ -1,5 +1,6 @@
 <!-- components/{{ componentName }}.vue -->
 <script setup lang="ts">
+import { useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{

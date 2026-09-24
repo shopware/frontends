@@ -33,6 +33,8 @@ Internally, Shopware's Store API uses the `sw-context-token` header parameter to
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/create-a-cart.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCart } from "#imports";
+
 const { refreshCart } = useCart();
 
 await refreshCart();
@@ -59,6 +61,7 @@ You can use the `useAddToCart` composable to add a product to the cart:
 
 ```vue
 <script setup lang="ts">
+import { useAddToCart } from "#imports";
 const product: Product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
@@ -83,6 +86,7 @@ The process of adding a promotions code is just as straightforward as adding a p
 
 ```vue
 <script setup lang="ts">
+import { ref, useCart } from "#imports";
 const promotionCode = ref<string>();
 const { addPromotionCode, appliedPromotionCodes } = useCart();
 </script>
@@ -104,6 +108,7 @@ Once the products are added to the cart, the can be accessed through the `cartIt
 
 ```vue
 <script setup lang="ts">
+import { useCart } from "#imports";
 const { cartItems, totalPrice, count } = useCart();
 </script>
 <template>
@@ -139,6 +144,8 @@ The `changeProductQuantity` method can be used to change the quantity of a cart 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/change-the-quantity-of-a-cart-item.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCart } from "#imports";
+
 const { changeProductQuantity } = useCart();
 
 const cartItem: LineItem = {
@@ -158,6 +165,8 @@ You can remove items from the cart using the `useCart` or the `useCartItem` comp
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCart } from "#imports";
+
 const { removeItem } = useCart();
 
 await removeItem({ id: "7b5b97bd48454979b14f21c8ef38ce08" });
@@ -170,6 +179,8 @@ In case of the `useCartItem` composable, you pass the item identifier when calli
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/cart/remove-a-cart-item-2.ts" code lang="ts" no-name -->
 
 ```ts
+import { toRefs, useCartItem } from "#imports";
+
 const { cartItem } = toRefs(props);
 const { removeItem } = useCartItem(cartItem);
 
@@ -196,6 +207,7 @@ This cart is positioned sticky on the right side of the screen and shows a basic
 
 ```vue
 <script setup lang="ts">
+import { h, onMounted, useCart } from "#imports";
 const { count, refreshCart, cartItems, removeItem, totalPrice } = useCart();
 
 onMounted(() => {

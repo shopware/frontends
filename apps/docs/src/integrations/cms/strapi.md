@@ -57,7 +57,7 @@ At the beginning we created a single type on the Strapi collection, with fallowi
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element.ts" code lang="ts" no-name -->
 
 ```ts
-interface {
+interface StrapiBanner {
   text: string; // short input field - this will represent a text that we want to display in the banner
   color: string; // short input field - this will represent a color of the banner (this can be done also with color picker filed, but for this example we will use input text)
 }
@@ -71,6 +71,7 @@ The next step is to create a banner component
 
 ```vue
 <script setup lang="ts">
+import { computed } from "#imports";
 interface GlobalBanner {
   text: string;
   color: string;
@@ -124,7 +125,7 @@ Create new collection type `Page` on the Strapi admin site with fields:
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages.ts" code lang="ts" no-name -->
 
 ```ts
-interface {
+interface StrapiContentPage {
   text: string; // Content page
   seoUrl: string; // Page slug
 }
@@ -137,6 +138,8 @@ Composable for resolving components
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-2.ts" code lang="ts" no-name -->
 
 ```ts
+import { h, resolveComponent } from "#imports";
+
 interface StripePage {
   text: string;
   seoUrl: string;
@@ -171,6 +174,8 @@ Provide Strapi resolver to the `pageRenderMiddlewares`
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-3.ts" code lang="ts" no-name -->
 
 ```ts
+import { provide, resolveComponent } from "#imports";
+
 const { resolveComponent } = useSWStrapi();
 provide("pageRenderMiddlewares", resolveComponent);
 ```

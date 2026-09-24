@@ -53,6 +53,8 @@ First, obtain an app token from Shopware, then exchange it for a Braintree clien
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-1-get-client-token.ts" code lang="ts" no-name -->
 
 ```ts
+import { useSessionContext, useShopwareContext } from "#imports";
+
 const { apiClient } = useShopwareContext();
 const { sessionContext } = useSessionContext();
 
@@ -114,6 +116,8 @@ When the user submits payment, get the nonce from the Drop-in, create the order,
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-3-create-order-and-handle-payment.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCheckout, useShopwareContext } from "#imports";
+
 const { createOrder } = useCheckout();
 const { apiClient } = useShopwareContext();
 

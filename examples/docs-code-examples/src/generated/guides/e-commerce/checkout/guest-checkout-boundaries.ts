@@ -1,3 +1,5 @@
+import { useUser } from "#imports";
+
 const { logout } = useUser();
 
 try {

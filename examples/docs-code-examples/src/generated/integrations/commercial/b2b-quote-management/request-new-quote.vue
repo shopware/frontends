@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useCart, useB2bQuoteManagement } from "@shopware/composables";
+import { ref } from "vue";
 const { cartItems } = useCart();
 const { requestQuote } = UseB2bQuoteManagement();
 const comment = ref("");

@@ -1,3 +1,5 @@
+import { useCart } from "#imports";
+
 const { changeProductQuantity } = useCart();
 
 const cartItem: LineItem = {

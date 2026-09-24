@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { h, onMounted, useCart } from "#imports";
 const { count, refreshCart, cartItems, removeItem, totalPrice } = useCart();
 
 onMounted(() => {

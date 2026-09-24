@@ -1,6 +1,7 @@
 <!-- Category.vue -->
 
 <script setup>
+import { useCategory, useCategorySearch, useRoute } from "#imports";
 const { path } = useRoute();
 const { search } = useCategorySearch();
 

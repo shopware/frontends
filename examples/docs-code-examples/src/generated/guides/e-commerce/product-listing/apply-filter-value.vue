@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useListing } from "#imports";
 const { setCurrentFilters } = useListing(/** parameters omitted */);
 
 setCurrentFilters({

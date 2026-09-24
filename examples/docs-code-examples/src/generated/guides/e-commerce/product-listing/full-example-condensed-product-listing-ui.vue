@@ -2,6 +2,8 @@
 import { useProductSearchSuggest } from "@shopware/composables";
 import { getTranslatedProperty } from "@shopware/helpers";
 
+import { h, onMounted, useCart } from "#imports";
+
 const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
 
 onMounted(() => {

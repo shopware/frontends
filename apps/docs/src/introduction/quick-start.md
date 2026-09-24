@@ -39,7 +39,7 @@ npm i && npm run dev
 
 The directory structure follows [Nuxt 4.x conventions](https://nuxt.com/docs/guide/directory-structure) with the `app/` directory:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/directory-structure.json" code lang="json" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/directory-structure.txt" code lang="json" no-name -->
 
 ```json
 my-store/
@@ -99,6 +99,8 @@ In order to connect it to your own store backend, you need to edit the `nuxt.con
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/quick-start/configure.ts" code lang="ts" no-name -->
 
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 /* ... */
 export default defineNuxtConfig({
   runtimeConfig: {

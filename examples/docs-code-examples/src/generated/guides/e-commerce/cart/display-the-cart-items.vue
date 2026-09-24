@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useCart } from "#imports";
 const { cartItems, totalPrice, count } = useCart();
 </script>
 <template>

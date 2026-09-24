@@ -25,6 +25,8 @@ Before fetching, ensure the cart is not empty by using `refreshCart` in the `use
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCheckout } from "#imports";
+
 const { getShippingMethods } = useCheckout();
 
 await getShippingMethods();
@@ -38,6 +40,7 @@ await getShippingMethods();
 
 ```vue
 <script setup lang="ts">
+import { computed, useCheckout } from "#imports";
 const {
   shippingMethods,
   setShippingMethod,
@@ -85,6 +88,8 @@ You can also display:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCheckout } from "#imports";
+
 const { getPaymentMethods } = useCheckout();
 
 await getPaymentMethods();
@@ -98,6 +103,7 @@ await getPaymentMethods();
 
 ```vue
 <script setup lang="ts">
+import { computed, useCheckout } from "#imports";
 const {
   paymentMethods,
   selectedPaymentMethod: paymentMethod,
@@ -140,6 +146,7 @@ Those data will be used to create a standard or temporary account.
 
 ```vue
 <script setup lang="ts">
+import { reactive, useCountries, useSalutations, useUser } from "#imports";
 const state = reactive({
   salutationId: "",
   firstName: "",
@@ -278,6 +285,7 @@ Totals should **not** be calculated by the frontend. All calculations should be 
 
 ```vue
 <script setup lang="ts">
+import { useCart, usePrice } from "#imports";
 const { refreshCart, cartItems, subtotal, totalPrice, shippingTotal } =
   useCart();
 const { getFormattedPrice } = usePrice();
@@ -316,6 +324,8 @@ After placing an order with the `createOrder` method, the cart is refreshed auto
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order.ts" code lang="ts" no-name -->
 
 ```ts
+import { useCart, useCheckout } from "#imports";
+
 const { createOrder } = useCheckout();
 const { refreshCart } = useCart();
 
@@ -331,6 +341,8 @@ The backend allows fetching orders related only to the current user by checking 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order-2.ts" code lang="ts" no-name -->
 
 ```ts
+import { useOrderDetails } from "#imports";
+
 const {
   loadOrderDetails,
   personalDetails,
@@ -359,6 +371,8 @@ progression when it fails.
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/guest-checkout-boundaries.ts" code lang="ts" no-name -->
 
 ```ts
+import { useUser } from "#imports";
+
 const { logout } = useUser();
 
 try {

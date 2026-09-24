@@ -1,3 +1,5 @@
+import { h, resolveComponent } from "#imports";
+
 interface StripePage {
   text: string;
   seoUrl: string;

@@ -42,6 +42,8 @@ In a Nuxt application, extend the CMS layer and, if you want the shared styling 
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/install-the-package.ts" code lang="ts" no-name -->
 
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",

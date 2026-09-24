@@ -53,6 +53,8 @@ Every error thrown within the application is automatically caught and the `error
 ```ts
 import { isMaintenanceMode } from "@shopware/helpers";
 
+import { createError } from "#imports";
+
 apiClient.hook("onResponseError", (response) => {
   const error = isMaintenanceMode(response._data?.errors ?? []);
   if (error) {
@@ -73,6 +75,7 @@ apiClient.hook("onResponseError", (response) => {
 ```vue
 // error.vue
 <script setup lang="ts">
+import { computed } from "#imports";
 const props = defineProps<{
   error: {
     statusCode: number;

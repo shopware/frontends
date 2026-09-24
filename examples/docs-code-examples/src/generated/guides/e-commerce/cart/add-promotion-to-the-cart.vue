@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, useCart } from "#imports";
 const promotionCode = ref<string>();
 const { addPromotionCode, appliedPromotionCodes } = useCart();
 </script>

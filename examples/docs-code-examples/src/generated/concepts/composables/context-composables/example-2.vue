@@ -1,6 +1,7 @@
 <!-- CategoryHeader.vue -->
 
 <script setup>
+import { useCategory } from "#imports";
 // Resolving the category from the closest parent context boundary
 const { category } = useCategory();
 </script>

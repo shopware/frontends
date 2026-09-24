@@ -1,7 +1,7 @@
 <!-- app/components/PageBuilder.vue -->
 <script setup lang="ts">
-import SectionHero from "./sections/SectionHero.vue";
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
+import SectionHero from "./sections/SectionHero.vue";
 // ...
 
 const components = {
