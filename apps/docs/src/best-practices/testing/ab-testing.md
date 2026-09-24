@@ -42,14 +42,26 @@ You should split your components dynamically. This will help you to avoid enlarg
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/split-components-dynamically-to-avoid-enlagred-bundle-sizes.vue" code lang="vue" no-name -->
 
-```ts
+```vue
+<script setup lang="ts">
+import { defineAsyncComponent } from "vue";
+
+function useABTesting(_flag: string) {
+  return true;
+}
+
 const myExperimentFlag = useABTesting("myExperimentFlag");
 
-const MyComponent = myExperimentFlag ? import("./MyComponentVariantA") : import("./MyComponentVariantB");
+const MyComponent = defineAsyncComponent(() =>
+  myExperimentFlag
+    ? import("./MyComponentVariantA.vue")
+    : import("./MyComponentVariantB.vue"),
+);
+</script>
 
-// later in the template
-
-<MyComponent />
+<template>
+  <MyComponent />
+</template>
 ```
 
 <!-- /automd -->
@@ -60,20 +72,28 @@ While dynamic splitting is very effective to avoid loading too much code to the 
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/testing-smaller-components.vue" code lang="vue" no-name -->
 
-```ts
+```vue
+<script setup lang="ts">
+function useABTesting(_flag: string) {
+  return true;
+}
+
 const myExperimentFlag = useABTesting("myExperimentFlag");
+</script>
 
-// later in the template
+<template>
+  <button
+    :class="{
+      'bg-color-red': myExperimentFlag,
+      'bg-color-blue': !myExperimentFlag,
+    }"
+  >
+    Click me
+  </button>
 
-<button :class={{
-  "bg-color-red": myExperimentFlag,
-  "bg-color-blue": !myExperimentFlag
-}}> Click me </button>
-
-// or more slear split using v-show/v-if
-
-<button v-if="myExperimentFlag" class="bg-color-red"> Click me </button>
-<button v-else class="bg-color-blue"> Click me please! </button>
+  <button v-if="myExperimentFlag" class="bg-color-red">Click me</button>
+  <button v-else class="bg-color-blue">Click me please!</button>
+</template>
 ```
 
 <!-- /automd -->

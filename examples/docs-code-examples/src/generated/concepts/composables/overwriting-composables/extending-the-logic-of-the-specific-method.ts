@@ -1,13 +1,17 @@
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
 
   const addToCart = async (quantity: number) => {
-    const result = await coreFunctionality.addToCart(quantity);
+    coreFunctionality.quantity.value = quantity;
+    const result = await coreFunctionality.addToCart();
     // here we can call analytics, we have access to product, added quantity and result of the core addToCart method
     return result; // going back to the original method, result can also be modified by you
   };

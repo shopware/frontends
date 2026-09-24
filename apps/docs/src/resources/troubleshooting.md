@@ -38,6 +38,7 @@ In general, the store API should only output content that would also be visible 
 
 - Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
+
 <!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
 
 ```ts
@@ -56,6 +57,7 @@ export default defineNuxtConfig({
 ```
 
 <!-- /automd -->
+
 - Start your dev server with `pnpm run dev`
 - Your browser may ask you to accept the risk when you visit `https://localhost:3000`. This is because it is a self-signed certificate.
 
@@ -70,13 +72,15 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
 <!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.ts" code lang="ts" no-name -->
 
 ```ts
-// a part of nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
 
+export default defineNuxtConfig({
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // access token for corresponding sales channel
     endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
     devStorefrontUrl: "https://demo-frontends.shopware.store", // see section below
   },
+});
 ```
 
 <!-- /automd -->
@@ -102,7 +106,7 @@ Set `devStorefrontUrl` to a domain that is configured in your Shopware admin und
 // nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
-export default defineNuxtConfig({
+const config = {
   runtimeConfig: {
     public: {
       shopware: {
@@ -112,7 +116,9 @@ export default defineNuxtConfig({
       },
     },
   },
-});
+};
+
+export default defineNuxtConfig(config);
 ```
 
 <!-- /automd -->
@@ -246,11 +252,15 @@ If you're using `@shopware/cms-base-layer`, you can extend both layers together:
 <!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.ts" code lang="ts" no-name -->
 
 ```ts
-extends: [
-  "@shopware/composables/nuxt-layer",
-  "@shopware/cms-base-layer",
-  "@shopware/unocss-design-tokens-layer"
-],
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
+});
 ```
 
 <!-- /automd -->

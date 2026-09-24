@@ -27,9 +27,12 @@ In order to extend or overwrite the logic of the composables, you need to create
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
   return {
     ...coreFunctionality,
@@ -62,9 +65,14 @@ This case is not problematic, as the existing API is not changing. Let's try to 
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref, computed, useCart } from "#imports";
+import { computed, useCart } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+type LineItem = Schemas["LineItem"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
   const { cartItems } = useCart();
 
@@ -95,13 +103,17 @@ This might be especially useful for high customization. Let's say we want to add
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
 
   const addToCart = async (quantity: number) => {
-    const result = await coreFunctionality.addToCart(quantity);
+    coreFunctionality.quantity.value = quantity;
+    const result = await coreFunctionality.addToCart();
     // here we can call analytics, we have access to product, added quantity and result of the core addToCart method
     return result; // going back to the original method, result can also be modified by you
   };
@@ -127,12 +139,16 @@ Sometimes you want to completly replace original logic, maybe you want to call a
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
 
   const addToCart = async (quantity: number) => {
+    void quantity;
     // your own logic withoout core functionality. Mind to return the same interface as the original one and change it only if you know what you're doing
   };
 
@@ -154,9 +170,13 @@ If you need to replace whole composable logic you can do this by not invoking co
 ```ts
 // composables/useAddToCart.ts
 
-import { Ref, useAddToCart } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
+  void product;
   // your own implementation
 }
 ```

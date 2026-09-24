@@ -1,9 +1,12 @@
 import { useAddToCart as coreUseAddToCart } from "@shopware/composables";
 
 // composables/useAddToCart.ts
-import { Ref } from "#imports";
+import type { Ref } from "#imports";
+import type { Schemas } from "#shopware";
 
-export function useAddToCart(product: Ref<Product>) {
+type Product = Schemas["Product"];
+
+export function useAddToCart(product: Ref<Product | undefined>) {
   const coreFunctionality = coreUseAddToCart(product);
   return {
     ...coreFunctionality,
