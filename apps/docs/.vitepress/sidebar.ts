@@ -289,6 +289,10 @@ export const sidebar = [
             text: "Product Reviews",
             link: "/frontends-recipes/catalog/reviews.html",
           },
+          {
+            text: "Product Variants",
+            link: "/frontends-recipes/catalog/variants.html",
+          },
         ],
       },
       {
