@@ -1,4 +1,6 @@
 // studio/schemaTypes/documents/page.ts
+import { defineField } from "sanity";
+
 defineField({
   name: "pageBuilder",
   type: "array",

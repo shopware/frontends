@@ -1,4 +1,4 @@
-import { h, resolveComponent } from "#imports";
+import { h, useStrapi } from "#imports";
 
 interface StripePage {
   text: string;

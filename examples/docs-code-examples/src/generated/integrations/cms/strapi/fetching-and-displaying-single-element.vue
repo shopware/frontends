@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from "#imports";
+import { computed, useStrapi } from "#imports";
+
 interface GlobalBanner {
   text: string;
   color: string;

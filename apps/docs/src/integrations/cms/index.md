@@ -82,19 +82,19 @@ CMS later.
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture.ts" code lang="ts" no-name -->
 
 ```ts
-type CmsRouteContext = {
+export type CmsRouteContext = {
   path: string;
   locale: string;
   salesChannelId?: string;
 };
 
-type CmsBlock = {
+export type CmsBlock = {
   id: string;
   type: string;
   props: Record<string, unknown>;
 };
 
-type CmsPage = {
+export type CmsPage = {
   title?: string;
   seo?: {
     title?: string;
@@ -103,7 +103,7 @@ type CmsPage = {
   blocks: CmsBlock[];
 };
 
-type CmsAdapter = {
+export type CmsAdapter = {
   resolvePage(context: CmsRouteContext): Promise<CmsPage | null>;
 };
 ```
@@ -113,7 +113,7 @@ type CmsAdapter = {
 Then implement the adapter with the CMS tooling your project uses. The rest of
 the storefront should only depend on the normalized contract:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-2.ts" lines="3:14" code lang="ts" no-name -->
 
 ```ts
 export function createCmsResolver(adapter: CmsAdapter) {
@@ -135,7 +135,7 @@ export function createCmsResolver(adapter: CmsAdapter) {
 The adapter can call a REST API, GraphQL API, SDK, or internal service. Keep that
 vendor-specific code in one place:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-3.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-3.ts" lines="23:31" code lang="ts" no-name -->
 
 ```ts
 const cmsAdapter: CmsAdapter = {
@@ -215,7 +215,15 @@ a route component.
 ```vue
 <!-- app/pages/[...all].vue -->
 <script setup lang="ts">
-import { createError, useAsyncData, useRoute, useSeoMeta } from "#imports";
+import {
+  createError,
+  useAsyncData,
+  useExternalCms,
+  useI18n,
+  useRoute,
+  useSeoMeta,
+} from "#imports";
+
 const route = useRoute();
 const { locale } = useI18n();
 const { resolvePage } = useExternalCms();
@@ -330,7 +338,7 @@ routes such as `/checkout`, `/account/**`, and cart flows out of ISR.
 Pass the active storefront locale to the CMS resolver and keep a clear fallback
 policy:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/localization.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/localization.ts" lines="11:12" code lang="ts" no-name -->
 
 ```ts
 const { locale } = useI18n();

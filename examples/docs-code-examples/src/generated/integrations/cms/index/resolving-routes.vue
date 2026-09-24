@@ -1,6 +1,14 @@
 <!-- app/pages/[...all].vue -->
 <script setup lang="ts">
-import { createError, useAsyncData, useRoute, useSeoMeta } from "#imports";
+import {
+  createError,
+  useAsyncData,
+  useExternalCms,
+  useI18n,
+  useRoute,
+  useSeoMeta,
+} from "#imports";
+
 const route = useRoute();
 const { locale } = useI18n();
 const { resolvePage } = useExternalCms();

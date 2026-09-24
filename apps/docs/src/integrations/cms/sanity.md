@@ -123,6 +123,8 @@ export const featuredProducts = defineType({
 
 ```ts
 // studio/schemaTypes/documents/page.ts
+import { defineField } from "sanity";
+
 defineField({
   name: "pageBuilder",
   type: "array",
@@ -148,6 +150,8 @@ Fetch the page builder with GROQ and map each block `_type` to a component.
 ```vue
 <!-- app/app.vue -->
 <script setup lang="ts">
+import { groq, useSanityQuery } from "#imports";
+
 const PAGE_QUERY = groq`*[_type == "page"] | order(_createdAt asc)[0]{
   title,
   pageBuilder[]{ ... }
@@ -167,11 +171,13 @@ const { data: page } = await useSanityQuery(PAGE_QUERY);
 ```vue
 <!-- app/components/PageBuilder.vue -->
 <script setup lang="ts">
+import type { Component } from "vue";
+
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
 import SectionHero from "./sections/SectionHero.vue";
 // ...
 
-const components = {
+const components: Record<string, Component> = {
   hero: SectionHero,
   featuredProducts: SectionFeaturedProducts,
   // richText, banner, gallery...
@@ -245,14 +251,22 @@ cart and raises a toast; a mini cart reads the live cart:
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications.ts" code lang="ts" no-name -->
 
 ```ts
-import { useAddToCart, useNotifications } from "#imports";
+import { ref, useAddToCart, useNotifications } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref<Schemas["Product"] | undefined>({
+  id: "example-product-id",
+  translated: {
+    name: "Example product",
+  },
+} as Schemas["Product"]);
 
 const { addToCart } = useAddToCart(product);
 const { pushSuccess } = useNotifications();
 
 const add = async () => {
   await addToCart();
-  pushSuccess(`${product.value.translated?.name} added to cart`);
+  pushSuccess(`${product.value?.translated?.name ?? "Product"} added to cart`);
 };
 ```
 
