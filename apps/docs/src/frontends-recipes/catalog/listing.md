@@ -268,8 +268,9 @@ const sortOptions = computed<SortOption[]>(() => getSortingOrders.value ?? []);
 // getListingFilters types its options far more loosely than the payload is:
 // a property group carries PropertyGroupOption[] under `options`, a manufacturer
 // aggregation carries ProductManufacturer[] under `entities`. Both have a name.
-type FilterOption =
-  Schemas["PropertyGroupOption"] | Schemas["ProductManufacturer"];
+type PropertyOption = Schemas["PropertyGroupOption"];
+type ManufacturerOption = Schemas["ProductManufacturer"];
+type FilterOption = PropertyOption | ManufacturerOption;
 
 const optionsOf = (filter: { options?: unknown; entities?: unknown }) =>
   (filter.options ?? filter.entities ?? []) as FilterOption[];
