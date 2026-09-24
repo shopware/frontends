@@ -1,7 +1,7 @@
 // nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
-export default defineNuxtConfig({
+const config = {
   runtimeConfig: {
     public: {
       shopware: {
@@ -11,4 +11,6 @@ export default defineNuxtConfig({
       },
     },
   },
-});
+};
+
+export default defineNuxtConfig(config);

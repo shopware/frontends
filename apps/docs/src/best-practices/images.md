@@ -125,6 +125,7 @@ When Images occupy a big amount of space on web pages, they are a common cause o
 
 - Always set `width` and `hight` attributes for your `<img>` elements, with values matching size of image source. So even if they are being loaded, the space of layout will be filled out.
 - Define CSS style to override `<img>` attributes (there is a moment when image element is available in DOM, and CSS is not loaded yet):
+
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/images/reduce-cumulative-layout-shift-cls.css" code lang="css" no-name -->
 
 ```css
@@ -135,6 +136,7 @@ img {
 ```
 
 <!-- /automd -->
+
 - Try to use low-quality placeholders (based on svg, for example) to avoid having empty blank spaces within the layout:
     <div role="status" class="mt-4 max-w-sm p-4 animate-pulse md:p-6 ">
         <div class="flex items-center justify-center h-32 mb-4 bg-gray-300 rounded dark:bg-gray-700">

@@ -1,11 +1,10 @@
 import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
 import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-
-import { provide } from "#imports";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 export type ShopwareFrontendsOptions = {
@@ -29,6 +28,12 @@ export default {
       baseURL: options.endpoint,
       accessToken: options.accessToken,
       contextToken: contextToken.value,
+      fetchOptions: {
+        timeout: options.shopwareApiClient?.timeout || 5000,
+      },
+      defaultHeaders: {
+        "sw-language-id": languageId.value,
+      },
     });
 
     const shopwareContext = createShopwareContext(app, {

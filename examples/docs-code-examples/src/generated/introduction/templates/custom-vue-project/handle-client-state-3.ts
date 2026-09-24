@@ -1,4 +1,11 @@
-import { provide, ref } from "#imports";
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { createShopwareContext } from "@shopware/composables";
+import { createApp, ref } from "vue";
+
+const app = createApp({});
+const apiClient = createAPIClient<operations>({});
+const shopwareContext = createShopwareContext(app, {});
 
 app.provide("apiClient", apiClient);
 app.provide("shopware", shopwareContext);

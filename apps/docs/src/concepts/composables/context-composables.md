@@ -15,7 +15,13 @@ Instead of doing this:
 ```vue
 <!-- Product.vue -->
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
+
 const product = searchProduct();
+
+function searchProduct(): Schemas["Product"] {
+  return {} as Schemas["Product"];
+}
 </script>
 <template>
   <div>
@@ -31,6 +37,10 @@ const product = searchProduct();
 ```vue
 <!-- ProductConfigurator.vue -->
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
+
+type Product = Schemas["Product"];
+
 const props = defineProps<{
   product: Product;
 }>();
@@ -49,13 +59,19 @@ const props = defineProps<{
 ```vue
 <!-- ProductPrice.vue -->
 <script setup lang="ts">
+import { getFormattedPrice } from "@shopware/helpers";
+
+import type { Schemas } from "#shopware";
+
+type Product = Schemas["Product"];
+
 const props = defineProps<{
   product: Product;
 }>();
 </script>
 <template>
   <div>
-    {{ getFormattedPrice(product.price) }}
+    {{ getFormattedPrice(product.calculatedPrice.unitPrice, "$") }}
   </div>
 </template>
 ```

@@ -142,7 +142,20 @@ The install method is a good place to do that:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-3.ts" code lang="ts" no-name -->
 
 ```ts
-import { ref } from "#imports";
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import Cookies from "js-cookie";
+import { ref } from "vue";
+
+import type { ShopwareFrontendsOptions } from "./configure-api-client-2";
+
+const options: ShopwareFrontendsOptions = {
+  endpoint: "https://demo-frontends.swstage.store/store-api",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  shopwareApiClient: {
+    timeout: 5000,
+  },
+};
 
 const cookieContextToken = Cookies.get("sw-context-token");
 const cookieLanguageId = Cookies.get("sw-language-id");
@@ -150,13 +163,19 @@ const cookieLanguageId = Cookies.get("sw-language-id");
 const contextToken = ref(cookieContextToken);
 const languageId = ref(cookieLanguageId);
 
-const instance = createInstance({
-  endpoint: options.endpoint,
+const apiClient = createAPIClient<operations>({
+  baseURL: options.endpoint,
   accessToken: options.accessToken,
-  timeout: options.shopwareApiClient?.timeout || 5000,
+  fetchOptions: {
+    timeout: options.shopwareApiClient?.timeout || 5000,
+  },
   contextToken: contextToken.value,
-  languageId: languageId.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
 });
+
+export { apiClient, contextToken, languageId };
 ```
 
 <!-- /automd -->
@@ -169,30 +188,53 @@ Complete code example can be found [HERE](./custom-vue-project.html#plugin-code)
 
 Now, we need to ensure that the context token, which identifies a user session, is properly stored and updated. The context token may change after operations like login or logout.
 
-Then, we can take advantage of the onConfigChange method. It executes when the API client detects a new value of the context token coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
+Then, we can take advantage of the `onDefaultHeaderChanged` hook. It executes when the API client detects a changed default header value coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state.ts" code lang="ts" no-name -->
 
 ```ts
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import Cookies from "js-cookie";
+import { ref } from "vue";
+
+const contextToken = ref(Cookies.get("sw-context-token"));
+const languageId = ref(Cookies.get("sw-language-id"));
+const apiClient = createAPIClient<operations>({
+  baseURL: "https://demo-frontends.swstage.store/store-api",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: contextToken.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
+});
+
 /**
  * Save current contextToken when it changes
  */
-instance.onConfigChange(({ config }) => {
+apiClient.hook("onDefaultHeaderChanged", (headerName, value) => {
   try {
-    Cookies.set("sw-context-token", config.contextToken || "", {
-      expires: 365,
-      sameSite: "Lax",
-      path: "/",
-    });
-    Cookies.set("sw-language-id", config.languageId || "", {
-      expires: 365,
-      sameSite: "Lax",
-      path: "/",
-    });
+    const headerValue = typeof value === "string" ? value : "";
 
-    contextToken.value = config.contextToken;
-    languageId.value = config.languageId;
-  } catch (e) {
+    if (headerName === "sw-context-token") {
+      Cookies.set("sw-context-token", headerValue, {
+        expires: 365,
+        sameSite: "Lax",
+        path: "/",
+      });
+      contextToken.value = headerValue;
+    }
+
+    if (headerName === "sw-language-id") {
+      Cookies.set("sw-language-id", headerValue, {
+        expires: 365,
+        sameSite: "Lax",
+        path: "/",
+      });
+      languageId.value = headerValue;
+    }
+  } catch (error) {
+    void error;
     // Sometimes cookie is set on server after request is send, it can fail silently
   }
 });
@@ -205,11 +247,19 @@ Another step is to create a Shopware instance that combines API Client and the b
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-2.ts" code lang="ts" no-name -->
 
 ```ts
-import { createShopwareContext } from "#imports";
+import { createShopwareContext } from "@shopware/composables";
+import { createApp } from "vue";
+
+const app = createApp({});
+const options = {
+  enableDevtools: false,
+};
 
 const shopwareContext = createShopwareContext(app, {
   enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
 });
+
+export { shopwareContext };
 ```
 
 <!-- /automd -->
@@ -219,7 +269,14 @@ And the last step is to provide the shopwareContext:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-3.ts" code lang="ts" no-name -->
 
 ```ts
-import { provide, ref } from "#imports";
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { createShopwareContext } from "@shopware/composables";
+import { createApp, ref } from "vue";
+
+const app = createApp({});
+const apiClient = createAPIClient<operations>({});
+const shopwareContext = createShopwareContext(app, {});
 
 app.provide("apiClient", apiClient);
 app.provide("shopware", shopwareContext);
@@ -261,13 +318,12 @@ app.mount("#app");
 
 ```ts
 import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
 import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-
-import { provide } from "#imports";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 export type ShopwareFrontendsOptions = {
@@ -291,6 +347,12 @@ export default {
       baseURL: options.endpoint,
       accessToken: options.accessToken,
       contextToken: contextToken.value,
+      fetchOptions: {
+        timeout: options.shopwareApiClient?.timeout || 5000,
+      },
+      defaultHeaders: {
+        "sw-language-id": languageId.value,
+      },
     });
 
     const shopwareContext = createShopwareContext(app, {
@@ -330,18 +392,42 @@ NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
 
 <!-- /automd -->
 
-Otherwise, make sure that you are setting different values on the create instance phase
+Otherwise, make sure that you are setting different values when creating the API client:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode.ts" code lang="ts" no-name -->
 
 ```ts
-const instance = createInstance({
-  endpoint: ssrValue || clientValue,
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { ref } from "vue";
+
+import type { ShopwareFrontendsOptions } from "./configure-api-client-2";
+
+const ssrValue = "http://shopware";
+const clientValue = "https://demo-frontends.shopware.store";
+const options: ShopwareFrontendsOptions = {
+  endpoint: clientValue,
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  shopwareApiClient: {
+    timeout: 5000,
+  },
+};
+const contextToken = ref<string>();
+const languageId = ref<string>();
+
+const apiClient = createAPIClient<operations>({
+  baseURL: ssrValue || clientValue,
   accessToken: options.accessToken,
-  timeout: options.shopwareApiClient?.timeout || 5000,
+  fetchOptions: {
+    timeout: options.shopwareApiClient?.timeout || 5000,
+  },
   contextToken: contextToken.value,
-  languageId: languageId.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
 });
+
+export { apiClient };
 ```
 
 <!-- /automd -->

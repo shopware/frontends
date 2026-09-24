@@ -24,8 +24,6 @@ Example:
 import { useCartFunction } from "@shopware/composables";
 import { createSharedComposable } from "@vueuse/core";
 
-import { useCart } from "#imports";
-
 function myUseCart() {
   const coreCartFunctions = useCartFunction();
 

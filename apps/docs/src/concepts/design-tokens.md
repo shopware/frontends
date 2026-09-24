@@ -60,12 +60,14 @@ Override or extend tokens in your project's `uno.config.ts`:
 <!-- automd:file src="examples/docs-code-examples/src/generated/concepts/design-tokens/customising-tokens.ts" code lang="ts" no-name -->
 
 ```ts
-theme: {
-  colors: {
-    "brand-primary": "#123456",   // overwrite an existing token
-    "custom-accent": "#FF00FF",   // add a new token
+export default {
+  theme: {
+    colors: {
+      "brand-primary": "#123456", // overwrite an existing token
+      "custom-accent": "#FF00FF", // add a new token
+    },
   },
-}
+};
 ```
 
 <!-- /automd -->

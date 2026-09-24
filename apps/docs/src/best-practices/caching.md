@@ -166,29 +166,33 @@ The `vue-demo-store` template uses a 24-hour window on the homepage and the catc
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.ts" code lang="ts" no-name -->
 
 ```ts
-routeRules: {
-  "/": {
-    isr: 60 * 60 * 24, // 86400s = 24h
-  },
-  "/checkout": {
-    ssr: false,
-    headers: {
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    "/": {
+      isr: 60 * 60 * 24, // 86400s = 24h
+    },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": { ssr: false },
+    "/login": { ssr: false },
+    "/register": { ssr: false },
+    "/reset-password": { ssr: false },
+    "/wishlist": { ssr: false },
+    "/account": { ssr: false },
+    "/account/**": { ssr: false },
+    "/search": { ssr: false },
+    "/search/**": { ssr: false },
+    "/**": {
+      isr: 60 * 60 * 24, // catch-all 24h ISR
     },
   },
-  "/checkout/**": { ssr: false },
-  "/login": { ssr: false },
-  "/register": { ssr: false },
-  "/reset-password": { ssr: false },
-  "/wishlist": { ssr: false },
-  "/account": { ssr: false },
-  "/account/**": { ssr: false },
-  "/search": { ssr: false },
-  "/search/**": { ssr: false },
-  "/**": {
-    isr: 60 * 60 * 24, // catch-all 24h ISR
-  },
-}
+});
 ```
 
 <!-- /automd -->
@@ -198,27 +202,31 @@ The `vue-starter-template` uses a shorter 60-minute window. The source comment c
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
 
 ```ts
-routeRules: {
-  "/**": {
-    // 60-minute ISR - increase for mostly-static storefronts, decrease for frequently updated content
-    isr: 60 * 60, // 3600s
-  },
-  "/**/*.svg": {
-    headers: {
-      "Cache-Control": "public, max-age=31536000, immutable", // 1 year
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    "/**": {
+      // 60-minute ISR - increase for mostly-static storefronts, decrease for frequently updated content
+      isr: 60 * 60, // 3600s
     },
-  },
-  "/checkout": {
-    ssr: false,
-    headers: {
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable", // 1 year
+      },
     },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": { ssr: false },
+    "/account": { ssr: false },
+    "/account/**": { ssr: false },
+    "/wishlist": { ssr: false },
   },
-  "/checkout/**": { ssr: false },
-  "/account": { ssr: false },
-  "/account/**": { ssr: false },
-  "/wishlist": { ssr: false },
-}
+});
 ```
 
 <!-- /automd -->
@@ -240,19 +248,25 @@ Route rules can set HTTP `Cache-Control` directly. The templates use it two ways
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.ts" code lang="ts" no-name -->
 
 ```ts
-// Prevent any caching on sensitive routes
-"/checkout": {
-  ssr: false,
-  headers: {
-    "Cache-Control": "no-cache, no-store, must-revalidate",
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    // Prevent any caching on sensitive routes
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    // Long-lived, immutable caching for static SVG assets
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
   },
-},
-// Long-lived, immutable caching for static SVG assets
-"/**/*.svg": {
-  headers: {
-    "Cache-Control": "public, max-age=31536000, immutable",
-  },
-},
+});
 ```
 
 <!-- /automd -->
