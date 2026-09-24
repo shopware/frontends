@@ -1,12 +1,13 @@
-import { ref } from "#imports";
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
 
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
-window.paypal
+paypal
   .Buttons({
-    fundingSource: paypal.FUNDING.VENMO,
-    createOrder: createOrder.bind(this, "venmo"),
-    onApprove: onApprove.bind(this),
+    fundingSource: "venmo",
+    createOrder: () => createOrder("venmo"),
+    onApprove,
 
     // ...
   })

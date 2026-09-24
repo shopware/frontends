@@ -8,7 +8,8 @@ const tokenResponse = await apiClient.invoke(
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token",
   { pathParams: { name: "SwagBraintreeApp" } },
 );
-const { token, shopId } = tokenResponse.data;
+const token = tokenResponse.data?.token ?? "";
+const shopId = tokenResponse.data?.shopId ?? "";
 
 // Get Braintree client config from the app server
 const currencyId = sessionContext.value?.currency?.id;

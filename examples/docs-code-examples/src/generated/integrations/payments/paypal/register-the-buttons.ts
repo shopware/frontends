@@ -1,11 +1,8 @@
-import { ref } from "#imports";
+import { getPayPal } from "./snippet-context";
 
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
 // client only
-window.paypal
-  .Buttons({
-    /** configuration skipped */
-  })
-  .render(divContainer);
+paypal.Buttons({}).render(divContainer);
 // this script will mount the component in element `divContainer`

@@ -48,4 +48,4 @@ const paypalButtons = {
   },
 };
 
-paypalButtons.onApprove;
+void paypalButtons.onApprove;

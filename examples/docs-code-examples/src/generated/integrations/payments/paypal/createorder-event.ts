@@ -1,11 +1,12 @@
-import { ref } from "#imports";
+import { apiClient, getPayPal } from "./snippet-context";
 
-const divContainer = ref();
+const paypal = getPayPal();
+const divContainer = "#paypal-button-container";
 
 // client only
-window.paypal
+paypal
   .Buttons({
-    createOrder: async (data: CreateOrderData, actions: CreateOrderActions) => {
+    createOrder: async () => {
       const response = await apiClient.invoke(
         "createPayPalOrder post /store-api/paypal/create-order",
       );

@@ -1,8 +1,17 @@
+import { createOrder, getPayPal, onApprove } from "./snippet-context";
+
+const paypal = getPayPal();
+
 const cardFields = paypal.CardFields({
-  createOrder: createOrder.bind(this, "acdc"),
-  onApprove: onApprove.bind(this),
+  createOrder: () => createOrder("acdc"),
+  onApprove,
+  onError(error) {
+    console.error(error);
+  },
   style: {
-    /** some custom styling */
+    input: {
+      color: "#1f2937",
+    },
   },
 });
 

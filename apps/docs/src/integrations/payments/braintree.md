@@ -63,7 +63,8 @@ const tokenResponse = await apiClient.invoke(
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token",
   { pathParams: { name: "SwagBraintreeApp" } },
 );
-const { token, shopId } = tokenResponse.data;
+const token = tokenResponse.data?.token ?? "";
+const shopId = tokenResponse.data?.shopId ?? "";
 
 // Get Braintree client config from the app server
 const currencyId = sessionContext.value?.currency?.id;
@@ -90,10 +91,12 @@ Use the `shopware-app-token` header, **NOT** `Authorization: Bearer`. Using the 
 
 ## Step 2: Initialize Braintree Drop-in
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-2-initialize-braintree-drop-in.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-2-initialize-braintree-drop-in.ts" lines="1:" code lang="ts" no-name -->
 
 ```ts
 import dropin from "braintree-web-drop-in";
+
+import { clientToken } from "./snippet-context";
 
 const instance = await dropin.create({
   authorization: clientToken,
@@ -113,10 +116,12 @@ const instance = await dropin.create({
 
 When the user submits payment, get the nonce from the Drop-in, create the order, then call `/handle-payment` with the Braintree data.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-3-create-order-and-handle-payment.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-3-create-order-and-handle-payment.ts" lines="1:" code lang="ts" no-name -->
 
 ```ts
 import { useCheckout, useShopwareContext } from "#imports";
+
+import { instance } from "./snippet-context";
 
 const { createOrder } = useCheckout();
 const { apiClient } = useShopwareContext();
@@ -127,16 +132,17 @@ async function onPaymentSubmit() {
 
   // Create order (no braintree params here)
   const order = await createOrder();
+  const paymentPayload = {
+    orderId: order.id,
+    finishUrl: `${window.location.origin}/checkout/finish`,
+    errorUrl: `${window.location.origin}/checkout/error`,
+    braintreeNonce: nonce,
+    braintreeDeviceData: deviceData,
+  };
 
   // Handle payment WITH Braintree data
   await apiClient.invoke("handlePaymentMethod post /handle-payment", {
-    body: {
-      orderId: order.id,
-      finishUrl: `${window.location.origin}/checkout/finish`,
-      errorUrl: `${window.location.origin}/checkout/error`,
-      braintreeNonce: nonce,
-      braintreeDeviceData: deviceData,
-    },
+    body: paymentPayload,
   });
 }
 ```

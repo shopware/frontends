@@ -1,7 +1,9 @@
+import { cardFieldElements, cardFields } from "./snippet-context";
+
 async function onFormSubmit() {
   const cardState = await cardFields.getState();
 
-  if (state.isFormValid) {
+  if (cardState.isFormValid) {
     // This will trigger the `onApprove` event
     cardFields.submit();
 
@@ -9,8 +11,11 @@ async function onFormSubmit() {
   }
 
   // Do some advanced error handling, e.g. focus the invalid field
-  const firstInvalidFieldKey = Object.keys(state.fields).find(
-    (key) => !state.fields[key].isValid,
+  const firstInvalidFieldKey = Object.keys(cardState.fields).find(
+    (key): key is keyof typeof cardState.fields =>
+      !cardState.fields[key as keyof typeof cardState.fields].isValid,
   );
-  this.fields[firstInvalidFieldKey]?.focus();
+  if (firstInvalidFieldKey) {
+    cardFieldElements[firstInvalidFieldKey]?.focus();
+  }
 }
