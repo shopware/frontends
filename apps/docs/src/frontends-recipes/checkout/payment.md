@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 20
+  position: 40
 recipe:
   area: checkout
   status: stable
@@ -357,7 +357,7 @@ The example hands the redirect to the customer through a link, and points `finis
 
 The order is not part of the sales channel context, but reading it still depends on the `sw-context-token`: `readOrder post /order` returns the orders of the customer that the token resolves to. A return page therefore has to run in the same session.
 
-A guest whose session did not survive the provider needs the deep link flow instead — `readOrder post /order` accepts a `deepLinkCode` `filter` together with `email` and `zipcode`. `useOrderDetails` takes only an order id and extra associations, so it cannot send those fields. In that case build the call yourself and hand the resulting order to `useOrderPayment` as a `computed`. The body is required, and it still needs the associations and the `checkPromotion` flag:
+A guest whose session did not survive the provider needs the deep link flow instead — `readOrder post /order` accepts a `deepLinkCode` `filter` together with `email` and `zipcode`. `useOrderDetails` takes only an order id and extra associations, so it cannot send those fields — the [Guest Order Lookup recipe](../orders/guest-order-lookup.html) covers that flow in full. In that case build the call yourself and hand the resulting order to `useOrderPayment` as a `computed`. The body is required, and it still needs the associations and the `checkPromotion` flag:
 
 ```ts
 const response = await apiClient.invoke("readOrder post /order", {
@@ -385,7 +385,7 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 - `paymentChangeable` defaults to `false`, so a page that renders the method switcher before the order has loaded shows nothing.
 - `finishUrl` and `errorUrl` are optional in the schema, and omitting them leaves the return target to the payment handler. Pass absolute URLs built from `window.location.origin` — they are used after the browser has left your application.
 - `redirectUrl` is declared required and non-nullable in the generated response, so the types promise a `string` the schema cannot always deliver — a synchronous method has nowhere to send the customer. Guard the value before the browser sees it, and check the **scheme**, not just that it parses: `new URL()` resolves `javascript:` and `data:` without throwing. The starter template checks neither path: its watcher wraps `new URL()` in a `try/catch` and navigates as soon as the value parses, and its button path (`goToUrl`) assigns `window.location.href` with no check at all.
-- The declared type of `handlePayment` accepts a third `paymentDetails` argument, but neither implementation forwards it. The generated body declares only `orderId`, `finishUrl` and `errorUrl`, so a prepared payment flow that needs extra transaction fields has to add them through a schema override before `apiClient.invoke("handlePaymentMethod post /handle-payment")` will accept them.
+- The declared type of `handlePayment` accepts a third `paymentDetails` argument, but neither implementation has that parameter — both functions take only `finishUrl` and `errorUrl`, so the argument type-checks and is then ignored. The generated body declares only `orderId`, `finishUrl` and `errorUrl`, so a prepared payment flow that needs extra transaction fields has to add them through a schema override before `apiClient.invoke("handlePaymentMethod post /handle-payment")` will accept them.
 - A customer can close the provider tab and come back later. Treat `open` as a resumable state rather than a failure.
 
 ## Common Mistakes
@@ -418,6 +418,9 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 
 ## Related Links
 
+- [Order History recipe](../account/order-history.html)
+- [Order Details recipe](../orders/details.html)
+- [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Payments documentation](../../guides/e-commerce/payments.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)

@@ -437,6 +437,7 @@ Customer-specific prices, promotions and rules change with the customer context,
 
 ## Related Links
 
+- [Cart Errors recipe](cart-errors.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
