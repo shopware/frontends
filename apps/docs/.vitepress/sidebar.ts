@@ -282,6 +282,10 @@ export const sidebar = [
             link: "/frontends-recipes/catalog/listing.html",
           },
           {
+            text: "Prices and Tax State",
+            link: "/frontends-recipes/catalog/prices.html",
+          },
+          {
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",
           },
@@ -292,17 +296,6 @@ export const sidebar = [
           {
             text: "Product Variants",
             link: "/frontends-recipes/catalog/variants.html",
-          },
-        ],
-      },
-      {
-        text: "Catalog",
-        link: "/frontends-recipes/catalog/",
-        collapsed: true,
-        items: [
-          {
-            text: "Prices and Tax State",
-            link: "/frontends-recipes/catalog/prices.html",
           },
         ],
       },

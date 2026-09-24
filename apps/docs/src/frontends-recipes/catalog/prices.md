@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 15
 recipe:
   area: catalog
   status: stable
@@ -115,15 +115,15 @@ You do not need to compute a gross price from a net one, or a discount percentag
 
 ## Request Flow
 
-| Step                | Code                             | Store API                            | Type                                                                                |
-| ------------------- | -------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------- |
-| Read the tax state  | `taxState`                       | `GET /context`                       | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' /> |
-| Read the currency   | `currency`                       | `GET /context`                       | <SchemaTypeTooltip type-key='Schemas["Currency"]' />                                |
-| Switch the currency | `setCurrency({ id })`            | `PATCH /context` then `GET /context` | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' /> |
-| Pick the price      | `useProductPrice(product).price` | none                                 | <SchemaTypeTooltip type-key='Schemas["CalculatedPrice"]' />                         |
-| Read the reduction  | `price?.listPrice`               | none                                 | <SchemaTypeTooltip type-key='Schemas["CartListPrice"]' />                           |
-| Read the reference  | `referencePrice`                 | none                                 | <SchemaTypeTooltip type-key='Schemas["CartPriceReference"]' />                      |
-| Format for display  | `getFormattedPrice(unitPrice)`   | none                                 | <SchemaTypeTooltip type-key='Schemas["CalculatedPrice"]' />                         |
+| Step                | Code                                          | Store API                            | Type                                                                                |
+| ------------------- | --------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------- |
+| Read the tax state  | `taxState`                                    | `GET /context`                       | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' /> |
+| Read the currency   | `currency`                                    | `GET /context`                       | <SchemaTypeTooltip type-key='Schemas["Currency"]' />                                |
+| Switch the currency | `setCurrency({ id })`                         | `PATCH /context` then `GET /context` | <SchemaTypeTooltip type-key='operations["updateContext patch /context"]["body"]' /> |
+| Pick the price      | `useProductPrice(toRef(() => product)).price` | none                                 | <SchemaTypeTooltip type-key='Schemas["CalculatedPrice"]' />                         |
+| Read the reduction  | `price?.listPrice`                            | none                                 | <SchemaTypeTooltip type-key='Schemas["CartListPrice"]' />                           |
+| Read the reference  | `referencePrice`                              | none                                 | <SchemaTypeTooltip type-key='Schemas["CartPriceReference"]' />                      |
+| Format for display  | `getFormattedPrice(unitPrice)`                | none                                 | none — `Intl.NumberFormat` output                                                   |
 
 Only `setCurrency` issues requests, and it issues two: the `PATCH` and the `refreshSessionContext()` that follows it. The first two rows read the context that `GET /context` already populated, and every row below reads data the product response already carried — which is why displaying a price needs no request of its own.
 
@@ -206,13 +206,19 @@ const {
   regulationPrice,
 } = useProductPrice(toRef(() => product));
 
-const showFrom = computed(
-  () => displayFrom.value || !!displayFromVariants.value,
+// displayFromVariants is number | false | undefined. A free variant is 0,
+// which truthiness would throw away, so narrow on the numeric case.
+const variantsFrom = computed(() =>
+  typeof displayFromVariants.value === "number"
+    ? displayFromVariants.value
+    : undefined,
 );
 
-const displayedPrice = computed(() =>
-  displayFromVariants.value ? displayFromVariants.value : unitPrice.value,
+const showFrom = computed(
+  () => displayFrom.value || variantsFrom.value !== undefined,
 );
+
+const displayedPrice = computed(() => variantsFrom.value ?? unitPrice.value);
 
 const taxNote = computed(() => {
   if (taxState.value === "tax-free") return "tax free";
@@ -309,7 +315,7 @@ The locale does not follow the context. That `update()` call passes only `curren
 - Do not read `product.calculatedPrice.unitPrice` directly on a tiered product. Use `useProductPrice`.
 - Do not pass a product to `useProductPrice`. It wants a `Ref`, and a plain object renders empty strings instead of raising.
 - Do not assume `usePrice` arguments are inert. They are ignored only on the client, and only after an instance already exists.
-- Do not treat `displayFromVariants` as a boolean.
+- Do not treat `displayFromVariants` as a boolean. A variant that is free resolves to `0`, so `!!` and a bare ternary both discard it and fall back to the current variant's dearer price. Narrow with `typeof … === "number"`.
 - Do not expect the number format to change with the language. Only the currency follows the context.
 - Do not render a strikethrough whenever `listPrice` exists. Check `hasListPrice`.
 - Do not show `tierPrices` labels untranslated in a localized storefront.
@@ -331,6 +337,9 @@ The locale does not follow the context. That `update()` call passes only `curren
 
 ## Related Links
 
+- [Product Listing and Filters recipe](listing.html)
+- [Product Variants recipe](variants.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Work with prices](../../guides/e-commerce/prices.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Helpers package](../../packages/helpers.html)
