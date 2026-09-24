@@ -133,10 +133,10 @@ Pick by scope — how much of the price problem the composable is about:
 
 | Composable           | Scope             | Reach for it when                                       |
 | -------------------- | ----------------- | ------------------------------------------------------- |
-| `useSessionContext`  | the whole session | reading `taxState` or `currency`, or switching currency  |
-| `useProductPrice`    | one product       | deciding which of a product's prices to show             |
-| `usePrice`           | one number        | turning any value into a formatted string                |
-| `useShopwareContext` | the application   | reading `browserLocale`, the seed for the number format  |
+| `useSessionContext`  | the whole session | reading `taxState` or `currency`, or switching currency |
+| `useProductPrice`    | one product       | deciding which of a product's prices to show            |
+| `usePrice`           | one number        | turning any value into a formatted string               |
+| `useShopwareContext` | the application   | reading `browserLocale`, the seed for the number format |
 
 `useProductPrice` is the one you reach for most. It takes a `Ref<Product | undefined>` and derives everything else from it:
 
@@ -168,6 +168,8 @@ Use generated Store API types when you need to type prices, currencies, or lower
   <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/prices/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -179,6 +181,8 @@ type Currency = Schemas["Currency"];
 type SessionContext = operations["readContext get /context"]["response"];
 ```
 
+<!-- /automd -->
+
 `CalculatedPrice` is the type to open first. Alongside `unitPrice` and `totalPrice` it carries `quantity`, `calculatedTaxes`, `listPrice`, `referencePrice` and `regulationPrice`, plus `taxRules` just past the tooltip's field limit.
 
 Two fields people expect to find there are **not** on `CalculatedPrice`. `netPrice` and `taxStatus` belong to `CartPrice` — the cart's total, not a product's price — where `taxStatus` is enumerated `gross | net | tax-free`. A product price carries its tax breakdown in `calculatedTaxes` and `taxRules` instead, and the gross-or-net question is answered by the context's `taxState`, not by the price object.
@@ -187,8 +191,17 @@ Two fields people expect to find there are **not** on `CalculatedPrice`. `netPri
 
 <CodeExample title="Minimal product price">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/prices/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
+import {
+  usePrice,
+  useProductPrice,
+  useSessionContext,
+} from "@shopware/composables";
+import { computed, toRef } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const { product } = defineProps<{ product: Schemas["Product"] }>();
@@ -272,6 +285,8 @@ const taxNote = computed(() => {
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

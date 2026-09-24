@@ -1,12 +1,14 @@
 import { createOrder, getPayPal, onApprove } from "./snippet-context";
 
+const cardStyle = {}; // Add custom card field styling here.
+
 const cardFields = getPayPal().CardFields({
   createOrder: () => createOrder("acdc"),
   onApprove: (data) => onApprove({ orderID: data.orderID }),
   onError: (error) => {
     console.error(error);
   },
-  style: {/** some custom styling */},
+  style: cardStyle,
 });
 
 const nameField = cardFields.NameField({

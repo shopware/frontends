@@ -116,9 +116,10 @@ import { ref } from "vue";
 import { getPayPal } from "./snippet-context";
 
 const divContainer = ref<HTMLElement>();
+const buttonOptions = {}; // Add your PayPal button configuration here.
 
 // client only
-getPayPal().Buttons({/** configuration skipped */}).render(divContainer.value!);
+getPayPal().Buttons(buttonOptions).render(divContainer.value!);
 // this script will mount the component in element `divContainer`
 ```
 
@@ -479,13 +480,15 @@ getPayPal()
 ```ts
 import { createOrder, getPayPal, onApprove } from "./snippet-context";
 
+const cardStyle = {}; // Add custom card field styling here.
+
 const cardFields = getPayPal().CardFields({
   createOrder: () => createOrder("acdc"),
   onApprove: (data) => onApprove({ orderID: data.orderID }),
   onError: (error) => {
     console.error(error);
   },
-  style: {/** some custom styling */},
+  style: cardStyle,
 });
 
 const nameField = cardFields.NameField({
