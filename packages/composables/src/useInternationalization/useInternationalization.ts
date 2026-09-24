@@ -1,7 +1,7 @@
 import { urlIsAbsolute } from "@shopware/helpers";
 import type { Ref } from "vue";
 
-import { useContext, useShopwareContext } from "#imports";
+import { useCacheableRead, useContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseInternationalizationReturn = {
@@ -81,7 +81,8 @@ export type RouteObject = {
 export function useInternationalization(
   pathResolver?: (path: string) => string,
 ): UseInternationalizationReturn {
-  const { devStorefrontUrl, apiClient, cacheableReads } = useShopwareContext();
+  const { devStorefrontUrl, apiClient } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
@@ -94,9 +95,7 @@ export function useInternationalization(
   }
 
   async function getAvailableLanguages() {
-    const { data } = cacheableReads
-      ? await apiClient.invoke("readLanguagesGet get /language")
-      : await apiClient.invoke("readLanguages post /language");
+    const { data } = await invokeRead("readLanguages post /language");
     _storeLanguages.value = data.elements;
     return data;
   }

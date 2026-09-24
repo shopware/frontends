@@ -1,8 +1,7 @@
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
-import { useShopwareContext } from "#imports";
+import { useCacheableRead, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseProductReviewsReturn = {
@@ -40,7 +39,8 @@ export type UseProductReviewsReturn = {
 export function useProductReviews(
   product: Ref<Schemas["Product"]>,
 ): UseProductReviewsReturn {
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   const productReviews: Ref<Schemas["ProductReview"][]> = ref([]);
 
@@ -49,21 +49,13 @@ export function useProductReviews(
   ): Promise<
     operations["readProductReviews post /product/{productId}/reviews"]["response"]
   > => {
-    const fetchedReviews = cacheableReads
-      ? await apiClient.invoke(
-          "readProductReviewsGet get /product/{productId}/reviews",
-          {
-            pathParams: { productId: product.value.id },
-            query: { _criteria: encodeForQuery(parameters) },
-          },
-        )
-      : await apiClient.invoke(
-          "readProductReviews post /product/{productId}/reviews",
-          {
-            pathParams: { productId: product.value.id },
-            body: parameters,
-          },
-        );
+    const fetchedReviews = await invokeRead(
+      "readProductReviews post /product/{productId}/reviews",
+      {
+        pathParams: { productId: product.value.id },
+        body: parameters,
+      },
+    );
     productReviews.value = fetchedReviews.data.elements ?? [];
     return fetchedReviews.data;
   };

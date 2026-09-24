@@ -42,6 +42,7 @@ describe("useInternationalization", () => {
     await vm.getAvailableLanguages();
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       "readLanguagesGet get /language",
+      { headers: { "sw-context-token": "" }, query: {} },
     );
   });
 
