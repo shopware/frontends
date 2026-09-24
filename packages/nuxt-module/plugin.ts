@@ -1,5 +1,9 @@
 import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import type {
+  ApiClientRuntimeConfig,
+  ShopwareNuxtOptions,
+} from "@shopware/nuxt-module";
 import { getCookie } from "h3";
 import type { H3Event } from "h3";
 import Cookies from "js-cookie";
@@ -15,8 +19,6 @@ import {
   useState,
 } from "#imports";
 import type { ApiClient } from "#shopware";
-
-import type { ApiClientRuntimeConfig, ShopwareNuxtOptions } from "./src";
 
 type ShopwarePluginInjections = {
   shopwareApiClient: ApiClient;
