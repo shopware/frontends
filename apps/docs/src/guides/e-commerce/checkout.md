@@ -287,7 +287,7 @@ Placing an order requires
 - A selected payment method
 - A selected shipping method
 
-After placing an order with the `createOrder` method, the cart is refreshed automatically.
+After placing an order with the `createOrder` method, the server deletes the cart, but the shared `swCart` value still holds the old line items until you refresh it yourself.
 
 ```ts
 const { createOrder } = useCheckout();
@@ -297,17 +297,18 @@ const order = await createOrder();
 refreshCart();
 ```
 
-After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.
+After creating an order, you can fetch order data. `createOrder` resolves with the whole order entity, so pass its `id` to `useOrderDetails`.
 The backend allows fetching orders related only to the current user by checking the session.
 
 ```ts
+// `order` is the entity `createOrder()` resolved with above
 const {
   loadOrderDetails,
   personalDetails,
   billingAddress,
   shippingAddress,
-  order,
-} = useOrderDetails({ order: { id: orderId } as any });
+  order: orderDetails,
+} = useOrderDetails(order.id);
 
 await loadOrderDetails();
 ```

@@ -12,7 +12,7 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Account
 
-<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, registration, password recovery and change, account state, the customer wishlist, the newsletter subscription, and customer addresses." />
+<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, registration, password recovery and change, account state, the customer wishlist, the order history, the newsletter subscription, customer addresses, and the customer profile." />
 
 ## Catalog
 
@@ -32,4 +32,4 @@ These pages are written for frontend developers who want to understand the Shopw
 
 ## Orders
 
-<PageRef page="orders/" title="Orders" sub="Placed order flows, starting with reading a guest order from the deep link in its confirmation mail." />
+<PageRef page="orders/" title="Orders" sub="Placed order flows such as reading a guest order from the deep link in its confirmation mail, and rendering one order with its associations, cancellation, documents and downloads." />
