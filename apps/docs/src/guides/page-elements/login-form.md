@@ -53,18 +53,36 @@ In the next step, use the `useUser` composable. It provides user data, login met
 
 ```vue
 <script setup lang="ts">
-import { useUser } from "#imports";
+import { reactive, ref, useUser } from "#imports";
+
 const {
   login, // login method, accepts username and password
   logout, // performing a logout
-  errors, // errors from API prefixed with a method name, which is the source of the problem
   isLoggedIn, // flag that says if customer is logged in
   user, // the whole customer object
 } = useUser();
 
-const invokeLogin = () => login(loginCredentials);
+const loginCredentials = reactive({
+  username: "",
+  password: "",
+});
+const loginError = ref<string | null>(null);
+
+const invokeLogin = async () => {
+  loginError.value = null;
+  try {
+    await login(loginCredentials);
+  } catch (error) {
+    loginError.value = error instanceof Error ? error.message : "Login failed";
+  }
+};
 </script>
-...
+
+<template>
+  <button v-if="!isLoggedIn" @click="invokeLogin">sign in</button>
+  <button v-else @click="logout()">sign out {{ user?.firstName }}</button>
+  <p v-if="loginError">{{ loginError }}</p>
+</template>
 ```
 
 <!-- /automd -->
@@ -78,12 +96,18 @@ If the login process was successful, the `isLoggedIn` computed property becomes 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/display-user-data.vue" code lang="vue{2,6}" no-name -->
 
 ```vue{2,6}
+<script setup lang="ts">
+import { useUser } from "#imports";
+
+const { logout, isLoggedIn, user } = useUser();
+</script>
+
 <template>
   <div v-if="!isLoggedIn">
     <!-- DISPLAY FORM HERE -->
   </div>
   <div v-else>
-    <h1>Hi, {{ user.firstName }}!</h1>
+    <h1>Hi, {{ user?.firstName }}!</h1>
     <button @click="logout()">sign out</button>
   </div>
 </template>
@@ -97,23 +121,28 @@ The example above shows the conditional visibility of content depending on the c
 
 To finish, we would like to inform the user about problems that may appear during the authentication.
 
-In order to achieve it, the `errors` computed ref can be used:
+In order to achieve it, store the rejected `login()` call message in local state:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/login-form/handle-authentication-errors.vue" code lang="vue{5}" no-name -->
 
 ```vue{5}
+<script setup lang="ts">
+import { ref, useUser } from "#imports";
+
+const { isLoggedIn } = useUser();
+const loginError = ref<string | null>(null);
+</script>
+
 <template>
   <div v-if="!isLoggedIn">
-    <div v-if="errors.login.length">
-      {{ errors.login[0].detail }}
-    </div>
+    <div v-if="loginError">{{ loginError }}</div>
   </div>
 </template>
 ```
 
 <!-- /automd -->
 
-The example explains how to display only the first error that may appear in the response while processing the `login` method (see, the `errors` computed has prefixed `login` nested object).
+The example explains how to display the error that may appear while processing the `login` method.
 
 ## Full example
 
@@ -121,13 +150,23 @@ The example explains how to display only the first error that may appear in the 
 
 ```vue
 <script setup lang="ts">
-import { reactive, useUser } from "#imports";
-const { logout, login, errors, isLoggedIn, user } = useUser();
+import { reactive, ref, useUser } from "#imports";
+
+const { logout, login, isLoggedIn, user } = useUser();
 const loginCredentials = reactive({
   username: "",
   password: "",
 });
-const invokeLogin = () => login(loginCredentials);
+const loginError = ref<string | null>(null);
+
+const invokeLogin = async () => {
+  loginError.value = null;
+  try {
+    await login(loginCredentials);
+  } catch (error) {
+    loginError.value = error instanceof Error ? error.message : "Login failed";
+  }
+};
 </script>
 <template>
   <div v-if="!isLoggedIn">
@@ -135,12 +174,10 @@ const invokeLogin = () => login(loginCredentials);
     <input type="text" v-model="loginCredentials.username" />
     <input type="password" v-model="loginCredentials.password" />
     <button @click="invokeLogin">sign in</button>
-    <div v-if="errors.login.length">
-      {{ errors.login[0].detail }}
-    </div>
+    <div v-if="loginError" class="errors">{{ loginError }}</div>
   </div>
   <div v-else>
-    <h1>Hi, {{ user.firstName }}!</h1>
+    <h1>Hi, {{ user?.firstName }}!</h1>
     <button @click="logout()">sign out</button>
   </div>
 </template>

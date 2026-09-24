@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useNavigation } from "@shopware/composables";
 import { getCategoryRoute } from "@shopware/helpers";
+
 const { navigationElements, loadNavigationElements } = useNavigation({
   type: "footer-navigation", // footer-navigation selected
 });
@@ -8,13 +9,20 @@ loadNavigationElements({
   // invoke an API call to fetch navigation categories
   depth: 1,
 });
+
+type NavigationElement = NonNullable<typeof navigationElements.value>[number];
+
+const getCategoryHref = (category: NavigationElement) => {
+  const route = getCategoryRoute(category);
+  return typeof route === "string" ? route : route.path;
+};
 </script>
 <template>
   <Transition>
-    <footer v-if="navigationElements.length" class="bg-white dark:bg-gray-900">
+    <footer v-if="navigationElements?.length" class="bg-white dark:bg-gray-900">
       <div class="mx-auto w-full max-w-screen-xl">
         <div class="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
-          <div v-for="category in navigationElements" :key="category.id">
+          <div v-for="category in navigationElements ?? []" :key="category.id">
             <h2
               class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
             >
@@ -30,7 +38,7 @@ loadNavigationElements({
                 :key="childCategory.id"
               >
                 <a
-                  :href="getCategoryRoute(childCategory)"
+                  :href="getCategoryHref(childCategory)"
                   class="hover:underline"
                   >{{ childCategory.translated.name }}</a
                 >

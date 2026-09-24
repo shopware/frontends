@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware/composables";
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 import { useCmsBlock } from "#imports";
 

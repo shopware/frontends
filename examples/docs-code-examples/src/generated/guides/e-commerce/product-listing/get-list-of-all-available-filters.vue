@@ -4,10 +4,7 @@ const { getAvailableFilters, getCurrentFilters, setCurrentFilters } =
   useListing(/** parameters omitted */);
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
-  setCurrentFilters({
-    code: "manufacturer",
-    value: manufacturerId,
-  });
+  setCurrentFilters([{ code: "manufacturer", value: [manufacturerId] }]);
 };
 
 // element from getAvailableFilters.value

@@ -2,15 +2,9 @@
 import { useListing } from "#imports";
 const { setCurrentFilters } = useListing(/** parameters omitted */);
 
-setCurrentFilters({
-  code: "properties",
-  value: "some-property-id",
-});
+setCurrentFilters([{ code: "properties", value: ["some-property-id"] }]);
 
 // or
 
-setCurrentFilters({
-  code: "rating",
-  value: 5, // 5 stars rated products
-});
+setCurrentFilters([{ code: "rating", value: 5 }]);
 </script>

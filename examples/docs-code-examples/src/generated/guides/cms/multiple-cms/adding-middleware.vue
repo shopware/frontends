@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { pascalCase } from "scule";
-import { resolveComponent } from "vue";
-import type { Ref } from "vue";
+import { h, ref, resolveComponent } from "vue";
+import type { Ref, VNode } from "vue";
 
-import { VNode, h, inject, useAsyncData, useRoute } from "#imports";
+import { inject, useAsyncData, useRoute } from "#imports";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -13,7 +13,7 @@ defineOptions({
 
 const { resolvePath } = useNavigationSearch();
 const route = useRoute();
-const { locale } = useI18n();
+const locale = ref("en");
 const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 
 /**

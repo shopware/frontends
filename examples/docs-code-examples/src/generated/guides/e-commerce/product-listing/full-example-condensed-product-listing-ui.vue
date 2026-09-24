@@ -12,7 +12,7 @@ onMounted(() => {
   search();
 });
 
-const addProductAndRefresh = async ({ id }) => {
+const addProductAndRefresh = async ({ id }: { id: string }) => {
   await addProduct({ id });
   refreshCart();
 };
@@ -31,7 +31,7 @@ const { addProduct, refreshCart } = useCart();
           class="h-full w-full object-cover bg-white cursor-pointer overflow-hidden"
         >
           <img
-            :src="product.cover.media.url"
+            :src="product.cover?.media?.url"
             class="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
           />
         </div>

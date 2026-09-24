@@ -5,5 +5,7 @@ const { addPromotionCode, appliedPromotionCodes } = useCart();
 </script>
 <template>
   <input type="text" v-model="promotionCode" />
-  <button @click="addPromotionCode(promotionCode)">Apply promotion code</button>
+  <button @click="promotionCode && addPromotionCode(promotionCode)">
+    Apply promotion code
+  </button>
 </template>

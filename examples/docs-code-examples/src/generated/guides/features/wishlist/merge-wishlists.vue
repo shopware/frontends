@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from "#imports";
+import { ref, useUser, useWishlist } from "#imports";
+
+const { login } = useUser();
+const { mergeWishlistProducts } = useWishlist();
 const formData = ref({
   username: "",
   password: "",

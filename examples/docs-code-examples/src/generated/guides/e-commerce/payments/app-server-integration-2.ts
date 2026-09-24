@@ -1,3 +1,9 @@
+const tokenResponse = {
+  data: {
+    token: "example-jwt",
+  },
+};
+
 await fetch("https://shopware.mypaymentgateway.com/api/store/card", {
   method: "POST",
   headers: {

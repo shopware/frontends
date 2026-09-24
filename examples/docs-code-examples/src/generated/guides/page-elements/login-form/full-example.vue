@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { reactive, useUser } from "#imports";
-const { logout, login, errors, isLoggedIn, user } = useUser();
+import { reactive, ref, useUser } from "#imports";
+
+const { logout, login, isLoggedIn, user } = useUser();
 const loginCredentials = reactive({
   username: "",
   password: "",
 });
-const invokeLogin = () => login(loginCredentials);
+const loginError = ref<string | null>(null);
+
+const invokeLogin = async () => {
+  loginError.value = null;
+  try {
+    await login(loginCredentials);
+  } catch (error) {
+    loginError.value = error instanceof Error ? error.message : "Login failed";
+  }
+};
 </script>
 <template>
   <div v-if="!isLoggedIn">
@@ -13,12 +23,10 @@ const invokeLogin = () => login(loginCredentials);
     <input type="text" v-model="loginCredentials.username" />
     <input type="password" v-model="loginCredentials.password" />
     <button @click="invokeLogin">sign in</button>
-    <div v-if="errors.login.length">
-      {{ errors.login[0].detail }}
-    </div>
+    <div v-if="loginError" class="errors">{{ loginError }}</div>
   </div>
   <div v-else>
-    <h1>Hi, {{ user.firstName }}!</h1>
+    <h1>Hi, {{ user?.firstName }}!</h1>
     <button @click="logout()">sign out</button>
   </div>
 </template>

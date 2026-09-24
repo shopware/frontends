@@ -1,4 +1,12 @@
-const ColorFilter: ListingFiler = {
+type ListingFilter = {
+  name: string;
+  options: Array<{
+    id: string;
+    name: string;
+  }>;
+};
+
+const ColorFilter: ListingFilter = {
   name: "Color",
   // other properties omitted
   options: [

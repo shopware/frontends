@@ -1,3 +1,8 @@
+import { ref, useInternationalization } from "#imports";
+
+const { changeLanguage, getLanguageCodeFromId, replaceToDevStorefront } =
+  useInternationalization();
+const locale = ref("");
 const dev = process.dev;
 
 const onChangeHandler = async (option: Event) => {

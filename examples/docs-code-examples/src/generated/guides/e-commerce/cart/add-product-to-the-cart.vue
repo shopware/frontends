@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { ref } from "vue";
+
 import { useAddToCart } from "#imports";
-const product: Product = {
+import type { Schemas } from "#shopware";
+
+const product = ref({
   id: "7b5b97bd48454979b14f21c8ef38ce08",
-};
-const { addProduct, quantity, getAvailableStock } = useAddToCart({
-  product,
-});
+  availableStock: 10,
+} as Schemas["Product"]);
+const { addToCart, quantity, getAvailableStock } = useAddToCart(product);
 </script>
 <template>
   Only {{ getAvailableStock }} in stock<br />

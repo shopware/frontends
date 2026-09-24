@@ -11,4 +11,5 @@ const productResponse = await search("some-product-id", {
 // object that keeps a Product entity
 const product: Schemas["Product"] = productResponse.product;
 // object with variants configuration
-const propertyGroups: Schemas["PropertyGroup"][] = productResponse.configurator;
+const propertyGroups: Schemas["PropertyGroup"][] =
+  productResponse.configurator ?? [];

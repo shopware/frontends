@@ -1,3 +1,7 @@
+import { useInternationalization } from "#imports";
+
+const { changeLanguage, replaceToDevStorefront } = useInternationalization();
+
 const onChangeHandler = async (option: Event) => {
   const data = await changeLanguage((option.target as HTMLSelectElement).value);
 

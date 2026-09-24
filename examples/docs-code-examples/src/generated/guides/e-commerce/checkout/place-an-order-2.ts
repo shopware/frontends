@@ -1,11 +1,12 @@
 import { useOrderDetails } from "#imports";
 
+const orderId = "example-order-id";
 const {
   loadOrderDetails,
   personalDetails,
   billingAddress,
   shippingAddress,
   order,
-} = useOrderDetails({ order: { id: orderId } as any });
+} = useOrderDetails(orderId);
 
 await loadOrderDetails();

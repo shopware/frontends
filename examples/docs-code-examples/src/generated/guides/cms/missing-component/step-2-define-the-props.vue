@@ -3,6 +3,6 @@
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["{{ schemaType }}"];
+  content: Schemas["CmsBlock"];
 }>();
 </script>

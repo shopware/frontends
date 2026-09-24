@@ -14,6 +14,7 @@ import {
 import type { Schemas } from "#shopware";
 
 const router = useRouter();
+const $t = (key: string) => key;
 
 const { search } = useProductSearch();
 const { data: productResponse } = await useAsyncData(

@@ -1,5 +1,7 @@
 // useProductCustomizedProductConfigurator is autoimported
 // in vue-demo-store template as it's located in ~/composables
+import { useProductCustomizedProductConfigurator } from "#imports";
+
 const {
   isActive, // indicates whether product is empowered by Custom Products extension and active
   customizedProduct, // returns the custom product's template data

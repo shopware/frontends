@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCategoryUrl } from "@shopware/helpers";
+import { getCategoryRoute } from "@shopware/helpers";
 
 import { useNavigation } from "#imports";
 const { loadNavigationElements, navigationElements } = useNavigation();
@@ -9,7 +9,7 @@ await loadNavigationElements({ depth: 2 });
 <template>
   <ul>
     <li
-      v-for="navigationElement in navigationElements"
+      v-for="navigationElement in navigationElements ?? []"
       :key="navigationElement.id"
     >
       <RouterLink

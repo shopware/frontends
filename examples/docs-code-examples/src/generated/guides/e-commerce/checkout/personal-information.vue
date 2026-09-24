@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { reactive, useCountries, useSalutations, useUser } from "#imports";
 const state = reactive({
+  acceptedDataProtection: true,
   salutationId: "",
   firstName: "",
   lastName: "",
   email: "",
   password: "",
-  guest: false,
+  guest: false as false,
   billingAddress: {
+    customerId: "",
+    firstName: "",
+    id: "",
+    lastName: "",
     street: "",
     zipcode: "",
     city: "",

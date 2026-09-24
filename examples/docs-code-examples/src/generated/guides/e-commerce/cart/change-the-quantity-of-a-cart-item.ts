@@ -2,7 +2,7 @@ import { useCart } from "#imports";
 
 const { changeProductQuantity } = useCart();
 
-const cartItem: LineItem = {
+const cartItem = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
   quantity: 2,
 };

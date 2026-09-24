@@ -28,10 +28,10 @@ onMounted(() => {
           <p class="text-gray-600 text-xs">{{ item.quantity }}</p>
         </div>
         <div class="text-right flex flex-col justify-between">
-          <p>$ {{ item.price.totalPrice }}</p>
+          <p>$ {{ item.price?.totalPrice }}</p>
           <p
             class="text-blue-600 cursor-pointer hover:underline"
-            @click="removeItem({ id: item.id })"
+            @click="removeItem(item)"
           >
             Remove
           </p>

@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { tierPrices, totalPrice } = useProductPrice(product);
+</script>
+
 <template>
   <div>
     <table v-if="tierPrices.length">
@@ -8,7 +18,7 @@
           <span v-else> From </span>
           {{ tierPrice.quantity }}
         </td>
-        <td>{{ tierPrice.totalPrice }} $</td>
+        <td>{{ tierPrice.unitPrice }} $</td>
       </tr>
     </table>
     <div v-else>

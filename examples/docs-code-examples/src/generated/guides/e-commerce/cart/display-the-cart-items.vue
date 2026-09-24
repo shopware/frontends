@@ -8,7 +8,7 @@ const { cartItems, totalPrice, count } = useCart();
 
   <ul>
     <li v-for="cartItem in cartItems" :id="cartItem.id">
-      {{ cartItem.label }} - {{ cartItem.price.totalPrice }}
+      {{ cartItem.label }} - {{ cartItem.price?.totalPrice }}
     </li>
   </ul>
 </template>

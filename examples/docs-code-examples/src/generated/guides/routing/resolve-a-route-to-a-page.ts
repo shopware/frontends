@@ -1,11 +1,7 @@
 import {
-  useNavigation,
   useNavigationContext,
   useNavigationSearch,
   useCategorySearch,
-} from "@shopware/composables";
-
-import {
   ref,
   useCategory,
   useLandingSearch,
@@ -14,34 +10,49 @@ import {
 } from "#imports";
 import type { Schemas } from "#shopware";
 
+const route = {
+  path: "/Winter-Season/My-Product",
+};
+const { resolvePath } = useNavigationSearch();
 const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 
-const data = ref(null);
+const data = ref<
+  Schemas["Category"] | Schemas["LandingPage"] | Schemas["Product"] | null
+>(null);
 
 switch (routeName.value) {
   case "frontend.navigation.page":
-    let { search: categorySearch } = useCategorySearch();
-    const categoryResponse = await categorySearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    const { category } = useCategory(categoryResponse);
-    data.value = category;
+    {
+      const { search: categorySearch } = useCategorySearch();
+      const categoryResponse = await categorySearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { category } = useCategory(ref(categoryResponse));
+      data.value = category.value;
+    }
     break;
   case "frontend.detail.page":
-    let { search: productSearch } = useProductSearch();
-    const productResponse = await productSearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    const { product } = useProduct(productResponse);
-    data.value = product;
+    {
+      const { search: productSearch } = useProductSearch();
+      const productResponse = await productSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { product } = useProduct(
+        ref(productResponse.product),
+        productResponse.configurator ?? [],
+      );
+      data.value = product.value;
+    }
     break;
   case "frontend.landing.page":
-    let { search: landingSearch } = useLandingSearch();
-    const landing = await landingSearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    data.value = ref(landing);
+    {
+      const { search: landingSearch } = useLandingSearch();
+      const landing = await landingSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      data.value = landing;
+    }
     break;
 }

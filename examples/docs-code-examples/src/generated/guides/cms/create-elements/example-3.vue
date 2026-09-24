@@ -1,7 +1,8 @@
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage, useCmsElementImage } from "@shopware/composables";
+import { useCmsElementImage } from "@shopware/composables";
+import type { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsElementImage;

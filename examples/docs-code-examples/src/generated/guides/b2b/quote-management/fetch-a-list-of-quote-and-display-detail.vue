@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { useB2bQuoteManagement } from "@shopware/composables";
 import { ref, onBeforeMount } from "vue";
-const quotesList = ref([]);
+
+import type { Schemas } from "#shopware";
+
+const quotesList = ref<Schemas["Quote"][]>([]);
 const { getQuoteList } = useB2bQuoteManagement();
 onBeforeMount(async () => {
   quotesList.value = await getQuoteList();
@@ -24,10 +27,10 @@ onBeforeMount(async () => {
         <td>{{ quote.createdAt }}</td>
         <td>{{ quote.expirationDate }}</td>
         <td>
-          {{ quote.price.totalPrice }}
+          {{ quote.price?.totalPrice }}
         </td>
         <td>
-          {{ quote.stateMachineState.translated.name }}
+          {{ quote.stateMachineState?.translated.name }}
         </td>
       </tr>
     </tbody>
