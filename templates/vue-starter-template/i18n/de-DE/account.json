@@ -25,6 +25,7 @@
       "seeLess": "Weniger anzeigen",
       "orderLabel": "Bestellung",
       "shippingStatus": "Versandstatus",
+      "statusUnknown": "Unbekannt",
       "shipping": "Versand",
       "shippingMethod": "Versandart",
       "total": "Gesamt",

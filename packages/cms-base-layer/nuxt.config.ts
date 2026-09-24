@@ -1,6 +1,9 @@
 import { createResolver } from "@nuxt/kit";
 import type { NuxtConfig } from "@nuxt/schema";
 import { defineNuxtConfig } from "nuxt/config";
+import type { LoggingFunction, RollupLog } from "rollup";
+
+import componentDirs from "./component-dirs.json";
 
 const { resolve: resolveLayer } = createResolver(import.meta.url);
 
@@ -9,20 +12,20 @@ export default defineNuxtConfig({
   // to prevent bundling heavy 3D libraries in the initial bundle.
   // If you need 3D support, add "@tresjs/nuxt" to your app's nuxt.config.ts modules array
   // and dynamically import SwMedia3D using defineAsyncComponent.
-  modules: ["@unocss/nuxt", "@nuxt/image"],
+  //
+  // @unocss/nuxt is not included here either. This layer only ships CMS components,
+  // the UnoCSS setup lives in @shopware/unocss-design-tokens-layer (or your own config),
+  // so apps that don't use UnoCSS can still extend this layer.
+  modules: ["@nuxt/image"],
+  css: [resolveLayer("./app/assets/css/rich-text.css")],
 
   hooks: {
     "components:extend"(components) {
       // Exclude SwMedia3D from auto-import to prevent bundling heavy 3D libraries
       // It should be dynamically imported when needed using defineAsyncComponent.
-      const index = components.findIndex(
-        (c) =>
-          c.pascalName === "SwMedia3D" ||
-          c.kebabName === "sw-media3-d" ||
-          c.filePath?.includes("SwMedia3D.vue"),
-      );
-      if (index > -1) {
-        components.splice(index, 1);
+      for (const name of componentDirs.excluded) {
+        const index = components.findIndex((c) => c.pascalName === name);
+        if (index > -1) components.splice(index, 1);
       }
     },
   },
@@ -85,26 +88,11 @@ export default defineNuxtConfig({
     },
   },
 
-  components: [
-    {
-      path: resolveLayer("./app/components"),
-      pattern: "Sw*",
-      extensions: [".vue"],
-      global: true,
-    },
-    {
-      path: resolveLayer("./app/components/ui"),
-      extensions: [".vue"],
-      prefix: "Sw",
-      global: true,
-    },
-    {
-      path: resolveLayer("./app/components/public"),
-      pathPrefix: false,
-      global: true,
-      extensions: [".vue"],
-    },
-  ],
+  components: componentDirs.dirs.map(({ path, ...dir }) => ({
+    ...dir,
+    path: resolveLayer(path),
+    extensions: [".vue"],
+  })),
   alias: {
     "@cms-assets": resolveLayer("./app/assets"),
   },
@@ -114,6 +102,24 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ["xss"],
+    },
+    build: {
+      // Async SwMedia3D/three chunk is ~977 kB after minify; that split is intentional.
+      chunkSizeWarningLimit: 1000,
+    },
+  },
+  nitro: {
+    rollupConfig: {
+      // @vueuse/shared still embeds @__NO_SIDE_EFFECTS__ inside JSDoc (injectLocal).
+      // Nitro/Rollup treats that as a misplaced annotation. Track upstream vueuse.
+      onwarn(warning: RollupLog, warn: LoggingFunction) {
+        if (
+          warning.message?.includes("annotation that Rollup cannot interpret")
+        ) {
+          return;
+        }
+        warn(warning);
+      },
     },
   },
   telemetry: {

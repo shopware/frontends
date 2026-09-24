@@ -28,7 +28,7 @@ Therefore, the only requirement is to globally register the component with the a
 
 ### Demo store
 
-The demo store utilizes Nuxt 3, which by default registers all components globally. For optimal application structure, we recommend adding the components to the `/components/cms` directory.
+Templates register `app/components/cms/` as a Nuxt **global** component directory so Vue `resolveComponent` can find CMS blocks and elements. Put custom CMS components there (not only under a non-global `components/` path).
 
 ### Vue apps
 

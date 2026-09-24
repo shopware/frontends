@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { getCategoryImageUrl, getCategoryRoute } from "@shopware/helpers";
+import {
+  getCategoryImageUrl,
+  getCategoryRoute,
+  getTranslatedProperty,
+} from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
 
@@ -62,7 +66,7 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
                 @click="sideMenuController.close"
               >
                 <span class="flex">
-                  {{ navigationElement.name }}
+                  {{ getTranslatedProperty(navigationElement, "name") }}
                 </span>
                 <div class="flex flex-1" />
                 <button
@@ -112,7 +116,7 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
                     @click="sideMenuController.close"
                   >
                     <span>
-                      {{ childElement.name }}
+                      {{ getTranslatedProperty(childElement, "name") }}
                     </span>
                   </NuxtLink>
                 </li>

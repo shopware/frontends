@@ -1,16 +1,21 @@
+import type { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { ref } from "vue";
+
 import { apiClient, getPayPal } from "./snippet-context";
 
-const paypal = getPayPal();
-const divContainer = "#paypal-button-container";
+const divContainer = ref<HTMLElement>();
 
 // client only
-paypal
+getPayPal()
   .Buttons({
-    createOrder: async () => {
+    createOrder: async (
+      _data: CreateOrderData,
+      _actions: CreateOrderActions,
+    ) => {
       const response = await apiClient.invoke(
         "createPayPalOrder post /store-api/paypal/create-order",
       );
-      return response.data?.token;
+      return response.data.token;
     },
   })
-  .render(divContainer);
+  .render(divContainer.value!);

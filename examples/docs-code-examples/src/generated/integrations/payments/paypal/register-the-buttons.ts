@@ -1,8 +1,13 @@
+import { ref } from "vue";
+
 import { getPayPal } from "./snippet-context";
 
-const paypal = getPayPal();
-const divContainer = "#paypal-button-container";
+const divContainer = ref<HTMLElement>();
 
 // client only
-paypal.Buttons({}).render(divContainer);
+getPayPal()
+  .Buttons({
+    /** configuration skipped */
+  })
+  .render(divContainer.value!);
 // this script will mount the component in element `divContainer`

@@ -1,6 +1,6 @@
 {
   "name": "lumora-demo-store",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Lumora Demo Store - Modern Home Scents",
   "private": true,
   "author": "Shopware",
@@ -22,20 +22,34 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "nuxt": "4.4.8",
-    "vue": "3.5.39",
+    "@shopware/api-client": "canary",
+    "nuxt": "4.5.2",
+    "vue": "3.5.43",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/core": "66.7.5",
+    "@unocss/core": "66.10.5",
     "typescript": "5.9.3",
-    "vue-tsc": "3.3.7",
-    "oxfmt": "0.58.0",
-    "oxlint": "1.73.0"
+    "vue-tsc": "3.3.11",
+    "oxfmt": "0.62.0",
+    "oxlint": "1.77.0"
   },
   "overrides": {
     "glob": "^13",
     "eslint-visitor-keys": "^4"
+  },
+  "engines": {
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "oxfmt",
+      "oxlint",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }

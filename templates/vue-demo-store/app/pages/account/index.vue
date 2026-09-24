@@ -96,7 +96,7 @@ onBeforeMount(async () => {
     </div>
     <section class="flex gap-10 mb-10">
       <div class="w-full flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">
+        <h3 class="border-b pb-3 font-bold mb-3 text-xl">
           {{ $t("account.yourProfile") }}
         </h3>
         <p>
@@ -116,7 +116,7 @@ onBeforeMount(async () => {
       </div>
     </section>
     <section class="mb-10">
-      <h3 class="border-b pb-3 font-bold mb-5 flex items-center gap-2">
+      <h3 class="border-b pb-3 font-bold mb-5 flex items-center gap-2 text-xl">
         {{ $t("account.newsletterSettingHeader") }}
         <div
           v-if="newsletterDisabled"
@@ -149,7 +149,7 @@ onBeforeMount(async () => {
     </section>
     <section class="flex gap-10 mb-10">
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">
+        <h3 class="border-b pb-3 font-bold mb-3 text-xl">
           {{ $t("account.defaultBillingAddressHeader") }}
         </h3>
         <AccountAddressCard
@@ -172,7 +172,7 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">
+        <h3 class="border-b pb-3 font-bold mb-3 text-xl">
           {{ $t("account.defaultShippingAddressHeader") }}
         </h3>
         <AccountAddressCard

@@ -1,21 +1,10 @@
-const orderCreated = { value: null as unknown };
-const order = { id: "order-id" };
-const apiClient = {
-  async invoke(_route: string, _payload: unknown) {
-    return {
-      data: {
-        redirectUrl: "https://example.com/payment/finalize",
-        token: "paypal-order-token",
-      },
-    };
-  },
-};
+import { ref } from "vue";
 
-function refreshCart() {}
+import { apiClient } from "./snippet-context";
 
-async function createOrder(
-  product?: "paylater" | "acdc" | "applepay" | "googlepay" | "venmo",
-) {
+type PayPalProduct = "paylater" | "acdc" | "applepay" | "googlepay" | "venmo";
+
+async function createPayPalOrder(product?: PayPalProduct) {
   const response = await apiClient.invoke(
     "createPayPalOrder post /store-api/paypal/create-order",
     { body: { product } },
@@ -24,16 +13,14 @@ async function createOrder(
   return response?.data?.token;
 }
 
-async function createShopwareOrder(payload: { paypalOrderId: string }) {
-  return { id: "order-id", ...payload };
-}
-
 async function onApprove(data: { orderID: string }) {
   // createOrder from useCheckout composable
-  orderCreated.value = await createShopwareOrder({
+  orderCreated.value = await createOrder({
     paypalOrderId: data.orderID,
   });
   refreshCart();
+  const order = orderCreated.value;
+
   // apiClient from useShopwareContext composable
   const handlePaymentResponse = await apiClient.invoke(
     "handlePaymentMethod post /handle-payment",
@@ -51,5 +38,12 @@ async function onApprove(data: { orderID: string }) {
   await fetch(handlePaymentResponse.data.redirectUrl);
 }
 
-await createOrder();
-await onApprove({ orderID: "paypal-order-id" });
+async function createOrder(_payload: { paypalOrderId: string }) {
+  return { id: "order-id" };
+}
+
+function refreshCart() {}
+
+const orderCreated = ref<{ id: string }>();
+
+export { createPayPalOrder, onApprove };

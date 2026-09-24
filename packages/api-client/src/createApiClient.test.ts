@@ -3,6 +3,7 @@ import {
   createError,
   eventHandler,
   getHeaders,
+  readMultipartFormData,
   setHeader,
   toNodeListener,
 } from "h3";
@@ -12,7 +13,9 @@ import type { Listener } from "listhen";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 import type { operations } from "../api-types/storeApiTypes";
+import { ApiClientError } from "./ApiError";
 import { createAPIClient } from "./createAPIClient";
+import { isTimeoutError } from "./isTimeoutError";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -177,6 +180,75 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).toHaveBeenCalledWith("789");
   });
 
+  it("should NOT adopt sw-context-token from publicly cacheable responses", async () => {
+    // CacheableReads / CDN hits replay Cache-Control: public responses that may
+    // still carry a guest sw-context-token from when the entry was stored.
+    // Adopting that token would log the user out.
+    const app = createApp().use(
+      "/language",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "cached-guest-token");
+        setHeader(
+          event,
+          "cache-control",
+          "max-age=0, Public, s-maxage=1800, stale-while-revalidate=86400",
+        );
+        return { elements: [] };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "logged-in-token",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("readLanguagesGet get /language");
+
+    expect(contextChangedMock).not.toHaveBeenCalled();
+    expect(client.defaultHeaders["sw-context-token"]).toEqual(
+      "logged-in-token",
+    );
+  });
+
+  it("should still adopt sw-context-token from private session responses", async () => {
+    const app = createApp().use(
+      "/account/login",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "post-login-token");
+        setHeader(
+          event,
+          "cache-control",
+          "max-age=0, no-cache, private, s-maxage=0",
+        );
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "pre-login-token",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("loginCustomer post /account/login", {
+      body: { username: "user", password: "pass" },
+    });
+
+    expect(contextChangedMock).toHaveBeenCalledWith("post-login-token");
+    expect(client.defaultHeaders["sw-context-token"]).toEqual(
+      "post-login-token",
+    );
+  });
+
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",
@@ -315,7 +387,7 @@ describe("createAPIClient", () => {
     );
   });
 
-  it("should keep multipart/form-data Content-Type header in node environment", async () => {
+  it("should let the runtime set multipart/form-data with a boundary for FormData bodies", async () => {
     const contentTypeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/core/upload",
@@ -334,11 +406,16 @@ describe("createAPIClient", () => {
       baseURL,
     });
 
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
     // @ts-expect-error this endpoint does not exist
     await client.invoke("fileUpload post /core/upload", {
+      // a manually set multipart/form-data has no boundary and must be replaced
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      body: formData,
     });
 
     expect(contentTypeSpy).toHaveBeenCalledTimes(1);
@@ -349,10 +426,56 @@ describe("createAPIClient", () => {
       "sw-access-key": "123",
       "sw-context-token": "456",
     });
-    // Outside the browser there is no `window`, so the manually set
-    // Content-Type header is forwarded as-is (see createApiClient.browser.test.ts
-    // for the browser-specific removal behaviour).
-    expect(headers?.["content-type"]).toContain("multipart/form-data");
+    // The default application/json (and the boundary-less multipart) must be
+    // gone, replaced by a runtime-generated multipart/form-data + boundary.
+    expect(headers?.["content-type"]).toMatch(
+      /^multipart\/form-data; boundary=/,
+    );
+  });
+
+  it("should deliver a parseable upload even when the caller mislabels it as JSON", async () => {
+    // The runtime serializes FormData as multipart and generates the boundary,
+    // but that boundary only reaches the server through the Content-Type. An
+    // explicit application/json would strand it and the upload would fail
+    // silently, so it has to be dropped too.
+    const uploadSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/core/upload",
+      eventHandler(async (event) => {
+        uploadSpy({
+          contentType: getHeaders(event)["content-type"],
+          parts: await readMultipartFormData(event),
+        });
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    const formData = new FormData();
+    formData.append("file", new Blob(["file-content"]), "file.txt");
+
+    // @ts-expect-error this endpoint does not exist
+    await client.invoke("fileUpload post /core/upload", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formData,
+    });
+
+    expect(uploadSpy).toHaveBeenCalledTimes(1);
+    const upload = uploadSpy.mock.calls[0]?.[0];
+    expect(upload?.contentType).toMatch(/^multipart\/form-data; boundary=/);
+    // the server can actually read the file back out
+    expect(upload?.parts).toHaveLength(1);
+    expect(upload?.parts?.[0]?.filename).toBe("file.txt");
+    expect(upload?.parts?.[0]?.data.toString()).toBe("file-content");
   });
 
   it("should trigger success callback", async () => {
@@ -444,6 +567,39 @@ describe("createAPIClient", () => {
   });
 
   describe("fetchOptions", () => {
+    /**
+     * The merged timeout only shows up as a timer, so the release has to be
+     * observed through the timer itself rather than through the response.
+     */
+    async function releasedTimers(
+      timeout: number,
+      run: () => Promise<unknown>,
+    ) {
+      const armTimer = vi.spyOn(globalThis, "setTimeout");
+      const releaseTimer = vi.spyOn(globalThis, "clearTimeout");
+      try {
+        await run().catch(() => {});
+
+        const armed = armTimer.mock.calls
+          .map((call, index) =>
+            call[1] === timeout
+              ? armTimer.mock.results[index]?.value
+              : undefined,
+          )
+          .filter((timer) => timer !== undefined);
+
+        return {
+          armed: armed.length,
+          released: armed.filter((timer) =>
+            releaseTimer.mock.calls.some(([released]) => released === timer),
+          ).length,
+        };
+      } finally {
+        armTimer.mockRestore();
+        releaseTimer.mockRestore();
+      }
+    }
+
     it("should enforce the timeout for API requests when a timeout is provided", async () => {
       const app = createApp().use(
         "/slow-endpoint",
@@ -585,6 +741,378 @@ describe("createAPIClient", () => {
         `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
       );
     });
+
+    it("should abort through the client timeout when no signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testTimeoutShape get /slow-endpoint", {})
+        .catch((caught: unknown) => caught as Error & { status?: number });
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+      expect(error).not.toBeInstanceOf(ApiClientError);
+    });
+
+    it("should abort through the client timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testSignalAndTimeout get /slow-endpoint", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught as Error & { status?: number });
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+      expect(error).not.toBeInstanceOf(ApiClientError);
+    });
+
+    it("should abort through a per-request timeout when a per-request signal is set", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testSignalAndRequestTimeout get /slow-endpoint", {
+          fetchOptions: { signal: new AbortController().signal, timeout: 50 },
+        })
+        .catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(true);
+    });
+
+    it("should let a per-request signal abort while a client timeout is configured", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 5000 },
+        baseURL,
+      });
+
+      const controller = new AbortController();
+      const request = client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testSignalAborts get /slow-endpoint",
+        { fetchOptions: { signal: controller.signal } },
+      );
+      controller.abort();
+
+      const error = await request.catch((caught: unknown) => caught);
+
+      expect(isTimeoutError(error)).toBe(false);
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).message).toMatch(/aborted/i);
+    });
+
+    it("should keep the caller's signal alone where AbortSignal.any is missing", async () => {
+      const app = createApp().use(
+        "/slow-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 50 },
+        baseURL,
+      });
+
+      const combine = AbortSignal.any;
+      Object.defineProperty(AbortSignal, "any", {
+        value: undefined,
+        configurable: true,
+        writable: true,
+      });
+      try {
+        const response = await client.invoke(
+          // @ts-expect-error this endpoint does not exist
+          "testWithoutAbortSignalAny get /slow-endpoint",
+          { fetchOptions: { signal: new AbortController().signal } },
+        );
+
+        expect(response).toEqual({
+          data: { message: "Request succeeded" },
+          status: 200,
+        });
+      } finally {
+        Object.defineProperty(AbortSignal, "any", {
+          value: combine,
+          configurable: true,
+          writable: true,
+        });
+      }
+    });
+
+    it.each([
+      { level: "client", clientTimeout: 50.5, requestTimeout: undefined },
+      { level: "per-request", clientTimeout: undefined, requestTimeout: 0.5 },
+    ])(
+      "should round a fractional $level timeout up when combining it with a signal",
+      async ({ clientTimeout, requestTimeout }) => {
+        const app = createApp().use(
+          "/slow-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            return { message: "This should never be returned" };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          fetchOptions: { timeout: clientTimeout },
+          baseURL,
+        });
+
+        const error = await client
+          // @ts-expect-error this endpoint does not exist
+          .invoke("testFractionalTimeout get /slow-endpoint", {
+            fetchOptions: {
+              signal: new AbortController().signal,
+              timeout: requestTimeout,
+            },
+          })
+          .catch((caught: unknown) => caught);
+
+        expect(isTimeoutError(error)).toBe(true);
+      },
+    );
+
+    it("should not abort a stalled body when no signal is set", async () => {
+      let releaseResponse: (() => void) | undefined;
+      const app = createApp().use(
+        "/stalled-body",
+        eventHandler((event) => {
+          const response = event.node.res;
+          response.writeHead(200, { "content-type": "application/json" });
+          response.write('{"message":');
+          releaseResponse = () => response.end('"released"}');
+          return new Promise<never>(() => {});
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 100 },
+        baseURL,
+      });
+
+      const request = client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testStalledBody get /stalled-body", {})
+        .then(
+          () => "settled",
+          () => "settled",
+        );
+      const outcome = await Promise.race([
+        request,
+        new Promise<string>((resolve) =>
+          setTimeout(() => resolve("pending"), 400),
+        ),
+      ]);
+      releaseResponse?.();
+      await request;
+
+      expect(outcome).toBe("pending");
+    });
+
+    it("should time out while reading a stalled body when a signal is set", async () => {
+      let releaseResponse: (() => void) | undefined;
+      const app = createApp().use(
+        "/stalled-body",
+        eventHandler((event) => {
+          const response = event.node.res;
+          response.writeHead(200, { "content-type": "application/json" });
+          response.write('{"message":');
+          releaseResponse = () => response.end('"released"}');
+          return new Promise<never>(() => {});
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: 100 },
+        baseURL,
+      });
+
+      const error = await client
+        // @ts-expect-error this endpoint does not exist
+        .invoke("testStalledBodyWithSignal get /stalled-body", {
+          fetchOptions: { signal: new AbortController().signal },
+        })
+        .catch((caught: unknown) => caught as { status?: number });
+      releaseResponse?.();
+
+      expect(isTimeoutError(error)).toBe(true);
+      expect(error.status).toBeUndefined();
+    });
+
+    it.each([
+      ["negative", -5],
+      ["infinite", Number.POSITIVE_INFINITY],
+      ["NaN", Number.NaN],
+    ])(
+      "ignores a %s timeout instead of failing the request",
+      async (_name, timeout) => {
+        const app = createApp().use(
+          "/fast-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            return { message: "Request succeeded" };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          baseURL,
+        });
+
+        const response = await client.invoke(
+          // @ts-expect-error this endpoint does not exist
+          "testInvalidTimeout get /fast-endpoint",
+          {
+            fetchOptions: { signal: new AbortController().signal, timeout },
+          },
+        );
+
+        expect(response).toEqual({
+          data: { message: "Request succeeded" },
+          status: 200,
+        });
+      },
+    );
+
+    it("ignores an unusable client timeout instead of failing the request", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        fetchOptions: { timeout: -5 },
+        baseURL,
+      });
+
+      const response = await client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testInvalidClientTimeout get /fast-endpoint",
+        { fetchOptions: { signal: new AbortController().signal } },
+      );
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it.each([
+      ["a request that resolves", 200, "Request succeeded"],
+      ["a request that fails", 500, "Server error"],
+    ])(
+      "releases the timeout timer after %s",
+      async (_name, status, message) => {
+        const app = createApp().use(
+          "/release-endpoint",
+          eventHandler(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 20));
+            if (status !== 200) throw createError({ status, message });
+            return { message };
+          }),
+        );
+
+        const baseURL = await createPortAndGetUrl(app);
+
+        const client = createAPIClient<operations>({
+          accessToken: "123",
+          baseURL,
+        });
+
+        const timers = await releasedTimers(12345, () =>
+          client.invoke(
+            // @ts-expect-error this endpoint does not exist
+            "testTimerRelease get /release-endpoint",
+            {
+              fetchOptions: {
+                signal: new AbortController().signal,
+                timeout: 12345,
+              },
+            },
+          ),
+        );
+
+        expect(timers.armed).toBe(1);
+        expect(timers.released).toBe(1);
+      },
+    );
   });
 
   describe("default header changes", () => {

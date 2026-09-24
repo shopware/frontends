@@ -1,21 +1,16 @@
-type OnApproveData = { orderID: string };
-type OnApproveActions = unknown;
+import type { OnApproveActions, OnApproveData } from "@paypal/paypal-js";
 
-const apiClient = {
-  async invoke(_route: string, _payload: unknown) {
-    return { data: { redirectUrl: "https://example.com/payment/finalize" } };
-  },
-};
+import { apiClient } from "./snippet-context";
 
-async function createOrder(payload: { paypalOrderId: string }) {
-  return { id: "order-id", ...payload };
+async function createOrder(_payload: { paypalOrderId: string }) {
+  return { id: "order-id" };
 }
 
 function refreshCart() {}
 
-const paypalButtons = {
+export const paypalButtonsConfig = {
   // part of window.paypal.Buttons({}) params
-  onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
+  onApprove: async (data: OnApproveData, _actions: OnApproveActions) => {
     await apiClient.invoke(
       "preparePayPalExpressCheckout post /store-api/paypal/express/prepare-checkout",
       {
@@ -47,5 +42,3 @@ const paypalButtons = {
     // ...
   },
 };
-
-void paypalButtons.onApprove;

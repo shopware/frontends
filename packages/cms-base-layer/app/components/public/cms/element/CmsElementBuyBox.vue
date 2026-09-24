@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementBuyBox } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { defu } from "defu";
 import { computed } from "vue";
 
@@ -64,7 +65,9 @@ const referencePrice = computed(
   () => product.value?.calculatedPrice?.referencePrice,
 );
 const purchaseUnit = computed(() => product.value?.purchaseUnit);
-const unitName = computed(() => product.value?.unit?.name);
+const unitName = computed(() =>
+  getTranslatedProperty(product.value?.unit, "name"),
+);
 const productName = computed(() => product.value?.translated?.name || "");
 </script>
 <template>

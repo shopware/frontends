@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({
@@ -28,7 +30,7 @@ const orderDate = computed(() =>
         {{ order.orderNumber }}
       </div>
       <div class="text-secondary-600">
-        {{ order.amountTotal }} {{ currency?.symbol }}
+        {{ order.amountTotal }} {{ getTranslatedProperty(currency, "symbol") }}
       </div>
       <div class="text-secondary-600">{{ orderDate }}</div>
       <div class="text-secondary-600">

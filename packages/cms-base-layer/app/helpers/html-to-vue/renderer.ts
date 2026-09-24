@@ -27,6 +27,7 @@ export type ExtraComponentConfig = {
 export type RendererConfig = {
   container: {
     type: string;
+    class?: string;
   };
   extraComponentsMap: Record<string, ExtraComponentConfig>;
   renderAnyway: boolean;
@@ -113,5 +114,13 @@ export function renderer(
   const rendered = _render(createElement, ast);
   const children = flattenChildren(rendered);
 
-  return createElement(config.container.type, context?.data || {}, children);
+  const containerProps: Record<string, unknown> = { ...(context?.data || {}) };
+
+  if (config.container.class) {
+    containerProps.class = containerProps.class
+      ? [containerProps.class, config.container.class]
+      : config.container.class;
+  }
+
+  return createElement(config.container.type, containerProps, children);
 }

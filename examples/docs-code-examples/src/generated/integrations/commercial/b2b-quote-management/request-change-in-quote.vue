@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useB2bQuoteManagement } from "@shopware/composables";
 import { ref } from "vue";
-const quote = ref({ id: "example-id" });
+const quoteId = ref("example-id");
 const changeRequest = ref("");
 const { requestChangeQuote } = useB2bQuoteManagement();
 const handleChangeRequest = async () => {
-  requestChangeQuote(quote.value.id, changeRequest.value);
+  await requestChangeQuote(quoteId.value, changeRequest.value);
   changeRequest.value = "";
 };
 </script>

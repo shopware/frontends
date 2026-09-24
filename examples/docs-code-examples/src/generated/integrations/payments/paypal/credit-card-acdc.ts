@@ -1,17 +1,13 @@
 import { createOrder, getPayPal, onApprove } from "./snippet-context";
 
-const paypal = getPayPal();
-
-const cardFields = paypal.CardFields({
+const cardFields = getPayPal().CardFields({
   createOrder: () => createOrder("acdc"),
-  onApprove,
-  onError(error) {
+  onApprove: (data) => onApprove({ orderID: data.orderID }),
+  onError: (error) => {
     console.error(error);
   },
   style: {
-    input: {
-      color: "#1f2937",
-    },
+    /** some custom styling */
   },
 });
 

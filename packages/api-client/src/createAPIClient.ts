@@ -1,4 +1,3 @@
-import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchContext,
@@ -11,6 +10,8 @@ import {
 import type { operations } from "../api-types/storeApiTypes";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import { mergeSignalWithTimeout } from "./mergeSignalWithTimeout";
+import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -73,6 +74,21 @@ export type ApiClientHooks = {
   onRequest: (context: FetchContext) => void;
 };
 
+/**
+ * Shared-cache responses (`Cache-Control: public`) must not drive session
+ * updates. A CDN hit can replay a guest `sw-context-token` from when the entry
+ * was stored, which would overwrite the caller's logged-in session.
+ */
+function isPubliclyCacheableResponse(
+  response: Pick<FetchResponse<ResponseType>, "headers">,
+): boolean {
+  const cacheControl = response.headers.get("cache-control");
+  if (!cacheControl) {
+    return false;
+  }
+  return /(?:^|,)\s*public\s*(?:,|$)/i.test(cacheControl);
+}
+
 export function createAPIClient<
   // TODO: Keep this broad until generated operation types are narrowed.
   OPERATIONS extends Record<string, any> = operations,
@@ -114,6 +130,14 @@ export function createAPIClient<
       },
       async onResponse(context) {
         apiClientHooks.callHook("onSuccessResponse", context.response);
+        // Publicly cacheable Store API responses (cacheableReads / CDN) may
+        // carry a stale guest sw-context-token from when the entry was stored.
+        // Adopting that token would replace a logged-in session and log the user
+        // out. Session-changing routes (login/logout/register/context) respond
+        // with Cache-Control: private and still update the token as before.
+        if (isPubliclyCacheableResponse(context.response)) {
+          return;
+        }
         if (
           context.response.headers.has("sw-context-token") &&
           defaultHeaders["sw-context-token"] !==
@@ -133,6 +157,7 @@ export function createAPIClient<
   }
 
   let apiFetch = createFetchClient(currentBaseURL);
+  const clientTimeout = params.fetchOptions?.timeout;
 
   /**
    * Invoke API request based on provided path definition.
@@ -187,31 +212,34 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
+    const mergedHeaders = resolveRequestHeaders(
+      currentParams.headers,
+      defaultHeaders,
+      currentParams.body,
+    );
 
-    if (
-      mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
-      typeof window !== "undefined"
-    ) {
-      // multipart/form-data must not be set manually when it's used by the browser
-      const { "Content-Type": _, ...headersWithoutContentType } = mergedHeaders;
-      mergedHeaders = headersWithoutContentType;
+    // armed last, so nothing between here and the `finally` can leave the
+    // timer running
+    const releaseTimeout = mergeSignalWithTimeout(fetchOptions, clientTimeout);
+
+    try {
+      const resp = await apiFetch.raw<
+        SimpleUnionPick<CURRENT_OPERATION, "response">
+      >(requestPathWithParams, {
+        ...fetchOptions,
+        method,
+        body: currentParams.body,
+        headers: mergedHeaders as HeadersInit,
+        query: currentParams.query,
+      });
+
+      return {
+        data: resp._data,
+        status: resp.status,
+      } as RequestReturnType<CURRENT_OPERATION>;
+    } finally {
+      releaseTimeout();
     }
-
-    const resp = await apiFetch.raw<
-      SimpleUnionPick<CURRENT_OPERATION, "response">
-    >(requestPathWithParams, {
-      ...fetchOptions,
-      method,
-      body: currentParams.body,
-      headers: mergedHeaders as HeadersInit,
-      query: currentParams.query,
-    });
-
-    return {
-      data: resp._data,
-      status: resp.status,
-    } as RequestReturnType<CURRENT_OPERATION>;
   }
 
   return {

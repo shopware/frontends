@@ -36,7 +36,7 @@ export function useProductJsonLD(
       script: [
         {
           type: "application/ld+json",
-          children: JSON.stringify(defu(JsonLd, additionalData)),
+          innerHTML: JSON.stringify(defu(JsonLd, additionalData)),
         },
       ],
     };

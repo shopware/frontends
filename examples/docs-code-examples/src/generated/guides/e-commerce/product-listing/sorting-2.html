@@ -1,1 +1,11 @@
-<select @change="onOrderChange"></select>
+<!-- part of <template> -->
+<select>
+  <option
+    v-for="sortingOrder in getSortingOrders"
+    :key="sortingOrder.key"
+    :value="sortingOrder.key"
+    :selected="sortingOrder.key === getCurrentSortingOrder"
+  >
+    {{ sortingOrder.label }}
+  </option>
+</select>

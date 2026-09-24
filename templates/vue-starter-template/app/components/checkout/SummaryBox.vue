@@ -34,8 +34,8 @@ function handleUpdateQuantity(id: string, quantity: number) {
           :item="item"
           :key="item.id"
           class="py-4"
-          @remove="(id) => handleRemoveItem(id)"
-          @updateQuantity="(id, quantity) => handleUpdateQuantity(id, quantity)"
+          @remove="handleRemoveItem"
+          @update-quantity="handleUpdateQuantity"
         />
       </div>
 
@@ -86,7 +86,7 @@ function handleUpdateQuantity(id: string, quantity: number) {
         <SharedPrice
           :value="totalPrice"
           class="text-right justify-start text-surface-on-surface text-base font-normal leading-normal"
-          data-testid="cart-subtotal"
+          data-testid="cart-total"
         />
       </div>
     </div>

@@ -1,9 +1,15 @@
 import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import type {
+  ApiClientRuntimeConfig,
+  ShopwareNuxtOptions,
+} from "@shopware/nuxt-module";
 import { getCookie } from "h3";
+import type { H3Event } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 
+import type { Plugin } from "#app";
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -14,21 +20,71 @@ import {
 } from "#imports";
 import type { ApiClient } from "#shopware";
 
-import type { ShopwareNuxtOptions } from "./src";
+type ShopwarePluginInjections = {
+  shopwareApiClient: ApiClient;
+};
 
-declare module "#app" {
-  interface NuxtApp {
-    $shopwareApiClient: ApiClient;
+type ShopwarePluginNuxtApp = {
+  ssrContext?: {
+    event: H3Event;
+  };
+  vueApp: {
+    provide: (name: string, value: unknown) => void;
+  };
+};
+
+type ApiError = {
+  code?: string;
+};
+
+function isApiError(error: unknown): error is ApiError {
+  if (!error || typeof error !== "object") {
+    return false;
   }
+
+  const { code } = error as { code?: unknown };
+
+  return code === undefined || typeof code === "string";
 }
 
-declare module "vue" {
-  interface ComponentCustomProperties {
-    $shopwareApiClient: ApiClient;
+function getApiErrors(data: unknown): ApiError[] {
+  if (!data || typeof data !== "object" || !("errors" in data)) {
+    return [];
   }
+
+  const { errors } = data as { errors?: unknown };
+
+  return Array.isArray(errors) ? errors.filter(isApiError) : [];
 }
 
-export default defineNuxtPlugin((NuxtApp) => {
+const warnedTimeouts = new Set<string>();
+
+function toTimeout(value: unknown, source: string): number | undefined {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+
+  const timeout = typeof value === "string" ? Number(value) : value;
+
+  if (typeof timeout === "number" && Number.isFinite(timeout) && timeout > 0) {
+    return timeout;
+  }
+
+  const message = `[shopware] Ignoring ${source}.timeout: expected a positive number of milliseconds, got ${
+    typeof value === "number" ? String(value) : JSON.stringify(value)
+  }.`;
+
+  if (!warnedTimeouts.has(message)) {
+    warnedTimeouts.add(message);
+    console.warn(message);
+  }
+
+  return undefined;
+}
+
+function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
+  provide: ShopwarePluginInjections;
+} {
   const runtimeConfig = useRuntimeConfig();
 
   const shopwareRuntimeConfigPublic = runtimeConfig.public
@@ -70,13 +126,31 @@ export default defineNuxtPlugin((NuxtApp) => {
     ? getCookie(NuxtApp.ssrContext.event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
-  type ApiClientConfig = {
-    headers?: Record<string, string>;
-  };
-
   const privateApiClientConfig = import.meta.server
-    ? (runtimeConfig.apiClientConfig as ApiClientConfig)
+    ? (runtimeConfig.apiClientConfig as ApiClientRuntimeConfig | undefined)
     : undefined;
+  const publicApiClientConfig = runtimeConfig.public?.apiClientConfig as
+    | ApiClientRuntimeConfig
+    | undefined;
+
+  // Both deprecated tiers report as shopware.apiClientConfig, the name nuxt.config uses.
+  const timeout =
+    toTimeout(
+      privateApiClientConfig?.timeout,
+      "runtimeConfig.apiClientConfig",
+    ) ??
+    toTimeout(
+      publicApiClientConfig?.timeout,
+      "runtimeConfig.public.apiClientConfig",
+    ) ??
+    toTimeout(
+      shopwareRuntimeConfig?.apiClientConfig?.timeout,
+      "shopware.apiClientConfig",
+    ) ??
+    toTimeout(
+      shopwareRuntimeConfigPublic?.apiClientConfig?.timeout,
+      "shopware.apiClientConfig",
+    );
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
@@ -86,7 +160,8 @@ export default defineNuxtPlugin((NuxtApp) => {
       : "",
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
-      (runtimeConfig.public?.apiClientConfig as ApiClientConfig)?.headers,
+      publicApiClientConfig?.headers,
+    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
@@ -99,8 +174,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   });
 
   apiClient.hook("onResponseError", (response) => {
-    // @ts-expect-error TODO: check maintenance mode and fix typongs here
-    const error = isMaintenanceMode(response._data?.errors ?? []);
+    const error = isMaintenanceMode(getApiErrors(response._data));
     if (error) {
       throw showError({
         statusCode: 503,
@@ -142,4 +216,9 @@ export default defineNuxtPlugin((NuxtApp) => {
       shopwareApiClient: apiClient as ApiClient,
     },
   };
-});
+}
+
+const shopwarePlugin: Plugin<ShopwarePluginInjections> =
+  defineNuxtPlugin<ShopwarePluginInjections>(setupShopwarePlugin);
+
+export default shopwarePlugin;

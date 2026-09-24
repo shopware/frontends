@@ -4,6 +4,7 @@ import {
   useCart,
   useProductSearch,
 } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import Button from "primevue/button";
 import Message from "primevue/message";
 import Step from "primevue/step";
@@ -65,7 +66,7 @@ onBeforeMount(async () => {
                   class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
                 >
                   <h3 class="text-base m-0">
-                    {{ product.name }}
+                    {{ getTranslatedProperty(product, "name") }}
                   </h3>
                   <p class="flex gap-1">
                     {{ product.calculatedCheapestPrice.unitPrice }}

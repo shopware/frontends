@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { customValidators } from "@@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 const { required, minLength, email, requiredIf } = customValidators();
 
@@ -147,7 +148,7 @@ useBreadcrumbs([
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold text-xl">
         {{ $t("account.signUpHeader") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
@@ -188,7 +189,7 @@ useBreadcrumbs([
               :key="salutation.id"
               :value="salutation.id"
             >
-              {{ salutation.displayName }}
+              {{ getTranslatedProperty(salutation, "displayName") }}
             </option>
           </select>
         </div>
@@ -313,7 +314,7 @@ useBreadcrumbs([
         </div>
       </div>
 
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold text-xl">
         {{ $t("account.yourAddress") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">

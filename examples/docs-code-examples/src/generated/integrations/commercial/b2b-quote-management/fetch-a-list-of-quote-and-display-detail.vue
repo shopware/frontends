@@ -29,7 +29,7 @@ onBeforeMount(async () => {
           {{ quote.price?.totalPrice }}
         </td>
         <td>
-          {{ quote.stateMachineState?.translated.name }}
+          {{ quote.stateMachineState?.translated?.name }}
         </td>
       </tr>
     </tbody>

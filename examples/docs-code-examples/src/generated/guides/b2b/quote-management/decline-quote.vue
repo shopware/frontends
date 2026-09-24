@@ -2,10 +2,21 @@
 import { useB2bQuoteManagement } from "@shopware/composables";
 import { ref } from "vue";
 const declineComment = ref("");
-const quote = ref({ id: "example-id" });
-const { declineQuote } = useB2bQuoteManagement();
+const declineLineItemId = ref<string>();
+const quoteId = ref("example-id");
+const { declineQuoteWithComment, createDraftQuoteVersion } =
+  useB2bQuoteManagement();
 const handleDecline = async () => {
-  declineQuote(quote.value.id, declineComment.value);
+  const lineItemId = declineLineItemId.value;
+  if (!lineItemId) return;
+
+  const versionId = await createDraftQuoteVersion(quoteId.value);
+
+  await declineQuoteWithComment(quoteId.value, {
+    comment: declineComment.value,
+    lineItemId,
+    versionId,
+  });
   declineComment.value = "";
 };
 </script>

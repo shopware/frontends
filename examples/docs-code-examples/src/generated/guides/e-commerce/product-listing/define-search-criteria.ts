@@ -1,5 +1,3 @@
-import { useListing } from "#imports";
-
 const { search } = useListing();
 
 search({

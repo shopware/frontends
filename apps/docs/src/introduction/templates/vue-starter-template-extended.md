@@ -16,6 +16,12 @@ This template uses [Nuxt layers](https://nuxt.com/docs/getting-started/layers) a
 
 ### Quick setup
 
+Unlike the other templates, this one cannot simply be copied out of the
+repository: it is `scaffoldable: false` in `templates/manifest.json`, because its
+`nuxt.config.ts` extends `../vue-starter-template` by relative path and its
+`package.json` depends on `vue-starter-template` through the workspace protocol.
+The steps below are the manual setup that works around both.
+
 Scaffold both templates side by side:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup.sh" code lang="bash" no-name -->
@@ -29,7 +35,7 @@ npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-stor
 
 Update the `lumora-store/package.json` to reference local paths instead of workspace protocol:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup.diff" code lang="diff" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-2.txt" code lang="diff" no-name -->
 
 ```diff
 "dependencies": {
@@ -46,18 +52,14 @@ Update the `lumora-store/package.json` to reference local paths instead of works
 
 Then install and run:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-2.sh" code lang="bash" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-3.sh" code lang="bash" no-name -->
 
 ```bash
 cd lumora-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 <!-- /automd -->
-
-:::tip
-This setup works with **npm**, **yarn**, **pnpm**, or **bun**.
-:::
 
 ## What is Lumora?
 
@@ -77,9 +79,9 @@ This template extends the Vue Starter Template using Nuxt's layer system:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/layer-architecture.ts" code lang="ts" no-name -->
 
 ```ts
-// nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
+// nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"], // Extend base template
   // ... Lumora-specific configuration
@@ -103,9 +105,9 @@ By extending the base template, you automatically get:
 
 The extended template contains only:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/what-you-customize" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/what-you-customize.txt" code no-name -->
 
-```
+```txt
 lumora-store/
 ├─ app/
 │  └─ app.config.ts        # Brand customizations (colors, settings)
@@ -127,8 +129,6 @@ The template demonstrates how to customize the image placeholder color using `ap
 
 ```ts
 // app/app.config.ts
-import { defineAppConfig } from "#imports";
-
 export default defineAppConfig({
   imagePlaceholder: {
     color: "#B38A65", // Lumora brand-primary color
@@ -169,22 +169,27 @@ export default mergeConfigs([
 
 ## Overriding Components
 
-To override a component from the base template, create a file with the same name in your `app/components/` directory:
+To override a component from the base template, create a file with the same name in the matching directory under `app/components/`:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/overriding-components" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/overriding-components.txt" code no-name -->
 
-```
+```txt
 lumora-store/
   app/
     components/
-      SwProductCard.vue  # Overrides base SwProductCard
+      global/
+        FrontendDetailPage.vue  # Overrides SEO PDP (must stay in global/)
+      cms/
+        element/
+          CmsElementImage.vue   # Overrides CMS element (must stay in cms/)
+      SwProductCard.vue         # Overrides base SwProductCard
       layout/
-        LayoutHeader.vue # Overrides base header
+        Header.vue              # Overrides base LayoutHeader
 ```
 
 <!-- /automd -->
 
-Nuxt automatically prioritizes your local components over the base template components.
+Nuxt prioritizes your local components over the base template. Keep `Frontend*` pages in `components/global/` and CMS blocks/elements in `components/cms/` so `resolveComponent` still finds them.
 
 ## Benefits of the Layer Approach
 
@@ -209,9 +214,9 @@ npm update vue-starter-template
 
 Create multiple brand variants from a single base:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/3-multiple-brands" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/3-multiple-brands.txt" code no-name -->
 
-```
+```txt
 my-monorepo/
 ├─ vue-starter-template/      # Base template
 ├─ lumora-store/              # Brand A (extends base)
@@ -238,9 +243,9 @@ Instead of a local path, you can extend from an npm package:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-from-npm-package.ts" code lang="ts" no-name -->
 
 ```ts
-// nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
+// nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@your-company/store-base"],
   // ... your customizations
@@ -256,9 +261,9 @@ You can extend multiple layers:
 <!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-multiple-layers.ts" code lang="ts" no-name -->
 
 ```ts
-// nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
+// nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@your-company/store-base", "@your-company/payment-layer"],
 });

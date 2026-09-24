@@ -1,6 +1,4 @@
 // part of <script setup> section
-import { useListing } from "#imports";
-
 const { getCurrentSortingOrder, getSortingOrders, changeCurrentSortingOrder } =
   useListing({
     listingType: "categoryListing",

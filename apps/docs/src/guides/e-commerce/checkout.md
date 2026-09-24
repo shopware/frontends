@@ -25,8 +25,6 @@ Before fetching, ensure the cart is not empty by using `refreshCart` in the `use
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information.ts" code lang="ts" no-name -->
 
 ```ts
-import { useCheckout } from "#imports";
-
 const { getShippingMethods } = useCheckout();
 
 await getShippingMethods();
@@ -36,11 +34,10 @@ await getShippingMethods();
 
 **Display shipping methods**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
-import { computed, useCheckout } from "#imports";
 const {
   shippingMethods,
   setShippingMethod,
@@ -85,11 +82,9 @@ You can also display:
 
 **Get payment methods**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-3.ts" code lang="ts" no-name -->
 
 ```ts
-import { useCheckout } from "#imports";
-
 const { getPaymentMethods } = useCheckout();
 
 await getPaymentMethods();
@@ -99,11 +94,10 @@ await getPaymentMethods();
 
 **Display payment methods**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-2.vue" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/shipping-and-payment-information-4.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
-import { computed, useCheckout } from "#imports";
 const {
   paymentMethods,
   selectedPaymentMethod: paymentMethod,
@@ -146,7 +140,6 @@ Those data will be used to create a standard or temporary account.
 
 ```vue
 <script setup lang="ts">
-import { reactive, useCountries, useSalutations, useUser } from "#imports";
 const state = reactive({
   acceptedDataProtection: true,
   salutationId: "",
@@ -154,11 +147,11 @@ const state = reactive({
   lastName: "",
   email: "",
   password: "",
-  guest: false as false,
+  guest: false,
   billingAddress: {
+    id: "",
     customerId: "",
     firstName: "",
-    id: "",
     lastName: "",
     street: "",
     zipcode: "",
@@ -290,7 +283,6 @@ Totals should **not** be calculated by the frontend. All calculations should be 
 
 ```vue
 <script setup lang="ts">
-import { useCart, usePrice } from "#imports";
 const { refreshCart, cartItems, subtotal, totalPrice, shippingTotal } =
   useCart();
 const { getFormattedPrice } = usePrice();
@@ -324,13 +316,11 @@ Placing an order requires
 - A selected payment method
 - A selected shipping method
 
-After placing an order with the `createOrder` method, the cart is refreshed automatically.
+After placing an order with the `createOrder` method, the server deletes the cart, but the shared `swCart` value still holds the old line items until you refresh it yourself.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order.ts" code lang="ts" no-name -->
 
 ```ts
-import { useCart, useCheckout } from "#imports";
-
 const { createOrder } = useCheckout();
 const { refreshCart } = useCart();
 
@@ -340,22 +330,22 @@ refreshCart();
 
 <!-- /automd -->
 
-After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.
+After creating an order, you can fetch order data. `createOrder` resolves with the whole order entity, so pass its `id` to `useOrderDetails`.
 The backend allows fetching orders related only to the current user by checking the session.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order-2.ts" code lang="ts" no-name -->
 
 ```ts
-import { useOrderDetails } from "#imports";
+// `order` is the entity `createOrder()` resolved with above
+const order = { id: "order-id" };
 
-const orderId = "example-order-id";
 const {
   loadOrderDetails,
   personalDetails,
   billingAddress,
   shippingAddress,
-  order,
-} = useOrderDetails(orderId);
+  order: orderDetails,
+} = useOrderDetails(order.id);
 
 await loadOrderDetails();
 ```
@@ -377,8 +367,6 @@ progression when it fails.
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/guest-checkout-boundaries.ts" code lang="ts" no-name -->
 
 ```ts
-import { useUser } from "#imports";
-
 const { logout } = useUser();
 
 try {

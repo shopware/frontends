@@ -1,12 +1,12 @@
 {
   "extends": "tsconfig/vue-library.json",
-  "include": ["./index.d.ts", "."],
-  "exclude": ["dist"],
+  "include": ["."],
   "compilerOptions": {
     "jsx": "preserve",
+    "resolveJsonModule": true,
     "lib": ["dom"],
     "paths": {
-      "#imports": ["./index.d.ts"],
+      "#imports": ["./types/imports.d.ts"],
       "#shopware": ["./types/api-types.ts"]
     }
   }

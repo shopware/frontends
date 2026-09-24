@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useListing } from "#imports";
 const { getCurrentFilters } = useListing(/** parameters omitted */);
 </script>
-
 <template>
   {{ getCurrentFilters.navigationId }}
   <!-- "category-A-ID-1" -->

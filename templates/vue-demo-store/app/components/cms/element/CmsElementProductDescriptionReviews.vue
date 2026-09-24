@@ -125,7 +125,7 @@ onMounted(async () => {
                 {{ getProductName({ product }) }}
               </p>
               <!-- eslint-disable vue/no-v-html -->
-              <div class="mt-2" v-html="description"></div>
+              <div class="cms-element-text mt-2" v-html="description"></div>
             </div>
             <div
               :class="[

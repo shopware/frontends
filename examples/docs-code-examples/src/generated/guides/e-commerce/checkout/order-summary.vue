@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCart, usePrice } from "#imports";
 const { refreshCart, cartItems, subtotal, totalPrice, shippingTotal } =
   useCart();
 const { getFormattedPrice } = usePrice();

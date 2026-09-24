@@ -1,28 +1,26 @@
-type OnApproveData = { orderID: string };
-type OnApproveActions = unknown;
+import type { OnApproveActions, OnApproveData } from "@paypal/paypal-js";
+import { ref } from "vue";
 
-const orderCreated = { value: null as unknown };
-const order = { id: "order-id" };
-const apiClient = {
-  async invoke(_route: string, _payload: unknown) {
-    return { data: { redirectUrl: "https://example.com/payment/finalize" } };
-  },
-};
+import { apiClient } from "./snippet-context";
 
-async function createOrder(payload: { paypalOrderId: string }) {
-  return { id: "order-id", ...payload };
+async function createOrder(_payload: { paypalOrderId: string }) {
+  return { id: "order-id" };
 }
 
 function refreshCart() {}
 
-const paypalButtons = {
+const orderCreated = ref<{ id: string }>();
+
+export const paypalButtonsConfig = {
   // part of window.paypal.Buttons({}) params
-  onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
+  onApprove: async (data: OnApproveData, _actions: OnApproveActions) => {
     // createOrder from useCheckout composable
     orderCreated.value = await createOrder({
       paypalOrderId: data.orderID,
     });
     refreshCart();
+    const order = orderCreated.value;
+
     // apiClient from useShopwareContext composable
     const handlePaymentResponse = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
@@ -41,5 +39,3 @@ const paypalButtons = {
     // ...
   },
 };
-
-void paypalButtons.onApprove;

@@ -31,13 +31,39 @@ Avoiding hard waits in Playwright.
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/waits-best-practice.js" code lang="js" no-name -->
 
 ```js
-await page.waitFor(1000); // hard wait for 1000ms
+// flaky
+await page.waitForLoadState("networkidle");
+await page.getByTestId("product-box-product-name-link").first().click();
+
+// reliable
+const firstProduct = page.getByTestId("product-box-product-name-link").first();
+await firstProduct.waitFor({ state: "visible" });
+await firstProduct.click();
 ```
 
 <!-- /automd -->
 
 Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
 Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
+
+One exception: avoid `waitForLoadState("networkidle")` on a Shopware storefront. A Nuxt app keeps making
+requests after the page is usable, so the network rarely goes idle and the wait times out. Wait for the
+element you are about to act on instead.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/waits-best-practice.js" code lang="js" no-name -->
+
+```js
+// flaky
+await page.waitForLoadState("networkidle");
+await page.getByTestId("product-box-product-name-link").first().click();
+
+// reliable
+const firstProduct = page.getByTestId("product-box-product-name-link").first();
+await firstProduct.waitFor({ state: "visible" });
+await firstProduct.click();
+```
+
+<!-- /automd -->
 
 ### Pages
 

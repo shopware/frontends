@@ -18,7 +18,7 @@ Alternatively, set up the vue-starter-template manually by running the following
 
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
 
 <!-- /automd -->
@@ -46,13 +46,17 @@ The template comes with:
 
 The directory structure follows [Nuxt conventions](https://nuxt.com/docs/guide/directory-structure):
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/directory-structure" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/directory-structure.txt" code no-name -->
 
-```
+```txt
 vue-starter-template/
 ├─ app/
-│  ├─ components/      /* Your custom components */
-│  ├─ pages/           /* Page components */
+│  ├─ components/
+│  │  ├─ global/       /* Frontend* SEO page resolvers (Nuxt global) */
+│  │  ├─ cms/          /* Custom/override CMS blocks & elements (Nuxt global) */
+│  │  ├─ layout/       /* Header, footer, navigation (auto-import) */
+│  │  └─ ...           /* Other auto-imported UI */
+│  ├─ pages/           /* Route pages, including [...all].vue resolver */
 │  ├─ layouts/         /* Layout components */
 │  └─ ...
 ├─ public/             /* Static assets */
@@ -63,6 +67,8 @@ vue-starter-template/
 ```
 
 <!-- /automd -->
+
+`components/global` and `components/cms` are registered as Nuxt global component dirs so Vue `resolveComponent` can load SEO page types and CMS blocks/elements. Other components under `app/components/` stay auto-imported only (not global), which avoids Rolldown `INEFFECTIVE_DYNAMIC_IMPORT` warnings from Lazy wrappers.
 
 ## Configure
 
@@ -93,19 +99,20 @@ export default defineNuxtConfig({
 
 You can also use a `.env` file to override configuration:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/shopware-connection.sh" code lang="bash" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/shopware-connection-2.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.shopware.store/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 # Optional: Required for local development when using customer registration
+# Only takes effect if `devStorefrontUrl` is also present in nuxt.config.ts
 # NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
 
 <!-- /automd -->
 
 :::info devStorefrontUrl
-The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See the [troubleshooting guide](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for more details.
+The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See [Storefront URL](../../guides/storefront-url.html) for more details.
 :::
 
 ### Generate Types
@@ -143,7 +150,11 @@ Create components in the `app/components/` directory. They will be auto-imported
 
 ### Override CMS Components
 
-The template uses `@shopware/cms-base-layer` for CMS integration. You can override any CMS component by creating a file with the same name in your `app/components/` directory.
+The template uses `@shopware/cms-base-layer` for CMS integration.
+
+- Override shared `Sw*` UI in `app/components/` (auto-imported).
+- Override CMS blocks/elements under `app/components/cms/` (registered global for `resolveComponent`).
+- Override SEO page shells (`FrontendDetailPage`, …) under `app/components/global/`.
 
 For example, to override the product card:
 
@@ -153,6 +164,17 @@ For example, to override the product card:
 <!-- app/components/SwProductCard.vue -->
 <template>
   <!-- Your custom product card implementation -->
+</template>
+```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/override-cms-components-2.vue" code lang="vue" no-name -->
+
+```vue
+<!-- app/components/cms/element/CmsElementImage.vue -->
+<template>
+  <!-- Your custom CMS image element -->
 </template>
 ```
 

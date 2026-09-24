@@ -7,12 +7,7 @@ const model = defineModel<string>({
   required: true,
 });
 
-const {
-  dataTestId = "",
-  id = "",
-  errorMessage = undefined,
-} = defineProps<{
-  dataTestId?: string;
+const { id = "", errorMessage = undefined } = defineProps<{
   id?: string;
   errorMessage?: MaybeRef<string>;
 }>();
@@ -36,7 +31,6 @@ const accountTypeOptions = [
     v-model="model"
     :label="$t('form.accountType.title')"
     :options="accountTypeOptions"
-    :data-testid="dataTestId"
     :errorMessage="errorMessage"
   />
 </template>

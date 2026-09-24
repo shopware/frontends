@@ -1,14 +1,11 @@
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
-import type { Schemas } from "#shopware";
-
 type MediaOption = { media: { filename: string; id: string } };
+type CustomizedProductTemplate = { id: string; options?: unknown[] };
 
 export type UseProductCustomizedProductConfiguratorReturn = {
-  customizedProduct: ComputedRef<
-    Schemas["SwagCustomizedProductsTemplate"] | undefined
-  >;
+  customizedProduct: ComputedRef<CustomizedProductTemplate | undefined>;
   state: Ref<Record<string, string | MediaOption>>;
   isActive: ComputedRef<boolean>;
   addToCart: () => Promise<void>;

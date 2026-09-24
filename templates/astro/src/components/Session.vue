@@ -11,11 +11,16 @@ await refreshSessionContext();
   <div class="instructions">
     <div class="example">
       <p>
-        Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
+        Currency:
+        <strong
+          >{{ currency?.translated?.name }} ({{
+            currency?.translated?.symbol
+          }})</strong
+        >
       </p>
       <p>
         Default payment method:
-        <strong>{{ selectedPaymentMethod?.name }}</strong>
+        <strong>{{ selectedPaymentMethod?.translated?.name }}</strong>
       </p>
       <p>
         Is customer logged in: <strong>{{ isLoggedIn }}</strong>

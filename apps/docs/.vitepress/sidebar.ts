@@ -2,9 +2,30 @@
  * Sidebar configuration is exported so DevHub can import it and prefix links with /frontends/.
  */
 
-import data from "./data/composables.data";
+import data from "../src/.data/composables.data";
+import templatesData from "../src/.data/templates.data";
 
 const composables = await data.load(null);
+const { templates } = await templatesData.load(null);
+
+// A template belongs in the nav when it has a docs page, whatever its support
+// level: vue-demo-store is deprecated but stays documented as a reference.
+const templatePages = templates
+  .filter((template) => template.link)
+  .map((template) => ({ text: template.displayName, link: template.link }));
+
+// Integration guides, not templates. They have a page but no templates/ entry,
+// so the manifest does not know about them.
+const integrationGuides = [
+  {
+    text: "Custom Vue Project",
+    link: "/introduction/templates/custom-vue-project.html",
+  },
+  {
+    text: "Custom React Project",
+    link: "/introduction/templates/custom-react-project.html",
+  },
+];
 
 export const sidebar = [
   {
@@ -27,36 +48,7 @@ export const sidebar = [
         text: "Setup Templates",
         link: "/introduction/templates.html",
         collapsed: true,
-        items: [
-          {
-            text: "Vue Starter Template",
-            link: "/introduction/templates/vue-starter-template.html",
-          },
-          {
-            text: "Vue Starter Template Extended",
-            link: "/introduction/templates/vue-starter-template-extended.html",
-          },
-          {
-            text: "Blank Template",
-            link: "/introduction/templates/blank-template.html",
-          },
-          {
-            text: "Demo Store",
-            link: "/introduction/templates/demo-store-template.html",
-          },
-          {
-            text: "Custom Vue Project",
-            link: "/introduction/templates/custom-vue-project.html",
-          },
-          {
-            text: "Custom React Project",
-            link: "/introduction/templates/custom-react-project.html",
-          },
-          {
-            text: "Astro Template",
-            link: "/introduction/templates/astro-template.html",
-          },
-        ],
+        items: [...templatePages, ...integrationGuides],
       },
     ],
   },
@@ -101,6 +93,7 @@ export const sidebar = [
     items: [
       { text: "Routing", link: "/guides/routing.html" },
       { text: "Languages", link: "/guides/languages.html" },
+      { text: "Storefront URL", link: "/guides/storefront-url.html" },
       {
         text: "CMS",
         link: "/guides/cms/",
@@ -231,6 +224,138 @@ export const sidebar = [
           {
             text: "Footer Navigation",
             link: "/guides/page-elements/footer-navigation.html",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    text: "FRONTENDS RECIPES",
+    link: "/frontends-recipes/",
+    items: [
+      {
+        text: "Account",
+        link: "/frontends-recipes/account/",
+        collapsed: true,
+        items: [
+          {
+            text: "Login",
+            link: "/frontends-recipes/account/login.html",
+          },
+          {
+            text: "Register",
+            link: "/frontends-recipes/account/register.html",
+          },
+          {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
+          {
+            text: "Wishlist",
+            link: "/frontends-recipes/account/wishlist.html",
+          },
+          {
+            text: "Order History",
+            link: "/frontends-recipes/account/order-history.html",
+          },
+          {
+            text: "Newsletter",
+            link: "/frontends-recipes/account/newsletter.html",
+          },
+          {
+            text: "Customer Addresses",
+            link: "/frontends-recipes/account/addresses.html",
+          },
+          {
+            text: "Customer Profile",
+            link: "/frontends-recipes/account/profile.html",
+          },
+        ],
+      },
+      {
+        text: "Catalog",
+        link: "/frontends-recipes/catalog/",
+        collapsed: true,
+        items: [
+          {
+            text: "Product Listing and Filters",
+            link: "/frontends-recipes/catalog/listing.html",
+          },
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
+          {
+            text: "Product Reviews",
+            link: "/frontends-recipes/catalog/reviews.html",
+          },
+          {
+            text: "Product Variants",
+            link: "/frontends-recipes/catalog/variants.html",
+          },
+        ],
+      },
+      {
+        text: "Checkout",
+        link: "/frontends-recipes/checkout/",
+        collapsed: true,
+        items: [
+          {
+            text: "Cart",
+            link: "/frontends-recipes/checkout/cart.html",
+          },
+          {
+            text: "Cart Errors",
+            link: "/frontends-recipes/checkout/cart-errors.html",
+          },
+          {
+            text: "Checkout and Order Placement",
+            link: "/frontends-recipes/checkout/checkout.html",
+          },
+          {
+            text: "Payment",
+            link: "/frontends-recipes/checkout/payment.html",
+          },
+        ],
+      },
+      {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Contact Form",
+            link: "/frontends-recipes/cms/contact-form.html",
+          },
+        ],
+      },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
+          },
+          {
+            text: "Language and Currency Switch",
+            link: "/frontends-recipes/context/language-and-currency.html",
+          },
+        ],
+      },
+      {
+        text: "Orders",
+        link: "/frontends-recipes/orders/",
+        collapsed: true,
+        items: [
+          {
+            text: "Guest Order Lookup via Deep Link",
+            link: "/frontends-recipes/orders/guest-order-lookup.html",
+          },
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
           },
         ],
       },

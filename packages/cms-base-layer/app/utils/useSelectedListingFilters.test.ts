@@ -8,17 +8,27 @@ import {
 describe("applyQueryToFilters", () => {
   it("populates sets from pipe-joined values", () => {
     const state = createEmptyFilterState();
-    applyQueryToFilters(state, { manufacturer: "a|b", properties: "x" });
+    applyQueryToFilters(state, {
+      manufacturer: "a|b",
+      properties: "x",
+      categories: "c1|c2",
+    });
     expect([...state.manufacturer]).toEqual(["a", "b"]);
     expect([...state.properties]).toEqual(["x"]);
+    expect([...state.categories]).toEqual(["c1", "c2"]);
   });
 
   it("clears removed filters when the query no longer has them (Back/Forward)", () => {
     const state = createEmptyFilterState();
-    applyQueryToFilters(state, { manufacturer: "a|b", search: "shirt" });
-    applyQueryToFilters(state, { search: "shirt" }); // manufacturer removed
+    applyQueryToFilters(state, {
+      manufacturer: "a|b",
+      categories: "c1",
+      search: "shirt",
+    });
+    applyQueryToFilters(state, { search: "shirt" }); // manufacturer + categories removed
     expect(state.manufacturer.size).toBe(0);
     expect(state.properties.size).toBe(0);
+    expect(state.categories.size).toBe(0);
   });
 
   it("clears removed scalar filters on resync", () => {

@@ -3,6 +3,7 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import type { CmsElementForm } from "@shopware/composables";
 import { useCmsTranslations } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useVuelidate } from "@vuelidate/core";
 import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
@@ -247,7 +248,7 @@ const invokeSubmit = async () => {
               :key="salutation.id"
               :value="salutation.id"
             >
-              {{ salutation.displayName }}
+              {{ getTranslatedProperty(salutation, "displayName") }}
             </option>
           </select>
         </div>

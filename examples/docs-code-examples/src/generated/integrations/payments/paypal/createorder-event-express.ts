@@ -1,3 +1,6 @@
+import type { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { ref } from "vue";
+
 import {
   addToCart,
   apiClient,
@@ -6,13 +9,15 @@ import {
   setPaymentMethod,
 } from "./snippet-context";
 
-const paypal = getPayPal();
-const divContainer = "#paypal-button-container";
+const divContainer = ref<HTMLElement>();
 
 // client only
-paypal
+getPayPal()
   .Buttons({
-    createOrder: async () => {
+    createOrder: async (
+      _data: CreateOrderData,
+      _actions: CreateOrderActions,
+    ) => {
       await setPaymentMethod(paypalMethod.value);
 
       await addToCart();
@@ -20,7 +25,7 @@ paypal
       const response = await apiClient.invoke(
         "createPayPalExpressOrder post /store-api/paypal/express/create-order",
       );
-      return response.data?.token;
+      return response.data.token;
     },
   })
-  .render(divContainer);
+  .render(divContainer.value!);

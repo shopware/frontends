@@ -133,7 +133,7 @@ onMounted(async () => {
           class="self-stretch text-surface-on-surface text-base font-normal leading-normal"
         >
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div v-html="description"></div>
+          <div class="cms-element-text" v-html="description"></div>
         </div>
       </div>
     </Transition>
@@ -242,7 +242,7 @@ onMounted(async () => {
               :key="category.id"
               class="mb-2"
             >
-              {{ category.name }}
+              {{ getTranslatedProperty(category, "name") }}
             </div>
           </div>
           <div v-else>No categories available</div>

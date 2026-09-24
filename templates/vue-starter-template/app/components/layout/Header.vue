@@ -72,6 +72,8 @@ watch(
             <div class="relative">
               <FormIconButton
                 type="ghost"
+                data-testid="header-account-button"
+                :data-logged-in="isLoggedIn"
                 @click="handleMyAccountClick"
                 :aria-label="$t('layout.header.myAccount')"
               >
@@ -95,7 +97,13 @@ watch(
               </ClientOnly>
             </div>
             <ClientOnly>
-              <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              <NuxtLink
+                data-testid="header-wishlist-button"
+                :to="formatLink('/wishlist')"
+                :aria-label="$t('wishlist.header')"
+              >
+                <LayoutHeaderWishlistIcon :counter="wishlistCount" />
+              </NuxtLink>
               <template #fallback>
                 <LayoutHeaderWishlistIcon :counter="0" />
               </template>
@@ -103,6 +111,7 @@ watch(
 
             <FormIconButton
               type="ghost"
+              data-testid="header-mini-cart-button"
               @click="toggleMiniCart"
               :aria-label="$t('layout.header.cart')"
             >

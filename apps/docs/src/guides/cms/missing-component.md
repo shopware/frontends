@@ -96,7 +96,7 @@ If the component belongs to a custom plugin or you created the block yourself in
   <p>Create <code>components/{{ componentName }}.vue</code></p>
 </div>
 
-Create the file anywhere inside your `components/` directory. Nuxt picks it up automatically as a global component:
+Create the file under your template’s global CMS components dir (e.g. `app/components/cms/`), which templates register with `global: true` so `resolveComponent` can find it:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-1-create-the-file" code no-name -->
 

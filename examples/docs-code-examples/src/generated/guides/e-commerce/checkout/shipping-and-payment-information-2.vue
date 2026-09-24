@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { computed, useCheckout } from "#imports";
 const {
-  paymentMethods,
-  selectedPaymentMethod: paymentMethod,
-  setPaymentMethod,
+  shippingMethods,
+  setShippingMethod,
+  selectedShippingMethod: shippingMethod,
+  getShippingMethods,
 } = useCheckout();
 
-const selectedPaymentMethod = computed({
+const selectedShippingMethod = computed({
   get(): string {
-    return paymentMethod.value?.id || "";
+    return shippingMethod.value?.id || "";
   },
-  async set(paymentMethodId: string) {
-    await setPaymentMethod({ id: paymentMethodId });
+  async set(shippingMethodId: string) {
+    await setShippingMethod({ id: shippingMethodId });
   },
 });
 </script>
 <template>
-  <div v-for="paymentMethod in paymentMethods" :key="paymentMethod.id">
+  <div v-for="shippingMethod in shippingMethods" :key="shippingMethod.id">
     <input
-      :id="paymentMethod.id"
-      v-model="selectedPaymentMethod"
-      :value="paymentMethod.id"
-      name="payment-method"
+      :id="shippingMethod.id"
+      v-model="selectedShippingMethod"
+      :value="shippingMethod.id"
+      name="shipping-method"
       type="radio"
     />
-    <label :for="paymentMethod.id">
-      {{ paymentMethod.name }}
+    <label :for="shippingMethod.id">
+      {{ shippingMethod.name }}
     </label>
   </div>
 </template>

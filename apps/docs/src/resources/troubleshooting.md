@@ -45,7 +45,7 @@ In general, the store API should only output content that would also be visible 
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineNuxtConfig } from "nuxt/config";
 
-// https://nuxt.com/docs/guide/directory-structure/nuxt-config
+// https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   devServer: {
     https: true,
@@ -87,45 +87,28 @@ export default defineNuxtConfig({
 
 ## What is `devStorefrontUrl` and when to use it?
 
-The `devStorefrontUrl` configuration option is primarily used for **customer registration** functionality. The Shopware registration endpoint requires a `storefrontUrl` parameter in its payload to identify which sales channel domain the customer is registering from.
+`devStorefrontUrl` overrides the `storefrontUrl` that Shopware Frontends sends to the Store API. It is needed for **customer registration**, **password recovery** and **newsletter subscription**, because those endpoints require a URL that matches a domain configured under **Sales Channel → Domains** — and during local development your browser origin is `http://localhost:3000`, which matches none.
 
-### Why is it needed?
-
-By default, the application uses `window.location.origin` (e.g., `https://your-store.com`) to determine the storefront URL. However, this fails in certain scenarios:
-
-- **Local development** - Your browser origin is `http://localhost:3000`, which doesn't match any configured sales channel domain
-- **Separate frontend/API hosting** - When your frontend runs on a different domain than what's configured in Shopware
-
-### How to configure it
-
-Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
-
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/what-is-devstorefronturl-and-when-to-use-it.ts" code lang="ts" no-name -->
 
 ```ts
-// nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
-const config = {
-  runtimeConfig: {
-    public: {
-      shopware: {
-        endpoint: "https://your-shop.shopware.store/store-api",
-        accessToken: "your-access-token",
-        devStorefrontUrl: "https://your-shop.shopware.store", // must match a domain in Sales Channel settings
-      },
-    },
+// nuxt.config.ts
+export default defineNuxtConfig({
+  shopware: {
+    endpoint: "https://your-shop.shopware.store/store-api",
+    accessToken: "your-access-token",
+    devStorefrontUrl: "https://your-shop.shopware.store", // must match a Sales Channel domain
   },
-};
-
-export default defineNuxtConfig(config);
+});
 ```
 
 <!-- /automd -->
 
-Or use an environment variable:
+The environment variable below overrides it, but **only if the `devStorefrontUrl` key is already present** in `nuxt.config.ts` (an empty string is enough) — Nuxt applies `NUXT_*` overrides only to keys that already exist, and the module does not seed a default:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.sh" code lang="bash" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/what-is-devstorefronturl-and-when-to-use-it-2.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
@@ -136,6 +119,8 @@ NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 :::tip
 If customer registration works in production but fails locally, `devStorefrontUrl` is likely the solution. Set it to your production storefront domain during local development.
 :::
+
+For the full explanation — what the backend does with `storefrontUrl`, which endpoints require it, `replaceToDevStorefront()`, and the constraint-violation errors — see [Storefront URL](../guides/storefront-url.html).
 
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 
@@ -149,9 +134,9 @@ If you're encountering issues related to Cross-Origin Resource Sharing (CORS) or
 
 Edit your `nuxt.config.ts` file and add:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example.txt" code no-name -->
 
-```
+```txt
 vite: {
     server: {
       proxy: {
@@ -169,9 +154,9 @@ vite: {
 
 Modify the Shopware API endpoint to match your local frontend URL.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example-2" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example-2.txt" code no-name -->
 
-```
+```txt
 {
     ...
       shopware: {
@@ -193,9 +178,9 @@ When Broadcasting is enabled, the BFCache (Back-Forward Cache) functionality is 
 
 To leverage the benefits of BFCache, we have decided to disable Broadcasting. By turning off Broadcasting, we ensure that the BFCache can function correctly, providing a smoother and faster navigation experience for users.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/resolution-vue-demo-template" code no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/resolution-vue-demo-template.txt" code no-name -->
 
-```
+```txt
 ...
 runtimeConfig: {
   broadcasting: true,
@@ -234,9 +219,9 @@ Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
 <!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution.ts" code lang="ts" no-name -->
 
 ```ts
-// nuxt.config.ts
 import { defineNuxtConfig } from "nuxt/config";
 
+// nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware/nuxt-module"],

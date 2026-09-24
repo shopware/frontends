@@ -166,20 +166,60 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.12.0
+### Latest changes: 1.13.0
 
 ### Minor Changes
 
-- [#2486](https://github.com/shopware/frontends/pull/2486) [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec) Thanks [@mkucmus](https://github.com/mkucmus)! - `useSessionContext`: expose `currentLocaleCode` — the active language's locale code (e.g. `"en-GB"`), read directly from the context's `languageInfo`. The current locale can now be derived from the session context alone, without loading the full language list via `useInternationalization().getAvailableLanguages()` just to map the current `languageId` to a locale.
+- [#2663](https://github.com/shopware/frontends/pull/2663) [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCmsElementImage` now honours the `ariaLabel` and `isDecorative` fields of a CMS image element, which were ignored before, and returns both. `imageAttrs.alt` is empty for a decorative image. `ariaLabel` names the link the image sits in, as it does in the Storefront, so it is not copied into `alt`.
 
-- [#2473](https://github.com/shopware/frontends/pull/2473) [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b) Thanks [@mkucmus](https://github.com/mkucmus)! - Add an opt-in `cacheableReads` flag that routes anonymous Store API reads through their cacheable GET variants instead of POST. Criteria is compressed into the `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`, which lets CDNs / reverse proxies / the browser cache the responses.
+  Both fields are optional on the image element config, because a Shopware instance that has never had them set does not return them. `useCmsElementConfig` accepts optional config members now, so `getConfigValue` keeps the declared value type for them instead of widening to `{}`.
 
-  Disabled by default — fully backwards compatible. Enable it in `nuxt.config` (`shopware: { cacheableReads: true }`) or via `createShopwareContext(app, { cacheableReads: true })` for non-Nuxt setups. It is surfaced on the Shopware context and read by the affected composables; public composable signatures are unchanged.
+  `SliderElementConfig` gained the `"none"` value for `navigationDots` and `navigationArrows`. The Administration offers it, the type did not list it.
 
-  Affected composables: `useNavigation`, `useNavigationSearch`, `useCountries`, `useUser` (country + salutation lookups), `useSalutations`, `useInternationalization`, `useProductConfigurator`, `useProductSearch`, and `useCategorySearch.advancedSearch`.
+- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `createDraftQuoteVersion` and `deleteDraftQuoteVersion` to `useB2bQuoteManagement`.
 
-  `useListing` (product-listing), single-category `useCategorySearch.search`, and `useLandingSearch` remain POST for now: the generated Store API schema does not type `_criteria` on those GET routes (a Shopware OpenAPI gap). The backend does honor `_criteria` on product-listing GET at runtime, so that one can be migrated later once the types are augmented.
+  Quote write operations such as `declineQuoteWithComment` expect the identifier of a temporary storefront draft version, not the `versionId` property of the quote entity. `createDraftQuoteVersion` wraps `POST /quote/{id}/draft-version` and returns that identifier, throwing when the API responds without one; `deleteDraftQuoteVersion` discards the draft again.
+
+  ```ts
+  const { createDraftQuoteVersion, declineQuoteWithComment } =
+    useB2bQuoteManagement();
+
+  const versionId = await createDraftQuoteVersion(quoteId);
+
+  await declineQuoteWithComment(quoteId, {
+    comment: "Too expensive",
+    lineItemId,
+    versionId,
+  });
+  ```
+
+- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `declineQuoteWithComment` to `useB2bQuoteManagement`, following the Store API `POST /quote/{id}/decline` schema, which as of `6.7.12` also carries `lineItemId` and `versionId` next to `comment`.
+
+  `declineQuote` keeps its `(quoteId, comment)` signature and is deprecated. It will be removed in the next major.
+
+  ```ts
+  const { declineQuoteWithComment, createDraftQuoteVersion } =
+    useB2bQuoteManagement();
+
+  const versionId = await createDraftQuoteVersion(quoteId);
+
+  await declineQuoteWithComment(quoteId, {
+    comment: "Too expensive",
+    lineItemId,
+    versionId,
+  });
+  ```
 
 ### Patch Changes
 
-- [#2462](https://github.com/shopware/frontends/pull/2462) [`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2) Thanks [@mkucmus](https://github.com/mkucmus)! - `useProductAssociations`: add optional `includeSeoUrls` option. When `true`, the cross-selling request sends `sw-include-seo-urls: true` so returned products include the `seoUrls` association. Defaults to `false` to avoid extra backend overhead.
+- [#2676](https://github.com/shopware/frontends/pull/2676) [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Realign the composables with the `6.7.13.0` Store API schema:
+
+  - `useB2bQuoteManagement`: `getQuote()` now invokes `readQuote post /quote/{id}` (was `readQuote post /quote/detail/{id}`) and `createOrderFromQuote()` now invokes `createOrderFromQuote post /quote/{id}/order` (was `createOrderFromQuote post /quote/order/{id}`), matching the renamed endpoints.
+  - `useListing`: `getSortingOrders` is typed as `Schemas["ProductListingResult"]["availableSortings"]` instead of the removed `Schemas["ProductSorting"][]`.
+  - `useProductSearch`: the `associations` option is typed as `Partial<Schemas["Associations"]>` instead of the removed `Schemas["Association"]`.
+
+- [#2660](https://github.com/shopware/frontends/pull/2660) [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsElementImage` now returns the translated media `alt` in `imageAttrs`. It read `element.data.media.alt` from the entity root, which the Store API fills with the system language value, so the `alt` attribute ignored the language of the current request. The value is now resolved with `getTranslatedProperty()` and falls back to the root property when `translated` is missing.
+
+- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
+  - @shopware/helpers@1.8.0
+  - @shopware/api-client@1.6.0

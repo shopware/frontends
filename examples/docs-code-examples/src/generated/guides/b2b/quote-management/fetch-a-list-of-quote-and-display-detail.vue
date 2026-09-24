@@ -3,7 +3,6 @@ import { useB2bQuoteManagement } from "@shopware/composables";
 import { ref, onBeforeMount } from "vue";
 
 import type { Schemas } from "#shopware";
-
 const quotesList = ref<Schemas["Quote"][]>([]);
 const { getQuoteList } = useB2bQuoteManagement();
 onBeforeMount(async () => {
@@ -30,7 +29,7 @@ onBeforeMount(async () => {
           {{ quote.price?.totalPrice }}
         </td>
         <td>
-          {{ quote.stateMachineState?.translated.name }}
+          {{ quote.stateMachineState?.translated?.name }}
         </td>
       </tr>
     </tbody>

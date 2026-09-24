@@ -1,9 +1,10 @@
+import { ref } from "vue";
+
 import { createOrder, getPayPal, onApprove } from "./snippet-context";
 
-const paypal = getPayPal();
-const divContainer = "#paypal-button-container";
+const divContainer = ref<HTMLElement>();
 
-paypal
+getPayPal()
   .Buttons({
     fundingSource: "venmo",
     createOrder: () => createOrder("venmo"),
@@ -11,4 +12,4 @@ paypal
 
     // ...
   })
-  .render(divContainer);
+  .render(divContainer.value!);

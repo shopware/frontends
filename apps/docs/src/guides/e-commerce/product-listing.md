@@ -33,8 +33,6 @@ Before using the composable, define the type related to the context:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/listing-type-and-context.ts" code lang="ts{3}" no-name -->
 
 ```ts{3}
-import { useListing } from "#imports";
-
 const { search, getElements } = useListing({
   listingType: "categoryListing",
   categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
@@ -56,8 +54,6 @@ In order to get the expected products, we need to define the search criteria. Th
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/define-search-criteria.ts" code lang="ts" no-name -->
 
 ```ts
-import { useListing } from "#imports";
-
 const { search } = useListing();
 
 search({
@@ -89,7 +85,6 @@ In order to display products of product listing we need to:
 
 ```vue{11,22}
 <script setup lang="ts">
-import { useListing } from "#imports";
 const { search, getElements } = useListing({
   listingType: "categoryListing",
   categoryId: "dfd52ab937f840fd87e9d24ebf6bd245", // entrypoint to browse
@@ -135,8 +130,6 @@ Available methods of `useListing` to manage sorting order:
 
 ```ts{3-5}
 // part of <script setup> section
-import { useListing } from "#imports";
-
 const { getCurrentSortingOrder, getSortingOrders, changeCurrentSortingOrder } =
   useListing({
     listingType: "categoryListing",
@@ -152,7 +145,7 @@ const { getCurrentSortingOrder, getSortingOrders, changeCurrentSortingOrder } =
 
 Show all available sortings:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting.html" code lang="html" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
@@ -172,12 +165,12 @@ Show all available sortings:
 
 Refresh the product listing on option's change:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.ts" code lang="ts{4-6}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-3.ts" code lang="ts{4-6}" no-name -->
 
 ```ts{4-6}
-import { useListing } from "#imports";
-
-const { changeCurrentSortingOrder } = useListing();
+const { changeCurrentSortingOrder } = useListing({
+  listingType: "categoryListing",
+});
 
 const onOrderChange = (onOrderChangeEvent: Event) => {
   // accept the DOM Event and extract the option's value
@@ -192,7 +185,7 @@ const onOrderChange = (onOrderChangeEvent: Event) => {
 
 Add event listener to the `<select>` element:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-2.html" code lang="html" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/sorting-4.html" code lang="html" no-name -->
 
 ```html
 <select @change="onOrderChange"></select>
@@ -208,8 +201,6 @@ To achieve this, you can use `useCart` composable which expose `addProduct` meth
 
 ```ts
 // part of <script setup> section
-import { useCart } from "#imports";
-
 const { addProduct } = useCart();
 ```
 
@@ -217,7 +208,7 @@ const { addProduct } = useCart();
 
 Utilize the method in a template:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/enable-adding-to-the-cart.html" code lang="html" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/enable-adding-to-the-cart-2.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
@@ -245,8 +236,6 @@ Pagination is available by using three methods from `useListing` composable:
 
 ```ts{5-7}
 // part of <script setup> section
-import { useListing } from "#imports";
-
 const {
   search,
   getElements,
@@ -268,7 +257,7 @@ const {
 
 The implementation can look similar to:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/add-pagination.html" code lang="html" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/add-pagination-2.html" code lang="html" no-name -->
 
 ```html
 <!-- part of <template> -->
@@ -321,8 +310,6 @@ In order to get the list of available filters, use the following command:
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.ts" code lang="ts" no-name -->
 
 ```ts
-import { useListing } from "#imports";
-
 const { getAvailableFilters } = useListing(/** parameters omitted */);
 ```
 
@@ -332,20 +319,26 @@ You can then iterate the filter objects available in the array. The filter objec
 
 `ListingFilter.code`: **manufacturer**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters.vue" code lang="vue{15,17}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.vue" code lang="vue{15,17}" no-name -->
 
 ```vue{15,17}
 <script setup lang="ts">
-import { useListing } from "#imports";
 const { getAvailableFilters, getCurrentFilters, setCurrentFilters } =
-  useListing(/** parameters omitted */);
+  useListing({
+    listingType: "categoryListing",
+  });
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
-  setCurrentFilters([{ code: "manufacturer", value: [manufacturerId] }]);
+  setCurrentFilters([
+    {
+      code: "manufacturer",
+      value: [manufacturerId],
+    },
+  ]);
 };
 
 // element from getAvailableFilters.value
-// i.e: getAvailableFilters.value?.find(({ code }) => code === "manufacturer")?.[0]
+// i.e: getAvailableFilters.value?.find(({code}) => code === "manufacturer")?.[0]
 const manufacturerFilter = {
   apiAlias: "manufacturer_aggregation",
   code: "manufacturer",
@@ -376,23 +369,27 @@ const manufacturerFilter = {
       customFields: null,
       apiAlias: "product_manufacturer",
     },
-    // other manufacturer objects
+    {
+      // other manufacturer objects
+      id: "another-manufacturer-id",
+      name: "Other manufacturer",
+      apiAlias: "product_manufacturer",
+    },
   ],
 };
 </script>
-
 <template>
   <h3>{{ manufacturerFilter.label }}</h3>
   <div
-    v-for="manufacturer in manufacturerFilter.entities"
+    v-for="manufacturer in manufacturerFilter?.entities"
     :key="manufacturer.id"
   >
     <input
-      :id="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`"
       type="checkbox"
+      :id="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`"
       :name="manufacturerFilter.code"
-      :checked="getCurrentFilters.manufacturer?.includes(manufacturer.id)"
       @click="selectManufacturerAndSearch(manufacturer.id)"
+      :checked="getCurrentFilters['manufacturer']?.includes(manufacturer.id)"
     />
     <label :for="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`">
       {{ manufacturer.name }}
@@ -415,18 +412,15 @@ const manufacturerFilter = {
 
 Despite being in the same filter group, every entity of property defined in the admin panel is available separately.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-2.ts" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/get-list-of-all-available-filters-3.ts" code lang="ts" no-name -->
 
 ```ts
 type ListingFilter = {
   name: string;
-  options: Array<{
-    id: string;
-    name: string;
-  }>;
+  options: Array<{ id: string; name: string }>;
 };
 
-const ColorFilter: ListingFilter = {
+const colorFilter: ListingFilter = {
   name: "Color",
   // other properties omitted
   options: [
@@ -446,6 +440,134 @@ const ColorFilter: ListingFilter = {
 
 <!-- /automd -->
 
+### Category filter for search results
+
+The Store API does not add a category aggregation on its own. You can request one through the search criteria. The `@shopware/helpers` package ships a few small helpers for this.
+
+Request the category aggregations together with your search:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/category-filter-for-search-results.ts" code lang="ts" no-name -->
+
+```ts
+import { getCategoryFilterAggregations } from "@shopware/helpers";
+
+const { search } = useListing({ listingType: "productSearchListing" });
+
+search({
+  search: "running",
+  aggregations: getCategoryFilterAggregations(),
+});
+```
+
+<!-- /automd -->
+
+The response then contains two extra aggregations: `categories` (the category entities) and `categories-counts` (a product count per category id). `getListingFilters` - and with it `getAvailableFilters` / `getInitialFilters` - merges them into a single filter with the code `categories`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/category-filter-for-search-results-2.ts" code lang="ts" no-name -->
+
+```ts
+export const categoryFilterForSearchResults = {
+  code: "categories",
+  label: "categories",
+  entities: [
+    { id: "...", name: "Shoes", count: 248 /* other category props */ },
+    { id: "...", name: "Clothing", count: 97 },
+  ],
+};
+```
+
+<!-- /automd -->
+
+The entities are sorted by `count`, highest first. Note that `label` is the raw aggregation name, so give the filter your own translated heading when you render it.
+
+On the `/store-api/search` route the `count` counts every matching **variant**, not every product. The filter UIs in this repo sort by it but do not display it. The `cms-base-layer` filters show no counts at all, and the demo store hides this one because its manufacturer and property filters do collapse variants, so an uncollapsed category count next to them would read as a bug.
+
+The reason is that the helper keeps the counts aggregation flat on purpose: on the `/store-api/search` route, attaching any nested aggregation to a terms aggregation on `categoriesRo.id` makes it return an empty bucket list. `categoriesRo` is a `nested`-mapped field in the Elasticsearch product index, and the Elasticsearch criteria parser does not step back to the root document for the sub-aggregation field (`parentId`). The same nested aggregation works on routes backed by the database DAL, such as `/store-api/product`. If your listing runs on such a route, you can build the aggregations yourself and add a nested terms aggregation on `parentId` to the counts aggregation, named after the exported `CATEGORY_PARENTS_AGGREGATION_NAME` constant. The filter merge then counts all variants of one product as one, and the count is safe to display.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/category-filter-for-search-results-3.ts" code lang="ts" no-name -->
+
+```ts
+import {
+  CATEGORY_AGGREGATION_NAME,
+  CATEGORY_COUNTS_AGGREGATION_NAME,
+  CATEGORY_PARENTS_AGGREGATION_NAME,
+} from "@shopware/helpers";
+
+const aggregations = [
+  {
+    name: CATEGORY_AGGREGATION_NAME,
+    type: "entity",
+    definition: "category",
+    field: "categoriesRo.id",
+  },
+  {
+    name: CATEGORY_COUNTS_AGGREGATION_NAME,
+    type: "terms",
+    field: "categoriesRo.id",
+    aggregation: {
+      name: CATEGORY_PARENTS_AGGREGATION_NAME,
+      type: "terms",
+      field: "parentId",
+    },
+  },
+];
+```
+
+<!-- /automd -->
+
+To filter the listing by selected categories, send a `post-filter` with the next search:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/category-filter-for-search-results-4.ts" code lang="ts" no-name -->
+
+```ts
+import {
+  getCategoryFilterAggregations,
+  getCategoryFilterPostFilter,
+} from "@shopware/helpers";
+
+const { search } = useListing({ listingType: "productSearchListing" });
+const selectedCategoryId = "category-id";
+
+search({
+  search: "running",
+  aggregations: getCategoryFilterAggregations(),
+  "post-filter": [getCategoryFilterPostFilter([selectedCategoryId])],
+});
+```
+
+<!-- /automd -->
+
+A post-filter narrows the result set but does not reduce the aggregations. All category options stay visible while the products are filtered. This is the same mechanism the Store API uses internally for the manufacturer and properties filters.
+
+The `categories` entities include the sales channel entry point, which is an ancestor of every product's category tree. It matches the whole result set, so filtering by it changes nothing. Use `excludeRootCategory` to drop it before you render the options:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/category-filter-for-search-results-5.ts" code lang="ts" no-name -->
+
+```ts
+import { excludeRootCategory } from "@shopware/helpers";
+
+const { sessionContext } = useSessionContext();
+const filter = {
+  entities: [
+    { id: "navigation-category-id", translated: { name: "Root" } },
+    { id: "running-shoes-id", translated: { name: "Running shoes" } },
+  ],
+};
+
+const options = computed(() =>
+  excludeRootCategory(
+    filter.entities,
+    sessionContext.value?.salesChannel?.navigationCategoryId,
+  ),
+);
+```
+
+<!-- /automd -->
+
+:::info
+The `SwProductListingFilters` component from `@shopware/cms-base-layer` renders the category filter out of the box when the aggregations are present in the listing and the component runs with `listing-type="productSearchListing"`. See the search page of `vue-starter-template` for a full example.
+:::
+
 ### Apply filter value
 
 In order to apply a specific filter you need to be aware of:
@@ -457,14 +579,25 @@ In order to apply a specific filter you need to be aware of:
 
 ```vue
 <script setup lang="ts">
-import { useListing } from "#imports";
-const { setCurrentFilters } = useListing(/** parameters omitted */);
+const { setCurrentFilters } = useListing({
+  listingType: "categoryListing",
+});
 
-setCurrentFilters([{ code: "properties", value: ["some-property-id"] }]);
+setCurrentFilters([
+  {
+    code: "properties",
+    value: ["some-property-id"],
+  },
+]);
 
 // or
 
-setCurrentFilters([{ code: "rating", value: 5 }]);
+setCurrentFilters([
+  {
+    code: "rating",
+    value: 5, // 5 stars rated products
+  },
+]);
 </script>
 ```
 
@@ -478,10 +611,8 @@ setCurrentFilters([{ code: "rating", value: 5 }]);
 
 ```vue
 <script setup lang="ts">
-import { useListing } from "#imports";
 const { getCurrentFilters } = useListing(/** parameters omitted */);
 </script>
-
 <template>
   {{ getCurrentFilters.navigationId }}
   <!-- "category-A-ID-1" -->
@@ -535,7 +666,7 @@ import {
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/helpers-package.html" code lang="html" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-listing/helpers-package-2.html" code lang="html" no-name -->
 
 ```html
 <img
@@ -635,8 +766,6 @@ This listing shows the product name and price with soft hover effects and a fade
 <script setup lang="ts">
 import { useProductSearchSuggest } from "@shopware/composables";
 import { getTranslatedProperty } from "@shopware/helpers";
-
-import { h, onMounted, useCart } from "#imports";
 
 const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
 

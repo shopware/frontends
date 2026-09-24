@@ -4,54 +4,46 @@ packages:
   - "templates/*"
   - "examples/*"
 
-templates:
-  - "templates/*"
-
 # Reduciing the risk of installing fresh compromised packages before detected
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
   - "@shopware/*"
-  - "@typescript/native-preview"
-  - "happy-dom"
-  - "@vue/test-utils"
-  - "@adyen/adyen-web"
-  - "astro" # remove after 25/07/2026
-  - astro@7.1.3
 
 overrides:
-  axios: ^1.18.0
-  minimatch: ^10.2.5
-  undici: ^6.27.0
-  dompurify: ^3.4.11 # GHSA-cmwh-pvxp-8882 (transitive via isomorphic-dompurify)
-  "jsdom>undici": "^7"
-  unbuild: ^3.6.1
-  uuid: ^14.0.0
-  esbuild: ^0.28.1
-  ws: ^8.21.0
-  form-data: ^4.0.6
-  vite: ^8.0.16
-  vue: 3.5.38
-  "@vue/compiler-core": 3.5.38
-  "@vue/compiler-dom": 3.5.38
-  "@vue/compiler-sfc": 3.5.38
-  "@vue/compiler-ssr": 3.5.38
-  "@vue/reactivity": 3.5.38
-  "@vue/runtime-core": 3.5.38
-  "@vue/runtime-dom": 3.5.38
-  "@vue/server-renderer": 3.5.38
-  "@vue/shared": 3.5.38
-  launch-editor: ^2.14.1
-  js-yaml: ^4.2.0
-  markdown-it: ^14.2.0
-  "@babel/core": "^7.29.6"
-  tar: ^7.5.21
-  svgo: ^4.0.2
-  fast-uri: ^3.1.4
-  sharp: ^0.35.0
-  postcss: ^8.5.18
-  valibot: ^1.4.2
-  brace-expansion: ^5.0.8
-  shell-quote: ^1.8.5
+  "editorconfig>minimatch": "^9.0.9"
+  "@vercel/blob>undici": "^6.28.0"
+  less: ^4.8.1
+  "qs@<6.16.0": 6.16.0
+  "fast-uri@<3.1.6": 3.1.6
+  "@tiptap/pm@<3.30.5": 3.30.5
+  "nanoid@<3.3.18": "^3.3.18"
+  esbuild: ^0.28.2
+  vite: ^8.2.1
+  "@vueuse/core": 14.4.0
+  "@vueuse/shared": 14.4.0
+  "@vueuse/metadata": 14.4.0
+  "@vueuse/integrations": 14.4.0
+  vue: 3.5.42
+  "@vue/compiler-core": 3.5.42
+  "@vue/compiler-dom": 3.5.42
+  "@vue/compiler-sfc": 3.5.42
+  "@vue/compiler-ssr": 3.5.42
+  "@vue/reactivity": 3.5.42
+  "@vue/runtime-core": 3.5.42
+  "@vue/runtime-dom": 3.5.42
+  "@vue/server-renderer": 3.5.42
+  "@vue/shared": 3.5.42
+  browserslist: 4.28.9
+  "@tiptap/core": 3.30.5
+  "fflate@<0.6.11": "^0.6.11"
+  "js-yaml@>=4.0.0 <4.3.2": 4.3.2
+  "svgo@>=4.0.0 <4.1.0": 4.1.0
+  "smol-toml@<=1.7.0": 1.7.1
+  "sharp@<0.35.4": 0.35.4
+  "astro@<7.2.8": 7.2.8
+  "vitest@>=2.1.0 <4.1.11": 4.1.11
+  "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
+  "devalue@<5.9.1": 5.9.1
 
 peerDependencyRules:
   ignoreMissing:
