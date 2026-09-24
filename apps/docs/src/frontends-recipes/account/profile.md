@@ -618,6 +618,7 @@ The three session flags are computed differently and are not interchangeable. `i
 - [Register recipe](register.html)
 - [Password Recovery and Change recipe](password.html)
 - [Customer Addresses recipe](addresses.html)
+- [Order History recipe](order-history.html)
 - [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
