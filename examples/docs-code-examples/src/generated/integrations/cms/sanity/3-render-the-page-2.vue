@@ -1,10 +1,12 @@
 <!-- app/components/PageBuilder.vue -->
 <script setup lang="ts">
+import type { Component } from "vue";
+
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
 import SectionHero from "./sections/SectionHero.vue";
 // ...
 
-const components = {
+const components: Record<string, Component> = {
   hero: SectionHero,
   featuredProducts: SectionFeaturedProducts,
   // richText, banner, gallery...

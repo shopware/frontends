@@ -1,16 +1,16 @@
-type CmsRouteContext = {
+export type CmsRouteContext = {
   path: string;
   locale: string;
   salesChannelId?: string;
 };
 
-type CmsBlock = {
+export type CmsBlock = {
   id: string;
   type: string;
   props: Record<string, unknown>;
 };
 
-type CmsPage = {
+export type CmsPage = {
   title?: string;
   seo?: {
     title?: string;
@@ -19,6 +19,6 @@ type CmsPage = {
   blocks: CmsBlock[];
 };
 
-type CmsAdapter = {
+export type CmsAdapter = {
   resolvePage(context: CmsRouteContext): Promise<CmsPage | null>;
 };

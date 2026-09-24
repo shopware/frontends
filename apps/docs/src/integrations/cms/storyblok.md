@@ -36,10 +36,14 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.ts" code lang="ts" no-name -->
 
 ```ts
-modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
   storyblok: {
-  accessToken: "super-secret-token"
-},
+    accessToken: "super-secret-token",
+  },
+});
 ```
 
 <!-- /automd -->
@@ -185,9 +189,13 @@ import Frontends from "../components/Frontends.vue";
 
 ```vue
 <script setup lang="ts">
-import { createError, useRoute } from "#imports";
+import { createError, useAsyncStoryblok, useRoute } from "#imports";
+
 const route = useRoute();
-const slug = route.params.slug.toString() ?? "home";
+const slugParam = route.params.slug;
+const slug = Array.isArray(slugParam)
+  ? slugParam.join("/")
+  : slugParam?.toString() || "home";
 const story = await useAsyncStoryblok(
   slug,
   { version: "draft", resolve_relations: "Article.author" }, // API Options
