@@ -45,7 +45,7 @@ useBreadcrumbs([
 
 ## Building breadcrumbs for a category/product page
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-a-category-product-page.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-a-category-product-page.ts" code lang="ts" no-name -->
 
 ```ts
 // props.navigationId is a page id
@@ -72,7 +72,7 @@ breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 
 we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-cms-pages-without-additional-request.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-cms-pages-without-additional-request.ts" code lang="ts" no-name -->
 
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware/helpers";

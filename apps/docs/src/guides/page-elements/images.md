@@ -119,7 +119,7 @@ There are few functions that could be used to extract some crucial information a
 
 Example how to work with Product's main image:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/helpers.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/helpers.ts" code lang="ts" no-name -->
 
 ```ts
 import { getMainImageUrl } from "@shopware/helpers";

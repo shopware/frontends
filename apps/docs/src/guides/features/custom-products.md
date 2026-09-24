@@ -39,7 +39,7 @@ Works only if the `useProduct` is fulfilled and the product data is known. Typic
 Visit the [useProduct]/packages/composables.html#useproduct) reference to see more details.
 :::
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.ts" code lang="ts" no-name -->
 
 ```ts
 // useProductCustomizedProductConfigurator is autoimported
@@ -90,7 +90,7 @@ Add the mentioned component in a template. For instance in `<ProductStatic/>` fo
 
 Overwrite a logic in `<ProductAddToCart/>` (or any other responsible for adding a product to cart in your template):
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.txt" code lang="ts{3-6,9-10}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.ts" code lang="ts{3-6,9-10}" no-name -->
 
 ```ts{3-6,9-10}
 // part of templates/vue-demo-store/components/product/ProductAddToCart.vue;

@@ -139,7 +139,7 @@ Now, once the plugin is created, we need to create an API client instance and th
 
 The install method is a good place to do that:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-3.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-3.ts" code lang="ts" no-name -->
 
 ```ts
 import { ref } from "#imports";
@@ -171,7 +171,7 @@ Now, we need to ensure that the context token, which identifies a user session, 
 
 Then, we can take advantage of the onConfigChange method. It executes when the API client detects a new value of the context token coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state.ts" code lang="ts" no-name -->
 
 ```ts
 /**
@@ -202,7 +202,7 @@ instance.onConfigChange(({ config }) => {
 
 Another step is to create a Shopware instance that combines API Client and the business logic in composables to be used in entire Vue application:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { createShopwareContext } from "#imports";
@@ -216,7 +216,7 @@ const shopwareContext = createShopwareContext(app, {
 
 And the last step is to provide the shopwareContext:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-3.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-3.ts" code lang="ts" no-name -->
 
 ```ts
 import { provide, ref } from "#imports";
@@ -231,7 +231,7 @@ app.provide("swSessionContext", ref());
 
 ## Register the plugin
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/register-the-plugin.txt" code lang="ts{6,9-14}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/register-the-plugin.ts" code lang="ts{6,9-14}" no-name -->
 
 ```ts{6,9-14}
 // main.ts
@@ -257,7 +257,7 @@ app.mount("#app");
 
 ## Plugin code
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/plugin-code.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/plugin-code.ts" code lang="ts" no-name -->
 
 ```ts
 import { createAPIClient } from "@shopware/api-client";
@@ -332,7 +332,7 @@ NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
 
 Otherwise, make sure that you are setting different values on the create instance phase
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode.ts" code lang="ts" no-name -->
 
 ```ts
 const instance = createInstance({

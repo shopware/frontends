@@ -1,4 +1,26 @@
-async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlepay' | 'applepay' | 'venmo') {
+type PayPalProduct =
+  | "paylater"
+  | "acdc"
+  | "applepay"
+  | "googlepay"
+  | "venmo";
+
+const orderCreated = { value: null as unknown };
+const order = { id: "order-id" };
+const apiClient = {
+  async invoke(_route: string, _payload: unknown) {
+    return {
+      data: {
+        redirectUrl: "https://example.com/payment/finalize",
+        token: "paypal-order-token",
+      },
+    };
+  },
+};
+
+function refreshCart() {}
+
+async function createOrder(product?: PayPalProduct) {
   const response = await apiClient.invoke(
     "createPayPalOrder post /store-api/paypal/create-order",
     { body: { product } },
@@ -7,12 +29,16 @@ async function createOrder(product?: 'paylater' | 'acdc' | 'applepay' | 'googlep
   return response?.data?.token;
 }
 
+async function createShopwareOrder(payload: { paypalOrderId: string }) {
+  return { id: "order-id", ...payload };
+}
+
 async function onApprove(data: { orderID: string }) {
   // createOrder from useCheckout composable
-  orderCreated.value = await createOrder({
+  orderCreated.value = await createShopwareOrder({
     paypalOrderId: data.orderID,
   });
-  refreshCart()
+  refreshCart();
   // apiClient from useShopwareContext composable
   const handlePaymentResponse = await apiClient.invoke(
     "handlePaymentMethod post /handle-payment",
@@ -28,5 +54,7 @@ async function onApprove(data: { orderID: string }) {
   );
   // call the /payment/finalize-transaction endpoint
   await fetch(handlePaymentResponse.data.redirectUrl);
-  ...
 }
+
+await createOrder();
+await onApprove({ orderID: "paypal-order-id" });

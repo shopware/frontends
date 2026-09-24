@@ -68,7 +68,7 @@ Depending on which type of route you have, the way of fetching the page data is 
 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-route-to-a-page.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-route-to-a-page.ts" code lang="ts" no-name -->
 
 ```ts
 import {
@@ -145,7 +145,7 @@ We have created two new helper functions that can be used to avoid these extra c
 
 ##### Example getCategoryRoute with NuxtLink
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getcategoryroute-with-nuxtlink.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getcategoryroute-with-nuxtlink.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -163,7 +163,7 @@ import { getCategoryRoute } from "@shopware/helpers";
 
 ##### Example getProductRoute with RouterLink
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getproductroute-with-routerlink.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getproductroute-with-routerlink.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

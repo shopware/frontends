@@ -1,15 +1,30 @@
-  ...
+type OnApproveData = { orderID: string };
+type OnApproveActions = unknown;
+
+const apiClient = {
+  async invoke(_route: string, _payload: unknown) {
+    return { data: { redirectUrl: "https://example.com/payment/finalize" } };
+  },
+};
+
+async function createOrder(payload: { paypalOrderId: string }) {
+  return { id: "order-id", ...payload };
+}
+
+function refreshCart() {}
+
+const paypalButtons = {
   // part of window.paypal.Buttons({}) params
   onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
     await apiClient.invoke(
       "preparePayPalExpressCheckout post /store-api/paypal/express/prepare-checkout",
       {
         body: { token: data.orderID },
-      }
+      },
     );
     // createOrder from useCheckout composable
     const order = await createOrder({ paypalOrderId: data.orderID });
-    refreshCart()
+    refreshCart();
 
     // redirect to order confirmation site
 
@@ -31,4 +46,6 @@
     await fetch(handlePaymentResponse.data.redirectUrl);
     // ...
   },
-  ...
+};
+
+paypalButtons.onApprove;

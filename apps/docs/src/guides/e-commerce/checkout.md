@@ -142,7 +142,7 @@ const selectedPaymentMethod = computed({
 Each guest user has to provide billing data.
 Those data will be used to create a standard or temporary account.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/personal-information.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/personal-information.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -338,7 +338,7 @@ refreshCart();
 After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.
 The backend allows fetching orders related only to the current user by checking the session.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/checkout/place-an-order-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { useOrderDetails } from "#imports";

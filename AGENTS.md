@@ -271,10 +271,10 @@ the docs.
 When editing docs examples:
 
 - Do not add new inline fenced code blocks under `apps/docs/src`.
-- Keep `.ts`, `.vue`, and `.js` snippet files compilable; they are part of the
-  docs-code example TypeScript project. If a snippet is intentionally partial
-  and cannot stand alone, store it as `.txt` and keep the rendered language on
-  the `automd:file` comment with `lang="ts"`, `lang="vue"`, etc.
+- Keep TypeScript, Vue, and JavaScript snippets as `.ts`, `.vue`, or `.js`
+  files that compile in the docs-code example project. If the docs should show
+  only part of a larger example, keep the source file complete and use automd
+  line ranges to render the focused excerpt.
 - Run `pnpm --filter example-docs-code-examples typecheck` after changing
   snippets.
 - Run `pnpm generateAutomd` after changing any automd-backed source file or

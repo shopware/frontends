@@ -52,7 +52,7 @@ A route can only be migrated to GET once its GET variant declares `_criteria` in
 
 For a Nuxt app, set it as a module option in `nuxt.config.ts`:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.ts" code lang="ts" no-name -->
 
 ```ts
 import { defineNuxtConfig } from "nuxt/config";
@@ -163,7 +163,7 @@ Shopware Frontends configures page-level HTTP caching declaratively through Nuxt
 
 The `vue-demo-store` template uses a 24-hour window on the homepage and the catch-all:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.ts" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -195,7 +195,7 @@ routeRules: {
 
 The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
 
 ```ts
 routeRules: {
@@ -237,7 +237,7 @@ ISR is only active in production builds and requires a runtime that can store an
 
 Route rules can set HTTP `Cache-Control` directly. The templates use it two ways:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.ts" code lang="ts" no-name -->
 
 ```ts
 // Prevent any caching on sensitive routes

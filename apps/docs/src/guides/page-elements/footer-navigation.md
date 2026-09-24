@@ -23,7 +23,7 @@ Implementing a footer navigation can be described in a few steps:
 
 ## Code example
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/footer-navigation/code-example.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/footer-navigation/code-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

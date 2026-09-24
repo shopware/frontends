@@ -57,7 +57,7 @@ Because the tokens are registered as Uno `theme.colors`, they work with every co
 
 Override or extend tokens in your project's `uno.config.ts`:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/design-tokens/customising-tokens.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/design-tokens/customising-tokens.ts" code lang="ts" no-name -->
 
 ```ts
 theme: {

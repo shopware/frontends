@@ -65,7 +65,7 @@ const handleRequestQuote = async () => {
 
 This feature allows users to retrieve a list of all their requested quotes or quotes created by the admin.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/fetch-a-list-of-quote-and-display-detail.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/fetch-a-list-of-quote-and-display-detail.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -111,7 +111,7 @@ onBeforeMount(async () => {
 
 The "Decline Quote" feature provides users with the ability to reject a quote that doesn't meet their requirements or expectations. By declining a quote, users can communicate their dissatisfaction with the proposed terms, prompting the sales team to review and potentially adjust the quote to better meet the user's needs. This feature ensures that the negotiation process is interactive and that the final agreement is satisfactory to both parties.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/decline-quote.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/decline-quote.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -139,7 +139,7 @@ const handleDecline = async () => {
 
 The "Request Change in Quote" feature empowers users to actively participate in the negotiation process. If a quote doesn't meet their expectations or requirements, users can request specific changes to the quote. This could involve adjustments to pricing, quantities, delivery terms, or product specifications. By requesting a change, users can ensure that the final agreement is tailored to their needs, fostering a more collaborative and satisfactory business relationship.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/request-change-in-quote.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/request-change-in-quote.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -167,7 +167,7 @@ const handleChangeRequest = async () => {
 
 The "Change Payment or Shipping in Quote" feature provides users with the flexibility to modify the payment method or shipping details in a quote.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/change-payment-or-shipping-in-quote.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/change-payment-or-shipping-in-quote.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -186,7 +186,7 @@ changePaymentMethod(quote.value.id, "example-payment-id");
 
 The "Create an Order from a Quote" feature allows users to seamlessly convert a negotiated quote into a formal order. Once a quote has been reviewed and agreed upon, users can use this feature to initiate the ordering process directly from the quote.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/create-an-order-from-a-quote.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/b2b/quote-management/create-an-order-from-a-quote.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

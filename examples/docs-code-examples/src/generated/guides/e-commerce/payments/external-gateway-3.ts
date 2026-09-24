@@ -1,3 +1,10 @@
+declare const orderId: string;
+declare function handlePayment(
+  successUrl: string,
+  failureUrl: string,
+  additionalData: Record<string, unknown>,
+): Promise<unknown>;
+
 // where to redirect an user when payment is done correctly
 const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
 // go to this page otherwise

@@ -113,7 +113,7 @@ type CmsAdapter = {
 Then implement the adapter with the CMS tooling your project uses. The rest of
 the storefront should only depend on the normalized contract:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-2.ts" code lang="ts" no-name -->
 
 ```ts
 export function createCmsResolver(adapter: CmsAdapter) {
@@ -135,7 +135,7 @@ export function createCmsResolver(adapter: CmsAdapter) {
 The adapter can call a REST API, GraphQL API, SDK, or internal service. Keep that
 vendor-specific code in one place:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-3.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-3.ts" code lang="ts" no-name -->
 
 ```ts
 const cmsAdapter: CmsAdapter = {
@@ -157,7 +157,7 @@ A page builder should be explicit. Map every external block type to one Vue
 component, and render nothing for unknown blocks in production. In development,
 show a small placeholder so the missing component is obvious.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/rendering-cms-blocks.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/rendering-cms-blocks.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/components/ExternalCmsPage.vue -->
@@ -210,7 +210,7 @@ If Shopware should remain the primary router, use the [Multiple CMS](../../guide
 middleware pattern and only render the external CMS when Shopware does not return
 a route component.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/resolving-routes.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/resolving-routes.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/pages/[...all].vue -->
@@ -330,7 +330,7 @@ routes such as `/checkout`, `/account/**`, and cart flows out of ISR.
 Pass the active storefront locale to the CMS resolver and keep a clear fallback
 policy:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/localization.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/localization.ts" code lang="ts" no-name -->
 
 ```ts
 const { locale } = useI18n();

@@ -62,7 +62,7 @@ npx nuxi@latest module add sanity
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/1-install-configure.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/1-install-configure.ts" code lang="ts" no-name -->
 
 ```ts
 // nuxt.config.ts
@@ -95,7 +95,7 @@ In the Studio, a `page` document holds an ordered array of section blocks the
 editor arranges freely. The `featuredProducts` block stores **only Shopware
 product IDs**:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder.ts" code lang="ts" no-name -->
 
 ```ts
 // studio/schemaTypes/objects/featuredProducts.ts
@@ -119,7 +119,7 @@ export const featuredProducts = defineType({
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder-2.ts" code lang="ts" no-name -->
 
 ```ts
 // studio/schemaTypes/documents/page.ts
@@ -143,7 +143,7 @@ defineField({
 Fetch the page builder with GROQ and map each block `_type` to a component.
 `groq` and `useSanityQuery` are auto-imported.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/app.vue -->
@@ -162,7 +162,7 @@ const { data: page } = await useSanityQuery(PAGE_QUERY);
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page-2.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/components/PageBuilder.vue -->
@@ -242,7 +242,7 @@ another - make sure the IDs stored in Sanity belong to the sales channel your
 Commerce interactions stay with Shopware composables. The product card adds to the
 cart and raises a toast; a mini cart reads the live cart:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications.ts" code lang="ts" no-name -->
 
 ```ts
 import { useAddToCart, useNotifications } from "#imports";

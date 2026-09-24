@@ -34,7 +34,7 @@ The demo store utilizes Nuxt 3, which by default registers all components global
 
 [Global registration](https://vuejs.org/guide/components/registration#global-registration) in Vue apps
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.ts" code lang="ts" no-name -->
 
 ```ts
 import CmsBlockCustomBlock from "./components/cms/CmsElementDailymotion.vue";
@@ -61,7 +61,7 @@ const resolvedComponent = resolveComponent(componentNameToResolve);
 
 Component name must be the same as it was registered in the backed.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.txt" code lang="ts{3}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.ts" code lang="ts{3}" no-name -->
 
 ```ts{3}
 Shopware.Service('cmsService').registerCmsElement({
@@ -75,7 +75,7 @@ Shopware.Service('cmsService').registerCmsElement({
 
 Lets create new component `components/cms/element/CmsElementDailymotion.vue`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming-vue.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.vue" code lang="vue" no-name -->
 
 ```vue
 // components/cms/element/CmsElementDailymotion.vue
@@ -129,7 +129,7 @@ Component settings are passed via props. The declared `defaultConfig` can be acc
 
 The following is an example of how to convert the backend registration config to a TypeScript type.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.txt" code lang="ts{4-9}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.ts" code lang="ts{4-9}" no-name -->
 
 ```ts{4-9}
 Shopware.Service('cmsService').registerCmsElement({

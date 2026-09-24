@@ -1,10 +1,10 @@
 // components/cms/element/CmsElementDailymotion.vue
 <script setup lang="ts">
-import type { Schemas } from "#showpare";
+import type { Schemas } from "#shopware";
 
 type CmsElementDailymotion = Schemas["CmsSlot"] & {
   type: "dailymotion" | typeof String;
-  slot: typeof String;
+  slot: string;
   config: CmsElementDailymotionConfig;
   translated: {
     config: CmsElementDailymotionConfig;

@@ -33,7 +33,7 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
    `pnpm add @storyblok/vue -D`
 5. Now add the storyblok access token to you `nuxt.config.ts` file
    _(you need a storyblok account to get that token)_
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.ts" code lang="ts" no-name -->
 
 ```ts
 modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
@@ -159,7 +159,7 @@ onMounted(async () => {
 
    **[...all].vue**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-6.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-6.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -181,7 +181,7 @@ import Frontends from "../components/Frontends.vue";
 
    **storyblok/[slug].vue**
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

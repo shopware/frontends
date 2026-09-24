@@ -10,7 +10,7 @@ Context composables allow for a more granular way of sharing state between compo
 
 Instead of doing this:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- Product.vue -->
@@ -26,7 +26,7 @@ const product = searchProduct();
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-2.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- ProductConfigurator.vue -->
@@ -44,7 +44,7 @@ const props = defineProps<{
 
 <!-- /automd -->
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-3.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/composables/context-composables/why-to-use-context-composables-3.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- ProductPrice.vue -->

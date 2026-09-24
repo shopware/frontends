@@ -28,7 +28,7 @@ Some of relations need to be assigned explicitly by [associations](https://shopw
 
 The `useProductSearch` allows us to `search` in the product's collection:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data-ts.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.ts" code lang="ts" no-name -->
 
 ```ts
 import { useProductSearch } from "@shopware/composables";
@@ -57,7 +57,7 @@ If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` prope
 
 Having source of the data, you can display all you need in your Vue.js template:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.txt" code lang="js" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/get-product-data.js" code lang="js" no-name -->
 
 ```js
 import { computed } from "vue";
@@ -104,7 +104,7 @@ A minimal, static rendering of a product detail page - useful as a starting poin
 
 Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/static-example.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/product-detail-page/static-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">

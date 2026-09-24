@@ -67,7 +67,7 @@ interface StrapiBanner {
 
 The next step is to create a banner component
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -135,7 +135,7 @@ interface StrapiContentPage {
 
 Composable for resolving components
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { h, resolveComponent } from "#imports";
@@ -171,7 +171,7 @@ export function useSWStrapi() {
 
 Provide Strapi resolver to the `pageRenderMiddlewares`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-3.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-3.ts" code lang="ts" no-name -->
 
 ```ts
 import { provide, resolveComponent } from "#imports";

@@ -38,7 +38,7 @@ In general, the store API should only output content that would also be visible 
 
 - Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
 
 ```ts
 import basicSsl from "@vitejs/plugin-basic-ssl";
@@ -67,7 +67,7 @@ If you are using DDEV as a local environment with SSR = true (Nuxt config for ro
 
 The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `accessToken` is incorrect or not correct for the specified `endpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.ts" code lang="ts" no-name -->
 
 ```ts
 // a part of nuxt.config.ts
@@ -96,7 +96,7 @@ By default, the application uses `window.location.origin` (e.g., `https://your-s
 
 Set `devStorefrontUrl` to a domain that is configured in your Shopware admin under **Sales Channel → Domains**:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/how-to-configure-it.ts" code lang="ts" no-name -->
 
 ```ts
 // nuxt.config.ts
@@ -243,7 +243,7 @@ export default defineNuxtConfig({
 :::tip
 If you're using `@shopware/cms-base-layer`, you can extend both layers together:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.ts" code lang="ts" no-name -->
 
 ```ts
 extends: [

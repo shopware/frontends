@@ -326,7 +326,7 @@ See dedicated [Composables > useProductPrice](../../packages/composables/useProd
 
 Price for **non-variant** product (also for having tier pricing):
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing.txt" code lang="vue{6}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing.vue" code lang="vue{6}" no-name -->
 
 ```vue{6}
 <script setup lang="ts">
@@ -346,7 +346,7 @@ If there is a range of prices available, you can point this out by adding `from`
 
 In order to ensure if the variant prices are available, you can utilize the `displayVariantsFrom` computed property, that contains the value in current currency:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing-2.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing-2.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -375,7 +375,7 @@ In this case, there are few options to display:
 - Product with list price (kind of discount)
 - Tier prices
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.txt" code lang="ts" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.ts" code lang="ts" no-name -->
 
 ```ts
 import { usePrice, useProductPrice } from "#imports";
@@ -389,7 +389,7 @@ const { getFormattedPrice } = usePrice();
 
 Regular price, with list price included (in case of manufacturer's suggested retail price):
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-vue.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.vue" code lang="vue" no-name -->
 
 ```vue
 <template>
@@ -408,7 +408,7 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 
 Tier prices presented as a table with range labeled by "to" and "from":
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-2.txt" code lang="vue" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-2.vue" code lang="vue" no-name -->
 
 ```vue
 <template>
