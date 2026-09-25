@@ -149,6 +149,12 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 ## References
 
 - Docs: [developer.shopware.com/frontends](https://developer.shopware.com/frontends/)
+- Platform docs: [developer.shopware.com/llms.txt](https://developer.shopware.com/llms.txt)
+  indexes the whole developer portal as Markdown pages. Use it only for docs
+  outside this repo (Store API concepts, backend guides). Its Frontends part is
+  built from `apps/docs/src/`, so read that locally instead. The file is large,
+  so download it and search it. `/docs/v6.5/` and `/docs/v6.6/` are older
+  versions.
 - Package details: every package has a `README.md`, and some also have an
   `AGENTS.md` — check the package directory
 - Repository: [github.com/shopware/frontends](https://github.com/shopware/frontends)
