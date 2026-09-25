@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 20
+  position: 30
 recipe:
   area: context
   status: stable
@@ -196,6 +196,8 @@ Use generated Store API types when you need to type the navigation criteria, the
   <SchemaTypeTooltip type-key='Schemas["SeoUrl"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/navigation/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -210,6 +212,8 @@ type Breadcrumb = Schemas["Breadcrumb"];
 type SeoUrl = Schemas["SeoUrl"];
 ```
 
+<!-- /automd -->
+
 `NavigationRouteResponse` is declared as `Category[]` and `BreadcrumbResponse` as `Breadcrumb[]`, so both are iterable directly. `NavigationType` is the enum of the three accepted type strings. `Breadcrumb` here is the Store API shape, which requires `categoryId`, `type`, `translated` and `apiAlias` alongside `name` and `path`; `pushBreadcrumb` accepts a looser `{ name, path }` as well.
 
 ## Minimal Vue Example
@@ -218,10 +222,13 @@ The layout owns the navigation and renders it once. The page below owns the cate
 
 <CodeExample title="Category page with breadcrumbs">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/navigation/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
 import type { Ref } from "vue";
+
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{ navigationId: string }>();
@@ -337,11 +344,15 @@ onMounted(async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The page reads `useNavigationContext()` with no argument, which works because the catch-all route rendered it and provided the resolved `SeoUrl` above it. On a route that provides nothing the call does not throw — `routeName` comes back `undefined` and `foreignKey` an empty string.
 
 The navigation lives one level up. The layout renders from the `useAsyncData` ref rather than from `navigationElements`, because `useNavigation` closed over its own ref before the re-provide and that ref stays empty on the client:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/navigation/minimal-vue-example-2.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -383,6 +394,8 @@ provide("swNavigation-main-navigation", mainNavigation);
 </template>
 ```
 
+<!-- /automd -->
+
 Keep the navigation landmark in the layout only. A page that renders its own `<nav aria-label="Main navigation">` adds a second landmark with the same accessible name, nested inside `<main>`.
 
 The page that owns the entity is what fills the trail. A product page does the same thing with `referrerCategoryId` in the query, then calls `pushBreadcrumb` with the product's own name and SEO path — the starter appends that last crumb itself rather than reading it from the response.
@@ -397,7 +410,7 @@ That sharing is `inject` with a `provide` fallback, so it only reaches component
 
 Where that call sits decides the lifetime. In the starter every caller is a page-level component and the breadcrumb bar is their child, so the ref is created and destroyed with the page: the trail does not survive a route change. Call `useBreadcrumbs()` in a layout or above `NuxtPage` instead and the same ref outlives every navigation — which is the arrangement that makes a stale trail, and an uncancelled breadcrumb request, something you have to handle.
 
-Once a session context token exists, every request carries it as `sw-context-token`, so the language and currency in that context decide which translations and prices come back. The very first anonymous request goes out without the header and adopts the token from the response. A language switch invalidates the tree you already loaded, which is one reason it ends in a full page load rather than a reactive update. A currency switch does not: the navigation carries category names, not prices.
+Every request here is scoped by the `sw-context-token`, so the language in that context decides which translations come back; the [Session Context recipe](session-context.html) covers how that token is seeded and refreshed. What matters for the navigation is the consequence: a language switch invalidates the tree you already loaded, which is one reason it ends in a full page load rather than a reactive update. A currency switch does not, because the navigation carries category names, not prices.
 
 `useNavigationContext` holds route data rather than fetching it. It wraps the `SeoUrl` that `useNavigationSearch().resolvePath()` produced, and `routeName` is what a catch-all route branches on to decide which page component to render.
 
@@ -462,6 +475,7 @@ Once a session context token exists, every request carries it as `sw-context-tok
 - [Routing](../../guides/routing.html)
 - [Product listing](../../guides/e-commerce/product-listing.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
+- [Session Context recipe](session-context.html)
 - [Language and Currency Switch recipe](language-and-currency.html)
 - [Helpers package](../../packages/helpers.html)
 - [API client package](../../packages/api-client.html)
