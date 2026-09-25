@@ -18,15 +18,23 @@ static routes owned by the Frontends application.
 
 Link:
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/sitemap/sitemap.txt" code no-name -->
+
+```txt
 http://<your_domain>/sitemap.xml
 ```
 
+<!-- /automd -->
+
 ## Admin sitemap
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/sitemap/admin-sitemap.txt" code no-name -->
+
+```txt
 /server/routes/sitemap.xml.ts
 ```
+
+<!-- /automd -->
 
 This route creates a sitemap index from the files returned by the Store API
 `/sitemap` endpoint. Those files contain dynamic Shopware pages such as:
@@ -48,9 +56,13 @@ More about the Shopware sitemap can be found
 
 ## Frontends sitemap
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/sitemap/frontends-sitemap.txt" code no-name -->
+
+```txt
 /server/routes/sitemap-local.xml.ts
 ```
+
+<!-- /automd -->
 
 This sitemap contains static pages declared by the Frontends application.
 Each static page should be added manually to `/server/sitemap.ts`.
@@ -64,11 +76,15 @@ Shopware-generated sitemap instead.
 Inspect the sitemap index and every referenced sitemap file for URLs whose path
 starts with:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/sitemap/detect-and-clean-up-technical-sitemap-urls.txt" code lang="text" no-name -->
+
 ```text
 /detail/
 /navigation/
 /landingPage/
 ```
+
+<!-- /automd -->
 
 If a technical URL has a canonical SEO mapping, it should not be published in
 the sitemap. Determine which system generated it before applying a fix:

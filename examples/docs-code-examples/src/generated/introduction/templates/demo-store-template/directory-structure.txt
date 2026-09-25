@@ -1,0 +1,18 @@
+demo-store/
+├─ components/
+|  ├─ layout/       /* header, footer, account menu etc. */
+|  ├─ checkout/     /* cart items, cart overview */
+|  ├─ account/      /* order history, account settings */
+|  ├─ shared/       /* modals, notifications */
+|  ├─ ...
+├─ layouts/
+│  ├─ checkout.vue  /* minimal layout without navigation and footer */
+│  ├─ default.vue   /* default layout with navigation and footer */
+├─ pages/
+│  ├─ checkout/     /* checkout pages */
+│  ├─ account/      /* user account pages */
+│  ├─ ...
+├─ app.vue          /* app root component */
+├─ nuxt.config.ts   /* app configuration */
+├─ package.json
+├─ tsconfig.json

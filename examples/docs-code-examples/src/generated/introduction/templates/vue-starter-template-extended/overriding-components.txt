@@ -1,0 +1,11 @@
+lumora-store/
+  app/
+    components/
+      global/
+        FrontendDetailPage.vue  # Overrides SEO PDP (must stay in global/)
+      cms/
+        element/
+          CmsElementImage.vue   # Overrides CMS element (must stay in cms/)
+      SwProductCard.vue         # Overrides base SwProductCard
+      layout/
+        Header.vue              # Overrides base LayoutHeader

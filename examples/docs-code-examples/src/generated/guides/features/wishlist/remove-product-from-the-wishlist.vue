@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import { useProductWishlist } from "#imports";
+
+// Mocked product
+const product = {
+  id: "7b5b97bd48454979b14f21c8ef38ce08",
+};
+const { removeFromWishlist, isInWishlist } = useProductWishlist(product.id);
+</script>
+
+<template>
+  <button v-if="isInWishlist" @click="removeFromWishlist">
+    Remove product from the wishlist
+  </button>
+</template>

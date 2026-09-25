@@ -19,8 +19,15 @@ You can activate the maintenance mode of your store by selecting your sales chan
 
 Maintenance mode is returned as an error from all of the endpoints. We can detect it by using `onResponseError` hook.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/detecting-maintenance-mode-via-api.ts" code lang="ts" no-name -->
+
 ```ts
+import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import Cookies from "js-cookie";
+
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api/";
+const shopwareAccessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
 const apiClient = createAPIClient({
   baseURL: shopwareEndpoint,
@@ -29,10 +36,15 @@ const apiClient = createAPIClient({
 });
 
 apiClient.hook("onResponseError", (response) => {
-  const error = isMaintenanceMode(response._data?.errors ?? []);
+  const payload = response._data as { errors?: [{ code?: string }] };
+  const error = isMaintenanceMode(
+    payload.errors ?? ([{}] as [{ code?: string }]),
+  );
   // do proper reaction to maintenance mode
 });
 ```
+
+<!-- /automd -->
 
 ## Displaying maintenance page
 
@@ -44,11 +56,29 @@ This example is for Nuxt 3 apps
 
 Every error thrown within the application is automatically caught and the `error.vue` page is displayed.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/throwing-maintenance-mode-error.ts" code lang="ts" no-name -->
+
 ```ts
+import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import Cookies from "js-cookie";
+
+import { createError } from "#imports";
+
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api/";
+const shopwareAccessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
+
+const apiClient = createAPIClient({
+  baseURL: shopwareEndpoint,
+  accessToken: shopwareAccessToken,
+  contextToken: Cookies.get("sw-context-token"),
+});
 
 apiClient.hook("onResponseError", (response) => {
-  const error = isMaintenanceMode(response._data?.errors ?? []);
+  const payload = response._data as { errors?: [{ code?: string }] };
+  const error = isMaintenanceMode(
+    payload.errors ?? ([{}] as [{ code?: string }]),
+  );
   if (error) {
     throw createError({
       statusCode: 503,
@@ -58,11 +88,16 @@ apiClient.hook("onResponseError", (response) => {
 });
 ```
 
+<!-- /automd -->
+
 ### Displaying maintenance mode page
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/maintenance-mode/displaying-maintenance-mode-page.vue" code lang="vue" no-name -->
 
 ```vue
 // error.vue
 <script setup lang="ts">
+import { computed } from "#imports";
 const props = defineProps<{
   error: {
     statusCode: number;
@@ -80,6 +115,8 @@ const isMaintenanceMode = computed(() => {
   <div v-if="isMaintenanceMode">Maintenance Mode Page Content</div>
 </template>
 ```
+
+<!-- /automd -->
 
 ### IP Allowlisting
 

@@ -155,6 +155,8 @@ Use generated Store API types when you need to type the lookup body, the search 
   <SchemaTypeTooltip type-key='Schemas["failure"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/guest-order-lookup/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -164,11 +166,15 @@ type OrderRouteResponse = Schemas["OrderRouteResponse"];
 type Order = Schemas["Order"];
 ```
 
+<!-- /automd -->
+
 `GuestLookupFilter` is worth resolving in your editor rather than in the tooltip above: its `field` is restricted to the literal `"deepLinkCode"` and its `type` to `"equals"`. This is not a general-purpose criteria filter. The body tooltip cannot show you that — it renders `filter` as a plain `object[]`, and because the body is a criteria object with eighteen properties it truncates after the first eight, so `email`, `zipcode` and `login` are not in it either. Hover it for the criteria shape; read the generated type for the four fields this recipe is about.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal guest order lookup page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/guest-order-lookup/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -233,7 +239,9 @@ const lookupOrder = async (withGuestCredentials: boolean) => {
 
     // Decide once, from the whole payload. Looping and assigning per error
     // lets the last element overwrite the message the customer can act on.
-    const codes = new Set(error.details.errors.map((apiError) => apiError.code));
+    const codes = new Set(
+      error.details.errors.map((apiError: { code?: string }) => apiError.code),
+    );
 
     if (codes.has("CHECKOUT__GUEST_NOT_AUTHENTICATED")) {
       needsCredentials.value = true;
@@ -357,6 +365,8 @@ onMounted(loadOrder);
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

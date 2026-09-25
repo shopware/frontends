@@ -174,6 +174,8 @@ Use generated Store API types when you need to type the search body, the results
   <SchemaTypeTooltip type-key='Schemas["ProductListingFlags"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/search/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -184,19 +186,24 @@ type ProductDetailResponse = Schemas["ProductDetailResponse"];
 type ListingFlags = Schemas["ProductListingFlags"];
 ```
 
+<!-- /automd -->
+
 Comparing `SearchBody` and `SuggestBody` in the tooltips shows how close they are: both extend `ProductListingCriteria` and `ProductListingFlags`, and the only difference is that `search` is required on the suggest body.
 
 ## Minimal Vue Example
 
 <CodeExample title="Suggest dropdown on the shared listing">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/search/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
+import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const { searchTerm, search, getProducts, getTotal } = useProductSearchSuggest();
 
-const localePath = useLocalePath();
+const localePath = (path: string) => path;
 const { formatLink } = useInternationalization(localePath);
 
 const MIN_TERM_LENGTH = 3;
@@ -234,12 +241,9 @@ watch(typingTerm, (term) => {
   if (term.length >= MIN_TERM_LENGTH) {
     runSuggestSearch(term);
   } else {
-    runSuggestSearch.cancel();
     pending.value = false;
   }
 });
-
-onScopeDispose(() => runSuggestSearch.cancel());
 
 const showSuggest = computed(
   () => isOpen.value && typingTerm.value.length >= MIN_TERM_LENGTH,
@@ -295,6 +299,8 @@ onClickOutside(searchBox, close);
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

@@ -181,6 +181,8 @@ Use generated Store API types when you need to type the configurator, the varian
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/variants/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -198,6 +200,8 @@ type FoundCombination = {
 };
 ```
 
+<!-- /automd -->
+
 `ProductDetailResponse` is where the configurator comes from, and only `product` is required on it. `configurator?: PropertyGroup[]` is the optional half — the same array `getOptionGroups` returns — so a product that is not configurable answers without it and the selector has nothing to render.
 
 `FoundCombination` is written by hand for the mismatch above: the generated response type puts those two fields inside a `foundCombination` object that the route does not send.
@@ -205,6 +209,8 @@ type FoundCombination = {
 ## Minimal Vue Example
 
 <CodeExample title="Minimal variant selector">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/variants/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -302,6 +308,8 @@ const resolveVariant = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The sample resolves from a submit button rather than from `handleChange`'s callback, and that is the one deliberate departure from `SwVariantConfigurator`. A callback that navigates turns a radio group into a trap: arrow keys move **and** check, so every option a keyboard customer passes over fires `change` and routes them away before they reach the one they wanted. Pass the callback when the outcome stays on the page; resolve from an explicit action when it is a route change.
@@ -362,6 +370,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 ## Related Links
 
 - [Product Listing and Filters recipe](listing.html)
+- [Prices and Tax State recipe](prices.html)
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)

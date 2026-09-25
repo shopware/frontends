@@ -282,6 +282,10 @@ export const sidebar = [
             link: "/frontends-recipes/catalog/listing.html",
           },
           {
+            text: "Prices and Tax State",
+            link: "/frontends-recipes/catalog/prices.html",
+          },
+          {
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",
           },

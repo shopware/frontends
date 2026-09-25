@@ -1,0 +1,6 @@
+lumora-store/
+  app/
+    components/
+      SwProductCard.vue  # Overrides base SwProductCard
+      layout/
+        LayoutHeader.vue # Overrides base header

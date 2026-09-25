@@ -189,6 +189,8 @@ Use generated Store API types when you type the subscribe body, the confirmation
   <SchemaTypeTooltip type-key='Schemas["AccountNewsletterRecipient"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/newsletter/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -202,6 +204,8 @@ type AccountNewsletterRecipient = Schemas["AccountNewsletterRecipient"];
 type NewsletterRecipientStatus = AccountNewsletterRecipient["status"];
 ```
 
+<!-- /automd -->
+
 `newsletterSubscribe` accepts `Omit<NewsletterSubscribeBody, "storefrontUrl">`, and the status is the union `"notSet" | "optIn" | "optOut" | "direct" | "undefined"` — the same type the composable declares for `newsletterStatus`.
 
 Derive the status from `AccountNewsletterRecipient` rather than from `Schemas["NewsletterStatus"]`. The named schema is recent — the `6.6.10` and `6.7.10` schemas shipped in this repo do not declare it, `6.7.13` does — and on an older backend the generated types spell the same union inline on the recipient instead. The alias above works against either.
@@ -209,6 +213,8 @@ Derive the status from `AccountNewsletterRecipient` rather than from `Schemas["N
 ## Minimal Vue Example
 
 <CodeExample title="Newsletter box and account toggle">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/newsletter/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -363,6 +369,8 @@ watch(
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 
