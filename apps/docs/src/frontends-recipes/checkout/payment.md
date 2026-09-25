@@ -156,7 +156,7 @@ Six things the generated reference will not tell you:
 - Neither `handlePayment` nor `changePaymentMethod` on `useOrderPayment` reloads the order. On `useOrderDetails` only `changePaymentMethod` (and `cancel`) does; its `handlePayment` does not reload either. After switching the method through `useOrderPayment`, call `loadOrderDetails()` yourself or the page keeps showing the previous method.
 - `activeTransaction` is the **first** transaction whose `paymentMethod.active` is `true`, while `useOrderDetails().paymentMethod` reads the **last** transaction. After a method change an order has several transactions and the two disagree.
 - `isAsynchronous` is `paymentMethod.asynchronous && paymentMethod.afterOrderEnabled`. `afterOrderEnabled` is still part of the schema, but `asynchronous` was removed from `PaymentMethod` in 6.7, so against a current backend the whole expression is `undefined`. Gate a "continue to payment" button on `paymentUrl` and `state.technicalName` instead.
-- `paymentChangeable` is read from the `readOrder` response, not from the order itself. `loadOrderDetails` always sends `checkPromotion: true` — the flag the schema documents as *Check if the payment method of the order is still changeable* — so send the same flag when you build that request yourself.
+- `paymentChangeable` is read from the `readOrder` response, not from the order itself. `loadOrderDetails` always sends `checkPromotion: true` — the flag the schema documents as _Check if the payment method of the order is still changeable_ — so send the same flag when you build that request yourself.
 - `activeTransaction` resolves at all only because `loadOrderDetails` puts `useDefaultOrderAssociations` into the criteria, which requests `transactions.paymentMethod` and `transactions.stateMachineState`. Associations you pass to `useOrderDetails` are deep-merged into that set rather than replacing it — `defu` recurses into the default objects, so nothing you add is dropped and no default is lost.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
@@ -175,6 +175,8 @@ Use generated Store API types when you need to type the payment request, the tra
   <SchemaTypeTooltip type-key='Schemas["Order"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/payment/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -188,11 +190,15 @@ type StateMachineState = Schemas["StateMachineState"];
 type Order = Schemas["Order"];
 ```
 
+<!-- /automd -->
+
 `HandlePaymentResponse` is `{ redirectUrl: string }`. Reading that type is the fastest way to see why the return page cannot skip reloading the order.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal order payment page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/payment/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -223,6 +229,9 @@ const hasValidPaymentUrl = computed(() => {
     return false;
   }
 });
+const safePaymentUrl = computed(() =>
+  hasValidPaymentUrl.value ? (paymentUrl.value ?? undefined) : undefined,
+);
 
 const loadOrder = async () => {
   loadError.value = "";
@@ -246,7 +255,7 @@ onMounted(async () => {
     try {
       await handlePayment(
         `${origin}/checkout/success/${orderId}/paid`,
-        `${origin}/checkout/success/${orderId}/unpaid`
+        `${origin}/checkout/success/${orderId}/unpaid`,
       );
     } catch {
       paymentError.value = "The payment could not be started.";
@@ -320,7 +329,7 @@ const changeMethod = async (paymentMethodId: string) => {
 
       <div v-else-if="isPaymentOpen">
         <p>Your payment is still open.</p>
-        <a v-if="hasValidPaymentUrl" :href="paymentUrl" rel="noopener">
+        <a v-if="safePaymentUrl" :href="safePaymentUrl" rel="noopener">
           Continue to the payment provider
         </a>
       </div>
@@ -338,8 +347,12 @@ const changeMethod = async (paymentMethodId: string) => {
           type="button"
           :aria-disabled="isChangingPaymentMethod"
           :aria-busy="isChangingPaymentMethod"
-          :aria-current="method.id === paymentMethod?.id ? 'true' : undefined"
-          @click="changeMethod(method.id)"
+          :aria-current="
+            method.id != null && method.id === paymentMethod?.id
+              ? 'true'
+              : undefined
+          "
+          @click="method.id && changeMethod(method.id)"
         >
           {{ method.name }}
         </button>
@@ -349,18 +362,32 @@ const changeMethod = async (paymentMethodId: string) => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
-The example hands the redirect to the customer through a link, and points `finishUrl` and `errorUrl` at child routes so the return does not re-enter this page. The starter template does both instead: it renders a button *and* watches `paymentUrl` with a five-second debounce that navigates on its own, so a customer reading the confirmation is pulled to the provider mid-read. Pick one, and if you keep the automatic navigation, announce it.
+The example hands the redirect to the customer through a link, and points `finishUrl` and `errorUrl` at child routes so the return does not re-enter this page. The starter template does both instead: it renders a button _and_ watches `paymentUrl` with a five-second debounce that navigates on its own, so a customer reading the confirmation is pulled to the provider mid-read. Pick one, and if you keep the automatic navigation, announce it.
 
 ## State And Session
 
 The order is not part of the sales channel context, but reading it still depends on the `sw-context-token`: `readOrder post /order` returns the orders of the customer that the token resolves to. A return page therefore has to run in the same session.
 
-A guest whose session did not survive the provider needs the deep link flow instead — `readOrder post /order` accepts a `deepLinkCode` `filter` together with `email` and `zipcode`. `useOrderDetails` takes only an order id and extra associations, so it cannot send those fields. In that case build the call yourself and hand the resulting order to `useOrderPayment` as a `computed`. The body is required, and it still needs the associations and the `checkPromotion` flag:
+A guest whose session did not survive the provider needs the deep link flow instead — `readOrder post /order` accepts a `deepLinkCode` `filter` together with `email` and `zipcode`. `useOrderDetails` takes only an order id and extra associations, so it cannot send those fields — the [Guest Order Lookup recipe](../orders/guest-order-lookup.html) covers that flow in full. In that case build the call yourself and hand the resulting order to `useOrderPayment` as a `computed`. The body is required, and it still needs the associations and the `checkPromotion` flag:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/payment/state-and-session.ts" code lang="ts" no-name -->
 
 ```ts
-const response = await apiClient.invoke("readOrder post /order", {
+import {
+  useDefaultOrderAssociations,
+  useShopwareContext,
+} from "@shopware/composables";
+
+const { apiClient } = useShopwareContext();
+const deepLinkCode = "deep-link-code";
+const email = "customer@example.com";
+const zipcode = "12345";
+
+export const response = await apiClient.invoke("readOrder post /order", {
   body: {
     filter: [{ type: "equals", field: "deepLinkCode", value: deepLinkCode }],
     email,
@@ -370,6 +397,8 @@ const response = await apiClient.invoke("readOrder post /order", {
   },
 });
 ```
+
+<!-- /automd -->
 
 Treat `deepLinkCode` as a credential: together with `email` and `zipcode` it is the entire authentication for that order, and it returns the addresses, line items and transactions. Send it in the request body only — never in a URL, a log line or an analytics event, where a referrer header or a shared link leaks the order.
 
@@ -385,7 +414,7 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 - `paymentChangeable` defaults to `false`, so a page that renders the method switcher before the order has loaded shows nothing.
 - `finishUrl` and `errorUrl` are optional in the schema, and omitting them leaves the return target to the payment handler. Pass absolute URLs built from `window.location.origin` — they are used after the browser has left your application.
 - `redirectUrl` is declared required and non-nullable in the generated response, so the types promise a `string` the schema cannot always deliver — a synchronous method has nowhere to send the customer. Guard the value before the browser sees it, and check the **scheme**, not just that it parses: `new URL()` resolves `javascript:` and `data:` without throwing. The starter template checks neither path: its watcher wraps `new URL()` in a `try/catch` and navigates as soon as the value parses, and its button path (`goToUrl`) assigns `window.location.href` with no check at all.
-- The declared type of `handlePayment` accepts a third `paymentDetails` argument, but neither implementation forwards it. The generated body declares only `orderId`, `finishUrl` and `errorUrl`, so a prepared payment flow that needs extra transaction fields has to add them through a schema override before `apiClient.invoke("handlePaymentMethod post /handle-payment")` will accept them.
+- The declared type of `handlePayment` accepts a third `paymentDetails` argument, but neither implementation has that parameter — both functions take only `finishUrl` and `errorUrl`, so the argument type-checks and is then ignored. The generated body declares only `orderId`, `finishUrl` and `errorUrl`, so a prepared payment flow that needs extra transaction fields has to add them through a schema override before `apiClient.invoke("handlePaymentMethod post /handle-payment")` will accept them.
 - A customer can close the provider tab and come back later. Treat `open` as a resumable state rather than a failure.
 
 ## Common Mistakes
@@ -418,6 +447,9 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 
 ## Related Links
 
+- [Order History recipe](../account/order-history.html)
+- [Order Details recipe](../orders/details.html)
+- [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Payments documentation](../../guides/e-commerce/payments.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)

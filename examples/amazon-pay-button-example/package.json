@@ -33,7 +33,7 @@
     "axios": "1.19.0"
   },
   "devDependencies": {
-    "@nuxt/devtools": "3.4.1",
+    "@nuxt/devtools": "3.4.2",
     "@nuxt/module-builder": "1.0.3",
     "@nuxt/schema": "4.5.2",
     "@shopware/composables": "canary",
@@ -43,7 +43,7 @@
     "nuxt": "4.5.2",
     "typescript": "5.9.3",
     "uuid": "^14.0.0",
-    "vue-tsc": "3.3.9",
+    "vue-tsc": "3.3.11",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0"
   }

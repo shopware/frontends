@@ -1,0 +1,32 @@
+{
+  "unitPrice": 58,
+  "quantity": 1,
+  "totalPrice": 58,
+  "calculatedTaxes": [
+    {
+      "tax": 9.26,
+      "taxRate": 19,
+      "price": 58,
+      "apiAlias": "cart_tax_calculated"
+    }
+  ],
+  "taxRules": [
+    {
+      "taxRate": 19,
+      "percentage": 100,
+      "apiAlias": "cart_tax_rule"
+    }
+  ],
+  "referencePrice": null,
+  "listPrice": {
+    "price": 83.3,
+    "discount": -25.3,
+    "percentage": 30.37,
+    "apiAlias": "cart_list_price"
+  },
+  "regulationPrice": {
+    "price": 54,
+    "apiAlias": "cart_regulation_price"
+  },
+  "apiAlias": "calculated_price"
+}

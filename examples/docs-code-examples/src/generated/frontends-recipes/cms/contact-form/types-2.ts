@@ -1,0 +1,1 @@
+type ContactFormResult = { individualSuccessMessage?: string };

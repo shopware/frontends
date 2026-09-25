@@ -37,6 +37,8 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 
 ::: details Example of a `CalculatedPrice` object
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/structure-of-a-price.json" code lang="json" no-name -->
+
 ```json
 {
   "unitPrice": 58,
@@ -72,6 +74,8 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 }
 ```
 
+<!-- /automd -->
+
 :::
 
 Each product has at least one `CalculatedPrice` object assigned to it, which can be accessed through `product.calculatedPrice`. It contains the product's default price, which applies when no other prices are defined.
@@ -88,16 +92,22 @@ All prices are passed as floating point numbers, rounded to the decimals which a
 	</div>
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/display-a-default-price.vue" code lang="vue{4,16,24}" no-name -->
+
 ```vue{4,16,24}
 <script setup>
-import { useProductSearch } from '@shopware/composables';
+import { useProductSearch } from "@shopware/composables";
+
+import { ref, usePrice, useProductPrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { search } = useProductSearch();
 
-const { product } = await search('some-product-id');
+const { product } = await search("some-product-id");
 
-const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(product));
+const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(
+  ref(product),
+);
 </script>
 
 <template>
@@ -107,9 +117,7 @@ const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(produ
     </div>
     <div>
       {{ getFormattedPrice(unitPrice) }}
-      <small>
-        incl. {{ price.taxRules[0].taxRate }}% tax
-      </small>
+      <small> incl. {{ price.taxRules[0].taxRate }}% tax </small>
     </div>
     <div v-if="hasListPrice">
       <small>
@@ -123,11 +131,15 @@ const { unitPrice, price, tierPrices, hasListPrice } = useProductPrice(ref(produ
 </template>
 ```
 
+<!-- /automd -->
+
 ## Pricing tiers and quantity prices
 
 Pricing tiers add one layer of complexity to the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
 
 These pricing tiers are passed through a product's `calculatedPrices` field. The `calculatedPrices` field is an array of `CalculatedPrice` objects sorted by the `quantity` field, which defines the bounds of a pricing range.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/pricing-tiers-and-quantity-prices.txt" code lang="json" no-name -->
 
 ```json
 [
@@ -150,6 +162,8 @@ These pricing tiers are passed through a product's `calculatedPrices` field. The
 		/* ... */
 ]
 ```
+
+<!-- /automd -->
 
 ### Display tier prices
 
@@ -182,9 +196,13 @@ class="mx-auto p-10 shadow-md rounded-md dark:bg-#242424 text-gray-700 dark:text
 </div>
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/display-tier-prices.vue" code lang="vue{3,9}" no-name -->
+
 ```vue{3,9}
 <script setup>
 import { useProduct } from "@shopware/composables";
+
+import { usePrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
@@ -196,15 +214,18 @@ await search("some-product-id");
   <ul>
     <li
       v-for="(tierPrice, index) in product.calculatedPrices"
-      :key="tierPrice.quantity">
-        <!-- Display "from" or "to" depending on quantity level -->
-        {{ index == product.calculatedPrices.length - 1 ? 'from' : 'to' }}
-        {{ tierPrice.quantity }} -
-        {{ getFormattedPrice(tierPrice.unitPrice) }}
+      :key="tierPrice.quantity"
+    >
+      <!-- Display "from" or "to" depending on quantity level -->
+      {{ index == product.calculatedPrices.length - 1 ? "from" : "to" }}
+      {{ tierPrice.quantity }} -
+      {{ getFormattedPrice(tierPrice.unitPrice) }}
     </li>
   </ul>
 </template>
 ```
+
+<!-- /automd -->
 
 ### Advanced prices
 
@@ -238,9 +259,13 @@ See a full example of displaying the default price or pricing tiers depending on
 
 :::details Click to expand full example
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/full-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup>
 import { useProduct } from "@shopware/composables";
+
+import { computed, usePrice } from "#imports";
 
 const { getFormattedPrice } = usePrice();
 const { product, search } = useProduct();
@@ -289,6 +314,8 @@ const defaultPrice = computed(() => {
 </template>
 ```
 
+<!-- /automd -->
+
 :::
 
 ## useProductPrice composable
@@ -299,35 +326,52 @@ See dedicated [Composables > useProductPrice](../../packages/composables/useProd
 
 Price for **non-variant** product (also for having tier pricing):
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing.vue" code lang="vue{6}" no-name -->
+
 ```vue{6}
 <script setup lang="ts">
-const { totalPrice, displayFrom } = useProductPrice(/** argument omitted - Product object */);
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { totalPrice, displayFrom } = useProductPrice(product);
 </script>
 <template>
-<div>
-  <span v-if="displayFrom">from</span>{{ totalPrice }} $
-</div>
+  <div><span v-if="displayFrom">from</span>{{ totalPrice }} $</div>
 </template>
 ```
+
+<!-- /automd -->
 
 If there is a range of prices available, you can point this out by adding `from` prefix, using the `displayFrom` indicator. The result will be a total price, prefixed by `from` phrase. In this case, unit price is equal to the lowest price available.
 
 In order to ensure if the variant prices are available, you can utilize the `displayVariantsFrom` computed property, that contains the value in current currency:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-listing-2.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
-const { totalPrice, displayVariantsFrom } =
-  useProductPrice(/** argument omitted - Product object */);
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { totalPrice, displayFromVariants } = useProductPrice(product);
 </script>
 <template>
   <div>
     {{ totalPrice }} $
-    <span v-if="displayVariantsFrom">
-      Variants from {{ displayVariantsFrom }} $
+    <span v-if="displayFromVariants">
+      Variants from {{ displayFromVariants }} $
     </span>
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 ### Product details page
 
@@ -337,15 +381,37 @@ In this case, there are few options to display:
 - Product with list price (kind of discount)
 - Tier prices
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.ts" code lang="ts" no-name -->
+
 ```ts
+import { ref } from "vue";
+
+import { usePrice, useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
 const { totalPrice, price, tierPrices, hasListPrice } =
   useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 ```
 
+<!-- /automd -->
+
 Regular price, with list price included (in case of manufacturer's suggested retail price):
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page.vue" code lang="vue" no-name -->
+
 ```vue
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { hasListPrice, price, totalPrice } = useProductPrice(product);
+</script>
+
 <template>
   <div v-if="hasListPrice" class="old-price line-through">
     {{ price?.listPrice?.price }} $
@@ -358,9 +424,23 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 </template>
 ```
 
+<!-- /automd -->
+
 Tier prices presented as a table with range labeled by "to" and "from":
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/product-details-page-2.vue" code lang="vue" no-name -->
+
 ```vue
+<script setup lang="ts">
+import { ref } from "vue";
+
+import { useProductPrice } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref({} as Schemas["Product"]);
+const { tierPrices, totalPrice } = useProductPrice(product);
+</script>
+
 <template>
   <div>
     <table v-if="tierPrices.length">
@@ -371,7 +451,7 @@ Tier prices presented as a table with range labeled by "to" and "from":
           <span v-else> From </span>
           {{ tierPrice.quantity }}
         </td>
-        <td>{{ tierPrice.totalPrice }} $</td>
+        <td>{{ tierPrice.unitPrice }} $</td>
       </tr>
     </table>
     <div v-else>
@@ -382,15 +462,23 @@ Tier prices presented as a table with range labeled by "to" and "from":
 </template>
 ```
 
+<!-- /automd -->
+
 ### Format price according to current context
 
 There are additional metadata available in the _current_ API context. One of them is the _current currency_. In order to display the price together with the currency symbol applied to the current context, use `getFormattedPrice` helper.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/e-commerce/prices/format-price-according-to-current-context.ts" code lang="ts" no-name -->
+
 ```ts
+import { usePrice } from "#imports";
+
 const price = 12.95;
 const { getFormattedPrice } = usePrice();
 const priceWithCurrency = getFormattedPrice(price);
 // output: 12.95 $
 ```
+
+<!-- /automd -->
 
 Thanks to this, the `priceWithCurrency` will have the current currency symbol prefixed or suffixed, according to the configuration.

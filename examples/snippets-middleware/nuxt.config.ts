@@ -2,10 +2,10 @@
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer", "@shopware/cms-base-layer"],
   runtimeConfig: {
-    // These values are used in the Shopware API client
-    // TODO: replace with environment variables copied from Github once feature is supported
-    api_client_id: "SWIARW9QA2DYOUX3OXJMRGX2UQ", // or import.meta.env.NUXT_SHOPWARE_ACCESS_KEY_ID when .env is defined
-    api_client_secret: "dTRpT3ptZDlmMHZocDNrb2ZOODYxYWtIWnZtRTByUnBvRXh5M3Q", // or import.meta.env.NUXT_SHOPWARE_SECRET_ACCESS_KEY  when .env is defined
+    // Admin API integration credentials, read by ./server/api/translations.get.ts
+    // Set NUXT_API_CLIENT_ID and NUXT_API_CLIENT_SECRET in .env (see .env.template)
+    api_client_id: "",
+    api_client_secret: "",
   },
   shopware: {
     endpoint: "https://demo-frontends.shopware.store/store-api",

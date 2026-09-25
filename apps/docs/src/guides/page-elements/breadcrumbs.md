@@ -28,7 +28,11 @@ In this chapter you will learn how to
 
 ## Building breadcrumbs for a static page
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-a-static-page.ts" code lang="ts" no-name -->
+
 ```ts
+import { useBreadcrumbs } from "#imports";
+
 useBreadcrumbs([
   {
     name: "Shopware",
@@ -37,39 +41,88 @@ useBreadcrumbs([
 ]);
 ```
 
+<!-- /automd -->
+
 ## Building breadcrumbs for a category/product page
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-a-category-product-page.ts" code lang="ts" no-name -->
 
 ```ts
 // props.navigationId is a page id
 
+import { useBreadcrumbs } from "#imports";
+import type { Schemas } from "#shopware";
+
+const props = {
+  breadcrumbs: [
+    {
+      apiAlias: "breadcrumb",
+      categoryId: "example-navigation-id",
+      name: "Example category",
+      path: "example-category",
+      translated: {
+        categoryId: "example-navigation-id",
+        name: "Example category",
+        path: "example-category",
+      },
+      type: "page",
+    },
+  ] satisfies Schemas["Breadcrumb"][],
+};
+
 const { buildDynamicBreadcrumbs } = useBreadcrumbs();
-buildDynamicBreadcrumbs(props.navigationId);
+buildDynamicBreadcrumbs(props.breadcrumbs);
 ```
+
+<!-- /automd -->
 
 ## Building breadcrumbs for CMS pages - without additional request
 
 Each CMS page contains the `Category` with `breadcrumb` array, which contains a list of names, like:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-cms-pages-without-additional-request" code no-name -->
+
 ```
 breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 ```
 
+<!-- /automd -->
+
 we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/building-breadcrumbs-for-cms-pages-without-additional-request.ts" code lang="ts" no-name -->
 
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware/helpers";
 
-let breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value?.product?.seoCategory,
-);
+import { useBreadcrumbs } from "#imports";
+
+const productResponse = {
+  product: {
+    seoCategory: {
+      breadcrumb: ["Home", "Example category"],
+      translated: {
+        breadcrumb: ["Home", "Example category"],
+      },
+    },
+  },
+};
+
+const breadcrumbs = getCategoryBreadcrumbs(productResponse.product.seoCategory);
 useBreadcrumbs(breadcrumbs);
 ```
+
+<!-- /automd -->
 
 ## Clearing breadcrumbs list
 
 It's important to clear breadcrumbs list when you leave the page, otherwise you'll see breadcrumbs from the previous page if your not setting them on that page.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/clearing-breadcrumbs-list.ts" code lang="ts" no-name -->
+
 ```ts
+import { onBeforeRouteLeave, useBreadcrumbs } from "#imports";
+
 const { clearBreadcrumbs } = useBreadcrumbs();
 
 onBeforeRouteLeave(() => {
@@ -77,12 +130,17 @@ onBeforeRouteLeave(() => {
 });
 ```
 
+<!-- /automd -->
+
 ## Displaying Breadcrumbs
 
 Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/breadcrumbs/displaying-breadcrumbs.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
+import { useBreadcrumbs } from "#imports";
 const { breadcrumbs } = useBreadcrumbs();
 </script>
 <template>
@@ -101,3 +159,5 @@ const { breadcrumbs } = useBreadcrumbs();
   </nav>
 </template>
 ```
+
+<!-- /automd -->

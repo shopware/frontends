@@ -81,6 +81,8 @@ Use generated Store API types when you need to type credentials, responses, or l
   <SchemaTypeTooltip type-key='Schemas["Cart"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -91,7 +93,11 @@ type SessionContext = operations["readContext get /context"]["response"];
 type Customer = Schemas["Customer"];
 ```
 
+<!-- /automd -->
+
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -152,6 +158,8 @@ const submit = async () => {
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 ## State And Session
 

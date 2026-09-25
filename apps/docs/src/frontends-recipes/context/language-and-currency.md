@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 10
+  position: 20
 recipe:
   area: context
   status: stable
@@ -157,6 +157,8 @@ Use generated Store API types when you need to type the lists, the context patch
   <SchemaTypeTooltip type-key='Schemas["Currency"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/language-and-currency/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -168,11 +170,15 @@ type Language = Schemas["Language"];
 type Currency = Schemas["Currency"];
 ```
 
+<!-- /automd -->
+
 The two list responses do not share a shape, which is why they do not share a suffix: `LanguagesResponse` is an entity search result with an `elements` key, `CurrenciesResponse` is a bare `Currency[]`. And `ContextPatchResponse` is the type that explains the whole recipe: its only property is an optional `redirectUrl`.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal language and currency switcher">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/language-and-currency/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -320,16 +326,21 @@ const switchCurrency = async (currencyId: string) => {
         :key="currency.id"
         :value="currency.id"
       >
-        {{ currency.translated?.name ?? currency.name }} ({{ currency.isoCode }})
+        {{ currency.translated?.name ?? currency.name }} ({{
+          currency.isoCode
+        }})
       </option>
     </select>
   </label>
 
   <p aria-live="polite">
-    Prices are shown in {{ currentCurrency?.isoCode ?? "the default currency" }}.
+    Prices are shown in
+    {{ currentCurrency?.isoCode ?? "the default currency" }}.
   </p>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 
@@ -409,6 +420,9 @@ The current language itself is read from the context, not from this composable. 
 ## Related Links
 
 - [URL Resolving and SEO URLs recipe](url-resolving.html)
+- [Navigation and Breadcrumbs recipe](navigation.html)
+- [Session Context recipe](session-context.html)
+- [Prices and Tax State recipe](../catalog/prices.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Search and Suggest recipe](../catalog/search.html)
 - [Cart recipe](../checkout/cart.html)

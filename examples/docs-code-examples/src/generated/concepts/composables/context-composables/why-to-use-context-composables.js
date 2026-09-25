@@ -1,0 +1,1 @@
+const { product } = useProduct(detailProduct);

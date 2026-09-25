@@ -149,6 +149,8 @@ Use generated Store API types when you type a wishlist criteria, the response, o
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/wishlist/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -160,7 +162,11 @@ type Criteria = Schemas["Criteria"];
 type Product = Schemas["Product"];
 ```
 
+<!-- /automd -->
+
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/wishlist/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -262,6 +268,8 @@ watch(
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 ## State And Session
 

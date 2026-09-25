@@ -24,6 +24,8 @@ In Shopware, the concept of routing is connected to `SeoUrl` routes. A `SeoUrl` 
 
 In the most common routing scenario, you will have a URL path like `/Winter-Season/My-Product` and want to resolve it to a route configuration. The `useNavigationSearch` composable provides a function to do that:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-url-path-to-a-route.js" code lang="js" no-name -->
+
 ```js
 import {
   useNavigationContext,
@@ -37,7 +39,11 @@ const seoResult = await resolvePath("/Winter-Season/My-Product");
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 ```
 
+<!-- /automd -->
+
 The result of the `resolvePath` function is a reduced `SeoUrl` object, which you can access safely via the useNavigationContext composable.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-url-path-to-a-route.json" code lang="json" no-name -->
 
 ```json
 {
@@ -45,6 +51,8 @@ The result of the `resolvePath` function is a reduced `SeoUrl` object, which you
   "foreignKey": "f2f6b6b3a0a04e2a8b0f8a2b2b5b5b1a"
 }
 ```
+
+<!-- /automd -->
 
 This is all information you need to resolve the route to a page, or rather an entity.
 
@@ -60,48 +68,70 @@ Depending on which type of route you have, the way of fetching the page data is 
 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
 
-```ts
-import type { Schemas } from "#shopware";
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-route-to-a-page.ts" code lang="ts" no-name -->
 
+```ts
 import {
-  useNavigation,
   useNavigationContext,
   useNavigationSearch,
   useCategorySearch,
-} from "@shopware/composables";
+  ref,
+  useCategory,
+  useLandingSearch,
+  useProduct,
+  useProductSearch,
+} from "#imports";
+import type { Schemas } from "#shopware";
 
+const route = {
+  path: "/Winter-Season/My-Product",
+};
+const { resolvePath } = useNavigationSearch();
 const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 
-const data = ref(null);
+const data = ref<
+  Schemas["Category"] | Schemas["LandingPage"] | Schemas["Product"] | null
+>(null);
 
 switch (routeName.value) {
   case "frontend.navigation.page":
-    let { search: categorySearch } = useCategorySearch();
-    const categoryResponse = await categorySearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    const { category } = useCategory(categoryResponse);
-    data.value = category;
+    {
+      const { search: categorySearch } = useCategorySearch();
+      const categoryResponse = await categorySearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { category } = useCategory(ref(categoryResponse));
+      data.value = category.value;
+    }
     break;
   case "frontend.detail.page":
-    let { search: productSearch } = useProductSearch();
-    const productResponse = await productSearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    const { product } = useProduct(productResponse);
-    data.value = product;
+    {
+      const { search: productSearch } = useProductSearch();
+      const productResponse = await productSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { product } = useProduct(
+        ref(productResponse.product),
+        productResponse.configurator ?? [],
+      );
+      data.value = product.value;
+    }
     break;
   case "frontend.landing.page":
-    let { search: landingSearch } = useLandingSearch();
-    const landing = await landingSearch(foreignKey.value, {
-      withCmsAssociations: true,
-    });
-    data.value = ref(landing);
+    {
+      const { search: landingSearch } = useLandingSearch();
+      const landing = await landingSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      data.value = landing;
+    }
     break;
 }
 ```
+
+<!-- /automd -->
 
 This switch statement handles all options that Shopware natively supports and can easily be enhanced. Another option is to build custom components for each route type and do the rest in there.
 
@@ -126,9 +156,21 @@ We have created two new helper functions that can be used to avoid these extra c
 
 ##### Example getCategoryRoute with NuxtLink
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getcategoryroute-with-nuxtlink.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
-import { getCategoryRoute } from "@shopware/helpers";
+import { getCategoryRoute, getTranslatedProperty } from "@shopware/helpers";
+
+const navigationChild = {
+  id: "example-navigation-id",
+  name: "Example category",
+  type: "page",
+  translated: {
+    name: "Example category",
+  },
+  seoUrls: [{ seoPathInfo: "example-category" }],
+};
 </script>
 
 <template>
@@ -138,11 +180,24 @@ import { getCategoryRoute } from "@shopware/helpers";
 </template>
 ```
 
+<!-- /automd -->
+
 ##### Example getProductRoute with RouterLink
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getproductroute-with-routerlink.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
-import { getProductRoute } from "@shopware/helpers";
+import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
+
+const product = {
+  id: "example-product-id",
+  name: "Example product",
+  translated: {
+    name: "Example product",
+  },
+  seoUrls: [{ seoPathInfo: "example-product" }],
+};
 </script>
 
 <template>
@@ -151,6 +206,8 @@ import { getProductRoute } from "@shopware/helpers";
   </RouterLink>
 </template>
 ```
+
+<!-- /automd -->
 
 ##### How does "Omitting store API calls for seoURLs" work in detail?
 
