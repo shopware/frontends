@@ -21,7 +21,7 @@
     "braintree-web-drop-in": "^1.46.0",
     "nuxt": "4.5.2",
     "vue-tsc": "3.3.11",
-    "oxfmt": "0.62.0",
-    "oxlint": "1.77.0"
+    "oxfmt": "0.69.0",
+    "oxlint": "1.84.0"
   }
 }

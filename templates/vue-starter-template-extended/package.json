@@ -32,8 +32,8 @@
     "@unocss/core": "66.10.5",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.11",
-    "oxfmt": "0.62.0",
-    "oxlint": "1.77.0"
+    "oxfmt": "0.69.0",
+    "oxlint": "1.84.0"
   },
   "overrides": {
     "glob": "^13",
