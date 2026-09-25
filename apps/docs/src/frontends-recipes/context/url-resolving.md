@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 20
+  position: 40
 recipe:
   area: context
   status: stable
@@ -182,7 +182,7 @@ Seven things the generated reference will not tell you:
 - `useCategorySearch` has two methods and they are not symmetrical. `search(categoryId, options)` sends `sw-include-seo-urls: true`; `advancedSearch({ query })` does not send that header at all.
 - `useCategorySearch().search` is the odd one out on associations: it puts the whole `cmsAssociations` object into the body's `associations` field, so the CMS tree ends up nested one level deeper. `useLandingSearch().search` and `useProductSearch().search` both send `cmsAssociations.associations` unwrapped. The three are not interchangeable if you build a request by hand.
 - `useUrlResolver().resolveUrl(url)` prefixes the path, it does not rewrite it. The `split("/").slice(1)` inside reads like it removes a path segment, but on a path that starts with a slash the element it removes is the empty string in front of it: `/en/navigation/123` with `urlPrefix: "shop"` comes back as `/shop/en/navigation/123`, locale segment intact, which is what the composable's own test pins. Only a path handed in without a leading slash loses a real segment. It also throws `URL Input too long` for input over 2083 characters, and `getUrlPrefix()` reads an injected `urlPrefix` that the application provides, not the composable.
-- `useBreadcrumbs` is scoped, not global. It goes through `useContext("swBreadcrumb")`, which injects an ancestor's ref or, finding none, creates its own and provides it downwards. Nothing above the page components provides it, so each page roots a fresh trail per mount and cannot inherit another page's. `clearBreadcrumbs()` empties the trail, and calling `useBreadcrumbs(breadcrumbs)` with an argument replaces it outright.
+- `useBreadcrumbs` is scoped, not global. It goes through `useContext("swBreadcrumb")`, which injects an ancestor's ref or, finding none, creates its own and provides it downwards. Nothing above the page components provides it, so each page roots a fresh trail per mount. The [Navigation and Breadcrumbs recipe](navigation.html) covers what changes when that ref sits higher.
 
 The [composables reference](../../packages/composables/) is generated from source and lists every member.
 
@@ -200,23 +200,30 @@ Use generated Store API types when you need to type the resolution, the entity r
   <SchemaTypeTooltip type-key='Schemas["LandingPage"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/url-resolving/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
 type SeoUrlBody = operations["readSeoUrl post /seo-url"]["body"];
 type SeoUrlResponse = operations["readSeoUrl post /seo-url"]["response"];
-type CachedSeoUrlResponse = operations["readSeoUrlGet get /seo-url"]["response"];
+type CachedSeoUrlResponse =
+  operations["readSeoUrlGet get /seo-url"]["response"];
 type LandingPageBody =
   operations["readLandingPage post /landing-page/{landingPageId}"]["body"];
 type SeoUrl = Schemas["SeoUrl"];
 type LandingPage = Schemas["LandingPage"];
 ```
 
+<!-- /automd -->
+
 `SeoUrl` is the type the whole recipe turns on. `routeName` selects the page component, `foreignKey` is the entity id, and `seoPathInfo` and `pathInfo` are the two fields the lookup filters on.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal catch-all route">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/url-resolving/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -226,6 +233,7 @@ import {
 } from "@shopware/helpers";
 import { pascalCase } from "scule";
 
+import { useI18n, useLocalePath } from "#imports";
 import type { Schemas } from "#shopware";
 
 const { resolvePath } = useNavigationSearch();
@@ -317,6 +325,8 @@ if (!canonicalRedirectTarget && !pageComponent) {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 Four things that route depends on and the code does not show:
@@ -350,7 +360,6 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - `routeName` is pascal-cased into a component name, and `resolveComponent` only finds components registered `global: true`. It returns the name string rather than throwing when nothing matches, which is why the example compares the result against the name and turns a miss into a `404`.
 - `resolveUrl` throws `URL Input too long` for input over 2083 characters. That is a deliberate guard against a polynomial regular expression, not a validation error to surface.
 - `resolveUrl` only touches URLs matching `[a-zA-Z0-9]+/navigation/[a-zA-Z0-9]+` and returns everything else unchanged — including a `/detail/<id>` link, and including `/navigation/<id>` itself, which has no segment before the slash for the pattern to match and so never gets the prefix.
-- The breadcrumb trail is scoped to the subtree of whichever component calls `useBreadcrumbs` first. In `vue-starter-template` that is the page component, so each page starts from an empty trail and a page that builds none renders none.
 - The `history.state` shortcut keys off the field, not its provenance: `[...all].vue` takes it whenever a client-side navigation to a non-technical path carries `history.state.routeName`, and reads `foreignKey` alongside it without requiring it. A plain `<NuxtLink to="/my-category">` therefore still takes the lookup, while anything that writes that state skips it — including a link that sets `routeName` alone, whose resolution then trips the `404` guard on click and resolves fine on reload. `getProductRoute` and `getCategoryRoute` are what write the pair in practice, and both can emit a `routeName` with an undefined `foreignKey` — `getProductRoute` takes an optional product, and `getCategoryRoute` reads `internalLink` for a `product` or `landing_page` link. That is why the example above guards on both fields.
 - Nothing on this path carries a timeout. `resolvePath` takes no signal, so a Store API that accepts the connection and never answers hangs the render until the platform kills it. Set `runtimeConfig.apiClientConfig.timeout` if you want a bound.
 
@@ -386,11 +395,12 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 
 ## Related Links
 
+- [Session Context recipe](session-context.html)
 - [Language and Currency Switch recipe](language-and-currency.html)
+- [Navigation and Breadcrumbs recipe](navigation.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Contact Form recipe](../cms/contact-form.html)
 - [Work with routing](../../guides/routing.html)
-- [Build a navigation](../../guides/page-elements/navigation.html)
 - [Content pages](../../guides/cms/content-pages.html)
 - [Caching](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
