@@ -350,6 +350,10 @@ export const sidebar = [
             text: "Language and Currency Switch",
             link: "/frontends-recipes/context/language-and-currency.html",
           },
+          {
+            text: "Navigation and Breadcrumbs",
+            link: "/frontends-recipes/context/navigation.html",
+          },
         ],
       },
       {

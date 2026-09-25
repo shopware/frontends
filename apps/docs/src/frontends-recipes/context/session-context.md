@@ -347,6 +347,7 @@ Turning it on moves the problem to the cache. The server render then depends on 
 ## Related Links
 
 - [Language and Currency Switch recipe](language-and-currency.html)
+- [Navigation and Breadcrumbs recipe](navigation.html)
 - [Work with languages](../../guides/languages.html)
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Login recipe](../account/login.html)
