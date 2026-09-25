@@ -182,6 +182,8 @@ Use generated Store API types when you need to type the response, one group, or 
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/cross-selling/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -192,11 +194,15 @@ type CrossSellingElement = Schemas["CrossSellingElement"];
 type CrossSellingConfig = Schemas["ProductCrossSelling"];
 ```
 
+<!-- /automd -->
+
 `CrossSellingCollection` is declared as an array in the schema, so `productAssociations` is iterable directly. Most Store API list responses wrap their rows in an `elements` key; this one, like `readNavigation` and `readBreadcrumb`, does not.
 
 ## Minimal Vue Example
 
 <CodeExample title="Cross-selling groups on a product page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/cross-selling/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -206,7 +212,7 @@ import type { Schemas } from "#shopware";
 
 const { product } = defineProps<{ product: Schemas["Product"] }>();
 
-const localePath = useLocalePath();
+const localePath = (path: string) => path;
 const { formatLink } = useInternationalization(localePath);
 
 const { productAssociations, isLoading, loadAssociations } =
@@ -247,11 +253,13 @@ watch(
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The groups are rendered stacked, each under its own `h2`, rather than as tabs. A tab strip needs the full `tablist`/`tab`/`tabpanel` pattern with roving focus to be reachable by keyboard, and none of that is about cross-selling — stacked headings are navigable out of the box and cannot strand the reader on a panel that no longer exists.
 
-`formatLink` wraps `getProductRoute` because the helper returns an unprefixed route. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL. The resolver is what makes it work: `formatLink` returns the link untouched unless `useInternationalization` was created with one, so the path resolver from Nuxt i18n has to be resolved first and passed in — two lines, never one.
+`formatLink` wraps `getProductRoute` because the helper returns an unprefixed route. Without the wrapper a customer browsing `/de-DE` lands on the default-locale URL. The resolver is what makes it work: `formatLink` returns the link untouched unless `useInternationalization` was created with one, so the path resolver from Nuxt i18n has to be resolved first and passed in — two lines, never one. The example above stands in an identity function for it, because the project these snippets compile against does not install `@nuxtjs/i18n`; in your own storefront that line is `const localePath = useLocalePath();`.
 
 `buildUrlPrefix` from `@shopware/helpers` prefixes a route too, and you will see it in `cms-base-layer` components such as `SwProductCard`. Reach for it there, not here: that layer has no dependency on `@nuxtjs/i18n`, so it takes the prefix from an injected `urlPrefix` string instead. In template code the i18n resolver is available, and `formatLink` delegates to it — which is what honours a strategy such as `prefix_except_default`, where the default locale is supposed to carry no prefix at all. `vue-starter-template` calls `formatLink` at every one of its own link sites and `buildUrlPrefix` at none.
 
