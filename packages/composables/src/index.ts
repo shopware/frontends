@@ -96,7 +96,9 @@ export function resolveCmsComponent(
       componentName,
       componentNameToResolve,
       resolvedComponent: undefined,
-      // deprecated duplicate of isResolved, kept so the error shape is unchanged
+      /**
+       * @deprecated Use `isResolved` instead. Kept so the error shape is unchanged.
+       */
       resolved: false,
       isResolved: false,
       error: (e as Error).message,
