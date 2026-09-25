@@ -297,6 +297,10 @@ export const sidebar = [
             text: "Product Variants",
             link: "/frontends-recipes/catalog/variants.html",
           },
+          {
+            text: "Cross-Selling",
+            link: "/frontends-recipes/catalog/cross-selling.html",
+          },
         ],
       },
       {
@@ -345,6 +349,10 @@ export const sidebar = [
           {
             text: "Language and Currency Switch",
             link: "/frontends-recipes/context/language-and-currency.html",
+          },
+          {
+            text: "Navigation and Breadcrumbs",
+            link: "/frontends-recipes/context/navigation.html",
           },
         ],
       },
