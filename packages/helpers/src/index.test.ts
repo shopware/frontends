@@ -30,6 +30,7 @@ describe("helpers - test global API", () => {
         "getCmsLayoutConfiguration": [Function],
         "getCmsTranslate": [Function],
         "getFormattedPrice": [Function],
+        "getFrontendRouteName": [Function],
         "getLanguageName": [Function],
         "getListingFilters": [Function],
         "getMainImageUrl": [Function],

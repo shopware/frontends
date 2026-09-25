@@ -56,6 +56,10 @@ There are three different type of routes that Shopware natively supports. When t
 - `frontend.navigation.page` - A category page
 - `frontend.landing.page` - A landing page
 
+:::info Headless sales channels
+Headless (API type) sales channels store their SEO URLs with `store-api.*` route names instead (`store-api.product.detail`, `store-api.category.detail`, `store-api.landing-page.detail`). The `resolvePath` function of `useNavigationSearch` maps them to the `frontend.*` equivalents listed above, so your page resolution logic works the same for both sales channel types. If you resolve SEO URLs yourself, use the `getFrontendRouteName` helper from `@shopware/helpers` to apply the same mapping.
+:::
+
 Depending on which type of route you have, the way of fetching the page data is different - because routes don't point to pages. They point to entities that are used to render pages.
 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
