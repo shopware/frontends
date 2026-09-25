@@ -1,0 +1,3 @@
+127.0.0.1       yourDomainFromBackend.com
+#IPv6
+::1             yourDomainFromBackend.com

@@ -36,33 +36,43 @@ You can use the `useWishlist` composable to get the wishlist products.
 `getWishlistProducts` method will detect if the customer is logged in or not
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/get-wishlist.vue" code lang="vue" no-name -->
+
 ```vue
-<script>
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
+
+import { useShopwareContext, useWishlist } from "#imports";
 import type { Schemas } from "#shopware";
 
-// Contains a list of products ids in the wishlist
+const products = ref<Schemas["Product"][]>([]);
+const isLoading = ref(false);
+
+// Contains a list of products ids in the wishlist.
 const { getWishlistProducts, items } = useWishlist();
 const { apiClient } = useShopwareContext();
 
-// Load products data
+// Load products data.
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
   try {
-    // Backend API call for product data
+    // Backend API call for product data.
     const result = await apiClient.invoke("readProduct post /product", {
       body: {
         ids: itemIds || items.value,
       },
     });
 
-    products.value = result.data.elements;
+    products.value = result.data.elements ?? [];
   } catch (error) {
     console.error(error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
-// Watch changes and update product data
+// Watch changes and update product data.
 watch(
   items,
   (items, oldItems) => {
@@ -76,14 +86,15 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 
 onMounted(async () => {
-  // Fetch wishlist products
+  // Fetch wishlist products.
   await getWishlistProducts();
 });
 </script>
+
 <template>
   <div v-if="products.length">
     <h1>Wishlist</h1>
@@ -96,6 +107,8 @@ onMounted(async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 ## Add product to the wishlist
 
 You can use the `useProductWishlist` composable to add a product to the wishlist.
@@ -106,13 +119,17 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 `addToWishlist` method will detect if the customer is logged in or not
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/add-product-to-the-wishlist.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
+import { useProductWishlist } from "#imports";
+
 // Mocked product
-const product: Schemas["Product"] = {
+const product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
-const { addToWishlist, isInWishlist } = useProductWishlist(product);
+const { addToWishlist, isInWishlist } = useProductWishlist(product.id);
 </script>
 
 <template>
@@ -121,6 +138,8 @@ const { addToWishlist, isInWishlist } = useProductWishlist(product);
   </button>
 </template>
 ```
+
+<!-- /automd -->
 
 ## Remove product from the wishlist
 
@@ -132,13 +151,17 @@ To avoid such a situation, `isInWishlist` property should protect `removeFromWis
 `removeFromWishlist` method will detect if the customer is logged in or not
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/remove-product-from-the-wishlist.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
+import { useProductWishlist } from "#imports";
+
 // Mocked product
-const product: Product = {
+const product = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
-const { removeFromWishlist, isInWishlist } = useProductWishlist(product);
+const { removeFromWishlist, isInWishlist } = useProductWishlist(product.id);
 </script>
 
 <template>
@@ -148,12 +171,20 @@ const { removeFromWishlist, isInWishlist } = useProductWishlist(product);
 </template>
 ```
 
+<!-- /automd -->
+
 ## Merge wishlists
 
 To synchronize the local wishlist with the remote wishlist (associated with the user's account), the `mergeWishlistProducts()` method must be triggered after the customer has logged in.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/wishlist/merge-wishlists.vue" code lang="vue{10}" no-name -->
+
 ```vue{10}
 <script setup lang="ts">
+import { ref, useUser, useWishlist } from "#imports";
+
+const { login } = useUser();
+const { mergeWishlistProducts } = useWishlist();
 const formData = ref({
   username: "",
   password: "",
@@ -200,3 +231,5 @@ const invokeLogin = async (): Promise<void> => {
   </form>
 </template>
 ```
+
+<!-- /automd -->

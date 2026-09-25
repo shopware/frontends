@@ -152,6 +152,8 @@ Use generated Store API types when you need to type the criteria, the review, or
   <SchemaTypeTooltip type-key='Schemas["Criteria"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/reviews/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -164,15 +166,20 @@ type SaveReviewBody =
 type ProductReview = Schemas["ProductReview"];
 ```
 
+<!-- /automd -->
+
 `SaveReviewBody` is wider than what `addReview` accepts: alongside the required `title`, `content` and `points` it also takes `name` and `email`, documented as defaulting to the customer's own. Reaching those means calling `apiClient.invoke` directly.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal product reviews section">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/reviews/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+
 import type { Schemas } from "#shopware";
 
 const { product } = defineProps<{ product: Schemas["Product"] }>();
@@ -249,7 +256,8 @@ const submitReview = async () => {
     const alreadyReviewed =
       error instanceof ApiClientError &&
       error.details?.errors?.some(
-        (apiError) => apiError.code === "VIOLATION::ENTITY_EXISTS",
+        (apiError: { code?: string }) =>
+          apiError.code === "VIOLATION::ENTITY_EXISTS",
       );
 
     submitError.value = alreadyReviewed
@@ -354,6 +362,8 @@ const submitReview = async () => {
   <p v-else>Sign in to write a review.</p>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

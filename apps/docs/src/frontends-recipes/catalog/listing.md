@@ -187,6 +187,8 @@ Use generated Store API types when you need to type criteria, results, or lower-
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -198,11 +200,15 @@ type ProductListingCriteria = Schemas["ProductListingCriteria"];
 type Product = Schemas["Product"];
 ```
 
+<!-- /automd -->
+
 `ProductListingCriteria` is what `setCurrentFilters` keys its codes on. It extends the base `Criteria`, so `filter`, `sort`, `page` and the rest are accepted too; its own listing-specific codes are `order`, `limit`, `p`, `manufacturer`, `min-price`, `max-price`, `rating`, `shipping-free`, `properties`, `property-whitelist`, `reduce-aggregations` and the `*-filter` toggles. `SearchBody` adds `search` on top of it, which is the one field a category listing does not declare. Both bodies additionally intersect `ProductListingFlags`, which contributes the `no-aggregations` and `only-aggregations` flags.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal category listing page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -262,8 +268,9 @@ const sortOptions = computed<SortOption[]>(() => getSortingOrders.value ?? []);
 // getListingFilters types its options far more loosely than the payload is:
 // a property group carries PropertyGroupOption[] under `options`, a manufacturer
 // aggregation carries ProductManufacturer[] under `entities`. Both have a name.
-type FilterOption =
-  Schemas["PropertyGroupOption"] | Schemas["ProductManufacturer"];
+type PropertyOption = Schemas["PropertyGroupOption"];
+type ManufacturerOption = Schemas["ProductManufacturer"];
+type FilterOption = PropertyOption | ManufacturerOption;
 
 const optionsOf = (filter: { options?: unknown; entities?: unknown }) =>
   (filter.options ?? filter.entities ?? []) as FilterOption[];
@@ -281,7 +288,11 @@ const isSelected = (code: string, id: string) => selectedIds(code).has(id);
 
 const toggleOption = (code: string, id: string) => {
   const selected = selectedIds(code);
-  selected.has(id) ? selected.delete(id) : selected.add(id);
+  if (selected.has(id)) {
+    selected.delete(id);
+  } else {
+    selected.add(id);
+  }
 
   const query = { ...route.query, [code]: [...selected].join("|") };
   // An empty value would be sent as "" and come back as [""].
@@ -444,6 +455,8 @@ const statusMessage = computed(() =>
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

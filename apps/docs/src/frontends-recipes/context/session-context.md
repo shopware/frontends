@@ -171,6 +171,8 @@ Use generated Store API types when you need to type the context, a patch body, o
   <SchemaTypeTooltip type-key='Schemas["CustomerAddress"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/session-context/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -181,11 +183,15 @@ type Currency = Schemas["Currency"];
 type CustomerAddress = Schemas["CustomerAddress"];
 ```
 
+<!-- /automd -->
+
 `UpdateContextBody` is the honest description of what a context switch can change. Anything that is not a field on it cannot be switched through `PATCH /context` at all.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal session context panel">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/session-context/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -267,6 +273,8 @@ const switchCountry = async (id?: string) => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 ## State And Session
@@ -281,16 +289,19 @@ The token itself is handled one layer below the composables. `@shopware/nuxt-mod
 
 Server-side rendering is where the "seeded once at the root" story needs one more fact. The module passes the cookie token into the server-side API client only when `useUserContextInSSR` is enabled, and that option defaults to `false`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/context/session-context/state-and-session.ts" code lang="ts" no-name -->
+
 ```ts
-// nuxt.config.ts
-runtimeConfig: {
-  public: {
-    shopware: {
-      useUserContextInSSR: true,
-    },
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  shopware: {
+    useUserContextInSSR: true,
   },
-},
+});
 ```
+
+<!-- /automd -->
 
 With the default, the root's `readContext get /context` runs without a token during the server render, so the HTML is built from a fresh anonymous context: no customer, and the sales channel defaults for currency, language and country. On the client the plugin does read the cookie, the root call runs again and replaces the shared value — a logged-in customer with a non-default currency sees the guest version of the page until hydration finishes.
 

@@ -13,9 +13,13 @@ Follow these steps to integrate Shopware Frontends into an existing, custom Vue.
 You can skip this part if you have an existing project.
 ::::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/creating-vue-project.sh" code lang="bash" no-name -->
+
 ```bash
 pnpm create vue@latest
 ```
+
+<!-- /automd -->
 
 More information about creating a new Vue project can be found [here](https://vuejs.org/guide/quick-start.html)
 
@@ -23,15 +27,23 @@ More information about creating a new Vue project can be found [here](https://vu
 
 First of all, install the required npm dependencies:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/install-dependencies.sh" code lang="bash" no-name -->
+
 ```bash
 pnpm add @shopware/composables @shopware/api-client
 ```
 
+<!-- /automd -->
+
 Additionally, to keep the current session context even after page reloads, we are going to install a cookie helper to set and get value of [context token](https://shopware.stoplight.io/docs/store-api/ZG9jOjEwODA3NjQx-authentication-and-authorisation) in our plugin:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/install-dependencies-2.sh" code lang="bash" no-name -->
 
 ```bash
 pnpm add js-cookie
 ```
+
+<!-- /automd -->
 
 For CMS components, you can add a package that contains ready-to-use components.
 You can read more about CMS pages here:
@@ -82,23 +94,33 @@ This section requires having knowledge about the [concept of Vue 3 plugins](http
 
 Import necessary methods from `@shopware/api-client`, `@shopware/composables` and `js-cookie` packages:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client.ts" code lang="ts" no-name -->
+
 ```ts
-// ./plugins/vue-shopware-frontends.ts file
-import { ref } from "vue";
-import type { App } from "vue";
 import { createAPIClient } from "@shopware/api-client";
 import { createShopwareContext } from "@shopware/composables";
 import Cookies from "js-cookie";
+// ./plugins/vue-shopware-frontends.ts file
+import type { App } from "vue";
+import { ref } from "vue";
+
+interface ShopwareFrontendsOptions {
+  accessToken: string;
+  endpoint: string;
+}
 
 export default {
   install: (app: App, options: ShopwareFrontendsOptions) => {
-    ...
+    // Configure the API client and Shopware context here.
   },
 };
-
 ```
 
+<!-- /automd -->
+
 We prepare some types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-2.ts" code lang="ts" no-name -->
 
 ```ts
 export type ShopwareFrontendsOptions = {
@@ -111,25 +133,52 @@ export type ShopwareFrontendsOptions = {
 };
 ```
 
+<!-- /automd -->
+
 Now, once the plugin is created, we need to create an API client instance and the Shopware instance for Vue application.
 
 The install method is a good place to do that:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/configure-api-client-3.ts" code lang="ts" no-name -->
+
 ```ts
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import Cookies from "js-cookie";
+import { ref } from "vue";
+
+import type { ShopwareFrontendsOptions } from "./configure-api-client-2";
+
+const options: ShopwareFrontendsOptions = {
+  endpoint: "https://demo-frontends.swstage.store/store-api",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  shopwareApiClient: {
+    timeout: 5000,
+  },
+};
+
 const cookieContextToken = Cookies.get("sw-context-token");
 const cookieLanguageId = Cookies.get("sw-language-id");
 
 const contextToken = ref(cookieContextToken);
 const languageId = ref(cookieLanguageId);
 
-const instance = createInstance({
-  endpoint: options.endpoint,
+const apiClient = createAPIClient<operations>({
+  baseURL: options.endpoint,
   accessToken: options.accessToken,
-  timeout: options.shopwareApiClient?.timeout || 5000,
+  fetchOptions: {
+    timeout: options.shopwareApiClient?.timeout || 5000,
+  },
   contextToken: contextToken.value,
-  languageId: languageId.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
 });
+
+export { apiClient, contextToken, languageId };
 ```
+
+<!-- /automd -->
 
 ## Handle client state
 
@@ -139,55 +188,112 @@ Complete code example can be found [HERE](./custom-vue-project.html#plugin-code)
 
 Now, we need to ensure that the context token, which identifies a user session, is properly stored and updated. The context token may change after operations like login or logout.
 
-Then, we can take advantage of the onConfigChange method. It executes when the API client detects a new value of the context token coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
+Then, we can take advantage of the `onDefaultHeaderChanged` hook. It executes when the API client detects a changed default header value coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state.ts" code lang="ts" no-name -->
 
 ```ts
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import Cookies from "js-cookie";
+import { ref } from "vue";
+
+const contextToken = ref(Cookies.get("sw-context-token"));
+const languageId = ref(Cookies.get("sw-language-id"));
+const apiClient = createAPIClient<operations>({
+  baseURL: "https://demo-frontends.swstage.store/store-api",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: contextToken.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
+});
+
 /**
  * Save current contextToken when it changes
  */
-instance.onConfigChange(({ config }) => {
+apiClient.hook("onDefaultHeaderChanged", (headerName, value) => {
   try {
-    Cookies.set("sw-context-token", config.contextToken || "", {
-      expires: 365,
-      sameSite: "Lax",
-      path: "/",
-    });
-    Cookies.set("sw-language-id", config.languageId || "", {
-      expires: 365,
-      sameSite: "Lax",
-      path: "/",
-    });
+    const headerValue = typeof value === "string" ? value : "";
 
-    contextToken.value = config.contextToken;
-    languageId.value = config.languageId;
-  } catch (e) {
+    if (headerName === "sw-context-token") {
+      Cookies.set("sw-context-token", headerValue, {
+        expires: 365,
+        sameSite: "Lax",
+        path: "/",
+      });
+      contextToken.value = headerValue;
+    }
+
+    if (headerName === "sw-language-id") {
+      Cookies.set("sw-language-id", headerValue, {
+        expires: 365,
+        sameSite: "Lax",
+        path: "/",
+      });
+      languageId.value = headerValue;
+    }
+  } catch (error) {
+    void error;
     // Sometimes cookie is set on server after request is send, it can fail silently
   }
 });
 ```
 
+<!-- /automd -->
+
 Another step is to create a Shopware instance that combines API Client and the business logic in composables to be used in entire Vue application:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-2.ts" code lang="ts" no-name -->
+
 ```ts
+import { createShopwareContext } from "@shopware/composables";
+import { createApp } from "vue";
+
+const app = createApp({});
+const options = {
+  enableDevtools: false,
+};
+
 const shopwareContext = createShopwareContext(app, {
   enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
 });
+
+export { shopwareContext };
 ```
+
+<!-- /automd -->
 
 And the last step is to provide the shopwareContext:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/handle-client-state-3.ts" code lang="ts" no-name -->
+
 ```ts
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { createShopwareContext } from "@shopware/composables";
+import { createApp, ref } from "vue";
+
+const app = createApp({});
+const apiClient = createAPIClient<operations>({});
+const shopwareContext = createShopwareContext(app, {});
+
 app.provide("apiClient", apiClient);
 app.provide("shopware", shopwareContext);
 // thanks to this, `shopwareContext` can be injected in a component and other Vue-instance-aware places (like composables).
 app.provide("swSessionContext", ref());
 ```
 
+<!-- /automd -->
+
 ## Register the plugin
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/register-the-plugin.ts" code lang="ts{6,9-14}" no-name -->
 
 ```ts{6,9-14}
 // main.ts
 import { createApp } from "vue";
+
 import "./style.css";
 import App from "./App.vue";
 // import previously implemented module
@@ -195,24 +301,29 @@ import ShopwareFrontends from "./plugins/vue-shopware-frontends";
 const app = createApp(App);
 
 app.use(ShopwareFrontends, {
-    // pass options described under ShopwareFrontendsOptions type in the previous section
-    endpoint: "https://demo-frontends.swstage.store",
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    apiDefaults: {},
+  // pass options described under ShopwareFrontendsOptions type in the previous section
+  endpoint: "https://demo-frontends.swstage.store",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  apiDefaults: {},
 });
 
 app.mount("#app");
 ```
 
+<!-- /automd -->
+
 ## Plugin code
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/plugin-code.ts" code lang="ts" no-name -->
+
 ```ts
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { createShopwareContext } from "@shopware/composables";
+import Cookies from "js-cookie";
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-import { createAPIClient } from "@shopware/api-client";
-import { createShopwareContext } from "@shopware/composables";
-import Cookies from "js-cookie";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 export type ShopwareFrontendsOptions = {
@@ -236,6 +347,12 @@ export default {
       baseURL: options.endpoint,
       accessToken: options.accessToken,
       contextToken: contextToken.value,
+      fetchOptions: {
+        timeout: options.shopwareApiClient?.timeout || 5000,
+      },
+      defaultHeaders: {
+        "sw-language-id": languageId.value,
+      },
     });
 
     const shopwareContext = createShopwareContext(app, {
@@ -249,33 +366,71 @@ export default {
 };
 ```
 
+<!-- /automd -->
+
 ## Shopware Endpoint on the SSR mode
 
 It may happen that for SSR and CSR, you need two different shopware endpoints. One of the most common situations is when you are using an internal network for communication between apps.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode" code no-name -->
 
 ```
 Server URL to the backend: http://shopware (not exposed)
 Client URL to the backend  https://demo-frontends.shopware.store (exposed)
 ```
 
+<!-- /automd -->
+
 If you are using the Nuxt plugin, you can set private and public envs:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode-2" code no-name -->
 
 ```
 NUXT_SHOPWARE_ENDPOINT=http://shopware
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
 ```
 
-Otherwise, make sure that you are setting different values on the create instance phase
+<!-- /automd -->
+
+Otherwise, make sure that you are setting different values when creating the API client:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/custom-vue-project/shopware-endpoint-on-the-ssr-mode.ts" code lang="ts" no-name -->
 
 ```ts
-const instance = createInstance({
-  endpoint: ssrValue || clientValue,
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
+import { ref } from "vue";
+
+import type { ShopwareFrontendsOptions } from "./configure-api-client-2";
+
+const ssrValue = "http://shopware";
+const clientValue = "https://demo-frontends.shopware.store";
+const options: ShopwareFrontendsOptions = {
+  endpoint: clientValue,
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  shopwareApiClient: {
+    timeout: 5000,
+  },
+};
+const contextToken = ref<string>();
+const languageId = ref<string>();
+
+const apiClient = createAPIClient<operations>({
+  baseURL: ssrValue || clientValue,
   accessToken: options.accessToken,
-  timeout: options.shopwareApiClient?.timeout || 5000,
+  fetchOptions: {
+    timeout: options.shopwareApiClient?.timeout || 5000,
+  },
   contextToken: contextToken.value,
-  languageId: languageId.value,
+  defaultHeaders: {
+    "sw-language-id": languageId.value,
+  },
 });
+
+export { apiClient };
 ```
+
+<!-- /automd -->
 
 :::warning
 If you need to redirect your media, you can use the `shopware.yaml` file to configure the main media URL.

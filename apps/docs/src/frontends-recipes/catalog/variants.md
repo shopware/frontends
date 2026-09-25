@@ -181,6 +181,8 @@ Use generated Store API types when you need to type the configurator, the varian
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/variants/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -198,6 +200,8 @@ type FoundCombination = {
 };
 ```
 
+<!-- /automd -->
+
 `ProductDetailResponse` is where the configurator comes from, and only `product` is required on it. `configurator?: PropertyGroup[]` is the optional half — the same array `getOptionGroups` returns — so a product that is not configurable answers without it and the selector has nothing to render.
 
 `FoundCombination` is written by hand for the mismatch above: the generated response type puts those two fields inside a `foundCombination` object that the route does not send.
@@ -205,6 +209,8 @@ type FoundCombination = {
 ## Minimal Vue Example
 
 <CodeExample title="Minimal variant selector">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/variants/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -301,6 +307,8 @@ const resolveVariant = async () => {
   </form>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

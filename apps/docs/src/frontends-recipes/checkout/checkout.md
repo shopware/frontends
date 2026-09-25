@@ -188,6 +188,8 @@ Use generated Store API types when you need to type the order body, the method l
   <SchemaTypeTooltip type-key='Schemas["SalesChannelContext"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/checkout/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -200,11 +202,15 @@ type Order = Schemas["Order"];
 type CustomerAddress = Schemas["CustomerAddress"];
 ```
 
+<!-- /automd -->
+
 `CreateOrderBody` is the shortest useful reminder of how little the order request carries. Everything else is context.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal checkout page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/checkout/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -447,6 +453,8 @@ const placeOrder = async () => {
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

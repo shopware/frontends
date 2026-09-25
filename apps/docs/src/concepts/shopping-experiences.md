@@ -29,13 +29,21 @@ The `@shopware/cms-base-layer` package provides an implementation of all default
 
 First of all, add the package to your project:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/install-the-package.sh" code lang="bash" no-name -->
+
 ```bash
 npm install -D @shopware/cms-base-layer
 ```
 
+<!-- /automd -->
+
 In a Nuxt application, extend the CMS layer and, if you want the shared styling defaults, also extend the design-tokens layer:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/install-the-package.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
@@ -50,6 +58,8 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 If you already have your own UnoCSS or Tailwind setup, you can keep using `@shopware/cms-base-layer` without the design-tokens layer and provide your own styling configuration instead.
 
 ## CMS rendering workflow
@@ -60,12 +70,16 @@ Understanding how the API data flows into rendered components helps you know wha
 
 The Shopware API returns a nested CMS tree:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/data-component-mapping" code no-name -->
+
 ```
 CmsPage
   └── CmsSection  (type e.g. "default", "sidebar")
         └── CmsBlock    (type e.g. "image-text", "product-slider")
               └── CmsSlot     (type e.g. "image", "text")
 ```
+
+<!-- /automd -->
 
 Each node has a `type` field. The `cms-base-layer` package resolves a Vue component for every node by converting the type to a PascalCase component name:
 
