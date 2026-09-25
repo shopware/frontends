@@ -27,7 +27,7 @@ export default defineNuxtConfig({
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
-        devStorefrontUrl: "https://frontends-demo.vercel.app",
+        devStorefrontUrl: "https://frontends-starter-template.vercel.app",
         cacheableReads: true,
         // Uses the Shopware context cookie during SSR, so the first render matches
         // the user's currency. Disable shared HTML cache/ISR for these pages.
