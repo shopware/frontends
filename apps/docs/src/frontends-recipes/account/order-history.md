@@ -197,6 +197,8 @@ Use generated Store API types when you type the list criteria, the response, or 
   <SchemaTypeTooltip type-key='Schemas["StateMachineState"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/order-history/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -207,11 +209,15 @@ type OrderLineItem = Schemas["OrderLineItem"];
 type OrderState = Schemas["StateMachineState"];
 ```
 
+<!-- /automd -->
+
 `OrderListCriteria` intersects `Schemas["NoneFieldsCriteria"]` with `checkPromotion` and the guest-authentication fields `email`, `zipcode`, `login`, plus a `filter` restricted to an `equals` filter on `deepLinkCode`.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal order history page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/order-history/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -233,7 +239,7 @@ const { isLoggedIn } = useUser();
 // which differs between the server render and the browser.
 const { browserLocale } = useShopwareContext();
 const { getFormattedPrice } = usePrice();
-const localePath = useLocalePath();
+const localePath = (path: string) => path;
 const { formatLink } = useInternationalization(localePath);
 
 // loadOrders replaces the limit in your criteria with this ref, so set it here.
@@ -375,6 +381,8 @@ watch(
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

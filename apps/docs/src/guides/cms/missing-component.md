@@ -98,17 +98,21 @@ If the component belongs to a custom plugin or you created the block yourself in
 
 Create the file under your template’s global CMS components dir (e.g. `app/components/cms/`), which templates register with `global: true` so `resolveComponent` can find it:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-1-create-the-file" code no-name -->
+
 ```
 your-project/
-└── app/
-    └── components/
-        └── cms/
-            └── {{ componentName }}.vue   ← create this
+└── components/
+    └── {{ componentName }}.vue   ← create this
 ```
+
+<!-- /automd -->
 
 ## Step 2 — Define the props
 
 Every CMS component receives a single `content` prop. Use the Shopware schema type matching the CMS node type:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -116,10 +120,12 @@ Every CMS component receives a single `content` prop. Use the Shopware schema ty
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["{{ schemaType }}"];
+  content: Schemas["CmsBlock"];
 }>();
 </script>
 ```
+
+<!-- /automd -->
 
 ## Step 3 — Render the content
 
@@ -135,9 +141,12 @@ A minimal working {{ cmsType }}:
 
 <div v-if="cmsType === 'block'">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- components/{{ componentName }}.vue -->
 <script setup lang="ts">
+import { useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -155,9 +164,13 @@ const mainContent = getSlotContent("main");
 </template>
 ```
 
+<!-- /automd -->
+
 </div>
 
 <div v-else>
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content-2.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- components/{{ componentName }}.vue -->
@@ -168,8 +181,11 @@ const props = defineProps<{
   content: Schemas["CmsSlot"];
 }>();
 
+type TitleConfig = { title?: { value?: string } } | null | undefined;
+
 // config values are typed as `unknown` — assert the shape you need
-const title = props.content.config?.title?.value as string | undefined;
+const config = props.content.config as TitleConfig;
+const title = config?.title?.value;
 </script>
 
 <template>
@@ -179,6 +195,8 @@ const title = props.content.config?.title?.value as string | undefined;
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 </div>
 

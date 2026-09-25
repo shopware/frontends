@@ -1,0 +1,2 @@
+data-testid="{scope}-{name}-{type}"
+data-testid="header-search-input"

@@ -79,20 +79,22 @@ Keep the integration as a thin adapter between three layers:
 This keeps vendor SDKs out of your components and makes it easier to replace a
 CMS later.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture.ts" code lang="ts" no-name -->
+
 ```ts
-type CmsRouteContext = {
+export type CmsRouteContext = {
   path: string;
   locale: string;
   salesChannelId?: string;
 };
 
-type CmsBlock = {
+export type CmsBlock = {
   id: string;
   type: string;
   props: Record<string, unknown>;
 };
 
-type CmsPage = {
+export type CmsPage = {
   title?: string;
   seo?: {
     title?: string;
@@ -101,13 +103,17 @@ type CmsPage = {
   blocks: CmsBlock[];
 };
 
-type CmsAdapter = {
+export type CmsAdapter = {
   resolvePage(context: CmsRouteContext): Promise<CmsPage | null>;
 };
 ```
 
+<!-- /automd -->
+
 Then implement the adapter with the CMS tooling your project uses. The rest of
 the storefront should only depend on the normalized contract:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-2.ts" lines="3:14" code lang="ts" no-name -->
 
 ```ts
 export function createCmsResolver(adapter: CmsAdapter) {
@@ -124,8 +130,12 @@ export function createCmsResolver(adapter: CmsAdapter) {
 }
 ```
 
+<!-- /automd -->
+
 The adapter can call a REST API, GraphQL API, SDK, or internal service. Keep that
 vendor-specific code in one place:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/recommended-architecture-3.ts" lines="23:31" code lang="ts" no-name -->
 
 ```ts
 const cmsAdapter: CmsAdapter = {
@@ -139,19 +149,24 @@ const cmsAdapter: CmsAdapter = {
 };
 ```
 
+<!-- /automd -->
+
 ## Rendering CMS blocks
 
 A page builder should be explicit. Map every external block type to one Vue
 component, and render nothing for unknown blocks in production. In development,
 show a small placeholder so the missing component is obvious.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/rendering-cms-blocks.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/components/ExternalCmsPage.vue -->
 <script setup lang="ts">
 import type { Component } from "vue";
+
+import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 import CmsHero from "./external-cms/CmsHero.vue";
 import CmsRichText from "./external-cms/CmsRichText.vue";
-import CmsFeaturedProducts from "./external-cms/CmsFeaturedProducts.vue";
 
 defineProps<{
   blocks: Array<{
@@ -182,6 +197,8 @@ const components: Record<string, Component> = {
 </template>
 ```
 
+<!-- /automd -->
+
 This is the same idea used by the [Sanity example](./sanity.html): Sanity
 provides a `pageBuilder` array, while Vue maps each `_type` to a section
 component.
@@ -193,9 +210,20 @@ If Shopware should remain the primary router, use the [Multiple CMS](../../guide
 middleware pattern and only render the external CMS when Shopware does not return
 a route component.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/resolving-routes.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/pages/[...all].vue -->
 <script setup lang="ts">
+import {
+  createError,
+  useAsyncData,
+  useExternalCms,
+  useI18n,
+  useRoute,
+  useSeoMeta,
+} from "#imports";
+
 const route = useRoute();
 const { locale } = useI18n();
 const { resolvePage } = useExternalCms();
@@ -223,14 +251,19 @@ useSeoMeta({
 </template>
 ```
 
+<!-- /automd -->
+
 ## Connecting content with commerce
 
 Do not copy product data into the CMS. Store stable Shopware identifiers and
 resolve them during SSR with Shopware composables.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/connecting-content-with-commerce.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/components/external-cms/CmsFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -270,6 +303,8 @@ const { data: products } = await useAsyncData(
 </template>
 ```
 
+<!-- /automd -->
+
 This is the safest split for commerce projects:
 
 - CMS stores product IDs, copy, layout, campaign images, and editorial order.
@@ -303,10 +338,14 @@ routes such as `/checkout`, `/account/**`, and cart flows out of ISR.
 Pass the active storefront locale to the CMS resolver and keep a clear fallback
 policy:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/index/localization.ts" lines="11:12" code lang="ts" no-name -->
+
 ```ts
 const { locale } = useI18n();
 const page = await resolvePage(path, locale.value);
 ```
+
+<!-- /automd -->
 
 For multi-language storefronts, align:
 

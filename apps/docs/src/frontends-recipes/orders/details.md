@@ -159,6 +159,8 @@ Use generated Store API types when you need to type the order criteria, the sear
   <SchemaTypeTooltip type-key='Schemas["StateMachineState"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/details/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -170,11 +172,15 @@ type Document = Schemas["Document"];
 type StateMachineState = Schemas["StateMachineState"];
 ```
 
+<!-- /automd -->
+
 `ReadOrderBody` is where the criteria live. It is also the type that reveals the guest authentication fields — `filter`, `email`, `zipcode` and `login` — which a customer-session page never touches and a guest order lookup is built on.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal order details page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/details/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -362,6 +368,8 @@ const downloadDocument = async (orderDocument: Schemas["Document"]) => {
   </article>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

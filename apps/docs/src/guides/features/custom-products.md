@@ -39,9 +39,13 @@ Works only if the `useProduct` is fulfilled and the product data is known. Typic
 Visit the [useProduct]/packages/composables.html#useproduct) reference to see more details.
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/example-of-usage.ts" code lang="ts" no-name -->
+
 ```ts
 // useProductCustomizedProductConfigurator is autoimported
 // in vue-demo-store template as it's located in ~/composables
+import { useProductCustomizedProductConfigurator } from "#imports";
+
 const {
   isActive, // indicates whether product is empowered by Custom Products extension and active
   customizedProduct, // returns the custom product's template data
@@ -50,6 +54,8 @@ const {
   handleFileUpload, // uploads an image, then gets mediaId from API and assigns it to the state
 } = useProductCustomizedProductConfigurator();
 ```
+
+<!-- /automd -->
 
 ## Presentation: Vue component
 
@@ -64,6 +70,8 @@ The component is responsible for:
 
 Add the mentioned component in a template. For instance in `<ProductStatic/>` for templates that not come from CMS:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.html" code lang="html{9}" no-name -->
+
 ```html{9}
 <!-- part of templates/vue-demo-store/components/product/ProductStatic.vue -->
 <!-- Options -->
@@ -73,17 +81,31 @@ Add the mentioned component in a template. For instance in `<ProductStatic/>` fo
     <ProductPrice :product="product" />
     <ProductUnits :product="product" class="text-sm" />
     <ProductVariantConfigurator @change="handleVariantChange" />
-    <ProductCustomizedProductConfigurator /> <!-- ADDED -->
+    <ProductCustomizedProductConfigurator />
+    <!-- ADDED -->
     <ProductAddToCart :product="product" />
   </div>
 </div>
 ```
 
+<!-- /automd -->
+
 Overwrite a logic in `<ProductAddToCart/>` (or any other responsible for adding a product to cart in your template):
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/custom-products/implementation.ts" code lang="ts{3-6,9-10}" no-name -->
+
 ```ts{3-6,9-10}
-// part of templates/vue-demo-store/components/product/ProductAddToCart.vue;
-// the <script setup lang="ts"> section
+import { ref } from "vue";
+
+async function addToCart() {}
+
+function useProductCustomizedProductConfigurator() {
+  return {
+    addToCart: async () => {},
+    isActive: ref(false),
+  };
+}
+
 const {
   addToCart: customizedProductAddToCart,
   isActive: isCustomizedProductActive,
@@ -95,8 +117,10 @@ const addToCartProxy = async () => {
   } else {
     await addToCart();
   }
-...
+};
 ```
+
+<!-- /automd -->
 
 Used composable function allows to use `addToCart()` method and `isActive` computed property. Both are described in "Example of usage" chapter above.
 

@@ -1,3 +1,8 @@
+import { createSharedComposable, useBroadcastChannel } from "@vueuse/core";
+import { watch } from "vue";
+import type { Ref } from "vue";
+
+import { useCart, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export function useSyncChannel<Entity>(
