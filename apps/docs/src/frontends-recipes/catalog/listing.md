@@ -187,6 +187,8 @@ Use generated Store API types when you need to type criteria, results, or lower-
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -198,11 +200,15 @@ type ProductListingCriteria = Schemas["ProductListingCriteria"];
 type Product = Schemas["Product"];
 ```
 
+<!-- /automd -->
+
 `ProductListingCriteria` is what `setCurrentFilters` keys its codes on. It extends the base `Criteria`, so `filter`, `sort`, `page` and the rest are accepted too; its own listing-specific codes are `order`, `limit`, `p`, `manufacturer`, `min-price`, `max-price`, `rating`, `shipping-free`, `properties`, `property-whitelist`, `reduce-aggregations` and the `*-filter` toggles. `SearchBody` adds `search` on top of it, which is the one field a category listing does not declare. Both bodies additionally intersect `ProductListingFlags`, which contributes the `no-aggregations` and `only-aggregations` flags.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal category listing page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -262,8 +268,9 @@ const sortOptions = computed<SortOption[]>(() => getSortingOrders.value ?? []);
 // getListingFilters types its options far more loosely than the payload is:
 // a property group carries PropertyGroupOption[] under `options`, a manufacturer
 // aggregation carries ProductManufacturer[] under `entities`. Both have a name.
-type FilterOption =
-  Schemas["PropertyGroupOption"] | Schemas["ProductManufacturer"];
+type PropertyOption = Schemas["PropertyGroupOption"];
+type ManufacturerOption = Schemas["ProductManufacturer"];
+type FilterOption = PropertyOption | ManufacturerOption;
 
 const optionsOf = (filter: { options?: unknown; entities?: unknown }) =>
   (filter.options ?? filter.entities ?? []) as FilterOption[];
@@ -281,7 +288,11 @@ const isSelected = (code: string, id: string) => selectedIds(code).has(id);
 
 const toggleOption = (code: string, id: string) => {
   const selected = selectedIds(code);
-  selected.has(id) ? selected.delete(id) : selected.add(id);
+  if (selected.has(id)) {
+    selected.delete(id);
+  } else {
+    selected.add(id);
+  }
 
   const query = { ...route.query, [code]: [...selected].join("|") };
   // An empty value would be sent as "" and come back as [""].
@@ -445,6 +456,8 @@ const statusMessage = computed(() =>
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The example is URL-first: a control writes its selection to the query, and one watcher turns the query into a single `search()`. That is what makes the back button, a refresh and a shared link land on the same listing, and it is the pattern `useListingFilters` uses in `cms-base-layer`. `setCurrentFilters()` is the shorter alternative when the listing state does not have to survive a reload — it takes the shortcut filter params directly and searches for you. `filtersToQuery()` is the piece for the other direction: it turns a `ProductListingCriteria` into a query object, joining array values with `|`. It gates on truthiness rather than on emptiness, so `shipping-free: false`, `rating: 0` and `min-price: 0` are dropped along with the genuinely empty values.
@@ -530,8 +543,12 @@ A listing is context-dependent. Prices come back calculated in the current curre
 
 ## Related Links
 
-- [Product listing documentation](../../getting-started/e-commerce/product-listing.html)
-- [Prices documentation](../../getting-started/e-commerce/prices.html)
+- [Prices and Tax State recipe](prices.html)
+- [Search and Suggest recipe](search.html)
+- [Product Reviews recipe](reviews.html)
+- [Language and Currency Switch recipe](../context/language-and-currency.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
+- [Prices documentation](../../guides/e-commerce/prices.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

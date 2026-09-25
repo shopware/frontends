@@ -138,24 +138,24 @@ You do not call `readContext get /context` yourself after registering, because `
 
 ## Request Flow
 
-| Step                             | Code                                                                                                             | Store API                                                   | Type                                                                                                                                                  |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Step                             | Code                                                                                                             | Store API                                                      | Type                                                                                                                                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Load salutation options          | `fetchSalutations()`                                                                                             | `POST /salutation`, or `GET /salutation` with `cacheableReads` | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' /> <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> |
-| Load countries and their states  | `fetchCountries()`                                                                                               | `POST /country`, or `GET /country` with `cacheableReads`    | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' /> <SchemaTypeTooltip type-key='operations["readCountryGet get /country"]["response"]' /> |
-| Read a customer group invitation | `apiClient.invoke("getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}")` | `GET /customer-group-registration/config/{customerGroupId}` | <SchemaTypeTooltip type-key='operations["getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}"]["response"]' /> |
-| Submit the registration          | `register(params)`                                                                                               | `POST /account/register`                                    | <SchemaTypeTooltip type-key='operations["register post /account/register"]["body"]' />                                                                |
-| Read the created customer        | `const customer = await register(params)`                                                                        | `POST /account/register`                                    | <SchemaTypeTooltip type-key='operations["register post /account/register"]["response"]' />                                                            |
-| Refresh session context          | `refreshSessionContext()`                                                                                        | `GET /context`                                              | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />                                                                   |
-| Refresh the cart                 | `refreshCart()`                                                                                                  | `GET /checkout/cart`                                        | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                                                                 |
-| Confirm a double opt-in link     | `apiClient.invoke("registerConfirm post /account/register-confirm")`                                             | `POST /account/register-confirm`                            | <SchemaTypeTooltip type-key='operations["registerConfirm post /account/register-confirm"]["body"]' />                                                 |
+| Load countries and their states  | `fetchCountries()`                                                                                               | `POST /country`, or `GET /country` with `cacheableReads`       | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' /> <SchemaTypeTooltip type-key='operations["readCountryGet get /country"]["response"]' />             |
+| Read a customer group invitation | `apiClient.invoke("getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}")` | `GET /customer-group-registration/config/{customerGroupId}`    | <SchemaTypeTooltip type-key='operations["getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}"]["response"]' />                                   |
+| Submit the registration          | `register(params)`                                                                                               | `POST /account/register`                                       | <SchemaTypeTooltip type-key='operations["register post /account/register"]["body"]' />                                                                                                  |
+| Read the created customer        | `const customer = await register(params)`                                                                        | `POST /account/register`                                       | <SchemaTypeTooltip type-key='operations["register post /account/register"]["response"]' />                                                                                              |
+| Refresh session context          | `refreshSessionContext()`                                                                                        | `GET /context`                                                 | <SchemaTypeTooltip type-key='operations["readContext get /context"]["response"]' />                                                                                                     |
+| Refresh the cart                 | `refreshCart()`                                                                                                  | `GET /checkout/cart`                                           | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                                                                                                  |
+| Confirm a double opt-in link     | `apiClient.invoke("registerConfirm post /account/register-confirm")`                                             | `POST /account/register-confirm`                               | <SchemaTypeTooltip type-key='operations["registerConfirm post /account/register-confirm"]["body"]' />                                                                                   |
 
 The two option lists are the only rows whose route depends on configuration. `useSalutations` and `useCountries` switch to the cacheable GET variant when `shopware.cacheableReads` is set, and `vue-starter-template` sets it, so the GET routes are what the supported template actually issues. The registration write itself is always a POST.
 
 ## Composables
 
 - `useUser`: exposes `register`, which returns the created `Schemas["Customer"]`, plus `user`, `isLoggedIn`, `isCustomerSession`, `isGuestSession`, and `refreshUser` for the state you render afterwards.
-- `useSalutations`: exposes `getSalutations` and `fetchSalutations`. It fetches the list on mount when nothing has been provided yet and shares it through the `swSalutations` injection, so several forms on one page issue one request.
-- `useCountries`: exposes `getCountries`, `getCountriesOptions`, `getStatesForCountry`, and `fetchCountries`. Like `useSalutations` it fetches on mount when the shared list is still empty, so the example never calls `fetchCountries` itself. It merges `associations.states` into your criteria, which is why `getStatesForCountry` can answer from the already loaded countries without a second request.
+- `useSalutations`: exposes `getSalutations` and `fetchSalutations`. It fetches the list on mount when nothing has been fetched yet — the guard is `if (!_salutations.value)`, not a length check. Its `swSalutations` injection shares the list only down a subtree: `useSalutations` both injects the key and provides it, and nothing provides it at the application root, so two callers that are siblings rather than ancestor and descendant each get their own list and each issue a request. See the [Contact form recipe](../cms/contact-form.html) for what that costs on a page holding two forms.
+- `useCountries`: exposes `getCountries`, `getCountriesOptions`, `getStatesForCountry`, and `fetchCountries`. It is built the same way down to the guard — `swCountries`, `if (!_sharedCountries.value)`, provided from inside the composable — so the example never calls `fetchCountries` itself, and the same subtree limit applies. It merges `associations.states` into your criteria, which is why `getStatesForCountry` can answer from the already loaded countries without a second request.
 - `useCart`: exposes `refreshCart`, which `register()` awaits for you. Reach for it directly only when the registration page renders cart state of its own.
 - `useSessionContext`: exposes `refreshSessionContext` and `userFromContext`. `useUser` keeps its customer ref in sync with `userFromContext`, so the context response is the source of truth for the session.
 - `useInternationalization`: exposes `getStorefrontUrl`, which `register()` uses to fill `storefrontUrl`. It returns the configured `devStorefrontUrl` or `window.location.origin`.
@@ -176,6 +176,8 @@ Use generated Store API types when you type the registration body, the created c
   <SchemaTypeTooltip type-key='Schemas["CountryState"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/register/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -187,6 +189,8 @@ type Customer = Schemas["Customer"];
 type CustomerAddress = Schemas["CustomerAddress"];
 ```
 
+<!-- /automd -->
+
 `RegisterBody` is a union discriminated by `accountType`. The `private` branch requires `company` and `vatIds` to be omitted or `null`, while the `business` branch requires `accountType: "business"`, a `company`, and a `vatIds` array with at least one entry.
 
 `RegisterPayload` is the shape `useUser().register()` accepts, because the composable fills `storefrontUrl`. Note that `Omit` does not distribute over a union: it flattens `RegisterBody` into a single object whose `accountType`, `company`, and `vatIds` are all optional, so the composable's parameter type does **not** enforce the business branch. Build the branch yourself at submit time, as the example does, rather than trusting the type to catch a business body with no `company` — that combination is rejected by the Store API, not by the compiler.
@@ -194,6 +198,8 @@ type CustomerAddress = Schemas["CustomerAddress"];
 Two things follow from the flattening. `form.accountType = "business"` and `form.vatIds = [value]` compile directly, so `accountTypeModel` in the example is a `v-model` convenience over an optional field rather than something the type forces on you. And the `private` and `business` shapes the section above describes are only enforced on the wire, so nothing in your editor stops you sending a half-filled business body.
 
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/register/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -251,14 +257,14 @@ const renderedPointers = new Set([
 ]);
 
 const countryStates = computed(() =>
-  getStatesForCountry(form.billingAddress.countryId)
+  getStatesForCountry(form.billingAddress.countryId),
 );
 
 watch(
   () => form.billingAddress.countryId,
   () => {
     form.billingAddress.countryStateId = "";
-  }
+  },
 );
 
 const accountTypeModel = computed({
@@ -416,7 +422,9 @@ const submit = async () => {
           autocomplete="email"
           required
           :aria-invalid="errorsByPointer['/email'] ? true : undefined"
-          :aria-describedby="errorsByPointer['/email'] ? 'email-error' : undefined"
+          :aria-describedby="
+            errorsByPointer['/email'] ? 'email-error' : undefined
+          "
         />
       </label>
       <p v-if="errorsByPointer['/email']" id="email-error">
@@ -460,7 +468,10 @@ const submit = async () => {
               "
             />
           </label>
-          <p v-if="errorsByPointer['/billingAddress/company']" id="company-error">
+          <p
+            v-if="errorsByPointer['/billingAddress/company']"
+            id="company-error"
+          >
             {{ errorsByPointer["/billingAddress/company"] }}
           </p>
 
@@ -552,7 +563,10 @@ const submit = async () => {
             </option>
           </select>
         </label>
-        <p v-if="errorsByPointer['/billingAddress/countryId']" id="country-error">
+        <p
+          v-if="errorsByPointer['/billingAddress/countryId']"
+          id="country-error"
+        >
           {{ errorsByPointer["/billingAddress/countryId"] }}
         </p>
 
@@ -575,21 +589,23 @@ const submit = async () => {
       </fieldset>
 
       <label>
-        <input
-          v-model="form.acceptedDataProtection"
-          type="checkbox"
-          required
-        />
+        <input v-model="form.acceptedDataProtection" type="checkbox" required />
         I accept the data protection terms
       </label>
 
-      <button type="submit" :aria-disabled="isSubmitting" :aria-busy="isSubmitting">
+      <button
+        type="submit"
+        :aria-disabled="isSubmitting"
+        :aria-busy="isSubmitting"
+      >
         {{ isSubmitting ? "Creating account..." : "Create account" }}
       </button>
     </form>
   </template>
 </template>
 ```
+
+<!-- /automd -->
 
 ## State And Session
 
@@ -643,8 +659,10 @@ The Store API identifies the sales channel session with the `sw-context-token` h
 ## Related Links
 
 - [Login recipe](login.html)
+- [Session Context recipe](../context/session-context.html)
+- [Customer Profile recipe](profile.html)
 - [Storefront URL](../../guides/storefront-url.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../getting-started/e-commerce/cart.html)
+- [Cart documentation](../../guides/e-commerce/cart.html)
 - [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)

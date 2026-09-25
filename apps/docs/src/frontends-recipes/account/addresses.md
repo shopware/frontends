@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 50
+  position: 60
 recipe:
   area: account
   status: stable
@@ -121,16 +121,16 @@ Editing an address book entry needs nothing beyond that reload. Changing a defau
 
 ## Request Flow
 
-| Step                     | Code                                           | Store API                                             | Type                                                                                               |
-| ------------------------ | ---------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Load the addresses       | `loadCustomerAddresses()`                      | `POST /account/list-address`                          | <SchemaTypeTooltip type-key='operations["listAddress post /account/list-address"]["response"]' />   |
-| Load the countries       | `fetchCountries()`                             | `POST /country`                                       | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' />                |
-| Load the salutations     | `fetchSalutations()`                           | `POST /salutation`                                    | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' />          |
-| Create an address        | `createCustomerAddress(address)`               | `POST /account/address`                               | <SchemaTypeTooltip type-key='operations["createCustomerAddress post /account/address"]["body"]' />  |
+| Step                     | Code                                           | Store API                                             | Type                                                                                                            |
+| ------------------------ | ---------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Load the addresses       | `loadCustomerAddresses()`                      | `POST /account/list-address`                          | <SchemaTypeTooltip type-key='operations["listAddress post /account/list-address"]["response"]' />               |
+| Load the countries       | `fetchCountries()`                             | `POST /country`                                       | <SchemaTypeTooltip type-key='operations["readCountry post /country"]["response"]' />                            |
+| Load the salutations     | `fetchSalutations()`                           | `POST /salutation`                                    | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' />                      |
+| Create an address        | `createCustomerAddress(address)`               | `POST /account/address`                               | <SchemaTypeTooltip type-key='operations["createCustomerAddress post /account/address"]["body"]' />              |
 | Update an address        | `updateCustomerAddress(address)`               | `PATCH /account/address/{addressId}`                  | <SchemaTypeTooltip type-key='operations["updateCustomerAddress patch /account/address/{addressId}"]["body"]' /> |
-| Delete an address        | `deleteCustomerAddress(addressId)`             | `DELETE /account/address/{addressId}`                 | none — the operation answers `204 No Content`                                                      |
-| Set the default billing  | `setDefaultCustomerBillingAddress(addressId)`  | `PATCH /account/address/default-billing/{addressId}`  | none — the operation answers `200` with an empty body                                              |
-| Set the default shipping | `setDefaultCustomerShippingAddress(addressId)` | `PATCH /account/address/default-shipping/{addressId}` | none — the operation answers `200` with an empty body                                              |
+| Delete an address        | `deleteCustomerAddress(addressId)`             | `DELETE /account/address/{addressId}`                 | none — the operation answers `204 No Content`                                                                   |
+| Set the default billing  | `setDefaultCustomerBillingAddress(addressId)`  | `PATCH /account/address/default-billing/{addressId}`  | none — the operation answers `200` with an empty body                                                           |
+| Set the default shipping | `setDefaultCustomerShippingAddress(addressId)` | `PATCH /account/address/default-shipping/{addressId}` | none — the operation answers `200` with an empty body                                                           |
 
 The two default rows send no body. The address id is the whole request, which is why they cannot fail on validation — only on ownership. Neither answers with a body either, so the `Promise<string>` that `useAddress` declares for them resolves to nothing usable — call them for the effect, not for the return value.
 
@@ -156,6 +156,8 @@ Use generated Store API types when you need to type the address form, the list r
   <SchemaTypeTooltip type-key='Schemas["CountryState"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/addresses/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -167,9 +169,13 @@ type Country = Schemas["Country"];
 type CountryState = Schemas["CountryState"];
 ```
 
+<!-- /automd -->
+
 The two address types are not the same and the difference matters. `CustomerAddressBody` is what the operations accept and requires `countryId`, `firstName`, `lastName`, `city` and `street`. `CustomerAddress` is what comes back and additionally carries `id` and `customerId`. It also declares `isDefaultBillingAddress` and `isDefaultShippingAddress`, but those two are optional runtime fields that only exist from Shopware 6.7.7.0 — read the Edge Cases before you branch on them.
 
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/addresses/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -208,7 +214,7 @@ const isSaving = ref(false);
 const addressError = ref("");
 
 const states = computed(() =>
-  form.countryId ? (getStatesForCountry(form.countryId) ?? []) : []
+  form.countryId ? (getStatesForCountry(form.countryId) ?? []) : [],
 );
 
 // an empty string is not a valid UUID, so drop the optional ids left unset.
@@ -285,7 +291,7 @@ const runOnAddress = async (
   addressId: string,
   action: () => Promise<unknown>,
   message: string,
-  refreshContext = false
+  refreshContext = false,
 ) => {
   addressError.value = "";
   pendingId.value = addressId;
@@ -305,7 +311,7 @@ const remove = (addressId: string) =>
   runOnAddress(
     addressId,
     () => deleteCustomerAddress(addressId),
-    "This address could not be deleted."
+    "This address could not be deleted.",
   );
 
 const makeDefaultBilling = (addressId: string) =>
@@ -313,7 +319,7 @@ const makeDefaultBilling = (addressId: string) =>
     addressId,
     () => setDefaultCustomerBillingAddress(addressId),
     "The default billing address could not be changed.",
-    true
+    true,
   );
 
 const makeDefaultShipping = (addressId: string) =>
@@ -321,14 +327,17 @@ const makeDefaultShipping = (addressId: string) =>
     addressId,
     () => setDefaultCustomerShippingAddress(addressId),
     "The default shipping address could not be changed.",
-    true
+    true,
   );
 </script>
 
 <template>
   <p v-if="addressError">{{ addressError }}</p>
 
-  <p v-if="!customerAddresses.length">No addresses to display (the list is also empty before the first load resolves).</p>
+  <p v-if="!customerAddresses.length">
+    No addresses to display (the list is also empty before the first load
+    resolves).
+  </p>
 
   <ul v-else>
     <li v-for="address in customerAddresses" :key="address.id">
@@ -462,6 +471,8 @@ const makeDefaultShipping = (addressId: string) =>
 </template>
 ```
 
+<!-- /automd -->
+
 ## State And Session
 
 The list lives in the `swCustomerAddresses` injection, so an address selector in the checkout and the address book on the account page read the same array. It starts as an empty array rather than `undefined`, which means "no addresses" and "not loaded yet" look identical — track the loading state yourself if that distinction matters.
@@ -522,7 +533,8 @@ Changing a default also changes the customer, so reloading the address list is n
 ## Related Links
 
 - [Login recipe](login.html)
+- [Customer Profile recipe](profile.html)
 - [Checkout recipe](../checkout/checkout.html)
-- [Checkout documentation](../../getting-started/e-commerce/checkout.html)
+- [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

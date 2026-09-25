@@ -1,6 +1,6 @@
 ---
 nav:
-  position: 30
+  position: 40
 recipe:
   area: account
   status: stable
@@ -149,6 +149,8 @@ Use generated Store API types when you type a wishlist criteria, the response, o
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/wishlist/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -160,7 +162,11 @@ type Criteria = Schemas["Criteria"];
 type Product = Schemas["Product"];
 ```
 
+<!-- /automd -->
+
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/wishlist/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -263,6 +269,8 @@ watch(
 </template>
 ```
 
+<!-- /automd -->
+
 ## State And Session
 
 The Store API resolves the customer from the `sw-context-token` header. Nothing about the wishlist is passed as a parameter, so `POST /customer/wishlist` returns the wishlist of whoever is authenticated in the current sales channel session.
@@ -305,4 +313,4 @@ That shared state holds exactly one page. `items` contains the ids of the produc
 - [Login recipe](login.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Product listing](../../getting-started/e-commerce/product-listing.html)
+- [Product listing](../../guides/e-commerce/product-listing.html)

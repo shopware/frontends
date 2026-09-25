@@ -247,8 +247,16 @@ export const sidebar = [
             link: "/frontends-recipes/account/register.html",
           },
           {
+            text: "Password Recovery and Change",
+            link: "/frontends-recipes/account/password.html",
+          },
+          {
             text: "Wishlist",
             link: "/frontends-recipes/account/wishlist.html",
+          },
+          {
+            text: "Order History",
+            link: "/frontends-recipes/account/order-history.html",
           },
           {
             text: "Newsletter",
@@ -257,6 +265,10 @@ export const sidebar = [
           {
             text: "Customer Addresses",
             link: "/frontends-recipes/account/addresses.html",
+          },
+          {
+            text: "Customer Profile",
+            link: "/frontends-recipes/account/profile.html",
           },
         ],
       },
@@ -268,6 +280,22 @@ export const sidebar = [
           {
             text: "Product Listing and Filters",
             link: "/frontends-recipes/catalog/listing.html",
+          },
+          {
+            text: "Prices and Tax State",
+            link: "/frontends-recipes/catalog/prices.html",
+          },
+          {
+            text: "Search and Suggest",
+            link: "/frontends-recipes/catalog/search.html",
+          },
+          {
+            text: "Product Reviews",
+            link: "/frontends-recipes/catalog/reviews.html",
+          },
+          {
+            text: "Product Variants",
+            link: "/frontends-recipes/catalog/variants.html",
           },
         ],
       },
@@ -295,6 +323,32 @@ export const sidebar = [
         ],
       },
       {
+        text: "CMS",
+        link: "/frontends-recipes/cms/",
+        collapsed: true,
+        items: [
+          {
+            text: "Contact Form",
+            link: "/frontends-recipes/cms/contact-form.html",
+          },
+        ],
+      },
+      {
+        text: "Context",
+        link: "/frontends-recipes/context/",
+        collapsed: true,
+        items: [
+          {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
+          },
+          {
+            text: "Language and Currency Switch",
+            link: "/frontends-recipes/context/language-and-currency.html",
+          },
+        ],
+      },
+      {
         text: "Orders",
         link: "/frontends-recipes/orders/",
         collapsed: true,
@@ -302,6 +356,10 @@ export const sidebar = [
           {
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
+          },
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
           },
         ],
       },

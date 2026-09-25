@@ -188,6 +188,8 @@ Use generated Store API types when you need to type the order body, the method l
   <SchemaTypeTooltip type-key='Schemas["SalesChannelContext"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/checkout/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -200,11 +202,15 @@ type Order = Schemas["Order"];
 type CustomerAddress = Schemas["CustomerAddress"];
 ```
 
+<!-- /automd -->
+
 `CreateOrderBody` is the shortest useful reminder of how little the order request carries. Everything else is context.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal checkout page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/checkout/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -448,6 +454,8 @@ const placeOrder = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The example owns its initial load, so it works on its own. `vue-starter-template` also calls `refreshCart()` in `app.vue`, but that call is fire-and-forget inside `onMounted`, so keep the awaited one here: `isVirtualCart` is read on the very next line and is `false` until a cart has actually arrived.
@@ -517,7 +525,10 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 
 ## Related Links
 
+- [Session Context recipe](../context/session-context.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
+- [Order Details recipe](../orders/details.html)
+- [Order History recipe](../account/order-history.html)
 - [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Payments](../../guides/e-commerce/payments.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)

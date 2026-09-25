@@ -1,0 +1,4 @@
+demo-store/
+├─ components/
+|  ├─ cms/
+|  ├─ ├─ CmsBlockImageHighlightRow.vue
