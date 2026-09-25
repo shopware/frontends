@@ -27,7 +27,7 @@
     "@vueuse/core": "14.4.0",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.7",
-    "oxfmt": "0.58.0",
-    "oxlint": "1.73.0"
+    "oxfmt": "0.69.0",
+    "oxlint": "1.84.0"
   }
 }
