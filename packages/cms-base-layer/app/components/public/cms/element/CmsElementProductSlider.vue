@@ -4,8 +4,8 @@ import type {
   SliderElementConfig,
 } from "@shopware/composables";
 import { useElementSize } from "@vueuse/core";
-import { computed, inject, toValue, useTemplateRef } from "vue";
-import type { CSSProperties, ComputedRef, MaybeRefOrGetter } from "vue";
+import { computed, inject, useTemplateRef } from "vue";
+import type { CSSProperties, ComputedRef } from "vue";
 
 import { useCmsElementConfig } from "#imports";
 
@@ -15,15 +15,14 @@ const props = defineProps<{
 const { getConfigValue } = useCmsElementConfig(props.content);
 
 const productSlider = useTemplateRef<HTMLDivElement>("productSlider");
-// CmsGenericBlock provides a computed; a plain number is still accepted.
-const slotCount = inject<MaybeRefOrGetter<number>>("cms-block-slot-count", 1);
+const slotCount = inject<number>("cms-block-slot-count", 1);
 const elMinWidth = computed(
   () => +getConfigValue("elMinWidth").replace(/\D+/g, "") || 300,
 );
 const { width } = useElementSize(productSlider);
 const slidesToShow = computed(() => {
   // SSR: useElementSize returns 0, fallback to 1200px estimate divided by slot count
-  const containerWidth = width.value || 1200 / toValue(slotCount);
+  const containerWidth = width.value || 1200 / slotCount;
   return Math.max(1, Math.floor(containerWidth / elMinWidth.value));
 });
 const products = computed(() => props.content?.data?.products ?? []);

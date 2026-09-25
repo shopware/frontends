@@ -4,7 +4,7 @@ import {
   getBackgroundImageUrl,
   getCmsLayoutConfiguration,
 } from "@shopware/helpers";
-import { computed, h, provide, resolveComponent } from "vue";
+import { h, provide, resolveComponent } from "vue";
 
 import type { Schemas } from "#shopware";
 
@@ -17,14 +17,11 @@ const props = defineProps<{
 
 const appConfig = useTypedAppConfig();
 
-// Provided as computeds so a block handed different content updates its
-// children in place instead of needing a remount. Read them with `toValue()`.
-const slotCount = computed(() => props.content.slots?.length || 1);
+// Plain values, not refs: custom elements inject these as a `number` and a
+// `string` (see the README), so providing a ref here would break them.
+const slotCount = props.content.slots?.length || 1;
 provide("cms-block-slot-count", slotCount);
-provide(
-  "cms-image-sizes",
-  computed(() => getImageSizes(slotCount.value, appConfig.imageSizes)),
-);
+provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
 
 const DynamicRender = () => {
   const { resolvedComponent, componentName, componentNameToResolve } =

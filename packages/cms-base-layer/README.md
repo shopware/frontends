@@ -426,7 +426,7 @@ CMS image elements use `useElementSize()` to measure the rendered container and 
 
 ### Slider Components
 
-**Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count via `cms-block-slot-count` to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport. `CmsGenericBlock` provides it as a `computed` (as it does `cms-image-sizes`), so read it with `toValue()`; both components accept a plain number too, for a custom block that provides one.
+**Slider components** (`CmsElementProductSlider`, `CmsElementCrossSelling`) `inject` the slot count via `cms-block-slot-count` to scale their SSR breakpoints — ensuring media queries account for the container being a fraction of the viewport.
 
 ### LCP Image Preloading
 
