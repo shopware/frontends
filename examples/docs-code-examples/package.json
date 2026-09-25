@@ -1,0 +1,33 @@
+{
+  "name": "example-docs-code-examples",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
+    "generate": "nuxt generate",
+    "lint": "oxlint -A no-unused-vars app scripts src types nuxt.config.ts && oxfmt --check app scripts src types nuxt.config.ts package.json tsconfig.json",
+    "lint:fix": "oxlint --fix -A no-unused-vars app scripts src types nuxt.config.ts && oxfmt --write app scripts src types nuxt.config.ts package.json tsconfig.json",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit && node ./scripts/check-docs-code-examples.mjs"
+  },
+  "dependencies": {
+    "@shopware/api-client": "canary",
+    "@shopware/cms-base-layer": "canary",
+    "@shopware/composables": "canary",
+    "@shopware/helpers": "canary",
+    "@shopware/nuxt-module": "canary",
+    "js-cookie": "3.0.7",
+    "nuxt": "4.5.2",
+    "vue": "3.5.43"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "3.0.6",
+    "@types/node": "22.13.14",
+    "@unocss/nuxt": "66.7.5",
+    "@vueuse/core": "14.4.0",
+    "typescript": "5.9.3",
+    "vue-tsc": "3.3.7",
+    "oxfmt": "0.58.0",
+    "oxlint": "1.73.0"
+  }
+}

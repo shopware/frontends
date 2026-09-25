@@ -49,6 +49,8 @@ There will be cases when you would like to create a class instead of using a lon
     <img class="object-cover w-12 h-12 rounded-full border-3 border-white dark:border-#1a1a1a mr--6" src="https://picsum.photos/id/29/200/200" />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/reusability.html" code lang="html" no-name -->
+
 ```html
 <img
   class="object-cover w-12 h-12 rounded-full border-3 border-white mr--6"
@@ -64,11 +66,16 @@ There will be cases when you would like to create a class instead of using a lon
 />
 ```
 
+<!-- /automd -->
+
 will become
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/reusability.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- ImageCircle.vue -->
 <script setup>
+import { h } from "#imports";
 defineProps(["imageSrc"]);
 </script>
 
@@ -80,20 +87,28 @@ defineProps(["imageSrc"]);
 </template>
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/reusability-2.vue" code lang="vue" no-name -->
+
 ```vue
-<!--- ImageContainer.vue -->
-<script setup>
-defineProps(['images'])
+<!-- ImageContainer.vue -->
+<script setup lang="ts">
+defineProps<{ images: string[] }>();
 </script>
 
 <template>
-    <ImageCircle v-for="image in images" :imageSrc="image">
+  <ImageCircle v-for="image in images" :key="image" :image-src="image" />
 </template>
 ```
+
+<!-- /automd -->
 
 ### Responsive Design
 
 Start your layout from the smallest viewport and work your way up. There are built in prefixes for the viewport sizes:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/responsive-design.html" code lang="html" no-name -->
 
 ```html
 <div class="grid md:grid-cols-2">
@@ -101,9 +116,13 @@ Start your layout from the smallest viewport and work your way up. There are bui
 </div>
 ```
 
+<!-- /automd -->
+
 ### State Variants
 
 Similar to viewport breakpoints, you can also use state variants with prefixes:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/styling/state-variants.html" code lang="html" no-name -->
 
 ```html
 <div class="group flex justify-center">
@@ -113,6 +132,8 @@ Similar to viewport breakpoints, you can also use state variants with prefixes:
   />
 </div>
 ```
+
+<!-- /automd -->
 
 <div class="flex justify-center">
     <input

@@ -178,6 +178,8 @@ Use generated Store API types when you need to type the profile form, the email 
   <SchemaTypeTooltip type-key='Schemas["SuccessResponse"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/profile/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -189,6 +191,8 @@ type Customer = Schemas["Customer"];
 type Salutation = Schemas["Salutation"];
 ```
 
+<!-- /automd -->
+
 `ChangeProfileBody` is an intersection of two things. The always-available fields are `salutationId`, `title`, `firstName`, `lastName`, `birthdayDay`, `birthdayMonth` and `birthdayYear`, with `firstName` and `lastName` required. On top of that sits a union over `accountType`: the `private` branch keeps `company` and `vatIds` `null`, the `business` branch requires `accountType: "business"`, a `company` and a `vatIds` array with at least one entry — all three together. Anything else on `Customer` is not changeable through this operation.
 
 `Customer` carries the same `accountType` split, so `company` and `vatIds` are only reachable after narrowing. It is not identical to the body, though: on `Customer` the `private` branch has `accountType` **required** and drops `company` and `vatIds` entirely, while on the body they are present as `null` and `accountType` may be omitted — which is why the form state below can leave it out. Prefilling the form means reading the union, not the flat record.
@@ -197,10 +201,13 @@ type Salutation = Schemas["Salutation"];
 
 <CodeExample title="Minimal profile page">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/profile/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
+
 import type { operations } from "#shopware";
 
 const {
@@ -550,6 +557,8 @@ const saveEmail = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 ## State And Session
@@ -618,6 +627,7 @@ The three session flags are computed differently and are not interchangeable. `i
 - [Register recipe](register.html)
 - [Password Recovery and Change recipe](password.html)
 - [Customer Addresses recipe](addresses.html)
+- [Order History recipe](order-history.html)
 - [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

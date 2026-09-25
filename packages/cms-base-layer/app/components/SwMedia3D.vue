@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Bounds, OrbitControls, useGLTF } from "@tresjs/cientos";
 import { TresCanvas } from "@tresjs/core";
-import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from "three";
+import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from "three";
 import { computed, shallowRef } from "vue";
 
 const props = defineProps<{
@@ -20,6 +20,8 @@ const gl = {
 
 const { state } = await useGLTF(props.src);
 const model = computed(() => state.value?.scene);
+const cameraPosition = new Vector3(0, 0, 500);
+const lightPosition = new Vector3(3, 3, 3);
 
 const boundsRef = shallowRef();
 
@@ -29,12 +31,15 @@ function focusObject() {
 </script>
 <template>
   <TresCanvas v-bind="gl">
-    <TresPerspectiveCamera :args="[75, 1, 0.1, 2000]" :position="[0, 0, 500]" />
+    <TresPerspectiveCamera
+      :args="[75, 1, 0.1, 2000]"
+      :position="cameraPosition"
+    />
     <OrbitControls make-default />
     <Bounds ref="boundsRef" clip use-mounted>
       <primitive v-if="model" :object="model" @click="focusObject" />
     </Bounds>
-    <TresDirectionalLight :position="[3, 3, 3]" :intensity="1" />
+    <TresDirectionalLight :position="lightPosition" :intensity="1" />
     <TresAmbientLight :intensity="2" />
   </TresCanvas>
 </template>

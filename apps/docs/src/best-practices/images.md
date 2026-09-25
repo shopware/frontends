@@ -43,6 +43,8 @@ Using Content Delivery Network platforms (CDN) helps to reduce network distance,
 
 Although it can be a standalone service, some platforms serves images with additional option of resizing on the fly, or being more general: processing the images, depending on provided query parameter, like `?width=400px`. Thanks to this, `<img>` element is more readable.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/images/images-hosting-on-cdn-image-processor.html" code lang="html" no-name -->
+
 ```html
 <img
   src="https://images.swfrontends.com/frontends-unsplash.png?width=400px"
@@ -52,6 +54,8 @@ Although it can be a standalone service, some platforms serves images with addit
   "
 />
 ```
+
+<!-- /automd -->
 
 Examples of open source image processors which can be used as a middleware to serve processed images:
 
@@ -65,6 +69,8 @@ Utilize [srcset](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#a
 Decide what metric (pixel ratio - DPR or width) is more appropriate for your users when defining breakpoints.
 
 Also, consider using `sizes` attribute which will indicate what image size is best to choose - if your images occupy less than 100% of viewport. The value can be defined in percentage of viewport width (`sizes="80vw"`) or fixed value (`sizes="600px"`) regardless the device size. Read more at [mdn web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes).
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/images/responsive-images.html" code lang="html" no-name -->
 
 ```html
 <img
@@ -80,9 +86,13 @@ Also, consider using `sizes` attribute which will indicate what image size is be
 <!-- src fallback is set to be mobile first -->
 ```
 
+<!-- /automd -->
+
 If you application serves many image formats and there is a significant part of users with older browsers, you can use [picture](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) element.
 
 In this example, browser will decide which image format is available to serve, otherwise the `<img>` will be picked as a fallback.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/images/responsive-images-2.html" code lang="html" no-name -->
 
 ```html
 <picture>
@@ -107,18 +117,26 @@ In this example, browser will decide which image format is available to serve, o
 </picture>
 ```
 
+<!-- /automd -->
+
 ## Reduce Cumulative Layout Shift (CLS)
 
 When Images occupy a big amount of space on web pages, they are a common cause of high [CLS](https://web.dev/cls/) scores.
 
 - Always set `width` and `hight` attributes for your `<img>` elements, with values matching size of image source. So even if they are being loaded, the space of layout will be filled out.
 - Define CSS style to override `<img>` attributes (there is a moment when image element is available in DOM, and CSS is not loaded yet):
-  ```css
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  ```
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/images/reduce-cumulative-layout-shift-cls.css" code lang="css" no-name -->
+
+```css
+img {
+  max-width: 100%;
+  height: auto;
+}
+```
+
+<!-- /automd -->
+
 - Try to use low-quality placeholders (based on svg, for example) to avoid having empty blank spaces within the layout:
     <div role="status" class="mt-4 max-w-sm p-4 animate-pulse md:p-6 ">
         <div class="flex items-center justify-center h-32 mb-4 bg-gray-300 rounded dark:bg-gray-700">

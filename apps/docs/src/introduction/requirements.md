@@ -62,10 +62,14 @@ Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js ve
 Use **pnpm**. The templates are developed and tested with it, and each one
 ships a `pnpm.onlyBuiltDependencies` list so a fresh scaffold runs unattended.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/requirements/package-manager.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
 pnpm i && pnpm dev
 ```
+
+<!-- /automd -->
 
 :::info
 `npm` is available out of the box with Node.js; pnpm needs a one-time install

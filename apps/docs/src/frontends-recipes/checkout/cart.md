@@ -176,6 +176,8 @@ Use generated Store API types when you need to type line item payloads, cart res
   <SchemaTypeTooltip type-key='Schemas["CartDelivery"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/cart/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -195,15 +197,20 @@ type CartDelivery = Schemas["CartDelivery"];
 type CartErrors = NonNullable<Schemas["Cart"]["errors"]>;
 ```
 
+<!-- /automd -->
+
 `addProducts()` is typed with `AddLineItemBody["items"]`, so one array carries products, custom bundles and promotions together — but `items` is a union discriminated on `type`. A `"promotion"` entry takes `referencedId` (the code) and leaves `id` and `quantity` optional; every other `type` requires `id` and `quantity`.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal cart page">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/cart/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+
 import type { Schemas } from "#shopware";
 
 const {
@@ -254,7 +261,7 @@ onMounted(loadCart);
 const runCartWrite = async (
   item: Schemas["LineItem"],
   write: () => Promise<Schemas["Cart"]>,
-  fallbackMessage: string
+  fallbackMessage: string,
 ) => {
   if (isWriting.value) return;
 
@@ -289,7 +296,7 @@ const changeLineItemQuantity = (item: Schemas["LineItem"], value: string) => {
   return runCartWrite(
     item,
     () => changeProductQuantity({ id: item.id, quantity }),
-    "The quantity could not be updated."
+    "The quantity could not be updated.",
   );
 };
 
@@ -297,7 +304,7 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
   runCartWrite(
     item,
     () => removeItemById(item.id),
-    "The item could not be removed."
+    "The item could not be removed.",
   );
 </script>
 
@@ -341,7 +348,7 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
               @change="
                 changeLineItemQuantity(
                   item,
-                  ($event.target as HTMLInputElement).value
+                  ($event.target as HTMLInputElement).value,
                 )
               "
             />
@@ -375,6 +382,8 @@ const removeLineItem = (item: Schemas["LineItem"]) =>
   </section>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 
