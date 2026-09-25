@@ -21,19 +21,23 @@ const {
   getPaymentMethods,
   changePaymentMethod,
   statusTechnicalName,
-} = await useOrderDetails(props.orderId);
+} = useOrderDetails(props.orderId);
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
+const paymentMethods = ref<Schemas["PaymentMethod"][]>([]);
 
 const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
   () => order.value?.lineItems || [],
 );
 
 const selectedPaymentMethod = computed({
-  get(): string {
-    return paymentMethod.value?.id || "";
+  get(): string | null {
+    return paymentMethod.value?.id || null;
   },
-  async set(paymentMethodId: string) {
+  async set(paymentMethodId: string | null) {
+    if (!paymentMethodId) {
+      return;
+    }
     isLoading.value = true;
     try {
       await changePaymentMethod(paymentMethodId);
@@ -46,7 +50,21 @@ const selectedPaymentMethod = computed({
     }
   },
 });
-const paymentMethods = await getPaymentMethods();
+
+watch(
+  paymentChangeable,
+  async (changeable) => {
+    if (!changeable || paymentMethods.value.length > 0) {
+      return;
+    }
+    try {
+      paymentMethods.value = await getPaymentMethods();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  { immediate: true },
+);
 
 const handleReorder = async () => {
   if (!order.value?.lineItems) {
@@ -91,76 +109,70 @@ const handleReorder = async () => {
 </script>
 
 <template>
-  <div
-    v-if="paymentChangeable && statusTechnicalName === 'open'"
-    class="px-2 py-4"
-  >
-    <h3 class="mb-5 text-surface-on-surface text-base">
-      {{ $t("account.order.paymentMethod") }}
-    </h3>
-    <ul class="pl-2">
-      <li
-        v-for="singlePaymentMethod in paymentMethods"
-        :key="singlePaymentMethod.id"
-        class="flex mb-3"
-      >
-        <input
-          :id="singlePaymentMethod.id"
-          v-model="selectedPaymentMethod"
-          :value="singlePaymentMethod.id"
-          name="payment-method"
-          type="radio"
-          class="focus:ring-primary h-4 w-4 border-outline-outline"
-          :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
-          :checked="selectedPaymentMethod === singlePaymentMethod.id"
-          :disabled="isLoading"
-        />
-        <label
-          :for="singlePaymentMethod.id"
-          class="ml-2 block text-sm font-medium text-secondary-700 w-full"
-        >
-          <div class="flex justify-between">
-            <div>
-              <span>
-                {{ singlePaymentMethod.translated.name }}
-              </span>
-              <span
-                v-if="singlePaymentMethod.translated.description"
-                class="italic text-sm text-secondary-500 block"
-              >
-                {{ singlePaymentMethod.translated.description }}</span
-              >
-            </div>
-          </div>
-        </label>
-      </li>
-    </ul>
-  </div>
-  <div v-if="lineItems.length" class="px-2 py-4">
+  <div>
     <div
-      class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-surface-on-surface"
+      v-if="paymentChangeable && statusTechnicalName === 'open'"
+      class="mb-8"
     >
-      <div class="col-span-2">{{ $t("account.order.product") }}</div>
-      <div>{{ $t("account.order.quantity") }}</div>
-      <div>{{ $t("account.order.price") }}</div>
-      <div class="justify-self-end">
-        {{ $t("account.order.subtotal") }}
-      </div>
+      <h3 class="mb-4 text-surface-on-surface font-bold leading-normal">
+        {{ $t("account.orderDetails.changePaymentMethod") }}
+      </h3>
+      <ul
+        class="border border-outline-outline divide-y-1 divide-outline-outline"
+      >
+        <li
+          v-for="singlePaymentMethod in paymentMethods"
+          :key="singlePaymentMethod.id"
+        >
+          <label
+            :for="singlePaymentMethod.id"
+            class="flex items-center gap-4 p-4 cursor-pointer"
+          >
+            <FormRadioButton
+              :id="singlePaymentMethod.id"
+              v-model="selectedPaymentMethod"
+              :value="singlePaymentMethod.id"
+              :selected="selectedPaymentMethod === singlePaymentMethod.id"
+              :disabled="isLoading"
+              :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
+            />
+            <div>
+              <div class="text-surface-on-surface">
+                {{ singlePaymentMethod.translated.name }}
+              </div>
+              <div
+                v-if="singlePaymentMethod.translated.description"
+                class="text-sm text-surface-on-surface-variant leading-[21px]"
+              >
+                {{ singlePaymentMethod.translated.description }}
+              </div>
+            </div>
+          </label>
+        </li>
+      </ul>
     </div>
-
-    <AccountOrderLineItem
-      v-for="lineItem in lineItems"
-      :key="lineItem.identifier"
-      :line-item="lineItem"
-    />
-    <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
-    <button
-      class="mt-10 p-3"
-      data-testid="order-repeat-button"
-      :disabled="addingProducts"
-      @click="handleReorder"
-    >
-      {{ $t("account.order.repeatOrder") }}
-    </button>
+    <div v-if="lineItems.length">
+      <div class="divide-y divide-outline-outline-variant">
+        <AccountOrderLineItem
+          v-for="lineItem in lineItems"
+          :key="lineItem.identifier"
+          :line-item="lineItem"
+        />
+      </div>
+      <AccountOrderDownloads
+        v-if="hasDocuments"
+        :documents="documents"
+        class="mt-6"
+      />
+      <FormBaseButton
+        class="mt-8"
+        variant="outline"
+        data-testid="order-repeat-button"
+        :label="$t('account.order.repeatOrder')"
+        :loading="addingProducts"
+        :disabled="addingProducts"
+        @click="handleReorder"
+      />
+    </div>
   </div>
 </template>
