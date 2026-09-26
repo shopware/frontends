@@ -354,6 +354,10 @@ export const sidebar = [
             text: "Navigation and Breadcrumbs",
             link: "/frontends-recipes/context/navigation.html",
           },
+          {
+            text: "URL Resolving and SEO URLs",
+            link: "/frontends-recipes/context/url-resolving.html",
+          },
         ],
       },
       {

@@ -118,7 +118,11 @@ Exactly these composables gain a GET branch when `cacheableReads` is enabled:
 - `useInternationalization` (`getAvailableLanguages`)
 - `useProductConfigurator`
 - `useProductSearch` (single product detail)
+- `useProductReviews` (`loadProductReviews`)
 - `useCategorySearch.advancedSearch` (category list)
+- `useCategorySearch.search` (single category)
+
+One of those GET routes is not fully typed yet. `readCategoryGet get /category/{navigationId}` does not declare `_criteria` in the generated types, so `useCategorySearch.search` supplies it through a local intersection type. That is invisible to callers: the flag still decides which route runs, and a missing `_criteria` in the generated types is therefore not automatically a blocker.
 
 ::: tip
 The flag is a blanket GET/POST switch per composable, not a runtime authentication check. Even account-related lookups such as `useUser.loadCountry`/`loadSalutation` use GET when the flag is on. "Anonymous" here means the data is public reference or catalog data suitable for shared HTTP caching, not that the code inspects the login state. Whether a response is actually cached, and how it is scoped per user, is governed by the Shopware backend cache rules and your CDN configuration.
@@ -126,13 +130,12 @@ The flag is a blanket GET/POST switch per composable, not a runtime authenticati
 
 ### Which reads stay on POST, and why
 
-A few read paths intentionally stay on POST because the generated Store API schema does not type the `_criteria` parameter on their GET route:
+Two read paths still call POST, for different reasons:
 
-- `useListing` (product listing) - always `readProductListing post /product-listing/{categoryId}`
-- `useCategorySearch.search` (single category) - always `readCategory post /category/{navigationId}`
-- `useLandingSearch` - always `readLandingPage post /landing-page/{landingPageId}`
+- `useLandingSearch` - `readLandingPage post /landing-page/{landingPageId}`, because `readLandingPageGet get /landing-page/{landingPageId}` still does not declare `_criteria`.
+- `useListing` (product listing) - `readProductListing post /product-listing/{categoryId}`, although nothing in the types blocks the move any more.
 
-As those GET schemas gain `_criteria` typing upstream, these reads can migrate too. Product listing is the first: Shopware core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` (released in 6.7.12.0), so `useListing` can switch to the cacheable GET variant once the Store API types are regenerated against that schema.
+`useListing` is waiting on a composable change, not on the schema. The generated types already carry the parameter: `readProductListingGet get /product-listing/{categoryId}` declares `_criteria`, and both operations answer with `ProductListingResult`, so the switch is drop-in for callers. That covers the `categoryListing` branch only — with `listingType: "productSearchListing"` the composable calls `searchPage post /search`, whose GET twin still takes flattened query params instead of `_criteria`.
 
 Write and auth/context mutations (login, register, logout, `readCustomer`, `updateContext`, checkout) also stay on POST/PATCH regardless of the flag, because they are mutations and are not cacheable by design.
 
@@ -342,7 +345,6 @@ Image transforms only take effect when the backend supports remote/on-the-fly th
 - [Shopware: Store API concepts](https://developer.shopware.com/docs/concepts/api/store-api.html)
 - [Shopware: Remote thumbnail generation](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html)
 - [Shopware issue #12388: `_criteria` GET query parameter](https://github.com/shopware/shopware/issues/12388)
-- [Shopware PR #17204: declare `_criteria` on `GET /store-api/product-listing`](https://github.com/shopware/shopware/pull/17204)
 - [VueUse: `createSharedComposable`](https://vueuse.org/shared/createSharedComposable/)
 - [VueUse: `createInjectionState`](https://vueuse.org/shared/createInjectionState/)
 - [Vue 3: Provide / Inject](https://vuejs.org/guide/components/provide-inject.html)
