@@ -162,6 +162,28 @@
       "paymentMethodChanged": "Metoda płatności została pomyślnie zmieniona.",
       "productsAdded": "Produkty zostały dodane do koszyka.",
       "loginRequired": "Logowanie jest wymagane, aby uzyskać dostęp do tej strony. Zostaniesz przekierowany na stronę logowania."
+    },
+    "recoverPassword": {
+      "header": "Nie pamiętasz hasła?",
+      "subHeader": "Podaj swój adres e-mail, a wyślemy Ci link do ustawienia nowego hasła.",
+      "submitButton": "Wyślij wiadomość",
+      "successMessage": "Jeśli istnieje konto z tym adresem e-mail, wiadomość z linkiem do ustawienia nowego hasła jest już w drodze.",
+      "errorMessage": "Nie udało się wysłać wiadomości. Spróbuj ponownie za chwilę.",
+      "backToLogin": "Wróć do logowania"
+    },
+    "resetPassword": {
+      "header": "Ustaw nowe hasło",
+      "subHeader": "Wpisz nowe hasło dwa razy.",
+      "newPasswordLabel": "Nowe hasło*",
+      "confirmPasswordLabel": "Powtórz nowe hasło*",
+      "submitButton": "Zapisz nowe hasło",
+      "checkingLink": "Sprawdzamy Twój link...",
+      "linkExpired": "Ten link jest już nieważny. Poproś o nowy.",
+      "requestNewLink": "Poproś o nowy link",
+      "checkFailed": "Nie udało się sprawdzić Twojego linku. Spróbuj ponownie.",
+      "retryButton": "Spróbuj ponownie",
+      "successMessage": "Twoje hasło zostało zmienione. Możesz się teraz nim zalogować.",
+      "goToLogin": "Przejdź do logowania"
     }
   }
 }

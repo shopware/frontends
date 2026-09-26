@@ -24,7 +24,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         },
         "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
-          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development. For the public demo backend use https://demo-frontends.shopware.store/figma."
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
@@ -68,7 +68,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         },
         "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
-          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development. For the public demo backend use https://demo-frontends.shopware.store/figma."
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."

@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCT0RWATU1RG9RT200M29XNA",
-        devStorefrontUrl: "https://frontends-demo.vercel.app",
+        devStorefrontUrl: "https://demo-frontends.shopware.store/figma",
         cacheableReads: true,
       },
     },

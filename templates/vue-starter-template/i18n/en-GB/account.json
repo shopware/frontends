@@ -162,6 +162,28 @@
       "paymentMethodChanged": "Payment method changed successfully.",
       "productsAdded": "Products have been added to the cart.",
       "loginRequired": "Login is required to access this page. You are being redirected to the login page."
+    },
+    "recoverPassword": {
+      "header": "Forgot your password?",
+      "subHeader": "Enter your email address and we will send you a link to set a new password.",
+      "submitButton": "Send recovery email",
+      "successMessage": "If an account exists for this email address, a message with a link to set a new password is on its way.",
+      "errorMessage": "We could not send the email. Please try again in a moment.",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "header": "Set a new password",
+      "subHeader": "Enter your new password twice.",
+      "newPasswordLabel": "New password*",
+      "confirmPasswordLabel": "Repeat new password*",
+      "submitButton": "Save new password",
+      "checkingLink": "Checking your link...",
+      "linkExpired": "This link is no longer valid. Please request a new one.",
+      "requestNewLink": "Request a new link",
+      "checkFailed": "We could not check your link. Please try again.",
+      "retryButton": "Try again",
+      "successMessage": "Your password has been changed. You can now sign in with it.",
+      "goToLogin": "Go to login"
     }
   }
 }

@@ -162,6 +162,28 @@
       "paymentMethodChanged": "Zahlungsmethode wurde erfolgreich geändert.",
       "productsAdded": "Produkte wurden dem Warenkorb hinzugefügt.",
       "loginRequired": "Zum Zugriff auf diese Seite ist eine Anmeldung erforderlich. Sie werden zur Anmeldeseite weitergeleitet."
+    },
+    "recoverPassword": {
+      "header": "Passwort vergessen?",
+      "subHeader": "Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.",
+      "submitButton": "E-Mail senden",
+      "successMessage": "Wenn ein Konto mit dieser E-Mail-Adresse existiert, ist eine Nachricht mit einem Link zum Festlegen eines neuen Passworts unterwegs.",
+      "errorMessage": "Die E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es gleich noch einmal.",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "resetPassword": {
+      "header": "Neues Passwort festlegen",
+      "subHeader": "Geben Sie Ihr neues Passwort zweimal ein.",
+      "newPasswordLabel": "Neues Passwort*",
+      "confirmPasswordLabel": "Neues Passwort wiederholen*",
+      "submitButton": "Neues Passwort speichern",
+      "checkingLink": "Ihr Link wird geprüft...",
+      "linkExpired": "Dieser Link ist nicht mehr gültig. Bitte fordern Sie einen neuen an.",
+      "requestNewLink": "Neuen Link anfordern",
+      "checkFailed": "Wir konnten Ihren Link nicht prüfen. Bitte versuchen Sie es erneut.",
+      "retryButton": "Erneut versuchen",
+      "successMessage": "Ihr Passwort wurde geändert. Sie können sich jetzt damit anmelden.",
+      "goToLogin": "Zur Anmeldung"
     }
   }
 }
