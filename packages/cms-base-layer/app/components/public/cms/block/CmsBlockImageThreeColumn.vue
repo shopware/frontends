@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageThreeColumn } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,11 +8,11 @@ const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
   <div class="flex flex-col sm:flex-row justify-start items-start gap-6 w-full">

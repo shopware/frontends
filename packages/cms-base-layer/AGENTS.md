@@ -24,7 +24,7 @@ naming rules for adding one are documented in
 **An unimplemented block or element renders differently per environment.**
 When the name does not resolve, dev mode logs a warning naming the exact
 component file to create and renders the `CmsNoComponent` placeholder — but
-production renders an empty `<div>` with no warning at all
+production renders nothing at all, with no warning
 (`CmsGenericElement.vue`, `CmsGenericBlock.vue`). So a block or element that
 silently disappears in production while looking fine locally is a name that does
 not match the CMS type; check the dev console before hunting for a data problem.

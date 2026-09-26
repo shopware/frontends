@@ -4,6 +4,7 @@ import type {
   CmsElementImage,
   CmsElementText,
 } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -11,21 +12,28 @@ const props = defineProps<{
   content: CmsBlockImageTextGallery;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftTextContent = getSlotContent("left-text") as CmsElementText;
-const rightTextContent = getSlotContent("right-text") as CmsElementText;
-const centerTextContent = getSlotContent("center-text") as CmsElementText;
+const leftTextContent = computed(
+  () => getSlotContent("left-text") as CmsElementText | undefined,
+);
+const rightTextContent = computed(
+  () => getSlotContent("right-text") as CmsElementText | undefined,
+);
+const centerTextContent = computed(
+  () => getSlotContent("center-text") as CmsElementText | undefined,
+);
 
-const leftImageContent = getSlotContent(
-  "left-image",
-) as unknown as CmsElementImage;
-const rightImageContent = getSlotContent(
-  "right-image",
-) as unknown as CmsElementImage;
-const centerImageContent = getSlotContent(
-  "center-image",
-) as unknown as CmsElementImage;
+const leftImageContent = computed(
+  () => getSlotContent("left-image") as unknown as CmsElementImage | undefined,
+);
+const rightImageContent = computed(
+  () => getSlotContent("right-image") as unknown as CmsElementImage | undefined,
+);
+const centerImageContent = computed(
+  () =>
+    getSlotContent("center-image") as unknown as CmsElementImage | undefined,
+);
 
 // TODO: useRouter
 function onImageClick(
@@ -52,29 +60,44 @@ function onImageClick(
   >
     <div class="w-full sm:flex-1">
       <CmsElementImage
+        v-if="leftImageContent"
         :content="leftImageContent"
         :style="{ cursor: leftImageContent.data?.url && 'pointer' }"
         @click="onImageClick(leftImageContent)"
       />
-      <CmsElementText :content="leftTextContent" class="self-stretch" />
+      <CmsElementText
+        v-if="leftTextContent"
+        :content="leftTextContent"
+        class="self-stretch"
+      />
     </div>
     <div class="w-full sm:flex-1">
       <CmsElementImage
+        v-if="centerImageContent"
         :content="centerImageContent"
         :style="{
           cursor: centerImageContent.data?.url && 'pointer',
         }"
         @click="onImageClick(centerImageContent)"
       />
-      <CmsElementText :content="centerTextContent" class="self-stretch" />
+      <CmsElementText
+        v-if="centerTextContent"
+        :content="centerTextContent"
+        class="self-stretch"
+      />
     </div>
     <div class="w-full sm:flex-1">
       <CmsElementImage
+        v-if="rightImageContent"
         :content="rightImageContent"
         :style="{ cursor: rightImageContent.data?.url && 'pointer' }"
         @click="onImageClick(rightImageContent)"
       />
-      <CmsElementText :content="rightTextContent" class="self-stretch" />
+      <CmsElementText
+        v-if="rightTextContent"
+        :content="rightTextContent"
+        class="self-stretch"
+      />
     </div>
   </article>
 </template>

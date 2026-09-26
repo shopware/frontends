@@ -79,23 +79,25 @@ const rightContent = getSlotContent("right");
 
 That works, but it's quite repetiive and hard to read. So we can use another composable `useCmsBlock` which makes our lives way easier.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/slots-2.vue" code lang="vue{8,10-12,16-18}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/slots-2.vue" code lang="vue{12,14-16,20-22}" no-name -->
 
-```vue{8,10-12,16-18}
+```vue{12,14-16,20-22}
 <script setup lang="ts">
 import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
-import { useCmsBlock } from "#imports";
+import { computed, useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+// A getter keeps the lookups pointed at the current block, and a computed
+// re-runs the lookup when that block is replaced.
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
   <div class="grid grid-cols-3">
