@@ -36,6 +36,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("resize", syncBodyPadding);
   document.body.style.paddingBottom = "";
+  document.documentElement.style.setProperty(
+    "--sw-guidance-banner-height",
+    "0px",
+  );
 });
 
 watch(isVisible, syncBodyPadding, { flush: "post" });
@@ -48,10 +52,19 @@ function closeBanner() {
 function syncBodyPadding() {
   if (!isVisible.value || !bannerElement.value) {
     document.body.style.paddingBottom = "";
+    document.documentElement.style.setProperty(
+      "--sw-guidance-banner-height",
+      "0px",
+    );
     return;
   }
 
-  document.body.style.paddingBottom = `${bannerElement.value.offsetHeight + 12}px`;
+  const offset = `${bannerElement.value.offsetHeight + 12}px`;
+  document.body.style.paddingBottom = offset;
+  document.documentElement.style.setProperty(
+    "--sw-guidance-banner-height",
+    offset,
+  );
 }
 
 function isExternalLink(href: string) {

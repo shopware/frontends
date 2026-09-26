@@ -10,10 +10,24 @@ const currentMenuPosition = ref<string | undefined>(undefined);
 const mobileSearchActive = ref(false);
 const searchText = ref("");
 
-const miniCartActive = ref(false);
+const {
+  isOpen: miniCartOpen,
+  open: openMiniCart,
+  close: closeMiniCart,
+} = useMiniCartModal();
+const { removeAll: dismissNotifications } = useNotifications();
+
 function toggleMiniCart() {
-  miniCartActive.value = !miniCartActive.value;
+  if (miniCartOpen.value) {
+    closeMiniCart();
+    return;
+  }
+  openMiniCart();
 }
+
+watch(miniCartOpen, (isOpen) => {
+  if (isOpen) dismissNotifications();
+});
 
 const accountMenuActive = ref(false);
 function toggleAccountMenu() {
@@ -41,7 +55,6 @@ const route = useRoute();
 watch(
   () => route.path,
   () => {
-    miniCartActive.value = false;
     accountMenuActive.value = false;
   },
 );
@@ -51,7 +64,7 @@ watch(
   <div>
     <div class="border-b">
       <div
-        class="container mx-auto flex sm:grid sm:grid-cols-3 items-center justify-between py-3.5 px-6 sm:px-0 relative"
+        class="container mx-auto flex sm:grid sm:grid-cols-3 items-center justify-between py-3.5 px-6 sm:px-0 relative z-30"
       >
         <template v-if="!mobileSearchActive">
           <NuxtLink
@@ -140,9 +153,9 @@ watch(
 
         <ClientOnly>
           <LayoutMiniCart
-            v-if="miniCartActive && cartCount > 0"
+            v-if="miniCartOpen && cartCount > 0"
             class="absolute top-full right-0"
-            @closeMiniCart="toggleMiniCart"
+            @closeMiniCart="closeMiniCart"
           />
         </ClientOnly>
       </div>
