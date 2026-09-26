@@ -1,5 +1,32 @@
 # @shopware/cms-base-layer
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Render blocks reactively and survive a missing slot
+
+  `CmsGenericElement` now takes `content` as an optional prop and renders nothing when it is missing, instead of handing `undefined` to `resolveCmsComponent` and throwing. A block does not have to carry every slot its layout allows, so that is no longer an error path.
+
+  Every block component now passes its `content` to `useCmsBlock` as a getter and reads slot lookups through a `computed`, and `CmsSectionSidebar` does the same with `useCmsSection`. A block or section that receives new content re-resolves which slot goes where, instead of rendering the tree it was mounted with.
+
+  That stops at the element boundary. Element components still call `useCmsElementConfig(props.content)` and `useCmsElementImage(props.content)`, which capture the slot object at setup, so an element reused for a different slot of the same type keeps its old config- and media-derived values — an image its old source, a text its old configured content. Only values read straight from the prop (`props.content.data`) follow. Making those composables accept a getter is a separate change.
+
+  Both generic components also stop emitting an empty `<div>` where they used to render a placeholder: a missing slot and — in production — a block or element type with no component now render nothing. Dev mode is unchanged: it still warns and renders `CmsNoComponent`.
+
+  `CmsGenericBlock` and `CmsGenericElement` dropped their `Problem resolving component: …` branch. It sat behind `if (resolvedComponent)` and tested `isResolved`, which was always `true` there, so it never rendered; an unresolved component still logs a dev warning and renders `CmsNoComponent`.
+
+### Patch Changes
+
+- [#2778](https://github.com/shopware/frontends/pull/2778) [`0d4151c`](https://github.com/shopware/frontends/commit/0d4151ce1fb231606c33e1fd88f525baff60416d) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Use Three.js vectors for the 3D camera and light positions.
+
+- [#2677](https://github.com/shopware/frontends/pull/2677) [`62c8d4c`](https://github.com/shopware/frontends/commit/62c8d4c86130c076b8391271593372eac83380e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Drive the product listing from the URL. Browser back and forward now update the products, and sorting no longer fires a duplicate request.
+
+- [#2677](https://github.com/shopware/frontends/pull/2677) [`62c8d4c`](https://github.com/shopware/frontends/commit/62c8d4c86130c076b8391271593372eac83380e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Write listing filters to the URL before fetching, so a slow or failed request no longer drops the selection. Expose the product id on the add-to-cart button.
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b), [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+  - @shopware/composables@1.14.0
+
 ## 4.0.0
 
 ### Major Changes

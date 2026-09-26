@@ -1,5 +1,20 @@
 # @shopware/nuxt-module
 
+## 1.6.0
+
+### Minor Changes
+
+- [#2693](https://github.com/shopware/frontends/pull/2693) [`9d4710c`](https://github.com/shopware/frontends/commit/9d4710ca02ab35f35c65ea39bebd384630f4e1a7) Thanks [@mkucmus](https://github.com/mkucmus)! - `apiClientConfig.timeout` now works. Set it in milliseconds under `runtimeConfig.apiClientConfig` or `runtimeConfig.public.apiClientConfig`, next to `headers`, and the plugin forwards it to the API client. Unset by default. Only a positive number arms it, and a numeric string is coerced. Any other value is ignored and logged once as a warning naming the config path the value came from, instead of being dropped silently. It aborts a request whose response headers do not arrive in time, including one still opening its connection. It does not abort a response that stalls after its headers arrived, unless the call passes its own `signal`.
+
+  `apiClientConfig` under the `shopware` module options is deprecated, and now works as a fallback. It had never been read before, so a value set there in the past becomes active with this release. It is read last, only when neither `runtimeConfig` path holds a valid value, and Nuxt warns at build time when a timeout is set there. Move to `runtimeConfig.apiClientConfig`; the fallback goes away in the next major.
+
+### Patch Changes
+
+- [#2777](https://github.com/shopware/frontends/pull/2777) [`fb7e480`](https://github.com/shopware/frontends/commit/fb7e480af6202013adc3d602d58918789156a3ee) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Resolve plugin configuration types from the published package entrypoint.
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b), [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+  - @shopware/composables@1.14.0
+
 ## 1.5.2
 
 ### Patch Changes

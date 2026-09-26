@@ -1,5 +1,41 @@
 # @shopware/composables
 
+## 1.14.0
+
+### Minor Changes
+
+- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Let the CMS tree lookups follow a changing `content`, and fix `resolveCmsComponent().isResolved`
+
+  **`useCmsSection` and `useCmsBlock` accept a `ref` or a getter.** Both took a plain object and closed over it, so `getPositionContent()` and `getSlotContent()` kept reading the tree captured at setup: a component receiving a new `content` prop had to remount to see it, and calling the function again did not help. Both now accept `MaybeRefOrGetter` and resolve it with `toValue()` on every call.
+
+  Passing a plain object still works exactly as before, so nothing has to change. To benefit, pass a getter and read the lookups through a `computed`:
+
+  ```ts
+  const { getSlotContent } = useCmsBlock(() => props.content);
+  const leftContent = computed(() => getSlotContent("left"));
+  ```
+
+  The returned `section` and `block` are still the value read when the composable was called, so they do not follow a replacement — use the source you passed in when you need that.
+
+  **`resolveCmsComponent().isResolved` now means resolved.** It compared the resolved value with `content.type`, while Vue's `resolveComponent` returns the _component name_ when nothing is registered — two strings that never match, so `isResolved` was `true` even when nothing resolved, and code guarding a fallback with `!isResolved` never ran. It is now derived from `resolvedComponent !== undefined`. Check `resolvedComponent` directly if you want the component itself.
+
+  The `resolved` field, which appears only when resolving throws, is now marked `@deprecated`. It always equals `isResolved`, so read that instead.
+
+  Note what is not fixed here: `getSlotContent()` still returns `undefined` at runtime for a slot the block does not carry, while its return type promises a value. The signature stays as it is because correcting it would be a breaking type change; the JSDoc now says so, and callers should keep guarding on the result.
+
+### Patch Changes
+
+- [#2700](https://github.com/shopware/frontends/pull/2700) [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh the cart after `register()`
+
+  `useUser().register()` changed the session context without refreshing the cart, while `login()` and `logout()` both did. Registration is the first point at which the backend learns the customer's billing country, which drives tax rates, shipping surcharges and customer-group prices, so the cart totals held in `useCart()` could stay at their pre-registration values while the order was placed at the recalculated ones.
+
+  `register()` now awaits `refreshCart()` after `refreshSessionContext()`, so a caller that awaits `register()` cannot observe the pre-registration totals afterwards. Note this makes `register()` resolve slightly later than before, and a failing cart refresh now rejects `register()` even though the customer was created — the same property `refreshSessionContext()` on the preceding line already had.
+
+  `login()` and `logout()` still call `refreshCart()` without awaiting it and are unchanged here.
+
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+
 ## 1.13.0
 
 ### Minor Changes
