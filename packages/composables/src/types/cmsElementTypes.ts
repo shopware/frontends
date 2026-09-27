@@ -151,6 +151,43 @@ export type CmsElementImageGallery = Omit<Schemas["CmsSlot"], "config"> & {
   };
 };
 
+// Video
+export type VideoDisplayMode = "standard" | "stretch" | "cover";
+
+type VideoElementConfig = {
+  media: ElementConfig<string | null>;
+  displayMode: ElementConfig<VideoDisplayMode>;
+  minHeight: ElementConfig<string | null>;
+  verticalAlign: ElementConfig<VerticalAlign | null>;
+  horizontalAlign: ElementConfig<VerticalAlign | null>;
+  ariaLabel: ElementConfig<string | null>;
+  autoPlay: ElementConfig<boolean>;
+  muted: ElementConfig<boolean>;
+  loop: ElementConfig<boolean>;
+  playsInline: ElementConfig<boolean>;
+  showControls: ElementConfig<boolean>;
+  showCover: ElementConfig<boolean>;
+};
+
+export type CmsElementVideo = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "video";
+  config: VideoElementConfig;
+  data: {
+    mediaId: string | null;
+    url: string | null;
+    newTab: boolean | null;
+    ariaLabel: string | null;
+    apiAlias: "cms_video";
+    media:
+      | (Schemas["Media"] & {
+          extensions?: {
+            videoCoverMedia?: Schemas["Media"];
+          };
+        })
+      | null;
+  };
+};
+
 // YouTube video
 type YouTubeVideoElementConfig = {
   end: ElementConfig<string>;
@@ -384,6 +421,11 @@ export type CmsElementProductName = Omit<Schemas["CmsSlot"], "config"> & {
   translated: {
     config: TextElementConfig;
   };
+};
+
+// Category Name
+export type CmsElementCategoryName = Omit<CmsElementText, "type"> & {
+  type: "category-name";
 };
 
 // Manufacturer Logo

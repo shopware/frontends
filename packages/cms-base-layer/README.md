@@ -460,6 +460,34 @@ The procedure is:
 
 ✅ Thanks to this, nuxt will take the component registered in your app instead of the one registered by this nuxt layer.
 
+### App blocks (`app-renderer`)
+
+Every block an app registers through the Meteor Admin SDK (`cms.registerCmsBlock`) reaches the Store API with the type `app-renderer`, so they all render through `CmsBlockAppRenderer`. By default it places the block's slots in the CSS grid the app declared, like the Storefront's fallback.
+
+To give one app block its own markup, add a global component named after the block, `CmsBlockAppRenderer` followed by the PascalCase `appBlockName` — for a block registered as `swag-two-columns`, that is `CmsBlockAppRendererSwagTwoColumns.vue`. It receives the block as its `content` prop, and every other app block keeps the fallback:
+
+```vue
+<script setup lang="ts">
+import type { CmsBlockAppRenderer } from "@shopware/composables";
+
+const props = defineProps<{ content: CmsBlockAppRenderer }>();
+
+const { getSlotContent } = useCmsBlock(() => props.content);
+
+const text = computed(() => getSlotContent("text-0"));
+const image = computed(() => getSlotContent("image-1"));
+</script>
+
+<template>
+  <div class="grid gap-6 md:grid-cols-2">
+    <CmsGenericElement :content="text" />
+    <CmsGenericElement :content="image" />
+  </div>
+</template>
+```
+
+The slots are named `{element}-{index}` in the order the app declared them, so look them up by name: the Store API returns them unsorted.
+
 ### Internal components
 
 ❗**Internal components are not a part of public API. Once overwritten you need to track the changes on your own.**
