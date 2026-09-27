@@ -39,6 +39,18 @@ describe("getCategoryNameContent", () => {
     expect(getCategoryNameContent(element("mapped", ""))).toBe("");
   });
 
+  it("renders no headline around a mapping path the backend returned", () => {
+    const leakedPath = {
+      type: "category-name",
+      config: {
+        content: { source: "mapped", value: "category.customFields" },
+      },
+      data: { content: "category.customFields", apiAlias: "cms_text" },
+    } as unknown as CmsElementCategoryName;
+
+    expect(getCategoryNameContent(leakedPath)).toBe("");
+  });
+
   it("returns nothing for static content that did not resolve", () => {
     expect(getCategoryNameContent(element("static", null))).toBe("");
   });
