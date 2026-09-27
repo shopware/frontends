@@ -29,7 +29,6 @@ export function getAppRendererLayout(
       ? pascalCase(`CmsBlockAppRenderer-${appBlockName}`)
       : undefined,
     grid: block.customFields?.slotLayout?.grid || undefined,
-    // The Store API returns slots unsorted, their `-{index}` suffix keeps the declared order
     slots: [...(block.slots ?? [])].sort(
       (a, b) => getSlotIndex(a) - getSlotIndex(b),
     ),

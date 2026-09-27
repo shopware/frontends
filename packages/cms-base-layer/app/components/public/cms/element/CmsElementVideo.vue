@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { CmsElementVideo } from "@shopware/composables";
 import { defu } from "defu";
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useId, useTemplateRef } from "vue";
 
 import { useCmsTranslations } from "#imports";
 
-import { getVideoElementOptions } from "../../../../helpers/cms/getVideoElementOptions";
+import {
+  getVideoAttributes,
+  getVideoElementOptions,
+  getVideoToggleAttributes,
+} from "../../../../helpers/cms/getVideoElementOptions";
 
 const props = defineProps<{
   content: CmsElementVideo;
@@ -16,6 +20,7 @@ type Translations = {
     video: {
       playLabel: string;
       pauseLabel: string;
+      loadError: string;
       notSupported: string;
     };
   };
@@ -26,6 +31,7 @@ let translations: Translations = {
     video: {
       playLabel: "Play video",
       pauseLabel: "Pause video",
+      loadError: "The video could not be loaded.",
       notSupported: "Your browser does not support the HTML5 video tag.",
     },
   },
@@ -46,21 +52,39 @@ const ALIGN_CLASSES = {
 } as const;
 
 const options = computed(() => getVideoElementOptions(props.content));
+const videoAttributes = computed(() => getVideoAttributes(options.value));
 
+const videoId = useId();
 const videoElement = useTemplateRef<HTMLVideoElement>("videoElement");
 const isPlaying = ref(false);
+const hasFailed = ref(false);
 
 function syncPlayingState() {
   const video = videoElement.value;
   isPlaying.value = !!video && !video.paused && !video.ended;
 }
 
+function markFailed() {
+  hasFailed.value = true;
+  videoElement.value?.pause();
+  isPlaying.value = false;
+}
+
 function togglePlayback() {
   const video = videoElement.value;
-  if (!video) return;
+  if (!video || hasFailed.value) return;
+
+  if (video.error || video.networkState === video.NETWORK_NO_SOURCE) {
+    markFailed();
+    return;
+  }
 
   if (video.paused || video.ended) {
-    video.play()?.catch(() => {});
+    video.play()?.catch((error: unknown) => {
+      if ((error as DOMException | undefined)?.name === "NotSupportedError") {
+        markFailed();
+      }
+    });
     return;
   }
 
@@ -71,31 +95,23 @@ function onKeydown(event: KeyboardEvent) {
   if (event.key !== "Enter" && event.key !== " ") return;
 
   event.preventDefault();
+  if (event.repeat) return;
+
   togglePlayback();
 }
 
-const toggleAttrs = computed(() => {
-  if (options.value.controls) return {};
-
-  const label =
-    options.value.ariaLabel ||
-    (isPlaying.value
-      ? translations.cms.video.pauseLabel
-      : translations.cms.video.playLabel);
-
-  return {
-    role: "button",
-    tabindex: 0,
-    "aria-label": label,
-    title: options.value.title || label,
-  };
-});
+const toggleAttrs = computed(() =>
+  getVideoToggleAttributes(
+    options.value,
+    { isPlaying: isPlaying.value, hasFailed: hasFailed.value, videoId },
+    translations.cms.video,
+  ),
+);
 
 const toggleListeners = computed(() =>
   options.value.controls ? {} : { click: togglePlayback, keydown: onKeydown },
 );
 
-// An autoplaying video can start before hydration attaches the listeners
 onMounted(syncPlayingState);
 </script>
 <template>
@@ -126,37 +142,49 @@ onMounted(syncPlayingState);
         "
       >
         <span
-          v-if="!options.controls"
+          v-if="!options.controls && !hasFailed"
           class="cms-video-play-icon pointer-events-none absolute left-1/2 top-1/2 z-2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-opacity duration-200"
           :class="isPlaying ? 'opacity-0' : 'opacity-100'"
           aria-hidden="true"
         >
           <span class="i-carbon-play-filled-alt h-8 w-8" />
         </span>
-        <!-- `playsinline` is not a boolean attribute to Vue, `false` would render it -->
+        <span
+          v-if="hasFailed"
+          class="cms-video-error pointer-events-none absolute inset-0 z-2 flex items-center justify-center p-4"
+        >
+          <span
+            class="rounded bg-black/60 px-3 py-2 text-center text-sm text-white"
+          >
+            {{ translations.cms.video.loadError }}
+          </span>
+        </span>
         <video
+          :id="videoId"
           ref="videoElement"
           class="cms-video block max-w-full"
           :class="{
             'w-full': options.displayMode !== 'standard',
             'absolute inset-0 h-full object-cover':
               options.displayMode === 'cover',
-            'cursor-pointer': !options.controls,
+            'cursor-pointer': !options.controls && !hasFailed,
           }"
-          :preload="options.preload"
-          :poster="options.poster"
-          :autoplay="options.autoplay"
-          :muted="options.muted"
-          :loop="options.loop"
-          :playsinline="options.playsInline || undefined"
-          :controls="options.controls"
-          :aria-label="options.ariaLabel"
-          :title="options.title"
+          :style="
+            options.placeholderAspectRatio
+              ? { aspectRatio: options.placeholderAspectRatio }
+              : undefined
+          "
+          v-bind="videoAttributes"
           @play="syncPlayingState"
           @pause="syncPlayingState"
           @ended="syncPlayingState"
+          @error="markFailed"
         >
-          <source :src="options.src" :type="options.mimeType" />
+          <source
+            :src="options.src"
+            :type="options.mimeType"
+            @error="markFailed"
+          />
           {{ translations.cms.video.notSupported }}
         </video>
       </div>

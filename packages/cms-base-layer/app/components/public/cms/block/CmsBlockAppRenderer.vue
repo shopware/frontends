@@ -13,7 +13,6 @@ const appContext = getCurrentInstance()?.appContext;
 
 const layout = computed(() => getAppRendererLayout(props.content));
 
-// Not `resolveComponent`, which warns for every app block without an override
 const appBlockComponent = computed<Component | undefined>(() => {
   const name = layout.value.componentName;
 
@@ -40,6 +39,7 @@ const gridStyle = computed<CSSProperties>(() => ({
     <div
       v-for="slot in layout.slots"
       :key="slot.id"
+      class="min-w-0"
       :class="`cms-block-app-renderer-fallback-slot-${slot.type}`"
     >
       <CmsGenericElement :content="slot" />

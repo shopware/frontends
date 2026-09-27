@@ -10,6 +10,8 @@ export type DisplayMode =
   | Exclude<CSSProperties["objectFit"], undefined>
   | "standard";
 
+export type MediaDisplayMode = "standard" | "stretch" | "cover";
+
 export type BoxLayout = "standard" | "image" | "minimal";
 
 export type VerticalAlign = "flex-start" | "center" | "flex-end" | "";
@@ -152,11 +154,9 @@ export type CmsElementImageGallery = Omit<Schemas["CmsSlot"], "config"> & {
 };
 
 // Video
-export type VideoDisplayMode = "standard" | "stretch" | "cover";
-
 type VideoElementConfig = {
   media: ElementConfig<string | null>;
-  displayMode: ElementConfig<VideoDisplayMode>;
+  displayMode: ElementConfig<MediaDisplayMode>;
   minHeight: ElementConfig<string | null>;
   verticalAlign: ElementConfig<VerticalAlign | null>;
   horizontalAlign: ElementConfig<VerticalAlign | null>;
@@ -424,8 +424,18 @@ export type CmsElementProductName = Omit<Schemas["CmsSlot"], "config"> & {
 };
 
 // Category Name
-export type CmsElementCategoryName = Omit<CmsElementText, "type"> & {
+type CategoryNameElementConfig = {
+  content: ElementConfig<string>;
+  verticalAlign?: ElementConfig<VerticalAlign | null>;
+};
+
+export type CmsElementCategoryName = Omit<Schemas["CmsSlot"], "config"> & {
   type: "category-name";
+  config: CategoryNameElementConfig;
+  data: {
+    content: string | null;
+    apiAlias: "cms_text";
+  };
 };
 
 // Manufacturer Logo

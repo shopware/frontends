@@ -11,14 +11,24 @@ const props = defineProps<{
   content: CmsElementCategoryName;
 }>();
 
-const textContent = computed<CmsElementText>(() => ({
-  ...props.content,
-  type: "text",
-  data: {
-    apiAlias: "cms_text",
-    content: getCategoryNameContent(props.content),
-  },
-}));
+const textContent = computed(
+  () =>
+    ({
+      ...props.content,
+      type: "text",
+      config: {
+        ...props.content.config,
+        verticalAlign: {
+          source: "static",
+          value: props.content.config?.verticalAlign?.value ?? "",
+        },
+      },
+      data: {
+        apiAlias: "cms_text",
+        content: getCategoryNameContent(props.content),
+      },
+    }) as CmsElementText,
+);
 </script>
 <template>
   <CmsElementText :content="textContent" class="cms-element-category-name" />

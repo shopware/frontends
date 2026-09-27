@@ -47,20 +47,22 @@ describe("getAppRendererLayout", () => {
     expect(layout.grid).toBeUndefined();
   });
 
-  it("orders the slots by the index in their name", () => {
+  it("restores the declared order from the name-sorted Store API order", () => {
     const layout = getAppRendererLayout(
       block({ appBlockName: "swag" }, [
-        "image-2",
+        "image-1",
+        "image-3",
         "text-0",
         "text-10",
-        "image-1",
+        "text-2",
       ]),
     );
 
     expect(layout.slots.map((slot) => slot.slot)).toEqual([
       "text-0",
       "image-1",
-      "image-2",
+      "text-2",
+      "image-3",
       "text-10",
     ]);
   });

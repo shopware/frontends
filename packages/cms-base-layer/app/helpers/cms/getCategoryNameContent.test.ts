@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { getCategoryNameContent } from "./getCategoryNameContent";
 
-const element = (source: "static" | "mapped", content?: string) =>
+const element = (source: "static" | "mapped", content: string | null) =>
   ({
     type: "category-name",
     config: {
@@ -11,9 +11,8 @@ const element = (source: "static" | "mapped", content?: string) =>
         source,
         value: source === "mapped" ? "category.name" : "<p>static</p>",
       },
-      verticalAlign: { source: "static", value: "" },
     },
-    data: content === undefined ? undefined : { content, apiAlias: "cms_text" },
+    data: { content, apiAlias: "cms_text" },
   }) as unknown as CmsElementCategoryName;
 
 describe("getCategoryNameContent", () => {
@@ -36,16 +35,11 @@ describe("getCategoryNameContent", () => {
   });
 
   it("renders no empty headline when the mapped value did not resolve", () => {
+    expect(getCategoryNameContent(element("mapped", null))).toBe("");
     expect(getCategoryNameContent(element("mapped", ""))).toBe("");
-    expect(getCategoryNameContent(element("mapped"))).toBe("");
   });
 
-  it("treats a missing config as static", () => {
-    const withoutConfig = {
-      type: "category-name",
-      data: { content: "<h1>Clothing</h1>", apiAlias: "cms_text" },
-    } as unknown as CmsElementCategoryName;
-
-    expect(getCategoryNameContent(withoutConfig)).toBe("<h1>Clothing</h1>");
+  it("returns nothing for static content that did not resolve", () => {
+    expect(getCategoryNameContent(element("static", null))).toBe("");
   });
 });

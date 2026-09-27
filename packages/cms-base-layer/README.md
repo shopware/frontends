@@ -462,7 +462,7 @@ The procedure is:
 
 ### App blocks (`app-renderer`)
 
-Every block an app registers through the Meteor Admin SDK (`cms.registerCmsBlock`) reaches the Store API with the type `app-renderer`, so they all render through `CmsBlockAppRenderer`. By default it places the block's slots in the CSS grid the app declared, like the Storefront's fallback.
+Every block an app registers through the Meteor Admin SDK (`cms.registerCmsBlock`) reaches the Store API with the type `app-renderer`, so they all render through `CmsBlockAppRenderer`. By default it places the block's slots in the CSS grid the app declared, like the Storefront's fallback, in the order the app declared them.
 
 To give one app block its own markup, add a global component named after the block, `CmsBlockAppRenderer` followed by the PascalCase `appBlockName` — for a block registered as `swag-two-columns`, that is `CmsBlockAppRendererSwagTwoColumns.vue`. It receives the block as its `content` prop, and every other app block keeps the fallback:
 
@@ -486,7 +486,9 @@ const image = computed(() => getSlotContent("image-1"));
 </template>
 ```
 
-The slots are named `{element}-{index}` in the order the app declared them, so look them up by name: the Store API returns them unsorted.
+The slots are named `{element}-{index}` in the order the app declared them, so look them up by name rather than by position: the Store API sorts them by name, so `image-1` comes before `text-0` and `text-10` before `text-2`. The fallback restores the declared order from the index, as the Administration preview shows it. The Storefront's fallback keeps the Store API order, so a block that mixes element types can place its slots differently there.
+
+The lookup of these components lives in `CmsBlockAppRenderer` itself. If you override `CmsBlockAppRenderer`, for example to change the fallback markup, your override replaces that lookup too, and your `CmsBlockAppRenderer{AppBlockName}` components are no longer used unless it renders them. A component whose name does not match the `appBlockName` renders the fallback without a warning, as a misnamed override of any other CMS component does.
 
 ### Internal components
 
