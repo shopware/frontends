@@ -171,11 +171,12 @@ The tree walk is what you use on every page:
 
 - **Sections** — `useCmsSection(section)` returns `section` and `getPositionContent(position)`, which filters the section's blocks by `sectionPosition` (`main`, `sidebar`).
 - **Blocks** — `useCmsBlock(block)` returns `block` and `getSlotContent(slotName)`, which matches a slot on its own `slot` name. That name is whatever the block declares; `left`, `right`, `content` and `center` are the common ones.
+- Both take the section or block itself, a `ref` to it or a getter, and read whichever you passed on every lookup — so `useCmsBlock(() => props.content)` with the lookups wrapped in a `computed` is what follows a replaced prop. That is what every block component in the CMS base layer does.
 - **Elements** — `useCmsElementConfig(element)` returns `getConfigValue(key)` for the admin configuration, and `useCmsElementImage(element)` derives `imageAttrs`, `anchorAttrs`, `imageContainerAttrs`, `imageLink`, `containerStyle`, `displayMode`, `ariaLabel`, `isDecorative`, `isVideoElement` and `mimeType` for an image or manufacturer-logo element.
 
 Five things the generated reference will not tell you:
 
-- None of the four follows a replacement. `useCmsSection`, `useCmsBlock` and `useCmsElementConfig` read the object and return plain values; `useCmsMeta` returns computeds over it, which do track that object's fields while it is reactive but never point at a new one. A `Ref` breaks all four in two different ways: `useCmsSection` and `useCmsBlock` throw, while `useCmsElementConfig` returns `undefined` and `useCmsMeta` returns empty strings.
+- Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` and `useCmsMeta` follow nothing at all and take the object itself: a `ref` makes the first return `undefined` and the second produce empty strings, in both cases without an error.
 - `getSlotContent(name)` is `Array.find` with a cast. A slot the block does not have is `undefined` at runtime while the type promises a value.
 - `getConfigValue(key)` returns `false`, not the value, when the entry's `source` is `"mapped"` — the case where the value comes from the surrounding entity rather than from the layout.
 - `useCmsMeta(entity)` returns a `title` and a `meta` computed, and it takes the entity, not a ref to it. Neither template calls it directly; both wrap it in their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
@@ -199,6 +200,8 @@ Use generated Store API types when you need to type the CMS tree, the criteria, 
   <SchemaTypeTooltip type-key='Schemas["CmsSlot"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/cms/rendering/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -209,16 +212,21 @@ type CmsBlock = Schemas["CmsBlock"];
 type CmsSlot = Schemas["CmsSlot"];
 ```
 
+<!-- /automd -->
+
 Each of the four carries a `type` and an `apiAlias`. The first is what the component name is built from; the second picks the prefix below the page level: `resolveCmsComponent` maps `cms_section` to `CmsSection`, `cms_block` to `CmsBlock`, and treats everything else — `cms_slot` included, and any alias it does not know — as `CmsElement`. The `CmsPage` itself is never resolved to a component; the renderer walks straight into its sections.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal CMS page renderer">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/cms/rendering/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { getCmsLayoutConfiguration } from "@shopware/helpers";
 import { pascalCase } from "scule";
+import { computed, resolveComponent } from "vue";
 
 import type { Schemas } from "#shopware";
 
@@ -252,29 +260,34 @@ const sections = computed(() =>
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The component name is built at runtime, so Nuxt cannot rewrite `resolveComponent` into a static import and the lookup falls back to the globally registered components. The section components therefore have to sit under a path registered `global: true` — `app/components/cms/` in `vue-starter-template` — or every section renders the fallback.
 
-A section component then does the same one level down. `useCmsSection(content)` gives it `getPositionContent(position)` for its blocks, and each block component uses `useCmsBlock(content)` and `getSlotContent(name)` to reach its elements. The element at the end of that walk is where rendering stops being generic: it reads what the admin configured with `const { getConfigValue } = useCmsElementConfig(content)` and renders its own markup from those values.
+A section component then does the same one level down. `useCmsSection(() => content)` gives it `getPositionContent(position)` for its blocks, and each block component uses `useCmsBlock(() => content)` and `getSlotContent(name)` to reach its elements. The element at the end of that walk is where rendering stops being generic: it reads what the admin configured with `const { getConfigValue } = useCmsElementConfig(content)` and renders its own markup from those values.
 
 ## State And Session
 
-Almost nothing here is state. `useCmsSection`, `useCmsBlock` and `useCmsMeta` all take a plain object and return derived values over it. `useCmsMeta` wraps its output in computeds, but nothing is stored, no context is provided and no request is made. They are helpers with a composable's naming, and passing a `Ref` instead of the object breaks them — loudly in `useCmsSection` and `useCmsBlock`, silently in `useCmsMeta`.
+Almost nothing here is state. `useCmsSection` and `useCmsBlock` resolve whatever they were handed on each lookup, and `useCmsMeta` wraps its output in computeds, but nothing is stored, no context is provided and no request is made. They are helpers with a composable's naming. `useCmsMeta` is the one that still insists on the entity rather than a ref to it, and says nothing when it gets one.
 
 The two places state does appear are worth knowing. `useCmsTranslations()` injects whatever the application provided under `cmsTranslations`, so a CMS component's fallback strings can be overridden per locale without prop drilling. And on a category page the base layer's `CmsPage` lifts the product listing out of the CMS payload with `getProductListingFromCmsPage` and seeds the shared listing context with `createCategoryListingContext(initialListing)` — which is why a category listing renders products before any listing request is made. What the listing composable then does with that seed — the initial listing, the applied one that shadows it, and the filters on top — is the [Product Listing and Filters recipe](../catalog/listing.html).
 
 The CMS payload is context-dependent like everything else. Prices inside a product element are calculated for the current currency and tax state, and `visibility` on a section or block can hide it for a given device. A currency or language switch invalidates the whole rendered page.
 
+That payload is also the one a shared cache may store. With the starter's `cacheableReads: true` the category read comes back `public, s-maxage=1800`, where the `POST` variant is `private, no-cache` — so the CMS tree and the calculated prices of the embedded listing sit in the same cacheable response. Keeping one customer's prices out of another's page is the backend's contract rather than the renderer's: those entries are varied on language, currency and login state, which [Backend HTTP cache and reverse proxy](../../best-practices/caching.html#backend-http-cache-and-reverse-proxy) explains. The frontend guards one thing itself — `@shopware/api-client` ignores `sw-context-token` on a publicly cacheable response, so a replayed guest token from a cache hit cannot overwrite a logged-in session.
+
 ## Edge Cases
 
 - `readCms post /cms/{id}` is never called by Shopware Frontends. Debugging a missing block means looking at the `cmsPage` the category or landing page response already carried, not at that operation.
 - `withCmsAssociations` is not what makes `cmsPage` appear. Both routes resolve the layout on their own, so removing the flag does not reproduce a missing-layout bug, and adding it does not fix one.
-- `useCmsSection` and `useCmsBlock` take a plain object. Passing `toRef(() => content)` gives them a `Ref` whose `.blocks` and `.slots` are undefined, and the lookups throw — during SSR that surfaces as a 500 on first paint, not as a browser console error.
-- Neither is reactive, and re-running the lookup is not enough. `getPositionContent` and `getSlotContent` close over the object handed to the composable, so on a new `content` prop they still read the old one. Call the composable again inside the `computed`, or key the child on `content.id` so it remounts.
+- `useCmsSection` and `useCmsBlock` accept the object, a `ref` or a getter, but a plain object is still a snapshot: it is the value you read at setup, not a live one. Hand them `() => props.content` when the prop can be replaced.
+- Calling a lookup once is not enough either. `getPositionContent` and `getSlotContent` re-read on every call, so the value has to be read again to change — wrap each one in a `computed`.
+- `section` and `block` do not follow a replacement at all; they are the value read when the composable was called. Read the prop directly when you need the current one.
 - `getSlotContent(name)` returns the result of `Array.find` cast to a slot. A missing slot is `undefined` at runtime while the type claims a value, so guard on it.
 - `getPositionContent(position)` returns an empty array for a position no block uses. That is the normal way a section with an unused side column behaves.
-- `resolveCmsComponent().isResolved` compares the resolved value with `content.type`, while `resolveComponent` returns the _component name_ when it cannot resolve. The two strings differ, so `isResolved` can be `true` for a component that does not exist — the package's own test asserts exactly that. Check `resolvedComponent !== undefined` instead.
+- `resolveCmsComponent()` reports `isResolved` from whether a component came back, so it is `false` for a type nothing is registered under. It also returns a `resolved` field when the resolution throws; that one is deprecated and always equals `isResolved`.
 - `resolveComponent` must be called during render or setup. Calling it in a plain module function outside a component context logs a Vue warning and resolves nothing.
 - A component whose name is built at runtime only resolves if it is registered `global: true`. Dropping a `CmsSection*` or `CmsElement*` override into plain `app/components/` leaves it out of `resolveComponent`'s reach, and the fallback renders with no error — in the starter the registered path is `app/components/cms/`.
 - `useCmsMeta(entity)` closes over the entity it was given. It reads the entity's meta fields, not the CMS page's, and does not follow a replacement.
@@ -287,10 +300,10 @@ The CMS payload is context-dependent like everything else. Prices inside a produ
 ## Common Mistakes
 
 - Do not fetch the CMS page separately. The route already returned it on the entity.
-- Do not pass a `Ref` to `useCmsSection` or `useCmsBlock`.
-- Do not treat them as reactive. On a new `content` prop re-invoke the composable, not just the lookup.
+- Do not hand `useCmsSection` or `useCmsBlock` a plain prop when it can be replaced. Pass a getter.
+- Do not read a lookup once at setup. Wrap `getPositionContent` and `getSlotContent` in a `computed`.
+- Do not read `section` or `block` expecting the current content. They are a snapshot.
 - Do not use `getSlotContent` without a guard. The cast hides a possible `undefined`.
-- Do not trust `resolveCmsComponent().isResolved`. Check `resolvedComponent`.
 - Do not call `resolveComponent` outside a component's setup or render.
 - Do not put a CMS component override outside a path registered `global: true`.
 - Do not read meta tags off the CMS page. `useCmsMeta` takes the entity, unwrapped.
@@ -302,7 +315,8 @@ The CMS payload is context-dependent like everything else. Prices inside a produ
 - A category page gets its layout from the category request itself — a `GET /category/{navigationId}?_criteria=…` with the starter template's `cacheableReads: true`, a `POST` without it — and never a separate `readCms post /cms/{id}` request.
 - Every section in the payload resolves to a component, and an unknown type renders the fallback rather than nothing.
 - `getPositionContent` returns only the blocks whose `sectionPosition` matches.
-- `getSlotContent` returns `undefined` for a slot the block does not have, without throwing.
+- `getSlotContent` returns `undefined` for a slot the block does not have, without throwing, and the element renders nothing rather than an empty wrapper.
+- Replacing the `content` of a mounted block changes what its slots render, without a remount.
 - A category page renders its first page of products before any listing request is sent.
 - A product listing element on a landing page fails loudly through `useCategoryListing` instead of rendering an empty listing.
 - `useCmsMeta` produces a title from the entity's translated name and meta entries only for the fields that are set.
@@ -312,6 +326,7 @@ The CMS payload is context-dependent like everything else. Prices inside a produ
 
 ## Related Links
 
+- [Contact Form recipe](contact-form.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create Blocks (CMS)](../../guides/cms/create-blocks.html)
