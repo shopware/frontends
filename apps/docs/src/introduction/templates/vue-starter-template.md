@@ -180,7 +180,7 @@ For example, to override the product card:
 
 <!-- /automd -->
 
-<PageRef page="../../packages/cms-base-layer.html#overwriting-components" title="Override CMS Components" sub="Learn how to customize CMS components from the base layer" />
+<PageRef page="../../packages/cms-base-layer.html#🔄-overwriting-components" title="Override CMS Components" sub="Learn how to customize CMS components from the base layer" />
 
 ### Styling with UnoCSS
 

@@ -39,7 +39,7 @@ Even the [developer IDE](./templates/demo-store-template.html) can be started in
 
 ### Stable
 
-Shopware **Frontends** [doesn’t rely on Shopware’s internal APIs](../index.md#how-it-works) (such as twig blocks, DAL or events),
+Shopware **Frontends** [doesn’t rely on Shopware’s internal APIs](../index.md#how-shopware-frontends-work) (such as twig blocks, DAL or events),
 hence not being subject to breaking changes in those APIs — as opposed to theme-based storefronts.
 Especially for big frontend projects this drastically reduces the complexity of platform updates.
 
