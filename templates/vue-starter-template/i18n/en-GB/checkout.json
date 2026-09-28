@@ -38,6 +38,7 @@
       "continueShopping": "Continue shopping",
       "viewInAccount": "View in my account",
       "goToPayment": "Go to payment",
+      "loadError": "We could not load your order. Your session may have expired.",
       "paymentProcessLabel": "Finish payment process.",
       "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
     },

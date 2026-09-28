@@ -22,16 +22,29 @@ const {
   subtotal,
   total,
   shippingCosts,
-} = useOrderDetails(orderId);
+} = useOrderDetails(orderId, {
+  addresses: { associations: { country: {} } },
+  deliveries: {
+    associations: { shippingOrderAddress: { associations: { country: {} } } },
+  },
+});
 
 const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(order);
+
+const loadError = ref(false);
 
 onMounted(async () => {
   const SUCCESS_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
   const FAILURE_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
-  await loadOrderDetails();
+  try {
+    await loadOrderDetails();
+  } catch (error) {
+    console.error(error);
+    loadError.value = true;
+    return;
+  }
   handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
 });
 
@@ -95,7 +108,21 @@ const showPaymentAlert = computed(
 
 <template>
   <ClientOnly>
-    <CheckoutSuccessSkeleton v-if="!order" />
+    <div
+      v-if="loadError"
+      class="container mx-auto px-6 sm:px-4 py-10 md:py-20 text-center"
+    >
+      <p class="text-surface-on-surface mb-6">
+        {{ $t("checkout.success.loadError") }}
+      </p>
+      <NuxtLink
+        :to="formatLink('/')"
+        class="bg-brand-primary text-brand-on-primary text-center font-bold leading-6 py-3 px-4 rounded inline-flex justify-center items-center"
+      >
+        {{ $t("checkout.success.continueShopping") }}
+      </NuxtLink>
+    </div>
+    <CheckoutSuccessSkeleton v-else-if="!order" />
     <div
       v-else
       class="container mx-auto px-6 sm:px-4 py-10 md:py-20"

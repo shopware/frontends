@@ -38,6 +38,7 @@
       "continueShopping": "Kontynuuj zakupy",
       "viewInAccount": "Zobacz w moim koncie",
       "goToPayment": "Przejdź do płatności",
+      "loadError": "Nie udało się załadować zamówienia. Twoja sesja mogła wygasnąć.",
       "paymentProcessLabel": "Zakończ proces płatności.",
       "paymentProcessInfo": "Zostaniesz przekierowany do bramki płatności w ciągu 5 sekund."
     },

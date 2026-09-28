@@ -38,6 +38,7 @@
       "continueShopping": "Weiter einkaufen",
       "viewInAccount": "In meinem Konto ansehen",
       "goToPayment": "Zur Zahlung gehen",
+      "loadError": "Wir konnten Ihre Bestellung nicht laden. Ihre Sitzung ist möglicherweise abgelaufen.",
       "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",
       "paymentProcessInfo": "Sie werden in 5 Sekunden zur Zahlungsmaschine weitergeleitet."
     },
