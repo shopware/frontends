@@ -358,6 +358,7 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - `getCanonicalPathForTechnicalPath` also returns `null` for SEO paths and for a mapping whose target is itself technical. Only a genuine technical-to-SEO mapping produces a redirect.
 - The redirect uses `301`. Getting the condition wrong caches the wrong target in browsers and CDNs.
 - `routeName` is pascal-cased into a component name, and `resolveComponent` only finds components registered `global: true`. It returns the name string rather than throwing when nothing matches, which is why the example compares the result against the name and turns a miss into a `404`.
+- The generated `SeoUrl` type limits `routeName` to the three names Shopware ships — `frontend.detail.page`, `frontend.navigation.page` and `frontend.landing.page` — and `vue-starter-template` has one global component for each. The schema describes the field as a route registered in the application's router, though, so a route name outside that set, such as one an extension registers, has no page component and ends in the same `404` until you add one.
 - `resolveUrl` throws `URL Input too long` for input over 2083 characters. That is a deliberate guard against a polynomial regular expression, not a validation error to surface.
 - `resolveUrl` only touches URLs matching `[a-zA-Z0-9]+/navigation/[a-zA-Z0-9]+` and returns everything else unchanged — including a `/detail/<id>` link, and including `/navigation/<id>` itself, which has no segment before the slash for the pattern to match and so never gets the prefix.
 - The `history.state` shortcut keys off the field, not its provenance: `[...all].vue` takes it whenever a client-side navigation to a non-technical path carries `history.state.routeName`, and reads `foreignKey` alongside it without requiring it. A plain `<NuxtLink to="/my-category">` therefore still takes the lookup, while anything that writes that state skips it — including a link that sets `routeName` alone, whose resolution then trips the `404` guard on click and resolves fine on reload. `getProductRoute` and `getCategoryRoute` are what write the pair in practice, and both can emit a `routeName` with an undefined `foreignKey` — `getProductRoute` takes an optional product, and `getCategoryRoute` reads `internalLink` for a `product` or `landing_page` link. That is why the example above guards on both fields.
@@ -400,8 +401,7 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - [Navigation and Breadcrumbs recipe](navigation.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Contact Form recipe](../cms/contact-form.html)
-- [Work with routing](../../guides/routing.html)
-- [Content pages](../../guides/cms/content-pages.html)
+- [Rendering CMS Pages recipe](../cms/rendering.html)
 - [Caching](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)

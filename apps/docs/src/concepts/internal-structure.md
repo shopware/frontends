@@ -81,7 +81,7 @@ If you want to use these packages with a different Vue.js framework, see the gui
 
 The CMS base is a Nuxt module that provides an implementation of all CMS components in Shopware [based on utility-classes](./styling.html) using unocss/Tailwind.css syntax. It is useful for projects that want to use the CMS components but design their own layout.
 
-Head to our [Content Pages](../guides/cms/content-pages#use-the-cms-base-package) guide to learn more.
+Head to the [Rendering CMS Pages recipe](../frontends-recipes/cms/rendering.html) to learn more.
 
 <PageRef page="../packages/cms-base.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
 

@@ -91,7 +91,6 @@ export const sidebar = [
     text: "GUIDES",
     link: "/guides/",
     items: [
-      { text: "Routing", link: "/guides/routing.html" },
       { text: "Languages", link: "/guides/languages.html" },
       { text: "Storefront URL", link: "/guides/storefront-url.html" },
       {
@@ -102,10 +101,6 @@ export const sidebar = [
           {
             text: "Custom Elements",
             link: "/guides/cms/custom-elements.html",
-          },
-          {
-            text: "Content Pages",
-            link: "/guides/cms/content-pages.html",
           },
           {
             text: "Customize Components",
@@ -206,20 +201,12 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Breadcrumbs",
-            link: "/guides/page-elements/breadcrumbs.html",
-          },
-          {
             text: "Images",
             link: "/guides/page-elements/images.html",
           },
           {
             text: "Login Form",
             link: "/guides/page-elements/login-form.html",
-          },
-          {
-            text: "Navigation",
-            link: "/guides/page-elements/navigation.html",
           },
           {
             text: "Footer Navigation",
