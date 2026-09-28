@@ -102,7 +102,7 @@ Read the diagram from left to right:
 3. The call rejects with `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which the page reads as "ask for credentials".
 4. A form collects the email address and the billing postal code of the order.
 5. The request is repeated with `filter`, `email`, `zipcode` and `login: true`, and the response header establishes a guest session.
-6. With a session in place, `useOrderDetails(order.id)` renders the order exactly as it does for a registered customer.
+6. With a session in place, `useOrderDetails(order.id)` renders the order exactly as it does for a registered customer — the [Order Details recipe](details.html) takes it from there.
 
 You do not need a separate authentication request. `login: true` on this operation is the login, which is why no composable wraps it — the credentials belong to one order, not to an account.
 
@@ -155,6 +155,8 @@ Use generated Store API types when you need to type the lookup body, the search 
   <SchemaTypeTooltip type-key='Schemas["failure"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/guest-order-lookup/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -164,11 +166,15 @@ type OrderRouteResponse = Schemas["OrderRouteResponse"];
 type Order = Schemas["Order"];
 ```
 
+<!-- /automd -->
+
 `GuestLookupFilter` is worth resolving in your editor rather than in the tooltip above: its `field` is restricted to the literal `"deepLinkCode"` and its `type` to `"equals"`. This is not a general-purpose criteria filter. The body tooltip cannot show you that — it renders `filter` as a plain `object[]`, and because the body is a criteria object with eighteen properties it truncates after the first eight, so `email`, `zipcode` and `login` are not in it either. Hover it for the criteria shape; read the generated type for the four fields this recipe is about.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal guest order lookup page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/orders/guest-order-lookup/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -233,7 +239,9 @@ const lookupOrder = async (withGuestCredentials: boolean) => {
 
     // Decide once, from the whole payload. Looping and assigning per error
     // lets the last element overwrite the message the customer can act on.
-    const codes = new Set(error.details.errors.map((apiError) => apiError.code));
+    const codes = new Set(
+      error.details.errors.map((apiError: { code?: string }) => apiError.code),
+    );
 
     if (codes.has("CHECKOUT__GUEST_NOT_AUTHENTICATED")) {
       needsCredentials.value = true;
@@ -358,6 +366,8 @@ onMounted(loadOrder);
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 Once `order` is set, hand `order.id` to a component built on `useOrderDetails` to render the full detail view — the guest session established by `login: true` is all that component needs.
@@ -391,7 +401,7 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 - Do not branch on the HTTP status. The three outcomes differ only by `error.details.errors[].code`.
 - Do not read the first rejection as a reason to stop. Sending the credentials up front is fine — the starter template does exactly that with empty strings — but you still have to handle `CHECKOUT__GUEST_NOT_AUTHENTICATED`, because an empty `email` or `zipcode` produces it just the same.
 - Do not use the `filter` array for anything else. Its `field` is restricted to `deepLinkCode`.
-- Do not build the detail view from the lookup response. It has no associations — reload through `useOrderDetails`.
+- Do not build the detail view from the lookup response. It has no associations — reload through `useOrderDetails`, as the [Order Details recipe](details.html) describes.
 - Do not put the deep link code in an error message or an analytics event. It grants access to the order.
 - Do not render the raw `detail` of the API error next to the form. Map each code to a sentence the customer can act on.
 - Do not end the branch chain without a terminal `v-else`. Every unmapped state then renders an empty page, and the customer has no way to tell a dead link from a broken one.
@@ -416,7 +426,9 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Payment recipe](../checkout/payment.html)
+- [Order Details recipe](details.html)
 - [Login recipe](../account/login.html)
+- [Order History recipe](../account/order-history.html)
 - [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)

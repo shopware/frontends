@@ -115,15 +115,15 @@ You do not need to check the HTTP status to find these. A rejected request is a 
 
 ## Request Flow
 
-| Step                      | Code                            | Store API                              | Type                                                                                                        |
-| ------------------------- | ------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Read the cart             | `refreshCart()`                 | `GET /checkout/cart`                   | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                       |
-| Add and collect errors    | `addProduct({ id, quantity })`  | `POST /checkout/cart/line-item`        | <SchemaTypeTooltip type-key='operations["addLineItem post /checkout/cart/line-item"]["response"]' />         |
-| Apply a promotion code    | `addPromotionCode(code)`        | `POST /checkout/cart/line-item`        | <SchemaTypeTooltip type-key='operations["addLineItem post /checkout/cart/line-item"]["response"]' />         |
-| Update and collect errors | `changeProductQuantity(params)` | `PATCH /checkout/cart/line-item`       | <SchemaTypeTooltip type-key='operations["updateLineItem patch /checkout/cart/line-item"]["response"]' />     |
+| Step                      | Code                            | Store API                              | Type                                                                                                           |
+| ------------------------- | ------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Read the cart             | `refreshCart()`                 | `GET /checkout/cart`                   | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                         |
+| Add and collect errors    | `addProduct({ id, quantity })`  | `POST /checkout/cart/line-item`        | <SchemaTypeTooltip type-key='operations["addLineItem post /checkout/cart/line-item"]["response"]' />           |
+| Apply a promotion code    | `addPromotionCode(code)`        | `POST /checkout/cart/line-item`        | <SchemaTypeTooltip type-key='operations["addLineItem post /checkout/cart/line-item"]["response"]' />           |
+| Update and collect errors | `changeProductQuantity(params)` | `PATCH /checkout/cart/line-item`       | <SchemaTypeTooltip type-key='operations["updateLineItem patch /checkout/cart/line-item"]["response"]' />       |
 | Remove and collect errors | `removeItemById(id)`            | `POST /checkout/cart/line-item/delete` | <SchemaTypeTooltip type-key='operations["removeLineItem post /checkout/cart/line-item/delete"]["response"]' /> |
-| Read the errors field     | `cart.errors`                   | any of the above                       | <SchemaTypeTooltip type-key='Schemas["Cart"]' />                                                             |
-| Consume the collected map | `getErrorsCodes()`              | none                                   | <SchemaTypeTooltip type-key='Schemas["CartError"]' />                                                        |
+| Read the errors field     | `cart.errors`                   | any of the above                       | <SchemaTypeTooltip type-key='Schemas["Cart"]' />                                                               |
+| Consume the collected map | `getErrorsCodes()`              | none                                   | <SchemaTypeTooltip type-key='Schemas["CartError"]' />                                                          |
 
 Every row in the `Store API` column is a cart operation you already call for another reason. There is no request in this recipe that exists only for errors. A promotion code is not a special endpoint either — `addPromotionCode` posts to the line item route with `type: "promotion"`, which is why promotion feedback arrives as a cart error rather than as a response of its own.
 
@@ -131,12 +131,12 @@ Every row in the `Store API` column is a cart operation you already call for ano
 
 Pick by what you are holding — the collected map, one error, or the notification list:
 
-| Composable                   | Scope                | Reach for it when                                                 |
-| ---------------------------- | -------------------- | ----------------------------------------------------------------- |
-| `useCart`                    | the whole cart       | writing line items, and reading the cart the resolver looks into   |
-| `useCartNotification`        | the collected errors | consuming everything one write complained about                    |
-| `useCartErrorParamsResolver` | one `CartError`      | turning that error into a translatable key and params              |
-| `useNotifications`           | the toast list       | rendering the result, or pushing anything else the customer sees   |
+| Composable                   | Scope                | Reach for it when                                                |
+| ---------------------------- | -------------------- | ---------------------------------------------------------------- |
+| `useCart`                    | the whole cart       | writing line items, and reading the cart the resolver looks into |
+| `useCartNotification`        | the collected errors | consuming everything one write complained about                  |
+| `useCartErrorParamsResolver` | one `CartError`      | turning that error into a translatable key and params            |
+| `useNotifications`           | the toast list       | rendering the result, or pushing anything else the customer sees |
 
 `useCartNotification` is the one this recipe is really about. It has exactly two members, and they are alternatives, not a pipeline:
 
@@ -168,6 +168,8 @@ Use generated Store API types when you need to type the errors field, one error,
   <SchemaTypeTooltip type-key='Schemas["LineItem"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/cart-errors/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas } from "#shopware";
 
@@ -175,6 +177,8 @@ type Cart = Schemas["Cart"];
 type CartErrors = Cart["errors"];
 type CartError = Schemas["CartError"];
 ```
+
+<!-- /automd -->
 
 `CartErrors` is the type to read carefully. The schema declares it as `anyOf` a `CartError[]` **and** a map of error key to error object, and the two shapes differ: the map form requires a numeric `code` that the array form does not have. Everything in Shopware Frontends handles the map form only.
 
@@ -184,9 +188,12 @@ type CartError = Schemas["CartError"];
 
 <CodeExample title="Add to cart with translated cart errors">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/checkout/cart-errors/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+import { useI18n } from "vue-i18n";
 
 const { addProduct, appliedPromotionCodes, cartItems, count } = useCart();
 const { getErrorsCodes } = useCartNotification();
@@ -263,6 +270,8 @@ const addToCart = async (productId: string, quantity: number) => {
   </button>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 

@@ -33,150 +33,190 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
    `pnpm add @storyblok/vue -D`
 5. Now add the storyblok access token to you `nuxt.config.ts` file
    _(you need a storyblok account to get that token)_
-   ```ts
-   modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
-     storyblok: {
-     accessToken: "super-secret-token"
-   },
-   ```
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.ts" code lang="ts" no-name -->
+
+```ts
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  modules: ["@shopware/nuxt-module", "@storyblok/nuxt"],
+  storyblok: {
+    accessToken: "super-secret-token",
+  },
+});
+```
+
+<!-- /automd -->
+
 6. In the root directory of your project create a `storyblok` folder.
 7. Let's create our base components files inside our `vue-blank-storyblok/storyblok` folder
 
    **Feature.vue**
 
-   ```vue
-   <script setup>
-   defineProps({ blok: Object });
-   </script>
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide.vue" code lang="vue" no-name -->
 
-   <template>
-     <div v-editable="blok" class="py-2" data-test="feature">
-       <h1 class="text-lg">{{ blok.name }}</h1>
-     </div>
-   </template>
-   ```
+```vue
+<script setup>
+defineProps({ blok: Object });
+</script>
 
-   **Grid.vue**
+<template>
+  <div v-editable="blok" class="py-2" data-test="feature">
+    <h1 class="text-lg">{{ blok.name }}</h1>
+  </div>
+</template>
+```
 
-   ```vue
-   <script setup>
-   defineProps({ blok: Object });
-   </script>
+<!-- /automd -->
 
-   <template>
-     <div v-editable="blok" class="flex py-8 mb-6" data-test="grid">
-       <div
-         v-for="blok in blok.columns"
-         :key="blok._uid"
-         class="flex-auto px-6"
-       >
-         <StoryblokComponent :blok="blok" />
-       </div>
-     </div>
-   </template>
-   ```
+**Grid.vue**
 
-   **Page.vue**
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-2.vue" code lang="vue" no-name -->
 
-   ```vue
-   <script setup>
-   defineProps({ blok: Object });
-   </script>
+```vue
+<script setup>
+defineProps({ blok: Object });
+</script>
 
-   <template>
-     <div v-editable="blok" class="px-6" data-test="page">
-       <StoryblokComponent
-         v-for="blok in blok.body"
-         :key="blok._uid"
-         :blok="blok"
-       />
-     </div>
-   </template>
-   ```
+<template>
+  <div v-editable="blok" class="flex py-8 mb-6" data-test="grid">
+    <div v-for="blok in blok.columns" :key="blok._uid" class="flex-auto px-6">
+      <StoryblokComponent :blok="blok" />
+    </div>
+  </div>
+</template>
+```
 
-   **Teaser.vue**
+<!-- /automd -->
 
-   ```vue
-   <script setup>
-   defineProps({ blok: Object });
-   </script>
+**Page.vue**
 
-   <template>
-     <div
-       v-editable="blok"
-       :cat="$attrs.cat"
-       class="py-8 mb-6 text-5xl font-bold text-center"
-       data-test="teaser"
-     >
-       {{ blok.headline }}
-     </div>
-   </template>
-   ```
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-3.vue" code lang="vue" no-name -->
+
+```vue
+<script setup>
+defineProps({ blok: Object });
+</script>
+
+<template>
+  <div v-editable="blok" class="px-6" data-test="page">
+    <StoryblokComponent
+      v-for="blok in blok.body"
+      :key="blok._uid"
+      :blok="blok"
+    />
+  </div>
+</template>
+```
+
+<!-- /automd -->
+
+**Teaser.vue**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-4.vue" code lang="vue" no-name -->
+
+```vue
+<script setup>
+defineProps({ blok: Object });
+</script>
+
+<template>
+  <div
+    v-editable="blok"
+    :cat="$attrs.cat"
+    class="py-8 mb-6 text-5xl font-bold text-center"
+    data-test="teaser"
+  >
+    {{ blok.headline }}
+  </div>
+</template>
+```
+
+<!-- /automd -->
 
 8. Change the `app.vue` file, we adding the `NuxtLayout` and `NuxtPage` components.
 
-   ```vue
-   <script setup lang="ts">
-   const { refreshSessionContext } = useSessionContext();
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-5.vue" code lang="vue" no-name -->
 
-   onMounted(async () => {
-     await refreshSessionContext();
-   });
-   </script>
+```vue
+<script setup lang="ts">
+import { onMounted, useSessionContext } from "#imports";
+const { refreshSessionContext } = useSessionContext();
 
-   <template>
-     <NuxtLayout>
-       <NuxtPage />
-     </NuxtLayout>
-   </template>
-   <style>
-   @import "./style.css";
-   </style>
-   ```
+onMounted(async () => {
+  await refreshSessionContext();
+});
+</script>
+
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+<style>
+@import "./style.css";
+</style>
+```
+
+<!-- /automd -->
 
 9. Create `pages/[...all].vue` and `pages/storyblok/[slug].vue` files
 
    **[...all].vue**
 
-   ```vue
-   <script setup lang="ts">
-   import Frontends from "../components/Frontends.vue";
-   </script>
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-6.vue" code lang="vue" no-name -->
 
-   <template>
-     <div id="app">
-       <Frontends template="Blank Vue 3 template (Nuxt)" />
-       <NuxtLink to="storyblok/home">Storyblok Home</NuxtLink>
-     </div>
-   </template>
-   <style>
-   @import "../style.css";
-   </style>
-   ```
+```vue
+<script setup lang="ts">
+import Frontends from "../components/Frontends.vue";
+</script>
 
-   **storyblok/[slug].vue**
+<template>
+  <div id="app">
+    <Frontends template="Blank Vue 3 template (Nuxt)" />
+    <NuxtLink to="storyblok/home">Storyblok Home</NuxtLink>
+  </div>
+</template>
+<style>
+@import "../style.css";
+</style>
+```
 
-   ```vue
-   <script setup lang="ts">
-   const route = useRoute();
-   const slug = route.params.slug.toString() ?? "home";
-   const story = await useAsyncStoryblok(
-     slug,
-     { version: "draft", resolve_relations: "Article.author" }, // API Options
-     { resolveRelations: ["Article.author"], resolveLinks: "url" }, // Bridge Options
-   );
-   if (story.value.status) {
-     throw createError({
-       statusCode: story.value.status,
-       statusMessage: story.value.response,
-     });
-   }
-   </script>
+<!-- /automd -->
 
-   <template>
-     <StoryblokComponent v-if="story" :blok="story.content" />
-   </template>
-   ```
+**storyblok/[slug].vue**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/storyblok/step-by-step-guide-7.vue" code lang="vue" no-name -->
+
+```vue
+<script setup lang="ts">
+import { createError, useAsyncStoryblok, useRoute } from "#imports";
+
+const route = useRoute();
+const slugParam = route.params.slug;
+const slug = Array.isArray(slugParam)
+  ? slugParam.join("/")
+  : slugParam?.toString() || "home";
+const story = await useAsyncStoryblok(
+  slug,
+  { version: "draft", resolve_relations: "Article.author" }, // API Options
+  { resolveRelations: ["Article.author"], resolveLinks: "url" }, // Bridge Options
+);
+if (story.value.status) {
+  throw createError({
+    statusCode: story.value.status,
+    statusMessage: story.value.response,
+  });
+}
+</script>
+
+<template>
+  <StoryblokComponent v-if="story" :blok="story.content" />
+</template>
+```
+
+<!-- /automd -->
 
 10. Log into your storyblok account and create a page called **home** inside the content.
     We already linked the slug "home" inside our `[...all].vue` file.

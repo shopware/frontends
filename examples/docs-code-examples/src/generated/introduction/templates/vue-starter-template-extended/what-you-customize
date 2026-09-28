@@ -1,0 +1,7 @@
+lumora-store/
+├─ app/
+│  └─ app.config.ts        # Brand customizations (colors, settings)
+├─ public/                  # Brand-specific assets (logo, favicon)
+├─ nuxt.config.ts          # Layer configuration
+├─ uno.config.ts           # Layer-specific UnoCSS extensions
+└─ package.json            # Dependencies

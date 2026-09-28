@@ -53,29 +53,45 @@ In the upstream Store API schema, `/dsr/customer/generate-login-token` declares 
 
 [`useInternationalization`](../packages/composables/useInternationalization.html) exposes `getStorefrontUrl()`, which is the single source of truth for the value:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/how-shopware-frontends-resolves-it.ts" code lang="ts" no-name -->
+
 ```ts
+const devStorefrontUrl: string | null = null;
+
 function getStorefrontUrl() {
   return devStorefrontUrl ?? window.location.origin ?? "";
 }
 ```
 
+<!-- /automd -->
+
 So: **if `devStorefrontUrl` is configured it wins, otherwise the browser origin is used.**
 
 Two composables inject the result for you, which is why `storefrontUrl` is omitted from their parameter types:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/how-shopware-frontends-resolves-it-2.ts" code lang="ts" no-name -->
+
 ```ts
-// useUser.ts — storefrontUrl is added internally
-register(
-  params: Omit<
-    operations["register post /account/register"]["body"],
-    "storefrontUrl"
-  >,
-);
+import type { operations } from "#shopware";
+
+type RegisterParams = Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+>;
+
+// useUser.ts - storefrontUrl is added internally
+declare function register(params: RegisterParams): Promise<void>;
+
+await register({} as RegisterParams);
 ```
+
+<!-- /automd -->
 
 `useNewsletter().newsletterSubscribe()` works the same way. `useCustomerPassword().resetPassword()` does **not** — it forwards the payload as-is, so you have to pass `storefrontUrl` yourself.
 
 Resolve it inside the submit handler, not in the component body:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/how-shopware-frontends-resolves-it-3.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -94,6 +110,8 @@ async function onSubmit() {
 </script>
 ```
 
+<!-- /automd -->
+
 :::warning Do not call `getStorefrontUrl()` during setup
 `<script setup>` also runs on the server. With no `devStorefrontUrl` configured — the default, since the Nuxt plugin falls back to `null` — `getStorefrontUrl()` reaches for `window.location.origin` and the render fails with `window is not defined`. A submit handler only ever runs in the browser, so resolving the value there is safe whether or not `devStorefrontUrl` is set.
 :::
@@ -102,15 +120,20 @@ async function onSubmit() {
 
 The two optional endpoints have no composable wrapper, so you call the API client directly and add `storefrontUrl` to the body yourself:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/endpoints-without-a-composable.ts" code lang="ts" no-name -->
+
 ```ts
 const { apiClient } = useShopwareContext();
 const { getStorefrontUrl } = useInternationalization();
+const employeeId = "employee-id";
 
 await apiClient.invoke("reinviteEmployee post /employee/reinvite/{id}", {
   pathParams: { id: employeeId },
   body: { storefrontUrl: getStorefrontUrl() },
 });
 ```
+
+<!-- /automd -->
 
 :::info Omitting it fails silently
 On both endpoints the field is optional, so the call succeeds without it and there is nothing in the response to tell you it was missing. Send it when you need the link in the invitation mail to point at a specific domain.
@@ -134,34 +157,48 @@ The default works in production, where your frontend is served from a domain tha
 
 For the Nuxt templates, set it in `nuxt.config.ts`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/configuration.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      shopware: {
-        endpoint: "https://your-shop.shopware.store/store-api",
-        accessToken: "your-access-token",
-        // must match a domain in Sales Channel → Domains
-        devStorefrontUrl: "https://your-shop.shopware.store",
-      },
-    },
+  shopware: {
+    endpoint: "https://your-shop.shopware.store/store-api",
+    accessToken: "your-access-token",
+    // must match a domain in Sales Channel -> Domains
+    devStorefrontUrl: "https://your-shop.shopware.store",
   },
 });
 ```
 
+<!-- /automd -->
+
 To keep the actual value per-environment, declare the key in `nuxt.config.ts` anyway — with an empty default — and override it with an environment variable:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/configuration-2.ts" code lang="ts" no-name -->
+
 ```ts
-// nuxt.config.ts — the key has to be present for the env override to apply
-shopware: {
-  devStorefrontUrl: "",
-},
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  // the key has to be present for the env override to apply
+  shopware: {
+    devStorefrontUrl: "",
+  },
+});
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/configuration-3.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
+
+<!-- /automd -->
 
 :::warning The env variable alone is not enough
 Nuxt applies `NUXT_*` overrides by walking the keys that already exist in the runtime config — `applyEnv()` iterates with `for (const key in obj)`, so a key that is absent is never visited and its environment variable is never read. The Nuxt module does not seed a default for `devStorefrontUrl`, it only merges what you pass in. Omit the key from `nuxt.config.ts` and `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is silently ignored — no warning, no error. This is why the templates commit the key: `vue-starter-template` ships `devStorefrontUrl: "https://frontends-demo.vercel.app"` and `vue-demo-store` ships `devStorefrontUrl: ""`.
@@ -169,11 +206,19 @@ Nuxt applies `NUXT_*` overrides by walking the keys that already exist in the ru
 
 Outside of the Nuxt module — a plain Vue or Astro app — pass it to `createShopwareContext()`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/configuration-4.ts" code lang="ts" no-name -->
+
 ```ts
+import { createShopwareContext } from "@shopware/composables";
+import { createApp } from "vue";
+
+const app = createApp({});
 const shopwareContext = createShopwareContext(app, {
   devStorefrontUrl: "https://your-shop.shopware.store",
 });
 ```
+
+<!-- /automd -->
 
 :::tip
 If customer registration works in production but fails locally, `devStorefrontUrl` is almost always the answer. Point it at your production (or staging) storefront domain while developing.
@@ -188,6 +233,8 @@ Because the value also selects the domain used to build the links in the mail, a
 `devStorefrontUrl` has a second use, in the opposite direction. `changeLanguage()` returns a `redirectUrl` built by the backend from the target language's sales channel domain. Following it blindly during local development throws you out of `localhost`.
 
 `useInternationalization().replaceToDevStorefront()` rewrites the origin of such a URL to `devStorefrontUrl` when it is set, and returns the URL untouched otherwise:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/replacetodevstorefront-and-language-switching.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -205,6 +252,8 @@ async function onChangeHandler(id: string) {
 </script>
 ```
 
+<!-- /automd -->
+
 Note that this keeps you on the configured `devStorefrontUrl`, so it does not by itself let you test the language switch on `localhost`. For that, see the local `hosts` override and the dev resolver in [Work with languages](./languages.html#switching-language-locally).
 
 ## Troubleshooting
@@ -213,10 +262,24 @@ Note that this keeps you on the configured `devStorefrontUrl`, so it does not by
 
 An empty value was sent. This happens when the form reads the runtime config directly instead of going through the composable:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/storefront-url/troubleshooting.ts" code lang="ts" no-name -->
+
 ```ts
-// reads runtimeConfig, where the value really is "" — `??` does not catch an empty string
-storefrontUrl: config.public.shopware.devStorefrontUrl ?? "",
+const config = {
+  public: {
+    shopware: {
+      devStorefrontUrl: "",
+    },
+  },
+};
+
+export const requestBody = {
+  // reads runtimeConfig, where the value really is "" - `??` does not catch an empty string
+  storefrontUrl: config.public.shopware.devStorefrontUrl ?? "",
+};
 ```
+
+<!-- /automd -->
 
 Use `getStorefrontUrl()` instead. The Nuxt plugin normalises the option with `devStorefrontUrl || null`, so an empty string becomes `null` in the context and the composable falls back to `window.location.origin`. Reading `runtimeConfig` yourself skips that normalisation and forwards the empty string.
 

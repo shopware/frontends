@@ -40,9 +40,13 @@ keeps editorial content and a product's _id_; Shopware provides the live data.
 | Product **price, name, stock, availability, media**                | **Shopware** | live commerce data - changes constantly |
 | **Cart**, totals, checkout, logged-in user                         | **Shopware** | transactional, per-user, real-time      |
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/the-pattern-content-commerce" code no-name -->
+
 ```
 Sanity (page.pageBuilder[]) --GROQ--> Nuxt --productIds--> Shopware Store API --> live cards
 ```
+
+<!-- /automd -->
 
 ## 1. Install & configure
 
@@ -50,12 +54,20 @@ Add the official [`@nuxtjs/sanity`](https://sanity.nuxtjs.org/) module. It bundl
 `@sanity/client`, `@portabletext/vue` and `groq`, and auto-imports
 `useSanityQuery`, `groq`, and the `<SanityContent>` / `<SanityImage>` components.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/1-install-configure.sh" code lang="bash" no-name -->
+
 ```bash
 npx nuxi@latest module add sanity
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/1-install-configure.ts" code lang="ts" no-name -->
+
 ```ts
 // nuxt.config.ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
   modules: ["@shopware/nuxt-module", "@nuxtjs/sanity"],
@@ -72,6 +84,8 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 A **public** dataset needs no token for the frontend to read. The Shopware
 `accessToken` is your sales-channel key.
 
@@ -80,6 +94,8 @@ A **public** dataset needs no token for the frontend to read. The Shopware
 In the Studio, a `page` document holds an ordered array of section blocks the
 editor arranges freely. The `featuredProducts` block stores **only Shopware
 product IDs**:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder.ts" code lang="ts" no-name -->
 
 ```ts
 // studio/schemaTypes/objects/featuredProducts.ts
@@ -101,8 +117,14 @@ export const featuredProducts = defineType({
 });
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/2-model-content-as-a-page-builder-2.ts" code lang="ts" no-name -->
+
 ```ts
 // studio/schemaTypes/documents/page.ts
+import { defineField } from "sanity";
+
 defineField({
   name: "pageBuilder",
   type: "array",
@@ -116,14 +138,20 @@ defineField({
 });
 ```
 
+<!-- /automd -->
+
 ## 3. Render the page
 
 Fetch the page builder with GROQ and map each block `_type` to a component.
 `groq` and `useSanityQuery` are auto-imported.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/app.vue -->
 <script setup lang="ts">
+import { groq, useSanityQuery } from "#imports";
+
 const PAGE_QUERY = groq`*[_type == "page"] | order(_createdAt asc)[0]{
   title,
   pageBuilder[]{ ... }
@@ -136,14 +164,20 @@ const { data: page } = await useSanityQuery(PAGE_QUERY);
 </template>
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/3-render-the-page-2.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/components/PageBuilder.vue -->
 <script setup lang="ts">
-import SectionHero from "./sections/SectionHero.vue";
+import type { Component } from "vue";
+
 import SectionFeaturedProducts from "./sections/SectionFeaturedProducts.vue";
+import SectionHero from "./sections/SectionHero.vue";
 // ...
 
-const components = {
+const components: Record<string, Component> = {
   hero: SectionHero,
   featuredProducts: SectionFeaturedProducts,
   // richText, banner, gallery...
@@ -162,6 +196,8 @@ defineProps<{ sections: Array<{ _key: string; _type: string }> }>();
 </template>
 ```
 
+<!-- /automd -->
+
 Rich text uses the module's `<SanityContent :value="block.content" />`, images use
 `<SanityImage :asset-id="image.asset._ref" />`.
 
@@ -170,9 +206,12 @@ Rich text uses the module's `<SanityContent :value="block.content" />`, images u
 The `featuredProducts` block arrives with only IDs. Resolve them to live products
 with `useProductSearch` during SSR, so the cards render in the initial HTML:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/4-resolve-products-from-shopware.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- app/components/sections/SectionFeaturedProducts.vue -->
 <script setup lang="ts">
+import { useAsyncData, useProductSearch } from "#imports";
 const props = defineProps<{
   section: { _key?: string; heading?: string; productIds?: string[] };
 }>();
@@ -196,6 +235,8 @@ const { data: products } = await useAsyncData(
 </script>
 ```
 
+<!-- /automd -->
+
 ::: warning Match the sales channel
 Product IDs are **per sales channel**. IDs from one channel return `404` in
 another - make sure the IDs stored in Sanity belong to the sales channel your
@@ -207,22 +248,42 @@ another - make sure the IDs stored in Sanity belong to the sales channel your
 Commerce interactions stay with Shopware composables. The product card adds to the
 cart and raises a toast; a mini cart reads the live cart:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications.ts" code lang="ts" no-name -->
+
 ```ts
+import { ref, useAddToCart, useNotifications } from "#imports";
+import type { Schemas } from "#shopware";
+
+const product = ref<Schemas["Product"] | undefined>({
+  id: "example-product-id",
+  translated: {
+    name: "Example product",
+  },
+} as Schemas["Product"]);
+
 const { addToCart } = useAddToCart(product);
 const { pushSuccess } = useNotifications();
 
 const add = async () => {
   await addToCart();
-  pushSuccess(`${product.value.translated?.name} added to cart`);
+  pushSuccess(`${product.value?.translated?.name ?? "Product"} added to cart`);
 };
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/5-cart-notifications-2.ts" code lang="ts" no-name -->
+
 ```ts
 // the cart is per-user session state - load it on the client, not in cached SSR
+import { onMounted, useCart } from "#imports";
+
 const { cartItems, count, totalPrice, isEmpty, removeItem, refreshCart } =
   useCart();
 onMounted(() => refreshCart());
 ```
+
+<!-- /automd -->
 
 ## The Studio (the editor)
 
@@ -231,10 +292,14 @@ Sanity project, separate from the Nuxt app. Scaffold one with
 `npm create sanity@latest`, add the `page` document and the block schemas shown
 above, then run it locally or deploy it to Sanity's hosting:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/sanity/the-studio-the-editor.sh" code lang="bash" no-name -->
+
 ```bash
 npx sanity dev      # http://localhost:3333
 npx sanity deploy   # https://<name>.sanity.studio
 ```
+
+<!-- /automd -->
 
 See [Sanity's Studio documentation](https://www.sanity.io/docs/studio) for
 creating, configuring and deploying a Studio.

@@ -12,13 +12,13 @@ const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const slotContent = getSlotContent("default");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const slotContent = computed(() => getSlotContent("default"));
 
 function getConfigValue(key: string): unknown {
-  if (!slotContent?.config) return null;
-  const configEntry =
-    slotContent.config[key as keyof typeof slotContent.config];
+  const slot = slotContent.value;
+  if (!slot?.config) return null;
+  const configEntry = slot.config[key as keyof typeof slot.config];
   if (
     configEntry &&
     typeof configEntry === "object" &&
@@ -31,8 +31,8 @@ function getConfigValue(key: string): unknown {
 }
 
 const modelUrl = computed(() => {
-  if (slotContent?.data) {
-    const data = slotContent.data as unknown as Schemas["Media"];
+  if (slotContent.value?.data) {
+    const data = slotContent.value.data as unknown as Schemas["Media"];
     if (data?.url && typeof data.url === "string") {
       return data.url;
     }

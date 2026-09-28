@@ -34,11 +34,18 @@ Templates register `app/components/cms/` as a Nuxt **global** component director
 
 [Global registration](https://vuejs.org/guide/components/registration#global-registration) in Vue apps
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/vue-apps.ts" code lang="ts" no-name -->
+
 ```ts
+import { createApp } from "vue";
+
 import CmsBlockCustomBlock from "./components/cms/CmsElementDailymotion.vue";
 
+const app = createApp({});
 app.component("CmsElementDailymotion", CmsBlockCustomBlock);
 ```
+
+<!-- /automd -->
 
 ## Naming
 
@@ -46,31 +53,49 @@ The component is searched in the global component register by its name.
 
 [Resolving component in CMS package](https://github.com/shopware/frontends/blob/main/packages/composables/src/index.ts#L74)
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.js" code lang="js" no-name -->
+
 ```js
 const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
 const resolvedComponent = resolveComponent(componentNameToResolve);
 ```
 
+<!-- /automd -->
+
 Component name must be the same as it was registered in the backed.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.ts" code lang="ts{3}" no-name -->
+
 ```ts{3}
-Shopware.Service('cmsService').registerCmsElement({
-    ...
-    name: 'dailymotion',
-    ...
+type CmsElementRegistration = {
+  name: string;
+};
+
+declare const Shopware: {
+  Service(service: "cmsService"): {
+    registerCmsElement(config: CmsElementRegistration): void;
+  };
+};
+
+Shopware.Service("cmsService").registerCmsElement({
+  name: "dailymotion",
 });
 ```
 
+<!-- /automd -->
+
 Lets create new component `components/cms/element/CmsElementDailymotion.vue`
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/naming.vue" code lang="vue" no-name -->
 
 ```vue
 // components/cms/element/CmsElementDailymotion.vue
 <script setup lang="ts">
-import type { Schemas } from "#showpare";
+import type { Schemas } from "#shopware";
 
 type CmsElementDailymotion = Schemas["CmsSlot"] & {
   type: "dailymotion" | typeof String;
-  slot: typeof String;
+  slot: string;
   config: CmsElementDailymotionConfig;
   translated: {
     config: CmsElementDailymotionConfig;
@@ -107,25 +132,47 @@ const props = defineProps<{
 </template>
 ```
 
+<!-- /automd -->
+
 ### Reading config
 
 Component settings are passed via props. The declared `defaultConfig` can be accessed through the `props.content.config` property.
 
 The following is an example of how to convert the backend registration config to a TypeScript type.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config.ts" code lang="ts{4-9}" no-name -->
+
 ```ts{4-9}
-Shopware.Service('cmsService').registerCmsElement({
-  ...
-    name: 'dailymotion',
-    defaultConfig: {
-        dailyUrl: {
-            source: 'static',
-            value: ''
-        }
-    }
-  ...
+type CmsElementRegistration = {
+  name: string;
+  defaultConfig: {
+    dailyUrl: {
+      source: "static";
+      value: string;
+    };
+  };
+};
+
+declare const Shopware: {
+  Service(service: "cmsService"): {
+    registerCmsElement(config: CmsElementRegistration): void;
+  };
+};
+
+Shopware.Service("cmsService").registerCmsElement({
+  name: "dailymotion",
+  defaultConfig: {
+    dailyUrl: {
+      source: "static",
+      value: "",
+    },
+  },
 });
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/custom-elements/reading-config-2.ts" code lang="ts" no-name -->
 
 ```ts
 type CmsElementDailymotionConfig = {
@@ -135,3 +182,5 @@ type CmsElementDailymotionConfig = {
   };
 };
 ```
+
+<!-- /automd -->

@@ -1,0 +1,22 @@
+{
+  i18n: {
+    vueI18n: {
+      fallbackLocale: "en-GB",
+    },
+    langDir: "i18n/src/",
+    locales: [
+    {
+      domain: 'example1.com'
+      code: "en-GB",
+      iso: "en-GB",
+      file: "en-GB.ts",
+    },
+    {
+      domain: 'example2.com'
+      code: "de-DE",
+      iso: "de-DE",
+      file: "de-DE.ts",
+    },
+  ],
+  },
+}
