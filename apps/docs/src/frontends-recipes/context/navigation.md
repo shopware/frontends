@@ -477,6 +477,7 @@ Every request here is scoped by the `sw-context-token`, so the language in that 
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Session Context recipe](session-context.html)
 - [Language and Currency Switch recipe](language-and-currency.html)
+- [URL Resolving and SEO URLs recipe](url-resolving.html)
 - [Helpers package](../../packages/helpers.html)
 - [API client package](../../packages/api-client.html)
 - [Composables reference](../../packages/composables/)

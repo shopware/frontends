@@ -596,6 +596,7 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 - [Rendering CMS Pages recipe](rendering.html)
 - [Newsletter recipe](../account/newsletter.html)
 - [Language and currency recipe](../context/language-and-currency.html)
+- [URL Resolving and SEO URLs recipe](../context/url-resolving.html)
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
