@@ -1,4 +1,4 @@
-<!-- components/cms/CmsElementImage.vue -->
+<!-- app/components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
 import { useCmsElementImage } from "@shopware/composables";
@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 
 const {
-  containerStyle, // padding, background-color etc.
+  containerStyle,
   displayMode, // cover, contain, stretch etc.
   imageAttrs, // automatically resolves src, alt and srcset attributes
 } = useCmsElementImage(props.content);
