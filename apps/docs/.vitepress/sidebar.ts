@@ -139,10 +139,6 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Product Listing",
-            link: "/guides/e-commerce/product-listing.html",
-          },
-          {
             text: "Product Detail Page",
             link: "/guides/e-commerce/product-detail-page.html",
           },
@@ -181,10 +177,6 @@ export const sidebar = [
           {
             text: "Sitemap",
             link: "/guides/features/sitemap.html",
-          },
-          {
-            text: "Wishlist",
-            link: "/guides/features/wishlist.html",
           },
           {
             text: "Custom Products extension",

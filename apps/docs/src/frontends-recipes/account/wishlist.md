@@ -10,6 +10,7 @@ recipe:
     - useWishlist
     - useProductWishlist
     - useSyncWishlist
+    - useLocalWishlist
     - useUser
   helpers:
     - getTranslatedProperty
@@ -134,6 +135,7 @@ You do not call `useSyncWishlist` directly. `useWishlist` drives the wishlist pa
 - `useWishlist`: the wishlist page. Exposes `getWishlistProducts`, `clearWishlist`, `mergeWishlistProducts`, `items`, `products`, `count`, `currentPage`, `totalPagesCount`, `limit`, and `canSyncWishlist`. Call `mergeWishlistProducts` right after a successful login, as both starter templates do: it pushes the ids saved in localStorage during the guest session to the customer wishlist and reloads. Without that call the products saved before sign-in are lost.
 - `useProductWishlist`: the wishlist state of one product. Takes a product id and exposes `addToWishlist`, `removeFromWishlist`, and `isInWishlist`.
 - `useSyncWishlist`: the customer wishlist behind the Store API, and the shared state both composables above read from. Exposes `getWishlistProducts`, `addToWishlistSync`, `removeFromWishlistSync`, `mergeWishlistProducts`, `items`, `products`, `count`, `currentPage`, and `limit`.
+- `useLocalWishlist`: the guest wishlist, a list of product ids kept in localStorage under `sw-wishlist-items`. `useWishlist` and `useProductWishlist` fall back to it whenever the customer wishlist is not available, and `mergeWishlistProducts` reads it at login.
 - `useUser`: provides `isLoggedIn` and `isGuestSession`, which decide whether the customer wishlist is used at all.
 
 ## Types
@@ -287,6 +289,8 @@ That shared state holds exactly one page. `items` contains the ids of the produc
 - `clearWishlist()` sends one `deleteProductOnWishlist delete /customer/wishlist/delete/{productId}` request per id in `items`, so it empties the loaded page and not the whole wishlist.
 - `useWishlist().canSyncWishlist` checks `isLoggedIn && !isGuestSession`, while `useProductWishlist` branches on `isLoggedIn` alone. The two checks are equivalent, because `isLoggedIn` is already false for guest sessions, so both the toggle and the wishlist page use the localStorage wishlist for a guest.
 - `useSyncWishlist` returns an `isLoading` ref that the composable never updates. Track loading state in your component.
+- In a guest session `getWishlistProducts()` only reads the ids from localStorage. `items` and `count` describe the guest wishlist, but `products` is filled by the customer wishlist response alone, so a guest wishlist page has to load the products for `items` itself.
+- `deleteProductOnWishlist delete /customer/wishlist/delete/{productId}` answers `404` when the product is not on the wishlist — for example after another tab removed it — and `removeFromWishlist()` rejects with that error.
 - The add and remove operations resolve with no wishlist data. Until the reload finishes, `count` and `products` still describe the state before the write.
 
 ## Common Mistakes
@@ -313,4 +317,4 @@ That shared state holds exactly one page. `items` contains the ids of the produc
 - [Login recipe](login.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Product listing](../../guides/e-commerce/product-listing.html)
+- [Product Listing and Filters recipe](../catalog/listing.html)
