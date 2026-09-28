@@ -2,7 +2,7 @@
 import type { Notification } from "@shopware/composables";
 import type { ComputedRef } from "vue";
 
-defineEmits<{
+const emit = defineEmits<{
   "click:close": [id: number];
 }>();
 
@@ -29,6 +29,9 @@ const themeTypeColor: ComputedRef<string> = computed(
   () => colorCssMap[props.notification.type] || "blue",
 );
 const icon = computed(() => iconsMap[props.notification.type] || "information");
+
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
   <!-- don't remove; enforce unocss to include dynamically used classes: class="bg-blue-100 bg-green-100 bg-orange-100 bg-red-100" -->
@@ -36,8 +39,8 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
     v-if="notification.message.length > 0"
     :id="`toast-${notification.id}`"
     :data-testid="`notification-element-${notification.type}`"
-    class="flex items-center w-full max-w-xs p-4 mb-4 bg-white rounded-lg shadow"
-    role="alert"
+    class="flex items-start w-full max-w-md p-4 bg-white rounded-lg shadow"
+    role="status"
   >
     <div
       :class="`text-${themeTypeColor}-500 bg-${themeTypeColor}-100`"
@@ -46,19 +49,30 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
       <!-- don't remove; enforce unocss to include dynamically used classes: class="i-carbon-information i-carbon-checkmark i-carbon-warning-alt i-carbon-close-outline" -->
       <div :class="`w-5 h-5 i-carbon-${icon}`" />
     </div>
-    <div
-      data-testid="notification-element-message"
-      class="ml-3 text-sm font-normal"
-    >
-      {{ notification.message }}
+    <div class="ml-3 flex-1 min-w-0">
+      <div
+        data-testid="notification-element-message"
+        class="text-sm font-normal"
+      >
+        {{ notification.message }}
+      </div>
+      <NuxtLink
+        v-if="notification.action"
+        :to="formatLink(notification.action.to)"
+        data-testid="notification-element-action"
+        class="mt-1 inline-flex min-h-8 items-center text-sm font-bold text-brand-primary"
+        @click="emit('click:close', notification.id)"
+      >
+        {{ notification.action.label }}
+      </NuxtLink>
     </div>
     <button
       data-testid="notification-element-button"
       type="button"
-      class="ml-auto -mx-1.5 -my-1.5 bg-white rounded-lg focus:ring-2 p-1.5 inline-flex h-8 w-8"
+      class="ml-2 -mx-1.5 -my-1.5 bg-white rounded-lg focus:ring-2 p-1.5 inline-flex h-8 w-8 flex-shrink-0"
       :data-dismiss-target="`toast-${notification.id}`"
       :aria-label="$t('layout.ariaLabels.closeNotification')"
-      @click="$emit('click:close', notification.id)"
+      @click="emit('click:close', notification.id)"
     >
       <span class="sr-only">{{ $t("close") }}</span>
       <div class="w-5 h-5 i-carbon-close" />
