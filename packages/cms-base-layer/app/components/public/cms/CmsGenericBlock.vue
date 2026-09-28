@@ -17,22 +17,17 @@ const props = defineProps<{
 
 const appConfig = useTypedAppConfig();
 
+// Plain values, not refs: custom elements inject these as a `number` and a
+// `string` (see the README), so providing a ref here would break them.
 const slotCount = props.content.slots?.length || 1;
 provide("cms-block-slot-count", slotCount);
 provide("cms-image-sizes", getImageSizes(slotCount, appConfig.imageSizes));
 
 const DynamicRender = () => {
-  const {
-    resolvedComponent,
-    componentName,
-    isResolved,
-    componentNameToResolve,
-  } = resolveCmsComponent(props.content);
+  const { resolvedComponent, componentName, componentNameToResolve } =
+    resolveCmsComponent(props.content);
 
   if (resolvedComponent) {
-    if (!isResolved)
-      return h("div", {}, `Problem resolving component: ${componentName}`);
-
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
     );
@@ -75,7 +70,8 @@ const DynamicRender = () => {
     );
     return h(resolveComponent("CmsNoComponent"), { content: props.content });
   }
-  return h("div", {}, "");
+  // Production: a block type with no component renders nothing.
+  return null;
 };
 </script>
 

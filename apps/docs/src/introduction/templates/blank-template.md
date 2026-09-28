@@ -14,10 +14,14 @@ The blank template contains no UI or markup - it's just a blank Nuxt3 applicatio
 
 Alternatively, set up the vue-blank template manually by running the following commands in a new directory:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/blank-template/setup-run.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-blank vue-blank && cd vue-blank
-pnpm i && pnpm dev
+npm i && npm run dev
 ```
+
+<!-- /automd -->
 
 ## Configure
 
@@ -25,7 +29,11 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration details:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/blank-template/configure.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 /* ... */
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -45,6 +53,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 ## What next?
 

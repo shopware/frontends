@@ -33,9 +33,13 @@ See [install the package](../../concepts/shopping-experiences#install-the-packag
 
 Now, you can import all components from the `@shopware/cms-base-layer` package and use them in your templates. The most straightforward way to render a page is to use the `CmsPage` component. It takes a `content` prop and resolves all subordinate sections, blocks and elements automatically. Put the following code in your catch-all component that also handles the [routing logic](../routing#resolve-a-route-to-a-page).
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/content-pages/render-the-page.html" code lang="vue-html" no-name -->
+
 ```vue-html
-<CmsPage v-if="data" :content="data.cmsPage"/>
+<CmsPage v-if="data" :content="data.cmsPage" />
 ```
+
+<!-- /automd -->
 
 :::warning This will only work
 if you followed the previous chapter on [routing](../routing). The `data` value in this example is a reactive reference to either a product, a category or a landing page response. If you are not sure how to get the data otherwise, check that chapter and see how the data is fetched.

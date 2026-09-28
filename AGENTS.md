@@ -103,6 +103,23 @@ The essentials for code changes:
 - **Client state** — `createSharedComposable` and `provide`/`inject` dedupe work
   in-memory per session. They are not a durable response cache.
 
+## Docs code examples
+
+Code examples in `apps/docs/src` must be sourced from real files instead of
+hand-written fenced blocks. Put shared docs snippets in
+`examples/docs-code-examples` by default, or in a dedicated `examples/*` project
+when the scenario already needs its own setup. Include snippets with
+`automd:file` comments so `pnpm generateAutomd` materializes the fenced block.
+Prefer small focused files or line ranges over dumping a full page into docs.
+
+When editing docs examples, do not add new inline fenced code blocks under
+`apps/docs/src`. Keep TypeScript, Vue, and JavaScript snippets as `.ts`, `.vue`,
+or `.js` files that compile in the docs-code example project. If docs should
+show only part of a larger example, keep the source complete and render the
+excerpt with automd line ranges. Run
+`pnpm --filter example-docs-code-examples typecheck` and `pnpm generateAutomd`
+after changing snippets.
+
 ## Nuxt component registration (templates)
 
 Which directories are registered `global: true`, why, and the trap of
@@ -146,6 +163,12 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 ## References
 
 - Docs: [developer.shopware.com/frontends](https://developer.shopware.com/frontends/)
+- Platform docs: [developer.shopware.com/llms.txt](https://developer.shopware.com/llms.txt)
+  indexes the whole developer portal as Markdown pages. Use it only for docs
+  outside this repo (Store API concepts, backend guides). Its Frontends part is
+  built from `apps/docs/src/`, so read that locally instead. The file is large,
+  so download it outside the repo (a temp dir) and search it there.
+  `/docs/v6.5/` and `/docs/v6.6/` are older versions.
 - Package details: every package has a `README.md`, and some also have an
   `AGENTS.md` — check the package directory
 - Repository: [github.com/shopware/frontends](https://github.com/shopware/frontends)

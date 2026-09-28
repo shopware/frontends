@@ -178,6 +178,8 @@ Use generated Store API types when you need to type the request bodies or lower-
   <SchemaTypeTooltip type-key='Schemas["SuccessResponse"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/password/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -194,11 +196,15 @@ type ChangePasswordBody =
 type SuccessResponse = Schemas["SuccessResponse"];
 ```
 
+<!-- /automd -->
+
 `RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible — it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip: it is an `array_struct` envelope, so the flag lives at `data[0].isExpired`. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal password recovery and change page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/password/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -257,7 +263,7 @@ const canSetPassword = computed(
     isHashChecked.value &&
     !isCheckFailed.value &&
     !isExpired.value &&
-    !isResetComplete.value
+    !isResetComplete.value,
 );
 
 const startSubmit = () => {
@@ -280,7 +286,7 @@ const checkHash = async () => {
   try {
     const { data: recoveryResponse } = await apiClient.invoke(
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
-      { body: { hash }, fetchOptions: { timeout: 10_000 } }
+      { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
     // the flag sits inside an array_struct envelope, not on the response root
     isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
@@ -325,7 +331,7 @@ const confirmNewPassword = async () => {
   try {
     await apiClient.invoke(
       "recoveryPassword post /account/recovery-password-confirm",
-      { body: { hash, ...resetForm } }
+      { body: { hash, ...resetForm } },
     );
     resetForm.newPassword = "";
     resetForm.newPasswordConfirm = "";
@@ -517,6 +523,8 @@ onMounted(checkHash);
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-demo-store` pins it with `definePageMeta({ path: "/account/recover/password" })`.
@@ -573,6 +581,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 - [Login recipe](login.html)
 - [Register recipe](register.html)
+- [Customer Profile recipe](profile.html)
 - [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)
 - [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)

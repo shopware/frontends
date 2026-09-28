@@ -1,0 +1,5 @@
+my-monorepo/
+├─ vue-starter-template/      # Base template
+├─ lumora-store/              # Brand A (extends base)
+├─ another-brand/             # Brand B (extends base)
+└─ premium-brand/             # Brand C (extends base)

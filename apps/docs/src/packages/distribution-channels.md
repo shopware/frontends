@@ -43,6 +43,8 @@ Normal production releases, managed by [Changesets](https://github.com/changeset
 
 Contributors add a changeset in their PR (`pnpm changeset`). The `Release` GitHub workflow (`.github/workflows/release.yml`) aggregates pending changesets into a `chore: next version release` PR. Merging that PR runs `changeset publish`, which publishes to npm under `latest` and creates the matching git tags and GitHub releases.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/packages/distribution-channels/stable.sh" code lang="bash" no-name -->
+
 ```bash
 # Latest stable
 npm i @shopware/api-client
@@ -50,6 +52,8 @@ npm i @shopware/api-client
 # Pin an exact version
 npm i @shopware/api-client@1.5.0
 ```
+
+<!-- /automd -->
 
 :::tip When to use
 Production and any normal app development. This is the default and the only channel with semver guarantees - if you are unsure, use this one.
@@ -61,12 +65,18 @@ Snapshot pre-releases published to npm under the `canary` dist-tag automatically
 
 The job runs:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/packages/distribution-channels/canary.sh" code lang="bash" no-name -->
+
 ```bash
 pnpm run version --snapshot canary
 pnpm changeset publish --no-git-tag --tag canary
 ```
 
+<!-- /automd -->
+
 Versions use the format `0.0.0-canary-<UTC-timestamp>`, for example `0.0.0-canary-20260629144551`.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/packages/distribution-channels/canary-2.sh" code lang="bash" no-name -->
 
 ```bash
 # Newest canary snapshot
@@ -75,6 +85,8 @@ npm i @shopware/api-client@canary
 # Pin an exact snapshot for reproducibility
 npm i @shopware/api-client@0.0.0-canary-20260629144551
 ```
+
+<!-- /automd -->
 
 Because the `canary` tag always points at the newest snapshot, pin the exact snapshot version when you need a reproducible install.
 
@@ -92,11 +104,17 @@ Per-pull-request preview builds powered by [pkg-pr-new](https://pkg.pr.new). The
 
 The `package-previews` workflow (`.github/workflows/package-previews.yml`) triggers on a pull request `labeled` event, only when the label is `publish-pkg-preview`. It builds the packages and runs:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/packages/distribution-channels/pr-preview.sh" code lang="bash" no-name -->
+
 ```bash
 npx pkg-pr-new publish ./packages/api-client ./packages/api-gen ./packages/cms-base-layer ./packages/composables ./packages/helpers ./packages/nuxt-module
 ```
 
+<!-- /automd -->
+
 The pkg-pr-new bot then comments the install commands on the PR. Install directly from the preview URL:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/packages/distribution-channels/pr-preview-2.sh" code lang="bash" no-name -->
 
 ```bash
 # By PR number
@@ -105,6 +123,8 @@ npm i https://pkg.pr.new/shopware/frontends/@shopware/api-client@1349
 # A commit SHA also works in place of the PR number
 npm i https://pkg.pr.new/shopware/frontends/@shopware/api-client@<commit-sha>
 ```
+
+<!-- /automd -->
 
 :::info Opt-in
 Previews are opt-in: a maintainer adds the `publish-pkg-preview` label to the PR to trigger a build.
