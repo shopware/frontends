@@ -48,12 +48,19 @@ const skippedFiles =
 
 const getTwin = (post: string) => post.replace(/^(\w+) post /, "$1Get get ");
 
-const operationKeys = new Set(
-  readFileSync(
-    join(root, "packages/api-client/api-types/storeApiTypes.d.ts"),
-    "utf8",
-  ).match(/(?<=")\w+ (?:get|post) \/[^"]*(?=":)/g),
+const storeApiTypes = readFileSync(
+  join(root, "packages/api-client/api-types/storeApiTypes.d.ts"),
+  "utf8",
 );
+
+const operationKeys = new Set(
+  storeApiTypes.match(/(?<=")\w+ (?:get|post) \/[^"]*(?=":)/g),
+);
+
+function operationType(key: string) {
+  const start = storeApiTypes.indexOf(`\n  "${key}": {`);
+  return storeApiTypes.slice(start, storeApiTypes.indexOf('\n  "', start + 1));
+}
 
 const twins = [...operationKeys].filter(
   (key) => key.includes(" post ") && operationKeys.has(getTwin(key)),
@@ -86,6 +93,18 @@ describe("cacheable reads coverage", () => {
         ...Object.keys(postOnlyReads),
       ].sort(),
     ).toEqual(twins.sort());
+  });
+
+  it("maps plain query params for a GET twin without _criteria", () => {
+    const unmapped = Object.values(cacheableReadRoutes)
+      .filter((route) => !("query" in route))
+      .map((route) => route.get)
+      .filter((get) => !operationType(get).includes("_criteria"));
+
+    expect(
+      unmapped,
+      "This GET route may ignore _criteria. List the body keys it reads as plain params in `query`.",
+    ).toEqual([]);
   });
 
   it("sends every cacheable read through invokeRead", () => {

@@ -23,7 +23,19 @@ export const cacheableReadRoutes = {
   },
   "readCategory post /category/{navigationId}": {
     get: "readCategoryGet get /category/{navigationId}",
-    query: ["slots"],
+    // the listing reads these from the request, `_criteria` drops `limit`
+    query: [
+      "slots",
+      "limit",
+      "p",
+      "order",
+      "manufacturer",
+      "properties",
+      "min-price",
+      "max-price",
+      "rating",
+      "shipping-free",
+    ],
   },
   "readCountry post /country": {
     get: "readCountryGet get /country",

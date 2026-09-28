@@ -1,6 +1,8 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
 
+import type { Schemas } from "#shopware";
+
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
 import { useCategorySearch } from "./useCategorySearch";
@@ -82,11 +84,43 @@ describe("useCategorySearch", () => {
           _criteria: encodeForQuery({
             associations: cmsAssociations,
             filter: [{ type: "equals", field: "active", value: true }],
-            limit: 1,
             sort: [{ field: "name", order: "ASC" }],
           }),
+          limit: 1,
         },
       },
+    );
+  });
+
+  it("search sends listing params as plain query params on GET", () => {
+    const { vm, injections } = useSetup(useCategorySearch, {
+      shopware: { cacheableReads: true },
+    });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {},
+    });
+
+    vm.search("categoryId", {
+      withCmsAssociations: true,
+      query: {
+        p: 2,
+        limit: 30,
+        order: "price-asc",
+        properties: "a|b",
+      } as Schemas["Criteria"],
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readCategoryGet get /category/{navigationId}",
+      expect.objectContaining({
+        query: {
+          _criteria: encodeForQuery({ associations: cmsAssociations }),
+          p: 2,
+          limit: 30,
+          order: "price-asc",
+          properties: "a|b",
+        },
+      }),
     );
   });
 
