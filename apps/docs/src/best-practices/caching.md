@@ -369,7 +369,6 @@ Image transforms only take effect when the backend supports remote/on-the-fly th
 - [Shopware: Store API concepts](https://developer.shopware.com/docs/concepts/api/store-api.html)
 - [Shopware: Remote thumbnail generation](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html)
 - [Shopware issue #12388: `_criteria` GET query parameter](https://github.com/shopware/shopware/issues/12388)
-- [Shopware PR #17204: declare `_criteria` on `GET /store-api/product-listing`](https://github.com/shopware/shopware/pull/17204)
 - [VueUse: `createSharedComposable`](https://vueuse.org/shared/createSharedComposable/)
 - [VueUse: `createInjectionState`](https://vueuse.org/shared/createInjectionState/)
 - [Vue 3: Provide / Inject](https://vuejs.org/guide/components/provide-inject.html)

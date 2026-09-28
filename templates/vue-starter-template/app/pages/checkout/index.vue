@@ -23,8 +23,16 @@ const {
 const { changeProductQuantity, removeItemById, isEmpty, refreshCart, cart } =
   useCart();
 
-const { register, isLoggedIn, isGuestSession, userDefaultBillingAddress } =
-  useUser();
+const {
+  register,
+  refreshUser,
+  updatePersonalInfo,
+  user,
+  isLoggedIn,
+  isGuestSession,
+  userDefaultBillingAddress,
+} = useUser();
+const { updateCustomerAddress } = useAddress();
 const { handleApiError: handleRegistrationError } = useApiErrorsResolver(
   "checkout_registration_form",
 );
@@ -42,9 +50,14 @@ const {
   customerBaseInfo,
   billingAddress,
   createAccount,
+  countryHasStates,
 } = useTemplateCheckout();
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
+const registeredDuringCheckout = ref(false);
+const showCustomerForm = computed(
+  () => !isUserSession.value || registeredDuringCheckout.value,
+);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const { push } = useRouter();
@@ -75,20 +88,123 @@ function focusFirstInvalid() {
 }
 
 const isPlacingOrder = ref(false);
-const isRegistering = ref(false);
+
+async function validateCustomerForm() {
+  const [baseInfoResult, billingAddressResult] = await Promise.allSettled([
+    $vBaseInfo.$validate(),
+    $vBillingAddress.$validate(),
+  ]);
+
+  const isBaseInfoValid =
+    baseInfoResult.status === "fulfilled" && baseInfoResult.value.valid;
+  const isBillingAddressValid =
+    billingAddressResult.status === "fulfilled" &&
+    billingAddressResult.value.valid;
+
+  if (!isBaseInfoValid || !isBillingAddressValid) {
+    focusFirstInvalid();
+    return false;
+  }
+
+  return true;
+}
+
+function getBillingAddressFields() {
+  return {
+    firstName: billingAddress.value.firstName,
+    lastName: billingAddress.value.lastName,
+    street: billingAddress.value.street,
+    zipcode: billingAddress.value.zipcode,
+    city: billingAddress.value.city,
+    countryId: billingAddress.value.countryId,
+    countryStateId: billingAddress.value.countryStateId || undefined,
+  };
+}
+
+async function updateCustomerDetails() {
+  const existingAddress = userDefaultBillingAddress.value;
+  if (existingAddress) {
+    await updateCustomerAddress({
+      ...existingAddress,
+      ...getBillingAddressFields(),
+    });
+  }
+
+  await updatePersonalInfo({
+    firstName: billingAddress.value.firstName,
+    lastName: billingAddress.value.lastName,
+    ...(user.value?.salutationId
+      ? { salutationId: user.value.salutationId }
+      : {}),
+  });
+
+  await refreshUser();
+}
+
+async function saveCustomerDetails() {
+  if (isUserSession.value) {
+    await updateCustomerDetails();
+  } else {
+    await register({
+      accountType: "private",
+      firstName: billingAddress.value.firstName,
+      lastName: billingAddress.value.lastName,
+      email: customerBaseInfo.value.email,
+      password: createAccount.value ? customerBaseInfo.value.password : "",
+      guest: !createAccount.value,
+      billingAddress: {
+        customerId: "",
+        id: "",
+        ...getBillingAddressFields(),
+      },
+      acceptedDataProtection: true,
+    });
+    registeredDuringCheckout.value = true;
+  }
+
+  await Promise.allSettled([
+    getShippingMethods({ forceReload: true }),
+    getPaymentMethods({ forceReload: true }),
+  ]);
+
+  if (sessionSelectedPaymentMethod.value) {
+    selectedPaymentMethod.value = sessionSelectedPaymentMethod.value.id;
+  }
+  if (sessionSelectedShippingMethod.value) {
+    selectedShippingMethod.value = sessionSelectedShippingMethod.value.id;
+  }
+}
 
 async function handlePlaceOrder() {
   if (isPlacingOrder.value) return;
 
+  if (showCustomerForm.value) {
+    const isValid = await validateCustomerForm();
+    if (!isValid) return;
+  }
+
+  if (!canPlaceOrder.value) return;
+
   isPlacingOrder.value = true;
   const trigger = document.activeElement;
+  let savingCustomerDetails = false;
   try {
+    if (showCustomerForm.value) {
+      savingCustomerDetails = true;
+      await saveCustomerDetails();
+      savingCustomerDetails = false;
+    }
+
+    if (!canPlaceOrder.value) return;
+
     const order = await createOrder();
     await push(formatLink(`/checkout/success/${order.id}`));
     await refreshCart();
   } catch (error) {
     if (isTimeoutError(error)) {
       persistentError(t("errors.order-timeout"));
+    } else if (savingCustomerDetails) {
+      handleRegistrationError(error, persistentError);
     } else {
       handlePlaceOrderError(error, persistentError);
     }
@@ -104,49 +220,6 @@ function handleChangeShippingMethod(id: string) {
 
 function handleChangePaymentMethod(id: string) {
   setPaymentMethod({ id });
-}
-
-async function handleRegister() {
-  if (isRegistering.value) return;
-
-  $vBaseInfo.$touch();
-  $vBillingAddress.$touch();
-
-  const { valid: validBaseInfo } = await $vBaseInfo.$validate();
-  const { valid: validBillingAddress } = await $vBillingAddress.$validate();
-
-  if (!validBaseInfo || !validBillingAddress) {
-    focusFirstInvalid();
-    return;
-  }
-
-  isRegistering.value = true;
-  const trigger = document.activeElement;
-  try {
-    await register({
-      firstName: billingAddress.value.firstName,
-      lastName: billingAddress.value.lastName,
-      email: customerBaseInfo.value.email,
-      password: customerBaseInfo.value.password,
-      guest: !createAccount.value,
-      billingAddress: {
-        customerId: "",
-        firstName: billingAddress.value.firstName,
-        id: "",
-        lastName: billingAddress.value.lastName,
-        street: billingAddress.value.street,
-        zipcode: billingAddress.value.zipcode,
-        city: billingAddress.value.city,
-        countryId: billingAddress.value.countryId,
-      },
-      acceptedDataProtection: true,
-    });
-  } catch (error) {
-    handleRegistrationError(error, persistentError);
-  } finally {
-    isRegistering.value = false;
-    restoreFocus(trigger);
-  }
 }
 
 onMounted(() => {
@@ -203,30 +276,21 @@ onMounted(() => {
           </div>
         </div>
         <CheckoutStepHeader :step="1" label="Shipping address">
-          <template v-if="!isUserSession">
+          <div v-if="showCustomerForm" class="flex flex-col">
             <CheckoutCustomerBaseInfo
               class="mb-4"
               v-model:email="customerBaseInfo.email"
               v-model:password="customerBaseInfo.password"
               v-model:createAccount="createAccount"
-              :errorMessages="toRef($vBaseInfo)"
+              :validation="$vBaseInfo"
             />
             <CheckoutCustomerAddress
               class="mb-4"
               v-model="billingAddress"
-              :errorMessages="toRef($vBillingAddress)"
+              :validation="$vBillingAddress"
+              @states-change="countryHasStates = $event.length > 0"
             />
-            <FormBaseButton
-              :label="
-                isRegistering
-                  ? $t('checkout.savingDetails')
-                  : $t('checkout.continueButton')
-              "
-              :loading="isRegistering"
-              data-testid="checkout-pi-submit-button"
-              @click="handleRegister"
-            />
-          </template>
+          </div>
 
           <CheckoutCustomerAddressChosen v-else :address="billingAddress" />
         </CheckoutStepHeader>
@@ -245,6 +309,7 @@ onMounted(() => {
           />
         </CheckoutStepHeader>
         <FormBaseButton
+          type="button"
           data-testid="checkout-place-order-button"
           :label="
             isPlacingOrder
@@ -252,7 +317,7 @@ onMounted(() => {
               : $t('checkout.placeOrderButton')
           "
           :loading="isPlacingOrder"
-          :disabled="!canPlaceOrder"
+          :disabled="isUserSession && !canPlaceOrder"
           @click="handlePlaceOrder"
         />
       </div>

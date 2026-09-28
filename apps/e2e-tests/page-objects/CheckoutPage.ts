@@ -113,6 +113,11 @@ export class CheckoutPage {
     await selectCountry(this.page, this.country, "Germany");
     await selectFirstOptionIfPresent(this.countryState);
 
+    // Demo-store checkout has a Continue control that registers the guest
+    // before place-order. The starter registers as part of place-order, so
+    // skip when that button is not on the page.
+    if ((await this.submitButton.count()) === 0) return;
+
     // Saving the address registers the guest; without that session
     // /checkout/order answers 403 CUSTOMER_NOT_LOGGED_IN.
     const guestRegistered = this.page.waitForResponse(
