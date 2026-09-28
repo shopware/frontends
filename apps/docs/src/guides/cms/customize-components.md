@@ -29,12 +29,16 @@ In order to customize a component, you need to override it. The process is the s
 
 To do so, you need to create a file with the same name as the component in the `components` directory or wherever according to the project's configuration.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/customize-components/create-new-files.txt" code lang="json" no-name -->
+
 ```json
 demo-store/
 ├─ components/
 |  ├─ cms/
 |  ├─ ├─ CmsBlockImageHighlightRow.vue
 ```
+
+<!-- /automd -->
 
 Now the CMS module will automatically resolve that file based on the name and you can start writing your component.
 

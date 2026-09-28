@@ -28,16 +28,7 @@ nav:
 
 Avoiding hard waits in Playwright.
 
-```js
-await page.waitFor(1000); // hard wait for 1000ms
-```
-
-Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
-Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
-
-One exception: avoid `waitForLoadState("networkidle")` on a Shopware storefront. A Nuxt app keeps making
-requests after the page is usable, so the network rarely goes idle and the wait times out. Wait for the
-element you are about to act on instead.
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/waits-best-practice.js" code lang="js" no-name -->
 
 ```js
 // flaky
@@ -49,6 +40,30 @@ const firstProduct = page.getByTestId("product-box-product-name-link").first();
 await firstProduct.waitFor({ state: "visible" });
 await firstProduct.click();
 ```
+
+<!-- /automd -->
+
+Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
+Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
+
+One exception: avoid `waitForLoadState("networkidle")` on a Shopware storefront. A Nuxt app keeps making
+requests after the page is usable, so the network rarely goes idle and the wait times out. Wait for the
+element you are about to act on instead.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/waits-best-practice.js" code lang="js" no-name -->
+
+```js
+// flaky
+await page.waitForLoadState("networkidle");
+await page.getByTestId("product-box-product-name-link").first().click();
+
+// reliable
+const firstProduct = page.getByTestId("product-box-product-name-link").first();
+await firstProduct.waitFor({ state: "visible" });
+await firstProduct.click();
+```
+
+<!-- /automd -->
 
 ### Pages
 
@@ -70,34 +85,40 @@ Each page must contain a cohesive set of locators and actions.
 
 For a page object to be as readable as possible, you must follow the below structure:
 
-```js
-import { expect, Locator, Page } from "@playwright/test";
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/structure-e2e-tests.ts" code lang="ts" no-name -->
+
+```ts
+import type { Locator, Page } from "@playwright/test";
+
+import { readonly } from "#imports";
 
 export class LoginForm {
-  // Define selectors
+  // Define selectors.
   readonly page: Page;
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
-  readonly closeLoginPopup: Locator
+  readonly closeLoginPopup: Locator;
 
-  // Init selectors using constructor
+  // Init selectors using constructor.
   constructor(page: Page) {
     this.page = page;
     this.usernameInput = page.locator("[data-testid='login-email-input']");
     this.passwordInput = page.locator("[data-testid='login-password-input']");
     this.submitButton = page.locator("[data-testid='login-submit-button']");
-    this.closeLoginPopup =page.locator('text=close')
+    this.closeLoginPopup = page.locator("text=close");
   }
 
-  // Define login page methods
+  // Define login page methods.
   async login(username: string, password: string) {
     await this.usernameInput.type(username);
     await this.passwordInput.type(password);
     await this.submitButton.click();
   }
-};
+}
 ```
+
+<!-- /automd -->
 
 ## data-testid attribute
 
@@ -110,16 +131,22 @@ The main benefit of adding those attributes is that you can easily get elements 
 
 ### Naming convention
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/naming-convention" code no-name -->
+
 ```
 data-testid="{scope}-{name}-{type}"
 data-testid="header-search-input"
 ```
+
+<!-- /automd -->
 
 **Scope** - indicates where the element is placed. For example - page
 **Name** - defines the element. For example - input name
 **Type** - indicates the type of element. For example - input
 
 ### Usage in tests
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/e2e-testing/usage-in-tests.js" code lang="js" no-name -->
 
 ```js
 import { test, expect } from "@playwright/test";
@@ -146,3 +173,5 @@ test("failed login", async ({ page }) => {
   ).toBeVisible();
 });
 ```
+
+<!-- /automd -->

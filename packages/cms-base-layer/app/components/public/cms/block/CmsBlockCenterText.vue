@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockCenterText } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,10 +8,10 @@ const props = defineProps<{
   content: CmsBlockCenterText;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const slotLeftContent = getSlotContent("left");
-const slotRightContent = getSlotContent("right");
-const slotCenterContent = getSlotContent("center");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const slotLeftContent = computed(() => getSlotContent("left"));
+const slotRightContent = computed(() => getSlotContent("right"));
+const slotCenterContent = computed(() => getSlotContent("center"));
 </script>
 <template>
   <div class="cms-block-center-text grid md:grid-cols-3 gap-10 content-center">

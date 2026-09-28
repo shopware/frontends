@@ -4,6 +4,14 @@
   "categories": {
     "correctness": "error"
   },
+  "overrides": [
+    {
+      "files": ["examples/docs-code-examples/**/*.{js,ts,vue}"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     "dist",
     "node_modules",

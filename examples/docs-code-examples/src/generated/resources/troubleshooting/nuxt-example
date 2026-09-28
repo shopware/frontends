@@ -1,0 +1,11 @@
+  vite: {
+    server: {
+      proxy: {
+        "/store-api": {
+          target: "<backend url>",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  },

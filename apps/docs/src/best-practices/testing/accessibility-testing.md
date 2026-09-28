@@ -22,31 +22,44 @@ Axe Core is an open-source accessibility testing engine used for automated web t
 Playwright and e2e tests can also be used to test application for many types of accessibility issues.
 By default, axe checks against a wide variety of accessibility rules, but rules can be defined easily at the test level
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/axe-core.js" code lang="js" no-name -->
+
 ```js
 const accessibilityScanResults = await new AxeBuilder({ page })
   .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
   .analyze();
 ```
 
+<!-- /automd -->
+
 ## Example accessibility tests
 
 Using the ax core library is practically no different from typical work with playwright. You can create tests for each page from scratch or integrate accessibility scans and assertions into your existing test cases.
 
-```js
-import { test, expect } from '@playwright/test';
-import AxeBuilder from "@axe-core/playwright";
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/example-accessibility-tests.js" code lang="js" no-name -->
 
-//Uses normal Playwright Test syntax to define a test case
-test('Check accessibility violations', async ({ page }) => {
-//Uses normal Playwright syntax to navigate to the page under test
-  await page.goto('https://example.com');
-//Awaits AxeBuilder.analyze() to run the accessibility scan against the page
+```js
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+
+// Uses normal Playwright Test syntax to define a test case.
+test("Check accessibility violations", async ({ page }) => {
+  // Uses normal Playwright syntax to navigate to the page under test.
+  await page.goto("https://example.com");
+
+  // Awaits AxeBuilder.analyze() to run the accessibility scan against the page.
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-  //Uses normal Playwright Test assertions to verify that there are no violations in the returned scan results
-      expect(accessibilityScanResults.violations).toEqual([]);
+
+  // Uses normal Playwright Test assertions to verify that there are no violations in the returned scan results.
+  expect(accessibilityScanResults.violations).toEqual([]);
+});
 ```
 
+<!-- /automd -->
+
 You can also run tests for a specific part of the page
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/accessibility-testing/example-accessibility-tests-2.js" code lang="js" no-name -->
 
 ```js
 test("navigation menu should not have automatically detectable accessibility violations", async ({
@@ -68,3 +81,5 @@ test("navigation menu should not have automatically detectable accessibility vio
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 ```
+
+<!-- /automd -->

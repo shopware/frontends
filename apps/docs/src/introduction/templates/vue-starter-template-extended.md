@@ -24,15 +24,21 @@ The steps below are the manual setup that works around both.
 
 Scaffold both templates side by side:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template vue-starter-template
 npx tiged shopware/frontends/templates/vue-starter-template-extended lumora-store
 ```
 
+<!-- /automd -->
+
 Update the `lumora-store/package.json` to reference local paths instead of workspace protocol:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-2.txt" code lang="diff" no-name -->
+
 ```diff
-  "dependencies": {
+"dependencies": {
 -   "vue-starter-template": "workspace:*"
 +   "vue-starter-template": "file:../vue-starter-template"
   },
@@ -42,12 +48,18 @@ Update the `lumora-store/package.json` to reference local paths instead of works
   }
 ```
 
+<!-- /automd -->
+
 Then install and run:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/quick-setup-3.sh" code lang="bash" no-name -->
 
 ```bash
 cd lumora-store
 pnpm i && pnpm dev
 ```
+
+<!-- /automd -->
 
 ## What is Lumora?
 
@@ -64,13 +76,19 @@ Lumora is a fictional brand selling modern home scents (candles, reed diffusers,
 
 This template extends the Vue Starter Template using Nuxt's layer system:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/layer-architecture.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["../vue-starter-template"], // Extend base template
   // ... Lumora-specific configuration
 });
 ```
+
+<!-- /automd -->
 
 ### What You Inherit
 
@@ -87,7 +105,9 @@ By extending the base template, you automatically get:
 
 The extended template contains only:
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/what-you-customize.txt" code no-name -->
+
+```txt
 lumora-store/
 ├─ app/
 │  └─ app.config.ts        # Brand customizations (colors, settings)
@@ -97,11 +117,15 @@ lumora-store/
 └─ package.json            # Dependencies
 ```
 
+<!-- /automd -->
+
 ## Customization Example
 
 ### Brand Color Configuration
 
 The template demonstrates how to customize the image placeholder color using `app.config.ts`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/brand-color-configuration.ts" code lang="ts" no-name -->
 
 ```ts
 // app/app.config.ts
@@ -112,15 +136,20 @@ export default defineAppConfig({
 });
 ```
 
+<!-- /automd -->
+
 This setting is used by the `useImagePlaceholder` composable from `@shopware/cms-base-layer`.
 
 ### Theme Customization
 
 Custom UnoCSS configuration in `uno.config.ts` adds Lumora-specific styles on top of the shared base config generated from the extended layers:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/theme-customization.ts" code lang="ts" no-name -->
+
 ```ts
 // uno.config.ts
 import { mergeConfigs } from "@unocss/core";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 export default mergeConfigs([
@@ -136,11 +165,15 @@ export default mergeConfigs([
 ]);
 ```
 
+<!-- /automd -->
+
 ## Overriding Components
 
 To override a component from the base template, create a file with the same name in the matching directory under `app/components/`:
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/overriding-components.txt" code no-name -->
+
+```txt
 lumora-store/
   app/
     components/
@@ -154,6 +187,8 @@ lumora-store/
         Header.vue              # Overrides base LayoutHeader
 ```
 
+<!-- /automd -->
+
 Nuxt prioritizes your local components over the base template. Keep `Frontend*` pages in `components/global/` and CMS blocks/elements in `components/cms/` so `resolveComponent` still finds them.
 
 ## Benefits of the Layer Approach
@@ -166,22 +201,30 @@ Only maintain code that differs from the base template. In this example, the ent
 
 When the base template improves (bug fixes, new features), you can update it without touching your customizations:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/2-automatic-updates.sh" code lang="bash" no-name -->
+
 ```bash
 # Update base template dependency
 npm update vue-starter-template
 ```
 
+<!-- /automd -->
+
 ### 3. Multiple Brands
 
 Create multiple brand variants from a single base:
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/3-multiple-brands.txt" code no-name -->
+
+```txt
 my-monorepo/
 ├─ vue-starter-template/      # Base template
 ├─ lumora-store/              # Brand A (extends base)
 ├─ another-brand/             # Brand B (extends base)
 └─ premium-brand/             # Brand C (extends base)
 ```
+
+<!-- /automd -->
 
 ### 4. Clean Separation
 
@@ -197,7 +240,11 @@ Your brand-specific code stays separate from the framework code, making it easie
 
 Instead of a local path, you can extend from an npm package:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-from-npm-package.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@your-company/store-base"],
@@ -205,20 +252,30 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 ### Extend Multiple Layers
 
 You can extend multiple layers:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/extend-multiple-layers.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@your-company/store-base", "@your-company/payment-layer"],
 });
 ```
 
+<!-- /automd -->
+
 ## Production Deployment
 
 The extended template can be deployed like any Nuxt application:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template-extended/production-deployment.sh" code lang="bash" no-name -->
 
 ```bash
 # Build for production
@@ -227,6 +284,8 @@ npm run build
 # Preview production build
 npm run preview
 ```
+
+<!-- /automd -->
 
 <PageRef page="https://nuxt.com/docs/getting-started/deployment" target="blank" title="Nuxt Deployment Guide" sub="Learn how to deploy your Nuxt application to various platforms" />
 
