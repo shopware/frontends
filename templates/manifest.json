@@ -93,6 +93,57 @@
       "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
     },
     {
+      "id": "vue-agentic-handoff",
+      "displayName": "Vue Agentic Handoff (UCP)",
+      "packageName": "vue-agentic-handoff",
+      "framework": "nuxt",
+      "purpose": "Takes over checkouts that AI agents hand off over UCP, on top of vue-starter-template as a Nuxt layer.",
+      "docsUrl": null,
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Bvue-agentic-handoff%5D+",
+      "supportLevel": "example",
+      "scaffoldable": false,
+      "scaffoldCommand": null,
+      "deployable": false,
+      "devcontainer": false,
+      "env": {
+        "NUXT_PUBLIC_SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/."
+        },
+        "NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
+        },
+        "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "NUXT_SHOPWARE_ENDPOINT": {
+          "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        },
+        "NUXT_AGENTIC_HANDOFF_SHOPWARE_ORIGIN": {
+          "description": "Optional. Origin of the Shopware instance running the agentic-commerce plugin; /.well-known/ucp and /ucp/* are proxied there. Derived from the Store API endpoint when empty."
+        },
+        "NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS": {
+          "description": "Optional. Hosts this storefront answers on, comma separated, with a port where one is used. The UCP proxy reports the first one to Shopware, and /checkout/continue/* answers only on these hosts. Empty trusts the incoming request."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "nuxt prepare && nuxt build",
+      "devCommand": "nuxt prepare && nuxt dev",
+      "typeGeneration": {
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: NUXT_PUBLIC_SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN."
+          }
+        },
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
+      "notes": "Needs a Shopware instance with the agentic-commerce plugin (UCP) and a continueUrlTemplate pointing at /checkout/continue/{checkoutId}; the public demo backend has no UCP, so the handoff routes do nothing there. Not scaffoldable for the same reason as vue-starter-template-extended: it extends \"../vue-starter-template\" by relative path."
+    },
+    {
       "id": "astro",
       "displayName": "Astro Template",
       "packageName": "shopware-astro",
