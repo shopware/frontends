@@ -40,35 +40,63 @@ Before you start your A/B test, you should have a clear hypothesis. What do you 
 
 You should split your components dynamically. This will help you to avoid enlarged bundle sizes. You can use the `import()` function to load components on demand. Example:
 
-```ts
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/split-components-dynamically-to-avoid-enlagred-bundle-sizes.vue" code lang="vue" no-name -->
+
+```vue
+<script setup lang="ts">
+import { defineAsyncComponent } from "vue";
+
+function useABTesting(_flag: string) {
+  return true;
+}
+
 const myExperimentFlag = useABTesting("myExperimentFlag");
 
-const MyComponent = myExperimentFlag ? import("./MyComponentVariantA") : import("./MyComponentVariantB");
+const MyComponent = defineAsyncComponent(() =>
+  myExperimentFlag
+    ? import("./MyComponentVariantA.vue")
+    : import("./MyComponentVariantB.vue"),
+);
+</script>
 
-// later in the template
-
-<MyComponent />
+<template>
+  <MyComponent />
+</template>
 ```
+
+<!-- /automd -->
 
 ### Testing smaller components
 
 While dynamic splitting is very effective to avoid loading too much code to the client's browser, this would not be efficient with some very small components. For example if you only want to test a different button variant, then in most cases it could be done in a single component. Example:
 
-```ts
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/testing/ab-testing/testing-smaller-components.vue" code lang="vue" no-name -->
+
+```vue
+<script setup lang="ts">
+function useABTesting(_flag: string) {
+  return true;
+}
+
 const myExperimentFlag = useABTesting("myExperimentFlag");
+</script>
 
-// later in the template
+<template>
+  <button
+    :class="{
+      'bg-color-red': myExperimentFlag,
+      'bg-color-blue': !myExperimentFlag,
+    }"
+  >
+    Click me
+  </button>
 
-<button :class={{
-  "bg-color-red": myExperimentFlag,
-  "bg-color-blue": !myExperimentFlag
-}}> Click me </button>
-
-// or more slear split using v-show/v-if
-
-<button v-if="myExperimentFlag" class="bg-color-red"> Click me </button>
-<button v-else class="bg-color-blue"> Click me please! </button>
+  <button v-if="myExperimentFlag" class="bg-color-red">Click me</button>
+  <button v-else class="bg-color-blue">Click me please!</button>
+</template>
 ```
+
+<!-- /automd -->
 
 ### Clean your code
 

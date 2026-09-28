@@ -1,0 +1,13 @@
+<!-- part of templates/vue-demo-store/components/product/ProductStatic.vue -->
+<!-- Options -->
+<div class="mt-4 lg:mt-0 lg:row-span-3">
+  <h2 class="sr-only">Product information</h2>
+  <div class="product-variants mt-10">
+    <ProductPrice :product="product" />
+    <ProductUnits :product="product" class="text-sm" />
+    <ProductVariantConfigurator @change="handleVariantChange" />
+    <ProductCustomizedProductConfigurator />
+    <!-- ADDED -->
+    <ProductAddToCart :product="product" />
+  </div>
+</div>

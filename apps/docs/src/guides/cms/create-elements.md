@@ -17,11 +17,13 @@ nav:
 
 Start with importing the correct element type from the `@shopware/composables` package and using it in the `defineProps` method to define the type of your `content` property:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example.vue" code lang="vue" no-name -->
+
 ```vue
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage } from "@shopware/composables";
+import type { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsElementImage;
@@ -29,42 +31,57 @@ const props = defineProps<{
 </script>
 ```
 
+<!-- /automd -->
+
 Now, you can use `props.content` to access all properties of the element in your template.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-2.vue" code lang="vue{8}" no-name -->
 
 ```vue{8}
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-// see above
+import type { CmsElementImage } from "@shopware/composables";
+
+const props = defineProps<{
+  content: CmsElementImage;
+}>();
 </script>
 
 <template>
-    <img :src="props.content.data.media.url" />
+  <img :src="props.content.data.media.url" />
 </template>
 ```
 
+<!-- /automd -->
+
 However, for some elements the configuration can be quite complex, so there are composables to give you a hand:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-3.vue" code lang="vue{10-14,18-20}" no-name -->
 
 ```vue{10-14,18-20}
 <!-- components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
-import { CmsElementImage, useCmsElementImage } from "@shopware/composables";
+import { useCmsElementImage } from "@shopware/composables";
+import type { CmsElementImage } from "@shopware/composables";
 
 const props = defineProps<{
-    content: CmsElementImage
+  content: CmsElementImage;
 }>();
 
 const {
-    containerStyle, // padding, background-color etc.
-    displayMode, // cover, contain, stretch etc.
-    imageAttrs, // automatically resolves src, alt and srcset attributes
+  containerStyle, // padding, background-color etc.
+  displayMode, // cover, contain, stretch etc.
+  imageAttrs, // automatically resolves src, alt and srcset attributes
 } = useCmsElementImage(props.content);
 </script>
 
 <template>
-    <div :style="containerStyle">
-        <img v-bind="imageAttrs"/>
-    </div>
+  <div :style="containerStyle">
+    <img v-bind="imageAttrs" />
+  </div>
 </template>
 ```
+
+<!-- /automd -->

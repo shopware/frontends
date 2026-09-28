@@ -38,21 +38,26 @@ In general, the store API should only output content that would also be visible 
 
 - Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
-  ```ts
-  import basicSsl from '@vitejs/plugin-basic-ssl'
-  // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
-  export default defineNuxtConfig({
-  // ...
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/option-2-vite-plugin.ts" code lang="ts" no-name -->
+
+```ts
+import basicSsl from "@vitejs/plugin-basic-ssl";
+import { defineNuxtConfig } from "nuxt/config";
+
+// https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
+export default defineNuxtConfig({
   devServer: {
     https: true,
   },
   vite: {
-    plugins: [
-      basicSsl(),
-    ],
+    plugins: [basicSsl()],
   },
-  // ...
-  ```
+});
+```
+
+<!-- /automd -->
+
 - Start your dev server with `pnpm run dev`
 - Your browser may ask you to accept the risk when you visit `https://localhost:3000`. This is because it is a self-signed certificate.
 
@@ -64,41 +69,52 @@ If you are using DDEV as a local environment with SSR = true (Nuxt config for ro
 
 The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `accessToken` is incorrect or not correct for the specified `endpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
 
-```ts
-// a part of nuxt.config.ts
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/412-error-page-during-local-development.ts" code lang="ts" no-name -->
 
+```ts
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // access token for corresponding sales channel
     endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
     devStorefrontUrl: "https://demo-frontends.shopware.store", // see section below
   },
-
+});
 ```
+
+<!-- /automd -->
 
 ## What is `devStorefrontUrl` and when to use it?
 
 `devStorefrontUrl` overrides the `storefrontUrl` that Shopware Frontends sends to the Store API. It is needed for **customer registration**, **password recovery** and **newsletter subscription**, because those endpoints require a URL that matches a domain configured under **Sales Channel → Domains** — and during local development your browser origin is `http://localhost:3000`, which matches none.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/what-is-devstorefronturl-and-when-to-use-it.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      shopware: {
-        endpoint: "https://your-shop.shopware.store/store-api",
-        accessToken: "your-access-token",
-        devStorefrontUrl: "https://your-shop.shopware.store", // must match a Sales Channel domain
-      },
-    },
+  shopware: {
+    endpoint: "https://your-shop.shopware.store/store-api",
+    accessToken: "your-access-token",
+    devStorefrontUrl: "https://your-shop.shopware.store", // must match a Sales Channel domain
   },
 });
 ```
 
+<!-- /automd -->
+
 The environment variable below overrides it, but **only if the `devStorefrontUrl` key is already present** in `nuxt.config.ts` (an empty string is enough) — Nuxt applies `NUXT_*` overrides only to keys that already exist, and the module does not seed a default:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/what-is-devstorefronturl-and-when-to-use-it-2.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
+
+<!-- /automd -->
 
 :::tip
 If customer registration works in production but fails locally, `devStorefrontUrl` is likely the solution. Set it to your production storefront domain during local development.
@@ -118,8 +134,10 @@ If you're encountering issues related to Cross-Origin Resource Sharing (CORS) or
 
 Edit your `nuxt.config.ts` file and add:
 
-```
-  vite: {
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example.txt" code no-name -->
+
+```txt
+vite: {
     server: {
       proxy: {
         "/store-api": {
@@ -132,10 +150,14 @@ Edit your `nuxt.config.ts` file and add:
   },
 ```
 
+<!-- /automd -->
+
 Modify the Shopware API endpoint to match your local frontend URL.
 
-```
-  {
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/nuxt-example-2.txt" code no-name -->
+
+```txt
+{
     ...
       shopware: {
           endpoint: "<frontends >store-api/",
@@ -143,6 +165,8 @@ Modify the Shopware API endpoint to match your local frontend URL.
       }
   }
 ```
+
+<!-- /automd -->
 
 ## Broadcasting and BFCache Compatibility
 
@@ -154,13 +178,17 @@ When Broadcasting is enabled, the BFCache (Back-Forward Cache) functionality is 
 
 To leverage the benefits of BFCache, we have decided to disable Broadcasting. By turning off Broadcasting, we ensure that the BFCache can function correctly, providing a smoother and faster navigation experience for users.
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/resolution-vue-demo-template.txt" code no-name -->
+
+```txt
 ...
 runtimeConfig: {
   broadcasting: true,
 },
 ...
 ```
+
+<!-- /automd -->
 
 ### Additional Information
 
@@ -188,7 +216,11 @@ When you use Nuxt layers, the layer system merges TypeScript configuration files
 
 Extend `@shopware/composables/nuxt-layer` in your `nuxt.config.ts`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 // nuxt.config.ts
 export default defineNuxtConfig({
   extends: ["@shopware/composables/nuxt-layer"],
@@ -197,16 +229,26 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 :::tip
 If you're using `@shopware/cms-base-layer`, you can extend both layers together:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/resources/troubleshooting/solution-2.ts" code lang="ts" no-name -->
+
 ```ts
-extends: [
-  "@shopware/composables/nuxt-layer",
-  "@shopware/cms-base-layer",
-  "@shopware/unocss-design-tokens-layer"
-],
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  extends: [
+    "@shopware/composables/nuxt-layer",
+    "@shopware/cms-base-layer",
+    "@shopware/unocss-design-tokens-layer",
+  ],
+});
 ```
+
+<!-- /automd -->
 
 :::
 

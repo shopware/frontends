@@ -1,0 +1,11 @@
+vue-starter-template/
+├─ app/
+│  ├─ components/      /* Your custom components */
+│  ├─ pages/           /* Page components */
+│  ├─ layouts/         /* Layout components */
+│  └─ ...
+├─ public/             /* Static assets */
+├─ nuxt.config.ts      /* Nuxt configuration */
+├─ uno.config.ts       /* Template-specific UnoCSS extensions */
+├─ package.json
+├─ tsconfig.json
