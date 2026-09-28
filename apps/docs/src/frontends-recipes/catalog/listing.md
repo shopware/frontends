@@ -543,6 +543,7 @@ A listing is context-dependent. Prices come back calculated in the current curre
 
 ## Related Links
 
+- [Rendering CMS Pages recipe](../cms/rendering.html)
 - [Prices and Tax State recipe](prices.html)
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)

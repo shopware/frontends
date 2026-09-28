@@ -593,6 +593,7 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 
 ## Related Links
 
+- [Rendering CMS Pages recipe](rendering.html)
 - [Newsletter recipe](../account/newsletter.html)
 - [Language and currency recipe](../context/language-and-currency.html)
 - [Create content pages](../../guides/cms/content-pages.html)
