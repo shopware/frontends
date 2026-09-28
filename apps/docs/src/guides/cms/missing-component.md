@@ -146,15 +146,15 @@ A minimal working {{ cmsType }}:
 ```vue
 <!-- components/{{ componentName }}.vue -->
 <script setup lang="ts">
-import { useCmsBlock } from "#imports";
+import { computed, useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const mainContent = getSlotContent("main");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const mainContent = computed(() => getSlotContent("main"));
 </script>
 
 <template>

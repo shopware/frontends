@@ -79,7 +79,12 @@ const handleReorder = async () => {
     }
 
     if (itemsBefore < count.value) {
-      pushSuccess(t("account.messages.productsAdded"));
+      pushSuccess(t("account.messages.productsAdded"), {
+        action: {
+          label: t("product.viewCart"),
+          to: "/checkout/cart",
+        },
+      });
     }
   } catch (error) {
     console.error(error);
