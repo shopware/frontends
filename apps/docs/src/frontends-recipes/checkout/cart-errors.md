@@ -348,7 +348,6 @@ Errors are app state, not component state. A mini cart, a cart page and a checko
 ## Related Links
 
 - [Cart recipe](cart.html)
-- [Work with the cart](../../guides/e-commerce/cart.html)
 - [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)

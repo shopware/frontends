@@ -29,7 +29,7 @@ Below are some key aspects explanining why Shopware Frontends could be a good fi
 Shopware **Frontends** is built for Shopware 6.
 
 No compromises or generic implementations — it works just like a developer would expect it to.
-Core concepts like [content management](../guides/cms/content-pages.html), [cart](../guides/e-commerce/cart.html), [payments](../guides/e-commerce/payments.html) or [checkout](../guides/e-commerce/checkout.html) are deeply integrated and fully functional.
+Core concepts like [content management](../guides/cms/content-pages.html), [cart](../frontends-recipes/checkout/cart.html), [payments](../guides/e-commerce/payments.html) or [checkout](../guides/e-commerce/checkout.html) are deeply integrated and fully functional.
 
 ### Cloud first
 

@@ -428,7 +428,6 @@ The current language itself is read from the context, not from this composable. 
 - [Cart recipe](../checkout/cart.html)
 - [Work with languages](../../guides/languages.html)
 - [Storefront URL guide](../../guides/storefront-url.html)
-- [Prices documentation](../../guides/e-commerce/prices.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
