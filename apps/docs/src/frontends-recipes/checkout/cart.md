@@ -448,6 +448,6 @@ Customer-specific prices, promotions and rules change with the customer context,
 
 - [Cart Errors recipe](cart-errors.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Checkout and Order Placement recipe](checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

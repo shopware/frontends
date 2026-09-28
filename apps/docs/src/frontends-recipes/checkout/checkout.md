@@ -10,6 +10,8 @@ recipe:
     - useCheckout
     - useSessionContext
     - useCart
+    - useUser
+    - usePrice
   helpers: []
   operations:
     - readShippingMethod post /shipping-method
@@ -18,6 +20,8 @@ recipe:
     - updateContext patch /context
     - createOrder post /checkout/order
     - checkoutGateway get /checkout/gateway
+    - register post /account/register
+    - logoutCustomer post /account/logout
   schemas:
     - ShippingMethod
     - PaymentMethod
@@ -155,6 +159,8 @@ Pick by what owns the value, because the checkout page itself owns almost nothin
 | `useSessionContext` | the whole sales channel context    | patching the selected methods or the active addresses, and calling `refreshSessionContext()` on entry        |
 | `useCart`           | the cart behind that context       | reading `cartItems`, `totalPrice`, `isEmpty` and `isVirtualCart`, and calling `refreshCart()` after a change |
 | `useCheckout`       | the two method lists and the order | listing what is available and placing the order                                                              |
+| `useUser`           | the customer in the session        | registering a visitor inside the checkout, and rotating a guest session with `logout()` after the order      |
+| `usePrice`          | the context currency               | formatting the totals the cart returns as plain numbers                                                      |
 
 `useCheckout` is the one this recipe is about:
 
@@ -476,7 +482,13 @@ Nothing on this page is checkout-local. The selected methods and the active addr
 
 The two method lists are the exception: they are cached in the `swShippingMethods` and `swPaymentMethods` injections that `useCheckout` provides, and `getShippingMethods()` / `getPaymentMethods()` return the cached value immediately when it is non-empty. Because those injections are per provide tree rather than application-wide, a component that is not a descendant of the one that loaded them will fetch its own copy — plan the checkout as one tree, or accept the extra request.
 
+A visitor who arrives without a customer becomes one inside the checkout. `vue-starter-template` sends `register()` from its address form with `guest: true` and an empty `password`, or with a password when the visitor opts into an account, and then reloads both method lists with `forceReload: true`: the session now has a customer and a billing address, and either can change what is available. The [Register recipe](../account/register.html) covers the registration request itself.
+
 After `createOrder()` resolves, the server has deleted the cart but the shared `swCart` value still holds the old line items. The example refreshes the cart in `finally`, so it also recovers when the order request failed and the cart is still alive. Do not swallow a failure from that refresh: `useCart` is shared app-wide, so a mini cart in the header would keep offering line items the customer has already paid for. The example flags it instead and asks for a reload.
+
+A guest order does not end the guest session. The customer that registration put into the context is still there after `createOrder()`, so the next checkout in the same session continues as that guest, with their email and addresses. Rotate the context with `logout()` before a new checkout starts: it sends `logoutCustomer post /account/logout`, which answers with a new context token, and then awaits `refreshSessionContext()`, which rethrows. Keep the checkout blocked when that promise rejects instead of carrying on with the old guest. A changed email, first name or last name belongs to a new guest registration, not to an update of the existing guest's address.
+
+That rotation only fits when nothing still needs the old session. When payment or order processing continues asynchronously, let your application backend own the boundary: keep the old context token only while payment handlers or recovery jobs need it, tell the checkout bootstrap which state it is in, and block a second checkout until the first order is terminal or the guest context has been rotated. Do not make a success page's route-leave or unmount hook the authority for the rotation — the customer can reload, close the tab or open the checkout in another one.
 
 ## Edge Cases
 
@@ -484,6 +496,7 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 - A virtual cart — a non-empty cart whose every non-promotion line item carries the `is-download` state — needs no shipping method. Read `isVirtualCart` only after the cart has loaded: on a cold page it is `false` until then, so an early check sends the shipping request anyway and the skip never happens.
 - Requesting shipping methods for a virtual cart can return an empty array and block the order button for a reason the customer cannot fix.
 - `billingAddress` reads `customer.activeBillingAddress`, so it is `undefined` for an anonymous session that has been through neither registration nor the guest form.
+- `totalPrice` and the line item prices are plain numbers. Format them with `usePrice().getFormattedPrice(value)`, which follows the context currency; the [Prices and Tax State recipe](../catalog/prices.html) explains which locale it formats with.
 - `Order.id` is required in the generated types but `Order.orderNumber` is optional, so a strict compiler will make you handle the empty case even though the platform populates it for a placed order.
 - `isEmpty` is `count <= 0` over the cart's line items, which makes an unloaded cart indistinguishable from an empty one. Branch on the cart value itself before falling through to `isEmpty`, or a failed load tells a customer with a full basket that it is gone.
 - Nothing in the composables carries a request deadline. Configure `apiClientConfig.timeout` and branch on `isTimeoutError`, or a request that never settles leaves the checkout on its loading state with no error and no way out.
@@ -505,6 +518,7 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 - Do not leave a `Promise.allSettled` result unread. It never rejects, so the surrounding `try`/`catch` cannot see the failure and the page renders an empty list as if it were a real answer.
 - Do not write `catch {}` without binding the error. You cannot log it, you cannot map it, and a programming error reaches the customer disguised as a failed order.
 - Do not show `order.id` as the order number. It is a UUID; `order.orderNumber` is the reference the customer can quote.
+- Do not start a second checkout on the session of a finished guest order. Rotate it with `logout()` first.
 
 ## Testing Checklist
 
@@ -522,6 +536,7 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 - The submit button stays inert while a method is missing or a selection is still in flight, and says which one is missing.
 - Submitting the form anyway — by keyboard, or past the `aria-disabled` button — does not reach `createOrder post /checkout/order`.
 - Placing an order moves focus to the confirmation heading, and the heading is announced.
+- After a guest order, a new checkout starts only once `logout()` has rotated the context, and a failing rotation keeps it blocked.
 
 ## Related Links
 
@@ -529,8 +544,9 @@ After `createOrder()` resolves, the server has deleted the cart but the shared `
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Order Details recipe](../orders/details.html)
 - [Order History recipe](../account/order-history.html)
-- [Create a checkout](../../guides/e-commerce/checkout.html)
-- [Payments](../../guides/e-commerce/payments.html)
+- [Payment recipe](payment.html)
+- [Register recipe](../account/register.html)
+- [Prices and Tax State recipe](../catalog/prices.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
