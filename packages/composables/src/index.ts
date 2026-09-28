@@ -80,20 +80,25 @@ export function resolveCmsComponent(
 
   const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
   try {
-    const resolvedComponent = resolveComponent(componentNameToResolve);
+    const component = resolveComponent(componentNameToResolve);
+    // Vue returns the name it was given when nothing is registered under it.
+    const resolvedComponent =
+      typeof component !== "string" ? component : undefined;
 
     return {
       componentName,
       componentNameToResolve,
-      isResolved: resolvedComponent !== componentName,
-      resolvedComponent:
-        typeof resolvedComponent !== "string" ? resolvedComponent : undefined,
+      isResolved: resolvedComponent !== undefined,
+      resolvedComponent,
     };
   } catch (e) {
     return {
       componentName,
       componentNameToResolve,
       resolvedComponent: undefined,
+      /**
+       * @deprecated Use `isResolved` instead. Kept so the error shape is unchanged.
+       */
       resolved: false,
       isResolved: false,
       error: (e as Error).message,

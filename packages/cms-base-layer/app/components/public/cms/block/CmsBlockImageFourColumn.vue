@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageFourColumn } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,12 +8,12 @@ const props = defineProps<{
   content: CmsBlockImageFourColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerLeftContent = getSlotContent("center-left");
-const centerRightContent = getSlotContent("center-right");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerLeftContent = computed(() => getSlotContent("center-left"));
+const centerRightContent = computed(() => getSlotContent("center-right"));
 </script>
 <template>
   <div

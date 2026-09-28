@@ -35,7 +35,12 @@ async function handleAddToCart() {
 
     await addProduct({ id: product.id, quantity: 1 });
 
-    pushSuccess(t("account.messages.productsAdded"));
+    pushSuccess(t("account.messages.productsAdded"), {
+      action: {
+        label: t("product.viewCart"),
+        to: "/checkout/cart",
+      },
+    });
   } catch (error) {
     console.error(error);
     pushError(t("messages.error"));

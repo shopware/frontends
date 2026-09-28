@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
-import { useCmsBlock } from "#imports";
+import { computed, useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+// A getter keeps the lookups pointed at the current block, and a computed
+// re-runs the lookup when that block is replaced.
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
   <div class="grid grid-cols-3">
