@@ -332,6 +332,10 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
+            text: "Rendering CMS Pages",
+            link: "/frontends-recipes/cms/rendering.html",
+          },
+          {
             text: "Contact Form",
             link: "/frontends-recipes/cms/contact-form.html",
           },
@@ -353,6 +357,10 @@ export const sidebar = [
           {
             text: "Navigation and Breadcrumbs",
             link: "/frontends-recipes/context/navigation.html",
+          },
+          {
+            text: "URL Resolving and SEO URLs",
+            link: "/frontends-recipes/context/url-resolving.html",
           },
         ],
       },
