@@ -9,7 +9,10 @@ overrides:
   '@vercel/blob>undici': ^6.28.0
   less: ^4.8.1
   qs@<6.16.0: 6.16.0
-  fast-uri@<3.1.6: 3.1.6
+  fast-uri@<3.1.8: 3.1.8
+  undici@>=8.0.0 <8.10.2: 8.10.2
+  brace-expansion@>=2.0.0 <2.1.7: 2.1.7
+  brace-expansion@>=4.0.0 <5.0.12: 5.0.12
   '@tiptap/pm@<3.30.5': 3.30.5
   nanoid@<3.3.18: ^3.3.18
   esbuild: ^0.28.2
@@ -1247,6 +1250,9 @@ importers:
       happy-dom:
         specifier: 20.14.5
         version: 20.14.5
+      pathe:
+        specifier: 2.0.3
+        version: 2.0.3
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -7764,18 +7770,11 @@ packages:
   brace-expansion@1.1.21:
     resolution: {integrity: sha512-9zeA+KLZNNzglF2TPKRQEDyx6Yby7daAkuy8MiPzpXPsYDWi/DRM8jmwUDxokQjYqBpv5DgPiwD4h4ZZSy1Ujw==}
 
-  brace-expansion@2.1.4:
-    resolution: {integrity: sha512-hGfVzPxthbf3+2yjg/RBs60cB0FhqBS/zvdV/4wn4/BmN0bNMMHPc4V/BbFieqf1TKAGGAHnY4eSjajCl0f2Xg==}
-
   brace-expansion@2.1.7:
     resolution: {integrity: sha512-uZbew1NqdmPDTMJ8ah1y+b+9QEJrfkXFk3RcTQw3X0jW/xRUvFKsg1CfQdSYGdTbXZWExtU3J3ccxtnfw1Fi0g==}
 
   brace-expansion@5.0.12:
     resolution: {integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==}
-    engines: {node: 20 || >=22}
-
-  brace-expansion@5.0.9:
-    resolution: {integrity: sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}
     engines: {node: 20 || >=22}
 
   braces@3.0.3:
@@ -8750,8 +8749,8 @@ packages:
   fast-string-width@3.0.2:
     resolution: {integrity: sha512-gX8LrtNEI5hq8DVUfRQMbr5lpaS4nMIWV+7XEbXk2b8kiQIizgnlr12B4dA3ZEx3308ze0O4Q1R+cHts8kyUJg==}
 
-  fast-uri@3.1.6:
-    resolution: {integrity: sha512-7Ical1vFEMr0onbVzEDIreM22I4khW+fzyQPwvAFWBp1iwdshSZRsL4jjRvPG9JP1uiqMHRto+YU6R2/CzDz5Q==}
+  fast-uri@3.1.8:
+    resolution: {integrity: sha512-GZMtZUTNRpOVIECoXwLNZS5xUGE+mVNbTB8h/7Rwh2TFWcBQiPzTgyZi05BF9UMZKkLJv8XBRJTlU7zg8+ZfMg==}
 
   fast-wrap-ansi@0.2.2:
     resolution: {integrity: sha512-7F2Fl+TjRSenLqlU3UjSH0iyqopqoZIu7eZVpEirP2g1GtWa2G/ecEmBdgz31+Mxr+ELclgg6sokpSFIQiZ02Q==}
@@ -12137,8 +12136,8 @@ packages:
     resolution: {integrity: sha512-RYONW2MeafgYlkVOKYKkA/Ag7BmXqgIWCa8t1m0JcxrQg9pI9lEqRhAOruOBCbAohOa/gkCF+iPi9hrgvTzu6Q==}
     engines: {node: '>=20.18.1'}
 
-  undici@8.10.0:
-    resolution: {integrity: sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBkbYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==}
+  undici@8.10.2:
+    resolution: {integrity: sha512-/y4/bH9YNU5hi9NIrpOuvGXFcxrj3CMrV+/AYpowAYTpHn8gX/XPFjNy766FPoYY0miQhdW977JFWKGNhBdwyQ==}
     engines: {node: '>=22.19.0'}
 
   unenv@2.0.0-rc.24:
@@ -25387,7 +25386,7 @@ snapshots:
   ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.1.6
+      fast-uri: 3.1.8
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -25784,19 +25783,11 @@ snapshots:
       balanced-match: 1.0.2
       concat-map: 0.0.1
 
-  brace-expansion@2.1.4:
-    dependencies:
-      balanced-match: 1.0.2
-
   brace-expansion@2.1.7:
     dependencies:
       balanced-match: 1.0.2
 
   brace-expansion@5.0.12:
-    dependencies:
-      balanced-match: 4.0.4
-
-  brace-expansion@5.0.9:
     dependencies:
       balanced-match: 4.0.4
 
@@ -26802,7 +26793,7 @@ snapshots:
     dependencies:
       fast-string-truncated-width: 3.0.3
 
-  fast-uri@3.1.6: {}
+  fast-uri@3.1.8: {}
 
   fast-wrap-ansi@0.2.2:
     dependencies:
@@ -28253,7 +28244,7 @@ snapshots:
 
   minimatch@10.2.5:
     dependencies:
-      brace-expansion: 5.0.9
+      brace-expansion: 5.0.12
 
   minimatch@10.2.6:
     dependencies:
@@ -28265,7 +28256,7 @@ snapshots:
 
   minimatch@5.1.9:
     dependencies:
-      brace-expansion: 2.1.4
+      brace-expansion: 2.1.7
 
   minimatch@9.0.9:
     dependencies:
@@ -30002,7 +29993,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.128.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.128.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -30145,7 +30136,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -30288,7 +30279,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26))
@@ -30431,7 +30422,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -30574,7 +30565,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -30717,7 +30708,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -30860,7 +30851,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -31003,7 +30994,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -31146,7 +31137,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -31289,7 +31280,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.25)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.25))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.25))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.25))
@@ -31432,7 +31423,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.112.0(@emnapi/core@1.10.0)(@emnapi/runtime@2.0.0-alpha.3))(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.112.0(@emnapi/core@1.10.0)(@emnapi/runtime@2.0.0-alpha.3))(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -31575,7 +31566,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28))
@@ -31718,7 +31709,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -31861,7 +31852,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -32004,7 +31995,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -32147,7 +32138,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -32290,7 +32281,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.150.0)(rolldown@1.2.4)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.150.0)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -32433,7 +32424,7 @@ snapshots:
       ultrahtml: 1.7.0
       uncrypto: 0.1.3
       unctx: 3.0.0(magic-string@1.4.1)(oxc-parser@0.131.0)(rolldown@1.2.9)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0)))
-      undici: 8.10.0
+      undici: 8.10.2
       unhead: 3.3.2(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unimport: 6.4.0(esbuild@0.28.2)(oxc-parser@0.131.0)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
       unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.62.4)(vite@8.3.0(@types/node@22.13.14)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.89.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(webpack@5.105.4(esbuild@0.28.2)(lightningcss@1.33.0))
@@ -35013,7 +35004,7 @@ snapshots:
 
   undici@7.29.1: {}
 
-  undici@8.10.0: {}
+  undici@8.10.2: {}
 
   unenv@2.0.0-rc.24:
     dependencies:
@@ -35197,7 +35188,7 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
       ohash: 2.0.12
-      undici: 8.10.0
+      undici: 8.10.2
 
   unimport@5.7.0:
     dependencies:
