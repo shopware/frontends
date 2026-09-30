@@ -4,6 +4,7 @@ import { getCookie } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 
+import type { ObjectPlugin, Plugin } from "#app";
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -28,7 +29,12 @@ declare module "vue" {
   }
 }
 
-export default defineNuxtPlugin((NuxtApp) => {
+type ShopwarePluginInjections = { shopwareApiClient: ApiClient };
+
+// Explicit annotation breaks the NuxtApp <-> plugin injection type cycle
+// introduced by Nuxt generating injection types from this plugin.
+const plugin: Plugin<ShopwarePluginInjections> &
+  ObjectPlugin<ShopwarePluginInjections> = defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
 
   const shopwareRuntimeConfigPublic = runtimeConfig.public
@@ -143,3 +149,5 @@ export default defineNuxtPlugin((NuxtApp) => {
     },
   };
 });
+
+export default plugin;

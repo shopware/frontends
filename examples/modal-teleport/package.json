@@ -14,7 +14,7 @@
     "@unocss/nuxt": "66.7.5",
     "@unocss/reset": "66.7.5",
     "@vueuse/core": "14.3.0",
-    "nuxt": "4.4.8",
+    "nuxt": "4.5.2",
     "unocss": "66.7.5",
     "vue-tsc": "3.3.7",
     "oxfmt": "0.58.0",
