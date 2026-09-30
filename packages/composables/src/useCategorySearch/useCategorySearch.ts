@@ -40,7 +40,9 @@ export function useCategorySearch(): UseCategorySearchReturn {
       query?: Schemas["Criteria"];
     },
   ) {
-    const associations = options?.withCmsAssociations ? cmsAssociations : {};
+    const associations = options?.withCmsAssociations
+      ? cmsAssociations.associations
+      : {};
     const criteria = {
       associations,
       ...options?.query,
