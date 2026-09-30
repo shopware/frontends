@@ -54,4 +54,23 @@ describe("useNotifications", () => {
     vm.pushSuccess("test");
     expect(vm.notifications.length).toBe(1);
   });
+
+  it("stores an optional action and keeps actionable toasts longer", () => {
+    const { vm } = useSetup(useNotifications);
+
+    vm.pushSuccess("Wooden Chair has been added to cart.", {
+      action: { label: "View cart", to: "/checkout/cart" },
+    });
+
+    expect(vm.notifications[0]?.action).toEqual({
+      label: "View cart",
+      to: "/checkout/cart",
+    });
+
+    vi.advanceTimersByTime(2500);
+    expect(vm.notifications.length).toBe(1);
+
+    vi.advanceTimersByTime(2500);
+    expect(vm.notifications.length).toBe(0);
+  });
 });

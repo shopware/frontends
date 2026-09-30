@@ -5,9 +5,14 @@ import type {
 } from "@shopware/composables";
 import { buildUrlPrefix } from "@shopware/helpers";
 import { useElementSize } from "@vueuse/core";
+import { defu } from "defu";
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 
-import { useCmsElementImage, useUrlResolver } from "#imports";
+import {
+  useCmsElementImage,
+  useCmsTranslations,
+  useUrlResolver,
+} from "#imports";
 
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 
@@ -16,16 +21,50 @@ const props = defineProps<{
   imageGallery?: boolean;
 }>();
 
+type Translations = {
+  cms: {
+    image: {
+      linkWithoutLabel: string;
+    };
+  };
+};
+
+let translations: Translations = {
+  cms: {
+    image: {
+      linkWithoutLabel: "Open linked page",
+    },
+  },
+};
+
+translations = defu(useCmsTranslations(), translations) as Translations;
+
 const { getUrlPrefix } = useUrlResolver();
 const {
+  ariaLabel,
   containerStyle,
   displayMode,
   imageContainerAttrs,
   imageAttrs,
   imageLink,
+  isDecorative,
   isVideoElement,
   mimeType,
 } = useCmsElementImage(props.content);
+
+// A link wrapping only an image is nameless without alt text, which axe
+// reports as a `link-name` violation.
+const linkAriaLabel = computed(() => {
+  if (!imageLink.value.url || imageAttrs.value.alt) {
+    return undefined;
+  }
+
+  const mediaTitle = isDecorative.value ? "" : props.content.data?.media?.title;
+
+  return (
+    ariaLabel.value || mediaTitle || translations.cms.image.linkWithoutLabel
+  );
+});
 
 const imageElement = useTemplateRef<HTMLImageElement>("imageElement");
 const { width, height } = useElementSize(imageElement);
@@ -69,6 +108,7 @@ const SwMedia3D = computed(() => {
     }"
     :style="containerStyle"
     v-bind="imageComputedContainerAttrs"
+    :aria-label="linkAriaLabel"
   >
     <video
       v-if="isVideoElement"

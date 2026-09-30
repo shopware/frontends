@@ -26,11 +26,18 @@
       "emailLabel": "E-Mail",
       "passwordPlaceholder": "Passwort eingeben",
       "passwordLabel": "Passwort",
-      "createAccountToggleLabel": "Kundenkonto erstellen"
+      "createAccountToggleLabel": "Kundenkonto erstellen",
+      "continueAsGuestToggleLabel": "Als Gast fortfahren"
     },
-    "saveAddressButton": "Weiter",
     "success": {
+      "title": "Vielen Dank für Ihre Bestellung",
       "header": "Wir haben Ihre Bestellung #{0} erhalten und werden sie so schnell wie möglich verarbeiten.",
+      "items": "Bestellte Artikel",
+      "deliveryAndPayment": "Lieferung und Zahlung",
+      "continueShopping": "Weiter einkaufen",
+      "viewInAccount": "In meinem Konto ansehen",
+      "goToPayment": "Zur Zahlung gehen",
+      "loadError": "Wir konnten Ihre Bestellung nicht laden. Ihre Sitzung ist möglicherweise abgelaufen.",
       "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",
       "paymentProcessInfo": "Sie werden in 5 Sekunden zur Zahlungsmaschine weitergeleitet."
     },

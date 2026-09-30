@@ -32,6 +32,7 @@ onClickOutside(accountMenuContainer, () => {
     <div class="px-6 py-4 border bg-surface-surface flex flex-col gap-3">
       <AccountMenuElement
         class="text-nowrap"
+        data-testid="header-my-account-link"
         :link="formatLink('/account')"
         :label="$t('account.menu.overview')"
         @click="handleCloseAccountMenu"

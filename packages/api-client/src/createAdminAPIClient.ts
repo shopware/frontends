@@ -1,4 +1,3 @@
-import { defu } from "defu";
 import { createHooks } from "hookable";
 import {
   type FetchOptions,
@@ -12,6 +11,8 @@ import type { InvokeParameters } from "./createAPIClient";
 import type { GlobalFetchOptions } from "./createAPIClient";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import { mergeSignalWithTimeout } from "./mergeSignalWithTimeout";
+import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -23,11 +24,9 @@ type SimpleUnionPick<T, K extends keyof T> = T extends unknown
   : never;
 
 type RenameByT<T, U> = {
-  [K in keyof U as K extends keyof T
-    ? T[K] extends string
-      ? T[K]
-      : never
-    : K]: K extends keyof U ? U[K] : never;
+  [
+    K in keyof U as K extends keyof T ? (T[K] extends string ? T[K] : never) : K
+  ]: K extends keyof U ? U[K] : never;
 };
 
 /**
@@ -129,6 +128,7 @@ export function createAdminAPIClient<
     }
   }
 
+  const clientTimeout = params.fetchOptions?.timeout;
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     ...params.fetchOptions,
@@ -154,10 +154,15 @@ export function createAdminAPIClient<
                 refresh_token: sessionData.refreshToken,
               };
 
-        // Access session expired, first we need to refresh it with refresh token
+        // Access session expired, first we need to refresh it with refresh token.
+        // The token body is always a plain JSON object, so this request
+        // intentionally uses defaultHeaders directly and skips
+        // resolveRequestHeaders (which only matters for non-JSON bodies).
         await ofetch("/oauth/token", {
           baseURL: params.baseURL,
           method: "POST",
+          signal: options.signal,
+          timeout: options.timeout,
           body,
           headers: defaultHeaders as HeadersInit,
           onResponseError({ response }) {
@@ -239,20 +244,34 @@ export function createAdminAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
-    const resp = await apiFetch.raw<
-      SimpleUnionPick<CURRENT_OPERATION, "response">
-    >(requestPathWithParams, {
-      ...fetchOptions,
-      method,
-      body: currentParams.body,
-      headers: defu(currentParams.headers, defaultHeaders) as HeadersInit,
-      query: currentParams.query,
-    });
+    const mergedHeaders = resolveRequestHeaders(
+      currentParams.headers,
+      defaultHeaders,
+      currentParams.body,
+    );
 
-    return {
-      data: resp._data,
-      status: resp.status,
-    } as RequestReturnType<CURRENT_OPERATION>;
+    // armed last, so nothing between here and the `finally` can leave the
+    // timer running
+    const releaseTimeout = mergeSignalWithTimeout(fetchOptions, clientTimeout);
+
+    try {
+      const resp = await apiFetch.raw<
+        SimpleUnionPick<CURRENT_OPERATION, "response">
+      >(requestPathWithParams, {
+        ...fetchOptions,
+        method,
+        body: currentParams.body,
+        headers: mergedHeaders as HeadersInit,
+        query: currentParams.query,
+      });
+
+      return {
+        data: resp._data,
+        status: resp.status,
+      } as RequestReturnType<CURRENT_OPERATION>;
+    } finally {
+      releaseTimeout();
+    }
   }
 
   return {

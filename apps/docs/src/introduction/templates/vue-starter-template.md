@@ -14,10 +14,14 @@ Unlike the Demo Store Template, the **Vue Starter Template** is designed for pro
 
 Alternatively, set up the vue-starter-template manually by running the following commands in a new directory:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/setup-run.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
-npm i && npm run dev
+pnpm i && pnpm dev
 ```
+
+<!-- /automd -->
 
 The vue-starter-template is connected to a Shopware Cloud instance by default. However, you can change the [configuration](#configure) to use your own instance.
 
@@ -42,11 +46,17 @@ The template comes with:
 
 The directory structure follows [Nuxt conventions](https://nuxt.com/docs/guide/directory-structure):
 
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/directory-structure.txt" code no-name -->
+
+```txt
 vue-starter-template/
 ├─ app/
-│  ├─ components/      /* Your custom components */
-│  ├─ pages/           /* Page components */
+│  ├─ components/
+│  │  ├─ global/       /* Frontend* SEO page resolvers (Nuxt global) */
+│  │  ├─ cms/          /* Custom/override CMS blocks & elements (Nuxt global) */
+│  │  ├─ layout/       /* Header, footer, navigation (auto-import) */
+│  │  └─ ...           /* Other auto-imported UI */
+│  ├─ pages/           /* Route pages, including [...all].vue resolver */
 │  ├─ layouts/         /* Layout components */
 │  └─ ...
 ├─ public/             /* Static assets */
@@ -56,13 +66,21 @@ vue-starter-template/
 ├─ tsconfig.json
 ```
 
+<!-- /automd -->
+
+`components/global` and `components/cms` are registered as Nuxt global component dirs so Vue `resolveComponent` can load SEO page types and CMS blocks/elements. Other components under `app/components/` stay auto-imported only (not global), which avoids Rolldown `INEFFECTIVE_DYNAMIC_IMPORT` warnings from Lazy wrappers.
+
 ## Configure
 
 ### Shopware Connection
 
 To connect to your own Shopware instance, edit the `nuxt.config.ts` file:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/shopware-connection.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -77,26 +95,37 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 You can also use a `.env` file to override configuration:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/shopware-connection-2.sh" code lang="bash" no-name -->
 
 ```bash
 NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://your-shop.shopware.store/store-api
 NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=your-access-token
 # Optional: Required for local development when using customer registration
+# Only takes effect if `devStorefrontUrl` is also present in nuxt.config.ts
 # NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://your-shop.shopware.store
 ```
 
+<!-- /automd -->
+
 :::info devStorefrontUrl
-The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See the [troubleshooting guide](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it) for more details.
+The `devStorefrontUrl` option is needed when customer registration fails during local development. It tells Shopware which sales channel domain to use when your browser's origin (e.g., `localhost:3000`) doesn't match any configured domain. Set it to a domain from your Sales Channel settings. See [Storefront URL](../../guides/storefront-url.html) for more details.
 :::
 
 ### Generate Types
 
 After connecting to your Shopware instance, generate TypeScript types:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/generate-types.sh" code lang="bash" no-name -->
+
 ```bash
 npm run generate-types
 ```
+
+<!-- /automd -->
 
 This command uses `@shopware/api-gen` to create type definitions based on your Shopware configuration.
 
@@ -105,6 +134,8 @@ This command uses `@shopware/api-gen` to create type definitions based on your S
 ### Adding Components
 
 Create components in the `app/components/` directory. They will be auto-imported:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/adding-components.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/components/MyCustomButton.vue -->
@@ -115,11 +146,19 @@ Create components in the `app/components/` directory. They will be auto-imported
 </template>
 ```
 
+<!-- /automd -->
+
 ### Override CMS Components
 
-The template uses `@shopware/cms-base-layer` for CMS integration. You can override any CMS component by creating a file with the same name in your `app/components/` directory.
+The template uses `@shopware/cms-base-layer` for CMS integration.
+
+- Override shared `Sw*` UI in `app/components/` (auto-imported).
+- Override CMS blocks/elements under `app/components/cms/` (registered global for `resolveComponent`).
+- Override SEO page shells (`FrontendDetailPage`, …) under `app/components/global/`.
 
 For example, to override the product card:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/override-cms-components.vue" code lang="vue" no-name -->
 
 ```vue
 <!-- app/components/SwProductCard.vue -->
@@ -127,6 +166,19 @@ For example, to override the product card:
   <!-- Your custom product card implementation -->
 </template>
 ```
+
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/override-cms-components-2.vue" code lang="vue" no-name -->
+
+```vue
+<!-- app/components/cms/element/CmsElementImage.vue -->
+<template>
+  <!-- Your custom CMS image element -->
+</template>
+```
+
+<!-- /automd -->
 
 <PageRef page="../../packages/cms-base-layer.html#overwriting-components" title="Override CMS Components" sub="Learn how to customize CMS components from the base layer" />
 
@@ -140,8 +192,11 @@ The template extends three Nuxt layers:
 
 The design-tokens layer provides the shared UnoCSS setup and token palette. Your local `uno.config.ts` should only add template-specific customizations on top of the generated config:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/vue-starter-template/styling-with-unocss.ts" code lang="ts" no-name -->
+
 ```ts
 import { mergeConfigs } from "@unocss/core";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 export default mergeConfigs([
@@ -156,6 +211,8 @@ export default mergeConfigs([
   },
 ]);
 ```
+
+<!-- /automd -->
 
 ## Extending with Layers
 

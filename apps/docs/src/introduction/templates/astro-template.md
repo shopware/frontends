@@ -16,10 +16,14 @@ The blank Astro bootstrap application with pre-installed dependencies, so you ca
 
 Alternatively, set up the astro-blank template manually by running the following commands in a new directory:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/astro-template/setup-run.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/astro astro-blank && cd astro-blank
 npm i && npm run dev
 ```
+
+<!-- /automd -->
 
 ## Configure
 
@@ -27,11 +31,15 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `env.development`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/astro-template/configure.sh" code lang="bash" no-name -->
+
 ```bash
 # .env.development
 API_URL="https://demo-frontends.shopware.store"
 API_ACCESS_TOKEN="SWSCBHFSNTVMAWNZDNFKSHLAYW"
 ```
+
+<!-- /automd -->
 
 :::info Production
 For production build it's good to prepare a separate `.env.production` file containing other credentials if needed.

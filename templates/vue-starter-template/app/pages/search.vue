@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import {
+  getCategoryFilterAggregations,
+  getCategoryFilterPostFilter,
+} from "@shopware/helpers";
 import { useTemplateRef } from "vue";
 
 import type { Schemas, operations } from "#shopware";
@@ -51,11 +55,18 @@ const buildSearchCriteria =
       // query that useAsyncData keys and watches on.
       limit: toNumber(firstQueryValue(query.limit)) ?? defaultLimit,
       p: toNumber(firstQueryValue(query.p)) ?? defaultPage,
+      // Expose the categories of the result set so the sidebar can offer a
+      // category filter with product counts.
+      aggregations: getCategoryFilterAggregations(),
     };
     const manufacturer = firstQueryValue(query.manufacturer);
     if (manufacturer) criteria.manufacturer = manufacturer;
     const properties = firstQueryValue(query.properties);
     if (properties) criteria.properties = properties;
+    const categoryIds =
+      firstQueryValue(query.categories)?.split("|").filter(Boolean) ?? [];
+    if (categoryIds.length > 0)
+      criteria["post-filter"] = [getCategoryFilterPostFilter(categoryIds)];
     const minPrice = toNumber(firstQueryValue(query["min-price"]));
     if (minPrice !== undefined) criteria["min-price"] = minPrice;
     const maxPrice = toNumber(firstQueryValue(query["max-price"]));

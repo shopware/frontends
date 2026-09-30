@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
+import { getTranslatedProperty } from "@shopware/helpers";
 import { useTemplateRef } from "vue";
 
 import type { Schemas } from "#shopware";
@@ -89,7 +90,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                   :value="salutation.id"
                   data-testid="account-address-form-salutation-select-option"
                 >
-                  {{ salutation.displayName }}
+                  {{ getTranslatedProperty(salutation, "displayName") }}
                 </option>
               </select>
             </div>

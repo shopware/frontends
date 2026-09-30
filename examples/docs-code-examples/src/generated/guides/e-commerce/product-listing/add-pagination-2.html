@@ -1,0 +1,17 @@
+<!-- part of <template> -->
+<div>
+  <div>Pages: {{ getTotalPagesCount }}</div>
+  <button
+    v-if="getCurrentPage > 1"
+    @click="changeCurrentPage(getCurrentPage - 1)"
+  >
+    prev
+  </button>
+  <span> {{ getCurrentPage }} </span>
+  <button
+    v-if="getCurrentPage < getTotalPagesCount"
+    @click="changeCurrentPage(getCurrentPage + 1)"
+  >
+    next
+  </button>
+</div>

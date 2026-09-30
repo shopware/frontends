@@ -13,7 +13,8 @@ export default defineNuxtPlugin(async () => {
 
   const [runtime, config] = await Promise.allSettled([
     import("@unocss/runtime"),
-    import("@shopware/unocss-design-tokens-layer/uno.config"),
+    // Theme-only config — full uno.config pulls @iconify-json/carbon into the client.
+    import("@shopware/unocss-design-tokens-layer/uno.runtime.config"),
   ]);
 
   if (runtime.status === "rejected" || config.status === "rejected") return;

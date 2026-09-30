@@ -1,5 +1,12 @@
 {
   "listing": {
+    "filterLabels": {
+      "categories": "Categories",
+      "manufacturer": "Manufacturer",
+      "price": "Price",
+      "rating": "Rating",
+      "shipping-free": "Shipping free"
+    },
     "filters": "Filters",
     "max": "Max",
     "min": "Min",

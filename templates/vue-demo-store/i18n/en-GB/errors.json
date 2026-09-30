@@ -26,6 +26,7 @@
     "salutation-missing": "A salutation is missing from your profile, please choose one during checkout.",
     "login_no_matching_customer_internal": "Invalid username and/or password.",
     "message-default": "Unfortunately, something went wrong.",
+    "order-timeout": "We did not get a confirmation in time. Your order may still have been placed, so please check your orders before trying again.",
     "message-404": "The requested page cannot be found.",
     "addToCartError": "An error occurred while trying to add items to the shopping cart.",
     "productNotFound": "Product {number} not found.",

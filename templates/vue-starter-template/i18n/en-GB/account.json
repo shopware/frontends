@@ -4,6 +4,7 @@
     "signUpHeader": "Create an account",
     "signUpSubHeader": "Register to get started",
     "yourAddress": "Your address",
+    "documentsLabel": "Documents",
     "loginPageTitle": "Login & Registration",
     "loginPageHeader": "Log in or create account",
     "order": {
@@ -25,6 +26,7 @@
       "seeLess": "See less",
       "orderLabel": "Order",
       "shippingStatus": "Shipping Status",
+      "statusUnknown": "Unknown",
       "shipping": "Shipping",
       "shippingMethod": "Shipping method",
       "total": "Total",

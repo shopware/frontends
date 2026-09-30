@@ -62,13 +62,19 @@ export async function ReadmeBasedReference({
         "tail",
       );
 
-      const indexAstJson = extract(
-        resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
+      const entrypoint = resolve(
+        `${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`,
       );
 
-      const exportedList: string[] = await expCollector(
-        resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
-      );
+      // packages without a TypeScript entrypoint (e.g. plain Nuxt layers)
+      // expose no API to extract, keep the README-only page
+      if (!existsSync(entrypoint)) {
+        return transformedCode;
+      }
+
+      const indexAstJson = extract(entrypoint);
+
+      const exportedList: string[] = await expCollector(entrypoint);
 
       if (!exportedList.length) {
         return transformedCode;

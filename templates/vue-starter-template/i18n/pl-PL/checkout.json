@@ -26,11 +26,18 @@
       "emailLabel": "Adres e-mail",
       "passwordPlaceholder": "Wprowadź hasło",
       "passwordLabel": "Hasło",
-      "createAccountToggleLabel": "Utwórz konto klienta"
+      "createAccountToggleLabel": "Utwórz konto klienta",
+      "continueAsGuestToggleLabel": "Kontynuuj jako gość"
     },
-    "saveAddressButton": "Dalej",
     "success": {
+      "title": "Dziękujemy za zamówienie",
       "header": "Otrzymaliśmy Twoje zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
+      "items": "Zamówione produkty",
+      "deliveryAndPayment": "Dostawa i płatność",
+      "continueShopping": "Kontynuuj zakupy",
+      "viewInAccount": "Zobacz w moim koncie",
+      "goToPayment": "Przejdź do płatności",
+      "loadError": "Nie udało się załadować zamówienia. Twoja sesja mogła wygasnąć.",
       "paymentProcessLabel": "Zakończ proces płatności.",
       "paymentProcessInfo": "Zostaniesz przekierowany do bramki płatności w ciągu 5 sekund."
     },

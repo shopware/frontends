@@ -173,4 +173,40 @@ describe("@shopware/nuxt-module", () => {
       "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
     );
   });
+
+  it("warns when the deprecated shopware.apiClientConfig is set", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+
+    await setup(
+      { apiClientConfig: { timeout: 5000 } },
+      createNuxtMock("/tmp/test-project"),
+    );
+
+    expect(loggerMock.warn).toHaveBeenCalledWith(
+      "shopware.apiClientConfig is deprecated and will be removed in the next major. Move timeout to runtimeConfig.apiClientConfig or runtimeConfig.public.apiClientConfig.",
+    );
+  });
+
+  it("does not warn about an apiClientConfig that sets no timeout", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+
+    await setup({ apiClientConfig: {} }, createNuxtMock("/tmp/test-project"));
+
+    expect(loggerMock.warn).not.toHaveBeenCalledWith(
+      expect.stringContaining("apiClientConfig"),
+    );
+  });
+
+  it("does not warn about shopware.apiClientConfig when it is unset", async () => {
+    existsSyncMock.mockReturnValue(false);
+    const setup = await getModuleSetup();
+
+    await setup({}, createNuxtMock("/tmp/test-project"));
+
+    expect(loggerMock.warn).not.toHaveBeenCalledWith(
+      expect.stringContaining("apiClientConfig"),
+    );
+  });
 });

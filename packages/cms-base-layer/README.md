@@ -192,8 +192,16 @@ Replace standard `<img>` tags with `<NuxtImg>` to enable automatic optimization:
   :src="product.cover.media.url"
   preset="productDetail"
   :width="800"
-  :alt="product.cover.media.alt"
+  :alt="getTranslatedProperty(product.cover.media, 'alt')"
 />
+```
+
+The media `alt` text is a translatable field, so read it through `getTranslatedProperty` rather than
+`media.alt` — the latter always holds the system language value, no matter which language the current
+request asks for. The helper is not auto-imported, so add it to the component's script block:
+
+```ts
+import { getTranslatedProperty } from "@shopware/helpers";
 ```
 
 ### Supported Modifiers
@@ -350,7 +358,7 @@ url("https://cdn.shopware.store/.../image.jpg?width=1000&fit=crop,smart&format=w
 
 ## LCP Image Preload
 
-This layer includes a `useLcpImagePreload` composable that automatically preloads the first image found in CMS page content. This targets the [Largest Contentful Paint (LCP)](https://web.dev/lcp/) element, which is often a hero background image or the first visible image element.
+This layer includes a `useLcpImagePreload` composable that preloads the first image found in CMS page content when enabled via `lcpImagePreload: true` in your `app.config.ts` (disabled by default). This targets the [Largest Contentful Paint (LCP)](https://web.dev/lcp/) element, which is often a hero background image or the first visible image element.
 
 ### How it works
 
@@ -364,12 +372,10 @@ The first image found is injected as a `<link rel="preload" as="image" fetchprio
 
 ### Usage
 
-The composable is already called in `CmsPage.vue`. If you override `CmsPage`, you can use it in your custom component:
+The composable is already called in `CmsPage.vue`. If you override `CmsPage`, you can use it in your custom component. It is auto-imported once your app extends this layer, so it needs no import statement:
 
 ```vue
 <script setup>
-import { useLcpImagePreload } from "@shopware/cms-base-layer/composables/useLcpImagePreload";
-
 const props = defineProps<{ content: Schemas["CmsPage"] }>();
 
 useLcpImagePreload(props.content?.sections || []);
@@ -384,7 +390,7 @@ Images are optimized to prevent the browser from downloading images larger than 
 
 ### Product Card Images (`SwProductCardImage`)
 
-The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height`/`densities`/`loading` stay on the component — NuxtImg presets don't propagate these reliably:
+The `productCard` preset only defines URL modifiers (format/quality/fit). `width`/`height` and `loading` stay on the component: in `@nuxt/image` 2.1.0 a preset carries `width`/`height` only as `modifiers`, which shape the URL rather than the rendered attributes, and `loading` is not a preset field at all. `densities` is kept alongside them for consistency, though a preset would propagate it:
 
 ```ts
 // nuxt.config.ts
@@ -448,9 +454,9 @@ The list of available blocks and elements is [here](https://developer.shopware.c
 
 The procedure is:
 
-- find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
+- find a component in component's [list](https://developer.shopware.com/frontends/packages/cms-base-layer.html#available-components), using a [Vue devtools](https://devtools.vuejs.org/) or browsing the github [repository](https://github.com/shopware/frontends/tree/main/packages/cms-base-layer/app/components)
 - take its name
-- create a file with the same name and place it into `~/components` dir in your nuxt project (or wherever according your nuxt config)
+- create a file with the same name and place it under a `components` directory that your `nuxt.config.ts` registers with `global: true` — CMS components are looked up with `resolveComponent`, so an override outside a global path is never found and this layer's version keeps rendering with no error. In the starter template that directory is `app/components/cms/`; because it is registered with `pathPrefix: false`, the name comes from the filename alone and subdirectory depth under it does not matter.
 
 ✅ Thanks to this, nuxt will take the component registered in your app instead of the one registered by this nuxt layer.
 
@@ -485,9 +491,66 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 3.0.1
+### Latest changes: 4.0.0
+
+### Major Changes
+
+- [#2609](https://github.com/shopware/frontends/pull/2609) [`2dc86da`](https://github.com/shopware/frontends/commit/2dc86da2532e986ebdadd06a922e68403414a0ff) Thanks [@mkucmus](https://github.com/mkucmus)! - Make the package a plain Nuxt layer.
+
+  **Breaking:** the package now declares an `exports` map, so only the layer entry point
+  is importable. Deep imports such as
+  `@shopware/cms-base-layer/app/components/SwProductCard.vue` no longer resolve. Use the
+  auto-registered global components instead, which is what extending the layer gives you.
+
+  **Breaking:** the leftover Nuxt module is gone, so `index.cjs` and the `dist` build are
+  no longer published. The module registered a component folder that moved to `app/` a
+  while ago, so it could not work any more. Consume this package with `extends`, which
+  resolves `nuxt.config.ts`:
+
+  ```ts
+  export default defineNuxtConfig({
+    extends: ["@shopware/cms-base-layer"],
+  });
+  ```
+
+  Other changes:
+
+  - Dropped the `build` and `dev` scripts and the `unbuild` dev dependency. There is
+    nothing left to bundle.
+  - Fixed `files`. It listed `helpers` and `app.config.ts`, which do not exist at the
+    package root, and shipped the dead `dist` and `index.cjs`.
+  - Deleted `components.d.ts`. It typed two components at paths that moved to
+    `app/components/public/cms/`, and no tsconfig referenced the file.
+  - Removed two vitest aliases that pointed at files which do not exist.
+  - Removed the `check-colors` script. It read `uno.config.ts` from this package, which
+    moved to `@shopware/unocss-design-tokens-layer`, so it always found zero colors. It
+    also relied on `tsx` without declaring it.
+
+### Minor Changes
+
+- [#2574](https://github.com/shopware/frontends/pull/2574) [`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac) Thanks [@mkucmus](https://github.com/mkucmus)! - `SwProductListingFilters` and `SwProductListingFiltersHorizontal` render a new `SwFilterCategories` checkbox filter when the listing response contains the category aggregations from `getCategoryFilterAggregations()`. The selection is kept in the `categories` URL param and applied as a criteria `post-filter`. Both are search listings only (`listing-type="productSearchListing"`); on any other listing the category filter is not rendered, because the selection would neither reach the URL nor the criteria. Listings without these aggregations are unaffected.
 
 ### Patch Changes
 
-- Updated dependencies [[`8be060d`](https://github.com/shopware/frontends/commit/8be060de825ca799f98a8f045a5e7fea61f5d1a2), [`5678fb0`](https://github.com/shopware/frontends/commit/5678fb008cbd86eaddd061e004de89e6f45bb7ec), [`22611e5`](https://github.com/shopware/frontends/commit/22611e542b8f42a4f34dce5186f628f9a17f457b)]:
-  - @shopware/composables@1.12.0
+- [#2645](https://github.com/shopware/frontends/pull/2645) [`7a7ce3e`](https://github.com/shopware/frontends/commit/7a7ce3e5649e7ab84f7e547ce1ebcd9413117dde) Thanks [@mkucmus](https://github.com/mkucmus)! - Ship `component-dirs.json` in the published package. `nuxt.config.ts` imports it at load time, but it was missing from `files`, so the layer failed to load when installed from the registry.
+
+- [#2660](https://github.com/shopware/frontends/pull/2660) [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Read translatable entity fields through their `translated` object instead of the untranslated entity root, so they follow the language of the current request instead of rendering the system language. Affected components: `SwContactForm` and `SwNewsletterForm` (salutation `displayName`), `SwStockInfo` (delivery time `name`), `SwVariantConfigurator` (property group `name` — the option values below it already used `translated`), `CmsElementBuyBox` (unit `name`), `CmsElementCrossSelling` (cross selling `name`), `CmsElementProductDescriptionReviews` (category `name`), `SwProductCardImage` and `CmsElementImageGallery` (media `alt`).
+
+  All of them now go through `getTranslatedProperty()` from `@shopware/helpers`, which falls back to the root property when `translated` is missing — so the rendered value only ever changes on storefronts whose language differs from the system language.
+
+- [#2606](https://github.com/shopware/frontends/pull/2606) [`1c9a604`](https://github.com/shopware/frontends/commit/1c9a604e05c0fa1b27708a5338cd5690a0ff5c67) Thanks [@mkucmus](https://github.com/mkucmus)! - Stop leaking internal types into the layer's public type surface.
+
+  - `index.d.ts` now only augments the app config. It no longer re-exports `@shopware/composables` and `./.nuxt/imports`.
+  - The `#imports` shim moved to a private `types/imports.d.ts`, which is not published.
+  - `app.config` exports a plain object with `satisfies AppConfigInput` instead of calling `defineAppConfig`. No runtime change.
+
+  This fixes `Cannot find name 'ref'` and similar errors in the shared and node contexts when a project uses the Nuxt 4 project-references `tsconfig.json`.
+
+- [#2601](https://github.com/shopware/frontends/pull/2601) [`e64d2f9`](https://github.com/shopware/frontends/commit/e64d2f9c13a99054d7e56e4b7ec2f1f23f9768b7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Typography for CMS-authored HTML is now scoped to a `cms-element-text` class and ships from the layer as `app/assets/css/rich-text.css`, with overflow guards for long strings, media, `pre` and tables. Headings and lists in your own markup that had no explicit size or `list-*` class were relying on the removed global rules and will change.
+
+- [#2663](https://github.com/shopware/frontends/pull/2663) [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354) Thanks [@mkucmus](https://github.com/mkucmus)! - A linked CMS image always has an accessible name now. `CmsElementImage` names the link with the element's `ariaLabel`, then the media title, then a generic fallback translatable through `cms.image.linkWithoutLabel`. A decorative image skips the media title.
+
+- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4), [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
+  - @shopware/helpers@1.8.0
+  - @shopware/composables@1.13.0
+  - @shopware/api-client@1.6.0

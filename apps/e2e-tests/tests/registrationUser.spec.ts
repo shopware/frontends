@@ -1,10 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { test } from "@playwright/test";
 
+import { expect, test } from "../fixtures";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
+import { uniqueEmail } from "../utils/data-helpers";
 
-test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
+test.describe("Registration new user", { tag: "@frontends" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
 
@@ -22,7 +23,7 @@ test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
     await registrationPage.fillCustomerData(
       `e2e ${faker.person.firstName()}`,
       `e2e ${faker.person.lastName()}`,
-      faker.internet.exampleEmail(),
+      uniqueEmail(),
       faker.internet.password(),
     );
     await registrationPage.fillAddressData(
@@ -30,9 +31,14 @@ test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await registrationPage.submitRegistraionForm();
-    await page.waitForLoadState("load");
-    await page.locator("header-sing-out-link").nth(1).isVisible();
+    await registrationPage.submitRegistrationForm();
+    // Registration signs the customer in, so the header account control
+    // switches to its logged-in role.
+    await expect(
+      page.locator(
+        '[data-testid="header-account-button"][data-logged-in="true"]',
+      ),
+    ).toBeVisible();
   });
 
   test("Registration new user company", async ({ page }) => {
@@ -45,7 +51,7 @@ test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
     await registrationPage.fillCustomerData(
       `e2e ${faker.person.firstName()}`,
       `e2e ${faker.person.lastName()}`,
-      faker.internet.exampleEmail(),
+      uniqueEmail(),
       faker.internet.password(),
     );
     await registrationPage.fillAddressData(
@@ -53,8 +59,13 @@ test.describe("Registration new user", { tag: "@vue-demo-store" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await registrationPage.submitRegistraionForm();
-    await page.waitForLoadState("load");
-    await page.locator("header-sing-out-link").nth(1).isVisible();
+    await registrationPage.submitRegistrationForm();
+    // Registration signs the customer in, so the header account control
+    // switches to its logged-in role.
+    await expect(
+      page.locator(
+        '[data-testid="header-account-button"][data-logged-in="true"]',
+      ),
+    ).toBeVisible();
   });
 });

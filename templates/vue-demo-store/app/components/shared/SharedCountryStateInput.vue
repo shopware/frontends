@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getTranslatedProperty } from "@shopware/helpers";
 import type { BaseValidation } from "@vuelidate/core";
 
 import type { Schemas } from "#shopware";
@@ -34,7 +35,7 @@ function onCountrySelectChanged() {
 }
 
 function getStateName(state: Schemas["CountryState"]) {
-  return state.translated?.name ?? state.name;
+  return getTranslatedProperty(state, "name");
 }
 </script>
 
@@ -65,7 +66,7 @@ function getStateName(state: Schemas["CountryState"]) {
           :key="country.id"
           :value="country.id"
         >
-          {{ country.name }}
+          {{ getTranslatedProperty(country, "name") }}
         </option>
       </select>
       <span

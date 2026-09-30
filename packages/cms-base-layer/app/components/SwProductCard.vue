@@ -47,6 +47,7 @@ type Translations = {
     reason: string;
     cannotAddToWishlist: string;
     addedToCart: string;
+    viewCart: string;
     addToCart: string;
     details: string;
     badges: {
@@ -67,6 +68,7 @@ let translations: Translations = {
     reason: "Reason",
     cannotAddToWishlist: "cannot be added to wishlist.",
     addedToCart: "has been added to cart.",
+    viewCart: "View cart",
     addToCart: "Add to cart",
     details: "Details",
     badges: {
@@ -136,6 +138,12 @@ const addToCartProxy = async () => {
   if (!errors.length)
     pushSuccess(
       `${product?.value.translated.name} ${translations.product.addedToCart}`,
+      {
+        action: {
+          label: translations.product.viewCart,
+          to: "/checkout/cart",
+        },
+      },
     );
 };
 

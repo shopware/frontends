@@ -155,6 +155,145 @@ describe("useCmsElementImage", () => {
         });
       });
 
+      it("should prefer the translated media alt over the root alt", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Company logo",
+              translated: {
+                alt: "Firmenlogo",
+              },
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("Firmenlogo");
+      });
+
+      it("should fall back to the root media alt when translated is missing", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Company logo",
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("Company logo");
+      });
+
+      it("should fall back to the root media alt when the translated alt is empty", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+              alt: "Company logo",
+              translated: {
+                alt: "",
+              },
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("Company logo");
+      });
+
+      it("should return an empty alt when the media has no alt at all", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            media: {
+              url: "https://shopware.com/logo.png",
+            },
+          },
+        } as unknown as CmsElementManufacturerLogo);
+
+        expect(imageAttrs.value.alt).toBe("");
+      });
+
+      it("should keep the alt empty when media has none, the aria label names the link", () => {
+        const { imageAttrs, ariaLabel } = useCmsElementImage({
+          data: {
+            ariaLabel: "Go to the summer collection",
+            media: {
+              url: "https://shopware.com/banner.png",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("Go to the summer collection");
+        expect(imageAttrs.value.alt).toBe("");
+      });
+
+      it("should read the aria label from config when data has none", () => {
+        const { ariaLabel } = useCmsElementImage({
+          config: {
+            ariaLabel: {
+              value: "Go to the sale",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("Go to the sale");
+      });
+
+      it("should return an empty aria label when neither data nor config has one", () => {
+        const { ariaLabel } = useCmsElementImage({
+          data: {},
+          config: {},
+        } as unknown as CmsElementImage);
+
+        expect(ariaLabel.value).toBe("");
+      });
+
+      it("should drop alternative text when the image is decorative but keep the aria label", () => {
+        const { imageAttrs, isDecorative, ariaLabel } = useCmsElementImage({
+          data: {
+            ariaLabel: "Go to the sale",
+            media: {
+              url: "https://shopware.com/pattern.png",
+              alt: "ignored",
+              translated: {
+                alt: "ignoriert",
+              },
+            },
+          },
+          config: {
+            isDecorative: {
+              value: true,
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(isDecorative.value).toBe(true);
+        expect(imageAttrs.value.alt).toBe("");
+        // a decorative image inside a link still needs the link named
+        expect(ariaLabel.value).toBe("Go to the sale");
+      });
+
+      it("should keep the media alt when an aria label is also set", () => {
+        const { imageAttrs } = useCmsElementImage({
+          data: {
+            ariaLabel: "Go to the sale",
+            media: {
+              url: "https://shopware.com/banner.png",
+              alt: "Two mugs on a table",
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(imageAttrs.value.alt).toBe("Two mugs on a table");
+      });
+
+      it("should not be decorative by default", () => {
+        const { isDecorative } = useCmsElementImage({
+          config: {},
+        } as unknown as CmsElementImage);
+
+        expect(isDecorative.value).toBe(false);
+      });
+
       it("should return displayMode", () => {
         const { displayMode } = useCmsElementImage({
           config: {

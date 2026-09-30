@@ -1,5 +1,12 @@
 {
   "listing": {
+    "filterLabels": {
+      "categories": "Kategorie",
+      "manufacturer": "Producent",
+      "price": "Cena",
+      "rating": "Ocena",
+      "shipping-free": "Darmowa dostawa"
+    },
     "filters": "Filtry",
     "max": "Max",
     "min": "Min",

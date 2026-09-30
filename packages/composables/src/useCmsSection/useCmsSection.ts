@@ -1,3 +1,6 @@
+import { toValue } from "vue";
+import type { MaybeRefOrGetter } from "vue";
+
 import type { Schemas } from "#shopware";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
@@ -5,11 +8,14 @@ type ArrayElement<ArrayType extends readonly unknown[]> =
 
 type UseCmsSectionType = {
   /**
-   * CMS section
+   * CMS section, as it was when the composable was called.
    */
   section: Schemas["CmsSection"];
   /**
-   * Position of the section
+   * Blocks of the section placed on the given position.
+   *
+   * Reads the section on every call, so it follows a `ref` or getter passed as
+   * `content`.
    */
   getPositionContent(
     position: ArrayElement<Schemas["CmsSection"]["blocks"]>["sectionPosition"],
@@ -22,18 +28,18 @@ type UseCmsSectionType = {
  * @category CMS (Shopping Experiences)
  */
 export function useCmsSection<SECTION_TYPE extends Schemas["CmsSection"]>(
-  content: SECTION_TYPE,
+  content: MaybeRefOrGetter<SECTION_TYPE>,
 ): UseCmsSectionType {
   function getPositionContent(
     position: ArrayElement<SECTION_TYPE["blocks"]>["sectionPosition"],
   ) {
-    return content.blocks.filter(
+    return toValue(content).blocks.filter(
       (block) => block.sectionPosition === position,
     ) as Array<Schemas["CmsBlock"]>;
   }
 
   return {
-    section: content,
+    section: toValue(content),
     getPositionContent,
   };
 }

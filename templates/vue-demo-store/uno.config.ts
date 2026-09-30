@@ -143,36 +143,6 @@ const templateConfig: ConfigBase = {
     },
   },
   transformers: [transformerDirectives()],
-  preflights: [
-    // preflights can be used to set some base styles
-    {
-      getCSS: () => `
-      h1 {
-        line-height: 2.5rem;
-        font-size: 2.25rem;
-      }
-      h2 {
-        line-height: 2rem;
-        font-size: 1.75rem;
-      }
-      h3 {
-        line-height: 1.5rem;
-        font-size: 1.25rem;
-      }
-      ol,
-      ul,
-      dl {
-        list-style-type: disc;
-        padding-left: 40px;
-        margin-top: 0;
-        margin-bottom: 1rem;
-      }
-      ol {
-        list-style-type: decimal;
-      }
-      `,
-    },
-  ],
   safelist: helpersCssClasses,
   presets: [
     presetWind3(),

@@ -33,7 +33,7 @@ deno install --dev npm:@shopware/api-gen
 
 ## Features
 
-Generator will create a new directory `api-types` with TypeScript schemas inside. Depending on the `apiType` parameter it will create `storeApiTypes.ts` or `adminApiTypes.ts` file.
+Generator will create a new directory `api-types` with TypeScript schemas inside. Depending on the `apiType` parameter it will create `storeApiTypes.d.ts` or `adminApiTypes.d.ts` file.
 
 ### Overriding
 
@@ -99,6 +99,14 @@ export type operations = {
 > [!IMPORTANT]  
 > Overriding components or operations in the TS files requires you to have a full object definitions!
 
+Override-only projects (extra plugin endpoints, no local OpenAPI JSON) should
+import components from `@shopware/api-client/store-api-types` and merge the
+overlay in `shopware.d.ts` with `WithApiOverrides` from `@shopware/api-client`.
+That keeps StackBlitz working without committing a generated `storeApiTypes.d.ts`.
+See the [api-client TypeScript overrides](https://www.npmjs.com/package/@shopware/api-client) docs.
+When you do run `generate`, it still applies the same overlay onto whatever base
+schema it resolved (local JSON, or the types shipped with the api-client).
+
 ### Partial overrides
 
 There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
@@ -156,7 +164,7 @@ You could also use multiple patches and add your own overrides on top:
 }
 ```
 
-and then inside the `storeApiTypes.overrides.json` file you can add your patches:
+and then inside the `./api-types/myOwnPatches.overrides.json` file you can add your patches:
 
 ```json
 {
@@ -281,7 +289,7 @@ pnpx @shopware/api-gen validateJson --help
 pnpx @shopware/api-gen validateJson --apiType=store
 ```
 
-this searches for `api-types/storeApiTypes.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
+this searches for `api-types/storeApiSchema.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
 
 Prepare your config file named **api-gen.config.json**:
 
@@ -340,7 +348,7 @@ import { generate } from "@shopware/api-gen";
 
 await generate({
   cwd: process.cwd(),
-  filename: "storeApiTypes.ts",
+  filename: "storeApiSchema.json",
   apiType: "store",
   debug: true,
   logPatches: true,
@@ -354,7 +362,7 @@ import { loadSchema } from "@shopware/api-gen";
 
 await loadSchema({
   cwd: process.cwd(),
-  filename: "storeApiTypes.json",
+  filename: "storeApiSchema.json",
   apiType: "store",
 });
 ```
@@ -366,7 +374,7 @@ import { validateJson } from "@shopware/api-gen";
 
 await validateJson({
   cwd: process.cwd(),
-  filename: "storeApiTypes.json",
+  filename: "storeApiSchema.json",
   apiType: "store",
   logPatches: true,
   debug: true,
@@ -401,13 +409,9 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.5.0
-
-### Minor Changes
-
-- [#2262](https://github.com/shopware/frontends/pull/2262) [`7a20ea0`](https://github.com/shopware/frontends/commit/7a20ea0454ee237c772e532a03408477e968a958) Thanks [@mkucmus](https://github.com/mkucmus)! - Added support for `client_credentials` grant type authentication when loading Admin API schema. Set `SHOPWARE_ADMIN_CLIENT_SECRET` and `SHOPWARE_ADMIN_CLIENT_ID`environment variables to use integration credentials instead of username/password.
+### Latest changes: 1.5.2
 
 ### Patch Changes
 
-- Updated dependencies [[`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf), [`b5f7e2a`](https://github.com/shopware/frontends/commit/b5f7e2a20c9dfdde1690e9006252d847f732bc0a), [`9604f22`](https://github.com/shopware/frontends/commit/9604f22678150d04c3c3156fd8ee2ce440c8c8bf)]:
-  - @shopware/api-client@1.5.0
+- Updated dependencies [[`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
+  - @shopware/api-client@1.6.0

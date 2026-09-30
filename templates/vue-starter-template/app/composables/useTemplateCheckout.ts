@@ -5,46 +5,48 @@ import type { Schemas } from "#shopware";
 
 import { customValidators } from "../../i18n/utils/i18n-validators";
 
+type CheckoutBillingAddress = Omit<
+  Schemas["CustomerAddress"],
+  "id" | "customerId"
+>;
+
+type CheckoutBaseInfo = {
+  email: string;
+  password: string;
+};
+
 interface UseTemplateCheckoutReturn {
   selectedShippingMethod: Ref<string | null>;
   selectedPaymentMethod: Ref<string | null>;
-  billingAddress: Ref<Omit<Schemas["CustomerAddress"], "id" | "customerId">>;
+  createAccount: Ref<boolean>;
+  countryHasStates: Ref<boolean>;
+  billingAddress: Ref<CheckoutBillingAddress>;
   canPlaceOrder: ComputedRef<boolean>;
-  customerAddressRules: ComputedRef<object>;
-  $vBillingAddress: Regle<
-    Omit<Schemas["CustomerAddress"], "id" | "customerId">
-  >["r$"];
-  $vBaseInfo: Regle<{
-    email: string;
-    password: string;
-  }>["r$"];
-  customerBaseInfo: Ref<{
-    email: string;
-    password: string;
-  }>;
+  $vBillingAddress: Regle<CheckoutBillingAddress>["r$"];
+  $vBaseInfo: Regle<CheckoutBaseInfo>["r$"];
+  customerBaseInfo: Ref<CheckoutBaseInfo>;
 }
 
 export function useTemplateCheckout(): UseTemplateCheckoutReturn {
-  const { required, minLength, email } = customValidators();
+  const { required, minLength, email, requiredIf } = customValidators();
 
   const selectedShippingMethod = ref<string | null>(null);
   const selectedPaymentMethod = ref<string | null>(null);
 
-  const billingAddress = ref<
-    Omit<Schemas["CustomerAddress"], "id" | "customerId">
-  >({
+  const createAccount = ref(false);
+  const countryHasStates = ref(false);
+
+  const billingAddress = ref<CheckoutBillingAddress>({
     firstName: "",
     lastName: "",
     street: "",
     zipcode: "",
     city: "",
     countryId: "",
+    countryStateId: "",
   });
 
-  const customerBaseInfo = ref<{
-    email: string;
-    password: string;
-  }>({
+  const customerBaseInfo = ref<CheckoutBaseInfo>({
     email: "",
     password: "",
   });
@@ -53,7 +55,7 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
     () => !!(selectedShippingMethod.value && selectedPaymentMethod.value),
   );
 
-  const customerAddressRules = computed(() => ({
+  const { r$: $vBillingAddress } = useRegle(billingAddress, () => ({
     firstName: {
       required,
       minLength: minLength(3),
@@ -66,37 +68,46 @@ export function useTemplateCheckout(): UseTemplateCheckoutReturn {
       required,
       minLength: minLength(3),
     },
+    zipcode: {
+      required,
+    },
     city: {
       required,
     },
     countryId: {
       required,
     },
+    countryStateId: {
+      required: requiredIf(() => countryHasStates.value),
+    },
   }));
 
-  const baseInfoRules = computed(() => ({
+  const { r$: $vBaseInfo } = useRegle(customerBaseInfo, () => ({
     email: {
       required,
       email,
     },
-    password: {
-      required,
-      minLength: minLength(3),
-    },
+    password: createAccount.value
+      ? {
+          required,
+          minLength: minLength(8),
+        }
+      : {},
   }));
 
-  const { r$: $vBillingAddress } = useRegle(
-    billingAddress,
-    customerAddressRules,
-  );
-  const { r$: $vBaseInfo } = useRegle(customerBaseInfo, baseInfoRules);
+  watch(createAccount, (shouldCreateAccount) => {
+    if (shouldCreateAccount) return;
+    customerBaseInfo.value.password = "";
+    $vBaseInfo.password.$reset();
+  });
 
   return {
     selectedShippingMethod,
     selectedPaymentMethod,
+    createAccount,
+    countryHasStates,
     billingAddress,
     canPlaceOrder,
-    customerAddressRules,
     $vBillingAddress,
     $vBaseInfo,
     customerBaseInfo,

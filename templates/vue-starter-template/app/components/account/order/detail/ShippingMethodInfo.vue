@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getShippingMethodDeliveryTime } from "@shopware/helpers";
+
 import type { Schemas } from "#shopware";
 
 defineOptions({
@@ -26,7 +28,7 @@ defineProps<{
             class="text-sm text-surface-on-surface-variant"
           >
             {{ $t("checkout.takesUpTo") }}
-            {{ shippingMethod.deliveryTime?.name }}
+            {{ getShippingMethodDeliveryTime(shippingMethod) }}
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import { defineAppConfig } from "#imports";
+import type { AppConfigInput } from "nuxt/schema";
 
-export default defineAppConfig({
+export default {
   imagePlaceholder: {
     color: "#543B95",
   },
@@ -16,4 +16,4 @@ export default defineAppConfig({
     default: "(max-width: 768px) 50vw, 25vw",
   },
   unocssRuntime: true,
-});
+} satisfies AppConfigInput;

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Regle } from "@regle/core";
 
+import type { FocusableInput } from "#imports";
+
 const email = defineModel<string>("email", {
   required: true,
 });
@@ -9,112 +11,77 @@ const password = defineModel<string>("password", {
   required: true,
 });
 
-const { errorMessages } = defineProps<{
-  errorMessages?: Ref<
-    Regle<{
-      email: string;
-      password: string;
-    }>["r$"]
-  >;
+const createAccount = defineModel<boolean>("createAccount", {
+  required: true,
+});
+
+const { validation } = defineProps<{
+  validation?: Regle<{
+    email: string;
+    password: string;
+  }>["r$"];
 }>();
 
-const switchAnimating = ref(false);
-const createAccountToggle = ref(false);
+const passwordField = useTemplateRef<FocusableInput>("passwordField");
 
-function switchAnimation(e: Event) {
-  e.preventDefault();
+async function switchToAccount() {
+  if (createAccount.value) return;
 
-  switchAnimating.value = true;
-  setTimeout(() => {
-    createAccountToggle.value = true;
-    switchAnimating.value = false;
-  }, 600);
+  createAccount.value = true;
+  await nextTick();
+  passwordField.value?.focus({ preventScroll: true });
 }
 
-function handleUpdateBaseInfo() {
-  console.log("handle data update");
+function switchToGuest() {
+  if (!createAccount.value) return;
+  createAccount.value = false;
 }
 </script>
 <template>
-  <form @submit.prevent="handleUpdateBaseInfo">
-    <div>
-      <FormInputField
-        class="mb-4"
-        v-model="email"
-        id="email"
-        :label="$t('checkout.customerBaseInfo.emailLabel')"
-        :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
-        :errorMessage="errorMessages?.value?.email?.$errors?.[0] ?? ''"
-      />
-      <div
-        class="relative transition-all"
-        :class="{
-          'h-4': !createAccountToggle && !switchAnimating,
-          'h-15': switchAnimating || createAccountToggle,
-        }"
+  <div>
+    <FormInputField
+      class="mb-4"
+      v-model="email"
+      id="email"
+      type="email"
+      autocomplete="email"
+      data-testid="checkout-pi-email-input"
+      :label="$t('checkout.customerBaseInfo.emailLabel')"
+      :placeholder="$t('checkout.customerBaseInfo.emailPlaceholder')"
+      :errorMessage="validation?.email.$errors[0]"
+      @blur="validation?.email.$touch()"
+    />
+    <div v-if="!createAccount" class="mb-4">
+      <FormLinkButton
+        class="border-b-0 text-sm"
+        data-testid="checkout-create-account-toggle"
+        @click="switchToAccount"
       >
-        <div
-          v-if="!createAccountToggle"
-          class="flex items-center gap-2 absolute"
-          :class="{ 'animate-slide-up-out': switchAnimating }"
-        >
-          <FormLinkButton class="border-b-0 text-sm" @click="switchAnimation">
-            <Icon name="shopware:plus-xs" class="color-brand-primary" />
-            <span class="text-brand-primary">{{
-              $t("checkout.customerBaseInfo.createAccountToggleLabel")
-            }}</span>
-          </FormLinkButton>
-        </div>
-        <div
-          v-show="createAccountToggle || switchAnimating"
-          class="absolute w-full"
-          :class="{
-            'opacity-0': !createAccountToggle && switchAnimating,
-            'animate-slide-up-in': switchAnimating,
-          }"
-        >
-          <FormInputField
-            class="mb-4"
-            v-model="password"
-            id="password"
-            type="password"
-            :label="$t('checkout.customerBaseInfo.passwordLabel')"
-            :placeholder="$t('checkout.customerBaseInfo.passwordPlaceholder')"
-            :errorMessage="errorMessages?.value?.password?.$errors?.[0] ?? ''"
-          />
-        </div>
-      </div>
+        <Icon name="shopware:plus-xs" class="color-brand-primary" />
+        <span class="text-brand-primary">{{
+          $t("checkout.customerBaseInfo.createAccountToggleLabel")
+        }}</span>
+      </FormLinkButton>
     </div>
-  </form>
+    <div v-else class="mb-4">
+      <FormInputField
+        ref="passwordField"
+        class="mb-2"
+        v-model="password"
+        id="password"
+        type="password"
+        autocomplete="new-password"
+        data-testid="checkout-pi-password-input"
+        :label="$t('checkout.customerBaseInfo.passwordLabel')"
+        :placeholder="$t('checkout.customerBaseInfo.passwordPlaceholder')"
+        :errorMessage="validation?.password.$errors[0]"
+        @blur="validation?.password.$touch()"
+      />
+      <FormLinkButton class="border-b-0 text-sm" @click="switchToGuest">
+        <span class="text-brand-primary">{{
+          $t("checkout.customerBaseInfo.continueAsGuestToggleLabel")
+        }}</span>
+      </FormLinkButton>
+    </div>
+  </div>
 </template>
-<style scoped>
-@keyframes slideUpOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-}
-
-@keyframes slideUpIn {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up-out {
-  animation: slideUpOut 0.6s ease forwards;
-}
-
-.animate-slide-up-in {
-  animation: slideUpIn 0.6s ease forwards;
-}
-</style>

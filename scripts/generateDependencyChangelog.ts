@@ -1,10 +1,14 @@
+import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
+import path from "node:path";
+import { promisify } from "node:util";
 
 import { getChangedFilesSince } from "@changesets/git";
 import type { PackageJSON } from "@changesets/types";
-import writeChangeset from "@changesets/write";
+import { writeChangeset } from "@changesets/write";
 import { getPackages } from "@manypkg/get-packages";
-import spawn from "spawndamnit";
+
+const execFileAsync = promisify(execFile);
 
 const IGNORED_PACKAGE_PATTERNS = [
   // all in examples directory regex
@@ -15,12 +19,13 @@ async function getJsonFileBaseVersion(
   filename: string,
   cwd: string,
 ): Promise<PackageJSON> {
-  const { stdout, code } = await spawn("git", ["show", `main:./${filename}`], {
-    cwd,
-  });
+  const { stdout } = await execFileAsync(
+    "git",
+    ["show", `main:./${filename}`],
+    { cwd, encoding: "utf8" },
+  );
 
-  const packageJSON = JSON.parse(stdout.toString());
-  return packageJSON;
+  return JSON.parse(stdout) as PackageJSON;
 }
 
 async function getExistingDependencyChangesetsFiles(
@@ -67,22 +72,20 @@ function createLineDescription(
 }
 
 async function run() {
-  const repoInfo = await getPackages(__dirname);
-  const rootDir = repoInfo.root.dir;
+  const rootDir = path.resolve(__dirname, "..");
+  const repoInfo = await getPackages(rootDir);
   let dependenciesChanged = false;
 
   const packages = repoInfo.packages
     .filter((pkg) => {
-      return !IGNORED_PACKAGE_PATTERNS.some((pattern) => pattern.test(pkg.dir));
+      return !IGNORED_PACKAGE_PATTERNS.some((pattern) =>
+        pattern.test(pkg.relativeDir),
+      );
     })
-    .map((pkg) => {
-      const relativeDir = `${pkg.dir.replace(`${rootDir}/`, "")}/package.json`;
-
-      return {
-        ...pkg,
-        relativeDir,
-      };
-    });
+    .map((pkg) => ({
+      ...pkg,
+      relativeDir: `${pkg.relativeDir}/package.json`,
+    }));
 
   const changedFiles = await getChangedFilesSince({
     cwd: rootDir,
@@ -168,6 +171,7 @@ async function run() {
           releases: [{ name: pkg.packageJson.name, type: "patch" }],
         },
         rootDir,
+        { format: "oxfmt" },
       );
       console.log(
         "Saved dependency changeset: ",

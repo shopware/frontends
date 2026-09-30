@@ -1,5 +1,12 @@
 {
   "listing": {
+    "filterLabels": {
+      "categories": "Kategorien",
+      "manufacturer": "Hersteller",
+      "price": "Preis",
+      "rating": "Bewertung",
+      "shipping-free": "Versandkostenfrei"
+    },
     "filters": "Filter",
     "max": "Max",
     "min": "Min",

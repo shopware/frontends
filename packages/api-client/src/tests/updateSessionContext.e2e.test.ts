@@ -6,7 +6,8 @@ import { createAPIClient } from "../createAPIClient";
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-describe("updateSessionContext", () => {
+// hits the live demo instance, so the 5s default timeout flakes in CI
+describe("updateSessionContext", { retry: 2, timeout: 30_000 }, () => {
   describe("update session currency", () => {
     it("should update session currency", async () => {
       const apiInstance = createAPIClient<operations>({

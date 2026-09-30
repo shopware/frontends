@@ -4,6 +4,7 @@
     "signUpHeader": "Utwórz konto",
     "signUpSubHeader": "Zarejestruj się, aby rozpocząć",
     "yourAddress": "Twój adres",
+    "documentsLabel": "Dokumenty",
     "loginPageTitle": "Logowanie i rejestracja",
     "loginPageHeader": "Zaloguj się lub utwórz konto",
     "order": {
@@ -25,6 +26,7 @@
       "seeLess": "Zobacz mniej",
       "orderLabel": "Zamówienie",
       "shippingStatus": "Status wysyłki",
+      "statusUnknown": "Nieznany",
       "shipping": "Wysyłka",
       "shippingMethod": "Metoda wysyłki",
       "total": "Całkowita kwota",

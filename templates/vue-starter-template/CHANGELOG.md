@@ -1,5 +1,15 @@
 # vue-starter-template
 
+## 0.1.3
+
+### Patch Changes
+
+- [#2571](https://github.com/shopware/frontends/pull/2571) [`c64ae1c`](https://github.com/shopware/frontends/commit/c64ae1c6e2d11e33bd52df4b55177cc26b646433) Thanks [@patzick](https://github.com/patzick)! - Show the category a shopper came from in product breadcrumbs, while direct product links continue to use the default category.
+
+- [#2538](https://github.com/shopware/frontends/pull/2538) [`b4c409c`](https://github.com/shopware/frontends/commit/b4c409c35f103656f1972d67133380ef04f92f1d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `FormCountrySearchSelect`, a searchable country picker with flag icons, paginated Store API loading, keyboard navigation, and single-country mode. Use it in registration, account address, checkout, and `CountryStateInput`, and require the state field only when the selected country has states.
+
+- [#2568](https://github.com/shopware/frontends/pull/2568) [`6315350`](https://github.com/shopware/frontends/commit/6315350add0464abef153343897d42f5808f2003) Thanks [@patzick](https://github.com/patzick)! - Load category and product breadcrumbs after hydration so they no longer block the primary SSR response. Abort stale breadcrumb requests during navigation and animate the complete breadcrumb trail as a single transition while reserving its row height to avoid layout shifts.
+
 ## 0.1.2
 
 ### Patch Changes

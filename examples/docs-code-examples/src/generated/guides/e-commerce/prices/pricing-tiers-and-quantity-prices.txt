@@ -1,0 +1,19 @@
+[
+	{
+		"unitPrice": 58,
+		"quantity": 5, // quantity from 1 to 5
+		"totalPrice": 290,
+		/* ... */
+	},
+	{
+		"unitPrice": 50,
+		"quantity": 10, // quantity from 6 to 10
+		"totalPrice": 500,
+		/* ... */
+	},
+	{
+		"unitPrice": 44,
+		"quantity": 11, // quantity from 11 to max
+		"totalPrice": 484,
+		/* ... */
+]

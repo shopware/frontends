@@ -102,15 +102,38 @@ export default defineNuxtConfig({
     "@shopware/nuxt-module",
     "@nuxtjs/i18n",
   ],
-  // components: true,
+  // resolveComponent targets must be global. Use distinct dirs — Nuxt skips later
+  // scans under an already-scanned path, so pattern/ignore on the same folder drops
+  // Layout/Checkout/etc. Avoid global:true on every component (INEFFECTIVE_DYNAMIC_IMPORT).
   components: {
     dirs: [
+      {
+        // SEO page resolver targets: FrontendDetailPage, FrontendLandingPage, ...
+        path: "~/components/global",
+        pathPrefix: false,
+        global: true,
+        priority: 2,
+      },
+      {
+        // Keep Errors* names used by resolveComponent / error.vue.
+        path: "~/components/errors",
+        prefix: "Errors",
+        pathPrefix: false,
+        global: true,
+        priority: 2,
+      },
+      {
+        // Custom / override CMS blocks & elements (CmsBlock*, CmsElement*, ...).
+        path: "~/components/cms",
+        pathPrefix: false,
+        global: true,
+        priority: 2,
+      },
       {
         path: "~/components",
         priority: 2,
       },
     ],
-    global: true,
   },
   vueuse: {
     ssrHandlers: true,

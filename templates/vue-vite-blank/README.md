@@ -7,8 +7,8 @@ This repository shows an example of application built with Shopware Frontends Fr
 ## What's inside
 
 - Vue 3 application
-- Required libraries installed (api-client, composables, Vue 3 plugin)
-- Minimum configuration of Vue 3 plugin (see `ShopwareFrontendsOptions` in [main.ts](./src/main.ts))
+- Required libraries installed (api-client, composables)
+- Minimum Shopware context setup (see `createShopwareContext` in [main.ts](./src/main.ts))
 
 ## Requirements
 

@@ -1,34 +1,30 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": ["pnpm-lock.yaml", "pnpm-workspace.yaml"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "nuxt-prepare"],
       "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "nuxt-prepare"],
       "outputs": ["dist/**", ".output/**", ".vercel/**"]
     },
+    "nuxt-prepare": {
+      "dependsOn": ["^build"],
+      "outputs": [".nuxt/**"]
+    },
     "lint": {
-      "cache": false,
       "outputs": [],
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "lint:fix": {
-      "cache": false,
       "outputs": [],
       "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "typecheck": {
-      "dependsOn": ["build", "^build"],
-      "outputs": [],
-      "inputs": [
-        "src/**/*.ts",
-        "src/**/*.vue",
-        "*.ts",
-        "tsconfig.json",
-        "package.json"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "generate-types": {
       "cache": false,
@@ -51,6 +47,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["^nuxt-prepare"],
       "cache": false,
       "persistent": true
     },

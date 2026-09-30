@@ -19,7 +19,12 @@ const { isLoggedIn } = useUser();
   <h1>{{ template }}</h1>
   <div class="example">
     <p>
-      Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
+      Currency:
+      <strong
+        >{{ currency?.translated?.name }} ({{
+          currency?.translated?.symbol
+        }})</strong
+      >
     </p>
     <p>
       Default payment method:

@@ -30,6 +30,7 @@ function handleChange(id: string) {
     <div
       v-for="shippingMethod in shippingMethods"
       :key="shippingMethod.id"
+      data-testid="checkout-shipping-method"
       class="p-4"
     >
       <label :for="shippingMethod.id" class="flex items-center gap-4">
@@ -54,7 +55,7 @@ function handleChange(id: string) {
             {{ getShippingMethodDeliveryTime(shippingMethod) }}
           </div>
         </div>
-        <div class="ml-auto">
+        <div v-if="getShippingMethodIcon(shippingMethod)" class="ml-auto">
           <NuxtImg
             :src="getShippingMethodIcon(shippingMethod)"
             height="32"
