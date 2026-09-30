@@ -114,7 +114,9 @@ describe("useCategorySearch", () => {
       "readCategoryGet get /category/{navigationId}",
       expect.objectContaining({
         query: {
-          _criteria: encodeForQuery({ associations: cmsAssociations }),
+          _criteria: encodeForQuery({
+            associations: cmsAssociations.associations,
+          }),
           p: 2,
           limit: 30,
           order: "price-asc",
