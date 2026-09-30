@@ -93,6 +93,34 @@
       "notes": "Not scaffoldable. nuxt.config.ts extends \"../vue-starter-template\" by relative path and package.json depends on \"vue-starter-template\": \"workspace:*\", so copying this directory out of the monorepo produces a broken install."
     },
     {
+      "id": "react-starter-template",
+      "displayName": "React Starter Template",
+      "packageName": "react-starter-template",
+      "framework": "next",
+      "purpose": "Next.js App Router storefront in development, the React counterpart of vue-starter-template.",
+      "docsUrl": null,
+      "issueUrl": "https://github.com/shopware/frontends/issues/new?labels=template&title=%5Breact-starter-template%5D+",
+      "supportLevel": "example",
+      "scaffoldable": false,
+      "scaffoldCommand": null,
+      "deployable": false,
+      "devcontainer": false,
+      "env": {
+        "SHOPWARE_ENDPOINT": {
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/. Read on the server at request time."
+        },
+        "SHOPWARE_ACCESS_TOKEN": {
+          "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access). Read on the server at request time."
+        }
+      },
+      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "devPort": 3000,
+      "buildCommand": "next build",
+      "devCommand": "next dev",
+      "typeGeneration": null,
+      "notes": "Skeleton stage: the data layer that reads the env vars is not implemented yet. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
+    },
+    {
       "id": "astro",
       "displayName": "Astro Template",
       "packageName": "shopware-astro",
