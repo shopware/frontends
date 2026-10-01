@@ -1,0 +1,376 @@
+import type { CSSProperties } from "react";
+
+import type { Schemas } from "#shopware";
+
+export type SourceType = "static" | "mapped";
+
+export type Position = "left" | "center" | "right";
+
+export type DisplayMode =
+  | Exclude<CSSProperties["objectFit"], undefined>
+  | "standard"
+  | "stretch";
+
+export type BoxLayout = "standard" | "image" | "minimal";
+
+export type VerticalAlign = "flex-start" | "center" | "flex-end" | "";
+
+export type ElementConfig<VALUE_TYPE> = {
+  source: SourceType;
+  value: VALUE_TYPE;
+};
+
+type TextElementConfig = {
+  content: ElementConfig<string>;
+  verticalAlign: ElementConfig<VerticalAlign>;
+};
+
+type ElementFieldConfig = {
+  name: string;
+  source: SourceType;
+  value: string | null;
+  apiAlias: string;
+};
+
+export type CmsElementText = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "text" | typeof String;
+  slot: typeof String;
+  config: TextElementConfig;
+  fieldConfig: ElementFieldConfig[];
+  data: {
+    content: string;
+    apiAlias: "cms_text";
+  };
+  translated: {
+    config: TextElementConfig;
+  };
+};
+
+export type CmsElementHtml = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "html";
+  data: {
+    content: string;
+    apiAlias: "cms_html";
+  };
+};
+
+type ImageElementConfig = {
+  url: ElementConfig<string>;
+  media: ElementConfig<string>;
+  newTab: ElementConfig<boolean>;
+  product: ElementConfig<string>;
+  ariaLabel?: ElementConfig<string | null>;
+  boxLayout: ElementConfig<BoxLayout>;
+  displayMode: ElementConfig<DisplayMode>;
+  minHeight: ElementConfig<string | number>;
+  isDecorative?: ElementConfig<boolean>;
+  verticalAlign: ElementConfig<VerticalAlign>;
+  horizontalAlign: ElementConfig<VerticalAlign>;
+};
+
+export type CmsElementImage = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "image";
+  config: ImageElementConfig;
+  data: {
+    mediaId: string;
+    url: string;
+    newTab: boolean;
+    ariaLabel?: string | null;
+    apiAlias: "cms_image";
+    media: Schemas["Media"];
+  };
+};
+
+export type SliderElementConfig = {
+  minWidth?: ElementConfig<string>;
+  minHeight: ElementConfig<string | number>;
+  verticalAlign?: ElementConfig<VerticalAlign>;
+  displayMode?: ElementConfig<"standard" | "cover" | "contain">;
+  navigationDots?: ElementConfig<"outside" | "inside" | "none" | "">;
+  navigationArrows?: ElementConfig<"outside" | "inside" | "none" | "">;
+};
+
+type ImageSliderElementConfig = ImageElementConfig &
+  SliderElementConfig & {
+    sliderItems: ElementConfig<
+      Array<{
+        url: null | string;
+        newTab: boolean;
+        mediaId: string;
+        mediaUrl: string;
+      }>
+    >;
+  };
+
+export type CmsElementImageSlider = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "image-slider";
+  config: ImageSliderElementConfig;
+  data: {
+    apiAlias: "cms_image_slider";
+    navigation: unknown;
+    sliderItems: {
+      url: string;
+      newTab: boolean;
+      media: Schemas["Media"];
+      mediaId: string;
+      apiAlias: "cms_image_slider_item";
+    }[];
+  };
+};
+
+type ImageGalleryElementConfig = ImageSliderElementConfig & {
+  galleryPosition: ElementConfig<Position>;
+  magnifierOverGallery: ElementConfig<boolean>;
+  keepAspectRatioOnZoom: ElementConfig<boolean>;
+  fullScreen: ElementConfig<boolean>;
+  zoom: ElementConfig<boolean>;
+};
+
+export type CmsElementImageGallery = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "image-gallery";
+  config: ImageGalleryElementConfig;
+  data: {
+    apiAlias: "cms_image_slider";
+    navigation: unknown;
+    sliderItems: Array<
+      | {
+          url: null | string;
+          newTab: boolean;
+          media: Schemas["Media"];
+          apiAlias: "cms_image_slider_item";
+        }
+      | Schemas["ProductMedia"]
+    >;
+  };
+};
+
+type YouTubeVideoElementConfig = {
+  end: ElementConfig<string>;
+  url: ElementConfig<string>;
+  loop: ElementConfig<boolean>;
+  start: ElementConfig<string>;
+  videoID: ElementConfig<string>;
+  autoPlay: ElementConfig<boolean>;
+  displayMode: ElementConfig<DisplayMode>;
+  previewMedia: ElementConfig<string>;
+  showControls: ElementConfig<boolean>;
+  needsConfirmation: ElementConfig<boolean>;
+  advancedPrivacyMode: ElementConfig<boolean>;
+  iframeTitle: ElementConfig<string | null>;
+};
+export type CmsElementYoutubeVideo = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "youtube-video";
+  config: YouTubeVideoElementConfig;
+  data: {
+    mediaId: string | null;
+    url: null | string;
+    newTab: null | boolean;
+    media: null | Schemas["Media"];
+    apiAlias: "cms_image";
+  };
+};
+
+type VimeoVideoElementConfig = {
+  loop: ElementConfig<boolean>;
+  color: ElementConfig<string>;
+  title: ElementConfig<boolean>;
+  mute: ElementConfig<boolean>;
+  byLine: ElementConfig<boolean>;
+  videoID: ElementConfig<string>;
+  autoplay: ElementConfig<boolean>;
+  controls: ElementConfig<boolean>;
+  portrait: ElementConfig<boolean>;
+  doNotTrack: ElementConfig<boolean>;
+  previewMedia: ElementConfig<string>;
+  needsConfirmation: ElementConfig<boolean>;
+  iframeTitle: ElementConfig<string | null>;
+};
+
+export type CmsElementVimeoVideo = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "vimeo-video";
+  config: VimeoVideoElementConfig;
+  data: {
+    mediaId: string | null;
+    url: null | string;
+    newTab: null | boolean;
+    media: null | Schemas["Media"];
+    apiAlias: "cms_image";
+  };
+};
+
+type ProductBoxElementConfig = {
+  boxLayout: ElementConfig<BoxLayout>;
+  product: ElementConfig<string>;
+};
+
+export type CmsElementProductBox = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "product-box";
+  config: ProductBoxElementConfig;
+  data: {
+    productId: string;
+    product: Schemas["Product"];
+    apiAlias: "cms_product_box";
+  };
+};
+
+type ProductSliderElementConfig = {
+  title: ElementConfig<string>;
+  border: ElementConfig<boolean>;
+  rotate: ElementConfig<boolean>;
+  products: ElementConfig<string[]>;
+  boxLayout: ElementConfig<BoxLayout>;
+  elMinWidth: ElementConfig<string>;
+  navigation: ElementConfig<boolean>;
+  displayMode: ElementConfig<DisplayMode>;
+  verticalAlign: ElementConfig<VerticalAlign>;
+  productStream: ElementConfig<string>;
+  productStreamSorting: ElementConfig<string>;
+};
+
+export type CmsElementProductSlider = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "product-slider";
+  config: ProductSliderElementConfig;
+  data: {
+    apiAlias: "cms_product_slider";
+    products: Schemas["Product"][];
+  };
+};
+
+type CmsSidebarFilterElementConfig = {
+  boxLayout: ElementConfig<BoxLayout>;
+  content: ElementConfig<string>;
+  displayMode: ElementConfig<DisplayMode>;
+  media: ElementConfig<string>;
+  minHeight: ElementConfig<string | number>;
+  newTab: ElementConfig<boolean>;
+  url: ElementConfig<string>;
+  verticalAlign: ElementConfig<VerticalAlign>;
+};
+
+export type CmsElementSidebarFilter = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "sidebar-filter";
+  config: CmsSidebarFilterElementConfig;
+};
+
+type CmsProductListingElementConfig = {
+  filters: ElementConfig<string>;
+  boxLayout: ElementConfig<BoxLayout>;
+  showSorting: ElementConfig<boolean>;
+  defaultSorting: ElementConfig<string>;
+  useCustomSorting: ElementConfig<boolean>;
+  availableSortings: ElementConfig<string[]>;
+  propertyWhitelist: ElementConfig<string[]>;
+};
+
+export type CmsElementProductListing = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "product-listing";
+  config: CmsProductListingElementConfig;
+  data: {
+    apiAlias: "cms_product_listing";
+    listing: Schemas["ProductListingResult"];
+  };
+};
+
+type CategoryNavigationElementConfig = unknown;
+
+export type CmsElementCategoryNavigation = Omit<
+  Schemas["CmsSlot"],
+  "config"
+> & {
+  type: "category-navigation";
+  config: CategoryNavigationElementConfig;
+};
+
+type ProductDescriptionReviewsElementConfig = {
+  product: ElementConfig<string>;
+  alignment: ElementConfig<VerticalAlign>;
+};
+
+export type CmsElementProductDescriptionReviews = Omit<
+  Schemas["CmsSlot"],
+  "config"
+> & {
+  type: "product-description-reviews";
+  config: ProductDescriptionReviewsElementConfig;
+  data: {
+    productId: null | string;
+    ratingSuccess: boolean;
+    product?: Schemas["Product"];
+    reviews: {
+      elements: Schemas["ProductReview"][];
+    };
+    apiAlias: "cms_product_description_reviews";
+  };
+};
+
+type BuyBoxElementConfig = ProductDescriptionReviewsElementConfig;
+
+export type CmsElementBuyBox = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "buy-box";
+  config: BuyBoxElementConfig;
+  data: {
+    configuratorSettings: Schemas["PropertyGroup"][] | null;
+    productId: null | string;
+    ratingSuccess: boolean;
+    product?: Schemas["Product"];
+    reviews: Schemas["ProductReview"][];
+    apiAlias: "cms_product_description_reviews";
+  };
+};
+
+type CrossSellingElementConfig = {
+  product: ElementConfig<string>;
+  alignment: ElementConfig<VerticalAlign>;
+  boxLayout: ElementConfig<BoxLayout>;
+  elMinWidth: ElementConfig<string>;
+  displayMode: ElementConfig<DisplayMode>;
+};
+
+export type CmsElementCrossSelling = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "cross-selling";
+  config: CrossSellingElementConfig;
+  data: {
+    apiAlias: "cms_cross_selling";
+    crossSellings: Schemas["CrossSellingElement"][];
+  };
+};
+
+type FormElementConfig = {
+  type: ElementConfig<"contact" | "newsletter">;
+  title: ElementConfig<string>;
+  mailReceiver: ElementConfig<string[]>;
+  confirmationText: ElementConfig<string>;
+  defaultMailReceiver: ElementConfig<boolean>;
+};
+
+export type CmsElementForm = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "form";
+  config: FormElementConfig;
+  data: Schemas["Salutation"][];
+};
+
+export type CmsElementProductName = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "product-name";
+  config: TextElementConfig;
+  fieldConfig: ElementFieldConfig[];
+  data: {
+    content: string;
+    apiAlias: "cms_text";
+  };
+  translated: {
+    config: TextElementConfig;
+  };
+};
+
+export type CmsElementManufacturerLogo = Omit<Schemas["CmsSlot"], "config"> & {
+  type: "manufacturer-logo";
+  config: ImageElementConfig;
+  data: {
+    mediaId: string;
+    url: string;
+    newTab: boolean;
+    ariaLabel?: string | null;
+    apiAlias: "cms_manufacturer_logo";
+    media: Schemas["Media"];
+  };
+};
