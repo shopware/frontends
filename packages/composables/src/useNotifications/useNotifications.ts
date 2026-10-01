@@ -4,12 +4,23 @@ import type { ComputedRef, Ref } from "vue";
 type NotificationType = "info" | "warning" | "success" | "danger";
 
 /**
+ * Optional CTA rendered next to a notification message (e.g. "View cart").
+ *
+ * @private
+ */
+export type NotificationAction = {
+  label: string;
+  to: string;
+};
+
+/**
  * @private
  */
 export type Notification = {
   type: NotificationType;
   message: string;
   id: number;
+  action?: NotificationAction;
 };
 
 /**
@@ -22,6 +33,7 @@ export type NotificationOptions = {
   type?: NotificationType;
   timeout?: number;
   persistent?: boolean;
+  action?: NotificationAction;
 };
 
 /**
@@ -86,7 +98,7 @@ export function useNotifications(): UseNotificationsReturn {
     message: string,
     options: Required<Pick<NotificationOptions, "type">> & NotificationOptions,
   ) {
-    const timeout = options.timeout || 2500;
+    const timeout = options.timeout || (options.action ? 5000 : 2500);
     const persistent = !!options.persistent;
     _notifications.value = _notifications.value || [];
 
@@ -95,6 +107,7 @@ export function useNotifications(): UseNotificationsReturn {
       id: messageId,
       type: options.type,
       message,
+      ...(options.action ? { action: options.action } : {}),
     });
     if (!persistent) {
       setTimeout(() => {

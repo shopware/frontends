@@ -5,39 +5,37 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t border-outline-outline text-surface-on-surface sm:items-center"
-  >
-    <div class="sm:flex items-center col-span-2 text-surface-on-surface">
-      <div
-        class="w-26 i-carbon-percentage text-3xl text-center align-end"
-      ></div>
-      <div class="my-5 text-center">
-        {{ lineItem.label }}
-      </div>
-    </div>
-    <div class="flex justify-between">
-      <div class="sm:hidden">{{ $t("account.order.quantity") }}</div>
-      <div>{{ lineItem.quantity }}</div>
-    </div>
-    <div v-if="lineItem.unitPrice" class="flex justify-between">
-      <div class="sm:hidden">{{ $t("account.order.price") }}</div>
-      <SharedPrice
-        :value="lineItem.unitPrice"
-        class="text-surface-on-surface font-normal"
-        data-testid="order-item-credit-unitprice"
-      />
+  <div class="flex gap-4 py-4 text-surface-on-surface">
+    <div
+      class="w-24 h-24 flex-shrink-0 bg-surface-surface-container-low flex items-center justify-center"
+    >
+      <div class="w-8 h-8 i-carbon-percentage text-brand-primary" />
     </div>
     <div
-      v-if="lineItem.totalPrice"
-      class="flex justify-between sm:justify-self-end"
+      class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2"
     >
-      <div class="sm:hidden">{{ $t("account.order.subtotal") }}</div>
-      <SharedPrice
-        :value="lineItem.totalPrice"
-        class="text-surface-on-surface font-normal"
-        data-testid="order-item-credit-totalprice"
-      />
+      <div>
+        <div class="text-surface-on-surface leading-normal">
+          {{ lineItem.label }}
+        </div>
+        <div class="text-sm text-surface-on-surface-variant mt-1">
+          {{ $t("account.order.quantity") }} {{ lineItem.quantity }}
+        </div>
+      </div>
+      <div class="sm:text-right shrink-0">
+        <SharedPrice
+          v-if="lineItem.totalPrice"
+          :value="lineItem.totalPrice"
+          class="text-surface-on-surface"
+          data-testid="order-item-credit-totalprice"
+        />
+        <SharedPrice
+          v-if="lineItem.unitPrice && lineItem.quantity > 1"
+          :value="lineItem.unitPrice"
+          class="text-sm text-surface-on-surface-variant font-normal"
+          data-testid="order-item-credit-unitprice"
+        />
+      </div>
     </div>
   </div>
 </template>

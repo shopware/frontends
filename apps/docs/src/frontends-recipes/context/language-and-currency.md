@@ -419,6 +419,7 @@ The current language itself is read from the context, not from this composable. 
 
 ## Related Links
 
+- [URL Resolving and SEO URLs recipe](url-resolving.html)
 - [Navigation and Breadcrumbs recipe](navigation.html)
 - [Session Context recipe](session-context.html)
 - [Prices and Tax State recipe](../catalog/prices.html)
