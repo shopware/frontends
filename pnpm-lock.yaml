@@ -1434,9 +1434,15 @@ importers:
 
   templates/react-starter-template:
     dependencies:
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client
       '@shopware/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
+      '@shopware/helpers':
+        specifier: canary
+        version: link:../../packages/helpers
       next:
         specifier: 16.3.6
         version: 16.3.6(@playwright/test@1.63.0)(@types/node@24.19.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.89.2)
@@ -1447,6 +1453,9 @@ importers:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
     devDependencies:
+      '@shopware/api-gen':
+        specifier: canary
+        version: link:../../packages/api-gen
       '@tailwindcss/postcss':
         specifier: 4.3.2
         version: 4.3.2

@@ -8,6 +8,7 @@ a project from.
 
 - Next.js 16.3 with the App Router and Cache Components
 - React 19
+- `@shopware/api-client` with the Store API types, `@shopware/helpers`
 - Tailwind CSS v4 with the Shopware color tokens from `@shopware/design-tokens`
 
 ## Development
@@ -20,3 +21,29 @@ pnpm --filter react-starter-template dev
 ```
 
 Then open http://localhost:3000.
+
+## Connecting your own Shopware instance
+
+The template runs against the public demo backend without any configuration.
+To use your own instance, copy `.env.template` to `.env` and set:
+
+| Variable                | Value                                                            |
+| ----------------------- | ---------------------------------------------------------------- |
+| `SHOPWARE_ENDPOINT`     | Store API endpoint, e.g. `https://your-shop.com/store-api/`      |
+| `SHOPWARE_ACCESS_TOKEN` | Sales Channel access key (Settings > Sales Channel > API access) |
+
+Both are read on the server at request time, so one build can serve several
+environments.
+
+## Type generation
+
+The Store API types come from `@shopware/api-client`. To include the endpoints
+and fields of your own instance and its extensions, set `OPENAPI_JSON_URL` and
+`OPENAPI_ACCESS_KEY` in `.env`, then run:
+
+```bash
+npx shopware-api-gen loadSchema --apiType=store
+pnpm --filter react-starter-template generate-types
+```
+
+Point `shopware.d.ts` at the generated `./api-types/storeApiTypes` afterwards.

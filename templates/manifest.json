@@ -117,8 +117,19 @@
       "devPort": 3000,
       "buildCommand": "next build",
       "devCommand": "next dev",
-      "typeGeneration": null,
-      "notes": "Skeleton stage: the data layer that reads the env vars is not implemented yet. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
+      "typeGeneration": {
+        "env": {
+          "OPENAPI_JSON_URL": {
+            "description": "Base URL of the Shopware instance: SHOPWARE_ENDPOINT without its /store-api suffix (trailing slash or not)."
+          },
+          "OPENAPI_ACCESS_KEY": {
+            "description": "Sales Channel access key: the same value as SHOPWARE_ACCESS_TOKEN."
+          }
+        },
+        "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
+        "script": "generate-types"
+      },
+      "notes": "Skeleton stage: anonymous Store API reads only, no session, cart or checkout yet. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
     },
     {
       "id": "astro",
