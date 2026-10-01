@@ -18,6 +18,7 @@ This is the implementation working with the `vue-starter-template`. To see the d
 :::
 
 This page covers the i18n configuration. What happens at runtime — switching the language and the currency, the redirect a language switch ends in, and building locale-aware links with `formatLink` — is covered end-to-end in the [Language and Currency Switch recipe](../frontends-recipes/context/language-and-currency.html) and the [Session Context recipe](../frontends-recipes/context/session-context.html).
+
 Each store has two sources of translations.
 
 Backend source for:
