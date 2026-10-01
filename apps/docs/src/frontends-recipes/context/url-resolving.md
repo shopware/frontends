@@ -174,13 +174,12 @@ Pick by scope — how much of the resolution the composable is about:
 - **A technical path** — one lookup filtered on `pathInfo`, with a trailing slash removed by `normalizePath`.
 - **No match** — `getRouteFromPathInfo` derives a synthetic resolution from the technical prefix, otherwise `null`.
 
-Seven things the generated reference will not tell you:
+Six things the generated reference will not tell you:
 
 - `resolvePath("/")` issues no request at all, so it is only as correct as the session context. The id it returns changes with the sales channel, not with the route.
 - `useNavigationContext(context)` snapshots what you pass it. `useContext` stores `ref(unref(context))`, so a `computed` handed to it is read once rather than tracked — which is what you want for a per-navigation resolution, and a trap if you expect it to follow a later change.
 - `useNavigationContext` issues no requests. It provides the `navigation` injection and exposes `navigationContext`, `routeName` and `foreignKey`; `foreignKey` falls back to `""`, never `undefined`. Called without an argument it only injects, and in `vue-starter-template` the catch-all is the only thing that seeds it — under an explicit file route you pass the `SeoUrl` in yourself.
 - `useCategorySearch` has two methods and they are not symmetrical. `search(categoryId, options)` sends `sw-include-seo-urls: true`; `advancedSearch({ query })` does not send that header at all.
-- `useCategorySearch().search` is the odd one out on associations: it puts the whole `cmsAssociations` object into the body's `associations` field, so the CMS tree ends up nested one level deeper. `useLandingSearch().search` and `useProductSearch().search` both send `cmsAssociations.associations` unwrapped. The three are not interchangeable if you build a request by hand.
 - `useUrlResolver().resolveUrl(url)` prefixes the path, it does not rewrite it. The `split("/").slice(1)` inside reads like it removes a path segment, but on a path that starts with a slash the element it removes is the empty string in front of it: `/en/navigation/123` with `urlPrefix: "shop"` comes back as `/shop/en/navigation/123`, locale segment intact, which is what the composable's own test pins. Only a path handed in without a leading slash loses a real segment. It also throws `URL Input too long` for input over 2083 characters, and `getUrlPrefix()` reads an injected `urlPrefix` that the application provides, not the composable.
 - `useBreadcrumbs` is scoped, not global. It goes through `useContext("swBreadcrumb")`, which injects an ancestor's ref or, finding none, creates its own and provides it downwards. Nothing above the page components provides it, so each page roots a fresh trail per mount. The [Navigation and Breadcrumbs recipe](navigation.html) covers what changes when that ref sits higher.
 
