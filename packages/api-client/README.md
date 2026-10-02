@@ -418,6 +418,10 @@ async function loadMainNavigation() {
 }
 ```
 
+### Dropping a default header per request
+
+Set a header to `""` to leave a default header out of one request. Example: `headers: { "sw-context-token": "" }`. Header names match case-insensitively. A response to a request that drops `sw-context-token` this way never changes the client's token.
+
 ### Uploading files (`multipart/form-data`) and other binary bodies
 
 Some endpoints accept binary uploads sent as `multipart/form-data` - for example the Admin API `uploadV2 post /_action/media/upload`. For these requests, build a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) instance and pass it as `body`:
@@ -558,6 +562,20 @@ apiClient.invoke("readProductGet get /product", {
     _criteria: encodeForQuery(criteria),
   },
 });
+```
+
+### mergeRequestHeaders
+
+Merges request headers over default headers, like `invoke` does. Names match case-insensitively and come back lowercase. A header set to `""` is removed.
+
+```typescript
+import { mergeRequestHeaders } from "@shopware/api-client/helpers";
+
+const headers = mergeRequestHeaders(
+  { "SW-Language-Id": "my-language-id" },
+  apiClient.defaultHeaders,
+);
+headers["sw-language-id"]; // "my-language-id"
 ```
 
 ## Links

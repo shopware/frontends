@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
 
@@ -38,7 +37,7 @@ const {
 defineOptions({
   name: "WishlistPage",
 });
-const { apiClient, cacheableReads } = useShopwareContext();
+const { invokeRead } = useCacheableRead();
 const products = ref<Schemas["Product"][]>([]);
 const isLoading = ref(false);
 const { t } = useI18n();
@@ -66,13 +65,9 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
 
   try {
     const criteria = { ids: itemIds || items.value };
-    const { data } = cacheableReads
-      ? await apiClient.invoke("readProductGet get /product", {
-          query: { _criteria: encodeForQuery(criteria) },
-        })
-      : await apiClient.invoke("readProduct post /product", {
-          body: criteria,
-        });
+    const { data } = await invokeRead("readProduct post /product", {
+      body: criteria,
+    });
 
     if (data?.elements) {
       products.value = data.elements;

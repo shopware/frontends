@@ -22,6 +22,10 @@ export * from "./createShopwareContext";
 export * from "./useAddress/useAddress";
 export * from "./useAddToCart/useAddToCart";
 export * from "./useBreadcrumbs/useBreadcrumbs";
+export {
+  type UseCacheableReadReturn,
+  useCacheableRead,
+} from "./useCacheableRead/useCacheableRead";
 export * from "./useCart/useCart";
 export * from "./useCartItem/useCartItem";
 export * from "./useCategory/useCategory";

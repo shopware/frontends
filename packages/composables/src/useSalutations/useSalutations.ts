@@ -1,7 +1,7 @@
 import { computed, inject, onMounted, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
 
-import { useShopwareContext } from "#imports";
+import { useCacheableRead } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseSalutationsReturn = {
@@ -23,7 +23,7 @@ export type UseSalutationsReturn = {
  * @category Context & Language
  */
 export function useSalutations(): UseSalutationsReturn {
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
@@ -31,9 +31,7 @@ export function useSalutations(): UseSalutationsReturn {
   const fetchSalutations = async (): Promise<
     operations["readSalutation post /salutation"]["response"]
   > => {
-    const result = cacheableReads
-      ? await apiClient.invoke("readSalutationGet get /salutation")
-      : await apiClient.invoke("readSalutation post /salutation");
+    const result = await invokeRead("readSalutation post /salutation");
     _salutations.value = result.data.elements;
     return result.data;
   };
