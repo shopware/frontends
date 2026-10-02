@@ -175,18 +175,6 @@ export const sidebar = [
             text: "Images",
             link: "/guides/page-elements/images.html",
           },
-          {
-            text: "Login Form",
-            link: "/guides/page-elements/login-form.html",
-          },
-          {
-            text: "Footer Navigation",
-            link: "/guides/page-elements/footer-navigation.html",
-          },
-          {
-            text: "Navigation",
-            link: "/guides/page-elements/navigation.html",
-          },
         ],
       },
     ],

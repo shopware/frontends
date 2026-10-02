@@ -90,7 +90,7 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 > `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://developer.shopware.com/frontends/guides/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
+See a [short guide](https://developer.shopware.com/frontends/frontends-recipes/cms/rendering.html) on how to use `cms-base-layer` in your Nuxt project.
 
 ## Styling and Design Tokens
 
