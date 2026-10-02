@@ -107,6 +107,10 @@ export const sidebar = [
             link: "/guides/cms/customize-components.html",
           },
           {
+            text: "Content Pages",
+            link: "/guides/cms/content-pages.html",
+          },
+          {
             text: "Implement Missing Component",
             link: "/guides/cms/missing-component.html",
           },

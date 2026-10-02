@@ -599,7 +599,7 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 - [URL Resolving and SEO URLs recipe](../context/url-resolving.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
-- [Custom CMS elements](../../guides/cms/custom-elements.html)
+- [Implement a Missing CMS Component](../../guides/cms/missing-component.html)
 - [Composables reference](../../packages/composables/)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [API client package](../../packages/api-client.html)
