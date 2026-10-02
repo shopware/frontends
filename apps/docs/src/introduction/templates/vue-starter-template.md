@@ -227,6 +227,6 @@ The Vue Starter Template can be extended using [Nuxt layers](https://nuxt.com/do
 
 ## What's Next?
 
-<PageRef page="../page-elements/navigation.html" title="Build your navigation" sub="Learn how to implement the main navigation for your store" />
+<PageRef page="../../frontends-recipes/context/navigation.html" title="Build your navigation" sub="Learn how to implement the main navigation for your store" />
 
-<PageRef page="../cms/content-pages.html" title="Work with CMS" sub="Integrate Shopware Shopping Experiences into your frontend" />
+<PageRef page="../../frontends-recipes/cms/rendering.html" title="Work with CMS" sub="Integrate Shopware Shopping Experiences into your frontend" />
