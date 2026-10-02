@@ -17,4 +17,4 @@ The wishlist is covered end-to-end in the Frontends Recipes:
 
 ## Shopware Extensions
 
-<PageRef page="./custom-products.html" title="Custom Products" sub="Example of integration with Custom Products extension" />
+<PageRef page="../../integrations/commercial/custom-products.html" title="Custom Products" sub="Example of integration with Custom Products extension" />

@@ -355,8 +355,6 @@ The locale does not follow the context. That `update()` call passes only `curren
 - [Product Listing and Filters recipe](listing.html)
 - [Product Variants recipe](variants.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Work with prices](../../guides/e-commerce/prices.html)
-- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

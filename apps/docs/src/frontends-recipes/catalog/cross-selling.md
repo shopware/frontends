@@ -327,6 +327,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - [Product Variants recipe](variants.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [Helpers package](../../packages/helpers.html)

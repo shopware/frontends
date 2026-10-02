@@ -403,6 +403,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 - [Product Listing and Filters recipe](listing.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Product detail page](../../guides/e-commerce/product-detail-page.html)
+- [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
