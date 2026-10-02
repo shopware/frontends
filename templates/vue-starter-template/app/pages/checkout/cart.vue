@@ -22,13 +22,17 @@ function handleUpdateQuantity(id: string, quantity: number) {
       {{ $t("cart.title") }}
     </h1>
 
-    <div v-if="isEmpty" class="flex flex-col items-center justify-center py-20">
-      <p class="text-surface-on-surface text-lg mb-6">
+    <div
+      v-if="isEmpty"
+      class="flex flex-col items-center justify-center gap-4 py-20 text-center"
+    >
+      <SharedIconBadge icon="i-carbon-shopping-cart" size="large" />
+      <p class="text-lg text-surface-on-surface">
         {{ $t("cart.emptyCartLabel") }}
       </p>
       <NuxtLink
         :to="formatLink('/')"
-        class="bg-brand-primary text-brand-on-primary text-center font-bold leading-6 py-3 px-4 rounded-md"
+        class="mt-2 px-4 py-3 rounded bg-brand-primary text-brand-on-primary font-bold leading-normal inline-flex items-center justify-center hover:bg-brand-primary-hover transition-colors"
       >
         {{ $t("cart.continueShopping") }}
       </NuxtLink>
