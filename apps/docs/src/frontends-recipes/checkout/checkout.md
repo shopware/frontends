@@ -541,6 +541,7 @@ That rotation only fits when nothing still needs the old session. When payment o
 
 ## Related Links
 
+- [Cart recipe](cart.html)
 - [Session Context recipe](../context/session-context.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
 - [Order Details recipe](../orders/details.html)
@@ -549,5 +550,7 @@ That rotation only fits when nothing still needs the old session. When payment o
 - [Register recipe](../account/register.html)
 - [Prices and Tax State recipe](../catalog/prices.html)
 - [Work with the cart](../../guides/e-commerce/cart.html)
+- [Create a checkout](../../guides/e-commerce/checkout.html)
+- [Payments](../../guides/e-commerce/payments.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

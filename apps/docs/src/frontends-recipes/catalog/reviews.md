@@ -424,7 +424,6 @@ Reviews carry a `status` and a `comment`. `status` is the moderation flag — `f
 
 - [Product Listing and Filters recipe](listing.html)
 - [Login recipe](../account/login.html)
-- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

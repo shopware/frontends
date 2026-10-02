@@ -148,5 +148,5 @@ const isActive = (path: string) => {
 
 ## Next steps
 
-<PageRef page="./footer-navigation.html" title="Footer Navigation" sub="Build a footer navigation from admin-configured categories" />
+<PageRef page="../../frontends-recipes/context/navigation.html" title="Navigation and Breadcrumbs" sub="Load the main and the footer navigation, resolve the current URL and render breadcrumbs." />
 <PageRef page="../routing.html" title="Work with routing" sub="Resolve paths and fetch content dynamically" />
