@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@shopware/api-client": "canary",
+    "@shopware/cms-base-layer-react": "workspace:*",
     "@shopware/design-tokens": "workspace:*",
     "@shopware/helpers": "canary",
     "next": "16.3.6",
