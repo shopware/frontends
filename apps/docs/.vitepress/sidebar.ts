@@ -385,6 +385,7 @@ export const sidebar = [
       },
       { text: "Images", link: "/best-practices/images.html" },
       { text: "Performance", link: "/best-practices/performance.html" },
+      { text: "Prerendering", link: "/best-practices/prerendering.html" },
       {
         text: "Testing",
         link: "/best-practices/testing.html",
