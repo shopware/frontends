@@ -429,7 +429,6 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 - [Order Details recipe](details.html)
 - [Login recipe](../account/login.html)
 - [Order History recipe](../account/order-history.html)
-- [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)
 - [Reference implementation in `vue-starter-template`](https://github.com/shopware/frontends/blob/main/templates/vue-starter-template/app/pages/account/order/%5BdeepCode%5D.vue)
