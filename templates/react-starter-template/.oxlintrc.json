@@ -5,7 +5,9 @@
     "correctness": "error"
   },
   "rules": {
-    "react/rules-of-hooks": "error"
+    "react/rules-of-hooks": "error",
+    "jsx-a11y/no-autofocus": ["error", { "ignoreNonDOM": true }],
+    "nextjs/no-img-element": "off"
   },
   "ignorePatterns": [".next", "next-env.d.ts", "node_modules"]
 }

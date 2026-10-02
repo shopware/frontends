@@ -1,9 +1,10 @@
 # react-starter-template
 
 Next.js App Router storefront template for Shopware 6, the React counterpart of
-`vue-starter-template`. State: anonymous Store API reads, SEO URL routing and
-CMS rendering work; there is no session yet, so cart, wishlist and forms are
-stubs. `supportLevel` in `templates/manifest.json` is authoritative.
+`vue-starter-template`. State: anonymous Store API reads, SEO URL routing, CMS
+rendering and the header/footer layout work; there is no session yet, so cart,
+wishlist, account, search and forms are stubs. `supportLevel` in
+`templates/manifest.json` is authoritative.
 
 ## Next.js docs
 
@@ -74,6 +75,47 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   Catalog routes must never read `cookies()` or `headers()`.
 - The home page calls `connection()` before its reads so `next build` does
   not need the Store API. Prerendering at build time is a later decision.
+
+## Layout
+
+- `app/layout.tsx` renders `features/layout/components/Header` and `Footer`
+  around `<main aria-label="Main content">`. Both are server components. The
+  parts that read the Store API (`readNavigation("main-navigation", 2)` for
+  the header, `"footer-navigation"` with depth 1 for the footer) await
+  `connection()` inside their own `<Suspense>`, so the hermetic build works
+  and the header bar renders before the navigation streams in. The two header
+  readers share one `cache()`d loader.
+- Categories cross into client islands only as `NavigationNode` trees
+  (`features/navigation/navigationTree.ts`: id, name, href from
+  `getCategoryUrl`, `external` for `externalLink`/`linkNewTab`, children).
+  `NavigationLink` turns `external` into `target="_blank" rel="noopener"`.
+  Never pass `Schemas["Category"]` to a client component.
+- Client islands: `TopNavigation` (desktop menubar with the flyout, hidden
+  below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
+  `data-testid="sidebar-left"`, focus trap and body scroll lock), `HeaderBar`
+  (logo, search, account/wishlist/cart buttons, mobile search toggle),
+  `HeaderSearch` and `NewsletterBox`.
+- Session data comes from `useSession()` in `features/session`, a mock
+  (`mockSession.ts`: logged out, counts 0) until the session architecture is
+  decided. The header buttons and the search input only call `notify()` with
+  the messages in `features/storefront/notWired.ts`; the newsletter form goes
+  through `subscribeNewsletter` of the actions port, so wiring it later needs
+  no form change.
+- UI copy sits in a `t` const at the top of each component, keyed by the Vue
+  i18n keys (`templates/vue-starter-template/i18n/en-GB/*.json`), ready for a
+  next-intl swap. Keep the Vue `data-testid`s and roles
+  (`header-account-button[data-logged-in]`, `header-wishlist-button`,
+  `header-mini-cart-button`, `header-search-input`,
+  `[role="menubar"] [role="menuitem"]` for top-level entries only); the e2e
+  suite asserts them.
+- Icons are hand-ported meteor SVGs in `components/icons/index.tsx` (fill
+  `currentColor`, `aria-hidden`). Shared class lists live in
+  `components/input.ts` and `features/layout/headerAction.ts`.
+- `pnpm --filter react-starter-template test` runs two Vitest projects:
+  `*.test.{ts,tsx}` in node (SSR markup through `test/render.tsx`) and
+  `*.dom.test.tsx` in happy-dom for the interactive contract (drawer,
+  flyout). Components that import `server-only` or call `connection()` are
+  not rendered in tests.
 
 ## Session and actions
 
