@@ -20,7 +20,7 @@ Start with importing the correct element type from the `@shopware/composables` p
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example.vue" code lang="vue" no-name -->
 
 ```vue
-<!-- components/cms/CmsElementImage.vue -->
+<!-- app/components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
 import type { CmsElementImage } from "@shopware/composables";
@@ -35,10 +35,10 @@ const props = defineProps<{
 
 Now, you can use `props.content` to access all properties of the element in your template.
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-2.vue" code lang="vue{8}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-2.vue" code lang="vue{12}" no-name -->
 
-```vue{8}
-<!-- components/cms/CmsElementImage.vue -->
+```vue{12}
+<!-- app/components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
 import type { CmsElementImage } from "@shopware/composables";
@@ -57,10 +57,10 @@ const props = defineProps<{
 
 However, for some elements the configuration can be quite complex, so there are composables to give you a hand:
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-3.vue" code lang="vue{10-14,18-20}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-elements/example-3.vue" code lang="vue{11-15,19-21}" no-name -->
 
-```vue{10-14,18-20}
-<!-- components/cms/CmsElementImage.vue -->
+```vue{11-15,19-21}
+<!-- app/components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
 import { useCmsElementImage } from "@shopware/composables";
@@ -71,7 +71,7 @@ const props = defineProps<{
 }>();
 
 const {
-  containerStyle, // padding, background-color etc.
+  containerStyle,
   displayMode, // cover, contain, stretch etc.
   imageAttrs, // automatically resolves src, alt and srcset attributes
 } = useCmsElementImage(props.content);
@@ -85,3 +85,5 @@ const {
 ```
 
 <!-- /automd -->
+
+`useCmsElementImage` returns more than these three values, and `getConfigValue` from `useCmsElementConfig` returns `false` for a config entry mapped from the surrounding entity. The [Rendering CMS Pages recipe](../../frontends-recipes/cms/rendering.html#composables) lists both.
