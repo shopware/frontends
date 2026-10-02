@@ -135,16 +135,6 @@ export const sidebar = [
             link: "/guides/e-commerce/product-listing.html",
           },
           {
-            text: "Product Detail Page",
-            link: "/guides/e-commerce/product-detail-page.html",
-          },
-          { text: "Prices", link: "/guides/e-commerce/prices.html" },
-          { text: "Cart", link: "/guides/e-commerce/cart.html" },
-          {
-            text: "Checkout",
-            link: "/guides/e-commerce/checkout.html",
-          },
-          {
             text: "Payments",
             link: "/guides/e-commerce/payments.html",
           },
