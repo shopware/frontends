@@ -131,16 +131,6 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Product Detail Page",
-            link: "/guides/e-commerce/product-detail-page.html",
-          },
-          { text: "Prices", link: "/guides/e-commerce/prices.html" },
-          { text: "Cart", link: "/guides/e-commerce/cart.html" },
-          {
-            text: "Product Listing",
-            link: "/guides/e-commerce/product-listing.html",
-          },
-          {
             text: "Checkout",
             link: "/guides/e-commerce/checkout.html",
           },
@@ -162,14 +152,6 @@ export const sidebar = [
           {
             text: "Sitemap",
             link: "/guides/features/sitemap.html",
-          },
-          {
-            text: "Custom Products extension",
-            link: "/guides/features/custom-products.html",
-          },
-          {
-            text: "Wishlist",
-            link: "/guides/features/wishlist.html",
           },
           {
             text: "Broadcasting",
