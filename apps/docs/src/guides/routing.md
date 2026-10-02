@@ -224,4 +224,4 @@ To check it out on a code level have a look at the `[...all].vue` file in the de
 ## Next steps
 
 <PageRef page="cms/content-pages.html" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
-<PageRef page="e-commerce/product-listing.html" title="Create a product listing" sub="Display a list of products" />
+<PageRef page="../frontends-recipes/catalog/listing.html" title="Product Listing and Filters" sub="Display a list of products with filters, sorting and pagination" />
