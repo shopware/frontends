@@ -273,7 +273,7 @@ const invokeSubmit = () => {
 
 We can use some helper methods from `useCart` composable to display an order summary and format prices.
 
-Refer to [formatting prices](prices.html) for more information on displaying prices.
+Refer to [formatting prices](../../frontends-recipes/catalog/prices.html) for more information on displaying prices.
 
 :::warning
 Totals should **not** be calculated by the frontend. All calculations should be done on the backend side.

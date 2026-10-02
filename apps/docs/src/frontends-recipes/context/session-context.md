@@ -351,7 +351,7 @@ Turning it on moves the problem to the cache. The server render then depends on 
 - [Work with languages](../../guides/languages.html)
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Login recipe](../account/login.html)
+- [Prices and Tax State recipe](../catalog/prices.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
 - [Nuxt module package](../../packages/nuxt-module.html)
-- [Prices documentation](../../guides/e-commerce/prices.html)
