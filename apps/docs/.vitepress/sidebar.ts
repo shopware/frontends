@@ -100,16 +100,8 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Custom Elements",
-            link: "/guides/cms/custom-elements.html",
-          },
-          {
             text: "Content Pages",
             link: "/guides/cms/content-pages.html",
-          },
-          {
-            text: "Customize Components",
-            link: "/guides/cms/customize-components.html",
           },
           {
             text: "Implement Missing Component",
