@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "react-starter-template",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_TELEMETRY_DISABLED=1",
+        "pnpm",
+        "--filter",
+        "react-starter-template",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}
