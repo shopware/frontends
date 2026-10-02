@@ -374,7 +374,6 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)

@@ -30,6 +30,7 @@ Shopware **Frontends** is built for Shopware 6.
 
 No compromises or generic implementations — it works just like a developer would expect it to.
 Core concepts like [content management](../frontends-recipes/cms/rendering.html), [cart](../guides/e-commerce/cart.html), [payments](../guides/e-commerce/payments.html) or [checkout](../guides/e-commerce/checkout.html) are deeply integrated and fully functional.
+Core concepts like [content management](../guides/cms/content-pages.html), [cart](../frontends-recipes/checkout/cart.html), [payments](../guides/e-commerce/payments.html) or [checkout](../guides/e-commerce/checkout.html) are deeply integrated and fully functional.
 
 ### Cloud first
 
@@ -39,7 +40,7 @@ Even the [developer IDE](./templates/demo-store-template.html) can be started in
 
 ### Stable
 
-Shopware **Frontends** [doesn’t rely on Shopware’s internal APIs](../index.md#how-it-works) (such as twig blocks, DAL or events),
+Shopware **Frontends** [doesn’t rely on Shopware’s internal APIs](../index.md#how-shopware-frontends-work) (such as twig blocks, DAL or events),
 hence not being subject to breaking changes in those APIs — as opposed to theme-based storefronts.
 Especially for big frontend projects this drastically reduces the complexity of platform updates.
 

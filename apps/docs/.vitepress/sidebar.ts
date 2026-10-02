@@ -130,12 +130,6 @@ export const sidebar = [
             link: "/guides/e-commerce/product-listing.html",
           },
           {
-            text: "Product Detail Page",
-            link: "/guides/e-commerce/product-detail-page.html",
-          },
-          { text: "Prices", link: "/guides/e-commerce/prices.html" },
-          { text: "Cart", link: "/guides/e-commerce/cart.html" },
-          {
             text: "Checkout",
             link: "/guides/e-commerce/checkout.html",
           },
@@ -146,17 +140,6 @@ export const sidebar = [
           {
             text: "JSON-LD",
             link: "/guides/e-commerce/json-ld.html",
-          },
-        ],
-      },
-      {
-        text: "B2B",
-        link: "/guides/b2b/",
-        collapsed: true,
-        items: [
-          {
-            text: "Quote Management",
-            link: "/guides/b2b/quote-management.html",
           },
         ],
       },
@@ -172,10 +155,6 @@ export const sidebar = [
           {
             text: "Wishlist",
             link: "/guides/features/wishlist.html",
-          },
-          {
-            text: "Custom Products extension",
-            link: "/guides/features/custom-products.html",
           },
           {
             text: "Broadcasting",
@@ -203,6 +182,10 @@ export const sidebar = [
           {
             text: "Footer Navigation",
             link: "/guides/page-elements/footer-navigation.html",
+          },
+          {
+            text: "Navigation",
+            link: "/guides/page-elements/navigation.html",
           },
         ],
       },

@@ -1,18 +1,15 @@
 ---
+nav:
+  hidden: true
 head:
   - - meta
-    - name: og:title
-      content: "Building a footer navigation"
-  - - meta
-    - name: og:description
-      content: "In this chapter you will learn how to build a footer navigation from admin-configured categories."
-nav:
-  position: 25
+    - http-equiv: refresh
+      content: "0; url=/frontends/frontends-recipes/context/navigation.html"
 ---
 
-# Create a footer navigation
+# This page has moved
 
-Implementing a footer navigation can be described in a few steps:
+This content is now part of **[Navigation and Breadcrumbs recipe](/frontends/frontends-recipes/context/navigation.html)**.
 
 1. Use the [useNavigation](../../packages/composables/useNavigation) composable to `loadNavigationElements` and display a navigation configured in the admin panel.
 2. Iterate over the `navigationElements` array of categories and display them.
@@ -104,3 +101,4 @@ In order to resolve an entity assigned to each category path, utilize a [composa
 1. `search` from `useNavigationSearch` to find the entity type.
 2. Use a [dedicated composable](../../frontends-recipes/context/url-resolving.html) to process page resolving.
    :::
+If you are not redirected automatically, [click here](/frontends/frontends-recipes/context/navigation.html).
