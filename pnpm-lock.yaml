@@ -1504,6 +1504,9 @@ importers:
       react-dom:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
     devDependencies:
       '@shopware/api-gen':
         specifier: canary
@@ -22603,7 +22606,7 @@ snapshots:
       prettier: 3.8.3
       reselect: 5.2.0
       tsconfig-paths: 4.2.0
-      zod: 4.5.4
+      zod: 4.6.5
     optionalDependencies:
       oxfmt: 0.62.0
     transitivePeerDependencies:
