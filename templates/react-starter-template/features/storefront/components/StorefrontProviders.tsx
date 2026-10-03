@@ -8,6 +8,8 @@ import type {
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
+import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 
 import { NOT_WIRED_MESSAGES } from "../notWired";
@@ -37,7 +39,7 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
   const actions = useMemo<Partial<CmsActions>>(() => {
     const notWired = async () => {
       notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
-      return { ok: false, message: NOT_WIRED_MESSAGES.forms };
+      return { ok: false };
     };
     return {
       notify,
@@ -53,25 +55,35 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
     };
   }, [notify]);
 
+  const sessionActions = useMemo<Partial<SessionActions>>(() => {
+    const notWired = async () => {
+      notify({ type: "warning", message: NOT_WIRED_MESSAGES.account });
+      return { ok: false, message: NOT_WIRED_MESSAGES.account };
+    };
+    return { login: notWired, register: notWired, logout: notWired };
+  }, [notify]);
+
   return (
     <SessionProvider>
-      <CmsActionsProvider actions={actions}>
-        {children}
-        <div
-          aria-live="polite"
-          className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
-        >
-          {toasts.map((toast) => (
-            <p
-              key={toast.id}
-              data-testid="notification-element-message"
-              className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
-            >
-              {toast.message}
-            </p>
-          ))}
-        </div>
-      </CmsActionsProvider>
+      <SessionActionsProvider actions={sessionActions}>
+        <CmsActionsProvider actions={actions}>
+          {children}
+          <div
+            aria-live="polite"
+            className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
+          >
+            {toasts.map((toast) => (
+              <p
+                key={toast.id}
+                data-testid="notification-element-message"
+                className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
+              >
+                {toast.message}
+              </p>
+            ))}
+          </div>
+        </CmsActionsProvider>
+      </SessionActionsProvider>
     </SessionProvider>
   );
 }

@@ -39,6 +39,14 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   locally, the precedent being `useCategorySearch.search` in composables.
   Let a failed read throw so the failure is not cached; the calling
   component handles it (`notFoundOn404` in `platform/shopware/errors.ts`).
+- The Store API caps `limit` at 100 and the demo backend has 250 countries, so
+  `readCountries` pages through `/country` with `"total-count-mode": "exact"`
+  until `elements.length >= total` (ten pages at most) and returns
+  `CountryOption`s. The sort is `position`, then `name`, then `id`: most
+  countries share one position, and paging on a non-unique sort returns the
+  same country on several pages (153 unique out of 250 on the demo). The mapping and the per-page criteria sit in
+  `reads/countryOptions.ts` without `server-only`, so client islands and tests
+  can import the type and the pure helpers.
 - Import Store API types from `#shopware` (`shopware.d.ts`) with `import type`
   only. Point that file at `./api-types/storeApiTypes` after running
   `loadSchema` and `generate-types` to get the types of your own instance.
@@ -97,8 +105,16 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `HeaderSearch` and `NewsletterBox`.
 - Session data comes from `useSession()` in `features/session`, a mock
   (`mockSession.ts`: logged out, counts 0) until the session architecture is
-  decided. The header buttons and the search input only call `notify()` with
-  the messages in `features/storefront/notWired.ts`; the newsletter form goes
+  decided. The account button sends a guest to
+  `/account/login?redirect=<encoded path>` like the Vue header's
+  `route.fullPath`, and `LoginForm` follows that `redirect` after a login.
+  Both read `window.location` in the event handler, never `usePathname()` or
+  `useSearchParams()` during render: with Cache Components those hooks suspend
+  the root layout under `app/[...path]` (an unknown catch-all param), which
+  fails `next build`, and would drop the login form out of the static shell.
+  Logged in, the account button only calls `notify()`, as the wishlist and
+  cart buttons and the search input do, with the messages in
+  `features/storefront/notWired.ts`; the newsletter form goes
   through `subscribeNewsletter` of the actions port, so wiring it later needs
   no form change.
 - UI copy sits in a `t` const at the top of each component, keyed by the Vue
@@ -124,6 +140,14 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   is decided, every action shows a "not connected" notification and returns
   `{ ok: false }`. Wire cart, wishlist, variant lookup and forms there, not in
   the CMS components.
+- Login, registration and logout go through the session actions port
+  (`features/session/components/SessionActionsContext.tsx`:
+  `SessionActionsProvider`, `useSessionActions`). `StorefrontProviders` mounts
+  it with stubs that notify `NOT_WIRED_MESSAGES.account` and resolve
+  `{ ok: false }`; the forms validate and build the real Store API payload
+  (`RegistrationInput` is the `/account/register` body without
+  `storefrontUrl`), so wiring a session means replacing the stubs, not the
+  forms. The default context warns once per call, like the CMS port.
 
 ## Rules the code does not show
 

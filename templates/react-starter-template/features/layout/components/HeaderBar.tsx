@@ -5,6 +5,7 @@ import {
   useCmsActions,
 } from "@shopware/cms-base-layer-react/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -35,11 +36,21 @@ const COUNTER_CLASS = "absolute -top-2 left-1/2";
 export function HeaderBar({ menu }: { menu: ReactNode }) {
   const { isLoggedIn, cartCount, wishlistCount } = useSession();
   const { notify } = useCmsActions();
+  const router = useRouter();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const restoreFocus = useRef(false);
 
   const notWired = (message: string) => () => notify({ type: "info", message });
+
+  const openAccount = isLoggedIn
+    ? notWired(NOT_WIRED_MESSAGES.account)
+    : () => {
+        const { pathname, search, hash } = window.location;
+        router.push(
+          `/account/login?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+        );
+      };
 
   const closeMobileSearch = () => {
     restoreFocus.current = true;
@@ -93,7 +104,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               data-testid="header-account-button"
               data-logged-in={String(isLoggedIn)}
               aria-label={t["layout.header.myAccount"]}
-              onClick={notWired(NOT_WIRED_MESSAGES.account)}
+              onClick={openAccount}
             >
               <UserIcon className={ICON_CLASS} />
             </IconButton>

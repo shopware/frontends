@@ -8,6 +8,12 @@ import { renderToHtml } from "@/test/render";
 
 import { HeaderBar } from "./HeaderBar";
 
+const push = vi.hoisted(() => vi.fn());
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push }),
+}));
+
 const actions = { notify: vi.fn() };
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
@@ -50,6 +56,13 @@ describe("HeaderBar", () => {
 
     expect(html).toContain('aria-label="Search"');
     expect(html).not.toContain("bg-states-error");
+  });
+
+  it("does not navigate or notify while rendering", async () => {
+    await render();
+
+    expect(push).not.toHaveBeenCalled();
+    expect(actions.notify).not.toHaveBeenCalled();
   });
 
   it("gives every action button the same round hit area", async () => {
