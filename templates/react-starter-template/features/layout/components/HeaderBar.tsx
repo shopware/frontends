@@ -6,7 +6,7 @@ import {
 } from "@shopware/cms-base-layer-react/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 import {
@@ -15,9 +15,11 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "@/components/icons";
+import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
 import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
 import { HeaderSearch } from "@/features/search/components/HeaderSearch";
+import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
 
@@ -34,23 +36,60 @@ const ICON_CLASS = "size-5 text-brand-primary";
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
 
 export function HeaderBar({ menu }: { menu: ReactNode }) {
-  const { isLoggedIn, cartCount, wishlistCount } = useSession();
+  const { status, isLoggedIn, customerName, cartCount, wishlistCount } =
+    useSession();
+  const { retrySession } = useSessionActions();
   const { notify } = useCmsActions();
   const router = useRouter();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(false);
+  const checkingSessionRef = useRef(false);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
+  const accountButtonRef = useRef<HTMLButtonElement>(null);
   const restoreFocus = useRef(false);
+  const accountMenuId = useId();
+
+  if (accountMenuOpen && !isLoggedIn) setAccountMenuOpen(false);
 
   const notWired = (message: string) => () => notify({ type: "info", message });
 
-  const openAccount = isLoggedIn
-    ? notWired(NOT_WIRED_MESSAGES.account)
-    : () => {
-        const { pathname, search, hash } = window.location;
-        router.push(
-          `/account/login?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
-        );
-      };
+  const closeAccountMenu = useCallback(() => setAccountMenuOpen(false), []);
+
+  const goToLogin = () => {
+    const { pathname, search, hash } = window.location;
+    router.push(
+      `/account/login?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+    );
+  };
+
+  const recoverSession = async () => {
+    if (checkingSessionRef.current) return;
+    checkingSessionRef.current = true;
+    setCheckingSession(true);
+    try {
+      const session = await retrySession();
+      if (session.isLoggedIn) setAccountMenuOpen(true);
+      else goToLogin();
+    } catch {
+      goToLogin();
+    } finally {
+      checkingSessionRef.current = false;
+      setCheckingSession(false);
+    }
+  };
+
+  const openAccount = () => {
+    if (isLoggedIn) {
+      setAccountMenuOpen((open) => !open);
+      return;
+    }
+    if (status === "error") {
+      void recoverSession();
+      return;
+    }
+    goToLogin();
+  };
 
   const closeMobileSearch = () => {
     restoreFocus.current = true;
@@ -94,20 +133,38 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               variant="ghost"
               className={`${HEADER_ACTION_CLASS} sm:hidden`}
               aria-label={t.search}
-              onClick={() => setMobileSearchActive(true)}
+              onClick={() => {
+                setAccountMenuOpen(false);
+                setMobileSearchActive(true);
+              }}
             >
               <SearchIcon className={ICON_CLASS} />
             </IconButton>
-            <IconButton
-              variant="ghost"
-              className={HEADER_ACTION_CLASS}
-              data-testid="header-account-button"
-              data-logged-in={String(isLoggedIn)}
-              aria-label={t["layout.header.myAccount"]}
-              onClick={openAccount}
-            >
-              <UserIcon className={ICON_CLASS} />
-            </IconButton>
+            <div className="relative flex">
+              <IconButton
+                ref={accountButtonRef}
+                variant="ghost"
+                className={`${HEADER_ACTION_CLASS} aria-disabled:cursor-progress aria-disabled:opacity-50`}
+                data-testid="header-account-button"
+                data-logged-in={String(isLoggedIn)}
+                aria-label={t["layout.header.myAccount"]}
+                aria-expanded={isLoggedIn ? accountMenuOpen : undefined}
+                aria-controls={isLoggedIn ? accountMenuId : undefined}
+                aria-busy={checkingSession || undefined}
+                aria-disabled={checkingSession || undefined}
+                onClick={openAccount}
+              >
+                <UserIcon className={ICON_CLASS} />
+              </IconButton>
+              {isLoggedIn && accountMenuOpen ? (
+                <AccountMenu
+                  id={accountMenuId}
+                  customerName={customerName}
+                  triggerRef={accountButtonRef}
+                  onClose={closeAccountMenu}
+                />
+              ) : null}
+            </div>
             <IconButton
               variant="ghost"
               className={HEADER_ACTION_CLASS}

@@ -1,6 +1,9 @@
 import type { operations } from "#shopware";
 
+export type SessionStatus = "loading" | "ready" | "error";
+
 export type StorefrontSession = {
+  status: SessionStatus;
   isLoggedIn: boolean;
   customerName: string | null;
   cartCount: number;

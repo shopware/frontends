@@ -2,9 +2,9 @@
 
 Next.js App Router storefront template for Shopware 6, the React counterpart of
 `vue-starter-template`. State: anonymous Store API reads, SEO URL routing, CMS
-rendering and the header/footer layout work; there is no session yet, so cart,
-wishlist, account, search and forms are stubs. `supportLevel` in
-`templates/manifest.json` is authoritative.
+rendering, the header/footer layout and a browser session with login,
+registration and logout work; cart, wishlist, search and forms are stubs.
+`supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Next.js docs
 
@@ -19,14 +19,24 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Store API
 
-- `platform/shopware/` is the only place that creates API clients
-  (`createShopwareClient`), and every module there imports `server-only`. The
-  endpoint and access token are read on the server at request time
-  (`SHOPWARE_ENDPOINT`, `SHOPWARE_ACCESS_TOKEN`) and fall back to the public
-  demo backend, like the Vue starter's `nuxt.config.ts` defaults.
-- Create one client per request, never at module scope. An instance adopts the
-  `sw-context-token` of every response, so a shared one leaks sessions between
-  users.
+- Server clients come only from `platform/shopware/client.ts`
+  (`createShopwareClient`), and every module there imports `server-only`
+  except `publicConfig.ts` and `reads/countryOptions.ts`. The one browser
+  client is `features/session/browserClient.ts` (see Session and actions).
+  The config is read on the server at request time (`getShopwareConfig`:
+  `SHOPWARE_ENDPOINT`, `SHOPWARE_ACCESS_TOKEN`, `SHOPWARE_PUBLIC_ENDPOINT`,
+  `SHOPWARE_DEV_STOREFRONT_URL`) and falls back to the public demo backend,
+  like the Vue starter's `nuxt.config.ts` defaults. Server reads use
+  `endpoint`; `publicEndpoint` (defaults to `endpoint`) is what the browser
+  calls, for setups where the server reaches Shopware on an internal URL.
+  `.env.template` leaves `SHOPWARE_PUBLIC_ENDPOINT` and
+  `SHOPWARE_DEV_STOREFRONT_URL` empty on purpose: a demo value left there
+  after `SHOPWARE_ENDPOINT` is re-pointed sends the shop's logins and
+  registrations to the demo host. `getShopwareConfig` warns once per process
+  when that happens.
+- Create one server client per request, never at module scope. An instance
+  adopts the `sw-context-token` of every response, so a shared one leaks
+  sessions between users.
 - Reads live in `platform/shopware/reads/`. Each is a `'use cache'` function
   that creates its own anonymous client and sets a `cacheLife` profile from
   `next.config.ts` (`catalog`, `listing`, `seo`, `reference`) and an `sw:` tag.
@@ -103,20 +113,35 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `data-testid="sidebar-left"`, focus trap and body scroll lock), `HeaderBar`
   (logo, search, account/wishlist/cart buttons, mobile search toggle),
   `HeaderSearch` and `NewsletterBox`.
-- Session data comes from `useSession()` in `features/session`, a mock
-  (`mockSession.ts`: logged out, counts 0) until the session architecture is
-  decided. The account button sends a guest to
-  `/account/login?redirect=<encoded path>` like the Vue header's
-  `route.fullPath`, and `LoginForm` follows that `redirect` after a login.
-  Both read `window.location` in the event handler, never `usePathname()` or
+- Session data comes from `useSession()` in `features/session`, filled in the
+  browser by `ShopwareSessionProvider` (see Session and actions). The account
+  button sends a guest to `/account/login?redirect=<encoded path>` like the
+  Vue header's `route.fullPath`, and `LoginForm` and `RegistrationForm`
+  follow that `redirect` after a login or a registration.
+  They read `window.location` in the event handler, never `usePathname()` or
   `useSearchParams()` during render: with Cache Components those hooks suspend
   the root layout under `app/[...path]` (an unknown catch-all param), which
   fails `next build`, and would drop the login form out of the static shell.
-  Logged in, the account button only calls `notify()`, as the wishlist and
-  cart buttons and the search input do, with the messages in
-  `features/storefront/notWired.ts`; the newsletter form goes
-  through `subscribeNewsletter` of the actions port, so wiring it later needs
-  no form change.
+  `AccountMenu` may call `usePathname()` only because it renders after a
+  click, never on the server.
+- Logged in, the account button is a disclosure (`aria-expanded`,
+  `aria-controls`) for `AccountMenu`: the "Signed in as" line and Logout. It
+  closes on Escape, an outside `mousedown`, a route change and a logout.
+  With status `"error"` the click is not a guest click: it awaits
+  `retrySession()` (the button is `aria-busy` meanwhile) and opens the menu or
+  goes to the login page depending on the session it returns.
+  `LoggedInRedirect` on `/account/login` decides once, on the first status
+  that is not `"loading"`, and replaces to the redirect target only for a
+  customer who arrived logged in; a login or registration on the page
+  navigates from the form. Both resolve the same target
+  (`resolveRedirectFromSearch`, which returns the URL-normalized path and
+  refuses any whose normalized pathname starts with `//`, such as
+  `/.//evil.example`), so a login during the first session read,
+  which can trigger both, still lands on one URL.
+- The wishlist and cart buttons and the search input only call `notify()`
+  with the messages in `features/storefront/notWired.ts`; the newsletter form
+  goes through `subscribeNewsletter` of the actions port, so wiring it later
+  needs no form change.
 - UI copy sits in a `t` const at the top of each component, keyed by the Vue
   i18n keys (`templates/vue-starter-template/i18n/en-GB/*.json`), ready for a
   next-intl swap. Keep the Vue `data-testid`s and roles
@@ -135,19 +160,74 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Session and actions
 
-- `features/storefront/components/StorefrontProviders.tsx` is the app side of
-  the CMS actions port (`CmsActionsProvider`). Until the session architecture
-  is decided, every action shows a "not connected" notification and returns
-  `{ ok: false }`. Wire cart, wishlist, variant lookup and forms there, not in
-  the CMS components.
+- The session lives in the browser, like `packages/nuxt-module/plugin.ts`:
+  `features/session/browserClient.ts` creates the browser `@shopware/api-client`
+  instance (`createBrowserClient`) with the context token from the
+  JS-readable `sw-context-token` cookie, and an `onContextChanged` hook writes
+  every new token back with `js-cookie`: 365 days, path `/`, `sameSite: "lax"`,
+  `secure` when the page itself is served over `https:`. Nuxt keys `secure` on
+  the endpoint protocol instead, but the cookie belongs to the page, so the
+  page protocol is what counts. The module never imports a `server-only` file.
+- Server rendering stays anonymous. Reads in `platform/shopware/reads/` create
+  anonymous clients and never read `cookies()` or `headers()`, so the catalog
+  stays static and cached: reading the cookie would move catalog routes to
+  request-time rendering, and personalized catalog HTML must never be cached
+  and shared. Anything personal is read in the browser after hydration;
+  `StorefrontSession.status` is `"loading"` until then.
+- The browser gets the endpoint, the access token and `devStorefrontUrl` from
+  the route handler `app/api/shopware/config/route.ts` (`GET`, `connection()`
+  first, `Cache-Control: no-store`), never from `NEXT_PUBLIC_*`: those are
+  inlined at build time, so one build could not be re-pointed at another
+  instance. The static `api` segment wins over `app/[...path]`.
+  `loadPublicConfig` fetches it once per page load and forgets a failure, so
+  the next caller retries; `parsePublicShopwareConfig` in
+  `platform/shopware/publicConfig.ts` validates the payload. That fetch and
+  the `/context` read give up after `READ_TIMEOUT_MS`
+  (`features/session/readTimeout.ts`; ofetch retries the read once), because
+  every action waits for them. Mutations have no timeout.
+- `features/session/components/ShopwareSessionProvider.tsx`, mounted by
+  `StorefrontProviders`, binds one `createSessionStore()`
+  (`features/session/sessionStore.ts`) with `useSyncExternalStore`; the
+  server snapshot is `anonymousSession`. The store creates the client once
+  (also under StrictMode), reads `/context`, ignores a read that a newer one
+  overtook, and derives the `StorefrontSession` (`sessionFromContext.ts`:
+  `isLoggedIn` exactly like `useUser`, an active customer that is not a
+  guest). A failed read gives status `"error"` and a logged-out session,
+  logged to the console without a toast. Only a successful first read is
+  memoized, so after a failure the next action reads `/context` again before
+  it runs. While the status is `"error"` the provider re-reads on `online`
+  and on `visibilitychange` to a visible tab, and `retrySession()` on the
+  actions port re-reads and resolves the new session (it never rejects).
+  Cart and wishlist counts stay 0.
 - Login, registration and logout go through the session actions port
   (`features/session/components/SessionActionsContext.tsx`:
-  `SessionActionsProvider`, `useSessionActions`). `StorefrontProviders` mounts
-  it with stubs that notify `NOT_WIRED_MESSAGES.account` and resolve
-  `{ ok: false }`; the forms validate and build the real Store API payload
-  (`RegistrationInput` is the `/account/register` body without
-  `storefrontUrl`), so wiring a session means replacing the stubs, not the
-  forms. The default context warns once per call, like the CMS port.
+  `SessionActionsProvider`, `useSessionActions`), implemented by
+  `createSessionActions` in `features/session/sessionActions.ts`: the Store
+  API call, then a `/context` re-read, mirroring `useUser`. The forms send
+  the real payload (`RegistrationInput` is the `/account/register` body
+  without `storefrontUrl`); `register` adds `storefrontUrl` from
+  `storefrontUrl.ts`, a port of `getStorefrontUrl`
+  (`devStorefrontUrl`, else the page origin, matched against the sales
+  channel domains), resolved after the client and its config are ready.
+  A logout rejected with 403 `FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN`
+  means the session already ended (another tab, an expired context), so it
+  refreshes the session and resolves `{ ok: true }` without a toast; every
+  other logout failure stays a failure. Actions called before the client is
+  ready wait for it and for the first `/context` read, so a late guest token
+  cannot overwrite the login token. A failed re-read after a successful
+  mutation does not turn it into a failure.
+- The actions never reject. On an error they resolve every message with
+  `resolveApiErrorMessages` (`apiErrors.ts`, a port of the Vue
+  `useApiErrorsResolver` with the copy of `errors.json` in
+  `errorMessages.ts`), show one error toast per message themselves and
+  resolve `{ ok: false, message }` with the first one, so the forms must not
+  notify `{ ok: false }` again. Anything that is not an `ApiClientError`
+  resolves to `errors.message-default`.
+- `StorefrontProviders` is also the app side of the CMS actions port
+  (`CmsActionsProvider`). Cart, wishlist, variant lookup and forms are
+  still stubs there that show a "not connected" notification
+  (`features/storefront/notWired.ts`) and return `{ ok: false }`. Wire them
+  there, not in the CMS components.
 
 ## Rules the code does not show
 

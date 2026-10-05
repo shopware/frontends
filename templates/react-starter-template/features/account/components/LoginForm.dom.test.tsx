@@ -138,8 +138,13 @@ describe("LoginForm in the browser", () => {
     );
   });
 
-  it("calls the port with the credentials and stays put on a rejection", async () => {
-    const { actions, notify, form, email, password } = await setup();
+  it("calls the port with the credentials and leaves the error toast to the action on a rejection", async () => {
+    const { actions, notify, form, email, password, submit } = await setup({
+      login: vi.fn(async () => ({
+        ok: false,
+        message: "Invalid credentials.",
+      })),
+    });
 
     await interact(() => setInputValue(email, "jane@example.com"));
     await interact(() => setInputValue(password, "secret"));
@@ -154,6 +159,7 @@ describe("LoginForm in the browser", () => {
     expect(navigation.push).not.toHaveBeenCalled();
     expect(email.value).toBe("jane@example.com");
     expect(password.value).toBe("secret");
+    expect(submit.getAttribute("aria-busy")).toBe("false");
   });
 
   it("confirms a successful login and goes home", async () => {
@@ -267,7 +273,7 @@ describe("LoginForm in the browser", () => {
     expect(submit.getAttribute("aria-disabled")).toBeNull();
   });
 
-  it("reports a thrown login error", async () => {
+  it("reports an unexpected thrown login error", async () => {
     const { notify, form, email, password } = await setup({
       login: vi.fn(async () => {
         throw new Error("Service unavailable");

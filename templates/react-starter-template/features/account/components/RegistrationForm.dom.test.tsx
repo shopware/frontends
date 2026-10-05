@@ -4,11 +4,14 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
+import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
+import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type {
   RegistrationInput,
   SessionActionResult,
+  StorefrontSession,
 } from "@/features/session/types";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 import {
@@ -21,17 +24,19 @@ import {
 } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
+import { LoggedInRedirect } from "./LoggedInRedirect";
 import { RegistrationForm } from "./RegistrationForm";
 import type { RegistrationFormProps } from "./RegistrationForm";
 
-const { push, refresh, routeLoad } = vi.hoisted(() => ({
+const { push, replace, refresh, routeLoad } = vi.hoisted(() => ({
   push: vi.fn(),
+  replace: vi.fn(),
   refresh: vi.fn(),
   routeLoad: { start: undefined as (() => void) | undefined },
 }));
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push, refresh }),
+  useRouter: () => ({ push, replace, refresh }),
 }));
 
 const countries: CountryOption[] = [
@@ -51,7 +56,9 @@ let mounted: Mounted | undefined;
 
 beforeEach(() => {
   push.mockReset();
+  replace.mockReset();
   refresh.mockReset();
+  window.history.replaceState(null, "", "/account/login");
 });
 
 afterEach(async () => {
@@ -314,7 +321,12 @@ describe("RegistrationForm in the browser", () => {
   });
 
   it("sends the Store API payload once for a valid private registration and stays on a rejection", async () => {
-    const { container, actions, form, input, error } = await setup();
+    const { container, actions, notify, form, input, error } = await setup(
+      registerMock(async () => ({
+        ok: false,
+        message: "The email address is already in use.",
+      })),
+    );
 
     await fill(input, { ...personalData, ...addressData });
     await chooseCountry(container, "Germany");
@@ -347,6 +359,8 @@ describe("RegistrationForm in the browser", () => {
       },
     });
     expect(push).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
+    expect(container.querySelector("output")?.textContent).toBe("");
     expect(input("registration-first-name-input").value).toBe("Jane");
     expect(input("registration-email-input").value).toBe(
       "jane.doe@example.com",
@@ -452,6 +466,78 @@ describe("RegistrationForm in the browser", () => {
     expect(push).toHaveBeenCalledWith("/account");
   });
 
+  it("follows the redirect query parameter without an explicit redirectUrl", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/account/login?redirect=%2FClothing%2FMen%2F",
+    );
+    const { container, form, input } = await setup(
+      registerMock(async () => ({ ok: true })),
+    );
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledWith("/Clothing/Men/");
+  });
+
+  it("navigates once when the session flips to logged in next to LoggedInRedirect", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/account/login?redirect=%2FFurniture%2F",
+    );
+    const sessionControl: { set?: (session: StorefrontSession) => void } = {};
+    function ControlledSession({ children }: { children: ReactNode }) {
+      const [session, setSession] = useState<StorefrontSession>({
+        ...anonymousSession,
+        status: "ready",
+      });
+      useEffect(() => {
+        sessionControl.set = setSession;
+      }, []);
+      return <SessionProvider session={session}>{children}</SessionProvider>;
+    }
+    const register = registerMock(async () => {
+      sessionControl.set?.({
+        ...anonymousSession,
+        status: "ready",
+        isLoggedIn: true,
+        customerName: "Jane Doe",
+      });
+      return { ok: true };
+    });
+    const notify = vi.fn();
+    mounted = await mount(
+      <ControlledSession>
+        <LoggedInRedirect />
+        <CmsActionsProvider actions={{ notify }}>
+          <SessionActionsProvider actions={{ register }}>
+            <RegistrationForm countries={countries} />
+          </SessionActionsProvider>
+        </CmsActionsProvider>
+      </ControlledSession>,
+    );
+    const { container } = mounted;
+    const input = (testId: string) =>
+      byTestId<HTMLInputElement>(container, testId);
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() =>
+      submitForm(byTestId<HTMLFormElement>(container, "registration-form")),
+    );
+
+    expect(register).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledWith("/Furniture/");
+    expect(replace).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
+  });
+
   it("shows the double opt-in notice and clears the form", async () => {
     const { container, form, input, error } = await setup(
       registerMock(async () => ({ ok: true, doubleOptIn: true })),
@@ -541,7 +627,7 @@ describe("RegistrationForm in the browser", () => {
     expect(input("registration-first-name-input").value).toBe("Jane");
   });
 
-  it("reports a thrown registration error without losing the input", async () => {
+  it("reports an unexpected thrown registration error without losing the input", async () => {
     const { container, notify, form, input } = await setup(
       registerMock(async () => {
         throw new Error("Service unavailable");

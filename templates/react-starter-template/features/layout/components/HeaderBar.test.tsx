@@ -2,6 +2,7 @@ import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
+import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
 import { renderToHtml } from "@/test/render";
@@ -12,6 +13,7 @@ const push = vi.hoisted(() => vi.fn());
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
+  usePathname: () => "/",
 }));
 
 const actions = { notify: vi.fn() };
@@ -47,6 +49,8 @@ describe("HeaderBar", () => {
     expect(account).toContain('data-logged-in="false"');
     expect(account).toContain('aria-label="My Account"');
     expect(account).toContain('type="button"');
+    expect(account).not.toContain("aria-expanded");
+    expect(account).not.toContain("aria-controls");
 
     const wishlist = buttonWithTestId(html, "header-wishlist-button");
     expect(wishlist).toContain('aria-label="Wishlist"');
@@ -89,6 +93,8 @@ describe("HeaderBar", () => {
 
   it("shows the counters and the logged-in flag from the session", async () => {
     const html = await render({
+      ...anonymousSession,
+      status: "ready",
       isLoggedIn: true,
       customerName: "Jane Doe",
       cartCount: 2,
@@ -102,10 +108,28 @@ describe("HeaderBar", () => {
     expect(html).toMatch(/bg-states-error[^>]*>2<\/span>/);
   });
 
+  it("renders a closed account disclosure for a logged-in customer", async () => {
+    const html = await render({
+      ...anonymousSession,
+      status: "ready",
+      isLoggedIn: true,
+      customerName: "Jane Doe",
+    });
+
+    const account = buttonWithTestId(html, "header-account-button");
+    expect(account).toContain('aria-expanded="false"');
+    const controls = account.match(/aria-controls="([^"]+)"/)?.[1];
+    expect(controls).toBeTruthy();
+    expect(html).not.toContain(`id="${controls}"`);
+    expect(html).not.toContain("Signed in as");
+    expect(html).not.toContain(">Logout<");
+    expect(html).not.toContain("aria-haspopup");
+  });
+
   it("hides the wishlist counter for guests", async () => {
     const html = await render({
-      isLoggedIn: false,
-      customerName: null,
+      ...anonymousSession,
+      status: "ready",
       cartCount: 1,
       wishlistCount: 4,
     });

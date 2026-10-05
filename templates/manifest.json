@@ -107,10 +107,16 @@
       "devcontainer": false,
       "env": {
         "SHOPWARE_ENDPOINT": {
-          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/. Read on the server at request time."
+          "description": "Store API endpoint of your Shopware instance, e.g. https://your-shop.com/store-api/. Used by server-side reads, and by the browser unless SHOPWARE_PUBLIC_ENDPOINT is set. Read at request time."
         },
         "SHOPWARE_ACCESS_TOKEN": {
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access). Read on the server at request time."
+        },
+        "SHOPWARE_PUBLIC_ENDPOINT": {
+          "description": "Optional. Endpoint the browser calls for login, registration and logout when it differs from SHOPWARE_ENDPOINT. Served at runtime by /api/shopware/config."
+        },
+        "SHOPWARE_DEV_STOREFRONT_URL": {
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
         }
       },
       "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
@@ -129,7 +135,7 @@
         "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
-      "notes": "In development: anonymous Store API reads, SEO URL routing and CMS pages via @shopware/cms-base-layer-react work; cart, wishlist, forms and checkout are stubs until the session architecture is decided. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
+      "notes": "In development: anonymous Store API reads, SEO URL routing, CMS pages via @shopware/cms-base-layer-react, and login, registration and logout from the browser (sw-context-token cookie, like the Nuxt module) work; cart, wishlist, search, forms and checkout are stubs. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
     },
     {
       "id": "astro",

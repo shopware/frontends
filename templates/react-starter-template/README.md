@@ -27,13 +27,16 @@ Then open http://localhost:3000.
 The template runs against the public demo backend without any configuration.
 To use your own instance, copy `.env.template` to `.env` and set:
 
-| Variable                | Value                                                            |
-| ----------------------- | ---------------------------------------------------------------- |
-| `SHOPWARE_ENDPOINT`     | Store API endpoint, e.g. `https://your-shop.com/store-api/`      |
-| `SHOPWARE_ACCESS_TOKEN` | Sales Channel access key (Settings > Sales Channel > API access) |
+| Variable                      | Value                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `SHOPWARE_ENDPOINT`           | Store API endpoint, e.g. `https://your-shop.com/store-api/`                                                                   |
+| `SHOPWARE_ACCESS_TOKEN`       | Sales Channel access key (Settings > Sales Channel > API access)                                                              |
+| `SHOPWARE_PUBLIC_ENDPOINT`    | Store API endpoint the browser calls, if it differs from `SHOPWARE_ENDPOINT` (the default)                                    |
+| `SHOPWARE_DEV_STOREFRONT_URL` | `storefrontUrl` sent with a registration instead of the page origin, for local development only; leave it empty in production |
 
-Both are read on the server at request time, so one build can serve several
-environments.
+All of them are read on the server at request time, so one build can serve
+several environments. The browser gets the public ones from
+`/api/shopware/config`.
 
 ## Type generation
 

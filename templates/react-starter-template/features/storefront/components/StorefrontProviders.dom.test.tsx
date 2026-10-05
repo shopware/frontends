@@ -1,136 +1,133 @@
 import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import type { CmsActionResult } from "@shopware/cms-base-layer-react/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { ApiClient } from "#shopware";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
-import type { SessionActions } from "@/features/session/components/SessionActionsContext";
-import type {
-  RegistrationInput,
-  SessionActionResult,
-} from "@/features/session/types";
+import { useSession } from "@/features/session/components/SessionProvider";
+import { errorMessages } from "@/features/session/errorMessages";
+import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
+import {
+  apiClientError,
+  salesChannelContext,
+} from "@/features/session/session.fixture";
+import type { SessionActionResult } from "@/features/session/types";
+import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import { NOT_WIRED_MESSAGES } from "../notWired";
 import { StorefrontProviders } from "./StorefrontProviders";
 
-const registration: RegistrationInput = {
-  accountType: "private",
-  acceptedDataProtection: true,
-  firstName: "Jane",
-  lastName: "Doe",
-  email: "jane@example.com",
-  password: "password1",
-  billingAddress: {
-    id: "",
-    customerId: "",
-    firstName: "Jane",
-    lastName: "Doe",
-    street: "Main Street 1",
-    zipcode: "12345",
-    city: "Berlin",
-    countryId: "country-de",
-  },
-};
+const browser = vi.hoisted(() => ({
+  invoke: vi.fn<(operation: string, params?: unknown) => Promise<unknown>>(),
+}));
 
-type ActionName = keyof SessionActions;
-type Call = (actions: SessionActions) => Promise<SessionActionResult>;
+vi.mock("@/features/session/browserClient", () => ({
+  CONTEXT_TOKEN_COOKIE: "sw-context-token",
+  loadPublicConfig: async (): Promise<PublicShopwareConfig> => ({
+    endpoint: "https://shop.test/store-api/",
+    accessToken: "SWSCTEST",
+    devStorefrontUrl: null,
+  }),
+  createBrowserClient: () =>
+    ({ invoke: browser.invoke }) as unknown as ApiClient,
+}));
 
-const CALLS: Record<ActionName, Call> = {
-  login: (actions) =>
-    actions.login({ username: "jane@example.com", password: "secret" }),
-  register: (actions) => actions.register(registration),
-  logout: (actions) => actions.logout(),
-};
-
-const ACTION_NAMES = Object.keys(CALLS) as ActionName[];
 const TOAST = '[data-testid="notification-element-message"]';
 
-function SessionConsumer({
-  onResult,
-}: {
-  onResult: (name: ActionName, result: SessionActionResult) => void;
-}) {
-  const actions = useSessionActions();
-  return (
-    <>
-      {ACTION_NAMES.map((name) => (
-        <button
-          key={name}
-          type="button"
-          data-testid={`call-${name}`}
-          onClick={() => {
-            void CALLS[name](actions).then((result) => onResult(name, result));
-          }}
-        >
-          {name}
-        </button>
-      ))}
-    </>
-  );
-}
-
 let mounted: Mounted | undefined;
+
+beforeEach(() => {
+  browser.invoke.mockReset();
+  browser.invoke.mockImplementation(async (operation) => {
+    if (operation === "readContext get /context") {
+      return { data: salesChannelContext(null), status: 200 };
+    }
+    throw apiClientError(
+      [{ code: "0", detail: "No matching customer for the email found." }],
+      401,
+    );
+  });
+});
 
 afterEach(async () => {
   await mounted?.unmount();
   mounted = undefined;
 });
 
-async function setup() {
-  const results: [ActionName, SessionActionResult][] = [];
-  mounted = await mount(
-    <StorefrontProviders>
-      <SessionConsumer
-        onResult={(name, result) => {
-          results.push([name, result]);
+function SessionConsumer({
+  onResult,
+}: {
+  onResult: (result: SessionActionResult) => void;
+}) {
+  const session = useSession();
+  const { login } = useSessionActions();
+  return (
+    <>
+      <output data-testid="session-status">{session.status}</output>
+      <output data-testid="session-logged-in">
+        {String(session.isLoggedIn)}
+      </output>
+      <button
+        type="button"
+        data-testid="call-login"
+        onClick={() => {
+          void login({
+            username: "jane@example.com",
+            password: "wrong",
+          }).then(onResult);
         }}
-      />
-    </StorefrontProviders>,
+      >
+        login
+      </button>
+    </>
   );
-  return { container: mounted.container, results };
 }
 
-describe("StorefrontProviders session stubs", () => {
-  it.each(ACTION_NAMES)(
-    "reports the missing session for %s and resolves { ok: false }",
-    async (name) => {
-      const { container, results } = await setup();
+describe("StorefrontProviders session", () => {
+  it("reads the Shopware session in the browser", async () => {
+    mounted = await mount(
+      <StorefrontProviders>
+        <SessionConsumer onResult={() => {}} />
+      </StorefrontProviders>,
+    );
+    const { container } = mounted;
 
-      await interact(() =>
-        query<HTMLButtonElement>(
-          container,
-          `[data-testid="call-${name}"]`,
-        ).click(),
-      );
-      await vi.waitFor(() => expect(results).toHaveLength(1));
+    await vi.waitFor(() =>
+      expect(
+        query(container, '[data-testid="session-status"]').textContent,
+      ).toBe("ready"),
+    );
+    expect(
+      query(container, '[data-testid="session-logged-in"]').textContent,
+    ).toBe("false");
+    expect(browser.invoke).toHaveBeenCalledWith("readContext get /context", {
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
+    });
+    expect(queryAll(container, TOAST)).toHaveLength(0);
+  });
 
-      expect(results[0]).toEqual([
-        name,
-        { ok: false, message: NOT_WIRED_MESSAGES.account },
-      ]);
-      const toasts = queryAll<HTMLParagraphElement>(container, TOAST);
-      expect(toasts).toHaveLength(1);
-      expect(toasts[0]?.textContent).toBe(NOT_WIRED_MESSAGES.account);
-      expect(toasts[0]?.className).toContain("bg-states-warning-container");
-    },
-  );
+  it("shows a failed login as one error toast", async () => {
+    const results: SessionActionResult[] = [];
+    mounted = await mount(
+      <StorefrontProviders>
+        <SessionConsumer onResult={(result) => results.push(result)} />
+      </StorefrontProviders>,
+    );
+    const { container } = mounted;
 
-  it("shows one toast per stub call", async () => {
-    const { container, results } = await setup();
+    await interact(() =>
+      query<HTMLButtonElement>(container, '[data-testid="call-login"]').click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(1));
 
-    for (const name of ACTION_NAMES) {
-      await interact(() =>
-        query<HTMLButtonElement>(
-          container,
-          `[data-testid="call-${name}"]`,
-        ).click(),
-      );
-    }
-    await vi.waitFor(() => expect(results).toHaveLength(3));
-
-    expect(results.map(([name]) => name)).toEqual(ACTION_NAMES);
-    expect(queryAll(container, TOAST)).toHaveLength(3);
+    const message = errorMessages.errors.login_no_matching_customer_internal;
+    expect(results[0]).toEqual({ ok: false, message });
+    const toasts = queryAll<HTMLParagraphElement>(container, TOAST);
+    expect(toasts).toHaveLength(1);
+    expect(toasts[0]?.textContent).toBe(message);
+    expect(toasts[0]?.className).toContain("bg-states-error-container");
   });
 });
 

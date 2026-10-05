@@ -14,7 +14,7 @@ import {
   validateLogin,
 } from "@/features/account/loginSchema";
 import type { LoginValues } from "@/features/account/loginSchema";
-import { resolveRedirectTarget } from "@/features/account/redirect";
+import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 
 const t = {
@@ -92,10 +92,10 @@ export function LoginForm({
       const result = await login(values);
       if (!result.ok) return;
       notify({ type: "success", message: t.account.messages.loggedInSuccess });
-      const redirect =
-        redirectUrl ??
-        new URLSearchParams(window.location.search).get("redirect");
-      const target = resolveRedirectTarget(redirect);
+      const target = resolveRedirectFromSearch(
+        window.location.search,
+        redirectUrl,
+      );
       startNavigation(() => {
         router.push(target);
       });

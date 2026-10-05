@@ -1495,6 +1495,9 @@ importers:
       '@shopware/helpers':
         specifier: canary
         version: link:../../packages/helpers
+      js-cookie:
+        specifier: 3.0.8
+        version: 3.0.8
       next:
         specifier: 16.3.6
         version: 16.3.6(@playwright/test@1.63.0)(@types/node@24.19.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.89.2)
@@ -1514,6 +1517,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: 4.3.2
         version: 4.3.2
+      '@types/js-cookie':
+        specifier: 3.0.6
+        version: 3.0.6
       '@types/node':
         specifier: 24.19.0
         version: 24.19.0

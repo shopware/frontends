@@ -9,7 +9,12 @@ import {
 } from "./SessionActionsContext";
 import type { SessionActions } from "./SessionActionsContext";
 
-const ACTION_NAMES: (keyof SessionActions)[] = ["login", "register", "logout"];
+const ACTION_NAMES: (keyof SessionActions)[] = [
+  "login",
+  "register",
+  "logout",
+  "retrySession",
+];
 
 function WiredActions() {
   const actions = useSessionActions();
@@ -74,5 +79,19 @@ describe("notImplementedSessionActions", () => {
     });
     expect(warn).toHaveBeenCalledTimes(2);
     expect(warn.mock.calls[1]?.[0]).toContain('"logout"');
+  });
+
+  it("resolves an unavailable session for retrySession and warns", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(notImplementedSessionActions.retrySession()).resolves.toEqual({
+      status: "error",
+      isLoggedIn: false,
+      customerName: null,
+      cartCount: 0,
+      wishlistCount: 0,
+    });
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]?.[0]).toContain('"retrySession"');
   });
 });

@@ -11,7 +11,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
-import { resolveRedirectTarget } from "@/features/account/redirect";
+import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
   emptyRegistrationValues,
   toRegistrationInput,
@@ -189,7 +189,10 @@ export function RegistrationForm({
         setDoubleOptInCount((count) => count + 1);
         return;
       }
-      const target = resolveRedirectTarget(redirectUrl);
+      const target = resolveRedirectFromSearch(
+        window.location.search,
+        redirectUrl,
+      );
       startNavigation(() => {
         router.push(target);
       });

@@ -3,13 +3,13 @@
 import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 
-import { mockSession } from "../mockSession";
+import { anonymousSession } from "../anonymousSession";
 import type { StorefrontSession } from "../types";
 
-const SessionContext = createContext<StorefrontSession>(mockSession);
+const SessionContext = createContext<StorefrontSession>(anonymousSession);
 
 export function SessionProvider({
-  session = mockSession,
+  session = anonymousSession,
   children,
 }: {
   session?: StorefrontSession;

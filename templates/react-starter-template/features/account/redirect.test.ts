@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveRedirectTarget } from "./redirect";
+import { resolveRedirectFromSearch, resolveRedirectTarget } from "./redirect";
 
 describe("resolveRedirectTarget", () => {
   it("falls back to the home page without a target", () => {
@@ -31,10 +31,55 @@ describe("resolveRedirectTarget", () => {
     expect(resolveRedirectTarget("/account\u007f")).toBe("/");
   });
 
+  it.each([
+    "/.//evil.example",
+    "/..//evil.example",
+    "/%2e//evil.example",
+    "/%2E%2E//evil.example",
+    "/a/..//evil.example",
+  ])("refuses %s, which normalizes to a protocol-relative path", (target) => {
+    expect(resolveRedirectTarget(target)).toBe("/");
+  });
+
+  it("returns the normalized path the router will navigate to", () => {
+    expect(resolveRedirectTarget("/Clothing/./Men/../Women/?p=2#top")).toBe(
+      "/Clothing/Women/?p=2#top",
+    );
+  });
+
   it("uses the given fallback", () => {
     expect(resolveRedirectTarget(null, "/account")).toBe("/account");
     expect(resolveRedirectTarget("https://example.com", "/account")).toBe(
       "/account",
     );
+  });
+});
+
+describe("resolveRedirectFromSearch", () => {
+  it("reads the redirect query parameter", () => {
+    expect(resolveRedirectFromSearch("?redirect=%2FClothing%2FMen%2F")).toBe(
+      "/Clothing/Men/",
+    );
+    expect(resolveRedirectFromSearch("redirect=%2Faccount")).toBe("/account");
+  });
+
+  it("falls back to the home page without a usable parameter", () => {
+    expect(resolveRedirectFromSearch("")).toBe("/");
+    expect(resolveRedirectFromSearch("?redirect=")).toBe("/");
+    expect(
+      resolveRedirectFromSearch("?redirect=https%3A%2F%2Fexample.com"),
+    ).toBe("/");
+    expect(
+      resolveRedirectFromSearch("?redirect=%2F%252e%2F%2Fevil.example"),
+    ).toBe("/");
+  });
+
+  it("prefers an explicit target over the query parameter", () => {
+    expect(resolveRedirectFromSearch("?redirect=%2FClothing", "/account")).toBe(
+      "/account",
+    );
+    expect(
+      resolveRedirectFromSearch("?redirect=%2FClothing", "//example.com"),
+    ).toBe("/");
   });
 });

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
+import { LoggedInRedirect } from "@/features/account/components/LoggedInRedirect";
 import { LoginForm } from "@/features/account/components/LoginForm";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
 import { RegistrationFormSkeleton } from "@/features/account/components/RegistrationFormSkeleton";
@@ -39,6 +40,7 @@ async function RegistrationSection() {
 export default function LoginPage() {
   return (
     <div className="mx-auto my-10 w-full max-w-screen-2xl px-4 md:my-20">
+      <LoggedInRedirect />
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-0">
         <div className="flex w-full flex-col justify-start lg:w-1/2 lg:border-r lg:border-outline-outline-variant lg:pr-16">
           <LoginForm hideSignUp />
