@@ -3,7 +3,8 @@ import type { StorefrontSession } from "./types";
 export const anonymousSession: StorefrontSession = {
   status: "loading",
   isLoggedIn: false,
+  isGuestSession: false,
   customerName: null,
-  cartCount: 0,
   wishlistCount: 0,
+  context: null,
 };

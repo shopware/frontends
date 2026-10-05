@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
+import { ShopwareClientProvider } from "@/features/storefront/components/ShopwareClientContext";
+
 import { anonymousSession } from "../anonymousSession";
 import type { SessionNotification } from "../sessionActions";
 import { createSessionStore } from "../sessionStore";
@@ -52,10 +54,12 @@ export function ShopwareSessionProvider({
   const actions = useMemo(() => store.createActions(notify), [store, notify]);
 
   return (
-    <SessionProvider session={session}>
-      <SessionActionsProvider actions={actions}>
-        {children}
-      </SessionActionsProvider>
-    </SessionProvider>
+    <ShopwareClientProvider getClient={store.getClient}>
+      <SessionProvider session={session}>
+        <SessionActionsProvider actions={actions}>
+          {children}
+        </SessionActionsProvider>
+      </SessionProvider>
+    </ShopwareClientProvider>
   );
 }

@@ -11,12 +11,15 @@ import { toStorefrontSession, unavailableSession } from "./sessionFromContext";
 import { getStorefrontUrl } from "./storefrontUrl";
 import type { StorefrontSession } from "./types";
 
+export type SessionRefreshOptions = { keepLastGood?: boolean };
+
 export type SessionStore = {
   getSnapshot(): StorefrontSession;
   subscribe(listener: () => void): () => void;
   start(): Promise<void>;
-  refresh(): Promise<void>;
+  refresh(options?: SessionRefreshOptions): Promise<void>;
   retry(): Promise<StorefrontSession>;
+  getClient(): Promise<ApiClient>;
   createActions(
     notify: (notification: SessionNotification) => void,
   ): SessionActions;
@@ -54,7 +57,9 @@ export function createSessionStore(): SessionStore {
     return pendingClient;
   }
 
-  async function refresh(): Promise<void> {
+  async function refresh({
+    keepLastGood = false,
+  }: SessionRefreshOptions = {}): Promise<void> {
     readCount += 1;
     const read = readCount;
     try {
@@ -67,8 +72,12 @@ export function createSessionStore(): SessionStore {
       publish(toStorefrontSession(data));
     } catch (error) {
       if (read === readCount) {
-        context = null;
-        publish(unavailableSession);
+        if (keepLastGood && context) {
+          publish({ ...snapshot, status: "error" });
+        } else {
+          context = null;
+          publish(unavailableSession);
+        }
       }
       throw error;
     }
@@ -87,9 +96,19 @@ export function createSessionStore(): SessionStore {
     if (!initialRead) {
       await start();
     } else if (snapshot.status === "error") {
-      await refresh().catch(logReadFailure);
+      await refresh({ keepLastGood: true }).catch(logReadFailure);
     }
     return snapshot;
+  }
+
+  async function getClient(): Promise<ApiClient> {
+    await start();
+    return connect();
+  }
+
+  async function refreshSession(): Promise<void> {
+    await start();
+    await refresh({ keepLastGood: true }).catch(logReadFailure);
   }
 
   async function resolveStorefrontUrl(): Promise<string> {
@@ -109,7 +128,7 @@ export function createSessionStore(): SessionStore {
         invoke: async (operation, ...params) =>
           (await connect()).invoke(operation, ...params),
       },
-      refreshSession: refresh,
+      refreshSession: () => refresh(),
       getStorefrontUrl: resolveStorefrontUrl,
       notify,
     });
@@ -127,6 +146,7 @@ export function createSessionStore(): SessionStore {
         return actions.logout();
       },
       retrySession: retry,
+      refreshSession,
     };
   }
 
@@ -141,6 +161,7 @@ export function createSessionStore(): SessionStore {
     start,
     refresh,
     retry,
+    getClient,
     createActions,
   };
 }

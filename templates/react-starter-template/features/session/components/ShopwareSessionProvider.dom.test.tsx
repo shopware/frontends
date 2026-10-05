@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
+import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import type { GetShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import { interact, mount, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
@@ -171,9 +173,10 @@ describe("ShopwareSessionProvider session state", () => {
     expect(session()).toEqual({
       status: "loading",
       isLoggedIn: false,
+      isGuestSession: false,
       customerName: null,
-      cartCount: 0,
       wishlistCount: 0,
+      context: null,
     });
 
     await interact(() => pendingConfig.resolve(config));
@@ -182,9 +185,10 @@ describe("ShopwareSessionProvider session state", () => {
     expect(session()).toEqual({
       status: "ready",
       isLoggedIn: false,
+      isGuestSession: false,
       customerName: null,
-      cartCount: 0,
       wishlistCount: 0,
+      context: salesChannelContext(null),
     });
     expect(browser.createBrowserClient).toHaveBeenCalledWith(config);
     expect(backend.invocations).toEqual([
@@ -204,14 +208,18 @@ describe("ShopwareSessionProvider session state", () => {
   });
 
   it.each([
-    ["a guest", customer({ guest: true })],
-    ["an inactive customer", customer({ active: false })],
-  ])("is logged out for %s", async (_, current) => {
+    ["a guest", customer({ guest: true }), true],
+    ["an inactive customer", customer({ active: false }), false],
+  ])("is logged out for %s", async (_, current, isGuestSession) => {
     createBackend(current);
     const { session } = await setup();
 
     await vi.waitFor(() => expect(session().status).toBe("ready"));
-    expect(session()).toMatchObject({ isLoggedIn: false, customerName: null });
+    expect(session()).toMatchObject({
+      isLoggedIn: false,
+      isGuestSession,
+      customerName: null,
+    });
   });
 
   it("reports a failed context read as an error session without a toast", async () => {
@@ -598,5 +606,61 @@ describe("ShopwareSessionProvider actions", () => {
     ]);
     await vi.waitFor(() => expect(session().isLoggedIn).toBe(false));
     expect(session().status).toBe("ready");
+  });
+});
+
+describe("ShopwareSessionProvider client and refresh", () => {
+  it("hands out the session client after the first context read with a stable getter", async () => {
+    const pendingRead = deferred<void>();
+    const backend = createBackend();
+    backend.heldRead = pendingRead.promise;
+    const getters: GetShopwareClient[] = [];
+    function ClientProbe() {
+      const { status } = useSession();
+      const getClient = useShopwareClient();
+      useEffect(() => {
+        getters.push(getClient);
+      }, [status, getClient]);
+      return <Probe />;
+    }
+    mounted = await mount(
+      <ShopwareSessionProvider notify={() => {}}>
+        <ClientProbe />
+      </ShopwareSessionProvider>,
+    );
+
+    let client: ApiClient | undefined;
+    await interact(() => {
+      void getters[0]?.().then((value) => {
+        client = value;
+      });
+    });
+    await vi.waitFor(() => expect(backend.invocations).toHaveLength(1));
+    expect(client).toBeUndefined();
+
+    await interact(() => pendingRead.resolve());
+
+    await vi.waitFor(() => expect(client).toBeDefined());
+    expect(client).toBe(browser.createBrowserClient.mock.results[0]?.value);
+    expect(getters.length).toBeGreaterThan(1);
+    expect(new Set(getters).size).toBe(1);
+  });
+
+  it("re-reads the context through refreshSession and publishes it", async () => {
+    const backend = createBackend();
+    const { session } = await setup();
+    await vi.waitFor(() => expect(session().status).toBe("ready"));
+    backend.customer = customer({ guest: true });
+
+    await interact(() => {
+      void harness.actions?.refreshSession();
+    });
+
+    await vi.waitFor(() => expect(session().isGuestSession).toBe(true));
+    expect(session()).toMatchObject({ isLoggedIn: false, status: "ready" });
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_CONTEXT,
+    ]);
   });
 });

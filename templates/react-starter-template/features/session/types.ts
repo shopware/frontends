@@ -1,13 +1,14 @@
-import type { operations } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type SessionStatus = "loading" | "ready" | "error";
 
 export type StorefrontSession = {
   status: SessionStatus;
   isLoggedIn: boolean;
+  isGuestSession: boolean;
   customerName: string | null;
-  cartCount: number;
   wishlistCount: number;
+  context: Schemas["SalesChannelContext"] | null;
 };
 
 export type LoginInput = { username: string; password: string };

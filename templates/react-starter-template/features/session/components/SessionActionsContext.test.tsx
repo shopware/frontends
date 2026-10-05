@@ -14,6 +14,7 @@ const ACTION_NAMES: (keyof SessionActions)[] = [
   "register",
   "logout",
   "retrySession",
+  "refreshSession",
 ];
 
 function WiredActions() {
@@ -87,11 +88,22 @@ describe("notImplementedSessionActions", () => {
     await expect(notImplementedSessionActions.retrySession()).resolves.toEqual({
       status: "error",
       isLoggedIn: false,
+      isGuestSession: false,
       customerName: null,
-      cartCount: 0,
       wishlistCount: 0,
+      context: null,
     });
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn.mock.calls[0]?.[0]).toContain('"retrySession"');
+  });
+
+  it("resolves refreshSession without a value and warns", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(
+      notImplementedSessionActions.refreshSession(),
+    ).resolves.toBeUndefined();
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]?.[0]).toContain('"refreshSession"');
   });
 });

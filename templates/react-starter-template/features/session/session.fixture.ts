@@ -37,11 +37,15 @@ export function customer(
   } as Schemas["Customer"];
 }
 
+export const CONTEXT_TOKEN = "context-token-1";
+
 export function salesChannelContext(
   currentCustomer: Schemas["Customer"] | null = null,
+  token: string = CONTEXT_TOKEN,
 ): Schemas["SalesChannelContext"] {
   return {
     apiAlias: "sales_channel_context",
+    token,
     customer: currentCustomer,
     context: { languageIdChain: ["language-en"] },
     salesChannel: {

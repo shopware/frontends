@@ -113,7 +113,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access). Read on the server at request time."
         },
         "SHOPWARE_PUBLIC_ENDPOINT": {
-          "description": "Optional. Endpoint the browser calls for login, registration and logout when it differs from SHOPWARE_ENDPOINT. Served at runtime by /api/shopware/config."
+          "description": "Optional. Endpoint the browser calls for the session, cart and checkout when it differs from SHOPWARE_ENDPOINT. Served at runtime by /api/shopware/config."
         },
         "SHOPWARE_DEV_STOREFRONT_URL": {
           "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
@@ -135,7 +135,7 @@
         "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
-      "notes": "In development: anonymous Store API reads, SEO URL routing, CMS pages via @shopware/cms-base-layer-react, and login, registration and logout from the browser (sw-context-token cookie, like the Nuxt module) work; cart, wishlist, search, forms and checkout are stubs. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
+      "notes": "In development: anonymous Store API reads, SEO URL routing, CMS pages via @shopware/cms-base-layer-react, login, registration and logout, the cart (header counter, mini cart, /checkout/cart, add to cart from CMS pages) and the checkout (guest, new account or signed-in customer, shipping and payment method, order confirmation with the payment redirect) work, all customer calls from the browser (sw-context-token cookie, like the Nuxt module); wishlist, search, variant switching and forms are stubs. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
     },
     {
       "id": "astro",

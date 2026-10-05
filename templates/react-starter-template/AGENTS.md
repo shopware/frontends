@@ -2,8 +2,9 @@
 
 Next.js App Router storefront template for Shopware 6, the React counterpart of
 `vue-starter-template`. State: anonymous Store API reads, SEO URL routing, CMS
-rendering, the header/footer layout and a browser session with login,
-registration and logout work; cart, wishlist, search and forms are stubs.
+rendering, the header/footer layout, a browser session with login,
+registration and logout, the cart and the checkout with the order
+confirmation work; wishlist, search, variant switching and forms are stubs.
 `supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Next.js docs
@@ -63,12 +64,24 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Routing and CMS
 
-- `app/[...path]/page.tsx` resolves every storefront URL in a server
-  component: `/` maps to the sales channel's navigation category, technical
-  paths (`/navigation/{id}`, `/detail/{id}`, `/landingPage/{id}`) are parsed
-  with `getRouteFromPathInfo`, everything else is looked up in `/seo-url` with
-  both the plain path and the path with a trailing slash. The result is
-  dispatched to `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
+- `app/layout.tsx` holds only `<html>`, `<body>` and `StorefrontProviders`.
+  Two route groups carry the two Vue layouts. `app/(shop)/layout.tsx`
+  (`Header`, `<main aria-label="Main content">`, `Footer`; the Vue default
+  layout) holds `/` (`app/(shop)/page.tsx`), the catch-all
+  `app/(shop)/[...path]/page.tsx`, `/account/login` and the order pages under
+  `app/(shop)/checkout/success/[id]/`. `app/(checkout)/layout.tsx`
+  (`CheckoutHeader`, `<main aria-label="Checkout">`; the Vue
+  `layouts/checkout.vue`) holds `/checkout` and `/checkout/cart`. Both groups
+  have a `checkout` folder; that is fine as long as no URL resolves in both.
+  A static segment wins over the catch-all, so a new page goes into the group
+  whose layout it needs.
+- `app/(shop)/page.tsx` renders the sales channel's navigation category for
+  `/`. `app/(shop)/[...path]/page.tsx` resolves every other storefront URL in
+  a server component: technical paths (`/navigation/{id}`, `/detail/{id}`,
+  `/landingPage/{id}`) are parsed with `getRouteFromPathInfo`, everything
+  else is looked up in `/seo-url` with both the plain path and the path with
+  a trailing slash. The result is dispatched to
+  `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
 - A miss calls `notFound()` inside a `<Suspense>` boundary, which streams a
   200 with `noindex`, not a real 404. Real 301/404/503 status codes need the
   lookup in `proxy.ts`; that is a later stage, do not try to fix it in the
@@ -91,15 +104,17 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - Reading `searchParams` or calling `connection()` makes a subtree dynamic, so
   it always happens inside a `<Suspense>` (`PageSkeleton` is the fallback).
   Catalog routes must never read `cookies()` or `headers()`.
-- The home page calls `connection()` before its reads so `next build` does
-  not need the Store API. Prerendering at build time is a later decision.
+- The home page (`app/(shop)/page.tsx`) calls `connection()` before its
+  reads so `next build` does not need the Store API. Prerendering at build
+  time is a later decision.
 
 ## Layout
 
-- `app/layout.tsx` renders `features/layout/components/Header` and `Footer`
-  around `<main aria-label="Main content">`. Both are server components. The
-  parts that read the Store API (`readNavigation("main-navigation", 2)` for
-  the header, `"footer-navigation"` with depth 1 for the footer) await
+- `app/(shop)/layout.tsx` renders `features/layout/components/Header` and
+  `Footer` around `<main aria-label="Main content">`. Both are server
+  components. The parts that read the Store API
+  (`readNavigation("main-navigation", 2)` for the header,
+  `"footer-navigation"` with depth 1 for the footer) await
   `connection()` inside their own `<Suspense>`, so the hermetic build works
   and the header bar renders before the navigation streams in. The two header
   readers share one `cache()`d loader.
@@ -119,11 +134,11 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   Vue header's `route.fullPath`, and `LoginForm` and `RegistrationForm`
   follow that `redirect` after a login or a registration.
   They read `window.location` in the event handler, never `usePathname()` or
-  `useSearchParams()` during render: with Cache Components those hooks suspend
-  the root layout under `app/[...path]` (an unknown catch-all param), which
-  fails `next build`, and would drop the login form out of the static shell.
-  `AccountMenu` may call `usePathname()` only because it renders after a
-  click, never on the server.
+  `useSearchParams()` during render: with Cache Components those hooks
+  suspend the shop layout under `app/(shop)/[...path]` (an unknown catch-all
+  param), which fails `next build`, and would drop the login form out of the
+  static shell. `AccountMenu` and `MiniCart` may call `usePathname()` only
+  because they render after a click, never on the server.
 - Logged in, the account button is a disclosure (`aria-expanded`,
   `aria-controls`) for `AccountMenu`: the "Signed in as" line and Logout. It
   closes on Escape, an outside `mousedown`, a route change and a logout.
@@ -138,8 +153,10 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   refuses any whose normalized pathname starts with `//`, such as
   `/.//evil.example`), so a login during the first session read,
   which can trigger both, still lands on one URL.
-- The wishlist and cart buttons and the search input only call `notify()`
-  with the messages in `features/storefront/notWired.ts`; the newsletter form
+- The cart button reads `useCart().count` and is a disclosure for `MiniCart`
+  (see Cart) that opens only while the count is above 0. The wishlist button
+  and the search input only call `notify()` with the messages in
+  `features/storefront/notWired.ts`; the newsletter form
   goes through `subscribeNewsletter` of the actions port, so wiring it later
   needs no form change.
 - UI copy sits in a `t` const at the top of each component, keyed by the Vue
@@ -178,13 +195,16 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   the route handler `app/api/shopware/config/route.ts` (`GET`, `connection()`
   first, `Cache-Control: no-store`), never from `NEXT_PUBLIC_*`: those are
   inlined at build time, so one build could not be re-pointed at another
-  instance. The static `api` segment wins over `app/[...path]`.
+  instance. The static `api` segment wins over `app/(shop)/[...path]`.
   `loadPublicConfig` fetches it once per page load and forgets a failure, so
   the next caller retries; `parsePublicShopwareConfig` in
   `platform/shopware/publicConfig.ts` validates the payload. That fetch and
   the `/context` read give up after `READ_TIMEOUT_MS`
   (`features/session/readTimeout.ts`; ofetch retries the read once), because
-  every action waits for them. Mutations have no timeout.
+  every action waits for them. Mutations other than `createOrder` have no
+  timeout; `createOrder` gives up after `ORDER_TIMEOUT_MS` (60 s, same file),
+  and ofetch never retries a POST, so the timeout cannot place a second
+  order.
 - `features/session/components/ShopwareSessionProvider.tsx`, mounted by
   `StorefrontProviders`, binds one `createSessionStore()`
   (`features/session/sessionStore.ts`) with `useSyncExternalStore`; the
@@ -192,13 +212,36 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   (also under StrictMode), reads `/context`, ignores a read that a newer one
   overtook, and derives the `StorefrontSession` (`sessionFromContext.ts`:
   `isLoggedIn` exactly like `useUser`, an active customer that is not a
-  guest). A failed read gives status `"error"` and a logged-out session,
-  logged to the console without a toast. Only a successful first read is
+  guest; `isGuestSession` is `!!customer?.guest`, also like `useUser`;
+  `context` is the whole `SalesChannelContext` of the last read, `null`
+  before it and after a failure). A failed read gives status `"error"`,
+  logged to the console without a toast. A failed first read, and a failed
+  re-read inside `login`, `register` or `logout` (the identity changed, so
+  the old snapshot would be wrong), give a logged-out session with `context`
+  `null`. A failed `refreshSession()` or `retrySession()` re-read keeps the
+  last good session and its `context` with only the status set to
+  `"error"`, so a flaky network does not log the customer out of the page
+  or change the cart's session key. Only a successful first read is
   memoized, so after a failure the next action reads `/context` again before
   it runs. While the status is `"error"` the provider re-reads on `online`
   and on `visibilitychange` to a visible tab, and `retrySession()` on the
   actions port re-reads and resolves the new session (it never rejects).
-  Cart and wishlist counts stay 0.
+  The wishlist count stays 0; the cart has its own store (see Cart).
+- Every other customer call in the browser (cart, checkout, account pages)
+  goes through the same client. `ShopwareSessionProvider` mounts
+  `ShopwareClientProvider`
+  (`features/storefront/components/ShopwareClientContext.tsx`) with the
+  store's `getClient()`, and `useShopwareClient()` returns that getter with a
+  stable identity. It resolves only after the first `/context` read settled
+  (a failed first read is retried, like the actions), so no request goes out
+  before the cookie token is adopted, and it rejects while the public config
+  cannot be loaded. Never create a second browser client: it would not see
+  the tokens the session client adopts.
+- After a mutation that changes what `/context` returns (`updateContext`,
+  `changeProfile`, an address, an order), call `refreshSession()` on the
+  actions port. It waits for the first read, re-reads `/context` and never
+  rejects; a failed re-read is logged and gives status `"error"` with the
+  last good session kept.
 - Login, registration and logout go through the session actions port
   (`features/session/components/SessionActionsContext.tsx`:
   `SessionActionsProvider`, `useSessionActions`), implemented by
@@ -224,10 +267,104 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   notify `{ ok: false }` again. Anything that is not an `ApiClientError`
   resolves to `errors.message-default`.
 - `StorefrontProviders` is also the app side of the CMS actions port
-  (`CmsActionsProvider`). Cart, wishlist, variant lookup and forms are
-  still stubs there that show a "not connected" notification
-  (`features/storefront/notWired.ts`) and return `{ ok: false }`. Wire them
-  there, not in the CMS components.
+  (`CmsActionsProvider`). `addToCart` goes to the cart (see Cart); wishlist,
+  variant lookup and forms are still stubs there that show a "not connected"
+  notification (`features/storefront/notWired.ts`) and return `{ ok: false }`.
+  Wire them there, not in the CMS components.
+- `StorefrontProviders` renders the toasts of `notify()`. A toast's
+  `action` is a `next/link` rendered after the
+  `data-testid="notification-element-message"` element, never inside it:
+  `ProductPage.addToCart` in the e2e suite asserts that the last message's
+  text ends with "has been added to cart.". Following the link or the close
+  button dismisses the toast. A toast without `timeout` stays 5 seconds, a
+  positive finite `timeout` is respected, and `0`, a negative or an infinite
+  one keeps it until it is closed (the checkout's persistent errors).
+
+## Cart
+
+- `features/cart/cartStore.ts` (`createCartStore`) holds the cart.
+  `CartProvider` (`features/cart/components/CartProvider.tsx`, mounted by
+  `StorefrontProviders` under the session provider) creates one store with
+  `useShopwareClient()`, and `useCart()` (`features/cart/useCart.ts`) binds
+  it with `useSyncExternalStore`; the server snapshot is
+  `{ status: "loading", cart: null }`. `useCart()` adds the values of the Vue
+  `useCart` computeds (`summarizeCart`): `count` sums `quantity` over the
+  line items with `good === true`, `isEmpty` is `count <= 0`, `subtotal` is
+  `price.positionPrice`, `totalPrice` is `price.totalPrice` and
+  `shippingCosts` is `deliveries`. Its action functions keep their identity
+  across cart updates. Without a provider it stays loading and the actions
+  warn and resolve `{ ok: false }`.
+- The store reads `readCart get /checkout/cart` (with `READ_TIMEOUT_MS`)
+  once the session's first `/context` read settled, ready or failed, and
+  again whenever `cartSessionKey` changes: the customer id, the guest flag
+  or the context token, so after a login, a registration (guest or not) and
+  a logout. An order keeps the token (`CartOrderRoute` only deletes the
+  cart), and so does a context switch (shipping or payment method, currency,
+  country), so neither re-reads on its own: call `refresh()` after it, as the
+  checkout does. A failed read is logged, sets status `"error"` and keeps
+  the last cart.
+- Mutations: `addProduct` posts `addLineItem` with
+  `{ items: [{ id, referencedId: id, quantity, type: "product" }] }`
+  (`quantity` defaults to 1, where the Vue `addProduct` sends 0),
+  `removeItem` posts `removeLineItem` with `{ ids: [id] }`, and
+  `changeQuantity` patches `updateLineItem` with `{ items: [{ id, quantity }] }`.
+  Every returned cart replaces the stored one.
+- All cart operations run one after another in request order. A request
+  counter like the session store's is not enough here: two cart writes on one
+  context token in flight at once can lose an update in Shopware, and a read
+  started by a session change would win over an add-to-cart answer that
+  arrived first. A `refresh()` still queued behind the same operation is
+  joined instead of sent twice. Cart mutations have no timeout (only
+  `createOrder` has one, see Checkout), so a hung one holds the queue until
+  the browser gives up.
+- The actions never reject and never notify. Success resolves
+  `{ ok: true, errors }`, where `errors` are the cart errors as
+  `CmsActionError`s (`cartErrors.ts`: `getErrorsCodes` of
+  `useCartNotification`, keyed map only and without
+  `promotion-discount-added`, then `resolveCartError` of
+  `useCartErrorParamsResolver`: `product-stock-reached` gets `name` and
+  `quantity` from the line item's label and `maxPurchase`, or becomes
+  `product-stock-reached-empty` without them; `shipping-method-blocked` gets
+  `name`; anything else carries all its fields as params). A failure
+  resolves `{ ok: false, message }` with the first `resolveApiErrorMessages`
+  message. The caller decides what to show; the `messageKey`s are the
+  `errors.json` keys in `errorMessages.errors`.
+- CMS add-to-cart: `StorefrontProviders` maps the port's
+  `addToCart({ productId, quantity })` to `addProduct` and returns its result
+  unchanged. The islands (`SwProductAddToCartForm`,
+  `SwProductCardAddToCartButton`) notify the success with the "View cart"
+  action and the cart errors themselves, so the provider must not notify.
+- `components/Price.tsx` formats with `formatPrice` from the CMS package,
+  locale `en-GB`, in the session context's currency (`EUR` until it is read),
+  and renders nothing for `null` or `undefined`.
+- The cart UI sits in `features/cart/components/`. `CheckoutProductTile` ports
+  the Vue `checkout/ProductTile.vue`: `data-product-id` is the line item's
+  `referencedId`, the quantity select shows only for stackable products
+  (clamped to `quantityInformation`, snapped to `purchaseSteps`), Remove only
+  for removable ones, and the payload options render as "Group: Option"
+  under `cart-product-options`. `MiniCart` is the header panel (closes on
+  Escape, an outside `mousedown`, a route change and once the cart is
+  empty); `CartPageContent` is `/checkout/cart`
+  (`app/(checkout)/checkout/cart/page.tsx`). Nothing re-reads the cart on
+  that page on its own, so a failed first read shows the error with a
+  "Try again" button that calls `refresh()`; the store keeps status
+  `"error"` during that re-read, so the button holds its own pending state
+  (`disabled`, `aria-busy`). Both and the checkout
+  `SummaryBox` go through `useLineItemActions`, which notifies every cart
+  error (`errorMessages.errors`, else `params.message`) and the failure
+  message only when there are no cart errors, the order
+  `SwProductAddToCartForm` uses.
+- Keep the e2e ids (`page-objects/{CartPage,ProductPage}.ts`,
+  `tests/addToCart.spec.ts`): `header-mini-cart-button`,
+  `mini-cart-container`, `mini-cart-close-button`, `checkout-cart-link`,
+  `checkout-product-tile-item`, `checkout-product-tile-image`,
+  `checkout-product-tile-remove-button`, `cart-product-options`.
+- There is no injectable cart store context, so component tests replace
+  `useCart` with `vi.mock` (`cartView.fixture.tsx`,
+  `features/checkout/checkoutTestDoubles.tsx`). `Price`,
+  `CheckoutProductTile` and `ShopwareClientProvider` are real in tests: wrap
+  a fake invoke client in `ShopwareClientHarness` instead of mocking
+  `useShopwareClient`.
 
 ## Rules the code does not show
 
@@ -242,3 +379,98 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - `@shopware/design-tokens` and `@shopware/cms-base-layer-react` are linked
   with `workspace:*` until they are published, which is why the template is
   not scaffoldable yet.
+
+## Checkout
+
+- `/checkout` is `app/(checkout)/checkout/page.tsx` in the checkout layout
+  (`CheckoutHeader`, `<main aria-label="Checkout">`, like the Vue
+  `layouts/checkout.vue`). It awaits `connection()` and `readCountries()`
+  inside `<Suspense>` (`CheckoutSkeleton`) and hands the countries to
+  `features/checkout/components/CheckoutPageContent.tsx`; a failed country
+  read shows the country field's error with a retry, as on the login page.
+  The success pages sit in the shop layout under
+  `app/(shop)/checkout/success/[id]/` (the Vue default layout); the static
+  `checkout` segment wins over `app/(shop)/[...path]`.
+- Every checkout call runs in the browser through `useShopwareClient()`.
+  The order belongs to the customer's context token, which only the browser
+  client holds; doing it on the server would need `cookies()` and a second
+  client that misses the tokens the session client adopts. The only server
+  read is the anonymous, cached country list.
+- `features/checkout/checkoutApi.ts` holds the calls as pure functions over
+  `Pick<ApiClient, "invoke">`: `getShippingMethods`
+  (`readShippingMethodGet get /shipping-method`, `onlyAvailable` plus
+  `_criteria` with `prices`, sorted by `position`) and `getPaymentMethods`
+  (`readPaymentMethodGet get /payment-method`, `onlyAvailable`), both with
+  the query type widened locally because the GET types lack `onlyAvailable`
+  (the backend reads it from the query too); `setShippingMethod` and
+  `setPaymentMethod` (`updateContext patch /context`); `createOrder`;
+  `updateCustomerDetails`; `readOrder` (`readOrder post /order` with
+  `checkPromotion` and `orderAssociations`, the `useDefaultOrderAssociations`
+  set plus the address countries); `handlePayment`
+  (`handlePaymentMethod post /handle-payment`). `updateCustomerDetails` sends
+  every field of the existing default billing address with the patch,
+  because the upsert route nulls the ones left out, then `changeProfile`.
+- `CheckoutPageContent` shows `CheckoutSkeleton` until the session and the
+  first cart read settle, then the empty cart state or the three steps. A
+  session that could not be read at all (status `"error"`, no `context`) and
+  a failed first cart read each show an alert with a "Try again" button
+  (`retrySession()`, `cart.refresh()`) instead of the steps, because an
+  unknown session would otherwise show the guest form to a logged-in
+  customer; an order in flight keeps the steps mounted. The
+  selected methods are the session context's `shippingMethod` and
+  `paymentMethod`, overridden only while a change is in flight; a change
+  patches the context, then calls `refreshSession()` and `cart.refresh()`
+  (the token stays, so the cart store does not re-read on its own). Place
+  order validates with `checkoutSchema.ts` (the `useTemplateCheckout` rules)
+  and focuses the first invalid field. Without a user session it registers
+  through `useSessionActions().register` with `guest: !createAccount`; the
+  action shows its own errors, so a `{ ok: false }` just stops, and a double
+  opt-in shows the sign-up message and stops. A session that registered
+  during this checkout updates the customer details on the next attempt
+  instead of registering again, then refreshes the session and the cart, so
+  the summary shows the totals of the new address; a customer who arrived
+  logged in or as a guest skips the form and sees the default billing
+  address. If a registration succeeded but the session still has no
+  customer, the next attempt calls `retrySession()` instead of registering a
+  second time and stops with `messages.error` while the customer is still
+  missing. Then it reloads the methods, creates the order, pushes
+  `/checkout/success/{id}` and refreshes the session and the cart. A ref
+  ignores a second click, the form is `inert` behind
+  `<output aria-label="Placing order…">`, and errors are persistent toasts
+  (`timeout: 0`). A failed `createOrder` whose outcome is unknown
+  (`isAmbiguousOrderFailure` in `checkoutApi.ts`: a timeout, an error
+  without an HTTP status, or 502/503/504) shows `errors.order-timeout`,
+  since the order may exist; any other API error shows its messages. Every
+  failed `createOrder` re-reads the cart, so an order the backend committed
+  turns the page into the empty cart state instead of inviting a retry
+  against a stale summary. A client that cannot be created fails before
+  the request and shows `errors.message-default`.
+- `SuccessPageContent` `use()`s the params promise under `<Suspense>`, keyed
+  by order id. A ready session that is neither logged in nor a guest is
+  replaced to `/`. Otherwise it reads the order once (a ref, so StrictMode
+  does not start the payment twice), then calls `handlePayment` with
+  `{origin}/checkout/success/{id}/paid` and `/unpaid` as finish and error
+  URLs. Only a `redirectUrl` that parses as an http(s) URL shows the payment
+  alert and redirects after `PAYMENT_REDIRECT_DELAY_MS` (5 s, cleared on
+  unmount); synchronous payment methods answer `null`. A failed
+  `handle-payment` is only logged, and reloading the page runs it again. The
+  backend pays only the newest transaction still in the `open` state. An
+  order with no open transaction left (paid, failed, cancelled) answers 200
+  with `redirectUrl: null`, so the page shows the confirmation with no
+  payment alert. An async payment that is still open gets a fresh redirect.
+  It errors only when the order has no transaction for this customer at all.
+  `paid` and `unpaid` are server pages; the
+  Vue starter's i18n lacks their keys, so the copy comes from the
+  `vue-demo-store` `checkout.json`.
+- Keep the e2e ids (`page-objects/CheckoutPage.ts`, `tests/createOrder.spec.ts`):
+  `checkout-pi-email-input`, `checkout-pi-password-input`,
+  `checkout-create-account-toggle`, `checkout-pi-first-name-input`,
+  `checkout-pi-last-name-input`, `checkout-pi-street-address-input`,
+  `checkout-pi-zip-code-input`, `checkout-pi-city-input`, `country-select`,
+  `checkout-pi-state-input`, `checkout-shipping-method` (one per row, around a
+  native `name="shipping-method"` radio), `checkout-place-order-button`,
+  `cart-subtotal`, `cart-total`, `checkout-success-page`, `order-subtotal`,
+  `order-shipping`, `order-total`.
+- Not ported yet: the "View in my account" link (no account order page),
+  downloads of digital line items and changing the payment method of an
+  order.

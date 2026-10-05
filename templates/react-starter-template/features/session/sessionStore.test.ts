@@ -274,6 +274,26 @@ describe("createSessionStore", () => {
     expect(consoleError).toHaveBeenCalledTimes(2);
   });
 
+  it("keeps the context and the guest flag of the last read in the snapshot", async () => {
+    const context = salesChannelContext(
+      customer({ guest: true }),
+      "guest-token",
+    );
+    answerReads(Promise.resolve({ data: context }));
+    const store = createSessionStore();
+
+    await store.start();
+
+    expect(store.getSnapshot()).toEqual({
+      status: "ready",
+      isLoggedIn: false,
+      isGuestSession: true,
+      customerName: null,
+      wishlistCount: 0,
+      context,
+    });
+  });
+
   it("starts only once", async () => {
     const invoke = answerReads(
       Promise.resolve({ data: salesChannelContext(null) }),
@@ -284,5 +304,193 @@ describe("createSessionStore", () => {
 
     expect(invoke).toHaveBeenCalledTimes(1);
     expect(browser.createBrowserClient).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("createSessionStore getClient", () => {
+  it("resolves the browser client only after the first context read", async () => {
+    const firstRead = deferred<{ data: Schemas["SalesChannelContext"] }>();
+    const invoke = answerReads(firstRead.promise);
+    const store = createSessionStore();
+
+    let resolved: ApiClient | undefined;
+    const pending = store.getClient().then((client) => {
+      resolved = client;
+    });
+    await vi.waitFor(() => expect(invoke).toHaveBeenCalledTimes(1));
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(resolved).toBeUndefined();
+
+    firstRead.resolve({ data: salesChannelContext(null) });
+    await pending;
+
+    expect(resolved).toBe(browser.createBrowserClient.mock.results[0]?.value);
+    expect(store.getSnapshot().status).toBe("ready");
+  });
+
+  it("shares one client and one first read between callers", async () => {
+    const invoke = answerReads(
+      Promise.resolve({ data: salesChannelContext(null) }),
+    );
+    const store = createSessionStore();
+
+    const [first, second] = await Promise.all([
+      store.getClient(),
+      store.getClient(),
+    ]);
+    await store.start();
+
+    expect(first).toBe(second);
+    expect(invoke).toHaveBeenCalledTimes(1);
+    expect(browser.createBrowserClient).toHaveBeenCalledTimes(1);
+  });
+
+  it("reads the context again before it resolves after the first read failed", async () => {
+    silenceConsoleError();
+    const invoke = answerReads(
+      Promise.reject(new TypeError("Failed to fetch")),
+      Promise.resolve({ data: salesChannelContext(customer()) }),
+    );
+    const store = createSessionStore();
+    await store.start();
+    expect(store.getSnapshot().status).toBe("error");
+
+    await store.getClient();
+
+    expect(invoke).toHaveBeenCalledTimes(2);
+    expect(store.getSnapshot()).toMatchObject({
+      status: "ready",
+      isLoggedIn: true,
+    });
+  });
+
+  it("rejects while the public config cannot be loaded", async () => {
+    silenceConsoleError();
+    browser.loadPublicConfig.mockRejectedValue(new Error("config down"));
+    const store = createSessionStore();
+
+    await expect(store.getClient()).rejects.toThrow("config down");
+    expect(browser.createBrowserClient).not.toHaveBeenCalled();
+  });
+});
+
+describe("createSessionStore refreshSession action", () => {
+  it("re-reads the context and publishes the new session", async () => {
+    const invoke = answerReads(
+      Promise.resolve({ data: salesChannelContext(null) }),
+      Promise.resolve({
+        data: salesChannelContext(customer(), "context-token-2"),
+      }),
+    );
+    const store = createSessionStore();
+    await store.start();
+    const actions = store.createActions(() => {});
+
+    await expect(actions.refreshSession()).resolves.toBeUndefined();
+
+    expect(invoke.mock.calls).toEqual([
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+    ]);
+    expect(store.getSnapshot()).toMatchObject({
+      status: "ready",
+      isLoggedIn: true,
+      context: { token: "context-token-2" },
+    });
+  });
+
+  it("waits for the first context read before it reads again", async () => {
+    const firstRead = deferred<{ data: Schemas["SalesChannelContext"] }>();
+    const invoke = answerReads(
+      firstRead.promise,
+      Promise.resolve({ data: salesChannelContext(customer()) }),
+    );
+    const store = createSessionStore();
+    const actions = store.createActions(() => {});
+
+    const refreshed = actions.refreshSession();
+    await vi.waitFor(() => expect(invoke).toHaveBeenCalledTimes(1));
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(invoke).toHaveBeenCalledTimes(1);
+
+    firstRead.resolve({ data: salesChannelContext(null) });
+    await refreshed;
+
+    expect(invoke).toHaveBeenCalledTimes(2);
+    expect(store.getSnapshot().isLoggedIn).toBe(true);
+  });
+
+  it("resolves, logs and keeps the last session when the re-read fails", async () => {
+    const consoleError = silenceConsoleError();
+    const context = salesChannelContext(customer());
+    answerReads(
+      Promise.resolve({ data: context }),
+      Promise.reject(new TypeError("Failed to fetch")),
+    );
+    const store = createSessionStore();
+    await store.start();
+    const ready = store.getSnapshot();
+    const actions = store.createActions(() => {});
+
+    await expect(actions.refreshSession()).resolves.toBeUndefined();
+
+    expect(consoleError).toHaveBeenCalledTimes(1);
+    expect(store.getSnapshot()).toEqual({ ...ready, status: "error" });
+    expect(store.getSnapshot().context).toBe(context);
+  });
+
+  it("keeps the last session when a retry after a failed re-read fails too", async () => {
+    silenceConsoleError();
+    const context = salesChannelContext(customer({ guest: true }));
+    const invoke = answerReads(
+      Promise.resolve({ data: context }),
+      Promise.reject(new TypeError("Failed to fetch")),
+      Promise.reject(new TypeError("Failed to fetch")),
+    );
+    const store = createSessionStore();
+    await store.start();
+    const actions = store.createActions(() => {});
+    await actions.refreshSession();
+
+    await expect(actions.retrySession()).resolves.toMatchObject({
+      status: "error",
+      isGuestSession: true,
+      context,
+    });
+    expect(invoke).toHaveBeenCalledTimes(3);
+  });
+
+  it("forgets the last session when the re-read after a login fails", async () => {
+    silenceConsoleError();
+    let contextReads = 0;
+    const invoke = vi.fn(async (operation: string) => {
+      if (operation === LOGIN) return { data: {}, status: 200 };
+      contextReads += 1;
+      if (contextReads === 1) {
+        return { data: salesChannelContext(null), status: 200 };
+      }
+      throw new TypeError("Failed to fetch");
+    });
+    browser.createBrowserClient.mockReturnValue({
+      invoke,
+    } as unknown as ApiClient);
+    const store = createSessionStore();
+    await store.start();
+    const actions = store.createActions(() => {});
+
+    await expect(
+      actions.login({ username: "jane@example.com", password: "secret" }),
+    ).resolves.toEqual({ ok: true });
+
+    expect(invoke.mock.calls.map(([operation]) => operation)).toEqual([
+      READ_CONTEXT,
+      LOGIN,
+      READ_CONTEXT,
+    ]);
+    expect(store.getSnapshot()).toMatchObject({
+      status: "error",
+      isLoggedIn: false,
+      context: null,
+    });
   });
 });

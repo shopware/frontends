@@ -15,6 +15,8 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "@/components/icons";
+import { MiniCart } from "@/features/cart/components/MiniCart";
+import { useCart } from "@/features/cart/useCart";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
 import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
@@ -36,25 +38,42 @@ const ICON_CLASS = "size-5 text-brand-primary";
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
 
 export function HeaderBar({ menu }: { menu: ReactNode }) {
-  const { status, isLoggedIn, customerName, cartCount, wishlistCount } =
-    useSession();
+  const { status, isLoggedIn, customerName, wishlistCount } = useSession();
+  const { count: cartQuantity } = useCart();
   const { retrySession } = useSessionActions();
   const { notify } = useCmsActions();
   const router = useRouter();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [miniCartOpen, setMiniCartOpen] = useState(false);
   const [checkingSession, setCheckingSession] = useState(false);
   const checkingSessionRef = useRef(false);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const accountButtonRef = useRef<HTMLButtonElement>(null);
+  const cartButtonRef = useRef<HTMLButtonElement>(null);
   const restoreFocus = useRef(false);
+  const miniCartShown = useRef(false);
   const accountMenuId = useId();
+  const miniCartId = useId();
+  const showMiniCart = miniCartOpen && cartQuantity > 0;
 
   if (accountMenuOpen && !isLoggedIn) setAccountMenuOpen(false);
+  if (miniCartOpen && cartQuantity === 0) setMiniCartOpen(false);
 
   const notWired = (message: string) => () => notify({ type: "info", message });
 
   const closeAccountMenu = useCallback(() => setAccountMenuOpen(false), []);
+  const closeMiniCart = useCallback(() => setMiniCartOpen(false), []);
+
+  const toggleMiniCart = () => {
+    if (miniCartOpen) {
+      setMiniCartOpen(false);
+      return;
+    }
+    if (cartQuantity === 0) return;
+    setAccountMenuOpen(false);
+    setMiniCartOpen(true);
+  };
 
   const goToLogin = () => {
     const { pathname, search, hash } = window.location;
@@ -81,6 +100,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
 
   const openAccount = () => {
     if (isLoggedIn) {
+      setMiniCartOpen(false);
       setAccountMenuOpen((open) => !open);
       return;
     }
@@ -97,13 +117,22 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   };
 
   useEffect(() => {
+    const wasShown = miniCartShown.current;
+    miniCartShown.current = showMiniCart;
+    if (!wasShown || showMiniCart || cartQuantity > 0) return;
+    if (document.activeElement === document.body) {
+      cartButtonRef.current?.focus();
+    }
+  }, [showMiniCart, cartQuantity]);
+
+  useEffect(() => {
     if (mobileSearchActive || !restoreFocus.current) return;
     restoreFocus.current = false;
     searchButtonRef.current?.focus();
   }, [mobileSearchActive]);
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3.5 sm:grid sm:grid-cols-3">
+    <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3.5 sm:grid sm:grid-cols-3">
       {mobileSearchActive ? (
         <>
           <HeaderSearch className="w-full" autoFocus />
@@ -135,6 +164,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               aria-label={t.search}
               onClick={() => {
                 setAccountMenuOpen(false);
+                setMiniCartOpen(false);
                 setMobileSearchActive(true);
               }}
             >
@@ -183,16 +213,19 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               </span>
             </IconButton>
             <IconButton
+              ref={cartButtonRef}
               variant="ghost"
               className={HEADER_ACTION_CLASS}
               data-testid="header-mini-cart-button"
               aria-label={t["layout.header.cart"]}
-              onClick={notWired(NOT_WIRED_MESSAGES.cart)}
+              aria-expanded={showMiniCart}
+              aria-controls={miniCartId}
+              onClick={toggleMiniCart}
             >
               <span className="relative flex">
                 <ShoppingCartIcon className={ICON_CLASS} />
-                {cartCount > 0 ? (
-                  <MainCounter count={cartCount} className={COUNTER_CLASS} />
+                {cartQuantity > 0 ? (
+                  <MainCounter count={cartQuantity} className={COUNTER_CLASS} />
                 ) : null}
               </span>
             </IconButton>
@@ -200,6 +233,14 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
           </div>
         </>
       )}
+      {showMiniCart ? (
+        <MiniCart
+          id={miniCartId}
+          triggerRef={cartButtonRef}
+          onClose={closeMiniCart}
+          className="absolute top-full right-0"
+        />
+      ) : null}
     </div>
   );
 }

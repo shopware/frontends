@@ -33,7 +33,7 @@ export function createSessionActions({
   refreshSession,
   getStorefrontUrl,
   notify,
-}: SessionActionDeps): Omit<SessionActions, "retrySession"> {
+}: SessionActionDeps): Omit<SessionActions, "retrySession" | "refreshSession"> {
   function fail(
     error: unknown,
     context?: ApiErrorContext,

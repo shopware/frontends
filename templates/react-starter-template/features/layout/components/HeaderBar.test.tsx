@@ -1,7 +1,12 @@
 import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  cartView,
+  fakeCart,
+  lineItem,
+} from "@/features/cart/components/cartView.fixture";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
@@ -16,7 +21,16 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
+vi.mock("@/features/cart/useCart", async () => ({
+  useCart: (await import("@/features/cart/components/cartView.fixture"))
+    .useFakeCart,
+}));
+
 const actions = { notify: vi.fn() };
+
+beforeEach(() => {
+  fakeCart.set(cartView({ status: "loading" }));
+});
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
   const bar = (
@@ -57,6 +71,11 @@ describe("HeaderBar", () => {
 
     const cart = buttonWithTestId(html, "header-mini-cart-button");
     expect(cart).toContain('aria-label="Cart"');
+    expect(cart).toContain('aria-expanded="false"');
+    const controls = cart.match(/aria-controls="([^"]+)"/)?.[1];
+    expect(controls).toBeTruthy();
+    expect(html).not.toContain(`id="${controls}"`);
+    expect(html).not.toContain("mini-cart-container");
 
     expect(html).toContain('aria-label="Search"');
     expect(html).not.toContain("bg-states-error");
@@ -91,13 +110,13 @@ describe("HeaderBar", () => {
     );
   });
 
-  it("shows the counters and the logged-in flag from the session", async () => {
+  it("shows the wishlist counter from the session and the cart counter from the cart", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 2 })] }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
       isLoggedIn: true,
       customerName: "Jane Doe",
-      cartCount: 2,
       wishlistCount: 3,
     });
 
@@ -127,14 +146,34 @@ describe("HeaderBar", () => {
   });
 
   it("hides the wishlist counter for guests", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 1 })] }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
-      cartCount: 1,
       wishlistCount: 4,
     });
 
     expect(html.match(/bg-states-error/g)).toHaveLength(1);
     expect(html).toMatch(/bg-states-error[^>]*>1<\/span>/);
+  });
+
+  it("shows the count useCart reports, not the number of line items", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem()], count: 5 }));
+    const html = await render({ ...anonymousSession, status: "ready" });
+
+    expect(html.match(/bg-states-error/g)).toHaveLength(1);
+    expect(html).toMatch(/bg-states-error[^>]*>5<\/span>/);
+  });
+
+  it("hides the cart counter while the count is 0", async () => {
+    fakeCart.set(
+      cartView({
+        lineItems: [lineItem({ type: "promotion", good: false })],
+        count: 0,
+      }),
+    );
+    const html = await render({ ...anonymousSession, status: "ready" });
+
+    expect(html).not.toContain("bg-states-error");
   });
 });
