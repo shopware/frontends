@@ -600,7 +600,7 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
-- [Custom CMS elements](../../guides/cms/custom-elements.html)
+- [Implement a Missing CMS Component](../../guides/cms/missing-component.html)
 - [Composables reference](../../packages/composables/)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [API client package](../../packages/api-client.html)

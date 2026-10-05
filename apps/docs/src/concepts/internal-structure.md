@@ -54,7 +54,7 @@ Helpers are functions that can be used for formatting, data manipulation and oth
 
 The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../guides/).
 
-<PageRef page="../packages/composables.html" title="Composables Reference" sub="Package API reference with all composables" />
+<PageRef page="../packages/composables/" title="Composables Reference" sub="Package API reference with all composables" />
 
 ## nuxt-module
 
@@ -83,7 +83,7 @@ The CMS base is a Nuxt module that provides an implementation of all CMS compone
 
 Head to our [Content Pages](../guides/cms/content-pages#use-the-cms-base-package) guide to learn more.
 
-<PageRef page="../packages/cms-base.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
+<PageRef page="../packages/cms-base-layer.html" title="CMS Base Reference" sub="Package API reference for the CMS composables" />
 
 ## Templates & Examples
 

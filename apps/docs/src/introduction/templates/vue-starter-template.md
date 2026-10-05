@@ -180,7 +180,7 @@ For example, to override the product card:
 
 <!-- /automd -->
 
-<PageRef page="../../packages/cms-base-layer.html#overwriting-components" title="Override CMS Components" sub="Learn how to customize CMS components from the base layer" />
+<PageRef page="../../packages/cms-base-layer.html#🔄-overwriting-components" title="Override CMS Components" sub="Learn how to customize CMS components from the base layer" />
 
 ### Styling with UnoCSS
 
@@ -227,6 +227,6 @@ The Vue Starter Template can be extended using [Nuxt layers](https://nuxt.com/do
 
 ## What's Next?
 
-<PageRef page="../page-elements/navigation.html" title="Build your navigation" sub="Learn how to implement the main navigation for your store" />
+<PageRef page="../../frontends-recipes/context/navigation.html" title="Build your navigation" sub="Learn how to implement the main navigation for your store" />
 
-<PageRef page="../cms/content-pages.html" title="Work with CMS" sub="Integrate Shopware Shopping Experiences into your frontend" />
+<PageRef page="../../frontends-recipes/cms/rendering.html" title="Work with CMS" sub="Integrate Shopware Shopping Experiences into your frontend" />

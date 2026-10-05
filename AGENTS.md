@@ -175,12 +175,13 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 ## Maintaining these files
 
-`AGENTS.md` is what agents read; Claude Code reads `CLAUDE.md`, so every
-`AGENTS.md` has a one-line `CLAUDE.md` beside it containing `@AGENTS.md` — add
-both together, or the file is invisible to it. The root pair is resident in
-every session; a nested one loads when an agent works in that directory.
+`AGENTS.md` is what agents read, Claude Code included (v2.1.277+), so no
+`CLAUDE.md` pointer sits beside it. Don't add any `CLAUDE.md` or
+`CLAUDE.local.md` — by default Claude Code reads that in place of every
+`AGENTS.md` beside or below it. The root file is resident in every session; a
+nested one loads when an agent works in that directory.
 
-**Keep the root pair under 200 lines.** Past that it costs more context and gets
+**Keep the root file under 200 lines.** Past that it costs more context and gets
 followed less, so the budget is a correctness rule, not tidiness. Nested files
 are bounded by relevance rather than context cost, which is why moving
 package-specific detail down out of this file is a real saving.
