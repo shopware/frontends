@@ -131,14 +131,6 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Checkout",
-            link: "/guides/e-commerce/checkout.html",
-          },
-          {
-            text: "Product Listing",
-            link: "/guides/e-commerce/product-listing.html",
-          },
-          {
             text: "Payments",
             link: "/guides/e-commerce/payments.html",
           },
