@@ -5,6 +5,8 @@ import { computed } from "vue";
 
 import type { Schemas } from "#shopware";
 
+import { shouldShowBuyButton } from "../helpers/product/shouldShowBuyButton";
+
 type Translations = {
   product: {
     addToCart: string;
@@ -27,6 +29,9 @@ const props = defineProps<{
 }>();
 
 const isMinimalLayout = computed(() => props.layoutType === "minimal");
+const showBuyButton = computed(() =>
+  shouldShowBuyButton(props.product, props.fromPrice),
+);
 </script>
 <template>
   <div
@@ -72,7 +77,7 @@ const isMinimalLayout = computed(() => props.layoutType === "minimal");
     <template v-if="!isMinimalLayout">
       <SwBaseButton
         variant="primary"
-        v-if="!fromPrice"
+        v-if="showBuyButton"
         size="medium"
         :disabled="!product?.available"
         block

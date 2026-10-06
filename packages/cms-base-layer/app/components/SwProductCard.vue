@@ -47,6 +47,7 @@ type Translations = {
     reason: string;
     cannotAddToWishlist: string;
     addedToCart: string;
+    notAddedToCart: string;
     viewCart: string;
     addToCart: string;
     details: string;
@@ -68,6 +69,7 @@ let translations: Translations = {
     reason: "Reason",
     cannotAddToWishlist: "cannot be added to wishlist.",
     addedToCart: "has been added to cart.",
+    notAddedToCart: "could not be added to cart.",
     viewCart: "View cart",
     addToCart: "Add to cart",
     details: "Details",
@@ -87,7 +89,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const product = toRef(() => productProp);
 
-const { addToCart } = useAddToCart(product);
+const { addToCart, isInCart } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
@@ -135,16 +137,25 @@ const addToCartProxy = async () => {
       pushError(getCmsTranslate(translations.errors[messageKey], params));
   }
 
-  if (!errors.length)
-    pushSuccess(
-      `${product?.value.translated.name} ${translations.product.addedToCart}`,
-      {
-        action: {
-          label: translations.product.viewCart,
-          to: "/checkout/cart",
-        },
-      },
+  if (errors.length) return;
+
+  // Shopware drops some items without a cart error, e.g. a variant parent.
+  if (!isInCart.value) {
+    pushError(
+      `${product?.value.translated.name} ${translations.product.notAddedToCart}`,
     );
+    return;
+  }
+
+  pushSuccess(
+    `${product?.value.translated.name} ${translations.product.addedToCart}`,
+    {
+      action: {
+        label: translations.product.viewCart,
+        to: "/checkout/cart",
+      },
+    },
+  );
 };
 
 const fromPrice = getProductFromPrice(product.value);

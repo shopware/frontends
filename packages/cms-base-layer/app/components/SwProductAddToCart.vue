@@ -22,6 +22,7 @@ const props = defineProps<{
 type Translations = {
   product: {
     addedToCart: string;
+    notAddedToCart: string;
     viewCart: string;
     qty: string;
     addToCart: string;
@@ -35,6 +36,7 @@ type Translations = {
 let translations: Translations = {
   product: {
     addedToCart: "has been added to cart.",
+    notAddedToCart: "could not be added to cart.",
     viewCart: "View cart",
     qty: "Qty",
     addToCart: "Add to cart",
@@ -49,7 +51,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
-const { addToCart, quantity } = useAddToCart(product);
+const { addToCart, isInCart, quantity } = useAddToCart(product);
 
 const availableStock = computed(() => product.value?.availableStock ?? 0);
 const minPurchase = computed(() => product.value?.minPurchase ?? 0);
@@ -66,16 +68,25 @@ const addToCartProxy = async () => {
       pushError(getCmsTranslate(translations.errors[messageKey], params));
   }
 
-  if (!errors.length)
-    pushSuccess(
-      `${props.product?.translated.name} ${translations.product.addedToCart}`,
-      {
-        action: {
-          label: translations.product.viewCart,
-          to: "/checkout/cart",
-        },
-      },
+  if (errors.length) return;
+
+  // Shopware drops some items without a cart error, e.g. a variant parent.
+  if (!isInCart.value) {
+    pushError(
+      `${props.product?.translated.name} ${translations.product.notAddedToCart}`,
     );
+    return;
+  }
+
+  pushSuccess(
+    `${props.product?.translated.name} ${translations.product.addedToCart}`,
+    {
+      action: {
+        label: translations.product.viewCart,
+        to: "/checkout/cart",
+      },
+    },
+  );
 };
 </script>
 
