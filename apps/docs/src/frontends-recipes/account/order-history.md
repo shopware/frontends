@@ -452,5 +452,3 @@ That route answers a guest session `isLoggedIn` reports as signed out, so a gues
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
-- [Payments documentation](../../guides/e-commerce/payments.html)

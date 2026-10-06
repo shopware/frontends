@@ -447,6 +447,7 @@ Customer-specific prices, promotions and rules change with the customer context,
 ## Related Links
 
 - [Cart Errors recipe](cart-errors.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Checkout and Order Placement recipe](checkout.html)
+- [Payment recipe](payment.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
