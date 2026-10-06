@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { BoxLayout } from "@shopware/composables";
+import { useProductPrice } from "@shopware/composables";
 import type { UrlRouteOutput } from "@shopware/helpers";
-import { computed } from "vue";
+import { computed, toRef } from "vue";
 
 import type { Schemas } from "#shopware";
 
@@ -29,8 +30,9 @@ const props = defineProps<{
 }>();
 
 const isMinimalLayout = computed(() => props.layoutType === "minimal");
+const { displayFrom } = useProductPrice(toRef(props, "product"));
 const showBuyButton = computed(() =>
-  shouldShowBuyButton(props.product, props.fromPrice),
+  shouldShowBuyButton(props.product, displayFrom.value),
 );
 </script>
 <template>

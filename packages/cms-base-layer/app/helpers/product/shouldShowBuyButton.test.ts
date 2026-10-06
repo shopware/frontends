@@ -16,6 +16,6 @@ describe("shouldShowBuyButton", () => {
   });
 
   it("hides the button when there is a from price", () => {
-    expect(shouldShowBuyButton({ childCount: 0 }, 19.99)).toBe(false);
+    expect(shouldShowBuyButton({ childCount: 0 }, true)).toBe(false);
   });
 });

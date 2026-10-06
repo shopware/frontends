@@ -1,7 +1,6 @@
-// Same rule as the Twig storefront product card.
 export function shouldShowBuyButton(
   product: { childCount?: number } | undefined,
-  fromPrice?: number,
+  displayFrom = false,
 ): boolean {
-  return !fromPrice && (product?.childCount ?? 0) <= 0;
+  return !displayFrom && (product?.childCount ?? 0) <= 0;
 }
