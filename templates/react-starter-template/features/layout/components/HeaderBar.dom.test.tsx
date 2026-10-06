@@ -315,7 +315,20 @@ describe("HeaderBar in the browser", () => {
     expect(account.getAttribute("aria-expanded")).toBe("true");
     expect(panel?.id).toBe(controls);
     expect(panel?.textContent).toContain("Signed in as Jane Doe");
-    expect(panel?.querySelectorAll("a")).toHaveLength(0);
+    expect(
+      [...(panel?.querySelectorAll("a") ?? [])].map((link) => [
+        link.getAttribute("href"),
+        link.textContent,
+      ]),
+    ).toEqual([
+      ["/account", "Overview"],
+      ["/account/profile", "Your profile"],
+      ["/account/address", "Addresses"],
+      ["/account/order", "Orders"],
+    ]);
+    expect(panel?.querySelector('[data-testid="header-my-account-link"]')).toBe(
+      panel?.querySelector('a[href="/account"]'),
+    );
     const logout = query<HTMLButtonElement>(panel ?? document, LOGOUT_BUTTON);
     expect(logout.textContent).toBe("Logout");
     expect(logout.type).toBe("button");
@@ -399,6 +412,27 @@ describe("HeaderBar in the browser", () => {
     expect(menu()).not.toBeNull();
     expect(logoutButton().getAttribute("aria-busy")).toBe("false");
     expect(logoutButton().hasAttribute("aria-disabled")).toBe(false);
+  });
+
+  it("closes when one of its account links is followed", async () => {
+    const { account, menu } = await setup(loggedIn);
+    const stopNavigation = (event: Event) => event.preventDefault();
+    document.addEventListener("click", stopNavigation, { capture: true });
+
+    try {
+      await interact(() => account.click());
+      await interact(() =>
+        query<HTMLAnchorElement>(
+          menu() ?? document,
+          '[data-testid="header-my-account-link"]',
+        ).click(),
+      );
+    } finally {
+      document.removeEventListener("click", stopNavigation, { capture: true });
+    }
+
+    expect(menu()).toBeNull();
+    expect(account.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("closes on Escape and returns focus to the account button", async () => {

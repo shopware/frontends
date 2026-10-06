@@ -5,12 +5,13 @@ import { renderToHtml } from "@/test/render";
 import { order } from "../checkout.fixture";
 import { OrderConfirmation, formatOrderDate } from "./OrderConfirmation";
 
-function render(paymentUrl: string | null = null) {
+function render(paymentUrl: string | null = null, showAccountLink = false) {
   return renderToHtml(
     <OrderConfirmation
       order={order()}
       paymentUrl={paymentUrl}
       onGoToPayment={() => {}}
+      showAccountLink={showAccountLink}
     />,
   );
 }
@@ -96,5 +97,17 @@ describe("formatOrderDate", () => {
       /^05\/10\/2026, \d{2}:\d{2}$/,
     );
     expect(formatOrderDate("not a date")).toBe("");
+  });
+
+  it("links to the order in the account only for logged-in customers", async () => {
+    const guest = await render();
+    expect(guest).not.toContain("View in my account");
+
+    const customer = await render(null, true);
+    expect(customer).toMatch(
+      new RegExp(
+        `<a [^>]*href="/account/order/details/${order().id}"[^>]*>View in my account</a>`,
+      ),
+    );
   });
 });

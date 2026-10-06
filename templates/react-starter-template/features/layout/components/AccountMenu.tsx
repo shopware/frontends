@@ -1,11 +1,15 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 
-import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import {
+  ACCOUNT_MENU_LINKS,
+  isCurrentAccountPage,
+} from "@/features/account/components/accountMenuLinks";
+import { useAccountLogout } from "@/features/account/components/useAccountLogout";
 
 const t = {
   "account.menu.signedInAs": "Signed in as {name}",
@@ -25,12 +29,8 @@ export function AccountMenu({
   triggerRef,
   onClose,
 }: AccountMenuProps) {
-  const router = useRouter();
   const pathname = usePathname();
-  const { logout } = useSessionActions();
-  const { notify } = useCmsActions();
-  const [pending, setPending] = useState(false);
-  const pendingRef = useRef(false);
+  const { pending, logout } = useAccountLogout();
   const panelRef = useRef<HTMLDivElement>(null);
   const openedAt = useRef(pathname);
 
@@ -66,24 +66,9 @@ export function AccountMenu({
   }, [triggerRef, onClose]);
 
   async function handleLogout() {
-    if (pendingRef.current) return;
-    pendingRef.current = true;
-    setPending(true);
-    try {
-      const result = await logout();
-      if (!result.ok) return;
-      router.push("/");
-      triggerRef.current?.focus();
-      onClose();
-    } catch (cause) {
-      notify({
-        type: "error",
-        message: cause instanceof Error ? cause.message : String(cause),
-      });
-    } finally {
-      pendingRef.current = false;
-      setPending(false);
-    }
+    if (!(await logout())) return;
+    triggerRef.current?.focus();
+    onClose();
   }
 
   return (
@@ -98,6 +83,22 @@ export function AccountMenu({
           {t["account.menu.signedInAs"].replace("{name}", () => customerName)}
         </p>
       ) : null}
+      {ACCOUNT_MENU_LINKS.map(({ href, label }) => (
+        <Link
+          key={href}
+          href={href}
+          data-testid={
+            href === "/account" ? "header-my-account-link" : undefined
+          }
+          aria-current={
+            isCurrentAccountPage(pathname, href) ? "page" : undefined
+          }
+          className="-mt-px self-start border-b border-transparent text-nowrap text-surface-on-surface hover:border-surface-on-surface aria-[current=page]:border-surface-on-surface"
+          onClick={onClose}
+        >
+          {label}
+        </Link>
+      ))}
       <button
         type="button"
         data-testid="header-account-logout-button"

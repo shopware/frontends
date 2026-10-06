@@ -125,6 +125,7 @@ function OrderSuccess({ orderId }: { orderId: string }) {
       order={orderLoad.order}
       paymentUrl={paymentUrl}
       onGoToPayment={redirectToPayment}
+      showAccountLink={session.isLoggedIn}
     />
   );
 }

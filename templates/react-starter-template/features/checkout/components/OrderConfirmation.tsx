@@ -31,6 +31,7 @@ const t = {
       items: "Items ordered",
       deliveryAndPayment: "Delivery and payment",
       continueShopping: "Continue shopping",
+      viewInAccount: "View in my account",
       goToPayment: "Go to payment",
       paymentProcessLabel: "Finish payment process.",
       paymentProcessInfo:
@@ -62,6 +63,9 @@ const ORDER_DATE_FORMAT = new Intl.DateTimeFormat("en-GB", {
 const PRIMARY_LINK_CLASS =
   "inline-flex items-center justify-center rounded bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary";
 
+const SECONDARY_LINK_CLASS =
+  "inline-flex items-center justify-center rounded border border-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-primary";
+
 export function formatOrderDate(date: string): string {
   const parsed = new Date(date);
   return Number.isNaN(parsed.getTime()) ? "" : ORDER_DATE_FORMAT.format(parsed);
@@ -81,12 +85,14 @@ export type OrderConfirmationProps = {
   order: Schemas["Order"];
   paymentUrl: string | null;
   onGoToPayment: (url: string) => void;
+  showAccountLink?: boolean;
 };
 
 export function OrderConfirmation({
   order,
   paymentUrl,
   onGoToPayment,
+  showAccountLink = false,
 }: OrderConfirmationProps) {
   const shippingAddress = getOrderShippingAddress(order);
   const billingAddress = getOrderBillingAddress(order);
@@ -268,6 +274,14 @@ export function OrderConfirmation({
                 <Link href="/" className={PRIMARY_LINK_CLASS}>
                   {t.checkout.success.continueShopping}
                 </Link>
+                {showAccountLink ? (
+                  <Link
+                    href={`/account/order/details/${encodeURIComponent(order.id)}`}
+                    className={SECONDARY_LINK_CLASS}
+                  >
+                    {t.checkout.success.viewInAccount}
+                  </Link>
+                ) : null}
               </div>
             </div>
           </section>

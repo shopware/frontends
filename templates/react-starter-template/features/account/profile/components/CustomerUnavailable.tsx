@@ -1,0 +1,52 @@
+"use client";
+
+import { BaseButton } from "@shopware/cms-base-layer-react/client";
+import { useState } from "react";
+
+const t = {
+  errors: {
+    "message-default":
+      "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",
+  },
+  listing: {
+    retry: "Try again",
+  },
+};
+
+export function CustomerUnavailable({
+  onRetry,
+}: {
+  onRetry: () => Promise<void>;
+}) {
+  const [retrying, setRetrying] = useState(false);
+
+  async function retry() {
+    if (retrying) return;
+    setRetrying(true);
+    try {
+      await onRetry();
+    } finally {
+      setRetrying(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <p role="alert" className="text-sm text-states-error">
+        {t.errors["message-default"]}
+      </p>
+      <BaseButton
+        variant="secondary"
+        size="small"
+        aria-busy={retrying}
+        aria-disabled={retrying || undefined}
+        className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+        onClick={() => {
+          void retry();
+        }}
+      >
+        {t.listing.retry}
+      </BaseButton>
+    </div>
+  );
+}

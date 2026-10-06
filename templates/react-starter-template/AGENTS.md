@@ -3,8 +3,9 @@
 Next.js App Router storefront template for Shopware 6, the React counterpart of
 `vue-starter-template`. State: anonymous Store API reads, SEO URL routing, CMS
 rendering, the header/footer layout, a browser session with login,
-registration and logout, the cart and the checkout with the order
-confirmation work; wishlist, search, variant switching and forms are stubs.
+registration and logout, the cart, the checkout with the order confirmation
+and the customer account area (`/account/**`) work; wishlist, search, variant
+switching and forms are stubs.
 `supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Next.js docs
@@ -68,8 +69,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   Two route groups carry the two Vue layouts. `app/(shop)/layout.tsx`
   (`Header`, `<main aria-label="Main content">`, `Footer`; the Vue default
   layout) holds `/` (`app/(shop)/page.tsx`), the catch-all
-  `app/(shop)/[...path]/page.tsx`, `/account/login` and the order pages under
-  `app/(shop)/checkout/success/[id]/`. `app/(checkout)/layout.tsx`
+  `app/(shop)/[...path]/page.tsx`, the account area (see Account) and the
+  order pages under `app/(shop)/checkout/success/[id]/`. `app/(checkout)/layout.tsx`
   (`CheckoutHeader`, `<main aria-label="Checkout">`; the Vue
   `layouts/checkout.vue`) holds `/checkout` and `/checkout/cart`. Both groups
   have a `checkout` folder; that is fine as long as no URL resolves in both.
@@ -140,8 +141,11 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   static shell. `AccountMenu` and `MiniCart` may call `usePathname()` only
   because they render after a click, never on the server.
 - Logged in, the account button is a disclosure (`aria-expanded`,
-  `aria-controls`) for `AccountMenu`: the "Signed in as" line and Logout. It
-  closes on Escape, an outside `mousedown`, a route change and a logout.
+  `aria-controls`) for `AccountMenu`: the "Signed in as" line, the four
+  account links of `ACCOUNT_MENU_LINKS` (the `/account` one carries
+  `data-testid="header-my-account-link"`, which the e2e `openMyAccount`
+  clicks) and Logout. It closes on Escape, an outside `mousedown`, a route
+  change, a followed link and a logout.
   With status `"error"` the click is not a guest click: it awaits
   `retrySession()` (the button is `aria-busy` meanwhile) and opens the menu or
   goes to the login page depending on the session it returns.
@@ -471,6 +475,157 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   native `name="shipping-method"` radio), `checkout-place-order-button`,
   `cart-subtotal`, `cart-total`, `checkout-success-page`, `order-subtotal`,
   `order-shipping`, `order-total`.
-- Not ported yet: the "View in my account" link (no account order page),
-  downloads of digital line items and changing the payment method of an
-  order.
+- For a logged-in customer the success page links to
+  `/account/order/details/{id}` ("View in my account"), as Vue does. Not
+  ported yet: the success page's downloads of digital line items (the
+  account order page has them, see Account).
+
+## Account
+
+- Routes. `app/(shop)/account/(member)/layout.tsx` renders `AccountShell`
+  (the Vue `layouts/account.vue`: the "Your account" side menu from `md` up
+  and the content column) around every page that needs a customer: `/account`,
+  `/account/profile`, `/account/profile/change-email`,
+  `/account/profile/change-password`, `/account/address`,
+  `/account/address/new`, `/account/address/edit/[id]`, `/account/order` and
+  `/account/order/details/[id]`. The `(member)` group adds the layout without
+  a URL segment. `/account/login` and the deep-link order page
+  `app/(shop)/account/order/[deepCode]/page.tsx` stay outside it and public,
+  like the Vue `[deepCode].vue`, which does not use the account layout. No URL
+  resolves in both: the static `details` segment wins over `[deepCode]`.
+- Every page under `(member)` exports `instant = false`. The guard renders its
+  skeleton instead of the page until the browser session is known, so the dev
+  instant-navigation validator never sees the page segment and reports it as
+  dropped. The content is customer-specific and renders after hydration
+  anyway; keep the export on new account pages.
+- The guard runs in the browser, like the Vue `useAuthGuardRedirection`. The
+  session token lives in a JS-readable cookie that only the browser client
+  uses, and server rendering never reads `cookies()` (see Session and
+  actions), so the server cannot tell who is logged in. Every account page is
+  prerendered as a static shell with `AccountGuardSkeleton` (`aria-busy`),
+  and personal content renders after hydration. `AccountGuard` (inside the
+  shell) waits while the status is `"loading"`. When the status is `"ready"`
+  and the visitor is not logged in, it redirects. A guest counts as logged
+  out. The redirect shows one `account.messages.loginRequired` info toast and
+  calls `router.replace("/account/login?redirect=…")`, built from
+  `window.location`, never from `usePathname()`. When the status is
+  `"error"` and there is no customer, the guard calls `retrySession()` once
+  first, the way `HeaderBar` does.
+- A logout from the header `AccountMenu` or the side `AccountMenuList` goes
+  through `useAccountLogout`. It sets a module flag (`takeLogoutIntent`), so
+  the guard skips its redirect and toast, and the menu's `push("/")` decides
+  where the customer goes. Without the flag, the session update lands before
+  the push and sends the customer to the login page with "Login is
+  required". The flag is cleared on a failed logout and whenever a guard
+  mounts.
+- `AccountMenuList` calls `usePathname()` inside its own `<Suspense>`, whose
+  fallback is the same list without `aria-current`. With Cache Components
+  the hook suspends under an unknown dynamic param (`address/edit/[id]`,
+  `order/details/[id]`), and `next build` fails without the boundary.
+  `aria-current="page"` marks exact paths only, as Vue's active class does, so
+  sub-pages such as `/account/profile/change-email` mark no link.
+- The customer. The shell mounts `CustomerProvider`
+  (`features/account/customer/`) inside the guard. `useCustomer()` returns
+  `{ status, customer, refresh }`.
+  - It reads `readCustomer post /account/customer` with `CUSTOMER_CRITERIA`
+    (salutation, and both default addresses with country, countryState and
+    salutation) and `READ_TIMEOUT_MS`.
+  - It reads once per session customer id. A new id resets the state to
+    loading, and answers from reads that a newer one overtook are ignored.
+  - A failed first read gives `"error"` with no customer. A failed refresh
+    keeps the last customer and sets `"error"`.
+  - `refresh()` never rejects.
+  - Outside the provider (the deep-link page) the hook stays loading and
+    `refresh` only warns.
+- The refresh rule. The header name and the checkout's default addresses come
+  from `/context`, and the account pages come from the customer read. So
+  after any mutation that changes the customer (profile, email, an address
+  edit or delete, a new default billing or shipping address), call
+  `useCustomer().refresh()` and `useSessionActions().refreshSession()`
+  together.
+- The server side of the area is only the anonymous `'use cache'` reads:
+  `readCountries` and `readSalutations` (`platform/shopware/reads/salutations.ts`,
+  `readSalutationGet get /salutation`, `cacheLife("reference")`). The
+  `server-only` loaders `features/account/{profile/profileReferences,address/addressReferences}.ts`
+  call them after `connection()` inside `<Suspense>` and turn a failure into
+  a `*Unavailable` flag with a retry. Every customer call runs in the browser
+  through `useShopwareClient()`, as pure functions over
+  `Pick<ApiClient, "invoke">` in `profile/profileApi.ts`,
+  `address/addressApi.ts` and `orders/ordersApi.ts`. None of the customer
+  endpoints below has a GET variant, except the downloads.
+- What each page calls:
+  - `/account` (`AccountOverview`): the customer. `NewsletterSection` reads
+    `readNewsletterRecipient post /account/newsletter-recipient`, then
+    `subscribeToNewsletter post /newsletter/subscribe` (with
+    `option: "subscribe"` and `storefrontUrl` from `getStorefrontUrl`) or
+    `unsubscribeToNewsletter post /newsletter/unsubscribe`. A failed toggle
+    puts the checkbox back.
+  - `/account/profile`: salutations on the server, then
+    `changeProfile post /account/change-profile`. The body always sends
+    `accountType`, because without it the backend keeps a business type.
+  - `change-email` and `change-password`:
+    `changeEmail post /account/change-email` and
+    `changePassword post /account/change-password`, then
+    `push("/account/profile")`.
+  - `/account/address`: `listAddress post /account/list-address`, with the
+    defaults taken from `useCustomer()`. Also `deleteCustomerAddress delete`,
+    `defaultBillingAddress patch` and `defaultShippingAddress patch`. Delete
+    is hidden on a default address, and there is no confirmation step,
+    because `Tile.vue` has none.
+  - `address/new` and `address/edit/[id]`: countries and salutations on the
+    server, then `createCustomerAddress post /account/address` or
+    `updateCustomerAddress patch /account/address/{addressId}`. The edit page
+    reads its address through `list-address` with an `equals` filter on `id`.
+    An update sends every stored field merged with the form values, because
+    `UpsertAddressRoute` nulls the fields it does not get.
+  - `/account/order`: `readOrder post /order` with `page`, `limit`
+    (15 by default), `orderAssociations` from `checkoutApi`, exact total
+    count and `createdAt` DESC. Paging is component state, not the URL.
+  - `/account/order/details/[id]`: `readOrder` by id with `checkPromotion` in
+    the body and in the query. `OrderRoute` reads it only from the query, and
+    without it `paymentChangeable` never comes back. An id that is not 32 hex
+    characters is not found without a request, and `FRAMEWORK__INVALID_UUID`
+    reads as not found too.
+    - Changing the payment method: `getPaymentMethods`,
+      `orderSetPayment post /order/payment`, then `handleOrderPayment`
+      (`ordersApi.ts`, because `checkoutApi`'s `handlePayment` takes no
+      timeout), with the success pages as the return URLs. Both calls give
+      up after `ORDER_TIMEOUT_MS`, a timed-out change reloads the order, and a
+      `pageshow` from the bfcache closes the busy dialog and reloads it.
+    - Downloads: `orderDownloadFile get /order/download/{orderId}/{downloadId}`
+      and `downloadGet get /document/download/{documentId}/{deepLinkCode}`.
+    - Repeat order: `useCart().addProduct`.
+  - `/account/order/[deepCode]`: `readOrder` with `login: true` and the
+    `deepLinkCode` filter, plus `email` and `zipcode` once the guest has
+    entered them. Then `refreshSession()`, because `login: true` swaps the
+    context token. The page is `noindex`.
+- Keep the e2e ids (`page-objects/{HomePage,MyAccountPage}.ts`,
+  `tests/myAccountTests.spec.ts`):
+  - `header-my-account-link`.
+  - `account-personal-data-firstname-input`,
+    `account-personal-data-lastname-input` and
+    `account-personal-data-submit-button` on the profile form.
+  - `account-personal-data-email-input` on the new-email field of
+    `change-email`.
+  - `order-total` (exactly one per page), `order-subtotal` and
+    `order-shipping`.
+  - From the Vue account sources: `order-item-unitprice`,
+    `order-item-totalprice`, `order-repeat-button` and
+    `checkout-payment-method-{id}`.
+  - There is no `my-account-change-profile-button`, because the Vue profile
+    page has none. `MyAccountPage.changePersonalData` falls back to
+    `goto("/account/profile")`.
+- Tests. There is no injectable customer store, so component tests replace
+  `useCustomer` with `vi.mock` and the one contract-shaped fake in
+  `customer/fakeCustomer.fixture.ts` (`fakeCustomer.set({ status, customer })`).
+  `AccountOverview.dom.test.tsx` and `AccountShell.dom.test.tsx` mount the
+  real `CustomerProvider` instead. `accountCustomer()` lives in
+  `customer/customer.fixture.ts`, `customerAddress()` and its default
+  addresses in `address/address.fixture.ts`; API tests use `fakeClient` from
+  `features/checkout/checkout.fixture.ts`.
+- Out of scope, or deliberately not ported:
+  - Cancelling an order, because no Vue component offers it.
+  - The `LineItem{Product,Promotion,Credit,Custom}.vue` cards and their
+    `order-item-{promotion,credit,custom}-*` ids. They belong to Vue's
+    `order/Details.vue`, which only the checkout success page renders.
+  - The Vue `TransitionGroup` animations of the address tiles.
