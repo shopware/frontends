@@ -1,0 +1,25 @@
+{
+  "cart": {
+    "remove": "Usuń",
+    "itemImageAlt": "{label} – produkt w koszyku",
+    "miniCart": {
+      "close": "Zamknij"
+    }
+  },
+  "checkout": {
+    "steps": {
+      "shipping": "Wysyłka",
+      "payment": "Informacje o płatności"
+    },
+    "success": {
+      "pageTitle": "Potwierdzenie zamówienia"
+    },
+    "yourOrder": "Twoje zamówienie",
+    "orderPaid": "zostało opłacone",
+    "orderUnpaid": "nie zostało opłacone",
+    "checkStatus": "Możesz teraz sprawdzić status zamówienia w swoim koncie. Dziękujemy!",
+    "unpaidStatus": "Niestety, Twoje zamówienie nie zostało opłacone. Możesz spróbować ponownie lub skontaktować się z nami.",
+    "backToHomepage": "Wróć do strony głównej",
+    "checkOrderDetails": "Sprawdź szczegóły zamówienia"
+  }
+}

@@ -29,6 +29,7 @@ import {
 } from "@/features/checkout/paymentRedirect";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocale, useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import {
   documentFileName,
@@ -48,36 +49,6 @@ import { OrderDetailLineItems } from "./OrderDetailLineItems";
 import { OrderDocuments } from "./OrderDocuments";
 import { OrderPriceSummary } from "./OrderPriceSummary";
 
-const t = {
-  account: {
-    orderDetails: {
-      placedOn: "Placed on {d}",
-      shippingAddress: "Shipping address",
-      billingAddress: "Billing address",
-      paymentMethod: "Payment method",
-      shippingMethod: "Shipping method",
-      change: "Change",
-      changePaymentMethod: "Change payment method",
-    },
-    order: {
-      repeatOrder: "Repeat order",
-    },
-    messages: {
-      paymentMethodChanged: "Payment method changed successfully.",
-      productsAdded: "Products have been added to the cart.",
-    },
-  },
-  checkout: {
-    takesUpTo: "Takes up to",
-  },
-  product: {
-    viewCart: "View cart",
-  },
-  messages: {
-    error: "An error occurred. Please try again.",
-  },
-};
-
 const CART_PATH = "/checkout/cart";
 
 function methodName(
@@ -96,6 +67,9 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
   const { addProduct } = useCart();
+  const t = useTranslations();
+  const locale = useLocale();
+  const localePath = useLocalePath();
   const [modalOpen, setModalOpen] = useState(false);
   const [methods, setMethods] = useState<PaymentMethodsLoad>({
     status: "loading",
@@ -136,10 +110,12 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
     : undefined;
   const paymentChangeable = isOrderPaymentChangeable(details);
   const repeatItems = reorderItems(order);
-  const orderDate = order.orderDate ? formatOrderDate(order.orderDate) : "";
+  const orderDate = order.orderDate
+    ? formatOrderDate(order.orderDate, locale)
+    : "";
 
   function notifyErrors(error: unknown) {
-    for (const message of resolveApiErrorMessages(error)) {
+    for (const message of resolveApiErrorMessages(error, t)) {
       notify({ type: "error", message });
     }
   }
@@ -171,9 +147,13 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
 
   async function changePaymentMethod(paymentMethodId: string) {
     if (changingRef.current) return;
-    const returnUrls = orderPaymentReturnUrls(window.location.origin, order.id);
+    const returnUrls = orderPaymentReturnUrls(
+      window.location.origin,
+      order.id,
+      localePath,
+    );
     if (!returnUrls) {
-      notify({ type: "error", message: t.messages.error });
+      notify({ type: "error", message: t("messages.error") });
       return;
     }
     changingRef.current = true;
@@ -215,7 +195,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
       if (!paymentFailed) {
         notify({
           type: "success",
-          message: t.account.messages.paymentMethodChanged,
+          message: t("account.messages.paymentMethodChanged"),
         });
       }
       closeModal();
@@ -241,14 +221,15 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
       for (const item of repeatItems) {
         const result = await addProduct(item);
         if (result.ok) added = true;
-        for (const message of cartResultMessages(result)) messages.add(message);
+        for (const message of cartResultMessages(result, t))
+          messages.add(message);
       }
       for (const message of messages) notify({ type: "error", message });
       if (added) {
         notify({
           type: "success",
-          message: t.account.messages.productsAdded,
-          action: { label: t.product.viewCart, href: CART_PATH },
+          message: t("account.messages.productsAdded"),
+          action: { label: t("product.viewCart"), href: localePath(CART_PATH) },
         });
       }
     } finally {
@@ -290,7 +271,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
       <div className="mb-6 flex flex-col justify-between sm:flex-row">
         {orderDate ? (
           <p className="text-sm text-surface-on-surface-variant">
-            {t.account.orderDetails.placedOn.replace("{d}", orderDate)}
+            {t("account.orderDetails.placedOn", { d: orderDate })}
           </p>
         ) : (
           <span />
@@ -313,13 +294,13 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
         {shippingAddress ? (
           <OrderAddress
             address={shippingAddress}
-            label={t.account.orderDetails.shippingAddress}
+            label={t("account.orderDetails.shippingAddress")}
           />
         ) : null}
         {billingAddress ? (
           <OrderAddress
             address={billingAddress}
-            label={t.account.orderDetails.billingAddress}
+            label={t("account.orderDetails.billingAddress")}
           />
         ) : null}
         <OrderPriceSummary
@@ -340,11 +321,11 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
         {shippingMethod ? (
           <OrderMethodCard
-            label={t.account.orderDetails.shippingMethod}
+            label={t("account.orderDetails.shippingMethod")}
             title={methodName(shippingMethod)}
             description={
               deliveryTime
-                ? `${t.checkout.takesUpTo} ${deliveryTime}`
+                ? `${t("checkout.takesUpTo")} ${deliveryTime}`
                 : undefined
             }
           />
@@ -352,7 +333,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
         {paymentMethod ? (
           <div>
             <OrderMethodCard
-              label={t.account.orderDetails.paymentMethod}
+              label={t("account.orderDetails.paymentMethod")}
               title={methodName(paymentMethod)}
             />
             {paymentChangeable ? (
@@ -360,11 +341,11 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
                 size="small"
                 className="mt-3"
                 aria-haspopup="dialog"
-                aria-label={t.account.orderDetails.changePaymentMethod}
+                aria-label={t("account.orderDetails.changePaymentMethod")}
                 data-testid="order-change-payment-button"
                 onClick={openModal}
               >
-                {t.account.orderDetails.change}
+                {t("account.orderDetails.change")}
               </BaseButton>
             ) : null}
           </div>
@@ -381,7 +362,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
             void repeatOrder();
           }}
         >
-          {t.account.order.repeatOrder}
+          {t("account.order.repeatOrder")}
         </BaseButton>
       ) : null}
 

@@ -1,16 +1,14 @@
 "use client";
 
 import { SwQuantitySelect, cx } from "@shopware/cms-base-layer-react/client";
+import type { CmsTranslations } from "@shopware/cms-base-layer-react/client";
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
 import { useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
 import { Price } from "@/components/Price";
-
-const t = {
-  remove: "Remove",
-  cartItem: "{label} cart item",
-};
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useMessages, useTranslations } from "@/i18n/I18nProvider";
 
 export type CheckoutProductTileProps = {
   item: Schemas["LineItem"];
@@ -81,6 +79,9 @@ export function CheckoutProductTile({
   onChangeQuantity,
   className,
 }: CheckoutProductTileProps) {
+  const t = useTranslations();
+  const messages = useMessages();
+  const contentLang = useContentLang();
   const [draft, setDraft] = useState<QuantityDraft | null>(null);
   const changeTicket = useRef(0);
 
@@ -119,7 +120,7 @@ export function CheckoutProductTile({
           <img
             data-testid="checkout-product-tile-image"
             src={cover}
-            alt={t.cartItem.replace("{label}", () => label)}
+            alt={t("cart.itemImageAlt", { label })}
             className="size-full object-cover object-center"
           />
         ) : (
@@ -131,10 +132,13 @@ export function CheckoutProductTile({
       </div>
       <div className="grid grow grid-cols-2 justify-between gap-y-2 py-2.5">
         <div className="text-surface-on-surface">
-          <div className="line-clamp-2">{item.label}</div>
+          <div className="line-clamp-2" lang={contentLang}>
+            {item.label}
+          </div>
           {options.length > 0 ? (
             <p
               data-testid="cart-product-options"
+              lang={contentLang}
               className="mt-1 text-sm text-surface-on-surface-variant"
             >
               {options.map(({ group, option }, index) => (
@@ -158,6 +162,7 @@ export function CheckoutProductTile({
               min={rules.min}
               max={Number.isFinite(rules.max) ? rules.max : undefined}
               steps={rules.step}
+              translations={messages as CmsTranslations}
             />
           ) : null}
         </div>
@@ -169,7 +174,7 @@ export function CheckoutProductTile({
               className="inline-flex items-center gap-1 border-b border-brand-primary bg-transparent text-sm text-brand-primary hover:border-transparent"
               onClick={() => onRemove(item.id)}
             >
-              {t.remove}
+              {t("cart.remove")}
             </button>
           ) : null}
         </div>

@@ -7,7 +7,10 @@ export function FooterColumns({ tree }: { tree: NavigationNode[] }) {
     <>
       {tree.map((node) => (
         <div key={node.id} className="flex flex-col gap-4">
-          <p className="font-semibold text-surface-inverse-on-surface">
+          <p
+            lang={node.lang}
+            className="font-semibold text-surface-inverse-on-surface"
+          >
             {node.name}
           </p>
           {node.children.length > 0 ? (
@@ -15,6 +18,7 @@ export function FooterColumns({ tree }: { tree: NavigationNode[] }) {
               {node.children.map((child) => (
                 <li key={child.id}>
                   <Link
+                    lang={child.lang}
                     href={child.href}
                     target={child.external ? "_blank" : undefined}
                     rel={child.external ? "noopener" : undefined}

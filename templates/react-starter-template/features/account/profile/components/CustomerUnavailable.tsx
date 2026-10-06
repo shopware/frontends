@@ -3,21 +3,14 @@
 import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 
-const t = {
-  errors: {
-    "message-default":
-      "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export function CustomerUnavailable({
   onRetry,
 }: {
   onRetry: () => Promise<void>;
 }) {
+  const t = useTranslations();
   const [retrying, setRetrying] = useState(false);
 
   async function retry() {
@@ -33,7 +26,7 @@ export function CustomerUnavailable({
   return (
     <div className="flex flex-col items-start gap-3">
       <p role="alert" className="text-sm text-states-error">
-        {t.errors["message-default"]}
+        {t("errors.message-default")}
       </p>
       <BaseButton
         variant="secondary"
@@ -45,7 +38,7 @@ export function CustomerUnavailable({
           void retry();
         }}
       >
-        {t.listing.retry}
+        {t("listing.retry")}
       </BaseButton>
     </div>
   );

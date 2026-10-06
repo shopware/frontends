@@ -18,6 +18,8 @@ import {
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import type { StorefrontSession } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -71,10 +73,12 @@ async function setup({
   answer,
   session = checkoutSession(),
   strict = false,
+  locale = "en-GB",
 }: {
   answer: FakeAnswer;
   session?: StorefrontSession;
   strict?: boolean;
+  locale?: Locale;
 }) {
   const shopware = fakeClient(answer);
   const notify = vi.fn();
@@ -82,7 +86,7 @@ async function setup({
     async () => {},
   );
   fakeCart.set(cartResult());
-  const tree = (
+  const tree = withI18n(
     <CmsActionsProvider actions={{ notify }}>
       <ShopwareClientHarness client={shopware.client}>
         <SessionHarness initial={session}>
@@ -95,7 +99,8 @@ async function setup({
           </SessionActionsProvider>
         </SessionHarness>
       </ShopwareClientHarness>
-    </CmsActionsProvider>
+    </CmsActionsProvider>,
+    locale,
   );
   mounted = await mount(strict ? <StrictMode>{tree}</StrictMode> : tree);
   return { container: mounted.container, shopware, notify, refreshSession };
@@ -363,5 +368,54 @@ describe("DeepLinkOrderPageContent", () => {
     expect(query(container, '[role="alert"]').textContent).toContain(
       "Unfortunately, something went wrong.",
     );
+  });
+});
+
+describe("DeepLinkOrderPageContent in Polish", () => {
+  it("asks for the credentials in Polish and validates them in Polish", async () => {
+    const { container, notify } = await setup({
+      answer: (_operation, params) => {
+        if (hasCredentials(params)) {
+          return guestError("CHECKOUT__GUEST_WRONG_CREDENTIALS")();
+        }
+        return notAuthenticated();
+      },
+      locale: "pl-PL",
+    });
+
+    expect(query(container, "h1").textContent).toBe(
+      "Zweryfikuj swoje zamówienie",
+    );
+
+    await fillAndSubmit(container, { email: "guest", zipcode: "" });
+    expect(container.querySelector("#deep-link-email-error")?.textContent).toBe(
+      "Wartość nie jest prawidłowym adresem e-mail",
+    );
+    expect(
+      container.querySelector("#deep-link-postal-code-error")?.textContent,
+    ).toBe("Wartość jest wymagana");
+
+    await fillAndSubmit(container, {
+      email: "guest@example.com",
+      zipcode: "12345",
+    });
+    expect(notify).toHaveBeenCalledWith({
+      type: "error",
+      message:
+        "Adres e-mail lub kod pocztowy jest nieprawidłowy. Spróbuj ponownie.",
+    });
+  });
+
+  it("links a logged-in customer back to the prefixed orders list", async () => {
+    const { container } = await setup({
+      answer: () => orderRouteResponse([accountOrder()]),
+      session: checkoutSession({ customer: checkoutCustomer() }),
+      locale: "pl-PL",
+    });
+
+    expect(
+      query(container, 'a[href="/pl-PL/account/order"]').textContent,
+    ).toContain("Powrót do listy zamówień");
+    expect(query(container, "h1").textContent).toBe("Zamówienie #10042");
   });
 });

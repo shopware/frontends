@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { resolveNewsletterStorefrontUrl } from "../newsletterStorefrontUrl";
 import {
@@ -17,23 +18,6 @@ import {
 } from "../profileApi";
 import type { NewsletterStatus } from "../profileApi";
 
-const t = {
-  account: {
-    overview: {
-      newsletter: {
-        subscriptionLabel:
-          "Yes, I would like to subscribe to the free Demostore newsletter. (I may unsubscribe at any time.)",
-        confirmationNeeded:
-          "Please confirm your email address before subscribing to the newsletter.",
-        messages: {
-          subscribed: "Thank you! We have signed up your address.",
-          unsubscribed: "Newsletter unsubscribe",
-        },
-      },
-    },
-  },
-};
-
 const CHECKBOX_ID = "newsletter-checkbox";
 const CONFIRMATION_ID = "newsletter-confirmation-needed";
 
@@ -41,6 +25,7 @@ export function NewsletterSection({ email }: { email: string }) {
   const getClient = useShopwareClient();
   const { context } = useSession();
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const [status, setStatus] = useState<NewsletterStatus | null>(null);
   const [subscribed, setSubscribed] = useState(false);
   const [pending, setPending] = useState(false);
@@ -87,18 +72,18 @@ export function NewsletterSection({ email }: { email: string }) {
         setStatus(await subscribeNewsletter(client, { email, storefrontUrl }));
         notify({
           type: "success",
-          message: t.account.overview.newsletter.messages.subscribed,
+          message: t("account.overview.newsletter.messages.subscribed"),
         });
       } else {
         await unsubscribeNewsletter(client, email);
         notify({
           type: "success",
-          message: t.account.overview.newsletter.messages.unsubscribed,
+          message: t("account.overview.newsletter.messages.unsubscribed"),
         });
       }
     } catch (error) {
       setSubscribed(!next);
-      for (const message of resolveApiErrorMessages(error)) {
+      for (const message of resolveApiErrorMessages(error, t)) {
         notify({ type: "error", message });
       }
     } finally {
@@ -129,12 +114,12 @@ export function NewsletterSection({ email }: { email: string }) {
               : "text-surface-on-surface"
           }
         >
-          {t.account.overview.newsletter.subscriptionLabel}
+          {t("account.overview.newsletter.subscriptionLabel")}
         </span>
       </label>
       {confirmationNeeded ? (
         <p id={CONFIRMATION_ID} className="mb-2 text-sm text-states-error">
-          {t.account.overview.newsletter.confirmationNeeded}
+          {t("account.overview.newsletter.confirmationNeeded")}
         </p>
       ) : null}
     </div>

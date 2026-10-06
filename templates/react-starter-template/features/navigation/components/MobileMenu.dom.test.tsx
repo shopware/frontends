@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 
+import { buildNavigationTree } from "@/features/navigation/navigationTree";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, pressKey, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -50,6 +52,56 @@ async function openMenu() {
 }
 
 describe("MobileMenu in the browser", () => {
+  it("labels the drawer in Polish and keeps the prefixed category links under the pl-PL provider", async () => {
+    const polishTree = buildNavigationTree(
+      [
+        {
+          id: "clothing",
+          type: "page",
+          name: "Odzież",
+          translated: { name: "Odzież" },
+          seoUrls: [{ seoPathInfo: "Clothing/" }],
+          children: [
+            {
+              id: "men",
+              type: "page",
+              name: "Mężczyźni",
+              translated: { name: "Mężczyźni" },
+              seoUrls: [{ seoPathInfo: "Clothing/Men/" }],
+              children: [],
+            },
+          ],
+        },
+      ] as unknown as Parameters<typeof buildNavigationTree>[0],
+      "pl-PL",
+    );
+    mounted = await mount(withI18n(<MobileMenu tree={polishTree} />, "pl-PL"));
+    const { container } = mounted;
+    const burger = query<HTMLButtonElement>(
+      container,
+      'button[aria-label="Otwórz menu"]',
+    );
+
+    await interact(() => burger.click());
+
+    const drawer = query<HTMLDialogElement>(container, DRAWER);
+    expect(drawer.getAttribute("aria-label")).toBe("Panel boczny");
+    expect(query<HTMLButtonElement>(drawer, "button").textContent).toBe(
+      "Zamknij menu",
+    );
+    expect(query<HTMLAnchorElement>(drawer, "a").getAttribute("href")).toMatch(
+      /^\/pl-PL\/Clothing\/?$/,
+    );
+    const toggle = query<HTMLButtonElement>(
+      drawer,
+      'button[aria-label="Pokaż podkategorie"]',
+    );
+
+    await interact(() => toggle.click());
+
+    expect(toggle.getAttribute("aria-label")).toBe("Ukryj podkategorie");
+  });
+
   it("opens a modal drawer, locks the page scroll and focuses the close button", async () => {
     const { container, burger } = await openMenu();
 

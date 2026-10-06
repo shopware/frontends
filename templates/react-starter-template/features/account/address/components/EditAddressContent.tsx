@@ -4,15 +4,16 @@ import {
   BaseButton,
   useCmsActions,
 } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useRef, useState, useTransition } from "react";
 
 import type { Schemas } from "#shopware";
+import { LocaleLink } from "@/components/LocaleLink";
 import { useCustomer } from "@/features/account/customer/useCustomer";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import {
   readCustomerAddress,
@@ -25,22 +26,6 @@ import { SECONDARY_BUTTON_CLASS } from "./addressButtonClasses";
 import { ADDRESS_LIST_PATH, AddressForm } from "./AddressForm";
 import type { AddressFormProps } from "./AddressForm";
 import { AddressFormSkeleton } from "./AddressSkeletons";
-
-const t = {
-  account: {
-    back: "Back",
-    address: {
-      notFound: "Address not found",
-      edit: {
-        successMessage: "Address has been successfully updated.",
-      },
-    },
-  },
-  listing: {
-    error: "Something went wrong while loading results.",
-    retry: "Try again",
-  },
-};
 
 type AddressLoad =
   | { status: "loading" }
@@ -72,6 +57,8 @@ function EditAddress({
   const router = useRouter();
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const { refresh: refreshCustomer } = useCustomer();
   const { refreshSession } = useSessionActions();
   const [load, setLoad] = useState<AddressLoad>({ status: "loading" });
@@ -107,7 +94,7 @@ function EditAddress({
   }
 
   function notifyErrors(error: unknown) {
-    for (const message of resolveApiErrorMessages(error)) {
+    for (const message of resolveApiErrorMessages(error, t)) {
       notify({ type: "error", message });
     }
   }
@@ -115,7 +102,7 @@ function EditAddress({
   async function handleSubmit(values: AddressValues) {
     if (savedRef.current) return;
     if (load.status !== "ready" || !load.address.id) {
-      notify({ type: "error", message: t.account.address.notFound });
+      notify({ type: "error", message: t("account.address.notFound") });
       return;
     }
     const { address } = load;
@@ -134,11 +121,11 @@ function EditAddress({
     setSaved(true);
     notify({
       type: "success",
-      message: t.account.address.edit.successMessage,
+      message: t("account.address.edit.successMessage"),
     });
     void Promise.all([refreshCustomer(), refreshSession()]);
     startNavigation(() => {
-      router.push(ADDRESS_LIST_PATH);
+      router.push(localePath(ADDRESS_LIST_PATH));
     });
   }
 
@@ -150,10 +137,10 @@ function EditAddress({
         role="alert"
         className="flex flex-col items-start gap-4 text-surface-on-surface"
       >
-        <p>{t.account.address.notFound}</p>
-        <Link href={ADDRESS_LIST_PATH} className={SECONDARY_BUTTON_CLASS}>
-          {t.account.back}
-        </Link>
+        <p>{t("account.address.notFound")}</p>
+        <LocaleLink href={ADDRESS_LIST_PATH} className={SECONDARY_BUTTON_CLASS}>
+          {t("account.back")}
+        </LocaleLink>
       </div>
     );
   }
@@ -164,9 +151,9 @@ function EditAddress({
         role="alert"
         className="flex flex-col items-start gap-3 text-surface-on-surface"
       >
-        <p>{t.listing.error}</p>
+        <p>{t("listing.error")}</p>
         <BaseButton variant="secondary" size="small" onClick={retry}>
-          {t.listing.retry}
+          {t("listing.retry")}
         </BaseButton>
       </div>
     );

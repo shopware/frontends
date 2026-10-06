@@ -2,6 +2,8 @@ import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -23,14 +25,15 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(cart: CartView) {
+async function setup(cart: CartView, locale?: Locale) {
   fakeCart.set(cart);
   const notify = vi.fn();
-  mounted = await mount(
+  const page = (
     <CmsActionsProvider actions={{ notify }}>
       <CartPageContent />
-    </CmsActionsProvider>,
+    </CmsActionsProvider>
   );
+  mounted = await mount(locale ? withI18n(page, locale) : page);
   return { container: mounted.container, notify };
 }
 
@@ -178,5 +181,29 @@ describe("CartPageContent", () => {
 
     expect(container.textContent).toContain("Your cart is empty");
     expect(container.querySelector(TILE)).toBeNull();
+  });
+});
+
+describe("CartPageContent in other locales", () => {
+  it("speaks Polish and links to the Polish checkout", async () => {
+    const { container } = await setup(
+      cartView({ lineItems: [lineItem()], subtotal: 29.99 }),
+      "pl-PL",
+    );
+
+    expect(query<HTMLElement>(container, "h1").textContent).toBe("Mój koszyk");
+    expect(container.textContent).toContain(
+      "Podatki & koszty wysyłki będą obliczone przy płatności.",
+    );
+    expect(links(container)).toEqual([["Przejdź do kasy", "/pl-PL/checkout"]]);
+  });
+
+  it("links the empty German cart to the German homepage", async () => {
+    const { container } = await setup(cartView({ lineItems: [] }), "de-DE");
+
+    expect(container.textContent).toContain("Ihr Warenkorb ist leer");
+    expect(links(container)).toEqual([
+      ["Mit dem Einkauf fortfahren", "/de-DE"],
+    ]);
   });
 });

@@ -3,32 +3,20 @@
 import { use } from "react";
 
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
+import { useTranslations } from "@/i18n/I18nProvider";
+import type { Translate } from "@/i18n/translate";
 
 import { useOrderDetails } from "../useOrderDetails";
 import { OrderBackLink } from "./OrderBackLink";
 import { OrderDetailSkeleton } from "./OrderDetailSkeleton";
 import { OrderDetailView } from "./OrderDetailView";
 
-const t = {
-  account: {
-    orderDetails: {
-      order: "Order",
-      backToOrdersList: "Back to orders list",
-    },
-    messages: {
-      orderSuccessNoOrder: "The order could not be found.",
-    },
-  },
-  listing: {
-    error: "Something went wrong while loading results.",
-    retry: "Try again",
-  },
-};
-
-export function orderTitle(orderNumber: string | undefined): string {
-  return orderNumber
-    ? `${t.account.orderDetails.order} #${orderNumber}`
-    : t.account.orderDetails.order;
+export function orderTitle(
+  t: Translate,
+  orderNumber: string | undefined,
+): string {
+  const label = t("account.orderDetails.order");
+  return orderNumber ? `${label} #${orderNumber}` : label;
 }
 
 export type OrderDetailsPageContentProps = {
@@ -43,6 +31,7 @@ export function OrderDetailsPageContent({
 }
 
 function OrderDetails({ orderId }: { orderId: string }) {
+  const t = useTranslations();
   const { state, reload } = useOrderDetails(orderId);
 
   function renderBody() {
@@ -52,13 +41,15 @@ function OrderDetails({ orderId }: { orderId: string }) {
       case "notFound":
         return (
           <p role="alert" className="text-surface-on-surface">
-            {t.account.messages.orderSuccessNoOrder}
+            {t("account.messages.orderSuccessNoOrder")}
           </p>
         );
       case "error":
         return (
           <div role="alert" className="text-sm">
-            <p className="text-surface-on-surface-variant">{t.listing.error}</p>
+            <p className="text-surface-on-surface-variant">
+              {t("listing.error")}
+            </p>
             <button
               type="button"
               className="mt-3 text-surface-on-surface underline"
@@ -66,7 +57,7 @@ function OrderDetails({ orderId }: { orderId: string }) {
                 void reload();
               }}
             >
-              {t.listing.retry}
+              {t("listing.retry")}
             </button>
           </div>
         );
@@ -78,11 +69,12 @@ function OrderDetails({ orderId }: { orderId: string }) {
   return (
     <div className="mb-20">
       <p className="mb-2">
-        <OrderBackLink label={t.account.orderDetails.backToOrdersList} />
+        <OrderBackLink label={t("account.orderDetails.backToOrdersList")} />
       </p>
       <AccountPageHeader
         className="mb-14"
         title={orderTitle(
+          t,
           state.status === "ready"
             ? state.details.order.orderNumber
             : undefined,

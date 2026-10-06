@@ -8,6 +8,8 @@ import {
   ShopwareClientHarness,
   apiError,
 } from "@/features/checkout/checkoutTestDoubles";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, submitForm } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -48,15 +50,19 @@ afterEach(async () => {
 
 async function setup(
   answer: FakeAnswer = () => customerAddress({ id: "address-new" }),
+  locale: Locale = "en-GB",
 ) {
   const shopware = fakeClient(answer);
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <ShopwareClientHarness client={shopware.client}>
-        <NewAddressForm countries={countries} salutations={salutations} />
-      </ShopwareClientHarness>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <ShopwareClientHarness client={shopware.client}>
+          <NewAddressForm countries={countries} salutations={salutations} />
+        </ShopwareClientHarness>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -162,5 +168,29 @@ describe("NewAddressForm in the browser", () => {
 
     expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(2);
     expect(push).toHaveBeenCalledExactlyOnceWith("/account/address");
+  });
+});
+
+describe("NewAddressForm in Polish", () => {
+  it("validates in Polish, confirms in Polish and returns to the prefixed list", async () => {
+    const { container, form, notify } = await setup(undefined, "pl-PL");
+
+    await interact(() => submitForm(form));
+    expect(container.querySelector("#street-error")?.textContent).toBe(
+      "Wartość jest wymagana",
+    );
+    expect(
+      container.querySelector('a[href="/pl-PL/account/address"]')?.textContent,
+    ).toBe("Anuluj");
+
+    await fillAddress(container);
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(notify).toHaveBeenCalledExactlyOnceWith({
+      type: "success",
+      message: "Adres został pomyślnie dodany.",
+    });
+    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL/account/address");
   });
 });

@@ -4,6 +4,7 @@ import { fakeClient } from "@/features/checkout/checkout.fixture";
 import { orderAssociations } from "@/features/checkout/checkoutApi";
 import { apiError } from "@/features/checkout/checkoutTestDoubles";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import { testTranslator } from "@/test/i18n";
 
 import {
   ORDER_ID,
@@ -165,9 +166,11 @@ describe("readDeepLinkOrder", () => {
     const order = accountOrder();
     const shopware = fakeClient(() => orderRouteResponse([order]));
 
-    const result = await readDeepLinkOrder(shopware.client, {
-      deepLinkCode: "deep-code-1",
-    });
+    const result = await readDeepLinkOrder(
+      shopware.client,
+      { deepLinkCode: "deep-code-1" },
+      testTranslator(),
+    );
 
     expect(shopware.invocations).toEqual([
       {
@@ -194,10 +197,14 @@ describe("readDeepLinkOrder", () => {
   it("sends the email and postal code once the guest entered them", async () => {
     const shopware = fakeClient(() => orderRouteResponse([accountOrder()]));
 
-    await readDeepLinkOrder(shopware.client, {
-      deepLinkCode: "deep-code-1",
-      credentials: { email: "guest@example.com", zipcode: "12345" },
-    });
+    await readDeepLinkOrder(
+      shopware.client,
+      {
+        deepLinkCode: "deep-code-1",
+        credentials: { email: "guest@example.com", zipcode: "12345" },
+      },
+      testTranslator(),
+    );
 
     expect(shopware.calls(READ_ORDER)[0]?.params).toMatchObject({
       body: { email: "guest@example.com", zipcode: "12345", login: true },
@@ -208,7 +215,11 @@ describe("readDeepLinkOrder", () => {
     const shopware = fakeClient(() => orderRouteResponse([]));
 
     await expect(
-      readDeepLinkOrder(shopware.client, { deepLinkCode: "deep-code-1" }),
+      readDeepLinkOrder(
+        shopware.client,
+        { deepLinkCode: "deep-code-1" },
+        testTranslator(),
+      ),
     ).resolves.toEqual({ status: "notFound" });
   });
 
@@ -224,9 +235,22 @@ describe("readDeepLinkOrder", () => {
         throw apiError([{ code, status: "403", detail: code }], 403);
       });
       await expect(
-        readDeepLinkOrder(shopware.client, { deepLinkCode: "deep-code-1" }),
+        readDeepLinkOrder(
+          shopware.client,
+          { deepLinkCode: "deep-code-1" },
+          testTranslator(),
+        ),
       ).resolves.toEqual(expected);
     }
+  });
+
+  it("resolves the default message in the language of the translator", () => {
+    const pl = testTranslator("pl-PL");
+
+    expect(classifyDeepLinkError(new Error("offline"), pl)).toEqual({
+      status: "failed",
+      messages: [pl("errors.message-default")],
+    });
   });
 
   it("resolves every other error to its messages", () => {
@@ -242,9 +266,12 @@ describe("readDeepLinkOrder", () => {
           ],
           403,
         ),
+        testTranslator(),
       ),
     ).toEqual({ status: "failed", messages: ["Customer is not logged in."] });
-    expect(classifyDeepLinkError(new Error("offline"))).toEqual({
+    expect(
+      classifyDeepLinkError(new Error("offline"), testTranslator()),
+    ).toEqual({
       status: "failed",
       messages: [
         "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",

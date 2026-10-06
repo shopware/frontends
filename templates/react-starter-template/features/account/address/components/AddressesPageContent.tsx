@@ -12,6 +12,7 @@ import { useCustomer } from "@/features/account/customer/useCustomer";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import {
   deleteCustomerAddress,
@@ -23,21 +24,6 @@ import { AddressDataSection } from "./AddressDataSection";
 import { AddressDataSkeleton, AddressListSkeleton } from "./AddressSkeletons";
 import { AddressTile } from "./AddressTile";
 import type { DefaultAddressKind } from "./AddressTile";
-
-const t = {
-  account: {
-    address: {
-      defaultBillingAddressSectionHeader: "Default billing address",
-      defaultShippingAddressSectionHeader: "Default shipping address",
-      availableAddressesSectionHeader: "Available addresses",
-    },
-  },
-  listing: {
-    empty: "No results.",
-    error: "Something went wrong while loading results.",
-    retry: "Try again",
-  },
-};
 
 type AddressList =
   | { status: "loading" }
@@ -78,6 +64,7 @@ function DefaultAddress({
 export function AddressesPageContent() {
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const { refreshSession } = useSessionActions();
   const {
     status: customerStatus,
@@ -125,7 +112,7 @@ export function AddressesPageContent() {
   }
 
   function notifyErrors(error: unknown) {
-    for (const message of resolveApiErrorMessages(error)) {
+    for (const message of resolveApiErrorMessages(error, t)) {
       notify({ type: "error", message });
     }
   }
@@ -206,7 +193,7 @@ export function AddressesPageContent() {
           role="alert"
           className="flex flex-col items-start gap-3 text-surface-on-surface"
         >
-          <p>{t.listing.error}</p>
+          <p>{t("listing.error")}</p>
           <BaseButton
             variant="secondary"
             size="small"
@@ -216,7 +203,7 @@ export function AddressesPageContent() {
               void retry();
             }}
           >
-            {t.listing.retry}
+            {t("listing.retry")}
           </BaseButton>
         </div>
       );
@@ -226,7 +213,7 @@ export function AddressesPageContent() {
     }
     if (list.addresses.length === 0) {
       return (
-        <p className="text-surface-on-surface-variant">{t.listing.empty}</p>
+        <p className="text-surface-on-surface-variant">{t("listing.empty")}</p>
       );
     }
     return (
@@ -265,7 +252,7 @@ export function AddressesPageContent() {
         <div className="mb-10 flex-1">
           <AccountSectionHeader
             className="mb-4"
-            title={t.account.address.defaultBillingAddressSectionHeader}
+            title={t("account.address.defaultBillingAddressSectionHeader")}
           />
           <DefaultAddress
             address={customer?.defaultBillingAddress}
@@ -275,7 +262,7 @@ export function AddressesPageContent() {
         <div className="mb-10 flex-1">
           <AccountSectionHeader
             className="mb-4"
-            title={t.account.address.defaultShippingAddressSectionHeader}
+            title={t("account.address.defaultShippingAddressSectionHeader")}
           />
           <DefaultAddress
             address={customer?.defaultShippingAddress}
@@ -287,7 +274,7 @@ export function AddressesPageContent() {
       <div className="mb-10">
         <AccountSectionHeader
           className="mb-4"
-          title={t.account.address.availableAddressesSectionHeader}
+          title={t("account.address.availableAddressesSectionHeader")}
         />
         <div aria-busy={list.status === "loading" || undefined}>
           {renderAddresses()}

@@ -1,20 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 
+import { LocaleLink } from "@/components/LocaleLink";
 import {
   ACCOUNT_MENU_LINKS,
   isCurrentAccountPage,
 } from "@/features/account/components/accountMenuLinks";
 import { useAccountLogout } from "@/features/account/components/useAccountLogout";
-
-const t = {
-  "account.menu.signedInAs": "Signed in as {name}",
-  "account.menu.logout": "Logout",
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export type AccountMenuProps = {
   id: string;
@@ -30,6 +26,7 @@ export function AccountMenu({
   onClose,
 }: AccountMenuProps) {
   const pathname = usePathname();
+  const t = useTranslations();
   const { pending, logout } = useAccountLogout();
   const panelRef = useRef<HTMLDivElement>(null);
   const openedAt = useRef(pathname);
@@ -80,11 +77,11 @@ export function AccountMenu({
     >
       {customerName ? (
         <p className="text-sm wrap-break-word text-surface-on-surface-variant">
-          {t["account.menu.signedInAs"].replace("{name}", () => customerName)}
+          {t("layout.header.signedInAs", { name: customerName })}
         </p>
       ) : null}
-      {ACCOUNT_MENU_LINKS.map(({ href, label }) => (
-        <Link
+      {ACCOUNT_MENU_LINKS.map(({ href, labelKey }) => (
+        <LocaleLink
           key={href}
           href={href}
           data-testid={
@@ -96,8 +93,8 @@ export function AccountMenu({
           className="-mt-px self-start border-b border-transparent text-nowrap text-surface-on-surface hover:border-surface-on-surface aria-[current=page]:border-surface-on-surface"
           onClick={onClose}
         >
-          {label}
-        </Link>
+          {t(labelKey)}
+        </LocaleLink>
       ))}
       <button
         type="button"
@@ -109,7 +106,7 @@ export function AccountMenu({
           void handleLogout();
         }}
       >
-        {t["account.menu.logout"]}
+        {t("account.menu.logout")}
       </button>
     </div>
   );

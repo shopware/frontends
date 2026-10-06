@@ -1,19 +1,18 @@
+"use client";
+
+import { useTranslations } from "@/i18n/I18nProvider";
+
 const PLACEHOLDER = "rounded bg-surface-surface-container";
 
-const t = {
-  form: {
-    loading: "Loading...",
-  },
-};
-
 export function SuccessSkeleton() {
+  const t = useTranslations();
   return (
     <div
       className="mx-auto w-full max-w-screen-2xl animate-pulse px-4 py-10 md:py-20"
       aria-busy="true"
       data-testid="loading"
     >
-      <output className="sr-only">{t.form.loading}</output>
+      <output className="sr-only">{t("form.loading")}</output>
       <div className="mb-12 flex items-start gap-4 md:mb-16 md:gap-6">
         <div className="size-12.5 shrink-0 rounded-full bg-surface-surface-container" />
         <div className="max-w-xl flex-1">

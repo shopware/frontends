@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { ORDER_ID, accountOrder } from "../orders.fixture";
@@ -77,5 +78,21 @@ describe("OrderLine", () => {
 
   it("encodes the order id in the details link", () => {
     expect(orderDetailsHref("a/b")).toBe("/account/order/details/a%2Fb");
+  });
+});
+
+describe("OrderLine in Polish", () => {
+  it("renders the Polish labels, a prefixed details link and Polish dates and prices", async () => {
+    const html = await renderToHtml(
+      withI18n(<OrderLine order={accountOrder()} />, "pl-PL"),
+    );
+
+    expect(html).toContain(`href="/pl-PL/account/order/details/${ORDER_ID}"`);
+    expect(html).toContain("Zamówienie<!-- -->: <!-- -->10042");
+    expect(html).toContain("Numer zamówienia<!-- -->:</dt>");
+    expect(html).toContain("Data zamówienia<!-- -->:");
+    expect(html).toContain("5.10.2026");
+    expect(html).toContain("59,98");
+    expect(html).toContain("Zobacz więcej");
   });
 });

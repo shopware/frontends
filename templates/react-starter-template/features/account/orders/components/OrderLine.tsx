@@ -2,11 +2,11 @@
 
 import { cx } from "@shopware/cms-base-layer-react/client";
 import { getTranslatedProperty } from "@shopware/helpers";
-import Link from "next/link";
 import { useId, useState } from "react";
 
 import type { Schemas } from "#shopware";
 import { ChevronDownIcon } from "@/components/icons";
+import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
 import { formatOrderDate } from "@/features/checkout/components/OrderConfirmation";
 import { OrderLineItems } from "@/features/checkout/components/OrderLineItems";
@@ -16,25 +16,8 @@ import {
   getOrderShippingMethod,
   getOrderTotals,
 } from "@/features/checkout/orderDetails";
-
-const t = {
-  account: {
-    order: {
-      orderLabel: "Order",
-      orderNumber: "Order number",
-      orderDate: "Order date",
-      shippingStatus: "Shipping Status",
-      statusUnknown: "Unknown",
-      paymentMethod: "Payment method",
-      shippingMethod: "Shipping method",
-      seeMore: "See more",
-      seeLess: "See less",
-      subtotal: "Subtotal",
-      shipping: "Shipping",
-      total: "Total",
-    },
-  },
-};
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import type { Translate } from "@/i18n/translate";
 
 export function orderDetailsHref(orderId: string): string {
   return `/account/order/details/${encodeURIComponent(orderId)}`;
@@ -47,13 +30,13 @@ function translatedName(
   return getTranslatedProperty(entity, "name") || entity.name || "";
 }
 
-function shippingStatusLabel(order: Schemas["Order"]): string {
+function shippingStatusLabel(order: Schemas["Order"], t: Translate): string {
   const state =
     order.deliveries?.[0]?.stateMachineState ?? order.stateMachineState;
   return (
     translatedName(state) ||
     state?.technicalName ||
-    t.account.order.statusUnknown
+    t("account.order.statusUnknown")
   );
 }
 
@@ -75,6 +58,8 @@ export function OrderLine({
   order: Schemas["Order"];
   className?: string;
 }) {
+  const t = useTranslations();
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(false);
   const headingId = useId();
   const productsId = useId();
@@ -84,7 +69,9 @@ export function OrderLine({
   const paymentMethod = getOrderPaymentMethod(order);
   const shippingMethod = getOrderShippingMethod(order);
   const { subtotal, shippingCosts, total } = getOrderTotals(order);
-  const orderDate = order.orderDate ? formatOrderDate(order.orderDate) : "";
+  const orderDate = order.orderDate
+    ? formatOrderDate(order.orderDate, locale)
+    : "";
 
   return (
     <article
@@ -94,16 +81,16 @@ export function OrderLine({
       <div className="flex flex-wrap items-start justify-between gap-2 border-b border-outline-outline pb-2">
         <div>
           <h2 id={headingId} className="font-bold text-surface-on-surface">
-            <Link
+            <LocaleLink
               href={orderDetailsHref(order.id)}
               className="hover:text-brand-primary"
             >
-              {t.account.order.orderLabel}: {order.orderNumber}
-            </Link>
+              {t("account.order.orderLabel")}: {order.orderNumber}
+            </LocaleLink>
           </h2>
           {orderDate ? (
             <p className="text-sm text-surface-on-surface-variant">
-              {t.account.order.orderDate}:{" "}
+              {t("account.order.orderDate")}:{" "}
               <time dateTime={order.orderDate}>{orderDate}</time>
             </p>
           ) : null}
@@ -116,23 +103,23 @@ export function OrderLine({
       <dl className="mt-4 grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {order.orderNumber ? (
           <LineData
-            label={t.account.order.orderNumber}
+            label={t("account.order.orderNumber")}
             value={order.orderNumber}
           />
         ) : null}
         <LineData
-          label={t.account.order.shippingStatus}
-          value={shippingStatusLabel(order)}
+          label={t("account.order.shippingStatus")}
+          value={shippingStatusLabel(order, t)}
         />
         {paymentMethod ? (
           <LineData
-            label={t.account.order.paymentMethod}
+            label={t("account.order.paymentMethod")}
             value={translatedName(paymentMethod)}
           />
         ) : null}
         {shippingMethod ? (
           <LineData
-            label={t.account.order.shippingMethod}
+            label={t("account.order.shippingMethod")}
             value={translatedName(shippingMethod)}
           />
         ) : null}
@@ -148,7 +135,9 @@ export function OrderLine({
             onClick={() => setExpanded((current) => !current)}
           >
             <span>
-              {expanded ? t.account.order.seeLess : t.account.order.seeMore}
+              {expanded
+                ? t("account.order.seeLess")
+                : t("account.order.seeMore")}
             </span>
             <ChevronDownIcon
               className={cx(
@@ -166,7 +155,7 @@ export function OrderLine({
       <dl className="mt-4">
         <div className="flex justify-between">
           <dt className="text-sm text-surface-on-surface-variant">
-            {t.account.order.subtotal}
+            {t("account.order.subtotal")}
           </dt>
           <dd>
             <Price
@@ -177,7 +166,7 @@ export function OrderLine({
         </div>
         <div className="flex justify-between">
           <dt className="text-sm text-surface-on-surface-variant">
-            {t.account.order.shipping}
+            {t("account.order.shipping")}
           </dt>
           <dd>
             <Price
@@ -187,7 +176,9 @@ export function OrderLine({
           </dd>
         </div>
         <div className="mt-2 flex justify-between border-t border-outline-outline-variant pt-2">
-          <dt className="text-surface-on-surface">{t.account.order.total}</dt>
+          <dt className="text-surface-on-surface">
+            {t("account.order.total")}
+          </dt>
           <dd>
             <Price value={total} className="text-surface-on-surface" />
           </dd>

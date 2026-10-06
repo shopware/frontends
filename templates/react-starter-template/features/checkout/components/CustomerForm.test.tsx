@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { countries } from "../checkout.fixture";
@@ -151,5 +152,54 @@ describe("CustomerAddress", () => {
     expect(html).toContain('role="alert"');
     expect(html).toContain("Countries could not be loaded");
     expect(html).toContain(">Try again</span></button>");
+  });
+});
+
+describe("customer form in other locales", () => {
+  it("labels the base info fields in Polish", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <CustomerBaseInfo
+          email=""
+          password=""
+          createAccount={false}
+          errors={{}}
+          onFieldChange={() => {}}
+          onFieldBlur={() => {}}
+          onCreateAccountChange={() => {}}
+        />,
+        "pl-PL",
+      ),
+    );
+
+    expect(html).toContain(requiredLabel("email", "Adres e-mail"));
+    expect(inputWithTestId(html, "checkout-pi-email-input")).toContain(
+      'placeholder="Wprowadź adres e-mail"',
+    );
+    expect(html).toContain("Utwórz konto klienta");
+  });
+
+  it("labels the address fields in German", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <CustomerAddress
+          values={{ ...emptyCheckoutValues, countryId: "country-de" }}
+          errors={{}}
+          countries={countries}
+          countriesUnavailable
+          onFieldChange={() => {}}
+          onFieldBlur={() => {}}
+          onCountryChange={() => {}}
+        />,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toContain(requiredLabel("first-name", "Vorname"));
+    expect(html).toContain(requiredLabel("zipcode", "Postleitzahl"));
+    expect(inputWithTestId(html, "checkout-pi-city-input")).toContain(
+      'placeholder="Stadt eingeben"',
+    );
+    expect(html).toContain(">Erneut versuchen</span></button>");
   });
 });

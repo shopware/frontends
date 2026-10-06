@@ -3,26 +3,36 @@
 import { useId } from "react";
 
 import type { Schemas } from "#shopware";
+import type { Locale } from "@/i18n/config";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import { DownloadIcon } from "./OrderIcons";
 
-const t = {
-  account: {
-    documentsLabel: "Documents",
-  },
-};
+const documentDateFormats = new Map<Locale, Intl.DateTimeFormat>();
 
-const DOCUMENT_DATE_FORMAT = new Intl.DateTimeFormat("en-GB", {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-});
+function documentDateFormat(locale: Locale): Intl.DateTimeFormat {
+  let format = documentDateFormats.get(locale);
+  if (!format) {
+    format = new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+    documentDateFormats.set(locale, format);
+  }
+  return format;
+}
 
-export function formatDocumentDate(document: Schemas["Document"]): string {
+export function formatDocumentDate(
+  document: Schemas["Document"],
+  locale: Locale,
+): string {
   const value = document.updatedAt ?? document.createdAt;
   if (!value) return "";
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "" : DOCUMENT_DATE_FORMAT.format(date);
+  return Number.isNaN(date.getTime())
+    ? ""
+    : documentDateFormat(locale).format(date);
 }
 
 export type OrderDocumentsProps = {
@@ -37,6 +47,8 @@ export function OrderDocuments({
   className,
 }: OrderDocumentsProps) {
   const headingId = useId();
+  const t = useTranslations();
+  const locale = useLocale();
   if (documents.length === 0) return null;
   return (
     <section className={className} aria-labelledby={headingId}>
@@ -44,11 +56,11 @@ export function OrderDocuments({
         id={headingId}
         className="mb-3 leading-normal font-bold text-surface-on-surface"
       >
-        {t.account.documentsLabel}
+        {t("account.documentsLabel")}
       </h3>
       <ul className="flex flex-col gap-2">
         {documents.map((document) => {
-          const date = formatDocumentDate(document);
+          const date = formatDocumentDate(document, locale);
           return (
             <li key={document.id}>
               <button

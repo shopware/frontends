@@ -3,6 +3,7 @@
 import { getPaymentMethodIcon } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
 
 export type PaymentMethodsProps = {
   paymentMethods: Schemas["PaymentMethod"][];
@@ -17,6 +18,7 @@ export function PaymentMethods({
   legend,
   onChange,
 }: PaymentMethodsProps) {
+  const contentLang = useContentLang();
   return (
     <fieldset className="min-w-0">
       <legend className="sr-only">{legend}</legend>
@@ -46,7 +48,7 @@ export function PaymentMethods({
                   checked={selectedPaymentMethod === paymentMethod.id}
                   onChange={() => onChange(paymentMethod.id)}
                 />
-                <span className="flex flex-col">
+                <span className="flex flex-col" lang={contentLang}>
                   <span className="text-surface-on-surface">{name}</span>
                   {description ? (
                     <span className="text-sm leading-[21px] text-surface-on-surface-variant">
@@ -58,6 +60,7 @@ export function PaymentMethods({
                   <img
                     src={icon}
                     alt={name}
+                    lang={contentLang}
                     height={32}
                     className="ml-auto h-8 w-auto"
                     loading="lazy"

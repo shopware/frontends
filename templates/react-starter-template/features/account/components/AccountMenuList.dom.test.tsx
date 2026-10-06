@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import type { SessionActionResult } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -39,14 +41,20 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(actions: Partial<SessionActions> = {}) {
+async function setup(
+  actions: Partial<SessionActions> = {},
+  locale: Locale = "en-GB",
+) {
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={actions}>
-        <AccountMenuList />
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={actions}>
+          <AccountMenuList />
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -144,5 +152,36 @@ describe("AccountMenuList", () => {
       type: "error",
       message: "Network down",
     });
+  });
+});
+
+describe("AccountMenuList in Polish", () => {
+  it("lists prefixed Polish links and marks the current prefixed page", async () => {
+    route.pathname = "/pl-PL/account/address";
+
+    const { links, logoutButton, current } = await setup({}, "pl-PL");
+
+    expect(
+      links().map((link) => [link.getAttribute("href"), link.textContent]),
+    ).toEqual([
+      ["/pl-PL/account", "Przegląd"],
+      ["/pl-PL/account/profile", "Twoje konto"],
+      ["/pl-PL/account/address", "Adresy"],
+      ["/pl-PL/account/order", "Zamówienia"],
+    ]);
+    expect(current()).toEqual(["/pl-PL/account/address"]);
+    expect(logoutButton().textContent).toBe("Wyloguj");
+  });
+
+  it("goes to the Polish home page after logging out", async () => {
+    route.pathname = "/pl-PL/account";
+    const { logoutButton } = await setup(
+      { logout: vi.fn(async () => ({ ok: true })) },
+      "pl-PL",
+    );
+
+    await interact(() => logoutButton().click());
+
+    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL");
   });
 });

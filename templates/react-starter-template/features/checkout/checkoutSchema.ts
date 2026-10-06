@@ -1,17 +1,9 @@
 import { z } from "zod";
 
 import type { RegistrationInput } from "@/features/session/types";
+import type { Translate } from "@/i18n/translate";
 
 import type { CheckoutAddressFields } from "./checkoutApi";
-
-const t = {
-  validations: {
-    required: "Value is required",
-    minLength: "This minimum length should be at least {min}",
-    email: "Value is not a valid email address",
-    requiredIf: "The value is required",
-  },
-};
 
 export type CheckoutValues = {
   email: string;
@@ -50,25 +42,18 @@ function isBlank(value: string): boolean {
   return value.trim().length === 0;
 }
 
-function minLengthMessage(min: number): string {
-  return t.validations.minLength.replace("{min}", String(min));
-}
+export function createCheckoutSchema(
+  { createAccount, countryHasStates }: CheckoutSchemaOptions,
+  t: Translate,
+) {
+  const requiredString = () =>
+    z.string().refine((value) => !isBlank(value), t("validations.required"));
+  const requiredMinLength = (min: number) =>
+    requiredString().min(min, t("validations.minLength", { min }));
 
-function requiredString() {
-  return z.string().refine((value) => !isBlank(value), t.validations.required);
-}
-
-function requiredMinLength(min: number) {
-  return requiredString().min(min, minLengthMessage(min));
-}
-
-export function createCheckoutSchema({
-  createAccount,
-  countryHasStates,
-}: CheckoutSchemaOptions) {
   return z
     .object({
-      email: requiredString().pipe(z.email(t.validations.email)),
+      email: requiredString().pipe(z.email(t("validations.email"))),
       password: createAccount ? requiredMinLength(8) : z.string(),
       firstName: requiredMinLength(3),
       lastName: requiredMinLength(3),
@@ -82,7 +67,7 @@ export function createCheckoutSchema({
       if (countryHasStates && isBlank(values.countryStateId)) {
         ctx.addIssue({
           code: "custom",
-          message: t.validations.requiredIf,
+          message: t("validations.requiredIf"),
           path: ["countryStateId"],
         });
       }
@@ -96,8 +81,9 @@ function isCheckoutField(key: PropertyKey | undefined): key is CheckoutField {
 export function validateCheckout(
   values: CheckoutValues,
   options: CheckoutSchemaOptions,
+  t: Translate,
 ): CheckoutErrors {
-  const result = createCheckoutSchema(options).safeParse(values);
+  const result = createCheckoutSchema(options, t).safeParse(values);
   if (result.success) return {};
 
   const errors: CheckoutErrors = {};

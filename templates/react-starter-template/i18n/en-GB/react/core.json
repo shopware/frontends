@@ -1,0 +1,99 @@
+{
+  "cms": {
+    "noLayout": {
+      "category": "This category has no layout assigned.",
+      "product": "This product has no layout assigned.",
+      "landingPage": "This landing page has no layout assigned."
+    },
+    "image": {
+      "linkWithoutLabel": "Open linked page"
+    },
+    "video": {
+      "privacyNoticeText": "By viewing the video you agree that your data will be transferred to {platform} and that you have read the privacy policy.",
+      "acceptButtonLabel": "Accept"
+    },
+    "vimeoVideo": {
+      "iframeTitle": "Vimeo video"
+    },
+    "youtubeVideo": {
+      "iframeTitle": "YouTube video"
+    }
+  },
+  "meta": {
+    "description": "A Next.js storefront template for Shopware 6."
+  },
+  "errors": {
+    "noDetailsProvided": "No details provided"
+  },
+  "product": {
+    "previously": "Previously",
+    "amount": "Amount",
+    "price": {
+      "label": "Price",
+      "to": "To",
+      "from": "From"
+    },
+    "to": "To",
+    "from": "From",
+    "content": "Content",
+    "pricesIncl": "Prices incl. VAT plus shipping costs",
+    "pricesExcl": "Prices excl. VAT plus shipping costs",
+    "description": "Description",
+    "reviews": "Reviews",
+    "noReviews": "No reviews yet.",
+    "reviewNotAccepted": "Your review has not been approved yet",
+    "reviewFeedback": "Shop feedback",
+    "addedToWishlist": "has been added to wishlist.",
+    "removedFromTheWishlist": "has been removed from wishlist.",
+    "reason": "Reason",
+    "cannotAddToWishlist": "cannot be added to wishlist.",
+    "addedToCart": "has been added to cart.",
+    "details": "Details",
+    "badges": {
+      "topseller": "Tip"
+    },
+    "qty": "Qty",
+    "productNumber": "Product number",
+    "chooseA": "Choose a",
+    "deliveryTime": "Available, delivery time",
+    "days": "days",
+    "noAvailable": "No longer available"
+  },
+  "listing": {
+    "noProducts": "No products found 😔",
+    "variantsFrom": "variants from",
+    "previously": "previously",
+    "from": "from",
+    "to": "to",
+    "filters": "Filters",
+    "sort": "Sort",
+    "resetFilters": "Reset filters",
+    "freeShipping": "Free shipping",
+    "perPage": "Per Page:",
+    "product": "Product",
+    "products": "Products",
+    "min": "Min",
+    "max": "Max",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "form": {
+    "salutationPlaceholder": "Enter salutation...",
+    "phone": "Phone number",
+    "phonePlaceholder": "Enter phone number...",
+    "subject": "Subject",
+    "subjectPlaceholder": "Enter subject...",
+    "comment": "Comment",
+    "commentPlaceholder": "Enter comment...",
+    "privacy": "Privacy",
+    "dataProtection": "I have read the data protection information.",
+    "messages": {
+      "contactFormSuccess": "We have received your contact request and will process it."
+    },
+    "subscribeLabel": "Subscribe to newsletter",
+    "unsubscribeLabel": "Unsubscribe from newsletter",
+    "action": "Action",
+    "privacyLabel": "I have read the data protection information.",
+    "newsletterBenefits": "Be aware of upcoming sales and events.Receive gifts and special offers!"
+  }
+}

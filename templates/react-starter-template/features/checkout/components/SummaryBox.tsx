@@ -6,19 +6,12 @@ import { Price } from "@/components/Price";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
-
-const t = {
-  checkout: {
-    summary: "Summary",
-    subtotal: "Subtotal",
-    shippingCosts: "Shipping",
-    total: "Total",
-  },
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export function SummaryBox({ className }: { className?: string }) {
   const { lineItems, subtotal, totalPrice, shippingCosts } = useCart();
   const { remove, updateQuantity } = useLineItemActions();
+  const t = useTranslations();
 
   function handleRemove(id: string) {
     void remove(id);
@@ -34,7 +27,7 @@ export function SummaryBox({ className }: { className?: string }) {
           id="checkout-summary-heading"
           className="px-6 font-serif text-[40px] text-surface-on-surface"
         >
-          {t.checkout.summary}
+          {t("checkout.summary")}
         </h2>
       </div>
       <div className="p-6 pt-10">
@@ -54,7 +47,7 @@ export function SummaryBox({ className }: { className?: string }) {
         <dl className="flex flex-col gap-1 border-t border-outline-outline-variant py-4">
           <div className="flex justify-between">
             <dt className="text-sm font-normal text-surface-on-surface-variant">
-              {t.checkout.subtotal}
+              {t("checkout.subtotal")}
             </dt>
             <dd>
               <Price
@@ -70,7 +63,7 @@ export function SummaryBox({ className }: { className?: string }) {
               className="flex justify-between"
             >
               <dt className="text-sm font-normal text-surface-on-surface-variant">
-                {t.checkout.shippingCosts}
+                {t("checkout.shippingCosts")}
               </dt>
               <dd>
                 <Price
@@ -83,7 +76,7 @@ export function SummaryBox({ className }: { className?: string }) {
         </dl>
         <dl className="flex justify-between border-t border-outline-outline-variant pt-4">
           <dt className="text-base leading-normal font-normal text-surface-on-surface">
-            {t.checkout.total}
+            {t("checkout.total")}
           </dt>
           <dd>
             <Price

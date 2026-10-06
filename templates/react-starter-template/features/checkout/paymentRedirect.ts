@@ -14,11 +14,12 @@ export function parsePaymentUrl(value: unknown): string | null {
 export function paymentReturnUrls(
   origin: string,
   orderId: string,
+  localePath: (path: string) => string = (path) => path,
 ): { finishUrl: string; errorUrl: string } {
-  const successPage = `${origin}/checkout/success/${encodeURIComponent(orderId)}`;
+  const successPage = `/checkout/success/${encodeURIComponent(orderId)}`;
   return {
-    finishUrl: `${successPage}/paid`,
-    errorUrl: `${successPage}/unpaid`,
+    finishUrl: `${origin}${localePath(`${successPage}/paid`)}`,
+    errorUrl: `${origin}${localePath(`${successPage}/unpaid`)}`,
   };
 }
 

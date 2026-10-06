@@ -4,13 +4,13 @@ import type { ApiClient, Schemas } from "#shopware";
 import { accountCustomer } from "@/features/account/customer/customer.fixture";
 import { CustomerProvider } from "@/features/account/customer/CustomerProvider";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
-import { errorMessages } from "@/features/session/errorMessages";
 import {
   customer as sessionCustomer,
   salesChannelContext,
 } from "@/features/session/session.fixture";
 import { toStorefrontSession } from "@/features/session/sessionFromContext";
 import { ShopwareClientProvider } from "@/features/storefront/components/ShopwareClientContext";
+import { testTranslator } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -175,7 +175,9 @@ describe("AccountOverview", () => {
       () => retry.promise,
     ]);
 
-    expect(alert()?.textContent).toBe(errorMessages.errors["message-default"]);
+    expect(alert()?.textContent).toBe(
+      testTranslator()("errors.message-default"),
+    );
     const button = retryButton();
     expect(button).toBeDefined();
 

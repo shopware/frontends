@@ -3,22 +3,10 @@
 import { useEffect, useRef } from "react";
 
 import { InputField } from "@/components/form/InputField";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import type { CheckoutErrors, CheckoutField } from "../checkoutSchema";
 import { PlusIcon } from "./CheckoutIcons";
-
-const t = {
-  checkout: {
-    customerBaseInfo: {
-      emailPlaceholder: "Enter email address",
-      emailLabel: "Email address",
-      passwordPlaceholder: "Enter password",
-      passwordLabel: "Password",
-      createAccountToggleLabel: "Create customer account",
-      continueAsGuestToggleLabel: "Continue as guest",
-    },
-  },
-};
 
 const TOGGLE_CLASS =
   "inline-flex items-center gap-1 rounded-sm text-sm text-brand-primary hover:underline focus-visible:ring-2 focus-visible:ring-outline-outline-focus focus-visible:outline-hidden";
@@ -44,6 +32,7 @@ export function CustomerBaseInfo({
   onCreateAccountChange,
   className,
 }: CustomerBaseInfoProps) {
+  const t = useTranslations();
   const passwordRef = useRef<HTMLInputElement>(null);
   const createToggleRef = useRef<HTMLButtonElement>(null);
   const focusPassword = useRef(false);
@@ -81,8 +70,8 @@ export function CustomerBaseInfo({
         type="email"
         autoComplete="email"
         data-testid="checkout-pi-email-input"
-        label={t.checkout.customerBaseInfo.emailLabel}
-        placeholder={t.checkout.customerBaseInfo.emailPlaceholder}
+        label={t("checkout.customerBaseInfo.emailLabel")}
+        placeholder={t("checkout.customerBaseInfo.emailPlaceholder")}
         required
         value={email}
         onChange={(event) => onFieldChange("email", event.target.value)}
@@ -98,8 +87,8 @@ export function CustomerBaseInfo({
             type="password"
             autoComplete="new-password"
             data-testid="checkout-pi-password-input"
-            label={t.checkout.customerBaseInfo.passwordLabel}
-            placeholder={t.checkout.customerBaseInfo.passwordPlaceholder}
+            label={t("checkout.customerBaseInfo.passwordLabel")}
+            placeholder={t("checkout.customerBaseInfo.passwordPlaceholder")}
             required
             value={password}
             onChange={(event) => onFieldChange("password", event.target.value)}
@@ -111,7 +100,7 @@ export function CustomerBaseInfo({
             className={TOGGLE_CLASS}
             onClick={switchToGuest}
           >
-            {t.checkout.customerBaseInfo.continueAsGuestToggleLabel}
+            {t("checkout.customerBaseInfo.continueAsGuestToggleLabel")}
           </button>
         </div>
       ) : (
@@ -124,7 +113,9 @@ export function CustomerBaseInfo({
             onClick={switchToAccount}
           >
             <PlusIcon className="size-4" />
-            <span>{t.checkout.customerBaseInfo.createAccountToggleLabel}</span>
+            <span>
+              {t("checkout.customerBaseInfo.createAccountToggleLabel")}
+            </span>
           </button>
         </div>
       )}

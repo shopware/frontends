@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { withLocale } from "@/i18n/config";
+
 import { parsePaymentUrl, paymentReturnUrls } from "./paymentRedirect";
 
 describe("parsePaymentUrl", () => {
@@ -35,5 +37,21 @@ describe("paymentReturnUrls", () => {
     expect(paymentReturnUrls("https://shop.test", "a/b").finishUrl).toBe(
       "https://shop.test/checkout/success/a%2Fb/paid",
     );
+  });
+
+  it("puts the locale prefix in front of the success pages", () => {
+    expect(
+      paymentReturnUrls("https://shop.test", "order-1", (path) =>
+        withLocale(path, "pl-PL"),
+      ),
+    ).toEqual({
+      finishUrl: "https://shop.test/pl-PL/checkout/success/order-1/paid",
+      errorUrl: "https://shop.test/pl-PL/checkout/success/order-1/unpaid",
+    });
+    expect(
+      paymentReturnUrls("https://shop.test", "order-1", (path) =>
+        withLocale(path, "en-GB"),
+      ).finishUrl,
+    ).toBe("https://shop.test/checkout/success/order-1/paid");
   });
 });

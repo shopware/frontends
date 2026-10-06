@@ -3,32 +3,20 @@
 import { BaseButton } from "@shopware/cms-base-layer-react/client";
 
 import { InputField } from "@/components/form/InputField";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { changeEmail } from "../profileApi";
 import { emptyChangeEmailValues, validateChangeEmail } from "../profileSchemas";
 import { useCredentialChange } from "../useCredentialChange";
 
-const t = {
-  account: {
-    changeEmail: {
-      form: {
-        newEmailLabel: "Enter new email",
-        confirmEmailLabel: "Repeat new email",
-        passwordLabel: "Current password*",
-        buttonSubmit: "Save",
-        successUpdate: "Email address has been updated successfully.",
-      },
-    },
-  },
-};
-
 export function ChangeEmailForm() {
+  const t = useTranslations();
   const { values, busy, formRef, errorFor, setField, touch, handleSubmit } =
     useCredentialChange({
       initialValues: emptyChangeEmailValues,
       validate: validateChangeEmail,
       submit: changeEmail,
-      successMessage: t.account.changeEmail.form.successUpdate,
+      successMessage: t("account.changeEmail.form.successUpdate"),
     });
 
   return (
@@ -45,7 +33,7 @@ export function ChangeEmailForm() {
         id="newEmail"
         data-testid="account-personal-data-email-input"
         type="email"
-        label={t.account.changeEmail.form.newEmailLabel}
+        label={t("account.changeEmail.form.newEmailLabel")}
         aria-required="true"
         autoComplete="off"
         value={values.email}
@@ -56,7 +44,7 @@ export function ChangeEmailForm() {
       <InputField
         id="confirmEmail"
         type="email"
-        label={t.account.changeEmail.form.confirmEmailLabel}
+        label={t("account.changeEmail.form.confirmEmailLabel")}
         aria-required="true"
         autoComplete="off"
         value={values.emailConfirmation}
@@ -67,7 +55,7 @@ export function ChangeEmailForm() {
       <InputField
         id="password"
         type="password"
-        label={t.account.changeEmail.form.passwordLabel}
+        label={t("account.changeEmail.form.passwordLabel")}
         aria-required="true"
         autoComplete="current-password"
         value={values.password}
@@ -82,7 +70,7 @@ export function ChangeEmailForm() {
           aria-disabled={busy || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         >
-          {t.account.changeEmail.form.buttonSubmit}
+          {t("account.changeEmail.form.buttonSubmit")}
         </BaseButton>
       </div>
     </form>

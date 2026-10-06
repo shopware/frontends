@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { Pagination } from "./Pagination";
@@ -32,5 +33,21 @@ describe("Pagination", () => {
       /<button[^>]*disabled=""[^>]*aria-label="Previous page"/,
     );
     expect(first).toMatch(/<button[^>]*disabled=""[^>]*aria-label="Next page"/);
+  });
+});
+
+describe("Pagination in German", () => {
+  it("labels the navigation and the page buttons in German", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <Pagination total={3} current={2} onChangePage={() => {}} />,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toContain('aria-label="Seitennummerierung"');
+    expect(html).toContain('aria-label="Vorherige Seite"');
+    expect(html).toContain('aria-label="Nächste Seite"');
+    expect(html).toContain('aria-current="page" aria-label="Seite 2"');
   });
 });

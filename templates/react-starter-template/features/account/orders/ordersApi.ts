@@ -7,6 +7,7 @@ import { orderAssociations } from "@/features/checkout/checkoutApi";
 import { paymentReturnUrls } from "@/features/checkout/paymentRedirect";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import type { Translate } from "@/i18n/translate";
 
 export type OrdersClient = Pick<ApiClient, "invoke">;
 
@@ -130,12 +131,15 @@ function errorCodes(error: unknown): Set<string> {
   return new Set(errors.flatMap(({ code }) => (code ? [code] : [])));
 }
 
-export function classifyDeepLinkError(error: unknown): DeepLinkOrderResult {
+export function classifyDeepLinkError(
+  error: unknown,
+  t: Translate,
+): DeepLinkOrderResult {
   const codes = errorCodes(error);
   if (codes.has(DEEP_LINK_NOT_FOUND)) return { status: "notFound" };
   if (codes.has(GUEST_WRONG_CREDENTIALS)) return { status: "wrongCredentials" };
   if (codes.has(GUEST_NOT_AUTHENTICATED)) return { status: "authRequired" };
-  return { status: "failed", messages: resolveApiErrorMessages(error) };
+  return { status: "failed", messages: resolveApiErrorMessages(error, t) };
 }
 
 export async function readDeepLinkOrder(
@@ -144,6 +148,7 @@ export async function readDeepLinkOrder(
     deepLinkCode,
     credentials = null,
   }: { deepLinkCode: string; credentials?: DeepLinkCredentials | null },
+  t: Translate,
 ): Promise<DeepLinkOrderResult> {
   try {
     const { data } = await client.invoke("readOrder post /order", {
@@ -163,7 +168,7 @@ export async function readDeepLinkOrder(
     const details = toOrderDetails(data);
     return details ? { status: "found", details } : { status: "notFound" };
   } catch (error) {
-    return classifyDeepLinkError(error);
+    return classifyDeepLinkError(error, t);
   }
 }
 
@@ -202,8 +207,11 @@ export function isOrderId(value: unknown): value is string {
 export function orderPaymentReturnUrls(
   origin: string,
   orderId: string,
+  localePath?: (path: string) => string,
 ): { finishUrl: string; errorUrl: string } | null {
-  return isOrderId(orderId) ? paymentReturnUrls(origin, orderId) : null;
+  return isOrderId(orderId)
+    ? paymentReturnUrls(origin, orderId, localePath)
+    : null;
 }
 
 function lastTransaction(

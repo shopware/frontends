@@ -1,7 +1,8 @@
 import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, pressKey, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -14,12 +15,15 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(autoFocus?: boolean) {
+async function setup(autoFocus?: boolean, locale?: Locale) {
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <HeaderSearch autoFocus={autoFocus} />
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <HeaderSearch autoFocus={autoFocus} />
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   return {
     notify,
@@ -40,8 +44,21 @@ describe("HeaderSearch in the browser", () => {
     expect(notify).toHaveBeenCalledTimes(1);
     expect(notify).toHaveBeenCalledWith({
       type: "info",
-      message: NOT_WIRED_MESSAGES.search,
+      message: "Search is not connected yet.",
     });
+  });
+
+  it("reports the mocked search in German under the de-DE provider", async () => {
+    const { notify, input } = await setup(false, "de-DE");
+    input.value = "Hemd";
+
+    await interact(() => pressKey(input, "Enter"));
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "info",
+      message: "Die Suche ist noch nicht angebunden.",
+    });
+    expect(input.placeholder).toBe("Produkte suchen");
   });
 
   it("ignores Enter on a blank query and other keys", async () => {

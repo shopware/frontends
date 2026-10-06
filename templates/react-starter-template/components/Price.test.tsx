@@ -5,6 +5,7 @@ import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import { salesChannelContext } from "@/features/session/session.fixture";
 import { toStorefrontSession } from "@/features/session/sessionFromContext";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { Price } from "./Price";
@@ -45,6 +46,34 @@ describe("Price", () => {
     );
 
     expect(html).toBe("<span>€0.00</span>");
+  });
+
+  it.each([
+    ["pl-PL", "1234,50\u00a0€"],
+    ["de-DE", "1.234,50\u00a0€"],
+    ["en-GB", "€1,234.50"],
+  ] as const)(
+    "formats with the %s locale of the page",
+    async (locale, text) => {
+      const html = await renderToHtml(
+        withI18n(<Price value={1234.5} />, locale),
+      );
+
+      expect(html).toBe(`<span>${text}</span>`);
+    },
+  );
+
+  it("formats the session currency with the page locale", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <SessionProvider session={withCurrency("GBP")}>
+          <Price value={10} />
+        </SessionProvider>,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toBe("<span>10,00\u00a0£</span>");
   });
 
   it.each([

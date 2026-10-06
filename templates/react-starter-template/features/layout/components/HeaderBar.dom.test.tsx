@@ -16,6 +16,8 @@ import type {
   SessionActionResult,
   StorefrontSession,
 } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, pressKey, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -120,6 +122,7 @@ afterEach(async () => {
 async function setup(
   session?: StorefrontSession,
   actions: Partial<SessionActions> = {},
+  locale?: Locale,
 ) {
   const notify = vi.fn();
   const bar = (
@@ -130,10 +133,13 @@ async function setup(
     </CmsActionsProvider>
   );
   mounted = await mount(
-    session ? (
-      <ControlledSession initial={session}>{bar}</ControlledSession>
-    ) : (
-      bar
+    withI18n(
+      session ? (
+        <ControlledSession initial={session}>{bar}</ControlledSession>
+      ) : (
+        bar
+      ),
+      locale,
     ),
   );
   const { container } = mounted;
@@ -193,6 +199,29 @@ describe("HeaderBar in the browser", () => {
         (button) => button.textContent === "Close",
       ),
     ).toBe(false);
+  });
+
+  it("sends a guest to the Polish login page and reports the wishlist stub in Polish under the pl-PL provider", async () => {
+    const { account, container, notify } = await setup(undefined, {}, "pl-PL");
+    window.history.replaceState(null, "", "/pl-PL/Furniture/");
+
+    await interact(() => account.click());
+
+    expect(push).toHaveBeenCalledWith(
+      "/pl-PL/account/login?redirect=%2Fpl-PL%2FFurniture%2F",
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="header-wishlist-button"]',
+      ).click(),
+    );
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "info",
+      message: "Lista życzeń nie jest jeszcze połączona z sesją.",
+    });
   });
 
   it("sends a guest to the login page with the current path as redirect", async () => {

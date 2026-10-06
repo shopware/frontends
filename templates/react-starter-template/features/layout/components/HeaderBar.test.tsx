@@ -10,6 +10,7 @@ import {
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { HeaderBar } from "./HeaderBar";
@@ -79,6 +80,31 @@ describe("HeaderBar", () => {
 
     expect(html).toContain('aria-label="Search"');
     expect(html).not.toContain("bg-states-error");
+  });
+
+  it("renders the Polish labels and the prefixed logo link under the pl-PL provider", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <CmsActionsProvider actions={actions}>
+          <HeaderBar menu={null} />
+        </CmsActionsProvider>,
+        "pl-PL",
+      ),
+    );
+
+    expect(html).toMatch(/<a[^>]*href="\/pl-PL"[^>]*>/);
+    expect(buttonWithTestId(html, "header-account-button")).toContain(
+      'aria-label="Moje konto"',
+    );
+    expect(buttonWithTestId(html, "header-wishlist-button")).toContain(
+      'aria-label="Lista życzeń"',
+    );
+    expect(buttonWithTestId(html, "header-mini-cart-button")).toContain(
+      'aria-label="Koszyk"',
+    );
+    expect(html).toContain('aria-label="Szukaj"');
+    expect(html).toContain('placeholder="Szukaj produktów"');
+    expect(html).not.toContain("My Account");
   });
 
   it("does not navigate or notify while rendering", async () => {

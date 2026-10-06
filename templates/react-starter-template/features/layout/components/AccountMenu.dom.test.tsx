@@ -9,6 +9,8 @@ import { SessionActionsProvider } from "@/features/session/components/SessionAct
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -74,27 +76,31 @@ afterEach(async () => {
 async function setup(
   actions: Partial<SessionActions> = {},
   page: ReactNode = null,
+  locale?: Locale,
 ) {
   const notify = vi.fn();
   const onClose = vi.fn();
   const triggerRef = createRef<HTMLButtonElement>();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={actions}>
-        <ControlledSession initial={loggedIn}>
-          <button type="button" ref={triggerRef}>
-            My Account
-          </button>
-          <AccountMenu
-            id="account-menu"
-            customerName="Jane Doe"
-            triggerRef={triggerRef}
-            onClose={onClose}
-          />
-          {page}
-        </ControlledSession>
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={actions}>
+          <ControlledSession initial={loggedIn}>
+            <button type="button" ref={triggerRef}>
+              My Account
+            </button>
+            <AccountMenu
+              id="account-menu"
+              customerName="Jane Doe"
+              triggerRef={triggerRef}
+              onClose={onClose}
+            />
+            {page}
+          </ControlledSession>
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -141,6 +147,35 @@ describe("AccountMenu", () => {
     expect(links().some((link) => link.hasAttribute("aria-current"))).toBe(
       false,
     );
+  });
+
+  it("translates the menu and prefixes its links under the pl-PL provider", async () => {
+    route.pathname = "/pl-PL/account/address";
+    const { container, links } = await setup({}, null, "pl-PL");
+    const panel = query<HTMLElement>(
+      container,
+      '[data-testid="header-account-menu"]',
+    );
+
+    expect([...panel.children].map((child) => child.textContent)).toEqual([
+      "Zalogowano jako Jane Doe",
+      "Przegląd",
+      "Twoje konto",
+      "Adresy",
+      "Zamówienia",
+      "Wyloguj",
+    ]);
+    expect(links().map((link) => link.getAttribute("href"))).toEqual([
+      "/pl-PL/account",
+      "/pl-PL/account/profile",
+      "/pl-PL/account/address",
+      "/pl-PL/account/order",
+    ]);
+    expect(
+      links()
+        .filter((link) => link.getAttribute("aria-current") === "page")
+        .map((link) => link.getAttribute("href")),
+    ).toEqual(["/pl-PL/account/address"]);
   });
 
   it("marks the account page that is open", async () => {

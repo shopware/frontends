@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 
+import { LocaleLink } from "@/components/LocaleLink";
+import { useTranslations } from "@/i18n/I18nProvider";
+
 import { ACCOUNT_MENU_LINKS, isCurrentAccountPage } from "./accountMenuLinks";
 import { useAccountLogout } from "./useAccountLogout";
-
-const t = {
-  "account.menu.logout": "Logout",
-};
 
 const LINK_CLASS =
   "-mt-px border-b border-transparent text-surface-on-surface hover:border-surface-on-surface aria-[current=page]:border-surface-on-surface";
@@ -29,20 +27,21 @@ function CurrentAccountMenuItems() {
 
 function AccountMenuItems({ pathname }: { pathname: string | null }) {
   const { pending, logout } = useAccountLogout();
+  const t = useTranslations();
 
   return (
     <ul className="flex flex-col gap-3">
-      {ACCOUNT_MENU_LINKS.map(({ href, label }) => (
+      {ACCOUNT_MENU_LINKS.map(({ href, labelKey }) => (
         <li key={href}>
-          <Link
+          <LocaleLink
             href={href}
             className={LINK_CLASS}
             aria-current={
               isCurrentAccountPage(pathname, href) ? "page" : undefined
             }
           >
-            {label}
-          </Link>
+            {t(labelKey)}
+          </LocaleLink>
         </li>
       ))}
       <li>
@@ -55,7 +54,7 @@ function AccountMenuItems({ pathname }: { pathname: string | null }) {
             void logout();
           }}
         >
-          {t["account.menu.logout"]}
+          {t("account.menu.logout")}
         </button>
       </li>
     </ul>

@@ -4,18 +4,18 @@ import {
   BaseButton,
   useCmsActions,
 } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 
 import type { Schemas } from "#shopware";
+import { LocaleLink } from "@/components/LocaleLink";
 import { useCart } from "@/features/cart/useCart";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
-import { errorMessages } from "@/features/session/errorMessages";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import {
@@ -47,32 +47,6 @@ import { PaymentMethods } from "./PaymentMethods";
 import { ShippingMethods } from "./ShippingMethods";
 import { StepHeader } from "./StepHeader";
 import { SummaryBox } from "./SummaryBox";
-
-const t = {
-  checkout: {
-    title: "Checkout",
-    placeOrderButton: "Confirm and place order",
-    placingOrder: "Placing order…",
-  },
-  cart: {
-    emptyCartLabel: "Your cart is empty",
-    continueShopping: "Continue Shopping",
-  },
-  steps: {
-    shippingAddress: "Shipping address",
-    shipping: "Shipping",
-    payment: "Payment information",
-  },
-  account: {
-    messages: {
-      signUpSuccess:
-        "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-    },
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
 
 const OVERLAY_CLASS =
   "absolute inset-0 z-10 cursor-wait bg-surface-surface/70 backdrop-blur-[1px]";
@@ -133,16 +107,15 @@ async function readCheckoutMethods(
 }
 
 function RetryAlert({ onRetry }: { onRetry: () => void }) {
+  const t = useTranslations();
   return (
     <div
       role="alert"
       className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-6 px-4 py-20"
     >
-      <p className="text-lg text-surface-on-surface">
-        {errorMessages.messages.error}
-      </p>
+      <p className="text-lg text-surface-on-surface">{t("messages.error")}</p>
       <BaseButton variant="secondary" onClick={onRetry}>
-        {t.listing.retry}
+        {t("listing.retry")}
       </BaseButton>
     </div>
   );
@@ -158,6 +131,8 @@ export function CheckoutPageContent({
   const { notify } = useCmsActions();
   const getClient = useShopwareClient();
   const cart = useCart();
+  const t = useTranslations();
+  const localePath = useLocalePath();
 
   const [values, setValues] = useState<CheckoutValues>(emptyCheckoutValues);
   const [createAccount, setCreateAccount] = useState(false);
@@ -205,10 +180,11 @@ export function CheckoutPageContent({
 
   const states =
     countries.find((country) => country.id === values.countryId)?.states ?? [];
-  const errors = validateCheckout(values, {
-    createAccount,
-    countryHasStates: states.length > 0,
-  });
+  const errors = validateCheckout(
+    values,
+    { createAccount, countryHasStates: states.length > 0 },
+    t,
+  );
   const fieldErrors = visibleErrors(errors, touched, submitted);
 
   useEffect(() => {
@@ -279,7 +255,7 @@ export function CheckoutPageContent({
   }
 
   function notifyApiError(error: unknown) {
-    for (const message of resolveApiErrorMessages(error)) {
+    for (const message of resolveApiErrorMessages(error, t)) {
       notifyPersistentError(message);
     }
   }
@@ -299,7 +275,7 @@ export function CheckoutPageContent({
       }
       await Promise.allSettled([refreshSession(), cart.refresh()]);
     } catch (error) {
-      for (const message of resolveApiErrorMessages(error)) {
+      for (const message of resolveApiErrorMessages(error, t)) {
         notify({ type: "error", message });
       }
     } finally {
@@ -317,7 +293,7 @@ export function CheckoutPageContent({
       if (result.ok) {
         notify({
           type: "info",
-          message: t.account.messages.signUpSuccess,
+          message: t("account.messages.signUpSuccess"),
           timeout: 0,
         });
       }
@@ -334,7 +310,7 @@ export function CheckoutPageContent({
       if (!registered.current) return registerCustomer();
       const next = await retrySession();
       if (!next.isLoggedIn && !next.isGuestSession) {
-        notifyPersistentError(errorMessages.messages.error);
+        notifyPersistentError(t("messages.error"));
         return false;
       }
       currentCustomer = next.context?.customer ?? null;
@@ -367,7 +343,7 @@ export function CheckoutPageContent({
     }
 
     if (!canPlaceOrder) {
-      notifyPersistentError(errorMessages.messages.error);
+      notifyPersistentError(t("messages.error"));
       return;
     }
 
@@ -386,7 +362,7 @@ export function CheckoutPageContent({
         order = await createOrder(client);
       } catch (error) {
         if (isAmbiguousOrderFailure(error)) {
-          notifyPersistentError(errorMessages.errors["order-timeout"]);
+          notifyPersistentError(t("errors.order-timeout"));
         } else {
           notifyApiError(error);
         }
@@ -397,7 +373,9 @@ export function CheckoutPageContent({
 
       placed = true;
       setOrderPlaced(true);
-      router.push(`/checkout/success/${encodeURIComponent(order.id)}`);
+      router.push(
+        localePath(`/checkout/success/${encodeURIComponent(order.id)}`),
+      );
       void refreshSession();
       void cart.refresh();
     } catch (error) {
@@ -444,14 +422,14 @@ export function CheckoutPageContent({
       return (
         <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center px-4 py-20">
           <h1 className="mb-6 text-lg text-surface-on-surface">
-            {t.cart.emptyCartLabel}
+            {t("cart.emptyCartLabel")}
           </h1>
-          <Link
+          <LocaleLink
             href="/"
             className="rounded-md bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary"
           >
-            {t.cart.continueShopping}
-          </Link>
+            {t("cart.continueShopping")}
+          </LocaleLink>
         </div>
       );
     }
@@ -460,7 +438,7 @@ export function CheckoutPageContent({
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4">
       <h1 className="my-10 font-serif text-[40px] leading-tight text-surface-on-surface md:my-20">
-        {t.checkout.title}
+        {t("checkout.title")}
       </h1>
 
       <div className="flex flex-col justify-between gap-10 lg:flex-row lg:gap-20">
@@ -471,20 +449,20 @@ export function CheckoutPageContent({
             >
               <output
                 className="flex flex-col items-center gap-3"
-                aria-label={t.checkout.placingOrder}
+                aria-label={t("checkout.placingOrder")}
               >
                 <span
                   className="size-8 animate-spin rounded-full border-2 border-brand-primary border-t-transparent motion-reduce:animate-none"
                   aria-hidden="true"
                 />
                 <span className="text-sm font-bold text-surface-on-surface">
-                  {t.checkout.placingOrder}
+                  {t("checkout.placingOrder")}
                 </span>
               </output>
             </div>
           ) : null}
           <div ref={formRef} inert={isPlacingOrder}>
-            <StepHeader step={1} label={t.steps.shippingAddress}>
+            <StepHeader step={1} label={t("checkout.shippingAddressLabel")}>
               {showCustomerForm ? (
                 <div className="flex flex-col">
                   <CustomerBaseInfo
@@ -512,9 +490,9 @@ export function CheckoutPageContent({
                 <CustomerAddressChosen address={chosenAddress} />
               ) : null}
             </StepHeader>
-            <StepHeader step={2} label={t.steps.shipping}>
+            <StepHeader step={2} label={t("checkout.steps.shipping")}>
               <ShippingMethods
-                legend={t.steps.shipping}
+                legend={t("checkout.steps.shipping")}
                 shippingMethods={shippingMethods}
                 selectedShippingMethod={selectedShippingMethod}
                 onChange={(id) => {
@@ -522,9 +500,9 @@ export function CheckoutPageContent({
                 }}
               />
             </StepHeader>
-            <StepHeader step={3} label={t.steps.payment}>
+            <StepHeader step={3} label={t("checkout.steps.payment")}>
               <PaymentMethods
-                legend={t.steps.payment}
+                legend={t("checkout.steps.payment")}
                 paymentMethods={paymentMethods}
                 selectedPaymentMethod={selectedPaymentMethod}
                 onChange={(id) => {
@@ -541,8 +519,8 @@ export function CheckoutPageContent({
               }}
             >
               {isPlacingOrder
-                ? t.checkout.placingOrder
-                : t.checkout.placeOrderButton}
+                ? t("checkout.placingOrder")
+                : t("checkout.placeOrderButton")}
             </BaseButton>
           </div>
         </div>

@@ -1,5 +1,15 @@
 import type { ApiClient, Schemas } from "#shopware";
+import type { Locale } from "@/i18n/config";
+import type { Translate } from "@/i18n/translate";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
+import {
+  findLanguageId,
+  toLanguageOptions,
+} from "@/platform/shopware/reads/languageOptions";
+import type {
+  LanguageOption,
+  SalesChannelLanguages,
+} from "@/platform/shopware/reads/languageOptions";
 
 import { anonymousSession } from "./anonymousSession";
 import { createBrowserClient, loadPublicConfig } from "./browserClient";
@@ -13,6 +23,8 @@ import type { StorefrontSession } from "./types";
 
 export type SessionRefreshOptions = { keepLastGood?: boolean };
 
+export type SessionStoreOptions = { locale?: Locale | null };
+
 export type SessionStore = {
   getSnapshot(): StorefrontSession;
   subscribe(listener: () => void): () => void;
@@ -20,8 +32,12 @@ export type SessionStore = {
   refresh(options?: SessionRefreshOptions): Promise<void>;
   retry(): Promise<StorefrontSession>;
   getClient(): Promise<ApiClient>;
+  getLanguages(): Promise<LanguageOption[]>;
+  loadLanguages(): Promise<SalesChannelLanguages>;
+  setLocale(locale: Locale): void;
   createActions(
     notify: (notification: SessionNotification) => void,
+    t: Translate,
   ): SessionActions;
 };
 
@@ -29,7 +45,13 @@ function logReadFailure(error: unknown): void {
   console.error("[Session] reading the session failed", error);
 }
 
-export function createSessionStore(): SessionStore {
+function logLocaleFailure(error: unknown): void {
+  console.error("[Session] applying the locale to the session failed", error);
+}
+
+export function createSessionStore({
+  locale: initialLocale = null,
+}: SessionStoreOptions = {}): SessionStore {
   let snapshot = anonymousSession;
   const listeners = new Set<() => void>();
   let pendingClient: Promise<ApiClient> | null = null;
@@ -37,6 +59,9 @@ export function createSessionStore(): SessionStore {
   let readCount = 0;
   let publicConfig: PublicShopwareConfig | null = null;
   let context: Schemas["SalesChannelContext"] | null = null;
+  let locale: Locale | null = initialLocale;
+  let languages: Promise<LanguageOption[]> | null = null;
+  let localeTask: Promise<void> = Promise.resolve();
 
   function publish(next: StorefrontSession): void {
     snapshot = next;
@@ -83,8 +108,61 @@ export function createSessionStore(): SessionStore {
     }
   }
 
+  function readLanguages(client: ApiClient): Promise<LanguageOption[]> {
+    if (!languages) {
+      const pending = client
+        .invoke("readLanguagesGet get /language", {
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        })
+        .then(({ data }) => toLanguageOptions(data.elements ?? []));
+      languages = pending;
+      pending.catch(() => {
+        if (languages === pending) languages = null;
+      });
+    }
+    return languages;
+  }
+
+  function localeLanguageId(
+    options: LanguageOption[],
+    target: Locale,
+  ): string | null {
+    return (
+      findLanguageId(options, target) ??
+      context?.salesChannel?.languageId ??
+      null
+    );
+  }
+
+  async function applyLocale(): Promise<void> {
+    const target = locale;
+    if (!target || !context) return;
+    const client = await connect();
+    const languageId = localeLanguageId(await readLanguages(client), target);
+    if (!languageId) return;
+    client.defaultHeaders.apply({ "sw-language-id": languageId });
+    if (languageId === context.context?.languageIdChain?.[0]) return;
+    await client.invoke("updateContext patch /context", {
+      body: { languageId },
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
+    });
+    await refresh({ keepLastGood: true });
+  }
+
+  function scheduleLocale(): Promise<void> {
+    const run = localeTask.then(applyLocale).catch(logLocaleFailure);
+    localeTask = run;
+    return run;
+  }
+
+  function setLocale(next: Locale): void {
+    if (next === locale) return;
+    locale = next;
+    if (context) void scheduleLocale();
+  }
+
   function start(): Promise<void> {
-    initialRead ??= refresh().catch((error: unknown) => {
+    initialRead ??= refresh().then(scheduleLocale, (error: unknown) => {
       logReadFailure(error);
       initialRead = null;
     });
@@ -106,6 +184,22 @@ export function createSessionStore(): SessionStore {
     return connect();
   }
 
+  async function getLanguages(): Promise<LanguageOption[]> {
+    await initialRead;
+    await localeTask;
+    const pending = languages;
+    return pending ? pending.catch(() => []) : [];
+  }
+
+  async function loadLanguages(): Promise<SalesChannelLanguages> {
+    await start();
+    const options = await readLanguages(await connect());
+    return {
+      languages: options,
+      defaultLanguageId: context?.salesChannel?.languageId ?? null,
+    };
+  }
+
   async function refreshSession(): Promise<void> {
     await start();
     await refresh({ keepLastGood: true }).catch(logReadFailure);
@@ -122,6 +216,7 @@ export function createSessionStore(): SessionStore {
 
   function createActions(
     notify: (notification: SessionNotification) => void,
+    t: Translate,
   ): SessionActions {
     const actions = createSessionActions({
       client: {
@@ -131,6 +226,7 @@ export function createSessionStore(): SessionStore {
       refreshSession: () => refresh(),
       getStorefrontUrl: resolveStorefrontUrl,
       notify,
+      t,
     });
     return {
       login: async (input) => {
@@ -162,6 +258,9 @@ export function createSessionStore(): SessionStore {
     refresh,
     retry,
     getClient,
+    getLanguages,
+    loadLanguages,
+    setLocale,
     createActions,
   };
 }

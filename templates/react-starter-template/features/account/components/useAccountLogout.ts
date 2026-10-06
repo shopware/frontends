@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import { useLocalePath } from "@/i18n/I18nProvider";
 
 let logoutIntended = false;
 
@@ -21,6 +22,7 @@ export type AccountLogout = {
 
 export function useAccountLogout(): AccountLogout {
   const router = useRouter();
+  const localePath = useLocalePath();
   const { logout } = useSessionActions();
   const { notify } = useCmsActions();
   const [pending, setPending] = useState(false);
@@ -35,7 +37,7 @@ export function useAccountLogout(): AccountLogout {
     try {
       const result = await logout();
       succeeded = result.ok;
-      if (succeeded) router.push("/");
+      if (succeeded) router.push(localePath("/"));
       return succeeded;
     } catch (cause) {
       notify({
@@ -48,7 +50,7 @@ export function useAccountLogout(): AccountLogout {
       pendingRef.current = false;
       setPending(false);
     }
-  }, [logout, notify, router]);
+  }, [logout, notify, router, localePath]);
 
   return { pending, logout: run };
 }

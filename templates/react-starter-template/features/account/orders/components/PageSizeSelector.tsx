@@ -4,12 +4,7 @@ import { cx } from "@shopware/cms-base-layer-react/client";
 
 import { ChevronDownIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
-
-const t = {
-  search: {
-    perPage: "Per Page:",
-  },
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export type PageSizeSelectorProps = {
   id: string;
@@ -28,10 +23,11 @@ export function PageSizeSelector({
   disabled = false,
   className,
 }: PageSizeSelectorProps) {
+  const t = useTranslations();
   return (
     <div className={cx("flex items-center gap-2", className)}>
       <label htmlFor={id} className="text-sm text-surface-on-surface">
-        {t.search.perPage}
+        {t("search.listing.perPage")}
       </label>
       <div className="relative">
         <select

@@ -6,16 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import type { FocusEvent } from "react";
 
 import { ChevronRightSmallIcon } from "@/components/icons";
+import { stripLocale } from "@/i18n/config";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import type { NavigationNode } from "../navigationTree";
 import { NavigationLink } from "./NavigationLink";
 
-const t = {
-  "layout.ariaLabels.mainNavigation": "Main navigation",
-};
-
 export function normalizePath(path: string): string {
   return path.length > 1 ? path.replace(/\/+$/, "") : path;
+}
+
+export function pagePath(path: string): string {
+  return normalizePath(stripLocale(path).pathname);
 }
 
 const WRAPPER_CLASS = "relative border-b border-outline-outline-variant";
@@ -36,11 +38,12 @@ export function TopNavigationPlaceholder() {
 
 export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
   const pathname = usePathname();
+  const t = useTranslations();
   const [menu, setMenu] = useState<OpenMenu>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef(new Map<string, HTMLAnchorElement>());
 
-  const currentPath = normalizePath(pathname);
+  const currentPath = pagePath(pathname);
   const currentMenuPosition = menu?.pathname === pathname ? menu.id : undefined;
 
   const open = (id: string) => setMenu({ id, pathname });
@@ -78,13 +81,13 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
       onBlur={handleBlur}
     >
       <nav
-        aria-label={t["layout.ariaLabels.mainNavigation"]}
+        aria-label={t("layout.ariaLabels.mainNavigation")}
         className={NAV_CLASS}
       >
         <ul role="menubar" className={LIST_CLASS}>
           {tree.map((node) => {
             const hasChildren = node.children.length > 0;
-            const active = normalizePath(node.href) === currentPath;
+            const active = pagePath(node.href) === currentPath;
             const expanded = hasChildren && currentMenuPosition === node.id;
             return (
               <li

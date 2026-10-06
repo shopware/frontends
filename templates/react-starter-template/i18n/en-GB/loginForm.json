@@ -1,0 +1,10 @@
+{
+  "loginForm": {
+    "header": "Sign in to your account",
+    "subHeader": "Sign in to your account to continue",
+    "loginLabel": "Email address",
+    "passwordLabel": "Password",
+    "submitButtonLabel": "Sign in",
+    "signUpButtonLabel": "Sign up"
+  }
+}

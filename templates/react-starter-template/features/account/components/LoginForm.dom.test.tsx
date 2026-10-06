@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import type { SessionActionResult } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -62,6 +64,7 @@ async function setup(
   overrides: Partial<SessionActions> = {},
   props: { hideSignUp?: boolean; redirectUrl?: string | null } = {},
   sibling: ReactNode = null,
+  locale: Locale = "en-GB",
 ) {
   const actions = {
     login: vi.fn(async () => ({ ok: false })),
@@ -69,12 +72,15 @@ async function setup(
   };
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={actions}>
-        <LoginForm {...props} />
-        {sibling}
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={actions}>
+          <LoginForm {...props} />
+          {sibling}
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -309,5 +315,90 @@ describe("LoginForm in the browser", () => {
     expect(
       container.querySelector('[data-testid="login-sign-up-button"]'),
     ).toBeNull();
+  });
+});
+
+describe("LoginForm in Polish", () => {
+  beforeEach(() => {
+    window.history.replaceState(null, "", "/pl-PL/account/login");
+  });
+
+  it("renders the Polish copy and validation messages", async () => {
+    const { container, form, error } = await setup({}, {}, null, "pl-PL");
+
+    expect(container.querySelector("h1")?.textContent).toBe(
+      "Zaloguj się do swojego konta",
+    );
+
+    await interact(() => submitForm(form));
+
+    expect(error("login-username")?.textContent).toBe("Wartość jest wymagana");
+  });
+
+  it("confirms the login in Polish and goes to the Polish home page", async () => {
+    const { notify, form, email, password } = await setup(
+      { login: vi.fn(async () => ({ ok: true })) },
+      {},
+      null,
+      "pl-PL",
+    );
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submitForm(form));
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Zostałeś pomyślnie zalogowany.",
+    });
+    expect(navigation.push).toHaveBeenCalledWith("/pl-PL");
+  });
+
+  it("keeps an already prefixed redirect and prefixes an unprefixed one", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/pl-PL/account/login?redirect=%2Fpl-PL%2Faccount%2Forder",
+    );
+    const first = await setup(
+      { login: vi.fn(async () => ({ ok: true })) },
+      {},
+      null,
+      "pl-PL",
+    );
+    await interact(() => setInputValue(first.email, "jane@example.com"));
+    await interact(() => setInputValue(first.password, "secret"));
+    await interact(() => submitForm(first.form));
+    expect(navigation.push).toHaveBeenCalledWith("/pl-PL/account/order");
+
+    await mounted?.unmount();
+    mounted = undefined;
+    navigation.push.mockReset();
+
+    const second = await setup(
+      { login: vi.fn(async () => ({ ok: true })) },
+      { redirectUrl: "/account" },
+      null,
+      "pl-PL",
+    );
+    await interact(() => setInputValue(second.email, "jane@example.com"));
+    await interact(() => setInputValue(second.password, "secret"));
+    await interact(() => submitForm(second.form));
+    expect(navigation.push).toHaveBeenCalledWith("/pl-PL/account");
+  });
+
+  it("sends the visitor to the Polish registration anchor", async () => {
+    const { container } = await setup({}, {}, null, "pl-PL");
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="login-sign-up-button"]',
+      ).click(),
+    );
+
+    expect(navigation.push).toHaveBeenCalledWith(
+      "/pl-PL/account/login#registration",
+    );
   });
 });

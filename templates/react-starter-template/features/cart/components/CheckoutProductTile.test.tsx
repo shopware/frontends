@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import { ContentLanguageProvider } from "@/i18n/ContentLanguageProvider";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { lineItem, promotionItem } from "./cartView.fixture";
@@ -146,5 +148,80 @@ describe("CheckoutProductTile", () => {
 
     expect(html).not.toContain("product-quantity");
     expect(html).toContain("cart-product-options");
+  });
+});
+
+describe("CheckoutProductTile in other locales", () => {
+  it("translates the image alt and the remove button", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <CheckoutProductTile
+          item={lineItem()}
+          onRemove={vi.fn()}
+          onChangeQuantity={vi.fn()}
+        />,
+        "pl-PL",
+      ),
+    );
+
+    expect(tag(html, "checkout-product-tile-image")).toContain(
+      'alt="Aerodynamic Bronze Brandix – produkt w koszyku"',
+    );
+    expect(html).toContain(">Usuń</button>");
+  });
+
+  it.each([
+    ["pl-PL", "Ilość", "Zwiększ ilość", "Zmniejsz ilość"],
+    ["de-DE", "Menge", "Menge erhöhen", "Vermindern Menge"],
+  ] as const)(
+    "labels the %s quantity stepper in the page language",
+    async (locale, label, increase, decrease) => {
+      const html = await renderToHtml(
+        withI18n(
+          <CheckoutProductTile
+            item={lineItem()}
+            onRemove={vi.fn()}
+            onChangeQuantity={vi.fn()}
+          />,
+          locale,
+        ),
+      );
+
+      expect(html).toContain(`aria-label="${decrease}"`);
+      expect(html).toContain(`aria-label="${increase}"`);
+      expect(tag(html, "product-quantity")).toContain(`aria-label="${label}"`);
+      expect(html).not.toContain("Increase quantity");
+    },
+  );
+
+  it("declares the content language on the Shopware label and options only", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <ContentLanguageProvider lang="en-US">
+          <CheckoutProductTile
+            item={lineItem()}
+            onRemove={vi.fn()}
+            onChangeQuantity={vi.fn()}
+          />
+        </ContentLanguageProvider>,
+        "pl-PL",
+      ),
+    );
+
+    expect(html).toContain(
+      '<div class="line-clamp-2" lang="en-US">Aerodynamic Bronze Brandix</div>',
+    );
+    expect(tag(html, "cart-product-options")).toContain('lang="en-US"');
+    expect(tag(html, "checkout-product-tile-image")).not.toContain("lang=");
+    expect(tag(html, "checkout-product-tile-remove-button")).not.toContain(
+      "lang=",
+    );
+    expect(html.match(/lang="/g)).toHaveLength(2);
+  });
+
+  it("declares no language without a content language", async () => {
+    const html = await render(lineItem());
+
+    expect(html).not.toContain("lang=");
   });
 });

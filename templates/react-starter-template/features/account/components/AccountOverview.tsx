@@ -7,31 +7,16 @@ import { AddressDataSection } from "@/features/account/address/components/Addres
 import { useCustomer } from "@/features/account/customer/useCustomer";
 import { PersonalDataSection } from "@/features/account/personal/components/PersonalDataSection";
 import { NewsletterSection } from "@/features/account/profile/components/NewsletterSection";
-import { errorMessages } from "@/features/session/errorMessages";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { AccountPageHeader } from "./AccountPageHeader";
 import { AccountSectionHeader } from "./AccountSectionHeader";
-
-const t = {
-  "account.overview.header": "Overview",
-  "account.overview.subHeader":
-    "Directly access your profile information, the default payment method and given addresses.",
-  "account.overview.personalDataSectionHeader": "Personal data",
-  "account.overview.defaultBillingAddressSectionHeader":
-    "Default billing address",
-  "account.overview.defaultShippingAddressSectionHeader":
-    "Default shipping address",
-  "account.overview.newsletter.subscriptionSectionHeader":
-    "Newsletter subscription",
-  "errors.message-default": errorMessages.errors["message-default"],
-  "form.loading": "Loading...",
-  "listing.retry": "Try again",
-};
 
 const PLACEHOLDER = "rounded bg-surface-surface-container";
 
 export function AccountOverview() {
   const { status, customer, refresh } = useCustomer();
+  const t = useTranslations();
   const [retrying, setRetrying] = useState(false);
 
   async function retry() {
@@ -47,8 +32,8 @@ export function AccountOverview() {
     <div>
       <AccountPageHeader
         className="mb-14"
-        title={t["account.overview.header"]}
-        subtitle={t["account.overview.subHeader"]}
+        title={t("account.overview.header")}
+        subtitle={t("account.overview.subHeader")}
       />
       {status === "loading" ? (
         <AccountOverviewSkeleton />
@@ -57,7 +42,7 @@ export function AccountOverview() {
           <div className="mb-10">
             <AccountSectionHeader
               className="mb-4"
-              title={t["account.overview.personalDataSectionHeader"]}
+              title={t("account.overview.personalDataSectionHeader")}
             />
             <PersonalDataSection
               customerName={[customer.firstName, customer.lastName]
@@ -70,7 +55,7 @@ export function AccountOverview() {
           <div className="mb-10">
             <AccountSectionHeader
               className="mb-4"
-              title={t["account.overview.newsletter.subscriptionSectionHeader"]}
+              title={t("account.overview.newsletter.subscriptionSectionHeader")}
             />
             <NewsletterSection email={customer.email} />
           </div>
@@ -79,7 +64,7 @@ export function AccountOverview() {
             <div className="mb-10 flex-1">
               <AccountSectionHeader
                 className="mb-4"
-                title={t["account.overview.defaultBillingAddressSectionHeader"]}
+                title={t("account.overview.defaultBillingAddressSectionHeader")}
               />
               {customer.defaultBillingAddress ? (
                 <AddressDataSection address={customer.defaultBillingAddress} />
@@ -88,9 +73,9 @@ export function AccountOverview() {
             <div className="mb-10 flex-1">
               <AccountSectionHeader
                 className="mb-4"
-                title={
-                  t["account.overview.defaultShippingAddressSectionHeader"]
-                }
+                title={t(
+                  "account.overview.defaultShippingAddressSectionHeader",
+                )}
               />
               {customer.defaultShippingAddress ? (
                 <AddressDataSection address={customer.defaultShippingAddress} />
@@ -101,7 +86,7 @@ export function AccountOverview() {
       ) : (
         <div className="mb-10 flex flex-col items-start gap-4">
           <p role="alert" className="text-surface-on-surface">
-            {t["errors.message-default"]}
+            {t("errors.message-default")}
           </p>
           <BaseButton
             variant="secondary"
@@ -111,7 +96,7 @@ export function AccountOverview() {
               void retry();
             }}
           >
-            {t["listing.retry"]}
+            {t("listing.retry")}
           </BaseButton>
         </div>
       )}
@@ -120,13 +105,14 @@ export function AccountOverview() {
 }
 
 function AccountOverviewSkeleton() {
+  const t = useTranslations();
   return (
     <div
       aria-busy="true"
       data-testid="account-overview-skeleton"
       className="animate-pulse"
     >
-      <output className="sr-only">{t["form.loading"]}</output>
+      <output className="sr-only">{t("form.loading")}</output>
       {[0, 1].map((section) => (
         <div key={section} className="mb-10">
           <div className="mb-4 border-b border-outline-outline-variant pb-2">

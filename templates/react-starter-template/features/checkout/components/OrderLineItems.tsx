@@ -1,21 +1,13 @@
+"use client";
+
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
 import { Price } from "@/components/Price";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { ImageIcon, PercentageIcon, TagIcon } from "./CheckoutIcons";
-
-const t = {
-  account: {
-    order: {
-      quantity: "Quantity",
-    },
-  },
-  cart: {
-    digital: "Digital",
-    promotion: "Promotion",
-  },
-};
 
 type LineItemKind = "product" | "promotion" | "credit" | "custom";
 
@@ -46,6 +38,7 @@ function LineItemMedia({
   lineItem: Schemas["OrderLineItem"];
   kind: LineItemKind;
 }) {
+  const contentLang = useContentLang();
   if (kind === "promotion") {
     return <TagIcon className="size-8 text-brand-primary" />;
   }
@@ -63,6 +56,7 @@ function LineItemMedia({
     <img
       src={coverUrl}
       alt={lineItem.label}
+      lang={contentLang}
       className="size-full object-cover object-center"
       loading="lazy"
     />
@@ -74,6 +68,8 @@ export function OrderLineItem({
 }: {
   lineItem: Schemas["OrderLineItem"];
 }) {
+  const t = useTranslations();
+  const contentLang = useContentLang();
   const kind = lineItemKind(lineItem);
   const testIdPrefix = PRICE_TEST_ID_PREFIX[kind];
   const isDigital =
@@ -90,25 +86,25 @@ export function OrderLineItem({
       <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="leading-normal text-surface-on-surface">
-            {lineItem.label}
+            <span lang={contentLang}>{lineItem.label}</span>
             {isDigital ? (
               <span
                 data-testid="cart-product-digital-label"
                 className={`${BADGE_CLASS} bg-states-info-container text-states-on-info-container`}
               >
-                {t.cart.digital}
+                {t("cart.digital")}
               </span>
             ) : null}
             {kind === "promotion" ? (
               <span
                 className={`${BADGE_CLASS} bg-states-success-container text-states-on-success-container`}
               >
-                {t.cart.promotion}
+                {t("cart.promotion")}
               </span>
             ) : null}
           </div>
           <div className="mt-1 text-sm text-surface-on-surface-variant">
-            {t.account.order.quantity} {lineItem.quantity}
+            {t("account.order.quantity")} {lineItem.quantity}
           </div>
         </div>
         <div className="shrink-0 sm:text-right">

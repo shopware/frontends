@@ -13,6 +13,7 @@ import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
+  REGISTRATION_MIN_LENGTHS,
   emptyRegistrationValues,
   toRegistrationInput,
   validateRegistration,
@@ -23,54 +24,9 @@ import type {
   RegistrationValues,
 } from "@/features/account/registrationSchema";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
-
-const t = {
-  account: {
-    signUpHeader: "Create an account",
-    signUpSubHeader: "Register to get started",
-    yourAddress: "Your address",
-    messages: {
-      signUpSuccess:
-        "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-    },
-  },
-  form: {
-    accountType: {
-      title: "Account type",
-      private: "Private",
-      business: "Company",
-    },
-    firstName: "First name",
-    lastName: "Last name",
-    email: "Email address",
-    password: "Password",
-    vatId: "VAT ID",
-    company: "Company",
-    streetAddress: "Street address",
-    postalCode: "ZIP / Postal code",
-    city: "City",
-    country: "Country",
-    chooseCountry: "Choose country...",
-    state: "State",
-    chooseState: "Choose state",
-    submit: "Submit",
-    requiredFieldsNote: "Fields marked with asterisks (*) are required.",
-    minLengthHint: "At least {min} characters",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
-
-function minLengthHint(min: number): string {
-  return t.form.minLengthHint.replace("{min}", String(min));
-}
-
-const ACCOUNT_TYPE_OPTIONS = [
-  { label: t.form.accountType.private, value: "private" },
-  { label: t.form.accountType.business, value: "business" },
-];
 
 type Touched = Partial<Record<RegistrationField, boolean>>;
 
@@ -101,6 +57,9 @@ export function RegistrationForm({
   const router = useRouter();
   const { register } = useSessionActions();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const contentLang = useContentLang();
+  const localePath = useLocalePath();
   const [values, setValues] = useState<RegistrationValues>(() =>
     initialValues(companyOnly),
   );
@@ -122,7 +81,13 @@ export function RegistrationForm({
     countries.find((country) => country.id === values.countryId) ?? null;
   const states = selectedCountry?.states ?? [];
   const countryHasStates = states.length > 0;
-  const errors = validateRegistration(values, { countryHasStates });
+  const errors = validateRegistration(values, { countryHasStates }, t);
+  const minLengthHint = (min: number) =>
+    t("account.registration.minLengthHint", { min }, min);
+  const accountTypeOptions = [
+    { label: t("form.accountType.private"), value: "private" },
+    { label: t("form.accountType.business"), value: "business" },
+  ];
 
   const errorFor = (field: RegistrationField) =>
     submitted || touched[field] ? errors[field] : undefined;
@@ -172,7 +137,7 @@ export function RegistrationForm({
     if (busy) return;
     setSubmitted(true);
     if (
-      Object.keys(validateRegistration(values, { countryHasStates })).length
+      Object.keys(validateRegistration(values, { countryHasStates }, t)).length
     ) {
       setFocusRequest((count) => count + 1);
       return;
@@ -194,7 +159,7 @@ export function RegistrationForm({
         redirectUrl,
       );
       startNavigation(() => {
-        router.push(target);
+        router.push(localePath(target));
       });
     } catch (cause) {
       notify({
@@ -211,19 +176,19 @@ export function RegistrationForm({
       <output ref={successBoxRef} aria-live="polite" className="block">
         {doubleOptInPending ? (
           <span className="mb-4 block border-t border-b border-states-success bg-states-success-container px-4 py-3 text-states-on-success-container">
-            {t.account.messages.signUpSuccess}
+            {t("account.messages.signUpSuccess")}
           </span>
         ) : null}
       </output>
       <div className="mb-6">
         <h2 id="sign-up-heading" className="text-2xl font-bold">
-          {t.account.signUpHeader}
+          {t("account.signUpHeader")}
         </h2>
         <p className="text-sm text-surface-on-surface-variant">
-          {t.account.signUpSubHeader}
+          {t("account.signUpSubHeader")}
         </p>
         <p className="mt-2 text-sm text-surface-on-surface-variant">
-          {t.form.requiredFieldsNote}
+          {t("form.requiredFieldsNote")}
         </p>
       </div>
       <form
@@ -242,8 +207,8 @@ export function RegistrationForm({
               className="col-span-12"
               id="accountType"
               data-testid="registration-account-type-select"
-              label={t.form.accountType.title}
-              options={ACCOUNT_TYPE_OPTIONS}
+              label={t("form.accountType.title")}
+              options={accountTypeOptions}
               value={values.accountType}
               onChange={(event) =>
                 setField("accountType", toAccountType(event.target.value))
@@ -256,8 +221,8 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="firstName"
             data-testid="registration-first-name-input"
-            label={t.form.firstName}
-            hint={minLengthHint(3)}
+            label={t("form.firstName")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.firstName)}
             required
             autoComplete="given-name"
             value={values.firstName}
@@ -269,8 +234,8 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="lastName"
             data-testid="registration-last-name-input"
-            label={t.form.lastName}
-            hint={minLengthHint(3)}
+            label={t("form.lastName")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.lastName)}
             required
             autoComplete="family-name"
             value={values.lastName}
@@ -283,7 +248,7 @@ export function RegistrationForm({
             id="emailAddress"
             data-testid="registration-email-input"
             type="email"
-            label={t.form.email}
+            label={t("form.email")}
             required
             autoComplete="email"
             value={values.email}
@@ -296,8 +261,8 @@ export function RegistrationForm({
             id="password"
             data-testid="registration-password-input"
             type="password"
-            label={t.form.password}
-            hint={minLengthHint(8)}
+            label={t("form.password")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.password)}
             required
             autoComplete="new-password"
             value={values.password}
@@ -310,7 +275,7 @@ export function RegistrationForm({
               className="col-span-12 md:col-span-4"
               id="vatId"
               data-testid="registration-vatid-input"
-              label={t.form.vatId}
+              label={t("form.vatId")}
               value={values.vatId}
               onChange={inputHandler("vatId")}
               onBlur={touch("vatId")}
@@ -323,7 +288,7 @@ export function RegistrationForm({
           id="address-heading"
           className="mb-5 block border-b border-outline-outline-variant pb-2 font-bold"
         >
-          {t.account.yourAddress}
+          {t("account.yourAddress")}
         </h3>
         <fieldset
           className="mb-5 grid min-w-0 grid-cols-12 gap-5"
@@ -334,7 +299,7 @@ export function RegistrationForm({
               className="col-span-12 md:col-span-4"
               id="company"
               data-testid="registration-company-input"
-              label={t.form.company}
+              label={t("form.company")}
               required
               autoComplete="organization"
               value={values.company}
@@ -347,8 +312,8 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="street"
             data-testid="registration-street-input"
-            label={t.form.streetAddress}
-            hint={minLengthHint(3)}
+            label={t("form.streetAddress")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.street)}
             required
             autoComplete="street-address"
             value={values.street}
@@ -360,7 +325,7 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="zipcode"
             data-testid="registration-zipcode-input"
-            label={t.form.postalCode}
+            label={t("form.postalCode")}
             required
             autoComplete="postal-code"
             value={values.zipcode}
@@ -372,7 +337,7 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="city"
             data-testid="registration-city-input"
-            label={t.form.city}
+            label={t("form.city")}
             required
             autoComplete="address-level2"
             value={values.city}
@@ -385,8 +350,8 @@ export function RegistrationForm({
               <CountrySelect
                 className="w-full"
                 id="country"
-                label={t.form.country}
-                placeholder={t.form.chooseCountry}
+                label={t("form.country")}
+                placeholder={t("form.chooseCountry")}
                 countries={countries}
                 value={values.countryId}
                 onChange={handleCountryChange}
@@ -403,7 +368,7 @@ export function RegistrationForm({
                   aria-busy={refreshing}
                   onClick={retryCountries}
                 >
-                  {t.listing.retry}
+                  {t("listing.retry")}
                 </BaseButton>
               ) : null}
             </div>
@@ -412,10 +377,11 @@ export function RegistrationForm({
                 className="w-full"
                 id="state"
                 data-testid="checkout-pi-state-input"
-                label={t.form.state}
-                placeholder={t.form.chooseState}
+                label={t("form.state")}
+                placeholder={t("form.chooseState")}
                 required
                 autoComplete="address-level1"
+                optionsLang={contentLang}
                 options={states.map((state) => ({
                   label: state.name,
                   value: state.id,
@@ -436,7 +402,7 @@ export function RegistrationForm({
             aria-disabled={busy || undefined}
             className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           >
-            {t.form.submit}
+            {t("form.submit")}
           </BaseButton>
         </div>
       </form>

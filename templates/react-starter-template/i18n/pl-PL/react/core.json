@@ -1,0 +1,99 @@
+{
+  "cms": {
+    "noLayout": {
+      "category": "Ta kategoria nie ma przypisanego układu.",
+      "product": "Ten produkt nie ma przypisanego układu.",
+      "landingPage": "Ta strona docelowa nie ma przypisanego układu."
+    },
+    "image": {
+      "linkWithoutLabel": "Otwórz powiązaną stronę"
+    },
+    "video": {
+      "privacyNoticeText": "Oglądając film, zgadzasz się na przekazanie swoich danych do {platform} i potwierdzasz zapoznanie się z polityką prywatności.",
+      "acceptButtonLabel": "Akceptuję"
+    },
+    "vimeoVideo": {
+      "iframeTitle": "Film Vimeo"
+    },
+    "youtubeVideo": {
+      "iframeTitle": "Film YouTube"
+    }
+  },
+  "meta": {
+    "description": "Szablon sklepu Next.js dla Shopware 6."
+  },
+  "errors": {
+    "noDetailsProvided": "Brak szczegółów"
+  },
+  "product": {
+    "previously": "Wcześniej",
+    "amount": "Ilość",
+    "price": {
+      "label": "Cena",
+      "to": "Do",
+      "from": "Od"
+    },
+    "to": "Do",
+    "from": "Od",
+    "content": "Zawartość",
+    "pricesIncl": "Ceny zawierają VAT, nie zawierają kosztów wysyłki",
+    "pricesExcl": "Ceny bez VAT, nie zawierają kosztów wysyłki",
+    "description": "Opis",
+    "reviews": "Opinie",
+    "noReviews": "Brak opinii.",
+    "reviewNotAccepted": "Twoja opinia nie została jeszcze zatwierdzona",
+    "reviewFeedback": "Odpowiedź sklepu",
+    "addedToWishlist": "został dodany do listy życzeń.",
+    "removedFromTheWishlist": "został usunięty z listy życzeń.",
+    "reason": "Powód",
+    "cannotAddToWishlist": "nie może zostać dodany do listy życzeń.",
+    "addedToCart": "został dodany do koszyka.",
+    "details": "Szczegóły",
+    "badges": {
+      "topseller": "Polecamy"
+    },
+    "qty": "Ilość",
+    "productNumber": "Numer produktu",
+    "chooseA": "Wybierz",
+    "deliveryTime": "Dostępny, czas dostawy",
+    "days": "dni",
+    "noAvailable": "Produkt niedostępny"
+  },
+  "listing": {
+    "noProducts": "Nie znaleziono produktów 😔",
+    "variantsFrom": "warianty od",
+    "previously": "wcześniej",
+    "from": "od",
+    "to": "do",
+    "filters": "Filtry",
+    "sort": "Sortuj",
+    "resetFilters": "Wyczyść filtry",
+    "freeShipping": "Darmowa wysyłka",
+    "perPage": "Na stronie:",
+    "product": "Produkt",
+    "products": "Produkty",
+    "min": "Min",
+    "max": "Maks",
+    "previous": "Poprzednia",
+    "next": "Następna"
+  },
+  "form": {
+    "salutationPlaceholder": "Wybierz zwrot grzecznościowy...",
+    "phone": "Numer telefonu",
+    "phonePlaceholder": "Wpisz numer telefonu...",
+    "subject": "Temat",
+    "subjectPlaceholder": "Wpisz temat...",
+    "comment": "Komentarz",
+    "commentPlaceholder": "Wpisz komentarz...",
+    "privacy": "Prywatność",
+    "dataProtection": "Zapoznałem się z informacjami o ochronie danych.",
+    "messages": {
+      "contactFormSuccess": "Otrzymaliśmy Twoje zgłoszenie i wkrótce się nim zajmiemy."
+    },
+    "subscribeLabel": "Zapisz się do newslettera",
+    "unsubscribeLabel": "Wypisz się z newslettera",
+    "action": "Akcja",
+    "privacyLabel": "Zapoznałem się z informacjami o ochronie danych.",
+    "newsletterBenefits": "Bądź na bieżąco z wyprzedażami i wydarzeniami. Otrzymuj prezenty i oferty specjalne!"
+  }
+}

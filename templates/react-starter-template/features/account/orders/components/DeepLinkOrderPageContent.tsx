@@ -13,6 +13,7 @@ import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import {
   emptyDeepLinkCredentials,
@@ -31,31 +32,6 @@ import { OrderDetailSkeleton } from "./OrderDetailSkeleton";
 import { orderTitle } from "./OrderDetailsPageContent";
 import { OrderDetailView } from "./OrderDetailView";
 import { DocumentUnknownIcon } from "./OrderIcons";
-
-const t = {
-  account: {
-    order: {
-      backToList: "Back to orders list",
-      authOrderTitle: "Verify your order",
-      authOrderText:
-        "Please enter the email address and postal code used when placing the order.",
-      authOrderButton: "Verify order",
-      emailPlaceholder: "Email address",
-      postalCodePlaceholder: "Postal code",
-    },
-    messages: {
-      orderSuccessNoOrder: "The order could not be found.",
-      orderWrongData:
-        "The email address or postal code is incorrect. Please try again.",
-    },
-  },
-  messages: {
-    error: "An error occurred. Please try again.",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
 
 type Phase =
   | { name: "loading" }
@@ -78,14 +54,15 @@ export function DeepLinkOrderPageContent({
 }
 
 function NotFound() {
+  const t = useTranslations();
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <DocumentUnknownIcon className="mb-4 size-16 text-surface-on-surface-variant" />
       <h1 className="mb-2 text-xl font-semibold text-surface-on-surface">
-        {t.account.messages.orderSuccessNoOrder}
+        {t("account.messages.orderSuccessNoOrder")}
       </h1>
       <p className="max-w-md text-sm text-surface-on-surface-variant">
-        {t.account.order.authOrderText}
+        {t("account.order.authOrderText")}
       </p>
     </div>
   );
@@ -96,6 +73,7 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
   const { refreshSession } = useSessionActions();
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const [phase, setPhase] = useState<Phase>({ name: "loading" });
   const started = useRef(false);
   const focusResult = useRef(false);
@@ -106,10 +84,17 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
       let result: DeepLinkOrderResult;
       try {
         const client = await getClient();
-        result = await readDeepLinkOrder(client, { deepLinkCode, credentials });
+        result = await readDeepLinkOrder(
+          client,
+          { deepLinkCode, credentials },
+          t,
+        );
       } catch (error) {
         console.error("[Account] reading the order failed", error);
-        result = { status: "failed", messages: resolveApiErrorMessages(error) };
+        result = {
+          status: "failed",
+          messages: resolveApiErrorMessages(error, t),
+        };
       }
 
       const focusHeading = focusResult.current;
@@ -131,7 +116,10 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
           setPhase({ name: "auth", notFound: credentials !== null });
           return;
         case "wrongCredentials":
-          notify({ type: "error", message: t.account.messages.orderWrongData });
+          notify({
+            type: "error",
+            message: t("account.messages.orderWrongData"),
+          });
           setPhase({ name: "auth", notFound: false });
           return;
         case "failed":
@@ -146,7 +134,7 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
           return;
       }
     },
-    [deepLinkCode, getClient, notify, refreshSession],
+    [deepLinkCode, getClient, notify, refreshSession, t],
   );
 
   useEffect(() => {
@@ -171,14 +159,14 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
         return (
           <div role="alert" className="py-8 text-center text-sm">
             <p className="text-surface-on-surface-variant">
-              {phase.messages[0] ?? t.messages.error}
+              {phase.messages[0] ?? t("messages.error")}
             </p>
             <button
               type="button"
               className="mt-3 text-surface-on-surface underline"
               onClick={retry}
             >
-              {t.listing.retry}
+              {t("listing.retry")}
             </button>
           </div>
         );
@@ -206,7 +194,7 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
     <div className="mx-auto my-8 w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8">
       {session.isLoggedIn ? (
         <div className="mb-5">
-          <OrderBackLink label={t.account.order.backToList} />
+          <OrderBackLink label={t("account.order.backToList")} />
         </div>
       ) : null}
       {renderBody()}
@@ -221,6 +209,7 @@ function DeepLinkOrderView({
   details: OrderDetails;
   focusHeading: boolean;
 }) {
+  const t = useTranslations();
   const { state, reload } = useOrderDetails(details.order.id, details);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const current = state.status === "ready" ? state.details : details;
@@ -233,7 +222,7 @@ function DeepLinkOrderView({
     <>
       <AccountPageHeader
         className="mb-14"
-        title={orderTitle(current.order.orderNumber)}
+        title={orderTitle(t, current.order.orderNumber)}
         headingRef={headingRef}
       />
       <OrderDetailView details={current} onReload={reload} />
@@ -248,6 +237,7 @@ function DeepLinkAuthForm({
   headingLevel: 1 | 2;
   onSubmit: (credentials: DeepLinkCredentials) => Promise<void>;
 }) {
+  const t = useTranslations();
   const [values, setValues] = useState<DeepLinkCredentials>(
     emptyDeepLinkCredentials,
   );
@@ -257,7 +247,7 @@ function DeepLinkAuthForm({
   const [focusRequest, setFocusRequest] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const errors = validateDeepLinkCredentials(values);
+  const errors = validateDeepLinkCredentials(values, t);
   const errorFor = (field: Field) =>
     submitted || touched[field] ? errors[field] : undefined;
   const setField = (field: Field, value: string) =>
@@ -276,7 +266,7 @@ function DeepLinkAuthForm({
     event.preventDefault();
     if (pending) return;
     setSubmitted(true);
-    const credentials = parseDeepLinkCredentials(values);
+    const credentials = parseDeepLinkCredentials(values, t);
     if (!credentials) {
       setFocusRequest((count) => count + 1);
       return;
@@ -294,10 +284,10 @@ function DeepLinkAuthForm({
   return (
     <div>
       <Heading className="mb-2 text-2xl font-bold text-surface-on-surface">
-        {t.account.order.authOrderTitle}
+        {t("account.order.authOrderTitle")}
       </Heading>
       <p className="mb-6 text-sm text-surface-on-surface-variant">
-        {t.account.order.authOrderText}
+        {t("account.order.authOrderText")}
       </p>
       <form
         ref={formRef}
@@ -313,8 +303,8 @@ function DeepLinkAuthForm({
             id="deep-link-email"
             className="flex-1"
             type="email"
-            label={t.account.order.emailPlaceholder}
-            placeholder={t.account.order.emailPlaceholder}
+            label={t("account.order.emailPlaceholder")}
+            placeholder={t("account.order.emailPlaceholder")}
             autoComplete="email"
             required
             value={values.email}
@@ -326,8 +316,8 @@ function DeepLinkAuthForm({
             id="deep-link-postal-code"
             className="sm:w-2/5"
             type="text"
-            label={t.account.order.postalCodePlaceholder}
-            placeholder={t.account.order.postalCodePlaceholder}
+            label={t("account.order.postalCodePlaceholder")}
+            placeholder={t("account.order.postalCodePlaceholder")}
             autoComplete="postal-code"
             required
             value={values.zipcode}
@@ -344,7 +334,7 @@ function DeepLinkAuthForm({
             aria-disabled={pending || undefined}
             className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           >
-            {t.account.order.authOrderButton}
+            {t("account.order.authOrderButton")}
           </BaseButton>
         </div>
       </form>

@@ -5,17 +5,10 @@ import type { IconButtonProps } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { ChevronUpIcon, CloseIcon, MenuIcon } from "@/components/icons";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import type { NavigationNode } from "../navigationTree";
 import { NavigationLink } from "./NavigationLink";
-
-const t = {
-  "layout.ariaLabels.sidebar": "Sidebar",
-  "layout.sideMenu.open": "Open menu",
-  "layout.sideMenu.close": "Close menu",
-  "layout.sideMenu.showSubcategories": "Show subcategories",
-  "layout.sideMenu.hideSubcategories": "Hide subcategories",
-};
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -26,12 +19,13 @@ type BurgerButtonProps = Omit<
 >;
 
 function BurgerButton({ className, ...props }: BurgerButtonProps) {
+  const t = useTranslations();
   return (
     <IconButton
       {...props}
       variant="ghost"
       className={cx("lg:hidden", className)}
-      aria-label={t["layout.sideMenu.open"]}
+      aria-label={t("layout.sideMenu.open")}
     >
       <MenuIcon className="size-5 text-brand-primary" />
     </IconButton>
@@ -49,6 +43,7 @@ export function MobileMenu({
   tree: NavigationNode[];
   className?: string;
 }) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [expandedIds, setExpandedIds] = useState<ReadonlySet<string>>(
     () => new Set(),
@@ -122,7 +117,7 @@ export function MobileMenu({
           <button
             type="button"
             tabIndex={-1}
-            aria-label={t["layout.sideMenu.close"]}
+            aria-label={t("layout.sideMenu.close")}
             className="fixed inset-0 z-40 cursor-default bg-overlay-dark-high"
             onClick={close}
           />
@@ -132,7 +127,7 @@ export function MobileMenu({
             id={drawerId}
             data-testid="sidebar-left"
             aria-modal="true"
-            aria-label={t["layout.ariaLabels.sidebar"]}
+            aria-label={t("layout.ariaLabels.sidebar")}
             className="fixed inset-y-0 left-0 right-auto z-40 m-0 flex h-auto max-h-none w-screen max-w-md flex-col bg-surface-surface p-0 text-surface-on-surface shadow-xl"
           >
             <div className="flex px-4 py-5">
@@ -142,7 +137,7 @@ export function MobileMenu({
                 className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-surface-on-surface"
                 onClick={close}
               >
-                <span className="sr-only">{t["layout.sideMenu.close"]}</span>
+                <span className="sr-only">{t("layout.sideMenu.close")}</span>
                 <CloseIcon className="size-3" />
               </IconButton>
             </div>
@@ -168,8 +163,8 @@ export function MobileMenu({
                             className="flex size-12 items-center justify-center bg-transparent"
                             aria-label={
                               expanded
-                                ? t["layout.sideMenu.hideSubcategories"]
-                                : t["layout.sideMenu.showSubcategories"]
+                                ? t("layout.sideMenu.hideSubcategories")
+                                : t("layout.sideMenu.showSubcategories")
                             }
                             aria-expanded={expanded}
                             aria-controls={sublistId}

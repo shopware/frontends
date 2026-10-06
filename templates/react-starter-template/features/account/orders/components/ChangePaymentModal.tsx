@@ -5,24 +5,9 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { useId, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { Modal } from "./Modal";
-
-const t = {
-  account: {
-    orderDetails: {
-      changePaymentMethod: "Change payment method",
-      close: "Close",
-      confirm: "Confirm",
-    },
-  },
-  messages: {
-    error: "An error occurred. Please try again.",
-  },
-  form: {
-    loading: "Loading...",
-  },
-};
 
 const SKELETON_ROWS = [0, 1, 2];
 
@@ -44,11 +29,12 @@ export function ChangePaymentModal({
   open,
   ...props
 }: ChangePaymentModalProps) {
+  const t = useTranslations();
   return (
     <Modal
       open={open}
-      title={t.account.orderDetails.changePaymentMethod}
-      closeLabel={t.account.orderDetails.close}
+      title={t("account.orderDetails.changePaymentMethod")}
+      closeLabel={t("account.orderDetails.close")}
       onClose={() => {
         if (!props.busy) props.onClose();
       }}
@@ -66,6 +52,7 @@ function ChangePaymentForm({
   onClose,
   onConfirm,
 }: Omit<ChangePaymentModalProps, "open">) {
+  const t = useTranslations();
   const legendId = useId();
   const [selectedId, setSelectedId] = useState<string | null>(
     currentPaymentMethodId,
@@ -85,11 +72,11 @@ function ChangePaymentForm({
     >
       <fieldset className="space-y-4">
         <legend id={legendId} className="sr-only">
-          {t.account.orderDetails.changePaymentMethod}
+          {t("account.orderDetails.changePaymentMethod")}
         </legend>
         {methods.status === "loading" ? (
           <div aria-busy="true">
-            <output className="sr-only">{t.form.loading}</output>
+            <output className="sr-only">{t("form.loading")}</output>
             {SKELETON_ROWS.map((row) => (
               <div
                 key={row}
@@ -107,7 +94,7 @@ function ChangePaymentForm({
         ) : null}
         {methods.status === "error" ? (
           <p role="alert" className="text-sm text-states-error">
-            {t.messages.error}
+            {t("messages.error")}
           </p>
         ) : null}
         {methods.status === "ready"
@@ -157,7 +144,7 @@ function ChangePaymentForm({
           disabled={busy}
           onClick={onClose}
         >
-          {t.account.orderDetails.close}
+          {t("account.orderDetails.close")}
         </BaseButton>
         <BaseButton
           type="submit"
@@ -168,7 +155,7 @@ function ChangePaymentForm({
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           data-testid="change-payment-confirm-button"
         >
-          {t.account.orderDetails.confirm}
+          {t("account.orderDetails.confirm")}
         </BaseButton>
       </div>
     </form>

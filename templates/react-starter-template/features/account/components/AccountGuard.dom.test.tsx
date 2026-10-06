@@ -8,6 +8,8 @@ import { SessionActionsProvider } from "@/features/session/components/SessionAct
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -102,19 +104,23 @@ async function setup(
   initial: StorefrontSession,
   actions: Partial<SessionActions> = {},
   extra: ReactNode = null,
+  locale: Locale = "en-GB",
 ) {
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={actions}>
-        <ControlledSession initial={initial}>
-          {extra}
-          <AccountGuard>
-            <p data-testid="account-content">Customer data</p>
-          </AccountGuard>
-        </ControlledSession>
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={actions}>
+          <ControlledSession initial={initial}>
+            {extra}
+            <AccountGuard>
+              <p data-testid="account-content">Customer data</p>
+            </AccountGuard>
+          </ControlledSession>
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -351,5 +357,43 @@ describe("AccountGuard", () => {
 
     expect(replace).toHaveBeenCalledTimes(1);
     expect(notify).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("AccountGuard in Polish", () => {
+  it("sends the visitor to the Polish login page with the full prefixed path", async () => {
+    window.history.replaceState(null, "", "/pl-PL/account/order?page=2");
+
+    const { notify, skeleton } = await setup(anonymous, {}, null, "pl-PL");
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith(
+      "/pl-PL/account/login?redirect=%2Fpl-PL%2Faccount%2Forder%3Fpage%3D2",
+    );
+    expect(notify).toHaveBeenCalledWith({
+      type: "info",
+      message:
+        "Logowanie jest wymagane, aby uzyskać dostęp do tej strony. Zostaniesz przekierowany na stronę logowania.",
+    });
+    expect(skeleton()?.querySelector("output")?.textContent).toBe(
+      "Ładowanie...",
+    );
+  });
+
+  it("goes to the Polish home page after a logout started on the page", async () => {
+    window.history.replaceState(null, "", "/pl-PL/account");
+    const { container } = await setup(
+      loggedIn,
+      { logout: vi.fn(async () => ({ ok: true })) },
+      <LogoutButton />,
+      "pl-PL",
+    );
+
+    await interact(() =>
+      container
+        .querySelector<HTMLButtonElement>('[data-testid="logout"]')
+        ?.click(),
+    );
+
+    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL");
   });
 });

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { unavailableSession } from "@/features/session/sessionFromContext";
 import type { StorefrontSession } from "@/features/session/types";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -20,6 +21,7 @@ import {
   sessionControl,
 } from "../checkoutTestDoubles";
 import { redirectToPayment } from "../paymentRedirect";
+import { formatOrderDate } from "./OrderConfirmation";
 import { SuccessPageContent } from "./SuccessPageContent";
 
 const { replace } = vi.hoisted(() => ({ replace: vi.fn() }));
@@ -296,5 +298,68 @@ describe("SuccessPageContent", () => {
     expect(query(container, '[role="alert"]').textContent).toContain(
       "We could not load your order.",
     );
+  });
+});
+
+describe("SuccessPageContent in Polish", () => {
+  const polish = (node: ReactNode) => withI18n(node, "pl-PL");
+
+  it("renders the confirmation in Polish with prefixed links and a Polish date", async () => {
+    const { container } = await setup({ wrap: polish });
+
+    const page = query<HTMLElement>(container, SUCCESS_PAGE);
+    expect(query(page, "h1").textContent).toBe("Dziękujemy za zamówienie");
+    expect(page.textContent).toContain(
+      "Otrzymaliśmy Twoje zamówienie #10042 i przetworzymy je tak szybko, jak to możliwe.",
+    );
+    expect(page.textContent).toContain("Dostawa do 1-3 days");
+    expect(query(page, "time").textContent).toBe(
+      formatOrderDate(order().orderDate ?? "", "pl-PL"),
+    );
+    const links = queryAll<HTMLAnchorElement>(page, "a").map((link) => [
+      link.textContent,
+      link.getAttribute("href"),
+    ]);
+    expect(links).toEqual([
+      ["Kontynuuj zakupy", "/pl-PL"],
+      ["Zobacz w moim koncie", "/pl-PL/account/order/details/order-1"],
+    ]);
+  });
+
+  it("returns from the payment to the Polish paid and unpaid pages", async () => {
+    const { shopware } = await setup({ wrap: polish });
+    const successPage = `${window.location.origin}/pl-PL/checkout/success/order-1`;
+
+    expect(shopware.calls(HANDLE_PAYMENT)[0]?.params).toEqual({
+      body: {
+        orderId: "order-1",
+        finishUrl: `${successPage}/paid`,
+        errorUrl: `${successPage}/unpaid`,
+      },
+    });
+  });
+
+  it("sends an anonymous visitor to the Polish homepage", async () => {
+    await setup({ session: checkoutSession(), wrap: polish });
+
+    expect(replace).toHaveBeenCalledWith("/pl-PL");
+  });
+
+  it("shows the load error in Polish with a link to the Polish homepage", async () => {
+    const { container } = await setup({
+      wrap: polish,
+      answers: {
+        [READ_ORDER]: () => {
+          throw new Error("order not readable");
+        },
+      },
+    });
+
+    expect(query(container, '[role="alert"]').textContent).toBe(
+      "Nie udało się załadować zamówienia. Twoja sesja mogła wygasnąć.",
+    );
+    const link = query<HTMLAnchorElement>(container, "a");
+    expect(link.textContent).toBe("Kontynuuj zakupy");
+    expect(link.getAttribute("href")).toBe("/pl-PL");
   });
 });

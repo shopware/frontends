@@ -6,6 +6,7 @@ import {
 } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
 
 export type ShippingMethodsProps = {
   shippingMethods: Schemas["ShippingMethod"][];
@@ -20,6 +21,7 @@ export function ShippingMethods({
   legend,
   onChange,
 }: ShippingMethodsProps) {
+  const contentLang = useContentLang();
   return (
     <fieldset className="min-w-0">
       <legend className="sr-only">{legend}</legend>
@@ -48,7 +50,7 @@ export function ShippingMethods({
                   checked={selectedShippingMethod === shippingMethod.id}
                   onChange={() => onChange(shippingMethod.id)}
                 />
-                <span className="flex flex-col">
+                <span className="flex flex-col" lang={contentLang}>
                   <span className="text-surface-on-surface">{name}</span>
                   {deliveryTime ? (
                     <span className="text-sm leading-[21px] text-surface-on-surface-variant">
@@ -60,6 +62,7 @@ export function ShippingMethods({
                   <img
                     src={icon}
                     alt={name}
+                    lang={contentLang}
                     height={32}
                     className="ml-auto h-8 w-auto"
                     loading="lazy"

@@ -6,12 +6,8 @@ import type { KeyboardEvent } from "react";
 
 import { SearchSmallIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
-import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
-
-const t = {
-  "search.placeholder": "Search for products",
-  label: "Search",
-};
+import { NOT_WIRED_MESSAGE_KEYS } from "@/features/storefront/notWired";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export function HeaderSearch({
   className,
@@ -21,6 +17,7 @@ export function HeaderSearch({
   autoFocus?: boolean;
 }) {
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -31,13 +28,13 @@ export function HeaderSearch({
     if (event.key !== "Enter") return;
     if (!event.currentTarget.value.trim()) return;
     event.preventDefault();
-    notify({ type: "info", message: NOT_WIRED_MESSAGES.search });
+    notify({ type: "info", message: t(NOT_WIRED_MESSAGE_KEYS.search) });
   }
 
   return (
     <div className={cx("relative", className)}>
       <label htmlFor="search-input" className="sr-only">
-        {t.label}
+        {t("layout.header.search")}
       </label>
       <input
         ref={inputRef}
@@ -45,7 +42,7 @@ export function HeaderSearch({
         type="search"
         name="search"
         data-testid="header-search-input"
-        placeholder={t["search.placeholder"]}
+        placeholder={t("search.placeholder")}
         autoComplete="off"
         onKeyDown={handleKeyDown}
         className={cx(

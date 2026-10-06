@@ -9,25 +9,11 @@ import {
   ImageIcon,
   TagIcon,
 } from "@/features/checkout/components/CheckoutIcons";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { lineItemDownloads } from "../ordersApi";
 import { DownloadIcon } from "./OrderIcons";
-
-const t = {
-  account: {
-    orderDetails: {
-      itemsHeader: {
-        item: "Item",
-        quantity: "Quantity",
-        price: "Price",
-        total: "Total",
-      },
-    },
-  },
-  cart: {
-    promotion: "Promotion",
-  },
-};
 
 const HEADER_CELL_CLASS =
   "px-6 py-3 text-left text-xs font-medium tracking-wider text-surface-on-surface-variant uppercase";
@@ -40,6 +26,7 @@ function LineItemThumbnail({
 }: {
   lineItem: Schemas["OrderLineItem"];
 }) {
+  const contentLang = useContentLang();
   if (lineItem.type === "promotion") {
     return <TagIcon className="size-10 text-surface-on-surface" />;
   }
@@ -53,6 +40,7 @@ function LineItemThumbnail({
       className="size-10 object-cover"
       src={coverUrl}
       alt={lineItem.label}
+      lang={contentLang}
       loading="lazy"
     />
   );
@@ -67,22 +55,24 @@ export function OrderDetailLineItems({
   lineItems,
   onDownload,
 }: OrderDetailLineItemsProps) {
+  const t = useTranslations();
+  const contentLang = useContentLang();
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-outline-outline-variant">
         <thead className="bg-surface-surface-container-low">
           <tr>
             <th scope="col" className={HEADER_CELL_CLASS}>
-              {t.account.orderDetails.itemsHeader.item}
+              {t("account.orderDetails.itemsHeader.item")}
             </th>
             <th scope="col" className={HEADER_CELL_CLASS}>
-              {t.account.orderDetails.itemsHeader.quantity}
+              {t("account.orderDetails.itemsHeader.quantity")}
             </th>
             <th scope="col" className={HEADER_CELL_CLASS}>
-              {t.account.orderDetails.itemsHeader.price}
+              {t("account.orderDetails.itemsHeader.price")}
             </th>
             <th scope="col" className={HEADER_CELL_CLASS}>
-              {t.account.orderDetails.itemsHeader.total}
+              {t("account.orderDetails.itemsHeader.total")}
             </th>
           </tr>
         </thead>
@@ -97,10 +87,10 @@ export function OrderDetailLineItems({
                       <div className="size-10 shrink-0">
                         <LineItemThumbnail lineItem={lineItem} />
                       </div>
-                      {lineItem.label}
+                      <span lang={contentLang}>{lineItem.label}</span>
                       {lineItem.type === "promotion" ? (
                         <span className="-ml-2 rounded-full bg-states-success-container px-2.5 py-0.5 text-xs font-medium text-states-on-success-container">
-                          {t.cart.promotion}
+                          {t("cart.promotion")}
                         </span>
                       ) : null}
                     </div>

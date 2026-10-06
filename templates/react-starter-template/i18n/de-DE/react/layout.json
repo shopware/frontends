@@ -1,0 +1,26 @@
+{
+  "layout": {
+    "logo": "Shopware Frontends Demo Store",
+    "header": {
+      "search": "Suchen",
+      "closeSearch": "Schließen",
+      "signedInAs": "Angemeldet als {name}"
+    },
+    "sideMenu": {
+      "open": "Menü öffnen",
+      "showSubcategories": "Unterkategorien anzeigen",
+      "hideSubcategories": "Unterkategorien ausblenden"
+    },
+    "notWired": {
+      "wishlist": "Die Wunschliste ist noch nicht mit einer Sitzung verbunden.",
+      "search": "Die Suche ist noch nicht angebunden.",
+      "forms": "Formulare sind noch nicht mit einer Sitzung verbunden."
+    },
+    "languageSwitcher": {
+      "pending": "Seite wird geöffnet: {language}…"
+    },
+    "notFound": {
+      "backToHomepage": "Zurück zur Startseite"
+    }
+  }
+}

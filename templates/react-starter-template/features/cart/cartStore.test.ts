@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
 import { anonymousSession } from "@/features/session/anonymousSession";
-import { errorMessages } from "@/features/session/errorMessages";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import {
   apiClientError,
@@ -13,6 +12,7 @@ import {
   toStorefrontSession,
   unavailableSession,
 } from "@/features/session/sessionFromContext";
+import { testTranslator } from "@/test/i18n";
 
 import { cart, cartError, cartPrice, lineItem } from "./cart.fixture";
 import {
@@ -28,7 +28,8 @@ const ADD_LINE_ITEM = "addLineItem post /checkout/cart/line-item";
 const UPDATE_LINE_ITEM = "updateLineItem patch /checkout/cart/line-item";
 const REMOVE_LINE_ITEM = "removeLineItem post /checkout/cart/line-item/delete";
 const READ_CART_PARAMS = { fetchOptions: { timeout: READ_TIMEOUT_MS } };
-const DEFAULT_MESSAGE = errorMessages.errors["message-default"];
+const en = testTranslator("en-GB");
+const DEFAULT_MESSAGE = en("errors.message-default");
 
 type Invocation = { operation: string; params: unknown };
 type Answer = (operation: string) => Promise<Schemas["Cart"]> | Schemas["Cart"];
@@ -43,7 +44,7 @@ function deferred<T>() {
   return { promise, resolve, reject };
 }
 
-function setup(answer: Answer = () => cart()) {
+function setup(answer: Answer = () => cart(), t = en) {
   const invocations: Invocation[] = [];
   const client = {
     invoke: async (operation: string, params?: unknown) => {
@@ -52,7 +53,7 @@ function setup(answer: Answer = () => cart()) {
     },
   } as unknown as CartClient;
   const getClient = vi.fn(async () => client);
-  const store = createCartStore(getClient);
+  const store = createCartStore(getClient, t);
   return { store, invocations, getClient };
 }
 
@@ -312,10 +313,31 @@ describe("createCartStore failures", () => {
     expect(store.getSnapshot()).toBe(loadingCart);
   });
 
+  it("resolves the messages with the translator it was given last", async () => {
+    const { store } = setup(() => {
+      throw apiClientError([{ code: "product-not-found" }]);
+    }, testTranslator("de-DE"));
+
+    await expect(store.addProduct({ id: "product-1" })).resolves.toEqual({
+      ok: false,
+      message: testTranslator("de-DE")("errors.product-not-found"),
+    });
+
+    store.setTranslate(testTranslator("pl-PL"));
+
+    await expect(store.addProduct({ id: "product-1" })).resolves.toEqual({
+      ok: false,
+      message: testTranslator("pl-PL")("errors.product-not-found"),
+    });
+    expect(testTranslator("pl-PL")("errors.product-not-found")).not.toBe(
+      testTranslator("de-DE")("errors.product-not-found"),
+    );
+  });
+
   it("resolves the default message when the client cannot be created", async () => {
     const store = createCartStore(async () => {
       throw new Error("config down");
-    });
+    }, en);
 
     await expect(store.addProduct({ id: "product-1" })).resolves.toEqual({
       ok: false,
@@ -541,7 +563,7 @@ describe("cartSessionKey", () => {
     expect(cartSessionKey(anonymousSession)).toBeNull();
   });
 
-  it("changes with the customer, the guest flag and the context token only", () => {
+  it("changes with the customer, the guest flag, the context token and the language only", () => {
     const anonymous = cartSessionKey(readySession());
 
     expect(cartSessionKey(readySession())).toBe(anonymous);
@@ -553,5 +575,10 @@ describe("cartSessionKey", () => {
     expect(cartSessionKey(readySession(customer({ guest: true })))).not.toBe(
       cartSessionKey(readySession(customer())),
     );
+    const german = toStorefrontSession({
+      ...salesChannelContext(null),
+      context: { languageIdChain: ["language-de"] },
+    } as Schemas["SalesChannelContext"]);
+    expect(cartSessionKey(german)).not.toBe(anonymous);
   });
 });

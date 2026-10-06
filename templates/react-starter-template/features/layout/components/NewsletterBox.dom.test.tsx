@@ -2,6 +2,7 @@ import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import type { CmsActions } from "@shopware/cms-base-layer-react/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -20,17 +21,21 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(overrides: Partial<CmsActions> = {}) {
+async function setup(
+  overrides: Partial<CmsActions> = {},
+  locale?: "pl-PL" | "de-DE",
+) {
   const actions = {
     subscribeNewsletter: vi.fn(async () => ({ ok: true })),
     notify: vi.fn(),
     ...overrides,
   };
-  mounted = await mount(
+  const box = (
     <CmsActionsProvider actions={actions}>
       <NewsletterBox />
-    </CmsActionsProvider>,
+    </CmsActionsProvider>
   );
+  mounted = await mount(locale ? withI18n(box, locale) : box);
   const { container } = mounted;
   return {
     actions,
@@ -85,6 +90,21 @@ describe("NewsletterBox in the browser", () => {
     expect(error()).toBeNull();
     expect(input.hasAttribute("aria-invalid")).toBe(false);
     expect(input.disabled).toBe(false);
+  });
+
+  it("validates and confirms in Polish under the pl-PL provider", async () => {
+    const { actions, form, input, error } = await setup({}, "pl-PL");
+
+    await interact(() => submitForm(form));
+    expect(error()?.textContent).toBe("Wartość jest wymagana");
+
+    await interact(() => setInputValue(input, "jan@example.com"));
+    await interact(() => submitForm(form));
+
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Dziękujemy! Zapisaliśmy Twój adres.",
+    });
   });
 
   it("keeps the address and reports a failed subscription", async () => {

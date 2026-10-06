@@ -3,23 +3,13 @@
 import { cx } from "@shopware/cms-base-layer-react/client";
 
 import type { Schemas } from "#shopware";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { AddressActionLink } from "./AddressActionLink";
 import { AddressDataSection } from "./AddressDataSection";
 import { AddressDeleteButton } from "./AddressDeleteButton";
 import { AddressEditButton } from "./AddressEditButton";
 import { FileTextIcon, TruckIcon } from "./AddressIcons";
-
-const t = {
-  account: {
-    address: {
-      defaultBillingAddressSectionHeader: "Default billing address",
-      defaultShippingAddressSectionHeader: "Default shipping address",
-      useAsDefaultBillingAddressButton: "Use as default billing address",
-      useAsDefaultShippingAddressButton: "Use as default shipping address",
-    },
-  },
-};
 
 const BADGE_CLASS =
   "inline-flex items-center gap-1.5 rounded-sm bg-brand-secondary px-2 py-1 text-xs font-bold text-brand-on-secondary";
@@ -49,7 +39,7 @@ export function AddressTile({
   onSetAsDefaultBillingAddress,
   onSetAsDefaultShippingAddress,
 }: AddressTileProps) {
-  const copy = t.account.address;
+  const t = useTranslations();
   const dataId = `address-${address.id}`;
   const busy = isDeleting || pendingDefault !== null;
   const isDefault = isDefaultBillingAddress || isDefaultShippingAddress;
@@ -69,13 +59,13 @@ export function AddressTile({
           {isDefaultBillingAddress ? (
             <li className={BADGE_CLASS}>
               <FileTextIcon className="h-3 w-2.5" />
-              {copy.defaultBillingAddressSectionHeader}
+              {t("account.address.defaultBillingAddressSectionHeader")}
             </li>
           ) : null}
           {isDefaultShippingAddress ? (
             <li className={BADGE_CLASS}>
               <TruckIcon className="h-2.5 w-3.5" />
-              {copy.defaultShippingAddressSectionHeader}
+              {t("account.address.defaultShippingAddressSectionHeader")}
             </li>
           ) : null}
         </ul>
@@ -106,7 +96,7 @@ export function AddressTile({
               onClick={() => onSetAsDefaultBillingAddress(address.id)}
             >
               <FileTextIcon className="h-6 w-4.5" />
-              {copy.useAsDefaultBillingAddressButton}
+              {t("account.address.useAsDefaultBillingAddressButton")}
             </AddressActionLink>
           )}
           {isDefaultShippingAddress ? null : (
@@ -117,7 +107,7 @@ export function AddressTile({
               onClick={() => onSetAsDefaultShippingAddress(address.id)}
             >
               <TruckIcon className="h-4.5 w-6" />
-              {copy.useAsDefaultShippingAddressButton}
+              {t("account.address.useAsDefaultShippingAddressButton")}
             </AddressActionLink>
           )}
         </div>

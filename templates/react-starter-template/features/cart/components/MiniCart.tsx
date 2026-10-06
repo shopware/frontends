@@ -1,25 +1,17 @@
 "use client";
 
 import { IconButton, cx } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef } from "react";
 import type { RefObject } from "react";
 
 import { CloseIcon } from "@/components/icons";
+import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
-
-const t = {
-  "cart.miniCart.title": "My cart",
-  "cart.miniCart.subtotal": "Subtotal",
-  "cart.miniCart.taxEstimation": "Taxes & shipping estimated at checkout.",
-  "cart.miniCart.proceedToCheckout": "Proceed to checkout",
-  "cart.miniCart.goToShoppingCart": "Go to shopping cart",
-  close: "Close",
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export type MiniCartProps = {
   id: string;
@@ -36,6 +28,7 @@ export function MiniCart({
 }: MiniCartProps) {
   const { status, lineItems, subtotal } = useCart();
   const { remove, updateQuantity } = useLineItemActions();
+  const t = useTranslations();
   const pathname = usePathname();
   const openedAt = useRef(pathname);
   const panelRef = useRef<HTMLElement>(null);
@@ -101,13 +94,13 @@ export function MiniCart({
           id={titleId}
           className="font-serif text-2xl leading-9 font-normal text-surface-on-surface"
         >
-          {t["cart.miniCart.title"]}
+          {t("cart.miniCart.title")}
         </h2>
         <IconButton
           variant="ghost"
           className="rounded-full p-2"
           data-testid="mini-cart-close-button"
-          aria-label={t.close}
+          aria-label={t("cart.miniCart.close")}
           onClick={() => {
             triggerRef?.current?.focus();
             onClose();
@@ -132,7 +125,7 @@ export function MiniCart({
       <div className="border border-t-0 border-outline-outline-variant bg-surface-surface-container-low px-6 py-3">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-surface-on-surface">
-            {t["cart.miniCart.subtotal"]}
+            {t("cart.miniCart.subtotal")}
           </span>
           <Price
             className="leading-6 font-bold text-surface-on-surface"
@@ -140,21 +133,21 @@ export function MiniCart({
           />
         </div>
         <p className="mb-6 text-right leading-6 text-surface-on-surface-variant">
-          {t["cart.miniCart.taxEstimation"]}
+          {t("cart.miniCart.taxEstimation")}
         </p>
-        <Link
+        <LocaleLink
           href="/checkout"
           data-testid="checkout-cart-link"
           className="mb-2 block rounded-md bg-brand-primary py-1.5 text-center leading-6 font-bold text-brand-on-primary hover:bg-brand-primary-hover"
         >
-          {t["cart.miniCart.proceedToCheckout"]}
-        </Link>
-        <Link
+          {t("cart.miniCart.proceedToCheckout")}
+        </LocaleLink>
+        <LocaleLink
           href="/checkout/cart"
           className="block rounded-md bg-brand-secondary py-1.5 text-center leading-6 font-bold text-brand-on-secondary hover:bg-brand-secondary-hover"
         >
-          {t["cart.miniCart.goToShoppingCart"]}
-        </Link>
+          {t("cart.miniCart.goToShoppingCart")}
+        </LocaleLink>
       </div>
     </section>
   );

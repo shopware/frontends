@@ -5,20 +5,17 @@ import type {
   CmsActions,
   CmsNotification,
 } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 import { CloseIcon } from "@/components/icons";
+import { LocaleLink } from "@/components/LocaleLink";
 import { CartProvider } from "@/features/cart/components/CartProvider";
 import { useCart } from "@/features/cart/useCart";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
-import { NOT_WIRED_MESSAGES } from "../notWired";
-
-const t = {
-  "layout.ariaLabels.closeNotification": "Close notification",
-};
+import { NOT_WIRED_MESSAGE_KEYS } from "../notWired";
 
 export const TOAST_TIMEOUT_MS = 5000;
 
@@ -53,10 +50,13 @@ function StorefrontCmsActions({
   children: ReactNode;
 }) {
   const { addProduct } = useCart();
+  const t = useTranslations();
 
   const actions = useMemo<Partial<CmsActions>>(() => {
+    const warnNotWired = () =>
+      notify({ type: "warning", message: t(NOT_WIRED_MESSAGE_KEYS.forms) });
     const notWired = async () => {
-      notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
+      warnNotWired();
       return { ok: false };
     };
     return {
@@ -68,11 +68,11 @@ function StorefrontCmsActions({
       subscribeNewsletter: notWired,
       submitProductReview: notWired,
       findVariant: async () => {
-        notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
+        warnNotWired();
         return null;
       },
     };
-  }, [notify, addProduct]);
+  }, [notify, addProduct, t]);
 
   return <CmsActionsProvider actions={actions}>{children}</CmsActionsProvider>;
 }
@@ -84,6 +84,7 @@ function ToastMessage({
   toast: Toast;
   onDismiss: (id: number) => void;
 }) {
+  const t = useTranslations();
   const dismiss = () => onDismiss(toast.id);
   return (
     <div
@@ -98,20 +99,20 @@ function ToastMessage({
           {toast.message}
         </p>
         {toast.action ? (
-          <Link
+          <LocaleLink
             href={toast.action.href}
             data-testid="notification-element-action"
             className="inline-flex min-h-8 items-center font-bold underline underline-offset-2"
             onClick={dismiss}
           >
             {toast.action.label}
-          </Link>
+          </LocaleLink>
         ) : null}
       </div>
       <button
         type="button"
         data-testid="notification-element-button"
-        aria-label={t["layout.ariaLabels.closeNotification"]}
+        aria-label={t("layout.ariaLabels.closeNotification")}
         className="-my-1 -mr-2 inline-flex size-8 shrink-0 items-center justify-center rounded-md focus-visible:outline-2 focus-visible:outline-outline-outline-focus"
         onClick={dismiss}
       >
@@ -122,6 +123,7 @@ function ToastMessage({
 }
 
 export function StorefrontProviders({ children }: { children: ReactNode }) {
+  const locale = useLocale();
   const [toasts, setToasts] = useState<Toast[]>([]);
   const nextId = useRef(0);
   const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
@@ -158,7 +160,7 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ShopwareSessionProvider notify={notify}>
+    <ShopwareSessionProvider locale={locale} notify={notify}>
       <CartProvider>
         <StorefrontCmsActions notify={notify}>
           {children}

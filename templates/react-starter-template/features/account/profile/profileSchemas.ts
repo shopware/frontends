@@ -2,23 +2,13 @@ import { z } from "zod";
 
 import type { Schemas } from "#shopware";
 import type { AccountType } from "@/features/account/registrationSchema";
+import type { Translate } from "@/i18n/translate";
 
 import type {
   ChangeEmailBody,
   ChangePasswordBody,
   ChangeProfileBody,
 } from "./profileApi";
-
-const t = {
-  validations: {
-    required: "Value is required",
-    requiredIf: "The value is required",
-    email: "Value is not a valid email address",
-    minLength: "This minimum length should be at least {min}",
-    sameAs: "The value must be equal to the {otherName} value",
-    newPasswordConfirm: "The passwords needs to be the same",
-  },
-};
 
 export type PersonalDataValues = {
   salutationId: string;
@@ -84,81 +74,84 @@ function isBlank(value: string): boolean {
   return value.trim().length === 0;
 }
 
-function interpolate(message: string, params: Record<string, string>): string {
-  return message.replace(/\{(\w+)\}/g, (_, name: string) => params[name] ?? "");
+function requiredString(t: Translate) {
+  return z
+    .string()
+    .refine((value) => !isBlank(value), t("validations.required"));
 }
 
-function requiredString() {
-  return z.string().refine((value) => !isBlank(value), t.validations.required);
+function requiredMinLength(t: Translate, min: number) {
+  return requiredString(t).min(min, t("validations.minLength", { min }));
 }
 
-function requiredMinLength(min: number) {
-  return requiredString().min(
-    min,
-    interpolate(t.validations.minLength, { min: String(min) }),
-  );
+export function createPersonalDataSchema(t: Translate) {
+  return z
+    .object({
+      salutationId: z.string(),
+      title: z.string(),
+      accountType: z.enum(["private", "business"], t("validations.required")),
+      firstName: requiredString(t),
+      lastName: requiredString(t),
+      company: z.string(),
+      vatIds: z.string(),
+    })
+    .superRefine((values, ctx) => {
+      if (values.accountType !== "business") return;
+      for (const field of ["company", "vatIds"] as const) {
+        if (isBlank(values[field])) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("validations.requiredIf"),
+            path: [field],
+          });
+        }
+      }
+    });
 }
 
-export const personalDataSchema = z
-  .object({
-    salutationId: z.string(),
-    title: z.string(),
-    accountType: z.enum(["private", "business"], t.validations.required),
-    firstName: requiredString(),
-    lastName: requiredString(),
-    company: z.string(),
-    vatIds: z.string(),
-  })
-  .superRefine((values, ctx) => {
-    if (values.accountType !== "business") return;
-    for (const field of ["company", "vatIds"] as const) {
-      if (isBlank(values[field])) {
+export function createChangeEmailSchema(t: Translate) {
+  return z
+    .object({
+      email: requiredString(t).pipe(z.email(t("validations.email"))),
+      emailConfirmation: requiredString(t),
+      password: requiredString(t),
+    })
+    .superRefine((values, ctx) => {
+      if (
+        !isBlank(values.emailConfirmation) &&
+        values.emailConfirmation !== values.email
+      ) {
         ctx.addIssue({
           code: "custom",
-          message: t.validations.requiredIf,
-          path: [field],
+          message: t("validations.sameAs", {
+            otherName: t("account.changeEmail.form.emailFieldName"),
+          }),
+          path: ["emailConfirmation"],
         });
       }
-    }
-  });
+    });
+}
 
-export const changeEmailSchema = z
-  .object({
-    email: requiredString().pipe(z.email(t.validations.email)),
-    emailConfirmation: requiredString(),
-    password: requiredString(),
-  })
-  .superRefine((values, ctx) => {
-    if (
-      !isBlank(values.emailConfirmation) &&
-      values.emailConfirmation !== values.email
-    ) {
-      ctx.addIssue({
-        code: "custom",
-        message: interpolate(t.validations.sameAs, { otherName: "email" }),
-        path: ["emailConfirmation"],
-      });
-    }
-  });
-
-export const changePasswordSchema = z
-  .object({
-    newPassword: requiredMinLength(8),
-    newPasswordConfirm: requiredString(),
-    password: requiredString(),
-  })
-  .superRefine((values, ctx) => {
-    if (
-      !isBlank(values.newPasswordConfirm) &&
-      values.newPasswordConfirm !== values.newPassword
-    ) {
-      ctx.addIssue({
-        code: "custom",
-        message: t.validations.newPasswordConfirm,
-        path: ["newPasswordConfirm"],
-      });
-    }
-  });
+export function createChangePasswordSchema(t: Translate) {
+  return z
+    .object({
+      newPassword: requiredMinLength(t, 8),
+      newPasswordConfirm: requiredString(t),
+      password: requiredString(t),
+    })
+    .superRefine((values, ctx) => {
+      if (
+        !isBlank(values.newPasswordConfirm) &&
+        values.newPasswordConfirm !== values.newPassword
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("validations.newPasswordConfirm"),
+          path: ["newPasswordConfirm"],
+        });
+      }
+    });
+}
 
 function firstErrors<Field extends string>(
   issues: readonly z.core.$ZodIssue[] | undefined,
@@ -174,27 +167,30 @@ function firstErrors<Field extends string>(
 
 export function validatePersonalData(
   values: PersonalDataValues,
+  t: Translate,
 ): PersonalDataErrors {
   return firstErrors(
-    personalDataSchema.safeParse(values).error?.issues,
+    createPersonalDataSchema(t).safeParse(values).error?.issues,
     PERSONAL_DATA_FIELDS,
   );
 }
 
 export function validateChangeEmail(
   values: ChangeEmailValues,
+  t: Translate,
 ): ChangeEmailErrors {
   return firstErrors(
-    changeEmailSchema.safeParse(values).error?.issues,
+    createChangeEmailSchema(t).safeParse(values).error?.issues,
     CHANGE_EMAIL_FIELDS,
   );
 }
 
 export function validateChangePassword(
   values: ChangePasswordValues,
+  t: Translate,
 ): ChangePasswordErrors {
   return firstErrors(
-    changePasswordSchema.safeParse(values).error?.issues,
+    createChangePasswordSchema(t).safeParse(values).error?.issues,
     CHANGE_PASSWORD_FIELDS,
   );
 }

@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { LocaleLink } from "@/components/LocaleLink";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import { handlePayment, readOrder } from "../checkoutApi";
 import {
@@ -17,15 +18,6 @@ import {
 } from "../paymentRedirect";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { SuccessSkeleton } from "./SuccessSkeleton";
-
-const t = {
-  checkout: {
-    success: {
-      continueShopping: "Continue shopping",
-      loadError: "We could not load your order. Your session may have expired.",
-    },
-  },
-};
 
 type OrderLoad =
   | { status: "loading" }
@@ -45,6 +37,8 @@ function OrderSuccess({ orderId }: { orderId: string }) {
   const router = useRouter();
   const session = useSession();
   const getClient = useShopwareClient();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const [orderLoad, setOrderLoad] = useState<OrderLoad>({ status: "loading" });
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const started = useRef(false);
@@ -53,8 +47,8 @@ function OrderSuccess({ orderId }: { orderId: string }) {
   const anonymous = session.status === "ready" && !isUserSession;
 
   useEffect(() => {
-    if (anonymous) router.replace("/");
-  }, [anonymous, router]);
+    if (anonymous) router.replace(localePath("/"));
+  }, [anonymous, router, localePath]);
 
   useEffect(() => {
     if (session.status === "loading" || anonymous) return;
@@ -81,7 +75,7 @@ function OrderSuccess({ orderId }: { orderId: string }) {
       try {
         const { redirectUrl } = await handlePayment(client, {
           orderId,
-          ...paymentReturnUrls(window.location.origin, orderId),
+          ...paymentReturnUrls(window.location.origin, orderId, localePath),
         });
         setPaymentUrl(parsePaymentUrl(redirectUrl));
       } catch (error) {
@@ -90,7 +84,7 @@ function OrderSuccess({ orderId }: { orderId: string }) {
     }
 
     void load();
-  }, [session.status, anonymous, getClient, orderId]);
+  }, [session.status, anonymous, getClient, orderId, localePath]);
 
   useEffect(() => {
     if (!paymentUrl) return;
@@ -104,14 +98,14 @@ function OrderSuccess({ orderId }: { orderId: string }) {
     return (
       <div className="mx-auto w-full max-w-screen-2xl px-4 py-10 text-center md:py-20">
         <p role="alert" className="mb-6 text-surface-on-surface">
-          {t.checkout.success.loadError}
+          {t("checkout.success.loadError")}
         </p>
-        <Link
+        <LocaleLink
           href="/"
           className="inline-flex items-center justify-center rounded bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary"
         >
-          {t.checkout.success.continueShopping}
-        </Link>
+          {t("checkout.success.continueShopping")}
+        </LocaleLink>
       </div>
     );
   }

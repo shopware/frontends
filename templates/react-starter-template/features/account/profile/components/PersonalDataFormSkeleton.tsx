@@ -1,8 +1,6 @@
-const t = {
-  form: {
-    loading: "Loading...",
-  },
-};
+"use client";
+
+import { useTranslations } from "@/i18n/I18nProvider";
 
 const PLACEHOLDER = "rounded-sm bg-surface-surface-container";
 const FIELD_LABEL = `h-4 w-24 ${PLACEHOLDER}`;
@@ -18,13 +16,14 @@ function FieldPlaceholder({ className }: { className: string }) {
 }
 
 export function PersonalDataFormSkeleton() {
+  const t = useTranslations();
   return (
     <div
       className="flex animate-pulse flex-col gap-4"
       aria-busy="true"
       data-testid="account-personal-data-loading"
     >
-      <output className="sr-only">{t.form.loading}</output>
+      <output className="sr-only">{t("form.loading")}</output>
       <FieldPlaceholder className="w-60" />
       <FieldPlaceholder className="w-60" />
       <div className="flex flex-col gap-2 md:flex-row">

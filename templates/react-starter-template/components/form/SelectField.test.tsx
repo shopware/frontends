@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { SelectField } from "./SelectField";
@@ -65,6 +66,22 @@ describe("SelectField", () => {
       /^<option (value="" disabled=""|disabled="" value="")>Loading\.\.\.<\/option>$/,
     );
     expect(html).not.toContain(">Private<");
+  });
+
+  it("translates the loading entry under the pl-PL provider", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <SelectField
+          id="state"
+          label="Województwo"
+          options={options}
+          loading
+        />,
+        "pl-PL",
+      ),
+    );
+
+    expect(optionTags(html)[0]).toMatch(/>Ładowanie\.\.\.<\/option>$/);
   });
 
   it("passes native attributes through to the select", async () => {
@@ -149,5 +166,22 @@ describe("SelectField", () => {
 
     expect(tag(html, /<select[^>]*>/)).not.toMatch(/\srequired(=""|\s|>)/);
     expect(html).toContain(">Account type</label>");
+  });
+
+  it("declares the options language on the data options only", async () => {
+    const html = await renderToHtml(
+      <SelectField
+        id="salutation"
+        label="Salutation"
+        placeholder="Choose salutation"
+        optionsLang="en-US"
+        options={[{ label: "Mr.", value: "mr" }]}
+      />,
+    );
+
+    expect(optionTags(html)).toEqual([
+      '<option value="">Choose salutation</option>',
+      '<option value="mr" lang="en-US">Mr.</option>',
+    ]);
   });
 });

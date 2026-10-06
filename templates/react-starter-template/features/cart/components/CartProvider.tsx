@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { createCartStore, loadingCart } from "../cartStore";
 import type { CartStore } from "../cartStore";
@@ -21,6 +22,7 @@ export const unavailableCartStore: CartStore = {
   getSnapshot: () => loadingCart,
   subscribe: () => () => {},
   syncSession: () => {},
+  setTranslate: () => {},
   refresh: async () => {
     notWired("refresh");
   },
@@ -34,7 +36,12 @@ const CartStoreContext = createContext<CartStore>(unavailableCartStore);
 export function CartProvider({ children }: { children: ReactNode }) {
   const getClient = useShopwareClient();
   const session = useSession();
-  const [store] = useState(() => createCartStore(getClient));
+  const t = useTranslations();
+  const [store] = useState(() => createCartStore(getClient, t));
+
+  useEffect(() => {
+    store.setTranslate(t);
+  }, [store, t]);
 
   useEffect(() => {
     store.syncSession(session);

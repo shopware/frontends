@@ -10,18 +10,18 @@ import { cart, cartError, lineItem } from "@/features/cart/cart.fixture";
 import { useCart } from "@/features/cart/useCart";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
-import { errorMessages } from "@/features/session/errorMessages";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import {
   apiClientError,
   salesChannelContext,
 } from "@/features/session/session.fixture";
 import type { SessionActionResult } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
+import { testTranslator, withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
-import { NOT_WIRED_MESSAGES } from "../notWired";
 import { StorefrontProviders, TOAST_TIMEOUT_MS } from "./StorefrontProviders";
 
 const browser = vi.hoisted(() => ({
@@ -41,6 +41,7 @@ vi.mock("@/features/session/browserClient", () => ({
 
 const READ_CONTEXT = "readContext get /context";
 const READ_CART = "readCart get /checkout/cart";
+const READ_LANGUAGES = "readLanguagesGet get /language";
 const ADD_LINE_ITEM = "addLineItem post /checkout/cart/line-item";
 const MESSAGE = '[data-testid="notification-element-message"]';
 
@@ -59,6 +60,15 @@ beforeEach(() => {
     switch (operation) {
       case READ_CONTEXT:
         return { data: salesChannelContext(null), status: 200 };
+      case READ_LANGUAGES:
+        return {
+          data: {
+            elements: [
+              { id: "language-en", translationCode: { code: "en-GB" } },
+            ],
+          },
+          status: 200,
+        };
       case READ_CART:
         return { data: backend.cart, status: 200 };
       case ADD_LINE_ITEM:
@@ -152,7 +162,9 @@ describe("StorefrontProviders session", () => {
     );
     await vi.waitFor(() => expect(results).toHaveLength(1));
 
-    const message = errorMessages.errors.login_no_matching_customer_internal;
+    const message = testTranslator()(
+      "errors.login_no_matching_customer_internal",
+    );
     expect(results[0]).toEqual({ ok: false, message });
     const toasts = queryAll<HTMLParagraphElement>(container, MESSAGE);
     expect(toasts).toHaveLength(1);
@@ -238,6 +250,7 @@ describe("StorefrontProviders cart", () => {
 
     expect(browser.invoke.mock.calls.map(([operation]) => operation)).toEqual([
       READ_CONTEXT,
+      READ_LANGUAGES,
       READ_CART,
       ADD_LINE_ITEM,
     ]);
@@ -316,7 +329,7 @@ describe("StorefrontProviders cart", () => {
     });
     const { container, addToCart } = await mountShop();
 
-    const message = errorMessages.errors["product-not-found"];
+    const message = testTranslator()("errors.product-not-found");
     await expect(addToCart()).resolves.toEqual({ ok: false, message });
 
     const messages = queryAll(container, MESSAGE);
@@ -337,11 +350,14 @@ function Notifier({ notification }: { notification: CmsNotification }) {
   );
 }
 
-async function showToast(notification: CmsNotification) {
+async function showToast(notification: CmsNotification, locale?: Locale) {
   mounted = await mount(
-    <StorefrontProviders>
-      <Notifier notification={notification} />
-    </StorefrontProviders>,
+    withI18n(
+      <StorefrontProviders>
+        <Notifier notification={notification} />
+      </StorefrontProviders>,
+      locale,
+    ),
   );
   const { container } = mounted;
   await interact(() =>
@@ -429,6 +445,30 @@ describe("StorefrontProviders toasts", () => {
 
     expect(queryAll(container, MESSAGE)).toHaveLength(0);
   });
+
+  it("labels the close button in Polish and prefixes the action link under the pl-PL provider", async () => {
+    const container = await showToast(
+      {
+        type: "success",
+        message: "Dodano",
+        action: { label: "Zobacz koszyk", href: "/checkout/cart" },
+      },
+      "pl-PL",
+    );
+
+    expect(
+      query<HTMLAnchorElement>(
+        container,
+        '[data-testid="notification-element-action"]',
+      ).getAttribute("href"),
+    ).toBe("/pl-PL/checkout/cart");
+    expect(
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="notification-element-button"]',
+      ).getAttribute("aria-label"),
+    ).toBe("Zamknij powiadomienie");
+  });
 });
 
 describe("StorefrontProviders CMS stubs", () => {
@@ -473,7 +513,9 @@ describe("StorefrontProviders CMS stubs", () => {
     expect(results[0]).toEqual({ ok: false });
     const toasts = queryAll<HTMLParagraphElement>(container, MESSAGE);
     expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(NOT_WIRED_MESSAGES.forms);
+    expect(toasts[0]?.textContent).toBe(
+      "Forms are not connected to a session yet.",
+    );
     expect(toastOf(toasts[0] as HTMLParagraphElement).className).toContain(
       "bg-states-warning-container",
     );

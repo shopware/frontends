@@ -1,0 +1,26 @@
+{
+  "layout": {
+    "logo": "Shopware Frontends Demo Store",
+    "header": {
+      "search": "Search",
+      "closeSearch": "Close",
+      "signedInAs": "Signed in as {name}"
+    },
+    "sideMenu": {
+      "open": "Open menu",
+      "showSubcategories": "Show subcategories",
+      "hideSubcategories": "Hide subcategories"
+    },
+    "notWired": {
+      "wishlist": "The wishlist is not connected to a session yet.",
+      "search": "Search is not connected yet.",
+      "forms": "Forms are not connected to a session yet."
+    },
+    "languageSwitcher": {
+      "pending": "Opening the page in {language}…"
+    },
+    "notFound": {
+      "backToHomepage": "Back to homepage"
+    }
+  }
+}

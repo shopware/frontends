@@ -2,11 +2,14 @@
 
 import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { getShippingMethodDeliveryTime } from "@shopware/helpers";
-import Link from "next/link";
 
 import type { Schemas } from "#shopware";
 import { CheckmarkIcon } from "@/components/icons";
+import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
+import { defaultLocale } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import {
   getOrderBillingAddress,
@@ -20,45 +23,22 @@ import { OrderLineItems } from "./OrderLineItems";
 import { OrderMethodCard } from "./OrderMethodCard";
 import { OrderStatus } from "./OrderStatus";
 
-const t = {
-  checkout: {
-    summary: "Summary",
-    subtotal: "Subtotal",
-    success: {
-      title: "Thank you for your order",
-      header:
-        "We have received your order #{0} and will process it as soon as possible.",
-      items: "Items ordered",
-      deliveryAndPayment: "Delivery and payment",
-      continueShopping: "Continue shopping",
-      viewInAccount: "View in my account",
-      goToPayment: "Go to payment",
-      paymentProcessLabel: "Finish payment process.",
-      paymentProcessInfo:
-        "You will be redirected to the payment gateway in 5 seconds.",
-    },
-    shippingAddressLabel: "Shipping address",
-    paymentMethodLabel: "Payment method",
-    billingAddressLabel: "Billing address",
-    shippingMethodLabel: "Shipping method",
-    takesUpTo: "Takes up to",
-    shippingPriceLabel: "Shipping",
-    totalLabel: "Total",
-  },
-  account: {
-    order: {
-      orderNumber: "Order number",
-    },
-  },
-};
+const orderDateFormats = new Map<Locale, Intl.DateTimeFormat>();
 
-const ORDER_DATE_FORMAT = new Intl.DateTimeFormat("en-GB", {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-});
+function orderDateFormat(locale: Locale): Intl.DateTimeFormat {
+  let format = orderDateFormats.get(locale);
+  if (!format) {
+    format = new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+    orderDateFormats.set(locale, format);
+  }
+  return format;
+}
 
 const PRIMARY_LINK_CLASS =
   "inline-flex items-center justify-center rounded bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary";
@@ -66,9 +46,14 @@ const PRIMARY_LINK_CLASS =
 const SECONDARY_LINK_CLASS =
   "inline-flex items-center justify-center rounded border border-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-primary";
 
-export function formatOrderDate(date: string): string {
+export function formatOrderDate(
+  date: string,
+  locale: Locale = defaultLocale,
+): string {
   const parsed = new Date(date);
-  return Number.isNaN(parsed.getTime()) ? "" : ORDER_DATE_FORMAT.format(parsed);
+  return Number.isNaN(parsed.getTime())
+    ? ""
+    : orderDateFormat(locale).format(parsed);
 }
 
 function SectionHeader({ title, id }: { title: string; id: string }) {
@@ -94,6 +79,8 @@ export function OrderConfirmation({
   onGoToPayment,
   showAccountLink = false,
 }: OrderConfirmationProps) {
+  const t = useTranslations();
+  const locale = useLocale();
   const shippingAddress = getOrderShippingAddress(order);
   const billingAddress = getOrderBillingAddress(order);
   const shippingMethod = getOrderShippingMethod(order);
@@ -102,7 +89,9 @@ export function OrderConfirmation({
   const deliveryTime = shippingMethod
     ? getShippingMethodDeliveryTime(shippingMethod)
     : undefined;
-  const orderDate = order.orderDate ? formatOrderDate(order.orderDate) : "";
+  const orderDate = order.orderDate
+    ? formatOrderDate(order.orderDate, locale)
+    : "";
 
   return (
     <div
@@ -118,15 +107,15 @@ export function OrderConfirmation({
         </div>
         <div className="min-w-0">
           <h1 className="font-serif text-[40px] leading-15 text-surface-on-surface">
-            {t.checkout.success.title}
+            {t("checkout.success.title")}
           </h1>
           <p className="mt-2 max-w-2xl leading-normal text-surface-on-surface">
-            {t.checkout.success.header.replace("{0}", order.orderNumber ?? "")}
+            {t("checkout.success.header", [order.orderNumber ?? ""])}
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {order.orderNumber ? (
               <span className="text-sm text-surface-on-surface-variant">
-                {t.account.order.orderNumber}{" "}
+                {t("account.order.orderNumber")}{" "}
                 <span
                   className="font-medium text-surface-on-surface"
                   data-testid="order-number"
@@ -156,14 +145,14 @@ export function OrderConfirmation({
           role="alert"
         >
           <div className="font-medium">
-            {t.checkout.success.paymentProcessLabel}
+            {t("checkout.success.paymentProcessLabel")}
           </div>
-          <p className="mt-1">{t.checkout.success.paymentProcessInfo}</p>
+          <p className="mt-1">{t("checkout.success.paymentProcessInfo")}</p>
           <BaseButton
             className="mt-4"
             onClick={() => onGoToPayment(paymentUrl)}
           >
-            {t.checkout.success.goToPayment}
+            {t("checkout.success.goToPayment")}
           </BaseButton>
         </div>
       ) : null}
@@ -173,7 +162,7 @@ export function OrderConfirmation({
           <section aria-labelledby="order-items-heading">
             <SectionHeader
               id="order-items-heading"
-              title={t.checkout.success.items}
+              title={t("checkout.success.items")}
             />
             <div className="mt-4">
               <OrderLineItems lineItems={order.lineItems ?? []} />
@@ -183,32 +172,32 @@ export function OrderConfirmation({
           <section aria-labelledby="order-delivery-heading">
             <SectionHeader
               id="order-delivery-heading"
-              title={t.checkout.success.deliveryAndPayment}
+              title={t("checkout.success.deliveryAndPayment")}
             />
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
               {shippingAddress ? (
                 <OrderAddress
                   address={shippingAddress}
-                  label={t.checkout.shippingAddressLabel}
+                  label={t("checkout.shippingAddressLabel")}
                 />
               ) : null}
               {billingAddress ? (
                 <OrderAddress
                   address={billingAddress}
-                  label={t.checkout.billingAddressLabel}
+                  label={t("checkout.billingAddressLabel")}
                 />
               ) : null}
               <OrderMethodCard
-                label={t.checkout.paymentMethodLabel}
+                label={t("checkout.paymentMethodLabel")}
                 title={paymentMethod?.translated?.name ?? paymentMethod?.name}
               />
               {shippingMethod ? (
                 <OrderMethodCard
-                  label={t.checkout.shippingMethodLabel}
+                  label={t("checkout.shippingMethodLabel")}
                   title={shippingMethod.translated?.name ?? shippingMethod.name}
                   description={
                     deliveryTime
-                      ? `${t.checkout.takesUpTo} ${deliveryTime}`
+                      ? `${t("checkout.takesUpTo")} ${deliveryTime}`
                       : undefined
                   }
                 />
@@ -227,14 +216,14 @@ export function OrderConfirmation({
                 id="order-summary-heading"
                 className="px-6 font-serif text-[40px] text-surface-on-surface"
               >
-                {t.checkout.summary}
+                {t("checkout.summary")}
               </h2>
             </div>
             <div className="p-6">
               <dl className="flex flex-col gap-1 border-b border-outline-outline-variant py-4">
                 <div className="flex justify-between text-sm leading-normal">
                   <dt className="text-surface-on-surface-variant">
-                    {t.checkout.subtotal}
+                    {t("checkout.subtotal")}
                   </dt>
                   <dd>
                     <Price
@@ -246,7 +235,7 @@ export function OrderConfirmation({
                 </div>
                 <div className="flex justify-between text-sm leading-normal">
                   <dt className="text-surface-on-surface-variant">
-                    {t.checkout.shippingPriceLabel}
+                    {t("checkout.shippingPriceLabel")}
                   </dt>
                   <dd>
                     <Price
@@ -259,7 +248,7 @@ export function OrderConfirmation({
               </dl>
               <dl className="flex justify-between pt-4">
                 <dt className="text-base leading-normal text-surface-on-surface">
-                  {t.checkout.totalLabel}
+                  {t("checkout.totalLabel")}
                 </dt>
                 <dd>
                   <Price
@@ -271,16 +260,16 @@ export function OrderConfirmation({
               </dl>
 
               <div className="mt-8 flex flex-col gap-3">
-                <Link href="/" className={PRIMARY_LINK_CLASS}>
-                  {t.checkout.success.continueShopping}
-                </Link>
+                <LocaleLink href="/" className={PRIMARY_LINK_CLASS}>
+                  {t("checkout.success.continueShopping")}
+                </LocaleLink>
                 {showAccountLink ? (
-                  <Link
+                  <LocaleLink
                     href={`/account/order/details/${encodeURIComponent(order.id)}`}
                     className={SECONDARY_LINK_CLASS}
                   >
-                    {t.checkout.success.viewInAccount}
-                  </Link>
+                    {t("checkout.success.viewInAccount")}
+                  </LocaleLink>
                 ) : null}
               </div>
             </div>

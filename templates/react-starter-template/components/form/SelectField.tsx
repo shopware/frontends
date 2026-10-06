@@ -1,14 +1,13 @@
+"use client";
+
 import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ComponentProps } from "react";
 
 import { ChevronDownIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { FieldLabel } from "./FieldLabel";
-
-const t = {
-  "form.loading": "Loading...",
-};
 
 export type SelectOption = { label: string; value: string };
 
@@ -19,6 +18,7 @@ export type SelectFieldProps = Omit<
   id: string;
   label: string;
   options: SelectOption[];
+  optionsLang?: string;
   placeholder?: string;
   loading?: boolean;
   error?: string;
@@ -29,6 +29,7 @@ export function SelectField({
   id,
   label,
   options,
+  optionsLang,
   placeholder,
   loading = false,
   error,
@@ -36,6 +37,7 @@ export function SelectField({
   required,
   ...rest
 }: SelectFieldProps) {
+  const t = useTranslations();
   return (
     <div className={className}>
       <FieldLabel htmlFor={id} label={label} required={required} />
@@ -53,11 +55,15 @@ export function SelectField({
           ) : null}
           {loading ? (
             <option value="" disabled>
-              {t["form.loading"]}
+              {t("form.loading")}
             </option>
           ) : (
             options.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+                lang={optionsLang}
+              >
                 {option.label}
               </option>
             ))

@@ -7,6 +7,8 @@ import { useTransition } from "react";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import type {
@@ -14,32 +16,6 @@ import type {
   CheckoutField,
   CheckoutValues,
 } from "../checkoutSchema";
-
-const t = {
-  checkout: {
-    customerAddress: {
-      firstNamePlaceholder: "Enter first name",
-      firstNameLabel: "First name",
-      lastNamePlaceholder: "Enter last name",
-      lastNameLabel: "Last name",
-      streetPlaceholder: "Enter street address",
-      streetLabel: "Street address",
-      zipcodePlaceholder: "Enter ZIP code",
-      zipcodeLabel: "Zip Code",
-      cityPlaceholder: "Enter city name",
-      cityLabel: "City",
-    },
-  },
-  form: {
-    country: "Country",
-    chooseCountry: "Choose country...",
-    state: "State",
-    chooseState: "Choose state",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
 
 export type CustomerAddressProps = {
   values: Pick<
@@ -73,7 +49,8 @@ export function CustomerAddress({
 }: CustomerAddressProps) {
   const router = useRouter();
   const [refreshing, startRefresh] = useTransition();
-  const copy = t.checkout.customerAddress;
+  const t = useTranslations();
+  const contentLang = useContentLang();
   const states =
     countries.find((country) => country.id === values.countryId)?.states ?? [];
 
@@ -93,8 +70,8 @@ export function CustomerAddress({
             id="first-name"
             autoComplete="given-name"
             data-testid="checkout-pi-first-name-input"
-            label={copy.firstNameLabel}
-            placeholder={copy.firstNamePlaceholder}
+            label={t("checkout.customerAddress.firstNameLabel")}
+            placeholder={t("checkout.customerAddress.firstNamePlaceholder")}
             required
             value={values.firstName}
             onChange={(event) => onFieldChange("firstName", event.target.value)}
@@ -106,8 +83,8 @@ export function CustomerAddress({
             id="last-name"
             autoComplete="family-name"
             data-testid="checkout-pi-last-name-input"
-            label={copy.lastNameLabel}
-            placeholder={copy.lastNamePlaceholder}
+            label={t("checkout.customerAddress.lastNameLabel")}
+            placeholder={t("checkout.customerAddress.lastNamePlaceholder")}
             required
             value={values.lastName}
             onChange={(event) => onFieldChange("lastName", event.target.value)}
@@ -119,8 +96,8 @@ export function CustomerAddress({
           id="street"
           autoComplete="street-address"
           data-testid="checkout-pi-street-address-input"
-          label={copy.streetLabel}
-          placeholder={copy.streetPlaceholder}
+          label={t("checkout.customerAddress.streetLabel")}
+          placeholder={t("checkout.customerAddress.streetPlaceholder")}
           required
           value={values.street}
           onChange={(event) => onFieldChange("street", event.target.value)}
@@ -133,8 +110,8 @@ export function CustomerAddress({
             id="zipcode"
             autoComplete="postal-code"
             data-testid="checkout-pi-zip-code-input"
-            label={copy.zipcodeLabel}
-            placeholder={copy.zipcodePlaceholder}
+            label={t("checkout.customerAddress.zipcodeLabel")}
+            placeholder={t("checkout.customerAddress.zipcodePlaceholder")}
             required
             value={values.zipcode}
             onChange={(event) => onFieldChange("zipcode", event.target.value)}
@@ -146,8 +123,8 @@ export function CustomerAddress({
             id="city"
             autoComplete="address-level2"
             data-testid="checkout-pi-city-input"
-            label={copy.cityLabel}
-            placeholder={copy.cityPlaceholder}
+            label={t("checkout.customerAddress.cityLabel")}
+            placeholder={t("checkout.customerAddress.cityPlaceholder")}
             required
             value={values.city}
             onChange={(event) => onFieldChange("city", event.target.value)}
@@ -160,8 +137,8 @@ export function CustomerAddress({
             <CountrySelect
               className="w-full"
               id="country"
-              label={t.form.country}
-              placeholder={t.form.chooseCountry}
+              label={t("form.country")}
+              placeholder={t("form.chooseCountry")}
               countries={countries}
               value={values.countryId}
               onChange={onCountryChange}
@@ -178,7 +155,7 @@ export function CustomerAddress({
                 aria-busy={refreshing}
                 onClick={retryCountries}
               >
-                {t.listing.retry}
+                {t("listing.retry")}
               </BaseButton>
             ) : null}
           </div>
@@ -187,10 +164,11 @@ export function CustomerAddress({
               className="w-full"
               id="state"
               data-testid="checkout-pi-state-input"
-              label={t.form.state}
-              placeholder={t.form.chooseState}
+              label={t("form.state")}
+              placeholder={t("form.chooseState")}
               required
               autoComplete="address-level1"
+              optionsLang={contentLang}
               options={states.map((state) => ({
                 label: state.name,
                 value: state.id,

@@ -1,7 +1,10 @@
 import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { useRef } from "react";
+import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, pressKey, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -80,7 +83,7 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(cart: Partial<CartView> = {}) {
+async function setup(cart: Partial<CartView> = {}, locale?: Locale) {
   fakeCart.set(
     cartView({
       lineItems: [
@@ -93,11 +96,12 @@ async function setup(cart: Partial<CartView> = {}) {
   );
   const onClose = vi.fn();
   const notify = vi.fn();
-  mounted = await mount(
+  const page: ReactNode = (
     <CmsActionsProvider actions={{ notify }}>
       <Harness onClose={onClose} />
-    </CmsActionsProvider>,
+    </CmsActionsProvider>
   );
+  mounted = await mount(locale ? withI18n(page, locale) : page);
   const { container } = mounted;
   return {
     container,
@@ -331,5 +335,29 @@ describe("MiniCart", () => {
     expect(
       tiles[1]?.querySelector('[data-testid="product-quantity"]'),
     ).toBeNull();
+  });
+});
+
+describe("MiniCart in other locales", () => {
+  it("speaks Polish and links to the Polish checkout and cart", async () => {
+    const { panel } = await setup({}, "pl-PL");
+
+    const container = panel();
+    expect(query<HTMLElement>(container, "h2").textContent).toBe("Koszyk");
+    expect(
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="mini-cart-close-button"]',
+      ).getAttribute("aria-label"),
+    ).toBe("Zamknij");
+    expect(
+      queryAll<HTMLAnchorElement>(container, "a").map((link) => [
+        link.textContent,
+        link.getAttribute("href"),
+      ]),
+    ).toEqual([
+      ["Przejdź do kasy", "/pl-PL/checkout"],
+      ["Przejdź do koszyka", "/pl-PL/checkout/cart"],
+    ]);
   });
 });

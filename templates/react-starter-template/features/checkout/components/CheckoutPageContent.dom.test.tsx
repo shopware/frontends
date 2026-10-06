@@ -13,6 +13,8 @@ import type {
   StorefrontSession,
 } from "@/features/session/types";
 import { ShopwareClientProvider } from "@/features/storefront/components/ShopwareClientContext";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll, setInputValue } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -105,6 +107,7 @@ type SetupOptions = {
   retrySession?: Mock<SessionActions["retrySession"]>;
   answers?: Record<string, FakeAnswer>;
   getClient?: () => Promise<ApiClient>;
+  locale?: Locale;
 };
 
 async function setup({
@@ -115,6 +118,7 @@ async function setup({
   retrySession = vi.fn<SessionActions["retrySession"]>(async () => session),
   answers = {},
   getClient,
+  locale,
 }: SetupOptions = {}) {
   const shopware = fakeClient(checkoutAnswer(answers));
   fakeCart.set(cart);
@@ -129,17 +133,16 @@ async function setup({
       </SessionHarness>
     </CmsActionsProvider>
   );
-  mounted = await mount(
-    getClient ? (
-      <ShopwareClientProvider getClient={getClient}>
-        {page}
-      </ShopwareClientProvider>
-    ) : (
-      <ShopwareClientHarness client={shopware.client}>
-        {page}
-      </ShopwareClientHarness>
-    ),
+  const tree = getClient ? (
+    <ShopwareClientProvider getClient={getClient}>
+      {page}
+    </ShopwareClientProvider>
+  ) : (
+    <ShopwareClientHarness client={shopware.client}>
+      {page}
+    </ShopwareClientHarness>
   );
+  mounted = await mount(locale ? withI18n(tree, locale) : tree);
   const { container } = mounted;
   return {
     container,
@@ -1034,5 +1037,49 @@ describe("CheckoutPageContent", () => {
     expect(
       radio(container, "shipping-method", "shipping-standard").checked,
     ).toBe(true);
+  });
+});
+
+describe("CheckoutPageContent in other locales", () => {
+  it("renders the steps in German and opens the German success page", async () => {
+    const { container, shopware } = await setup({
+      session: checkoutSession({ customer: checkoutCustomer() }),
+      locale: "de-DE",
+    });
+
+    expect(query(container, "h1").textContent).toBe("Kasse");
+    expect(queryAll(container, "section h2").map((h) => h.textContent)).toEqual(
+      ["Versandadresse", "Versand", "Zahlungsinformationen", "Zusammenfassung"],
+    );
+    expect(query(container, PLACE_ORDER).textContent).toBe("Bestellen");
+
+    await interact(() =>
+      query<HTMLButtonElement>(container, PLACE_ORDER).click(),
+    );
+
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(1);
+    expect(push).toHaveBeenCalledWith("/de-DE/checkout/success/order-1");
+  });
+
+  it("validates the customer form in Polish", async () => {
+    const { container, button } = await setup({ locale: "pl-PL" });
+
+    await interact(() => button().click());
+
+    expect(container.querySelector("#email-error")?.textContent).toBe(
+      "Wartość jest wymagana",
+    );
+  });
+
+  it("links the empty cart state to the Polish homepage", async () => {
+    const { container } = await setup({
+      cart: cartResult({ lineItems: [] }),
+      locale: "pl-PL",
+    });
+
+    expect(query(container, "h1").textContent).toBe("Twój koszyk jest pusty");
+    const link = query<HTMLAnchorElement>(container, "a");
+    expect(link.textContent).toBe("Kontynuuj zakupy");
+    expect(link.getAttribute("href")).toBe("/pl-PL");
   });
 });

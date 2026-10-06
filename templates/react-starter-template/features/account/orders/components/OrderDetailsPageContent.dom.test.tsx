@@ -20,6 +20,8 @@ import {
 } from "@/features/checkout/checkoutTestDoubles";
 import { redirectToPayment } from "@/features/checkout/paymentRedirect";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll, submitForm } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -96,26 +98,31 @@ async function setup({
   orderId = ORDER_ID,
   answers = {},
   cart = cartResult(),
+  locale = "en-GB",
 }: {
   orderId?: string;
   answers?: Record<string, FakeAnswer>;
   cart?: ReturnType<typeof cartResult>;
+  locale?: Locale;
 } = {}) {
   const shopware = fakeClient(detailAnswer(answers));
   const notify = vi.fn();
   fakeCart.set(cart);
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <ShopwareClientHarness client={shopware.client}>
-        <SessionHarness initial={loggedIn}>
-          <Suspense fallback={<p data-testid="suspended" />}>
-            <OrderDetailsPageContent
-              params={Promise.resolve({ id: orderId })}
-            />
-          </Suspense>
-        </SessionHarness>
-      </ShopwareClientHarness>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <ShopwareClientHarness client={shopware.client}>
+          <SessionHarness initial={loggedIn}>
+            <Suspense fallback={<p data-testid="suspended" />}>
+              <OrderDetailsPageContent
+                params={Promise.resolve({ id: orderId })}
+              />
+            </Suspense>
+          </SessionHarness>
+        </ShopwareClientHarness>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   return { container: mounted.container, shopware, notify, cart };
 }
@@ -623,5 +630,60 @@ describe("OrderDetailsPageContent", () => {
       [file, "ebook.pdf"],
       [pdf, "invoice_10042.pdf"],
     ]);
+  });
+});
+
+describe("OrderDetailsPageContent in Polish", () => {
+  it("renders the Polish details with a prefixed back link", async () => {
+    const { container } = await setup({ locale: "pl-PL" });
+
+    expect(query(container, "h1").textContent).toBe("Zamówienie #10042");
+    expect(
+      query(container, 'a[href="/pl-PL/account/order"]').textContent,
+    ).toContain("Powrót do listy zamówień");
+    expect(container.textContent).toContain("Złożone dnia 5.10.2026");
+    expect(container.textContent).toContain("Podsumowanie zamówienia");
+  });
+
+  it("sends the payment provider back to the prefixed success pages", async () => {
+    const { container, shopware } = await setup({
+      locale: "pl-PL",
+      answers: {
+        [HANDLE_PAYMENT]: () => ({
+          redirectUrl: "https://psp.test/pay?id=1",
+        }),
+      },
+    });
+    const dialog = await openPaymentModal(container);
+
+    await choosePayment(dialog, "payment-cash");
+
+    const successPage = `${window.location.origin}/pl-PL/checkout/success/${ORDER_ID}`;
+    expect(shopware.calls(HANDLE_PAYMENT)[0]?.params).toEqual({
+      body: {
+        orderId: ORDER_ID,
+        finishUrl: `${successPage}/paid`,
+        errorUrl: `${successPage}/unpaid`,
+      },
+      fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+    });
+  });
+
+  it("links the repeated order toast to the prefixed cart", async () => {
+    const cart = cartResult();
+    const { container, notify } = await setup({ cart, locale: "pl-PL" });
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="order-repeat-button"]',
+      ).click(),
+    );
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Produkty zostały dodane do koszyka.",
+      action: { label: "Zobacz koszyk", href: "/pl-PL/checkout/cart" },
+    });
   });
 });

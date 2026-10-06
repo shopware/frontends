@@ -5,16 +5,18 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Schemas } from "#shopware";
 
 import { createShopwareClient } from "../client";
+import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
 export async function readProductDetail(
   productId: string,
+  languageId: string | null,
 ): Promise<Schemas["ProductDetailResponse"]> {
   "use cache";
   cacheLife("catalog");
-  cacheTag(`sw:product:${productId}`);
+  cacheTag(...languageCacheTags(`sw:product:${productId}`, languageId));
 
-  const response = await createShopwareClient().invoke(
+  const response = await createShopwareClient({ languageId }).invoke(
     "readProductDetailGet get /product/{productId}",
     {
       headers: { "sw-include-seo-urls": true },

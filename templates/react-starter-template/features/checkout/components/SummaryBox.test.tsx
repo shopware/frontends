@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { cartLineItem, cartResult, fakeCart } from "../checkoutTestDoubles";
@@ -55,5 +56,23 @@ describe("SummaryBox", () => {
     const html = await renderToHtml(<SummaryBox />);
 
     expect(html.match(/>Shipping<\/dt>/g)).toHaveLength(2);
+  });
+});
+
+describe("SummaryBox in other locales", () => {
+  it("labels the summary in German", async () => {
+    fakeCart.set(
+      cartResult({ lineItems: [cartLineItem({ removable: true })] }),
+    );
+
+    const html = await renderToHtml(withI18n(<SummaryBox />, "de-DE"));
+
+    expect(html).toMatch(/<h2[^>]*>Zusammenfassung<\/h2>/);
+    expect(html).toMatch(/<dt[^>]*>Zwischensumme<\/dt>/);
+    expect(html).toMatch(/<dt[^>]*>Versand<\/dt>/);
+    expect(html).toMatch(
+      /<dt[^>]*>Gesamt<\/dt><dd><span[^>]*data-testid="cart-total">64,97\s€<\/span>/,
+    );
+    expect(html).toContain(">Entfernen</button>");
   });
 });

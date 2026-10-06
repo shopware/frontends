@@ -12,6 +12,8 @@ import {
   apiError,
 } from "@/features/checkout/checkoutTestDoubles";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, queryAll, submitForm } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -80,24 +82,31 @@ function storedAnswer(overrides: Partial<Record<string, FakeAnswer>> = {}) {
   };
 }
 
-async function setup(answer: FakeAnswer = storedAnswer(), id = stored.id) {
+async function setup(
+  answer: FakeAnswer = storedAnswer(),
+  id = stored.id,
+  locale: Locale = "en-GB",
+) {
   const shopware = fakeClient(answer);
   const notify = vi.fn();
   const refreshSession = vi.fn(async () => {});
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={{ refreshSession }}>
-        <ShopwareClientHarness client={shopware.client}>
-          <Suspense fallback={<p>suspended</p>}>
-            <EditAddressContent
-              params={Promise.resolve({ id })}
-              countries={countries}
-              salutations={salutations}
-            />
-          </Suspense>
-        </ShopwareClientHarness>
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={{ refreshSession }}>
+          <ShopwareClientHarness client={shopware.client}>
+            <Suspense fallback={<p>suspended</p>}>
+              <EditAddressContent
+                params={Promise.resolve({ id })}
+                countries={countries}
+                salutations={salutations}
+              />
+            </Suspense>
+          </ShopwareClientHarness>
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   await interact(() => {});
   const { container } = mounted;
@@ -273,5 +282,35 @@ describe("EditAddressContent in the browser", () => {
 
     expect(shopware.calls(LIST_ADDRESS)).toHaveLength(2);
     expect(form()).not.toBeNull();
+  });
+});
+
+describe("EditAddressContent in German", () => {
+  it("says the address was not found in German and links back to the prefixed list", async () => {
+    const { container } = await setup(
+      storedAnswer({ [LIST_ADDRESS]: () => ({ elements: [] }) }),
+      stored.id,
+      "de-DE",
+    );
+
+    expect(alertText(container)).toContain("Adresse nicht gefunden");
+    expect(
+      container.querySelector('a[href="/de-DE/account/address"]')?.textContent,
+    ).toBe("Zurück");
+  });
+
+  it("returns to the prefixed list after saving", async () => {
+    const { form, notify } = await setup(storedAnswer(), stored.id, "de-DE");
+
+    await interact(() => {
+      const current = form();
+      if (current) submitForm(current);
+    });
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Adresse wurde erfolgreich aktualisiert.",
+    });
+    expect(push).toHaveBeenCalledExactlyOnceWith("/de-DE/account/address");
   });
 });

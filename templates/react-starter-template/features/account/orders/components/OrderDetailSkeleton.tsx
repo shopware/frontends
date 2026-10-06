@@ -1,10 +1,8 @@
+"use client";
+
 import { cx } from "@shopware/cms-base-layer-react/client";
 
-const t = {
-  form: {
-    loading: "Loading...",
-  },
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 const BAR = "rounded bg-surface-on-surface/10";
 
@@ -31,9 +29,10 @@ function CardPlaceholder() {
 }
 
 export function OrderDetailSkeleton() {
+  const t = useTranslations();
   return (
     <div className="animate-pulse" aria-busy="true" data-testid="loading">
-      <output className="sr-only">{t.form.loading}</output>
+      <output className="sr-only">{t("form.loading")}</output>
       <div aria-hidden="true">
         <div className="mb-6 flex flex-col justify-between sm:flex-row">
           <div className={cx("h-4 w-1/4", BAR)} />

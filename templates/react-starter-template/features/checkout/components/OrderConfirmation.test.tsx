@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { order } from "../checkout.fixture";
@@ -91,12 +92,56 @@ describe("OrderConfirmation", () => {
   });
 });
 
+describe("OrderConfirmation in other locales", () => {
+  it("renders the confirmation in German with German dates and prefixed links", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <OrderConfirmation
+          order={order()}
+          paymentUrl="https://psp.test/pay/1"
+          onGoToPayment={() => {}}
+          showAccountLink
+        />,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toMatch(/<h1[^>]*>Vielen Dank für Ihre Bestellung<\/h1>/);
+    expect(html).toContain(
+      "Wir haben Ihre Bestellung #10042 erhalten und werden sie so schnell wie möglich verarbeiten.",
+    );
+    expect(html).toContain("Menge<!-- --> <!-- -->2");
+    expect(html).toMatch(/<h3[^>]*>Versandadresse<\/h3>/);
+    expect(html).toContain(">Dauert bis zu 1-3 days</div>");
+    expect(html).toContain(">Zur Zahlung gehen</span></button>");
+    expect(html).toContain(
+      `>${formatOrderDate("2026-10-05T10:30:00.000+00:00", "de-DE")}</time>`,
+    );
+    expect(html).toMatch(/<a [^>]*href="\/de-DE"[^>]*>Weiter einkaufen<\/a>/);
+    expect(html).toMatch(
+      new RegExp(
+        `<a [^>]*href="/de-DE/account/order/details/${order().id}"[^>]*>In meinem Konto ansehen</a>`,
+      ),
+    );
+  });
+});
+
 describe("formatOrderDate", () => {
   it("formats in en-GB with the time and ignores invalid dates", () => {
     expect(formatOrderDate("2026-10-05T10:30:00.000Z")).toMatch(
       /^05\/10\/2026, \d{2}:\d{2}$/,
     );
     expect(formatOrderDate("not a date")).toBe("");
+    expect(formatOrderDate("not a date", "pl-PL")).toBe("");
+  });
+
+  it("formats in the given locale", () => {
+    expect(formatOrderDate("2026-10-05T10:30:00.000Z", "de-DE")).toMatch(
+      /^5\.10\.2026, \d{2}:\d{2}$/,
+    );
+    expect(formatOrderDate("2026-10-05T10:30:00.000Z", "pl-PL")).toMatch(
+      /^5\.10\.2026, \d{2}:\d{2}$/,
+    );
   });
 
   it("links to the order in the account only for logged-in customers", async () => {

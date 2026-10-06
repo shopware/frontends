@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { billingAddress, otherAddress } from "../address.fixture";
@@ -127,5 +128,29 @@ describe("AddressTile", () => {
       'aria-busy="true"',
     );
     expect(tags(html, "button", 'disabled=""')).toHaveLength(3);
+  });
+});
+
+describe("AddressTile in Polish", () => {
+  it("renders the Polish actions and a prefixed edit link", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <AddressTile
+          address={otherAddress}
+          isDefaultBillingAddress
+          onDelete={noop}
+          onSetAsDefaultBillingAddress={noop}
+          onSetAsDefaultShippingAddress={noop}
+        />,
+        "pl-PL",
+      ),
+    );
+
+    expect(
+      tags(html, "a", 'href="/pl-PL/account/address/edit/address-other"'),
+    ).toHaveLength(1);
+    expect(html).toContain("Edytuj adres</a>");
+    expect(html).toContain("Domyślny adres do faktur</li>");
+    expect(html).toContain("Użyj jako domyślny adres do wysyłki</button>");
   });
 });

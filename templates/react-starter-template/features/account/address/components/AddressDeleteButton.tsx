@@ -2,16 +2,10 @@
 
 import { cx } from "@shopware/cms-base-layer-react/client";
 
+import { useTranslations } from "@/i18n/I18nProvider";
+
 import { INACTIVE_CLASS, TERTIARY_BUTTON_CLASS } from "./addressButtonClasses";
 import { TrashIcon } from "./AddressIcons";
-
-const t = {
-  account: {
-    address: {
-      deleteAddressButton: "Delete address",
-    },
-  },
-};
 
 export type AddressDeleteButtonProps = {
   onClick: () => void;
@@ -26,6 +20,7 @@ export function AddressDeleteButton({
   busy = false,
   describedBy,
 }: AddressDeleteButtonProps) {
+  const t = useTranslations();
   return (
     <button
       type="button"
@@ -36,7 +31,7 @@ export function AddressDeleteButton({
       onClick={onClick}
     >
       <TrashIcon className="h-4 w-3.5" />
-      {t.account.address.deleteAddressButton}
+      {t("account.address.deleteAddressButton")}
     </button>
   );
 }

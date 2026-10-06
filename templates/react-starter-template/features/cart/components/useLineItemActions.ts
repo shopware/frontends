@@ -8,18 +8,22 @@ import { useCallback, useRef } from "react";
 
 import type { CartActionResult } from "@/features/cart/types";
 import { useCart } from "@/features/cart/useCart";
-import { errorMessages } from "@/features/session/errorMessages";
+import { useTranslations } from "@/i18n/I18nProvider";
+import { hasTranslation } from "@/i18n/translate";
+import type { Translate } from "@/i18n/translate";
 
-const CART_ERROR_MESSAGES: Record<string, string> = errorMessages.errors;
-
-export function cartResultMessages(result: CartActionResult): string[] {
+export function cartResultMessages(
+  result: CartActionResult,
+  t: Translate,
+): string[] {
   const errors = result.errors ?? [];
   const messages = errors.flatMap(({ messageKey, params }) => {
+    const key = `errors.${messageKey}`;
+    if (hasTranslation(t, key)) return [t(key, params)];
     const fallback = params?.message;
-    const text =
-      CART_ERROR_MESSAGES[messageKey] ??
-      (typeof fallback === "string" ? fallback : undefined);
-    return text ? [getCmsTranslate(text, params)] : [];
+    return typeof fallback === "string" && fallback
+      ? [getCmsTranslate(fallback, params)]
+      : [];
   });
   if (errors.length === 0 && !result.ok && result.message) {
     messages.push(result.message);
@@ -30,15 +34,16 @@ export function cartResultMessages(result: CartActionResult): string[] {
 export function useLineItemActions() {
   const { removeItem, changeQuantity } = useCart();
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const removing = useRef(new Set<string>());
 
   const report = useCallback(
     (result: CartActionResult) => {
-      for (const message of cartResultMessages(result)) {
+      for (const message of cartResultMessages(result, t)) {
         notify({ type: "error", message });
       }
     },
-    [notify],
+    [notify, t],
   );
 
   const remove = useCallback(

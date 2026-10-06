@@ -8,6 +8,8 @@ import {
   ShopwareClientHarness,
   deferred,
 } from "@/features/checkout/checkoutTestDoubles";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -50,12 +52,19 @@ afterEach(async () => {
   vi.restoreAllMocks();
 });
 
-async function setup(answer: FakeAnswer, { strict = false } = {}) {
+async function setup(
+  answer: FakeAnswer,
+  {
+    strict = false,
+    locale = "en-GB",
+  }: { strict?: boolean; locale?: Locale } = {},
+) {
   const shopware = fakeClient(answer);
-  const tree = (
+  const tree = withI18n(
     <ShopwareClientHarness client={shopware.client}>
       <OrdersPageContent />
-    </ShopwareClientHarness>
+    </ShopwareClientHarness>,
+    locale,
   );
   mounted = await mount(strict ? <StrictMode>{tree}</StrictMode> : tree);
   return { container: mounted.container, shopware };
@@ -354,5 +363,22 @@ describe("OrdersPageContent", () => {
     ]);
     expect(container.querySelector('[role="alert"]')).toBeNull();
     expect(orderNumbers(container)).toHaveLength(3);
+  });
+});
+
+describe("OrdersPageContent in Polish", () => {
+  it("renders the Polish header, order labels, pagination and page size label with prefixed links", async () => {
+    const { container } = await setup(pagedAnswer(40), { locale: "pl-PL" });
+
+    expect(query(container, "h1").textContent).toBe("Zamówienia");
+    expect(orderNumbers(container)[0]).toBe("Zamówienie: 10001");
+    expect(query(container, "article h2 a").getAttribute("href")).toBe(
+      "/pl-PL/account/order/details/order-1",
+    );
+    const nav = query(container, 'nav[aria-label="Paginacja"]');
+    expect(query(nav, '[aria-current="page"]').getAttribute("aria-label")).toBe(
+      "Strona 1",
+    );
+    expect(container.textContent).toContain("Na stronę:");
   });
 });

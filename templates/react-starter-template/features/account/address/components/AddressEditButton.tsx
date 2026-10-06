@@ -1,19 +1,13 @@
 "use client";
 
 import { cx } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import type { MouseEvent } from "react";
+
+import { LocaleLink } from "@/components/LocaleLink";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { INACTIVE_CLASS, TERTIARY_BUTTON_CLASS } from "./addressButtonClasses";
 import { PencilIcon } from "./AddressIcons";
-
-const t = {
-  account: {
-    address: {
-      editAddressButton: "Edit address",
-    },
-  },
-};
 
 export type AddressEditButtonProps = {
   addressId: string;
@@ -30,8 +24,9 @@ export function AddressEditButton({
   disabled = false,
   describedBy,
 }: AddressEditButtonProps) {
+  const t = useTranslations();
   return (
-    <Link
+    <LocaleLink
       href={`/account/address/edit/${encodeURIComponent(addressId)}`}
       className={cx(TERTIARY_BUTTON_CLASS, disabled && INACTIVE_CLASS)}
       aria-describedby={describedBy}
@@ -40,7 +35,7 @@ export function AddressEditButton({
       onClick={disabled ? preventNavigation : undefined}
     >
       <PencilIcon className="size-4" />
-      {t.account.address.editAddressButton}
-    </Link>
+      {t("account.address.editAddressButton")}
+    </LocaleLink>
   );
 }

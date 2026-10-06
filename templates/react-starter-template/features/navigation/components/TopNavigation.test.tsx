@@ -1,5 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import type { NavigationNode } from "../navigationTree";
@@ -7,11 +8,18 @@ import {
   TopNavigation,
   TopNavigationPlaceholder,
   normalizePath,
+  pagePath,
 } from "./TopNavigation";
 
+const route = vi.hoisted(() => ({ pathname: "/Clothing" }));
+
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/Clothing",
+  usePathname: () => route.pathname,
 }));
+
+beforeEach(() => {
+  route.pathname = "/Clothing";
+});
 
 function node(overrides: Partial<NavigationNode>): NavigationNode {
   return {
@@ -60,6 +68,20 @@ describe("normalizePath", () => {
 
   it("keeps the root path", () => {
     expect(normalizePath("/")).toBe("/");
+  });
+});
+
+describe("pagePath", () => {
+  it("drops the locale prefix and the trailing slash", () => {
+    expect(pagePath("/pl-PL/Clothing/")).toBe("/Clothing");
+    expect(pagePath("/de-DE/Clothing/Men")).toBe("/Clothing/Men");
+    expect(pagePath("/en-GB/Clothing/")).toBe("/Clothing");
+    expect(pagePath("/Clothing/")).toBe("/Clothing");
+  });
+
+  it("maps a bare locale to the root path", () => {
+    expect(pagePath("/pl-PL")).toBe("/");
+    expect(pagePath("/")).toBe("/");
   });
 });
 
@@ -130,5 +152,23 @@ describe("TopNavigation", () => {
     expect(food).not.toContain("aria-current");
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
     expect(html.match(/ border-surface-on-surface"/g)).toHaveLength(1);
+  });
+
+  it("labels the menubar in Polish and marks the prefixed current page under the pl-PL provider", async () => {
+    route.pathname = "/pl-PL/Food";
+    const polishTree = [
+      node({ id: "clothing", name: "Odzież", href: "/pl-PL/Clothing/" }),
+      node({ id: "food", name: "Żywność", href: "/pl-PL/Food/" }),
+    ];
+    const html = await renderToHtml(
+      withI18n(<TopNavigation tree={polishTree} />, "pl-PL"),
+    );
+    const [clothing, food] = anchors(html);
+
+    expect(html).toContain('aria-label="Główne menu"');
+    expect(clothing).toMatch(/href="\/pl-PL\/Clothing\/?"/);
+    expect(clothing).not.toContain("aria-current");
+    expect(food).toMatch(/href="\/pl-PL\/Food\/?"/);
+    expect(food).toContain('aria-current="page"');
   });
 });

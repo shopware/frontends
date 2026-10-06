@@ -1,15 +1,7 @@
 import { z } from "zod";
 
 import type { RegistrationInput } from "@/features/session/types";
-
-const t = {
-  validations: {
-    required: "Value is required",
-    minLength: "This minimum length should be at least {min}",
-    email: "Value is not a valid email address",
-    requiredIf: "The value is required",
-  },
-};
+import type { Translate } from "@/i18n/translate";
 
 export type AccountType = "private" | "business";
 
@@ -53,41 +45,47 @@ function isBlank(value: string): boolean {
   return value.trim().length === 0;
 }
 
-function minLengthMessage(min: number): string {
-  return t.validations.minLength.replace("{min}", String(min));
+export const REGISTRATION_MIN_LENGTHS = {
+  firstName: 3,
+  lastName: 3,
+  password: 8,
+  street: 3,
+} as const;
+
+function requiredString(t: Translate) {
+  return z
+    .string()
+    .refine((value) => !isBlank(value), t("validations.required"));
 }
 
-function requiredString() {
-  return z.string().refine((value) => !isBlank(value), t.validations.required);
+function requiredMinLength(t: Translate, min: number) {
+  return requiredString(t).min(min, t("validations.minLength", { min }));
 }
 
-function requiredMinLength(min: number) {
-  return requiredString().min(min, minLengthMessage(min));
-}
-
-export function createRegistrationSchema({
-  countryHasStates,
-}: RegistrationSchemaOptions) {
+export function createRegistrationSchema(
+  { countryHasStates }: RegistrationSchemaOptions,
+  t: Translate,
+) {
   return z
     .object({
-      accountType: z.enum(["private", "business"], t.validations.required),
-      firstName: requiredMinLength(3),
-      lastName: requiredMinLength(3),
-      email: requiredString().pipe(z.email(t.validations.email)),
-      password: requiredMinLength(8),
+      accountType: z.enum(["private", "business"], t("validations.required")),
+      firstName: requiredMinLength(t, REGISTRATION_MIN_LENGTHS.firstName),
+      lastName: requiredMinLength(t, REGISTRATION_MIN_LENGTHS.lastName),
+      email: requiredString(t).pipe(z.email(t("validations.email"))),
+      password: requiredMinLength(t, REGISTRATION_MIN_LENGTHS.password),
       vatId: z.string(),
       company: z.string(),
-      street: requiredMinLength(3),
-      zipcode: requiredString(),
-      city: requiredString(),
-      countryId: requiredString(),
+      street: requiredMinLength(t, REGISTRATION_MIN_LENGTHS.street),
+      zipcode: requiredString(t),
+      city: requiredString(t),
+      countryId: requiredString(t),
       countryStateId: z.string(),
     })
     .superRefine((values, ctx) => {
       if (values.accountType === "business" && isBlank(values.company)) {
         ctx.addIssue({
           code: "custom",
-          message: t.validations.requiredIf,
+          message: t("validations.requiredIf"),
           path: ["company"],
         });
       }
@@ -98,7 +96,7 @@ export function createRegistrationSchema({
       ) {
         ctx.addIssue({
           code: "custom",
-          message: t.validations.requiredIf,
+          message: t("validations.requiredIf"),
           path: ["countryStateId"],
         });
       }
@@ -114,8 +112,9 @@ function isRegistrationField(
 export function validateRegistration(
   values: RegistrationValues,
   options: RegistrationSchemaOptions,
+  t: Translate,
 ): RegistrationErrors {
-  const result = createRegistrationSchema(options).safeParse(values);
+  const result = createRegistrationSchema(options, t).safeParse(values);
   if (result.success) return {};
 
   const errors: RegistrationErrors = {};

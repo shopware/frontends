@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { AccountOverview } from "./AccountOverview";
@@ -21,5 +22,14 @@ describe("AccountOverview on the server", () => {
     expect(html).not.toContain("<h2");
     expect(html).not.toContain('id="newsletter-checkbox"');
     expect(html).not.toContain('role="alert"');
+  });
+});
+
+describe("AccountOverview on the server in German", () => {
+  it("renders the German page header and loading text", async () => {
+    const html = await renderToHtml(withI18n(<AccountOverview />, "de-DE"));
+
+    expect(html).toContain(">Übersicht</h1>");
+    expect(html).toContain('<output class="sr-only">Lädt...</output>');
   });
 });

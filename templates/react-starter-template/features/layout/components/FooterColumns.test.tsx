@@ -83,6 +83,35 @@ describe("FooterColumns", () => {
     expect(external).toContain('rel="noopener"');
   });
 
+  it("marks the Shopware names with the content language of their node", async () => {
+    const html = await renderToHtml(
+      <FooterColumns
+        tree={[
+          {
+            ...tree[0]!,
+            lang: "en-US",
+            children: tree[0]!.children.map((child) => ({
+              ...child,
+              lang: "en-US",
+            })),
+          },
+        ]}
+      />,
+    );
+
+    expect(html).toContain(
+      '<p lang="en-US" class="font-semibold text-surface-inverse-on-surface">Service</p>',
+    );
+    expect(anchors(html)).toHaveLength(2);
+    for (const link of anchors(html)) expect(link).toContain('lang="en-US"');
+  });
+
+  it("declares no language without a content language", async () => {
+    const html = await renderToHtml(<FooterColumns tree={tree} />);
+
+    expect(html).not.toContain("lang=");
+  });
+
   it("renders nothing for an empty tree", async () => {
     const html = await renderToHtml(<FooterColumns tree={[]} />);
 

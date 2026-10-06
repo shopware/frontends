@@ -3,6 +3,7 @@
 import { BaseButton } from "@shopware/cms-base-layer-react/client";
 
 import { InputField } from "@/components/form/InputField";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { changePassword } from "../profileApi";
 import {
@@ -11,27 +12,14 @@ import {
 } from "../profileSchemas";
 import { useCredentialChange } from "../useCredentialChange";
 
-const t = {
-  account: {
-    changePassword: {
-      form: {
-        newPasswordLabel: "Enter new password*",
-        confirmPasswordLabel: "Repeat new password*",
-        currentPasswordLabel: "Current password*",
-        buttonSubmit: "Save",
-        successUpdate: "Password has been updated successfully.",
-      },
-    },
-  },
-};
-
 export function ChangePasswordForm() {
+  const t = useTranslations();
   const { values, busy, formRef, errorFor, setField, touch, handleSubmit } =
     useCredentialChange({
       initialValues: emptyChangePasswordValues,
       validate: validateChangePassword,
       submit: changePassword,
-      successMessage: t.account.changePassword.form.successUpdate,
+      successMessage: t("account.changePassword.form.successUpdate"),
     });
 
   return (
@@ -47,7 +35,7 @@ export function ChangePasswordForm() {
       <InputField
         id="newPassword"
         type="password"
-        label={t.account.changePassword.form.newPasswordLabel}
+        label={t("account.changePassword.form.newPasswordLabel")}
         aria-required="true"
         autoComplete="new-password"
         value={values.newPassword}
@@ -58,7 +46,7 @@ export function ChangePasswordForm() {
       <InputField
         id="newPasswordConfirm"
         type="password"
-        label={t.account.changePassword.form.confirmPasswordLabel}
+        label={t("account.changePassword.form.confirmPasswordLabel")}
         aria-required="true"
         autoComplete="new-password"
         value={values.newPasswordConfirm}
@@ -69,7 +57,7 @@ export function ChangePasswordForm() {
       <InputField
         id="currentPassword"
         type="password"
-        label={t.account.changePassword.form.currentPasswordLabel}
+        label={t("account.changePassword.form.currentPasswordLabel")}
         aria-required="true"
         autoComplete="current-password"
         value={values.password}
@@ -84,7 +72,7 @@ export function ChangePasswordForm() {
           aria-disabled={busy || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         >
-          {t.account.changePassword.form.buttonSubmit}
+          {t("account.changePassword.form.buttonSubmit")}
         </BaseButton>
       </div>
     </form>

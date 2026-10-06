@@ -9,6 +9,8 @@ import { useCustomer } from "@/features/account/customer/useCustomer";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import type { Translate } from "@/i18n/translate";
 
 import type { ProfileClient } from "./profileApi";
 
@@ -16,7 +18,7 @@ export const PROFILE_PATH = "/account/profile";
 
 export type CredentialChangeOptions<Values extends Record<string, string>> = {
   initialValues: Values;
-  validate(values: Values): Partial<Record<keyof Values, string>>;
+  validate(values: Values, t: Translate): Partial<Record<keyof Values, string>>;
   submit(client: ProfileClient, values: Values): Promise<void>;
   successMessage: string;
 };
@@ -32,6 +34,8 @@ export function useCredentialChange<Values extends Record<string, string>>({
   const { refresh } = useCustomer();
   const { refreshSession } = useSessionActions();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const [values, setValues] = useState<Values>(initialValues);
   const [touched, setTouched] = useState<Partial<Record<keyof Values, true>>>(
     {},
@@ -45,7 +49,7 @@ export function useCredentialChange<Values extends Record<string, string>>({
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
-  const errors = validate(values);
+  const errors = validate(values, t);
 
   useEffect(() => {
     mounted.current = true;
@@ -77,7 +81,7 @@ export function useCredentialChange<Values extends Record<string, string>>({
     event.preventDefault();
     if (inFlight.current || busy) return;
     setSubmitted(true);
-    if (Object.keys(validate(values)).length) {
+    if (Object.keys(validate(values, t)).length) {
       setFocusRequest((count) => count + 1);
       return;
     }
@@ -88,7 +92,7 @@ export function useCredentialChange<Values extends Record<string, string>>({
       try {
         await submit(await getClient(), values);
       } catch (error) {
-        for (const message of resolveApiErrorMessages(error)) {
+        for (const message of resolveApiErrorMessages(error, t)) {
           notify({ type: "error", message });
         }
         return;
@@ -97,7 +101,7 @@ export function useCredentialChange<Values extends Record<string, string>>({
       await Promise.all([refresh(), refreshSession()]);
       if (!mounted.current) return;
       startNavigation(() => {
-        router.push(PROFILE_PATH);
+        router.push(localePath(PROFILE_PATH));
       });
     } finally {
       inFlight.current = false;

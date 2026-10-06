@@ -2,6 +2,7 @@ import type { ApiClient, Schemas } from "#shopware";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import type { StorefrontSession } from "@/features/session/types";
+import type { Translate } from "@/i18n/translate";
 
 import { toCartActionErrors } from "./cartErrors";
 import type { CartActionResult, CartState } from "./types";
@@ -14,6 +15,7 @@ export type CartStore = {
   getSnapshot(): CartState;
   subscribe(listener: () => void): () => void;
   syncSession(session: StorefrontSession): void;
+  setTranslate(t: Translate): void;
   refresh(): Promise<void>;
   addProduct(input: AddProductInput): Promise<CartActionResult>;
   removeItem(id: string): Promise<CartActionResult>;
@@ -58,6 +60,7 @@ export function cartSessionKey(session: StorefrontSession): string | null {
     customer?.id ?? null,
     !!customer?.guest,
     session.context?.token ?? null,
+    session.context?.context?.languageIdChain?.[0] ?? null,
   ]);
 }
 
@@ -69,8 +72,10 @@ function settle(): void {}
 
 export function createCartStore(
   getClient: () => Promise<CartClient>,
+  t: Translate,
 ): CartStore {
   let snapshot = loadingCart;
+  let translate = t;
   const listeners = new Set<() => void>();
   let tail: Promise<void> = Promise.resolve();
   let queuedRefresh: Promise<void> | null = null;
@@ -121,7 +126,10 @@ export function createCartStore(
         publish({ status: "ready", cart: data });
         return { ok: true, errors: toCartActionErrors(data) };
       } catch (error) {
-        return { ok: false, message: resolveApiErrorMessages(error)[0] };
+        return {
+          ok: false,
+          message: resolveApiErrorMessages(error, translate)[0],
+        };
       }
     });
   }
@@ -139,6 +147,9 @@ export function createCartStore(
       if (key === null || key === sessionKey) return;
       sessionKey = key;
       void refresh();
+    },
+    setTranslate(next) {
+      translate = next;
     },
     refresh,
     addProduct: ({ id, quantity = 1 }) =>

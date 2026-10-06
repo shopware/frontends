@@ -10,6 +10,8 @@ import { deferred } from "@/features/checkout/checkoutTestDoubles";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import { apiClientError } from "@/features/session/session.fixture";
 import { ShopwareClientProvider } from "@/features/storefront/components/ShopwareClientContext";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -68,19 +70,23 @@ function PendingRoute({ until }: { until: Promise<void> }) {
 async function setup({
   answer,
   sibling = null,
-}: { answer?: FakeAnswer; sibling?: ReactNode } = {}) {
+  locale = "en-GB",
+}: { answer?: FakeAnswer; sibling?: ReactNode; locale?: Locale } = {}) {
   const shopware = fakeClient(answer);
   const notify = vi.fn();
   const refreshSession = vi.fn(async () => {});
   mounted = await mount(
-    <ProfileHarness
-      client={shopware.client}
-      notify={notify}
-      actions={{ refreshSession }}
-    >
-      <ChangeEmailForm />
-      {sibling}
-    </ProfileHarness>,
+    withI18n(
+      <ProfileHarness
+        client={shopware.client}
+        notify={notify}
+        actions={{ refreshSession }}
+      >
+        <ChangeEmailForm />
+        {sibling}
+      </ProfileHarness>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -294,5 +300,41 @@ describe("ChangeEmailForm in the browser", () => {
 
     await interact(() => route.resolve());
     expect(submit.getAttribute("aria-busy")).toBe("false");
+  });
+});
+
+describe("ChangeEmailForm in Polish", () => {
+  it("labels and validates in Polish", async () => {
+    const { container, email, confirmation, error } = await setup({
+      locale: "pl-PL",
+    });
+
+    expect(container.querySelector('label[for="newEmail"]')?.textContent).toBe(
+      "Wprowadź nowy e-mail",
+    );
+
+    await interact(() => setInputValue(email, "new@example.com"));
+    await interact(() => setInputValue(confirmation, "other@example.com"));
+    await interact(() =>
+      confirmation.dispatchEvent(new FocusEvent("focusout", { bubbles: true })),
+    );
+    expect(error("confirmEmail")?.textContent).toBe(
+      "Wartość musi być równa wartości e-mail",
+    );
+  });
+
+  it("confirms the change in Polish and goes to the prefixed profile", async () => {
+    const { notify, submit, ...fields } = await setup({ locale: "pl-PL" });
+
+    await fillValid(fields);
+    await interact(() => submit.click());
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Adres e-mail został pomyślnie zaktualizowany.",
+    });
+    expect(navigation.push).toHaveBeenCalledExactlyOnceWith(
+      "/pl-PL/account/profile",
+    );
   });
 });

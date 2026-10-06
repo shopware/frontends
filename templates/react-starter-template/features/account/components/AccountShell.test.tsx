@@ -2,13 +2,16 @@ import { describe, expect, it, vi } from "vitest";
 
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { AccountShell } from "./AccountShell";
 
+const route = vi.hoisted(() => ({ pathname: "/account/profile" }));
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
-  usePathname: () => "/account/profile",
+  usePathname: () => route.pathname,
 }));
 
 function render() {
@@ -60,5 +63,30 @@ describe("AccountShell", () => {
     expect(html).toContain('aria-busy="true"');
     expect(html).toContain('data-testid="account-guard-skeleton"');
     expect(html).not.toContain("Customer data");
+  });
+});
+
+describe("AccountShell in German", () => {
+  it("renders the German navigation with prefixed links and the current page marked", async () => {
+    route.pathname = "/de-DE/account/profile";
+
+    const html = await renderToHtml(
+      withI18n(
+        <SessionProvider session={anonymousSession}>
+          <AccountShell>
+            <p data-testid="account-content">Customer data</p>
+          </AccountShell>
+        </SessionProvider>,
+        "de-DE",
+      ),
+    );
+    route.pathname = "/account/profile";
+
+    expect(html).toContain('aria-label="Kontonavigation"');
+    const profileLink = html.match(
+      /<a[^>]*href="\/de-DE\/account\/profile"[^>]*>/,
+    );
+    expect(profileLink?.[0]).toContain('aria-current="page"');
+    expect(html).toContain('href="/de-DE/account/order"');
   });
 });

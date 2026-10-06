@@ -16,6 +16,8 @@ import type { AccountType } from "@/features/account/registrationSchema";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { SalutationOption } from "@/platform/shopware/reads/salutations";
 
 import { changeProfile } from "../profileApi";
@@ -27,42 +29,6 @@ import {
 import type { PersonalDataField, PersonalDataValues } from "../profileSchemas";
 import { CustomerUnavailable } from "./CustomerUnavailable";
 import { PersonalDataFormSkeleton } from "./PersonalDataFormSkeleton";
-
-const t = {
-  account: {
-    profile: {
-      form: {
-        firstName: "First name",
-        lastName: "Last name",
-        company: "Company",
-        vatIds: "VAT Registration Number",
-        buttonSubmit: "Change data",
-        successUpdate: "Data has been updated.",
-      },
-    },
-  },
-  form: {
-    salutation: "Salutation",
-    chooseSalutation: "Choose salutation...",
-    accountType: {
-      title: "Account type",
-      private: "Private",
-      business: "Company",
-    },
-  },
-  errors: {
-    "message-default":
-      "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
-
-const ACCOUNT_TYPE_OPTIONS = [
-  { label: t.form.accountType.private, value: "private" },
-  { label: t.form.accountType.business, value: "business" },
-];
 
 type Touched = Partial<Record<PersonalDataField, boolean>>;
 
@@ -98,6 +64,12 @@ function PersonalDataFields({
   const { refresh } = useCustomer();
   const { refreshSession } = useSessionActions();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const contentLang = useContentLang();
+  const accountTypeOptions = [
+    { label: t("form.accountType.private"), value: "private" },
+    { label: t("form.accountType.business"), value: "business" },
+  ];
   const [values, setValues] = useState<PersonalDataValues>(() =>
     personalDataFromCustomer(customer),
   );
@@ -110,7 +82,7 @@ function PersonalDataFields({
   const formRef = useRef<HTMLFormElement>(null);
 
   const business = values.accountType === "business";
-  const errors = validatePersonalData(values);
+  const errors = validatePersonalData(values, t);
   const errorFor = (field: PersonalDataField) =>
     submitted || touched[field] ? errors[field] : undefined;
 
@@ -145,7 +117,7 @@ function PersonalDataFields({
     event.preventDefault();
     if (inFlight.current) return;
     setSubmitted(true);
-    if (Object.keys(validatePersonalData(values)).length) {
+    if (Object.keys(validatePersonalData(values, t)).length) {
       setFocusRequest((count) => count + 1);
       return;
     }
@@ -156,14 +128,14 @@ function PersonalDataFields({
       try {
         await changeProfile(await getClient(), toChangeProfileBody(values));
       } catch (error) {
-        for (const message of resolveApiErrorMessages(error)) {
+        for (const message of resolveApiErrorMessages(error, t)) {
           notify({ type: "error", message });
         }
         return;
       }
       notify({
         type: "success",
-        message: t.account.profile.form.successUpdate,
+        message: t("account.profile.form.successUpdate"),
       });
       await Promise.all([refresh(), refreshSession()]);
     } finally {
@@ -185,9 +157,10 @@ function PersonalDataFields({
       <div className="w-60">
         <SelectField
           id="salutation"
-          label={t.form.salutation}
-          placeholder={t.form.chooseSalutation}
+          label={t("form.salutation")}
+          placeholder={t("form.chooseSalutation")}
           autoComplete="honorific-prefix"
+          optionsLang={contentLang}
           options={salutations}
           disabled={salutationsUnavailable}
           value={values.salutationId}
@@ -195,7 +168,7 @@ function PersonalDataFields({
           onBlur={touch("salutationId")}
           error={
             salutationsUnavailable
-              ? t.errors["message-default"]
+              ? t("errors.message-default")
               : errorFor("salutationId")
           }
         />
@@ -207,15 +180,15 @@ function PersonalDataFields({
             aria-busy={refreshing}
             onClick={retrySalutations}
           >
-            {t.listing.retry}
+            {t("listing.retry")}
           </BaseButton>
         ) : null}
       </div>
       <div className="w-60">
         <SelectField
           id="accountType"
-          label={t.form.accountType.title}
-          options={ACCOUNT_TYPE_OPTIONS}
+          label={t("form.accountType.title")}
+          options={accountTypeOptions}
           value={values.accountType}
           onChange={(event) =>
             setField("accountType", toAccountType(event.target.value))
@@ -229,7 +202,7 @@ function PersonalDataFields({
           className="w-full"
           id="firstName"
           data-testid="account-personal-data-firstname-input"
-          label={t.account.profile.form.firstName}
+          label={t("account.profile.form.firstName")}
           required
           autoComplete="given-name"
           value={values.firstName}
@@ -241,7 +214,7 @@ function PersonalDataFields({
           className="w-full"
           id="lastName"
           data-testid="account-personal-data-lastname-input"
-          label={t.account.profile.form.lastName}
+          label={t("account.profile.form.lastName")}
           required
           autoComplete="family-name"
           value={values.lastName}
@@ -255,7 +228,7 @@ function PersonalDataFields({
           <InputField
             className="w-full"
             id="company"
-            label={t.account.profile.form.company}
+            label={t("account.profile.form.company")}
             required
             autoComplete="organization"
             value={values.company}
@@ -266,7 +239,7 @@ function PersonalDataFields({
           <InputField
             className="w-full"
             id="vatIds"
-            label={t.account.profile.form.vatIds}
+            label={t("account.profile.form.vatIds")}
             required
             value={values.vatIds}
             onChange={inputHandler("vatIds")}
@@ -282,7 +255,7 @@ function PersonalDataFields({
         aria-disabled={pending || undefined}
         className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
       >
-        {t.account.profile.form.buttonSubmit}
+        {t("account.profile.form.buttonSubmit")}
       </BaseButton>
     </form>
   );

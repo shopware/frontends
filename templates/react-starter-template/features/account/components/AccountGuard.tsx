@@ -7,25 +7,23 @@ import type { ReactNode } from "react";
 
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import { takeLogoutIntent } from "./useAccountLogout";
 
-const t = {
-  "account.messages.loginRequired":
-    "Login is required to access this page. You are being redirected to the login page.",
-  "form.loading": "Loading...",
-};
+const LOGIN_PATH = "/account/login";
 
 const PLACEHOLDER = "rounded bg-surface-surface-container";
 
 export function AccountGuardSkeleton() {
+  const t = useTranslations();
   return (
     <div
       aria-busy="true"
       data-testid="account-guard-skeleton"
       className="animate-pulse"
     >
-      <output className="sr-only">{t["form.loading"]}</output>
+      <output className="sr-only">{t("form.loading")}</output>
       <div className="mb-14 flex flex-col gap-2">
         <div className={`h-15 w-2/3 max-w-md ${PLACEHOLDER}`} />
         <div className={`h-6 w-full max-w-xl ${PLACEHOLDER}`} />
@@ -49,6 +47,8 @@ export function AccountGuard({ children }: { children: ReactNode }) {
   const { status, isLoggedIn } = useSession();
   const { retrySession } = useSessionActions();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const router = useRouter();
   const admitted = useRef(false);
   const redirected = useRef(false);
@@ -75,10 +75,10 @@ export function AccountGuard({ children }: { children: ReactNode }) {
     const redirect = () => {
       if (!active || redirected.current) return;
       redirected.current = true;
-      notify({ type: "info", message: t["account.messages.loginRequired"] });
+      notify({ type: "info", message: t("account.messages.loginRequired") });
       const { pathname, search } = window.location;
       router.replace(
-        `/account/login?redirect=${encodeURIComponent(`${pathname}${search}`)}`,
+        `${localePath(LOGIN_PATH)}?redirect=${encodeURIComponent(`${pathname}${search}`)}`,
       );
     };
 
@@ -93,7 +93,7 @@ export function AccountGuard({ children }: { children: ReactNode }) {
     return () => {
       active = false;
     };
-  }, [status, isLoggedIn, notify, retrySession, router]);
+  }, [status, isLoggedIn, notify, retrySession, router, t, localePath]);
 
   if (status === "loading" || !isLoggedIn) return <AccountGuardSkeleton />;
   return children;

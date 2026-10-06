@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Schemas } from "#shopware";
+import { ContentLanguageProvider } from "@/i18n/ContentLanguageProvider";
 import { renderToHtml } from "@/test/render";
 
 import { paymentMethod, paymentMethods } from "../checkout.fixture";
@@ -52,5 +53,26 @@ describe("PaymentMethods", () => {
     expect(html).toMatch(
       /<img src="https:\/\/cdn.test\/paypal.svg" alt="Invoice"/,
     );
+  });
+
+  it("declares the content language on the method name and description only", async () => {
+    const html = await renderToHtml(
+      <ContentLanguageProvider lang="en-US">
+        <PaymentMethods
+          legend="Zahlungsinformationen"
+          paymentMethods={paymentMethods}
+          selectedPaymentMethod="payment-invoice"
+          onChange={() => {}}
+        />
+      </ContentLanguageProvider>,
+    );
+
+    expect(
+      html.match(/<span class="flex flex-col" lang="en-US">/g),
+    ).toHaveLength(2);
+    expect(html).toContain(
+      '<legend class="sr-only">Zahlungsinformationen</legend>',
+    );
+    expect(html).not.toMatch(/<(fieldset|legend|label|input)[^>]*lang=/);
   });
 });

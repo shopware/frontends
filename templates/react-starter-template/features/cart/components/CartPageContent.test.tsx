@@ -1,11 +1,23 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import CartPage, { metadata } from "@/app/(checkout)/checkout/cart/page";
+import CartPage, {
+  generateMetadata,
+} from "@/app/[locale]/(checkout)/checkout/cart/page";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
+vi.mock("server-only", () => ({}));
+
 describe("CartPage", () => {
-  it("names the page after the cart", () => {
-    expect(metadata.title).toBe("My cart");
+  it("names the page after the cart", async () => {
+    expect(
+      (await generateMetadata({ params: Promise.resolve({ locale: "en-GB" }) }))
+        .title,
+    ).toBe("My cart");
+    expect(
+      (await generateMetadata({ params: Promise.resolve({ locale: "de-DE" }) }))
+        .title,
+    ).toBe("Mein Warenkorb");
   });
 
   it("renders the title and the loading skeleton on the server", async () => {
@@ -17,5 +29,11 @@ describe("CartPage", () => {
     expect(html).not.toContain("Your cart is empty");
     expect(html).not.toContain("checkout-product-tile-item");
     expect(html).not.toContain('href="/checkout"');
+  });
+
+  it("renders the Polish title", async () => {
+    const html = await renderToHtml(withI18n(<CartPage />, "pl-PL"));
+
+    expect(html).toMatch(/<h1[^>]*>Mój koszyk<\/h1>/);
   });
 });

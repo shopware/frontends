@@ -1,25 +1,14 @@
 "use client";
 
 import { BaseButton } from "@shopware/cms-base-layer-react/client";
-import Link from "next/link";
 import { useState } from "react";
 
+import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
-import { errorMessages } from "@/features/session/errorMessages";
-
-const t = {
-  "cart.title": "My cart",
-  "cart.emptyCartLabel": "Your cart is empty",
-  "cart.proceedToCheckout": "Check out",
-  "cart.continueShopping": "Continue Shopping",
-  "cart.miniCart.subtotal": "Subtotal",
-  "cart.miniCart.taxEstimation": "Taxes & shipping estimated at checkout.",
-  "errors.message-default": errorMessages.errors["message-default"],
-  "listing.retry": "Try again",
-};
+import { useTranslations } from "@/i18n/I18nProvider";
 
 const PRIMARY_LINK_CLASS =
   "rounded-md bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary hover:bg-brand-primary-hover";
@@ -27,6 +16,7 @@ const PRIMARY_LINK_CLASS =
 export function CartPageContent() {
   const { status, cart, lineItems, isEmpty, subtotal, refresh } = useCart();
   const { remove, updateQuantity } = useLineItemActions();
+  const t = useTranslations();
   const [retrying, setRetrying] = useState(false);
 
   async function retry() {
@@ -40,7 +30,7 @@ export function CartPageContent() {
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4">
-      <h1 className="my-10 font-serif text-[40px]">{t["cart.title"]}</h1>
+      <h1 className="my-10 font-serif text-[40px]">{t("cart.title")}</h1>
       {status === "loading" ? (
         <CartPageSkeleton />
       ) : isEmpty ? (
@@ -51,7 +41,7 @@ export function CartPageContent() {
                 role="alert"
                 className="mb-6 max-w-xl text-center text-lg text-surface-on-surface"
               >
-                {t["errors.message-default"]}
+                {t("errors.message-default")}
               </p>
               <BaseButton
                 variant="secondary"
@@ -62,17 +52,17 @@ export function CartPageContent() {
                   void retry();
                 }}
               >
-                {t["listing.retry"]}
+                {t("listing.retry")}
               </BaseButton>
             </>
           ) : (
             <p className="mb-6 text-lg text-surface-on-surface">
-              {t["cart.emptyCartLabel"]}
+              {t("cart.emptyCartLabel")}
             </p>
           )}
-          <Link href="/" className={PRIMARY_LINK_CLASS}>
-            {t["cart.continueShopping"]}
-          </Link>
+          <LocaleLink href="/" className={PRIMARY_LINK_CLASS}>
+            {t("cart.continueShopping")}
+          </LocaleLink>
         </div>
       ) : (
         <>
@@ -96,7 +86,7 @@ export function CartPageContent() {
           <div className="mb-20 ml-auto block w-fit">
             <div className="mb-2 flex items-center justify-between gap-8">
               <span className="text-surface-on-surface">
-                {t["cart.miniCart.subtotal"]}
+                {t("cart.miniCart.subtotal")}
               </span>
               <Price
                 className="leading-6 font-bold text-surface-on-surface"
@@ -104,14 +94,14 @@ export function CartPageContent() {
               />
             </div>
             <p className="mb-6 text-right text-sm leading-6 text-surface-on-surface-variant">
-              {t["cart.miniCart.taxEstimation"]}
+              {t("cart.miniCart.taxEstimation")}
             </p>
-            <Link
+            <LocaleLink
               href="/checkout"
               className={`${PRIMARY_LINK_CLASS} mb-2 ml-auto block w-fit`}
             >
-              {t["cart.proceedToCheckout"]}
-            </Link>
+              {t("cart.proceedToCheckout")}
+            </LocaleLink>
           </div>
         </>
       )}

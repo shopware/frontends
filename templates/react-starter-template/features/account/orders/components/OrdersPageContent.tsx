@@ -4,6 +4,7 @@ import { cx } from "@shopware/cms-base-layer-react/client";
 import { useId, useRef } from "react";
 
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import { ORDERS_PAGE_SIZE_OPTIONS } from "../ordersApi";
 import { useOrderList } from "../useOrderList";
@@ -11,21 +12,6 @@ import { OrderLine } from "./OrderLine";
 import { OrderLineSkeleton } from "./OrderLineSkeleton";
 import { PageSizeSelector } from "./PageSizeSelector";
 import { Pagination } from "./Pagination";
-
-const t = {
-  account: {
-    order: {
-      header: "Orders",
-      subHeader: "View your current and past orders",
-    },
-  },
-  listing: {
-    loading: "Loading…",
-    empty: "No results.",
-    error: "Something went wrong while loading results.",
-    retry: "Try again",
-  },
-};
 
 const MAX_SKELETONS = 3;
 
@@ -43,6 +29,7 @@ function scrollToList(target: HTMLElement | null): void {
 }
 
 export function OrdersPageContent() {
+  const t = useTranslations();
   const list = useOrderList();
   const listRef = useRef<HTMLDivElement>(null);
   const pageSizeId = useId();
@@ -60,7 +47,9 @@ export function OrdersPageContent() {
     if (status === "error") {
       return (
         <div className="py-8 text-center text-sm" role="alert">
-          <p className="text-surface-on-surface-variant">{t.listing.error}</p>
+          <p className="text-surface-on-surface-variant">
+            {t("listing.error")}
+          </p>
           <button
             type="button"
             className="mt-3 text-surface-on-surface underline"
@@ -68,7 +57,7 @@ export function OrdersPageContent() {
               void list.retry();
             }}
           >
-            {t.listing.retry}
+            {t("listing.retry")}
           </button>
         </div>
       );
@@ -77,7 +66,7 @@ export function OrdersPageContent() {
     if (!data) {
       return (
         <div aria-busy="true" data-testid="orders-loading">
-          <output className="sr-only">{t.listing.loading}</output>
+          <output className="sr-only">{t("listing.loading")}</output>
           {Array.from(
             { length: Math.min(limit, MAX_SKELETONS) },
             (_, index) => (
@@ -91,7 +80,7 @@ export function OrdersPageContent() {
     if (data.elements.length === 0) {
       return (
         <p className="py-8 text-center text-sm text-surface-on-surface-variant">
-          {t.listing.empty}
+          {t("listing.empty")}
         </p>
       );
     }
@@ -134,8 +123,8 @@ export function OrdersPageContent() {
     <div>
       <AccountPageHeader
         className="mb-14"
-        title={t.account.order.header}
-        subtitle={t.account.order.subHeader}
+        title={t("account.order.header")}
+        subtitle={t("account.order.subHeader")}
       />
       <div ref={listRef}>{renderBody()}</div>
     </div>

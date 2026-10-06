@@ -1,16 +1,9 @@
 import { z } from "zod";
 
 import type { Schemas } from "#shopware";
+import type { Translate } from "@/i18n/translate";
 
 import type { AddressBody } from "./addressApi";
-
-const t = {
-  validations: {
-    required: "Value is required",
-    minLength: "This minimum length should be at least {min}",
-    requiredIf: "The value is required",
-  },
-};
 
 export type AddressValues = {
   salutationId: string;
@@ -44,37 +37,36 @@ function isBlank(value: string): boolean {
   return value.trim().length === 0;
 }
 
-function minLengthMessage(min: number): string {
-  return t.validations.minLength.replace("{min}", String(min));
+function requiredString(t: Translate) {
+  return z
+    .string()
+    .refine((value) => !isBlank(value), t("validations.required"));
 }
 
-function requiredString() {
-  return z.string().refine((value) => !isBlank(value), t.validations.required);
+function requiredMinLength(t: Translate, min: number) {
+  return requiredString(t).min(min, t("validations.minLength", { min }));
 }
 
-function requiredMinLength(min: number) {
-  return requiredString().min(min, minLengthMessage(min));
-}
-
-export function createAddressSchema({
-  countryHasStates,
-}: AddressSchemaOptions) {
+export function createAddressSchema(
+  { countryHasStates }: AddressSchemaOptions,
+  t: Translate,
+) {
   return z
     .object({
-      salutationId: requiredString(),
-      firstName: requiredMinLength(2),
-      lastName: requiredMinLength(2),
-      street: requiredMinLength(3),
-      zipcode: requiredString(),
-      city: requiredString(),
-      countryId: requiredString(),
+      salutationId: requiredString(t),
+      firstName: requiredMinLength(t, 2),
+      lastName: requiredMinLength(t, 2),
+      street: requiredMinLength(t, 3),
+      zipcode: requiredString(t),
+      city: requiredString(t),
+      countryId: requiredString(t),
       countryStateId: z.string(),
     })
     .superRefine((values, ctx) => {
       if (countryHasStates && isBlank(values.countryStateId)) {
         ctx.addIssue({
           code: "custom",
-          message: t.validations.requiredIf,
+          message: t("validations.requiredIf"),
           path: ["countryStateId"],
         });
       }
@@ -88,8 +80,9 @@ function isAddressField(key: PropertyKey | undefined): key is AddressField {
 export function validateAddress(
   values: AddressValues,
   options: AddressSchemaOptions,
+  t: Translate,
 ): AddressErrors {
-  const result = createAddressSchema(options).safeParse(values);
+  const result = createAddressSchema(options, t).safeParse(values);
   if (result.success) return {};
 
   const errors: AddressErrors = {};

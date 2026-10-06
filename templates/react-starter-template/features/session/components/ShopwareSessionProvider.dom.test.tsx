@@ -1,15 +1,17 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import type { GetShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import type { Locale } from "@/i18n/config";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
+import { testTranslator, withI18n } from "@/test/i18n";
 import { interact, mount, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
-import { errorMessages } from "../errorMessages";
 import { READ_TIMEOUT_MS } from "../readTimeout";
 import {
   ENGLISH_DOMAIN,
@@ -23,6 +25,10 @@ import type { SessionActionResult, StorefrontSession } from "../types";
 import { useSessionActions } from "./SessionActionsContext";
 import type { SessionActions } from "./SessionActionsContext";
 import { useSession } from "./SessionProvider";
+import {
+  useLoadShopwareLanguages,
+  useShopwareLanguages,
+} from "./ShopwareLanguagesContext";
 import { ShopwareSessionProvider } from "./ShopwareSessionProvider";
 
 const browser = vi.hoisted(() => ({
@@ -332,7 +338,7 @@ describe("ShopwareSessionProvider config failure", () => {
     expect(notifications).toEqual([]);
     expect(browser.createBrowserClient).not.toHaveBeenCalled();
 
-    const defaultMessage = errorMessages.errors["message-default"];
+    const defaultMessage = testTranslator()("errors.message-default");
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
       { ok: false, message: defaultMessage },
     );
@@ -440,7 +446,9 @@ describe("ShopwareSessionProvider actions", () => {
     const { session, run, notifications } = await setup();
     await vi.waitFor(() => expect(session().status).toBe("ready"));
 
-    const message = errorMessages.errors.login_no_matching_customer_internal;
+    const message = testTranslator()(
+      "errors.login_no_matching_customer_internal",
+    );
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
       { ok: false, message },
     );
@@ -662,5 +670,322 @@ describe("ShopwareSessionProvider client and refresh", () => {
       READ_CONTEXT,
       READ_CONTEXT,
     ]);
+  });
+});
+
+const READ_LANGUAGES = "readLanguagesGet get /language";
+const UPDATE_CONTEXT = "updateContext patch /context";
+
+function createLanguageBackend({
+  languageId = "language-en",
+  defaultLanguageId = "language-en",
+  languages = [
+    { id: "language-en", translationCode: { code: "en-GB" } },
+    { id: "language-de", translationCode: { code: "de-DE" } },
+  ],
+  languageFailures = 0,
+}: {
+  languageId?: string;
+  defaultLanguageId?: string;
+  languages?: { id: string; translationCode: { code: string } }[];
+  languageFailures?: number;
+} = {}) {
+  const backend = {
+    languageId,
+    languageFailures,
+    invocations: [] as Invocation[],
+    headers: [] as Record<string, string>[],
+  };
+  const invoke = async (operation: string, params?: unknown) => {
+    backend.invocations.push({ operation, params });
+    switch (operation) {
+      case READ_CONTEXT:
+        return {
+          data: {
+            ...salesChannelContext(null),
+            context: { languageIdChain: [backend.languageId] },
+            salesChannel: {
+              ...salesChannelContext(null).salesChannel,
+              languageId: defaultLanguageId,
+            },
+          },
+          status: 200,
+        };
+      case READ_LANGUAGES:
+        if (backend.languageFailures > 0) {
+          backend.languageFailures -= 1;
+          throw new TypeError("Failed to fetch");
+        }
+        return { data: { elements: languages }, status: 200 };
+      case UPDATE_CONTEXT:
+        backend.languageId = (
+          params as { body: { languageId: string } }
+        ).body.languageId;
+        return { data: {}, status: 200 };
+      case LOGIN:
+        throw apiClientError([{ code: "0" }], 401);
+      default:
+        throw new Error(`Unexpected operation ${operation}`);
+    }
+  };
+  browser.createBrowserClient.mockImplementation(
+    () =>
+      ({
+        invoke,
+        defaultHeaders: {
+          apply: (headers: Record<string, string>) => {
+            backend.headers.push(headers);
+          },
+        },
+      }) as unknown as ApiClient,
+  );
+  return backend;
+}
+
+const localeHarness: { setLocale: ((locale: Locale) => void) | null } = {
+  setLocale: null,
+};
+
+function LocaleSwitch({ initial }: { initial: Locale }) {
+  const [locale, setLocale] = useState<Locale>(initial);
+  useEffect(() => {
+    localeHarness.setLocale = setLocale;
+  }, []);
+  return withI18n(
+    <ShopwareSessionProvider locale={locale} notify={() => {}}>
+      <Probe />
+    </ShopwareSessionProvider>,
+    locale,
+  );
+}
+
+function languageChain(container: HTMLElement): string[] | undefined {
+  const session: StorefrontSession = JSON.parse(
+    query<HTMLOutputElement>(container, '[data-testid="session"]')
+      .textContent ?? "",
+  );
+  return session.context?.context?.languageIdChain;
+}
+
+describe("ShopwareSessionProvider locale", () => {
+  it("applies the Shopware language of the page locale to the session", async () => {
+    const backend = createLanguageBackend();
+    mounted = await mount(<LocaleSwitch initial="de-DE" />);
+    const { container } = mounted;
+
+    await vi.waitFor(() =>
+      expect(languageChain(container)).toEqual(["language-de"]),
+    );
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_LANGUAGES,
+      UPDATE_CONTEXT,
+      READ_CONTEXT,
+    ]);
+    expect(backend.invocations[2]?.params).toEqual({
+      body: { languageId: "language-de" },
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
+    });
+    expect(backend.headers).toEqual([{ "sw-language-id": "language-de" }]);
+  });
+
+  it("re-applies the language when the locale changes in the browser", async () => {
+    const backend = createLanguageBackend();
+    mounted = await mount(<LocaleSwitch initial="en-GB" />);
+    const { container } = mounted;
+    await vi.waitFor(() =>
+      expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+        READ_CONTEXT,
+        READ_LANGUAGES,
+      ]),
+    );
+
+    await interact(() => localeHarness.setLocale?.("de-DE"));
+
+    await vi.waitFor(() =>
+      expect(languageChain(container)).toEqual(["language-de"]),
+    );
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_LANGUAGES,
+      UPDATE_CONTEXT,
+      READ_CONTEXT,
+    ]);
+    expect(backend.headers).toEqual([
+      { "sw-language-id": "language-en" },
+      { "sw-language-id": "language-de" },
+    ]);
+  });
+
+  it("resolves action errors in the language of the page", async () => {
+    createLanguageBackend();
+    const notifications: SessionNotification[] = [];
+    mounted = await mount(
+      withI18n(
+        <ShopwareSessionProvider
+          locale="de-DE"
+          notify={(notification) => {
+            notifications.push(notification);
+          }}
+        >
+          <Probe />
+        </ShopwareSessionProvider>,
+        "de-DE",
+      ),
+    );
+
+    let result: SessionActionResult | undefined;
+    await interact(() => {
+      void harness.actions?.login(credentials).then((value) => {
+        result = value;
+      });
+    });
+
+    const message = testTranslator("de-DE")(
+      "errors.login_no_matching_customer_internal",
+    );
+    await vi.waitFor(() => expect(result).toEqual({ ok: false, message }));
+    expect(notifications).toEqual([{ type: "error", message }]);
+  });
+});
+
+const languagesHarness: {
+  load: ReturnType<typeof useLoadShopwareLanguages> | null;
+} = { load: null };
+
+function LanguagesProbe() {
+  const languages = useShopwareLanguages();
+  const load = useLoadShopwareLanguages();
+  useEffect(() => {
+    languagesHarness.load = load;
+  }, [load]);
+  return <output data-testid="languages">{JSON.stringify(languages)}</output>;
+}
+
+async function mountLanguages(locale: Locale) {
+  mounted = await mount(
+    withI18n(
+      <ShopwareSessionProvider locale={locale} notify={() => {}}>
+        <LanguagesProbe />
+      </ShopwareSessionProvider>,
+      locale,
+    ),
+  );
+  const { container } = mounted;
+  return () =>
+    JSON.parse(
+      query<HTMLOutputElement>(container, '[data-testid="languages"]')
+        .textContent ?? "null",
+    );
+}
+
+describe("ShopwareSessionProvider languages", () => {
+  it("provides the Shopware languages of the sales channel to its children", async () => {
+    const pendingConfig = deferred<PublicShopwareConfig>();
+    browser.loadPublicConfig.mockReturnValue(pendingConfig.promise);
+    createLanguageBackend();
+    const languages = await mountLanguages("de-DE");
+
+    expect(languages()).toEqual([]);
+
+    await interact(() => pendingConfig.resolve(config));
+
+    await vi.waitFor(() =>
+      expect(languages()).toEqual([
+        { id: "language-en", code: "en-GB" },
+        { id: "language-de", code: "de-DE" },
+      ]),
+    );
+  });
+
+  it("reads the languages again on request after a failed read and hands them to its children", async () => {
+    const backend = createLanguageBackend({
+      defaultLanguageId: "language-de",
+      languageFailures: 1,
+    });
+    const languages = await mountLanguages("en-GB");
+    await vi.waitFor(() =>
+      expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+        READ_CONTEXT,
+        READ_LANGUAGES,
+      ]),
+    );
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(languages()).toEqual([]);
+
+    let loaded: unknown;
+    await interact(() => {
+      void languagesHarness.load?.().then((value) => {
+        loaded = value;
+      });
+    });
+
+    const expected = [
+      { id: "language-en", code: "en-GB" },
+      { id: "language-de", code: "de-DE" },
+    ];
+    await vi.waitFor(() =>
+      expect(loaded).toEqual({
+        languages: expected,
+        defaultLanguageId: "language-de",
+      }),
+    );
+    await vi.waitFor(() => expect(languages()).toEqual(expected));
+  });
+});
+
+function ContentLanguageProbe() {
+  return (
+    <output data-testid="content-lang">{useContentLang() ?? "none"}</output>
+  );
+}
+
+async function mountContentLanguage(locale: Locale) {
+  mounted = await mount(
+    withI18n(
+      <ShopwareSessionProvider locale={locale} notify={() => {}}>
+        <ContentLanguageProbe />
+      </ShopwareSessionProvider>,
+      locale,
+    ),
+  );
+  const { container } = mounted;
+  return () =>
+    query<HTMLOutputElement>(container, '[data-testid="content-lang"]')
+      .textContent;
+}
+
+describe("ShopwareSessionProvider content language", () => {
+  it("declares the session language when it differs from the page locale, like English (US) under pl-PL", async () => {
+    const backend = createLanguageBackend({
+      languageId: "language-us",
+      defaultLanguageId: "language-us",
+      languages: [{ id: "language-us", translationCode: { code: "en-US" } }],
+    });
+
+    const contentLang = await mountContentLanguage("pl-PL");
+
+    await vi.waitFor(() => expect(contentLang()).toBe("en-US"));
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_LANGUAGES,
+    ]);
+  });
+
+  it("declares nothing once the session uses the language of the locale", async () => {
+    const backend = createLanguageBackend();
+
+    const contentLang = await mountContentLanguage("de-DE");
+
+    await vi.waitFor(() =>
+      expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+        READ_CONTEXT,
+        READ_LANGUAGES,
+        UPDATE_CONTEXT,
+        READ_CONTEXT,
+      ]),
+    );
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(contentLang()).toBe("none");
   });
 });
