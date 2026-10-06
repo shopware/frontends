@@ -144,7 +144,7 @@ Pick by scope — how much of the search the composable is about:
 | `useProductSearch`        | one product, by id            | opening a product after the customer picks it                          |
 | `useShopwareContext`      | `apiClient`, `cacheableReads` | calling `searchSuggest post /search-suggest`, which has no composable  |
 
-The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload.
+The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload. A category facet needs aggregations the Store API does not add by itself; the [Product Listing and Filters recipe](listing.html) covers it.
 
 `useProductSearchSuggest` is the one this recipe is about, and it has six members:
 
@@ -402,7 +402,6 @@ The results are context-dependent like any listing: prices arrive calculated in 
 
 - [Product Listing and Filters recipe](listing.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
