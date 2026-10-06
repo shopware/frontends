@@ -51,7 +51,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
-const { addToCart, isInCart, quantity } = useAddToCart(product);
+const { addToCart, quantity } = useAddToCart(product);
 
 const availableStock = computed(() => product.value?.availableStock ?? 0);
 const minPurchase = computed(() => product.value?.minPurchase ?? 0);
@@ -60,7 +60,7 @@ const restockTime = computed(() => product.value?.restockTime);
 const productNumber = computed(() => product.value?.productNumber ?? "");
 
 const addToCartProxy = async () => {
-  await addToCart();
+  const cart = await addToCart();
   const errors = getErrorsCodes();
   for (const element of errors) {
     const { messageKey, params } = resolveCartError(element);
@@ -71,7 +71,10 @@ const addToCartProxy = async () => {
   if (errors.length) return;
 
   // Shopware drops some items without a cart error, e.g. a variant parent.
-  if (!isInCart.value) {
+  const added =
+    cart?.lineItems?.some((item) => item.referencedId === product.value.id) ??
+    true;
+  if (!added) {
     pushError(
       `${props.product?.translated.name} ${translations.product.notAddedToCart}`,
     );

@@ -89,7 +89,7 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const product = toRef(() => productProp);
 
-const { addToCart, isInCart } = useAddToCart(product);
+const { addToCart } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
@@ -129,7 +129,7 @@ const toggleWishlistProduct = async () => {
 };
 
 const addToCartProxy = async () => {
-  await addToCart();
+  const cart = await addToCart();
   const errors = getErrorsCodes();
   for (const element of errors) {
     const { messageKey, params } = resolveCartError(element);
@@ -140,7 +140,10 @@ const addToCartProxy = async () => {
   if (errors.length) return;
 
   // Shopware drops some items without a cart error, e.g. a variant parent.
-  if (!isInCart.value) {
+  const added =
+    cart?.lineItems?.some((item) => item.referencedId === product.value.id) ??
+    true;
+  if (!added) {
     pushError(
       `${product?.value.translated.name} ${translations.product.notAddedToCart}`,
     );
