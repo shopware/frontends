@@ -1,0 +1,3 @@
+# .env.development
+API_URL="https://demo-frontends.shopware.store"
+API_ACCESS_TOKEN="SWSCBHFSNTVMAWNZDNFKSHLAYW"

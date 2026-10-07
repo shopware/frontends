@@ -100,16 +100,8 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Custom Elements",
-            link: "/guides/cms/custom-elements.html",
-          },
-          {
             text: "Content Pages",
             link: "/guides/cms/content-pages.html",
-          },
-          {
-            text: "Customize Components",
-            link: "/guides/cms/customize-components.html",
           },
           {
             text: "Implement Missing Component",
@@ -139,37 +131,12 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Product Listing",
-            link: "/guides/e-commerce/product-listing.html",
-          },
-          {
-            text: "Product Detail Page",
-            link: "/guides/e-commerce/product-detail-page.html",
-          },
-          { text: "Prices", link: "/guides/e-commerce/prices.html" },
-          { text: "Cart", link: "/guides/e-commerce/cart.html" },
-          {
-            text: "Checkout",
-            link: "/guides/e-commerce/checkout.html",
-          },
-          {
             text: "Payments",
             link: "/guides/e-commerce/payments.html",
           },
           {
             text: "JSON-LD",
             link: "/guides/e-commerce/json-ld.html",
-          },
-        ],
-      },
-      {
-        text: "B2B",
-        link: "/guides/b2b/",
-        collapsed: true,
-        items: [
-          {
-            text: "Quote Management",
-            link: "/guides/b2b/quote-management.html",
           },
         ],
       },
@@ -181,14 +148,6 @@ export const sidebar = [
           {
             text: "Sitemap",
             link: "/guides/features/sitemap.html",
-          },
-          {
-            text: "Wishlist",
-            link: "/guides/features/wishlist.html",
-          },
-          {
-            text: "Custom Products extension",
-            link: "/guides/features/custom-products.html",
           },
           {
             text: "Broadcasting",
@@ -214,16 +173,8 @@ export const sidebar = [
             link: "/guides/page-elements/images.html",
           },
           {
-            text: "Login Form",
-            link: "/guides/page-elements/login-form.html",
-          },
-          {
             text: "Navigation",
             link: "/guides/page-elements/navigation.html",
-          },
-          {
-            text: "Footer Navigation",
-            link: "/guides/page-elements/footer-navigation.html",
           },
         ],
       },
@@ -255,6 +206,10 @@ export const sidebar = [
             link: "/frontends-recipes/account/wishlist.html",
           },
           {
+            text: "Order History",
+            link: "/frontends-recipes/account/order-history.html",
+          },
+          {
             text: "Newsletter",
             link: "/frontends-recipes/account/newsletter.html",
           },
@@ -278,12 +233,24 @@ export const sidebar = [
             link: "/frontends-recipes/catalog/listing.html",
           },
           {
+            text: "Prices and Tax State",
+            link: "/frontends-recipes/catalog/prices.html",
+          },
+          {
             text: "Search and Suggest",
             link: "/frontends-recipes/catalog/search.html",
           },
           {
             text: "Product Reviews",
             link: "/frontends-recipes/catalog/reviews.html",
+          },
+          {
+            text: "Product Variants",
+            link: "/frontends-recipes/catalog/variants.html",
+          },
+          {
+            text: "Cross-Selling",
+            link: "/frontends-recipes/catalog/cross-selling.html",
           },
         ],
       },
@@ -316,6 +283,10 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
+            text: "Rendering CMS Pages",
+            link: "/frontends-recipes/cms/rendering.html",
+          },
+          {
             text: "Contact Form",
             link: "/frontends-recipes/cms/contact-form.html",
           },
@@ -327,8 +298,20 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
+            text: "Session Context",
+            link: "/frontends-recipes/context/session-context.html",
+          },
+          {
             text: "Language and Currency Switch",
             link: "/frontends-recipes/context/language-and-currency.html",
+          },
+          {
+            text: "Navigation and Breadcrumbs",
+            link: "/frontends-recipes/context/navigation.html",
+          },
+          {
+            text: "URL Resolving and SEO URLs",
+            link: "/frontends-recipes/context/url-resolving.html",
           },
         ],
       },
@@ -340,6 +323,10 @@ export const sidebar = [
           {
             text: "Guest Order Lookup via Deep Link",
             link: "/frontends-recipes/orders/guest-order-lookup.html",
+          },
+          {
+            text: "Order Details",
+            link: "/frontends-recipes/orders/details.html",
           },
         ],
       },

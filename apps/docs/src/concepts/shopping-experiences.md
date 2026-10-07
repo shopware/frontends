@@ -21,7 +21,7 @@ This guide will discuss how to use and customize [Shopping Experiences](https://
 
 Shopping Experiences are implemented as a dedicated package that you can install in your project.
 
-If your project is based on the [Demo Store Template](../introduction/templates/demo-store-template), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
+If your project is based on the [Vue Starter Template](../introduction/templates/vue-starter-template.html), that package is already installed. If you are using a custom template, follow the instructions in [Install the package](#install-the-package) first.
 
 ## Install the package
 
@@ -29,13 +29,21 @@ The `@shopware/cms-base-layer` package provides an implementation of all default
 
 First of all, add the package to your project:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/install-the-package.sh" code lang="bash" no-name -->
+
 ```bash
 npm install -D @shopware/cms-base-layer
 ```
 
+<!-- /automd -->
+
 In a Nuxt application, extend the CMS layer and, if you want the shared styling defaults, also extend the design-tokens layer:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/concepts/shopping-experiences/install-the-package.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
@@ -50,32 +58,13 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 If you already have your own UnoCSS or Tailwind setup, you can keep using `@shopware/cms-base-layer` without the design-tokens layer and provide your own styling configuration instead.
 
 ## CMS rendering workflow
 
-Understanding how the API data flows into rendered components helps you know what's automatic and what requires your own implementation.
-
-### Data → Component mapping
-
-The Shopware API returns a nested CMS tree:
-
-```
-CmsPage
-  └── CmsSection  (type e.g. "default", "sidebar")
-        └── CmsBlock    (type e.g. "image-text", "product-slider")
-              └── CmsSlot     (type e.g. "image", "text")
-```
-
-Each node has a `type` field. The `cms-base-layer` package resolves a Vue component for every node by converting the type to a PascalCase component name:
-
-| API node      | type value   | resolved component  |
-| ------------- | ------------ | ------------------- |
-| `cms_section` | `default`    | `CmsSectionDefault` |
-| `cms_block`   | `image-text` | `CmsBlockImageText` |
-| `cms_slot`    | `image`      | `CmsElementImage`   |
-
-This resolution is done by `resolveCmsComponent` from `@shopware/composables`.
+The [Rendering CMS Pages recipe](../frontends-recipes/cms/rendering.html) explains how the CMS tree in the API response — sections, blocks and slots — is resolved to components.
 
 ### What is handled automatically
 
@@ -83,38 +72,7 @@ The `@shopware/cms-base-layer` package ships ready-made components for all **def
 
 ### What requires your implementation
 
-Any CMS block or element type that is **not** part of the default set — typically custom blocks created in the Shopware backend — will not have a matching component. In development mode you will see an outlined placeholder where the component is missing, with:
-
-- the expected component name to create (e.g. `CmsElementMyCustomSlider.vue`)
-- a link to the relevant docs
-- a one-click "copy AI prompt" button pre-filled with the live API data for that element
-
-In production the placeholder is invisible (renders nothing), so missing components fail silently.
-
-### Implementing a missing component
-
-When a CMS element or block has no matching Vue component, the dev-mode placeholder gives you everything you need to get started quickly.
-
-**Using the placeholder:**
-
-1. Open your browser on any page that contains the unimplemented CMS type.
-2. You will see a highlighted placeholder showing the expected component name (e.g. `CmsElementMyCustomSlider`).
-3. Click **docs ↗** to open the relevant implementation guide.
-4. Click **copy AI prompt** to copy a ready-to-use prompt to your clipboard. It includes:
-   - the exact component name and CMS type
-   - the full `content` prop JSON as returned by the API (including `config` and `data` fields)
-   - a reference to the docs
-5. Paste the prompt into your AI coding assistant to generate a working first draft of the component.
-
-**Completing the implementation:**
-
-1. Create a file with the expected component name in your project, e.g. `components/CmsElementMyCustomSlider.vue`.
-2. Nuxt auto-imports it as a global component, which is picked up by the resolver — the placeholder will disappear on the next hot-reload.
-3. Use `defineProps<{ content: Schemas["CmsSlot"] }>()` and access `content.data` / `content.config` for the element's data.
-
-::: tip Console warnings
-In development mode the browser console also logs a warning for each missing component, including the component name to create and a direct link to the relevant docs page.
-:::
+A block or element type outside the default set — typically a custom block created in the Shopware backend — has no matching component. In development it renders a placeholder with the component name to create; in production it renders nothing. A missing section type shows a plain "There is no …" line instead, in every mode. [Implement a Missing CMS Component](../guides/cms/missing-component.html) takes you from the placeholder to a working component.
 
 ## 3D / spatial media support
 
@@ -122,4 +80,4 @@ Shopping Experiences also support 3D models (GLB format) in image elements, imag
 
 ## How to build Pages, Elements and Blocks?
 
-<PageRef page="../guides/cms/" title="BUILDGING > CMS" sub="See the buliding chapter about CMS." />
+<PageRef page="../guides/cms/" title="CMS guides" sub="Create, override and implement CMS blocks and elements." />

@@ -12,6 +12,9 @@ recipe:
   helpers:
     - getListingFilters
     - getTranslatedProperty
+    - getCategoryFilterAggregations
+    - getCategoryFilterPostFilter
+    - excludeRootCategory
   operations:
     - readProductListing post /product-listing/{categoryId}
     - searchPage post /search
@@ -133,13 +136,14 @@ You do not need a separate request for the filter options. They are the `aggrega
 | Seed from the CMS    | `setInitialListing(listing)`            | none                                 | <SchemaTypeTooltip type-key='Schemas["ProductListingResult"]' />                                                 |
 | Search a category    | `search({ limit: 24 })`                 | `POST /product-listing/{categoryId}` | <SchemaTypeTooltip type-key='operations["readProductListing post /product-listing/{categoryId}"]["body"]' />     |
 | Search by term       | `search({ search: term })`              | `POST /search`                       | <SchemaTypeTooltip type-key='operations["searchPage post /search"]["body"]' />                                   |
+| Filter by category   | `getCategoryFilterPostFilter(ids)`      | `POST /search`                       | <SchemaTypeTooltip type-key='operations["searchPage post /search"]["body"]' />                                   |
 | Read the page        | `getElements`, `getTotal`               | either                               | <SchemaTypeTooltip type-key='operations["readProductListing post /product-listing/{categoryId}"]["response"]' /> |
 | Apply filters        | `setCurrentFilters([{ code, value }])`  | either                               | <SchemaTypeTooltip type-key='Schemas["ProductListingCriteria"]' />                                               |
 | Change the sorting   | `changeCurrentSortingOrder("name-asc")` | either                               | <SchemaTypeTooltip type-key='Schemas["ProductListingCriteria"]' />                                               |
 | Change the page      | `changeCurrentPage(2)`                  | either                               | <SchemaTypeTooltip type-key='Schemas["Criteria"]' />                                                             |
 | Append the next page | `loadMore({ ...criteria, p })`          | either                               | <SchemaTypeTooltip type-key='operations["searchPage post /search"]["response"]' />                               |
 
-The two pagination rows do not use the same field. `changeCurrentPage(page)` sends `page`, which comes from the base `Criteria`, while `loadMore()` sends `p`, the listing-specific page parameter. Hover both chips to see where each is declared.
+The category row assumes the same criteria also carries `getCategoryFilterAggregations()`. The post filter narrows the products either way, but without those aggregations the response holds no category options to render. The two pagination rows do not use the same field. `changeCurrentPage(page)` sends `page`, which comes from the base `Criteria`, while `loadMore()` sends `p`, the listing-specific page parameter. Hover both chips to see where each is declared.
 
 `changeCurrentPage` and `changeCurrentSortingOrder` both take an optional second `query` argument, applied as `Object.assign({ page }, query)` and `Object.assign({ order }, query)`. It is merged last, so anything it carries wins over the field the method itself set. That argument is how a listing rebuilds its whole criteria while changing one thing — `CmsElementProductListing` in `cms-base-layer` uses it to rebuild a whitelisted criteria from the URL query on every navigation, coercing the strings the router hands it into the numbers and booleans the criteria declares.
 
@@ -187,6 +191,8 @@ Use generated Store API types when you need to type criteria, results, or lower-
   <SchemaTypeTooltip type-key='Schemas["Product"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -198,11 +204,17 @@ type ProductListingCriteria = Schemas["ProductListingCriteria"];
 type Product = Schemas["Product"];
 ```
 
+<!-- /automd -->
+
 `ProductListingCriteria` is what `setCurrentFilters` keys its codes on. It extends the base `Criteria`, so `filter`, `sort`, `page` and the rest are accepted too; its own listing-specific codes are `order`, `limit`, `p`, `manufacturer`, `min-price`, `max-price`, `rating`, `shipping-free`, `properties`, `property-whitelist`, `reduce-aggregations` and the `*-filter` toggles. `SearchBody` adds `search` on top of it, which is the one field a category listing does not declare. Both bodies additionally intersect `ProductListingFlags`, which contributes the `no-aggregations` and `only-aggregations` flags.
+
+The response carries the other side as `currentFilters` on `ProductListingResult`, which is what `getCurrentFilters` returns. It is not the criteria shape: `manufacturer` and `properties` come back as arrays of bare ids — `properties` holds option ids with no property group attached — `price` as `{ min, max }`, `rating` as a number or `null`, and `shipping-free` as a boolean.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal category listing page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/listing/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -262,8 +274,9 @@ const sortOptions = computed<SortOption[]>(() => getSortingOrders.value ?? []);
 // getListingFilters types its options far more loosely than the payload is:
 // a property group carries PropertyGroupOption[] under `options`, a manufacturer
 // aggregation carries ProductManufacturer[] under `entities`. Both have a name.
-type FilterOption =
-  Schemas["PropertyGroupOption"] | Schemas["ProductManufacturer"];
+type PropertyOption = Schemas["PropertyGroupOption"];
+type ManufacturerOption = Schemas["ProductManufacturer"];
+type FilterOption = PropertyOption | ManufacturerOption;
 
 const optionsOf = (filter: { options?: unknown; entities?: unknown }) =>
   (filter.options ?? filter.entities ?? []) as FilterOption[];
@@ -281,7 +294,11 @@ const isSelected = (code: string, id: string) => selectedIds(code).has(id);
 
 const toggleOption = (code: string, id: string) => {
   const selected = selectedIds(code);
-  selected.has(id) ? selected.delete(id) : selected.add(id);
+  if (selected.has(id)) {
+    selected.delete(id);
+  } else {
+    selected.add(id);
+  }
 
   const query = { ...route.query, [code]: [...selected].join("|") };
   // An empty value would be sent as "" and come back as [""].
@@ -445,6 +462,8 @@ const statusMessage = computed(() =>
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The example is URL-first: a control writes its selection to the query, and one watcher turns the query into a single `search()`. That is what makes the back button, a refresh and a shared link land on the same listing, and it is the pattern `useListingFilters` uses in `cms-base-layer`. `setCurrentFilters()` is the shorter alternative when the listing state does not have to survive a reload — it takes the shortcut filter params directly and searches for you. `filtersToQuery()` is the piece for the other direction: it turns a `ProductListingCriteria` into a query object, joining array values with `|`. It gates on truthiness rather than on emptiness, so `shipping-free: false`, `rating: 0` and `min-price: 0` are dropped along with the genuinely empty values.
@@ -453,7 +472,7 @@ Everything the listing needs from the URL goes through `buildCriteria`, includin
 
 The filter panel reads `getInitialFilters` rather than `getAvailableFilters`. Both come from `getListingFilters`, but the initial one is computed over the listing the page was rendered with, so the options do not reshuffle while the customer is selecting.
 
-It also narrows that list. `getListingFilters` returns one entry per aggregation, except `properties`, which expands into one entry per property group; the `options` and `categories-counts` aggregations are dropped entirely. A category listing carries `price`, `rating` and `shipping-free` alongside `manufacturer` and `properties`. Those three hold no options to tick — they are labelled with the raw aggregation name and need a range input and toggles of their own. A minimal example drops them; `cms-base-layer` instead routes each code to its own component in `SwProductListingFilter`, and drops only the `categories` filter, which is search-only, in `getVisibleListingFilters`.
+It also narrows that list. `getListingFilters` returns one entry per aggregation, except `properties`, which expands into one entry per property group. The `options` aggregation is dropped, and `categories-counts` is folded into the `categories` filter as a `count` on each entity instead of becoming an entry of its own. A category listing carries `price`, `rating` and `shipping-free` alongside `manufacturer` and `properties`. Those three hold no options to tick — they are labelled with the raw aggregation name and need a range input and toggles of their own. A minimal example drops them; `cms-base-layer` instead routes each code to its own component in `SwProductListingFilter`, and drops only the `categories` filter, which is search-only, in `getVisibleListingFilters`.
 
 Each remaining filter carries its options under `options` for a property group and under `entities` for manufacturers and categories, which is why `optionsOf` falls back from one to the other. It also asserts the element type: `getListingFilters` declares those arrays as little more than `{ id, translated }`, so `getTranslatedProperty(option, "name")` does not typecheck against them even though every real payload has a name. `SwFilterProperties` in `cms-base-layer` solves the same mismatch with a generic that pins `options` to `PropertyGroupOption[]` and `entities` to `ProductManufacturer[]`.
 
@@ -481,9 +500,13 @@ A listing is context-dependent. Prices come back calculated in the current curre
 - `resetFilters()` always sends a `search` key. That field exists on `searchPage post /search` but not on `readProductListing post /product-listing/{categoryId}`, so on a category listing it is a key the operation does not declare.
 - `resetFilters()` deliberately keeps the search term. It clears filters, not the query.
 - With `listingType: "categoryListing"` and no `categoryId`, the composable reads the id from `useCategory()`, which throws a `ContextError` when no category is in context. The failure happens at the `useListing()` call, not as a request with `undefined` in the path.
-- `getInitialFilters` and `getAvailableFilters` return one entry per aggregation, except `properties`, which expands into one entry per property group; the `options` and `categories-counts` aggregations are dropped. Not every entry has selectable options.
+- `getInitialFilters` and `getAvailableFilters` return one entry per aggregation, except `properties`, which expands into one entry per property group. `options` is dropped, and `categories-counts` becomes the `count` on each `categories` entity. Not every entry has selectable options.
 - Property-group entries carry an `id`, and so does the `categories` filter; `manufacturer`, `price`, `rating` and `shipping-free` do not. Key a filter list on `filter.id ?? filter.code` — every property group is a separate filter sharing the `properties` code.
-- A search listing can also carry a `categories` filter. Its code is not part of `ProductListingCriteria`; it is applied as a post filter, and `cms-base-layer` hides it on a category listing because it would otherwise render a checkbox the next query sync resets and that never changes the result set.
+- A search listing can also carry a `categories` filter, but the Store API does not add its aggregations on its own. `getCategoryFilterAggregations()` from `@shopware/helpers` requests them: a `categories` entity aggregation and a flat `categories-counts` terms aggregation, both on `categoriesRo.id`.
+- The `categories` code is not a key of `ProductListingCriteria`, and `setCurrentFilters` types its `code` against that schema, so it does not accept the category filter. Send the selection as a `post-filter` entry built by `getCategoryFilterPostFilter(ids)`: a post filter narrows the products and leaves the aggregations alone, so every category option stays visible. `cms-base-layer` hides the filter on a category listing because it would otherwise render a checkbox the next query sync resets and that never changes the result set.
+- The `categories` filter is labelled with the raw aggregation name, so give it your own heading. Its entities are sorted by `count`, but on `searchPage post /search` that count covers every matching variant, not every product: the helper keeps `categories-counts` flat because the search route returns no buckets once a nested aggregation is attached, and neither `cms-base-layer` nor the templates render the number. Where a nested aggregation does return buckets, a `categories-parents` terms aggregation on `parentId` under `categories-counts` — the `CATEGORY_PARENTS_AGGREGATION_NAME` constant — makes the count collapse variants into their parent product.
+- The `categories` entities include the sales channel's entry point, an ancestor of every product's category, so selecting it changes nothing. Drop it with `excludeRootCategory(entities, sessionContext.value?.salesChannel?.navigationCategoryId)`. `SwProductListingFilters` from `cms-base-layer` renders the whole category filter when it runs with `listing-type="productSearchListing"`, as the search page of `vue-starter-template` does.
+- A product with variants is listed the way its _Storefront presentation_ setting in the administration says, and the product carries that setting as `variantListingConfig`, which is `null` until someone configures it. Unconfigured, the listing returns one variant per product and never the parent: `parentId` is set, `optionIds` holds that variant's options and `childCount` is `0`. The other modes change which products come back; the [Shopware user documentation](https://docs.shopware.com/en/shopware-6-en/catalogues/products) describes them.
 - `getLimit` falls back to the `limit` from `defaultSearchCriteria` and then to `10`. It is not the shop's configured products-per-page until a response has arrived.
 - `getTotalPagesCount` is derived from `getTotal / getLimit`, so it is `0` until a listing exists. A page seeded with `setInitialListing()` has one on the first render; a page that fetches on mount does not, so a "last page" check there needs a guard.
 - `getAvailableFilters` reads the applied listing's aggregations and falls back to the current listing's. Since `getCurrentListing` is the applied listing or the initial one, that fallback only ever resolves to the initial listing. `getInitialFilters` always reads the initial listing — useful for a filter panel that must not reshuffle as the customer filters.
@@ -504,6 +527,8 @@ A listing is context-dependent. Prices come back calculated in the current curre
 - Do not swallow the rejection. `ApiClientError` carries the status and the backend's own messages — log it, and show the customer one sentence.
 - Do not call `useCategoryListing()` without `createCategoryListingContext()` on a parent — it throws by design.
 - Do not send both `order` and `sort`. The schema documents that as unpredictable.
+- Do not pass the category selection to `setCurrentFilters`. It is not a listing criteria code — send it as a `post-filter`.
+- Do not assume a listing element is the parent product. Unconfigured, a product with variants is listed as one of its variants.
 - Do not keep a local copy of the elements, the total or the current page.
 - Do not assume the listing survives a currency or language switch. Refetch after a context change.
 
@@ -527,14 +552,17 @@ A listing is context-dependent. Prices come back calculated in the current curre
 - A superseded request that fails does not overwrite the error state of the request that replaced it.
 - The result count, the loading state and the error are announced to a screen reader.
 - An empty result renders an empty state rather than a stale page.
+- Selecting a category on a search listing narrows the products and keeps every category option in the filter.
 
 ## Related Links
 
+- [Rendering CMS Pages recipe](../cms/rendering.html)
+- [Prices and Tax State recipe](prices.html)
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
+- [Navigation and Breadcrumbs recipe](../context/navigation.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
-- [Prices documentation](../../guides/e-commerce/prices.html)
+- [URL Resolving and SEO URLs recipe](../context/url-resolving.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

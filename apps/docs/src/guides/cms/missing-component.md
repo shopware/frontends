@@ -73,7 +73,9 @@ The Shopware API returns a CMS tree of sections, blocks, and slots. Each node ha
 | `cms_block`   | `image-text`       | `CmsBlockImageText.vue`        |
 | `cms_slot`    | `my-custom-slider` | `CmsElementMyCustomSlider.vue` |
 
-If no matching component exists, the placeholder appears. Your job is to create that component.
+For a custom element, `type` is the `name` it was registered with in the Administration, so `registerCmsElement({ name: "dailymotion" })` expects `CmsElementDailymotion.vue`.
+
+If no matching block or element component exists, the placeholder appears in development, and the browser console logs a warning with the component name to create and a link to the docs. In production nothing renders, so a missing component fails silently. A missing section is the exception: `CmsPage` renders a plain "There is no …" line for it in every mode. Your job is to create the component.
 
 ## Is this a default Shopware CMS component?
 
@@ -87,16 +89,18 @@ If the component type is part of **core Shopware 6 CMS** and is not covered by `
 Add the **`cms-base`** label to the issue. Include the component name shown in the placeholder, the `type` value, and the `apiAlias` from the API response. You can copy the full content JSON from the **copy AI prompt** button in the placeholder.
 :::
 
-If the component belongs to a custom plugin or you created the block yourself in the Shopware backend, continue with the steps below.
+If the component belongs to a custom plugin or you created the block yourself in the Shopware backend, continue with the steps below. The backend side of a custom element is described in [Add custom CMS element](https://developer.shopware.com/docs/guides/plugins/plugins/content/cms/add-cms-element.html).
 
 ## Step 1 — Create the file
 
 <div v-if="hasContext" class="custom-block tip">
   <p class="custom-block-title">Your component</p>
-  <p>Create <code>components/{{ componentName }}.vue</code></p>
+  <p>Create <code>app/components/cms/{{ componentName }}.vue</code></p>
 </div>
 
 Create the file under your template’s global CMS components dir (e.g. `app/components/cms/`), which templates register with `global: true` so `resolveComponent` can find it:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-1-create-the-file" code no-name -->
 
 ```
 your-project/
@@ -106,20 +110,62 @@ your-project/
             └── {{ componentName }}.vue   ← create this
 ```
 
+<!-- /automd -->
+
 ## Step 2 — Define the props
 
 Every CMS component receives a single `content` prop. Use the Shopware schema type matching the CMS node type:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props.vue" code lang="vue" no-name -->
+
 ```vue
-<!-- components/{{ componentName }}.vue -->
+<!-- app/components/cms/{{ componentName }}.vue -->
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: Schemas["{{ schemaType }}"];
+  content: Schemas["CmsBlock"];
 }>();
 </script>
 ```
+
+<!-- /automd -->
+
+For an element with its own settings, type `config` from the `defaultConfig` it was registered with. The backend guide registers its `dailymotion` element like this:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-2-define-the-props-2.ts" code lang="ts" no-name -->
+
+```ts
+type CmsElementRegistration = {
+  name: string;
+  defaultConfig: {
+    dailyUrl: {
+      source: "static";
+      value: string;
+    };
+  };
+};
+
+declare const Shopware: {
+  Service(service: "cmsService"): {
+    registerCmsElement(config: CmsElementRegistration): void;
+  };
+};
+
+Shopware.Service("cmsService").registerCmsElement({
+  name: "dailymotion",
+  defaultConfig: {
+    dailyUrl: {
+      source: "static",
+      value: "",
+    },
+  },
+});
+```
+
+<!-- /automd -->
+
+Each key of `defaultConfig` arrives in `content.config` as an `ElementConfig` holding `source` and `value`, which is how the element example in Step 3 types its `config`.
 
 ## Step 3 — Render the content
 
@@ -135,17 +181,20 @@ A minimal working {{ cmsType }}:
 
 <div v-if="cmsType === 'block'">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content.vue" code lang="vue" no-name -->
+
 ```vue
-<!-- components/{{ componentName }}.vue -->
+<!-- app/components/cms/{{ componentName }}.vue -->
 <script setup lang="ts">
+import { computed, useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const mainContent = getSlotContent("main");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const mainContent = computed(() => getSlotContent("main"));
 </script>
 
 <template>
@@ -155,30 +204,46 @@ const mainContent = getSlotContent("main");
 </template>
 ```
 
+<!-- /automd -->
+
 </div>
 
 <div v-else>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-3-render-the-content-2.vue" code lang="vue" no-name -->
+
 ```vue
-<!-- components/{{ componentName }}.vue -->
+<!-- app/components/cms/{{ componentName }}.vue -->
 <script setup lang="ts">
+import type { ElementConfig } from "@shopware/composables";
+
+import { computed, useCmsElementConfig } from "#imports";
 import type { Schemas } from "#shopware";
 
+type CmsElementMyCustomSlider = Omit<Schemas["CmsSlot"], "config"> & {
+  config: {
+    title?: ElementConfig<string>;
+  };
+};
+
 const props = defineProps<{
-  content: Schemas["CmsSlot"];
+  content: CmsElementMyCustomSlider;
 }>();
 
-// config values are typed as `unknown` — assert the shape you need
-const title = props.content.config?.title?.value as string | undefined;
+const { getConfigValue } = useCmsElementConfig(props.content);
+const title = computed(() => getConfigValue("title") || "");
 </script>
 
 <template>
   <div>
     <h2 v-if="title">{{ title }}</h2>
-    <!-- render content.data here -->
   </div>
 </template>
 ```
+
+<!-- /automd -->
+
+Read the settings through `getConfigValue` rather than from `content.config` directly. It returns `false` for an entry whose `source` is `mapped`, because a mapped value comes from the surrounding entity, not from the element.
 
 </div>
 
@@ -187,14 +252,30 @@ const title = props.content.config?.title?.value as string | undefined;
 Save the file. Vite will hot-reload and the placeholder will be replaced by your component. If it still shows, check that:
 
 - the filename exactly matches the expected component name (PascalCase, `.vue` extension)
-- the file is inside a directory that Nuxt scans for components
+- the file is inside a directory your `nuxt.config.ts` registers with `global: true` — `app/components/cms/` in `vue-starter-template`. A file in plain `app/components/` is auto-imported but not global, so `resolveComponent` does not find it.
 
 ::: tip No restart needed
 Nuxt's component auto-import picks up new files without restarting the dev server.
 :::
 
+Outside Nuxt nothing registers the file for you. Register the component globally, because `resolveComponent` only sees global components:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/missing-component/step-4-verify.ts" code lang="ts" no-name -->
+
+```ts
+import { createApp } from "vue";
+
+import CmsElementDailymotion from "./components/cms/CmsElementDailymotion.vue";
+
+const app = createApp({});
+app.component("CmsElementDailymotion", CmsElementDailymotion);
+```
+
+<!-- /automd -->
+
 ## Going deeper
 
 <PageRef page="create-elements.html" title="Create Elements" sub="Typed composables and helpers for working with CMS element data." />
 <PageRef page="create-blocks.html" title="Create Blocks" sub="How to build block layouts with named slots." />
-<PageRef page="customize-components.html" title="Customize existing components" sub="Override a default component from cms-base-layer." />
+<PageRef page="overwriting-cms.html" title="Customize existing components" sub="Override a default component from cms-base-layer." />
+<PageRef page="../../frontends-recipes/cms/rendering.html" title="Rendering CMS Pages" sub="How the CMS tree in the API response is resolved to components." />

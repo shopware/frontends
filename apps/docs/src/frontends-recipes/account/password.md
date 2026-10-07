@@ -178,6 +178,8 @@ Use generated Store API types when you need to type the request bodies or lower-
   <SchemaTypeTooltip type-key='Schemas["SuccessResponse"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/password/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -194,11 +196,15 @@ type ChangePasswordBody =
 type SuccessResponse = Schemas["SuccessResponse"];
 ```
 
+<!-- /automd -->
+
 `RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible — it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip: it is an `array_struct` envelope, so the flag lives at `data[0].isExpired`. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
 
 ## Minimal Vue Example
 
 <CodeExample title="Minimal password recovery and change page">
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/password/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -525,6 +531,8 @@ onMounted(checkHash);
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-starter-template` serves the default `/account/recover/password` from `app/pages/account/recover/password.vue`.
@@ -583,6 +591,5 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 - [Register recipe](register.html)
 - [Customer Profile recipe](profile.html)
 - [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)
-- [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

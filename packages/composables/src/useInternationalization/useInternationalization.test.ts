@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Schemas } from "#shopware";
 
 import { useSetup } from "../_test";
+import { useSessionContext } from "../useSessionContext/useSessionContext";
 import { useInternationalization } from "./useInternationalization";
 import type { RouteObject } from "./useInternationalization";
 
@@ -137,6 +138,159 @@ describe("useInternationalization", () => {
     expect(vm.getStorefrontUrl()).toBe("http://dev-storefront.test");
     expect(vm.replaceToDevStorefront("http://localhost:3000/test")).toBe(
       "http://dev-storefront.test/test",
+    );
+  });
+
+  it("uses a sales channel domain when the preferred storefront URL is not configured there", async () => {
+    const { vm } = useSetup(
+      () => {
+        const session = useSessionContext();
+        const i18n = useInternationalization();
+        return {
+          setContext: session.setContext,
+          getStorefrontUrl: i18n.getStorefrontUrl,
+        };
+      },
+      {
+        shopware: {
+          devStorefrontUrl: "https://frontends-starter-template.vercel.app",
+        },
+      },
+    );
+
+    vm.setContext({
+      salesChannel: {
+        domains: [
+          {
+            url: "https://demo-frontends.shopware.store/figma",
+            languageId: "lang-en",
+          },
+        ],
+        languageId: "lang-en",
+      },
+    } as Schemas["SalesChannelContext"]);
+
+    expect(vm.getStorefrontUrl()).toBe(
+      "https://demo-frontends.shopware.store/figma",
+    );
+  });
+
+  it("keeps the preferred storefront URL when it matches a sales channel domain", async () => {
+    const preferred = "https://frontends-starter-template.vercel.app";
+    const { vm } = useSetup(
+      () => {
+        const session = useSessionContext();
+        const i18n = useInternationalization();
+        return {
+          setContext: session.setContext,
+          getStorefrontUrl: i18n.getStorefrontUrl,
+        };
+      },
+      {
+        shopware: { devStorefrontUrl: preferred },
+      },
+    );
+
+    vm.setContext({
+      salesChannel: {
+        domains: [{ url: preferred, languageId: "lang-en" }],
+        languageId: "lang-en",
+      },
+    } as Schemas["SalesChannelContext"]);
+
+    expect(vm.getStorefrontUrl()).toBe(preferred);
+  });
+
+  it("falls back to the first sales channel domain when no language domain matches", async () => {
+    const { vm } = useSetup(
+      () => {
+        const session = useSessionContext();
+        const i18n = useInternationalization();
+        return {
+          setContext: session.setContext,
+          getStorefrontUrl: i18n.getStorefrontUrl,
+        };
+      },
+      {
+        shopware: { devStorefrontUrl: "https://not-a-channel-domain.example" },
+      },
+    );
+
+    vm.setContext({
+      salesChannel: {
+        domains: [
+          { url: undefined, languageId: "lang-de" },
+          {
+            url: "https://demo-frontends.shopware.store/figma",
+            languageId: "lang-en",
+          },
+        ],
+        languageId: "lang-pl",
+      },
+      context: { languageIdChain: ["lang-fr"] },
+    } as Schemas["SalesChannelContext"]);
+
+    expect(vm.getStorefrontUrl()).toBe(
+      "https://demo-frontends.shopware.store/figma",
+    );
+  });
+
+  it("keeps the preferred URL when sales channel domains have no url", async () => {
+    const preferred = "https://frontends-starter-template.vercel.app";
+    const { vm } = useSetup(
+      () => {
+        const session = useSessionContext();
+        const i18n = useInternationalization();
+        return {
+          setContext: session.setContext,
+          getStorefrontUrl: i18n.getStorefrontUrl,
+        };
+      },
+      {
+        shopware: { devStorefrontUrl: preferred },
+      },
+    );
+
+    vm.setContext({
+      salesChannel: {
+        domains: [{ languageId: "lang-en" }],
+        languageId: "lang-de",
+      },
+    } as Schemas["SalesChannelContext"]);
+
+    expect(vm.getStorefrontUrl()).toBe(preferred);
+  });
+
+  it("treats a trailing slash as the same sales channel domain", async () => {
+    const { vm } = useSetup(
+      () => {
+        const session = useSessionContext();
+        const i18n = useInternationalization();
+        return {
+          setContext: session.setContext,
+          getStorefrontUrl: i18n.getStorefrontUrl,
+        };
+      },
+      {
+        shopware: {
+          devStorefrontUrl: "https://frontends-starter-template.vercel.app/",
+        },
+      },
+    );
+
+    vm.setContext({
+      salesChannel: {
+        domains: [
+          {
+            url: "https://frontends-starter-template.vercel.app",
+            languageId: "lang-en",
+          },
+        ],
+      },
+    } as Schemas["SalesChannelContext"]);
+
+    expect(vm.getStorefrontUrl()).toBe(
+      "https://frontends-starter-template.vercel.app",
     );
   });
 

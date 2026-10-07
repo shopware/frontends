@@ -26,12 +26,18 @@
       "emailLabel": "Email address",
       "passwordPlaceholder": "Enter password",
       "passwordLabel": "Password",
-      "createAccountToggleLabel": "Create customer account"
+      "createAccountToggleLabel": "Create customer account",
+      "continueAsGuestToggleLabel": "Continue as guest"
     },
-    "continueButton": "Next",
-    "savingDetails": "Saving your details…",
     "success": {
+      "title": "Thank you for your order",
       "header": "We have received your order #{0} and will process it as soon as possible.",
+      "items": "Items ordered",
+      "deliveryAndPayment": "Delivery and payment",
+      "continueShopping": "Continue shopping",
+      "viewInAccount": "View in my account",
+      "goToPayment": "Go to payment",
+      "loadError": "We could not load your order. Your session may have expired.",
       "paymentProcessLabel": "Finish payment process.",
       "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
     },

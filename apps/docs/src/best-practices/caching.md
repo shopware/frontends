@@ -52,7 +52,11 @@ A route can only be migrated to GET once its GET variant declares `_criteria` in
 
 For a Nuxt app, set it as a module option in `nuxt.config.ts`:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   shopware: {
     cacheableReads: true, // route anonymous Store API reads through cacheable GET routes
@@ -60,23 +64,36 @@ export default defineNuxtConfig({
 });
 ```
 
+<!-- /automd -->
+
 The flag is read from the public runtime config, so it is available on both server and client. For a non-Nuxt setup, pass it directly to `createShopwareContext`:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { createShopwareContext } from "@shopware/composables";
+import { createApp } from "vue";
 
+const app = createApp({});
 const shopware = createShopwareContext(app, {
   cacheableReads: true,
 });
 app.use(shopware);
 ```
 
+<!-- /automd -->
+
 Inside a composable the flag is read from the Shopware context and used to branch the request:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/enabling-it-3.ts" code lang="ts" no-name -->
 
 ```ts
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
+import { useShopwareContext } from "#imports";
+
 const { apiClient, cacheableReads } = useShopwareContext();
+const criteria = {};
 
 const result = cacheableReads
   ? await apiClient.invoke("readCountryGet get /country", {
@@ -86,6 +103,8 @@ const result = cacheableReads
       body: criteria,
     });
 ```
+
+<!-- /automd -->
 
 ### Which reads switch to GET
 
@@ -99,7 +118,11 @@ Exactly these composables gain a GET branch when `cacheableReads` is enabled:
 - `useInternationalization` (`getAvailableLanguages`)
 - `useProductConfigurator`
 - `useProductSearch` (single product detail)
+- `useProductReviews` (`loadProductReviews`)
 - `useCategorySearch.advancedSearch` (category list)
+- `useCategorySearch.search` (single category)
+
+One of those GET routes is not fully typed yet. `readCategoryGet get /category/{navigationId}` does not declare `_criteria` in the generated types, so `useCategorySearch.search` supplies it through a local intersection type. That is invisible to callers: the flag still decides which route runs, and a missing `_criteria` in the generated types is therefore not automatically a blocker.
 
 ::: tip
 The flag is a blanket GET/POST switch per composable, not a runtime authentication check. Even account-related lookups such as `useUser.loadCountry`/`loadSalutation` use GET when the flag is on. "Anonymous" here means the data is public reference or catalog data suitable for shared HTTP caching, not that the code inspects the login state. Whether a response is actually cached, and how it is scoped per user, is governed by the Shopware backend cache rules and your CDN configuration.
@@ -107,13 +130,12 @@ The flag is a blanket GET/POST switch per composable, not a runtime authenticati
 
 ### Which reads stay on POST, and why
 
-A few read paths intentionally stay on POST because the generated Store API schema does not type the `_criteria` parameter on their GET route:
+Two read paths still call POST, for different reasons:
 
-- `useListing` (product listing) - always `readProductListing post /product-listing/{categoryId}`
-- `useCategorySearch.search` (single category) - always `readCategory post /category/{navigationId}`
-- `useLandingSearch` - always `readLandingPage post /landing-page/{landingPageId}`
+- `useLandingSearch` - `readLandingPage post /landing-page/{landingPageId}`, because `readLandingPageGet get /landing-page/{landingPageId}` still does not declare `_criteria`.
+- `useListing` (product listing) - `readProductListing post /product-listing/{categoryId}`, although nothing in the types blocks the move any more.
 
-As those GET schemas gain `_criteria` typing upstream, these reads can migrate too. Product listing is the first: Shopware core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` (released in 6.7.12.0), so `useListing` can switch to the cacheable GET variant once the Store API types are regenerated against that schema.
+`useListing` is waiting on a composable change, not on the schema. The generated types already carry the parameter: `readProductListingGet get /product-listing/{categoryId}` declares `_criteria`, and both operations answer with `ProductListingResult`, so the switch is drop-in for callers. That covers the `categoryListing` branch only — with `listingType: "productSearchListing"` the composable calls `searchPage post /search`, whose GET twin still takes flattened query params instead of `_criteria`.
 
 Write and auth/context mutations (login, register, logout, `readCustomer`, `updateContext`, checkout) also stay on POST/PATCH regardless of the flag, because they are mutations and are not cacheable by design.
 
@@ -121,12 +143,16 @@ Write and auth/context mutations (login, register, logout, `readCustomer`, `upda
 
 `encodeForQuery` is a deterministic, pure function: it serializes the object with `JSON.stringify`, gzips it (via `fflate`), then base64url-encodes the result (no `+`, `/`, or `=`), producing a URL-safe value.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/how-the-criteria-is-encoded.ts" code lang="ts" no-name -->
+
 ```ts
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
 const criteria = { associations: { states: {} } };
 const encoded = encodeForQuery(criteria); // gzip + base64url string, safe in a URL / cache key
 ```
+
+<!-- /automd -->
 
 Because it is deterministic, identical criteria produce an identical `_criteria` value and therefore an identical URL. That stable URL is what lets a CDN or browser register a cache hit. Object key order matters: "identical criteria" means an identical serialization, not merely a semantically equal object.
 
@@ -140,57 +166,73 @@ Shopware Frontends configures page-level HTTP caching declaratively through Nuxt
 
 The `vue-demo-store` template uses a 24-hour window on the homepage and the catch-all:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration.ts" code lang="ts" no-name -->
+
 ```ts
-routeRules: {
-  "/": {
-    isr: 60 * 60 * 24, // 86400s = 24h
-  },
-  "/checkout": {
-    ssr: false,
-    headers: {
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    "/": {
+      isr: 60 * 60 * 24, // 86400s = 24h
+    },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": { ssr: false },
+    "/login": { ssr: false },
+    "/register": { ssr: false },
+    "/reset-password": { ssr: false },
+    "/wishlist": { ssr: false },
+    "/account": { ssr: false },
+    "/account/**": { ssr: false },
+    "/search": { ssr: false },
+    "/search/**": { ssr: false },
+    "/**": {
+      isr: 60 * 60 * 24, // catch-all 24h ISR
     },
   },
-  "/checkout/**": { ssr: false },
-  "/login": { ssr: false },
-  "/register": { ssr: false },
-  "/reset-password": { ssr: false },
-  "/wishlist": { ssr: false },
-  "/account": { ssr: false },
-  "/account/**": { ssr: false },
-  "/search": { ssr: false },
-  "/search/**": { ssr: false },
-  "/**": {
-    isr: 60 * 60 * 24, // catch-all 24h ISR
-  },
-}
+});
 ```
+
+<!-- /automd -->
 
 The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
+
 ```ts
-routeRules: {
-  "/**": {
-    // 60-minute ISR - increase for mostly-static storefronts, decrease for frequently updated content
-    isr: 60 * 60, // 3600s
-  },
-  "/**/*.svg": {
-    headers: {
-      "Cache-Control": "public, max-age=31536000, immutable", // 1 year
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    "/**": {
+      // 60-minute ISR - increase for mostly-static storefronts, decrease for frequently updated content
+      isr: 60 * 60, // 3600s
     },
-  },
-  "/checkout": {
-    ssr: false,
-    headers: {
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable", // 1 year
+      },
     },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": { ssr: false },
+    "/account": { ssr: false },
+    "/account/**": { ssr: false },
+    "/wishlist": { ssr: false },
   },
-  "/checkout/**": { ssr: false },
-  "/account": { ssr: false },
-  "/account/**": { ssr: false },
-  "/wishlist": { ssr: false },
-}
+});
 ```
+
+<!-- /automd -->
 
 `vue-starter-template-extended` extends `../vue-starter-template` and defines no `routeRules` of its own, so it inherits the parent's caching. Nuxt layer extends merges parent route rules, so changes in the parent propagate to the child. `vue-blank` defines no `routeRules`, so default Nitro behavior (full SSR, no ISR) applies.
 
@@ -206,21 +248,31 @@ ISR is only active in production builds and requires a runtime that can store an
 
 Route rules can set HTTP `Cache-Control` directly. The templates use it two ways:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/headers-per-route-cache-control.ts" code lang="ts" no-name -->
+
 ```ts
-// Prevent any caching on sensitive routes
-"/checkout": {
-  ssr: false,
-  headers: {
-    "Cache-Control": "no-cache, no-store, must-revalidate",
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  routeRules: {
+    // Prevent any caching on sensitive routes
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    // Long-lived, immutable caching for static SVG assets
+    "/**/*.svg": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
   },
-},
-// Long-lived, immutable caching for static SVG assets
-"/**/*.svg": {
-  headers: {
-    "Cache-Control": "public, max-age=31536000, immutable",
-  },
-},
+});
 ```
+
+<!-- /automd -->
 
 `max-age=31536000` is one year; `immutable` tells clients never to revalidate, which is safe only for versioned/hashed or otherwise stable assets. Note the SVG rule exists in `vue-starter-template` (and its extended child) but not in `vue-demo-store`.
 
@@ -293,7 +345,6 @@ Image transforms only take effect when the backend supports remote/on-the-fly th
 - [Shopware: Store API concepts](https://developer.shopware.com/docs/concepts/api/store-api.html)
 - [Shopware: Remote thumbnail generation](https://developer.shopware.com/docs/guides/plugins/plugins/content/media/remote-thumbnail-generation.html)
 - [Shopware issue #12388: `_criteria` GET query parameter](https://github.com/shopware/shopware/issues/12388)
-- [Shopware PR #17204: declare `_criteria` on `GET /store-api/product-listing`](https://github.com/shopware/shopware/pull/17204)
 - [VueUse: `createSharedComposable`](https://vueuse.org/shared/createSharedComposable/)
 - [VueUse: `createInjectionState`](https://vueuse.org/shared/createInjectionState/)
 - [Vue 3: Provide / Inject](https://vuejs.org/guide/components/provide-inject.html)

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockImageSimpleGrid } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,11 +8,11 @@ const props = defineProps<{
   content: CmsBlockImageSimpleGrid;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftTopContent = getSlotContent("left-top");
-const leftBottomContent = getSlotContent("left-bottom");
-const rightContent = getSlotContent("right");
+const leftTopContent = computed(() => getSlotContent("left-top"));
+const leftBottomContent = computed(() => getSlotContent("left-bottom"));
+const rightContent = computed(() => getSlotContent("right"));
 </script>
 
 <template>

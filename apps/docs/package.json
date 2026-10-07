@@ -10,8 +10,8 @@
     "docs:preview": "../../../developer-portal/docs-cli.cjs preview",
     "docs:cli": "../../../developer-portal/docs-cli.cjs",
     "schema:update": "pnpm run schema:update:store && pnpm run schema:update:admin",
-    "schema:update:admin": "cp ../../packages/api-client/api-types/adminApiSchema.json .data/schema/adminApiSchema.json",
-    "schema:update:store": "cp ../../packages/api-client/api-types/storeApiSchema.json .data/schema/storeApiSchema.json"
+    "schema:update:admin": "cp ../../packages/api-client/api-types/adminApiSchema.json src/.data/schema/adminApiSchema.json",
+    "schema:update:store": "cp ../../packages/api-client/api-types/storeApiSchema.json src/.data/schema/storeApiSchema.json"
   },
   "engines": {
     "node": "^22.19.0 || ^24.11.0 || >=26.0.0"

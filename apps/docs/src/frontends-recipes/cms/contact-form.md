@@ -172,6 +172,8 @@ Use generated Store API types when you need to type the submission or the saluta
   <SchemaTypeTooltip type-key='Schemas["Salutation"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/cms/contact-form/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -179,13 +181,19 @@ type ContactFormBody = operations["sendContactMail post /contact-form"]["body"];
 type Salutation = Schemas["Salutation"];
 ```
 
+<!-- /automd -->
+
 `ContactFormBody` is the field list to build the form from — and the reminder that a privacy consent checkbox is not on it. Consent is a UI concern; the operation has no field for it.
 
 The response type is the one place the generated types are wrong. Because the schema declares the `200` with no content, `api-gen` emits `response: never`, so `invoke` resolves to `{ data: never; status: 200 }` and `data.individualSuccessMessage` will not compile. Cast at that one point until the schema catches up, and keep the cast on `data` rather than on the whole call so the request stays type-checked:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/cms/contact-form/types-2.ts" code lang="ts" no-name -->
+
 ```ts
 type ContactFormResult = { individualSuccessMessage?: string };
 ```
+
+<!-- /automd -->
 
 Never hand-edit `packages/api-client/api-types/*.d.ts` to add it — those files are generated.
 
@@ -201,13 +209,14 @@ Neither constraint means what it looks like, and they are wrong in opposite dire
 
 <CodeExample title="Minimal contact form">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/cms/contact-form/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { ApiClientError, isTimeoutError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
-import { getTranslatedProperty } from "@shopware/helpers";
-
 import type { CmsElementForm } from "@shopware/composables";
+import { getTranslatedProperty } from "@shopware/helpers";
 
 import type { operations } from "#shopware";
 
@@ -480,6 +489,8 @@ const submit = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 </CodeExample>
 
 The consent checkbox gates the submit button and is not part of the body. It is a UI requirement with no field on the operation, so it lives in its own `ref` rather than in `form` — spreading a form state that contains it would send an undeclared property.
@@ -582,12 +593,14 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 
 ## Related Links
 
+- [Rendering CMS Pages recipe](rendering.html)
 - [Newsletter recipe](../account/newsletter.html)
 - [Language and currency recipe](../context/language-and-currency.html)
+- [URL Resolving and SEO URLs recipe](../context/url-resolving.html)
 - [Create content pages](../../guides/cms/content-pages.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
-- [Custom CMS elements](../../guides/cms/custom-elements.html)
+- [Implement a Missing CMS Component](../../guides/cms/missing-component.html)
 - [Composables reference](../../packages/composables/)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [API client package](../../packages/api-client.html)

@@ -24,7 +24,9 @@ We recommend using [devenv](https://developer.shopware.com/docs/guides/installat
 
 The directory structure is the same as in a [default Nuxt project](https://nuxtjs.org/docs/get-started/directory-structure/):
 
-```json
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/demo-store-template/directory-structure.txt" code lang="text" no-name -->
+
+```text
 demo-store/
 ├─ components/
 |  ├─ layout/       /* header, footer, account menu etc. */
@@ -44,6 +46,8 @@ demo-store/
 ├─ package.json
 ├─ tsconfig.json
 ```
+
+<!-- /automd -->
 
 The `components` directory contains components that have been extracted from their corresponding page components, so these become more readable. The components within `components` are organized based on the page and layout components they are used in. The `shared` directory contains generic components that are used across multiple pages and layouts.
 
@@ -67,7 +71,11 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/templates/demo-store-template/configure.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 /* ... */
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -87,6 +95,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 

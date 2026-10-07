@@ -81,6 +81,8 @@ Use generated Store API types when you need to type credentials, responses, or l
   <SchemaTypeTooltip type-key='Schemas["Cart"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -91,7 +93,11 @@ type SessionContext = operations["readContext get /context"]["response"];
 type Customer = Schemas["Customer"];
 ```
 
+<!-- /automd -->
+
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -153,6 +159,8 @@ const submit = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 ## State And Session
 
 The Store API identifies the current sales channel session with the `sw-context-token` header. A successful login can affect the current customer context and the cart associated with that context.
@@ -188,7 +196,6 @@ It does not **await** that call, and neither does `logout()`. Only `register()` 
 
 ## Related Links
 
-- [Login form page element](../../guides/page-elements/login-form.html)
+- [Cart recipe](../checkout/cart.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../guides/e-commerce/cart.html)

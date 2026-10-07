@@ -144,7 +144,7 @@ Pick by scope — how much of the search the composable is about:
 | `useProductSearch`        | one product, by id            | opening a product after the customer picks it                          |
 | `useShopwareContext`      | `apiClient`, `cacheableReads` | calling `searchSuggest post /search-suggest`, which has no composable  |
 
-The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload.
+The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload. A category facet needs aggregations the Store API does not add by itself; the [Product Listing and Filters recipe](listing.html) covers it.
 
 `useProductSearchSuggest` is the one this recipe is about, and it has six members:
 
@@ -174,6 +174,8 @@ Use generated Store API types when you need to type the search body, the results
   <SchemaTypeTooltip type-key='Schemas["ProductListingFlags"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/search/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -184,19 +186,24 @@ type ProductDetailResponse = Schemas["ProductDetailResponse"];
 type ListingFlags = Schemas["ProductListingFlags"];
 ```
 
+<!-- /automd -->
+
 Comparing `SearchBody` and `SuggestBody` in the tooltips shows how close they are: both extend `ProductListingCriteria` and `ProductListingFlags`, and the only difference is that `search` is required on the suggest body.
 
 ## Minimal Vue Example
 
 <CodeExample title="Suggest dropdown on the shared listing">
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/catalog/search/minimal-vue-example.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
 import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
+import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const { searchTerm, search, getProducts, getTotal } = useProductSearchSuggest();
 
-const localePath = useLocalePath();
+const localePath = (path: string) => path;
 const { formatLink } = useInternationalization(localePath);
 
 const MIN_TERM_LENGTH = 3;
@@ -234,12 +241,9 @@ watch(typingTerm, (term) => {
   if (term.length >= MIN_TERM_LENGTH) {
     runSuggestSearch(term);
   } else {
-    runSuggestSearch.cancel();
     pending.value = false;
   }
 });
-
-onScopeDispose(() => runSuggestSearch.cancel());
 
 const showSuggest = computed(
   () => isOpen.value && typingTerm.value.length >= MIN_TERM_LENGTH,
@@ -295,6 +299,8 @@ onClickOutside(searchBox, close);
   </div>
 </template>
 ```
+
+<!-- /automd -->
 
 </CodeExample>
 
@@ -396,8 +402,6 @@ The results are context-dependent like any listing: prices arrive calculated in 
 
 - [Product Listing and Filters recipe](listing.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
-- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)
