@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyQueryToFilters,
   createEmptyFilterState,
-} from "./useSelectedListingFilters";
+} from "./listingFilterState";
 
 describe("applyQueryToFilters", () => {
   it("populates sets from pipe-joined values", () => {
