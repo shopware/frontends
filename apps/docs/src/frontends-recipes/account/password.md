@@ -582,6 +582,6 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 - [Login recipe](login.html)
 - [Register recipe](register.html)
 - [Customer Profile recipe](profile.html)
-- [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)
+- [Storefront URL: devStorefrontUrl](../../guides/storefront-url.html#devstorefronturl)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

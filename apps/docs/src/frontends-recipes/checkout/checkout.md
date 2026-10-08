@@ -549,7 +549,6 @@ That rotation only fits when nothing still needs the old session. When payment o
 - [Payment recipe](payment.html)
 - [Register recipe](../account/register.html)
 - [Prices and Tax State recipe](../catalog/prices.html)
-- [Cart recipe](cart.html)
 - [Cart Errors recipe](cart-errors.html)
 - [Payments guide](../../guides/e-commerce/payments.html)
 - [Composables reference](../../packages/composables/)

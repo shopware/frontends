@@ -422,4 +422,3 @@ Because `newsletterStatus` lives per composable instance, every component that r
 - [Storefront URL](../../guides/storefront-url.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)
