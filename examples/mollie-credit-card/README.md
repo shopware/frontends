@@ -12,7 +12,7 @@
 
 ## Requirements
 
-- Frontend side: any Nuxt 3 project, or a project with [Shopware Frontends](https://developer.shopware.com/frontends/getting-started/templates.html) registered and running (you can use one of the Nuxt templates provided in [shopware/frontends](https://github.com/shopware/frontends/tree/main/templates) GitHub Project
+- Frontend side: any Nuxt 3 project, or a project with [Shopware Frontends](https://developer.shopware.com/frontends/introduction/templates.html) registered and running (you can use one of the Nuxt templates provided in [shopware/frontends](https://github.com/shopware/frontends/tree/main/templates) GitHub Project
 - Backend side: [Mollie Payments App for Shopware](https://store.shopware.com/en/molli23282346664f/mollie-payments-app-for-shopware.html) installed on your environment ([See how to setup it locally](https://boxblinkracer.com/blog/mollie-app-setup))
 
 ## Setup
