@@ -475,7 +475,9 @@ Every request here is scoped by the `sw-context-token`, so the language in that 
 
 ## Related Links
 
-- [Product listing](../../guides/e-commerce/product-listing.html)
+- [Create a navigation](../../guides/page-elements/navigation.html)
+- [Breadcrumbs](../../guides/page-elements/breadcrumbs.html)
+- [Routing](../../guides/routing.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Session Context recipe](session-context.html)
 - [Language and Currency Switch recipe](language-and-currency.html)

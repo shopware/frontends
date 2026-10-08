@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/frontends/guides/features/wishlist.html"
+      content: "0; url=/frontends/frontends-recipes/account/wishlist.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Create a wishlist](/frontends/guides/features/wishlist.html)**.
+This content is now part of **[Wishlist recipe](/frontends/frontends-recipes/account/wishlist.html)**.
 
-If you are not redirected automatically, [click here](/frontends/guides/features/wishlist.html).
+If you are not redirected automatically, [click here](/frontends/frontends-recipes/account/wishlist.html).

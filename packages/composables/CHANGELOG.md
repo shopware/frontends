@@ -1,5 +1,55 @@
 # @shopware/composables
 
+## 1.14.0
+
+### Minor Changes
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsElementConfig` accepts a `ref` or a getter. `getConfigValue` reads the element on every call, so a component that passes `() => props.content` follows a new `content` instead of the one it was set up with. Passing a plain object works as before.
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the `CmsBlockCategoryHeading`, `CmsBlockVideo`, `CmsBlockAppRenderer`, `CmsElementCategoryName`, `CmsElementVideo` and `MediaDisplayMode` types.
+
+- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Let the CMS tree lookups follow a changing `content`, and fix `resolveCmsComponent().isResolved`
+
+  **`useCmsSection` and `useCmsBlock` accept a `ref` or a getter.** Both took a plain object and closed over it, so `getPositionContent()` and `getSlotContent()` kept reading the tree captured at setup: a component receiving a new `content` prop had to remount to see it, and calling the function again did not help. Both now accept `MaybeRefOrGetter` and resolve it with `toValue()` on every call.
+
+  Passing a plain object still works exactly as before, so nothing has to change. To benefit, pass a getter and read the lookups through a `computed`:
+
+  ```ts
+  const { getSlotContent } = useCmsBlock(() => props.content);
+  const leftContent = computed(() => getSlotContent("left"));
+  ```
+
+  The returned `section` and `block` are still the value read when the composable was called, so they do not follow a replacement — use the source you passed in when you need that.
+
+  **`resolveCmsComponent().isResolved` now means resolved.** It compared the resolved value with `content.type`, while Vue's `resolveComponent` returns the _component name_ when nothing is registered — two strings that never match, so `isResolved` was `true` even when nothing resolved, and code guarding a fallback with `!isResolved` never ran. It is now derived from `resolvedComponent !== undefined`. Check `resolvedComponent` directly if you want the component itself.
+
+  The `resolved` field, which appears only when resolving throws, is now marked `@deprecated`. It always equals `isResolved`, so read that instead.
+
+  Note what is not fixed here: `getSlotContent()` still returns `undefined` at runtime for a slot the block does not carry, while its return type promises a value. The signature stays as it is because correcting it would be a breaking type change; the JSDoc now says so, and callers should keep guarding on the result.
+
+### Patch Changes
+
+- [#2731](https://github.com/shopware/frontends/pull/2731) [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477) Thanks [@patzick](https://github.com/patzick)! - Add an optional notification action (label + link) so add-to-cart toasts can offer a "View cart" shortcut, and keep those toasts visible a little longer.
+
+- [#2799](https://github.com/shopware/frontends/pull/2799) [`7dbca8b`](https://github.com/shopware/frontends/commit/7dbca8bf8bca1225b365bc03e4dbc07d3764c2e1) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCategorySearch().search()` with `withCmsAssociations: true` now requests the CMS associations. Before, it nested them one level too deep, so the backend ignored them.
+
+- [#2724](https://github.com/shopware/frontends/pull/2724) [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281) Thanks [@patzick](https://github.com/patzick)! - Fall back `getStorefrontUrl()` to a sales channel domain
+
+  `useUser().register()` injects `storefrontUrl` from `getStorefrontUrl()`. Shopware rejects that value unless it matches a **Sales Channel → Domains** entry, so guest checkout against the public demo (`devStorefrontUrl` pointing at the starter Vercel host) never reached `POST /checkout/order`.
+
+  `getStorefrontUrl()` now uses the preferred URL when it is one of the current sales channel domains, and otherwise the domain for the active language (or the first configured domain).
+
+- [#2700](https://github.com/shopware/frontends/pull/2700) [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh the cart after `register()`
+
+  `useUser().register()` changed the session context without refreshing the cart, while `login()` and `logout()` both did. Registration is the first point at which the backend learns the customer's billing country, which drives tax rates, shipping surcharges and customer-group prices, so the cart totals held in `useCart()` could stay at their pre-registration values while the order was placed at the recalculated ones.
+
+  `register()` now awaits `refreshCart()` after `refreshSessionContext()`, so a caller that awaits `register()` cannot observe the pre-registration totals afterwards. Note this makes `register()` resolve slightly later than before, and a failing cart refresh now rejects `register()` even though the customer was created — the same property `refreshSessionContext()` on the preceding line already had.
+
+  `login()` and `logout()` still call `refreshCart()` without awaiting it and are unchanged here.
+
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+
 ## 1.13.0
 
 ### Minor Changes

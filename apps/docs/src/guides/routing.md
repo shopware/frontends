@@ -12,3 +12,213 @@ head:
 This content is now part of **[URL Resolving and SEO URLs recipe](/frontends/frontends-recipes/context/url-resolving.html)**.
 
 If you are not redirected automatically, [click here](/frontends/frontends-recipes/context/url-resolving.html).
+- Resolve a path string to a route configuration
+- Resolve a route configuration to its page or entity
+
+## Resolve a URL path to a route
+
+In Shopware, the concept of routing is connected to `SeoUrl` routes. A `SeoUrl` contains information about the path and what page it resolves to.
+
+In the most common routing scenario, you will have a URL path like `/Winter-Season/My-Product` and want to resolve it to a route configuration. The `useNavigationSearch` composable provides a function to do that:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-url-path-to-a-route.js" code lang="js" no-name -->
+
+```js
+import {
+  useNavigationContext,
+  useNavigationSearch,
+} from "@shopware/composables";
+
+const { resolvePath } = useNavigationSearch();
+
+const seoResult = await resolvePath("/Winter-Season/My-Product");
+
+const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
+```
+
+<!-- /automd -->
+
+The result of the `resolvePath` function is a reduced `SeoUrl` object, which you can access safely via the useNavigationContext composable.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-url-path-to-a-route.json" code lang="json" no-name -->
+
+```json
+{
+  "routeName": "frontend.detail.page",
+  "foreignKey": "f2f6b6b3a0a04e2a8b0f8a2b2b5b5b1a"
+}
+```
+
+<!-- /automd -->
+
+This is all information you need to resolve the route to a page, or rather an entity.
+
+## Resolve a route to a page
+
+There are three different type of routes that Shopware natively supports. When there are extensions active in your store, there can be more. The three types are:
+
+- `frontend.detail.page` - A product detail page
+- `frontend.navigation.page` - A category page
+- `frontend.landing.page` - A landing page
+
+Depending on which type of route you have, the way of fetching the page data is different - because routes don't point to pages. They point to entities that are used to render pages.
+
+Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/resolve-a-route-to-a-page.ts" code lang="ts" no-name -->
+
+```ts
+import {
+  useNavigationContext,
+  useNavigationSearch,
+  useCategorySearch,
+  ref,
+  useCategory,
+  useLandingSearch,
+  useProduct,
+  useProductSearch,
+} from "#imports";
+import type { Schemas } from "#shopware";
+
+const route = {
+  path: "/Winter-Season/My-Product",
+};
+const { resolvePath } = useNavigationSearch();
+const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
+
+const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
+
+const data = ref<
+  Schemas["Category"] | Schemas["LandingPage"] | Schemas["Product"] | null
+>(null);
+
+switch (routeName.value) {
+  case "frontend.navigation.page":
+    {
+      const { search: categorySearch } = useCategorySearch();
+      const categoryResponse = await categorySearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { category } = useCategory(ref(categoryResponse));
+      data.value = category.value;
+    }
+    break;
+  case "frontend.detail.page":
+    {
+      const { search: productSearch } = useProductSearch();
+      const productResponse = await productSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      const { product } = useProduct(
+        ref(productResponse.product),
+        productResponse.configurator ?? [],
+      );
+      data.value = product.value;
+    }
+    break;
+  case "frontend.landing.page":
+    {
+      const { search: landingSearch } = useLandingSearch();
+      const landing = await landingSearch(foreignKey.value, {
+        withCmsAssociations: true,
+      });
+      data.value = landing;
+    }
+    break;
+}
+```
+
+<!-- /automd -->
+
+This switch statement handles all options that Shopware natively supports and can easily be enhanced. Another option is to build custom components for each route type and do the rest in there.
+
+:::tip Module imports
+If you use the `@shopware/nuxt-module`, all composables will be automatically imported for you.
+:::
+
+You are done at this point if you choose to build/design custom pages or integrate an external CMS system for the page content.
+
+## Omitting store API calls for seoURLs
+
+Having pretty URLs is important for SEO and user experience. To display the proper page for that URL, it must be resolved first. This often requires two API calls.
+
+- seoURL lookup, which returns the kind of page we should display and the id of the entity
+- API call to fetch the entity data
+
+Thankfully, we do not need to do that in every case. Only the first request (handled on the server side) is required to resolve the URL. After we render the page, every link information contains not only SEOUrl for redirection but also metadata information containing redirection data. Thanks to this, we can load page data directly without first resolving the URL.
+
+To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
+
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers.html#getcategoryroute) and [getProductRoute](../packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+
+##### Example getCategoryRoute with NuxtLink
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getcategoryroute-with-nuxtlink.vue" code lang="vue" no-name -->
+
+```vue
+<script setup lang="ts">
+import { getCategoryRoute, getTranslatedProperty } from "@shopware/helpers";
+
+const navigationChild = {
+  id: "example-navigation-id",
+  name: "Example category",
+  type: "page",
+  translated: {
+    name: "Example category",
+  },
+  seoUrls: [{ seoPathInfo: "example-category" }],
+};
+</script>
+
+<template>
+  <NuxtLink :to="getCategoryRoute(navigationChild)">
+    {{ getTranslatedProperty(navigationChild, "name") }}
+  </NuxtLink>
+</template>
+```
+
+<!-- /automd -->
+
+##### Example getProductRoute with RouterLink
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/routing/example-getproductroute-with-routerlink.vue" code lang="vue" no-name -->
+
+```vue
+<script setup lang="ts">
+import { getProductRoute, getTranslatedProperty } from "@shopware/helpers";
+
+const product = {
+  id: "example-product-id",
+  name: "Example product",
+  translated: {
+    name: "Example product",
+  },
+  seoUrls: [{ seoPathInfo: "example-product" }],
+};
+</script>
+
+<template>
+  <RouterLink :to="getProductRoute(product)">
+    {{ getTranslatedProperty(product, "name") }}
+  </RouterLink>
+</template>
+```
+
+<!-- /automd -->
+
+##### How does "Omitting store API calls for seoURLs" work in detail?
+
+Several things happen during a request. It should be noted that some operations take place on the server side and some on the client side. Also, data can be passed from the server side to the client side and reused there without the need for a new request. Check the documentation about [useAsyncData](https://nuxt.com/docs/api/composables/use-async-data) in a Nuxt environment.
+
+> Simplified process
+>
+> 1. The user loads an arbitrary page (we don't know which one it is)
+> 2. The server-side rendering (SSR) always happens first and that's where we need to resolve the page, as you learned [above](#resolve-a-route-to-a-page). You will see in the developer tools (network tab) that we load the CMS data (seoURL is included in the response) from the store API.
+> 3. After the initial loading (as described in 1 and 2), we already show pretty links to the user. From now on, we don't need to call the store API endpoint for seo-urls, because we already have the data we need. So we simply return it to the user via the [History State API](https://developer.mozilla.org/en-US/docs/Web/API/History/state). This is why we use helpers always in our demo-store template.
+
+To check it out on a code level have a look at the `[...all].vue` file in the demo-store template.
+
+## Next steps
+
+<PageRef page="cms/content-pages.html" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
+<PageRef page="../frontends-recipes/catalog/listing.html" title="Product Listing and Filters" sub="Display a list of products with filters, sorting and pagination" />

@@ -444,8 +444,6 @@ The order is a snapshot. Its line items, prices and addresses are `OrderLineItem
 - [Guest Order Lookup recipe](guest-order-lookup.html)
 - [Payment recipe](../checkout/payment.html)
 - [Login recipe](../account/login.html)
-- [Create a checkout](../../guides/e-commerce/checkout.html)
-- [Payments](../../guides/e-commerce/payments.html)
 - [Checkout and Order Placement recipe](../checkout/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
