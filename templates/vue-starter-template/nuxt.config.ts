@@ -160,6 +160,11 @@ export default defineNuxtConfig({
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     },
+    // The index lists URLs on the request host, but ISR caches one copy per
+    // path for every domain of a deployment.
+    "/sitemap.xml": {
+      isr: false,
+    },
     "/checkout": {
       ssr: false,
       headers: {
