@@ -9,18 +9,31 @@ export type SitemapFile = {
  * Shopware links sitemap files on the host they live on, which is never the
  * headless storefront. Each file is proxied under `/sitemap/<path>` so the
  * index only references this storefront.
+ *
+ * Shopware lists the files of one language per request, so this asks once for
+ * every language of the sales channel.
  */
 export async function listSitemapFiles(): Promise<SitemapFile[]> {
-  const { data } = await createServerApiClient().invoke(
-    "readSitemap get /sitemap",
+  const apiClient = createServerApiClient();
+  const { data: languages } = useRuntimeConfig().public.shopware.cacheableReads
+    ? await apiClient.invoke("readLanguagesGet get /language")
+    : await apiClient.invoke("readLanguages post /language");
+  const sitemaps = await Promise.all(
+    languages.elements.map(({ id }) =>
+      apiClient.invoke("readSitemap get /sitemap", {
+        headers: { "sw-language-id": id },
+      }),
+    ),
   );
   const base = getShopwareServerEndpoint();
 
-  return data.flatMap(({ filename }) => {
-    const url = new URL(filename, base).href;
-    const path = url.match(/\/sitemap\/(.+\.xml(?:\.gz)?)$/)?.[1];
-    return path ? [{ path, url }] : [];
-  });
+  return sitemaps.flatMap(({ data }) =>
+    data.flatMap(({ filename }) => {
+      const url = new URL(filename, base).href;
+      const path = url.match(/\/sitemap\/(.+\.(?:xml|gz))$/)?.[1];
+      return path ? [{ path, url }] : [];
+    }),
+  );
 }
 
 /**

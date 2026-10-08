@@ -18,8 +18,10 @@ export function getShopwareServerEndpoint() {
 }
 
 /**
- * Headers and timeout for server-side Store API calls. Like the plugin, each
- * field falls back from the private tier to the public one on its own.
+ * Headers and timeout for server-side Store API calls, from
+ * `runtimeConfig.apiClientConfig`. Like the plugin, each field falls back from
+ * the private tier to the public one on its own. The deprecated
+ * `shopware.apiClientConfig` is not read.
  */
 export function getServerApiClientOptions() {
   const config = useRuntimeConfig();
