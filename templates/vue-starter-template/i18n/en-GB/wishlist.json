@@ -2,6 +2,7 @@
   "wishlist": {
     "header": "Wishlist",
     "subHeader": "View your current wishlist.",
+    "clearWishlist": "Clear wishlist",
     "empty": {
       "title": "Your wishlist is empty",
       "description": "Keep an eye on products you like by adding them to your wishlist.",
