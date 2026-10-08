@@ -16,7 +16,7 @@ test.describe("Password recovery", { tag: "@frontends" }, () => {
     await expect(recoveryPage.recoverForm).toBeVisible();
   });
 
-  test("Recovery request shows the same acknowledgement for any address", async () => {
+  test("Recovery request acknowledges an unknown address", async () => {
     await recoveryPage.visitRecoverPage();
     await recoveryPage.requestRecoveryMail(
       `nobody-${Date.now()}@example.invalid`,

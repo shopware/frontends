@@ -19,6 +19,7 @@ const state = ref({ email: "" });
 const { r$ } = useRegle(state, recoverPasswordFormRules());
 const loading = ref(false);
 const isRequested = ref(false);
+const heading = useTemplateRef<HTMLElement>("heading");
 
 async function handleSubmit() {
   await r$.$validate();
@@ -33,6 +34,9 @@ async function handleSubmit() {
       storefrontUrl: getStorefrontUrl(),
     });
     isRequested.value = true;
+    // The form that held focus is gone now.
+    await nextTick();
+    heading.value?.focus();
   } catch (error) {
     // Shopware answers a known and an unknown address alike, so a failure
     // here is operational. Say so and keep the form for another try.
@@ -50,7 +54,9 @@ async function handleSubmit() {
       <SharedIconBadge icon="i-carbon-email" size="large" />
       <div class="flex flex-col gap-2">
         <h1
-          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface"
+          ref="heading"
+          tabindex="-1"
+          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface focus:outline-none"
         >
           {{ $t("account.recoverPassword.header") }}
         </h1>
@@ -62,20 +68,21 @@ async function handleSubmit() {
       <div
         class="w-full mt-4 p-6 md:p-8 rounded-lg bg-surface-surface-container-low"
       >
-        <div
-          v-if="isRequested"
-          role="status"
-          class="flex flex-col items-center gap-4"
-          data-testid="recover-password-success-message"
-        >
-          <SharedIconBadge icon="i-carbon-checkmark" variant="success" />
-          <p class="text-surface-on-surface">
-            {{ $t("account.recoverPassword.successMessage") }}
-          </p>
+        <div aria-live="polite">
+          <div
+            v-if="isRequested"
+            class="flex flex-col items-center gap-4"
+            data-testid="recover-password-success-message"
+          >
+            <SharedIconBadge icon="i-carbon-checkmark" variant="success" />
+            <p class="text-surface-on-surface">
+              {{ $t("account.recoverPassword.successMessage") }}
+            </p>
+          </div>
         </div>
 
         <form
-          v-else
+          v-if="!isRequested"
           class="flex flex-col gap-4 text-left"
           data-testid="recover-password-form"
           @submit.prevent="handleSubmit"

@@ -4,7 +4,10 @@
  */
 export default defineEventHandler(async (event) => {
   const path = getRouterParam(event, "path") ?? "";
-  const file = (await listSitemapFiles()).find((entry) => entry.path === path);
+  // The router hands over a decoded path; listed paths keep URL encoding.
+  const file = (await listSitemapFiles()).find(
+    (entry) => decodeURI(entry.path) === path,
+  );
 
   if (!file) {
     throw createError({ statusCode: 404, statusMessage: "Sitemap not found" });

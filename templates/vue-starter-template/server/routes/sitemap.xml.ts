@@ -15,10 +15,7 @@ function escapeXml(value: string) {
  * files are served by `/sitemap/[...path]`, so every location is on this host.
  */
 export default defineEventHandler(async (event) => {
-  const { origin } = getRequestURL(event, {
-    xForwardedHost: true,
-    xForwardedProto: true,
-  });
+  const { origin } = getRequestURL(event);
   const files = await listSitemapFiles();
 
   const entries = files

@@ -31,6 +31,7 @@ const linkStatus = ref<"checking" | "valid" | "expired" | "unknown">(
 );
 const loading = ref(false);
 const isResetComplete = ref(false);
+const heading = useTemplateRef<HTMLElement>("heading");
 
 async function checkLink() {
   if (!hash) {
@@ -71,6 +72,9 @@ async function handleSubmit() {
     state.value.newPassword = "";
     state.value.newPasswordConfirm = "";
     isResetComplete.value = true;
+    // The form that held focus is gone now.
+    await nextTick();
+    heading.value?.focus();
   } catch (error) {
     handleApiError(error);
   } finally {
@@ -87,7 +91,9 @@ onMounted(checkLink);
       <SharedIconBadge icon="i-carbon-password" size="large" />
       <div class="flex flex-col gap-2">
         <h1
-          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface"
+          ref="heading"
+          tabindex="-1"
+          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface focus:outline-none"
         >
           {{ $t("account.resetPassword.header") }}
         </h1>

@@ -11,30 +11,35 @@ export type SitemapFile = {
  * index only references this storefront.
  *
  * Shopware lists the files of one language per request, so this asks once for
- * every language of the sales channel.
+ * every language of the sales channel. The list is cached for a few minutes,
+ * because a crawler fetches every file right after the index.
  */
-export async function listSitemapFiles(): Promise<SitemapFile[]> {
-  const apiClient = createServerApiClient();
-  const { data: languages } = useRuntimeConfig().public.shopware.cacheableReads
-    ? await apiClient.invoke("readLanguagesGet get /language")
-    : await apiClient.invoke("readLanguages post /language");
-  const sitemaps = await Promise.all(
-    languages.elements.map(({ id }) =>
-      apiClient.invoke("readSitemap get /sitemap", {
-        headers: { "sw-language-id": id },
-      }),
-    ),
-  );
-  const base = getShopwareServerEndpoint();
+export const listSitemapFiles = defineCachedFunction(
+  async (): Promise<SitemapFile[]> => {
+    const apiClient = createServerApiClient();
+    const { data: languages } = useRuntimeConfig().public.shopware
+      .cacheableReads
+      ? await apiClient.invoke("readLanguagesGet get /language")
+      : await apiClient.invoke("readLanguages post /language");
+    const sitemaps = await Promise.all(
+      languages.elements.map(({ id }) =>
+        apiClient.invoke("readSitemap get /sitemap", {
+          headers: { "sw-language-id": id },
+        }),
+      ),
+    );
+    const base = getShopwareServerEndpoint();
 
-  return sitemaps.flatMap(({ data }) =>
-    data.flatMap(({ filename }) => {
-      const url = new URL(filename, base).href;
-      const path = url.match(/\/sitemap\/(.+\.(?:xml|gz))$/)?.[1];
-      return path ? [{ path, url }] : [];
-    }),
-  );
-}
+    return sitemaps.flatMap(({ data }) =>
+      data.flatMap(({ filename }) => {
+        const url = new URL(filename, base).href;
+        const path = url.match(/\/sitemap\/(.+\.(?:xml|gz))$/)?.[1];
+        return path ? [{ path, url }] : [];
+      }),
+    );
+  },
+  { name: "sitemap-files", maxAge: 60 * 10 },
+);
 
 /**
  * On the backend host the file can sit behind the Store API, which needs the
