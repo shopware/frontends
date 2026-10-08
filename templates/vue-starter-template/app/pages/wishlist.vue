@@ -9,8 +9,25 @@ const { formatLink } = useInternationalization(localePath);
 
 const { isLoggedIn } = useUser();
 const { apiClient } = useShopwareContext();
+const { clearWishlist } = useWishlist();
+const { pushError } = useNotifications();
+const { t } = useI18n();
 
 const list = ref<PaginatedListInstance | null>(null);
+const clearing = ref(false);
+
+async function handleClearWishlist() {
+  try {
+    clearing.value = true;
+    await clearWishlist();
+    await list.value?.refresh();
+  } catch (error) {
+    console.error(error);
+    pushError(t("messages.error"));
+  } finally {
+    clearing.value = false;
+  }
+}
 
 const fetchWishlistProducts: OffsetPaginationFetcher<
   Schemas["Product"]
@@ -48,6 +65,15 @@ const fetchWishlistProducts: OffsetPaginationFetcher<
         data-key="wishlist-products"
       >
         <template #default="{ items }: { items: Schemas['Product'][] }">
+          <FormBaseButton
+            class="mb-6"
+            variant="outline"
+            type="button"
+            data-testid="clear-wishlist-button"
+            :label="$t('wishlist.clearWishlist')"
+            :loading="clearing"
+            @click="handleClearWishlist"
+          />
           <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
           >

@@ -131,6 +131,7 @@ onMounted(async () => {
     <div class="self-stretch flex flex-col justify-center items-center">
       <div
         class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-surface-surface-variant transition-colors"
+        data-testid="product-reviews-tab"
         @click="toggleSection(2)"
       >
         <div class="flex-1 flex items-center gap-2.5">
@@ -185,6 +186,7 @@ onMounted(async () => {
           </ClientOnly>
           <div
             v-if="reviewAdded"
+            data-testid="review-success-message"
             class="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center"
           >
             <div class="w-5 h-5 text-states-success flex-shrink-0">
