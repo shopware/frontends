@@ -70,6 +70,34 @@ describe("Footer", () => {
     expect(childLink(html)).toMatch(/href="\/de-DE\/Clothing\/Women\/?"/);
     expect(childLink(html)).not.toContain("lang=");
     expect(html).toMatch(/<a [^>]*href="\/de-DE"/);
+    expect(html).toContain(">Erstellt mit Shopware Frontends und Next.js</p>");
+  });
+
+  it("stacks a sand newsletter band, the ink footer and a bottom bar", async () => {
+    vi.mocked(resolveContentLanguage).mockResolvedValue({
+      languageId: null,
+      contentLang: undefined,
+    });
+
+    const html = await renderToHtml(withI18n(<Footer locale="en-GB" />));
+    const newsletter = html.indexOf('id="newsletter-email"');
+    const logo = html.indexOf('src="/logo-white.svg"');
+    const bottomBar = html.indexOf(
+      '<div class="border-t border-shell-on-ink/15">',
+    );
+    const builtWith = html.indexOf(
+      ">Built with Shopware Frontends and Next.js</p>",
+    );
+
+    expect(html).toContain(
+      '<footer class="bg-shell-ink text-shell-on-ink"><div class="bg-shell-sand text-shell-ink">',
+    );
+    expect(newsletter).toBeGreaterThan(0);
+    expect(logo).toBeGreaterThan(newsletter);
+    expect(html.indexOf(">Women</a>")).toBeGreaterThan(logo);
+    expect(html.indexOf(">Women</a>")).toBeLessThan(bottomBar);
+    expect(bottomBar).toBeGreaterThan(logo);
+    expect(builtWith).toBeGreaterThan(bottomBar);
   });
 
   it("declares the content language on the column heading and links", async () => {

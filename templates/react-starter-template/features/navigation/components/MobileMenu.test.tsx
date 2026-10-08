@@ -44,7 +44,7 @@ describe("MobileMenu", () => {
     const html = await renderToHtml(<MobileMenu tree={tree} />);
 
     expect(html).toContain('aria-hidden="true"');
-    expect(html).toContain("size-5 text-brand-primary");
+    expect(html).toContain("size-5 text-shell-ink");
   });
 
   it("appends the caller's class to the burger button", async () => {
@@ -67,7 +67,7 @@ describe("MobileMenuPending", () => {
     expect(html).toContain('aria-busy="true"');
     expect(html).toContain("disabled");
     expect(html).toMatch(/<button[^>]*class="[^"]*lg:hidden rounded-full p-2"/);
-    expect(html).toContain("size-5 text-brand-primary");
+    expect(html).toContain("size-5 text-shell-ink");
     expect(html).not.toContain("aria-expanded");
     expect(html).not.toContain("aria-controls");
   });

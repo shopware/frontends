@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { buildNavigationTree } from "@/features/navigation/navigationTree";
 import { withI18n } from "@/test/i18n";
-import { interact, mount, pressKey, query } from "@/test/mount";
+import { interact, mount, pressKey, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import type { NavigationNode } from "../navigationTree";
@@ -118,6 +118,32 @@ describe("MobileMenu in the browser", () => {
     const close = query<HTMLButtonElement>(drawer, "button");
     expect(close.textContent).toBe("Close menu");
     expect(document.activeElement).toBe(close);
+  });
+
+  it("puts the close button on an ink strip above white rows with sand subcategories", async () => {
+    const { container } = await openMenu();
+    const drawer = query<HTMLDialogElement>(container, DRAWER);
+    const close = query<HTMLButtonElement>(drawer, "button");
+
+    expect(close.parentElement?.className).toContain("bg-shell-ink");
+    expect(close.className).toContain("focus-visible:outline-shell-accent");
+    expect(query<HTMLImageElement>(drawer, "img").getAttribute("alt")).toBe("");
+    const rows = queryAll<HTMLLIElement>(drawer, "aside > ul > li");
+    expect(rows).toHaveLength(2);
+    for (const row of rows) {
+      expect(row.className).toContain("border-b border-shell-line");
+    }
+
+    const toggle = query<HTMLButtonElement>(
+      drawer,
+      'button[aria-label="Show subcategories"]',
+    );
+    await interact(() => toggle.click());
+
+    const sublist = document.getElementById(
+      toggle.getAttribute("aria-controls") ?? "",
+    );
+    expect(sublist?.className).toContain("bg-shell-sand");
   });
 
   it("expands and collapses a subcategory list from its toggle", async () => {

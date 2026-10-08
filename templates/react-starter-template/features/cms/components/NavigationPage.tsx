@@ -6,6 +6,7 @@ import {
 import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import { getProductListingFromCmsPage } from "@shopware/helpers";
 
+import type { Schemas } from "#shopware";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
@@ -32,17 +33,20 @@ export async function NavigationPage({
   );
   const cmsPage = category.cmsPage;
 
-  const needsListing =
-    !!cmsPage &&
-    hasListingQuery(searchParams) &&
-    getProductListingFromCmsPage(cmsPage) !== null;
+  const cmsListing = cmsPage
+    ? getProductListingFromCmsPage<Schemas["ProductListingResult"]>(cmsPage)
+    : null;
+  const needsListing = cmsListing !== null && hasListingQuery(searchParams);
 
   const [navigation, listing] = await Promise.all([
     readNavigation(navigationId, 2, languageId),
     needsListing
       ? readProductListing(
           navigationId,
-          buildListingQueryParams(searchParams),
+          buildListingQueryParams(searchParams, {
+            limit: cmsListing.limit,
+            order: cmsListing.sorting,
+          }),
           languageId,
         )
       : undefined,

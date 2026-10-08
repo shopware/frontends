@@ -3,6 +3,7 @@ import { Suspense, cache } from "react";
 
 import { HeaderBar } from "@/features/layout/components/HeaderBar";
 import { MetaNavigation } from "@/features/layout/components/MetaNavigation";
+import { StickyHeader } from "@/features/layout/components/StickyHeader";
 import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
 import {
   MobileMenu,
@@ -37,9 +38,9 @@ export type HeaderProps = { locale: Locale };
 
 export function Header({ locale }: HeaderProps) {
   return (
-    <header className="bg-surface-surface">
+    <StickyHeader className="bg-surface-surface lg:sticky lg:top-0 lg:z-30">
       <MetaNavigation />
-      <div className="border-b border-outline-outline-variant">
+      <div className="border-b border-shell-line">
         <HeaderBar
           menu={
             <Suspense
@@ -55,7 +56,7 @@ export function Header({ locale }: HeaderProps) {
           <HeaderTopNavigation locale={locale} />
         </Suspense>
       </div>
-    </header>
+    </StickyHeader>
   );
 }
 

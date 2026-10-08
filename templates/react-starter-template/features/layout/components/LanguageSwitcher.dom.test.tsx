@@ -229,6 +229,21 @@ describe("LanguageSwitcher", () => {
     ]);
   });
 
+  it("opens the list right-aligned on sand under an ink-ready button", async () => {
+    const { button, container } = await setup();
+
+    expect(button.className).toContain("focus-visible:outline-shell-accent");
+    expect(button.className).toContain("hover:bg-shell-ink-soft");
+
+    await click(button);
+
+    const list = container.querySelector("ul");
+    expect(list?.className).toContain("right-0");
+    expect(list?.className).not.toContain("left-0");
+    expect(list?.className).toContain("bg-shell-sand");
+    expect(list?.className).toContain("text-shell-ink");
+  });
+
   it("closes on Escape and returns focus to the button", async () => {
     const { button, link, links } = await setup();
     await click(button);

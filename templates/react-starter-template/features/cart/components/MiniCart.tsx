@@ -1,6 +1,6 @@
 "use client";
 
-import { IconButton, cx } from "@shopware/cms-base-layer-react/client";
+import { cx } from "@shopware/cms-base-layer-react/client";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef } from "react";
 import type { RefObject } from "react";
@@ -11,6 +11,10 @@ import { Price } from "@/components/Price";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
+import {
+  SHELL_BUTTON_PRIMARY_CLASS,
+  SHELL_BUTTON_SECONDARY_CLASS,
+} from "@/features/layout/shellButton";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 export type MiniCartProps = {
@@ -87,18 +91,21 @@ export function MiniCart({
       id={id}
       data-testid="mini-cart-container"
       aria-labelledby={titleId}
-      className={cx("z-40 w-full max-w-[500px]", className)}
+      className={cx(
+        "z-40 flex w-full max-w-[500px] flex-col rounded-lg shadow-xl lg:max-h-[calc(100dvh_-_var(--sticky-header-height)_+_2rem)]",
+        className,
+      )}
     >
-      <div className="flex items-center justify-between border border-outline-outline-variant bg-surface-surface px-6 pt-4 pb-3">
+      <div className="flex shrink-0 items-center justify-between rounded-t-lg border border-shell-line bg-shell-sand px-6 py-3">
         <h2
           id={titleId}
-          className="font-serif text-2xl leading-9 font-normal text-surface-on-surface"
+          className="text-xl leading-8 font-semibold text-shell-ink"
         >
           {t("cart.miniCart.title")}
         </h2>
-        <IconButton
-          variant="ghost"
-          className="rounded-full p-2"
+        <button
+          type="button"
+          className="rounded-full p-2 text-shell-ink transition-colors hover:bg-shell-sand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-ink"
           data-testid="mini-cart-close-button"
           aria-label={t("cart.miniCart.close")}
           onClick={() => {
@@ -107,9 +114,9 @@ export function MiniCart({
           }}
         >
           <CloseIcon className="size-3" />
-        </IconButton>
+        </button>
       </div>
-      <ul className="max-h-[365px] divide-y divide-outline-outline-variant overflow-y-auto border border-t-0 border-outline-outline-variant bg-surface-surface px-6 py-3">
+      <ul className="max-h-[365px] min-h-0 divide-y divide-shell-line overflow-y-auto overscroll-contain border border-t-0 border-shell-line bg-surface-surface px-6 py-3">
         {lineItems.map((item) => (
           <li key={item.id} className="py-8 first:pt-3">
             <CheckoutProductTile
@@ -122,7 +129,7 @@ export function MiniCart({
           </li>
         ))}
       </ul>
-      <div className="border border-t-0 border-outline-outline-variant bg-surface-surface-container-low px-6 py-3">
+      <div className="shrink-0 rounded-b-lg border border-t-0 border-shell-line bg-surface-surface px-6 pt-3 pb-5">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-surface-on-surface">
             {t("cart.miniCart.subtotal")}
@@ -138,13 +145,19 @@ export function MiniCart({
         <LocaleLink
           href="/checkout"
           data-testid="checkout-cart-link"
-          className="mb-2 block rounded-md bg-brand-primary py-1.5 text-center leading-6 font-bold text-brand-on-primary hover:bg-brand-primary-hover"
+          className={cx(
+            SHELL_BUTTON_PRIMARY_CLASS,
+            "mb-2 block py-2.5 text-center leading-6",
+          )}
         >
           {t("cart.miniCart.proceedToCheckout")}
         </LocaleLink>
         <LocaleLink
           href="/checkout/cart"
-          className="block rounded-md bg-brand-secondary py-1.5 text-center leading-6 font-bold text-brand-on-secondary hover:bg-brand-secondary-hover"
+          className={cx(
+            SHELL_BUTTON_SECONDARY_CLASS,
+            "block py-2.5 text-center leading-6",
+          )}
         >
           {t("cart.miniCart.goToShoppingCart")}
         </LocaleLink>

@@ -612,7 +612,7 @@ describe("HeaderBar in the browser", () => {
     fakeCart.set(filledCart());
     const { cartButton, miniCart, notify } = await setup();
 
-    expect(cartButton.textContent).toBe("3");
+    expect(cartButton.textContent).toBe("3Cart");
 
     await interact(() => cartButton.click());
 
@@ -695,7 +695,7 @@ describe("HeaderBar in the browser", () => {
 
     expect(miniCart()).toBeNull();
     expect(cartButton.getAttribute("aria-expanded")).toBe("false");
-    expect(cartButton.textContent).toBe("");
+    expect(cartButton.textContent).toBe("Cart");
     expect(document.activeElement).toBe(cartButton);
 
     await interact(() => fakeCart.set(filledCart()));

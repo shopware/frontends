@@ -208,7 +208,7 @@ export function OrderConfirmation({
 
         <aside className="order-1 w-full lg:order-2 lg:w-1/2">
           <section
-            className="sticky top-2 border border-outline-outline"
+            className="sticky top-2 border border-outline-outline lg:top-[calc(var(--sticky-header-height)_+_0.5rem)]"
             aria-labelledby="order-summary-heading"
           >
             <div className="border-b border-outline-outline-variant">

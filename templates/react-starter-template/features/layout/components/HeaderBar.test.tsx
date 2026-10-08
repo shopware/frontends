@@ -7,6 +7,10 @@ import {
   fakeCart,
   lineItem,
 } from "@/features/cart/components/cartView.fixture";
+import {
+  HEADER_ACTION_CLASS,
+  HEADER_ACTION_LABEL_CLASS,
+} from "@/features/layout/headerAction";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
@@ -44,6 +48,12 @@ function render(session?: StorefrontSession, menu: ReactNode = null) {
   );
 }
 
+const COUNTER = /\bbg-shell-accent\b(?!-)/g;
+
+function counters(html: string): RegExpMatchArray | null {
+  return html.match(COUNTER);
+}
+
 function buttonWithTestId(html: string, testId: string): string {
   const match = html.match(
     new RegExp(`<button[^>]*data-testid="${testId}"[^>]*>`),
@@ -79,7 +89,63 @@ describe("HeaderBar", () => {
     expect(html).not.toContain("mini-cart-container");
 
     expect(html).toContain('aria-label="Search"');
-    expect(html).not.toContain("bg-states-error");
+    expect(counters(html)).toBeNull();
+  });
+
+  it("puts the search icon in a sand pill before the actions and shows the smaller logo", async () => {
+    const html = await render();
+
+    expect(html).toMatch(/<img [^>]*class="h-10 w-auto sm:h-12"/);
+    expect(html).toMatch(
+      /<input [^>]*class="[^"]*rounded-full[^"]*bg-shell-sand[^"]*"/,
+    );
+    expect(html.indexOf('data-testid="header-search-input"')).toBeLessThan(
+      html.indexOf('data-testid="header-account-button"'),
+    );
+  });
+
+  it.each([
+    ["header-account-button", "My Account"],
+    ["header-wishlist-button", "Wishlist"],
+    ["header-mini-cart-button", "Cart"],
+  ])(
+    "shows the label of %s under its icon from lg up, matching its accessible name",
+    async (testId, label) => {
+      const html = await render();
+      const button = html.match(
+        new RegExp(`<button[^>]*data-testid="${testId}"[^>]*>.*?</button>`),
+      )?.[0];
+
+      expect(button).toBeDefined();
+      expect(button).toContain(`aria-label="${label}"`);
+      expect(button).toContain(
+        `<span class="${HEADER_ACTION_LABEL_CLASS}">${label}</span>`,
+      );
+      expect(button).toMatch(
+        new RegExp(
+          `<span class="hidden [^"]*\\blg:block\\b[^"]*">${label}</span>`,
+        ),
+      );
+      expect(button).toMatch(/<svg[^>]*>.*<\/svg>.*<span class="hidden /);
+    },
+  );
+
+  it("shows the Polish labels under the icons under the pl-PL provider", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <CmsActionsProvider actions={actions}>
+          <HeaderBar menu={null} />
+        </CmsActionsProvider>,
+        "pl-PL",
+      ),
+    );
+    const labels = [
+      ...html.matchAll(
+        /<span class="hidden [^"]*\blg:block\b[^"]*">([^<]*)<\/span>/g,
+      ),
+    ].map((match) => match[1]);
+
+    expect(labels).toEqual(["Moje konto", "Lista życzeń", "Koszyk"]);
   });
 
   it("renders the Polish labels and the prefixed logo link under the pl-PL provider", async () => {
@@ -114,13 +180,16 @@ describe("HeaderBar", () => {
     expect(actions.notify).not.toHaveBeenCalled();
   });
 
-  it("gives every action button the same round hit area", async () => {
+  it("gives every action button the same hit area and ink focus ring", async () => {
     const html = await render();
     const buttons = html.match(/<button[^>]*>/g) ?? [];
 
     expect(buttons).toHaveLength(4);
     for (const button of buttons) {
-      expect(button).toContain("rounded-full p-2");
+      expect(button).toContain(HEADER_ACTION_CLASS);
+      expect(button).toMatch(/\bp-2\b/);
+      expect(button).toContain("rounded-full");
+      expect(button).toContain("focus-visible:outline-shell-ink");
     }
   });
 
@@ -148,9 +217,9 @@ describe("HeaderBar", () => {
 
     const account = buttonWithTestId(html, "header-account-button");
     expect(account).toContain('data-logged-in="true"');
-    expect(html.match(/bg-states-error/g)).toHaveLength(2);
-    expect(html).toMatch(/bg-states-error[^>]*>3<\/span>/);
-    expect(html).toMatch(/bg-states-error[^>]*>2<\/span>/);
+    expect(counters(html)).toHaveLength(2);
+    expect(html).toMatch(/bg-shell-accent [^>]*>3<\/span>/);
+    expect(html).toMatch(/bg-shell-accent [^>]*>2<\/span>/);
   });
 
   it("renders a closed account disclosure for a logged-in customer", async () => {
@@ -179,16 +248,16 @@ describe("HeaderBar", () => {
       wishlistCount: 4,
     });
 
-    expect(html.match(/bg-states-error/g)).toHaveLength(1);
-    expect(html).toMatch(/bg-states-error[^>]*>1<\/span>/);
+    expect(counters(html)).toHaveLength(1);
+    expect(html).toMatch(/bg-shell-accent [^>]*>1<\/span>/);
   });
 
   it("shows the count useCart reports, not the number of line items", async () => {
     fakeCart.set(cartView({ lineItems: [lineItem()], count: 5 }));
     const html = await render({ ...anonymousSession, status: "ready" });
 
-    expect(html.match(/bg-states-error/g)).toHaveLength(1);
-    expect(html).toMatch(/bg-states-error[^>]*>5<\/span>/);
+    expect(counters(html)).toHaveLength(1);
+    expect(html).toMatch(/bg-shell-accent [^>]*>5<\/span>/);
   });
 
   it("hides the cart counter while the count is 0", async () => {
@@ -200,6 +269,6 @@ describe("HeaderBar", () => {
     );
     const html = await render({ ...anonymousSession, status: "ready" });
 
-    expect(html).not.toContain("bg-states-error");
+    expect(counters(html)).toBeNull();
   });
 });

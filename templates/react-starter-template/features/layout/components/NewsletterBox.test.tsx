@@ -93,8 +93,31 @@ describe("NewsletterBox", () => {
 
     expect(form.toLowerCase()).toContain("novalidate");
     expect(button).toContain('type="submit"');
-    expect(button).not.toContain("disabled");
-    expect(html).toContain(">Submit</span>");
+    expect(button).not.toMatch(/ disabled(="")?[ >]/);
+    expect(button).toContain("bg-shell-ink");
+    expect(button).toContain("text-shell-on-ink");
+    expect(button).toContain("rounded-full");
+    expect(html).toContain(">Submit</button>");
+  });
+
+  it("keeps the title a paragraph and puts the copy before the form", async () => {
+    const html = await render();
+
+    expect(html).not.toMatch(/<h[1-6][ >]/);
+    expect(html).toContain(
+      '<p class="text-2xl font-semibold tracking-tight text-shell-ink md:text-3xl">Subscribe</p>',
+    );
+    expect(html.indexOf(">Subscribe</p>")).toBeLessThan(html.indexOf("<form"));
+  });
+
+  it("gives the input a visible border and an ink focus ring on the sand band", async () => {
+    const html = await render();
+    const input = tag(html, /<input [^>]*>/);
+
+    expect(input).toContain("border-shell-ink/60");
+    expect(input).toContain("bg-surface-surface");
+    expect(input).toContain("focus-visible:ring-shell-ink");
+    expect(input).toContain("aria-invalid:border-states-error");
   });
 
   it("shows no error before the field is touched", async () => {
@@ -120,15 +143,17 @@ describe("NewsletterBox", () => {
     expect(html).toContain(">Abonnieren</p>");
     expect(html).toContain(">E-Mail-Adresse</label>");
     expect(html).toContain('placeholder="E-Mail-Adresse eingeben"');
-    expect(html).toContain(">Absenden</span>");
+    expect(html).toContain(">Absenden</button>");
     expect(html).not.toContain("Subscribe");
   });
 
-  it("passes the className to the root element", async () => {
+  it("appends the className to the root layout classes", async () => {
     const html = await render("col-span-1 sm:col-span-2");
 
-    expect(html.startsWith('<div class="col-span-1 sm:col-span-2">')).toBe(
-      true,
-    );
+    expect(
+      html.startsWith(
+        '<div class="grid gap-6 md:grid-cols-2 md:items-center md:gap-12 col-span-1 sm:col-span-2">',
+      ),
+    ).toBe(true);
   });
 });

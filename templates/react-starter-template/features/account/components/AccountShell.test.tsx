@@ -29,10 +29,10 @@ describe("AccountShell", () => {
     const html = await render();
 
     expect(html).toMatch(
-      /<nav aria-label="Account navigation" class="hidden flex-col gap-3 text-nowrap md:flex">/,
+      /<nav aria-label="Account navigation" class="hidden min-w-56 shrink-0 flex-col gap-4 rounded-lg bg-shell-sand p-6 text-nowrap md:flex">/,
     );
     expect(html).toContain(
-      '<h2 class="text-base leading-normal font-bold text-brand-primary">Your account</h2>',
+      '<h2 class="px-3 text-base leading-normal font-bold text-shell-ink">Your account</h2>',
     );
     for (const href of [
       "/account",
@@ -44,7 +44,9 @@ describe("AccountShell", () => {
     }
     const profileLink = html.match(/<a[^>]*href="\/account\/profile"[^>]*>/);
     expect(profileLink?.[0]).toContain('aria-current="page"');
+    expect(profileLink?.[0]).toContain("bg-shell-ink text-shell-on-ink");
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+    expect(html.match(/bg-shell-ink text-shell-on-ink/g)).toHaveLength(1);
     expect(html).toContain(">Logout</button>");
   });
 
@@ -52,7 +54,7 @@ describe("AccountShell", () => {
     const html = await render();
 
     expect(html).toMatch(
-      /^<div class="container mx-auto mt-5 flex w-full max-w-screen-2xl gap-20 px-4 md:mt-20">/,
+      /^<div class="container mx-auto mt-5 flex w-full max-w-screen-2xl items-start gap-10 px-4 md:mt-12 lg:gap-16">/,
     );
     expect(html).toContain('<div class="w-full min-w-0">');
   });

@@ -96,6 +96,10 @@ describe("TopNavigationPlaceholder", () => {
     expect(html).not.toContain("<ul");
     expect(anchors(html)).toHaveLength(0);
     expect(classes(html)).toEqual(classes(live));
+    expect(html).toMatch(
+      /^<div class="relative bg-shell-ink text-shell-on-ink"/,
+    );
+    expect(html).toMatch(/<div class="[^"]*min-h-12[^"]*"><\/div>/);
   });
 });
 
@@ -115,9 +119,7 @@ describe("TopNavigation", () => {
     const html = await renderToHtml(<TopNavigation tree={[]} />);
 
     expect(html).toContain('aria-label="Main navigation"');
-    expect(html).toMatch(
-      /<ul role="menubar" class="[^"]*min-h-\[25px\][^"]*">/,
-    );
+    expect(html).toMatch(/<ul role="menubar" class="[^"]*min-h-12[^"]*">/);
     expect(anchors(html)).toHaveLength(0);
   });
 
@@ -128,7 +130,7 @@ describe("TopNavigation", () => {
     expect(clothing).toContain('aria-haspopup="true"');
     expect(clothing).toContain('aria-expanded="false"');
     expect(food).not.toContain("aria-haspopup");
-    expect(food).not.toContain("aria-expanded");
+    expect(food).not.toMatch(/\saria-expanded="/);
     expect(blog).not.toContain("aria-haspopup");
   });
 
@@ -151,7 +153,48 @@ describe("TopNavigation", () => {
     expect(clothing).toContain('aria-current="page"');
     expect(food).not.toContain("aria-current");
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
-    expect(html.match(/ border-surface-on-surface"/g)).toHaveLength(1);
+    expect(clothing).toContain("aria-[current=page]:text-shell-accent");
+    expect(clothing).toContain("aria-[current=page]:border-b-shell-accent");
+    expect(clothing?.match(/class="([^"]*)"/)?.[1]).toBe(
+      food?.match(/class="([^"]*)"/)?.[1],
+    );
+  });
+
+  it("keeps the band on one scrollable row so the header height stays fixed", async () => {
+    const html = await renderToHtml(<TopNavigation tree={tree} />);
+    const list = html.match(/<ul role="menubar" class="([^"]*)">/)?.[1] ?? "";
+
+    expect(list.split(" ")).toEqual(
+      expect.arrayContaining([
+        "min-h-12",
+        "justify-center-safe",
+        "overflow-x-auto",
+      ]),
+    );
+    expect(list).not.toContain("flex-wrap");
+    expect(html.match(/<li role="none" class="flex shrink-0"/g)).toHaveLength(
+      3,
+    );
+  });
+
+  it("centers the top-level items on the ink band in uppercase with accent hover, active and focus states", async () => {
+    const html = await renderToHtml(<TopNavigation tree={tree} />);
+
+    expect(html).toMatch(
+      /^<div class="relative bg-shell-ink text-shell-on-ink"/,
+    );
+    expect(html).toMatch(
+      /<ul role="menubar" class="[^"]*justify-center[^"]*">/,
+    );
+    for (const item of anchors(html)) {
+      expect(item).toContain("whitespace-nowrap");
+      expect(item).toContain("uppercase");
+      expect(item).toContain("tracking-wide");
+      expect(item).toContain("font-semibold");
+      expect(item).toContain("hover:text-shell-accent");
+      expect(item).toContain("hover:border-b-shell-accent");
+      expect(item).toContain("focus-visible:outline-shell-accent");
+    }
   });
 
   it("labels the menubar in Polish and marks the prefixed current page under the pl-PL provider", async () => {

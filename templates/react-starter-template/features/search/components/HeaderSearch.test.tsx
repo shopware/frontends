@@ -32,6 +32,22 @@ describe("HeaderSearch", () => {
     expect(html).toContain("<svg");
   });
 
+  it("renders a sand pill with the search icon on the left and an ink focus edge", async () => {
+    const html = await renderToHtml(<HeaderSearch />);
+
+    const input = tag(html, /<input[^>]*>/);
+    expect(input).toContain("rounded-full");
+    expect(input).toContain("border-transparent");
+    expect(input).toContain("bg-shell-sand");
+    expect(input).toContain("pl-11");
+    expect(input).toContain("focus-visible:border-shell-ink");
+    expect(input).toContain("focus-visible:ring-shell-ink");
+
+    const icon = tag(html, /<svg[^>]*>/);
+    expect(icon).toContain("left-4");
+    expect(icon).not.toContain("right-");
+  });
+
   it("renders the Polish label and placeholder under the pl-PL provider", async () => {
     const html = await renderToHtml(withI18n(<HeaderSearch />, "pl-PL"));
 

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  IconButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
+import { cx, useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
@@ -19,14 +16,17 @@ import { MiniCart } from "@/features/cart/components/MiniCart";
 import { useCart } from "@/features/cart/useCart";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
-import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
+import {
+  HEADER_ACTION_CLASS,
+  HEADER_ACTION_ICON_CLASS,
+  HEADER_ACTION_LABEL_CLASS,
+} from "@/features/layout/headerAction";
 import { HeaderSearch } from "@/features/search/components/HeaderSearch";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { NOT_WIRED_MESSAGE_KEYS } from "@/features/storefront/notWired";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
-const ICON_CLASS = "size-5 text-brand-primary";
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
 
 export function HeaderBar({ menu }: { menu: ReactNode }) {
@@ -128,14 +128,18 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
     searchButtonRef.current?.focus();
   }, [mobileSearchActive]);
 
+  const accountLabel = t("layout.header.myAccount");
+  const wishlistLabel = t("wishlist.header");
+  const cartLabel = t("layout.header.cart");
+
   return (
-    <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3.5 sm:grid sm:grid-cols-3">
+    <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-2 px-4 py-3 sm:gap-6 lg:gap-10">
       {mobileSearchActive ? (
         <>
           <HeaderSearch className="w-full" autoFocus />
           <button
             type="button"
-            className="shrink-0 border-b border-brand-primary text-sm text-brand-primary hover:border-transparent"
+            className="shrink-0 border-b border-shell-accent-strong text-sm font-medium text-shell-accent-strong hover:border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-ink"
             onClick={closeMobileSearch}
           >
             {t("layout.header.closeSearch")}
@@ -143,21 +147,24 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
         </>
       ) : (
         <>
-          <LocaleLink href="/" className="shrink-0 sm:justify-self-start">
+          <LocaleLink
+            href="/"
+            className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-ink"
+          >
             <img
               src="/logo.svg"
               alt={t("layout.logo")}
               width={93}
               height={39}
-              className="h-20 w-auto max-sm:h-10"
+              className="h-10 w-auto sm:h-12"
             />
           </LocaleLink>
-          <HeaderSearch className="w-full justify-self-center max-sm:hidden" />
-          <div className="flex shrink-0 items-center gap-4 sm:justify-self-end">
-            <IconButton
+          <HeaderSearch className="flex-1 max-sm:hidden lg:mr-auto lg:max-w-xl" />
+          <div className="flex shrink-0 items-center sm:gap-1 lg:gap-2">
+            <button
               ref={searchButtonRef}
-              variant="ghost"
-              className={`${HEADER_ACTION_CLASS} sm:hidden`}
+              type="button"
+              className={cx(HEADER_ACTION_CLASS, "sm:hidden")}
               aria-label={t("layout.header.search")}
               onClick={() => {
                 setAccountMenuOpen(false);
@@ -165,24 +172,30 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                 setMobileSearchActive(true);
               }}
             >
-              <SearchIcon className={ICON_CLASS} />
-            </IconButton>
+              <SearchIcon className={HEADER_ACTION_ICON_CLASS} />
+            </button>
             <div className="relative flex">
-              <IconButton
+              <button
                 ref={accountButtonRef}
-                variant="ghost"
-                className={`${HEADER_ACTION_CLASS} aria-disabled:cursor-progress aria-disabled:opacity-50`}
+                type="button"
+                className={cx(
+                  HEADER_ACTION_CLASS,
+                  "aria-disabled:cursor-progress aria-disabled:opacity-50",
+                )}
                 data-testid="header-account-button"
                 data-logged-in={String(isLoggedIn)}
-                aria-label={t("layout.header.myAccount")}
+                aria-label={accountLabel}
                 aria-expanded={isLoggedIn ? accountMenuOpen : undefined}
                 aria-controls={isLoggedIn ? accountMenuId : undefined}
                 aria-busy={checkingSession || undefined}
                 aria-disabled={checkingSession || undefined}
                 onClick={openAccount}
               >
-                <UserIcon className={ICON_CLASS} />
-              </IconButton>
+                <UserIcon className={HEADER_ACTION_ICON_CLASS} />
+                <span className={HEADER_ACTION_LABEL_CLASS}>
+                  {accountLabel}
+                </span>
+              </button>
               {isLoggedIn && accountMenuOpen ? (
                 <AccountMenu
                   id={accountMenuId}
@@ -192,15 +205,15 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                 />
               ) : null}
             </div>
-            <IconButton
-              variant="ghost"
+            <button
+              type="button"
               className={HEADER_ACTION_CLASS}
               data-testid="header-wishlist-button"
-              aria-label={t("wishlist.header")}
+              aria-label={wishlistLabel}
               onClick={notWired(NOT_WIRED_MESSAGE_KEYS.wishlist)}
             >
               <span className="relative flex">
-                <HeartIcon className={ICON_CLASS} />
+                <HeartIcon className={HEADER_ACTION_ICON_CLASS} />
                 {wishlistCount > 0 && isLoggedIn ? (
                   <MainCounter
                     count={wishlistCount}
@@ -208,24 +221,26 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                   />
                 ) : null}
               </span>
-            </IconButton>
-            <IconButton
+              <span className={HEADER_ACTION_LABEL_CLASS}>{wishlistLabel}</span>
+            </button>
+            <button
               ref={cartButtonRef}
-              variant="ghost"
+              type="button"
               className={HEADER_ACTION_CLASS}
               data-testid="header-mini-cart-button"
-              aria-label={t("layout.header.cart")}
+              aria-label={cartLabel}
               aria-expanded={showMiniCart}
               aria-controls={miniCartId}
               onClick={toggleMiniCart}
             >
               <span className="relative flex">
-                <ShoppingCartIcon className={ICON_CLASS} />
+                <ShoppingCartIcon className={HEADER_ACTION_ICON_CLASS} />
                 {cartQuantity > 0 ? (
                   <MainCounter count={cartQuantity} className={COUNTER_CLASS} />
                 ) : null}
               </span>
-            </IconButton>
+              <span className={HEADER_ACTION_LABEL_CLASS}>{cartLabel}</span>
+            </button>
             {menu}
           </div>
         </>

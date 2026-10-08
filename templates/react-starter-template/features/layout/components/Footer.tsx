@@ -36,22 +36,38 @@ async function FooterNavigation({ locale }: FooterProps) {
 export function Footer({ locale }: FooterProps) {
   const t = getTranslator(locale);
   return (
-    <footer className="bg-brand-primary">
-      <div className="mx-auto w-full max-w-screen-2xl px-4 py-10">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          <LocaleLink href="/" className="mb-4 md:mb-0">
+    <footer className="bg-shell-ink text-shell-on-ink">
+      <div className="bg-shell-sand text-shell-ink">
+        <div className="mx-auto w-full max-w-screen-2xl px-4 py-10 md:py-14">
+          <NewsletterBox />
+        </div>
+      </div>
+      <div className="mx-auto grid w-full max-w-screen-2xl gap-10 px-4 py-12 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] md:gap-16">
+        <div>
+          <LocaleLink
+            href="/"
+            className="inline-block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-accent"
+          >
             <img
               src="/logo-white.svg"
               alt={t("layout.logo")}
-              className="h-16 w-auto sm:h-20"
+              className="h-12 w-auto"
               width={93}
               height={39}
             />
           </LocaleLink>
+        </div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
           <Suspense fallback={null}>
             <FooterNavigation locale={locale} />
           </Suspense>
-          <NewsletterBox className="col-span-1 sm:col-span-2 md:col-span-1" />
+        </div>
+      </div>
+      <div className="border-t border-shell-on-ink/15">
+        <div className="mx-auto w-full max-w-screen-2xl px-4 py-5">
+          <p className="text-sm text-shell-on-ink-muted">
+            {t("layout.footer.builtWith")}
+          </p>
         </div>
       </div>
     </footer>

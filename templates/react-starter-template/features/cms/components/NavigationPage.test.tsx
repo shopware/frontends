@@ -34,17 +34,17 @@ vi.mock("@/platform/shopware/reads/landingPage", () => ({
   readLandingPage: vi.fn(),
 }));
 
-const listingPage = {
-  sections: [
-    {
-      blocks: [
-        {
-          slots: [{ type: "product-listing", data: { listing: {} } }],
-        },
-      ],
-    },
-  ],
-} as unknown as Schemas["CmsPage"];
+function pageWithListing(listing: object): Schemas["CmsPage"] {
+  return {
+    sections: [
+      {
+        blocks: [{ slots: [{ type: "product-listing", data: { listing } }] }],
+      },
+    ],
+  } as unknown as Schemas["CmsPage"];
+}
+
+const listingPage = pageWithListing({});
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -103,6 +103,68 @@ describe("NavigationPage", () => {
       "n",
       expect.objectContaining({ order: "price-asc" }),
       "language-pl",
+    );
+  });
+});
+
+describe("NavigationPage listing pages", () => {
+  it("reads further pages with the page size and sorting of the CMS listing, not hardcoded ones", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "n",
+      cmsPage: pageWithListing({ limit: 24, sorting: "topseller", page: 1 }),
+    } as unknown as Schemas["Category"]);
+
+    await NavigationPage({
+      navigationId: "n",
+      searchParams: { p: "2" },
+      locale: "en-GB",
+      languageId: null,
+    });
+
+    expect(readProductListing).toHaveBeenCalledExactlyOnceWith(
+      "n",
+      { p: 2, limit: 24, order: "topseller" },
+      null,
+    );
+  });
+
+  it("lets the URL limit and order win over the CMS listing", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "n",
+      cmsPage: pageWithListing({ limit: 24, sorting: "topseller" }),
+    } as unknown as Schemas["Category"]);
+
+    await NavigationPage({
+      navigationId: "n",
+      searchParams: { p: "3", limit: "30", order: "price-asc" },
+      locale: "en-GB",
+      languageId: null,
+    });
+
+    expect(readProductListing).toHaveBeenCalledExactlyOnceWith(
+      "n",
+      { p: 3, limit: 30, order: "price-asc" },
+      null,
+    );
+  });
+
+  it("leaves limit and order to the backend when the CMS listing has none", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "n",
+      cmsPage: listingPage,
+    } as unknown as Schemas["Category"]);
+
+    await NavigationPage({
+      navigationId: "n",
+      searchParams: { p: "2" },
+      locale: "en-GB",
+      languageId: null,
+    });
+
+    expect(readProductListing).toHaveBeenCalledExactlyOnceWith(
+      "n",
+      { p: 2 },
+      null,
     );
   });
 });

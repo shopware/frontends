@@ -9,7 +9,8 @@ describe("MetaNavigation", () => {
   it("renders the language switcher closed, labelled in the page locale", async () => {
     const html = await renderToHtml(withI18n(<MetaNavigation />, "pl-PL"));
 
-    expect(html).toContain("bg-surface-surface-primary");
+    expect(html).toMatch(/^<div class="bg-shell-ink py-2 text-shell-on-ink">/);
+    expect(html).toMatch(/<div class="[^"]*justify-end[^"]*">/);
     expect(html).toMatch(/<button type="button" aria-expanded="false"/);
     expect(html).toContain('<span class="sr-only">Zmień język<!-- -->:');
     expect(html).toContain('<span lang="pl-PL">Polski</span>');

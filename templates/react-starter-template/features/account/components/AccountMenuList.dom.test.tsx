@@ -99,6 +99,30 @@ describe("AccountMenuList", () => {
     expect(currentLinks()).toEqual(current);
   });
 
+  it("fills only the current link with ink and keeps a visible focus on every item", async () => {
+    route.pathname = "/account/order";
+    const { links, logoutButton } = await setup();
+
+    const filled = links().filter((link) =>
+      link.classList.contains("bg-shell-ink"),
+    );
+    expect(filled.map((link) => link.getAttribute("href"))).toEqual([
+      "/account/order",
+    ]);
+    expect(filled[0]?.classList.contains("text-shell-on-ink")).toBe(true);
+    for (const link of links().filter((link) => !filled.includes(link))) {
+      expect(link.classList.contains("hover:bg-shell-sand-strong")).toBe(true);
+    }
+    expect(logoutButton().classList.contains("text-shell-accent-strong")).toBe(
+      true,
+    );
+    for (const item of [...links(), logoutButton()]) {
+      expect(
+        item.classList.contains("focus-visible:outline-shell-accent-strong"),
+      ).toBe(true);
+    }
+  });
+
   it("logs out once and goes home", async () => {
     const request = deferred<SessionActionResult>();
     const logout = vi.fn<SessionActions["logout"]>(() => request.promise);

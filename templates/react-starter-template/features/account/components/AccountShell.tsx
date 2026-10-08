@@ -11,12 +11,12 @@ import { AccountMenuList } from "./AccountMenuList";
 export function AccountShell({ children }: { children: ReactNode }) {
   const t = useTranslations();
   return (
-    <div className="container mx-auto mt-5 flex w-full max-w-screen-2xl gap-20 px-4 md:mt-20">
+    <div className="container mx-auto mt-5 flex w-full max-w-screen-2xl items-start gap-10 px-4 md:mt-12 lg:gap-16">
       <nav
         aria-label={t("layout.ariaLabels.accountNavigation")}
-        className="hidden flex-col gap-3 text-nowrap md:flex"
+        className="hidden min-w-56 shrink-0 flex-col gap-4 rounded-lg bg-shell-sand p-6 text-nowrap md:flex"
       >
-        <h2 className="text-base leading-normal font-bold text-brand-primary">
+        <h2 className="px-3 text-base leading-normal font-bold text-shell-ink">
           {t("account.menu.header")}
         </h2>
         <AccountMenuList />

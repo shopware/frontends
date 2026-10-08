@@ -79,6 +79,14 @@ describe("OrderConfirmation", () => {
     expect(html).toMatch(/<a [^>]*href="\/"[^>]*>Continue shopping<\/a>/);
   });
 
+  it("keeps the summary below the sticky shop header from lg up", async () => {
+    const html = await render();
+
+    expect(html).toContain(
+      '<section class="sticky top-2 border border-outline-outline lg:top-[calc(var(--sticky-header-height)_+_0.5rem)]" aria-labelledby="order-summary-heading">',
+    );
+  });
+
   it("asks the customer to finish the payment when there is a payment URL", async () => {
     const html = await render("https://psp.test/pay/1");
 

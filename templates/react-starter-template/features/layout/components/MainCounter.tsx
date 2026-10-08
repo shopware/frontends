@@ -10,7 +10,7 @@ export function MainCounter({
   return (
     <span
       className={cx(
-        "block size-[18px] rounded-full bg-states-error text-center text-xs leading-[18px] font-bold text-white",
+        "block size-[18px] rounded-full bg-shell-accent text-center text-xs leading-[18px] font-bold text-shell-on-accent",
         className,
       )}
     >

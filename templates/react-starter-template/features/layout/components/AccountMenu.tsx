@@ -73,10 +73,10 @@ export function AccountMenu({
       ref={panelRef}
       id={id}
       data-testid="header-account-menu"
-      className="absolute top-full right-0 z-20 mt-2 flex w-max max-w-44 flex-col gap-3 border border-outline-outline-variant bg-surface-surface px-6 py-4 sm:max-w-xs"
+      className="absolute top-full right-0 z-20 mt-2 flex w-max max-w-44 flex-col gap-0.5 overflow-hidden rounded-lg border border-shell-line bg-surface-surface py-2 shadow-lg sm:max-w-xs"
     >
       {customerName ? (
-        <p className="text-sm wrap-break-word text-surface-on-surface-variant">
+        <p className="-mt-2 mb-2 border-b border-shell-line bg-shell-sand px-5 py-3 text-sm wrap-break-word text-shell-ink">
           {t("layout.header.signedInAs", { name: customerName })}
         </p>
       ) : null}
@@ -90,7 +90,7 @@ export function AccountMenu({
           aria-current={
             isCurrentAccountPage(pathname, href) ? "page" : undefined
           }
-          className="-mt-px self-start border-b border-transparent text-nowrap text-surface-on-surface hover:border-surface-on-surface aria-[current=page]:border-surface-on-surface"
+          className="mx-2 rounded-md px-3 py-2 text-nowrap text-surface-on-surface transition-colors hover:bg-shell-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-shell-ink aria-[current=page]:bg-shell-sand aria-[current=page]:font-semibold"
           onClick={onClose}
         >
           {t(labelKey)}
@@ -101,7 +101,7 @@ export function AccountMenu({
         data-testid="header-account-logout-button"
         aria-busy={pending}
         aria-disabled={pending || undefined}
-        className="-mt-px self-start border-b border-transparent bg-transparent text-left text-other-sale hover:border-other-sale aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+        className="mx-2 rounded-md bg-transparent px-3 py-2 text-left font-medium text-shell-accent-strong transition-colors hover:bg-shell-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-shell-accent-strong aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         onClick={() => {
           void handleLogout();
         }}

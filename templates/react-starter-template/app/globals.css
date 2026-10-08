@@ -1,10 +1,20 @@
 @import "tailwindcss";
 @import "@shopware/design-tokens/tailwind.css";
 @import "@shopware/cms-base-layer-react/styles.css";
+@import "../site/theme.css";
 
 @source "../node_modules/@shopware/cms-base-layer-react/src";
 @source inline("max-md:hidden md:max-lg:hidden lg:hidden");
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html:has(header[data-sticky-header]) {
+    @variant lg {
+      --sticky-header-height: 11.3125rem;
+      scroll-padding-top: calc(var(--sticky-header-height) + 0.75rem);
+    }
+  }
 }

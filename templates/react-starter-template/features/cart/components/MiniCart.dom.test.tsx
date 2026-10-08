@@ -156,6 +156,59 @@ describe("MiniCart", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
+  it("heads the panel with a sand strip and shows the checkout links as ink pills", async () => {
+    const { panel } = await setup();
+    const container = panel();
+
+    expect(
+      query<HTMLElement>(container, "h2").parentElement?.className,
+    ).toContain("bg-shell-sand");
+    const checkout = query<HTMLAnchorElement>(
+      container,
+      '[data-testid="checkout-cart-link"]',
+    );
+    expect(checkout.className).toContain("rounded-full");
+    expect(checkout.className).toContain("bg-shell-ink");
+    expect(checkout.className).toContain("text-shell-on-ink");
+    expect(checkout.className).toContain("hover:bg-shell-ink-soft");
+    expect(checkout.className).toContain("focus-visible:outline-shell-ink");
+    const cartLink = queryAll<HTMLAnchorElement>(container, "a").find(
+      (link) => link.textContent === "Go to shopping cart",
+    );
+    expect(cartLink?.className).toContain(
+      "rounded-full border border-shell-ink bg-surface-surface",
+    );
+    expect(cartLink?.className).toContain("text-shell-ink");
+    expect(cartLink?.className).toContain("focus-visible:outline-shell-ink");
+    for (const link of [checkout, cartLink]) {
+      expect(link?.className).toMatch(/(^| )border( |$)/);
+      expect(link?.className).toContain("py-2.5");
+      expect(link?.className).toContain("leading-6");
+    }
+  });
+
+  it("keeps the subtotal and both checkout links on screen by shrinking only the list from lg up", async () => {
+    const { panel } = await setup();
+    const container = panel();
+    const [title, list, footer] = [...container.children] as HTMLElement[];
+
+    expect(container.className).toContain("flex");
+    expect(container.className).toContain("flex-col");
+    expect(container.className).toContain(
+      "lg:max-h-[calc(100dvh_-_var(--sticky-header-height)_+_2rem)]",
+    );
+    expect(title?.className).toContain("shrink-0");
+    expect(list?.tagName).toBe("UL");
+    expect(list?.className).toContain("min-h-0");
+    expect(list?.className).toContain("overscroll-contain");
+    expect(list?.className).not.toContain("flex-1");
+    expect(list?.className).not.toContain("shrink-0");
+    expect(footer?.className).toContain("shrink-0");
+    expect(
+      query(footer as HTMLElement, '[data-testid="checkout-cart-link"]'),
+    ).toBeDefined();
+  });
+
   it("closes from the close button and returns focus to the cart button", async () => {
     const { panel, onClose, trigger } = await setup();
 

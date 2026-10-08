@@ -178,6 +178,23 @@ describe("AccountMenu", () => {
     ).toEqual(["/pl-PL/account/address"]);
   });
 
+  it("heads the menu with a sand strip and shows Logout in the strong accent", async () => {
+    const { container } = await setup();
+    const panel = query<HTMLElement>(
+      container,
+      '[data-testid="header-account-menu"]',
+    );
+
+    expect(panel.firstElementChild?.className).toContain("bg-shell-sand");
+    expect(panel.firstElementChild?.className).toContain("text-shell-ink");
+    const logout = query<HTMLButtonElement>(
+      container,
+      '[data-testid="header-account-logout-button"]',
+    );
+    expect(logout.className).toContain("text-shell-accent-strong");
+    expect(logout.className).not.toContain("other-sale");
+  });
+
   it("marks the account page that is open", async () => {
     route.pathname = "/account/address";
     const { links } = await setup();

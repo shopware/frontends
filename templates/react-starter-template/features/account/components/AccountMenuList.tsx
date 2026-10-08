@@ -9,8 +9,12 @@ import { useTranslations } from "@/i18n/I18nProvider";
 import { ACCOUNT_MENU_LINKS, isCurrentAccountPage } from "./accountMenuLinks";
 import { useAccountLogout } from "./useAccountLogout";
 
-const LINK_CLASS =
-  "-mt-px border-b border-transparent text-surface-on-surface hover:border-surface-on-surface aria-[current=page]:border-surface-on-surface";
+const ITEM_CLASS =
+  "block w-full rounded-md px-3 py-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-accent-strong";
+
+const LINK_CLASS = `${ITEM_CLASS} text-surface-on-surface hover:bg-shell-sand-strong`;
+
+const CURRENT_LINK_CLASS = `${ITEM_CLASS} bg-shell-ink text-shell-on-ink`;
 
 export function AccountMenuList() {
   return (
@@ -30,26 +34,27 @@ function AccountMenuItems({ pathname }: { pathname: string | null }) {
   const t = useTranslations();
 
   return (
-    <ul className="flex flex-col gap-3">
-      {ACCOUNT_MENU_LINKS.map(({ href, labelKey }) => (
-        <li key={href}>
-          <LocaleLink
-            href={href}
-            className={LINK_CLASS}
-            aria-current={
-              isCurrentAccountPage(pathname, href) ? "page" : undefined
-            }
-          >
-            {t(labelKey)}
-          </LocaleLink>
-        </li>
-      ))}
-      <li>
+    <ul className="flex flex-col gap-1">
+      {ACCOUNT_MENU_LINKS.map(({ href, labelKey }) => {
+        const current = isCurrentAccountPage(pathname, href);
+        return (
+          <li key={href}>
+            <LocaleLink
+              href={href}
+              className={current ? CURRENT_LINK_CLASS : LINK_CLASS}
+              aria-current={current ? "page" : undefined}
+            >
+              {t(labelKey)}
+            </LocaleLink>
+          </li>
+        );
+      })}
+      <li className="mt-3 border-t border-shell-line pt-3">
         <button
           type="button"
           aria-busy={pending}
           aria-disabled={pending || undefined}
-          className="-mt-px border-b border-transparent bg-transparent text-left text-other-sale hover:border-other-sale aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+          className={`${ITEM_CLASS} bg-transparent font-semibold text-shell-accent-strong hover:bg-shell-sand-strong aria-disabled:cursor-not-allowed aria-disabled:opacity-50`}
           onClick={() => {
             void logout();
           }}

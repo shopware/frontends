@@ -95,6 +95,11 @@ describe("TopNavigation in the browser", () => {
     expect(labels(container)).toEqual(["Clothing", "Men", "Shirts", "Food"]);
     const flyout = query(container, 'a[role="menuitem"] + div');
     expect(flyout.textContent).toContain("Men");
+    expect(flyout.className).toContain(
+      "max-h-[calc(100dvh_-_var(--sticky-header-height))]",
+    );
+    expect(flyout.className).toContain("overflow-y-auto");
+    expect(flyout.className).toContain("overscroll-contain");
   });
 
   it("switches to the focused trigger and renders no flyout for a leaf node", async () => {

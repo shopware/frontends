@@ -275,7 +275,7 @@ export function LanguageSwitcher() {
         aria-expanded={open}
         aria-controls={menuId}
         aria-busy={pending !== null || undefined}
-        className="inline-flex h-9 items-center gap-2 rounded border border-surface-surface/15 bg-surface-surface/10 px-3 text-sm font-medium transition-colors hover:bg-surface-surface/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline-outline-focus"
+        className="inline-flex h-9 items-center gap-2 rounded-md border border-shell-on-ink/25 bg-transparent px-3 text-sm font-medium text-shell-on-ink transition-colors hover:bg-shell-ink-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-accent"
         onClick={toggle}
       >
         <GlobeIcon className="size-[1.125rem]" />
@@ -297,7 +297,7 @@ export function LanguageSwitcher() {
       {targets ? (
         <ul
           id={menuId}
-          className="absolute top-full left-0 z-40 mt-1 min-w-44 rounded-md border border-outline-outline-variant bg-surface-surface py-1 text-surface-on-surface shadow-lg"
+          className="absolute top-full right-0 z-40 mt-1 min-w-44 rounded-md border border-shell-line bg-shell-sand py-1 text-shell-ink shadow-lg"
         >
           {targets.map((target) => {
             const current = target.locale === locale;
@@ -312,14 +312,14 @@ export function LanguageSwitcher() {
                   aria-busy={busy || undefined}
                   aria-disabled={busy || undefined}
                   className={cx(
-                    "flex items-center justify-between gap-4 px-4 py-2 text-sm hover:bg-surface-surface-container focus-visible:bg-surface-surface-container focus-visible:ring-2 focus-visible:ring-outline-outline-focus focus-visible:outline-hidden focus-visible:ring-inset aria-busy:cursor-progress aria-busy:opacity-60",
+                    "flex items-center justify-between gap-4 px-4 py-2 text-sm hover:bg-shell-sand-strong focus-visible:ring-2 focus-visible:ring-shell-accent-strong focus-visible:outline-hidden focus-visible:ring-inset aria-busy:cursor-progress aria-busy:opacity-60",
                     current && "font-semibold",
                   )}
                   onClick={(event) => choose(event, target)}
                 >
                   {localeNames[target.locale]}
                   {current ? (
-                    <CheckmarkIcon className="h-3 w-4 text-brand-primary" />
+                    <CheckmarkIcon className="h-3 w-4 text-shell-accent-strong" />
                   ) : null}
                 </a>
               </li>

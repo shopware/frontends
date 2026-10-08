@@ -119,7 +119,15 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   params are present and the category layout contains a product listing,
   `NavigationPage` re-reads `/product-listing/{categoryId}` with them and
   passes the result as `ctx.listing`; otherwise the listing embedded in the
-  CMS data is used.
+  CMS data is used. A param the URL leaves out (a page change sends only
+  `p`) is filled from that embedded listing, which is page 1:
+  `buildListingQueryParams(searchParams, { limit, order: sorting })`. Never
+  default to fixed values: page 1 uses the sales channel's
+  `core.listing.productsPerPage` and default sorting (24 and `name-asc` on a
+  default Shopware, 15 on the demo), so a fixed `limit: 15` re-paged a
+  24-per-page listing, repeating and skipping products and changing the
+  page count after the first click. Without an embedded listing the read
+  sends neither, and the backend applies the same defaults.
 - Reading `searchParams` or calling `connection()` makes a subtree dynamic, so
   it always happens inside a `<Suspense>` (`PageSkeleton` is the fallback).
   Catalog routes must never read `cookies()` or `headers()`.
@@ -147,9 +155,33 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
   `data-testid="sidebar-left"`, focus trap and body scroll lock), `HeaderBar`
   (logo, search, account/wishlist/cart buttons, mobile search toggle),
-  `HeaderSearch`, `NewsletterBox` and `MetaNavigation`.
+  `HeaderSearch`, `NewsletterBox`, `MetaNavigation` and `StickyHeader` (the
+  `<header>` element itself, wrapping the server-rendered rows).
+- The header is, from the top, the `shell-ink` meta bar, a white row (logo,
+  sand search pill, account/wishlist/cart with a visible label under each
+  icon from `lg`, equal to the button's `aria-label`) and, from `lg`, a
+  full-width `shell-ink` navigation band with centred uppercase items. The
+  band never wraps (`overflow-x-auto`, `justify-center-safe`, non-shrinking
+  items), so `TopNavigationPlaceholder` keeps its height; only a classic
+  scrollbar on an overflowing band adds to it, and the measured height below
+  absorbs that. It is sticky from `lg` only (`lg:sticky lg:top-0 lg:z-30`),
+  because below that it would cover half of a phone or 400%-zoom viewport.
+  Everything that must clear it reads one property, `--sticky-header-height`:
+  `StickyHeader` writes the measured height onto `<html>` with a
+  `ResizeObserver`, and `app/globals.css` gives the pre-hydration value
+  (11.3125rem, the 181px header) only while a `header[data-sticky-header]` is
+  on the page, so the static `CheckoutHeader` gets no offset. Its users are
+  the `scroll-padding-top` (WCAG 2.4.11), the flyout's and the mini cart's
+  `max-h` (the mini cart opens 49px above the header's bottom edge) and the
+  sticky summary of `OrderConfirmation`; never hardcode the header height
+  elsewhere. `CheckoutHeader` is the meta bar
+  plus a white row with the logo and an outlined "Continue Shopping" pill,
+  not sticky. The footer has three tiers: the newsletter band on sand (its
+  title stays a `<p>`), the `shell-ink` main footer (white logo,
+  `FooterColumns`) and an ink bottom bar with `layout.footer.builtWith`.
 - `MetaNavigation` (above the header bar and above `CheckoutHeader`, like the
-  Vue default and checkout layouts) holds `LanguageSwitcher`, which lists
+  Vue default and checkout layouts, but on `shell-ink` with the switcher
+  right-aligned) holds `LanguageSwitcher`, which lists
   the storefront locales of `i18n/config.ts` by their own names
   (`localeNames`: English, Polski, Deutsch, never translated) and is always
   shown. It is a disclosure button with a list of plain `<a>` links, not the
@@ -250,7 +282,10 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   suite asserts them.
 - Icons are hand-ported meteor SVGs in `components/icons/index.tsx` (fill
   `currentColor`, `aria-hidden`). Shared class lists live in
-  `components/input.ts` and `features/layout/headerAction.ts`.
+  `components/input.ts`, `features/layout/headerAction.ts` and
+  `features/layout/shellButton.ts` (the filled and outlined ink pills;
+  variant classes only, so each call site adds its own display, padding and
+  size through `cx`).
 - `pnpm --filter react-starter-template test` runs two Vitest projects:
   `*.test.{ts,tsx}` in node (SSR markup through `test/render.tsx`) and
   `*.dom.test.tsx` in happy-dom for the interactive contract (drawer,
@@ -621,10 +656,22 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Rules the code does not show
 
-- Colors come from `@shopware/design-tokens` (`tailwind.css`, `@theme static`).
-  The class names match the Vue templates (`bg-brand-primary`,
-  `text-surface-on-surface`), so markup ports between them. Add or change a
-  color in that package, not here.
+- Markup keeps the `@shopware/design-tokens` class names of the Vue
+  templates (`bg-brand-primary`, `text-surface-on-surface`), so it ports
+  between them. `site/theme.css`, imported after the package's
+  `tailwind.css`, is the brand override point and re-themes the template
+  without touching any component file: a later `@theme` value for a
+  design-token name (`--color-brand-primary`, the surface containers, the
+  outlines, `outline-outline-focus`) replaces the package value, so CMS
+  blocks from `@shopware/cms-base-layer-react` follow the template's look
+  too (ink buttons, peach secondary actions, warm surfaces), while the Vue
+  starter keeps the package's purple. The same file defines the
+  template-only `shell-*` colors for the layout chrome (header, meta bar,
+  navigation band, footer, account side menu, mini cart and account menu
+  panels). When changing a value, recompute every pair it takes part in:
+  text 4.5:1, UI components and focus indicators 3:1. On `shell-ink` focus
+  uses `outline-shell-accent`; `shell-accent` is never text on white or
+  sand (2.99:1).
 - The template reads `@shopware/design-tokens` from its build output, and
   `unbuild --stub` does not work in Next.js client bundles. After changing the
   package, rebuild it: `pnpm --filter @shopware/design-tokens build`.

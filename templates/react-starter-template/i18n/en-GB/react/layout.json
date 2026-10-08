@@ -19,6 +19,9 @@
     "languageSwitcher": {
       "pending": "Opening the page in {language}…"
     },
+    "footer": {
+      "builtWith": "Built with Shopware Frontends and Next.js"
+    },
     "notFound": {
       "backToHomepage": "Back to homepage"
     }

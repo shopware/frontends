@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
 import { SearchSmallIcon } from "@/components/icons";
-import { INPUT_CLASS } from "@/components/input";
 import { NOT_WIRED_MESSAGE_KEYS } from "@/features/storefront/notWired";
 import { useTranslations } from "@/i18n/I18nProvider";
 
@@ -45,12 +44,9 @@ export function HeaderSearch({
         placeholder={t("search.placeholder")}
         autoComplete="off"
         onKeyDown={handleKeyDown}
-        className={cx(
-          INPUT_CLASS,
-          "pr-10 pl-3 focus-visible:ring-brand-primary/20",
-        )}
+        className="w-full rounded-full border border-transparent bg-shell-sand py-2.5 pr-4 pl-11 text-sm text-shell-ink transition-colors placeholder:text-surface-on-surface-variant hover:border-shell-line focus-visible:border-shell-ink focus-visible:ring-1 focus-visible:ring-shell-ink focus-visible:outline-hidden"
       />
-      <SearchSmallIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-surface-on-surface-variant" />
+      <SearchSmallIcon className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-shell-ink" />
     </div>
   );
 }

@@ -20,9 +20,13 @@ export function pagePath(path: string): string {
   return normalizePath(stripLocale(path).pathname);
 }
 
-const WRAPPER_CLASS = "relative border-b border-outline-outline-variant";
-const NAV_CLASS = "mx-auto w-full max-w-screen-2xl px-4 pt-6 pb-4";
-const LIST_CLASS = "flex min-h-[25px] gap-8";
+const WRAPPER_CLASS = "relative bg-shell-ink text-shell-on-ink";
+const NAV_CLASS = "mx-auto w-full max-w-screen-2xl px-4";
+const LIST_CLASS = "flex min-h-12 justify-center-safe gap-x-6 overflow-x-auto";
+const ITEM_CLASS =
+  "flex min-h-12 items-center border-y-2 border-transparent px-2 text-sm font-semibold tracking-wide whitespace-nowrap uppercase transition-colors hover:border-b-shell-accent hover:text-shell-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-shell-accent aria-expanded:border-b-shell-accent aria-expanded:text-shell-accent aria-[current=page]:border-b-shell-accent aria-[current=page]:text-shell-accent";
+const FLYOUT_FOCUS_CLASS =
+  "rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-accent-strong";
 
 type OpenMenu = { id: string; pathname: string };
 
@@ -93,10 +97,7 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
               <li
                 key={node.id}
                 role="none"
-                className={cx(
-                  "border-b border-transparent text-surface-on-surface hover:border-surface-on-surface",
-                  active && "border-surface-on-surface",
-                )}
+                className="flex shrink-0"
                 onMouseEnter={() => open(node.id)}
               >
                 <NavigationLink
@@ -109,6 +110,7 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                   }}
                   node={node}
                   role="menuitem"
+                  className={ITEM_CLASS}
                   aria-haspopup={hasChildren ? "true" : undefined}
                   aria-expanded={hasChildren ? expanded : undefined}
                   aria-current={active ? "page" : undefined}
@@ -118,8 +120,8 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                   {node.name}
                 </NavigationLink>
                 {expanded ? (
-                  <div className="absolute inset-x-0 top-full z-10 w-full border-b border-outline-outline-variant bg-surface-surface">
-                    <div className="mx-auto w-full max-w-screen-2xl columns-3 px-4 py-6">
+                  <div className="absolute inset-x-0 top-full z-10 max-h-[calc(100dvh_-_var(--sticky-header-height))] w-full overflow-y-auto overscroll-contain border-t-2 border-shell-accent bg-shell-sand text-shell-ink shadow-lg">
+                    <div className="mx-auto w-full max-w-screen-2xl columns-3 gap-10 px-4 py-8">
                       {node.children.map((child) => (
                         <div
                           key={child.id}
@@ -128,7 +130,10 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                           <NavigationLink
                             node={child}
                             role="menuitem"
-                            className="mb-3 flex items-center gap-1 font-bold text-brand-primary"
+                            className={cx(
+                              "mb-3 flex w-fit items-center gap-1 font-semibold text-shell-ink hover:text-shell-accent-strong",
+                              FLYOUT_FOCUS_CLASS,
+                            )}
                             onClick={close}
                           >
                             {child.name}
@@ -143,7 +148,10 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                                   <NavigationLink
                                     node={grandChild}
                                     role="menuitem"
-                                    className="text-surface-on-surface hover:text-brand-primary"
+                                    className={cx(
+                                      "text-surface-on-surface hover:text-shell-accent-strong",
+                                      FLYOUT_FOCUS_CLASS,
+                                    )}
                                     onClick={close}
                                   >
                                     {grandChild.name}

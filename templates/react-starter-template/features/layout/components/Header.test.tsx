@@ -88,6 +88,13 @@ describe("Header", () => {
       html.search(/role="menuitem"/),
     );
     expectEveryNavigationRead("main-navigation", 2, "language-de");
+    expect(html).toMatch(
+      /^<header class="bg-surface-surface lg:sticky lg:top-0 lg:z-30" data-sticky-header="">/,
+    );
+    expect(html).toContain('<div class="border-b border-shell-line">');
+    expect(html).toMatch(
+      /<div class="max-lg:hidden">(<!--\$-->)?<div class="relative bg-shell-ink text-shell-on-ink">/,
+    );
     expect(topLevelLink(html)).toMatch(/href="\/de-DE\/Clothing\/?"/);
     expect(topLevelLink(html)).not.toContain("lang=");
   });
