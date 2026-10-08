@@ -91,7 +91,6 @@ export const sidebar = [
     text: "GUIDES",
     link: "/guides/",
     items: [
-      { text: "Routing", link: "/guides/routing.html" },
       { text: "Languages", link: "/guides/languages.html" },
       { text: "Storefront URL", link: "/guides/storefront-url.html" },
       {
@@ -99,10 +98,6 @@ export const sidebar = [
         link: "/guides/cms/",
         collapsed: true,
         items: [
-          {
-            text: "Content Pages",
-            link: "/guides/cms/content-pages.html",
-          },
           {
             text: "Implement Missing Component",
             link: "/guides/cms/missing-component.html",
@@ -165,16 +160,8 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Breadcrumbs",
-            link: "/guides/page-elements/breadcrumbs.html",
-          },
-          {
             text: "Images",
             link: "/guides/page-elements/images.html",
-          },
-          {
-            text: "Navigation",
-            link: "/guides/page-elements/navigation.html",
           },
         ],
       },
