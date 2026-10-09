@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "4.5.2",
-    "axios": "1.19.0"
+    "axios": "1.20.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "3.4.2",
