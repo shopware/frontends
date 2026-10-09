@@ -22,6 +22,8 @@
     ".astro",
     "temp",
     ".nuxt",
+    ".next",
+    "next-env.d.ts",
     ".vercel",
     "**/*apiSchema*.json",
     "**/*ApiSchema*.json",

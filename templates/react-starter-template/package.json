@@ -1,0 +1,36 @@
+{
+  "name": "react-starter-template",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
+    "typecheck": "next typegen && tsc --noEmit",
+    "generate-types": "shopware-api-gen generate --apiType=store"
+  },
+  "engines": {
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  },
+  "dependencies": {
+    "@shopware/api-client": "canary",
+    "@shopware/design-tokens": "workspace:*",
+    "@shopware/helpers": "canary",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@shopware/api-gen": "canary",
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "24.19.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "oxfmt": "0.65.0",
+    "oxlint": "1.80.0",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "@shopware/design-tokens",
+  "version": "0.0.0",
+  "description": "Shopware Frontends design tokens as TypeScript, CSS custom properties, a Tailwind CSS v4 theme and JSON",
+  "author": "Shopware",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://developer.shopware.com/frontends/",
+  "keywords": [
+    "shopware",
+    "design tokens",
+    "tailwindcss",
+    "css"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./tailwind.css": "./dist/tailwind.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.json": "./dist/tokens.json"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
+    "typecheck": "tsgo --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20260205.1",
+    "@vitest/coverage-v8": "5.0.0",
+    "tsconfig": "workspace:*",
+    "unbuild": "3.6.1",
+    "vitest": "5.0.0"
+  }
+}

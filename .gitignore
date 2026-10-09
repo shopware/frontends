@@ -16,6 +16,10 @@ out/
 build
 dist
 
+# next.js
+.next
+next-env.d.ts
+
 # vitepress
 **/.vitepress/cache
 apps/docs/src/_source
