@@ -102,6 +102,7 @@ function handleWishlistClick() {
         :disabled="isLoading"
         class="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
         data-testid="product-box-toggle-wishlist-button"
+        :data-in-wishlist="isInWishlist"
         @click="handleWishlistClick"
       >
         <SwWishlistIcon :filled="isInWishlist" />

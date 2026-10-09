@@ -102,6 +102,7 @@ const onHandleChange = async () => {
             v-for="option in optionGroup.options"
             :key="option.id"
             data-testid="product-variant"
+            :data-selected="isOptionSelected(option.id)"
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
             :class="{
               'border-3 border-brand-primary': isOptionSelected(option.id),
