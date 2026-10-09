@@ -1,20 +1,18 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
-import { AbstractPage } from "./AbstractPage";
 import { LoginForm } from "./LoginPage";
 
-export class HomePage extends AbstractPage {
-  //readonly page: Page
+export class HomePage {
+  readonly page: Page;
   readonly accountButton: Locator;
   readonly linkToRegistrationPage: Locator;
   readonly searchBar: Locator;
-  readonly wishlistButton: Locator;
   readonly signedIn: Locator;
   readonly myAccountLink: Locator;
   readonly suggestResultLink: Locator;
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
     this.accountButton = page.getByTestId("header-account-button");
     this.searchBar = page.getByTestId("header-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-button");

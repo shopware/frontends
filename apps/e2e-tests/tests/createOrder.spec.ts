@@ -51,7 +51,6 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
     await page.waitForSelector("[data-testid='checkout-shipping-method']");
-    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
     await expect(page.getByTestId("order-total")).toHaveCount(1);
@@ -67,7 +66,6 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
-    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
     await expect(page.getByTestId("order-total")).toHaveCount(1);
@@ -91,7 +89,6 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       faker.location.city(),
       accountPassword,
     );
-    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
 
@@ -116,7 +113,6 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
-    await checkoutPage.checkNotCreateAccount();
     await checkoutPage.fillGuestUserData(
       `e2e ${faker.person.firstName()}`,
       `e2e ${faker.person.lastName()}`,
@@ -125,7 +121,6 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
-    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
     await expect(page.getByTestId("order-total")).toHaveCount(1);
