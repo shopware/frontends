@@ -256,8 +256,9 @@ describe("useNavigationSearch", () => {
 
     expect(await vm.resolvePath("/test")).toStrictEqual(mockedResponse);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readSeoUrlGet get"),
-      expect.objectContaining({
+      "readSeoUrlGet get /seo-url",
+      {
+        headers: { "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery({
             filter: [
@@ -269,7 +270,7 @@ describe("useNavigationSearch", () => {
             ],
           }),
         },
-      }),
+      },
     );
   });
 });

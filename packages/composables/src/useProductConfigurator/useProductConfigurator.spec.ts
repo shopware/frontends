@@ -58,9 +58,10 @@ describe("useProductConfigurator", () => {
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       "readProductGet get /product",
-      expect.objectContaining({
-        query: expect.objectContaining({ _criteria: expect.any(String) }),
-      }),
+      {
+        headers: { "sw-context-token": "" },
+        query: { _criteria: expect.any(String) },
+      },
     );
   });
 

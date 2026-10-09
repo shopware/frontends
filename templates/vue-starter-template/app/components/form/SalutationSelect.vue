@@ -12,7 +12,7 @@ const { id = "", errorMessage = undefined } = defineProps<{
 }>();
 
 const nuxtApp = useNuxtApp();
-const { apiClient, cacheableReads } = useShopwareContext();
+const { invokeRead } = useCacheableRead();
 const appConfig = useAppConfig();
 const defaultCSRCacheLifetime =
   typeof appConfig.defaultCSRCacheLifetime === "number"
@@ -25,10 +25,7 @@ const {
   error,
 } = await useAsyncData(
   "salutationData",
-  () =>
-    cacheableReads
-      ? apiClient.invoke("readSalutationGet get /salutation")
-      : apiClient.invoke("readSalutation post /salutation"),
+  () => invokeRead("readSalutation post /salutation"),
   {
     transform: (apiData) => {
       const options =
