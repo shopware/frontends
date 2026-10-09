@@ -37,7 +37,7 @@ export abstract class ListingPage {
   }
 
   async selectSortingPriceAsc() {
-    await this.sortBy("Price ascending");
+    await this.sortBy("price-asc");
   }
 
   async selectLimitOneProductPerPage() {
@@ -55,7 +55,11 @@ export abstract class ListingPage {
       .first();
     const before = await firstProduct.getAttribute("href");
 
-    await this.page.getByRole("button", { name: `Page ${number}` }).click();
+    await this.page
+      .locator(
+        `[data-testid="listing-pagination-page-button"][data-page="${number}"]`,
+      )
+      .click();
     await this.page.waitForURL(new RegExp(`p=${number}`));
     await this.rendered();
     await expect(firstProduct).not.toHaveAttribute("href", before ?? "", {
@@ -119,12 +123,11 @@ export abstract class ListingPage {
     return panels.nth(index);
   }
 
-  /** Sort menus render as a menu of menuitems, not a native select. */
-  protected async sortBy(label: string) {
-    await this.page.getByRole("button", { name: "Sort" }).click();
-    const entry = this.page
-      .locator('[role="menu"] [role="menuitem"]')
-      .filter({ hasText: label });
+  protected async sortBy(sortKey: string) {
+    await this.page.getByTestId("listing-sort-button").click();
+    const entry = this.page.locator(
+      `[data-testid="listing-sort-option"][data-sort-key="${sortKey}"]`,
+    );
 
     const listed = listingRequested(this.page);
     await entry.click();
@@ -132,10 +135,11 @@ export abstract class ListingPage {
       await listed;
     } catch {
       throw new Error(
-        `Sorting by "${label}" sent no successful listing request within ${LISTING_TIMEOUT}ms.`,
+        `Sorting by "${sortKey}" sent no successful listing request within ${LISTING_TIMEOUT}ms.`,
       );
     }
     await this.rendered();
+    await expect(entry).toHaveAttribute("data-selected", "true");
   }
 
   /** The URL is pushed before the request starts, so wait for the result. */
