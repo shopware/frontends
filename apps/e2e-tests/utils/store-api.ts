@@ -5,6 +5,8 @@ import { uniqueEmail, uniquePassword } from "./data-helpers";
 
 export type StoreApi = { endpoint: string; accessKey: string };
 
+const STORE_API_TIMEOUT = 10_000;
+
 export type Customer = { email: string; password: string };
 
 type SessionContext = {
@@ -56,6 +58,7 @@ async function sessionContext(page: Page, storeApi: { value?: StoreApi }) {
         "sw-access-key": accessKey,
         ...(contextToken ? { "sw-context-token": contextToken } : {}),
       },
+      timeout: STORE_API_TIMEOUT,
     });
     expect(
       response.ok(),
@@ -107,6 +110,7 @@ export async function registerCustomer(
     const candidate = { email: uniqueEmail(), password: uniquePassword() };
     const response = await page.request.post(`${endpoint}/account/register`, {
       headers: { "sw-access-key": accessKey },
+      timeout: STORE_API_TIMEOUT,
       data: {
         ...candidate,
         firstName: `e2e ${faker.person.firstName()}`,

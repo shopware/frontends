@@ -185,16 +185,20 @@ export const test = base.extend<{
     { auto: true },
   ],
 
-  customer: async ({ page, storeApi }, use) => {
-    if (!page.url().startsWith("http")) await page.goto("/");
-    await expect
-      .poll(() => storeApi.value, {
-        message: "The storefront sent no store-api request with an access key.",
-        timeout: 30_000,
-      })
-      .toBeTruthy();
-    await use(await registerCustomer(page, storeApi));
-  },
+  customer: [
+    async ({ page, storeApi }, use) => {
+      if (!page.url().startsWith("http")) await page.goto("/");
+      await expect
+        .poll(() => storeApi.value, {
+          message:
+            "The storefront sent no store-api request with an access key.",
+          timeout: 30_000,
+        })
+        .toBeTruthy();
+      await use(await registerCustomer(page, storeApi));
+    },
+    { timeout: 120_000 },
+  ],
 });
 
 export { expect } from "@playwright/test";
