@@ -1,5 +1,16 @@
 # @shopware/cms-base-layer
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
+
+- [#2816](https://github.com/shopware/frontends/pull/2816) [`b6c09e5`](https://github.com/shopware/frontends/commit/b6c09e53ff457c3552ac4f159a6d5072538373e5) Thanks [@mkucmus](https://github.com/mkucmus)! - Add `data-testid` attributes to the reviews section header (`product-reviews-tab`) and the review success message (`review-success-message`) in `CmsElementProductDescriptionReviews`.
+- Updated dependencies [[`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676)]:
+  - @shopware/composables@1.15.0
+  - @shopware/helpers@1.9.0
+
 ## 4.1.0
 
 ### Minor Changes
