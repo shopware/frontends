@@ -5,13 +5,8 @@ import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
 import { SearchSmallIcon } from "@/components/icons";
-import { INPUT_CLASS } from "@/components/input";
-import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
-
-const t = {
-  "search.placeholder": "Search for products",
-  label: "Search",
-};
+import { NOT_WIRED_MESSAGE_KEYS } from "@/features/storefront/notWired";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 export function HeaderSearch({
   className,
@@ -21,6 +16,7 @@ export function HeaderSearch({
   autoFocus?: boolean;
 }) {
   const { notify } = useCmsActions();
+  const t = useTranslations();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -31,13 +27,13 @@ export function HeaderSearch({
     if (event.key !== "Enter") return;
     if (!event.currentTarget.value.trim()) return;
     event.preventDefault();
-    notify({ type: "info", message: NOT_WIRED_MESSAGES.search });
+    notify({ type: "info", message: t(NOT_WIRED_MESSAGE_KEYS.search) });
   }
 
   return (
     <div className={cx("relative", className)}>
       <label htmlFor="search-input" className="sr-only">
-        {t.label}
+        {t("layout.header.search")}
       </label>
       <input
         ref={inputRef}
@@ -45,15 +41,12 @@ export function HeaderSearch({
         type="search"
         name="search"
         data-testid="header-search-input"
-        placeholder={t["search.placeholder"]}
+        placeholder={t("search.placeholder")}
         autoComplete="off"
         onKeyDown={handleKeyDown}
-        className={cx(
-          INPUT_CLASS,
-          "pr-10 pl-3 focus-visible:ring-brand-primary/20",
-        )}
+        className="w-full rounded-full border border-transparent bg-shell-sand py-2.5 pr-4 pl-11 text-sm text-shell-ink transition-colors placeholder:text-surface-on-surface-variant hover:border-shell-line focus-visible:border-shell-ink focus-visible:ring-1 focus-visible:ring-shell-ink focus-visible:outline-hidden"
       />
-      <SearchSmallIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-surface-on-surface-variant" />
+      <SearchSmallIcon className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-shell-ink" />
     </div>
   );
 }

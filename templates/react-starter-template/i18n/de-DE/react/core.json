@@ -1,0 +1,99 @@
+{
+  "cms": {
+    "noLayout": {
+      "category": "Dieser Kategorie ist kein Layout zugewiesen.",
+      "product": "Diesem Produkt ist kein Layout zugewiesen.",
+      "landingPage": "Dieser Landingpage ist kein Layout zugewiesen."
+    },
+    "image": {
+      "linkWithoutLabel": "Verlinkte Seite öffnen"
+    },
+    "video": {
+      "privacyNoticeText": "Mit dem Abspielen des Videos stimmen Sie zu, dass Ihre Daten an {platform} übertragen werden, und bestätigen, dass Sie die Datenschutzerklärung gelesen haben.",
+      "acceptButtonLabel": "Akzeptieren"
+    },
+    "vimeoVideo": {
+      "iframeTitle": "Vimeo-Video"
+    },
+    "youtubeVideo": {
+      "iframeTitle": "YouTube-Video"
+    }
+  },
+  "meta": {
+    "description": "Eine Next.js-Storefront-Vorlage für Shopware 6."
+  },
+  "errors": {
+    "noDetailsProvided": "Keine Details angegeben"
+  },
+  "product": {
+    "previously": "Vorher",
+    "amount": "Menge",
+    "price": {
+      "label": "Preis",
+      "to": "Bis",
+      "from": "Ab"
+    },
+    "to": "Bis",
+    "from": "Ab",
+    "content": "Inhalt",
+    "pricesIncl": "Preise inkl. MwSt. zzgl. Versandkosten",
+    "pricesExcl": "Preise zzgl. MwSt. und Versandkosten",
+    "description": "Beschreibung",
+    "reviews": "Bewertungen",
+    "noReviews": "Noch keine Bewertungen.",
+    "reviewNotAccepted": "Ihre Bewertung wurde noch nicht freigegeben",
+    "reviewFeedback": "Antwort des Shops",
+    "addedToWishlist": "wurde zur Wunschliste hinzugefügt.",
+    "removedFromTheWishlist": "wurde von der Wunschliste entfernt.",
+    "reason": "Grund",
+    "cannotAddToWishlist": "kann nicht zur Wunschliste hinzugefügt werden.",
+    "addedToCart": "wurde in den Warenkorb gelegt.",
+    "details": "Details",
+    "badges": {
+      "topseller": "Tipp"
+    },
+    "qty": "Menge",
+    "productNumber": "Produktnummer",
+    "chooseA": "Wählen Sie",
+    "deliveryTime": "Verfügbar, Lieferzeit",
+    "days": "Tage",
+    "noAvailable": "Nicht mehr verfügbar"
+  },
+  "listing": {
+    "noProducts": "Keine Produkte gefunden 😔",
+    "variantsFrom": "Varianten ab",
+    "previously": "vorher",
+    "from": "ab",
+    "to": "bis",
+    "filters": "Filter",
+    "sort": "Sortieren",
+    "resetFilters": "Filter zurücksetzen",
+    "freeShipping": "Kostenloser Versand",
+    "perPage": "Pro Seite:",
+    "product": "Produkt",
+    "products": "Produkte",
+    "min": "Min",
+    "max": "Max",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "form": {
+    "salutationPlaceholder": "Anrede auswählen...",
+    "phone": "Telefonnummer",
+    "phonePlaceholder": "Telefonnummer eingeben...",
+    "subject": "Betreff",
+    "subjectPlaceholder": "Betreff eingeben...",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Kommentar eingeben...",
+    "privacy": "Datenschutz",
+    "dataProtection": "Ich habe die Datenschutzinformationen gelesen.",
+    "messages": {
+      "contactFormSuccess": "Wir haben Ihre Kontaktanfrage erhalten und werden sie bearbeiten."
+    },
+    "subscribeLabel": "Newsletter abonnieren",
+    "unsubscribeLabel": "Newsletter abbestellen",
+    "action": "Aktion",
+    "privacyLabel": "Ich habe die Datenschutzinformationen gelesen.",
+    "newsletterBenefits": "Erfahren Sie als Erste von Aktionen und Events. Erhalten Sie Geschenke und Sonderangebote!"
+  }
+}

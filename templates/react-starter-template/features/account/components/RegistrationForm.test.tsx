@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { RegistrationForm } from "./RegistrationForm";
@@ -256,5 +257,34 @@ describe("RegistrationForm", () => {
     expect(html).toContain('<h3 id="address-heading"');
     const group = tag(html, /<fieldset [^>]*>/);
     expect(group).toContain('aria-labelledby="address-heading"');
+  });
+});
+
+describe("RegistrationForm in Polish", () => {
+  it("renders the Polish copy with the minimum length hints in the Polish plural forms", async () => {
+    const html = await renderToHtml(
+      withI18n(<RegistrationForm countries={countries} />, "pl-PL"),
+    );
+
+    expect(html).toContain(">Utwórz konto</h2>");
+    expect(tag(html, /<p id="firstName-hint"[^>]*>[^<]*<\/p>/)).toContain(
+      ">Co najmniej 3 znaki</p>",
+    );
+    expect(tag(html, /<p id="password-hint"[^>]*>[^<]*<\/p>/)).toContain(
+      ">Co najmniej 8 znaków</p>",
+    );
+    expect(html).toContain(
+      '<option value="business">Klient biznesowy</option>',
+    );
+  });
+
+  it("renders the German minimum length hints", async () => {
+    const html = await renderToHtml(
+      withI18n(<RegistrationForm countries={countries} />, "de-DE"),
+    );
+
+    expect(tag(html, /<p id="password-hint"[^>]*>[^<]*<\/p>/)).toContain(
+      ">Mindestens 8 Zeichen</p>",
+    );
   });
 });

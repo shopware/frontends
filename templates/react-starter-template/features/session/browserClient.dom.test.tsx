@@ -1,5 +1,13 @@
 import Cookies from "js-cookie";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 
@@ -51,6 +59,10 @@ function contextChanged(): ContextChanged {
   if (!callback) throw new Error("onContextChanged is not hooked");
   return callback;
 }
+
+beforeAll(async () => {
+  await import("./browserClient");
+});
 
 beforeEach(() => {
   api.options.length = 0;

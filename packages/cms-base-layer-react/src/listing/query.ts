@@ -149,14 +149,16 @@ export type ListingQueryParams = Pick<
 
 export function buildListingQueryParams(
   params: ListingSearchParams,
-  defaults: ListingDefaults = LISTING_DEFAULTS,
+  defaults: Partial<ListingDefaults> = {},
 ): ListingQueryParams {
   const state = parseListingState(params);
   const query: ListingQueryParams = {
-    limit: state.limit ?? defaults.limit,
-    p: state.page ?? defaults.page,
-    order: state.order ?? defaults.order,
+    p: state.page ?? defaults.page ?? LISTING_DEFAULTS.page,
   };
+  const limit = state.limit ?? defaults.limit;
+  if (limit !== undefined) query.limit = limit;
+  const order = state.order ?? defaults.order;
+  if (order !== undefined) query.order = order;
 
   const { filters } = state;
   if (filters.manufacturer.length)

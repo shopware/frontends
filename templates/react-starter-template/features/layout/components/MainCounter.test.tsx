@@ -8,7 +8,9 @@ describe("MainCounter", () => {
   it("renders the count inside the badge", async () => {
     const html = await renderToHtml(<MainCounter count={7} />);
 
-    expect(html).toMatch(/<span[^>]*bg-states-error[^>]*>7<\/span>/);
+    expect(html).toMatch(
+      /<span[^>]*bg-shell-accent [^>]*text-shell-on-accent[^>]*>7<\/span>/,
+    );
   });
 
   it("appends the caller's positioning class", async () => {

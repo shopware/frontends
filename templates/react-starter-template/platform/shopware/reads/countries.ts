@@ -3,6 +3,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { createShopwareClient } from "../client";
+import { languageCacheTags } from "./cacheTags";
 import {
   collectCountryPages,
   countryPageCriteria,
@@ -10,12 +11,14 @@ import {
 } from "./countryOptions";
 import type { CountryOption } from "./countryOptions";
 
-export async function readCountries(): Promise<CountryOption[]> {
+export async function readCountries(
+  languageId: string | null,
+): Promise<CountryOption[]> {
   "use cache";
   cacheLife("reference");
-  cacheTag("sw:countries");
+  cacheTag(...languageCacheTags("sw:countries", languageId));
 
-  const client = createShopwareClient();
+  const client = createShopwareClient({ languageId });
   const countries = await collectCountryPages((page) =>
     client
       .invoke("readCountryGet get /country", {

@@ -1,6 +1,5 @@
-export const NOT_WIRED_MESSAGES = {
-  cart: "The cart is not connected to a session yet.",
-  wishlist: "The wishlist is not connected to a session yet.",
-  search: "Search is not connected yet.",
-  forms: "Forms are not connected to a session yet.",
+export const NOT_WIRED_MESSAGE_KEYS = {
+  wishlist: "layout.notWired.wishlist",
+  search: "layout.notWired.search",
+  forms: "layout.notWired.forms",
 } as const;

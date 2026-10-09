@@ -16,25 +16,7 @@ import {
 import type { LoginValues } from "@/features/account/loginSchema";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
-
-const t = {
-  loginForm: {
-    header: "Sign in to your account",
-    subHeader: "Sign in to your account to continue",
-    loginLabel: "Email address",
-    passwordLabel: "Password",
-    submitButtonLabel: "Sign in",
-    signUpButtonLabel: "Sign up",
-  },
-  form: {
-    requiredFieldsNote: "Fields marked with asterisks (*) are required.",
-  },
-  account: {
-    messages: {
-      loggedInSuccess: "You have been logged in successfully.",
-    },
-  },
-};
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 const SIGN_UP_PATH = "/account/login#registration";
 
@@ -52,6 +34,8 @@ export function LoginForm({
   const router = useRouter();
   const { login } = useSessionActions();
   const { notify } = useCmsActions();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const [values, setValues] = useState<LoginValues>(emptyLoginValues);
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
@@ -61,7 +45,7 @@ export function LoginForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
-  const errors = validateLogin(values);
+  const errors = validateLogin(values, t);
   const errorFor = (field: keyof LoginValues) =>
     submitted || touched[field] ? errors[field] : undefined;
 
@@ -82,7 +66,7 @@ export function LoginForm({
     event.preventDefault();
     if (busy) return;
     setSubmitted(true);
-    if (Object.keys(validateLogin(values)).length) {
+    if (Object.keys(validateLogin(values, t)).length) {
       setFocusRequest((count) => count + 1);
       return;
     }
@@ -91,13 +75,16 @@ export function LoginForm({
     try {
       const result = await login(values);
       if (!result.ok) return;
-      notify({ type: "success", message: t.account.messages.loggedInSuccess });
+      notify({
+        type: "success",
+        message: t("account.messages.loggedInSuccess"),
+      });
       const target = resolveRedirectFromSearch(
         window.location.search,
         redirectUrl,
       );
       startNavigation(() => {
-        router.push(target);
+        router.push(localePath(target));
       });
     } catch (cause) {
       notify({
@@ -112,12 +99,12 @@ export function LoginForm({
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="mb-4">
-        <h1 className="text-2xl font-bold">{t.loginForm.header}</h1>
+        <h1 className="text-2xl font-bold">{t("loginForm.header")}</h1>
         <p className="text-sm text-surface-on-surface-variant">
-          {t.loginForm.subHeader}
+          {t("loginForm.subHeader")}
         </p>
         <p className="mt-2 text-sm text-surface-on-surface-variant">
-          {t.form.requiredFieldsNote}
+          {t("form.requiredFieldsNote")}
         </p>
       </div>
       <form
@@ -133,7 +120,7 @@ export function LoginForm({
           id="login-username"
           data-testid="login-email-input"
           type="email"
-          label={t.loginForm.loginLabel}
+          label={t("loginForm.loginLabel")}
           required
           autoComplete="username"
           value={values.username}
@@ -145,7 +132,7 @@ export function LoginForm({
           id="login-password"
           data-testid="login-password-input"
           type="password"
-          label={t.loginForm.passwordLabel}
+          label={t("loginForm.passwordLabel")}
           required
           autoComplete="current-password"
           value={values.password}
@@ -160,16 +147,16 @@ export function LoginForm({
           aria-disabled={busy || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         >
-          {t.loginForm.submitButtonLabel}
+          {t("loginForm.submitButtonLabel")}
         </BaseButton>
       </form>
       {hideSignUp ? null : (
         <BaseButton
           variant="secondary"
           data-testid="login-sign-up-button"
-          onClick={() => router.push(SIGN_UP_PATH)}
+          onClick={() => router.push(localePath(SIGN_UP_PATH))}
         >
-          {t.loginForm.signUpButtonLabel}
+          {t("loginForm.signUpButtonLabel")}
         </BaseButton>
       )}
     </div>

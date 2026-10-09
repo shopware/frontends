@@ -5,16 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent } from "react";
 
 import { CheckmarkIcon, ChevronDownIcon, CloseIcon } from "@/components/icons";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import { FieldLabel } from "./FieldLabel";
-
-const t = {
-  "form.clearCountry": "Clear country selection",
-  "form.toggleCountryList": "Toggle country list",
-  "form.noCountryResults": "No countries found",
-  "form.countrySearchError": "Countries could not be loaded",
-};
 
 const FLAG_CDN = "https://flagcdn.com";
 const ISO_PATTERN = /^[A-Z]{2}$/;
@@ -97,6 +92,8 @@ export function CountrySelect({
   testId = "country-select",
   className,
 }: CountrySelectProps) {
+  const t = useTranslations();
+  const contentLang = useContentLang();
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -108,7 +105,7 @@ export function CountrySelect({
   const selected = countries.find((country) => country.id === value) ?? null;
   const filtered = filterCountries(countries, searchTerm);
   const showList = isOpen && !singleCountry && !disabled && !loadError;
-  const fieldError = loadError ? t["form.countrySearchError"] : error;
+  const fieldError = loadError ? t("form.countrySearchError") : error;
   const listboxId = `${id}-listbox`;
   const errorId = `${id}-error`;
   const activeDescendant =
@@ -324,7 +321,7 @@ export function CountrySelect({
           <button
             type="button"
             className="-my-0.5 flex size-6 flex-none items-center justify-center rounded-sm text-surface-on-surface-variant outline-hidden transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
-            aria-label={t["form.clearCountry"]}
+            aria-label={t("form.clearCountry")}
             data-testid={`${testId}-clear`}
             onMouseDown={preventFocusSteal}
             onClick={() => selectCountry(null)}
@@ -336,7 +333,7 @@ export function CountrySelect({
             type="button"
             tabIndex={-1}
             className="-my-0.5 flex size-6 flex-none items-center justify-center text-surface-on-surface-variant"
-            aria-label={t["form.toggleCountryList"]}
+            aria-label={t("form.toggleCountryList")}
             aria-expanded={showList}
             aria-controls={showList ? listboxId : undefined}
             data-testid={`${testId}-toggle`}
@@ -364,7 +361,7 @@ export function CountrySelect({
         >
           {filtered.length === 0 ? (
             <div className="px-4 py-3 text-sm text-surface-on-surface-variant">
-              {t["form.noCountryResults"]}
+              {t("form.noCountryResults")}
             </div>
           ) : (
             filtered.map((country, index) => {
@@ -389,7 +386,7 @@ export function CountrySelect({
                   onClick={() => handleOptionClick(country)}
                 >
                   <Flag iso={country.iso} />
-                  <span className="min-w-0 flex-1 truncate">
+                  <span className="min-w-0 flex-1 truncate" lang={contentLang}>
                     {country.name}
                   </span>
                   {isSelected ? (

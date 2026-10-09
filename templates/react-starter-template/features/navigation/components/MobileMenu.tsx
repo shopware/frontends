@@ -1,40 +1,41 @@
 "use client";
 
-import { IconButton, cx } from "@shopware/cms-base-layer-react/client";
-import type { IconButtonProps } from "@shopware/cms-base-layer-react/client";
+import { cx } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import type { ComponentProps } from "react";
 
 import { ChevronUpIcon, CloseIcon, MenuIcon } from "@/components/icons";
+import { HEADER_ACTION_ICON_CLASS } from "@/features/layout/headerAction";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 import type { NavigationNode } from "../navigationTree";
 import { NavigationLink } from "./NavigationLink";
 
-const t = {
-  "layout.ariaLabels.sidebar": "Sidebar",
-  "layout.sideMenu.open": "Open menu",
-  "layout.sideMenu.close": "Close menu",
-  "layout.sideMenu.showSubcategories": "Show subcategories",
-  "layout.sideMenu.hideSubcategories": "Hide subcategories",
-};
-
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+const ROW_FOCUS_CLASS =
+  "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-shell-ink";
+
 type BurgerButtonProps = Omit<
-  IconButtonProps,
-  "variant" | "children" | "aria-label"
+  ComponentProps<"button">,
+  "type" | "children" | "aria-label"
 >;
 
 function BurgerButton({ className, ...props }: BurgerButtonProps) {
+  const t = useTranslations();
   return (
-    <IconButton
+    <button
       {...props}
-      variant="ghost"
-      className={cx("lg:hidden", className)}
-      aria-label={t["layout.sideMenu.open"]}
+      type="button"
+      className={cx(
+        "aria-busy:cursor-progress aria-busy:opacity-50 lg:hidden",
+        className,
+      )}
+      aria-label={t("layout.sideMenu.open")}
     >
-      <MenuIcon className="size-5 text-brand-primary" />
-    </IconButton>
+      <MenuIcon className={HEADER_ACTION_ICON_CLASS} />
+    </button>
   );
 }
 
@@ -49,6 +50,7 @@ export function MobileMenu({
   tree: NavigationNode[];
   className?: string;
 }) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [expandedIds, setExpandedIds] = useState<ReadonlySet<string>>(
     () => new Set(),
@@ -122,7 +124,7 @@ export function MobileMenu({
           <button
             type="button"
             tabIndex={-1}
-            aria-label={t["layout.sideMenu.close"]}
+            aria-label={t("layout.sideMenu.close")}
             className="fixed inset-0 z-40 cursor-default bg-overlay-dark-high"
             onClick={close}
           />
@@ -132,32 +134,45 @@ export function MobileMenu({
             id={drawerId}
             data-testid="sidebar-left"
             aria-modal="true"
-            aria-label={t["layout.ariaLabels.sidebar"]}
+            aria-label={t("layout.ariaLabels.sidebar")}
             className="fixed inset-y-0 left-0 right-auto z-40 m-0 flex h-auto max-h-none w-screen max-w-md flex-col bg-surface-surface p-0 text-surface-on-surface shadow-xl"
           >
-            <div className="flex px-4 py-5">
-              <IconButton
+            <div className="flex items-center justify-between gap-4 bg-shell-ink px-4 py-4 text-shell-on-ink">
+              <img
+                src="/logo-white.svg"
+                alt=""
+                width={93}
+                height={39}
+                className="h-8 w-auto"
+              />
+              <button
                 ref={closeButtonRef}
-                variant="ghost"
-                className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-surface-on-surface"
+                type="button"
+                className="-m-1 inline-flex items-center justify-center rounded-md p-2.5 text-shell-on-ink transition-colors hover:bg-shell-ink-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-accent"
                 onClick={close}
               >
-                <span className="sr-only">{t["layout.sideMenu.close"]}</span>
-                <CloseIcon className="size-3" />
-              </IconButton>
+                <span className="sr-only">{t("layout.sideMenu.close")}</span>
+                <CloseIcon className="size-3.5" />
+              </button>
             </div>
             <aside className="flex w-full flex-1 flex-col overflow-y-auto">
-              <ul className="flex flex-col items-start space-y-2 px-2">
+              <ul className="flex flex-col">
                 {tree.map((node) => {
                   const hasChildren = node.children.length > 0;
                   const expanded = expandedIds.has(node.id);
                   const sublistId = `${drawerId}-${node.id}`;
                   return (
-                    <li key={node.id} className="flex w-full flex-1 flex-col">
+                    <li
+                      key={node.id}
+                      className="flex w-full flex-col border-b border-shell-line"
+                    >
                       <div className="flex items-center">
                         <NavigationLink
                           node={node}
-                          className="flex flex-1 items-center px-5 py-3 text-base font-normal break-all text-surface-on-surface"
+                          className={cx(
+                            "flex flex-1 items-center px-5 py-3.5 text-base font-medium break-all text-shell-ink transition-colors hover:bg-shell-sand",
+                            ROW_FOCUS_CLASS,
+                          )}
                           onClick={close}
                         >
                           {node.name}
@@ -165,11 +180,14 @@ export function MobileMenu({
                         {hasChildren ? (
                           <button
                             type="button"
-                            className="flex size-12 items-center justify-center bg-transparent"
+                            className={cx(
+                              "flex size-12 shrink-0 items-center justify-center bg-transparent text-shell-ink transition-colors hover:bg-shell-sand aria-expanded:bg-shell-sand",
+                              ROW_FOCUS_CLASS,
+                            )}
                             aria-label={
                               expanded
-                                ? t["layout.sideMenu.hideSubcategories"]
-                                : t["layout.sideMenu.showSubcategories"]
+                                ? t("layout.sideMenu.hideSubcategories")
+                                : t("layout.sideMenu.showSubcategories")
                             }
                             aria-expanded={expanded}
                             aria-controls={sublistId}
@@ -177,7 +195,7 @@ export function MobileMenu({
                           >
                             <ChevronUpIcon
                               className={cx(
-                                "h-3 w-5 text-surface-on-surface transition-transform duration-300",
+                                "h-3 w-5 transition-transform duration-300",
                                 !expanded && "rotate-180",
                               )}
                             />
@@ -185,12 +203,18 @@ export function MobileMenu({
                         ) : null}
                       </div>
                       {hasChildren && expanded ? (
-                        <ul id={sublistId} className="m-0 px-0 py-2">
+                        <ul
+                          id={sublistId}
+                          className="m-0 bg-shell-sand px-0 py-2"
+                        >
                           {node.children.map((child) => (
                             <li key={child.id}>
                               <NavigationLink
                                 node={child}
-                                className="flex items-center p-3 pl-11 text-base font-normal break-all text-surface-on-surface-variant hover:bg-surface-surface-container"
+                                className={cx(
+                                  "flex items-center p-3 pl-11 text-base font-normal break-all text-surface-on-surface transition-colors hover:bg-shell-sand-strong",
+                                  ROW_FOCUS_CLASS,
+                                )}
                                 onClick={close}
                               >
                                 {child.name}

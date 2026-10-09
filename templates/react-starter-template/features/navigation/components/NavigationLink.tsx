@@ -17,14 +17,20 @@ export function NavigationLink({
 }: NavigationLinkProps) {
   if (node.external) {
     return (
-      <a {...props} href={node.href} target="_blank" rel="noopener">
+      <a
+        lang={node.lang}
+        {...props}
+        href={node.href}
+        target="_blank"
+        rel="noopener"
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <Link {...props} href={node.href}>
+    <Link lang={node.lang} {...props} href={node.href}>
       {children}
     </Link>
   );

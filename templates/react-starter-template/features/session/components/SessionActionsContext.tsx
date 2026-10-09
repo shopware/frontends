@@ -16,6 +16,7 @@ export type SessionActions = {
   register(input: RegistrationInput): Promise<SessionActionResult>;
   logout(): Promise<SessionActionResult>;
   retrySession(): Promise<StorefrontSession>;
+  refreshSession(): Promise<void>;
 };
 
 function warnNotImplemented(name: keyof SessionActions): void {
@@ -36,6 +37,9 @@ export const notImplementedSessionActions: SessionActions = {
   retrySession: async () => {
     warnNotImplemented("retrySession");
     return unavailableSession;
+  },
+  refreshSession: async () => {
+    warnNotImplemented("refreshSession");
   },
 };
 

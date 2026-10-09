@@ -1,0 +1,12 @@
+{
+  "account": {
+    "registration": {
+      "minLengthHint": "Mindestens {min} Zeichen | Mindestens {min} Zeichen"
+    },
+    "changeEmail": {
+      "form": {
+        "emailFieldName": "E-Mail"
+      }
+    }
+  }
+}

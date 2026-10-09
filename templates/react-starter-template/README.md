@@ -38,6 +38,19 @@ All of them are read on the server at request time, so one build can serve
 several environments. The browser gets the public ones from
 `/api/shopware/config`.
 
+## Languages
+
+The storefront ships the Vue starter's translations for `en-GB` (the default,
+served without a URL prefix), `pl-PL` (`/pl-PL/…`) and `de-DE` (`/de-DE/…`).
+A locale also switches the Shopware content language when your instance has
+a language whose translation code equals it; otherwise the default language
+of the sales channel is used and only the interface labels change. When the
+sales channel has more than one language, a language switcher appears above
+the header.
+
+The files in `i18n/<locale>/` are shared with the Vue starter; texts only this
+template needs live in `i18n/<locale>/react/`.
+
 ## Type generation
 
 The Store API types come from `@shopware/api-client`. To include the endpoints

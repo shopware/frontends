@@ -13,7 +13,9 @@ import type {
   SessionActionResult,
   StorefrontSession,
 } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -114,16 +116,20 @@ async function setup(
   register: RegisterMock = registerMock(),
   props: Partial<RegistrationFormProps> = {},
   sibling: ReactNode = null,
+  locale: Locale = "en-GB",
 ) {
   const actions = { register };
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
-      <SessionActionsProvider actions={actions}>
-        <RegistrationForm countries={countries} {...props} />
-        {sibling}
-      </SessionActionsProvider>
-    </CmsActionsProvider>,
+    withI18n(
+      <CmsActionsProvider actions={{ notify }}>
+        <SessionActionsProvider actions={actions}>
+          <RegistrationForm countries={countries} {...props} />
+          {sibling}
+        </SessionActionsProvider>
+      </CmsActionsProvider>,
+      locale,
+    ),
   );
   const { container } = mounted;
   return {
@@ -643,5 +649,35 @@ describe("RegistrationForm in the browser", () => {
       message: "Service unavailable",
     });
     expect(input("registration-first-name-input").value).toBe("Jane");
+  });
+});
+
+describe("RegistrationForm in Polish", () => {
+  beforeEach(() => {
+    window.history.replaceState(null, "", "/pl-PL/account/login");
+  });
+
+  it("reports the Polish validation messages", async () => {
+    const { form, error } = await setup(registerMock(), {}, null, "pl-PL");
+
+    await interact(() => submitForm(form));
+
+    expect(error("firstName")?.textContent).toBe("Wartość jest wymagana");
+    expect(error("emailAddress")?.textContent).toBe("Wartość jest wymagana");
+  });
+
+  it("navigates to the prefixed redirect target after a completed registration", async () => {
+    const { container, form, input } = await setup(
+      registerMock(async () => ({ ok: true })),
+      { redirectUrl: "/account" },
+      null,
+      "pl-PL",
+    );
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(push).toHaveBeenCalledWith("/pl-PL/account");
   });
 });

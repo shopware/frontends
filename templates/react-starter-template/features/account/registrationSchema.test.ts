@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { testTranslator } from "@/test/i18n";
+
 import {
   createRegistrationSchema,
   emptyRegistrationValues,
@@ -34,17 +36,19 @@ const validBusiness: RegistrationValues = {
 const noStates = { countryHasStates: false };
 const withStates = { countryHasStates: true };
 
+const t = testTranslator();
+
 describe("validateRegistration", () => {
   it("accepts a complete private registration", () => {
-    expect(validateRegistration(validPrivate, noStates)).toEqual({});
+    expect(validateRegistration(validPrivate, noStates, t)).toEqual({});
   });
 
   it("accepts a complete business registration with a state", () => {
-    expect(validateRegistration(validBusiness, withStates)).toEqual({});
+    expect(validateRegistration(validBusiness, withStates, t)).toEqual({});
   });
 
   it("requires every mandatory field with the Vue message", () => {
-    const errors = validateRegistration(emptyRegistrationValues, noStates);
+    const errors = validateRegistration(emptyRegistrationValues, noStates, t);
 
     expect(errors).toEqual({
       firstName: "Value is required",
@@ -62,6 +66,7 @@ describe("validateRegistration", () => {
     const errors = validateRegistration(
       { ...validPrivate, firstName: "   ", city: " " },
       noStates,
+      t,
     );
 
     expect(errors.firstName).toBe("Value is required");
@@ -78,6 +83,7 @@ describe("validateRegistration", () => {
         street: "A1",
       },
       noStates,
+      t,
     );
 
     expect(errors.firstName).toBe("This minimum length should be at least 3");
@@ -90,6 +96,7 @@ describe("validateRegistration", () => {
     const errors = validateRegistration(
       { ...validPrivate, email: "jane.doe" },
       noStates,
+      t,
     );
 
     expect(errors.email).toBe("Value is not a valid email address");
@@ -97,39 +104,39 @@ describe("validateRegistration", () => {
 
   it("never reports the optional VAT id", () => {
     expect(
-      validateRegistration({ ...validBusiness, vatId: "" }, noStates),
+      validateRegistration({ ...validBusiness, vatId: "" }, noStates, t),
     ).toEqual({});
     expect(
-      validateRegistration({ ...validPrivate, vatId: "" }, noStates),
+      validateRegistration({ ...validPrivate, vatId: "" }, noStates, t),
     ).toEqual({});
   });
 
   it("requires the company only for business accounts", () => {
     expect(
-      validateRegistration({ ...validPrivate, company: "" }, noStates),
+      validateRegistration({ ...validPrivate, company: "" }, noStates, t),
     ).toEqual({});
     expect(
-      validateRegistration({ ...validBusiness, company: "" }, noStates),
+      validateRegistration({ ...validBusiness, company: "" }, noStates, t),
     ).toEqual({ company: "The value is required" });
     expect(
-      validateRegistration({ ...validBusiness, company: "  " }, noStates),
+      validateRegistration({ ...validBusiness, company: "  " }, noStates, t),
     ).toEqual({ company: "The value is required" });
   });
 
   it("requires the state only when the chosen country has states", () => {
     const withoutState = { ...validPrivate, countryStateId: "" };
 
-    expect(validateRegistration(withoutState, noStates)).toEqual({});
-    expect(validateRegistration(withoutState, withStates)).toEqual({
+    expect(validateRegistration(withoutState, noStates, t)).toEqual({});
+    expect(validateRegistration(withoutState, withStates, t)).toEqual({
       countryStateId: "The value is required",
     });
     expect(
-      validateRegistration({ ...withoutState, countryId: "" }, withStates),
+      validateRegistration({ ...withoutState, countryId: "" }, withStates, t),
     ).toEqual({ countryId: "Value is required" });
   });
 
   it("reports the first message per field", () => {
-    const schema = createRegistrationSchema(noStates);
+    const schema = createRegistrationSchema(noStates, t);
     const result = schema.safeParse({ ...validPrivate, firstName: "" });
 
     expect(result.success).toBe(false);
@@ -138,7 +145,7 @@ describe("validateRegistration", () => {
       .map((issue) => issue.message);
     expect(messages?.[0]).toBe("Value is required");
     expect(
-      validateRegistration({ ...validPrivate, firstName: "" }, noStates)
+      validateRegistration({ ...validPrivate, firstName: "" }, noStates, t)
         .firstName,
     ).toBe("Value is required");
   });
@@ -185,5 +192,23 @@ describe("toRegistrationInput", () => {
     expect(toRegistrationInput({ ...validBusiness, vatId: "" }).vatIds).toEqual(
       [""],
     );
+  });
+});
+
+describe("validateRegistration in German", () => {
+  it("reports the German validation messages", () => {
+    const de = testTranslator("de-DE");
+
+    const errors = validateRegistration(
+      { ...validBusiness, company: "", password: "short", email: "jane" },
+      noStates,
+      de,
+    );
+
+    expect(errors).toEqual({
+      company: "Der Wert ist erforderlich",
+      password: "Mindestlänge 8",
+      email: "Der Wert ist keine gültige E-Mail-Adresse",
+    });
   });
 });

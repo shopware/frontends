@@ -5,6 +5,7 @@ import { getRouteFromPathInfo, isTechnicalPath } from "@shopware/helpers";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { createShopwareClient } from "../client";
+import { languageCacheTags } from "./cacheTags";
 import { readSalesChannelContext } from "./context";
 
 export type ResolvedRoute = {
@@ -24,14 +25,17 @@ function isCmsRouteName(value: string | undefined): value is CmsRouteName {
   return !!value && CMS_ROUTE_NAMES.includes(value as CmsRouteName);
 }
 
-async function readSeoUrl(path: string): Promise<ResolvedRoute | null> {
+async function readSeoUrl(
+  path: string,
+  languageId: string | null,
+): Promise<ResolvedRoute | null> {
   "use cache";
   cacheLife("seo");
-  cacheTag("sw:seo-url");
+  cacheTag(...languageCacheTags("sw:seo-url", languageId));
 
   const withoutLeadingSlash = path.replace(/^\/+/, "");
   const withoutTrailingSlash = withoutLeadingSlash.replace(/\/+$/, "");
-  const response = await createShopwareClient().invoke(
+  const response = await createShopwareClient({ languageId }).invoke(
     "readSeoUrlGet get /seo-url",
     {
       query: {
@@ -63,9 +67,10 @@ async function readSeoUrl(path: string): Promise<ResolvedRoute | null> {
 
 export async function resolveSeoPath(
   path: string,
+  languageId: string | null,
 ): Promise<ResolvedRoute | null> {
   if (path === "/") {
-    const context = await readSalesChannelContext();
+    const context = await readSalesChannelContext(languageId);
     return {
       routeName: "frontend.navigation.page",
       foreignKey: context.salesChannel.navigationCategoryId,
@@ -76,5 +81,5 @@ export async function resolveSeoPath(
     return getRouteFromPathInfo(path);
   }
 
-  return readSeoUrl(path);
+  return readSeoUrl(path, languageId);
 }

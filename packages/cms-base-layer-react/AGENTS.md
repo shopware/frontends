@@ -103,7 +103,12 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   `categories` joined with `|`, `min-price`, `max-price`, `rating`,
   `shipping-free`, `order`, `limit`, `p`. The app re-reads the listing from
   those params and passes it as `ctx.listing`; the element renders
-  `ctx.listing ?? content.data.listing`.
+  `ctx.listing ?? content.data.listing`. `buildListingQueryParams` sends
+  `limit` and `order` only when the URL or the caller's defaults give them
+  (the app passes the embedded listing's `limit` and `sorting`), so the
+  backend's own listing defaults apply otherwise; `LISTING_DEFAULTS` is a UI
+  fallback, never a value to send. The page-size select adds the listing's
+  own `limit` to the standard sizes (`limitOptions`).
 
 ## Images, links, prices, text
 

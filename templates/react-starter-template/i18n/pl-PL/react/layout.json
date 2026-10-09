@@ -1,0 +1,29 @@
+{
+  "layout": {
+    "logo": "Shopware Frontends Demo Store",
+    "header": {
+      "search": "Szukaj",
+      "closeSearch": "Zamknij",
+      "signedInAs": "Zalogowano jako {name}"
+    },
+    "sideMenu": {
+      "open": "Otwórz menu",
+      "showSubcategories": "Pokaż podkategorie",
+      "hideSubcategories": "Ukryj podkategorie"
+    },
+    "notWired": {
+      "wishlist": "Lista życzeń nie jest jeszcze połączona z sesją.",
+      "search": "Wyszukiwanie nie jest jeszcze podłączone.",
+      "forms": "Formularze nie są jeszcze połączone z sesją."
+    },
+    "languageSwitcher": {
+      "pending": "Otwieranie strony w wersji: {language}…"
+    },
+    "footer": {
+      "builtWith": "Zbudowane z Shopware Frontends i Next.js"
+    },
+    "notFound": {
+      "backToHomepage": "Wróć do strony głównej"
+    }
+  }
+}

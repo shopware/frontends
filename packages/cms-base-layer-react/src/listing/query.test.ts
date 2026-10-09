@@ -88,23 +88,33 @@ describe("buildListingQuery", () => {
 });
 
 describe("buildListingQueryParams", () => {
-  it("applies defaults and converts strings to numbers and booleans", () => {
-    expect(buildListingQueryParams({})).toEqual({
-      limit: 15,
-      p: 1,
-      order: "name-asc",
-    });
+  it("sends only the page when the URL sets no limit or order, so the backend applies its listing defaults", () => {
+    expect(buildListingQueryParams({})).toEqual({ p: 1 });
+  });
+
+  it("uses the given defaults for the values the URL leaves out", () => {
     expect(
-      buildListingQueryParams({
-        manufacturer: "m",
-        "min-price": "5",
-        "shipping-free": "true",
-        p: "2",
-      }),
+      buildListingQueryParams({ p: "2" }, { limit: 24, order: "topseller" }),
+    ).toEqual({ p: 2, limit: 24, order: "topseller" });
+  });
+
+  it("prefers the URL over the defaults and converts strings to numbers and booleans", () => {
+    expect(
+      buildListingQueryParams(
+        {
+          manufacturer: "m",
+          "min-price": "5",
+          "shipping-free": "true",
+          limit: "30",
+          order: "price-asc",
+          p: "2",
+        },
+        { limit: 24, order: "name-asc" },
+      ),
     ).toEqual({
-      limit: 15,
+      limit: 30,
       p: 2,
-      order: "name-asc",
+      order: "price-asc",
       manufacturer: "m",
       "min-price": 5,
       "shipping-free": true,

@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveApiErrorMessages } from "./apiErrors";
-import { errorMessages } from "./errorMessages";
+import { testTranslator } from "@/test/i18n";
+
+import { resolveApiErrorMessages as resolveWith } from "./apiErrors";
+import type { ApiErrorContext } from "./apiErrors";
 import { apiClientError, apiClientErrorWithBody } from "./session.fixture";
 
-const DEFAULT_MESSAGE = errorMessages.errors["message-default"];
+const en = testTranslator("en-GB");
+const DEFAULT_MESSAGE = en("errors.message-default");
+
+function resolveApiErrorMessages(error: unknown, context?: ApiErrorContext) {
+  return resolveWith(error, en, context);
+}
 
 describe("resolveApiErrorMessages", () => {
   it("translates a known code and fills its parameters from meta, stripping the braces", () => {
@@ -48,7 +55,7 @@ describe("resolveApiErrorMessages", () => {
     );
 
     expect(resolveApiErrorMessages(error, "account_login")).toEqual([
-      errorMessages.errors.login_no_matching_customer_internal,
+      en("errors.login_no_matching_customer_internal"),
     ]);
     expect(resolveApiErrorMessages(error, "account_registration_form")).toEqual(
       ["No matching customer for the email found."],
@@ -77,6 +84,17 @@ describe("resolveApiErrorMessages", () => {
     expect(resolveApiErrorMessages(error)).toEqual([
       "No details provided",
       "No details provided",
+    ]);
+  });
+
+  it("says in the visitor's language that no details were provided", () => {
+    const error = apiClientError([{ code: "UNKNOWN" }]);
+
+    expect(resolveWith(error, testTranslator("pl-PL"))).toEqual([
+      "Brak szczegółów",
+    ]);
+    expect(resolveWith(error, testTranslator("de-DE"))).toEqual([
+      "Keine Details angegeben",
     ]);
   });
 
@@ -127,6 +145,45 @@ describe("resolveApiErrorMessages", () => {
   ])("returns the default message for %s", (_, error) => {
     expect(resolveApiErrorMessages(error, "account_login")).toEqual([
       DEFAULT_MESSAGE,
+    ]);
+  });
+
+  it("translates the known codes, the context mapping and the default with the given translator", () => {
+    const pl = testTranslator("pl-PL");
+    const de = testTranslator("de-DE");
+
+    expect(
+      resolveWith(
+        apiClientError([
+          {
+            code: "rateLimitExceeded",
+            meta: { parameters: { seconds: "30" } },
+          },
+        ]),
+        de,
+      ),
+    ).toEqual([
+      "Zu viele Anfragen. Bitte warten Sie 30 Sekunden, bevor Sie es erneut versuchen.",
+    ]);
+    expect(
+      resolveWith(apiClientError([{ code: "0" }], 401), pl, "account_login"),
+    ).toEqual([pl("errors.login_no_matching_customer_internal")]);
+    expect(resolveWith(new TypeError("Failed to fetch"), pl)).toEqual([
+      pl("errors.message-default"),
+    ]);
+    expect(pl("errors.message-default")).not.toBe(DEFAULT_MESSAGE);
+  });
+
+  it("falls back to the English message for a code the locale lacks", () => {
+    const error = apiClientError([
+      {
+        code: "VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE",
+        meta: { parameters: { "{{ email }}": "jane@example.com" } },
+      },
+    ]);
+
+    expect(resolveWith(error, testTranslator("pl-PL"))).toEqual([
+      "The email address jane@example.com is already in use",
     ]);
   });
 });

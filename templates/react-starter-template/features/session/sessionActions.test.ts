@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient } from "#shopware";
+import { testTranslator } from "@/test/i18n";
 
-import { errorMessages } from "./errorMessages";
 import {
   apiClientError,
   apiClientErrorWithBody,
@@ -15,9 +15,10 @@ import type { SessionNotification } from "./sessionActions";
 type Invocation = { operation: string; params: unknown };
 
 const STOREFRONT_URL = "https://shop.test/en";
-const DEFAULT_MESSAGE = errorMessages.errors["message-default"];
+const en = testTranslator("en-GB");
+const DEFAULT_MESSAGE = en("errors.message-default");
 
-function setup(answer: (operation: string) => unknown = () => ({})) {
+function setup(answer: (operation: string) => unknown = () => ({}), t = en) {
   const invocations: Invocation[] = [];
   const order: string[] = [];
   const invoke = (async (operation: string, params?: unknown) => {
@@ -37,6 +38,7 @@ function setup(answer: (operation: string) => unknown = () => ({})) {
     notify: (notification) => {
       notifications.push(notification);
     },
+    t,
   });
   return {
     actions,
@@ -97,13 +99,13 @@ describe("createSessionActions().login", () => {
       actions.login({ username: "jane@example.com", password: "wrong" }),
     ).resolves.toEqual({
       ok: false,
-      message: errorMessages.errors.login_no_matching_customer_internal,
+      message: en("errors.login_no_matching_customer_internal"),
     });
 
     expect(notifications).toEqual([
       {
         type: "error",
-        message: errorMessages.errors.login_no_matching_customer_internal,
+        message: en("errors.login_no_matching_customer_internal"),
       },
     ]);
     expect(refreshSession).not.toHaveBeenCalled();
@@ -197,7 +199,7 @@ describe("createSessionActions().register", () => {
       },
       {
         type: "error",
-        message: errorMessages.errors["VIOLATION::ZIP_CODE_INVALID"],
+        message: en("errors.VIOLATION::ZIP_CODE_INVALID"),
       },
     ]);
     expect(refreshSession).not.toHaveBeenCalled();
@@ -321,5 +323,22 @@ describe("createSessionActions", () => {
       message: DEFAULT_MESSAGE,
     });
     expect(invocations).toEqual([]);
+  });
+});
+
+describe("createSessionActions translations", () => {
+  it("notifies and resolves the messages in the language of the translator", async () => {
+    const de = testTranslator("de-DE");
+    const { actions, notifications } = setup(
+      rejectWith(apiClientError([{ code: "0" }], 401)),
+      de,
+    );
+
+    const message = de("errors.login_no_matching_customer_internal");
+    await expect(
+      actions.login({ username: "jane@example.com", password: "wrong" }),
+    ).resolves.toEqual({ ok: false, message });
+    expect(message).toBe("Ungültiger Benutzername und/oder Passwort.");
+    expect(notifications).toEqual([{ type: "error", message }]);
   });
 });

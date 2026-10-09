@@ -5,6 +5,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Schemas, operations } from "#shopware";
 
 import { createShopwareClient } from "../client";
+import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
 type ReadLandingPageGetQuery = NonNullable<
@@ -13,12 +14,13 @@ type ReadLandingPageGetQuery = NonNullable<
 
 export async function readLandingPage(
   landingPageId: string,
+  languageId: string | null,
 ): Promise<Schemas["LandingPage"]> {
   "use cache";
   cacheLife("catalog");
-  cacheTag(`sw:landing:${landingPageId}`);
+  cacheTag(...languageCacheTags(`sw:landing:${landingPageId}`, languageId));
 
-  const response = await createShopwareClient().invoke(
+  const response = await createShopwareClient({ languageId }).invoke(
     "readLandingPageGet get /landing-page/{landingPageId}",
     {
       pathParams: { landingPageId },

@@ -46,12 +46,24 @@ describe("FooterColumns", () => {
     const html = await renderToHtml(<FooterColumns tree={tree} />);
 
     expect(html).toContain(
-      '<p class="font-semibold text-surface-inverse-on-surface">Service</p>',
+      '<p class="text-xs font-semibold tracking-wide text-shell-on-ink uppercase">Service</p>',
     );
     expect(html).toContain(
-      '<p class="font-semibold text-surface-inverse-on-surface">Legal</p>',
+      '<p class="text-xs font-semibold tracking-wide text-shell-on-ink uppercase">Legal</p>',
     );
     expect(html).not.toContain("<h");
+  });
+
+  it("styles the links for the ink footer with a visible keyboard focus", async () => {
+    const html = await renderToHtml(<FooterColumns tree={tree} />);
+    const links = anchors(html);
+
+    expect(links).toHaveLength(2);
+    for (const link of links) {
+      expect(link).toContain("text-shell-on-ink-muted");
+      expect(link).toContain("hover:text-shell-accent");
+      expect(link).toContain("focus-visible:outline-shell-accent");
+    }
   });
 
   it("lists children only for nodes that have them", async () => {
@@ -81,6 +93,35 @@ describe("FooterColumns", () => {
     expect(internal).not.toContain("rel=");
     expect(external).toContain('target="_blank"');
     expect(external).toContain('rel="noopener"');
+  });
+
+  it("marks the Shopware names with the content language of their node", async () => {
+    const html = await renderToHtml(
+      <FooterColumns
+        tree={[
+          {
+            ...tree[0]!,
+            lang: "en-US",
+            children: tree[0]!.children.map((child) => ({
+              ...child,
+              lang: "en-US",
+            })),
+          },
+        ]}
+      />,
+    );
+
+    expect(html).toContain(
+      '<p lang="en-US" class="text-xs font-semibold tracking-wide text-shell-on-ink uppercase">Service</p>',
+    );
+    expect(anchors(html)).toHaveLength(2);
+    for (const link of anchors(html)) expect(link).toContain('lang="en-US"');
+  });
+
+  it("declares no language without a content language", async () => {
+    const html = await renderToHtml(<FooterColumns tree={tree} />);
+
+    expect(html).not.toContain("lang=");
   });
 
   it("renders nothing for an empty tree", async () => {

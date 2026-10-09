@@ -2,6 +2,7 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
 import type { ApiClient, Schemas, operations } from "#shopware";
+import type { Translate } from "@/i18n/translate";
 
 import { resolveApiErrorMessages } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
@@ -15,6 +16,7 @@ export type SessionActionDeps = {
   refreshSession: () => Promise<void>;
   getStorefrontUrl: () => Promise<string>;
   notify: (notification: SessionNotification) => void;
+  t: Translate;
 };
 
 const CUSTOMER_NOT_LOGGED_IN = "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN";
@@ -33,12 +35,13 @@ export function createSessionActions({
   refreshSession,
   getStorefrontUrl,
   notify,
-}: SessionActionDeps): Omit<SessionActions, "retrySession"> {
+  t,
+}: SessionActionDeps): Omit<SessionActions, "retrySession" | "refreshSession"> {
   function fail(
     error: unknown,
     context?: ApiErrorContext,
   ): SessionActionResult {
-    const messages = resolveApiErrorMessages(error, context);
+    const messages = resolveApiErrorMessages(error, t, context);
     for (const message of messages) {
       notify({ type: "error", message });
     }

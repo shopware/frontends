@@ -45,5 +45,31 @@ describe("NavigationLink", () => {
     expect(html).toContain('href="https://example.com/blog"');
     expect(html).toContain('target="_blank"');
     expect(html).toContain('rel="noopener"');
+    expect(html).not.toContain("lang=");
   });
+
+  it.each([
+    ["/Clothing/", false],
+    ["https://example.com/blog", true],
+  ])(
+    "declares the content language of the node on %s",
+    async (href, external) => {
+      const html = await renderToHtml(
+        <NavigationLink
+          node={{
+            id: "node",
+            name: "Clothing",
+            href,
+            external,
+            lang: "en-US",
+            children: [],
+          }}
+        >
+          Clothing
+        </NavigationLink>,
+      );
+
+      expect(html).toMatch(/^<a [^>]*lang="en-US"/);
+    },
+  );
 });

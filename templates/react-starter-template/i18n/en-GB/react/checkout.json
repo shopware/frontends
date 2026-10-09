@@ -1,0 +1,25 @@
+{
+  "cart": {
+    "remove": "Remove",
+    "itemImageAlt": "{label} cart item",
+    "miniCart": {
+      "close": "Close"
+    }
+  },
+  "checkout": {
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment information"
+    },
+    "success": {
+      "pageTitle": "Order confirmation"
+    },
+    "yourOrder": "Your order",
+    "orderPaid": "has been paid",
+    "orderUnpaid": "is not paid",
+    "checkStatus": "You can now check the status of the order in your account. Thank you!",
+    "unpaidStatus": "Unfortunately, your order couldn't be paid. You can try to pay it again or contact us.",
+    "backToHomepage": "Back to homepage",
+    "checkOrderDetails": "Check the order details"
+  }
+}

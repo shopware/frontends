@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  cartView,
+  fakeCart,
+  lineItem,
+} from "@/features/cart/components/cartView.fixture";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
@@ -11,6 +16,8 @@ import type {
   SessionActionResult,
   StorefrontSession,
 } from "@/features/session/types";
+import type { Locale } from "@/i18n/config";
+import { withI18n } from "@/test/i18n";
 import { interact, mount, pressKey, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
@@ -46,7 +53,14 @@ vi.mock("next/navigation", async () => {
   };
 });
 
+vi.mock("@/features/cart/useCart", async () => ({
+  useCart: (await import("@/features/cart/components/cartView.fixture"))
+    .useFakeCart,
+}));
+
 const ACCOUNT_BUTTON = '[data-testid="header-account-button"]';
+const CART_BUTTON = '[data-testid="header-mini-cart-button"]';
+const MINI_CART = '[data-testid="mini-cart-container"]';
 const ACCOUNT_MENU = '[data-testid="header-account-menu"]';
 const LOGOUT_BUTTON = '[data-testid="header-account-logout-button"]';
 
@@ -86,9 +100,16 @@ function deferred<T>() {
 
 let mounted: Mounted | undefined;
 
+const filledCart = () =>
+  cartView({
+    lineItems: [lineItem(), lineItem({ id: "line-2", quantity: 1 })],
+    subtotal: 59.97,
+  });
+
 beforeEach(() => {
   push.mockReset();
   route.set("/");
+  fakeCart.set(cartView({ status: "ready" }));
 });
 
 afterEach(async () => {
@@ -101,6 +122,7 @@ afterEach(async () => {
 async function setup(
   session?: StorefrontSession,
   actions: Partial<SessionActions> = {},
+  locale?: Locale,
 ) {
   const notify = vi.fn();
   const bar = (
@@ -111,10 +133,13 @@ async function setup(
     </CmsActionsProvider>
   );
   mounted = await mount(
-    session ? (
-      <ControlledSession initial={session}>{bar}</ControlledSession>
-    ) : (
-      bar
+    withI18n(
+      session ? (
+        <ControlledSession initial={session}>{bar}</ControlledSession>
+      ) : (
+        bar
+      ),
+      locale,
     ),
   );
   const { container } = mounted;
@@ -124,6 +149,8 @@ async function setup(
     account: query<HTMLButtonElement>(container, ACCOUNT_BUTTON),
     menu: () => container.querySelector<HTMLElement>(ACCOUNT_MENU),
     logoutButton: () => query<HTMLButtonElement>(container, LOGOUT_BUTTON),
+    cartButton: query<HTMLButtonElement>(container, CART_BUTTON),
+    miniCart: () => container.querySelector<HTMLElement>(MINI_CART),
   };
 }
 
@@ -172,6 +199,29 @@ describe("HeaderBar in the browser", () => {
         (button) => button.textContent === "Close",
       ),
     ).toBe(false);
+  });
+
+  it("sends a guest to the Polish login page and reports the wishlist stub in Polish under the pl-PL provider", async () => {
+    const { account, container, notify } = await setup(undefined, {}, "pl-PL");
+    window.history.replaceState(null, "", "/pl-PL/Furniture/");
+
+    await interact(() => account.click());
+
+    expect(push).toHaveBeenCalledWith(
+      "/pl-PL/account/login?redirect=%2Fpl-PL%2FFurniture%2F",
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="header-wishlist-button"]',
+      ).click(),
+    );
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "info",
+      message: "Lista życzeń nie jest jeszcze połączona z sesją.",
+    });
   });
 
   it("sends a guest to the login page with the current path as redirect", async () => {
@@ -294,7 +344,20 @@ describe("HeaderBar in the browser", () => {
     expect(account.getAttribute("aria-expanded")).toBe("true");
     expect(panel?.id).toBe(controls);
     expect(panel?.textContent).toContain("Signed in as Jane Doe");
-    expect(panel?.querySelectorAll("a")).toHaveLength(0);
+    expect(
+      [...(panel?.querySelectorAll("a") ?? [])].map((link) => [
+        link.getAttribute("href"),
+        link.textContent,
+      ]),
+    ).toEqual([
+      ["/account", "Overview"],
+      ["/account/profile", "Your profile"],
+      ["/account/address", "Addresses"],
+      ["/account/order", "Orders"],
+    ]);
+    expect(panel?.querySelector('[data-testid="header-my-account-link"]')).toBe(
+      panel?.querySelector('a[href="/account"]'),
+    );
     const logout = query<HTMLButtonElement>(panel ?? document, LOGOUT_BUTTON);
     expect(logout.textContent).toBe("Logout");
     expect(logout.type).toBe("button");
@@ -378,6 +441,27 @@ describe("HeaderBar in the browser", () => {
     expect(menu()).not.toBeNull();
     expect(logoutButton().getAttribute("aria-busy")).toBe("false");
     expect(logoutButton().hasAttribute("aria-disabled")).toBe(false);
+  });
+
+  it("closes when one of its account links is followed", async () => {
+    const { account, menu } = await setup(loggedIn);
+    const stopNavigation = (event: Event) => event.preventDefault();
+    document.addEventListener("click", stopNavigation, { capture: true });
+
+    try {
+      await interact(() => account.click());
+      await interact(() =>
+        query<HTMLAnchorElement>(
+          menu() ?? document,
+          '[data-testid="header-my-account-link"]',
+        ).click(),
+      );
+    } finally {
+      document.removeEventListener("click", stopNavigation, { capture: true });
+    }
+
+    expect(menu()).toBeNull();
+    expect(account.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("closes on Escape and returns focus to the account button", async () => {
@@ -508,5 +592,143 @@ describe("HeaderBar in the browser", () => {
         "aria-expanded",
       ),
     ).toBe("false");
+  });
+
+  it("keeps the mini cart closed for an empty cart without a toast", async () => {
+    const { cartButton, miniCart, notify } = await setup();
+
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(cartButton.getAttribute("aria-controls")).toBeTruthy();
+
+    await interact(() => cartButton.click());
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(notify).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("toggles the mini cart for a cart with products", async () => {
+    fakeCart.set(filledCart());
+    const { cartButton, miniCart, notify } = await setup();
+
+    expect(cartButton.textContent).toBe("3Cart");
+
+    await interact(() => cartButton.click());
+
+    const panel = miniCart();
+    expect(panel).not.toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("true");
+    expect(panel?.id).toBe(cartButton.getAttribute("aria-controls"));
+    expect(
+      panel?.querySelectorAll('[data-testid="checkout-product-tile-item"]'),
+    ).toHaveLength(2);
+    expect(notify).not.toHaveBeenCalled();
+
+    await interact(() => {
+      cartButton.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+      cartButton.click();
+    });
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("closes the mini cart from its close button and focuses the cart button", async () => {
+    fakeCart.set(filledCart());
+    const { container, cartButton, miniCart } = await setup();
+
+    await interact(() => cartButton.click());
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="mini-cart-close-button"]',
+      ).click(),
+    );
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(cartButton);
+  });
+
+  it("closes the mini cart on Escape and on a click outside", async () => {
+    fakeCart.set(filledCart());
+    const { cartButton, miniCart } = await setup();
+
+    await interact(() => cartButton.click());
+    await interact(() => pressKey(document, "Escape"));
+    expect(miniCart()).toBeNull();
+    expect(document.activeElement).toBe(cartButton);
+
+    await interact(() => cartButton.click());
+    await interact(() =>
+      document.body.dispatchEvent(
+        new MouseEvent("mousedown", { bubbles: true }),
+      ),
+    );
+    expect(miniCart()).toBeNull();
+  });
+
+  it("closes the mini cart when the route changes", async () => {
+    fakeCart.set(filledCart());
+    const { cartButton, miniCart } = await setup();
+
+    await interact(() => cartButton.click());
+    await interact(() => route.set("/Clothing/"));
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("closes the mini cart once the cart is empty and keeps it closed after the next add", async () => {
+    fakeCart.set(filledCart());
+    const { cartButton, miniCart } = await setup();
+
+    await interact(() => cartButton.click());
+    const removeButton = miniCart()?.querySelector<HTMLButtonElement>(
+      '[data-testid="checkout-product-tile-remove-button"]',
+    );
+    removeButton?.focus();
+    expect(document.activeElement).toBe(removeButton);
+
+    await interact(() => fakeCart.set(cartView({ lineItems: [] })));
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(cartButton.textContent).toBe("Cart");
+    expect(document.activeElement).toBe(cartButton);
+
+    await interact(() => fakeCart.set(filledCart()));
+
+    expect(miniCart()).toBeNull();
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("closes the mini cart when the account menu opens", async () => {
+    fakeCart.set(filledCart());
+    const { account, cartButton, menu, miniCart } = await setup(loggedIn);
+
+    await interact(() => cartButton.click());
+    expect(miniCart()).not.toBeNull();
+
+    await interact(() => account.click());
+
+    expect(miniCart()).toBeNull();
+    expect(menu()).not.toBeNull();
+  });
+
+  it("closes the mini cart when the mobile search opens", async () => {
+    fakeCart.set(filledCart());
+    const { container, cartButton, miniCart } = await setup();
+
+    await interact(() => cartButton.click());
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        'button[aria-label="Search"]',
+      ).click(),
+    );
+
+    expect(miniCart()).toBeNull();
   });
 });
