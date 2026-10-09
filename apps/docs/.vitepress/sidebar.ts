@@ -91,7 +91,6 @@ export const sidebar = [
     text: "GUIDES",
     link: "/guides/",
     items: [
-      { text: "Routing", link: "/guides/routing.html" },
       { text: "Languages", link: "/guides/languages.html" },
       { text: "Storefront URL", link: "/guides/storefront-url.html" },
       {
@@ -99,18 +98,6 @@ export const sidebar = [
         link: "/guides/cms/",
         collapsed: true,
         items: [
-          {
-            text: "Custom Elements",
-            link: "/guides/cms/custom-elements.html",
-          },
-          {
-            text: "Content Pages",
-            link: "/guides/cms/content-pages.html",
-          },
-          {
-            text: "Customize Components",
-            link: "/guides/cms/customize-components.html",
-          },
           {
             text: "Implement Missing Component",
             link: "/guides/cms/missing-component.html",
@@ -139,37 +126,12 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Product Listing",
-            link: "/guides/e-commerce/product-listing.html",
-          },
-          {
-            text: "Product Detail Page",
-            link: "/guides/e-commerce/product-detail-page.html",
-          },
-          { text: "Prices", link: "/guides/e-commerce/prices.html" },
-          { text: "Cart", link: "/guides/e-commerce/cart.html" },
-          {
-            text: "Checkout",
-            link: "/guides/e-commerce/checkout.html",
-          },
-          {
             text: "Payments",
             link: "/guides/e-commerce/payments.html",
           },
           {
             text: "JSON-LD",
             link: "/guides/e-commerce/json-ld.html",
-          },
-        ],
-      },
-      {
-        text: "B2B",
-        link: "/guides/b2b/",
-        collapsed: true,
-        items: [
-          {
-            text: "Quote Management",
-            link: "/guides/b2b/quote-management.html",
           },
         ],
       },
@@ -181,14 +143,6 @@ export const sidebar = [
           {
             text: "Sitemap",
             link: "/guides/features/sitemap.html",
-          },
-          {
-            text: "Wishlist",
-            link: "/guides/features/wishlist.html",
-          },
-          {
-            text: "Custom Products extension",
-            link: "/guides/features/custom-products.html",
           },
           {
             text: "Broadcasting",
@@ -206,24 +160,8 @@ export const sidebar = [
         collapsed: true,
         items: [
           {
-            text: "Breadcrumbs",
-            link: "/guides/page-elements/breadcrumbs.html",
-          },
-          {
             text: "Images",
             link: "/guides/page-elements/images.html",
-          },
-          {
-            text: "Login Form",
-            link: "/guides/page-elements/login-form.html",
-          },
-          {
-            text: "Navigation",
-            link: "/guides/page-elements/navigation.html",
-          },
-          {
-            text: "Footer Navigation",
-            link: "/guides/page-elements/footer-navigation.html",
           },
         ],
       },

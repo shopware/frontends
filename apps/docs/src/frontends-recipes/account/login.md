@@ -196,7 +196,6 @@ It does not **await** that call, and neither does `logout()`. Only `register()` 
 
 ## Related Links
 
-- [Login form page element](../../guides/page-elements/login-form.html)
+- [Cart recipe](../checkout/cart.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../guides/e-commerce/cart.html)

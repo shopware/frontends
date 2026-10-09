@@ -176,7 +176,7 @@ The tree walk is what you use on every page:
 
 Five things the generated reference will not tell you:
 
-- Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` and `useCmsMeta` follow nothing at all and take the object itself: a `ref` makes the first return `undefined` and the second produce empty strings, in both cases without an error.
+- Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` accepts the element, a `ref` or a getter, and `getConfigValue` reads it on every call. `useCmsMeta` follows nothing at all and takes the object itself: a `ref` makes it produce empty strings without an error.
 - `getSlotContent(name)` is `Array.find` with a cast. A slot the block does not have is `undefined` at runtime while the type promises a value.
 - `getConfigValue(key)` returns `false`, not the value, when the entry's `source` is `"mapped"` — the case where the value comes from the surrounding entity rather than from the layout.
 - `useCmsMeta(entity)` returns a `title` and a `meta` computed, and it takes the entity, not a ref to it. Neither template calls it directly; both wrap it in their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
@@ -268,6 +268,8 @@ The component name is built at runtime, so Nuxt cannot rewrite `resolveComponent
 
 A section component then does the same one level down. `useCmsSection(() => content)` gives it `getPositionContent(position)` for its blocks, and each block component uses `useCmsBlock(() => content)` and `getSlotContent(name)` to reach its elements. The element at the end of that walk is where rendering stops being generic: it reads what the admin configured with `const { getConfigValue } = useCmsElementConfig(content)` and renders its own markup from those values.
 
+You rarely write that renderer yourself. With `@shopware/cms-base-layer` extended, `<CmsPage :content="entity.cmsPage" />` does the whole walk: the layer registers every section, block and element component globally, so there is nothing to import. `vue-starter-template` renders it in its page components — `FrontendNavigationPage`, `FrontendLandingPage` and `FrontendDetailPage`, each after fetching its own entity — and not in the catch-all route, which only resolves the path. Write a renderer like the one above only when you do not use the layer; you then also build every section, block and element component it would have provided.
+
 ## State And Session
 
 Almost nothing here is state. `useCmsSection` and `useCmsBlock` resolve whatever they were handed on each lookup, and `useCmsMeta` wraps its output in computeds, but nothing is stored, no context is provided and no request is made. They are helpers with a composable's naming. `useCmsMeta` is the one that still insists on the entity rather than a ref to it, and says nothing when it gets one.
@@ -328,7 +330,6 @@ That payload is also the one a shared cache may store. With the starter's `cache
 
 - [Contact Form recipe](contact-form.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
-- [Create content pages](../../guides/cms/content-pages.html)
 - [Create Blocks (CMS)](../../guides/cms/create-blocks.html)
 - [Create Elements (CMS)](../../guides/cms/create-elements.html)
 - [Implement a Missing CMS Component](../../guides/cms/missing-component.html)
