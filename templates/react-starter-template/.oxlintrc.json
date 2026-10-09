@@ -5,7 +5,15 @@
     "correctness": "error"
   },
   "rules": {
-    "react/rules-of-hooks": "error"
+    "react/rules-of-hooks": "error",
+    "jsx-a11y/no-autofocus": ["error", { "ignoreNonDOM": true }],
+    "nextjs/no-img-element": "off"
   },
+  "overrides": [
+    {
+      "files": ["components/form/CountrySelect.tsx"],
+      "rules": { "jsx-a11y/prefer-tag-over-role": "off" }
+    }
+  ],
   "ignorePatterns": [".next", "next-env.d.ts", "node_modules"]
 }

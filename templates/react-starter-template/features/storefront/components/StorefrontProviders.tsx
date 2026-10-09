@@ -8,8 +8,9 @@ import type {
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
-const NOT_WIRED =
-  "Cart, wishlist and forms are not connected to a session yet.";
+import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
+
+import { NOT_WIRED_MESSAGES } from "../notWired";
 
 type Toast = CmsNotification & { id: number };
 
@@ -35,8 +36,8 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
 
   const actions = useMemo<Partial<CmsActions>>(() => {
     const notWired = async () => {
-      notify({ type: "warning", message: NOT_WIRED });
-      return { ok: false, message: NOT_WIRED };
+      notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
+      return { ok: false };
     };
     return {
       notify,
@@ -46,29 +47,31 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
       subscribeNewsletter: notWired,
       submitProductReview: notWired,
       findVariant: async () => {
-        notify({ type: "warning", message: NOT_WIRED });
+        notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
         return null;
       },
     };
   }, [notify]);
 
   return (
-    <CmsActionsProvider actions={actions}>
-      {children}
-      <div
-        aria-live="polite"
-        className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
-      >
-        {toasts.map((toast) => (
-          <p
-            key={toast.id}
-            data-testid="notification-element-message"
-            className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
-          >
-            {toast.message}
-          </p>
-        ))}
-      </div>
-    </CmsActionsProvider>
+    <ShopwareSessionProvider notify={notify}>
+      <CmsActionsProvider actions={actions}>
+        {children}
+        <div
+          aria-live="polite"
+          className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
+        >
+          {toasts.map((toast) => (
+            <p
+              key={toast.id}
+              data-testid="notification-element-message"
+              className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
+            >
+              {toast.message}
+            </p>
+          ))}
+        </div>
+      </CmsActionsProvider>
+    </ShopwareSessionProvider>
   );
 }
