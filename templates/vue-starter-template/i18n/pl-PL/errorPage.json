@@ -1,0 +1,15 @@
+{
+  "errorPage": {
+    "404": "Nie możemy znaleźć strony, której szukasz. Być może została przeniesiona lub już nie istnieje.",
+    "408": "Sklep zbyt długo nie odpowiada.",
+    "429": "Zbyt wiele żądań naraz. Odczekaj chwilę i spróbuj ponownie.",
+    "500": "Ups, coś poszło nie tak po naszej stronie.",
+    "502": "Sklep nie mógł zrealizować Twojego żądania. Spróbuj ponownie za kilka sekund.",
+    "503": "Sklep jest teraz bardzo obciążony. Spróbuj ponownie za chwilę.",
+    "goBackHome": "Wróć na stronę główną",
+    "maintenance": {
+      "title": "Przerwa techniczna",
+      "text": "Trwają prace konserwacyjne. Wkrótce wracamy."
+    }
+  }
+}

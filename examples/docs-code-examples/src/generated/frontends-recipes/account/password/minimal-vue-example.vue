@@ -19,6 +19,7 @@ const heading = ref<HTMLElement | null>(null);
 
 const email = ref("");
 const isRecoveryRequested = ref(false);
+const recoveryError = ref("");
 
 const isHashChecked = ref(false);
 const isExpired = ref(false);
@@ -98,20 +99,25 @@ const requestRecoveryMail = async () => {
   if (isSubmitting.value) return;
   startSubmit();
 
+  recoveryError.value = "";
+
   try {
     await resetPassword({
       email: email.value,
       // resolved here, because setup also runs on the server, where there is no window
       storefrontUrl: getStorefrontUrl(),
     });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // Unconditional: the acknowledgement must not differ between a known and
-    // an unknown address, so it cannot depend on the response.
+    // Same wording for a known and an unknown address: the API already
+    // answered both with a success.
     isRecoveryRequested.value = true;
-    isSubmitting.value = false;
     await announce();
+  } catch (error) {
+    // A rejection is operational, not about the address, so say so and keep
+    // the form for another try.
+    console.error(error);
+    recoveryError.value = "We could not send the mail. Please try again.";
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
@@ -301,6 +307,8 @@ onMounted(checkHash);
     </p>
 
     <form v-else @submit.prevent="requestRecoveryMail">
+      <p v-if="recoveryError" role="alert">{{ recoveryError }}</p>
+
       <label>
         Email
         <input v-model="email" type="email" autocomplete="email" required />
