@@ -7,14 +7,9 @@ import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail, uniquePassword } from "../utils/data-helpers";
-import { findEnv } from "../utils/helpers";
 import { captureStoreApi } from "../utils/store-api";
 
 // A full purchase, and ProductPage.addToCart alone budgets 60s for its retries.
-require("dotenv").config({ path: findEnv() });
-const userEmail = process.env.USER_EMAIL || "test@shopware.com";
-const password = process.env.PASSWORD || "shopware123";
-
 test.setTimeout(90000);
 
 test.describe("Create Order", { tag: "@frontends" }, () => {
@@ -62,9 +57,12 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
-  test("Create new order as a signed in customer", async ({ page }) => {
+  test("Create new order as a signed in customer", async ({
+    page,
+    customer,
+  }) => {
     // The checkout has no sign-in step, so establish the session first.
-    await homePage.loginAs(userEmail, password);
+    await homePage.loginAs(customer.email, customer.password);
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
