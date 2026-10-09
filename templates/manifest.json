@@ -129,7 +129,7 @@
         "loadSchemaCommand": "npx shopware-api-gen loadSchema --apiType=store",
         "script": "generate-types"
       },
-      "notes": "Skeleton stage: anonymous Store API reads only, no session, cart or checkout yet. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
+      "notes": "In development: anonymous Store API reads, SEO URL routing and CMS pages via @shopware/cms-base-layer-react work; cart, wishlist, forms and checkout are stubs until the session architecture is decided. Not scaffoldable. package.json depends on \"@shopware/design-tokens\": \"workspace:*\" until that package is published, so copying this directory out of the monorepo produces a broken install."
     },
     {
       "id": "astro",
