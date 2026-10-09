@@ -31,23 +31,42 @@ export class ProductPage {
     await expect(async () => {
       await this.addToCartButton.waitFor();
       await expect(this.addToCartButton).toBeVisible();
+      const productId =
+        await this.addToCartButton.getAttribute("data-product-id");
+      const cartUpdated = this.page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname.endsWith(
+            "/checkout/cart/line-item",
+          ) && response.request().method() === "POST",
+        { timeout: 10_000 },
+      );
       await this.addToCartButton.dispatchEvent("click");
-      await expect(
-        this.page.getByTestId("notification-element-message").last(),
-      ).toHaveText(/has been added to cart.$/);
+      const response = await cartUpdated;
+      expect(response.ok(), await response.text()).toBe(true);
+      const cart = (await response.json()) as {
+        lineItems?: { referencedId?: string }[];
+      };
+      expect(cart.lineItems?.map((item) => item.referencedId)).toContain(
+        productId,
+      );
     }).toPass({
       // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe, .... Defaults to [100, 250, 500, 1000].
       intervals: [1_000, 2_000, 10_000],
       timeout: 60_000,
     });
+
+    await expect(
+      this.page
+        .getByTestId("notification-element-success")
+        .filter({ has: this.page.getByTestId("notification-element-action") })
+        .last(),
+    ).toBeVisible();
   }
 
   async addVariantToCart() {
     const urlBefore = this.page.url();
     const isSelected = await this.variant.evaluateAll((options) =>
-      options.map((option) =>
-        option.className.includes("border-brand-primary"),
-      ),
+      options.map((option) => option.getAttribute("data-selected") === "true"),
     );
 
     // Not every option combination is a real variant, and one that is not
