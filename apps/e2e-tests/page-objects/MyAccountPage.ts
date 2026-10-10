@@ -4,51 +4,22 @@ export class MyAccountPage {
   readonly page: Page;
   readonly personalFirstName: Locator;
   readonly personalLastName: Locator;
-  readonly personalEmail: Locator;
   readonly accountPersonalDataSubmitButton: Locator;
-  readonly changePaymentMethodButton: Locator;
-  readonly accountPaymentSubmitButton: Locator;
-  readonly accountChangeProfileButton: Locator;
-  readonly accountChangeBillingAddressButton: Locator;
-  readonly accountChangeShippingAddressButton: Locator;
-  readonly newsletterCheckbox: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.accountChangeProfileButton = page.getByTestId(
-      "my-account-change-profile-button",
-    );
     this.personalFirstName = page.getByTestId(
       "account-personal-data-firstname-input",
     );
     this.personalLastName = page.getByTestId(
       "account-personal-data-lastname-input",
     );
-    this.personalEmail = page.getByTestId("account-personal-data-email-input");
     this.accountPersonalDataSubmitButton = page.getByTestId(
       "account-personal-data-submit-button",
     );
-    this.changePaymentMethodButton = page.getByTestId(
-      "my-account-change-payment-method-button",
-    );
-    this.accountPaymentSubmitButton = page.getByTestId(
-      "account-payment-submit-button",
-    );
-    this.accountChangeBillingAddressButton = page.getByTestId(
-      "my-account-change-default-billing-address-button",
-    );
-    this.accountChangeShippingAddressButton = page.getByTestId(
-      "my-account-change-default-shipping-address-button",
-    );
-    this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }
 
-  /** Some templates gate the form behind an edit button; others do not. */
   async changePersonalData() {
-    if ((await this.accountChangeProfileButton.count()) > 0) {
-      await this.accountChangeProfileButton.click();
-      return;
-    }
     await this.page.goto("/account/profile");
     await this.personalFirstName.waitFor({ state: "visible" });
   }
@@ -64,22 +35,5 @@ export class MyAccountPage {
     await this.personalLastName.clear({ force: true });
     await this.personalLastName.fill(lastname);
     await this.accountPersonalDataSubmitButton.click();
-  }
-
-  async changePersonalEmail(email: string) {
-    await this.personalEmail.clear();
-    await this.personalEmail.type(email);
-  }
-
-  async changeDefaultBillingAddress() {
-    await this.accountChangeBillingAddressButton.click();
-  }
-
-  async changeDefaultShippingAddress() {
-    await this.accountChangeShippingAddressButton.click();
-  }
-
-  async subscribeNewsletter() {
-    await this.newsletterCheckbox.click();
   }
 }

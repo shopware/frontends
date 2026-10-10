@@ -13,7 +13,6 @@ export class RegisterForm {
   readonly page: Page;
   readonly storeApi: { value?: StoreApi };
   readonly accountType: Locator;
-  readonly salutation: Locator;
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
@@ -31,7 +30,6 @@ export class RegisterForm {
   constructor(page: Page) {
     this.page = page;
     this.accountType = page.getByTestId("registration-account-type-select");
-    this.salutation = page.getByTestId("registration-salutation-select");
     this.firstName = page.getByTestId("registration-first-name-input");
     this.lastName = page.getByTestId("registration-last-name-input");
     this.emailAdrdress = page.getByTestId("registration-email-input");
@@ -54,7 +52,6 @@ export class RegisterForm {
     email: string,
     password: string,
   ) {
-    await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
     await this.emailAdrdress.fill(email);
@@ -98,7 +95,6 @@ export class RegisterForm {
   }
 
   async createUser() {
-    await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(`e2e ${faker.person.firstName()}`);
     await this.lastName.fill(`e2e ${faker.person.lastName()}`);
     await this.emailAdrdress.fill(uniqueEmail());
