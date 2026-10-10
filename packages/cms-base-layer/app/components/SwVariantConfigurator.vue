@@ -102,18 +102,25 @@ const onHandleChange = async () => {
             v-for="option in optionGroup.options"
             :key="option.id"
             data-testid="product-variant"
-            class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
+            :data-selected="isOptionSelected(option.id)"
+            class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-primary has-[:focus-visible]:ring-offset-2"
             :class="{
               'border-3 border-brand-primary': isOptionSelected(option.id),
             }"
-            @click="
-              handleChange(
-                optionGroup.translated.name,
-                option.id,
-                onHandleChange,
-              )
-            "
           >
+            <input
+              type="radio"
+              class="sr-only"
+              :name="`variant-${optionGroup.id}`"
+              :checked="isOptionSelected(option.id)"
+              @change="
+                handleChange(
+                  optionGroup.translated.name,
+                  option.id,
+                  onHandleChange,
+                )
+              "
+            />
             <p
               :id="`${option.id}-choice-label`"
               data-testid="product-variant-text"
