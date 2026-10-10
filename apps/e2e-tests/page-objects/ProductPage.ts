@@ -33,15 +33,16 @@ export class ProductPage {
       await expect(this.addToCartButton).toBeVisible();
       const productId =
         await this.addToCartButton.getAttribute("data-product-id");
-      const cartUpdated = this.page.waitForResponse(
-        (response) =>
-          new URL(response.url()).pathname.endsWith(
-            "/checkout/cart/line-item",
-          ) && response.request().method() === "POST",
-        { timeout: 10_000 },
-      );
-      await this.addToCartButton.dispatchEvent("click");
-      const response = await cartUpdated;
+      const [response] = await Promise.all([
+        this.page.waitForResponse(
+          (response) =>
+            new URL(response.url()).pathname.endsWith(
+              "/checkout/cart/line-item",
+            ) && response.request().method() === "POST",
+          { timeout: 10_000 },
+        ),
+        this.addToCartButton.click({ timeout: 5_000 }),
+      ]);
       expect(response.ok(), await response.text()).toBe(true);
       const cart = (await response.json()) as {
         lineItems?: { referencedId?: string }[];
