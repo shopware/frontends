@@ -9,7 +9,7 @@ import type { H3Event } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 
-import type { Plugin } from "#app";
+import type { NuxtRequestEvent, Plugin } from "#app";
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -26,7 +26,7 @@ type ShopwarePluginInjections = {
 
 type ShopwarePluginNuxtApp = {
   ssrContext?: {
-    event: H3Event;
+    event: H3Event | NuxtRequestEvent;
   };
   vueApp: {
     provide: (name: string, value: unknown) => void;
@@ -123,7 +123,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     !!shopwareRuntimeConfig?.useUserContextInSSR;
 
   const contextTokenFromCookie = NuxtApp.ssrContext
-    ? getCookie(NuxtApp.ssrContext.event, "sw-context-token")
+    ? getCookie(NuxtApp.ssrContext.event as H3Event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
   const privateApiClientConfig = import.meta.server

@@ -30,7 +30,7 @@
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
         }
       },
-      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -74,7 +74,7 @@
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
         }
       },
-      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -140,7 +140,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         }
       },
-      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
@@ -194,7 +194,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         }
       },
-      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "nuxt prepare && nuxt build",
       "devCommand": "nuxt prepare && nuxt dev",
