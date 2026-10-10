@@ -1,6 +1,6 @@
 # E2E tests
 
-Playwright suite for the templates in this repository.
+Playwright suite for `vue-starter-template` and the templates built on it.
 
 All commands below run from this directory, `apps/e2e-tests`. Playwright resolves its config from there.
 
@@ -22,7 +22,7 @@ No account has to exist on that storefront. Tests that sign in to an existing ac
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs navigate generically, so they run against any storefront rather than one template.
+`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter and templates that extend it, such as `vue-starter-template-extended`. The deprecated `vue-demo-store` renders different test ids and is not covered.
 
 CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
@@ -49,7 +49,7 @@ BASE_E2E_URL=http://localhost:3000/ pnpm run test:e2e --project=chromium
 
 ## Run the accessibility check
 
-The `@accessibility` specs do not select on template specific content, so they run against any storefront. CI runs them against the supported starter template:
+The `@accessibility` specs use the same page objects, so the same targets apply. CI runs them against the supported starter template:
 
 ```sh
 BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
