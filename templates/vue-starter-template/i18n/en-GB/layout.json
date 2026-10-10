@@ -36,7 +36,9 @@
       "sidebar": "Sidebar",
       "closeNotification": "Close notification",
       "languageSwitcher": "Change language",
-      "currencySwitcher": "Change currency"
+      "currencySwitcher": "Change currency",
+      "guidedSetup": "Guided setup",
+      "contentSidebar": "Content sidebar"
     }
   }
 }
