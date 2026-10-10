@@ -68,9 +68,9 @@ export class HomePage {
     for (const href of hrefs.filter((entry): entry is string => !!entry)) {
       tried.push(href);
       await this.page.goto(href);
-      await this.page.waitForSelector("[data-testid='product-quantity']", {
-        state: "visible",
-      });
+      await this.page
+        .getByTestId("product-quantity")
+        .waitFor({ state: "visible" });
       const hasVariants = await this.page
         .getByTestId("product-variant")
         .first()
@@ -145,9 +145,9 @@ export class HomePage {
     }
 
     await this.page.goto(href);
-    await this.page.waitForSelector("[data-testid='product-quantity']", {
-      state: "visible",
-    });
+    await this.page
+      .getByTestId("product-quantity")
+      .waitFor({ state: "visible" });
   }
 
   /** Some templates link to a register page, the starter renders it inline. */
@@ -173,21 +173,22 @@ export class HomePage {
   }
 
   async typeSearchPhrase(phrase: string) {
-    await this.page.waitForLoadState("networkidle");
-    await this.searchBar.click();
-    await this.searchBar.type(phrase);
-    await this.page.waitForLoadState();
-    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.fillSearchPhrase(phrase);
     await this.page.keyboard.press("Enter");
   }
 
   async searchBySuggest(phrase: string) {
-    await this.page.waitForLoadState("networkidle");
-    await this.searchBar.click();
-    await this.searchBar.type(phrase);
-    await this.page.waitForLoadState();
-    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.fillSearchPhrase(phrase);
     await this.suggestResultLink.click();
+  }
+
+  private async fillSearchPhrase(phrase: string) {
+    const resultBox = this.page.getByTestId("layout-search-result-box");
+
+    await expect(async () => {
+      await this.searchBar.fill(phrase, { timeout: 5000 });
+      await resultBox.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
   }
 
   /** The toggle is <client-only>, so its presence means the listing is hydrated. */
@@ -228,10 +229,12 @@ export class HomePage {
   }
 
   async openMyAccount() {
-    await this.signedIn.waitFor();
-    await this.signedIn.dispatchEvent("click");
-    await this.myAccountLink.waitFor();
-    await this.myAccountLink.dispatchEvent("click");
+    await expect(async () => {
+      if (await this.myAccountLink.isVisible()) return;
+      await this.signedIn.click({ timeout: 5000 });
+      await this.myAccountLink.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
+    await this.myAccountLink.click();
     await this.page.waitForURL("**/account");
   }
 }
