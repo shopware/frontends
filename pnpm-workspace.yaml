@@ -41,12 +41,19 @@ overrides:
   "fflate@<0.6.11": "^0.6.11"
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "svgo@>=4.0.0 <4.1.0": 4.1.0
-  "smol-toml@<=1.7.0": 1.7.1
-  "sharp@<0.35.4": 0.35.4
+  "smol-toml@<1.8.1": 1.9.0
+  "sharp@<0.35.5": 0.35.5
   "astro@<7.2.8": 7.2.8
   "vitest@>=2.1.0 <4.1.11": 4.1.11
   "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
-  "devalue@<5.9.1": 5.9.1
+  "devalue@<5.9.3": 5.9.3
+  "seroval@<1.6.3": 1.6.3
+  "@simple-git/argv-parser@<2.0.1": 2.0.1
+  "tinypool@<2.1.2": 2.1.2
+  "shell-quote@>=1.8.4 <1.11.0": 1.11.0
+  "http-cache-semantics@<4.2.1": 4.3.0
+  "source-map-js@>=1.0.0 <1.2.2": 1.2.2
+  "postcss-selector-parser@<7.1.6": 7.1.6
 
 peerDependencyRules:
   ignoreMissing:
