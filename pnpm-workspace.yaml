@@ -79,3 +79,15 @@ allowBuilds:
   oxlint: true
   sharp: true
   vue-demi: true
+
+# Advisories with no usable patched release yet. Drop each entry once its fix ships.
+auditConfig:
+  ignoreGhsas:
+    # simple-git: fixed only in v4, which removed the default export @nuxt/devtools 3 imports (needs devtools 4, still beta). Dev-only, local git calls.
+    - GHSA-x6jw-m9v5-85vh
+    - GHSA-g4wm-2vf7-vfgr
+    - GHSA-858h-whjf-mvg5
+    # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
+    - GHSA-86w9-cpqp-85rv
+    # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
+    - GHSA-vfj7-8cjw-p6xm
