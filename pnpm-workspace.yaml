@@ -8,13 +8,6 @@ packages:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
   - "@shopware/*"
-  - nuxt@4.6.1
-  - "@nuxt/kit@4.6.1"
-  - "@nuxt/schema@4.6.1"
-  - "@nuxt/vite-builder@4.6.1"
-  - "@nuxt/nitro-server@4.6.1"
-  - "@nuxt/vite-server@4.6.1"
-  - "@nuxt/cli@4.0.1"
 
 overrides:
   "editorconfig>minimatch": "^9.0.9"
@@ -48,27 +41,20 @@ overrides:
   "fflate@<0.6.11": "^0.6.11"
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "svgo@>=4.0.0 <4.1.0": 4.1.0
-  "smol-toml@<1.9.0": 1.9.0
+  "smol-toml@<1.8.1": 1.9.0
   "sharp@<0.35.5": 0.35.5
   "astro@<7.2.8": 7.2.8
   "vitest@>=2.1.0 <4.1.11": 4.1.11
   "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
   "devalue@<5.9.3": 5.9.3
   "@nuxt/vite-builder@4.6.1>cssnano": 9.3.2
-  "shell-quote@<1.11.0": 1.11.0
+  "seroval@<1.6.3": 1.6.3
+  "@simple-git/argv-parser@<2.0.1": 2.0.1
   "tinypool@<2.1.2": 2.1.2
-  "axios@>=1.0.0 <1.20.0": 1.20.0
+  "shell-quote@>=1.8.4 <1.11.0": 1.11.0
   "http-cache-semantics@<4.2.1": 4.3.0
+  "source-map-js@>=1.0.0 <1.2.2": 1.2.2
   "postcss-selector-parser@<7.1.6": 7.1.6
-
-auditConfig:
-  ignoreGhsas:
-    - GHSA-x6jw-m9v5-85vh
-    - GHSA-g4wm-2vf7-vfgr
-    - GHSA-858h-whjf-mvg5
-    - GHSA-v5rq-49vh-5v5c
-    - GHSA-vfj7-8cjw-p6xm
-    - GHSA-86w9-cpqp-85rv
 
 peerDependencyRules:
   ignoreMissing:
@@ -94,3 +80,15 @@ allowBuilds:
   oxlint: true
   sharp: true
   vue-demi: true
+
+# Advisories with no usable patched release yet. Drop each entry once its fix ships.
+auditConfig:
+  ignoreGhsas:
+    # simple-git: fixed only in v4, which removed the default export @nuxt/devtools 3 imports (needs devtools 4, still beta). Dev-only, local git calls.
+    - GHSA-x6jw-m9v5-85vh
+    - GHSA-g4wm-2vf7-vfgr
+    - GHSA-858h-whjf-mvg5
+    # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
+    - GHSA-86w9-cpqp-85rv
+    # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
+    - GHSA-vfj7-8cjw-p6xm
