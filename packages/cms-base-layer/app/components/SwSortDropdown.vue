@@ -76,11 +76,11 @@ const handleSortingClick = (key: string) => {
                 : 'text-surface-on-surface-variant',
             ]"
             class="block w-full text-left px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container"
-            role="menuitem"
+            role="menuitemradio"
+            :aria-checked="sorting.key === currentSort"
             tabindex="-1"
             data-testid="listing-sort-option"
             :data-sort-key="sorting.key"
-            :data-selected="sorting.key === currentSort"
           >
             {{ sorting.translated?.label }}
           </button>
