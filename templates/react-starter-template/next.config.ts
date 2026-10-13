@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   agentRules: false,
   cacheComponents: true,
+  partialPrefetching: true,
   skipTrailingSlashRedirect: true,
   transpilePackages: ["@shopware/cms-base-layer-react"],
   cacheLife: {

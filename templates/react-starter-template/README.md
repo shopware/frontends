@@ -6,7 +6,7 @@ a project from.
 
 ## Stack
 
-- Next.js 16.3 with the App Router and Cache Components
+- Next.js 16.4 with the App Router and Cache Components
 - React 19
 - `@shopware/api-client` with the Store API types, `@shopware/helpers`
 - Tailwind CSS v4 with the Shopware color tokens from `@shopware/design-tokens`

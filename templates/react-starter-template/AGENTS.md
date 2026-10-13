@@ -13,7 +13,7 @@ switching and forms are stubs.
 
 Next.js ships docs that match the installed version in
 `node_modules/next/dist/docs/`. Read the relevant guide there before writing
-Next.js code: 16.3 differs from most training data (Cache Components,
+Next.js code: 16.4 differs from most training data (Cache Components,
 `proxy.ts` instead of `middleware.ts`, async request APIs).
 
 `agentRules` is `false` in `next.config.ts`, so `next dev` does not write its
