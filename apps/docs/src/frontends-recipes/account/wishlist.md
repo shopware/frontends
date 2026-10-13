@@ -104,18 +104,7 @@ The wishlist routes are customer routes. `addProductOnWishlist post /customer/wi
 
 Everything you render comes from `readCustomerWishlist post /customer/wishlist`. That route behaves like a product listing: you post a `Criteria`, and the response contains one page of products together with `total`, `page`, and `limit`. `useSyncWishlist` always merges `"total-count-mode": "exact"` into your criteria, so the total is a real count and not an estimate.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Wishlist flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. A customer toggles the wishlist button on a product.
-2. `useProductWishlist` sends the add or remove request, then reloads the wishlist because the write returns nothing to render.
-3. The Store API persists the product on the customer identified by `sw-context-token`.
-4. `useSyncWishlist` posts a criteria to `readCustomerWishlist post /customer/wishlist` and receives one page of products.
-5. The response fills refs declared at module level, so every component reading the wishlist sees the same page.
-6. The UI reads `products`, `count`, and the pagination values from composables instead of keeping its own copy.
 
 You do not call `useSyncWishlist` directly. `useWishlist` drives the wishlist page and `useProductWishlist` drives a single product toggle, and both delegate to it once the customer is logged in.
 

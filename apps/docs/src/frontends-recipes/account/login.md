@@ -40,18 +40,7 @@ Login is a small form action, but it changes the whole sales channel session. Th
   <LoginVueFlowDiagram />
 </ClientOnly>
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <LoginFlowDiagram />
-
-Read the diagram from left to right:
-
-1. Customer submits the login form.
-2. `useUser().login()` sends credentials to `POST /account/login`.
-3. The API client keeps using the current `sw-context-token` and reacts to context-token changes from the API response.
-4. `useUser` refreshes the sales channel context with `GET /context`.
-5. `useUser` refreshes the cart so it matches the customer session.
-6. The UI reads `user`, `isLoggedIn`, and cart state from composables instead of keeping its own copy.
 
 You usually do not need to call `readContext get /context` manually after login, because `useUser` calls `refreshSessionContext()` internally.
 

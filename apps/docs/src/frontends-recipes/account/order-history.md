@@ -118,19 +118,7 @@ Build a paginated order history for a logged-in customer and a detail view for a
 
 `useCustomerOrders().loadOrders()` sends only your criteria plus `limit` from its own ref and `"total-count-mode": "exact"`. It adds no associations of its own, so anything a row renders beyond the order's own columns — the state, the line items, the deliveries, the transactions — has to be asked for in the criteria you pass.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Order history flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The customer opens the order history and the page calls `loadOrders` with a criteria.
-2. `useCustomerOrders` overwrites the `limit` in that criteria with its own `limit` ref and sets `"total-count-mode": "exact"`.
-3. The Store API returns one page of orders for the customer behind the context token. `useCustomerOrders` adds no `checkPromotion` of its own, so unless your criteria passes one no `paymentChangeable` map comes back.
-4. The composable keeps `orders.elements`, `orders.total`, and `orders.page`, and exposes `orders`, `currentPage`, and `totalPages`.
-5. The customer opens one order and the detail view calls `useOrderDetails(orderId).loadOrderDetails()`.
-6. `loadOrderDetails` calls `readOrder post /order` again with `ids`, the default order associations, and `checkPromotion: true`.
-7. The UI reads `order`, `status`, `total`, and `paymentChangeable` from composables instead of keeping its own copy.
 
 You do not assemble the detail criteria yourself. `useOrderDetails` calls `useDefaultOrderAssociations()`, which asks for `stateMachineState`, `lineItems` with `cover` and `downloads.media`, `addresses`, `deliveries` with `shippingMethod`, `shippingOrderAddress` and `stateMachineState`, and `transactions` with `paymentMethod` and `stateMachineState`. The associations you pass as the second argument are merged underneath that, so the defaults win on conflicting keys.
 

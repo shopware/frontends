@@ -27,7 +27,7 @@ const steps = [
     title: "Store API",
     action: "Authenticate customer",
     detail:
-      "The API client invokes the generated operation for POST /account/login. This step validates credentials.",
+      "The API client invokes the generated operation for POST /account/login. This step validates credentials. The client keeps sending the current sw-context-token and picks up a new one if the response changes it.",
     code: 'apiClient.invoke("loginCustomer post /account/login")',
     state: "sw-context-token",
     typeKeys: [

@@ -4,32 +4,69 @@ nav:
   position: 115
 ---
 
+<script setup>
+import RecipeCard from "../components/RecipeCard.vue";
+import RecipeCardGrid from "../components/RecipeCardGrid.vue";
+</script>
+
 # Frontends Recipes
 
-Frontends Recipes explain how common Shopware Frontends features work end-to-end. Each recipe connects a UI action with composables, API client calls, Store API endpoints, generated types, session state, and production concerns.
+Each recipe follows one Shopware Frontends feature end-to-end, from the UI action through the composables and Store API calls to the session state the UI reads afterwards. They are written for frontend developers who want the Shopware flow behind a feature, not a generic Vue tutorial.
 
-These pages are written for frontend developers who want to understand the Shopware flow behind real Frontends features. They are not generic Vue tutorials.
+New here? Start with **Login** or **Cart**. Most other recipes build on the session and cart state they explain.
 
 ## Account
 
-<PageRef page="account/" title="Account" sub="Customer session and account flows such as login, registration, password recovery and change, account state, the customer wishlist, the order history, the newsletter subscription, customer addresses, and the customer profile." />
+<RecipeCardGrid>
+  <RecipeCard page="account/login.html" title="Login" badge="Start here" summary="Log a customer in, then refresh the session context and the cart so the UI matches the new customer." :composables="['useUser', 'useSessionContext', 'useCart']" />
+  <RecipeCard page="account/register.html" title="Register" summary="Create a customer and its billing address in one request, with salutation and country lookups and double opt-in." :composables="['useUser', 'useSalutations', 'useCountries']" />
+  <RecipeCard page="account/password.html" title="Password Recovery and Change" summary="Recover a forgotten password in three steps, and let a logged-in customer change theirs." :composables="['useCustomerPassword', 'useUser']" />
+  <RecipeCard page="account/wishlist.html" title="Wishlist" summary="Add and remove wishlist products, and page through one wishlist shared by every component." :composables="['useWishlist', 'useProductWishlist']" />
+  <RecipeCard page="account/order-history.html" title="Order History" summary="List a customer's orders page by page and open one order with the associations it needs." :composables="['useCustomerOrders', 'useOrderDetails']" />
+  <RecipeCard page="account/newsletter.html" title="Newsletter" summary="Subscribe and unsubscribe through the double opt-in lifecycle, for guests and customers." :composables="['useNewsletter', 'useUser']" />
+  <RecipeCard page="account/addresses.html" title="Customer Addresses" summary="List, add, edit and delete addresses, and switch the default billing and shipping address." :composables="['useAddress', 'useCountries', 'useSessionContext']" />
+  <RecipeCard page="account/profile.html" title="Customer Profile" summary="Show the logged-in customer and change their name, salutation, birthday and email address." :composables="['useUser', 'useSessionContext']" />
+</RecipeCardGrid>
 
 ## Catalog
 
-<PageRef page="catalog/" title="Catalog" sub="Product catalog flows such as listings and filters, search and suggest, variant selection, price and tax state, product reviews, and cross-selling." />
+<RecipeCardGrid>
+  <RecipeCard page="catalog/listing.html" title="Product Listing and Filters" summary="Render a listing with filters, sorting, pagination and infinite scroll from one response." :composables="['useListing', 'useCategory']" />
+  <RecipeCard page="catalog/prices.html" title="Prices and Tax State" summary="Show the right price, tier and strikethrough in the current currency without doing price math." :composables="['usePrice', 'useProductPrice']" />
+  <RecipeCard page="catalog/search.html" title="Search and Suggest" summary="Build a suggestion dropdown and a full results page, and pick the right search route for each." :composables="['useProductSearchSuggest', 'useListing']" />
+  <RecipeCard page="catalog/reviews.html" title="Product Reviews" summary="Render a product's reviews and rating, and let a customer submit one." :composables="['useProductReviews', 'useUser']" />
+  <RecipeCard page="catalog/variants.html" title="Product Variants" summary="Render option groups, track the selection and resolve the matching variant." :composables="['useProductConfigurator', 'useProduct']" />
+  <RecipeCard page="catalog/cross-selling.html" title="Cross-Selling" summary="Render a product's cross-selling groups such as accessories and related products." :composables="['useProductAssociations', 'useProduct']" />
+</RecipeCardGrid>
 
 ## Checkout
 
-<PageRef page="checkout/" title="Checkout" sub="Cart and checkout flows: line item handling, the recalculated cart response, the errors a 2xx response can carry, shipping and payment method selection, and order placement." />
+<RecipeCardGrid>
+  <RecipeCard page="checkout/cart.html" title="Cart" badge="Start here" summary="Add, change and remove line items, and keep one shared cart in sync with every response." :composables="['useCart', 'useCartItem', 'useAddToCart']" />
+  <RecipeCard page="checkout/cart-errors.html" title="Cart Errors" summary="Turn the errors a successful cart response carries into messages a customer can act on." :composables="['useCartNotification', 'useCart']" />
+  <RecipeCard page="checkout/checkout.html" title="Checkout and Order Placement" summary="Select shipping and payment methods as context changes, then turn the cart into an order." :composables="['useCheckout', 'useSessionContext']" />
+  <RecipeCard page="checkout/payment.html" title="Payment" summary="Hand a placed order to the payment provider and read the real payment state on the return page." :composables="['useOrderPayment', 'useOrderDetails']" />
+</RecipeCardGrid>
 
 ## CMS
 
-<PageRef page="cms/" title="CMS" sub="Shopping Experiences flows such as rendering a CMS page tree of sections, blocks and slots, resolving each node to a component, and the contact form element." />
+<RecipeCardGrid>
+  <RecipeCard page="cms/rendering.html" title="Rendering CMS Pages" summary="Walk a page's sections, blocks and slots and resolve each one to a component." :composables="['useCmsSection', 'useCmsBlock']" />
+  <RecipeCard page="cms/contact-form.html" title="Contact Form" summary="Build a contact form element that submits to the Store API and passes a real shop's validation." :composables="['useCmsElementConfig', 'useSalutations']" />
+</RecipeCardGrid>
 
 ## Context
 
-<PageRef page="context/" title="Context" sub="Sales channel context flows such as reading and patching the session context, switching language and currency, navigation and breadcrumbs, and resolving SEO URLs." />
+<RecipeCardGrid>
+  <RecipeCard page="context/session-context.html" title="Session Context" summary="Read and patch the sales channel context, and read it back after every change." :composables="['useSessionContext', 'useContext']" />
+  <RecipeCard page="context/language-and-currency.html" title="Language and Currency Switch" summary="Switch language with a redirect and currency with a context patch." :composables="['useInternationalization', 'useSessionContext']" />
+  <RecipeCard page="context/navigation.html" title="Navigation and Breadcrumbs" summary="Load main and footer navigation, resolve the current entity and render breadcrumbs." :composables="['useNavigation', 'useBreadcrumbs']" />
+  <RecipeCard page="context/url-resolving.html" title="URL Resolving and SEO URLs" summary="Serve every shop URL from one catch-all route and redirect technical URLs to SEO URLs." :composables="['useNavigationSearch', 'useNavigationContext']" />
+</RecipeCardGrid>
 
 ## Orders
 
-<PageRef page="orders/" title="Orders" sub="Placed order flows such as reading a guest order from the deep link in its confirmation mail, and rendering one order with its associations, cancellation, documents and downloads." />
+<RecipeCardGrid>
+  <RecipeCard page="orders/guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for credentials when the first lookup fails." :composables="['useOrderDetails', 'useUser']" />
+  <RecipeCard page="orders/details.html" title="Order Details" summary="Render one order with its state, items, documents and downloads, and let the customer cancel it." :composables="['useOrderDetails', 'useDefaultOrderAssociations']" />
+</RecipeCardGrid>

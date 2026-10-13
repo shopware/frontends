@@ -109,15 +109,6 @@ The naming needs care too. `useProductSearch` is not a text search at all: its `
 
 <RecipeFlowDiagram label="Search and suggest flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The input debounces the typing and enforces a minimum length itself — the composable does neither.
-2. `searchTerm.value` is set, then `search()` builds the criteria and overwrites `search` with that term.
-3. `searchPage post /search` returns a full listing result.
-4. That result lands in the applied listing of the shared `productSearchListing`.
-5. `getProducts`, `getTotal` and `loading` are that listing's `getElements`, `getTotal` and `loading`.
-6. Selecting a product calls `useProductSearch().search(productId)`, which is a detail request by id.
-
 What you do not need to call manually is the listing plumbing: `search()` writes the applied listing itself, so no component has to store the elements or the total. What you **do** still need is a request on the results page. The dropdown searched with a preview criteria — a small `limit`, no filters, no sorting, no page — and `setInitialListing` clears the applied listing when the results page seeds itself from its own payload, so the shared state is a live view, not a cache you can navigate into.
 
 ## Request Flow
