@@ -180,6 +180,29 @@ const selectedStep = computed(() => steps[selectedIndex.value]);
 
 const expandButton = ref<HTMLButtonElement>();
 const closeButton = ref<HTMLButtonElement>();
+const dialogElement = ref<HTMLElement>();
+
+// While the dialog is open, everything else on the page is made inert, so
+// Tab cannot reach the content hidden behind it. The dialog is teleported to
+// <body>, so its siblings there are the page itself.
+let inertElements: Element[] = [];
+
+function makeBackgroundInert() {
+  const dialog = dialogElement.value;
+  inertElements = Array.from(document.body.children).filter(
+    (element) => element !== dialog && !element.hasAttribute("inert"),
+  );
+  for (const element of inertElements) {
+    element.setAttribute("inert", "");
+  }
+}
+
+function releaseBackground() {
+  for (const element of inertElements) {
+    element.removeAttribute("inert");
+  }
+  inertElements = [];
+}
 let expandedFlow: VueFlowStore | undefined;
 
 function openExpanded(nodeId?: string) {
@@ -236,9 +259,12 @@ watch(isExpanded, async (open) => {
   if (open) {
     document.addEventListener("keydown", onKeydown);
     await nextTick();
+    makeBackgroundInert();
     closeButton.value?.focus();
   } else {
     document.removeEventListener("keydown", onKeydown);
+    // Release first: an inert element cannot receive focus.
+    releaseBackground();
     expandedFlow = undefined;
     expandedNodesMeasured = false;
     // Nodes are not focus targets, so focus always returns to the button.
@@ -250,6 +276,7 @@ onBeforeUnmount(() => {
   if (typeof document !== "undefined") {
     document.removeEventListener("keydown", onKeydown);
     document.documentElement.style.overflow = "";
+    releaseBackground();
   }
 });
 </script>
@@ -311,6 +338,7 @@ onBeforeUnmount(() => {
     <Teleport to="body">
       <div
         v-if="isExpanded"
+        ref="dialogElement"
         class="login-vue-flow-dialog"
         @click.self="closeExpanded"
       >
