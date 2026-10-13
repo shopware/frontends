@@ -61,8 +61,12 @@ Every section, block and element is a function component of
   `ctx.imageSizes`, `cms-section-layout` → `ctx.sectionLayout`, `urlPrefix` →
   `ctx.urlPrefix`, `cmsTranslations` → `ctx.translations`, the current
   product/category/listing → `ctx.product`, `ctx.category`, `ctx.listing`,
-  the navigation tree rooted at the current category (what Vue loads with
-  `useNavigation({ type: category.id })`, depth 2) → `ctx.navigation`,
+  the tree of the `category-navigation` element → `ctx.navigation` (the app
+  sets it only when the layout holds that element: the current category's
+  children on category pages, what Vue loads with
+  `useNavigation({ type: category.id })`, depth 2, and the main navigation on
+  the home, landing and product pages, where Vue's `useCategory()` throws; the
+  element renders nothing when it is missing or empty),
   `useUser().isLoggedIn` → `ctx.isLoggedIn` (the app sets it from the
   session, default `false`), "is this the search listing" →
   `ctx.isProductSearch` (default `false`; it decides whether the `search`
@@ -97,6 +101,14 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   `useProductConfigurator` does; `CmsActionResult.errors` carries Store API
   error codes (`messageKey` + `params`) that the islands translate through
   the `errors.*` message tree, as the Vue cart notifications do.
+- `getCustomerState()` on the port tells islands about the browser session
+  (`loading` | `guest` | `customer` with an id); `null` (the default) means
+  the app tracks none, and the island falls back to `ctx.isLoggedIn`. The
+  reviews island reads `loadProductReviews` only for a customer, the first
+  time its tab opens and after a submit, through
+  `src/reviews/useProductReviewList.ts`; the server list is the first render.
+  Never drop a read in an effect cleanup: Next keeps hidden segments in
+  `<Activity>`, which runs cleanups and keeps state.
 - Listing filters, sorting and pagination keep their state in the URL with
   `useListingNavigation()` from `./client`. The query contract is the one the
   Vue layer and the e2e suite use: `manufacturer`, `properties` and
@@ -165,9 +177,11 @@ use `getCmsTranslate(text, { count })`.
 ## Tooling
 
 - `pnpm --filter @shopware/cms-base-layer-react typecheck|lint|test`.
-- Tests are Vitest in the `node` environment. Pure helpers get unit tests;
+- Tests are Vitest with two projects: `node` for `*.test.ts(x)` and `dom`
+  (happy-dom) for `src/**/*.dom.test.tsx`. Pure helpers get unit tests;
   server components render through `react-dom/server` with
-  `renderToReadableStream` (async components are supported there). Client
-  islands that use `next/navigation` are not rendered in tests.
+  `renderToReadableStream`; client islands render in `dom` tests with the
+  helpers in `src/__fixtures__/dom.ts` and a `CmsActionsProvider` of mocks.
+  Islands that use `next/navigation` are not rendered in tests.
 - Out of scope for now: 3D media (`SwMedia3D`, `CmsBlockSpatialViewer`
   renders a placeholder) and loading more reviews.
