@@ -92,6 +92,7 @@ function getLinkRel(link: (typeof links)[number]) {
   <aside
     v-if="isVisible"
     ref="bannerElement"
+    :aria-label="$t('layout.ariaLabels.guidedSetup')"
     class="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 sm:px-6 sm:pb-6"
   >
     <div class="mx-auto max-w-6xl">

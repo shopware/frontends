@@ -96,7 +96,7 @@ export class HomePage extends AbstractPage {
    */
   async openFirstCategoryPage() {
     const sameTabEntries = this.page.locator(
-      '[role="menubar"] [role="menuitem"]:not([target="_blank"])',
+      '[data-testid="header-navigation-link"]:not([target="_blank"])',
     );
     await sameTabEntries.first().waitFor({ state: "visible" });
 
@@ -206,10 +206,10 @@ export class HomePage extends AbstractPage {
 
     // A toggle: clicking a product already wishlisted would remove it.
     const toggles = this.page.getByTestId("product-box-toggle-wishlist-button");
-    const labels = await toggles.evaluateAll((controls) =>
-      controls.map((control) => control.getAttribute("aria-label")),
+    const states = await toggles.evaluateAll((controls) =>
+      controls.map((control) => control.getAttribute("data-in-wishlist")),
     );
-    const index = labels.indexOf("Add to wishlist");
+    const index = states.indexOf("false");
     if (index === -1) {
       throw new Error("Every product on this listing is already wishlisted.");
     }
@@ -224,8 +224,8 @@ export class HomePage extends AbstractPage {
     await stored;
 
     await expect(toggles.nth(index)).toHaveAttribute(
-      "aria-label",
-      "Remove from wishlist",
+      "data-in-wishlist",
+      "true",
     );
   }
 
