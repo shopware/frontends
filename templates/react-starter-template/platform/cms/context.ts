@@ -23,17 +23,25 @@ export type StorefrontCmsContextInput = Omit<
   | "navigationCategoryId"
   | "isLoggedIn"
   | "translations"
+  | "navigation"
 > & {
   locale: Locale;
   languageId: string | null;
+  navigation?: CmsNavigation | Promise<CmsNavigation>;
 };
+
+type CmsNavigation = CreateCmsContextInput["navigation"];
 
 export async function createStorefrontCmsContext({
   locale,
   languageId,
+  navigation,
   ...input
 }: StorefrontCmsContextInput): Promise<CmsContext> {
-  const salesChannelContext = await readSalesChannelContext(languageId);
+  const [salesChannelContext, navigationTree] = await Promise.all([
+    readSalesChannelContext(languageId),
+    navigation,
+  ]);
   return createCmsContext({
     registry: cmsRegistry,
     locale,
@@ -44,5 +52,6 @@ export async function createStorefrontCmsContext({
     navigationCategoryId: salesChannelContext.salesChannel.navigationCategoryId,
     isLoggedIn: false,
     ...input,
+    navigation: navigationTree,
   });
 }

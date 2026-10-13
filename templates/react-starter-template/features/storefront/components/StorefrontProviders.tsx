@@ -3,6 +3,7 @@
 import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import type {
   CmsActions,
+  CmsCustomerState,
   CmsNotification,
 } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -65,6 +66,10 @@ function toastTimeout({ timeout }: CmsNotification): number | null {
   return Number.isFinite(timeout) && timeout > 0 ? timeout : null;
 }
 
+function customerIdOf(state: CmsCustomerState): string | null {
+  return state.status === "customer" ? state.customerId : null;
+}
+
 function StorefrontCmsActions({
   notify,
   children,
@@ -124,18 +129,38 @@ function StorefrontCmsActions({
         }
       },
       submitProductReview: async (input) => {
-        try {
-          await saveProductReview(await getClient(), input);
-          return { ok: true };
-        } catch (error) {
-          if (hasApiErrorCode(error, CUSTOMER_NOT_LOGGED_IN)) {
-            await refreshSession();
+        const save = async () => {
+          try {
+            await saveProductReview(await getClient(), input);
+            return { ok: true, error: null };
+          } catch (error) {
+            return { ok: false, error };
           }
+        };
+        const failed = (error: unknown) => {
           const violations = reviewViolations(error);
           if (violations) return { ok: false, violations };
           console.error("[Reviews] saving the product review failed", error);
           return { ok: false, message: t("errors.message-default") };
+        };
+        const first = await save();
+        if (first.ok) return { ok: true };
+        if (!hasApiErrorCode(first.error, CUSTOMER_NOT_LOGGED_IN)) {
+          return failed(first.error);
         }
+        if (!(await requestLogin())) {
+          await refreshSession();
+          return failed(first.error);
+        }
+        const author = customerIdOf(customerState);
+        if (
+          !author ||
+          customerIdOf(cmsCustomerState(await retrySession())) !== author
+        ) {
+          return { ok: false };
+        }
+        const retried = await save();
+        return retried.ok ? { ok: true } : failed(retried.error);
       },
       findVariant: async () => {
         warnNotWired();

@@ -53,4 +53,24 @@ describe("createStorefrontCmsContext", () => {
     expect(ctx.urlPrefix).toBe("");
     expect(ctx.translations).toBe(getMessages("en-GB"));
   });
+
+  it("reads the context while the navigation is still pending and puts the tree into ctx", async () => {
+    const tree = [{ id: "category-1" }] as Schemas["Category"][];
+    let resolveNavigation: (value: Schemas["Category"][]) => void = () => {};
+    const navigation = new Promise<Schemas["Category"][]>((resolve) => {
+      resolveNavigation = resolve;
+    });
+
+    const pending = createStorefrontCmsContext({
+      locale: "en-GB",
+      languageId: null,
+      routeName: "frontend.detail.page",
+      foreignKey: "product-1",
+      navigation,
+    });
+
+    expect(readSalesChannelContext).toHaveBeenCalledExactlyOnceWith(null);
+    resolveNavigation(tree);
+    await expect(pending).resolves.toMatchObject({ navigation: tree });
+  });
 });

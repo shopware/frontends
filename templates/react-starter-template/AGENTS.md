@@ -48,18 +48,24 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   imitation's `READ_TIMEOUT_MS`). The default exists because `next start`
   has no fill timeout for `'use cache'` at request time and concurrent
   requests share one fill per key: without it, one hung read holds every
-  request for that key until undici gives up. It covers the wait for
-  response headers only, and `readCountries` can take up to ten timeouts.
+  request for that key until undici gives up (300 s, then ofetch retries
+  the GET). It covers the wait for response headers only, and
+  `readCountries` can take up to ten timeouts.
 - The server sends `{ ...public, ...private }` headers (`SHOPWARE_API_HEADERS`
   wins per name) under its own `sw-language-id`. Names are trimmed and
   lowercased, because `createHeaders` and `defu` are case-sensitive and would
-  send both spellings. Dropped with a warning: every `sw-*` name (it would
-  replace the access key or the context token, or change a `'use cache'`
-  response outside its key), `accept`, `content-type`, the transport headers
-  undici consumes or throws on, invalid names and values, and, in the public
-  variable only, browser-forbidden names (`isBrowserForbiddenHeader`). Bad
-  input never throws, because a throw in the proxy or a read fails every
-  request. Warnings go out once per message and never print a value.
+  send both spellings. Dropped with a warning: every `sw-*` name, with `_`
+  read as `-` because PHP behind FastCGI maps both spellings to one server
+  variable (it would replace the access key or the context token, or change a
+  `'use cache'` response outside its key), `accept`, `content-type` and the transport
+  headers undici consumes or throws on (`host`, `content-length`,
+  `connection`, `keep-alive`, `transfer-encoding`, `upgrade`, `expect`, `te`,
+  `trailer`); invalid names; values outside `\t\x20-\x7e\x80-\xff` (undici
+  throws on them at request time); and, in the public variable only,
+  browser-forbidden names (`isBrowserForbiddenHeader`). Bad input never
+  throws, because a throw in the proxy or a read fails every request.
+  Warnings go out once per message and never print a value or an invalid
+  name, since values may be secrets.
 - Create one server client per request, never at module scope. An instance
   adopts the `sw-context-token` of every response, so a shared one leaks
   sessions between users.
@@ -177,15 +183,21 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - `ctx.navigation`, the tree of the `category-navigation` element, comes from
   `readCategoryNavigation(cmsPage, rootId, languageId)` in
   `platform/cms/categoryNavigation.ts`. It reads only when the layout holds a
-  `category-navigation` slot (`hasCmsElement` in `platform/cms/cmsElements.ts`),
-  otherwise it gives `undefined` without a request. Category pages read the
-  current category's children (a leaf category shows no sidebar, like Vue).
-  The home, landing and product pages read
+  `category-navigation` slot (`hasCmsElement` in `platform/cms/cmsElements.ts`,
+  no `server-only`), otherwise it gives `undefined` without a request.
+  Category pages read the current category's children
+  (`readNavigation(navigationId, 2, languageId)`, so a leaf category shows no
+  sidebar, like Vue). The home, landing and product pages read
   `readNavigation("main-navigation", 2, languageId)`, the Header's cache entry
-  and tags, so they add no Store API call; keep the alias and the depth in
-  step with the Header. A failed read logs and renders the page without the
-  sidebar, while `readNavigation` itself still throws, so the failure is not
-  cached. Landing and product pages get no active path.
+  and tags, so they add no Store API call; keep the alias and the depth in step
+  with the Header or they stop sharing it. A failed read logs
+  `[CMS] reading the category navigation failed` once and renders the page
+  without the sidebar, while `readNavigation` itself still throws, so the
+  failure is not cached. Landing and product pages get no active path: the
+  main navigation shows its top level collapsed, and the active id is
+  `ctx.category?.id`, which only category pages set. Landing and product
+  pages hand the read to `createStorefrontCmsContext` as a promise, so it runs
+  next to the sales channel context read instead of before it.
 - Listing state lives in the URL (`manufacturer`, `properties`, `min-price`,
   `max-price`, `rating`, `shipping-free`, `order`, `limit`, `p`). When those
   params are present and the category layout contains a product listing,
@@ -635,13 +647,14 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   The route also sends `headers`: `SHOPWARE_PUBLIC_API_HEADERS` through
   `getPublicApiHeaders()`, never `SHOPWARE_API_HEADERS`.
   `parsePublicShopwareConfig` re-applies the lowercase, reserved and
-  browser-forbidden filter, and `createBrowserClient` passes `config.headers`
-  as `defaultHeaders`. Shopware's CORS preflight allows only `Content-Type`,
+  browser-forbidden filter (the helpers live in the browser-safe
+  `publicConfig.ts`), and `createBrowserClient` passes `config.headers` as
+  `defaultHeaders`. Shopware's CORS preflight allows only `Content-Type`,
   `Authorization` and the core `sw-*` headers, so a custom header there
   blocks every browser call until a `CorsHeaderProviderInterface` service or
   an edge allows it. There is no browser timeout variable on purpose: a
   client-wide default would put a timeout on the login, register and cart
-  mutations.
+  mutations, which have none.
 - `features/session/components/ShopwareSessionProvider.tsx`, mounted by
   `StorefrontProviders`, binds one `createSessionStore()`
   (`features/session/sessionStore.ts`) with `useSyncExternalStore`; the
@@ -1270,8 +1283,12 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - The read uses `parentId ?? id`, like the CMS resolver; the review is saved
   under `product.id`, like Vue. The header counts the loaded list.
 - `submitProductReview` never toasts and never rejects: the form shows
-  `violations` inline. `FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN` refreshes
-  the session, which turns the form into the login hint.
+  `violations` inline. `FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN` opens the
+  login modal before the session is refreshed, because a refresh turns the
+  form into the login hint and drops the typed review. If the same customer
+  logs back in, the form stays and the review is saved once more; another
+  customer gets `{ ok: false }` and nothing is saved under their account; a
+  cancelled login refreshes the session and returns the violation.
 - Known risk: the backend HTTP cache key ignores `sw-context-token`, so under
   `CACHE_REWORK` a logged-in GET can get the anonymous list. The fallback is
   POST for this read only.

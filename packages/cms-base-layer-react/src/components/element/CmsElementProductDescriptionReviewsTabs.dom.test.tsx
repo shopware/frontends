@@ -240,7 +240,10 @@ describe("CmsElementProductDescriptionReviewsTabs", () => {
 
     await view.openReviews();
 
-    expect(view.container.querySelector('[aria-busy="true"]')).not.toBeNull();
+    const busy = view.container.querySelector('[aria-busy="true"]');
+    expect(busy?.textContent).toContain("Server reviews");
+    expect(busy?.querySelector("form")).toBeNull();
+    expect(view.container.querySelector(SUBMIT)).not.toBeNull();
 
     await interact(() => read.resolve({ ok: true, reviews: [approved] }));
 
@@ -307,9 +310,20 @@ describe("CmsElementProductDescriptionReviewsTabs", () => {
     expect(view.header()).toBe("Reviews (2)");
   });
 
-  it("saves the review under the product id and reads the list again", async () => {
-    const view = await setup();
+  it("saves the review under the product id and shows the list read again", async () => {
+    const lists = [
+      [approved, pending],
+      [
+        approved,
+        pending,
+        review({ id: "review-new", title: "Great chair", status: false }),
+      ],
+    ];
+    const view = await setup({
+      load: async () => ({ ok: true, reviews: lists.shift() ?? [] }),
+    });
     await view.openReviews();
+    expect(view.header()).toBe("Reviews (2)");
 
     await fillAndSubmit(view.container);
 
@@ -326,9 +340,40 @@ describe("CmsElementProductDescriptionReviewsTabs", () => {
       productId: "parent-1",
       page: 1,
     });
+    await vi.waitFor(() => expect(view.header()).toBe("Reviews (3)"));
+    expect(view.text()).toContain("Great chair");
     expect(view.text()).toContain(THANK_YOU);
     expect(view.container.querySelector(SUBMIT)).toBeNull();
     expect(view.notify).not.toHaveBeenCalled();
+  });
+
+  it("moves the focus to the thank-you message once the form is gone", async () => {
+    const view = await setup();
+    await view.openReviews();
+
+    await fillAndSubmit(view.container);
+    await vi.waitFor(() => expect(view.text()).toContain(THANK_YOU));
+
+    expect(document.activeElement?.textContent).toBe(THANK_YOU);
+  });
+
+  it("moves the focus to the login hint when the customer is logged out under the form", async () => {
+    const view = await setup();
+    await view.openReviews();
+    expect(view.container.querySelector(SUBMIT)).not.toBeNull();
+
+    await view.setCustomer(GUEST);
+
+    expect(document.activeElement?.textContent).toBe(LOGIN_HINT);
+  });
+
+  it("leaves the focus alone when a guest opens the reviews", async () => {
+    const view = await setup({ customer: GUEST });
+
+    await view.openReviews();
+
+    expect(view.text()).toContain(LOGIN_HINT);
+    expect(document.activeElement).toBe(document.body);
   });
 
   it("does not show the thank-you message to the next customer", async () => {
@@ -356,13 +401,18 @@ describe("CmsElementProductDescriptionReviewsTabs", () => {
     expect(view.hasServerReviews()).toBe(true);
   });
 
-  it("falls back to ctx.isLoggedIn when the app tracks no customer state", async () => {
+  it("falls back to ctx.isLoggedIn for the form and keeps the server list when the app tracks no customer state", async () => {
     const view = await setup({ customer: null, isLoggedIn: true });
     await view.openReviews();
 
     expect(view.container.querySelector(SUBMIT)).not.toBeNull();
-    expect(view.loadProductReviews).toHaveBeenCalledTimes(1);
     expect(view.text()).not.toContain(LOGIN_HINT);
+
+    await fillAndSubmit(view.container);
+    await vi.waitFor(() => expect(view.text()).toContain(THANK_YOU));
+
+    expect(view.loadProductReviews).not.toHaveBeenCalled();
+    expect(view.hasServerReviews()).toBe(true);
   });
 
   it("shows the hint when the app tracks no customer state and ctx is anonymous", async () => {

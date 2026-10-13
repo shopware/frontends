@@ -33,17 +33,18 @@ export async function DetailPage({
     notFoundOn404,
   );
   const [ctx, breadcrumbs, { contentLang }, now] = await Promise.all([
-    readCategoryNavigation(product.cmsPage, "main-navigation", languageId).then(
-      (navigation) =>
-        createStorefrontCmsContext({
-          locale,
-          languageId,
-          routeName: "frontend.detail.page",
-          foreignKey: productId,
-          product,
-          navigation,
-        }),
-    ),
+    createStorefrontCmsContext({
+      locale,
+      languageId,
+      routeName: "frontend.detail.page",
+      foreignKey: productId,
+      product,
+      navigation: readCategoryNavigation(
+        product.cmsPage,
+        "main-navigation",
+        languageId,
+      ),
+    }),
     readBreadcrumbOrNothing(product.id, "product", languageId),
     resolveContentLanguage(locale),
     catalogNow(),

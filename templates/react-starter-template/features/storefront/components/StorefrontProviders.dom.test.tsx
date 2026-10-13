@@ -74,6 +74,7 @@ const backend: {
   cart: Schemas["Cart"];
   afterAdd: Schemas["Cart"];
   signedIn: boolean;
+  customerId: string;
   acceptLogin: boolean;
   wishlist: string[];
   reviews: Schemas["ProductReview"][];
@@ -81,6 +82,7 @@ const backend: {
   cart: cart(),
   afterAdd: cart(),
   signedIn: false,
+  customerId: "customer-1",
   acceptLogin: false,
   wishlist: [],
   reviews: [],
@@ -96,6 +98,7 @@ beforeEach(() => {
   backend.cart = cart();
   backend.afterAdd = cart({ lineItems: [lineItem({ quantity: 2 })] });
   backend.signedIn = false;
+  backend.customerId = "customer-1";
   backend.acceptLogin = false;
   backend.wishlist = [];
   backend.reviews = [];
@@ -104,7 +107,9 @@ beforeEach(() => {
     switch (operation) {
       case READ_CONTEXT:
         return {
-          data: salesChannelContext(backend.signedIn ? customer() : null),
+          data: salesChannelContext(
+            backend.signedIn ? customer({ id: backend.customerId }) : null,
+          ),
           status: 200,
         };
       case READ_LANGUAGES:
@@ -951,15 +956,76 @@ function gateContextReads() {
   return () => interact(() => open());
 }
 
-function failSave(error: unknown, before: () => void = () => {}) {
+function failSave(
+  error: unknown,
+  before: () => void = () => {},
+  times = Number.POSITIVE_INFINITY,
+) {
   const answer = browser.invoke.getMockImplementation();
+  let failures = 0;
   browser.invoke.mockImplementation(async (operation, params) => {
-    if (operation === SAVE_REVIEW) {
+    if (operation === SAVE_REVIEW && failures < times) {
+      failures += 1;
       before();
       throw error;
     }
     return answer?.(operation, params);
   });
+}
+
+const CUSTOMER_GONE = () =>
+  apiClientError(
+    [
+      {
+        code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+        status: "403",
+        detail: "Customer is not logged in.",
+      },
+    ],
+    403,
+  );
+
+async function logInThroughDialog() {
+  await interact(() => {
+    setInputValue(
+      query<HTMLInputElement>(
+        loginDialog(),
+        '[data-testid="login-email-input"]',
+      ),
+      "jane@example.com",
+    );
+    setInputValue(
+      query<HTMLInputElement>(
+        loginDialog(),
+        '[data-testid="login-password-input"]',
+      ),
+      "secret-password",
+    );
+  });
+  await interact(() =>
+    submitForm(
+      query<HTMLFormElement>(loginDialog(), '[data-testid="login-form"]'),
+    ),
+  );
+}
+
+async function submitAfterTheSessionExpired() {
+  backend.signedIn = true;
+  backend.acceptLogin = true;
+  failSave(
+    CUSTOMER_GONE(),
+    () => {
+      backend.signedIn = false;
+    },
+    1,
+  );
+  const shop = await mountReviewsShop();
+  await vi.waitFor(() =>
+    expect(shop.customerState()).toBe("customer:customer-1"),
+  );
+  await shop.click("submit-review");
+  await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+  return shop;
 }
 
 describe("StorefrontProviders reviews", () => {
@@ -1092,29 +1158,31 @@ describe("StorefrontProviders reviews", () => {
     expect(invoked(READ_CONTEXT)).toHaveLength(1);
   });
 
-  it("re-reads the session when the backend says the customer is gone", async () => {
-    backend.signedIn = true;
-    failSave(
-      apiClientError(
-        [
-          {
-            code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
-            status: "403",
-            detail: "Customer is not logged in.",
-          },
-        ],
-        403,
-      ),
-      () => {
-        backend.signedIn = false;
-      },
-    );
-    const shop = await mountReviewsShop();
-    await vi.waitFor(() =>
-      expect(shop.customerState()).toBe("customer:customer-1"),
-    );
+  it("asks for a login and saves the review again once the same customer is back", async () => {
+    const shop = await submitAfterTheSessionExpired();
+    expect(shop.results).toEqual([]);
 
-    await expect(shop.submit()).resolves.toEqual({
+    await logInThroughDialog();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({ ok: true });
+    expect(invoked(SAVE_REVIEW)).toHaveLength(2);
+    expect(shop.customerState()).toBe("customer:customer-1");
+    expect(shop.toasts().map((toast) => toast.textContent)).toEqual([
+      testTranslator()("account.messages.loggedInSuccess"),
+    ]);
+  });
+
+  it("re-reads the session and reports the violation when the login is cancelled", async () => {
+    const shop = await submitAfterTheSessionExpired();
+
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({
       ok: false,
       violations: [
         {
@@ -1123,11 +1191,25 @@ describe("StorefrontProviders reviews", () => {
         },
       ],
     });
-
+    expect(invoked(SAVE_REVIEW)).toHaveLength(1);
     expect(invoked(READ_CONTEXT)).toHaveLength(2);
     expect(shop.customerState()).toBe("guest");
     expect(shop.toasts()).toHaveLength(0);
-    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("does not save the review under another customer who logs in instead", async () => {
+    const shop = await submitAfterTheSessionExpired();
+    backend.customerId = "customer-2";
+
+    await logInThroughDialog();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({ ok: false });
+    expect(invoked(SAVE_REVIEW)).toHaveLength(1);
+    expect(shop.customerState()).toBe("customer:customer-2");
+    expect(shop.toasts().map((toast) => toast.textContent)).toEqual([
+      testTranslator()("account.messages.loggedInSuccess"),
+    ]);
   });
 
   it("resolves a failure without API errors with the default message and no toast", async () => {

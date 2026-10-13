@@ -80,6 +80,9 @@ describe("isReservedApiHeader", () => {
     "SW-Context-Token",
     "sw-language-id",
     "sw-currency-id",
+    "sw_access_key",
+    "SW_Context_Token",
+    "Content_Type",
     "Accept",
     "content-type",
     "content-length",
@@ -95,12 +98,15 @@ describe("isReservedApiHeader", () => {
     expect(isReservedApiHeader(name)).toBe(true);
   });
 
-  it.each(["authorization", "x-sw-edge", "x-waf-bypass", "cookie"])(
-    "allows %s",
-    (name) => {
-      expect(isReservedApiHeader(name)).toBe(false);
-    },
-  );
+  it.each([
+    "authorization",
+    "x-sw-edge",
+    "x_sw_edge",
+    "x-waf-bypass",
+    "cookie",
+  ])("allows %s", (name) => {
+    expect(isReservedApiHeader(name)).toBe(false);
+  });
 });
 
 describe("isBrowserForbiddenHeader", () => {

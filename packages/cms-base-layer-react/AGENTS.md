@@ -103,10 +103,14 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   the `errors.*` message tree, as the Vue cart notifications do.
 - `getCustomerState()` on the port tells islands about the browser session
   (`loading` | `guest` | `customer` with an id); `null` (the default) means
-  the app tracks none, and the island falls back to `ctx.isLoggedIn`. The
-  reviews island reads `loadProductReviews` only for a customer, the first
-  time its tab opens and after a submit, through
+  the app tracks none, and the island falls back to `ctx.isLoggedIn` for the
+  form only. The reviews island reads `loadProductReviews` only for a customer
+  with an id, the first time its tab opens and after a submit, through
   `src/reviews/useProductReviewList.ts`; the server list is the first render.
+  Without an id it never reads: one shared id would show one customer's list,
+  pending review included, to the next one. When the form unmounts, the
+  thank-you (after a save) or the login hint (after a logout) takes the focus,
+  but only if the focus was lost.
   Never drop a read in an effect cleanup: Next keeps hidden segments in
   `<Activity>`, which runs cleanups and keeps state.
 - Listing filters, sorting and pagination keep their state in the URL with

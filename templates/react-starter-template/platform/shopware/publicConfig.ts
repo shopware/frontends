@@ -50,8 +50,8 @@ export function isValidHeaderValue(value: string): boolean {
 }
 
 export function isReservedApiHeader(name: string): boolean {
-  const lowerCased = name.toLowerCase();
-  return lowerCased.startsWith("sw-") || RESERVED_API_HEADERS.has(lowerCased);
+  const canonical = name.toLowerCase().replaceAll("_", "-");
+  return canonical.startsWith("sw-") || RESERVED_API_HEADERS.has(canonical);
 }
 
 export function isBrowserForbiddenHeader(name: string): boolean {

@@ -48,6 +48,12 @@ function customerFromContext(isLoggedIn: boolean): CmsCustomerState {
     : { status: "guest" };
 }
 
+function focusIfFocusWasLost(element: HTMLElement | null) {
+  if (!element) return;
+  const { activeElement, body } = element.ownerDocument;
+  if (!activeElement || activeElement === body) element.focus();
+}
+
 type SectionToggleProps = {
   title: string;
   open: boolean;
@@ -99,11 +105,9 @@ const panelPhaseClasses: Record<Exclude<PanelPhase, "closed">, string> = {
 
 function SectionPanel({
   open,
-  busy = false,
   children,
 }: {
   open: boolean;
-  busy?: boolean;
   children: ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -141,10 +145,7 @@ function SectionPanel({
       )}
       onTransitionEnd={handleTransitionEnd}
     >
-      <div
-        className="self-stretch text-surface-on-surface text-base font-normal leading-normal"
-        aria-busy={busy || undefined}
-      >
+      <div className="self-stretch text-surface-on-surface text-base font-normal leading-normal">
         {children}
       </div>
     </div>
@@ -167,15 +168,21 @@ export function CmsElementProductDescriptionReviewsTabs({
     () => new Set([DESCRIPTION_SECTION]),
   );
   const [reviewAddedFor, setReviewAddedFor] = useState<string | null>(null);
-  const customer =
-    actions.getCustomerState() ?? customerFromContext(isLoggedIn);
+  const trackedCustomer = actions.getCustomerState();
+  const customer = trackedCustomer ?? customerFromContext(isLoggedIn);
   const customerId =
     customer.status === "customer" ? customer.customerId : null;
   const reviewAdded = customerId !== null && reviewAddedFor === customerId;
+  const [previousCustomerId, setPreviousCustomerId] = useState(customerId);
+  const [customerLeft, setCustomerLeft] = useState(false);
+  if (previousCustomerId !== customerId) {
+    setPreviousCustomerId(customerId);
+    setCustomerLeft(previousCustomerId !== null && customerId === null);
+  }
   const reviewsOpen = openSections.has(REVIEWS_SECTION);
   const list = useProductReviewList({
     productId: reviewsProductId,
-    customerId,
+    customerId: trackedCustomer ? customerId : null,
     open: reviewsOpen,
   });
 
@@ -216,16 +223,18 @@ export function CmsElementProductDescriptionReviewsTabs({
         testId="product-reviews-tab"
         onToggle={() => toggleSection(REVIEWS_SECTION)}
       />
-      <SectionPanel open={reviewsOpen} busy={list.loading}>
-        {list.reviews ? (
-          <SwProductReviews
-            reviews={list.reviews}
-            locale={locale}
-            translations={translations}
-          />
-        ) : (
-          reviews
-        )}
+      <SectionPanel open={reviewsOpen}>
+        <div aria-busy={list.loading || undefined}>
+          {list.reviews ? (
+            <SwProductReviews
+              reviews={list.reviews}
+              locale={locale}
+              translations={translations}
+            />
+          ) : (
+            reviews
+          )}
+        </div>
         {productId && customerId && !reviewAdded ? (
           <SwProductReviewsForm
             key={customerId}
@@ -235,7 +244,11 @@ export function CmsElementProductDescriptionReviewsTabs({
           />
         ) : null}
         {productId && customer.status === "guest" ? (
-          <div className="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center">
+          <div
+            ref={customerLeft ? focusIfFocusWasLost : undefined}
+            tabIndex={-1}
+            className="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center"
+          >
             <div className="w-5 h-5 text-surface-on-surface-variant flex-shrink-0">
               <UserIcon width={20} height={20} aria-label="User" />
             </div>
@@ -245,7 +258,11 @@ export function CmsElementProductDescriptionReviewsTabs({
           </div>
         ) : null}
         {reviewAdded ? (
-          <div className="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center">
+          <div
+            ref={focusIfFocusWasLost}
+            tabIndex={-1}
+            className="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center"
+          >
             <div className="w-5 h-5 text-states-success flex-shrink-0">
               <CheckCircleIcon width={20} height={20} aria-label="Success" />
             </div>

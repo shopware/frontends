@@ -26,20 +26,18 @@ export async function LandingPage({
     notFoundOn404,
   );
   const [ctx, { contentLang }] = await Promise.all([
-    readCategoryNavigation(
-      landingPage.cmsPage,
-      "main-navigation",
+    createStorefrontCmsContext({
+      locale,
       languageId,
-    ).then((navigation) =>
-      createStorefrontCmsContext({
-        locale,
+      routeName: "frontend.landing.page",
+      foreignKey: landingPageId,
+      landingPage,
+      navigation: readCategoryNavigation(
+        landingPage.cmsPage,
+        "main-navigation",
         languageId,
-        routeName: "frontend.landing.page",
-        foreignKey: landingPageId,
-        landingPage,
-        navigation,
-      }),
-    ),
+      ),
+    }),
     resolveContentLanguage(locale),
   ]);
   const name = getTranslatedProperty(landingPage, "name");
