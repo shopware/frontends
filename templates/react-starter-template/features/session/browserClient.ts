@@ -50,6 +50,7 @@ export function createBrowserClient(config: PublicShopwareConfig): ApiClient {
     baseURL: config.endpoint,
     accessToken: config.accessToken,
     contextToken: Cookies.get(CONTEXT_TOKEN_COOKIE),
+    defaultHeaders: config.headers,
   });
   client.hook("onContextChanged", (contextToken) => {
     Cookies.set(CONTEXT_TOKEN_COOKIE, contextToken, {

@@ -1,6 +1,8 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
 import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import type {
   CmsActionResult,
+  CmsCustomerState,
   CmsNotification,
 } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -8,6 +10,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ApiClient, Schemas } from "#shopware";
 import { cart, cartError, lineItem } from "@/features/cart/cart.fixture";
 import { useCart } from "@/features/cart/useCart";
+import { productReviewsCriteria } from "@/features/reviews/productReviewsApi";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
@@ -62,6 +65,9 @@ const ADD_WISHLIST =
   "addProductOnWishlist post /customer/wishlist/add/{productId}";
 const DELETE_WISHLIST =
   "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}";
+const LOGOUT = "logoutCustomer post /account/logout";
+const READ_REVIEWS = "readProductReviewsGet get /product/{productId}/reviews";
+const SAVE_REVIEW = "saveProductReview post /product/{productId}/review";
 const MESSAGE = '[data-testid="notification-element-message"]';
 
 const backend: {
@@ -70,12 +76,14 @@ const backend: {
   signedIn: boolean;
   acceptLogin: boolean;
   wishlist: string[];
+  reviews: Schemas["ProductReview"][];
 } = {
   cart: cart(),
   afterAdd: cart(),
   signedIn: false,
   acceptLogin: false,
   wishlist: [],
+  reviews: [],
 };
 
 function wishlistProductId(params: unknown): string {
@@ -90,6 +98,7 @@ beforeEach(() => {
   backend.signedIn = false;
   backend.acceptLogin = false;
   backend.wishlist = [];
+  backend.reviews = [];
   browser.invoke.mockReset();
   browser.invoke.mockImplementation(async (operation, params) => {
     switch (operation) {
@@ -130,6 +139,21 @@ beforeEach(() => {
           (id) => id !== wishlistProductId(params),
         );
         return { data: { success: true }, status: 200 };
+      case LOGOUT:
+        backend.signedIn = false;
+        return { data: { contextToken: "guest-token" }, status: 200 };
+      case READ_REVIEWS:
+        return {
+          data: {
+            elements: backend.reviews,
+            total: backend.reviews.length,
+            page: 1,
+            limit: 10,
+          },
+          status: 200,
+        };
+      case SAVE_REVIEW:
+        return { data: undefined, status: 204 };
       case LOGIN:
         if (backend.acceptLogin) {
           backend.signedIn = true;
@@ -806,5 +830,324 @@ describe("StorefrontProviders wishlist", () => {
     expect(backend.wishlist).toEqual(["product-1", "product-9"]);
     await vi.waitFor(() => expect(inWishlist()).toBe("true"));
     expect(document.body.querySelector("dialog")).toBeNull();
+  });
+});
+
+const REVIEW_INPUT = {
+  productId: "variant-1",
+  title: "Great chair",
+  content: "Comfortable, sturdy and easy to assemble in ten minutes.",
+  points: 5,
+};
+
+function productReview(
+  overrides: Partial<Schemas["ProductReview"]> = {},
+): Schemas["ProductReview"] {
+  return {
+    id: "review-1",
+    productId: "variant-1",
+    salesChannelId: "sales-channel-1",
+    languageId: "language-en",
+    title: "Solid chair",
+    content: "Sturdy and comfortable for long working days at the desk.",
+    points: 4,
+    status: true,
+    ...overrides,
+  };
+}
+
+function describeCustomer(state: CmsCustomerState | null): string {
+  if (!state) return "none";
+  return state.status === "customer"
+    ? `customer:${state.customerId}`
+    : state.status;
+}
+
+function ReviewsIsland({
+  onResult,
+}: {
+  onResult: (result: CmsActionResult) => void;
+}) {
+  const actions = useCmsActions();
+  const { logout } = useSessionActions();
+  return (
+    <>
+      <output data-testid="customer-state">
+        {describeCustomer(actions.getCustomerState())}
+      </output>
+      <button
+        type="button"
+        data-testid="load-reviews"
+        onClick={() => {
+          void actions
+            .loadProductReviews({ productId: "parent-1" })
+            .then(onResult);
+        }}
+      >
+        load
+      </button>
+      <button
+        type="button"
+        data-testid="submit-review"
+        onClick={() => {
+          void actions.submitProductReview(REVIEW_INPUT).then(onResult);
+        }}
+      >
+        submit
+      </button>
+      <button
+        type="button"
+        data-testid="logout"
+        onClick={() => {
+          void logout();
+        }}
+      >
+        logout
+      </button>
+    </>
+  );
+}
+
+async function mountReviewsShop() {
+  const results: CmsActionResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <ReviewsIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const click = (testId: string) =>
+    interact(() =>
+      query<HTMLButtonElement>(container, `[data-testid="${testId}"]`).click(),
+    );
+  const call = async (testId: string) => {
+    const before = results.length;
+    await click(testId);
+    await vi.waitFor(() => expect(results).toHaveLength(before + 1));
+    return results[before];
+  };
+  return {
+    container,
+    results,
+    click,
+    load: () => call("load-reviews"),
+    submit: () => call("submit-review"),
+    customerState: () =>
+      query(container, '[data-testid="customer-state"]').textContent,
+    toasts: () => queryAll(container, MESSAGE),
+  };
+}
+
+function gateContextReads() {
+  const answer = browser.invoke.getMockImplementation();
+  let open: () => void = () => {};
+  const gate = new Promise<void>((resolve) => {
+    open = resolve;
+  });
+  browser.invoke.mockImplementation(async (operation, params) => {
+    if (operation === READ_CONTEXT) await gate;
+    return answer?.(operation, params);
+  });
+  return () => interact(() => open());
+}
+
+function failSave(error: unknown, before: () => void = () => {}) {
+  const answer = browser.invoke.getMockImplementation();
+  browser.invoke.mockImplementation(async (operation, params) => {
+    if (operation === SAVE_REVIEW) {
+      before();
+      throw error;
+    }
+    return answer?.(operation, params);
+  });
+}
+
+describe("StorefrontProviders reviews", () => {
+  it("reads the reviews over GET once the session is ready, without a toast", async () => {
+    backend.signedIn = true;
+    backend.reviews = [
+      productReview(),
+      productReview({ id: "review-2", status: false }),
+    ];
+    const openContext = gateContextReads();
+    const shop = await mountReviewsShop();
+
+    await shop.click("load-reviews");
+    expect(invoked(READ_REVIEWS)).toEqual([]);
+    await openContext();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({
+      ok: true,
+      reviews: backend.reviews,
+      total: 2,
+      page: 1,
+      limit: 10,
+    });
+    expect(invoked(READ_REVIEWS)).toEqual([
+      {
+        pathParams: { productId: "parent-1" },
+        query: { _criteria: encodeForQuery(productReviewsCriteria()) },
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    const operations = browser.invoke.mock.calls.map(([name]) => name);
+    expect(operations.indexOf(READ_CONTEXT)).toBeLessThan(
+      operations.indexOf(READ_REVIEWS),
+    );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a failed read as not ok, logs it and shows no toast", async () => {
+    backend.signedIn = true;
+    const failure = apiClientError(
+      [{ code: "PRODUCT__REVIEW_NOT_ACTIVE", status: "403" }],
+      403,
+    );
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_REVIEWS) throw failure;
+      return answer?.(operation, params);
+    });
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const shop = await mountReviewsShop();
+
+    await expect(shop.load()).resolves.toEqual({ ok: false });
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "[Reviews] reading the product reviews failed",
+      failure,
+    );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("reports the customer state from loading to the customer and to a guest after a logout", async () => {
+    backend.signedIn = true;
+    const openContext = gateContextReads();
+    const shop = await mountReviewsShop();
+
+    expect(shop.customerState()).toBe("loading");
+
+    await openContext();
+    await vi.waitFor(() =>
+      expect(shop.customerState()).toBe("customer:customer-1"),
+    );
+
+    await shop.click("logout");
+
+    await vi.waitFor(() => expect(shop.customerState()).toBe("guest"));
+  });
+
+  it("saves a review under the given product id without a toast", async () => {
+    backend.signedIn = true;
+    const shop = await mountReviewsShop();
+
+    await expect(shop.submit()).resolves.toEqual({ ok: true });
+
+    expect(invoked(SAVE_REVIEW)).toEqual([
+      {
+        pathParams: { productId: "variant-1" },
+        body: {
+          title: REVIEW_INPUT.title,
+          content: REVIEW_INPUT.content,
+          points: 5,
+        },
+      },
+    ]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a second review of the same customer as a violation without a toast", async () => {
+    backend.signedIn = true;
+    failSave(
+      apiClientError(
+        [
+          {
+            code: "VIOLATION::ENTITY_EXISTS",
+            status: "400",
+            detail: "The review already exists.",
+          },
+        ],
+        400,
+      ),
+    );
+    const shop = await mountReviewsShop();
+    await vi.waitFor(() =>
+      expect(shop.customerState()).toBe("customer:customer-1"),
+    );
+
+    await expect(shop.submit()).resolves.toEqual({
+      ok: false,
+      violations: [
+        {
+          code: "VIOLATION::ENTITY_EXISTS",
+          detail: "The review already exists.",
+        },
+      ],
+    });
+
+    expect(shop.toasts()).toHaveLength(0);
+    expect(invoked(READ_CONTEXT)).toHaveLength(1);
+  });
+
+  it("re-reads the session when the backend says the customer is gone", async () => {
+    backend.signedIn = true;
+    failSave(
+      apiClientError(
+        [
+          {
+            code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+            status: "403",
+            detail: "Customer is not logged in.",
+          },
+        ],
+        403,
+      ),
+      () => {
+        backend.signedIn = false;
+      },
+    );
+    const shop = await mountReviewsShop();
+    await vi.waitFor(() =>
+      expect(shop.customerState()).toBe("customer:customer-1"),
+    );
+
+    await expect(shop.submit()).resolves.toEqual({
+      ok: false,
+      violations: [
+        {
+          code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+          detail: "Customer is not logged in.",
+        },
+      ],
+    });
+
+    expect(invoked(READ_CONTEXT)).toHaveLength(2);
+    expect(shop.customerState()).toBe("guest");
+    expect(shop.toasts()).toHaveLength(0);
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("resolves a failure without API errors with the default message and no toast", async () => {
+    backend.signedIn = true;
+    const failure = new Error("offline");
+    failSave(failure);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const shop = await mountReviewsShop();
+
+    await expect(shop.submit()).resolves.toEqual({
+      ok: false,
+      message: testTranslator()("errors.message-default"),
+    });
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "[Reviews] saving the product review failed",
+      failure,
+    );
+    expect(shop.toasts()).toHaveLength(0);
   });
 });

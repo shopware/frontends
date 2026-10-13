@@ -1,3 +1,4 @@
+import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -11,32 +12,41 @@ import { resolveLanguageId } from "@/platform/shopware/reads/languages";
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<ListingSearchParams>;
 };
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: HomePageProps): Promise<Metadata> {
   await connection();
-  const locale = await localeFromParams(params);
+  const [locale, query] = await Promise.all([
+    localeFromParams(params),
+    searchParams,
+  ]);
   try {
     return await buildHomeMetadata({
       locale,
       languageId: await resolveLanguageId(locale),
+      page: query.p,
     });
   } catch {
     return {};
   }
 }
 
-async function HomeContent({ params }: HomePageProps) {
+async function HomeContent({ params, searchParams }: HomePageProps) {
   await connection();
-  const locale = await localeFromParams(params);
+  const [locale, query] = await Promise.all([
+    localeFromParams(params),
+    searchParams,
+  ]);
   const languageId = await resolveLanguageId(locale);
   const context = await readSalesChannelContext(languageId);
   return (
     <NavigationPage
       navigationId={context.salesChannel.navigationCategoryId}
-      searchParams={{}}
+      searchParams={query}
       locale={locale}
       languageId={languageId}
       isHome
@@ -44,10 +54,10 @@ async function HomeContent({ params }: HomePageProps) {
   );
 }
 
-export default function HomePage({ params }: HomePageProps) {
+export default function HomePage(props: HomePageProps) {
   return (
     <Suspense fallback={<PageSkeleton />}>
-      <HomeContent params={params} />
+      <HomeContent {...props} />
     </Suspense>
   );
 }

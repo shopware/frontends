@@ -118,6 +118,15 @@
         "SHOPWARE_DEV_STOREFRONT_URL": {
           "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
         },
+        "SHOPWARE_API_TIMEOUT": {
+          "description": "Optional. Timeout in whole milliseconds for every Store API call the server makes; 10000 when empty, 0 turns it off. Read at request time."
+        },
+        "SHOPWARE_API_HEADERS": {
+          "description": "Optional. JSON object of extra headers for the server's Store API calls, e.g. HTTP basic auth or a WAF bypass header. Never sent to the browser. Read at request time."
+        },
+        "SHOPWARE_PUBLIC_API_HEADERS": {
+          "description": "Optional. JSON object of extra headers the browser sends with its Store API calls, served at runtime by /api/shopware/config, so the values are public. Limited by Shopware's CORS allowed headers. The server sends them too; SHOPWARE_API_HEADERS wins for a name set in both."
+        },
         "STOREFRONT_URL": {
           "description": "Optional. Public origin of this storefront, e.g. https://shop.example.com. Used for absolute canonical links, Open Graph URLs and structured data; without it canonical links are relative and structured data has no URLs. Read at request time."
         }

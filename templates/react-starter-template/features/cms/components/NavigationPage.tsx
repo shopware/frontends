@@ -11,13 +11,13 @@ import { toBreadcrumbItems } from "@/features/navigation/breadcrumbs";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
+import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { getSiteUrl } from "@/platform/seo/siteUrl";
 import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readBreadcrumbOrNothing } from "@/platform/shopware/reads/breadcrumb";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
-import { readNavigation } from "@/platform/shopware/reads/navigation";
 import { readProductListing } from "@/platform/shopware/reads/productListing";
 
 export type NavigationPageProps = {
@@ -47,7 +47,11 @@ export async function NavigationPage({
 
   const [navigation, listing, breadcrumbs, { contentLang }] = await Promise.all(
     [
-      readNavigation(navigationId, 2, languageId),
+      readCategoryNavigation(
+        cmsPage,
+        isHome ? "main-navigation" : navigationId,
+        languageId,
+      ),
       needsListing
         ? readProductListing(
             navigationId,

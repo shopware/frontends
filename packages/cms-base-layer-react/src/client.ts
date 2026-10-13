@@ -9,8 +9,10 @@ export type {
   CmsActions,
   CmsActionsProviderProps,
   CmsApiViolation,
+  CmsCustomerState,
   CmsNotification,
   CmsNotificationAction,
+  CmsProductReviewsResult,
   CmsReviewResult,
   CmsVariantResult,
 } from "./actions/CmsActionsContext";

@@ -5,8 +5,8 @@ Next.js App Router storefront template for Shopware 6, the React counterpart of
 rendering, the header/footer layout, a browser session with login,
 registration and logout, the cart, the checkout with the order confirmation,
 the customer account area (`/account/**`), the wishlist and the three UI
-locales of the Vue starter (`en-GB`, `/pl-PL/…`, `/de-DE/…`) work; search,
-variant switching and forms are stubs.
+locales of the Vue starter (`en-GB`, `/pl-PL/…`, `/de-DE/…`) work; search, variant switching, the contact form and the
+newsletter are stubs; product reviews are wired (see Reviews).
 `supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Next.js docs
@@ -39,6 +39,27 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   after `SHOPWARE_ENDPOINT` is re-pointed sends the shop's logins and
   registrations to the demo host. `getShopwareConfig` warns once per process
   when that happens.
+- `platform/shopware/requestOptions.ts` reads `SHOPWARE_API_TIMEOUT`,
+  `SHOPWARE_API_HEADERS` and `SHOPWARE_PUBLIC_API_HEADERS` at request time
+  and parses each raw value once. `createShopwareClient` passes the timeout
+  (whole milliseconds, 10000 when empty, `0` turns it off) as the client's
+  `fetchOptions.timeout`, so every server call gets it and a per-call
+  `fetchOptions.timeout` wins (the proxy's 2.5 s SEO lookups, the
+  imitation's `READ_TIMEOUT_MS`). The default exists because `next start`
+  has no fill timeout for `'use cache'` at request time and concurrent
+  requests share one fill per key: without it, one hung read holds every
+  request for that key until undici gives up. It covers the wait for
+  response headers only, and `readCountries` can take up to ten timeouts.
+- The server sends `{ ...public, ...private }` headers (`SHOPWARE_API_HEADERS`
+  wins per name) under its own `sw-language-id`. Names are trimmed and
+  lowercased, because `createHeaders` and `defu` are case-sensitive and would
+  send both spellings. Dropped with a warning: every `sw-*` name (it would
+  replace the access key or the context token, or change a `'use cache'`
+  response outside its key), `accept`, `content-type`, the transport headers
+  undici consumes or throws on, invalid names and values, and, in the public
+  variable only, browser-forbidden names (`isBrowserForbiddenHeader`). Bad
+  input never throws, because a throw in the proxy or a read fails every
+  request. Warnings go out once per message and never print a value.
 - Create one server client per request, never at module scope. An instance
   adopts the `sw-context-token` of every response, so a shared one leaks
   sessions between users.
@@ -153,6 +174,18 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `platform/cms/registry.ts` with `mergeCmsRegistries`, never by editing the
   package. `app/globals.css` imports the package stylesheet and adds `@source`
   for its `src`, otherwise Tailwind drops the component classes.
+- `ctx.navigation`, the tree of the `category-navigation` element, comes from
+  `readCategoryNavigation(cmsPage, rootId, languageId)` in
+  `platform/cms/categoryNavigation.ts`. It reads only when the layout holds a
+  `category-navigation` slot (`hasCmsElement` in `platform/cms/cmsElements.ts`),
+  otherwise it gives `undefined` without a request. Category pages read the
+  current category's children (a leaf category shows no sidebar, like Vue).
+  The home, landing and product pages read
+  `readNavigation("main-navigation", 2, languageId)`, the Header's cache entry
+  and tags, so they add no Store API call; keep the alias and the depth in
+  step with the Header. A failed read logs and renders the page without the
+  sidebar, while `readNavigation` itself still throws, so the failure is not
+  cached. Landing and product pages get no active path.
 - Listing state lives in the URL (`manufacturer`, `properties`, `min-price`,
   `max-price`, `rating`, `shipping-free`, `order`, `limit`, `p`). When those
   params are present and the category layout contains a product listing,
@@ -172,7 +205,10 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   Catalog routes must never read `cookies()` or `headers()`.
 - The home page (`app/[locale]/(shop)/page.tsx`) calls `connection()` before its
   reads so `next build` does not need the Store API. Prerendering at build
-  time is a later decision.
+  time is a later decision. It passes its `searchParams` to `NavigationPage`
+  like the catch-all, so a root category with a product listing sorts,
+  filters and pages on `/` too, and its metadata gets `?p=N` in the
+  canonical.
 
 ## HTTP cache headers
 
@@ -596,6 +632,16 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   timeout; `createOrder` gives up after `ORDER_TIMEOUT_MS` (60 s, same file),
   and ofetch never retries a POST, so the timeout cannot place a second
   order.
+  The route also sends `headers`: `SHOPWARE_PUBLIC_API_HEADERS` through
+  `getPublicApiHeaders()`, never `SHOPWARE_API_HEADERS`.
+  `parsePublicShopwareConfig` re-applies the lowercase, reserved and
+  browser-forbidden filter, and `createBrowserClient` passes `config.headers`
+  as `defaultHeaders`. Shopware's CORS preflight allows only `Content-Type`,
+  `Authorization` and the core `sw-*` headers, so a custom header there
+  blocks every browser call until a `CorsHeaderProviderInterface` service or
+  an edge allows it. There is no browser timeout variable on purpose: a
+  client-wide default would put a timeout on the login, register and cart
+  mutations.
 - `features/session/components/ShopwareSessionProvider.tsx`, mounted by
   `StorefrontProviders`, binds one `createSessionStore()`
   (`features/session/sessionStore.ts`) with `useSyncExternalStore`; the
@@ -685,10 +731,12 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   resolves to `errors.message-default`.
 - `StorefrontProviders` is also the app side of the CMS actions port
   (`CmsActionsProvider`). `addToCart` goes to the cart (see Cart),
-  `toggleWishlist` and `isInWishlist` to the wishlist (see Wishlist); variant
-  lookup and forms are still stubs there that show a "not connected"
-  notification (`features/storefront/notWired.ts`) and return `{ ok: false }`.
-  Wire them there, not in the CMS components.
+  `toggleWishlist` and `isInWishlist` to the wishlist (see Wishlist),
+  `getCustomerState`, `loadProductReviews` and `submitProductReview` to the
+  reviews (see Reviews); variant lookup, the contact form and the newsletter
+  are still stubs there that show a "not connected" notification
+  (`features/storefront/notWired.ts`) and return `{ ok: false }`. Wire them
+  there, not in the CMS components.
 - `StorefrontProviders` renders the toasts of `notify()`. A toast's
   `action` is a `LocaleLink` rendered after the
   `data-testid="notification-element-message"` element, never inside it:
@@ -1205,3 +1253,25 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - Not ported: the Vue `useLocalWishlist` and the merge on login. The Vue
   starter never fills the local list (its card opens the login modal for
   guests too), so it stays empty and the merge only re-reads.
+
+## Reviews
+
+- The server render stays anonymous: the CMS slot's approved reviews are the
+  first render. `getCustomerState()` on the CMS port
+  (`features/storefront/cmsCustomerState.ts`, the same mapping as
+  `wishlistSessionKey`) is `loading` until the first `/context` read, so the
+  form and the login hint render only after hydration.
+- A logged-in customer's list is read in the browser, lazily: the first time
+  the reviews tab opens, and again after a successful submit
+  (`features/reviews/productReviewsApi.ts`, `readProductReviewsGet` with
+  `_criteria`, `createdAt DESC`, no `limit`, so `core.listing.reviewsPerPage`
+  applies). The route also returns the customer's own pending review
+  (`status: false`), which shows "not approved yet". Guests never read.
+- The read uses `parentId ?? id`, like the CMS resolver; the review is saved
+  under `product.id`, like Vue. The header counts the loaded list.
+- `submitProductReview` never toasts and never rejects: the form shows
+  `violations` inline. `FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN` refreshes
+  the session, which turns the form into the login hint.
+- Known risk: the backend HTTP cache key ignores `sw-context-token`, so under
+  `CACHE_REWORK` a logged-in GET can get the anonymous list. The fallback is
+  POST for this read only.

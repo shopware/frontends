@@ -3,6 +3,8 @@
 import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
 
+import type { Schemas } from "#shopware";
+
 export type CmsActionError = {
   messageKey: string;
   params?: Record<string, string | number | null | undefined>;
@@ -22,6 +24,18 @@ export type CmsApiViolation = {
 export type CmsReviewResult = CmsActionResult & {
   violations?: CmsApiViolation[];
 };
+
+export type CmsProductReviewsResult = CmsActionResult & {
+  reviews?: Schemas["ProductReview"][];
+  total?: number;
+  page?: number;
+  limit?: number | null;
+};
+
+export type CmsCustomerState =
+  | { status: "loading" }
+  | { status: "guest" }
+  | { status: "customer"; customerId: string };
 
 export type CmsNotificationAction = {
   label: string;
@@ -69,6 +83,12 @@ export type CmsActions = {
     content: string;
     points: number;
   }): Promise<CmsReviewResult>;
+  loadProductReviews(input: {
+    productId: string;
+    page?: number;
+    limit?: number;
+  }): Promise<CmsProductReviewsResult>;
+  getCustomerState(): CmsCustomerState | null;
   notify(notification: CmsNotification): void;
 };
 
@@ -92,6 +112,8 @@ export const notImplementedCmsActions: CmsActions = {
   submitContactForm: async () => notImplemented("submitContactForm"),
   subscribeNewsletter: async () => notImplemented("subscribeNewsletter"),
   submitProductReview: async () => notImplemented("submitProductReview"),
+  loadProductReviews: async () => notImplemented("loadProductReviews"),
+  getCustomerState: () => null,
   notify: (notification) => {
     console.info(`[CMS] ${notification.type}: ${notification.message}`);
   },

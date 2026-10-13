@@ -4,6 +4,7 @@ import { createAPIClient } from "@shopware/api-client";
 import type { ApiClient, operations } from "#shopware";
 
 import { getShopwareConfig } from "./config";
+import { getServerApiRequestOptions } from "./requestOptions";
 
 export type ShopwareClientOptions = {
   contextToken?: string;
@@ -15,10 +16,14 @@ export function createShopwareClient({
   languageId,
 }: ShopwareClientOptions = {}): ApiClient {
   const { endpoint, accessToken } = getShopwareConfig();
+  const { timeout, headers } = getServerApiRequestOptions();
   return createAPIClient<operations>({
     baseURL: endpoint,
     accessToken,
     contextToken,
-    defaultHeaders: languageId ? { "sw-language-id": languageId } : undefined,
+    defaultHeaders: languageId
+      ? { ...headers, "sw-language-id": languageId }
+      : headers,
+    fetchOptions: timeout === undefined ? undefined : { timeout },
   });
 }

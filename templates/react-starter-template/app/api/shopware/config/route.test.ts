@@ -13,14 +13,17 @@ beforeEach(() => {
   vi.stubEnv("SHOPWARE_PUBLIC_ENDPOINT", "https://shop.example.com/store-api/");
   vi.stubEnv("SHOPWARE_ACCESS_TOKEN", "SWSCOWN");
   vi.stubEnv("SHOPWARE_DEV_STOREFRONT_URL", "https://shop.example.com/en");
+  vi.stubEnv("SHOPWARE_API_HEADERS", "");
+  vi.stubEnv("SHOPWARE_PUBLIC_API_HEADERS", "");
 });
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  vi.restoreAllMocks();
 });
 
 describe("GET /api/shopware/config", () => {
-  it("returns only the public endpoint, the access token and the dev storefront URL", async () => {
+  it("returns only the public endpoint, the access token, the dev storefront URL and the public headers", async () => {
     const response = await GET();
 
     expect(response.status).toBe(200);
@@ -28,6 +31,46 @@ describe("GET /api/shopware/config", () => {
       endpoint: "https://shop.example.com/store-api/",
       accessToken: "SWSCOWN",
       devStorefrontUrl: "https://shop.example.com/en",
+      headers: {},
+    });
+  });
+
+  it("sends SHOPWARE_PUBLIC_API_HEADERS with lowercased names", async () => {
+    vi.stubEnv(
+      "SHOPWARE_PUBLIC_API_HEADERS",
+      '{"X-Edge-Region":"eu","Authorization":"Basic cHVibGlj"}',
+    );
+
+    const response = await GET();
+
+    expect((await response.json()).headers).toEqual({
+      "x-edge-region": "eu",
+      authorization: "Basic cHVibGlj",
+    });
+  });
+
+  it("never sends SHOPWARE_API_HEADERS to the browser", async () => {
+    vi.stubEnv("SHOPWARE_API_HEADERS", '{"authorization":"Basic c2VjcmV0"}');
+    vi.stubEnv("SHOPWARE_PUBLIC_API_HEADERS", '{"x-edge-region":"eu"}');
+
+    const response = await GET();
+    const body = await response.text();
+
+    expect(body).not.toContain("c2VjcmV0");
+    expect(JSON.parse(body).headers).toEqual({ "x-edge-region": "eu" });
+  });
+
+  it("leaves out public headers the Store API client or the browser must not get", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv(
+      "SHOPWARE_PUBLIC_API_HEADERS",
+      '{"sw-context-token":"shared","cookie":"a=b","host":"shop.test","x-edge-region":"eu"}',
+    );
+
+    const response = await GET();
+
+    expect((await response.json()).headers).toEqual({
+      "x-edge-region": "eu",
     });
   });
 
@@ -69,6 +112,7 @@ describe("GET /api/shopware/config", () => {
       endpoint: "https://demo-frontends.shopware.store/store-api/",
       accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
       devStorefrontUrl: "https://demo-frontends.shopware.store/figma",
+      headers: {},
     });
   });
 });

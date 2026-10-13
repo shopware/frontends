@@ -4,6 +4,7 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
+import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { getSiteUrl } from "@/platform/seo/siteUrl";
 import { notFoundOn404 } from "@/platform/shopware/errors";
@@ -25,13 +26,20 @@ export async function LandingPage({
     notFoundOn404,
   );
   const [ctx, { contentLang }] = await Promise.all([
-    createStorefrontCmsContext({
-      locale,
+    readCategoryNavigation(
+      landingPage.cmsPage,
+      "main-navigation",
       languageId,
-      routeName: "frontend.landing.page",
-      foreignKey: landingPageId,
-      landingPage,
-    }),
+    ).then((navigation) =>
+      createStorefrontCmsContext({
+        locale,
+        languageId,
+        routeName: "frontend.landing.page",
+        foreignKey: landingPageId,
+        landingPage,
+        navigation,
+      }),
+    ),
     resolveContentLanguage(locale),
   ]);
   const name = getTranslatedProperty(landingPage, "name");

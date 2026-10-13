@@ -17,16 +17,28 @@ import {
 } from "@/features/account/components/LoginModal";
 import { CartProvider } from "@/features/cart/components/CartProvider";
 import { useCart } from "@/features/cart/useCart";
+import {
+  readProductReviews,
+  reviewViolations,
+  saveProductReview,
+} from "@/features/reviews/productReviewsApi";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import { useSession } from "@/features/session/components/SessionProvider";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
 import {
   WishlistProvider,
   useWishlistStore,
 } from "@/features/wishlist/components/WishlistProvider";
 import { useWishlist } from "@/features/wishlist/useWishlist";
+import {
+  CUSTOMER_NOT_LOGGED_IN,
+  hasApiErrorCode,
+} from "@/features/wishlist/wishlistApi";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
+import { cmsCustomerState } from "../cmsCustomerState";
 import { NOT_WIRED_MESSAGE_KEYS } from "../notWired";
+import { useShopwareClient } from "./ShopwareClientContext";
 
 export const TOAST_TIMEOUT_MS = 5000;
 
@@ -66,6 +78,9 @@ function StorefrontCmsActions({
   const { retrySession, refreshSession } = useSessionActions();
   const requestLogin = useRequestLogin();
   const t = useTranslations();
+  const getClient = useShopwareClient();
+  const session = useSession();
+  const customerState = useMemo(() => cmsCustomerState(session), [session]);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
     const warnNotWired = () =>
@@ -96,7 +111,32 @@ function StorefrontCmsActions({
       },
       submitContactForm: notWired,
       subscribeNewsletter: notWired,
-      submitProductReview: notWired,
+      getCustomerState: () => customerState,
+      loadProductReviews: async (input) => {
+        try {
+          return {
+            ok: true,
+            ...(await readProductReviews(await getClient(), input)),
+          };
+        } catch (error) {
+          console.error("[Reviews] reading the product reviews failed", error);
+          return { ok: false };
+        }
+      },
+      submitProductReview: async (input) => {
+        try {
+          await saveProductReview(await getClient(), input);
+          return { ok: true };
+        } catch (error) {
+          if (hasApiErrorCode(error, CUSTOMER_NOT_LOGGED_IN)) {
+            await refreshSession();
+          }
+          const violations = reviewViolations(error);
+          if (violations) return { ok: false, violations };
+          console.error("[Reviews] saving the product review failed", error);
+          return { ok: false, message: t("errors.message-default") };
+        }
+      },
       findVariant: async () => {
         warnNotWired();
         return null;
@@ -111,6 +151,8 @@ function StorefrontCmsActions({
     refreshSession,
     requestLogin,
     t,
+    getClient,
+    customerState,
   ]);
 
   return <CmsActionsProvider actions={actions}>{children}</CmsActionsProvider>;

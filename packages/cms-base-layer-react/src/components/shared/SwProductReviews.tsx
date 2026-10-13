@@ -1,14 +1,15 @@
 import type { Schemas } from "#shopware";
 
-import type { CmsClientContext } from "../../context";
 import { cx } from "../../helpers/cx";
 import { withTranslationDefaults } from "../../translations";
+import type { CmsTranslations } from "../../translations";
 import { WarningIcon } from "../icons";
 import { SwProductRating } from "./SwProductRating";
 
 export type SwProductReviewsProps = {
   reviews?: Schemas["ProductReview"][];
-  ctx: CmsClientContext;
+  locale: string;
+  translations?: CmsTranslations;
 };
 
 const translationDefaults = {
@@ -35,11 +36,12 @@ function formatDate(date: string, locale: string): string {
   }
 }
 
-export function SwProductReviews({ reviews = [], ctx }: SwProductReviewsProps) {
-  const translations = withTranslationDefaults(
-    ctx.translations,
-    translationDefaults,
-  );
+export function SwProductReviews({
+  reviews = [],
+  locale,
+  translations: overrides,
+}: SwProductReviewsProps) {
+  const translations = withTranslationDefaults(overrides, translationDefaults);
 
   if (!reviews.length) {
     return <div>{translations.product.noReviews}.</div>;
@@ -61,7 +63,7 @@ export function SwProductReviews({ reviews = [], ctx }: SwProductReviewsProps) {
               {review.externalUser ? (
                 <span>{review.externalUser} - </span>
               ) : null}
-              <span>{formatDate(review.createdAt, ctx.locale)}</span>
+              <span>{formatDate(review.createdAt, locale)}</span>
             </div>
           ) : null}
           {!review.status ? (

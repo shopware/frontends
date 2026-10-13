@@ -81,6 +81,41 @@ function pageWithListing(listing: object): Schemas["CmsPage"] {
 
 const listingPage = pageWithListing({});
 
+const categoryNavigationPage = {
+  sections: [
+    {
+      id: "s",
+      apiAlias: "cms_section",
+      type: "default",
+      blocks: [
+        {
+          id: "b",
+          apiAlias: "cms_block",
+          type: "category-navigation",
+          slots: [
+            {
+              id: "slot",
+              apiAlias: "cms_slot",
+              type: "category-navigation",
+              slot: "content",
+              config: {},
+            },
+          ],
+        },
+      ],
+    },
+  ],
+} as unknown as Schemas["CmsPage"];
+
+const clothing = {
+  id: "clothing",
+  type: "page",
+  name: "Clothing",
+  translated: { name: "Clothing" },
+  seoUrls: [{ seoPathInfo: "Clothing/" }],
+  children: [],
+} as unknown as Schemas["Category"];
+
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(readCategory).mockResolvedValue({
@@ -101,7 +136,7 @@ beforeEach(() => {
 });
 
 describe("NavigationPage", () => {
-  it("reads the category, its navigation and the context in the page language", async () => {
+  it("reads the category and the context in the page language", async () => {
     const html = await renderToHtml(
       await NavigationPage({
         navigationId: "n",
@@ -112,11 +147,7 @@ describe("NavigationPage", () => {
     );
 
     expect(readCategory).toHaveBeenCalledExactlyOnceWith("n", "language-de");
-    expect(readNavigation).toHaveBeenCalledExactlyOnceWith(
-      "n",
-      2,
-      "language-de",
-    );
+    expect(readNavigation).not.toHaveBeenCalled();
     expect(readSalesChannelContext).toHaveBeenCalledExactlyOnceWith(
       "language-de",
     );
@@ -365,5 +396,191 @@ describe("catalog breadcrumbs", () => {
 
     expect(html).toMatch(/<span aria-current="page">Summer<\/span>/);
     expect(readBreadcrumbOrNothing).not.toHaveBeenCalled();
+  });
+});
+
+describe("CMS category navigation", () => {
+  it("lists the children of the category in the page language", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "n",
+      cmsPage: categoryNavigationPage,
+    } as unknown as Schemas["Category"]);
+    vi.mocked(readNavigation).mockResolvedValue([clothing]);
+
+    const html = await renderToHtml(
+      await NavigationPage({
+        navigationId: "n",
+        searchParams: {},
+        locale: "de-DE",
+        languageId: "language-de",
+      }),
+    );
+
+    expect(readNavigation).toHaveBeenCalledExactlyOnceWith(
+      "n",
+      2,
+      "language-de",
+    );
+    expect(anchor(html, "Clothing")).toMatch(/href="\/de-DE\/Clothing\/?"/);
+  });
+
+  it("lists the main navigation on the home page", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "root",
+      cmsPage: categoryNavigationPage,
+    } as unknown as Schemas["Category"]);
+    vi.mocked(readNavigation).mockResolvedValue([clothing]);
+
+    const html = await renderToHtml(
+      await NavigationPage({
+        navigationId: "root",
+        searchParams: {},
+        locale: "en-GB",
+        languageId: null,
+        isHome: true,
+      }),
+    );
+
+    expect(readNavigation).toHaveBeenCalledExactlyOnceWith(
+      "main-navigation",
+      2,
+      null,
+    );
+    expect(anchor(html, "Clothing")).toMatch(/href="\/Clothing\/?"/);
+  });
+
+  it("renders the category without the sidebar when the navigation cannot be read", async () => {
+    vi.mocked(readCategory).mockResolvedValue({
+      id: "n",
+      cmsPage: categoryNavigationPage,
+    } as unknown as Schemas["Category"]);
+    vi.mocked(readBreadcrumbOrNothing).mockResolvedValue([
+      breadcrumb("Furniture", "Furniture/"),
+    ]);
+    const failure = new Error("offline");
+    vi.mocked(readNavigation).mockRejectedValue(failure);
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const html = await renderToHtml(
+      await NavigationPage({
+        navigationId: "n",
+        searchParams: {},
+        locale: "en-GB",
+        languageId: null,
+      }),
+    );
+
+    expect(anchor(html, "Furniture")).toMatch(/href="\/Furniture\/?"/);
+    expect(html).not.toContain("Clothing");
+    expect(error).toHaveBeenCalledExactlyOnceWith(
+      "[CMS] reading the category navigation failed",
+      failure,
+    );
+    error.mockRestore();
+  });
+
+  it("lists the main navigation on a landing page in the page language", async () => {
+    vi.mocked(readLandingPage).mockResolvedValue({
+      id: "l",
+      cmsPage: categoryNavigationPage,
+    } as unknown as Schemas["LandingPage"]);
+    vi.mocked(readNavigation).mockResolvedValue([clothing]);
+
+    const html = await renderToHtml(
+      await LandingPage({
+        landingPageId: "l",
+        locale: "de-DE",
+        languageId: "language-de",
+      }),
+    );
+
+    expect(readNavigation).toHaveBeenCalledExactlyOnceWith(
+      "main-navigation",
+      2,
+      "language-de",
+    );
+    expect(anchor(html, "Clothing")).toMatch(/href="\/de-DE\/Clothing\/?"/);
+  });
+
+  it("reads no navigation for a landing page whose layout has no category navigation", async () => {
+    vi.mocked(readLandingPage).mockResolvedValue({
+      id: "l",
+      cmsPage: pageWithListing({}),
+    } as unknown as Schemas["LandingPage"]);
+
+    await LandingPage({
+      landingPageId: "l",
+      locale: "de-DE",
+      languageId: "language-de",
+    });
+
+    expect(readNavigation).not.toHaveBeenCalled();
+  });
+
+  it("renders the landing page without the sidebar when the navigation cannot be read", async () => {
+    vi.mocked(readLandingPage).mockResolvedValue({
+      id: "l",
+      name: "Summer",
+      translated: { name: "Summer" },
+      cmsPage: categoryNavigationPage,
+    } as unknown as Schemas["LandingPage"]);
+    const failure = new Error("offline");
+    vi.mocked(readNavigation).mockRejectedValue(failure);
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const html = await renderToHtml(
+      await LandingPage({
+        landingPageId: "l",
+        locale: "en-GB",
+        languageId: null,
+      }),
+    );
+
+    expect(html).toMatch(/<span aria-current="page">Summer<\/span>/);
+    expect(html).not.toContain("Clothing");
+    expect(error).toHaveBeenCalledExactlyOnceWith(
+      "[CMS] reading the category navigation failed",
+      failure,
+    );
+    error.mockRestore();
+  });
+
+  it("lists the main navigation on a product page in the page language", async () => {
+    vi.mocked(readProductDetail).mockResolvedValue({
+      product: { id: "p", cmsPage: categoryNavigationPage },
+    } as unknown as Schemas["ProductDetailResponse"]);
+    vi.mocked(readNavigation).mockResolvedValue([clothing]);
+
+    const html = await renderToHtml(
+      await DetailPage({
+        productId: "p",
+        locale: "de-DE",
+        languageId: "language-de",
+      }),
+    );
+
+    expect(readNavigation).toHaveBeenCalledExactlyOnceWith(
+      "main-navigation",
+      2,
+      "language-de",
+    );
+    expect(anchor(html, "Clothing")).toMatch(/href="\/de-DE\/Clothing\/?"/);
+    expect(jsonLdBlocks(html)).toContainEqual(
+      expect.objectContaining({ "@type": "Product" }),
+    );
+  });
+
+  it("reads no navigation for a product whose layout has no category navigation", async () => {
+    vi.mocked(readProductDetail).mockResolvedValue({
+      product: { id: "p", cmsPage: pageWithListing({}) },
+    } as unknown as Schemas["ProductDetailResponse"]);
+
+    await DetailPage({
+      productId: "p",
+      locale: "de-DE",
+      languageId: "language-de",
+    });
+
+    expect(readNavigation).not.toHaveBeenCalled();
   });
 });

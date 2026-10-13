@@ -3,9 +3,13 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode, TransitionEvent } from "react";
 
+import { useCmsActions } from "../../actions/CmsActionsContext";
+import type { CmsCustomerState } from "../../actions/CmsActionsContext";
 import { cx } from "../../helpers/cx";
+import { useProductReviewList } from "../../reviews/useProductReviewList";
 import type { CmsTranslations } from "../../translations";
 import { CheckCircleIcon, ChevronDownIcon, UserIcon } from "../icons";
+import { SwProductReviews } from "../shared/SwProductReviews";
 import { SwProductReviewsForm } from "../shared/SwProductReviewsForm";
 
 export type CmsElementProductDescriptionReviewsTabsTranslations = {
@@ -22,8 +26,10 @@ export type CmsElementProductDescriptionReviewsTabsTranslations = {
 
 export type CmsElementProductDescriptionReviewsTabsProps = {
   productId?: string;
-  reviewCount: number;
+  reviewsProductId?: string;
+  initialReviewCount: number;
   isLoggedIn: boolean;
+  locale: string;
   translations: CmsElementProductDescriptionReviewsTabsTranslations;
   description: ReactNode;
   reviews: ReactNode;
@@ -33,6 +39,14 @@ export type CmsElementProductDescriptionReviewsTabsProps = {
 const DESCRIPTION_SECTION = 1;
 const REVIEWS_SECTION = 2;
 const CATEGORY_SECTION = 3;
+
+const CONTEXT_CUSTOMER_ID = "cms-context-customer";
+
+function customerFromContext(isLoggedIn: boolean): CmsCustomerState {
+  return isLoggedIn
+    ? { status: "customer", customerId: CONTEXT_CUSTOMER_ID }
+    : { status: "guest" };
+}
 
 type SectionToggleProps = {
   title: string;
@@ -85,9 +99,11 @@ const panelPhaseClasses: Record<Exclude<PanelPhase, "closed">, string> = {
 
 function SectionPanel({
   open,
+  busy = false,
   children,
 }: {
   open: boolean;
+  busy?: boolean;
   children: ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -125,7 +141,10 @@ function SectionPanel({
       )}
       onTransitionEnd={handleTransitionEnd}
     >
-      <div className="self-stretch text-surface-on-surface text-base font-normal leading-normal">
+      <div
+        className="self-stretch text-surface-on-surface text-base font-normal leading-normal"
+        aria-busy={busy || undefined}
+      >
         {children}
       </div>
     </div>
@@ -134,17 +153,31 @@ function SectionPanel({
 
 export function CmsElementProductDescriptionReviewsTabs({
   productId,
-  reviewCount,
+  reviewsProductId,
+  initialReviewCount,
   isLoggedIn,
+  locale,
   translations,
   description,
   reviews,
   categories,
 }: CmsElementProductDescriptionReviewsTabsProps) {
+  const actions = useCmsActions();
   const [openSections, setOpenSections] = useState<ReadonlySet<number>>(
     () => new Set([DESCRIPTION_SECTION]),
   );
-  const [reviewAdded, setReviewAdded] = useState(false);
+  const [reviewAddedFor, setReviewAddedFor] = useState<string | null>(null);
+  const customer =
+    actions.getCustomerState() ?? customerFromContext(isLoggedIn);
+  const customerId =
+    customer.status === "customer" ? customer.customerId : null;
+  const reviewAdded = customerId !== null && reviewAddedFor === customerId;
+  const reviewsOpen = openSections.has(REVIEWS_SECTION);
+  const list = useProductReviewList({
+    productId: reviewsProductId,
+    customerId,
+    open: reviewsOpen,
+  });
 
   function toggleSection(section: number) {
     setOpenSections((current) => {
@@ -162,6 +195,11 @@ export function CmsElementProductDescriptionReviewsTabs({
     return openSections.has(section);
   }
 
+  function handleReviewAdded() {
+    setReviewAddedFor(customerId);
+    void list.reload();
+  }
+
   return (
     <>
       <SectionToggle
@@ -173,21 +211,30 @@ export function CmsElementProductDescriptionReviewsTabs({
         {description}
       </SectionPanel>
       <SectionToggle
-        title={`${translations.product.reviews} (${reviewCount})`}
-        open={isSectionOpen(REVIEWS_SECTION)}
+        title={`${translations.product.reviews} (${list.reviews?.length ?? initialReviewCount})`}
+        open={reviewsOpen}
         testId="product-reviews-tab"
         onToggle={() => toggleSection(REVIEWS_SECTION)}
       />
-      <SectionPanel open={isSectionOpen(REVIEWS_SECTION)}>
-        {reviews}
-        {productId && isLoggedIn && !reviewAdded ? (
+      <SectionPanel open={reviewsOpen} busy={list.loading}>
+        {list.reviews ? (
+          <SwProductReviews
+            reviews={list.reviews}
+            locale={locale}
+            translations={translations}
+          />
+        ) : (
+          reviews
+        )}
+        {productId && customerId && !reviewAdded ? (
           <SwProductReviewsForm
+            key={customerId}
             productId={productId}
             translations={translations}
-            onSuccess={() => setReviewAdded(true)}
+            onSuccess={handleReviewAdded}
           />
         ) : null}
-        {productId && !isLoggedIn ? (
+        {productId && customer.status === "guest" ? (
           <div className="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center">
             <div className="w-5 h-5 text-surface-on-surface-variant flex-shrink-0">
               <UserIcon width={20} height={20} aria-label="User" />

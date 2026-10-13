@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import { withLocale } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
+import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { catalogNow } from "@/platform/seo/clock";
 import { buildProductJsonLd } from "@/platform/seo/jsonLd";
@@ -32,13 +33,17 @@ export async function DetailPage({
     notFoundOn404,
   );
   const [ctx, breadcrumbs, { contentLang }, now] = await Promise.all([
-    createStorefrontCmsContext({
-      locale,
-      languageId,
-      routeName: "frontend.detail.page",
-      foreignKey: productId,
-      product,
-    }),
+    readCategoryNavigation(product.cmsPage, "main-navigation", languageId).then(
+      (navigation) =>
+        createStorefrontCmsContext({
+          locale,
+          languageId,
+          routeName: "frontend.detail.page",
+          foreignKey: productId,
+          product,
+          navigation,
+        }),
+    ),
     readBreadcrumbOrNothing(product.id, "product", languageId),
     resolveContentLanguage(locale),
     catalogNow(),
